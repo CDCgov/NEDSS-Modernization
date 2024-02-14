@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.model.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.model.Valueset;
-import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
-import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
 import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
@@ -36,25 +33,16 @@ public class ValuesetController {
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetUpdater valueSetUpdater;
   private final ValuesetCreator valueSetCreator;
-  private final ConceptCreator conceptCreator;
-  private final ConceptUpdater conceptUpdater;
-  private final ConceptFinder conceptFinder;
 
   public ValuesetController(
       final ValueSetOptionFinder optionFinder,
       final ValueSetStateManager valueSetStateManager,
       final ValueSetUpdater valueSetUpdater,
-      final ValuesetCreator valueSetCreator,
-      final ConceptCreator conceptCreator,
-      final ConceptUpdater conceptUpdater,
-      final ConceptFinder conceptFinder) {
+      final ValuesetCreator valueSetCreator) {
     this.optionFinder = optionFinder;
     this.valueSetStateManager = valueSetStateManager;
     this.valueSetUpdater = valueSetUpdater;
     this.valueSetCreator = valueSetCreator;
-    this.conceptCreator = conceptCreator;
-    this.conceptUpdater = conceptUpdater;
-    this.conceptFinder = conceptFinder;
   }
 
   @PostMapping
@@ -92,28 +80,6 @@ public class ValuesetController {
       @PageableDefault(size = 25, sort = "name") Pageable pageable,
       @RequestBody ValueSetSearchRequest request) {
     return optionFinder.search(request, pageable);
-  }
-
-  @GetMapping("{codeSetNm}/concepts")
-  public List<Concept> findConceptsByCodeSetName(@PathVariable String codeSetNm) {
-    return conceptFinder.find(codeSetNm);
-  }
-
-  @PutMapping("/{valueSetCode}/concepts/{localCode}")
-  public Concept updateConcept(
-      @PathVariable String valueSetCode,
-      @PathVariable String localCode,
-      @RequestBody UpdateConceptRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    return conceptUpdater.update(valueSetCode, localCode, request, details.getId());
-  }
-
-  @PostMapping("{codeSetNm}/concepts")
-  public Concept createConcept(
-      @PathVariable String codeSetNm,
-      @RequestBody CreateConceptRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    return conceptCreator.create(codeSetNm, request, details.getId());
   }
 
 }
