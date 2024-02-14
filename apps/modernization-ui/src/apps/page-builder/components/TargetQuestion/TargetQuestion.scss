@@ -17,12 +17,12 @@
         z-index: 1;
         .tabs {
             display: flex;
-            border-bottom: 2px solid var(--base-lighter, #dcdee0);
+            @extend %thin-bottom;
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.09);
             li {
                 display: inline-block;
                 cursor: pointer;
-                color: var(--base-black, #000);
+                color: colors.$base-black;
                 font-family: Public Sans;
                 font-size: 1rem;
                 font-style: normal;
@@ -32,7 +32,7 @@
                 margin-right: 2.5rem;
                 padding-bottom: 0.62rem;
                 &.active {
-                    border-bottom: 0.4375rem solid var(--primary-primary, #005ea2);
+                    border-bottom: 0.4375rem solid colors.$primary;
                 }
             }
         }
@@ -89,7 +89,7 @@
         max-height: 66.3rem;
         .tree-section {
             width: 35%;
-            margin-right: 2rem;
+            margin-right: 1rem;
             overflow-y: scroll;
         }
         .list-section {
