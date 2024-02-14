@@ -23,9 +23,12 @@ public class SecurityConfigurer {
     return authenticationConfigurer.configure(withStandardSecurity(http));
   }
 
+  @SuppressWarnings("java:S4502")
   private HttpSecurity withStandardSecurity(final HttpSecurity http) throws Exception {
     return http
+        //  disabled until the frontend can be altered to work with csrf
         .csrf().disable()
+        //
         .authorizeHttpRequests(requests -> requests.requestMatchers(ignoredPaths.paths()).permitAll())
         .authorizeHttpRequests(requests -> requests.anyRequest().authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

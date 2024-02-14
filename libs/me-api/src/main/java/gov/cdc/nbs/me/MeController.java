@@ -1,7 +1,6 @@
 package gov.cdc.nbs.me;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authorization.permission.PermissionFinder;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.GrantedAuthority;
