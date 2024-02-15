@@ -304,7 +304,12 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                     </Button>
                 </Grid>
                 <Grid col={12} className="padding-x-2">
-                    <Button accessKey="X" className="width-full clear-btn" type={'button'} onClick={handleClearAll} outline>
+                    <Button
+                        accessKey="X"
+                        className="width-full clear-btn"
+                        type={'button'}
+                        onClick={handleClearAll}
+                        outline>
                         Clear all
                     </Button>
                 </Grid>
