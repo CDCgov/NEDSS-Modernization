@@ -155,16 +155,41 @@ class PageContentMother {
 
         }
 
+        public void withStaticElementIn(
+                        final PageIdentifier page,
+                        final String name,
+                        final int subsection) {
+                harness.with(page)
+                                .use(found -> nthOfType(found.getUiMetadata(), subsection,
+                                                PageConstants.SUB_SECTION_COMPONENT)
+                                                                .ifPresent(container -> withStaticElementIn(found,
+                                                                                container,
+                                                                                name, 1012L)));
+        }
+
+        private void withStaticElementIn(
+                        final WaTemplate found,
+                        final WaUiMetadata container,
+                        final String name,
+                        final long type) {
+                placeWithin(found.getUiMetadata(), container, type)
+                                .ifPresent(order -> found.addLineSeparator(new PageContentCommand.AddLineSeparator(
+                                                found, order, this.settings.createdBy(), name,
+                                                Instant.now())));
+
+        }
+
         public void withContentIn(
                         final PageIdentifier page,
                         final String name,
-                        final int subSection) {
+                        final int subSection,
+                        final long type) {
 
                 harness.with(page)
                                 .use(found -> nthOfType(found.getUiMetadata(), subSection,
                                                 PageConstants.SUB_SECTION_COMPONENT)
                                                                 .ifPresent(container -> withContentIn(found, container,
-                                                                                name)));
+                                                                                name, type)));
         }
 
         public void withContentIn(
@@ -177,15 +202,16 @@ class PageContentMother {
 
                                 found.getUiMetadata().stream().filter(havingName(subSection))
                                                 .findFirst()
-                                                .ifPresent(container -> withContentIn(found, container, name)));
+                                                .ifPresent(container -> withContentIn(found, container, name, 1008L)));
         }
 
         private void withContentIn(
                         final WaTemplate found,
                         final WaUiMetadata container,
-                        final String name) {
-                placeWithin(found.getUiMetadata(), container, 1008L)
-                                .ifPresent(order -> found.addContent(name, 1008L, order, this.settings.createdBy(),
+                        final String name,
+                        final long type) {
+                placeWithin(found.getUiMetadata(), container, type)
+                                .ifPresent(order -> found.addContent(name, type, order, this.settings.createdBy(),
                                                 Instant.now()));
 
         }

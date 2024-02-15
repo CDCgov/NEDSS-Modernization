@@ -275,6 +275,12 @@ public class WaTemplate {
     including(tab);
   }
 
+  public void addLineSeparator(PageContentCommand.AddLineSeparator command) {
+    WaUiMetadata component = new WaUiMetadata(command);
+
+    this.uiMetadata.add(component);
+  }
+
   public void addSection(
       final String name,
       final int at,

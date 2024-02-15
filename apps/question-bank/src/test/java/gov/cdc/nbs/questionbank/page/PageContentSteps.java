@@ -12,8 +12,7 @@ public class PageContentSteps {
 
   PageContentSteps(
       final PageContentMother mother,
-      final Active<PageIdentifier> page
-  ) {
+      final Active<PageIdentifier> page) {
     this.mother = mother;
     this.page = page;
   }
@@ -84,7 +83,14 @@ public class PageContentSteps {
   public void the_page_has_a_named_question_in_the_nth_sub_section(final String subSection, final int section) {
     PageIdentifier active = page.active();
 
-    mother.withContentIn(active, subSection, section);
+    mother.withContentIn(active, subSection, section, 1008L);
+  }
+
+  @Given("^the page has a static element named \"(.*)\" in the (\\d+)(?:st|nd|rd|th) sub-section")
+  public void the_has_a_static_element_in_the_nth_sub_section(final String name, final int subsection) {
+    PageIdentifier active = page.active();
+
+    mother.withContentIn(active, name, subsection, 1011L);
   }
 
   @Given("the page has a question named {string} in the {string} sub-section")
