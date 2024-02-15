@@ -13,7 +13,6 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useAltX } from 'hotkeys';
 import { focusedTarget } from 'utils';
 
 type PatientSearchProps = {
@@ -34,11 +33,6 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
     useEffect(() => {
         skipTo('lastName');
     }, []);
-
-    useAltX(() => {
-        focusedTarget('lastName');
-        handleClearAll();
-    });
 
     useEffect(() => {}, [form.formState.errors]);
 
@@ -70,7 +64,7 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         // None instead of empty string because Trusswork's DatePicker doesn't update with empty string.
         form.reset({ dateOfBirth: 'none' }, { keepDefaultValues: true });
         clearAll();
-        skipTo('lastName');
+        focusedTarget('lastName');
     };
 
     const simpleSearchItems: AccordionItemProps[] = [
@@ -305,7 +299,8 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                 </Grid>
                 <Grid col={12} className="padding-x-2">
                     <Button
-                        accessKey="X"
+                        accessKey="x"
+                        aria-label="Clear all search criteria"
                         className="width-full clear-btn"
                         type={'button'}
                         onClick={handleClearAll}
