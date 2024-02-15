@@ -26,17 +26,17 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     USER_GUIDE_DOC_NAME=$USER_GUIDE_DOC_NAME
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
-RUN New-Item -ItemType directory -Path C:\nbs ; \
-    New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\DOS Devices' -Name 'D:'  -Value '\??\C:\nbs' -PropertyType String
+# RUN New-Item -ItemType directory -Path C:\nbs ; \
+#     New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\DOS Devices' -Name 'D:'  -Value '\??\C:\nbs' -PropertyType String
 
 # Configure NBS from Local Directory
 # NOTE: 
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
-WORKDIR /nbs
-COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-#Unzip and Wildfly Zip
-RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
+# WORKDIR /nbs
+# COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
+# #Unzip and Wildfly Zip
+# RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
 
 # Replace datasources in standalone.xml file
 COPY entrypoint.ps1 entrypoint.ps1
