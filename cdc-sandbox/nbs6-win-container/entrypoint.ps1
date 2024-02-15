@@ -48,13 +48,13 @@ $xmlDoc.Save($xmlFileName)
 # NOTE: Verify NBS User Training Guide.pdf is located in release zip file
 
 if ($env:GITHUB_RELEASE_TAG -eq 'latest') {
-    $github_api_Url = "https://api.github.com/repos/CDCgov/NEDSS-Modernization/releases/latest"
+    $github_api_url = "https://api.github.com/repos/CDCgov/NEDSS-Modernization/releases/latest"
   } else {
-    $github_api_Url = "https://api.github.com/repos/CDCgov/NEDSS-Modernization/releases/tags/$env:GITHUB_RELEASE_TAG"
+    $github_api_url = "https://api.github.com/repos/CDCgov/NEDSS-Modernization/releases/tags/$env:GITHUB_RELEASE_TAG"
   }
 
 # Fetch the latest release
-$githubRelease = Invoke-RestMethod -Uri $env:github_api_Url
+$githubRelease = Invoke-RestMethod -Uri $github_api_url
 # Output the latest tag name
 $releaseTag = $githubRelease.tag_name
 Write-Output "Release Tag to Download Zip From: $releaseTag"
