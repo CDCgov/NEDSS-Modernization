@@ -1,0 +1,24 @@
+.searchValueset {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    overflow: hidden;
+
+    .addValuesetHeader {
+        display: flex;
+        align-items: center;
+        svg {
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+    }
+
+    .scrollableContent {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        height: 100%;
+    }
+}

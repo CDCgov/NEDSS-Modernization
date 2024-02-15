@@ -5,7 +5,7 @@ import type { AddConceptRequest } from '../models/AddConceptRequest';
 import type { Concept } from '../models/Concept';
 import type { CreateValueSetResponse } from '../models/CreateValueSetResponse';
 import type { Page_ValueSet_ } from '../models/Page_ValueSet_';
-import type { Page_ValueSetSearchResponse_ } from '../models/Page_ValueSetSearchResponse_';
+import type { Page_ValueSetOption_ } from '../models/Page_ValueSetOption_';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
 import type { ValueSetCreateRequest } from '../models/ValueSetCreateRequest';
@@ -112,29 +112,29 @@ export class ValueSetControllerService {
 
     /**
      * searchValueSet
-     * @returns Page_ValueSetSearchResponse_ OK
+     * @returns Page_ValueSetOption_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static searchValueSetUsingPost({
         authorization,
-        search,
+        request,
         page,
         size,
         sort,
     }: {
         authorization: string,
         /**
-         * search
+         * request
          */
-        search: ValueSetSearchRequest,
+        request: ValueSetSearchRequest,
         page?: number,
         size?: number,
         sort?: string,
-    }): CancelablePromise<Page_ValueSetSearchResponse_ | any> {
+    }): CancelablePromise<Page_ValueSetOption_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/valueset/search',
+            url: '/nbs/page-builder/api/v1/valueset/options/search',
             headers: {
                 'Authorization': authorization,
             },
@@ -143,7 +143,7 @@ export class ValueSetControllerService {
                 'size': size,
                 'sort': sort,
             },
-            body: search,
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

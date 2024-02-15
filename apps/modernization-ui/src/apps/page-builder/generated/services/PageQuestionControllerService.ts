@@ -3,12 +3,59 @@
 /* eslint-disable */
 import type { AddQuestionRequest } from '../models/AddQuestionRequest';
 import type { AddQuestionResponse } from '../models/AddQuestionResponse';
+import type { PagesQuestion } from '../models/PagesQuestion';
+import type { UpdatePageQuestionRequest } from '../models/UpdatePageQuestionRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class PageQuestionControllerService {
+
+    /**
+     * updatePageQuestion
+     * @returns PagesQuestion OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updatePageQuestionUsingPut({
+        authorization,
+        page,
+        questionId,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * questionId
+         */
+        questionId: number,
+        /**
+         * request
+         */
+        request: UpdatePageQuestionRequest,
+    }): CancelablePromise<PagesQuestion | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
 
     /**
      * deleteQuestion

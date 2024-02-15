@@ -418,6 +418,6 @@ public class PatientSearchSteps {
 
   @Then("the Patient Search Results are not accessible")
   public void the_patient_search_results_are_not_accessible() throws Exception {
-    this.results.active().andExpect(accessDenied());
+    this.results.active().andDo(print()).andExpect(accessDenied());
   }
 }

@@ -24,6 +24,14 @@ nbs:
     patient:
       results:
         max: 25
+  authentication:
+    paths:
+      ignored:
+        - /v3/api-docs/**
+        - /swagger-ui/**
+        - /swagger-resources/**
+        - /v2/api-docs/**
+        - /login
 
 
 logging:
@@ -35,9 +43,7 @@ spring:
     include: ui
   graphql:
     path: /graphql
-    graphiql:
-      enabled: true
-      path: /graphiql
+
   jpa:
     properties:
       hibernate:

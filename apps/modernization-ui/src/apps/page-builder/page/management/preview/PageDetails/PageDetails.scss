@@ -1,0 +1,111 @@
+@use 'styles/colors';
+@use 'styles/borders' as borders;
+
+.page-details {
+    background-color: #f1f6f9;
+    padding: 0 1.5rem 6rem;
+    min-height: 90vh;
+    form.usa-form {
+        max-width: unset;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .page-details__form {
+        position: relative;
+        .page-details-printer {
+            position: absolute;
+            right:  1rem ;
+
+        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        min-width: 60rem;
+        max-width: 60rem;
+        background-color: colors.$base-white;
+        margin: 1.2rem 0;
+        display: flex;
+        justify-content: center;
+
+        .pages-breadcrumb {
+            padding-top: 1.4rem;
+            padding-left: 1.4rem;
+        }
+
+        .page-details__content {
+            width: 30rem;
+            padding: 2rem 0 4rem;
+            margin: 0 auto;
+            p {
+                font-size: 0.875rem;
+                line-height: 1.4rem;
+                margin-top: 0.5rem;
+                font-weight: 400;
+                color: colors.$base-darkest;
+                margin-bottom: 0;
+            }
+            .operator {
+                color: colors.$base;
+                font-size: 0.875rem;
+                font-weight: 400;
+            }
+            .mandatory-indicator {
+                color: colors.$mandatory;
+            }
+            h2 {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            h4 {
+                font-weight: 400;
+                margin-bottom: 0;
+            }
+            a {
+                text-decoration: none;
+            }
+            .usa-button {
+                margin-top: 0.4rem;
+                font-size: 0.95rem;
+                text-decoration: none;
+                margin-top: 0;
+            }
+            button {
+                p {
+                    margin: 0;
+                    font-weight: 700;
+                    color: colors.$primary;
+                }
+            }
+        }
+
+        .unsupported-event-type-message {
+            border: .25rem solid colors.$warm-accent;
+            background: rgba(250, 243, 209, 0.44);
+            display: flex;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            color: colors.$base-black;
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.62rem;
+        }
+    }
+    .page-details__buttons {
+        position: fixed;
+        display: flex;
+        bottom: 0;
+        width: 100%;
+        padding: 1.5rem;
+        justify-content: flex-end;
+        align-items: center;
+        @extend %thin;
+
+        background: colors.$base-white;
+        .usa-button {
+            margin-top: 0 !important;
+        }
+    }
+}

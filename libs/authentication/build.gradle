@@ -28,6 +28,7 @@ dependencies {
 
     implementation libs.springBoot.web
     implementation libs.bundles.security
+    implementation libs.bundles.oidc
 
     // database
     implementation libs.mssql.jdbc
