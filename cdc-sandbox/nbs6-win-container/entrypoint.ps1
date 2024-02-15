@@ -54,24 +54,26 @@ if ($env:GITHUB_RELEASE_TAG -eq 'latest') {
   }
 
 # Fetch the latest release
-$githubRelease = Invoke-RestMethod -Uri $GITHUB_API_URL
+$githubRelease = Invoke-RestMethod -Uri $github_api_Url
 # Output the latest tag name
 $releaseTag = $githubRelease.tag_name
 Write-Output "Release Tag to Download Zip From: $releaseTag"
 # Set Zip File Name
 $zip_url = ($githubRelease.assets | Where-Object { $_.name -eq $env:GITHUB_ZIP_FILE_NAME }).browser_download_url
-# Download Zip File
-Invoke-WebRequest -Uri $zip_url -OutFile $env:GITHUB_ZIP_FILE_NAME
+# Download Zip File. System.Net.WebClient is faster then using Invoke-WebRequest
+$webClient = New-Object System.Net.WebClient
+$webClient.DownloadFile($zip_url, $env:GITHUB_ZIP_FILE_NAME)
 Write-Output "Downloaded Zip File: $env:GITHUB_ZIP_FILE_NAME"
 # Extract ZIP to temporary directory
-Expand-Archive -LiteralPath "$env:GITHUB_ZIP_FILE_NAME" -Force
-Write-Output "$env:GITHUB_ZIP_FILE_NAME"        
+Expand-Archive -LiteralPath "$env:GITHUB_ZIP_FILE_NAME" -Force  
 $zip_folder = $env:GITHUB_ZIP_FILE_NAME.Trim(".zip")
 # Move zip file the final destination
-$user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder/$env:USER_GUIDE_NAME"
-Move-Item -Path $user_guide_path -Destination C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide -Force
+$user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder/$env:USER_GUIDE_DOC_NAME"
+Move-Item -Path $user_guide_path -Destination C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME -Force
+# Cleanup
 Remove-Item $env:GITHUB_ZIP_FILE_NAME
-Rename-Item -Path C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:USER_GUIDE_NAME -NewName $env:FINAL_NBS_USER_GUIDE_NAME
+Remove-Item $zip_folder -Recurse -Force -Confirm:$false
+Rename-Item -Path C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:USER_GUIDE_DOC_NAME -NewName $env:FINAL_NBS_USER_GUIDE_NAME
 #### END OF Configure User Guide ####
 
 #### DI app required task schedule ####
