@@ -7,6 +7,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class WebInteractionSteps {
 
@@ -31,5 +32,10 @@ public class WebInteractionSteps {
   @Then("I am not allowed due to insufficient permissions")
   public void access_is_denied() throws Exception {
     this.activeAction.active().andExpect(accessDenied());
+  }
+
+  @Then("I made a bad request")
+  public void bad_request() throws Exception {
+    this.activeAction.active().andExpect(status().isBadRequest());
   }
 }

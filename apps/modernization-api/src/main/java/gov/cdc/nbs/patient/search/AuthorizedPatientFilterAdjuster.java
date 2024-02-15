@@ -18,8 +18,7 @@ class AuthorizedPatientFilterAdjuster {
 
   PatientFilter adjusted(
       final NbsUserDetails user,
-      final PatientFilter filter
-  ) {
+      final PatientFilter filter) {
     return requiresAdjustment(user, filter.getRecordStatus())
         ? filter.adjustStatuses(withoutInactiveStatus(filter.getRecordStatus()))
         : filter;
@@ -27,12 +26,11 @@ class AuthorizedPatientFilterAdjuster {
 
   private boolean requiresAdjustment(
       final NbsUserDetails user,
-      final Collection<RecordStatus> selected
-  ) {
+      final Collection<RecordStatus> selected) {
     // If LOG_DEL or SUPERCEDED are specified, user must have FINDINACTIVE-PATIENT
     // authority
-    return selected.contains(RecordStatus.SUPERCEDED)
-        || selected.contains(RecordStatus.LOG_DEL)
+    return (selected.contains(RecordStatus.SUPERCEDED)
+        || selected.contains(RecordStatus.LOG_DEL))
         && (!user.hasPermission(permission));
   }
 

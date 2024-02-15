@@ -7,13 +7,14 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
-import org.apache.catalina.webresources.WarResource;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,7 +53,7 @@ class SubsectionGrouperTest {
         GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList(), (int) 2);
         waUiMetadata.setId(request.id());
         waUiMetadata.setBlockNm(request.blockName());
-        when(page.groupSubSection(any(), any())).thenReturn(waUiMetadata);
+        doNothing().when(page).groupSubSection(any(), any());
 
         Collection<RdbQuestion> listOfQuestions = new ArrayList<RdbQuestion>();
 
@@ -68,6 +70,17 @@ class SubsectionGrouperTest {
         Long userId = 456L;
         grouper.group(1l, request, userId);
         verify(page).groupSubSection(any(), any());
+    }
+
+    @Test
+    void should_not_group_subsection_no_page_found() {
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
+        WaUiMetadata waUiMetadata = new WaUiMetadata();
+        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList(), 1);
+        waUiMetadata.setId(request.id());
+        waUiMetadata.setBlockNm(request.blockName());
+        Long userId = 456L;
+        assertThrows(PageNotFoundException.class, () -> grouper.group(1l, request, userId));
     }
 
     @Test
@@ -107,18 +120,29 @@ class SubsectionGrouperTest {
         waUiMetadata.setId(100l);
         List<Long> batches = new ArrayList<>(Arrays.asList(101L, 102L));
         UnGroupSubSectionRequest request = new UnGroupSubSectionRequest(100l, batches);
-        when(page.unGroupSubSection(any(), any())).thenReturn(waUiMetadata);
+        doNothing().when(page).unGroupSubSection(any(), any());
         Long userId = 456L;
-        ResponseEntity<String> result = grouper.unGroup(1l, request, userId);
-        assertEquals("Subsection " + waUiMetadata.getId() + " is ungrouped Successfully ", result.getBody());
+        grouper.unGroup(1l, request, userId);
+        verify(page).unGroupSubSection(any(), any());
+    }
+
+    @Test
+    void should_not_unGroup_subsection_no_page_found() {
+        when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
+        WaUiMetadata waUiMetadata = new WaUiMetadata();
+        waUiMetadata.setId(100l);
+        List<Long> batches = new ArrayList<>(Arrays.asList(101L, 102L));
+        UnGroupSubSectionRequest request = new UnGroupSubSectionRequest(100l, batches);
+        Long userId = 456L;
+        assertThrows(PageNotFoundException.class, () -> grouper.unGroup(1l, request, userId));
     }
 
 
     @Test
     void testGroupSubSection() {
-        WaUiMetadata subsection = new WaUiMetadata();
-        subsection.setId(1L);
-        subsection.setNbsUiComponentUid(1016L);
+        WaUiMetadata subsection = mock(WaUiMetadata.class);
+        when(subsection.getId()).thenReturn(1L);
+        when(subsection.getNbsUiComponentUid()).thenReturn(1016L);
         PageContentCommand.GroupSubsection command = mock(PageContentCommand.GroupSubsection.class);
         when(command.batches()).thenReturn(getValidBatchList());
         when(command.subsection()).thenReturn(1L);
@@ -127,8 +151,8 @@ class SubsectionGrouperTest {
         List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2);
         WaTemplate waTemplate = new WaTemplate();
         waTemplate.setUiMetadata(uiMetadata);
-        WaUiMetadata result = waTemplate.groupSubSection(command, questionNbsUiComponentUids);
-        assertEquals(subsection, result);
+        waTemplate.groupSubSection(command, questionNbsUiComponentUids);
+        verify(subsection).update(any(PageContentCommand.GroupSubsection.class), anyInt());
     }
 
     @Test
@@ -164,9 +188,8 @@ class SubsectionGrouperTest {
         List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2);
         WaTemplate waTemplate = new WaTemplate();
         waTemplate.setUiMetadata(uiMetadata);
-
-        WaUiMetadata result = waTemplate.unGroupSubSection(command, questionNbsUiComponentUids);
-        assertEquals(subsection, result);
+        waTemplate.unGroupSubSection(command, questionNbsUiComponentUids);
+        assertNull(subsection.getBlockNm());
     }
 
     @Test
@@ -184,9 +207,9 @@ class SubsectionGrouperTest {
         List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2, nonQuestionBatch);
         WaTemplate waTemplate = new WaTemplate();
         waTemplate.setUiMetadata(uiMetadata);
+        waTemplate.unGroupSubSection(command, questionNbsUiComponentUids);
+        Assert.assertNull(subsection.getBlockNm());
 
-        WaUiMetadata result = waTemplate.unGroupSubSection(command, questionNbsUiComponentUids);
-        assertEquals(subsection, result);
     }
 
     @Test
@@ -246,7 +269,6 @@ class SubsectionGrouperTest {
         batchList.add(new GroupSubSectionRequest.Batch(101l, 'Y', "header1", 25));
         batchList.add(new GroupSubSectionRequest.Batch(102l, 'Y', "header2", 50));
         batchList.add(new GroupSubSectionRequest.Batch(103l, 'Y', "header2", 25));
-
         return batchList;
     }
 

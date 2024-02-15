@@ -79,7 +79,7 @@ class ConceptManagerTest {
         null,
         StatusCode.A,
         null,
-        new AddConceptRequest.MessagingInfo(null, null, null, "L"));
+        new AddConceptRequest.ConceptMessagingInfo(null, null, null, "L"));
 
     when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(a -> a.getArguments()[0]);
     conceptCreator.addConcept("codeset", request, 1L);
@@ -110,7 +110,7 @@ class ConceptManagerTest {
         null,
         StatusCode.A,
         null,
-        new AddConceptRequest.MessagingInfo(null, null, null, "NBS_CDC"));
+        new AddConceptRequest.ConceptMessagingInfo(null, null, null, "NBS_CDC"));
 
     when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(a -> a.getArguments()[0]);
     conceptCreator.addConcept("codeset", request, 1L);
@@ -141,7 +141,7 @@ class ConceptManagerTest {
         null,
         StatusCode.A,
         null,
-        new AddConceptRequest.MessagingInfo(null, null, null, "anything"));
+        new AddConceptRequest.ConceptMessagingInfo(null, null, null, "anything"));
 
     when(codeValueGeneralRepository.save(captor.capture())).thenAnswer(a -> a.getArguments()[0]);
     conceptCreator.addConcept("codeset", request, 1L);
@@ -169,7 +169,7 @@ class ConceptManagerTest {
         null,
         StatusCode.A,
         null,
-        new AddConceptRequest.MessagingInfo(null, null, null, "anything"));
+        new AddConceptRequest.ConceptMessagingInfo(null, null, null, "anything"));
     // Then an exception is thrown
     assertThrows(ConceptNotFoundException.class, () -> conceptCreator.addConcept("codeset", request, 1L));
   }

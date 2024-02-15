@@ -2,13 +2,12 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 
 import gov.cdc.nbs.questionbank.entity.WaRdbMetadata;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
@@ -47,7 +46,7 @@ public class SubSectionGrouper {
     }
     WaTemplate page = entityManager.find(WaTemplate.class, pageId);
     if (page == null) {
-      throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
+      throw new PageNotFoundException(pageId);
     }
 
     Collection<RdbQuestion> temp = finder.resolve(pageId);
@@ -62,14 +61,12 @@ public class SubSectionGrouper {
     page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
   }
 
-  public ResponseEntity<String> unGroup(Long pageId, UnGroupSubSectionRequest request, Long userId) {
+  public void unGroup(Long pageId, UnGroupSubSectionRequest request, Long userId) {
     WaTemplate page = entityManager.find(WaTemplate.class, pageId);
     if (page == null) {
-      throw new UpdateSubSectionException("Unable to find page with id: " + pageId);
+      throw new PageNotFoundException(pageId);
     }
-    WaUiMetadata section =
-        page.unGroupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
-    return ResponseEntity.ok("Subsection " + section.getId() + " is ungrouped Successfully ");
+    page.unGroupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
   }
 
   private PageContentCommand.GroupSubsectionRdb asCommand(

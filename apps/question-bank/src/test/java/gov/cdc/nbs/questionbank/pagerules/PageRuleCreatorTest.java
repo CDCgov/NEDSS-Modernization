@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;

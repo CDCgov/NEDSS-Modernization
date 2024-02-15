@@ -9,6 +9,7 @@ import gov.cdc.nbs.patient.GenderConverter;
 import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
+import gov.cdc.nbs.patient.PatientHistoryListener;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
@@ -21,6 +22,7 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -42,6 +44,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Entity
+@EntityListeners(PatientHistoryListener.class)
 public class Person {
     @Id
     @Column(name = "person_uid", nullable = false)

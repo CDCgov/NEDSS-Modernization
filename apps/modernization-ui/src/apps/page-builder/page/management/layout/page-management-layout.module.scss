@@ -31,6 +31,7 @@
             padding: 0.25rem 0.5rem;
             border-radius: 0.125rem;
             text-transform: uppercase;
+            background: colors.$info;
 
             &.draft {
                 background: colors.$info;
@@ -41,7 +42,7 @@
             }
 
             &.published {
-                background: colors.$success;
+                background: colors.$info;
             }
         }
     }

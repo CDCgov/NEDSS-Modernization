@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.redirect.search.EventFilterResolver;
 import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
-import gov.cdc.nbs.service.EncryptionService;
+import gov.cdc.nbs.encryption.EncryptionService;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController

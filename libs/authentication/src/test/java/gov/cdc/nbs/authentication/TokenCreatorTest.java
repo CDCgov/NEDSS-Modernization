@@ -3,7 +3,6 @@ package gov.cdc.nbs.authentication;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

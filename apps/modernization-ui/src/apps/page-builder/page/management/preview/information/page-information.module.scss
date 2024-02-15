@@ -1,24 +1,123 @@
 @use 'design/system';
+@use 'styles/colors';
 
 .information {
+    font-family: "Public Sans";
     header {
         padding: 1.5rem;
         display: flex;
         justify-content: space-between;
-
         @extend %thin-bottom;
     }
 
     nav {
         @extend %thin-bottom;
     }
-}
-
-.content {
-    padding: 1.5rem;
-
-    footer {
-        padding-top: 1.5rem;
-        @extend %thin-top;
+    .tabs {
+        display: flex;
+        @extend %thin-bottom;
+        padding:  1rem 1.5rem 0;
+        margin: 0;
+        font-style: normal;
+        li {
+            display: inline-block;
+            cursor: pointer;
+            color: colors.$base-black;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: normal;
+            background: colors.$base-white;
+            margin-right: 1.5rem;
+            &.active {
+                font-weight: 700;
+                border-bottom: 0.25rem solid  colors.$primary;
+                padding-bottom: 0.625rem;
+            }
+        }
+    }
+    .content {
+        padding: 1.5rem;
+        .lineBlock {
+            min-width: 50%;
+            margin-bottom: 1rem;
+        }
+        .detailsContainer {
+            border-bottom: colors.$base-lighter;
+            margin-bottom: 1.5rem;
+        }
+        .informationBlock {
+            display: flex;
+            align-items: flex-start;
+            align-self: stretch;
+            > div {
+                margin-right: 1rem;
+            }
+        }
+        .detailHeader {
+            color: colors.$base-darkest;
+            font-size: 0.8125rem;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            letter-spacing: 0.02031rem;
+            text-transform: uppercase;
+        }
+        .smallBodyText {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 162%; /* 1.4175rem */
+            overflow-wrap: break-word;
+        }
+        footer {
+            padding-top: 1.5rem;
+            @extend %thin-top;
+        }
+        .historyContent {
+            .versionBlock {
+                &:not(:first-child) {
+                    padding-top: 1rem;
+                }
+                @extend %thin-bottom;
+                padding-bottom: 1rem;
+                .text {
+                    color: colors.$base-darker;
+                    font-size: 0.9375rem;
+                    font-style: normal;
+                    font-weight: 700;
+                    line-height: normal;
+                    margin-bottom: 0.375rem;
+                }
+                .date {
+                    margin-left: 1.5rem;
+                    color: colors.$base-darkest;
+                    font-size: 0.875rem;
+                    font-style: normal;
+                    font-weight: 400;
+                }
+                .user {
+                    font-size: 0.875rem;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 162%;
+                    margin-bottom: 0.375rem;
+                }
+                .notes {
+                    color: colors.$base-darkest;
+                    font-size: 0.875rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 162%;
+                    word-break: break-word;
+                }
+                .description {
+                    font-size: 0.875rem;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 162%;
+                }
+            }
+        }
     }
 }

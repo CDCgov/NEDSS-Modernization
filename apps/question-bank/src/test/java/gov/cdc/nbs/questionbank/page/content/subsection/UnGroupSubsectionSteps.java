@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page.content.subsection;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
 import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,7 +38,6 @@ public class UnGroupSubsectionSteps {
     @Autowired
     private UserDetailsProvider user;
 
-    ResponseEntity<String> response;
 
     @Given("I send a ungroup subsection request")
     public void i_send_a_un_group_subsection_request() {
@@ -48,7 +49,7 @@ public class UnGroupSubsectionSteps {
             .orElseThrow();
         List<Long> batches = Arrays.asList(101l, 102l);
         try {
-            response = subsectionController.unGroupSubSection(
+            subsectionController.unGroupSubSection(
                 page.getId(),
                 new UnGroupSubSectionRequest(
                     section.getId(),
@@ -60,13 +61,13 @@ public class UnGroupSubsectionSteps {
             exceptionHolder.setException(e);
         } catch (AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
+        } catch (BadRequestException e) {
+            exceptionHolder.setException(e);
         }
     }
 
     @Then("the subsection is ungrouped")
     public void the_subsection_is_un_grouped() {
-        assertNotNull(response);
-        assertTrue(response.getBody().contains("ungrouped Successfully"));
-        assertEquals(200, response.getStatusCodeValue());
+        assertNull(exceptionHolder.getException());
     }
 }

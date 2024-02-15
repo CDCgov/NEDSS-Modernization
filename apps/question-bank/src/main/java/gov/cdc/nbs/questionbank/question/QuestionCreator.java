@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddDateQuestion;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.AddNumericQuestion;
 import gov.cdc.nbs.questionbank.question.exception.CreateQuestionException;
+import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
@@ -174,7 +175,7 @@ class QuestionCreator {
         dataMartInfo.dataMartColumnName());
   }
 
-  QuestionCommand.MessagingData asMessagingData(QuestionRequest.MessagingInfo messagingInfo) {
+  QuestionCommand.MessagingData asMessagingData(Question.MessagingInfo messagingInfo) {
     return new QuestionCommand.MessagingData(
         messagingInfo.includedInMessage(),
         messagingInfo.messageVariableId(),

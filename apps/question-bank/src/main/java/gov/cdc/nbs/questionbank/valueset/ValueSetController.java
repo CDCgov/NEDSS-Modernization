@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.List;
+
+import gov.cdc.nbs.questionbank.valueset.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,13 +23,6 @@ import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetCreateRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
-import gov.cdc.nbs.questionbank.valueset.response.CreateValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSet;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetOption;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import lombok.RequiredArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -45,6 +40,7 @@ public class ValueSetController {
   private final ConceptCreator conceptCreator;
   private final ConceptUpdater conceptUpdater;
   private final UserDetailsProvider userDetailsProvider;
+  private final CountyFinder countyFinder;
 
   @PostMapping
   public ResponseEntity<CreateValueSetResponse> createValueSet(@RequestBody ValueSetCreateRequest request) {
@@ -73,7 +69,7 @@ public class ValueSetController {
 
   @GetMapping("/options")
   public List<ValueSetOption> findValueSetOptions() {
-    return optionFinder.findValueSetOptions();
+    return optionFinder.findAllValueSetOptions();
   }
 
   @PostMapping("/update")
@@ -83,10 +79,11 @@ public class ValueSetController {
 
   }
 
-  @PostMapping("search")
-  public Page<ValueSetSearchResponse> searchValueSet(@PageableDefault(size = 25) Pageable pageable,
-      @RequestBody ValueSetSearchRequest search) {
-    return valueSetReader.searchValueSet(search, pageable);
+  @PostMapping("/options/search")
+  public Page<ValueSetOption> searchValueSet(
+      @PageableDefault(size = 25, sort = "name") Pageable pageable,
+      @RequestBody ValueSetSearchRequest request) {
+    return optionFinder.search(request, pageable);
   }
 
   @GetMapping("{codeSetNm}/concepts")
@@ -109,5 +106,9 @@ public class ValueSetController {
     return conceptCreator.addConcept(codeSetNm, request, userId);
   }
 
+  @GetMapping("{stateCode}/counties")
+  public List<County> findCountyByStateCode(@PathVariable String stateCode) {
+    return countyFinder.findByStateCode(stateCode);
+  }
 
 }

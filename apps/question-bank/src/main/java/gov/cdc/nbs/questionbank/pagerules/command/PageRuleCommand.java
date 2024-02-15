@@ -1,7 +1,8 @@
 package gov.cdc.nbs.questionbank.pagerules.command;
 
 import java.time.Instant;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+
+import gov.cdc.nbs.questionbank.pagerules.Rule;
 import gov.cdc.nbs.questionbank.pagerules.RuleData;
 
 public sealed interface PageRuleCommand {
@@ -12,10 +13,10 @@ public sealed interface PageRuleCommand {
         Instant requestedOn();
 
         public record AddPageRule(
-                        RuleData ruleData,
-                        CreateRuleRequest ruleRequest,
-                        Instant requestedOn,
-                        long userId,
-                        long page) implements PageRuleCommand {
+            RuleData ruleData,
+            Rule.CreateRuleRequest ruleRequest,
+            Instant requestedOn,
+            long userId,
+            long page) implements PageRuleCommand {
         }
 }
