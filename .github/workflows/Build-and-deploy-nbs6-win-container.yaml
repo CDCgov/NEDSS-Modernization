@@ -19,4 +19,6 @@ jobs:
       quay_repository: "quay.io/us-cdcgov/cdc-nbs-modernization"
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{ secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID }}
-      NBS6_ZIP_S3_BUCKET_NAME : ${{ secrets.NBS6_ZIP_S3_BUCKET_NAME }}
+      NBS6_ZIP_S3_BUCKET_NAME: ${{ secrets.NBS6_ZIP_S3_BUCKET_NAME }}
+      QUAY_ROBOT_USERNAME: ${{secrets.QUAY_ROBOT_USERNAME}}
+      QUAY_ROBOT_TOKEN: ${{secrets.QUAY_ROBOT_TOKEN}}
