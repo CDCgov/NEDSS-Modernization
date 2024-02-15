@@ -27,11 +27,11 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                         [styles.published]: mode === 'Published'
                     })}>
                     {mode === 'Published' ? (
-                        <>Previewing Published</>
+                        <>Previewing: Published</>
                     ) : mode === 'Draft' ? (
-                        <>Previewing initial draft</>
+                        <>Previewing: Initial Draft</>
                     ) : (
-                        <>Previewing Published with Draft</>
+                        <>Previewing: Published with Draft</>
                     )}
                 </span>
             </div>
