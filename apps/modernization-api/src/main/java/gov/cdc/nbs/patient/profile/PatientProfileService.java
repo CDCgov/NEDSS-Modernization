@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import java.util.function.Consumer;
 
 @Component
@@ -33,4 +34,11 @@ public class PatientProfileService {
     }
   }
 
+  public Person findPatientById(long patient) {
+    try {
+      return this.entityManager.find(Person.class, patient);
+    } catch (PatientNotFoundException e) {
+      throw new PatientNotFoundException(patient);
+    }
+  }
 }

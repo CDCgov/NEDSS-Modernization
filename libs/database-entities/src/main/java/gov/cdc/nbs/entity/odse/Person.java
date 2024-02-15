@@ -502,8 +502,6 @@ public class Person {
             .filter(name -> Objects.equals(name.getId(), identifier))
             .findFirst()
             .ifPresent(name -> name.update(info));
-
-        changed(info);
     }
 
     public void delete(final PatientCommand.DeleteNameInfo deleted) {
