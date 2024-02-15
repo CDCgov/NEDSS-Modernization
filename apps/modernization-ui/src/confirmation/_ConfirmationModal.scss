@@ -1,1 +1,12 @@
 @use 'styles/modal.scss';
+
+.modal-content {
+    .modal-message {
+        #confirmation-description, #confirmation-modal-details {
+            margin-bottom: 1rem;
+        }
+        p {
+            margin: 0;
+        }
+    }
+}
