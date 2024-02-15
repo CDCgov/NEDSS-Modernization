@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 class SubSectionQuestionFinder {
 
-    private static final String query = """
+    private static final String QUERY_STRING = """
             select
                 [component].wa_rdb_metadata_uid     as [identifier],
                 [component].wa_ui_metadata_uid      as [waIdentifier],
@@ -31,7 +31,7 @@ class SubSectionQuestionFinder {
 
     Collection<RdbQuestion> resolve(final long id) {
         return this.template.query(
-                query,
+                QUERY_STRING,
                 statement -> statement.setLong(PAGE_PARAMETER, id),
                 this.mapper);
     }
