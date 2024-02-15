@@ -16,7 +16,7 @@ jobs:
       github_release_tag: "latest"
       github_zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
       user_guide_doc_name: "NBS 7.2.2 User Guide.docx"
-      quay_repository: "us-cdcgov/cdc-nbs-modernization"
+      quay_repository: "quay.io/us-cdcgov/cdc-nbs-modernization"
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{ secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID }}
       NBS6_ZIP_S3_BUCKET_NAME : ${{ secrets.NBS6_ZIP_S3_BUCKET_NAME }}
