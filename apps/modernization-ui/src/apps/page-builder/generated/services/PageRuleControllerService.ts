@@ -3,18 +3,19 @@
 /* eslint-disable */
 import type { CreateRuleRequest } from '../models/CreateRuleRequest';
 import type { CreateRuleResponse } from '../models/CreateRuleResponse';
-import type { Page_ViewRuleResponse_ } from '../models/Page_ViewRuleResponse_';
+import type { Page_Rule_ } from '../models/Page_Rule_';
+import type { Rule } from '../models/Rule';
 import type { SearchPageRuleRequest } from '../models/SearchPageRuleRequest';
-import type { ViewRuleResponse } from '../models/ViewRuleResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
 export class PageRuleControllerService {
+
     /**
      * getAllPageRule
-     * @returns Page_ViewRuleResponse_ OK
+     * @returns Page_Rule_ OK
      * @throws ApiError
      */
     public static getAllPageRuleUsingGet({
@@ -22,36 +23,36 @@ export class PageRuleControllerService {
         id,
         page,
         size,
-        sort
+        sort,
     }: {
-        authorization: string;
+        authorization: string,
         /**
          * id
          */
-        id: number;
-        page?: number;
-        size?: number;
-        sort?: string;
-    }): CancelablePromise<Page_ViewRuleResponse_> {
+        id: number,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<Page_Rule_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules',
             path: {
-                id: id
+                'id': id,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             query: {
-                page: page,
-                size: size,
-                sort: sort
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -63,109 +64,115 @@ export class PageRuleControllerService {
     public static createBusinessRuleUsingPost({
         authorization,
         id,
-        request
+        request,
     }: {
-        authorization: string;
+        authorization: string,
         /**
          * id
          */
-        id: number;
+        id: number,
         /**
          * request
          */
-        request: CreateRuleRequest;
+        request: CreateRuleRequest,
     }): CancelablePromise<CreateRuleResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules',
             path: {
-                id: id
+                'id': id,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
     /**
      * findPageRule
-     * @returns Page_ViewRuleResponse_ OK
+     * @returns Page_Rule_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static findPageRuleUsingPost({
         authorization,
+        id,
         request,
-        pageId,
         page,
         size,
-        sort
+        sort,
     }: {
-        authorization: string;
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
         /**
          * request
          */
-        request: SearchPageRuleRequest;
-        pageId: string;
-        page?: number;
-        size?: number;
-        sort?: string;
-    }): CancelablePromise<Page_ViewRuleResponse_ | any> {
+        request: SearchPageRuleRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<Page_Rule_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: `/nbs/page-builder/api/v1/pages/${pageId}/rules/search`,
+            url: '/nbs/page-builder/api/v1/pages/{id}/rules/search',
+            path: {
+                'id': id,
+            },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             query: {
-                page: page,
-                size: size,
-                sort: sort
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
     /**
      * viewRuleResponse
-     * @returns ViewRuleResponse OK
+     * @returns Rule OK
      * @throws ApiError
      */
     public static viewRuleResponseUsingGet({
         authorization,
-        ruleId
+        ruleId,
     }: {
-        authorization: string;
+        authorization: string,
         /**
          * ruleId
          */
-        ruleId: number;
-    }): CancelablePromise<ViewRuleResponse> {
+        ruleId: number,
+    }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                ruleId: ruleId
+                'ruleId': ruleId,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -179,38 +186,38 @@ export class PageRuleControllerService {
         authorization,
         page,
         request,
-        ruleId
+        ruleId,
     }: {
-        authorization: string;
+        authorization: string,
         /**
          * page
          */
-        page: number;
+        page: number,
         /**
          * request
          */
-        request: CreateRuleRequest;
+        request: CreateRuleRequest,
         /**
          * ruleId
          */
-        ruleId: number;
+        ruleId: number,
     }): CancelablePromise<CreateRuleResponse | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                page: page,
-                ruleId: ruleId
+                'page': page,
+                'ruleId': ruleId,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
-                404: `Not Found`
-            }
+                404: `Not Found`,
+            },
         });
     }
 
@@ -222,32 +229,33 @@ export class PageRuleControllerService {
     public static deletePageRuleUsingDelete({
         authorization,
         id,
-        ruleId
+        ruleId,
     }: {
-        authorization: string;
+        authorization: string,
         /**
          * id
          */
-        id: number;
+        id: number,
         /**
          * ruleId
          */
-        ruleId: number;
+        ruleId: number,
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                id: id,
-                ruleId: ruleId
+                'id': id,
+                'ruleId': ruleId,
             },
             headers: {
-                Authorization: authorization
+                'Authorization': authorization,
             },
             errors: {
                 401: `Unauthorized`,
-                403: `Forbidden`
-            }
+                403: `Forbidden`,
+            },
         });
     }
+
 }

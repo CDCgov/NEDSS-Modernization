@@ -2,8 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type QuestionInfo = {
-    id?: string;
+export type SourceQuestion = {
+    codeSetName?: string;
     label?: string;
+    questionIdentifier?: string;
 };
 

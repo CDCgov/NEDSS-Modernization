@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import './BusinessRulesLibraryTable.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { ViewRuleResponse } from 'apps/page-builder/generated';
+import { Rule } from 'apps/page-builder/generated';
 
 export enum Column {
     SourceFields = 'Source Field',
@@ -50,7 +50,7 @@ type Rules = {
 };
 
 type Props = {
-    summaries: ViewRuleResponse[];
+    summaries: Rule[];
     pages?: any;
     qtnModalRef: RefObject<ModalRef>;
 };

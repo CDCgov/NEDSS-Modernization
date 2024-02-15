@@ -2,22 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { SourceValue } from './SourceValue';
+import type { SourceQuestion } from './SourceQuestion';
+import type { Target } from './Target';
 
-export type CreateRuleRequest = {
+export type Rule = {
     anySourceValue: boolean;
-    comparator: CreateRuleRequest.comparator;
+    comparator: Rule.comparator;
     description?: string;
-    ruleFunction: CreateRuleRequest.ruleFunction;
-    sourceIdentifier: string;
-    sourceText?: string;
-    sourceValues?: Array<SourceValue>;
-    targetIdentifiers: Array<string>;
-    targetType: CreateRuleRequest.targetType;
-    targetValueText?: Array<string>;
+    ruleFunction: Rule.ruleFunction;
+    id: number;
+    sourceQuestion: SourceQuestion;
+    sourceValues?: Array<string>;
+    targetType: Rule.targetType;
+    targets: Array<Target>;
+    template: number;
 };
 
-export namespace CreateRuleRequest {
+export namespace Rule {
     export enum comparator {
         EQUAL_TO = 'EQUAL_TO',
         GREATER_THAN = 'GREATER_THAN',
@@ -27,7 +28,7 @@ export namespace CreateRuleRequest {
         NOT_EQUAL_TO = 'NOT_EQUAL_TO'
     }
 
-    export enum RuleFunction {
+    export enum ruleFunction {
         DATE_COMPARE = 'DATE_COMPARE',
         DISABLE = 'DISABLE',
         ENABLE = 'ENABLE',

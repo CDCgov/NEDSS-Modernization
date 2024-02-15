@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
 import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
-import { Concept, CreateRuleRequest } from 'apps/page-builder/generated';
+import { Concept, CreateRuleRequest, SourceValue, Rule } from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -47,7 +47,7 @@ const BusinessRulesForm = () => {
         setTargetQuestion(data);
         const value = data.map((val) => val.question);
         const text = data.map((val) => val.name);
-        form.setValue('targetValueIdentifier', value);
+        form.setValue('targetIdentifiers', value);
         form.setValue('targetValueText', text);
     };
 
@@ -63,21 +63,21 @@ const BusinessRulesForm = () => {
         handleRuleDescription();
     }, [targetQuestion, selectedSource]);
 
-    const targetValueIdentifier = form.watch('targetValueIdentifier') || [];
+    const targetValueIdentifier = form.watch('targetIdentifiers') || [];
 
     const isTargetQuestionSelected = targetQuestion.length || targetValueIdentifier.length;
 
     const handleRuleDescription = () => {
         let description = '';
         const logic = form.watch('comparator');
-        const sourceValue = form.watch('sourceValue');
-        const sourceValueDescription = `${sourceValue?.sourceValueText?.join(' ')} `;
+        const sourceValues = form.watch('sourceValues');
+        const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
         if (selectedSource.length && targetQuestion.length && logic) {
             const targetValue = targetQuestion.map((val) => `${val.name} (${val.question})`);
             description = `${sourceDescription} ${logic} ${sourceValueDescription} ${form.watch(
                 'ruleFunction'
             )} ${targetValue}`;
-            form.setValue('ruleDescription', description);
+            form.setValue('description', description);
         }
     };
 
@@ -112,38 +112,25 @@ const BusinessRulesForm = () => {
     ];
 
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction == 'Date validation' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction === Rule.ruleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
 
-    const handleSourceValueChange = (data: string[]) => {
-        const values = form.getValues('sourceValue');
-        if (values) {
-            values.sourceValueText = [...data];
-            form.setValue('sourceValue', values);
-        } else {
-            form.setValue('sourceValue', { sourceValueText: data, sourceValueId: [] });
-        }
+    const handleSourceValueChange = (data: SourceValue[]) => {
+        form.setValue('sourceValues', data);
         handleRuleDescription();
     };
 
-    useEffect(() => {
-        if (form.watch('sourceValue')) {
-            const test = form.getValues('sourceValue');
-            handleSourceValueChange(test?.sourceValueText || []);
-        }
-    }, []);
-
     const isTargetTypeEnabled =
-        form.watch('ruleFunction') === 'Enable' ||
-        form.watch('ruleFunction') === 'Disable' ||
-        form.watch('ruleFunction') === 'Hide' ||
-        form.watch('ruleFunction') === 'Unhide';
+        form.watch('ruleFunction') === Rule.ruleFunction.ENABLE ||
+        form.watch('ruleFunction') === Rule.ruleFunction.DISABLE ||
+        form.watch('ruleFunction') === Rule.ruleFunction.HIDE ||
+        form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE;
 
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
         setSourceDescription('');
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
-        form.setValue('sourceValue', { sourceValueText: [], sourceValueId: [] });
+        form.setValue('sourceValues', []);
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
@@ -175,7 +162,7 @@ const BusinessRulesForm = () => {
                 </Grid>
             </Grid>
 
-            {ruleFunction != 'Date validation' && (
+            {ruleFunction != Rule.ruleFunction.DATE_COMPARE && (
                 <Controller
                     control={form.control}
                     name="anySourceValue"
@@ -229,10 +216,10 @@ const BusinessRulesForm = () => {
                 )}
             />
 
-            {ruleFunction != 'Date validation' && (
+            {ruleFunction != Rule.ruleFunction.DATE_COMPARE && (
                 <Controller
                     control={form.control}
-                    name="sourceValue"
+                    name="sourceValues"
                     render={() => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
@@ -332,7 +319,7 @@ const BusinessRulesForm = () => {
             </Grid>
             <Controller
                 control={form.control}
-                name="ruleDescription"
+                name="description"
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3} className="rule-description-label">

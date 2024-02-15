@@ -3,35 +3,17 @@ import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AddBusinessRule.scss';
-import { CreateRuleRequest, PageRuleControllerService, ViewRuleResponse } from '../../../generated';
+import { CreateRuleRequest, PageRuleControllerService, Rule } from '../../../generated';
 import { useAlert } from 'alert';
 import BusinessRulesForm from '../BusinessRulesForm';
 import { Breadcrumb } from 'breadcrumb';
 import { authorization } from 'authorization';
 import { ConfirmationModal } from 'confirmation';
 
-export type FormValues = {
-    ruleFunction: string;
-    sourceIdentifier: string;
-    sourceText: string;
-    comparator?: string;
-    sourceValueIds?: string[];
-    sourceValueText?: string[];
-    sourceValue?: {
-        sourceValueId?: string[];
-        sourceValueText?: string[];
-    };
-    targetValueIdentifier?: string[];
-    targetType: string;
-    ruleDescription: string;
-    targetValueText?: string[];
-    anySourceValue?: boolean;
-};
-
 const AddBusinessRule = () => {
     const navigate = useNavigate();
     const form = useForm<CreateRuleRequest>({
-        defaultValues: { targetType: 'SUBSECTION', anySourceValue: false },
+        defaultValues: { targetType: Rule.targetType.SUBSECTION, anySourceValue: false },
         mode: 'onChange'
     });
 
@@ -42,21 +24,25 @@ const AddBusinessRule = () => {
 
     useEffect(() => {
         if (ruleId) {
-            PageRuleControllerService.viewRuleResponseUsingGet({
+            PageRuleControllerService.findPageRuleUsingPost({
                 authorization: authorization(),
-                ruleId: Number(ruleId)
-            }).then((resp: ViewRuleResponse) => {
-                const sourceText = resp?.sourceValue?.sourceValueText || '';
-                form.setValue('anySourceValue', resp?.anySourceValue!);
-                form.setValue('comparator', resp?.comparator!);
-                form.setValue('ruleDescription', resp?.ruleDescription!);
-                form.setValue('ruleFunction', resp?.ruleFunction!);
-                form.setValue('sourceIdentifier', resp?.sourceIdentifier!);
-                form.setValue('sourceText', `${sourceText} (${resp?.sourceIdentifier!})`);
-                form.setValue('targetValueIdentifier', resp?.targetValueIdentifier!);
-                form.setValue('targetValueText', resp?.targetValueText!);
-                form.setValue('targetType', resp?.targetType!);
-                setSelectedFieldType(resp.ruleFunction!);
+                id: Number(ruleId),
+                request: { searchValue: '' }
+            }).then((resp: Rule) => {
+                const sourceQuestion = resp.sourceQuestion.label || '';
+                form.setValue('anySourceValue', resp?.anySourceValue);
+                form.setValue('comparator', resp.comparator);
+                form.setValue('description', resp.description);
+                form.setValue('ruleFunction', resp.ruleFunction);
+                form.setValue('sourceIdentifier', resp.sourceQuestion.questionIdentifier || '');
+                form.setValue('sourceText', `${sourceQuestion} (${resp?.sourceQuestion.questionIdentifier!})`);
+                form.setValue('targetIdentifiers', resp?.targets?.map((target) => target.targetIdentifier || '') || []);
+                form.setValue(
+                    'targetValueText',
+                    resp.targets.map((target) => target.label || '')
+                );
+                form.setValue('targetType', resp.targetType);
+                setSelectedFieldType(resp.ruleFunction);
             });
         }
     }, [ruleId]);

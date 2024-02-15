@@ -5,12 +5,12 @@ import { fetchBusinessRules } from './useBusinessRulesAPI';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { UserContext } from '../../../../providers/UserContext';
 import { Breadcrumb } from 'breadcrumb';
-import type { ViewRuleResponse } from '../../generated/models/ViewRuleResponse';
+import { Rule } from '../../generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(BusinessRuleContext);
-    const [rules, setRules] = useState<ViewRuleResponse[]>([]);
+    const [rules, setRules] = useState<Rule[]>([]);
     const [totalElements, setTotalElements] = useState(0);
     const { state } = useContext(UserContext);
     const { page } = useGetPageDetails();
