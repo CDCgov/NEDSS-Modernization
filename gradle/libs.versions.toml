@@ -1,5 +1,6 @@
 [versions]
 springBoot = '2.7.18'
+spring-security = '5.8.9'
 jackson = '2.13.5'
 queryDSL = '5.0.0'
 graphql = '20.7'
@@ -22,11 +23,15 @@ spring-kafka = { module = 'org.springframework.kafka:spring-kafka', version.ref 
 snappy = { module = 'org.xerial.snappy:snappy-java', version = '1.1.10.5' }
 spring-kafka-test = { module = 'org.springframework.kafka:spring-kafka-test', version.ref = 'spring-kafka' }
 elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '7.17.16' }
-parsson = {module = 'org.eclipse.parsson:parsson', version = '1.1.5'}
+parsson = { module = 'org.eclipse.parsson:parsson', version = '1.1.5' }
 spring-elasticsearch = { module = 'org.springframework.data:spring-data-elasticsearch', version = '4.4.18' }
 spring-test = { module = 'org.springframework.boot:spring-boot-starter-test', version.ref = 'springBoot' }
 spring-security = { module = 'org.springframework.boot:spring-boot-starter-security', version.ref = 'springBoot' }
-spring-security-test = { module = 'org.springframework.security:spring-security-test', version = '5.7.11' }
+spring-security-config = { module = 'org.springframework.security:spring-security-config', version.ref = 'spring-security' }
+spring-security-web = { module = 'org.springframework.security:spring-security-web', version.ref = 'spring-security' }
+spring-security-oauth2-resource-server = { module = 'org.springframework.security:spring-security-oauth2-resource-server', version.ref = 'spring-security' }
+spring-security-oauth2-jose = { module = 'org.springframework.security:spring-security-oauth2-jose', version.ref = 'spring-security' }
+spring-security-test = { module = 'org.springframework.security:spring-security-test', version.ref = 'spring-security' }
 springfox = { module = 'io.springfox:springfox-boot-starter', version = '3.0.0' }
 jackson-core = { module = 'com.fasterxml.jackson.core:jackson-core', version.ref = 'jackson' }
 jackson-datatype-jsr310 = { module = 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310', version.ref = 'jackson' }
@@ -50,13 +55,14 @@ junit-platform = { module = 'org.junit.platform:junit-platform-suite', version =
 awaitility = { module = 'org.awaitility:awaitility', version = '4.2.0' }
 
 [bundles]
-security = ['java-jwt', 'spring-security']
+security = ['java-jwt', 'spring-security', 'spring-security-config', 'spring-security-web']
+oidc = ['spring-security-oauth2-resource-server', 'spring-security-oauth2-jose']
 graphql = ['graphql', 'springBoot-graphql']
 jackson = ['jackson-core', 'jackson-datatype-jsr310']
 jpa = ['springBoot', 'springBoot-jpa']
-jdbc = ['springBoot','springBoot-jdbc']
-elasticsearch = ['parsson','elasticsearch-java','spring-elasticsearch']
-kafka = ['spring-kafka','snappy']
+jdbc = ['springBoot', 'springBoot-jdbc']
+elasticsearch = ['parsson', 'elasticsearch-java', 'spring-elasticsearch']
+kafka = ['spring-kafka', 'snappy']
 testing = ['assertj-core', 'mockito-inline']
 queryDSL = ['queryDSL-apt', 'queryDSL-jpa']
 swagger = ['springfox']

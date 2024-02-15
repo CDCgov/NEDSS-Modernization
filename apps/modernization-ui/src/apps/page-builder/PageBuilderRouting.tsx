@@ -4,9 +4,9 @@ import PageBuilderContextProvider from './context/PageBuilderContext';
 import { PageLibrary } from './page/library/PageLibrary';
 import { Edit } from './page/management/edit/Edit';
 import { PreviewPage } from './page/management/preview';
+import { PageDetails } from './page/management/preview/PageDetails/PageDetails';
 import { AddNewPage } from './pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { ValuesetLibrary } from './pages/ValuesetLibrary/ValuesetLibrary';
 import AddBusinessRule from './pages/BusinessRulesLibrary/Add/AddBusinessRule';
 
 const routing: RouteObject[] = [
@@ -56,6 +56,10 @@ const routing: RouteObject[] = [
                                 element: <Edit />
                             },
                             {
+                                path: 'details',
+                                element: <PageDetails />
+                            },
+                            {
                                 path: 'business-rules',
                                 children: [
                                     {
@@ -75,10 +79,6 @@ const routing: RouteObject[] = [
                         ]
                     }
                 ]
-            },
-            {
-                path: 'valueset-library',
-                element: <ValuesetLibrary />
             }
         ]
     }

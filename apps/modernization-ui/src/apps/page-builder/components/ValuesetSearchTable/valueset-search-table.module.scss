@@ -1,0 +1,58 @@
+@use 'styles/colors';
+@use 'styles/borders';
+.searchBar {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    border-radius: 0.3125rem;
+    background: colors.$base-lightest;
+
+    .clearSearchButton {
+        padding: 0;
+        margin: 0;
+    }
+
+    .searchText {
+        display: flex;
+        padding: 0.25rem 0.5rem;
+        align-items: center;
+        gap: 0.625rem;
+        border-radius: 0.125rem;
+        background: colors.$primary;
+        color: colors.$base-white;
+        line-height: normal;
+    }
+
+    svg {
+        cursor: pointer;
+    }
+
+    search {
+        width: 23.75rem;
+    }
+
+    div {
+        display: flex;
+
+        .createNewButton {
+            background-color: colors.$primary;
+            color: colors.$base-white;
+            line-height: 1rem;
+            margin-right: 0;
+        }
+    }
+}
+
+.searchResultTable {
+    thead tr th {
+        &:nth-of-type(2) {
+            width: 10ch;
+        }
+        &:nth-of-type(3) {
+            width: 22ch;
+        }
+    }
+}

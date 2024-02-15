@@ -4,13 +4,9 @@ import { Breadcrumb } from 'breadcrumb';
 
 import styles from './page-management-layout.module.scss';
 
-type Mode = 'draft' | 'published' | 'edit';
-
-const resolveModeDisplay = (mode: Mode) => (mode === 'edit' ? 'edit mode' : mode);
-
 type PageBuilderLayoutProps = {
     name: string;
-    mode: Mode;
+    mode: string;
     children?: ReactNode;
 };
 
@@ -26,11 +22,17 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                 </Breadcrumb>
                 <span
                     className={classNames(styles.mode, {
-                        [styles.draft]: mode === 'draft',
-                        [styles.edit]: mode === 'edit',
-                        [styles.published]: mode === 'published'
+                        [styles.draft]: mode === 'Draft',
+                        [styles.edit]: mode === 'Edit',
+                        [styles.published]: mode === 'Published'
                     })}>
-                    {resolveModeDisplay(mode)}
+                    {mode === 'Published' ? (
+                        <>Previewing Published</>
+                    ) : mode === 'Draft' ? (
+                        <>Previewing initial draft</>
+                    ) : (
+                        <>Previewing Published with Draft</>
+                    )}
                 </span>
             </div>
             <div className={styles.content}>{children}</div>

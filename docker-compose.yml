@@ -16,6 +16,8 @@ services:
       - NBS_UI_FEATURES_PAGEBUILDER_PAGE_MANAGEMENT_CREATE_ENABLED=${PAGEBUILDER_ENABLED:-true}
       - NBS_UI_FEATURES_PAGEBUILDER_PAGE_MANAGEMENT_EDIT_ENABLED=${PAGEBUILDER_ENABLED:-true}
       - NBS_UI_SETTINGS_ANALYTICS_KEY=${ANALYTICS_KEY}
+      - ISSUER_URI=${ISSUER_URI:-http://localhost:8100/realms/nbs-development}
+      - JWK_SET_URI=${JWK_SET_URI:-http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs}
     networks:
       - nbs
 

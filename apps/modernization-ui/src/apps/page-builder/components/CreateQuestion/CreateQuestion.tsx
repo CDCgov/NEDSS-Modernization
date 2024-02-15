@@ -114,9 +114,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             questionForm.setValue('defaultRdbTableName', updatedQuestion.defaultRdbTableName);
             questionForm.setValue('rdbColumnName', updatedQuestion.rdbColumnName);
             questionForm.setValue('codeSystem', updatedQuestion.codeSystem);
-            questionForm.setValue('conceptCode', updatedQuestion.conceptCode);
-            questionForm.setValue('conceptName', updatedQuestion.conceptName);
-            questionForm.setValue('preferredConceptName', updatedQuestion.preferredConceptName);
+            questionForm.setValue('codeSystem', updatedQuestion.conceptCode);
             questionForm.setValue('messageVariableId', updatedQuestion.messageVariableId);
             questionForm.setValue('labelInMessage', updatedQuestion.labelInMessage);
             questionForm.setValue('unitType', updatedQuestion.unitType);
@@ -139,7 +137,7 @@ export const CreateQuestion = ({ onAddQuestion, question, onCloseModal, addValue
             questionForm.setValue('fieldLength', updatedQuestion.fieldLength);
         }
     }, [question]);
-    const valueSetName = searchValueSet?.valueSetName || searchValueSet?.valueSetNm || question?.valueSet || '';
+    const valueSetName = searchValueSet?.valueSetNm || searchValueSet?.valueSetNm || question?.valueSet || '';
     const valueSetCode = searchValueSet?.valueSetCode || valueSetName;
     useEffect(() => {
         if (searchValueSet) questionForm.setValue('valueSet', searchValueSet.codeSetGroupId);

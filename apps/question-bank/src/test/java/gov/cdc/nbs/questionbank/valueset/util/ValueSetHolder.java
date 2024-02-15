@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.valueset.util;
 
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.Codeset;
@@ -14,6 +13,5 @@ import lombok.Setter;
 public class ValueSetHolder {
 	Page<ValueSet> valueSetResults;
 	Codeset valueSet;
-	Page<ValueSetSearchResponse> valueSetSearchResults;
 
 }

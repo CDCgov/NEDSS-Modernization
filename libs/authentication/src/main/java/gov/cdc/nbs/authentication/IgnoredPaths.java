@@ -2,6 +2,7 @@ package gov.cdc.nbs.authentication;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -15,6 +16,10 @@ public class IgnoredPaths {
     this.matchers = Arrays.stream(paths)
         .map(AntPathRequestMatcher::new)
         .toList();
+  }
+
+  public IgnoredPaths(final List<String> paths) {
+    this(paths.toArray(String[]::new));
   }
 
   public boolean ignored(final HttpServletRequest request) {

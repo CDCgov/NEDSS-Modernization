@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.question;
 import static org.junit.Assert.*;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,9 @@ class QuestionControllerTest {
     @Test
     void should_return_create_question_response() {
         // given a valid user is logged in
-        NbsUserDetails user = userDetails();
+        NbsUserDetails user = mock(NbsUserDetails.class);
+        when(user.getId()).thenReturn(1L);
+
         when(provider.getCurrentUserDetails()).thenReturn(user);
 
         // and a create text question request is sent
@@ -68,20 +71,5 @@ class QuestionControllerTest {
         // then a valid response is given
         assertEquals(19L, response.id());
     }
-
-    private NbsUserDetails userDetails() {
-        return new NbsUserDetails(
-            1L,
-            "test",
-            "test",
-            "test",
-            false,
-            false,
-            null,
-            null,
-            null,
-            true);
-    }
-
 
 }

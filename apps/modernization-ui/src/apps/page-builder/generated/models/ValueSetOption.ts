@@ -3,7 +3,11 @@
 /* eslint-disable */
 
 export type ValueSetOption = {
-    name: string;
-    value: string;
     codeSetNm: string;
+    description?: string;
+    id: number;
+    name: string;
+    type: string;
+    value: string;
 };
+

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request;
 
+import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,15 +22,6 @@ public class QuestionRequest {
       String defaultRdbTableName,
       String rdbColumnName,
       String dataMartColumnName) {
-  }
-
-  public record MessagingInfo(
-      boolean includedInMessage,
-      String messageVariableId,
-      String labelInMessage,
-      String codeSystem,
-      boolean requiredInMessage,
-      String hl7DataType) {
   }
 
 }

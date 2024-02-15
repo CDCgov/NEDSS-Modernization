@@ -2,7 +2,6 @@ package gov.cdc.nbs.authentication;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 
 public record NBSUserCookie(String user) {
 

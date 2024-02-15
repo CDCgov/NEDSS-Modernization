@@ -9,38 +9,21 @@ import styles from './add-question-modal.module.scss';
 
 type Props = {
     modal: RefObject<ModalRef>;
-    pageId: number;
-    onClose?: (questions: number[]) => void;
+    onAddQuestion: (questions: number[]) => void;
 };
 
-export const AddQuestionModal = (props: Props) => {
-    return (
-        <PageProvider>
-            <AddQuestionModalContent {...props} />
-        </PageProvider>
-    );
-};
-
-const AddQuestionModalContent = ({ pageId, modal, onClose }: Props) => {
+export const AddQuestionModal = ({ modal, onAddQuestion }: Props) => {
     const [state, setState] = useState<'search' | 'add'>('search');
-    const { page } = usePageManagement();
-    const { firstPage } = usePage();
 
-    const handleClose = (questions?: number[]) => {
-        if (onClose) {
-            onClose(questions ?? []);
-        }
-        setState('search');
-        if (!questions) {
-            firstPage();
-        }
+    const handleClose = () => {
         modal.current?.toggleModal(undefined, false);
+        setState('search');
     };
 
-    useEffect(() => {
-        firstPage();
-    }, [JSON.stringify(page)]);
-
+    const handleAccept = (questions: number[]) => {
+        onAddQuestion(questions);
+        modal.current?.toggleModal(undefined, false);
+    };
     return (
         <Modal
             isLarge
@@ -52,20 +35,41 @@ const AddQuestionModalContent = ({ pageId, modal, onClose }: Props) => {
             aria-describedby="modal-1-description">
             <div className={styles.modal}>
                 {state === 'search' ? (
-                    <QuestionSearch
-                        onCancel={handleClose}
-                        onAccept={handleClose}
-                        onCreateNew={() => setState('add')}
-                        pageId={pageId}
-                    />
+                    <PageProvider>
+                        <QuestionSearchWrapper
+                            onClose={handleClose}
+                            onAccept={handleAccept}
+                            onCreateNew={() => setState('add')}
+                        />
+                    </PageProvider>
                 ) : (
                     <AddQuestion
                         onBack={() => setState('search')}
                         onClose={handleClose}
-                        onQuestionCreated={(e) => handleClose([e])}
+                        onQuestionCreated={(e) => handleAccept([e])}
                     />
                 )}
             </div>
         </Modal>
     );
+};
+
+type WrapperProps = {
+    onClose: () => void;
+    onAccept: (questions: number[]) => void;
+    onCreateNew: () => void;
+};
+const QuestionSearchWrapper = ({ onClose, onCreateNew, onAccept }: WrapperProps) => {
+    const { firstPage } = usePage();
+    const { page } = usePageManagement();
+
+    useEffect(() => {
+        firstPage();
+    }, [JSON.stringify(page)]);
+
+    const handleCancel = () => {
+        onClose();
+        firstPage();
+    };
+    return <QuestionSearch onCancel={handleCancel} onAccept={onAccept} onCreateNew={onCreateNew} pageId={page.id} />;
 };

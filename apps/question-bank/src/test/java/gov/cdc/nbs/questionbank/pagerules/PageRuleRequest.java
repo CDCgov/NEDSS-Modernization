@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.cdc.nbs.questionbank.model.CreateRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.Rule.CreateRuleRequest;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -52,8 +52,8 @@ public class PageRuleRequest {
   public void deleteBusinessRule(final long page, final long ruleId) {
     try {
       mvc.perform(
-          this.authenticated
-              .withUser(delete("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)))
+              this.authenticated
+                  .withUser(delete("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)))
           .andExpect(status().isOk());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to execute Page Rule Delete request", exception);

@@ -3,6 +3,7 @@ FROM node:18 as ui-builder
 WORKDIR /usr/modernization-ui
 
 COPY package.json package.json
+COPY package-lock.json package-lock.json
 
 RUN npm install
 

@@ -1,6 +1,9 @@
 package gov.cdc.nbs.questionbank.valueset.request;
 
-public record ValueSetSearchRequest(String valueSetNm, String valueSetCode, String valueSetDescription) {
+import io.swagger.annotations.ApiModelProperty;
+
+public record ValueSetSearchRequest(
+    @ApiModelProperty(required = true) String query) {
 }
 
 
