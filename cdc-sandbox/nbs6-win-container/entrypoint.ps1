@@ -54,7 +54,7 @@ if ($env:GITHUB_RELEASE_TAG -eq 'latest') {
   }
 
 # Fetch the latest release
-$githubRelease = Invoke-RestMethod -Uri $github_api_Url
+$githubRelease = Invoke-RestMethod -Uri $env:github_api_Url
 # Output the latest tag name
 $releaseTag = $githubRelease.tag_name
 Write-Output "Release Tag to Download Zip From: $releaseTag"
@@ -65,15 +65,15 @@ $webClient = New-Object System.Net.WebClient
 $webClient.DownloadFile($zip_url, $env:GITHUB_ZIP_FILE_NAME)
 Write-Output "Downloaded Zip File: $env:GITHUB_ZIP_FILE_NAME"
 # Extract ZIP to temporary directory
-Expand-Archive -LiteralPath "$env:GITHUB_ZIP_FILE_NAME" -Force  
+Expand-Archive -LiteralPath "$env:GITHUB_ZIP_FILE_NAME" -Force
 $zip_folder = $env:GITHUB_ZIP_FILE_NAME.Trim(".zip")
 # Move zip file the final destination
-$user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder/$env:USER_GUIDE_DOC_NAME"
-Move-Item -Path $user_guide_path -Destination C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME -Force
+$zip_user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder\$env:USER_GUIDE_DOC_NAME"
+$user_guide_directory = "C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME"
+Copy-Item -Path "$zip_user_guide_path" -Destination "$user_guide_directory" -Force
 # Cleanup
 Remove-Item $env:GITHUB_ZIP_FILE_NAME
 Remove-Item $zip_folder -Recurse -Force -Confirm:$false
-Rename-Item -Path C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:USER_GUIDE_DOC_NAME -NewName $env:FINAL_NBS_USER_GUIDE_NAME
 #### END OF Configure User Guide ####
 
 #### DI app required task schedule ####
