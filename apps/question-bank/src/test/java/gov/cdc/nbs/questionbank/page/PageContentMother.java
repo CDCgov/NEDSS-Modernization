@@ -184,8 +184,8 @@ class PageContentMother {
                         final WaTemplate found,
                         final WaUiMetadata container,
                         final String name) {
-                placeWithin(found.getUiMetadata(), container, 1011L)
-                                .ifPresent(order -> found.addContent(name, 1011L, order, this.settings.createdBy(),
+                placeWithin(found.getUiMetadata(), container, 1008L)
+                                .ifPresent(order -> found.addContent(name, 1008L, order, this.settings.createdBy(),
                                                 Instant.now()));
 
         }

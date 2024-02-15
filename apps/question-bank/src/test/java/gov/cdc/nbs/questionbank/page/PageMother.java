@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,10 +61,10 @@ public class PageMother {
         .orElseThrow(() -> new IllegalStateException("No pages exist"));
   }
 
-  public WaUiMetadata pageContent() {
-    return one().getUiMetadata().stream().filter(ui -> ui.getNbsUiComponentUid() == PageConstants.SUB_SECTION_COMPONENT)
-        .findFirst()
-        .orElseThrow();
+  public List<WaUiMetadata> pageContent() {
+    List<WaUiMetadata> metadata = new ArrayList<>();
+    metadata.addAll(one().getUiMetadata());
+    return metadata;
   }
 
   private WaTemplate managed(final PageIdentifier identifier) {

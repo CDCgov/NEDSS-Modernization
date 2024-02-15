@@ -3,7 +3,7 @@ Feature: Group Subsection
 
     Background:
         Given I have a page
-        And the page has a tab
+        And the page has a tab named "tab"
         And the page has a section in the 1st tab
         And the page has a sub-section in the 1st section
 
