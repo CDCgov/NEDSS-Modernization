@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { usePageManagement } from '../../usePageManagement';
 
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
@@ -21,7 +22,7 @@ const PageInformation = () => {
     const { pageId } = useParams();
     const pageSize = 10;
     const navigate = useNavigate();
-
+    const { page } = usePageManagement();
     const fetchPageHistory = async () => {
         PageControllerService?.getPageHistoryUsingGet?.({
             authorization: authorization(),
@@ -84,6 +85,7 @@ const PageInformation = () => {
             <div className={styles.smallBodyText}>{desc || '-'}</div>
         </div>
     );
+    const isEditable = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status);
 
     return (
         <section className={styles.information}>
@@ -102,7 +104,7 @@ const PageInformation = () => {
                     <div className={styles.detailsContainer}>
                         <div className={styles.informationBlock}>
                             {renderBlock('Event type', pageInfo?.eventType?.name)}
-                            {renderBlock('Report Mechanism', pageInfo?.messageMappingGuide?.name)}
+                            {renderBlock('Reporting Mechanism', pageInfo?.messageMappingGuide?.name)}
                         </div>
                         <div className={styles.informationBlock}>
                             {renderBlock('Page name', pageInfo?.name!)}
@@ -129,8 +131,8 @@ const PageInformation = () => {
                     <div className={styles.detailsContainer}>
                         <footer>
                             <Button type="button" outline onClick={handleViewPage} className={styles.icon}>
-                                <Icon.Visibility />
-                                View page details
+                                {isEditable ? <Icon.Edit /> : <Icon.Visibility />}
+                                {isEditable ? 'Edit page details' : 'View page details'}
                             </Button>
                         </footer>
                     </div>
