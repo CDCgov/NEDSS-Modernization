@@ -34,7 +34,7 @@ To run all tests:
 To execute specific test tags:
 
 ```bash
-./gradlew test -Dcucumber.filter.tags="@patient_create" --tests "RunCucumberTest"
+./gradlew test -Dcucumber.filter.tags="@patient_create" --tests "RunCucumberTestz"
 ```
 
 ## Running

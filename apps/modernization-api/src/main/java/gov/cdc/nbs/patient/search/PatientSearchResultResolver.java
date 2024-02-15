@@ -11,19 +11,21 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
+
 @Controller
 class PatientSearchResultResolver {
 
   private final PatientSearchPageableResolver resolver;
-  private final PatientSearcher service;
+  private final PatientSearcher searcher;
   private final AuthorizedPatientFilterAdjuster adjuster;
 
   PatientSearchResultResolver(
       final PatientSearchPageableResolver resolver,
-      final PatientSearcher service
+      final PatientSearcher searcher
   ) {
     this.resolver = resolver;
-    this.service = service;
+    this.searcher = searcher;
     this.adjuster = new AuthorizedPatientFilterAdjuster(new Permission("FindInactive", "Patient"));
   }
 
@@ -33,12 +35,12 @@ class PatientSearchResultResolver {
       @AuthenticationPrincipal final NbsUserDetails user,
       @Argument final PatientFilter filter,
       @Argument final GraphQLPage page
-  ) {
+  ) throws IOException {
 
     PatientFilter adjusted = PatientFilterValidator.validate(this.adjuster.adjusted(user, filter));
     Pageable pageable = resolver.from(page);
 
-    return service.search(
+    return searcher.search(
         adjusted,
         pageable
     );

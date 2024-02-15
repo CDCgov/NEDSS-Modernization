@@ -11,7 +11,6 @@ Feature: Patient Search
     When I search for patients
     Then the patient search results contains the Patient ID
 
-
   Scenario: I can find patients with active record status
     Given I have another patient
     And the patient is inactive

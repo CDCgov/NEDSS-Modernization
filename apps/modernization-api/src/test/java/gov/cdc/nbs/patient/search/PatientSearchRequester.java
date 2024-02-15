@@ -7,6 +7,8 @@ import gov.cdc.nbs.graphql.GraphQLRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 @Component
 class PatientSearchRequester {
   private static final String QUERY = """
@@ -79,7 +81,7 @@ class PatientSearchRequester {
                       .put("sortDirection", sorting.direction().name())
                       .put("sortField", sorting.field())
               )
-      );
+      ).andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");
     }

@@ -1,34 +1,27 @@
 package gov.cdc.nbs.patient.search;
 
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
-import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.patient.profile.PatientProfileService;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 @Component
 public class PatientSearchIndexer {
 
-    private final EntityManager entityManager;
-    private final ElasticsearchPersonRepository repository;
+  private final PatientProfileService service;
+  private final ElasticsearchPersonRepository repository;
 
-    public PatientSearchIndexer(
-        final EntityManager entityManager,
-        final ElasticsearchPersonRepository repository
-    ) {
-        this.entityManager = entityManager;
-        this.repository = repository;
-    }
+  public PatientSearchIndexer(
+      final PatientProfileService service,
+      final ElasticsearchPersonRepository repository
+  ) {
+    this.service = service;
+    this.repository = repository;
+  }
 
-    @Transactional
-    public void index(final long patient) {
-        Person person = this.entityManager.find(Person.class, patient);
+  public void index(final long patient) {
 
-        ElasticsearchPerson searchable = SearchablePatientConverter.toSearchable(person);
-
-        this.repository.save(searchable);
-    }
+    this.service.with(patient, SearchablePatientConverter::toSearchable)
+        .ifPresent(this.repository::save);
+  }
 
 }
