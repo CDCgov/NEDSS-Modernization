@@ -8,7 +8,7 @@ export type CreateRuleRequest = {
     anySourceValue: boolean;
     comparator: CreateRuleRequest.comparator;
     description?: string;
-    ruleFunction: CreateRuleRequest.ruleFunction;
+    ruleFunction: CreateRuleRequest.RuleFunction;
     sourceIdentifier: string;
     sourceText?: string;
     sourceValues?: Array<SourceValue>;

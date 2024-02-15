@@ -112,7 +112,7 @@ const BusinessRulesForm = () => {
     ];
 
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction === Rule.ruleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction === Rule.RuleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: SourceValue[]) => {
         form.setValue('sourceValues', data);
@@ -120,10 +120,10 @@ const BusinessRulesForm = () => {
     };
 
     const isTargetTypeEnabled =
-        form.watch('ruleFunction') === Rule.ruleFunction.ENABLE ||
-        form.watch('ruleFunction') === Rule.ruleFunction.DISABLE ||
-        form.watch('ruleFunction') === Rule.ruleFunction.HIDE ||
-        form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE;
+        form.watch('ruleFunction') === Rule.RuleFunction.ENABLE ||
+        form.watch('ruleFunction') === Rule.RuleFunction.DISABLE ||
+        form.watch('ruleFunction') === Rule.RuleFunction.UNHIDE ||
+        form.watch('ruleFunction') === Rule.RuleFunction.HIDE;
 
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
@@ -162,7 +162,7 @@ const BusinessRulesForm = () => {
                 </Grid>
             </Grid>
 
-            {ruleFunction != Rule.ruleFunction.DATE_COMPARE && (
+            {ruleFunction != Rule.RuleFunction.DATE_COMPARE && (
                 <Controller
                     control={form.control}
                     name="anySourceValue"
@@ -216,7 +216,7 @@ const BusinessRulesForm = () => {
                 )}
             />
 
-            {ruleFunction != Rule.ruleFunction.DATE_COMPARE && (
+            {ruleFunction != Rule.RuleFunction.DATE_COMPARE && (
                 <Controller
                     control={form.control}
                     name="sourceValues"

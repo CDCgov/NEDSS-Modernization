@@ -85,12 +85,12 @@ const AddBusinessRule = () => {
     };
 
     const fieldTypeTab = [
-        { name: 'Enable' },
-        { name: 'Disable' },
-        { name: 'Date validation' },
-        { name: 'Hide' },
-        { name: 'Unhide' },
-        { name: 'Require If' }
+        { name: Rule.RuleFunction.ENABLE },
+        { name: Rule.RuleFunction.DISABLE },
+        { name: Rule.RuleFunction.DATE_COMPARE },
+        { name: Rule.RuleFunction.HIDE },
+        { name: Rule.RuleFunction.UNHIDE },
+        { name: Rule.RuleFunction.REQUIRE_IF }
     ];
 
     const title = !ruleId ? 'Add new' : 'Edit';
