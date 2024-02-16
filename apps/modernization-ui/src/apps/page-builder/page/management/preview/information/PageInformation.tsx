@@ -16,6 +16,7 @@ import { usePageManagement } from '../../usePageManagement';
 
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
+    const [totalResults, setTotalResults] = useState(4);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
     const [pageInfo, setPageInfo] = useState<InfoType>({});
@@ -26,9 +27,12 @@ const PageInformation = () => {
     const fetchPageHistory = async () => {
         PageControllerService?.getPageHistoryUsingGet?.({
             authorization: authorization(),
-            id: Number(pageId)
+            id: Number(pageId),
+            page: currentPage,
+            size: pageSize
         }).then((rep) => {
-            setPageHistory(rep);
+            setPageHistory(rep?.content ?? []);
+            setTotalResults(rep?.totalElements ?? 0);
         });
     };
     const fetchPageInfo = () => {
@@ -140,7 +144,7 @@ const PageInformation = () => {
             ) : (
                 <div className={styles.content}>
                     <div className={styles.historyContent}>
-                        {pageHistory.map((pageData, index) => (
+                        {pageHistory?.map((pageData, index) => (
                             <div className={styles.versionBlock} key={index}>
                                 <div className={styles.text}>
                                     {`Version ${pageData.publishVersionNbr}`}
@@ -151,10 +155,10 @@ const PageInformation = () => {
                             </div>
                         ))}
                     </div>
-                    {pageHistory.length >= pageSize && (
+                    {totalResults >= pageSize && (
                         <Pagination
                             className="margin-01 pagination"
-                            totalPages={Math.ceil(pageHistory.length / pageSize)}
+                            totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
                             pathname={'/'}
                             onClickNext={() => handleNext?.(currentPage + 1)}
