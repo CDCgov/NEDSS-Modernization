@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.Codeset;
+import gov.cdc.nbs.questionbank.entity.CodesetId;
 import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
 import gov.cdc.nbs.questionbank.valueset.exception.ConceptCreationException;
 import gov.cdc.nbs.questionbank.valueset.exception.ConceptNotFoundException;
@@ -45,6 +47,12 @@ public class ConceptCreator {
       String valueSet,
       CreateConceptRequest request,
       Long userId) {
+    // Ensure valueset exists
+    Codeset found = this.entityManager.find(Codeset.class, new CodesetId("code_value_general", valueSet));
+    if (found == null) {
+      throw new ConceptCreationException("Failed to find Codeset: " + valueSet);
+    }
+
     // Check if concept already exists for the valueset
     Optional<Concept> existingConcept = finder.find(valueSet, request.localCode());
     if (existingConcept.isPresent()) {

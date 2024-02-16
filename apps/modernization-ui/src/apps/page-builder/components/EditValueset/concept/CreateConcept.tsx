@@ -1,20 +1,34 @@
 import { Button } from '@trussworks/react-uswds';
 
-import styles from './create-concept.module.scss';
+import { useAlert } from 'alert';
+import { ConceptControllerService, CreateConceptRequest } from 'apps/page-builder/generated';
+import { authorization } from 'authorization';
+import { externalizeDateTime } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreateConceptRequest } from 'apps/page-builder/generated';
 import { ConceptForm } from './ConceptForm';
+import styles from './create-concept.module.scss';
 type Props = {
     onCreated: () => void;
     onCancel: () => void;
+    valuesetName: string;
 };
-export const CreateConcept = ({ onCreated, onCancel }: Props) => {
+export const CreateConcept = ({ onCreated, onCancel, valuesetName }: Props) => {
+    const { alertError } = useAlert();
     const form = useForm<CreateConceptRequest>({
         mode: 'onBlur',
         defaultValues: { status: CreateConceptRequest.status.ACTIVE }
     });
     const handleCreate = () => {
-        onCreated();
+        ConceptControllerService.createConceptUsingPost({
+            authorization: authorization(),
+            request: {
+                ...form.getValues(),
+                effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined
+            },
+            codeSetNm: valuesetName
+        })
+            .then(() => onCreated())
+            .catch(() => alertError({ message: 'Failed to create concept' }));
     };
     return (
         <div className={styles.createConcepts}>

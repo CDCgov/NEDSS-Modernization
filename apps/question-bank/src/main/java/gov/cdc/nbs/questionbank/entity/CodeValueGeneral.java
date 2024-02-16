@@ -140,7 +140,7 @@ public class CodeValueGeneral {
     this.codeSystemCd = command.codeSystemId();
     this.conceptTypeCd = command.conceptTypeCd();
 
-    this.effectiveFromTime = command.effectiveFromTime();
+    this.effectiveFromTime = command.effectiveFromTime() != null ? command.effectiveFromTime() : Instant.now();
     this.effectiveToTime = command.effectiveToTime();
 
     added(command);

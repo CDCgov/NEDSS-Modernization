@@ -8,7 +8,7 @@ public record CreateConceptRequest(
     @ApiModelProperty(required = true) String localCode,
     @ApiModelProperty(required = true) String longName,
     @ApiModelProperty(required = true) String display,
-    @ApiModelProperty(required = true) Instant effectiveFromTime,
+    Instant effectiveFromTime,
     Instant effectiveToTime,
     @ApiModelProperty(required = true) Status status,
     String adminComments,

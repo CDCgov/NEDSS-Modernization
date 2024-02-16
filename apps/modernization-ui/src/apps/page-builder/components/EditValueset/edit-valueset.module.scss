@@ -48,5 +48,24 @@
             padding: 1.25rem 0;
             text-align: center;
         }
+
+        .addConceptLinkSection {
+            display: flex;
+            justify-content: flex-end;
+            .addConceptButton {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                color: colors.$primary;
+                font-weight: 700;
+                background: unset;
+                border: none;
+
+                svg {
+                    margin-right: 0.38rem;
+                    margin-top: -0.1rem;
+                }
+            }
+        }
     }
 }

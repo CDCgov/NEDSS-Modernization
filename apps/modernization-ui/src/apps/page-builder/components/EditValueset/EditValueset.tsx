@@ -1,4 +1,4 @@
-import { Button } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { Valueset } from 'apps/page-builder/generated';
 import { ConceptSort, useFindConcepts } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
@@ -85,21 +85,30 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel }: Props) =
                     <>
                         <div className={styles.sectionText}>Value set concepts</div>
                         <ConceptTable loading={isLoading} concepts={response?.content ?? []} onSort={setSort} />
-                        <div className={styles.noConceptsSection}>
-                            <div className={styles.noConceptText}>
-                                No value set concept is displayed. Please click the button below to add a new value set
-                                concept.
+                        {response?.content?.length === 0 ? (
+                            <div className={styles.noConceptsSection}>
+                                <div className={styles.noConceptText}>
+                                    No value set concept is displayed. Please click the button below to add a new value
+                                    set concept.
+                                </div>
+                                <div>
+                                    <Button type="button" outline onClick={() => setState('create')}>
+                                        Add new concept
+                                    </Button>
+                                </div>
                             </div>
-                            <div>
-                                <Button type="button" outline onClick={() => setState('create')}>
-                                    Add new concept
-                                </Button>
+                        ) : (
+                            <div className={styles.addConceptLinkSection}>
+                                <button className={styles.addConceptButton} onClick={() => setState('create')}>
+                                    <Icon.Add size={3} /> Add new concept
+                                </button>
                             </div>
-                        </div>
+                        )}
                     </>
                 )}
                 {state === 'create' && (
                     <CreateConcept
+                        valuesetName={valueset.code}
                         onCancel={() => setState('view')}
                         onCreated={() => {
                             firstPage();

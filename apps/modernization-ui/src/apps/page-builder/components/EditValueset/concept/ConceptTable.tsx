@@ -1,6 +1,7 @@
 import { Concept } from 'apps/page-builder/generated';
 import { ConceptSort, SortField } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { TableBody, TableComponent } from 'components/Table';
+import { internalizeDate } from 'date';
 import { usePage } from 'page';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
@@ -40,7 +41,7 @@ export const ConceptTable = ({ concepts, loading, onSort }: Props) => {
                 { id: 2, title: concept.conceptCode },
                 {
                     id: 3,
-                    title: concept.effectiveFromTime
+                    title: internalizeDate(concept.effectiveFromTime)
                 }
             ]
         };
