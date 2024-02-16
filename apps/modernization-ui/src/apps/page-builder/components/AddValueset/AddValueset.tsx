@@ -1,11 +1,12 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import { CreateValuesetRequest } from 'apps/page-builder/generated';
+import { CreateValuesetRequest, Valueset, ValuesetControllerService } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
 import { ValuesetForm } from './ValuesetForm/ValuesetForm';
 import styles from './create-valueset.module.scss';
+import { authorization } from 'authorization';
 
 type Props = {
     onClose: () => void;
@@ -13,13 +14,16 @@ type Props = {
     onCreated: (valueset: string) => void;
 };
 export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
-    const { alertSuccess } = useAlert();
+    const { alertSuccess, alertError } = useAlert();
     const form = useForm<CreateValuesetRequest>({ mode: 'onBlur', defaultValues: { type: 'PHIN' } });
 
     const handleCreate = () => {
-        // TODO - actually create it
-        alertSuccess({ message: 'Successfully created value set 900_RESULT_PROVIDED' });
-        onCreated('900_RESULT_PROVIDED');
+        ValuesetControllerService.createUsingPost({ authorization: authorization(), request: { ...form.getValues() } })
+            .then((response: Valueset) => {
+                alertSuccess({ message: `Successfully created value set ${response.code}` });
+                onCreated(response.code);
+            })
+            .catch((error) => alertError({ message: error.message }));
     };
 
     return (
