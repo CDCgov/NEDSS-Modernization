@@ -222,6 +222,7 @@ const BusinessRulesForm = () => {
                                 onBlur={onBlur}
                                 options={logicList}
                                 error={error?.message}
+                                disabled={form.watch('anySourceValue')}
                                 required
                             />
                         </Grid>
@@ -247,6 +248,7 @@ const BusinessRulesForm = () => {
                                             handleSourceValueChange(e);
                                         }}
                                         options={sourceValueList}
+                                        disabled={form.watch('anySourceValue')}
                                     />
                                 </div>
                             </Grid>
