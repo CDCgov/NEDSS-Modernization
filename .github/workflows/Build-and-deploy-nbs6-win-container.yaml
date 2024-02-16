@@ -8,7 +8,7 @@ on:
 jobs:
   push-call-build-windows-container-workflow:
     name: On Push Build Windows Container
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@docker-nbs6-win
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
     with:
       image_name: "nbs6"
       nbs6_version: "6.0.15.1"
