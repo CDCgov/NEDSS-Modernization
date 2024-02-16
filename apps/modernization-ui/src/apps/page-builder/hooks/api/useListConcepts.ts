@@ -1,4 +1,4 @@
-import { Concept, ValueSetControllerService } from 'apps/page-builder/generated';
+import { Concept, ConceptControllerService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
@@ -34,7 +34,7 @@ export const useListConcepts = (codesetName?: string) => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+            ConceptControllerService.findConceptsUsingGet({
                 authorization: authorization(),
                 codeSetNm: state.codesetName
             })

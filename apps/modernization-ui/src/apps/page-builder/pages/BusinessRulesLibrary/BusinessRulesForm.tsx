@@ -7,7 +7,7 @@ import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
 import { authorization } from 'authorization';
-import { Concept, CreateRuleRequest, ValueSetControllerService } from 'apps/page-builder/generated';
+import { Concept, ConceptControllerService, CreateRuleRequest } from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -37,7 +37,7 @@ const BusinessRulesForm = () => {
     );
 
     const fetchSourceValueSets = async (valueSet: string) => {
-        const content: Concept[] = await ValueSetControllerService.findConceptsByCodeSetNameUsingGet({
+        const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
             authorization: authorization(),
             codeSetNm: valueSet
         });

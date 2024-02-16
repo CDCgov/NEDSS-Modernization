@@ -1,6 +1,9 @@
 package gov.cdc.nbs.questionbank.valueset.concept;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +39,13 @@ public class ConceptController {
   @GetMapping()
   public List<Concept> findConcepts(@PathVariable String codeSetNm) {
     return finder.find(codeSetNm);
+  }
+
+  @PostMapping("/search")
+  public Page<Concept> searchConcepts(
+      @PathVariable String codeSetNm,
+      @PageableDefault(size = 25, sort = "localCode") final Pageable pageable) {
+    return finder.find(codeSetNm, pageable);
   }
 
   @PostMapping()

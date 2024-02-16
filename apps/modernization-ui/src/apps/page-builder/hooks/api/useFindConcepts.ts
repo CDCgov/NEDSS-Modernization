@@ -1,36 +1,45 @@
 import { useEffect, useReducer } from 'react';
 
-import { ValuesetControllerService, Page_ValueSetOption_ as ValuesetSearchResponse } from 'apps/page-builder/generated';
+import {
+    CodedQuestion,
+    ConceptControllerService,
+    DateQuestion,
+    NumericQuestion,
+    Page_Concept_ as PageConcept,
+    TextQuestion
+} from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Direction } from 'sorting';
 
-export type ValuesetSearch = {
-    query?: string;
+export type ConceptSearch = {
+    codeSetNm: string;
     page?: number;
     pageSize?: number;
-    sort?: ValuesetSort;
+    sort?: ConceptSort;
 };
 
+export type Question = TextQuestion | NumericQuestion | CodedQuestion | DateQuestion;
+
 export enum SortField {
-    TYPE = 'type',
-    NAME = 'name',
-    DESCRIPTION = 'description',
-    CODE = 'code'
+    CODE = 'code',
+    DISPLAY = 'display',
+    CONCEPT_CODE = 'conceptCode',
+    EFFECTIVE_DATE = 'effectiveDate'
 }
-export type ValuesetSort = {
+export type ConceptSort = {
     field: SortField;
     direction: Direction;
 };
 
 type State =
     | { status: 'idle' }
-    | { status: 'searching'; search: ValuesetSearch }
-    | { status: 'complete'; valuesets: ValuesetSearchResponse }
+    | { status: 'searching'; search: ConceptSearch }
+    | { status: 'complete'; concepts: PageConcept }
     | { status: 'error'; error: string };
 
 type Action =
-    | { type: 'search'; search: ValuesetSearch }
-    | { type: 'complete'; valuesets: ValuesetSearchResponse }
+    | { type: 'search'; search: ConceptSearch }
+    | { type: 'complete'; concepts: PageConcept }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
@@ -40,7 +49,7 @@ const reducer = (_state: State, action: Action): State => {
         case 'search':
             return { status: 'searching', search: action.search };
         case 'complete':
-            return { status: 'complete', valuesets: action.valuesets };
+            return { status: 'complete', concepts: action.concepts };
         case 'error':
             return { status: 'error', error: action.error };
         default:
@@ -48,7 +57,7 @@ const reducer = (_state: State, action: Action): State => {
     }
 };
 
-export const useFindValuesets = () => {
+export const useFindConcepts = () => {
     const [state, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {
@@ -57,23 +66,23 @@ export const useFindValuesets = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
 
-            ValuesetControllerService.searchValueSetUsingPost({
+            ConceptControllerService.searchConceptsUsingPost({
                 authorization: authorization(),
-                request: { query: state.search.query ?? '' },
+                codeSetNm: state.search.codeSetNm,
                 page: state.search.page,
                 size: state.search.pageSize,
                 sort: sortString
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', valuesets: response }));
+                .then((response) => dispatch({ type: 'complete', concepts: response }));
         }
     }, [state.status]);
 
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'searching',
-        response: state.status === 'complete' ? state.valuesets : undefined,
-        search: (search: ValuesetSearch) => dispatch({ type: 'search', search })
+        response: state.status === 'complete' ? state.concepts : undefined,
+        search: (search: ConceptSearch) => dispatch({ type: 'search', search })
     };
 
     return value;

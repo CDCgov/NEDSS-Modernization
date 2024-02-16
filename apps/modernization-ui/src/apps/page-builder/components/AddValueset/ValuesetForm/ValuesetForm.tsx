@@ -1,5 +1,5 @@
 import { Radio } from '@trussworks/react-uswds';
-import { ValueSetCreateRequest } from 'apps/page-builder/generated';
+import { CreateValuesetRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
@@ -9,7 +9,7 @@ type Props = {
     isEditing?: boolean;
 };
 export const ValuesetForm = ({ isEditing = false }: Props) => {
-    const form = useFormContext<ValueSetCreateRequest>();
+    const form = useFormContext<CreateValuesetRequest>();
 
     return (
         <div className={styles.valuesetForm}>
@@ -24,7 +24,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                 </div>
                 <Controller
                     control={form.control}
-                    name="valueSetType"
+                    name="type"
                     render={({ field: { onChange, value } }) => (
                         <div className={styles.radioButtons}>
                             <Radio
@@ -50,7 +50,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                 />
                 <Controller
                     control={form.control}
-                    name="valueSetCode"
+                    name="code"
                     rules={{
                         pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
                         required: { value: true, message: 'Value set code is required' },
@@ -74,7 +74,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                 />
                 <Controller
                     control={form.control}
-                    name="valueSetName"
+                    name="name"
                     rules={{
                         pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' },
                         required: { value: true, message: 'Value set name is required' },
@@ -97,7 +97,7 @@ export const ValuesetForm = ({ isEditing = false }: Props) => {
                 />
                 <Controller
                     control={form.control}
-                    name="valueSetDescription"
+                    name="description"
                     rules={{
                         ...maxLengthRule(2000)
                     }}

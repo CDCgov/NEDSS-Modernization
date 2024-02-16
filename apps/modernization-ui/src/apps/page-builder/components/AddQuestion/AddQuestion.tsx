@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import './AddQuestion.scss';
 import { CreateQuestionForm, QuestionForm } from './QuestionForm';
-import styles from './add-question.module.scss';
+import { CreateEditValueset } from './valueset/CreateEditValueset';
 import { ValuesetSearch } from './valueset/ValuesetSearch';
-import { AddValueset } from '../AddValueset/AddValueset';
+import styles from './add-question.module.scss';
+import './AddQuestion.scss';
 
 type Props = {
     onBack: () => void;
@@ -21,7 +21,7 @@ type Props = {
     onQuestionCreated: (id: number) => void;
 };
 export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
-    const [state, setState] = useState<'create' | 'findValueset' | 'createValueset'>('create');
+    const [state, setState] = useState<'create' | 'findValueset' | 'createValueset' | 'editValueset'>('create');
     const { createQuestion, questionId, error } = useCreateQuestion();
     const { alertError } = useAlert();
     const form = useForm<CreateQuestionForm>({
@@ -64,7 +64,17 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
                     />
                 </PageProvider>
             )}
-            {state === 'createValueset' && <AddValueset onCancel={() => setState('findValueset')} onClose={onClose} />}
+            {state === 'createValueset' && (
+                <CreateEditValueset
+                    onCancel={() => {
+                        setState('findValueset');
+                    }}
+                    onClose={onClose}
+                    onAccept={() => {
+                        setState('create');
+                    }}
+                />
+            )}
         </FormProvider>
     );
 };

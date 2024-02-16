@@ -2,8 +2,14 @@ package gov.cdc.nbs.questionbank.valueset.concept;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -38,6 +44,51 @@ public class ConceptFinder {
         .orderBy(codeValueGeneralTable.codeShortDescTxt.asc())
         .fetchOne();
     return Optional.ofNullable(this.toConcept(row));
+  }
+
+  public Page<Concept> find(String codeSetNm, Pageable pageable) {
+    List<String> found = select()
+        .where(codeValueGeneralTable.id.codeSetNm.equalsIgnoreCase(codeSetNm))
+        .orderBy(resolveOrderBy(pageable.getSort()))
+        .fetch()
+        .stream()
+        .map(r -> r.get(codeValueGeneralTable.id.code))
+        .toList();
+
+    int total = found.size();
+
+    List<String> ids = found
+        .subList((int) pageable.getOffset(),
+            Math.min(
+                total,
+                (int) pageable.getOffset() + pageable.getPageSize()));
+
+
+    List<Concept> concepts = select()
+        .where(codeValueGeneralTable.id.code.in(ids).and(codeValueGeneralTable.id.codeSetNm.eq(codeSetNm)))
+        .orderBy(resolveOrderBy(pageable.getSort()))
+        .fetch()
+        .stream()
+        .map(this::toConcept)
+        .toList();
+
+    return new PageImpl<>(concepts, pageable, total);
+  }
+
+  private OrderSpecifier<?> resolveOrderBy(Sort sort) {
+    if (sort == null || sort.isEmpty() || sort.isUnsorted()) {
+      return codeValueGeneralTable.id.codeSetNm.asc();
+    } else {
+      Order order = sort.toList().get(0);
+      var path = switch (order.getProperty()) {
+        case "code" -> codeValueGeneralTable.id.code;
+        case "display" -> codeValueGeneralTable.codeShortDescTxt;
+        case "conceptCode" -> codeValueGeneralTable.conceptCode;
+        case "effectiveDate" -> codeValueGeneralTable.effectiveFromTime;
+        default -> codeValueGeneralTable.id.codeSetNm;
+      };
+      return order.isAscending() ? path.asc() : path.desc();
+    }
   }
 
   private JPAQuery<Tuple> select() {
@@ -79,4 +130,5 @@ public class ConceptFinder {
         row.get(codeValueGeneralTable.conceptPreferredNm),
         row.get(11, String.class));
   }
+
 }

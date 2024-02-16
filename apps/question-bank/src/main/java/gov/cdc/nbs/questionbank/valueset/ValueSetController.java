@@ -29,20 +29,28 @@ import springfox.documentation.annotations.ApiIgnore;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ValuesetController {
 
+  private final ValuesetFinder finder;
   private final ValueSetOptionFinder optionFinder;
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetUpdater valueSetUpdater;
   private final ValuesetCreator valueSetCreator;
 
   public ValuesetController(
+      final ValuesetFinder finder,
       final ValueSetOptionFinder optionFinder,
       final ValueSetStateManager valueSetStateManager,
       final ValueSetUpdater valueSetUpdater,
       final ValuesetCreator valueSetCreator) {
+    this.finder = finder;
     this.optionFinder = optionFinder;
     this.valueSetStateManager = valueSetStateManager;
     this.valueSetUpdater = valueSetUpdater;
     this.valueSetCreator = valueSetCreator;
+  }
+
+  @GetMapping("{codeSetNm}")
+  public Valueset getValueset(@PathVariable String codeSetNm) {
+    return finder.find(codeSetNm);
   }
 
   @PostMapping

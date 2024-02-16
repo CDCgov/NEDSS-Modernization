@@ -1,0 +1,52 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.editValueset {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .content {
+        padding: 1.5rem;
+        height: 100%;
+        overflow-y: auto;
+
+        .sectionText {
+            color: colors.$base-darker;
+            font-size: 1.375rem;
+            font-weight: 700;
+        }
+
+        .valuesetInfo {
+            margin: 1rem 0;
+            padding: 1.44rem;
+            @extend %thin;
+            @include borders.rounded();
+            display: flex;
+            justify-content: space-between;
+
+            .data {
+                max-width: 25%;
+                .title {
+                    font-size: 0.8125rem;
+                    font-weight: 600;
+                }
+
+                div {
+                    max-width: 100%;
+                    word-wrap: break-word;
+                }
+            }
+        }
+
+        .noConceptsSection {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            @extend %thin;
+            @include borders.rounded();
+            padding: 1.25rem 0;
+            text-align: center;
+        }
+    }
+}

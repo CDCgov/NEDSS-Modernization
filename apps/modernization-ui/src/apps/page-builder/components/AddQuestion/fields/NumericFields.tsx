@@ -1,5 +1,5 @@
 import { Label, Radio } from '@trussworks/react-uswds';
-import { CreateNumericQuestionRequest, ValueSetControllerService } from 'apps/page-builder/generated';
+import { CreateNumericQuestionRequest, ValuesetControllerService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput, Selectable } from 'components/FormInputs/SelectInput';
@@ -25,7 +25,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
     const [valueSets, setValueSets] = useState<Selectable[]>([]);
 
     useEffect(() => {
-        ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) =>
+        ValuesetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) =>
             setValueSets(response)
         );
 

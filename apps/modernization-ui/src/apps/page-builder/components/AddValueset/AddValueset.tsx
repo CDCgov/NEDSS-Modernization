@@ -1,5 +1,6 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { ValueSetCreateRequest } from 'apps/page-builder/generated';
+import { useAlert } from 'alert';
+import { CreateValuesetRequest } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
@@ -9,12 +10,16 @@ import styles from './create-valueset.module.scss';
 type Props = {
     onClose: () => void;
     onCancel: () => void;
+    onCreated: (valueset: string) => void;
 };
-export const AddValueset = ({ onClose, onCancel }: Props) => {
-    const form = useForm<ValueSetCreateRequest>({ mode: 'onBlur', defaultValues: { valueSetType: 'PHIN' } });
+export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
+    const { alertSuccess } = useAlert();
+    const form = useForm<CreateValuesetRequest>({ mode: 'onBlur', defaultValues: { type: 'PHIN' } });
 
     const handleCreate = () => {
-        console.log('clicked submit');
+        // TODO - actually create it
+        alertSuccess({ message: 'Successfully created value set 900_RESULT_PROVIDED' });
+        onCreated('900_RESULT_PROVIDED');
     };
 
     return (

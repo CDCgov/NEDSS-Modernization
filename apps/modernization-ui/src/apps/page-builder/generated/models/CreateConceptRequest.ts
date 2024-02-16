@@ -2,9 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Concept = {
+export type CreateConceptRequest = {
     adminComments?: string;
-    codeSetName: string;
     codeSystem: string;
     conceptCode: string;
     conceptName: string;
@@ -14,10 +13,10 @@ export type Concept = {
     localCode: string;
     longName: string;
     preferredConceptName: string;
-    status: Concept.status;
+    status: CreateConceptRequest.status;
 };
 
-export namespace Concept {
+export namespace CreateConceptRequest {
 
     export enum status {
         ACTIVE = 'ACTIVE',

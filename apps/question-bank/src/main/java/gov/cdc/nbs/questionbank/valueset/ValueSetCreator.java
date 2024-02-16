@@ -78,6 +78,7 @@ public class ValuesetCreator {
     try {
       entityManager.persist(valueset);
       return new Valueset(
+          valueset.getCodeSetGroup().getId(),
           valueset.getValueSetTypeCd(),
           valueset.getId().getCodeSetNm(),
           valueset.getValueSetNm(),
