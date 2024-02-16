@@ -32,6 +32,7 @@ type PatientLabReport = {
     programArea: string;
     jurisdiction: string;
     event: string;
+    electronicInd: string;
 };
 
 export type { PatientLabReport, AssociatedWith, TestResult };

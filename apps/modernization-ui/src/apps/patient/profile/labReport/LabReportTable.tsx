@@ -18,10 +18,18 @@ const asTableBody =
             {
                 id: 1,
                 title: report?.receivedOn ? (
-                    <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.report}`}>
-                        {report?.receivedOn && format(report.receivedOn, 'MM/dd/yyyy')} <br />{' '}
-                        {format(new Date(report?.receivedOn), 'hh:mm a')}
-                    </ClassicLink>
+                    <>
+                        <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.report}`}>
+                            {report?.receivedOn && format(report.receivedOn, 'MM/dd/yyyy')} <br />{' '}
+                            {format(new Date(report?.receivedOn), 'hh:mm a')}
+                        </ClassicLink>
+                        {report?.electronicInd === 'Y' && (
+                            <>
+                                <br />
+                                (Electronic)
+                            </>
+                        )}
+                    </>
                 ) : null
             },
             {
