@@ -23,7 +23,7 @@ const asTableBody =
                             {report?.receivedOn && format(report.receivedOn, 'MM/dd/yyyy')} <br />{' '}
                             {format(new Date(report?.receivedOn), 'hh:mm a')}
                         </ClassicLink>
-                        {report?.electronicInd === 'Y' && (
+                        {report?.isElectronic === 'Y' && (
                             <>
                                 <br />
                                 (Electronic)
