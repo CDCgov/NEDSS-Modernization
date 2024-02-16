@@ -3,18 +3,11 @@ package gov.cdc.nbs.entity.odse;
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientIdentificationHistoryListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -23,6 +16,7 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Entity_id")
+@EntityListeners(PatientIdentificationHistoryListener.class)
 public class EntityId {
 
     public static Predicate<EntityId> active() {
