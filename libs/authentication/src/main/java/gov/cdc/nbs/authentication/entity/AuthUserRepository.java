@@ -8,6 +8,4 @@ import java.util.Optional;
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, QuerydslPredicateExecutor<AuthUser> {
   public Optional<AuthUser> findByUserId(String userId);
 
-  public Optional<AuthUser> findByNedssEntryId(Long nedssEntryId);
-
 }

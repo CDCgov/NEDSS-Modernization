@@ -9,12 +9,12 @@ import io.cucumber.java.en.Given;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("java:S100")  //  allow the underscores in methods names of step classes
+@SuppressWarnings("java:S100") // allow the underscores in methods names of step classes
 @Transactional
 public class AuthenticationSteps {
 
   private final TokenCreator tokenCreator;
-  private final ActiveUserMother mother;
+  private final ActiveUserMother userMother;
   private final Active<ActiveUser> activeUser;
   private final Active<SessionCookie> activeSession;
 
@@ -22,13 +22,12 @@ public class AuthenticationSteps {
 
   AuthenticationSteps(
       final TokenCreator tokenCreator,
-      final ActiveUserMother mother,
+      final ActiveUserMother userMother,
       final Active<ActiveUser> activeUser,
       final Active<SessionCookie> activeSession,
-      final SessionMother sessionMother
-  ) {
+      final SessionMother sessionMother) {
     this.tokenCreator = tokenCreator;
-    this.mother = mother;
+    this.userMother = userMother;
     this.activeUser = activeUser;
     this.activeSession = activeSession;
     this.sessionMother = sessionMother;
@@ -36,7 +35,7 @@ public class AuthenticationSteps {
 
   @Before
   public void clean() {
-    mother.reset();
+    userMother.reset();
     sessionMother.reset();
   }
 
@@ -46,7 +45,7 @@ public class AuthenticationSteps {
   @Given("I am logged into NBS")
   @Given("I am logged into NBS and a security log entry exists")
   public void i_am_logged_in() {
-    ActiveUser user = mother.create();
+    ActiveUser user = userMother.create();
 
     activate(user);
   }
@@ -54,6 +53,11 @@ public class AuthenticationSteps {
   @Given("I have not authenticated as a user")
   @Given("I am not logged in( at all)")
   public void i_am_not_logged_in() {
+
+    String session = activeSession.maybeActive().map(SessionCookie::identifier).orElse("NOPE");
+    activeUser.maybeActive()
+        .ifPresent(current -> sessionMother.logout(current, session));
+
     activeUser.reset();
     SecurityContextHolder.getContext().setAuthentication(null);
   }
@@ -70,7 +74,7 @@ public class AuthenticationSteps {
 
   @Given("I am logged in as {string}")
   public void i_am_logged_in_as(final String name) {
-    ActiveUser user = mother.create(name);
+    ActiveUser user = userMother.create(name);
 
     activate(user);
   }

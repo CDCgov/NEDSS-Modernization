@@ -3,7 +3,6 @@ package gov.cdc.nbs.authentication;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 
 public record NBSToken(String value) {
 
