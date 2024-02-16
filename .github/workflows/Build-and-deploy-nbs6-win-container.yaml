@@ -2,9 +2,9 @@ name: Build NBS6 Windows Container Build
 on:
   push:
     branches:
-      - docker-nbs6-win
-    # paths:
-    #   - "cdc-sandbox/nbs6-win-container/**"
+      - main
+    paths:
+      - "cdc-sandbox/nbs6-win-container/**"
 jobs:
   push-call-build-windows-container-workflow:
     name: On Push Build Windows Container
