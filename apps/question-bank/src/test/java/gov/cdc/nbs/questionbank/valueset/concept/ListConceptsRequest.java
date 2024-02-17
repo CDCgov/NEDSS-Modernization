@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.valueset;
+package gov.cdc.nbs.questionbank.valueset.concept;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import org.springframework.stereotype.Component;

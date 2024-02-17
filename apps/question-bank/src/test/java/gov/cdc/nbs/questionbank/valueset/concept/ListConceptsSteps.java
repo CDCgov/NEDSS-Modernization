@@ -1,4 +1,4 @@
-package gov.cdc.nbs.questionbank.valueset;
+package gov.cdc.nbs.questionbank.valueset.concept;
 
 
 import static org.hamcrest.Matchers.contains;
