@@ -106,7 +106,8 @@ public class CodeValueGeneral {
   }
 
   public CodeValueGeneral update(ConceptCommand.UpdateConcept command) {
-    this.codeShortDescTxt = command.displayName();
+    this.codeDescTxt = command.displayName();
+    this.codeShortDescTxt = command.shortDisplayName();
     this.effectiveFromTime = command.effectiveFromTime();
     this.effectiveToTime = command.effectiveToTime();
     this.statusCd = command.status();
