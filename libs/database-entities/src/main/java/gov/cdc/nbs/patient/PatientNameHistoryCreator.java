@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PatientNameHistoryCreator {
-
     private static final int VERSION_PARAMETER = 1;
     private static final int PATIENT_PARAMETER = 2;
     private static final int SEQUENCE_PARAMETER = 3;
@@ -14,7 +13,6 @@ public class PatientNameHistoryCreator {
     public PatientNameHistoryCreator(final JdbcTemplate template) {
         this.template = template;
     }
-
 
     private static final String CREATE_PERSON_NAME_HIST = """
        insert into Person_name_hist (
@@ -88,6 +86,7 @@ public class PatientNameHistoryCreator {
        where person_uid = ?
          and person_name_seq = ?
        """;
+
     public void createPersonNameHistory(final long patient, final int version, final int sequence) {
         this.template.update(
             CREATE_PERSON_NAME_HIST,

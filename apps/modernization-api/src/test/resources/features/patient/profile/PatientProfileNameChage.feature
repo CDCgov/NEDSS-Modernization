@@ -16,6 +16,7 @@ Feature: Patient Profile Name Changes
     And the patient has a name
     When a patient's name is changed
     Then the patient has the expected name
+    And the patient name history contains the previous version
 
   Scenario: I can remove a patient's existing name
     Given I am logged into NBS
@@ -23,6 +24,7 @@ Feature: Patient Profile Name Changes
     And the patient has a name
     When a patient's name is removed
     Then the patient does not have the expected name
+    And the patient name history contains the previous version
 
   Scenario: I cannot add a patient's name without proper permission
     Given I am logged into NBS
