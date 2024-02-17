@@ -9,13 +9,13 @@ import gov.cdc.nbs.questionbank.valueset.exception.ValuesetNotFoundException;
 import gov.cdc.nbs.questionbank.valueset.model.Valueset;
 
 @Component
-public class ValuesetFinder {
+public class ValueSetFinder {
   private static final QCodeset codesetTable = QCodeset.codeset;
   private static final QCodeSetGroupMetadatum metadataTable = QCodeSetGroupMetadatum.codeSetGroupMetadatum;
 
   private final JPAQueryFactory factory;
 
-  public ValuesetFinder(final JPAQueryFactory factory) {
+  public ValueSetFinder(final JPAQueryFactory factory) {
     this.factory = factory;
   }
 

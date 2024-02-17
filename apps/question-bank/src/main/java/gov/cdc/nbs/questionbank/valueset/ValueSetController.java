@@ -31,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ValueSetController {
 
-  private final ValuesetFinder finder;
+  private final ValueSetFinder finder;
   private final ValueSetOptionFinder optionFinder;
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetUpdater valueSetUpdater;
@@ -39,7 +39,7 @@ public class ValueSetController {
   private final ValueSetCreator valueSetCreator;
 
   public ValueSetController(
-      final ValuesetFinder finder,
+      final ValueSetFinder finder,
       final ValueSetOptionFinder optionFinder,
       final ValueSetStateManager valueSetStateManager,
       final ValueSetUpdater valueSetUpdater,
