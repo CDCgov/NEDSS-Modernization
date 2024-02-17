@@ -4,9 +4,14 @@ package gov.cdc.nbs.questionbank.page.service;
 import gov.cdc.nbs.questionbank.page.model.PageHistory;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,36 +48,49 @@ class PageHistoryFinderTest {
 
   @Test
   void getPageHistory_validTemplateName_returnListOfPageHistory() {
+    Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Arrays.asList(
         new PageHistory("1.0", "09/25/2019", "User1", "Notes 1"),
         new PageHistory("2.0", "09/25/2019", "User2", "Notes 2"));
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class))).thenReturn(
         expectedPageHistory);
-    List<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l);
-    assertEquals(expectedPageHistory, actualPageHistory);
+    when(jdbcTemplate.query(any(String.class), any(PreparedStatementSetter.class), any(SingleColumnRowMapper.class)))
+        .thenReturn(Collections.singletonList(10));
+
+    Page<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l, pageable);
+    assertEquals(expectedPageHistory, actualPageHistory.toList());
   }
 
   @Test
   void getPageHistory_validTemplateName_queryLabelNames() {
+    Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Arrays.asList(
         new PageHistory("1.0", "09/25/2019", "User1", "Notes 1"),
         new PageHistory("2.0", "09/25/2019", "User2", "Notes 2"));
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class))).thenReturn(
         expectedPageHistory);
-    List<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l);
-    assertEquals("publishVersionNbr", "1.0", actualPageHistory.get(0).publishVersionNbr());
-    assertEquals("lastUpdatedDate", "09/25/2019", actualPageHistory.get(0).lastUpdatedDate());
-    assertEquals("lastUpdatedBy", "User1", actualPageHistory.get(0).lastUpdatedBy());
-    assertEquals("notes", "Notes 1", actualPageHistory.get(0).notes());
+    when(jdbcTemplate.query(any(String.class), any(PreparedStatementSetter.class), any(SingleColumnRowMapper.class)))
+        .thenReturn(Collections.singletonList(10));
+
+    Page<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l, pageable);
+    PageHistory pageHistory = actualPageHistory.stream().toList().get(0);
+    assertEquals("publishVersionNbr", "1.0", pageHistory.publishVersionNbr());
+    assertEquals("lastUpdatedDate", "09/25/2019", pageHistory.lastUpdatedDate());
+    assertEquals("lastUpdatedBy", "User1", pageHistory.lastUpdatedBy());
+    assertEquals("notes", "Notes 1", pageHistory.notes());
   }
 
   @Test
   void getPageHistory_invalidTemplateName_returnEmptyList() {
+    Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Collections.EMPTY_LIST;
     Mockito.when(jdbcTemplate.query(anyString(), any(Object[].class), any(int[].class), any(RowMapper.class)))
         .thenReturn(expectedPageHistory);
-    List<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l);
-    assertEquals(expectedPageHistory, actualPageHistory);
+    when(jdbcTemplate.query(any(String.class), any(PreparedStatementSetter.class), any(SingleColumnRowMapper.class)))
+        .thenReturn(Collections.singletonList(10));
+
+    Page<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l, pageable);
+    assertTrue(actualPageHistory.toList().isEmpty());
   }
 
   @Test
@@ -101,19 +119,21 @@ class PageHistoryFinderTest {
 
   @Test
   void getPageHistory_runtimeException_returnRuntimeExceptionWithMsg() {
+    Pageable pageable = getPageable();
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class)))
         .thenThrow(new RuntimeException("Error Fetching Page-History by Template_nm From the Database"));
-    var exception = assertThrows(RuntimeException.class, () -> pageHistoryFinder.getPageHistory(100l));
+    var exception = assertThrows(RuntimeException.class, () -> pageHistoryFinder.getPageHistory(100l, pageable));
     assertTrue(exception.getMessage().contains("Error Fetching Page-History by Template_nm From the Database"));
   }
 
 
   @Test
   void testGetPageHistoryQueryAndMapping() {
+    Pageable pageable = getPageable();
     Long pageId = 1L;
-    List<PageHistory> expectedPageHistory = Arrays.asList(
+    List<PageHistory> resultList = Arrays.asList(
         new PageHistory("1.0", "09/25/2019", "User1", "Notes 1"));
-
+    Page<PageHistory> expectedPageHistory = new PageImpl<>(resultList, pageable, 10);
     when(jdbcTemplate.query(anyString(), setterCaptor.capture(), any(RowMapper.class)))
         .thenAnswer(invocation -> {
           PreparedStatementSetter setter = setterCaptor.getValue();
@@ -126,18 +146,30 @@ class PageHistoryFinderTest {
           when(resultSet.getString("lastUpdatedDate")).thenReturn("09/25/2019");
           when(resultSet.getString("lastUpdatedBy")).thenReturn("User1");
           when(resultSet.getString("notes")).thenReturn("Notes 1");
-
           RowMapper<PageHistory> rowMapper = invocation.getArgument(2);
           PageHistory pageHistory = rowMapper.mapRow(resultSet, 1);
-
           pageHistoryList.add(pageHistory);
-
           return pageHistoryList;
         });
-
-    List<PageHistory> actualPageHistoryList = pageHistoryFinder.getPageHistory(pageId);
+    when(jdbcTemplate.query(any(String.class), setterCaptor.capture(), any(SingleColumnRowMapper.class)))
+        .thenAnswer(invocation -> {
+          PreparedStatementSetter setter = setterCaptor.getValue();
+          PreparedStatement preparedStatement = mock(PreparedStatement.class);
+          setter.setValues(preparedStatement);
+          return Collections.singletonList(10);
+        });
+    Page<PageHistory> actualPageHistoryList = pageHistoryFinder.getPageHistory(pageId, pageable);
     assertEquals(expectedPageHistory, actualPageHistoryList);
   }
 
+
+  private Pageable getPageable() {
+    Pageable pageable = mock(Pageable.class);
+    Sort sort = mock(Sort.class);
+    when(sort.isSorted()).thenReturn(true);
+    when(sort.toString()).thenReturn("searchField");
+    when(pageable.getSort()).thenReturn(sort);
+    return pageable;
+  }
 
 }

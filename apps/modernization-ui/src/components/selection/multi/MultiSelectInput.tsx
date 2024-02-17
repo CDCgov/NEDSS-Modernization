@@ -31,6 +31,7 @@ type MultiSelectInputProps = {
     onChange?: (value: any) => void;
     onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
     required?: boolean;
+    disabled?: boolean;
     error?: string;
 };
 
@@ -47,7 +48,8 @@ export const MultiSelectInput = ({
     required,
     error,
     placeholder = '- Select -',
-    orientation = 'vertical'
+    orientation = 'vertical',
+    disabled = false
 }: MultiSelectInputProps) => {
     const selectableOptions = useMemo(
         () => options.map((item) => ({ value: item.value, label: item.name })),
@@ -92,6 +94,7 @@ export const MultiSelectInput = ({
                     onBlur={onBlur}
                     options={selectableOptions}
                     components={{ Input, Option: CheckedOption }}
+                    isDisabled={disabled}
                 />
             </EntryWrapper>
         </div>

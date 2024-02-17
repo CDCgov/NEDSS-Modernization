@@ -13,7 +13,6 @@ import { ContactForm } from './ContactForm';
 import { EthnicityForm } from './EthnicityForm';
 import { IDForm } from './IdForm';
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
-import { useAltX } from 'hotkeys';
 import { focusedTarget } from 'utils';
 
 type PatientSearchProps = {
@@ -34,10 +33,6 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
     useEffect(() => {
         skipTo('lastName');
     }, []);
-
-    useAltX(() => {
-        focusedTarget('lastName');
-    });
 
     useEffect(() => {}, [form.formState.errors]);
 
@@ -61,6 +56,15 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
         Object.values(filter.identification ?? {}).length > 0;
         filter.identification = objectOrUndefined(filter.identification);
         handleSubmission(filter);
+    };
+
+    const handleClearAll = () => {
+        // Because of the customized nature of Date picker errors, the date picker doesn't reset when the clear all is clicked.
+        // So you need to set the error to false and then run the form reset and clearAll methods.
+        // None instead of empty string because Trusswork's DatePicker doesn't update with empty string.
+        form.reset({ dateOfBirth: 'none' }, { keepDefaultValues: true });
+        clearAll();
+        focusedTarget('lastName');
     };
 
     const simpleSearchItems: AccordionItemProps[] = [
@@ -295,19 +299,11 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                 </Grid>
                 <Grid col={12} className="padding-x-2">
                     <Button
+                        accessKey="x"
+                        aria-label="Clear all search criteria"
                         className="width-full clear-btn"
                         type={'button'}
-                        onClick={() => {
-                            // Because of the customized nature of Date picker errors, the date picker doesn't reset when the clear all is clicked.
-                            // So you need to set the error to false and then run the form reset and clearAll methods.
-                            // None instead of empty string because Trusswork's DatePicker doesn't update with empty string.
-                            form.setValue('dateOfBirth', 'none');
-                            setTimeout(() => {
-                                form.reset({}, { keepDefaultValues: true });
-                                clearAll();
-                                skipTo('lastName');
-                            });
-                        }}
+                        onClick={handleClearAll}
                         outline>
                         Clear all
                     </Button>

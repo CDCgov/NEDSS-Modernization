@@ -1,11 +1,11 @@
 package gov.cdc.nbs.authentication.login;
 
 import gov.cdc.nbs.authentication.NBSToken;
+import gov.cdc.nbs.authentication.SecurityProperties;
 import gov.cdc.nbs.authentication.TokenCreator;
-import gov.cdc.nbs.authentication.UserService;
-import gov.cdc.nbs.authentication.config.SecurityProperties;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 class LoginController {
-  private final UserService userService;
+  private final UserDetailsService userService;
   private final SecurityProperties securityProperties;
   private final TokenCreator creator;
 
   LoginController(
-      final UserService userService,
+      final UserDetailsService userService,
       final SecurityProperties securityProperties,
       final TokenCreator creator
   ) {
@@ -47,9 +47,7 @@ class LoginController {
     );
 
     return new LoginResponse(
-        userDetails.getId(),
         userDetails.getUsername(),
-        userDetails.getFirstName() + " " + userDetails.getLastName(),
         token.value()
     );
   }

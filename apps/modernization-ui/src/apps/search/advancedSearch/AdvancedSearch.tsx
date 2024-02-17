@@ -38,6 +38,7 @@ import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
+import { Icon as NBSIcon } from 'components/Icon/Icon';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -426,9 +427,7 @@ export const AdvancedSearch = () => {
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
                                 outline>
                                 Add new
-                                <img
-                                    src={lastSearchType ? '/icons/down-arrow-blue.svg' : '/icons/down-arrow-white.svg'}
-                                />
+                                <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
                             </Button>
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
@@ -527,16 +526,16 @@ export const AdvancedSearch = () => {
                                             onClick={() => setShowSorting(!showSorting)}
                                             outline>
                                             Sort by
-                                            <img
-                                                style={{ marginLeft: '5px' }}
-                                                src={
+                                            <NBSIcon
+                                                name={
                                                     (!investigationData?.content ||
                                                         investigationData?.content?.length === 0) &&
                                                     (!labReportData?.content || labReportData?.content?.length === 0) &&
                                                     (!patientData?.content || patientData?.content?.length === 0)
-                                                        ? '/icons/down-arrow-white.svg'
-                                                        : '/icons/down-arrow-blue.svg'
+                                                        ? 'down-arrow-white'
+                                                        : 'down-arrow-blue'
                                                 }
+                                                size="s"
                                             />
                                         </Button>
                                     )}

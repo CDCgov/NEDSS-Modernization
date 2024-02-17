@@ -1,0 +1,24 @@
+name: Build NBS6 Windows Container Build
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "cdc-sandbox/nbs6-win-container/**"
+jobs:
+  push-call-build-windows-container-workflow:
+    name: On Push Build Windows Container
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-windows-container.yaml@main
+    with:
+      image_name: "nbs6"
+      nbs6_version: "6.0.15.1"
+      dockerfile_relative_path: "./cdc-sandbox/nbs6-win-container/" 
+      github_release_tag: "latest"
+      github_zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
+      user_guide_doc_name: "NBS 7.2.2 User Guide.docx"
+      quay_repository: "quay.io/us-cdcgov/cdc-nbs-modernization"
+    secrets:
+      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{ secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID }}
+      NBS6_ZIP_S3_BUCKET_NAME: ${{ secrets.NBS6_ZIP_S3_BUCKET_NAME }}
+      QUAY_ROBOT_USERNAME: ${{secrets.QUAY_ROBOT_USERNAME}}
+      QUAY_ROBOT_TOKEN: ${{secrets.QUAY_ROBOT_TOKEN}}

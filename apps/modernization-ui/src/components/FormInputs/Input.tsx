@@ -111,6 +111,7 @@ export const Input = ({
                         aria-describedby={error ? `${error}-message` : undefined}
                         className={classNames(className)}
                         aria-label={ariaLabel}
+                        disabled={props?.disabled}
                     />
                 )}
             </EntryWrapper>

@@ -1,4 +1,4 @@
-import { Button, Icon } from '@trussworks/react-uswds';
+import { Button, Icon, Tooltip } from '@trussworks/react-uswds';
 import {
     PageHeader,
     PageManagementLayout,
@@ -8,7 +8,6 @@ import {
     usePageManagement
 } from 'apps/page-builder/page/management';
 import { Loading } from 'components/Spinner';
-import { LinkButton } from 'components/button';
 import { PageInformation } from './information/PageInformation';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import styles from './preview-page.module.scss';
@@ -39,11 +38,7 @@ const PreviewPageContent = () => {
                     <Button outline type="button">
                         Save as Template
                     </Button>
-                    {page.status === 'Published' ? (
-                        <Button type="button" outline>
-                            Create draft
-                        </Button>
-                    ) : (
+                    {page.status === 'Draft' && (
                         <>
                             <Button type="button" outline>
                                 Delete draft
@@ -53,23 +48,26 @@ const PreviewPageContent = () => {
                             </Button>
                         </>
                     )}
-                    <NavLinkButton type="outline" to="edit">
-                        Edit draft
-                    </NavLinkButton>
-                    <LinkButton
-                        href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
-                        label="open a preview of the page">
-                        <Icon.Visibility size={3} />
-                    </LinkButton>
-                    <LinkButton href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`}>
-                        <Icon.ContentCopy size={3} />
-                    </LinkButton>
-                    <LinkButton
-                        href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
-                        label="open simplified page view for printing">
-                        <Icon.Print size={3} />
-                    </LinkButton>
-                    <Button type="button">Publish</Button>
+                    <Tooltip position="top" label="Preview in NBS Classic">
+                        <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`} className={styles.link}>
+                            <Icon.Visibility size={3} />
+                        </a>
+                    </Tooltip>
+                    <Tooltip position="top" label="Clone this page">
+                        <a href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`} className={styles.link}>
+                            <Icon.ContentCopy size={3} />
+                        </a>
+                    </Tooltip>
+                    <Tooltip position="top" label="Print this page">
+                        <a href={`/nbs/page-builder/api/v1/pages/${page.id}/print`} className={styles.link}>
+                            <Icon.Print size={3} />
+                        </a>
+                    </Tooltip>
+                    {page.status === 'Published' ? (
+                        <Button type="button">Create draft</Button>
+                    ) : (
+                        <Button type="button">Publish</Button>
+                    )}
                 </PageManagementMenu>
             </PageHeader>
             <div className={styles.preview}>

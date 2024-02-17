@@ -1,0 +1,7 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${issuer-uri:http://localhost:8100/realms/nbs-development}
+          jwk-set-uri: ${jwk-set-uri:http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs}

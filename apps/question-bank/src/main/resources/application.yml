@@ -6,7 +6,6 @@ nbs:
   datasource:
     server: localhost
   security:
-    enabled: true
     tokenSecret: qJ5+oDurrJnxfaAz6h4Eg1saP7NSeHuQQ/Yq4vh+mbi4B4QYThc/M+33VtPJ5O2A
     tokenIssuer: gov.cdc.nbs
     tokenExpirationMillis: 1800000 # 30 minutes
@@ -15,6 +14,13 @@ nbs:
     server: ${nbs.wildfly.host}:${nbs.wildfly.port}
     port: 7001
     url: http://${nbs.wildfly.server}
+  authentication:
+    paths:
+      ignored:
+        - /v3/api-docs/**
+        - /swagger-ui/**
+        - /swagger-resources/**
+        - /v2/api-docs/**
 
 spring:
   servlet.multipart.max-file-size: 10MB

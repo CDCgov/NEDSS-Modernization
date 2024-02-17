@@ -8,7 +8,6 @@ import { TableHeader } from './TableHeader';
 import classNames from 'classnames';
 import { ChangeEvent, ChangeEventHandler, Fragment, ReactNode } from 'react';
 import { Column, resolveColumns } from './resolveColumns';
-
 import styles from './table.module.scss';
 
 type SelectionMode = 'select' | 'deselect';
@@ -158,45 +157,54 @@ export const TableComponent = ({
                     {buttons}
                 </header>
             )}
-            <Table
-                bordered={false}
-                fullWidth
-                className={classNames(
-                    {
-                        [styles.standard]: display === 'standard',
-                        [styles.zebra]: display === 'zebra'
-                    },
-                    className
-                )}>
-                <TableHeaders sorting={sorting} columns={columns} />
-                <tbody>
-                    {isLoading ? <LoadingRow columns={columns.length} /> : renderRows(sorting, tableBody, selectable)}
-                </tbody>
-            </Table>
-            <footer>
-                <div className={styles.range}>
-                    {!rangeSelector ? (
-                        <>
-                            Showing {tableBody?.length} of {totalResults}
-                        </>
-                    ) : (
-                        <>
-                            Showing <RangeToggle contextName={contextName} /> of {totalResults}
-                        </>
+            <>
+                <Table
+                    bordered={false}
+                    fullWidth
+                    className={classNames(
+                        {
+                            [styles.standard]: display === 'standard',
+                            [styles.zebra]: display === 'zebra'
+                        },
+                        className
+                    )}>
+                    <TableHeaders sorting={sorting} columns={columns} />
+                    <tbody>
+                        {isLoading ? (
+                            <LoadingRow columns={columns.length} />
+                        ) : (
+                            renderRows(sorting, tableBody, selectable)
+                        )}
+                    </tbody>
+                </Table>
+                <footer>
+                    {totalResults > 0 ? (
+                        <div className={styles.range}>
+                            {!rangeSelector ? (
+                                <>
+                                    Showing {tableBody?.length} of {totalResults}
+                                </>
+                            ) : (
+                                <>
+                                    Showing <RangeToggle contextName={contextName} /> of {totalResults}
+                                </>
+                            )}
+                        </div>
+                    ) : null}
+
+                    {isPagination && totalResults >= pageSize && (
+                        <Pagination
+                            className={styles.pagination}
+                            totalPages={Math.ceil(totalResults / pageSize)}
+                            currentPage={currentPage}
+                            pathname={'/patient-profile'}
+                            onClickNext={() => handleNext?.(currentPage + 1)}
+                            onClickPrevious={() => handleNext?.(currentPage - 1)}
+                            onClickPageNumber={(_, page) => handleNext?.(page)}
+                        />
                     )}
-                </div>
-                {isPagination && totalResults >= pageSize && (
-                    <Pagination
-                        className={styles.pagination}
-                        totalPages={Math.ceil(totalResults / pageSize)}
-                        currentPage={currentPage}
-                        pathname={'/patient-profile'}
-                        onClickNext={() => handleNext?.(currentPage + 1)}
-                        onClickPrevious={() => handleNext?.(currentPage - 1)}
-                        onClickPageNumber={(_, page) => handleNext?.(page)}
-                    />
-                )}
-            </footer>
+                </footer>
+            </>
         </div>
     );
 };
