@@ -26,7 +26,7 @@ class ValuesetCreatorTest {
   private JdbcTemplate template;
 
   @InjectMocks
-  private ValuesetCreator creator;
+  private ValueSetCreator creator;
 
   @Test
   void should_create_valueset() {

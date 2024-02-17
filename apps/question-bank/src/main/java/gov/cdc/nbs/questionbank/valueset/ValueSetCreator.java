@@ -16,13 +16,13 @@ import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
 
 @Component
 @Transactional
-public class ValuesetCreator {
+public class ValueSetCreator {
   private static final Pattern PATTERN = Pattern.compile("^\\w+$");
   private static final List<String> validTypes = Arrays.asList("PHIN", "LOCAL");
   private final JdbcTemplate template;
   private final EntityManager entityManager;
 
-  public ValuesetCreator(
+  public ValueSetCreator(
       final EntityManager entityManager,
       final JdbcTemplate template) {
     this.entityManager = entityManager;

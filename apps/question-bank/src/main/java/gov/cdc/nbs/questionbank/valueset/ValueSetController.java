@@ -36,14 +36,14 @@ public class ValueSetController {
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetUpdater valueSetUpdater;
   private final CountyFinder countyFinder;
-  private final ValuesetCreator valueSetCreator;
+  private final ValueSetCreator valueSetCreator;
 
   public ValueSetController(
       final ValuesetFinder finder,
       final ValueSetOptionFinder optionFinder,
       final ValueSetStateManager valueSetStateManager,
       final ValueSetUpdater valueSetUpdater,
-      final ValuesetCreator valueSetCreator,
+      final ValueSetCreator valueSetCreator,
       final CountyFinder countyFinder) {
     this.finder = finder;
     this.optionFinder = optionFinder;
