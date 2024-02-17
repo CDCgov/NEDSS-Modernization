@@ -5,7 +5,6 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.PatientHistoryListener;
 import gov.cdc.nbs.patient.PatientNameHistoryListener;
 import lombok.Getter;
 
