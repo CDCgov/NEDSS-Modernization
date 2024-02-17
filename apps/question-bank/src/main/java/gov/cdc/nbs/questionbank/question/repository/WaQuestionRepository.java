@@ -32,7 +32,7 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
     @Query("Update WaQuestion SET data_type =:type WHERE id=:id")
     public void setDataType(@Param("type") String type, @Param("id") Long id);
 
-    @Query("SELECT q.questionLabel, q.questionIdentifier FROM WaQuestion q WHERE q.questionIdentifier IN :identifiers")
+    @Query("SELECT q.questionIdentifier ,q.questionLabel FROM WaQuestion q WHERE q.questionIdentifier IN :identifiers")
     public List<Object[]> findLabelsByIdentifiers(@Param("identifiers") List<String> identifiers);
 
     List<Object[]> findIdByQuestionIdentifier(@Param("questionIdentifier") String questionIdentifier);
@@ -42,6 +42,7 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
     List<Object[]> findIdByUserDefinedColumnNm(@Param("userDefinedColumnNm") String dataMart);
 
     List<Object[]> findIdByRdbColumnNm(@Param("rdbColumnNm") String rdbColumnNm);
+
 
 
 

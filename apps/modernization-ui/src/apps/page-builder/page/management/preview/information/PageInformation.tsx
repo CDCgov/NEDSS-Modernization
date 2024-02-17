@@ -9,26 +9,30 @@ import {
     PageControllerService,
     PageHistory
 } from 'apps/page-builder/generated';
-import { download } from '../../../../../../utils/download';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { usePageManagement } from '../../usePageManagement';
 
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
+    const [totalResults, setTotalResults] = useState(4);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
     const [pageInfo, setPageInfo] = useState<InfoType>({});
     const { pageId } = useParams();
     const pageSize = 10;
     const navigate = useNavigate();
-
+    const { page } = usePageManagement();
     const fetchPageHistory = async () => {
         PageControllerService?.getPageHistoryUsingGet?.({
             authorization: authorization(),
-            id: Number(pageId)
+            id: Number(pageId),
+            page: currentPage,
+            size: pageSize
         }).then((rep) => {
-            setPageHistory(rep);
+            setPageHistory(rep?.content ?? []);
+            setTotalResults(rep?.totalElements ?? 0);
         });
     };
     const fetchPageInfo = () => {
@@ -55,12 +59,13 @@ const PageInformation = () => {
             authorization: authorization(),
             id: Number(pageId)
         }).then((data) => {
-            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            download({
-                data,
-                fileName: 'PageMetadata.xlsx',
-                fileType
-            });
+            const dataIn = data as Blob;
+            const newBlob = new Blob([dataIn], { type: '.xlsx' });
+            const downloadURL = window.URL.createObjectURL(newBlob);
+            const link = document.createElement('a');
+            link.href = downloadURL;
+            link.download = 'PageMetadata' + '.xlsx';
+            link.click();
         });
     };
 
@@ -84,6 +89,7 @@ const PageInformation = () => {
             <div className={styles.smallBodyText}>{desc || '-'}</div>
         </div>
     );
+    const isEditable = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status);
 
     return (
         <section className={styles.information}>
@@ -102,7 +108,7 @@ const PageInformation = () => {
                     <div className={styles.detailsContainer}>
                         <div className={styles.informationBlock}>
                             {renderBlock('Event type', pageInfo?.eventType?.name)}
-                            {renderBlock('Message mapping guide', pageInfo?.messageMappingGuide?.name)}
+                            {renderBlock('Reporting Mechanism', pageInfo?.messageMappingGuide?.name)}
                         </div>
                         <div className={styles.informationBlock}>
                             {renderBlock('Page name', pageInfo?.name!)}
@@ -129,8 +135,8 @@ const PageInformation = () => {
                     <div className={styles.detailsContainer}>
                         <footer>
                             <Button type="button" outline onClick={handleViewPage} className={styles.icon}>
-                                <Icon.Visibility />
-                                View page details
+                                {isEditable ? <Icon.Edit /> : <Icon.Visibility />}
+                                {isEditable ? 'Edit page details' : 'View page details'}
                             </Button>
                         </footer>
                     </div>
@@ -138,7 +144,7 @@ const PageInformation = () => {
             ) : (
                 <div className={styles.content}>
                     <div className={styles.historyContent}>
-                        {pageHistory.map((pageData, index) => (
+                        {pageHistory?.map((pageData, index) => (
                             <div className={styles.versionBlock} key={index}>
                                 <div className={styles.text}>
                                     {`Version ${pageData.publishVersionNbr}`}
@@ -149,10 +155,10 @@ const PageInformation = () => {
                             </div>
                         ))}
                     </div>
-                    {pageHistory.length >= pageSize && (
+                    {totalResults >= pageSize && (
                         <Pagination
                             className="margin-01 pagination"
-                            totalPages={Math.ceil(pageHistory.length / pageSize)}
+                            totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
                             pathname={'/'}
                             onClickNext={() => handleNext?.(currentPage + 1)}

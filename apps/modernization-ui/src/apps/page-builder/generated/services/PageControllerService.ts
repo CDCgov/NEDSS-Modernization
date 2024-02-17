@@ -1,10 +1,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Page_PageHistory_ } from '../models/Page_PageHistory_';
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
 import type { PageDeleteResponse } from '../models/PageDeleteResponse';
-import type { PageHistory } from '../models/PageHistory';
 import type { PageStateResponse } from '../models/PageStateResponse';
 import type { PageValidationRequest } from '../models/PageValidationRequest';
 
@@ -142,19 +142,25 @@ export class PageControllerService {
 
     /**
      * getPageHistory
-     * @returns PageHistory OK
+     * @returns Page_PageHistory_ OK
      * @throws ApiError
      */
     public static getPageHistoryUsingGet({
         authorization,
         id,
+        page,
+        size,
+        sort,
     }: {
         authorization: string,
         /**
          * id
          */
         id: number,
-    }): CancelablePromise<Array<PageHistory>> {
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<Page_PageHistory_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/pages/{id}/page-history',
@@ -163,6 +169,11 @@ export class PageControllerService {
             },
             headers: {
                 'Authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             errors: {
                 401: `Unauthorized`,

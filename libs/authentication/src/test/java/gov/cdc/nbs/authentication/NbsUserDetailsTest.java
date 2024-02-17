@@ -1,42 +1,69 @@
 package gov.cdc.nbs.authentication;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.util.Collections;
+import gov.cdc.nbs.authorization.permission.Permission;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class NbsUserDetailsTest {
 
-    @Test
-    void has_permission() {
-        NbsAuthority authority = NbsAuthority.builder()
-                .businessObject("TestObject")
-                .businessOperation("TestOperation")
-                .build();
-        NbsUserDetails userDetails = NbsUserDetails.builder()
-                .authorities(Collections.singleton(authority))
-                .build();
+  @Test
+  void has_permission() {
 
-        assertTrue(userDetails.hasPermission("TestObject", "TestOperation"));
-    }
+    NbsUserDetails userDetails = new NbsUserDetails(
+        103L,
+        "username",
+        "first",
+        "last",
+        Set.of(new SimpleGrantedAuthority("TestOperation-TestObject")),
+        true
+    );
 
-    @Test
-    void does_not_have_permission() {
-        NbsAuthority authority = NbsAuthority.builder()
-                .businessObject("Wrong Permission")
-                .businessOperation("TestOperation")
-                .build();
-        NbsUserDetails userDetails = NbsUserDetails.builder()
-                .authorities(Collections.singleton(authority))
-                .build();
+    assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isTrue();
+  }
 
-        assertFalse(userDetails.hasPermission("TestObject", "TestOperation"));
-    }
+  @Test
+  void does_not_have_permission_for_object() {
+    NbsUserDetails userDetails = new NbsUserDetails(
+        103L,
+        "username",
+        "first",
+        "last",
+        Set.of(new SimpleGrantedAuthority("TestOperation-WrongObject")),
+        true
+    );
 
-    @Test
-    void does_not_have_permission_null() {
-        NbsUserDetails userDetails = NbsUserDetails.builder().build();
+    assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
+  }
 
-        assertFalse(userDetails.hasPermission("TestObject", "TestOperation"));
-    }
+  @Test
+  void does_not_have_permission_for_operation() {
+    NbsUserDetails userDetails = new NbsUserDetails(
+        103L,
+        "username",
+        "first",
+        "last",
+        Set.of(new SimpleGrantedAuthority("WrongOperation-TestObject")),
+        true
+    );
+
+    assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
+  }
+
+  @Test
+  void does_not_have_permission_null() {
+    NbsUserDetails userDetails = new NbsUserDetails(
+        103L,
+        "username",
+        "first",
+        "last",
+        Set.of(),
+        true
+    );
+
+    assertThat(userDetails.hasPermission(new Permission("TestOperation", "TestObject"))).isFalse();
+  }
 }

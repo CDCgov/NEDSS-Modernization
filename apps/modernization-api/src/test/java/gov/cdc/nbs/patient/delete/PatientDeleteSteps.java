@@ -1,17 +1,16 @@
 package gov.cdc.nbs.patient.delete;
 
-import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.assertj.core.api.InstanceOfAssertFactories;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.util.Optional;
@@ -20,21 +19,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PatientDeleteSteps {
 
-  @Autowired
-  Active<ActiveUser> activeUser;
-
-  @Autowired
-  PersonRepository repository;
-
-  @Autowired
-  Available<PatientIdentifier> patients;
-
-  @Autowired
-  PatientDeleteController controller;
+  private final Active<ActiveUser> activeUser;
+  private final PersonRepository repository;
+  private final Available<PatientIdentifier> patients;
+  private final PatientDeleteController controller;
 
   private PatientDeleteResult result;
 
   private AccessDeniedException accessDeniedException;
+
+  PatientDeleteSteps(
+      final Active<ActiveUser> activeUser,
+      final PersonRepository repository,
+      final Available<PatientIdentifier> patients,
+      final PatientDeleteController controller
+  ) {
+    this.activeUser = activeUser;
+    this.repository = repository;
+    this.patients = patients;
+    this.controller = controller;
+  }
 
   @Before
   public void reset() {
@@ -91,7 +95,7 @@ public class PatientDeleteSteps {
   @Then("I am not allowed to delete the patient")
   public void i_am_not_allowed_to_delete_the_patient() {
     assertThat(accessDeniedException)
-        .hasMessageContaining("Access is denied");
+        .hasMessageContaining("Access Denied");
   }
 
   @When("I delete an unknown patient")

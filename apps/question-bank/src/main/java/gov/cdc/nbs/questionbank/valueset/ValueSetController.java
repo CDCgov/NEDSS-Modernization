@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.List;
+
+import gov.cdc.nbs.questionbank.valueset.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,25 +29,28 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/api/v1/valueset")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-public class ValuesetController {
+public class ValueSetController {
 
   private final ValuesetFinder finder;
   private final ValueSetOptionFinder optionFinder;
   private final ValueSetStateManager valueSetStateManager;
   private final ValueSetUpdater valueSetUpdater;
+  private final CountyFinder countyFinder;
   private final ValuesetCreator valueSetCreator;
 
-  public ValuesetController(
+  public ValueSetController(
       final ValuesetFinder finder,
       final ValueSetOptionFinder optionFinder,
       final ValueSetStateManager valueSetStateManager,
       final ValueSetUpdater valueSetUpdater,
-      final ValuesetCreator valueSetCreator) {
+      final ValuesetCreator valueSetCreator,
+      final CountyFinder countyFinder) {
     this.finder = finder;
     this.optionFinder = optionFinder;
     this.valueSetStateManager = valueSetStateManager;
     this.valueSetUpdater = valueSetUpdater;
     this.valueSetCreator = valueSetCreator;
+    this.countyFinder = countyFinder;
   }
 
   @GetMapping("{codeSetNm}")
@@ -88,6 +93,11 @@ public class ValuesetController {
       @PageableDefault(size = 25, sort = "name") Pageable pageable,
       @RequestBody ValueSetSearchRequest request) {
     return optionFinder.search(request, pageable);
+  }
+
+  @GetMapping("{stateCode}/counties")
+  public List<County> findCountyByStateCode(@PathVariable String stateCode) {
+    return countyFinder.findByStateCode(stateCode);
   }
 
 }
