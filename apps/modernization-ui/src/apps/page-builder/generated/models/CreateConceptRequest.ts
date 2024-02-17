@@ -8,7 +8,7 @@ export type CreateConceptRequest = {
     conceptCode: string;
     conceptName: string;
     display: string;
-    effectiveFromTime: string;
+    effectiveFromTime?: string;
     effectiveToTime?: string;
     localCode: string;
     longName: string;

@@ -1,6 +1,6 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import { CreateValuesetRequest, Valueset, ValuesetControllerService } from 'apps/page-builder/generated';
+import { CreateValuesetRequest, Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
@@ -18,7 +18,7 @@ export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
     const form = useForm<CreateValuesetRequest>({ mode: 'onBlur', defaultValues: { type: 'PHIN' } });
 
     const handleCreate = () => {
-        ValuesetControllerService.createUsingPost({ authorization: authorization(), request: { ...form.getValues() } })
+        ValueSetControllerService.createUsingPost({ authorization: authorization(), request: { ...form.getValues() } })
             .then((response: Valueset) => {
                 alertSuccess({ message: `Successfully created value set ${response.code}` });
                 onCreated(response.code);

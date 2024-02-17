@@ -1,4 +1,4 @@
-import { Valueset, ValuesetControllerService } from 'apps/page-builder/generated';
+import { Valueset, ValueSetControllerService } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
@@ -31,7 +31,7 @@ export const useValueset = (name?: string) => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            ValuesetControllerService.getValuesetUsingGet({ authorization: authorization(), codeSetNm: state.name })
+            ValueSetControllerService.getValuesetUsingGet({ authorization: authorization(), codeSetNm: state.name })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {
                     return response

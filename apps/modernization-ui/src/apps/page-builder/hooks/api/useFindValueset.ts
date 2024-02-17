@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import { ValuesetControllerService, Page_ValueSetOption_ as ValuesetSearchResponse } from 'apps/page-builder/generated';
+import { ValueSetControllerService, Page_ValueSetOption_ as ValuesetSearchResponse } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Direction } from 'sorting';
 
@@ -57,7 +57,7 @@ export const useFindValuesets = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
 
-            ValuesetControllerService.searchValueSetUsingPost({
+            ValueSetControllerService.searchValueSetUsingPost({
                 authorization: authorization(),
                 request: { query: state.search.query ?? '' },
                 page: state.search.page,

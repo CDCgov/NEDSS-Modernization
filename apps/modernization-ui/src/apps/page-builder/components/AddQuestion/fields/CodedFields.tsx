@@ -1,5 +1,5 @@
 import { Button } from '@trussworks/react-uswds';
-import { CreateCodedQuestionRequest, ValuesetControllerService, ValueSetOption } from 'apps/page-builder/generated';
+import { CreateCodedQuestionRequest, ValueSetControllerService, ValueSetOption } from 'apps/page-builder/generated';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { authorization } from 'authorization';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -17,7 +17,7 @@ export const CodedFields = ({ onFindValueSet }: Props) => {
     const { options, fetch } = useOptions();
 
     useEffect(() => {
-        ValuesetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) => {
+        ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) => {
             setValueSets(response);
         });
     }, []);
