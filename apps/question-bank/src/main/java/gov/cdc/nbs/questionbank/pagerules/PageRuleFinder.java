@@ -30,6 +30,7 @@ class PageRuleFinder {
            [rule].target_question_identifier  as [targetQuestions],
            [question].question_label          as [sourceQuestionLabel],
            [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
+           [question].wa_question_uid         as [sourceQuestionId],
            0                                  as [TotalCount]
        from WA_rule_metadata [rule]
        left join WA_question [question] on [rule].source_question_identifier = [question].question_identifier
@@ -51,6 +52,7 @@ class PageRuleFinder {
            [rule].target_question_identifier  as [targetQuestions],
            [question].question_label          as [sourceQuestionLabel],
            [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
+           [question].wa_question_uid         as [sourceQuestionId],
            (SELECT COUNT(*) 
                   FROM WA_rule_metadata [rule] 
                       WHERE [rule].wa_rule_metadata_uid = :pageId)
@@ -78,6 +80,7 @@ class PageRuleFinder {
            [rule].target_question_identifier  as [targetQuestions],
            [question].question_label          as [sourceQuestionLabel],
            [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
+           [question].wa_question_uid         as [sourceQuestionId],
            (SELECT COUNT(*) 
                   FROM WA_rule_metadata [rule]  
                      where  [rule].wa_template_uid =:pageId
