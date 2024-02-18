@@ -13,7 +13,7 @@ public class PatientIdentificationHistoryPreviousVersionVerifier {
       and [entity].entity_id_seq = 1
       """;
     private static final int RESULT_COLUMN = 1;
-    private static final int PATIENT_PARAMETER = 1;
+    private static final int ENTITY_PARAMETER = 1;
 
     private final JdbcTemplate template;
 
@@ -21,10 +21,10 @@ public class PatientIdentificationHistoryPreviousVersionVerifier {
         this.template = template;
     }
 
-    boolean verify(final long patient) {
+    boolean verify(final long entity) {
         return !this.template.query(
                 QUERY,
-                statement -> statement.setLong(PATIENT_PARAMETER, patient),
+                statement -> statement.setLong(ENTITY_PARAMETER, entity),
                 (resultSet, row) -> resultSet.getLong(RESULT_COLUMN)
         ).isEmpty();
     }

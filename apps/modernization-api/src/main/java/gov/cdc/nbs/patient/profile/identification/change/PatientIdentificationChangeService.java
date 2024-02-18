@@ -8,8 +8,6 @@ import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-
 @Component
 @Transactional
 public class PatientIdentificationChangeService {
