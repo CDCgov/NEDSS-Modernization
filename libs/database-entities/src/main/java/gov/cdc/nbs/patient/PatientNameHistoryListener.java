@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.PreUpdate;
-import javax.transaction.Transactional;
 
 @Component
 public class PatientNameHistoryListener {
