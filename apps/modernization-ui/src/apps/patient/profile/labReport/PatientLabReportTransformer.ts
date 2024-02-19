@@ -44,24 +44,19 @@ const checkCollectedOnDate = (content: string | undefined | null) => {
     }
 };
 
-const internalized = (content: GraphQLPatientLabReport): PatientLabReport | null => {
-    if (content) {
-        return {
-            report: String(content.observationUid),
-            receivedOn: asLocalDate(content.addTime),
-            reportingFacility: orNull(getReportingFacility(content)),
-            orderingProvider: getOrderingProviderName(content),
-            orderingFacility: orNull(getOrderingFacility(content)),
-            collectedOn: checkCollectedOnDate(content.effectiveFromTime),
-            results: getTestResults(content),
-            associatedWith: getAssociations(content),
-            programArea: content.programAreaCd,
-            jurisdiction: content.jurisdictionCodeDescTxt,
-            event: content.localId,
-            isElectronic: String(content.electronicInd)
-        };
-    }
-    return null;
-};
+const internalized = (content: GraphQLPatientLabReport): PatientLabReport => ({
+    report: String(content.observationUid),
+    receivedOn: asLocalDate(content.addTime),
+    reportingFacility: orNull(getReportingFacility(content)),
+    orderingProvider: getOrderingProviderName(content),
+    orderingFacility: orNull(getOrderingFacility(content)),
+    collectedOn: checkCollectedOnDate(content.effectiveFromTime),
+    results: getTestResults(content),
+    associatedWith: getAssociations(content),
+    programArea: content.programAreaCd,
+    jurisdiction: content.jurisdictionCodeDescTxt,
+    event: content.localId,
+    isElectronic: content.electronicInd === 'Y'
+});
 
 export const transform = (result: Result): PatientLabReport[] => mapNonNull(internalized, result);
