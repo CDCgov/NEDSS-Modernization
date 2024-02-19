@@ -83,6 +83,7 @@ public record PagesResponse(
   ) {
   }
 
+
   public record PagesQuestion(
       @ApiModelProperty(required = true)
       long id,
@@ -110,9 +111,11 @@ public record PagesResponse(
       String fieldLength,
       String defaultRdbTableName,
       String rdbColumnName,
-      String defaultLabelInReport
+      String defaultLabelInReport,
+      String dataMartColumnName
   ) {
   }
+
 
   public record PageRule(
       long id,
@@ -122,5 +125,6 @@ public record PagesResponse(
       String function,
       String sourceField,
       String targetField
-  ) {}
+  ) {
+  }
 }
