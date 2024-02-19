@@ -4,7 +4,7 @@ import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.patient.search.PatientSearchIndexer;
+import gov.cdc.nbs.patient.search.indexing.PatientSearchIndexer;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;

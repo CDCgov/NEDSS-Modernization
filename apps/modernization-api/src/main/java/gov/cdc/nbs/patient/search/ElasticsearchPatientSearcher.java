@@ -43,42 +43,47 @@ class ElasticsearchPatientSearcher implements PatientSearcher {
   public Page<PatientSearchResult> search(
       final PatientFilter criteria,
       final Pageable pageable
-  ) throws IOException {
+  ) {
 
     Query filter = filterResolver.resolve(criteria);
     Query query = queryResolver.resolve(criteria);
     List<SortOptions> sorting = sortResolver.resolve(pageable);
 
-    SearchResponse<PatientDocument> response = client.search(
-        search -> search.index("person")
-            .postFilter(filter)
-            .query(query)
-            .sort(sorting)
-            .from((int) pageable.getOffset())
-            .size(pageable.getPageSize()),
-        PatientDocument.class
-    );
+    try {
+      SearchResponse<SearchablePatient> response = client.search(
+          search -> search.index("person")
+              .postFilter(filter)
+              .query(query)
+              .sort(sorting)
+              .from((int) pageable.getOffset())
+              .size(pageable.getPageSize()),
+          SearchablePatient.class
+      );
 
-    HitsMetadata<PatientDocument> hits = response.hits();
+      HitsMetadata<SearchablePatient> hits = response.hits();
 
-    List<Long> ids = hits.hits()
-        .stream()
-        .map(Hit::source)
-        .filter(Objects::nonNull)
-        .map(PatientDocument::identifier)
-        .toList();
+      List<Long> ids = hits.hits()
+          .stream()
+          .map(Hit::source)
+          .filter(Objects::nonNull)
+          .map(SearchablePatient::identifier)
+          .toList();
 
-    long total = hits.total().value();
+      long total = hits.total().value();
 
-    List<PatientSearchResult> results = finder.find(ids)
-        .stream()
-        .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
-        .toList();
+      List<PatientSearchResult> results = finder.find(ids)
+          .stream()
+          .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
+          .toList();
 
-    return new PageImpl<>(
-        results,
-        pageable,
-        total
-    );
+      return new PageImpl<>(
+          results,
+          pageable,
+          total
+      );
+
+    } catch (RuntimeException | IOException exception) {
+      throw new IllegalStateException("An unexpected error occurred when searching for patients.", exception);
+    }
   }
 }

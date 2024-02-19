@@ -1,9 +1,10 @@
-package gov.cdc.nbs.patient.search;
+package gov.cdc.nbs.patient.search.indexing;
 
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.elasticsearch.NestedEntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.search.indexing.SearchablePatientConverter;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

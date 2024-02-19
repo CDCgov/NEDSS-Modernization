@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search;
+package gov.cdc.nbs.patient.search.indexing;
 
 
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
@@ -20,9 +20,9 @@ import org.apache.commons.codec.language.Soundex;
 import java.util.ArrayList;
 import java.util.List;
 
-class SearchablePatientConverter {
+public class SearchablePatientConverter {
 
-  static ElasticsearchPerson toSearchable(final Person person) {
+  public static ElasticsearchPerson toSearchable(final Person person) {
     return new SearchablePatientConverter().asSearchable(person);
   }
 

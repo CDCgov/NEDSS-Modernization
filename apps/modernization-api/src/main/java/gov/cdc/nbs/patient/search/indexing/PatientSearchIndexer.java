@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search;
+package gov.cdc.nbs.patient.search.indexing;
 
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;

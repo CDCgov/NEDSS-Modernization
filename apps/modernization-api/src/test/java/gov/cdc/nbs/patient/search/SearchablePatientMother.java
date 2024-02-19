@@ -1,11 +1,10 @@
 package gov.cdc.nbs.patient.search;
 
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPerson;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
-import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.patient.search.indexing.PatientSearchIndexer;
+import gov.cdc.nbs.support.search.ElasticsearchIndexCleaner;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -14,55 +13,53 @@ import javax.persistence.EntityManager;
 class SearchablePatientMother {
 
 
-    private final PatientMother mother;
-    private final EntityManager entityManager;
+  private final PatientMother mother;
+  private final PatientSearchIndexer indexer;
+  private final ElasticsearchIndexCleaner cleaner;
+  private final EntityManager entityManager;
 
-    private final ElasticsearchPersonRepository searchRepository;
+  SearchablePatientMother(
+      final PatientMother mother,
+      final PatientSearchIndexer indexer,
+      final ElasticsearchIndexCleaner cleaner,
+      final EntityManager entityManager
+  ) {
+    this.mother = mother;
+    this.indexer = indexer;
+    this.cleaner = cleaner;
+    this.entityManager = entityManager;
+  }
 
-    SearchablePatientMother(
-        final PatientMother mother,
-        final EntityManager entityManager,
-        final ElasticsearchPersonRepository searchRepository
-    ) {
-        this.mother = mother;
-        this.entityManager = entityManager;
-        this.searchRepository = searchRepository;
-    }
+  void reset() {
+    this.cleaner.clean("person");
+  }
 
-    void reset() {
-        this.searchRepository.deleteAll();
-    }
+  Person searchable() {
+    PatientIdentifier searchable = this.mother.create();
 
-    Person searchable() {
-        PatientIdentifier searchable = this.mother.create();
+    this.mother.withAddress(searchable);
+    this.mother.withIdentification(searchable);
+    this.mother.withRace(searchable);
+    this.mother.withName(searchable);
+    this.mother.withPhone(searchable);
+    this.mother.withBirthInformation(searchable);
+    this.mother.withGender(searchable);
+    this.mother.withMortality(searchable);
+    this.mother.withEthnicity(searchable);
+    this.mother.withEmail(searchable);
 
-        this.mother.withAddress(searchable);
-        this.mother.withIdentification(searchable);
-        this.mother.withRace(searchable);
-        this.mother.withName(searchable);
-        this.mother.withPhone(searchable);
-        this.mother.withBirthInformation(searchable);
-        this.mother.withGender(searchable);
-        this.mother.withMortality(searchable);
-        this.mother.withEthnicity(searchable);
-        this.mother.withEmail(searchable);
+    Person person = this.entityManager.find(Person.class, searchable.id());
 
-        Person person = this.entityManager.find(Person.class, searchable.id());
-        //  ssn should be in identification
-        person.setSsn(RandomUtil.getRandomSsn());
+    this.indexer.index(searchable.id());
 
-        this.searchRepository.save(SearchablePatientConverter.toSearchable(person));
+    return person;
+  }
 
-        return person;
-    }
+  Person searchable(final PatientIdentifier identifier) {
+    Person person = this.entityManager.find(Person.class, identifier.id());
 
-    Person searchable(final PatientIdentifier identifier) {
-        Person person = this.entityManager.find(Person.class, identifier.id());
-
-        ElasticsearchPerson searchable = SearchablePatientConverter.toSearchable(person);
-        this.searchRepository.save(searchable);
-
-        return person;
-    }
+    this.indexer.index(identifier.id());
+    return person;
+  }
 
 }

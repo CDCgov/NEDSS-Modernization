@@ -35,26 +35,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class PatientSearchSteps {
 
-  @Autowired
-  Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
+  private final Active<PatientIdentifier> patient;
+  private final SearchablePatientMother mother;
+  private final PatientShortIdentifierResolver resolver;
+  private final PatientSearchRequester request;
 
-  @Autowired
-  Active<PatientIdentifier> patient;
 
-  @Autowired
-  SearchablePatientMother mother;
+  private final List<Person> available;
+  private final Active<Person> target;
+  private final Active<PatientFilter> criteria;
+  private final Active<SortCriteria> sorting;
+  private final Active<ResultActions> results;
 
-  @Autowired
-  PatientShortIdentifierResolver resolver;
-
-  @Autowired
-  PatientSearchRequester request;
-
-  private final List<Person> available = new ArrayList<>();
-  private final Active<Person> target = new Active<>();
-  private final Active<PatientFilter> criteria = new Active<>();
-  private final Active<SortCriteria> sorting = new Active<>();
-  private final Active<ResultActions> results = new Active<>();
+  PatientSearchSteps(
+      final Available<PatientIdentifier> patients,
+      final Active<PatientIdentifier> patient,
+      final SearchablePatientMother mother,
+      final PatientShortIdentifierResolver resolver,
+      final PatientSearchRequester request
+  ) {
+    this.patients = patients;
+    this.patient = patient;
+    this.mother = mother;
+    this.resolver = resolver;
+    this.request = request;
+    available = new ArrayList<>();
+    target = new Active<>();
+    criteria = new Active<>();
+    sorting = new Active<>();
+    results = new Active<>();
+  }
 
   @Before("@patient-search")
   public void reset() {
@@ -238,7 +249,7 @@ public class PatientSearchSteps {
   }
 
   @When("I search for patients")
-  public void i_search_for_patients_() throws Exception {
+  public void i_search_for_patients_() {
 
     //  make all patients searchable
     this.patients.all().map(this.mother::searchable).forEach(this.available::add);
