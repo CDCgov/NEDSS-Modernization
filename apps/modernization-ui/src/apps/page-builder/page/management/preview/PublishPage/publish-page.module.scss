@@ -1,0 +1,37 @@
+@use 'styles/colors';
+
+.form {
+    max-width: unset !important;
+    width: 100%;
+    position: relative;
+    height: calc(100% - 3.75rem);
+    .body {
+        width: 100%;
+        padding: 1.5rem;
+        .required span {
+            color: colors.$warning;
+        }
+    }
+    .conditions {
+        padding: 1.5rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 35%;
+        p {
+            width: 100%;
+            padding-bottom: 0.5rem;
+            margin-left: 0.5rem;
+            border-bottom: 1px solid colors.$base-light;
+        }
+    }
+    .footer {
+        position: absolute;
+        padding: 1.5rem;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: flex-end;
+        bottom: 0;
+        width: 100%;
+    }
+}

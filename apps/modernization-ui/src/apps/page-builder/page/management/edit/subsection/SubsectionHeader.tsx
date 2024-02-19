@@ -5,8 +5,12 @@ import { Icon as IconComponent } from 'components/Icon/Icon';
 import { useRef } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
-import { PagesSubSection } from 'apps/page-builder/generated';
+import { PagesSubSection, SubSectionControllerService, UnGroupSubSectionRequest } from 'apps/page-builder/generated';
 import { GroupQuestion } from '../question/GroupQuestion/GroupQuestion';
+import { ConfirmationModal } from 'confirmation';
+import { authorization } from 'authorization';
+import { usePageManagement } from '../../usePageManagement';
+import { useAlert } from 'alert';
 
 type Props = {
     subsection: PagesSubSection;
@@ -25,8 +29,48 @@ export const SubsectionHeader = ({
     onDeleteSubsection,
     onEditSubsection
 }: Props) => {
+    const { page, refresh } = usePageManagement();
     const groupSubsectionModalRef = useRef<ModalRef>(null);
+    const ungroupSubsectionModalRef = useRef<ModalRef>(null);
     const addStaticElementModalRef = useRef<ModalRef>(null);
+    const { showAlert } = useAlert();
+
+    const handleUngroup = () => {
+        const request: UnGroupSubSectionRequest = {
+            batches: subsection.questions.map((question) => question.id),
+            id: subsection.id
+        };
+        try {
+            SubSectionControllerService.unGroupSubSectionUsingPost({
+                authorization: authorization(),
+                page: page.id,
+                request: request
+            }).then(() => {
+                showAlert({
+                    type: 'success',
+                    header: 'Ungrouped',
+                    message: `You've successfully ungrouped ${subsection.name}`
+                });
+                refresh();
+            });
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error(error);
+                showAlert({
+                    type: 'error',
+                    header: 'error',
+                    message: error.message
+                });
+            } else {
+                console.error(error);
+                showAlert({
+                    type: 'error',
+                    header: 'error',
+                    message: 'An unknown error occurred'
+                });
+            }
+        }
+    };
 
     return (
         <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''}`}>
@@ -47,9 +91,15 @@ export const SubsectionHeader = ({
                     <Button type="button" onClick={onEditSubsection}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
-                    <ModalToggleButton type="button" modalRef={groupSubsectionModalRef}>
-                        <IconComponent name={'group'} size={'s'} /> Group questions
-                    </ModalToggleButton>
+                    {subsection.isGrouped ? (
+                        <ModalToggleButton type="button" modalRef={ungroupSubsectionModalRef}>
+                            <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                        </ModalToggleButton>
+                    ) : (
+                        <ModalToggleButton type="button" modalRef={groupSubsectionModalRef}>
+                            <IconComponent name={'group'} size={'s'} /> Group questions
+                        </ModalToggleButton>
+                    )}
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>
@@ -74,6 +124,20 @@ export const SubsectionHeader = ({
                     />
                 }
                 size="wide"
+            />
+            <ConfirmationModal
+                modal={ungroupSubsectionModalRef}
+                title="Warning"
+                message="You have indicated that you would like to ungroup the repeating block questions in the Tribal Affiliation Repeating Block questions."
+                detail="Select Ungroup or Cancel to return to Edit Page."
+                confirmText="Ungroup"
+                onConfirm={() => {
+                    handleUngroup();
+                    ungroupSubsectionModalRef.current?.toggleModal();
+                }}
+                onCancel={() => {
+                    ungroupSubsectionModalRef.current?.toggleModal();
+                }}
             />
             <ModalComponent
                 modalRef={addStaticElementModalRef}
