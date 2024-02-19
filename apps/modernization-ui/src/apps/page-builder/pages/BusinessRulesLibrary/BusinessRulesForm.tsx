@@ -236,7 +236,7 @@ const BusinessRulesForm = () => {
                     control={form.control}
                     name="sourceValue"
                     render={() => (
-                        <Grid row className="inline-field">
+                        <Grid row className="inline-field source">
                             <Grid col={3}>
                                 <Label className="input-label" htmlFor="sourceValue" requiredMarker>
                                     Source value(s)
