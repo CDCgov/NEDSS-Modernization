@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.support;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.valueset.response.Concept;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +11,5 @@ import lombok.Setter;
 @Setter
 @Component
 public class ConceptHolder {
-    private List<Concept> concepts;
+  private List<Concept> concepts;
 }

@@ -2,13 +2,26 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ConceptMessagingInfo } from './ConceptMessagingInfo';
-
 export type UpdateConceptRequest = {
-    active: boolean;
+    adminComments?: string;
+    codeSystem: string;
     conceptCode: string;
-    conceptMessagingInfo?: ConceptMessagingInfo;
-    displayName: string;
+    conceptName: string;
+    display: string;
+    effectiveFromTime: string;
     effectiveToTime?: string;
+    longName: string;
+    preferredConceptName: string;
+    status: UpdateConceptRequest.status;
 };
+
+export namespace UpdateConceptRequest {
+
+    export enum status {
+        ACTIVE = 'ACTIVE',
+        INACTIVE = 'INACTIVE',
+    }
+
+
+}
 

@@ -9,10 +9,11 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import './AddQuestion.scss';
 import { CreateQuestionForm, QuestionForm } from './QuestionForm';
-import styles from './add-question.module.scss';
+import { CreateEditValueset } from './valueset/CreateEditValueset';
 import { ValuesetSearch } from './valueset/ValuesetSearch';
+import styles from './add-question.module.scss';
+import './AddQuestion.scss';
 
 type Props = {
     onBack: () => void;
@@ -20,7 +21,7 @@ type Props = {
     onQuestionCreated: (id: number) => void;
 };
 export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
-    const [state, setState] = useState<'create' | 'findValueSet'>('create');
+    const [state, setState] = useState<'create' | 'findValueset' | 'createValueset' | 'editValueset'>('create');
     const { createQuestion, questionId, error } = useCreateQuestion();
     const { alertError } = useAlert();
     const form = useForm<CreateQuestionForm>({
@@ -48,16 +49,31 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
         <FormProvider {...form}>
             {state === 'create' && (
                 <AddQuestionContent
-                    onFindValueSet={() => setState('findValueSet')}
+                    onFindValueSet={() => setState('findValueset')}
                     onBack={onBack}
                     onClose={onClose}
                     onSubmit={handleSubmit}
                 />
             )}
-            {state === 'findValueSet' && (
+            {state === 'findValueset' && (
                 <PageProvider>
-                    <FindValueSet onCancel={() => setState('create')} onClose={onClose} />
+                    <FindValueSet
+                        onCancel={() => setState('create')}
+                        onClose={onClose}
+                        onCreateNew={() => setState('createValueset')}
+                    />
                 </PageProvider>
+            )}
+            {state === 'createValueset' && (
+                <CreateEditValueset
+                    onCancel={() => {
+                        setState('findValueset');
+                    }}
+                    onClose={onClose}
+                    onAccept={() => {
+                        setState('create');
+                    }}
+                />
             )}
         </FormProvider>
     );
@@ -107,8 +123,9 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
 type FindValueSetProps = {
     onCancel: () => void;
     onClose: () => void;
+    onCreateNew: () => void;
 };
-const FindValueSet = ({ onCancel, onClose }: FindValueSetProps) => {
+const FindValueSet = ({ onCancel, onClose, onCreateNew }: FindValueSetProps) => {
     const form = useFormContext<CreateCodedQuestionRequest>();
 
     const handleSetValueset = (valueset: number) => {
@@ -116,5 +133,7 @@ const FindValueSet = ({ onCancel, onClose }: FindValueSetProps) => {
         onCancel();
     };
 
-    return <ValuesetSearch onCancel={onCancel} onClose={onClose} onAccept={handleSetValueset} />;
+    return (
+        <ValuesetSearch onCancel={onCancel} onClose={onClose} onAccept={handleSetValueset} onCreateNew={onCreateNew} />
+    );
 };
