@@ -21,8 +21,7 @@ import gov.cdc.nbs.questionbank.valueset.model.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.model.Valueset;
 import gov.cdc.nbs.questionbank.valueset.request.CreateValuesetRequest;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
-import gov.cdc.nbs.questionbank.valueset.request.ValueSetUpdateRequest;
-import gov.cdc.nbs.questionbank.valueset.response.UpdatedValueSetResponse;
+import gov.cdc.nbs.questionbank.valueset.request.UpdateValueSetRequest;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -34,7 +33,7 @@ public class ValueSetController {
   private final ValueSetFinder finder;
   private final ValueSetOptionFinder optionFinder;
   private final ValueSetStateManager valueSetStateManager;
-  private final ValueSetUpdater valueSetUpdater;
+  private final ValueSetUpdater updater;
   private final CountyFinder countyFinder;
   private final ValueSetCreator valueSetCreator;
 
@@ -42,13 +41,13 @@ public class ValueSetController {
       final ValueSetFinder finder,
       final ValueSetOptionFinder optionFinder,
       final ValueSetStateManager valueSetStateManager,
-      final ValueSetUpdater valueSetUpdater,
+      final ValueSetUpdater updater,
       final ValueSetCreator valueSetCreator,
       final CountyFinder countyFinder) {
     this.finder = finder;
     this.optionFinder = optionFinder;
     this.valueSetStateManager = valueSetStateManager;
-    this.valueSetUpdater = valueSetUpdater;
+    this.updater = updater;
     this.valueSetCreator = valueSetCreator;
     this.countyFinder = countyFinder;
   }
@@ -82,10 +81,11 @@ public class ValueSetController {
     return optionFinder.findAllValueSetOptions();
   }
 
-  @PostMapping("/update")
-  public ResponseEntity<UpdatedValueSetResponse> updateValueSet(@RequestBody ValueSetUpdateRequest update) {
-    UpdatedValueSetResponse response = valueSetUpdater.updateValueSet(update);
-    return new ResponseEntity<>(response, null, response.getStatus());
+  @PutMapping("{codeSetNm}")
+  public Valueset updateValueSet(
+      @PathVariable String codeSetNm,
+      @RequestBody UpdateValueSetRequest request) {
+    return updater.update(codeSetNm, request);
   }
 
   @PostMapping("/options/search")

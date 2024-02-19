@@ -102,7 +102,7 @@ public class Codeset {
   private Long addUserId;
 
 
-  public Codeset(final ValueSetCommand.AddValueSet request) {
+  public Codeset(final ValueSetCommand.Add request) {
     String valueSetCodeUpper = request.code().toUpperCase();
     this.valueSetCode = valueSetCodeUpper;
     this.valueSetTypeCd = request.type();
@@ -115,6 +115,14 @@ public class Codeset {
         request.name(),
         valueSetCodeUpper);
     created(request.addUserId(), request.addTime());
+  }
+
+  public Codeset update(final ValueSetCommand.Update command) {
+    this.valueSetNm = command.name();
+    this.codeSetDescTxt = command.description();
+
+    this.codeSetGroup.update(command);
+    return this;
   }
 
 

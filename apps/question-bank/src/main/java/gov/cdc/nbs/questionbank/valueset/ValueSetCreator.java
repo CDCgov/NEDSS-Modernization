@@ -103,10 +103,10 @@ public class ValueSetCreator {
     return id != null ? id : 9910l;
   }
 
-  public ValueSetCommand.AddValueSet asAdd(
+  public ValueSetCommand.Add asAdd(
       final CreateValuesetRequest request,
       long userId) {
-    return new ValueSetCommand.AddValueSet(
+    return new ValueSetCommand.Add(
         request.type().toUpperCase(),
         request.name(),
         request.code(),
