@@ -82,7 +82,7 @@ describe('when ReorderSection renders', () => {
                 </DragDropContext>
             </DragDropProvider>
         );
-        const subsection = container.getElementsByClassName('reorder-subsection');
+        const subsection = container.getElementsByClassName('subsection');
         expect(subsection.length).toEqual(2);
     });
 });

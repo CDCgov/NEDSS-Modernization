@@ -1,4 +1,4 @@
-.reorder-modal__header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -10,15 +10,15 @@
         height: 2.4rem;
     }
 }
-.reorder-modal {
+.modal {
     height: 38rem;
     overflow: hidden;
     overflow-y: auto;
-    .reorder-modal__content {
+    .content {
         p {
             margin: 0;
         }
-        .reorder-modal__top {
+        .top {
             display: flex;
             gap: 1rem;
             padding: 0.9rem 1.5rem;

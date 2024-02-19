@@ -1,18 +1,18 @@
 @use 'styles/colors';
 @use 'styles/animation';
 
-.reorder-subsection {
+.subsection {
     height: auto;
     position: relative;
-    .reorder-subsection__toggle {
+    .toggle {
         cursor: pointer;
     }
-    .reorder-subsection__handle {
+    .handle {
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .reorder-subsection__tile {
+    .tile {
         background-color: colors.$base-white;
         display: flex;
         align-items: center;
@@ -33,12 +33,15 @@
             background-color: pink;
         }
     }
-    .reorder-subsection__questions {
+    .questions {
         margin-left: 2.4rem;
         transition: animation.$transition-1;
         &.closed {
             height: 0;
             display: none;
         }
+    }
+    &.hidden {
+        height: 0px;
     }
 }

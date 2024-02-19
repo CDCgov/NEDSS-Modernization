@@ -15,6 +15,7 @@ type Props = {
     tab: PagesTab;
     handleManageSection?: () => void;
     handleAddSection?: () => void;
+    handleReorderModal?: () => void;
 };
 
 const hyperlinkId = 1003;
@@ -27,7 +28,7 @@ const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalE
 
 const questionTypes = [1001, 1006, 1007, 1008, 1009, 1013, 1017, 1019, 1024, 1025, 1026, 1027, 1028, 1029, 1031, 1032];
 
-export const PageContent = ({ tab, handleAddSection, handleManageSection }: Props) => {
+export const PageContent = ({ tab, handleAddSection, handleManageSection, handleReorderModal }: Props) => {
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
     const [subsectionId, setSubsectionId] = useState<number>(-1);
     const { error, response, add } = useAddQuestionsToPage();
@@ -94,7 +95,11 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={handleAddQuestion}
             />
-            <PageSideMenu onAddSection={() => handleAddSection?.()} onManageSection={() => handleManageSection?.()} />
+            <PageSideMenu
+                onAddSection={() => handleAddSection?.()}
+                onManageSection={() => handleManageSection?.()}
+                onReorderModal={() => handleReorderModal?.()}
+            />
             <ModalComponent
                 modalRef={editStaticElementRef}
                 modalHeading={'Edit static elements'}

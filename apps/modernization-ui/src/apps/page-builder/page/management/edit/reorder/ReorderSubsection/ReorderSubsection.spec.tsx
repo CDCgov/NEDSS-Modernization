@@ -91,7 +91,7 @@ describe('when ReorderSubsection renders', () => {
         </DragDropProvider>
     );
     it('should display Questions', () => {
-        const questions = container.getElementsByClassName('reorder-question');
+        const questions = container.getElementsByClassName('question');
         expect(questions.length).toEqual(2);
     });
 });
