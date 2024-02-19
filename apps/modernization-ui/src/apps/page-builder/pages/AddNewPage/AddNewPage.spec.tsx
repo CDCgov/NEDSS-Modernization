@@ -15,7 +15,7 @@ import {
     ProgramAreaControllerService,
     Template,
     TemplateControllerService,
-    ValueSetControllerService
+    ConceptControllerService
 } from 'apps/page-builder/generated';
 import userEvent from '@testing-library/user-event';
 
@@ -23,7 +23,7 @@ beforeEach(() => {
     jest.spyOn(ConditionControllerService, 'findAllConditionsUsingGet').mockReturnValue(
         Promise.resolve([{ id: '1' }] as Condition[]) as CancelablePromise<Condition[]>
     );
-    jest.spyOn(ValueSetControllerService, 'findConceptsByCodeSetNameUsingGet').mockReturnValue(
+    jest.spyOn(ConceptControllerService, 'findConceptsUsingGet').mockReturnValue(
         Promise.resolve([{ conceptCode: 'concept' }] as Concept[]) as CancelablePromise<Concept[]>
     );
     jest.spyOn(TemplateControllerService, 'findAllTemplatesUsingGet').mockReturnValue(

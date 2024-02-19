@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import gov.cdc.nbs.questionbank.valueset.command.ConceptCommand;
-import gov.cdc.nbs.questionbank.valueset.request.AddConceptRequest.StatusCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -106,16 +105,19 @@ public class CodeValueGeneral {
     this.isModifiableInd = 'Y';
   }
 
-  public CodeValueGeneral updateValueGeneral(ConceptCommand.UpdateConcept command) {
-    this.codeShortDescTxt = command.displayName();
-    this.effectiveFromTime = Instant.now();
-    this.effectiveToTime = (command.effectiveToTime() == null) ? this.effectiveToTime : command.effectiveToTime();
-    this.statusCd = (command.active()) ? 'A' : 'I';
-    this.conceptStatusCd = (command.active()) ? "Active" : "Inactive";
+  public CodeValueGeneral update(ConceptCommand.UpdateConcept command) {
+    this.codeDescTxt = command.displayName();
+    this.codeShortDescTxt = command.shortDisplayName();
+    this.effectiveFromTime = command.effectiveFromTime();
+    this.effectiveToTime = command.effectiveToTime();
+    this.statusCd = command.status();
+    this.conceptStatusCd = command.status().equals('A') ? "Active" : "Inactive";
     this.conceptCode = command.conceptCode();
     this.conceptNm = command.conceptName();
-    this.conceptPreferredNm =  command.preferredConceptName();
-    this.codeSystemCd = command.codeSystem();
+    this.conceptPreferredNm = command.preferredConceptName();
+    this.codeSystemDescTxt = command.codeSystem();
+    this.codeSystemCd = command.codeSystemId();
+    this.adminComments = command.adminComments();
     return this;
   }
 
@@ -127,9 +129,9 @@ public class CodeValueGeneral {
     this.codeDescTxt = command.displayName();
     this.codeShortDescTxt = command.shortDisplayName();
 
-    this.statusCd = command.statusCode().equals(StatusCode.A) ? 'A' : 'I';
+    this.statusCd = command.status();
     this.statusTime = command.requestedOn();
-    this.conceptStatusCd = command.statusCode().equals(StatusCode.A) ? "Active" : "Inactive";
+    this.conceptStatusCd = command.status().equals('A') ? "Active" : "Inactive";
     this.conceptStatusTime = command.requestedOn();
     this.adminComments = command.adminComments();
     this.conceptCode = command.conceptCode();
@@ -139,7 +141,7 @@ public class CodeValueGeneral {
     this.codeSystemCd = command.codeSystemId();
     this.conceptTypeCd = command.conceptTypeCd();
 
-    this.effectiveFromTime = command.effectiveFromTime();
+    this.effectiveFromTime = command.effectiveFromTime() != null ? command.effectiveFromTime() : Instant.now();
     this.effectiveToTime = command.effectiveToTime();
 
     added(command);

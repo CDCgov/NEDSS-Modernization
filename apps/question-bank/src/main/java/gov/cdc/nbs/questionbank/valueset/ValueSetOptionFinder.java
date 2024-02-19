@@ -17,8 +17,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.entity.QCodeSetGroupMetadatum;
 import gov.cdc.nbs.questionbank.entity.QCodeset;
+import gov.cdc.nbs.questionbank.valueset.model.ValueSetOption;
 import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
-import gov.cdc.nbs.questionbank.valueset.response.ValueSetOption;
 
 @Component
 public class ValueSetOptionFinder {

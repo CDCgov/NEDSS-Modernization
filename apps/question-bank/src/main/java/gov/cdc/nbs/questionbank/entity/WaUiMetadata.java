@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
-import java.util.List;
 import javax.persistence.*;
 
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;

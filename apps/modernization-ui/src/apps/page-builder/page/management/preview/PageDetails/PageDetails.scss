@@ -11,6 +11,7 @@
         display: flex;
         justify-content: center;
     }
+    .page-details-printer{ display: none}
     .page-details__form {
         position: relative;
         .page-details-printer {
@@ -107,5 +108,18 @@
         .usa-button {
             margin-top: 0 !important;
         }
+    }
+}
+#information {
+    .usa-modal,
+    &.usa-modal {
+        border-radius: 0.313rem;
+        font-family: "Public Sans";
+        border: .125rem solid colors.$base-lighter;
+        max-width: 38rem;
+    }
+    .usa-modal__footer {
+        display: flex !important;
+        justify-content: flex-end!important;
     }
 }

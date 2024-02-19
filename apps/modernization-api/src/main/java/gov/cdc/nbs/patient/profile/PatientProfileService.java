@@ -33,4 +33,7 @@ public class PatientProfileService {
     }
   }
 
+  public Person findPatientById(long patient) throws PatientNotFoundException {
+      return this.entityManager.find(Person.class, patient);
+  }
 }

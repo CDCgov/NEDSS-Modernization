@@ -1,6 +1,5 @@
 import { Direction } from 'sorting';
 import { createContext, Dispatch, SetStateAction } from 'react';
-import { ValueSet } from '../generated';
 
 export interface ContextData {
     filter: any;
@@ -18,10 +17,6 @@ export interface ContextData {
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
     handleSort?: (name: string, direction: Direction) => void;
-    searchValueSet?: ValueSet;
-    setSearchValueSet?: (valueSet: ValueSet) => void;
-    editValueSet?: ValueSet;
-    setEditValueSet?: (valueSet: ValueSet) => void;
 }
 
 const noop: ContextData & { type: 'noop' } = {

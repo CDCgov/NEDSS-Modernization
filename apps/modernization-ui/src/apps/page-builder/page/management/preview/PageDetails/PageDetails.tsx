@@ -18,6 +18,7 @@ import { PagesBreadcrumb } from '../../../../components/PagesBreadcrumb/PagesBre
 import { useForm } from 'react-hook-form';
 import { useAlert } from '../../../../../../alert';
 import { useGetPageDetails } from '../../useGetPageDetails';
+import { LinkButton } from '../../../../../../components/button';
 
 export const PageDetails = () => {
     const token = authorization();
@@ -26,15 +27,15 @@ export const PageDetails = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const navigate = useNavigate();
-    const { alertError } = useAlert();
+    const { alertError, alertSuccess } = useAlert();
     const { page } = useGetPageDetails();
-    const isEnabled = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status!);
+    const isEnabled = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status ?? '');
+    const pageStatus = page?.status;
 
     const form = useForm<PageInformationChangeRequest>({
         mode: 'onBlur',
         defaultValues: {}
     });
-    const { control } = form;
     useEffect(() => {
         fetchMMGOptions(token)
             .then((data) => {
@@ -79,8 +80,9 @@ export const PageDetails = () => {
             request
         })
             .then(() => {
-                form.reset();
+                alertSuccess({ message: 'You have successfully performed a task' });
                 navigate('..');
+                form.reset();
             })
             .catch(() => {
                 alertError({ message: 'Failed to save page' });
@@ -95,9 +97,12 @@ export const PageDetails = () => {
             <Form onSubmit={onSubmit}>
                 <div className="page-details__form">
                     <div className="page-details__content">
-                        <Button type="button" className="page-details-printer" name="Button" outline>
+                        <LinkButton
+                            className="page-details-printer"
+                            href={`/nbs/page-builder/api/v1/pages/${pageId}/print`}
+                            label="open simplified page details view for printing">
                             <Icon.Print size={3} />
-                        </Button>
+                        </LinkButton>
                         <h2 className="page-title">Page Details</h2>
                         <>
                             <div className="fields-info">
@@ -105,10 +110,11 @@ export const PageDetails = () => {
                             </div>
                             <PageDetailsField
                                 conditions={conditions}
-                                control={control}
+                                form={form}
                                 mmgs={mmgs}
                                 eventType={pageEvent}
                                 isEnabled={!isEnabled}
+                                pageStatus={pageStatus}
                             />
                         </>
                     </div>

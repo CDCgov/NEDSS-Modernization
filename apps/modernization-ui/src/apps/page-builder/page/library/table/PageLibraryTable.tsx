@@ -65,7 +65,6 @@ type Props = {
 
 export const PageLibraryTable = ({ enableEdit, summaries, searching = false, onSort }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-
     const {
         page: { pageSize, total, current },
         request

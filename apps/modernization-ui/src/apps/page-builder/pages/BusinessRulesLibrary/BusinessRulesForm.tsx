@@ -6,7 +6,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
-import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
 import { Concept, CreateRuleRequest, Rule, SourceQuestion, Target } from 'apps/page-builder/generated';
 
@@ -46,7 +45,6 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
     const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await useConceptAPI(authorization(), codeSetNm);
         const list = content?.map((src: any) => ({ name: src.display, value: src.conceptCode }));
-        console.log('fetching source value sets', { codeSetNm, list, content });
         setSourceValueList(list);
 
         if (sourceValues?.length) {
@@ -254,7 +252,7 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
                     control={form.control}
                     name="sourceValues"
                     render={() => (
-                        <Grid row className="inline-field">
+                        <Grid row className="inline-field source">
                             <Grid col={3}>
                                 <Label className="input-label" htmlFor="sourceValue" requiredMarker>
                                     Source value(s)
