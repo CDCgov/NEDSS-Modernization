@@ -1,7 +1,6 @@
 # This Dockerfile is used to build NBS 6.0 Image locally and pushed to a ECR Repository
 # Run command docker run -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -t <CONTAINER-NAME>
 # DATABASE_ENDPOINT provided on RUN to provided Database Endpoint
-# GITHUB_RELEASE_TAG provided on RUN to create URL and download Release Package from. Default is always latest
 
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
@@ -17,6 +16,8 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
+    # GITHUB_RELEASE_TAG provided on RUN to create URL and download Release Package from. Default is always latest or Null
+    GITHUB_RELEASE_TAG="" \
     # Userguide file name 
     FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
     # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
