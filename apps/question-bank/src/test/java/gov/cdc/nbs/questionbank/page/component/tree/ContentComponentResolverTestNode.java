@@ -41,6 +41,7 @@ class ContentComponentResolverTest {
         "default-rdb-table-name",
         "rdb-column-name",
         "default-label-in-report",
+        "dataMart-column-name",
         false
     );
 
@@ -99,6 +100,7 @@ class ContentComponentResolverTest {
         "default-rdb-table-name",
         "rdb-column-name",
         "default-label-in-report",
+        "dataMart-column-name",
         false
     );
 
@@ -156,6 +158,7 @@ class ContentComponentResolverTest {
         "default-rdb-table-name",
         "rdb-column-name",
         "default-label-in-report",
+        "dataMart-column-name",
         false
     );
 
@@ -213,6 +216,7 @@ class ContentComponentResolverTest {
         "default-rdb-table-name",
         "rdb-column-name",
         "default-label-in-report",
+        "dataMart-column-name",
         false
     );
 
