@@ -97,12 +97,12 @@ const AddBusinessRule = () => {
     };
 
     const fieldTypeTab = [
-        { name: Rule.ruleFunction.ENABLE },
-        { name: Rule.ruleFunction.DISABLE },
-        { name: Rule.ruleFunction.DATE_COMPARE },
-        { name: Rule.ruleFunction.HIDE },
-        { name: Rule.ruleFunction.UNHIDE },
-        { name: Rule.ruleFunction.REQUIRE_IF }
+        { value: Rule.ruleFunction.ENABLE, display: 'Enable' },
+        { value: Rule.ruleFunction.DISABLE, display: 'Disable' },
+        { value: Rule.ruleFunction.DATE_COMPARE, display: 'Date compare' },
+        { value: Rule.ruleFunction.HIDE, display: 'Hide' },
+        { value: Rule.ruleFunction.UNHIDE, display: 'Uhide' },
+        { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' }
     ];
 
     const title = !ruleId ? 'Add new' : 'Edit';
@@ -152,10 +152,10 @@ const AddBusinessRule = () => {
                                                         type="button"
                                                         outline={field.name !== selectedFieldType}
                                                         onClick={() => {
-                                                            setSelectedFieldType(field.name);
+                                                            setSelectedFieldType(field.value);
                                                             form.setValue('ruleFunction', field.name);
                                                         }}>
-                                                        {field.name}
+                                                        {field.display}
                                                     </Button>
                                                 ))}
                                             </ButtonGroup>

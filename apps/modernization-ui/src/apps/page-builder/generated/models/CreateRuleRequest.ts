@@ -18,13 +18,14 @@ export type CreateRuleRequest = {
 };
 
 export namespace CreateRuleRequest {
+
     export enum comparator {
         EQUAL_TO = 'EQUAL_TO',
         GREATER_THAN = 'GREATER_THAN',
         GREATER_THAN_OR_EQUAL_TO = 'GREATER_THAN_OR_EQUAL_TO',
         LESS_THAN = 'LESS_THAN',
         LESS_THAN_OR_EQUAL_TO = 'LESS_THAN_OR_EQUAL_TO',
-        NOT_EQUAL_TO = 'NOT_EQUAL_TO'
+        NOT_EQUAL_TO = 'NOT_EQUAL_TO',
     }
 
     export enum ruleFunction {
@@ -33,11 +34,14 @@ export namespace CreateRuleRequest {
         ENABLE = 'ENABLE',
         HIDE = 'HIDE',
         REQUIRE_IF = 'REQUIRE_IF',
-        UNHIDE = 'UNHIDE'
+        UNHIDE = 'UNHIDE',
     }
 
     export enum targetType {
         QUESTION = 'QUESTION',
-        SUBSECTION = 'SUBSECTION'
+        SUBSECTION = 'SUBSECTION',
     }
+
+
 }
+

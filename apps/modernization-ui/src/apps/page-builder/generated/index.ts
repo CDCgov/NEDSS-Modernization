@@ -20,6 +20,7 @@ export { Concept } from './models/Concept';
 export type { Condition } from './models/Condition';
 export type { ConditionStatusResponse } from './models/ConditionStatusResponse';
 export type { ConditionSummary } from './models/ConditionSummary';
+export type { County } from './models/County';
 export { CreateCodedQuestionRequest } from './models/CreateCodedQuestionRequest';
 export { CreateConceptRequest } from './models/CreateConceptRequest';
 export type { CreateConditionRequest } from './models/CreateConditionRequest';
