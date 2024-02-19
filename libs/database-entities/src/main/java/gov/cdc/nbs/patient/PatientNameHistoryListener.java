@@ -25,8 +25,7 @@ public class PatientNameHistoryListener {
         this.creator.createPersonNameHistory(personName.getPersonUid().getId(), currentVersion + 1, personNameSequence);
     }
 
-    @Transactional
-    int getCurrentVersionNumber(Person id, int personNameSequence) {
+    private int getCurrentVersionNumber(Person id, int personNameSequence) {
         long personUid = id.getId();
         String query = "SELECT MAX(version_ctrl_nbr) FROM Person_name_hist WHERE person_uid = ? and person_name_seq = ?";
         Integer maxVersionControlNumber = template.queryForObject(query, Integer.class, personUid, personNameSequence);
