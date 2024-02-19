@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
 import format from 'date-fns/format';
 import { FindLabReportsForPatientQuery, useFindLabReportsForPatientLazyQuery } from 'generated/graphql/schema';
@@ -17,66 +17,58 @@ const asTableBody =
         tableDetails: [
             {
                 id: 1,
-                title: report?.receivedOn ? (
-                    <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.report}`}>
-                        {report?.receivedOn && format(report.receivedOn, 'MM/dd/yyyy')} <br />{' '}
-                        {format(new Date(report?.receivedOn), 'hh:mm a')}
-                    </ClassicLink>
-                ) : null
-            },
-            {
-                id: 2,
                 title: (
                     <>
-                        {report?.reportingFacility !== null && (
+                        <ClassicLink url={`/nbs/api/profile/${patient}/report/lab/${report.report}`}>
+                            {report.receivedOn && format(report.receivedOn, 'MM/dd/yyyy')} <br />{' '}
+                            {format(new Date(report?.receivedOn), 'hh:mm a')}
+                        </ClassicLink>
+                        {report.isElectronic && (
                             <>
-                                <strong>Reporting facility:</strong>
                                 <br />
-                                <p className="margin0">{report.reportingFacility}</p>
-                            </>
-                        )}
-
-                        {report?.orderingFacility !== null && (
-                            <>
-                                <strong>Ordering facility:</strong>
-                                <br />
-                                <p className="margin0">{report.orderingFacility}</p>
-                            </>
-                        )}
-
-                        {report?.orderingProvider !== null && (
-                            <>
-                                <strong>Ordering provider:</strong>
-                                <br />
-                                <p className="margin0">{report.orderingProvider}</p>
+                                (Electronic)
                             </>
                         )}
                     </>
                 )
             },
             {
+                id: 2,
+                title: (
+                    <>
+                        {report.reportingFacility && (
+                            <TitledValue title="Reporting facility">{report.reportingFacility}</TitledValue>
+                        )}
+
+                        {report.orderingFacility && (
+                            <TitledValue title="Ordering facility">{report.orderingFacility}</TitledValue>
+                        )}
+
+                        {report.orderingProvider && (
+                            <TitledValue title="Ordering provider">{report.orderingProvider}</TitledValue>
+                        )}
+                    </>
+                )
+            },
+            {
                 id: 3,
-                title: internalizeDate(report?.collectedOn) || null
+                title: internalizeDate(report.collectedOn)
             },
             {
                 id: 4,
-                title: report?.results.length ? (
+                title: report.results.length && (
                     <>
-                        {report.results?.map((result: TestResult) => (
-                            <>
-                                <br />
-                                <strong>{result.test}:</strong>
-                                <br />
-                                <span>{result.result}</span>
-                                <br />
-                            </>
+                        {report.results.map((result: TestResult, index: number) => (
+                            <TitledValue key={index} title={result.test}>
+                                {result.result}
+                            </TitledValue>
                         ))}
                     </>
-                ) : null
+                )
             },
             {
                 id: 5,
-                title: report?.associatedWith.length ? (
+                title: report.associatedWith.length && (
                     <>
                         {report.associatedWith?.map((investigation: AssociatedWith, index: number) => (
                             <div key={index}>
@@ -87,25 +79,25 @@ const asTableBody =
                             </div>
                         ))}
                     </>
-                ) : null
+                )
             },
             {
                 id: 6,
-                title: report?.programArea || null
+                title: report.programArea
             },
             {
                 id: 7,
-                title: report?.jurisdiction || null
+                title: report.jurisdiction
             },
             {
                 id: 8,
-                title: report?.event || null
+                title: report.event
             }
         ]
     });
 
 const asTableBodies = (reports: PatientLabReport[], patient?: string): TableBody[] =>
-    reports?.map(asTableBody(patient)) || [];
+    reports.map(asTableBody(patient)) || [];
 
 const headers = [
     { name: Headers.DateReceived, sortable: true },
@@ -186,3 +178,17 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
         />
     );
 };
+
+type TitledValueProps = {
+    title: string;
+    children: ReactNode;
+};
+
+const TitledValue = ({ title, children }: TitledValueProps) => (
+    <>
+        <strong>{title}:</strong>
+        <br />
+        {children}
+        <br />
+    </>
+);

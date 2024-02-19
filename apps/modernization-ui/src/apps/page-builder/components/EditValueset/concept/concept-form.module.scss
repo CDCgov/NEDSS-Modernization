@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.conceptForm {
+    display: flex;
+    justify-content: center;
+
+    .formContent {
+        width: 40rem;
+
+        .wideInput {
+            max-width: 40rem;
+        }
+
+        .effectiveTimeSection {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .radioButtons {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 6.3rem;
+        }
+
+        .sectionHeading {
+            margin-top: 3rem;
+            color: colors.$base-darker;
+            font-weight: 700;
+        }
+    }
+}
