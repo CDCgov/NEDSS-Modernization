@@ -1,5 +1,5 @@
 import './_ConfirmationModal.scss';
-import { RefObject } from 'react';
+import { ReactNode, RefObject } from 'react';
 import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 
 type Props = {
@@ -7,8 +7,8 @@ type Props = {
     ariaDescribedBy?: string;
     modal: RefObject<ModalRef>;
     title: string;
-    message: string;
-    detail?: string;
+    message: string | ReactNode;
+    detail?: string | ReactNode;
     confirmText?: string;
     onConfirm: () => void;
     cancelText?: string;
