@@ -94,8 +94,8 @@ public final class InvestigationFilter implements EventFilter {
         UNASSIGNED(InvestigationFilter.UNASSIGNED),
         APPROVED("APPROVED"),
         COMPLETED("COMPLETED"),
-        MSG_FAIL("MSG_FAIL"),
-        PEND_APPR("PEND_APPR"),
+        MESSAGE_FAILED("MSG_FAIL"),
+        PERNDING_APPROVAL("PEND_APPR"),
         REJECTED("REJECTED");
 
         private final String value;
