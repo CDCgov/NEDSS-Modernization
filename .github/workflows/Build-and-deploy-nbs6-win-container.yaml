@@ -13,9 +13,6 @@ jobs:
       image_name: "nbs6"
       nbs6_version: "6.0.15.1"
       dockerfile_relative_path: "./cdc-sandbox/nbs6-win-container/" 
-      github_release_tag: "latest"
-      github_zip_file_name: "v7.2.2.NEDSS.NBS.Modernized.Documentation.zip"
-      user_guide_doc_name: "NBS 7.2.2 User Guide.docx"
       quay_repository: "quay.io/us-cdcgov/cdc-nbs-modernization"
     secrets:
       CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{ secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID }}
