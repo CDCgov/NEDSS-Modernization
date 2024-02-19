@@ -19,7 +19,8 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String fieldLength,
       String defaultRdbTableName,
       String rdbColumnName,
-      String defaultLabelInReport) {
+      String defaultLabelInReport,
+      String dataMartColumnName) {
 
   }
 
