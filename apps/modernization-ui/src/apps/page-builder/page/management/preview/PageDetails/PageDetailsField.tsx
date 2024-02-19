@@ -1,14 +1,12 @@
 import React from 'react';
-import { Concept, Condition, PageControllerService, PageInformationChangeRequest } from 'apps/page-builder/generated';
+import { Concept, Condition, PageInformationChangeRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Control, Controller } from 'react-hook-form';
-import { ModalToggleButton } from '@trussworks/react-uswds';
-import { validPageNameRule } from '../../../../../../validation/entry';
+import { ErrorMessage, Label, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
+import { maxLengthRule, validPageNameRule } from '../../../../../../validation/entry';
 import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNameRule';
-import { authorization } from '../../../../../../authorization';
-import { useAlert } from '../../../../../../alert';
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
@@ -29,17 +27,6 @@ const eventTypeOptions = [
 ];
 
 export const PageDetailsField = ({ conditions, mmgs, control, eventType, isEnabled }: AddNewPageFieldProps) => {
-    const { alertError } = useAlert();
-    const validatePageName = async (val: string) => {
-        const response = await PageControllerService.validatePageRequestUsingPost({
-            authorization: authorization(),
-            request: { name: val }
-        });
-        if (!response) {
-            alertError({ message: 'Failed to save page' });
-        }
-    };
-
     return (
         <>
             <Controller
@@ -81,10 +68,7 @@ export const PageDetailsField = ({ conditions, mmgs, control, eventType, isEnabl
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
-                        onBlur={() => {
-                            onBlur();
-                            validatePageName(value!);
-                        }}
+                        onBlur={onBlur}
                         label="Page name"
                         name={name}
                         htmlFor={name}
@@ -130,19 +114,13 @@ export const PageDetailsField = ({ conditions, mmgs, control, eventType, isEnabl
             <Controller
                 control={control}
                 name="description"
-                render={({ field: { onChange, value, name } }) => (
-                    <Input
-                        onChange={onChange}
-                        label="Page description"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
-                        aria-label={'enter a description for the page'}
-                        type="text"
-                        multiline
-                        disabled={isEnabled}
-                        defaultValue={value}
-                    />
+                rules={maxLengthRule(2000)}
+                render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
+                    <>
+                        <Label htmlFor={name}>Page description</Label>
+                        <Textarea onChange={onChange} onBlur={onBlur} defaultValue={value} name={name} id={name} />
+                        {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
+                    </>
                 )}
             />
             <Controller

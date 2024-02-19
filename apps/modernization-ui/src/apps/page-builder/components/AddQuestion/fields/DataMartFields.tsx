@@ -36,7 +36,6 @@ export const DataMartFields = ({ editing = false }: Props) => {
     }, [subgroup, rdbTableNames]);
 
     const handleRdbColumnNameValidation = (subgroup: string | undefined, columnName: string | undefined) => {
-        console.log('doing validation!', subgroup, columnName);
         if (columnName && subgroup) {
             validateRdbColumnName(`${subgroup}_${columnName}`);
         }
