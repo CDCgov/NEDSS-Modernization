@@ -23,8 +23,8 @@ Feature: Investigation search
       | notification | UNASSIGNED             |
       | notification | APPROVED               |
       | notification | COMPLETED              |
-      | notification | MESSAGE_FAIL           |
-      | notification | PEND_APPROVAL          |
+      | notification | MESSAGE_FAILED         |
+      | notification | PENDING_APPROVAL       |
       | notification | REJECTED               |
       | case         | UNASSIGNED             |
       | case         | CONFIRMED              |
