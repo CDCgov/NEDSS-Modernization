@@ -31,5 +31,40 @@ class PageDescriptionRowMapperTest {
     assertThat(actual.status()).isEqualTo("status-value");
     assertThat(actual.description()).isEqualTo("description-value");
   }
+
+  @Test
+  void should_return_published() throws SQLException {
+    int statusColNum =3;
+    ResultSet resultSet = mock(ResultSet.class);
+    when(resultSet.getString(statusColNum)).thenReturn("Published");
+    PageDescriptionRowMapper mapper = new PageDescriptionRowMapper();
+    PageDescription actual = mapper.mapRow(resultSet, -1);
+    assertThat(actual.status()).isEqualTo("Published");
+
+  }
+
+  @Test
+  void should_return_initial_draft() throws SQLException {
+    PageDescriptionRowMapper.Column columns = new PageDescriptionRowMapper.Column();
+    ResultSet resultSet = mock(ResultSet.class);
+    when(resultSet.getString(columns.status())).thenReturn("Draft");
+    when(resultSet.getString(columns.publishVersionNumber())).thenReturn(null);
+    PageDescriptionRowMapper mapper = new PageDescriptionRowMapper(columns);
+    PageDescription actual = mapper.mapRow(resultSet, -1);
+    assertThat(actual.status()).isEqualTo("Initial Draft");
+  }
+
+  @Test
+  void should_return_published_with_draft() throws SQLException {
+    PageDescriptionRowMapper.Column columns = new PageDescriptionRowMapper.Column();
+    ResultSet resultSet = mock(ResultSet.class);
+    when(resultSet.getString(columns.status())).thenReturn("Draft");
+    PageDescriptionRowMapper mapper = new PageDescriptionRowMapper(columns);
+    when(resultSet.getString(columns.publishVersionNumber())).thenReturn("1");
+    PageDescription actual = mapper.mapRow(resultSet, -1);
+    assertThat(actual.status()).isEqualTo("Published with Draft");
+  }
+
+
 }
 

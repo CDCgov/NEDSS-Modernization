@@ -209,7 +209,8 @@ public class WaUiMetadata {
   private String blockNm;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "waUiMetadataUid",
-      cascade = {CascadeType.REMOVE},
+      cascade = {CascadeType.PERSIST,
+          CascadeType.REMOVE},
       orphanRemoval = true)
   private WaRdbMetadatum waRdbMetadatum;
 
@@ -406,6 +407,9 @@ public class WaUiMetadata {
       this.defaultValue = c.getDefaultValue();
     } else {
       throw new AddQuestionException("Failed to determine question type");
+    }
+    if(command.question().getRdbTableNm() !=null) {
+      this.waRdbMetadatum = new WaRdbMetadatum(page, this, command);
     }
 
     // Audit info

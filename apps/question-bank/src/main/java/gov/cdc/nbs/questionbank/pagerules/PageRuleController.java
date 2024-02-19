@@ -68,9 +68,9 @@ public class PageRuleController {
 
   @PutMapping("/{ruleId}")
   public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
-      @RequestBody Rule.CreateRuleRequest request, @PathVariable Long page) throws RuleException {
+      @RequestBody Rule.CreateRuleRequest request, @PathVariable Long id) throws RuleException {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-    return pageRuleService.updatePageRule(ruleId, request, userId, page);
+    return pageRuleService.updatePageRule(ruleId, request, userId, id);
   }
 
   @GetMapping("/{ruleId}")

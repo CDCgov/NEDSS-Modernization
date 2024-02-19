@@ -147,7 +147,8 @@ class TreeifyTest {
                 tab -> assertThat(tab)
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
-                        section -> assertThat(section).extracting(SectionNode::children, collection(SubSectionNode.class))
+                        section -> assertThat(section).extracting(SectionNode::children,
+                                collection(SubSectionNode.class))
                             .satisfiesExactly(
                                 subSection -> assertThat(subSection.identifier()).isEqualTo(7L)
                             )
@@ -176,7 +177,8 @@ class TreeifyTest {
                 tab -> assertThat(tab)
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
-                        section -> assertThat(section).extracting(SectionNode::children, collection(SubSectionNode.class))
+                        section -> assertThat(section).extracting(SectionNode::children,
+                                collection(SubSectionNode.class))
                             .satisfiesExactly(
                                 subSection -> assertThat(subSection.identifier()).isEqualTo(7L),
                                 subSection -> assertThat(subSection.identifier()).isEqualTo(11L)
@@ -220,6 +222,7 @@ class TreeifyTest {
             "default-rdb-table-name",
             "rdb-column-name",
             "default-label-in-report",
+            "dataMart-column-name",
             false
         )
     ).collect(Treeify.asTree());
@@ -232,7 +235,8 @@ class TreeifyTest {
                 tab -> assertThat(tab)
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
-                        section -> assertThat(section).extracting(SectionNode::children, collection(SubSectionNode.class))
+                        section -> assertThat(section).extracting(SectionNode::children,
+                                collection(SubSectionNode.class))
                             .satisfiesExactly(
                                 subSection -> assertThat(subSection).extracting(SubSectionNode::children,
                                         collection(ContentNode.class))
@@ -277,6 +281,7 @@ class TreeifyTest {
             "default-rdb-table-name",
             "rdb-column-name",
             "default-label-in-report",
+            "dataMart-column-name",
             false
         ),
         new FlattenedComponent(13L, 1010, "Tab", true, 6)

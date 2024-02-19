@@ -15,7 +15,7 @@ import java.util.Optional;
 class PageRuleMapper implements RowMapper<Rule> {
   record Column(int ruleId, int template, int function, int description, int sourceQuestion,
                 int ruleExpression, int sourceValues, int comparator, int targetType, int targetQuestions,
-                int sourceQuestionLabel, int sourceQuestionCodeSet, int totalCount) {
+                int sourceQuestionLabel, int sourceQuestionCodeSet, int sourceQuestionId, int totalCount) {
 
   }
 
@@ -26,7 +26,8 @@ class PageRuleMapper implements RowMapper<Rule> {
 
   PageRuleMapper(final WaQuestionRepository waQuestionRepository) {
     this.columns = new PageRuleMapper.Column(1, 2, 3, 4,
-        5, 6, 7, 8, 9, 10, 11, 12, 13);
+        5, 6, 7, 8, 9, 10,
+        11, 12, 13, 14);
     this.waQuestionRepository = waQuestionRepository;
   }
 
@@ -46,13 +47,14 @@ class PageRuleMapper implements RowMapper<Rule> {
     String targetQuestions = rs.getString(columns.targetQuestions());
     String sourceQuestionLabel = rs.getString(columns.sourceQuestionLabel());
     String sourceQuestionCodeSet = rs.getString(columns.sourceQuestionCodeSet());
+    long sourceQuestionId = rs.getLong(columns.sourceQuestionId());
     totalRowsCount = rs.getLong(columns.totalCount());
 
     Rule.RuleFunction functionEnum = getFunctionEnum(function);
     Rule.Comparator comparatorEnum = getComparatorEnum(comparator);
     Rule.TargetType targetTypeEnum = getTargetTypeEnum(targetType);
     Rule.SourceQuestion sourceQuestionInfo =
-        new Rule.SourceQuestion(sourceQuestionIdentifier, sourceQuestionLabel, sourceQuestionCodeSet);
+        new Rule.SourceQuestion(sourceQuestionId, sourceQuestionIdentifier, sourceQuestionLabel, sourceQuestionCodeSet);
     boolean anySource = ruleExpression.contains("( )");
     List<String> sourceValuesList = null;
     if (sourceValues != null)

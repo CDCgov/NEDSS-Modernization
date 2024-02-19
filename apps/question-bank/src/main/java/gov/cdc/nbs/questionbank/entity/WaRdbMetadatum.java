@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +18,11 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
 public class WaRdbMetadatum {
+
+    public static final String ACTIVE = "Active";
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wa_rdb_metadata_uid", nullable = false)
     private Long id;
 
@@ -66,5 +72,28 @@ public class WaRdbMetadatum {
 
     @Column(name = "block_pivot_nbr")
     private Integer blockPivotNbr;
+
+    public WaRdbMetadatum(WaTemplate page, WaUiMetadata waUiMetadata,PageContentCommand.AddQuestion command){
+        WaQuestion question= command.question();
+        this.setRdbColumnNm(question.getRdbColumnNm());
+        this.setRdbTableNm(question.getRdbTableNm());
+        this.setRptAdminColumnNm(question.getRptAdminColumnNm());
+        this.setUserDefinedColumnNm(question.getUserDefinedColumnNm());
+        this.setWaTemplateUid(page);
+        this.setQuestionIdentifier(question.getQuestionIdentifier());
+        this.setLocalId(question.getLocalId());
+        this.setWaUiMetadataUid(waUiMetadata);
+        added(command);
+    }
+
+
+    private void added(PageContentCommand command) {
+        this.addTime = command.requestedOn();
+        this.addUserId = command.userId();
+        this.lastChgTime = command.requestedOn();
+        this.lastChgUserId = command.userId();
+        this.recordStatusCd = ACTIVE;
+        this.recordStatusTime = command.requestedOn();
+    }
 
 }

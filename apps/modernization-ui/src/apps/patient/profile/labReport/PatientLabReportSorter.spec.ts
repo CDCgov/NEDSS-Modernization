@@ -11,6 +11,7 @@ describe('when sorting reports', () => {
                 reportingFacility: 'Piedmont Hospital',
                 orderingProvider: 'Jane Cohn',
                 orderingFacility: "St. Joseph's Hospital",
+                isElectronic: false,
                 collectedOn: new Date('2023-12-15T05:00:00.000Z'),
                 results: [
                     {
@@ -39,6 +40,7 @@ describe('when sorting reports', () => {
                 reportingFacility: 'Amory University Hospital',
                 orderingProvider: null,
                 orderingFacility: null,
+                isElectronic: false,
                 collectedOn: new Date('2023-11-26T05:00:00.000Z'),
                 results: [
                     {
@@ -57,6 +59,7 @@ describe('when sorting reports', () => {
                 reportingFacility: 'Emory University Hospital',
                 orderingProvider: null,
                 orderingFacility: null,
+                isElectronic: false,
                 collectedOn: new Date('1970-01-01T05:00:00.000Z'),
                 results: [
                     {
@@ -94,6 +97,7 @@ describe('when sorting reports by receivedOn date', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -122,6 +126,7 @@ describe('when sorting reports by receivedOn date', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -140,6 +145,7 @@ describe('when sorting reports by receivedOn date', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
@@ -188,6 +194,7 @@ describe('when sorting reports by DateCollected', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -216,6 +223,7 @@ describe('when sorting reports by DateCollected', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -234,6 +242,7 @@ describe('when sorting reports by DateCollected', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
@@ -282,6 +291,7 @@ describe('when sorting reports by TestResults', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -310,6 +320,7 @@ describe('when sorting reports by TestResults', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -328,6 +339,7 @@ describe('when sorting reports by TestResults', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
@@ -376,6 +388,7 @@ describe('when sorting reports by AssociatedWith', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -404,6 +417,7 @@ describe('when sorting reports by AssociatedWith', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -422,6 +436,7 @@ describe('when sorting reports by AssociatedWith', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
@@ -470,6 +485,7 @@ describe('when sorting reports by ProgramArea', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -498,6 +514,7 @@ describe('when sorting reports by ProgramArea', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -516,6 +533,7 @@ describe('when sorting reports by ProgramArea', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
@@ -564,6 +582,7 @@ describe('when sorting reports by Jurisdiction', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -592,6 +611,7 @@ describe('when sorting reports by Jurisdiction', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -610,6 +630,7 @@ describe('when sorting reports by Jurisdiction', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
@@ -658,6 +679,7 @@ describe('when sorting reports by EventID', () => {
             reportingFacility: 'Piedmont Hospital',
             orderingProvider: 'Jane Cohn',
             orderingFacility: "St. Joseph's Hospital",
+            isElectronic: false,
             collectedOn: new Date('2023-12-15T05:00:00.000Z'),
             results: [
                 {
@@ -686,6 +708,7 @@ describe('when sorting reports by EventID', () => {
             reportingFacility: 'Amory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('2023-11-26T05:00:00.000Z'),
             results: [
                 {
@@ -704,6 +727,7 @@ describe('when sorting reports by EventID', () => {
             reportingFacility: 'Emory University Hospital',
             orderingProvider: null,
             orderingFacility: null,
+            isElectronic: false,
             collectedOn: new Date('1970-01-01T05:00:00.000Z'),
             results: [
                 {
