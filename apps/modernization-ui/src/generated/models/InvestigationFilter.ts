@@ -16,7 +16,7 @@ export type InvestigationFilter = {
     investigatorId?: number;
     jurisdictions?: Array<number>;
     lastUpdatedBy?: number;
-    notificationStatuses?: Array<'APPROVED' | 'COMPLETED' | 'MESSAGE_FAILED' | 'PENDING_APPROVAL' | 'REJECTED' | 'UNASSIGNED'>;
+    notificationStatuses?: Array<'APPROVED' | 'COMPLETED' | 'MSG_FAIL' | 'PEND_APPR' | 'REJECTED' | 'UNASSIGNED'>;
     outbreakNames?: Array<string>;
     patientId?: number;
     pregnancyStatus?: InvestigationFilter.pregnancyStatus;

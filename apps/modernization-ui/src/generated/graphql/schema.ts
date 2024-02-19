@@ -896,8 +896,8 @@ export type NewPatientPhoneNumber = {
 export enum NotificationStatus {
   Approved = 'APPROVED',
   Completed = 'COMPLETED',
-  MessageFailed = 'MESSAGE_FAILED',
-  PendingApproval = 'PENDING_APPROVAL',
+  MessageFailed = 'MSG_FAIL',
+  PendingApproval = 'PEND_APPR',
   Rejected = 'REJECTED',
   Unassigned = 'UNASSIGNED'
 }
