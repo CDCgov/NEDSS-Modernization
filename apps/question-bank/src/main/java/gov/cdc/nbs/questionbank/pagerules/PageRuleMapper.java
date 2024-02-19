@@ -48,7 +48,7 @@ class PageRuleMapper implements RowMapper<Rule> {
     String sourceQuestionCodeSet = rs.getString(columns.sourceQuestionCodeSet());
     totalRowsCount = rs.getLong(columns.totalCount());
 
-    Rule.Function functionEnum = getFunctionEnum(function);
+    Rule.RuleFunction functionEnum = getFunctionEnum(function);
     Rule.Comparator comparatorEnum = getComparatorEnum(comparator);
     Rule.TargetType targetTypeEnum = getTargetTypeEnum(targetType);
     Rule.SourceQuestion sourceQuestionInfo =
@@ -71,9 +71,9 @@ class PageRuleMapper implements RowMapper<Rule> {
     return totalRowsCount;
   }
 
-  private Rule.Function getFunctionEnum(String value) {
-    Optional<Rule.Function> functionEnum =
-        Arrays.stream(Rule.Function.values()).filter(f -> f.getValue().equalsIgnoreCase(value)).findFirst();
+  private Rule.RuleFunction getFunctionEnum(String value) {
+    Optional<Rule.RuleFunction> functionEnum =
+        Arrays.stream(Rule.RuleFunction.values()).filter(f -> f.getValue().equalsIgnoreCase(value)).findFirst();
     return functionEnum.isPresent() ? functionEnum.get() : null;
   }
 

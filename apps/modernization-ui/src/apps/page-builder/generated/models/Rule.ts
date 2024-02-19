@@ -9,7 +9,7 @@ export type Rule = {
     anySourceValue: boolean;
     comparator: Rule.comparator;
     description?: string;
-    ruleFunction: Rule.RuleFunction;
+    ruleFunction: Rule.ruleFunction;
     id: number;
     sourceQuestion: SourceQuestion;
     sourceValues?: Array<string>;
@@ -28,7 +28,7 @@ export namespace Rule {
         NOT_EQUAL_TO = 'NOT_EQUAL_TO'
     }
 
-    export enum RuleFunction {
+    export enum ruleFunction {
         DATE_COMPARE = 'DATE_COMPARE',
         DISABLE = 'DISABLE',
         ENABLE = 'ENABLE',

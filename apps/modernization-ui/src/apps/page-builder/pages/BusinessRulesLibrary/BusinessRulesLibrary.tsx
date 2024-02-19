@@ -3,20 +3,19 @@ import './BusinessRulesLibrary.scss';
 import { BusinessRuleContext } from '../../context/BusinessContext';
 import { fetchBusinessRules } from './useBusinessRulesAPI';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
-import { UserContext } from '../../../../providers/UserContext';
 import { Breadcrumb } from 'breadcrumb';
 import { Rule } from '../../generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { authorization } from 'authorization';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(BusinessRuleContext);
     const [rules, setRules] = useState<Rule[]>([]);
     const [totalElements, setTotalElements] = useState(0);
-    const { state } = useContext(UserContext);
     const { page } = useGetPageDetails();
 
     const getBusinessRules = async () => {
-        const token = `Bearer ${state.getToken()}`;
+        const token = authorization();
         setIsLoading(true);
 
         try {

@@ -53,7 +53,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withFunction(CreateRuleRequest request, final String function) {
         return new CreateRuleRequest(
-            Rule.Function.valueOf(function),
+            Rule.RuleFunction.valueOf(function),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),

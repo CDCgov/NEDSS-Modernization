@@ -27,7 +27,7 @@ const PageInformation = () => {
             authorization: authorization(),
             id: Number(pageId)
         }).then((rep) => {
-            setPageHistory(rep);
+            setPageHistory(rep.content || []);
         });
     };
     const fetchPageInfo = () => {

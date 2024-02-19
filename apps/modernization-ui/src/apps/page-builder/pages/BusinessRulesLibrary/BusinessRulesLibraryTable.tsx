@@ -30,25 +30,6 @@ const tableColumns = [
     { name: Column.ID, sortable: true }
 ];
 
-type TargetQuestion = {
-    label: string;
-    id: string;
-};
-
-type Rules = {
-    ruleId?: number;
-    templateUid?: number;
-    ruleFunction?: string;
-    ruleDescription?: string;
-    sourceIdentifier?: string;
-    sourceValue?: any;
-    comparator?: string;
-    targetType?: string;
-    errorMsgText?: string;
-    targetValueIdentifier?: any;
-    targetQuestions?: TargetQuestion[];
-};
-
 type Props = {
     summaries: Rule[];
     pages?: any;
@@ -57,45 +38,55 @@ type Props = {
 
 export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [selectedQuestion, setSelectedQuestion] = useState<Rules>({});
+    const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
     const { page } = useGetPageDetails();
 
     const mapLogic = ({ comparator, ruleFunction }: any) => {
-        if (ruleFunction === 'Date Compare') {
+        if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             switch (comparator) {
                 case '<':
-                    return 'Less than';
+                    return Rule.comparator.LESS_THAN;
                 case '<=':
-                    return 'Less or equal to';
+                    return Rule.comparator.LESS_THAN_OR_EQUAL_TO;
                 case '>=':
-                    return 'Greater than';
+                    return Rule.comparator.GREATER_THAN;
                 default:
-                    return 'Greater than';
+                    return Rule.comparator.GREATER_THAN;
             }
         } else {
             switch (comparator) {
                 case '=':
-                    return 'Equal to';
+                    return Rule.comparator.EQUAL_TO;
                 default:
-                    return 'Not equal to';
+                    return Rule.comparator.NOT_EQUAL_TO;
             }
         }
     };
 
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
-    const asTableRow = (rule: Rules): TableBody => ({
-        id: rule.templateUid,
+    const asTableRow = (rule: Rule): TableBody => ({
+        id: rule.template.toString(),
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`/page-builder/pages/${page?.id}/${rule.ruleId}`}>{rule?.ruleDescription}</Link>
+                title: <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>{rule.sourceQuestion.label}</Link>
             },
             { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {
                 id: 3,
-                title: <div>{rule?.sourceValue?.join(' ')}</div> || null
+                title:
+                    (
+                        <div>
+                            {rule?.sourceValues?.map((value) => (
+                                <>
+                                    <span>{value}</span>
+                                    <br />
+                                </>
+                            ))}
+                        </div>
+                    ) || null
             },
             {
                 id: 4,
@@ -106,9 +97,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 title:
                     (
                         <div>
-                            {rule?.targetQuestions?.map((question) => (
+                            {rule.targets?.map((target) => (
                                 <>
-                                    <span>{question.label}</span>
+                                    <span>{target.label}</span>
                                     <br />
                                 </>
                             ))}
@@ -117,13 +108,14 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             },
             {
                 id: 6,
-                title: <div>{rule?.ruleId}</div> || null
+                title: <div>{rule.id}</div> || null
             }
         ]
     });
 
     // @ts-ignore
-    const asTableRows = (pages: ViewRuleResponse[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (rules: Rule[] | undefined): TableBody[] => rules?.map(asTableRow) || [];
+
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
@@ -169,7 +161,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 className="cancel-btn"
                 type="button"
                 modalRef={qtnModalRef}
-                onClick={() => setSelectedQuestion({})}>
+                onClick={() => setSelectedQuestion([])}>
                 Cancel
             </ModalToggleButton>
             <ModalToggleButton
@@ -238,7 +230,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 rangeSelector={true}
                 isLoading={isLoading}
             />
-            {summaries.length === 0 && dataNotAvailableElement}
+            {summaries.length === 0 && !isLoading && dataNotAvailableElement}
             {summaries.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>

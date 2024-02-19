@@ -8,7 +8,7 @@ export type CreateRuleRequest = {
     anySourceValue: boolean;
     comparator: CreateRuleRequest.comparator;
     description?: string;
-    ruleFunction: CreateRuleRequest.RuleFunction;
+    ruleFunction: CreateRuleRequest.ruleFunction;
     sourceIdentifier: string;
     sourceText?: string;
     sourceValues?: Array<SourceValue>;
@@ -27,7 +27,7 @@ export namespace CreateRuleRequest {
         NOT_EQUAL_TO = 'NOT_EQUAL_TO'
     }
 
-    export enum RuleFunction {
+    export enum ruleFunction {
         DATE_COMPARE = 'DATE_COMPARE',
         DISABLE = 'DISABLE',
         ENABLE = 'ENABLE',

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AddBusinessRule.scss';
-import { CreateRuleRequest, PageRuleControllerService, Rule } from '../../../generated';
+import { CreateRuleRequest, PageRuleControllerService, Rule, SourceQuestion, Target } from '../../../generated';
 import { useAlert } from 'alert';
 import BusinessRulesForm from '../BusinessRulesForm';
 import { Breadcrumb } from 'breadcrumb';
@@ -18,31 +18,39 @@ const AddBusinessRule = () => {
     });
 
     const [selectedFieldType, setSelectedFieldType] = useState('');
+    const [question, setQuestion] = useState<SourceQuestion>();
+    const [targets, setTargets] = useState<Target[]>([]);
+    const [sourceValues, setSourceValues] = useState<string[]>([]);
     const { pageId, ruleId } = useParams();
     const deleteWarningModal = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
 
     useEffect(() => {
         if (ruleId) {
-            PageRuleControllerService.findPageRuleUsingPost({
+            PageRuleControllerService.viewRuleResponseUsingGet({
                 authorization: authorization(),
-                id: Number(ruleId),
-                request: { searchValue: '' }
+                ruleId: Number(ruleId)
             }).then((resp: Rule) => {
-                const sourceQuestion = resp.sourceQuestion.label || '';
+                const sourceQuestion = resp.sourceQuestion?.label || '';
+
+                setSourceValues(resp.sourceValues || []);
+                setQuestion(resp?.sourceQuestion);
+
                 form.setValue('anySourceValue', resp?.anySourceValue);
                 form.setValue('comparator', resp.comparator);
                 form.setValue('description', resp.description);
                 form.setValue('ruleFunction', resp.ruleFunction);
-                form.setValue('sourceIdentifier', resp.sourceQuestion.questionIdentifier || '');
-                form.setValue('sourceText', `${sourceQuestion} (${resp?.sourceQuestion.questionIdentifier!})`);
+                form.setValue('sourceIdentifier', resp.sourceQuestion?.questionIdentifier || '');
+                form.setValue('sourceText', `${sourceQuestion} (${resp?.sourceQuestion?.questionIdentifier!})`);
                 form.setValue('targetIdentifiers', resp?.targets?.map((target) => target.targetIdentifier || '') || []);
                 form.setValue(
                     'targetValueText',
-                    resp.targets.map((target) => target.label || '')
+                    resp.targets?.map((target) => target.label || '')
                 );
                 form.setValue('targetType', resp.targetType);
+
                 setSelectedFieldType(resp.ruleFunction);
+                setTargets(resp.targets || []);
             });
         }
     }, [ruleId]);
@@ -59,12 +67,16 @@ const AddBusinessRule = () => {
         } else {
             PageRuleControllerService.updatePageRuleUsingPut({
                 authorization: authorization(),
-                page: Number(pageId),
+                id: Number(pageId),
                 ruleId: Number(ruleId),
                 request: data
-            }).then((resp) => {
-                showAlert({ type: 'success', header: 'updated', message: resp.message });
-            });
+            })
+                .then((resp) => {
+                    showAlert({ type: 'success', header: 'updated', message: resp.message });
+                })
+                .catch((err) => {
+                    console.log('error', err);
+                });
         }
         handleCancel();
     });
@@ -85,12 +97,12 @@ const AddBusinessRule = () => {
     };
 
     const fieldTypeTab = [
-        { name: Rule.RuleFunction.ENABLE },
-        { name: Rule.RuleFunction.DISABLE },
-        { name: Rule.RuleFunction.DATE_COMPARE },
-        { name: Rule.RuleFunction.HIDE },
-        { name: Rule.RuleFunction.UNHIDE },
-        { name: Rule.RuleFunction.REQUIRE_IF }
+        { name: Rule.ruleFunction.ENABLE },
+        { name: Rule.ruleFunction.DISABLE },
+        { name: Rule.ruleFunction.DATE_COMPARE },
+        { name: Rule.ruleFunction.HIDE },
+        { name: Rule.ruleFunction.UNHIDE },
+        { name: Rule.ruleFunction.REQUIRE_IF }
     ];
 
     const title = !ruleId ? 'Add new' : 'Edit';
@@ -152,7 +164,11 @@ const AddBusinessRule = () => {
                                 </Grid>
                                 {selectedFieldType == '' ? null : (
                                     <FormProvider {...form}>
-                                        <BusinessRulesForm />
+                                        <BusinessRulesForm
+                                            targets={targets}
+                                            question={question}
+                                            sourceValues={sourceValues}
+                                        />
                                     </FormProvider>
                                 )}
                             </div>
