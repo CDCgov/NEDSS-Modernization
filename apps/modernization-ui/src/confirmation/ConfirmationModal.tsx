@@ -49,7 +49,7 @@ export const ConfirmationModal = ({
                     {detail && <p id="confirmation-modal-details">{detail}</p>}
                 </div>
             </div>
-            <ModalFooter className="border-top border-base-lighter padding-2 margin-left-auto">
+            <ModalFooter id="confirmation-footer" className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup>
                     <Button type="button" onClick={onCancel} outline>
                         {cancelText}

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { ModalRef, Icon, ModalToggleButton } from '@trussworks/react-uswds';
-import './DeleteQuestion.scss';
+import styles from './delete-question.module.scss';
 import { ConfirmationModal } from '../../../../confirmation';
 
 type CommonProps = {
@@ -13,7 +13,7 @@ const DeleteQuestion = ({ onDelete }: CommonProps) => {
         onDelete?.();
     };
     return (
-        <>
+        <div className={styles.delete}>
             <ModalToggleButton modalRef={deleteModalRef} className="delete-btn" unstyled>
                 <Icon.Delete style={{ cursor: 'pointer' }} className="primary-color" />
             </ModalToggleButton>
@@ -31,7 +31,7 @@ const DeleteQuestion = ({ onDelete }: CommonProps) => {
                     deleteModalRef.current?.toggleModal();
                 }}
             />
-        </>
+        </div>
     );
 };
 
