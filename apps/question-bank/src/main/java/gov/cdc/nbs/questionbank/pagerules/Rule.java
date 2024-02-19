@@ -35,7 +35,7 @@ public record Rule(
   }
 
 
-  public record SourceQuestion(String questionIdentifier, String label, String codeSetName) {
+  public record SourceQuestion(long questionId, String questionIdentifier, String label, String codeSetName) {
   }
 
 
