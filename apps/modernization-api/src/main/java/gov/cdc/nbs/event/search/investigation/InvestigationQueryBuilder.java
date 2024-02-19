@@ -53,8 +53,7 @@ public class InvestigationQueryBuilder {
   public NativeSearchQuery buildInvestigationQuery(
       final PermissionScope scope,
       final InvestigationFilter filter,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
     BoolQueryBuilder builder = QueryBuilders.boolQuery();
     // Investigations are secured by Program Area and Jurisdiction
     builder.must(withPermission(scope));
@@ -281,7 +280,7 @@ public class InvestigationQueryBuilder {
 
   private Optional<QueryBuilder> resolveNotificationStatusCriteria(final Collection<NotificationStatus> statuses) {
     return statuses.stream()
-        .map(NotificationStatus::name)
+        .map(NotificationStatus::value)
         .collect(maybeOneOfThese(Investigation.NOTIFICATION_RECORD_STATUS_CD));
   }
 
@@ -292,7 +291,7 @@ public class InvestigationQueryBuilder {
   }
 
   /**
-   * A {@link Collector} that returns a {@code terms} query for each String value.  An empty
+   * A {@link Collector} that returns a {@code terms} query for each String value. An empty
    * {@link java.util.stream.Stream} will return in an empty {@link Optional}.
    *
    * <pre>
@@ -310,8 +309,7 @@ public class InvestigationQueryBuilder {
         Collectors.toList(),
         keywords -> keywords.isEmpty()
             ? Optional.empty()
-            : Optional.of(QueryBuilders.termsQuery(field, keywords).queryName(field + " having one of"))
-    );
+            : Optional.of(QueryBuilders.termsQuery(field, keywords).queryName(field + " having one of")));
   }
 
   private Collection<SortBuilder<?>> buildSort(Pageable pageable) {
