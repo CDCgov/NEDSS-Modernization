@@ -6,9 +6,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
-import { useConceptAPI } from '../../components/Concept/useConceptAPI';
 import { authorization } from 'authorization';
-import { Concept, CreateRuleRequest } from 'apps/page-builder/generated';
+import { Concept, ConceptControllerService, CreateRuleRequest } from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -38,7 +37,10 @@ const BusinessRulesForm = () => {
     );
 
     const fetchSourceValueSets = async (valueSet: string) => {
-        const content: Concept[] = await useConceptAPI(authorization(), valueSet);
+        const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
+            authorization: authorization(),
+            codeSetNm: valueSet
+        });
         const list = content?.map((src: any) => ({ name: src.longName, value: src.conceptCode }));
         setSourceValueList(list);
     };
@@ -234,7 +236,7 @@ const BusinessRulesForm = () => {
                     control={form.control}
                     name="sourceValue"
                     render={() => (
-                        <Grid row className="inline-field">
+                        <Grid row className="inline-field source">
                             <Grid col={3}>
                                 <Label className="input-label" htmlFor="sourceValue" requiredMarker>
                                     Source value(s)

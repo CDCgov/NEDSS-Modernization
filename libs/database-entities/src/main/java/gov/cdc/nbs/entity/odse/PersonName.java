@@ -5,18 +5,10 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientNameHistoryListener;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -24,6 +16,7 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Person_name")
+@EntityListeners(PatientNameHistoryListener.class)
 public class PersonName {
 
     public static Predicate<PersonName> active() {

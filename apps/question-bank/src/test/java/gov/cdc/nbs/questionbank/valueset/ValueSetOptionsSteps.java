@@ -32,8 +32,9 @@ public class ValueSetOptionsSteps {
   public ValueSetOptionsSteps(
       final ValueSetMother mother,
       final Active<ResultActions> response,
-      final ValueSetOptionRequester request) {
-    this.valueset = new Active<>();
+      final ValueSetOptionRequester request,
+      final Active<Codeset> activeValueset) {
+    this.valueset = activeValueset;
     this.mother = mother;
     this.response = response;
     this.request = request;
