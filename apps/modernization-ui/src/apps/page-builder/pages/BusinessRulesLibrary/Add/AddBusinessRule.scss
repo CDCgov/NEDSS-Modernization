@@ -53,6 +53,11 @@
             .edit-rules__content {
                 width: 47.1rem;
                 .inline-field {
+                    &.source {
+                        .text-input {
+                            height: unset;
+                        }
+                    }
                     display: flex;
                     flex-direction: row;
                     margin-top: 1.25rem;
@@ -166,7 +171,7 @@
     bottom: 0;
     width: 100%;
     padding: 1.5rem;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-top: 2rem;
     border: 1px solid colors.$base-lightest;

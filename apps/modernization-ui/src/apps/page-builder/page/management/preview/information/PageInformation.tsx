@@ -17,7 +17,7 @@ import { usePageManagement } from '../../usePageManagement';
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
     const [totalResults, setTotalResults] = useState(4);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
     const [pageInfo, setPageInfo] = useState<InfoType>({});
     const { pageId } = useParams();

@@ -12,8 +12,9 @@ type Props = {
     onCancel: () => void;
     onClose: () => void;
     onAccept: (selected: number) => void;
+    onCreateNew: () => void;
 };
-export const ValuesetSearch = ({ onCancel, onClose, onAccept }: Props) => {
+export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Props) => {
     const [selectedValueset, setSelectedValueset] = useState<number | undefined>(undefined);
     const { page, ready, firstPage, reload } = usePage();
     const [query, setQuery] = useState<string>('');
@@ -70,7 +71,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept }: Props) => {
                         onSortChange={setSort}
                         query={query}
                         valuesets={response?.content ?? []}
-                        onCreateNew={() => {}}
+                        onCreateNew={onCreateNew}
                         isLoading={isLoading}
                     />
                 </div>
