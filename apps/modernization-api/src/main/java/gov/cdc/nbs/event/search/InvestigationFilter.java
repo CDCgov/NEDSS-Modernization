@@ -95,7 +95,7 @@ public final class InvestigationFilter implements EventFilter {
         APPROVED("APPROVED"),
         COMPLETED("COMPLETED"),
         MESSAGE_FAILED("MSG_FAIL"),
-        PERNDING_APPROVAL("PEND_APPR"),
+        PENDING_APPROVAL("PEND_APPR"),
         REJECTED("REJECTED");
 
         private final String value;
