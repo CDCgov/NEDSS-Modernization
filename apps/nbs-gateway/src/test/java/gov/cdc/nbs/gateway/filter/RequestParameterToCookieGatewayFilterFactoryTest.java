@@ -45,7 +45,7 @@ class RequestParameterToCookieGatewayFilterFactoryTest {
                         HttpHeaders.SET_COOKIE,
                         actual -> assertThat(actual)
                                 .contains("Secure")
-                                .contains("HttpOnly")
+                                .containsIgnoringCase("HTTPOnly")
                                 .contains("Cookie=parameter-value")
                 );
 
