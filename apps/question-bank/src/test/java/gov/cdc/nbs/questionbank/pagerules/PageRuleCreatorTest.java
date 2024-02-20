@@ -19,262 +19,275 @@ import gov.cdc.nbs.questionbank.support.RuleRequestMother;
 
 @ExtendWith(MockitoExtension.class)
 class PageRuleCreatorTest {
-    @InjectMocks
-    private PageRuleCreator pageRuleCreator;
+  @InjectMocks
+  private PageRuleCreator pageRuleCreator;
 
-    @Mock
-    private WaRuleMetaDataRepository waRuleMetaDataRepository;
+  @Mock
+  private WaRuleMetaDataRepository waRuleMetaDataRepository;
 
-    @Mock
-    private PageRuleHelper pageRuleJSHelper;
+  @Mock
+  private PageRuleHelper pageRuleJSHelper;
 
-    @BeforeEach
-    void setup() {
-        Mockito.reset(waRuleMetaDataRepository);
-    }
+  @BeforeEach
+  void setup() {
+    Mockito.reset(waRuleMetaDataRepository);
+  }
 
-    @Test
-    void should_save_ruleRequest_details_to_DB() throws RuleException {
+  @Test
+  void should_save_ruleRequest_details_to_DB() throws RuleException {
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.ruleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        // fix getting id, create query for max +1 for the id and then use that
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    // fix getting id, create query for max +1 for the id and then use that
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDateCompare() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForDateCompare() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.dateCompareRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.dateCompareRuleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
 
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDisable() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForDisable() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.DisableRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.DisableRuleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForDisableIfAnySourceIsTruw() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.DisableRuleTestDataAnySourceIsTrue();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.DisableRuleTestDataAnySourceIsTrue();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
 
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForEnableIfAnySourceIsTrue() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleTestDataAnySourceIsTrue();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleTestDataAnySourceIsTrue();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForEnable() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForEnable() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.EnableRuleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForHide() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForHide() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test()
-    void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue() throws RuleException {
+  @Test()
+  void shouldGiveRuleExpressionInACorrectFormatForHideIfAnySourceIsTrue() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleTestDataAnySourceIsTrue();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.HideRuleTestDataAnySourceIsTrue();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForRequireIfAnySourceIsTrue() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestDataAnySourceIsTrue();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestDataAnySourceIsTrue();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIfElsePart() throws RuleException {
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForRequireIfElsePart() throws RuleException {
 
 
-        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestData_othercomparator();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+    CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleTestData_othercomparator();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 
 
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws RuleException {
-        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForUnhide() throws RuleException {
+    CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
-    }
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws RuleException {
-        CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequest();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForRequireIf() throws RuleException {
+    CreateRuleRequest ruleRequest = RuleRequestMother.RequireIfRuleRequest();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
 
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
-    }
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
+  }
 
-    @Test
-    void shouldGiveRuleExpressionInACorrectFormatForUnhideIfAnySourceIsTrue() throws RuleException {
-        CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestIfAnySource();
-        RuleData ruleData = RuleDataMother.ruleData();
-        Long userId = 99L;
-        Long availableId = 1L;
+  @Test
+  void shouldGiveRuleExpressionInACorrectFormatForUnhideIfAnySourceIsTrue() throws RuleException {
+    CreateRuleRequest ruleRequest = RuleRequestMother.UnhideRuleRequestIfAnySource();
+    RuleData ruleData = RuleDataMother.ruleData();
+    Long userId = 99L;
+    Long availableId = 1L;
 
-        when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
+    when(waRuleMetaDataRepository.findNextAvailableID()).thenReturn(availableId);
 
-        when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
-        CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
+    when(pageRuleJSHelper.createRuleData(ruleRequest, availableId)).thenReturn(ruleData);
+    CreateRuleResponse ruleResponse = pageRuleCreator.createPageRule(userId, ruleRequest, 123456L);
 
-        Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
-        assertEquals("Rule Created Successfully", ruleResponse.message());
+    Mockito.verify(waRuleMetaDataRepository, Mockito.times(1)).save(Mockito.any());
+    assertEquals("The business rule '" + ruleData.jsFunctionNameHelper().jsFunctionName()
+        + "' is successfully added. Please click the unique name to edit", ruleResponse.message());
 
-    }
+  }
 }
