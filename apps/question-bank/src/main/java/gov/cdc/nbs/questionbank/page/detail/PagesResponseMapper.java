@@ -121,6 +121,7 @@ class PagesResponseMapper {
     String defaultRdbTableName = content.attributes().defaultRdbTableName();
     String rdbColumnName = content.attributes().rdbColumnName();
     String defaultLabelInReport = content.attributes().defaultLabelInReport();
+    String dataMartColumnName = content.attributes().dataMartColumnName();
     return new PagesResponse.PagesQuestion(
         id,
         isStandard,
@@ -145,7 +146,8 @@ class PagesResponseMapper {
         fieldLength,
         defaultRdbTableName,
         rdbColumnName,
-        defaultLabelInReport
+        defaultLabelInReport,
+        dataMartColumnName
     );
   }
 
