@@ -298,13 +298,14 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     rules={{
                         required: { value: true, message: `Provider is required` }
                     }}
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                         <>
                             <ProviderAutocomplete
                                 id={name}
-                                label="Event Provider type"
+                                label="Event provider type"
+                                placeholder=""
                                 onChange={onChange}
-                                required="true"
+                                required={true}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
@@ -320,13 +321,12 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     rules={{
                         required: { value: true, message: `Facility is required` }
                     }}
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                         <>
                             <FacilityAutocomplete
                                 id={name}
                                 label="Event facility type"
                                 placeholder=""
-                                value={value}
                                 onChange={onChange}
                                 required={true}
                                 onBlur={onBlur}

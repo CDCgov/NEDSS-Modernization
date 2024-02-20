@@ -2,7 +2,7 @@ import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, React
 import { Suggestions } from 'suggestion/Suggestions';
 import { Selectable } from 'options/selectable';
 import { useFacilityOptionsAutocomplete } from 'options/facilities/useFacilityOptionsAutocomplete';
-import { Label, ErrorMessage, TextInput } from '@trussworks/react-uswds';
+import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import 'components/FormInputs/Input.scss';
 import { EntryWrapper } from 'components/Entry';
@@ -15,7 +15,7 @@ type Props = {
     value?: Selectable;
     onChange?: (value?: string) => void;
     error?: any;
-    required?: string;
+    required?: any;
     onBlur?: any;
 };
 
@@ -26,7 +26,7 @@ const FacilityAutocomplete = ({ id, label, placeholder, value, onChange, error, 
         return <>{suggestion.label}</>;
     };
 
-    const [entered, setEntered] = useState(value?.name || '');
+    const [entered, setEntered] = useState(value?.name);
 
     const { options, suggest, reset } = useFacilityOptionsAutocomplete({ initialCriteria: entered });
 
@@ -57,14 +57,14 @@ const FacilityAutocomplete = ({ id, label, placeholder, value, onChange, error, 
         setEntered(option.name ?? '');
         if (onChange) {
             onChange(option.value ?? '');
-            onBlur()
+            onBlur();
         }
     };
 
     const handleCancel = () => {
         reset();
         inputRef?.current?.focus();
-    };    
+    };
 
     return (
         <div className={classNames('input', { 'input--error': error })}>
@@ -74,35 +74,34 @@ const FacilityAutocomplete = ({ id, label, placeholder, value, onChange, error, 
                 htmlFor={id ?? ''}
                 required={required}
                 error={error}>
+                <TextInput
+                    inputRef={inputRef}
+                    className="usa-input"
+                    id={id}
+                    data-testid={name}
+                    validationStatus={error ? 'error' : undefined}
+                    aria-describedby={error ? `${error}-message` : undefined}
+                    inputMode="text"
+                    placeholder={placeholder}
+                    type="text"
+                    autoComplete="off"
+                    value={entered ?? ''}
+                    name={id ?? ''}
+                    onChange={(event) => setEntered(event.target.value)}
+                    onBlur={onBlur}
+                    onKeyDown={handleKeyDown}
+                    required={required}
+                />
 
-            <TextInput
-                inputRef={inputRef}
-                className="usa-input"
-                id={id}
-                data-testid={name}
-                validationStatus={error ? 'error' : undefined}
-                aria-describedby={error ? `${error}-message` : undefined}
-                inputMode="text"
-                placeholder={placeholder}
-                type="text"
-                autoComplete="off"
-                value={entered ?? ''}
-                name={id ?? ''}
-                onChange={(event) => setEntered(event.target.value)}
-                onBlur={onBlur}
-                onKeyDown={handleKeyDown}
-                required={required}
-            />
-
-            <Suggestions
-                listRef={suggestionRef}
-                id={`${id}-options-autocomplete`}
-                suggestions={options}
-                renderSuggestion={renderSuggestion}
-                onSelection={handleSelection}
-                onCancel={handleCancel}
-            />
-            </EntryWrapper>            
+                <Suggestions
+                    listRef={suggestionRef}
+                    id={`${id}-options-autocomplete`}
+                    suggestions={options}
+                    renderSuggestion={renderSuggestion}
+                    onSelection={handleSelection}
+                    onCancel={handleCancel}
+                />
+            </EntryWrapper>
         </div>
     );
 };

@@ -429,17 +429,20 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                     control={form.control}
                     rules={{
                         required: { value: true, message: `ID is required` }
-                    }}                       
+                    }}
                     name="providerSearch.providerId"
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <FacilityAutocomplete                     
-                            id="providerSearch.providerId"
-                            required="true"
-                            label="Event ordering facility"
-                            error={error}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                        />
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                        <>
+                            <FacilityAutocomplete
+                                id={name}
+                                label="Event ordering facility"
+                                required={true}
+                                placeholder=""
+                                onChange={onChange}
+                                onBlur={onBlur}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
                     )}
                 />
             )}
@@ -448,36 +451,44 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 <Controller
                     control={form.control}
                     name="providerSearch.providerId"
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <ProviderAutocomplete
-                            id="providerSearch.providerId"
-                            label="Event ordering provider"
-                            onChange={onChange}
-                        />
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                        <>
+                            <ProviderAutocomplete
+                                id={name}
+                                label="Event ordering provider"
+                                required={true}
+                                placeholder=""
+                                onChange={onChange}
+                                onBlur={onBlur}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
                     )}
                 />
             )}
 
             {watch.providerSearch?.providerType == 'REPORTING_FACILITY' && (
                 <Controller
-                    rules={{
-                        required: { value: true, message: `ID is required` }
-                    }}
                     control={form.control}
                     name="providerSearch.providerId"
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <FacilityAutocomplete
-                            id="providerSearch.providerId"
-                            required="true"
-                            label="Event reporting facility"
-                            error={error}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                        />
+                    rules={{
+                        required: { value: true, message: `Facility is required` }
+                    }}
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                        <>
+                            <FacilityAutocomplete
+                                id={name}
+                                label="Event reporting facility"
+                                required={true}
+                                placeholder=""
+                                onChange={onChange}
+                                onBlur={onBlur}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
                     )}
                 />
             )}
-
         </>
     );
 };
