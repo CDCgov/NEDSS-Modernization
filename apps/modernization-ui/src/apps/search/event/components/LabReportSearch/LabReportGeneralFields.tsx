@@ -1,5 +1,7 @@
 import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -422,31 +424,60 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 )}
             />
 
-            {watch.providerSearch?.providerType && (
+            {watch.providerSearch?.providerType == 'ORDERING_FACILITY' && (
                 <Controller
                     control={form.control}
-                    name="providerSearch.providerId"
                     rules={{
                         required: { value: true, message: `ID is required` }
-                    }}
+                    }}                       
+                    name="providerSearch.providerId"
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <>
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                data-testid={name}
-                                defaultValue={value}
-                                type="text"
-                                label="ID:"
-                                htmlFor={name}
-                                id={name}
-                                required
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
+                        <FacilityAutocomplete                     
+                            id="providerSearch.providerId"
+                            required="true"
+                            label="Event ordering facility"
+                            error={error}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
                     )}
                 />
             )}
+
+            {watch.providerSearch?.providerType == 'ORDERING_PROVIDER' && (
+                <Controller
+                    control={form.control}
+                    name="providerSearch.providerId"
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <ProviderAutocomplete
+                            id="providerSearch.providerId"
+                            label="Event ordering provider"
+                            onChange={onChange}
+                        />
+                    )}
+                />
+            )}
+
+            {watch.providerSearch?.providerType == 'REPORTING_FACILITY' && (
+                <Controller
+                    rules={{
+                        required: { value: true, message: `ID is required` }
+                    }}
+                    control={form.control}
+                    name="providerSearch.providerId"
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <FacilityAutocomplete
+                            id="providerSearch.providerId"
+                            required="true"
+                            label="Event reporting facility"
+                            error={error}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    )}
+                />
+            )}
+
         </>
     );
 };

@@ -272,30 +272,6 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
 
             <Controller
                 control={form.control}
-                name="providerFacilitySearch.id"
-                render={({ field: { onChange } }) => (
-                    <ProviderAutocomplete
-                        id="providerFacilitySearch.id"
-                        label="Event provider type"
-                        onChange={onChange}
-                    />
-                )}
-            />
-
-            <Controller
-                control={form.control}
-                name="providerFacilitySearch.id"
-                render={({ field: { onChange } }) => (
-                    <FacilityAutocomplete
-                        id="providerFacilitySearch.id"
-                        label="Event facility type"
-                        onChange={(e) => handleFacilityTypeChange(e, onChange)}
-                    />
-                )}
-            />
-
-            <Controller
-                control={form.control}
                 name="providerFacilitySearch.entityType"
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
@@ -314,6 +290,52 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     />
                 )}
             />
+
+            {watch.providerFacilitySearch?.entityType == 'PROVIDER' && (
+                <Controller
+                    control={form.control}
+                    name="providerFacilitySearch.id"
+                    rules={{
+                        required: { value: true, message: `Provider is required` }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <ProviderAutocomplete
+                                id={name}
+                                label="Event Provider type"
+                                onChange={onChange}
+                                required="true"
+                                onBlur={onBlur}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
+                    )}
+                />
+            )}
+
+            {watch.providerFacilitySearch?.entityType == 'FACILITY' && (
+                <Controller
+                    control={form.control}
+                    name="providerFacilitySearch.id"
+                    rules={{
+                        required: { value: true, message: `Facility is required` }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <FacilityAutocomplete
+                                id={name}
+                                label="Event facility type"
+                                placeholder=""
+                                value={value}
+                                onChange={onChange}
+                                required={true}
+                                onBlur={onBlur}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
+                    )}
+                />
+            )}
         </>
     );
 };
