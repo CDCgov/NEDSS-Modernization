@@ -427,10 +427,10 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
             {watch.providerSearch?.providerType == 'ORDERING_FACILITY' && (
                 <Controller
                     control={form.control}
+                    name="providerSearch.providerId"
                     rules={{
                         required: { value: true, message: `ID is required` }
                     }}
-                    name="providerSearch.providerId"
                     render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                         <>
                             <FacilityAutocomplete
