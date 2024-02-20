@@ -37,7 +37,7 @@ class PageRuleMapper implements RowMapper<Rule> {
   public Rule mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     long ruleId = rs.getLong(columns.ruleId());
     long template = rs.getLong(columns.template());
-    String function = rs.getString(columns.function());
+    String function = rs.getString(columns.ruleFunction());
     String description = rs.getString(columns.description());
     String sourceQuestionIdentifier = rs.getString(columns.sourceQuestion());
     String ruleExpression = rs.getString(columns.ruleExpression());
