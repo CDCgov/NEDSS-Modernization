@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Component
 class PageRuleMapper implements RowMapper<Rule> {
-  record Column(int ruleId, int template, int function, int description, int sourceQuestion,
+  record Column(int ruleId, int template, int ruleFunction, int description, int sourceQuestion,
                 int ruleExpression, int sourceValues, int comparator, int targetType, int targetQuestions,
                 int sourceQuestionLabel, int sourceQuestionCodeSet, int sourceQuestionId, int totalCount) {
 
