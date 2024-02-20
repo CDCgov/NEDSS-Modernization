@@ -23,6 +23,13 @@ export const EditValuesetModal = ({ modal, valuesetName, onValuesetChanged }: Pr
     const handleClose = () => {
         modal.current?.toggleModal(undefined, false);
     };
+
+    const handleValuesetUpdated = () => {
+        if (valuesetName) {
+            fetch(valuesetName);
+        }
+    };
+
     return (
         <Modal
             isLarge
@@ -39,6 +46,7 @@ export const EditValuesetModal = ({ modal, valuesetName, onValuesetChanged }: Pr
                         onAccept={onValuesetChanged}
                         onCancel={handleClose}
                         onClose={handleClose}
+                        onValuesetUpdated={handleValuesetUpdated}
                     />
                 ) : (
                     <div className={styles.loadingDisplay}>

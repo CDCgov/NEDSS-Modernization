@@ -78,6 +78,11 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
         editValuesetModalRef.current?.toggleModal();
     };
 
+    const handleValuesetEdited = () => {
+        refresh();
+        editValuesetModalRef.current?.toggleModal();
+    };
+
     useEffect(() => {
         if (response) {
             showAlert({
@@ -115,7 +120,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection }: Prop
             />
             <AddQuestionModal onAddQuestion={handleAddQuestionClose} modal={addQuestionModalRef} />
             <EditValuesetModal
-                onValuesetChanged={refresh}
+                onValuesetChanged={handleValuesetEdited}
                 modal={editValuesetModalRef}
                 valuesetName={currentEditValueset}
             />
