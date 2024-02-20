@@ -23,7 +23,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceValues = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-            Rule.Function.ENABLE,
+            Rule.RuleFunction.ENABLE,
             "TestDescription",
             "INV214",
             true,
@@ -44,7 +44,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV133");
 
         return new CreateRuleRequest(
-            Rule.Function.DATE_COMPARE,
+            Rule.RuleFunction.DATE_COMPARE,
             "'Admission Date (INV132)' must be <= 'Discharge Date (INV133)'.",
             "INV132",
             false,
@@ -73,7 +73,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.ENABLE,
+            Rule.RuleFunction.ENABLE,
             "Enable",
             "DEM113",
             false,
@@ -95,7 +95,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.ENABLE,
+            Rule.RuleFunction.ENABLE,
             "Enable",
             "DEM113",
             false,
@@ -119,7 +119,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = testData();
 
         return new CreateRuleRequest(
-            Rule.Function.DISABLE,
+            Rule.RuleFunction.DISABLE,
             "Disable",
             "INV123",
             false,
@@ -141,7 +141,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.HIDE,
+            Rule.RuleFunction.HIDE,
             "Testing hid Function",
             "DEM113",
             false,
@@ -164,7 +164,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-            Rule.Function.REQUIRE_IF,
+            Rule.RuleFunction.REQUIRE_IF,
             "Require If",
             "DEM113",
             false,
@@ -187,7 +187,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-            Rule.Function.REQUIRE_IF,
+            Rule.RuleFunction.REQUIRE_IF,
             "Require If",
             "DEM113",
             true,
@@ -210,7 +210,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue1, sourceValue2);
 
         return new CreateRuleRequest(
-            Rule.Function.REQUIRE_IF,
+            Rule.RuleFunction.REQUIRE_IF,
             "Require If",
             "DEM113",
             true,
@@ -232,7 +232,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.REQUIRE_IF,
+            Rule.RuleFunction.REQUIRE_IF,
             "Require If",
             "DEM113",
             false,
@@ -253,7 +253,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-            Rule.Function.REQUIRE_IF,
+            Rule.RuleFunction.REQUIRE_IF,
             "require if ",
             "INV123",
             true,
@@ -273,7 +273,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
-            Rule.Function.REQUIRE_IF,
+            Rule.RuleFunction.REQUIRE_IF,
             "Require If",
             "DEM113",
             true,
@@ -292,7 +292,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
-            Rule.Function.HIDE,
+            Rule.RuleFunction.HIDE,
             "Hide",
             "DEM113",
             true,
@@ -311,7 +311,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("INV143");
 
         return new CreateRuleRequest(
-            Rule.Function.ENABLE,
+            Rule.RuleFunction.ENABLE,
             "Enable",
             "DEM113",
             true,
@@ -329,7 +329,7 @@ public class RuleRequestMother {
         List<String> targetIdentifiers = new ArrayList<>();
         targetIdentifiers.add("INV143");
         return new CreateRuleRequest(
-            Rule.Function.DISABLE,
+            Rule.RuleFunction.DISABLE,
             "Disable",
             "DEM113",
             true,
@@ -351,7 +351,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             "Unhide",
             "DEM113",
             false,
@@ -373,7 +373,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             "Unhide",
             "DEM113",
             false,
@@ -395,7 +395,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             "Unhide",
             "DEM113",
             false,
@@ -417,7 +417,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             "Unhide",
             "DEM113",
             false,
@@ -439,7 +439,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.HIDE,
+            Rule.RuleFunction.HIDE,
             "Hide",
             "DEM113",
             false,
@@ -461,7 +461,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = Arrays.asList(sourceValue);
 
         return new CreateRuleRequest(
-            Rule.Function.HIDE,
+            Rule.RuleFunction.HIDE,
             "Hide",
             "DEM113",
             false,
@@ -482,7 +482,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             "Unhide",
             "INV123",
             true,
@@ -503,7 +503,7 @@ public class RuleRequestMother {
         targetIdentifiers.add("test234");
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             "Unhide",
             "INV123",
             true,
@@ -525,7 +525,7 @@ public class RuleRequestMother {
         List<Rule.SourceValue> sourceDetails = testData();
 
         return new CreateRuleRequest(
-            Rule.Function.UNHIDE,
+            Rule.RuleFunction.UNHIDE,
             null,
             null,
             false,

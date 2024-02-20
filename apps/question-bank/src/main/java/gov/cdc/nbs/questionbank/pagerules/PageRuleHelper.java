@@ -43,22 +43,22 @@ public class PageRuleHelper {
         TargetValuesHelper targetValuesHelper = targetValuesHelper(request);
         RuleExpressionHelper expressionValues = null;
 
-        if (DATE_COMPARE.equals(request.function().getValue())) {
+        if (DATE_COMPARE.equals(request.ruleFunction().getValue())) {
             expressionValues = dateCompareFunction(request, sourceValuesHelper, targetValuesHelper,
                 ruleMetadata);
         }
-        if (DISABLE.equals(request.function().getValue()) || ENABLE.equals(request.function().getValue())) {
+        if (DISABLE.equals(request.ruleFunction().getValue()) || ENABLE.equals(request.ruleFunction().getValue())) {
             expressionValues = enableOrDisableFunction(request, sourceValuesHelper, targetValuesHelper,
                 ruleMetadata);
         }
-        if (HIDE.equals(request.function().getValue())) {
+        if (HIDE.equals(request.ruleFunction().getValue())) {
             expressionValues = hideFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
-        if (REQUIRE_IF.equals(request.function().getValue())) {
+        if (REQUIRE_IF.equals(request.ruleFunction().getValue())) {
             expressionValues = requireIfFunction(request, sourceValuesHelper, targetValuesHelper,
                 ruleMetadata);
         }
-        if (UNHIDE.equals(request.function().getValue())) {
+        if (UNHIDE.equals(request.ruleFunction().getValue())) {
             expressionValues =
                 unHideFunction(request, sourceValuesHelper, targetValuesHelper, ruleMetadata);
         }
@@ -203,7 +203,7 @@ public class PageRuleHelper {
         List<String> targetTextList = targetValuesHelper.targetTextList();
         String sourceIds = sourceValuesHelper.sourceValueIds();
         String sourceValueText = sourceValuesHelper.sourceValueText();
-        String indicator = ENABLE.equals(request.function().getValue()) ? "E" : "D";
+        String indicator = ENABLE.equals(request.ruleFunction().getValue()) ? "E" : "D";
 
         String commonErrMsgForAnySource = sourceText.concat(" ")
             .concat(" ")
@@ -451,13 +451,13 @@ public class PageRuleHelper {
 
         if ("Question" .equalsIgnoreCase(request.targetType().toString())) {
             for (String targetId : targetQuestionIdentifiers) {
-                if (ENABLE.equalsIgnoreCase(request.function().getValue()) && Objects.equals(request.comparator().getValue(),
+                if (ENABLE.equalsIgnoreCase(request.ruleFunction().getValue()) && Objects.equals(request.comparator().getValue(),
                     "=")) {
                     stringBuilder.append(PG_ENABLE_ELEMENT).append(targetId).append(PARANTHESIS).append(" }");
                     stringBuilder.append(" else { \n").append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS)
                         .append(" }");
                 }
-                if (!Objects.equals(ENABLE, request.function().getValue()) && Objects.equals(request.comparator().getValue(),
+                if (!Objects.equals(ENABLE, request.ruleFunction().getValue()) && Objects.equals(request.comparator().getValue(),
                     "=")) {
                     stringBuilder.append(PG_DISABLE_ELEMENT).append(targetId).append(PARANTHESIS);
                     stringBuilder.append(" else { \n").append(PG_ENABLE_ELEMENT).append(targetId).append(PARANTHESIS)
@@ -681,7 +681,7 @@ public class PageRuleHelper {
         if ("Question" .equalsIgnoreCase(request.targetType().toString())) {
             for (String targetId : targetQuestionIdentifiers) {
                 targetId += suffix;
-                if (Objects.equals(request.function().getValue(), UNHIDE) && Objects.equals(request.comparator().getValue(),
+                if (Objects.equals(request.ruleFunction().getValue(), UNHIDE) && Objects.equals(request.comparator().getValue(),
                     "=")) {
                     stringBuilder.append("pgUnhideElement('").append(targetId).append(PARANTHESIS);
                     stringBuilder.append(ELSE);
@@ -704,13 +704,13 @@ public class PageRuleHelper {
         if ("Subsection" .equalsIgnoreCase(request.targetType().toString())) {
             for (String targetId : targetQuestionIdentifiers) {
                 targetId += suffix;
-                if (Objects.equals(request.function().getValue(), UNHIDE) && Objects.equals(request.comparator().getValue(),
+                if (Objects.equals(request.ruleFunction().getValue(), UNHIDE) && Objects.equals(request.comparator().getValue(),
                     "=")) {
                     stringBuilder.append("pgSubSectionShown('").append(targetId).append(PARANTHESIS);
                 } else {
                     stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
                 }
-                if (!Objects.equals(request.function().getValue(), UNHIDE) && Objects.equals(request.comparator().getValue(),
+                if (!Objects.equals(request.ruleFunction().getValue(), UNHIDE) && Objects.equals(request.comparator().getValue(),
                     "=")) {
                     stringBuilder.append("pgSubSectionHidden('").append(targetId).append(PARANTHESIS);
                 } else {

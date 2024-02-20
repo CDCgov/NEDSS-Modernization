@@ -82,7 +82,7 @@ class PageRuleFinderTest {
   Rule getRuleResponse() {
     return new Rule(100,
         200l,
-        Rule.Function.ENABLE,
+        Rule.RuleFunction.ENABLE,
         "testDescription",
         null,
         true,

@@ -35,6 +35,7 @@ const PageInformation = () => {
             setTotalResults(rep?.totalElements ?? 0);
         });
     };
+
     const fetchPageInfo = () => {
         PageInformationService.find({
             authorization: authorization(),
@@ -83,13 +84,15 @@ const PageInformation = () => {
             </li>
         </ul>
     );
+
     const renderBlock = (header: string, desc: string = '-') => (
         <div className={styles.lineBlock}>
             <div className={styles.detailHeader}>{header}</div>
             <div className={styles.smallBodyText}>{desc || '-'}</div>
         </div>
     );
-    const isEditable = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status);
+
+    const isEditable = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status);
 
     return (
         <section className={styles.information}>

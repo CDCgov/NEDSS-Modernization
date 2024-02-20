@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import './BusinessRulesLibraryTable.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { ViewRuleResponse } from 'apps/page-builder/generated';
+import { Rule } from 'apps/page-builder/generated';
+import React from 'react';
 
 export enum Column {
     SourceFields = 'Source Field',
@@ -30,44 +31,25 @@ const tableColumns = [
     { name: Column.ID, sortable: true }
 ];
 
-type TargetQuestion = {
-    label: string;
-    id: string;
-};
-
-type Rules = {
-    ruleId?: number;
-    templateUid?: number;
-    ruleFunction?: string;
-    ruleDescription?: string;
-    sourceIdentifier?: string;
-    sourceValue?: any;
-    comparator?: string;
-    targetType?: string;
-    errorMsgText?: string;
-    targetValueIdentifier?: any;
-    targetQuestions?: TargetQuestion[];
-};
-
 type Props = {
-    summaries: ViewRuleResponse[];
+    summaries: Rule[];
     pages?: any;
     qtnModalRef: RefObject<ModalRef>;
 };
 
 export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
-    const [selectedQuestion, setSelectedQuestion] = useState<Rules>({});
+    const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
     const { page } = useGetPageDetails();
 
     const mapLogic = ({ comparator, ruleFunction }: any) => {
-        if (ruleFunction === 'Date Compare') {
+        if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             switch (comparator) {
                 case '<':
                     return 'Less than';
                 case '<=':
-                    return 'Less or equal to';
+                    return 'Less than or equal to';
                 case '>=':
                     return 'Greater than';
                 default:
@@ -85,17 +67,28 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
 
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
-    const asTableRow = (rule: Rules): TableBody => ({
-        id: rule.templateUid,
+    const asTableRow = (rule: Rule): TableBody => ({
+        key: rule.id,
+        id: rule.template.toString(),
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`/page-builder/pages/${page?.id}/${rule.ruleId}`}>{rule?.ruleDescription}</Link>
+                title: <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>{rule.sourceQuestion.label}</Link>
             },
             { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
             {
                 id: 3,
-                title: <div>{rule?.sourceValue?.join(' ')}</div> || null
+                title:
+                    (
+                        <div>
+                            {rule?.sourceValues?.map((value, index) => (
+                                <React.Fragment key={index}>
+                                    <span>{value}</span>
+                                    <br />
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    ) || null
             },
             {
                 id: 4,
@@ -106,24 +99,24 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 title:
                     (
                         <div>
-                            {rule?.targetQuestions?.map((question) => (
-                                <>
-                                    <span>{question.label}</span>
+                            {rule.targets?.map((target, index) => (
+                                <React.Fragment key={index}>
+                                    <span>{target.label}</span>
                                     <br />
-                                </>
+                                </React.Fragment>
                             ))}
                         </div>
                     ) || null
             },
             {
                 id: 6,
-                title: <div>{rule?.ruleId}</div> || null
+                title: <div>{rule.id}</div> || null
             }
         ]
     });
 
-    // @ts-ignore
-    const asTableRows = (pages: ViewRuleResponse[] | undefined): TableBody[] => pages?.map(asTableRow) || [];
+    const asTableRows = (rules: Rule[] | undefined): TableBody[] => rules?.map(asTableRow) || [];
+
     /*
      * Converts header and Direction to API compatible sort string such as "name,asc"
      */
@@ -169,7 +162,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 className="cancel-btn"
                 type="button"
                 modalRef={qtnModalRef}
-                onClick={() => setSelectedQuestion({})}>
+                onClick={() => setSelectedQuestion([])}>
                 Cancel
             </ModalToggleButton>
             <ModalToggleButton
@@ -238,7 +231,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 rangeSelector={true}
                 isLoading={isLoading}
             />
-            {summaries.length === 0 && dataNotAvailableElement}
+            {summaries.length === 0 && !isLoading && dataNotAvailableElement}
             {summaries.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
