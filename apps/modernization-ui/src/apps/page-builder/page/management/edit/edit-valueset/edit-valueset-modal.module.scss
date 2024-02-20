@@ -1,0 +1,20 @@
+.modal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .loadingDisplay {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        .spinnerContainer {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            div {
+                height: 100%;
+            }
+        }
+    }
+}

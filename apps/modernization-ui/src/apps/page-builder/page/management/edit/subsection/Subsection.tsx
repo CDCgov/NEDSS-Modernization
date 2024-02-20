@@ -18,6 +18,7 @@ type Props = {
     onAddQuestion: () => void;
     onDeleteSubsection: (subsection: PagesSubSection) => void;
     onEditSubsection: (subsecition: PagesSubSection) => void;
+    onEditValueset: (valuesetName: string) => void;
 };
 
 const hyperlinkID = 1003;
@@ -33,7 +34,8 @@ export const Subsection = ({
     onAddQuestion,
     onEditQuestion,
     onDeleteSubsection,
-    onEditSubsection
+    onEditSubsection,
+    onEditValueset
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
@@ -92,6 +94,7 @@ export const Subsection = ({
                             onEditQuestion={onEditQuestion}
                             onDeleteQuestion={handleDeleteQuestion}
                             onRequiredChange={handleRequiredChange}
+                            onEditValueset={onEditValueset}
                         />
                     ))}
                 </>

@@ -26,9 +26,17 @@ type Props = {
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteSection: () => void;
     onDeleteStatus: () => void;
+    onEditValueset: (valuesetName: string) => void;
 };
 
-export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSection, onDeleteStatus }: Props) => {
+export const Section = ({
+    section,
+    onAddQuestion,
+    onEditQuestion,
+    onDeleteSection,
+    onDeleteStatus,
+    onEditValueset
+}: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
     const { page, refresh, selected } = usePageManagement();
@@ -134,6 +142,7 @@ export const Section = ({ section, onAddQuestion, onEditQuestion, onDeleteSectio
                             onAddQuestion={() => onAddQuestion(subsection.id)}
                             onDeleteSubsection={handleDeleteSubsection}
                             onEditSubsection={handleEditSubsection}
+                            onEditValueset={onEditValueset}
                         />
                     ))}
                 </div>

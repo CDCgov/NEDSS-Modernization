@@ -1,5 +1,5 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import { Valueset } from 'apps/page-builder/generated';
+import { Concept, Valueset } from 'apps/page-builder/generated';
 import { ConceptSort, useFindConcepts } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
 import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
@@ -24,11 +24,26 @@ export const EditValueset = (props: Props) => {
 };
 
 const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel }: Props) => {
-    const [state, setState] = useState<'view' | 'create'>('view');
+    const [state, setState] = useState<'view' | 'create' | 'edit'>('view');
     const { response, isLoading, search } = useFindConcepts();
     const { page, ready, firstPage, reload } = usePage();
 
     const [sort, setSort] = useState<ConceptSort | undefined>(undefined);
+
+    const handleClose = () => {
+        setState('view');
+        onClose();
+    };
+
+    const handleCancel = () => {
+        setState('view');
+        onCancel();
+    };
+
+    const handleAccept = () => {
+        setState('view');
+        onAccept();
+    };
 
     useEffect(() => {
         search({ codeSetNm: valueset.code });
@@ -60,54 +75,24 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel }: Props) =
 
     return (
         <div className={styles.editValueset}>
-            <CloseableHeader title={<div className={styles.addValuesetHeader}>Add value set</div>} onClose={onClose} />
+            <CloseableHeader
+                title={<div className={styles.addValuesetHeader}>Edit value set</div>}
+                onClose={handleClose}
+            />
             <div className={styles.content}>
-                <div className={styles.sectionText}>Value set details</div>
-                <div className={styles.valuesetInfo}>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET TYPE</div>
-                        <div>{valueset.type}</div>
-                    </div>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET CODE</div>
-                        <div>{valueset.code}</div>
-                    </div>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET NAME</div>
-                        <div>{valueset.name}</div>
-                    </div>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET DESCRIPTION</div>
-                        <div>{valueset.description}</div>
-                    </div>
-                </div>
                 {state === 'view' && (
                     <>
-                        <div className={styles.sectionText}>Value set concepts</div>
-                        <ConceptTable loading={isLoading} concepts={response?.content ?? []} onSort={setSort} />
-                        {response?.content?.length === 0 ? (
-                            <div className={styles.noConceptsSection}>
-                                <div className={styles.noConceptText}>
-                                    No value set concept is displayed. Please click the button below to add a new value
-                                    set concept.
-                                </div>
-                                <div>
-                                    <Button type="button" outline onClick={() => setState('create')}>
-                                        Add new concept
-                                    </Button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className={styles.addConceptLinkSection}>
-                                <button className={styles.addConceptButton} onClick={() => setState('create')}>
-                                    <Icon.Add size={3} /> Add new concept
-                                </button>
-                            </div>
-                        )}
+                        <ValuesetDetails valueset={valueset} onEdit={() => setState('edit')} />
+                        <ValuesetContent
+                            isLoading={isLoading}
+                            concepts={response?.content ?? []}
+                            onSort={setSort}
+                            onAddNew={() => setState('create')}
+                        />
                     </>
                 )}
                 {state === 'create' && (
-                    <CreateConcept
+                    <CreateConceptContent
                         valuesetName={valueset.code}
                         onCancel={() => setState('view')}
                         onCreated={() => {
@@ -118,16 +103,91 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel }: Props) =
                 )}
             </div>
             <ButtonBar>
-                <Button disabled={state === 'create'} onClick={onCancel} type="button" outline>
+                <Button disabled={state === 'create'} onClick={handleCancel} type="button" outline>
                     Cancel
                 </Button>
                 <Button
-                    disabled={state === 'create' || response?.content?.length == 0}
-                    onClick={onAccept}
+                    disabled={state !== 'view' || response?.content?.length == 0}
+                    onClick={handleAccept}
                     type="button">
                     Continue
                 </Button>
             </ButtonBar>
         </div>
     );
+};
+
+type ValuesetDetailsProps = {
+    onEdit: () => void;
+    valueset: Valueset;
+};
+const ValuesetDetails = ({ valueset, onEdit }: ValuesetDetailsProps) => {
+    return (
+        <>
+            <div className={styles.detailsHeader}>
+                <div className={styles.sectionText}>Value set details</div>
+                <Icon.Edit size={3} onClick={onEdit} />
+            </div>
+            <div className={styles.valuesetInfo}>
+                <div className={styles.data}>
+                    <div className={styles.title}>VALUE SET TYPE</div>
+                    <div>{valueset.type}</div>
+                </div>
+                <div className={styles.data}>
+                    <div className={styles.title}>VALUE SET CODE</div>
+                    <div>{valueset.code}</div>
+                </div>
+                <div className={styles.data}>
+                    <div className={styles.title}>VALUE SET NAME</div>
+                    <div>{valueset.name}</div>
+                </div>
+                <div className={styles.data}>
+                    <div className={styles.title}>VALUE SET DESCRIPTION</div>
+                    <div>{valueset.description}</div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+type ValuesetContentProps = {
+    isLoading: boolean;
+    concepts: Concept[];
+    onSort: (sort: ConceptSort | undefined) => void;
+    onAddNew: () => void;
+};
+const ValuesetContent = ({ isLoading, concepts, onSort, onAddNew }: ValuesetContentProps) => {
+    return (
+        <>
+            <div className={styles.sectionText}>Value set concepts</div>
+            <ConceptTable loading={isLoading} concepts={concepts} onSort={onSort} />
+            {concepts.length === 0 ? (
+                <div className={styles.noConceptsSection}>
+                    <div className={styles.noConceptText}>
+                        No value set concept is displayed. Please click the button below to add a new value set concept.
+                    </div>
+                    <div>
+                        <Button type="button" outline onClick={onAddNew}>
+                            Add new concept
+                        </Button>
+                    </div>
+                </div>
+            ) : (
+                <div className={styles.addConceptLinkSection}>
+                    <button className={styles.addConceptButton} onClick={onAddNew}>
+                        <Icon.Add size={3} /> Add new concept
+                    </button>
+                </div>
+            )}
+        </>
+    );
+};
+
+type CreateConceptProps = {
+    valuesetName: string;
+    onCreated: () => void;
+    onCancel: () => void;
+};
+const CreateConceptContent = ({ valuesetName, onCreated, onCancel }: CreateConceptProps) => {
+    return <CreateConcept valuesetName={valuesetName} onCancel={onCancel} onCreated={onCreated} />;
 };
