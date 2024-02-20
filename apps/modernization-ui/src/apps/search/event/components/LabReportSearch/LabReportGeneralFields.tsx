@@ -1,5 +1,7 @@
 import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -422,25 +424,65 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 )}
             />
 
-            {watch.providerSearch?.providerType && (
+            {watch.providerSearch?.providerType == 'ORDERING_FACILITY' && (
                 <Controller
                     control={form.control}
                     name="providerSearch.providerId"
                     rules={{
                         required: { value: true, message: `ID is required` }
                     }}
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                         <>
-                            <Input
+                            <FacilityAutocomplete
+                                id={name}
+                                label="Event ordering facility"
+                                required={true}
+                                placeholder=""
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                data-testid={name}
-                                defaultValue={value}
-                                type="text"
-                                label="ID:"
-                                htmlFor={name}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
+                    )}
+                />
+            )}
+
+            {watch.providerSearch?.providerType == 'ORDERING_PROVIDER' && (
+                <Controller
+                    control={form.control}
+                    name="providerSearch.providerId"
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                        <>
+                            <ProviderAutocomplete
                                 id={name}
-                                required
+                                label="Event ordering provider"
+                                required={true}
+                                placeholder=""
+                                onChange={onChange}
+                                onBlur={onBlur}
+                            />
+                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                        </>
+                    )}
+                />
+            )}
+
+            {watch.providerSearch?.providerType == 'REPORTING_FACILITY' && (
+                <Controller
+                    control={form.control}
+                    name="providerSearch.providerId"
+                    rules={{
+                        required: { value: true, message: `Facility is required` }
+                    }}
+                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                        <>
+                            <FacilityAutocomplete
+                                id={name}
+                                label="Event reporting facility"
+                                required={true}
+                                placeholder=""
+                                onChange={onChange}
+                                onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                         </>
