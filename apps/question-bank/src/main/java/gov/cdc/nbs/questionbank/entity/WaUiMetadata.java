@@ -408,8 +408,8 @@ public class WaUiMetadata {
     } else {
       throw new AddQuestionException("Failed to determine question type");
     }
-    if(command.question().getRdbTableNm() !=null) {
-      this.waRdbMetadatum = new WaRdbMetadatum(page, this, command);
+    if (command.question().getRdbTableNm() != null) {
+      this.waRdbMetadatum = new WaRdbMetadata(page, this, command);
     }
 
     // Audit info
