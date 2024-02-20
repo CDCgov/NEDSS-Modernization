@@ -49,7 +49,7 @@ const PageInformation = () => {
     useEffect(() => {
         fetchPageInfo();
         fetchPageHistory();
-    }, []);
+    }, [page]);
 
     const handleNext = (page: number) => {
         setCurrentPage(page);

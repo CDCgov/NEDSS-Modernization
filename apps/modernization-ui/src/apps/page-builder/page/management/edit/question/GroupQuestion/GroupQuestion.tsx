@@ -3,7 +3,7 @@ import styles from './group-question.module.scss';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Form, ModalRef } from '@trussworks/react-uswds';
 import { RefObject, useState } from 'react';
-import { ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalToggleButton } from '@trussworks/react-uswds';
 import { RepeatingBlock } from './RepeatingBlock';
 import { SubsectionDetails } from './SubsectionDetails';
 import { SubSectionControllerService } from 'apps/page-builder/generated';
@@ -58,6 +58,7 @@ export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
                     id: data.id
                 }
             }).then(() => {
+                modalRef.current?.toggleModal();
                 showAlert({
                     type: 'success',
                     header: 'Grouped',
@@ -66,6 +67,7 @@ export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
                 refresh();
             });
         } catch (error) {
+            modalRef.current?.toggleModal();
             if (error instanceof Error) {
                 console.error(error);
                 showAlert({
@@ -131,14 +133,9 @@ export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
                         <ModalToggleButton modalRef={modalRef} onClick={() => reset()} type="button" outline closer>
                             Cancel
                         </ModalToggleButton>
-                        <ModalToggleButton
-                            modalRef={modalRef}
-                            onClick={onSubmit}
-                            type="button"
-                            disabled={!valid}
-                            closer>
+                        <Button onClick={onSubmit} type="button" disabled={!valid}>
                             Submit
-                        </ModalToggleButton>
+                        </Button>
                     </div>
                 </Form>
             </FormProvider>

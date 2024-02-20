@@ -20,20 +20,7 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                 <Breadcrumb start="/page-builder/pages" currentPage={name}>
                     Page library
                 </Breadcrumb>
-                <span
-                    className={classNames(styles.mode, {
-                        [styles.draft]: mode === 'Draft',
-                        [styles.edit]: mode === 'Edit',
-                        [styles.published]: mode === 'Published'
-                    })}>
-                    {mode === 'Published' ? (
-                        <>Previewing: Published</>
-                    ) : mode === 'Draft' ? (
-                        <>Previewing: Initial Draft</>
-                    ) : (
-                        <>Previewing: Published with Draft</>
-                    )}
-                </span>
+                <span className={classNames(styles.mode)}>PREVIEWING: {mode}</span>
             </div>
             <div className={styles.content}>{children}</div>
         </section>

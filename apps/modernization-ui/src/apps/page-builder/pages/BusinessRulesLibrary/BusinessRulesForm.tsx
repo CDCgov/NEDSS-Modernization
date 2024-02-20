@@ -239,6 +239,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                                 onBlur={onBlur}
                                 options={logicList}
                                 error={error?.message}
+                                disabled={form.watch('anySourceValue')}
                                 required
                             />
                         </Grid>
@@ -266,6 +267,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                                             handleSourceValueChange(value);
                                         }}
                                         options={sourceValueList}
+                                        disabled={form.watch('anySourceValue')}
                                     />
                                 </div>
                             </Grid>
