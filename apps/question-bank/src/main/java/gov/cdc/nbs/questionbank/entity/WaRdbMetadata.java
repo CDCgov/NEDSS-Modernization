@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -16,7 +15,6 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
 public class WaRdbMetadata {
-
   public static final String ACTIVE = "Active";
 
   @Id
@@ -82,7 +80,7 @@ public class WaRdbMetadata {
   }
 
   public WaRdbMetadata() {
-    this.recordStatusCd = "Active";
+    this.recordStatusCd = ACTIVE;
   }
 
   public WaRdbMetadata(WaTemplate template, WaUiMetadata waUiMetadata, Instant addedOn, long addedBy) {
