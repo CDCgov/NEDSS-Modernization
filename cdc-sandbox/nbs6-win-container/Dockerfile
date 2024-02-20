@@ -1,4 +1,6 @@
 # This Dockerfile is used to build NBS 6.0 Image locally and pushed to a ECR Repository
+# Run command docker run -p 7001:7001 -e "GITHUB_RELEASE_TAG=latest" -e "DATABASE_ENDPOINT=<ENDPOINT>" -t <CONTAINER-NAME>
+# DATABASE_ENDPOINT provided on RUN to provided Database Endpoint
 
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
@@ -6,12 +8,6 @@ FROM mcr.microsoft.com/windows/servercore:ltsc2019
 ### Setting Docker Build Arguments ###
 # NBS Zip File to download from S3
 ARG S3_ZIP_NAME 
-# GITHUB URL to download Release Package from
-ARG GITHUB_RELEASE_TAG
-# Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository
-ARG GITHUB_ZIP_FILE_NAME
-# Full user guide name with file format to be configured in NBS6 container"
-ARG USER_GUIDE_DOC_NAME
 
 # Run Shell as Powershell
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
@@ -20,10 +16,14 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
+    # GITHUB_RELEASE_TAG provided on RUN to create URL and download Release Package from. Default is always latest or Null
+    GITHUB_RELEASE_TAG="" \
+    # Userguide file name 
     FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
-    GITHUB_RELEASE_TAG=$GITHUB_RELEASE_TAG  \
-    GITHUB_ZIP_FILE_NAME=$GITHUB_ZIP_FILE_NAME  \
-    USER_GUIDE_DOC_NAME=$USER_GUIDE_DOC_NAME
+    # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
+    GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip"   \
+    # Full user guide name with file format to be configured in NBS6 container". <version> will be replaced in entrypoint script.
+    USER_GUIDE_DOC_NAME="NBS <version> User Guide.docx"
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \
@@ -38,11 +38,18 @@ COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
 #Unzip and Wildfly Zip
 RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
 
-# Replace datasources in standalone.xml file
+# Configure Task Schedular
+COPY task-scheduler.ps1 task-scheduler.ps1
+RUN C:\nbs\task-scheduler.ps1
+
+# Setup Entrypoint Script
 COPY entrypoint.ps1 entrypoint.ps1
 
 # Expose necessary ports
 EXPOSE 7001
+
+# ContainerUser used for running NBS6, following best practacies
+USER ContainerUser
 
 # Start WildFly
 CMD ["powershell","C:\\nbs\\entrypoint.ps1"]
