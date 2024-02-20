@@ -7,7 +7,14 @@ import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
 import { authorization } from 'authorization';
-import { Concept, CreateRuleRequest, Rule, SourceQuestion, Target } from 'apps/page-builder/generated';
+import {
+    Concept,
+    ConceptControllerService,
+    CreateRuleRequest,
+    Rule,
+    SourceQuestion,
+    Target
+} from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -28,7 +35,7 @@ interface Props {
     sourceValues?: string[];
 }
 
-const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
+const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
@@ -43,7 +50,10 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
     );
 
     const fetchSourceValueSets = async (codeSetNm: string) => {
-        const content: Concept[] = await useConceptAPI(authorization(), codeSetNm);
+        const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
+            authorization: authorization(),
+            codeSetNm
+        });
         const list = content?.map((src: any) => ({ name: src.display, value: src.conceptCode }));
         setSourceValueList(list);
 
@@ -63,7 +73,6 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
-        console.log('data fetching source', data);
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', data[0].name);
@@ -81,15 +90,6 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
         }
     }, []);
 
-    useEffect(() => {
-        if (targets?.length) {
-            // const value = targets.map((val) => val.targetIdentifier || '');
-            // const text = targets.map((val) => val.label || '');
-            // form.setValue('targetIdentifiers', value);
-            // form.setValue('targetValueText', text);
-        }
-    }, []);
-
     const targetValueIdentifier = form.watch('targetIdentifiers') || [];
     const isTargetQuestionSelected = targetQuestions.length || targetValueIdentifier.length;
 
@@ -98,6 +98,7 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
         const logic = form.watch('comparator');
         const sourceValues = form.watch('sourceValues');
         const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+
         if (selectedSource.length && targetQuestions.length && logic) {
             const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
             description = `${sourceDescription} ${logic} ${sourceValueDescription} ${form.watch(
@@ -162,8 +163,6 @@ const BusinessRulesForm = ({ targets, question, sourceValues }: Props) => {
         form.setValue('sourceValues', []);
         sourceModalRef.current?.toggleModal(undefined, true);
     };
-
-    console.log('sourcevaluelist', sourceValueList);
 
     return (
         <>

@@ -10,6 +10,7 @@ import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import './BusinessRulesLibraryTable.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Rule } from 'apps/page-builder/generated';
+import React from 'react';
 
 export enum Column {
     SourceFields = 'Source Field',
@@ -46,20 +47,20 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             switch (comparator) {
                 case '<':
-                    return Rule.comparator.LESS_THAN;
+                    return 'Less than';
                 case '<=':
-                    return Rule.comparator.LESS_THAN_OR_EQUAL_TO;
+                    return 'Less than or equal to';
                 case '>=':
-                    return Rule.comparator.GREATER_THAN;
+                    return 'Greater than';
                 default:
-                    return Rule.comparator.GREATER_THAN;
+                    return 'Greater than';
             }
         } else {
             switch (comparator) {
                 case '=':
-                    return Rule.comparator.EQUAL_TO;
+                    return 'Equal to';
                 default:
-                    return Rule.comparator.NOT_EQUAL_TO;
+                    return 'Not equal to';
             }
         }
     };
@@ -67,6 +68,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
     const asTableRow = (rule: Rule): TableBody => ({
+        key: rule.id,
         id: rule.template.toString(),
         tableDetails: [
             {
@@ -79,11 +81,11 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 title:
                     (
                         <div>
-                            {rule?.sourceValues?.map((value) => (
-                                <>
+                            {rule?.sourceValues?.map((value, index) => (
+                                <React.Fragment key={index}>
                                     <span>{value}</span>
                                     <br />
-                                </>
+                                </React.Fragment>
                             ))}
                         </div>
                     ) || null
@@ -97,11 +99,11 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 title:
                     (
                         <div>
-                            {rule.targets?.map((target) => (
-                                <>
+                            {rule.targets?.map((target, index) => (
+                                <React.Fragment key={index}>
                                     <span>{target.label}</span>
                                     <br />
-                                </>
+                                </React.Fragment>
                             ))}
                         </div>
                     ) || null

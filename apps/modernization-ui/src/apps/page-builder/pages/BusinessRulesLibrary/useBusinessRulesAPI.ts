@@ -15,7 +15,7 @@ export const fetchBusinessRules = (
             id: pageId,
             page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
             size: pageSize,
-            sort
+            sort: ''
         })
             .then((response: any) => {
                 return response || [];

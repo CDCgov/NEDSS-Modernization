@@ -47,7 +47,7 @@ const AddBusinessRule = () => {
                     'targetValueText',
                     resp.targets?.map((target) => target.label || '')
                 );
-                form.setValue('targetType', resp.targetType);
+                form.setValue('targetType', resp.targetType || Rule.targetType.QUESTION);
 
                 setSelectedFieldType(resp.ruleFunction);
                 setTargets(resp.targets || []);
@@ -82,7 +82,7 @@ const AddBusinessRule = () => {
     });
 
     const handleCancel = () => {
-        navigate('../');
+        navigate('../business-rules');
     };
 
     const handleDeleteRule = () => {
@@ -143,17 +143,20 @@ const AddBusinessRule = () => {
                                     </Grid>
                                     <Grid col={9}>
                                         {ruleId ? (
-                                            <label>{ruleFunction}</label>
+                                            <label>
+                                                {fieldTypeTab.find((tab) => tab.value === ruleFunction)?.display ||
+                                                    'Enable'}
+                                            </label>
                                         ) : (
                                             <ButtonGroup type="segmented">
                                                 {fieldTypeTab.map((field, index) => (
                                                     <Button
                                                         key={index}
                                                         type="button"
-                                                        outline={field.name !== selectedFieldType}
+                                                        outline={field.value !== selectedFieldType}
                                                         onClick={() => {
                                                             setSelectedFieldType(field.value);
-                                                            form.setValue('ruleFunction', field.name);
+                                                            form.setValue('ruleFunction', field.value);
                                                         }}>
                                                         {field.display}
                                                     </Button>
