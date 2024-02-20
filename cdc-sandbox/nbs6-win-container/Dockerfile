@@ -38,11 +38,18 @@ COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
 #Unzip and Wildfly Zip
 RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
 
-# Replace datasources in standalone.xml file
+# Configure Task Schedular
+COPY task-scheduler.ps1 task-scheduler.ps1
+RUN C:\nbs\task-scheduler.ps1
+
+# Setup Entrypoint Script
 COPY entrypoint.ps1 entrypoint.ps1
 
 # Expose necessary ports
 EXPOSE 7001
+
+# ContainerUser used for running NBS6, following best practacies
+USER ContainerUser
 
 # Start WildFly
 CMD ["powershell","C:\\nbs\\entrypoint.ps1"]
