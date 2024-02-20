@@ -48,7 +48,7 @@ const PageInformation = () => {
     useEffect(() => {
         fetchPageInfo();
         fetchPageHistory();
-    }, []);
+    }, [page]);
 
     const handleNext = (page: number) => {
         setCurrentPage(page);
@@ -89,7 +89,7 @@ const PageInformation = () => {
             <div className={styles.smallBodyText}>{desc || '-'}</div>
         </div>
     );
-    const isEditable = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status);
+    const isEditable = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status);
 
     return (
         <section className={styles.information}>
