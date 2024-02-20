@@ -56,7 +56,7 @@ class PageRuleMapperTest {
   private void validate(Rule response) {
     assertEquals(100l, response.id());
     assertEquals(123l, response.template());
-    assertEquals("ENABLE", response.function().toString());
+    assertEquals("ENABLE", response.ruleFunction().toString());
     assertEquals("description", response.description());
     assertEquals("test456", response.sourceQuestion().questionIdentifier());
     assertEquals("label123", response.sourceQuestion().label());

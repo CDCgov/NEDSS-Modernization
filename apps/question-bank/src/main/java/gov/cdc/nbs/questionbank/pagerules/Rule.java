@@ -7,7 +7,7 @@ import java.util.List;
 public record Rule(
     @ApiModelProperty(required = true) long id,
     @ApiModelProperty(required = true) long template,
-    @ApiModelProperty(required = true) Function function,
+    @ApiModelProperty(required = true) RuleFunction ruleFunction,
     String description,
     @ApiModelProperty(required = true) SourceQuestion sourceQuestion,
     @ApiModelProperty(required = true) boolean anySourceValue,
@@ -18,7 +18,7 @@ public record Rule(
 ) {
 
   public record CreateRuleRequest(
-      @ApiModelProperty(required = true) Function function,
+      @ApiModelProperty(required = true) RuleFunction ruleFunction,
       String description,
       @ApiModelProperty(required = true) String sourceIdentifier,
       @ApiModelProperty(required = true) boolean anySourceValue,
@@ -43,7 +43,7 @@ public record Rule(
   }
 
 
-  public enum Function {
+  public enum RuleFunction {
     DATE_COMPARE("Date Compare"),
     DISABLE("Disable"),
     ENABLE("Enable"),
@@ -52,7 +52,7 @@ public record Rule(
     UNHIDE("Unhide");
     private final String value;
 
-    Function(String value) {
+    RuleFunction(String value) {
       this.value = value;
     }
 

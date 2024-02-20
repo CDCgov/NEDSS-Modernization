@@ -127,8 +127,8 @@ public class PageRuleSteps {
     switch (property.toLowerCase()) {
       case "rule description" -> this.detailResponse.active()
           .andExpect(jsonPath("$.description", is(value)));
-      case "function" -> this.detailResponse.active()
-          .andExpect(jsonPath("$.function", is(value)));
+      case "ruleFunction" -> this.detailResponse.active()
+          .andExpect(jsonPath("$.ruleFunction", is(value)));
       case "comparator" -> this.detailResponse.active()
           .andExpect(jsonPath("$.comparator", is(value)));
       case "target type" -> this.detailResponse.active()
