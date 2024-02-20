@@ -141,7 +141,14 @@ export const PageDetailsField = ({
                 render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <>
                         <Label htmlFor={name}>Page description</Label>
-                        <Textarea onChange={onChange} onBlur={onBlur} defaultValue={value} name={name} id={name} />
+                        <Textarea
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            defaultValue={value}
+                            name={name}
+                            id={name}
+                            disabled={isEnabled}
+                        />
                         {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
                     </>
                 )}
