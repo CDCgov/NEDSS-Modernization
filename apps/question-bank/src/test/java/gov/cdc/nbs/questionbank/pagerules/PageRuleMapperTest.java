@@ -42,9 +42,10 @@ class PageRuleMapperTest {
     when(resultSet.getString(10)).thenReturn("test456,test789");
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
-    when(resultSet.getLong(13)).thenReturn(10l);
+    when(resultSet.getLong(13)).thenReturn(1000l);
+    when(resultSet.getLong(14)).thenReturn(10l);
     List<Object[]> targetQuestions =
-        Arrays.asList(new Object[] {"test456" ,"label1" }, new Object[] {" test789" ,"label2" });
+        Arrays.asList(new Object[] {"test456", "label1"}, new Object[] {" test789", "label2"});
     when(waQuestionRepository.findLabelsByIdentifiers(any())).thenReturn(targetQuestions);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
     validate(actualResponse);
@@ -65,7 +66,7 @@ class PageRuleMapperTest {
     assertEquals("EQUAL_TO", response.comparator().toString());
     assertEquals("QUESTION", response.targetType().toString());
     assertEquals(2, response.targets().size());
-    assertEquals(2, response.targets().size());
+    assertEquals(1000l, response.sourceQuestion().questionId());
   }
 
 

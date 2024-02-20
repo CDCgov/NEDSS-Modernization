@@ -16,6 +16,7 @@ Feature: Patient Profile Identification Changes
     And the patient has identification
     When a patient's identification is changed
     Then the patient has the expected identification
+    And the patient identification history contains the previous version
 
   Scenario: I can remove a patient's existing identification
     Given I am logged into NBS
@@ -23,6 +24,7 @@ Feature: Patient Profile Identification Changes
     And the patient has identification
     When a patient's identification is removed
     Then the patient does not have the expected identification
+    And the patient identification history contains the previous version
 
   Scenario: I cannot add a patient's identification without proper permission
     Given I am logged into NBS

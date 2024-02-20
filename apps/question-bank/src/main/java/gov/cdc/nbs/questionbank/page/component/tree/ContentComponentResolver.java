@@ -55,7 +55,8 @@ class ContentComponentResolver {
         component.fieldLength(),
         component.defaultRdbTableName(),
         component.rdbColumnName(),
-        component.defaultLabelInReport()
+        component.defaultLabelInReport(),
+        component.dataMartColumnName()
     );
   }
 

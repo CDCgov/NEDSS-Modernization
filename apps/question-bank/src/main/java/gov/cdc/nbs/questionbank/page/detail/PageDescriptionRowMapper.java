@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
+import gov.cdc.nbs.questionbank.page.PageStatus;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.NonNull;
 
@@ -9,9 +10,9 @@ import java.sql.SQLException;
 
 class PageDescriptionRowMapper implements RowMapper<PageDescription> {
 
-  record Column(int identifier, int name, int status, int description) {
+  record Column(int identifier, int name, int status, int description,int publishVersionNumber) {
     Column() {
-      this(1, 2, 3,4);
+      this(1, 2, 3,4,5);
     }
   }
 
@@ -32,7 +33,13 @@ class PageDescriptionRowMapper implements RowMapper<PageDescription> {
     long identifier = rs.getLong(columns.identifier());
     String name = rs.getString(columns.name());
     String status = rs.getString(columns.status());
+    String publishVersionNumber = rs.getString(columns.publishVersionNumber());
     String description = rs.getString(columns.description());
+    if("Draft".equalsIgnoreCase(status)){
+      status =(publishVersionNumber == null)
+          ? PageStatus.INITIAL_DRAFT.display()
+          : PageStatus.PUBLISHED_WITH_DRAFT.display();
+    }
     return new PageDescription(
         identifier,
         name,

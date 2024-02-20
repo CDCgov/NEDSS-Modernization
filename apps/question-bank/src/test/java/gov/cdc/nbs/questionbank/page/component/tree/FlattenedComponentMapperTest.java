@@ -34,6 +34,11 @@ class FlattenedComponentMapperTest {
     when(resultSet.getString(columns.defaultValue())).thenReturn("default-value-value");
     when(resultSet.getString(columns.valueSet())).thenReturn("value-set-value");
     when(resultSet.getString(columns.blockName())).thenReturn("blockName");
+    when(resultSet.getString(columns.defaultRdbTableName())).thenReturn("rdb-table-name");
+    when(resultSet.getString(columns.rdbColumnName())).thenReturn("rdb-column-name");
+    when(resultSet.getString(columns.defaultLabelInReport())).thenReturn("default-label-in-Report");
+    when(resultSet.getString(columns.dataMartColumnName())).thenReturn("dataMart-column-name");
+
 
     FlattenedComponentMapper mapper = new FlattenedComponentMapper(columns);
 
@@ -59,6 +64,10 @@ class FlattenedComponentMapperTest {
     assertThat(actual.defaultValue()).isEqualTo("default-value-value");
     assertThat(actual.valueSet()).isEqualTo("value-set-value");
     assertThat(actual.isGrouped()).isTrue();
+    assertThat(actual.defaultRdbTableName()).isEqualTo("rdb-table-name");
+    assertThat(actual.rdbColumnName()).isEqualTo("rdb-column-name");
+    assertThat(actual.defaultLabelInReport()).isEqualTo("default-label-in-Report");
+    assertThat(actual.dataMartColumnName()).isEqualTo("dataMart-column-name");
   }
 
   @Test

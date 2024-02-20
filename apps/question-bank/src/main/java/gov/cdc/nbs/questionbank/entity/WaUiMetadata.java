@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
-import java.util.List;
 import javax.persistence.*;
 
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
@@ -210,7 +209,8 @@ public class WaUiMetadata {
   private String blockNm;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "waUiMetadataUid",
-      cascade = {CascadeType.REMOVE},
+      cascade = {CascadeType.PERSIST,
+          CascadeType.REMOVE},
       orphanRemoval = true)
   private WaRdbMetadata waRdbMetadatum;
 
@@ -407,6 +407,9 @@ public class WaUiMetadata {
       this.defaultValue = c.getDefaultValue();
     } else {
       throw new AddQuestionException("Failed to determine question type");
+    }
+    if(command.question().getRdbTableNm() !=null) {
+      this.waRdbMetadatum = new WaRdbMetadatum(page, this, command);
     }
 
     // Audit info

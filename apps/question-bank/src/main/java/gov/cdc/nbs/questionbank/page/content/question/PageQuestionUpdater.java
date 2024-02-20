@@ -57,9 +57,10 @@ public class PageQuestionUpdater {
         waUiMetadata.getNbsUiComponentUid(),
         waUiMetadata.getAdminComment(),
         waUiMetadata.getFieldSize(),
-        waUiMetadata.getWaRdbMetadatum()!=null?waUiMetadata.getWaRdbMetadatum().getRdbTableNm():null,
-        waUiMetadata.getWaRdbMetadatum()!=null?waUiMetadata.getWaRdbMetadatum().getRdbColumnNm():null,
-        waUiMetadata.getWaRdbMetadatum()!=null?waUiMetadata.getWaRdbMetadatum().getRptAdminColumnNm():null
+        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getRdbTableNm() : null,
+        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getRdbColumnNm() : null,
+        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getRptAdminColumnNm() : null,
+        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getUserDefinedColumnNm() : null
     );
 
   }

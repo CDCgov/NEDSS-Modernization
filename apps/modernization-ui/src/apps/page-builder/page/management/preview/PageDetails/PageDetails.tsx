@@ -8,8 +8,8 @@ import {
 } from 'apps/page-builder/generated';
 import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
+import React, { useEffect, useState } from 'react';
+import { Button, Form, Icon } from '@trussworks/react-uswds';
 import './PageDetails.scss';
 import { PageDetailsField } from './PageDetailsField';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,7 +19,6 @@ import { useForm } from 'react-hook-form';
 import { useAlert } from '../../../../../../alert';
 import { useGetPageDetails } from '../../useGetPageDetails';
 import { LinkButton } from '../../../../../../components/button';
-import { InformationModal } from 'Information';
 
 export const PageDetails = () => {
     const token = authorization();
@@ -28,16 +27,15 @@ export const PageDetails = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const navigate = useNavigate();
-    const { alertError } = useAlert();
+    const { alertError, alertSuccess } = useAlert();
     const { page } = useGetPageDetails();
-    const isEnabled = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status ?? '');
-    const infoModalRef = useRef<ModalRef>(null);
+    const isEnabled = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status ?? '');
+    const pageStatus = page?.status;
 
     const form = useForm<PageInformationChangeRequest>({
         mode: 'onBlur',
         defaultValues: {}
     });
-    const { control } = form;
     useEffect(() => {
         fetchMMGOptions(token)
             .then((data) => {
@@ -82,11 +80,12 @@ export const PageDetails = () => {
             request
         })
             .then(() => {
-                infoModalRef.current?.toggleModal(undefined, true);
+                alertSuccess({ message: 'You have successfully performed a task' });
+                navigate('..');
                 form.reset();
             })
-            .catch(() => {
-                alertError({ message: 'Failed to save page' });
+            .catch((error) => {
+                alertError({ message: error.body.message || 'Failed to save page' });
             });
     });
 
@@ -111,10 +110,11 @@ export const PageDetails = () => {
                             </div>
                             <PageDetailsField
                                 conditions={conditions}
-                                control={control}
+                                form={form}
                                 mmgs={mmgs}
                                 eventType={pageEvent}
                                 isEnabled={!isEnabled}
+                                pageStatus={pageStatus}
                             />
                         </>
                     </div>
@@ -130,17 +130,6 @@ export const PageDetails = () => {
                     )}
                 </div>
             </Form>
-            <InformationModal
-                modal={infoModalRef}
-                title="Success"
-                id="information"
-                message="You have successfully performed a task"
-                detail="Select close to close this popup and view page details.."
-                onClose={() => {
-                    navigate('..');
-                    infoModalRef.current?.toggleModal(undefined, false);
-                }}
-            />
         </div>
     );
 };

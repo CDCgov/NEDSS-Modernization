@@ -48,7 +48,6 @@ public class WaTemplate {
   private static final long TAB = 1010l;
   private static final long SECTION = 1015l;
   private static final long SUB_SECTION = 1016l;
-  private static final long QUESTION = 1008l;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.entity;
 
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,81 +16,107 @@ import java.time.Instant;
 @Entity
 @Table(name = "WA_RDB_metadata", catalog = "NBS_ODSE")
 public class WaRdbMetadata {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "wa_rdb_metadata_uid", nullable = false)
-    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wa_template_uid", nullable = false)
-    private WaTemplate waTemplateUid;
+  public static final String ACTIVE = "Active";
 
-    @Column(name = "user_defined_column_nm", length = 30)
-    private String userDefinedColumnNm;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "wa_rdb_metadata_uid", nullable = false)
+  private Long id;
 
-    @Column(name = "record_status_cd", nullable = false, length = 20)
-    private String recordStatusCd;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "wa_template_uid", nullable = false)
+  private WaTemplate waTemplateUid;
 
-    @Column(name = "record_status_time", nullable = false)
-    private Instant recordStatusTime;
+  @Column(name = "user_defined_column_nm", length = 30)
+  private String userDefinedColumnNm;
 
-    @Column(name = "add_user_id", nullable = false)
-    private Long addUserId;
+  @Column(name = "record_status_cd", nullable = false, length = 20)
+  private String recordStatusCd;
 
-    @Column(name = "add_time", nullable = false)
-    private Instant addTime;
+  @Column(name = "record_status_time", nullable = false)
+  private Instant recordStatusTime;
 
-    @Column(name = "last_chg_time")
-    private Instant lastChgTime;
+  @Column(name = "add_user_id", nullable = false)
+  private Long addUserId;
 
-    @Column(name = "last_chg_user_id")
-    private Long lastChgUserId;
+  @Column(name = "add_time", nullable = false)
+  private Instant addTime;
 
-    @Column(name = "local_id", length = 50)
-    private String localId;
+  @Column(name = "last_chg_time")
+  private Instant lastChgTime;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
-    private WaUiMetadata waUiMetadataUid;
+  @Column(name = "last_chg_user_id")
+  private Long lastChgUserId;
 
-    @Column(name = "rdb_table_nm", length = 30)
-    private String rdbTableNm;
+  @Column(name = "local_id", length = 50)
+  private String localId;
 
-    @Column(name = "rpt_admin_column_nm", length = 50)
-    private String rptAdminColumnNm;
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
+  private WaUiMetadata waUiMetadataUid;
 
-    @Column(name = "rdb_column_nm", length = 30)
-    private String rdbColumnNm;
+  @Column(name = "rdb_table_nm", length = 30)
+  private String rdbTableNm;
 
-    @Column(name = "question_identifier", length = 50)
-    private String questionIdentifier;
+  @Column(name = "rpt_admin_column_nm", length = 50)
+  private String rptAdminColumnNm;
 
-    @Column(name = "block_pivot_nbr")
-    private Integer blockPivotNbr;
+  @Column(name = "rdb_column_nm", length = 30)
+  private String rdbColumnNm;
 
-    public void groupQuestion(PageContentCommand.GroupSubsectionRdb command) {
-        this.blockPivotNbr = command.repeatingNbr();
-        changed(command);
-    }
+  @Column(name = "question_identifier", length = 50)
+  private String questionIdentifier;
 
-    public void changed(PageContentCommand command) {
-        this.lastChgTime = command.requestedOn();
-        this.lastChgUserId = command.userId();
-    }
+  @Column(name = "block_pivot_nbr")
+  private Integer blockPivotNbr;
 
-    public WaRdbMetadata() {
-        this.recordStatusCd = "Active";
-    }
+  public void groupQuestion(PageContentCommand.GroupSubsectionRdb command) {
+    this.blockPivotNbr = command.repeatingNbr();
+    changed(command);
+  }
 
-    public WaRdbMetadata(WaTemplate template, WaUiMetadata waUiMetadata, Instant addedOn, long addedBy) {
-        this();
-        this.waTemplateUid = template;
-        this.waUiMetadataUid = waUiMetadata;
-        this.addTime = addedOn;
-        this.addUserId = addedBy;
-        this.recordStatusTime = addedOn;
-    }
+  public void changed(PageContentCommand command) {
+    this.lastChgTime = command.requestedOn();
+    this.lastChgUserId = command.userId();
+  }
+
+  public WaRdbMetadata() {
+    this.recordStatusCd = "Active";
+  }
+
+  public WaRdbMetadata(WaTemplate template, WaUiMetadata waUiMetadata, Instant addedOn, long addedBy) {
+    this();
+    this.waTemplateUid = template;
+    this.waUiMetadataUid = waUiMetadata;
+    this.addTime = addedOn;
+    this.addUserId = addedBy;
+    this.recordStatusTime = addedOn;
+  }
 
 
+
+  public WaRdbMetadata(WaTemplate page, WaUiMetadata waUiMetadata, PageContentCommand.AddQuestion command) {
+    WaQuestion question = command.question();
+    this.setRdbColumnNm(question.getRdbColumnNm());
+    this.setRdbTableNm(question.getRdbTableNm());
+    this.setRptAdminColumnNm(question.getRptAdminColumnNm());
+    this.setUserDefinedColumnNm(question.getUserDefinedColumnNm());
+    this.setWaTemplateUid(page);
+    this.setQuestionIdentifier(question.getQuestionIdentifier());
+    this.setLocalId(question.getLocalId());
+    this.setWaUiMetadataUid(waUiMetadata);
+    added(command);
+  }
+
+
+  private void added(PageContentCommand command) {
+    this.addTime = command.requestedOn();
+    this.addUserId = command.userId();
+    this.lastChgTime = command.requestedOn();
+    this.lastChgUserId = command.userId();
+    this.recordStatusCd = ACTIVE;
+    this.recordStatusTime = command.requestedOn();
+  }
 
 }

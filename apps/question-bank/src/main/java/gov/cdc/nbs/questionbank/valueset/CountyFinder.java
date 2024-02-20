@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 class CountyFinder {
-  private static final String FIND_BY_STATE_CODE = """   
+  private static final String FIND_BY_STATE_CODE = """
       select
            [StateCounty].code                        as [code],
            [StateCounty].code_short_desc_txt         as [shortDescription],
