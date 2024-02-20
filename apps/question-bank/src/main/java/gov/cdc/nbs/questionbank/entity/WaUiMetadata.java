@@ -212,7 +212,7 @@ public class WaUiMetadata {
       cascade = {CascadeType.PERSIST,
           CascadeType.REMOVE},
       orphanRemoval = true)
-  private WaRdbMetadatum waRdbMetadatum;
+  private WaRdbMetadata waRdbMetadatum;
 
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "codeSetGroup")
@@ -408,8 +408,8 @@ public class WaUiMetadata {
     } else {
       throw new AddQuestionException("Failed to determine question type");
     }
-    if(command.question().getRdbTableNm() !=null) {
-      this.waRdbMetadatum = new WaRdbMetadatum(page, this, command);
+    if (command.question().getRdbTableNm() != null) {
+      this.waRdbMetadatum = new WaRdbMetadata(page, this, command);
     }
 
     // Audit info
@@ -548,8 +548,7 @@ public class WaUiMetadata {
         original.getCoinfectionIndCd(),
         original.getBlockNm(),
         original.waRdbMetadatum,
-        original.codeset
-    );
+        original.codeset);
 
   }
 
@@ -557,18 +556,20 @@ public class WaUiMetadata {
     this.displayInd = visible ? "T" : "F";
   }
 
-  public void update(PageContentCommand.GroupSubsection command) {
+  public void update(PageContentCommand.GroupSubsection command, int questionGroupSeqNbr) {
     this.blockNm = command.blockName();
+    this.questionGroupSeqNbr = questionGroupSeqNbr;
     updated(command);
   }
 
-  public void updateQuestionBatch(PageContentCommand.GroupSubsection command) {
+  public void updateQuestionBatch(PageContentCommand.GroupSubsection command, int groupSeqNbr) {
     this.blockNm = command.blockName();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
     this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
     this.batchTableHeader = batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();
+    this.questionGroupSeqNbr = groupSeqNbr;
     updated(command);
   }
 

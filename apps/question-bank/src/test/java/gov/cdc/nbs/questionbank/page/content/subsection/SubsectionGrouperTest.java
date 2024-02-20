@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
+import gov.cdc.nbs.questionbank.entity.WaRdbMetadata;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertNull;
@@ -35,6 +37,9 @@ class SubsectionGrouperTest {
     @Mock
     QuestionManagementUtil questionManagementUtil;
 
+    @Mock
+    SubSectionQuestionFinder finder;
+
     @InjectMocks
     private SubSectionGrouper grouper;
 
@@ -45,10 +50,23 @@ class SubsectionGrouperTest {
         WaTemplate page = mock(WaTemplate.class);
         when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
         WaUiMetadata waUiMetadata = new WaUiMetadata();
-        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList());
+        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList(), (int) 2);
         waUiMetadata.setId(request.id());
         waUiMetadata.setBlockNm(request.blockName());
         doNothing().when(page).groupSubSection(any(), any());
+
+        Collection<RdbQuestion> listOfQuestions = new ArrayList<RdbQuestion>();
+
+        listOfQuestions.add(new RdbQuestion(1L, 101L, page.getId(), 2));
+        listOfQuestions.add(new RdbQuestion(2L, 102L, page.getId(), 2));
+
+        when(finder.resolve(1L)).thenReturn(listOfQuestions);
+
+        WaRdbMetadata temp1 = new WaRdbMetadata();
+        WaRdbMetadata temp2 = new WaRdbMetadata();
+        when(entityManager.find(WaRdbMetadata.class, 1L)).thenReturn(temp1);
+        when(entityManager.find(WaRdbMetadata.class, 2L)).thenReturn(temp2);
+
         Long userId = 456L;
         grouper.group(1l, request, userId);
         verify(page).groupSubSection(any(), any());
@@ -58,7 +76,7 @@ class SubsectionGrouperTest {
     void should_not_group_subsection_no_page_found() {
         when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
         WaUiMetadata waUiMetadata = new WaUiMetadata();
-        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList());
+        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getValidBatchList(), 1);
         waUiMetadata.setId(request.id());
         waUiMetadata.setBlockNm(request.blockName());
         Long userId = 456L;
@@ -67,28 +85,29 @@ class SubsectionGrouperTest {
 
     @Test
     void should_not_update_null_blockName() {
-        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, null, getValidBatchList());
+        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, null, getValidBatchList(), 2);
         Long userId = 456L;
         UpdateSubSectionException exception =
-            assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, request, userId));
+                assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, request, userId));
         assertEquals("SubSection Block Name is required", exception.getMessage());
     }
 
     @Test
     void should_not_update_null_columWith() {
-        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getUnValidBatchColumnWidth());
+        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getUnValidBatchColumnWidth(), 2);
         Long userId = 456L;
         UpdateSubSectionException exception =
-            assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, request, userId));
+                assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, request, userId));
         assertEquals("batch TableColumnWidth is required", exception.getMessage());
     }
 
     @Test
     void should_not_update_columnWith_lessThan_100() {
-        GroupSubSectionRequest request = new GroupSubSectionRequest(100l, "BLOCK_X", getUnValidBatchColumnWidthTotal());
+        GroupSubSectionRequest request =
+                new GroupSubSectionRequest(100l, "BLOCK_X", getUnValidBatchColumnWidthTotal(), 2);
         Long userId = 456L;
         UpdateSubSectionException exception =
-            assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, request, userId));
+                assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, request, userId));
         assertEquals("the total of batch TableColumnWidth must calculate to 100", exception.getMessage());
     }
 
@@ -133,7 +152,7 @@ class SubsectionGrouperTest {
         WaTemplate waTemplate = new WaTemplate();
         waTemplate.setUiMetadata(uiMetadata);
         waTemplate.groupSubSection(command, questionNbsUiComponentUids);
-        verify(subsection).update(any(PageContentCommand.GroupSubsection.class));
+        verify(subsection).update(any(PageContentCommand.GroupSubsection.class), anyInt());
     }
 
     @Test
@@ -150,8 +169,8 @@ class SubsectionGrouperTest {
         WaTemplate waTemplate = new WaTemplate();
         waTemplate.setUiMetadata(uiMetadata);
 
-        UpdateSubSectionException exception = assertThrows(UpdateSubSectionException.class, () ->
-            waTemplate.groupSubSection(command, questionNbsUiComponentUids));
+        UpdateSubSectionException exception = assertThrows(UpdateSubSectionException.class,
+                () -> waTemplate.groupSubSection(command, questionNbsUiComponentUids));
         assertEquals("Can only group the question elements", exception.getMessage());
     }
 
@@ -196,14 +215,13 @@ class SubsectionGrouperTest {
     @Test
     void testUpdateGroupQuestionBatch() {
         PageContentCommand.GroupSubsection command = mock(PageContentCommand.GroupSubsection.class);
-        GroupSubSectionRequest.Batch batch = new GroupSubSectionRequest.Batch
-            (123l, 'Y', "TableHeader", 50);
+        GroupSubSectionRequest.Batch batch = new GroupSubSectionRequest.Batch(123l, 'Y', "TableHeader", 50);
         when(command.batches()).thenReturn(Arrays.asList(batch));
         when(command.blockName()).thenReturn("BlockName");
         WaUiMetadata waUiMetadata = getInitialWaUiMetadata();
         waUiMetadata.setId(123l);
 
-        waUiMetadata.updateQuestionBatch(command);
+        waUiMetadata.updateQuestionBatch(command, 10);
         assertEquals("BlockName", waUiMetadata.getBlockNm());
         assertEquals('Y', waUiMetadata.getBatchTableAppearIndCd());
         assertEquals("TableHeader", waUiMetadata.getBatchTableHeader());
@@ -216,7 +234,7 @@ class SubsectionGrouperTest {
         PageContentCommand.GroupSubsection command = mock(PageContentCommand.GroupSubsection.class);
         when(command.blockName()).thenReturn("BlockName");
         WaUiMetadata waUiMetadata = getInitialWaUiMetadata();
-        waUiMetadata.update(command);
+        waUiMetadata.update(command, 2);
         assertEquals("BlockName", waUiMetadata.getBlockNm());
     }
 
