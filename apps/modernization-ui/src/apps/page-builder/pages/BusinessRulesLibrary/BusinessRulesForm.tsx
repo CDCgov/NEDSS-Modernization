@@ -54,7 +54,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             authorization: authorization(),
             codeSetNm
         });
-        const list = content?.map((src: any) => ({ name: src.display, value: src.conceptCode }));
+        const list = content?.map((src: Concept) => ({ name: src.display, value: src.conceptCode }));
         setSourceValueList(list);
 
         if (sourceValues?.length) {

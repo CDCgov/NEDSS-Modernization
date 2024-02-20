@@ -22,8 +22,8 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
             if (page) {
                 const response = await fetchBusinessRules(token, searchQuery, page.id, sortBy, currentPage, pageSize);
                 const { content, totalElements } = response;
-                setRules(content);
-                setTotalElements(totalElements);
+                setRules(content || []);
+                setTotalElements(totalElements || 0);
                 setIsLoading(false);
             }
         } catch (error) {

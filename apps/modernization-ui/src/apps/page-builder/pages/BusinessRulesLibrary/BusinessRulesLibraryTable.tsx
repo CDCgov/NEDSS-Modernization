@@ -115,7 +115,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         ]
     });
 
-    // @ts-ignore
     const asTableRows = (rules: Rule[] | undefined): TableBody[] => rules?.map(asTableRow) || [];
 
     /*
