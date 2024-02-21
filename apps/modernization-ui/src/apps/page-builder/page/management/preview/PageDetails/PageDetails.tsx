@@ -29,13 +29,13 @@ export const PageDetails = () => {
     const navigate = useNavigate();
     const { alertError, alertSuccess } = useAlert();
     const { page } = useGetPageDetails();
-    const isEnabled = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status ?? '');
+    const isEnabled = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status ?? '');
+    const pageStatus = page?.status;
 
     const form = useForm<PageInformationChangeRequest>({
         mode: 'onBlur',
         defaultValues: {}
     });
-    const { control } = form;
     useEffect(() => {
         fetchMMGOptions(token)
             .then((data) => {
@@ -84,8 +84,8 @@ export const PageDetails = () => {
                 navigate('..');
                 form.reset();
             })
-            .catch(() => {
-                alertError({ message: 'Failed to save page' });
+            .catch((error) => {
+                alertError({ message: error.body.message || 'Failed to save page' });
             });
     });
 
@@ -110,10 +110,11 @@ export const PageDetails = () => {
                             </div>
                             <PageDetailsField
                                 conditions={conditions}
-                                control={control}
+                                form={form}
                                 mmgs={mmgs}
                                 eventType={pageEvent}
                                 isEnabled={!isEnabled}
+                                pageStatus={pageStatus}
                             />
                         </>
                     </div>

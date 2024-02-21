@@ -12,9 +12,10 @@ class PageDescriptionFinder {
   private static final String QUERY = """
       select
           [template].wa_template_uid  as [identifier],
-          [template].template_nm      as [name],
-          [template].template_type    as [status],
-          [template].desc_txt         as [description]
+          [template].template_nm            as [name],
+          [template].template_type          as [status],
+          [template].desc_txt               as [description],
+          [template].publish_version_nbr    as [versionNumber]
       from WA_template [template]
       where [template].wa_template_uid = ?
       """;

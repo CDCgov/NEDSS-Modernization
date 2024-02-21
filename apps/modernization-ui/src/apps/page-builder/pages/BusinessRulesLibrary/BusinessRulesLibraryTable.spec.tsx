@@ -1,6 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { BrowserRouter } from 'react-router-dom';
+import { Rule } from 'apps/page-builder/generated';
 
 describe('BusinessRulesLibraryTable', () => {
     const modalRef = { current: null };
@@ -8,12 +9,13 @@ describe('BusinessRulesLibraryTable', () => {
     describe('when rendered', () => {
         it('should display sentence cased headers', async () => {
             const rulesSummary: any = {
-                ruleId: 6376,
-                templateUid: 1000272,
+                id: 6376,
+                template: 1000272,
                 ruleFunction: 'Enable',
                 ruleDescription: null,
                 sourceIdentifier: 'ARB001',
                 sourceValue: ['Dengue virus'],
+                sourceQuestion: { label: 'Type of Arbovirus' },
                 comparator: '=',
                 targetType: 'QUESTION',
                 errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
@@ -42,18 +44,21 @@ describe('BusinessRulesLibraryTable', () => {
 
     describe('when at least one summary is available', () => {
         it('should display the Business rules summaries', async () => {
-            const rulesSummary: any = {
-                ruleId: 6376,
-                templateUid: 1000272,
-                ruleFunction: 'Enable',
+            const rulesSummary = {
+                id: 6376,
+                template: 1000272,
+                ruleFunction: 'Enable' as Rule.ruleFunction,
                 ruleDescription: 'test name',
                 sourceIdentifier: 'ARB001',
-                sourceValue: ['Dengue virus'],
-                comparator: '=',
-                targetType: 'QUESTION',
+                sourceValues: ['Dengue virus'],
+                sourceQuestion: { label: 'test name' },
+                comparator: '=' as Rule.comparator,
+                targetType: 'QUESTION' as Rule.targetType,
                 errorMsgText: 'Type of Arbovirus = must be ( Dengue virus ) Dengue (DENV) Serotype',
-                targetQuestions: [{ label: '404400' }]
+                targets: [{ label: '404400' }],
+                anySourceValue: false
             };
+
             const summaries = [rulesSummary];
             const pages = {
                 totalElements: 1

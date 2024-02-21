@@ -15,7 +15,6 @@ public class PatientNameChangeService {
 
     private final PatientProfileService patientProfileService;
 
-
     public PatientNameChangeService(PatientProfileService patientProfileService) {
         this.patientProfileService = patientProfileService;
     }

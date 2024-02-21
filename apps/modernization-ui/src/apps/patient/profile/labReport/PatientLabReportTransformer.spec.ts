@@ -1,8 +1,8 @@
 import { PatientLabReport as GraphQLPatientLabReport } from 'generated/graphql/schema';
 import { transform } from './PatientLabReportTransformer';
 
-describe('when the result is empty', () => {
-    it('should return an empty array of reports', () => {
+describe('when the result does not have content', () => {
+    it('should return an empty array of reports when reports in empty', () => {
         const result: GraphQLPatientLabReport[] = [];
 
         const actual = transform(result);
@@ -22,7 +22,7 @@ describe('when the result has content', () => {
                 programAreaCd: 'program-area-value',
                 jurisdictionCodeDescTxt: 'jurisdiction-value',
                 localId: 'local-id-value',
-                electronicInd: 'N',
+                electronicInd: 'Y',
                 associatedInvestigations: [],
                 personParticipations: [
                     {
@@ -66,7 +66,8 @@ describe('when the result has content', () => {
                     collectedOn: new Date('2023-03-29T05:00:00Z'),
                     programArea: 'program-area-value',
                     jurisdiction: 'jurisdiction-value',
-                    event: 'local-id-value'
+                    event: 'local-id-value',
+                    isElectronic: true
                 })
             ])
         );
@@ -265,7 +266,6 @@ describe('when the result has content', () => {
             ])
         );
     });
-
 
     it('should return null for collectedOn date and not transform a null effectiveFromTime value to a date with for collectedOn', () => {
         const result: GraphQLPatientLabReport[] = [

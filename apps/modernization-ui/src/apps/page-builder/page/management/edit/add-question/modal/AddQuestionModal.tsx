@@ -22,6 +22,7 @@ export const AddQuestionModal = ({ modal, onAddQuestion }: Props) => {
 
     const handleAccept = (questions: number[]) => {
         onAddQuestion(questions);
+        setState('search');
         modal.current?.toggleModal(undefined, false);
     };
     return (

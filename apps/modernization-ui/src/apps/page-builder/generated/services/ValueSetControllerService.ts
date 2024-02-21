@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { County } from '../models/County';
 import type { CreateValuesetRequest } from '../models/CreateValuesetRequest';
 import type { Page_ValueSetOption_ } from '../models/Page_ValueSetOption_';
 import type { UpdateValueSetRequest } from '../models/UpdateValueSetRequest';
@@ -249,5 +250,36 @@ export class ValueSetControllerService {
         });
     }
 
+    /**
+     * findCountyByStateCode
+     * @returns County OK
+     * @throws ApiError
+     */
+    public static findCountyByStateCodeUsingGet({
+        authorization,
+        stateCode,
+    }: {
+        authorization: string,
+        /**
+         * stateCode
+         */
+        stateCode: string,
+    }): CancelablePromise<Array<County>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/valueset/{stateCode}/counties',
+            path: {
+                'stateCode': stateCode,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
 
 }

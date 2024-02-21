@@ -16,10 +16,10 @@ export const MessagingFields = ({ editing = false }: Props) => {
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
     const { options: hl7Options } = useOptions('NBS_HL7_DATA_TYPE');
     const form = useFormContext<CreateQuestionForm>();
-    const messagingInfo = useWatch({ control: form.control, name: 'messagingInfo', exact: true });
+    const includedInMessage = useWatch({ control: form.control, name: 'messagingInfo.includedInMessage', exact: true });
 
     useEffect(() => {
-        if (!messagingInfo?.includedInMessage) {
+        if (!includedInMessage) {
             form.reset({
                 ...form.getValues(),
                 messagingInfo: {
@@ -30,7 +30,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 }
             });
         }
-    }, [messagingInfo?.includedInMessage]);
+    }, [includedInMessage]);
 
     return (
         <>
@@ -57,7 +57,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.messageVariableId"
                 rules={{
                     required: {
-                        value: messagingInfo?.includedInMessage ?? false,
+                        value: includedInMessage ?? false,
                         message: 'Message ID is required'
                     },
                     ...maxLengthRule(50)
@@ -72,8 +72,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={!messagingInfo?.includedInMessage}
-                        required={messagingInfo?.includedInMessage}
+                        disabled={!includedInMessage}
+                        required={includedInMessage}
                         error={error?.message}
                     />
                 )}
@@ -83,7 +83,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.labelInMessage"
                 rules={{
                     required: {
-                        value: messagingInfo?.includedInMessage ?? false,
+                        value: includedInMessage ?? false,
                         message: 'Message label is required'
                     },
                     ...maxLengthRule(100)
@@ -98,8 +98,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required={messagingInfo?.includedInMessage}
-                        disabled={!messagingInfo?.includedInMessage}
+                        required={includedInMessage}
+                        disabled={!includedInMessage}
                         error={error?.message}
                     />
                 )}
@@ -109,7 +109,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.codeSystem"
                 rules={{
                     required: {
-                        value: messagingInfo?.includedInMessage ?? false,
+                        value: includedInMessage ?? false,
                         message: 'Code system name is required'
                     }
                 }}
@@ -123,12 +123,11 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         id={name}
                         htmlFor={name}
                         options={codeSystems}
-                        disabled={!messagingInfo?.includedInMessage}
-                        required={messagingInfo?.includedInMessage}
+                        disabled={!includedInMessage}
+                        required={includedInMessage}
                     />
                 )}
             />
-
             <Controller
                 control={form.control}
                 name="messagingInfo.requiredInMessage"
@@ -143,7 +142,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                                 className="requiredInMessage"
                                 checked={value}
                                 name="includedInMessage"
-                                disabled={!messagingInfo?.includedInMessage}
+                                disabled={!includedInMessage}
                                 onChange={onChange}
                             />
                             <div>Required</div>
@@ -156,7 +155,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 name="messagingInfo.hl7DataType"
                 rules={{
                     required: {
-                        value: messagingInfo?.includedInMessage ?? false,
+                        value: includedInMessage ?? false,
                         message: 'HL7 data type required'
                     }
                 }}
@@ -170,8 +169,8 @@ export const MessagingFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={!messagingInfo?.includedInMessage}
-                        required={messagingInfo?.includedInMessage}
+                        disabled={!includedInMessage}
+                        required={includedInMessage}
                         options={hl7Options}
                     />
                 )}

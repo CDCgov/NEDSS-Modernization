@@ -25,7 +25,7 @@ const businessRuleContextDefaultValue: BusinessRuleContextData = {
     setSearchQuery: () => {},
     currentPage: 1,
     setCurrentPage: () => {},
-    sortBy: 'ruleDescText',
+    sortBy: '',
     setSortBy: () => {},
     sortDirection: '',
     setSortDirection: () => {},

@@ -17,7 +17,7 @@ import { usePageManagement } from '../../usePageManagement';
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
     const [totalResults, setTotalResults] = useState(4);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
     const [pageInfo, setPageInfo] = useState<InfoType>({});
     const { pageId } = useParams();
@@ -35,6 +35,7 @@ const PageInformation = () => {
             setTotalResults(rep?.totalElements ?? 0);
         });
     };
+
     const fetchPageInfo = () => {
         PageInformationService.find({
             authorization: authorization(),
@@ -48,7 +49,7 @@ const PageInformation = () => {
     useEffect(() => {
         fetchPageInfo();
         fetchPageHistory();
-    }, []);
+    }, [page]);
 
     const handleNext = (page: number) => {
         setCurrentPage(page);
@@ -83,12 +84,14 @@ const PageInformation = () => {
             </li>
         </ul>
     );
+
     const renderBlock = (header: string, desc: string = '-') => (
         <div className={styles.lineBlock}>
             <div className={styles.detailHeader}>{header}</div>
             <div className={styles.smallBodyText}>{desc || '-'}</div>
         </div>
     );
+
     const isEditable = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status);
 
     return (

@@ -11,7 +11,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withSourceText(CreateRuleRequest request, final String sourceText) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -25,7 +25,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withSourceIdentifier(CreateRuleRequest request, final String sourceIdentifier) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             sourceIdentifier,
             request.anySourceValue(),
@@ -39,7 +39,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withRuleDescription(CreateRuleRequest request, final String ruleDescription) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             ruleDescription,
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -53,7 +53,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withFunction(CreateRuleRequest request, final String function) {
         return new CreateRuleRequest(
-            Rule.Function.valueOf(function),
+            Rule.RuleFunction.valueOf(function),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -67,7 +67,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withComparator(CreateRuleRequest request, final String comparator) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -81,7 +81,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withAnySourceValue(CreateRuleRequest request, final boolean value) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             value,
@@ -95,7 +95,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withTargetType(CreateRuleRequest request, final String targetType) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -109,7 +109,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withTargetValues(CreateRuleRequest request, List<String> values) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -123,7 +123,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withTargetIdentifiers(CreateRuleRequest request, List<String> values) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),
@@ -137,7 +137,7 @@ public class PageRuleCreateRequestHelper {
 
     public static CreateRuleRequest withSourceValues(CreateRuleRequest request, List<SourceValue> values) {
         return new CreateRuleRequest(
-            request.function(),
+            request.ruleFunction(),
             request.description(),
             request.sourceIdentifier(),
             request.anySourceValue(),

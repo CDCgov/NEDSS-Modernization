@@ -6,6 +6,7 @@ export type PagesQuestion = {
     adminComments?: string;
     allowFutureDates?: boolean;
     coInfection?: boolean;
+    dataMartColumnName?: string;
     dataType?: string;
     defaultLabelInReport?: string;
     defaultRdbTableName?: string;

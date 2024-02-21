@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
-import gov.cdc.nbs.questionbank.entity.WaRdbMetadatum;
+import gov.cdc.nbs.questionbank.entity.WaRdbMetadata;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
@@ -42,7 +42,7 @@ class PageQuestionUpdaterTest {
     page.setUiMetadata(waUiMetadataList);
     UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
 
-    PagesQuestion textQuestion  =updater.updatePageQuestion(1l, 100l, request, 3l);
+    PagesQuestion textQuestion = updater.updatePageQuestion(1l, 100l, request, 3l);
 
     boolean required = request.required().equals("T");
     boolean display = request.required().equals("T");
@@ -50,7 +50,7 @@ class PageQuestionUpdaterTest {
     Assert.assertEquals(required, textQuestion.required());
     Assert.assertEquals(display, textQuestion.display());
     Assert.assertEquals(enabled, textQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(),textQuestion.defaultLabelInReport());
+    assertEquals(request.defaultLabelInReport(), textQuestion.defaultLabelInReport());
   }
 
   @Test
@@ -61,7 +61,7 @@ class PageQuestionUpdaterTest {
     page.setUiMetadata(waUiMetadataList);
     UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
 
-    PagesQuestion codedQuestion  =updater.updatePageQuestion(1l, 200l, request, 3l);
+    PagesQuestion codedQuestion = updater.updatePageQuestion(1l, 200l, request, 3l);
 
     boolean required = request.required().equals("T");
     boolean display = request.required().equals("T");
@@ -70,7 +70,7 @@ class PageQuestionUpdaterTest {
     Assert.assertEquals(required, codedQuestion.required());
     Assert.assertEquals(display, codedQuestion.display());
     Assert.assertEquals(enabled, codedQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(),codedQuestion.defaultLabelInReport());
+    assertEquals(request.defaultLabelInReport(), codedQuestion.defaultLabelInReport());
   }
 
   @Test
@@ -81,7 +81,7 @@ class PageQuestionUpdaterTest {
     page.setUiMetadata(waUiMetadataList);
     UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
 
-    PagesQuestion dateQuestion  =updater.updatePageQuestion(1l, 300l, request, 3l);
+    PagesQuestion dateQuestion = updater.updatePageQuestion(1l, 300l, request, 3l);
 
     boolean required = request.required().equals("T");
     boolean display = request.required().equals("T");
@@ -90,7 +90,7 @@ class PageQuestionUpdaterTest {
     Assert.assertEquals(required, dateQuestion.required());
     Assert.assertEquals(display, dateQuestion.display());
     Assert.assertEquals(enabled, dateQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(),dateQuestion.defaultLabelInReport());
+    assertEquals(request.defaultLabelInReport(), dateQuestion.defaultLabelInReport());
   }
 
   @Test
@@ -101,7 +101,7 @@ class PageQuestionUpdaterTest {
     page.setUiMetadata(waUiMetadataList);
     UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
 
-    PagesQuestion numericQuestion  =updater.updatePageQuestion(1l, 400l, request, 3l);
+    PagesQuestion numericQuestion = updater.updatePageQuestion(1l, 400l, request, 3l);
 
     boolean required = request.required().equals("T");
     boolean display = request.required().equals("T");
@@ -110,7 +110,7 @@ class PageQuestionUpdaterTest {
     Assert.assertEquals(required, numericQuestion.required());
     Assert.assertEquals(display, numericQuestion.display());
     Assert.assertEquals(enabled, numericQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(),numericQuestion.defaultLabelInReport());
+    assertEquals(request.defaultLabelInReport(), numericQuestion.defaultLabelInReport());
   }
 
 
@@ -120,8 +120,7 @@ class PageQuestionUpdaterTest {
     UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-    assertThrows(PageNotFoundException.class, () ->
-        updater.updatePageQuestion(1l, 2l, request, 3l));
+    assertThrows(PageNotFoundException.class, () -> updater.updatePageQuestion(1l, 2l, request, 3l));
   }
 
   @Test
@@ -132,8 +131,8 @@ class PageQuestionUpdaterTest {
     page.setUiMetadata(waUiMetadataList);
     UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
 
-    PageContentModificationException exception = assertThrows(PageContentModificationException.class, () ->
-        updater.updatePageQuestion(1l, 7l, request, 3l));
+    PageContentModificationException exception =
+        assertThrows(PageContentModificationException.class, () -> updater.updatePageQuestion(1l, 7l, request, 3l));
 
     Assertions.assertEquals("Unable to update a question from a page, the page does not contain the question",
         exception.getMessage());
@@ -154,7 +153,7 @@ class PageQuestionUpdaterTest {
     return waUiMetadataList;
   }
 
-  private WaUiMetadata getWaUiMetadata( long id , String dataType){
+  private WaUiMetadata getWaUiMetadata(long id, String dataType) {
     WaUiMetadata waUiMetadata = new WaUiMetadata();
     waUiMetadata.setDataType(dataType);
     waUiMetadata.setId(id);
@@ -170,7 +169,7 @@ class PageQuestionUpdaterTest {
     waUiMetadata.setNbsUiComponentUid(1008l);
     waUiMetadata.setOrderNbr(7);
 
-    WaRdbMetadatum waRdbMetadatum =new WaRdbMetadatum();
+    WaRdbMetadata waRdbMetadatum = new WaRdbMetadata();
     waRdbMetadatum.setWaUiMetadataUid(waUiMetadata);
     waRdbMetadatum.setRptAdminColumnNm("test");
     waRdbMetadatum.setUserDefinedColumnNm("test");

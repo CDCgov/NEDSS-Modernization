@@ -3,11 +3,11 @@
 /* eslint-disable */
 
 import type { Pageable } from './Pageable';
+import type { Rule } from './Rule';
 import type { Sort } from './Sort';
-import type { ViewRuleResponse } from './ViewRuleResponse';
 
-export type Page_ViewRuleResponse_ = {
-    content?: Array<ViewRuleResponse>;
+export type Page_Rule_ = {
+    content?: Array<Rule>;
     empty?: boolean;
     first?: boolean;
     last?: boolean;

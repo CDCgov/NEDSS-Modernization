@@ -13,32 +13,33 @@ import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
 @Transactional
 public class PageRuleCreator {
 
-        private final WaRuleMetaDataRepository waRuleMetaDataRepository;
+  private final WaRuleMetaDataRepository waRuleMetaDataRepository;
 
-        private final PageRuleHelper pageRuleHelper;
+  private final PageRuleHelper pageRuleHelper;
 
-        public PageRuleCreator(
-            WaRuleMetaDataRepository waRuleMetaDataRepository,
-            PageRuleHelper pageRuleHelper) {
-                this.waRuleMetaDataRepository = waRuleMetaDataRepository;
-                this.pageRuleHelper = pageRuleHelper;
-        }
+  public PageRuleCreator(
+      WaRuleMetaDataRepository waRuleMetaDataRepository,
+      PageRuleHelper pageRuleHelper) {
+    this.waRuleMetaDataRepository = waRuleMetaDataRepository;
+    this.pageRuleHelper = pageRuleHelper;
+  }
 
-        public CreateRuleResponse createPageRule(Long userId, Rule.CreateRuleRequest request, Long page) {
-                long availableId = waRuleMetaDataRepository.findNextAvailableID();
+  public CreateRuleResponse createPageRule(Long userId, Rule.CreateRuleRequest request, Long page) {
+    long availableId = waRuleMetaDataRepository.findNextAvailableID();
 
-                RuleData ruleData = pageRuleHelper.createRuleData(request, availableId);
-                WaRuleMetadata ruleMetadata = new WaRuleMetadata(asAddPageRule(ruleData, request, userId, page));
+    RuleData ruleData = pageRuleHelper.createRuleData(request, availableId);
+    WaRuleMetadata ruleMetadata = new WaRuleMetadata(asAddPageRule(ruleData, request, userId, page));
 
-                waRuleMetaDataRepository.save(ruleMetadata);
-                return new CreateRuleResponse(ruleMetadata.getId(), "Rule Created Successfully");
-        }
+    waRuleMetaDataRepository.save(ruleMetadata);
+    return new CreateRuleResponse(ruleMetadata.getId(), "The business rule '" + ruleMetadata.getJsFunctionName()
+        + "' is successfully added. Please click the unique name to edit");
+  }
 
-        private PageRuleCommand.AddPageRule asAddPageRule(
-            RuleData ruleData,
-            Rule.CreateRuleRequest request,
-            long userId,
-            long page) {
-                return new PageRuleCommand.AddPageRule(ruleData, request, Instant.now(), userId, page);
-        }
+  private PageRuleCommand.AddPageRule asAddPageRule(
+      RuleData ruleData,
+      Rule.CreateRuleRequest request,
+      long userId,
+      long page) {
+    return new PageRuleCommand.AddPageRule(ruleData, request, Instant.now(), userId, page);
+  }
 }

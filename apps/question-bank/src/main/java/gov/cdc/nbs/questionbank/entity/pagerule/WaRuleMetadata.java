@@ -83,7 +83,7 @@ public class WaRuleMetadata {
 
 
   public WaRuleMetadata(PageRuleCommand.AddPageRule command) {
-    this.ruleCd = command.ruleRequest().function().getValue();
+    this.ruleCd = command.ruleRequest().ruleFunction().getValue();
     this.ruleDescText = command.ruleRequest().description();
     this.sourceValues = command.ruleData().sourceValues();
     this.logic = command.ruleRequest().comparator().getValue();
