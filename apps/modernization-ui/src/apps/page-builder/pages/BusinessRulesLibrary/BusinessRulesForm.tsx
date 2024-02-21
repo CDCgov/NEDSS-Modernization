@@ -7,7 +7,14 @@ import TargetQuestion from '../../components/TargetQuestion/TargetQuestion';
 import { useParams } from 'react-router-dom';
 import { Input } from '../../../../components/FormInputs/Input';
 import { authorization } from 'authorization';
-import { Concept, ConceptControllerService, CreateRuleRequest } from 'apps/page-builder/generated';
+import {
+    Concept,
+    ConceptControllerService,
+    CreateRuleRequest,
+    Rule,
+    SourceQuestion,
+    Target
+} from 'apps/page-builder/generated';
 
 type QuestionProps = {
     id: number;
@@ -22,11 +29,17 @@ type FieldProps = {
     value: string;
 };
 
-const BusinessRulesForm = () => {
+interface Props {
+    targets?: Target[];
+    question?: SourceQuestion;
+    sourceValues?: string[];
+}
+
+const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
-    const [targetQuestion, setTargetQuestion] = useState<QuestionProps[]>([]);
+    const [targetQuestions, setTargetQuestions] = useState<QuestionProps[]>([]);
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const { pageId } = useParams();
@@ -36,20 +49,26 @@ const BusinessRulesForm = () => {
             : ''
     );
 
-    const fetchSourceValueSets = async (valueSet: string) => {
+    const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
             authorization: authorization(),
-            codeSetNm: valueSet
+            codeSetNm
         });
-        const list = content?.map((src: any) => ({ name: src.longName, value: src.conceptCode }));
+        const list = content?.map((src: Concept) => ({ name: src.display, value: src.conceptCode }));
         setSourceValueList(list);
+
+        if (sourceValues?.length) {
+            const matchedValues = sourceValues.map((valueName: string) => list.find((val) => val.name === valueName));
+            const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
+            form.setValue('sourceValues', newValues);
+        }
     };
 
     const handleChangeTargetQuestion = (data: QuestionProps[]) => {
-        setTargetQuestion(data);
+        setTargetQuestions(data);
         const value = data.map((val) => val.question);
         const text = data.map((val) => val.name);
-        form.setValue('targetValueIdentifier', value);
+        form.setValue('targetIdentifiers', value);
         form.setValue('targetValueText', text);
     };
 
@@ -63,89 +82,85 @@ const BusinessRulesForm = () => {
 
     useEffect(() => {
         handleRuleDescription();
-    }, [targetQuestion, selectedSource]);
+    }, [targetQuestions, selectedSource]);
 
-    const targetValueIdentifier = form.watch('targetValueIdentifier') || [];
+    useEffect(() => {
+        if (question?.codeSetName) {
+            fetchSourceValueSets(question.codeSetName);
+        }
+    }, []);
 
-    const isTargetQuestionSelected = targetQuestion.length || targetValueIdentifier.length;
+    const targetValueIdentifier = form.watch('targetIdentifiers') || [];
+    const isTargetQuestionSelected = targetQuestions.length || targetValueIdentifier.length;
 
     const handleRuleDescription = () => {
         let description = '';
         const logic = form.watch('comparator');
-        const sourceValue = form.watch('sourceValue');
-        const sourceValueDescription = `${sourceValue?.sourceValueText?.join(' ')} `;
-        if (selectedSource.length && targetQuestion.length && logic) {
-            const targetValue = targetQuestion.map((val) => `${val.name} (${val.question})`);
+        const sourceValues = form.watch('sourceValues');
+        const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+
+        if (selectedSource.length && targetQuestions.length && logic) {
+            const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
             description = `${sourceDescription} ${logic} ${sourceValueDescription} ${form.watch(
                 'ruleFunction'
             )} ${targetValue}`;
-            form.setValue('ruleDescription', description);
+            form.setValue('description', description);
         }
     };
 
     const nonDateCompare = [
         {
             name: 'Equal to',
-            value: '='
+            value: Rule.comparator.EQUAL_TO
         },
         {
             name: 'Not equal to',
-            value: '!='
+            value: Rule.comparator.NOT_EQUAL_TO
         }
     ];
 
     const dateCompare = [
         {
             name: 'Less than',
-            value: '<'
+            value: Rule.comparator.LESS_THAN
         },
         {
             name: 'Less or equal to',
-            value: '<='
+            value: Rule.comparator.LESS_THAN_OR_EQUAL_TO
         },
         {
             name: 'Greater or equal to',
-            value: '>='
+            value: Rule.comparator.GREATER_THAN_OR_EQUAL_TO
         },
         {
             name: 'Greater than',
-            value: '>'
+            value: Rule.comparator.GREATER_THAN
         }
     ];
 
     const ruleFunction = form.watch('ruleFunction');
-    const logicList = ruleFunction == 'Date validation' ? dateCompare : nonDateCompare;
+    const logicList = ruleFunction === Rule.ruleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
 
     const handleSourceValueChange = (data: string[]) => {
-        const values = form.getValues('sourceValue');
-        if (values) {
-            values.sourceValueText = [...data];
-            form.setValue('sourceValue', values);
-        } else {
-            form.setValue('sourceValue', { sourceValueText: data, sourceValueId: [] });
-        }
+        // create a new array by comparing data and sourceValueList, for each item in data, find the corresponding item in sourceValueList and return it
+        const matchedValues = data.map((value) => sourceValueList.find((val) => val.value === value));
+        const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
+        form.setValue('sourceValues', newValues);
         handleRuleDescription();
     };
 
-    useEffect(() => {
-        if (form.watch('sourceValue')) {
-            const test = form.getValues('sourceValue');
-            handleSourceValueChange(test?.sourceValueText || []);
-        }
-    }, []);
-
     const isTargetTypeEnabled =
-        form.watch('ruleFunction') === 'Enable' ||
-        form.watch('ruleFunction') === 'Disable' ||
-        form.watch('ruleFunction') === 'Hide' ||
-        form.watch('ruleFunction') === 'Unhide';
+        form.watch('ruleFunction') === Rule.ruleFunction.ENABLE ||
+        form.watch('ruleFunction') === Rule.ruleFunction.DISABLE ||
+        form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE ||
+        form.watch('ruleFunction') === Rule.ruleFunction.HIDE;
 
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
         setSourceDescription('');
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
-        form.setValue('sourceValue', { sourceValueText: [], sourceValueId: [] });
+        form.setValue('sourceValues', []);
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
@@ -158,9 +173,9 @@ const BusinessRulesForm = () => {
                     </Label>
                 </Grid>
                 <Grid col={9}>
-                    {selectedSource.length ? (
+                    {form.watch('sourceText') ? (
                         <div className="source-question-display">
-                            {selectedSource[0].name}
+                            {form.getValues('sourceText')} ({form.getValues('sourceIdentifier')})
                             <Icon.Close onClick={handleResetSourceQuestion} />
                         </div>
                     ) : (
@@ -177,7 +192,7 @@ const BusinessRulesForm = () => {
                 </Grid>
             </Grid>
 
-            {ruleFunction != 'Date validation' && (
+            {ruleFunction != Rule.ruleFunction.DATE_COMPARE && (
                 <Controller
                     control={form.control}
                     name="anySourceValue"
@@ -224,6 +239,7 @@ const BusinessRulesForm = () => {
                                 onBlur={onBlur}
                                 options={logicList}
                                 error={error?.message}
+                                disabled={form.watch('anySourceValue')}
                                 required
                             />
                         </Grid>
@@ -231,10 +247,10 @@ const BusinessRulesForm = () => {
                 )}
             />
 
-            {ruleFunction != 'Date validation' && (
+            {ruleFunction != Rule.ruleFunction.DATE_COMPARE && (
                 <Controller
                     control={form.control}
-                    name="sourceValue"
+                    name="sourceValues"
                     render={() => (
                         <Grid row className="inline-field source">
                             <Grid col={3}>
@@ -245,10 +261,13 @@ const BusinessRulesForm = () => {
                             <Grid col={9}>
                                 <div className="text-input">
                                     <MultiSelectInput
-                                        onChange={(e) => {
-                                            handleSourceValueChange(e);
+                                        value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
+                                        onChange={(value) => {
+                                            console.log('e', value);
+                                            handleSourceValueChange(value);
                                         }}
                                         options={sourceValueList}
+                                        disabled={form.watch('anySourceValue')}
                                     />
                                 </div>
                             </Grid>
@@ -311,10 +330,10 @@ const BusinessRulesForm = () => {
                         </div>
                     ) : (
                         <div className="selected-target-questions-display">
-                            {targetQuestion?.map((qtn, index: number) => (
+                            {form.getValues('targetValueText')?.map((target, index: number) => (
                                 <div className="margin-bottom-1" key={index}>
                                     <Icon.Check />
-                                    <span className="margin-left-1"> {`${qtn.name} (${qtn.question})`}</span>
+                                    <span className="margin-left-1"> {`${target} (${target})`}</span>
                                 </div>
                             ))}
 
@@ -334,7 +353,7 @@ const BusinessRulesForm = () => {
             </Grid>
             <Controller
                 control={form.control}
-                name="ruleDescription"
+                name="description"
                 render={({ field: { name, onChange, onBlur, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
                         <Grid col={3} className="rule-description-label">
@@ -370,7 +389,7 @@ const BusinessRulesForm = () => {
                         modalRef={sourceModalRef}
                         getList={handleChangeSource}
                         multiSelected={false}
-                        header="Source Question"
+                        header="Source question"
                         pageId={pageId}
                     />
                 </>

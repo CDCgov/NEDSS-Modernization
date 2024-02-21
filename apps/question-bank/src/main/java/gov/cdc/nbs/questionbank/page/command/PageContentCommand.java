@@ -177,8 +177,16 @@ public sealed interface PageContentCommand {
       long subsection,
       String blockName,
       List<GroupSubSectionRequest.Batch> batches,
+      long repeatingNbr,
       long userId,
       Instant requestedOn) implements PageContentCommand {
+  }
+
+  public record GroupSubsectionRdb(
+      int repeatingNbr,
+      long userId,
+      Instant requestedOn) implements PageContentCommand {
+
   }
 
 

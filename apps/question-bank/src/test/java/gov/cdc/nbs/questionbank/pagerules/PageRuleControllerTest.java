@@ -103,9 +103,8 @@ class PageRuleControllerTest {
     List<Rule.Target> targetQuestions = new ArrayList<>();
     List<Rule> content = new ArrayList<>();
     Rule.SourceQuestion sourceQuestion = new Rule.SourceQuestion(1000l, "identifier", "label", "codeSet");
-    content.add(new Rule(100l, 123l, Rule.Function.ENABLE, "testDesc", sourceQuestion,
+    content.add(new Rule(100l, 123l, Rule.RuleFunction.ENABLE, "testDesc", sourceQuestion,
         false, sourceValues, Rule.Comparator.EQUAL_TO, Rule.TargetType.QUESTION, targetQuestions));
     return content;
   }
-
 }

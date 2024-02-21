@@ -32,18 +32,6 @@
             border-radius: 0.125rem;
             text-transform: uppercase;
             background: colors.$info;
-
-            &.draft {
-                background: colors.$info;
-            }
-
-            &.edit {
-                background: colors.$warning;
-            }
-
-            &.published {
-                background: colors.$info;
-            }
         }
     }
 }

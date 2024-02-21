@@ -152,7 +152,7 @@ public class WaTemplate {
       CascadeType.MERGE,
       CascadeType.REMOVE
   }, orphanRemoval = true)
-  private List<WaRdbMetadatum> waRdbMetadatums;
+  private List<WaRdbMetadata> waRdbMetadatums;
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "waTemplateUid", cascade = {
       CascadeType.PERSIST,
@@ -166,6 +166,7 @@ public class WaTemplate {
     this.recordStatusCd = "ACTIVE";
     this.conditionMappings = new HashSet<>();
     this.uiMetadata = new ArrayList<>();
+    this.waRdbMetadatums = new ArrayList<>();
   }
 
   public WaTemplate(
@@ -271,6 +272,12 @@ public class WaTemplate {
 
   void addTab(WaUiMetadata tab) {
     including(tab);
+  }
+
+  public void addLineSeparator(PageContentCommand.AddLineSeparator command) {
+    WaUiMetadata component = new WaUiMetadata(command);
+
+    this.uiMetadata.add(component);
   }
 
   public void addSection(
@@ -415,7 +422,14 @@ public class WaTemplate {
         addedBy,
         addedOn);
 
+    WaRdbMetadata rdbComponent = new WaRdbMetadata(this, component, addedOn, addedBy);
+    addRdb(rdbComponent);
+
     including(component);
+  }
+
+  public void addRdb(WaRdbMetadata component) {
+    waRdbMetadatums.add(component);
   }
 
   public void deleteSection(PageContentCommand.DeleteSection command) {
@@ -520,10 +534,10 @@ public class WaTemplate {
     // ensure page already contain question
     WaUiMetadata question = uiMetadata.stream()
         .filter(e -> e.getId() != null
-            && e.getId().equals(command.question())).findFirst()
-        .orElseThrow(() ->
-            new PageContentModificationException(
-                "Unable to delete a question from a page, the page does not contain the question"));
+            && e.getId().equals(command.question()))
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException(
+            "Unable to delete a question from a page, the page does not contain the question"));
 
     //can not delete standard questions
     if (question.getStandardQuestionIndCd() == 'T') {
@@ -679,8 +693,7 @@ public class WaTemplate {
 
   public void createTemplate(
       final TemplateNameVerifier verifier,
-      final PageCommand.CreateTemplate create
-  ) {
+      final PageCommand.CreateTemplate create) {
 
     //  This method should return a new Template object however, the creation of templates is being delegated to classic
     //  NBS because of the complexity surrounding the XML payload.  For now, it is just verifying the template name is
@@ -692,8 +705,7 @@ public class WaTemplate {
 
   private void checkTemplateCreation(
       final TemplateNameVerifier verifier,
-      final PageCommand.CreateTemplate create
-  ) {
+      final PageCommand.CreateTemplate create) {
 
     String name = create.name();
 
@@ -723,6 +735,13 @@ public class WaTemplate {
   public void groupSubSection(PageContentCommand.GroupSubsection command, List<Long> questionNbsUiComponentUids) {
 
     verifyDraftType();
+    int max = 0;
+    for (WaUiMetadata entry : uiMetadata) {
+      if (entry.getQuestionGroupSeqNbr() != null) {
+        max = Math.max(entry.getQuestionGroupSeqNbr(), max);
+      }
+    }
+    final int finalMax = ++max;
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
@@ -732,15 +751,16 @@ public class WaTemplate {
           }
           return true;
         }).forEach(questionBatch -> {
-          questionBatch.updateQuestionBatch(command);
+          questionBatch.updateQuestionBatch(command, finalMax);
           changed(command);
         });
+
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to group"));
-    subsection.update(command);
+    subsection.update(command, finalMax);
     changed(command);
 
   }
@@ -799,10 +819,10 @@ public class WaTemplate {
     // ensure page already contain question
     WaUiMetadata question = uiMetadata.stream()
         .filter(e -> e.getId() != null
-            && e.getId().equals(command.question())).findFirst()
-        .orElseThrow(() ->
-            new PageContentModificationException(
-                "Unable to update a question from a page, the page does not contain the question"));
+            && e.getId().equals(command.question()))
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException(
+            "Unable to update a question from a page, the page does not contain the question"));
 
     question.update(command, question.getDataType());
     changed(command);

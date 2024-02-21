@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type QuestionInfo = {
-    id?: string;
+export type Target = {
     label?: string;
+    targetIdentifier?: string;
 };
 

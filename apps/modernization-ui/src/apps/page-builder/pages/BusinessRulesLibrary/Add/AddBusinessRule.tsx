@@ -3,39 +3,24 @@ import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import './AddBusinessRule.scss';
-import { CreateRuleRequest, PageRuleControllerService, ViewRuleResponse } from '../../../generated';
+import { CreateRuleRequest, PageRuleControllerService, Rule, SourceQuestion, Target } from '../../../generated';
 import { useAlert } from 'alert';
 import BusinessRulesForm from '../BusinessRulesForm';
 import { Breadcrumb } from 'breadcrumb';
 import { authorization } from 'authorization';
 import { ConfirmationModal } from 'confirmation';
 
-export type FormValues = {
-    ruleFunction: string;
-    sourceIdentifier: string;
-    sourceText: string;
-    comparator?: string;
-    sourceValueIds?: string[];
-    sourceValueText?: string[];
-    sourceValue?: {
-        sourceValueId?: string[];
-        sourceValueText?: string[];
-    };
-    targetValueIdentifier?: string[];
-    targetType: string;
-    ruleDescription: string;
-    targetValueText?: string[];
-    anySourceValue?: boolean;
-};
-
 const AddBusinessRule = () => {
     const navigate = useNavigate();
     const form = useForm<CreateRuleRequest>({
-        defaultValues: { targetType: 'SUBSECTION', anySourceValue: false },
+        defaultValues: { targetType: Rule.targetType.SUBSECTION, anySourceValue: false },
         mode: 'onChange'
     });
 
     const [selectedFieldType, setSelectedFieldType] = useState('');
+    const [question, setQuestion] = useState<SourceQuestion>();
+    const [targets, setTargets] = useState<Target[]>([]);
+    const [sourceValues, setSourceValues] = useState<string[]>([]);
     const { pageId, ruleId } = useParams();
     const deleteWarningModal = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
@@ -45,18 +30,27 @@ const AddBusinessRule = () => {
             PageRuleControllerService.viewRuleResponseUsingGet({
                 authorization: authorization(),
                 ruleId: Number(ruleId)
-            }).then((resp: ViewRuleResponse) => {
-                const sourceText = resp?.sourceValue?.sourceValueText || '';
-                form.setValue('anySourceValue', resp?.anySourceValue!);
-                form.setValue('comparator', resp?.comparator!);
-                form.setValue('ruleDescription', resp?.ruleDescription!);
-                form.setValue('ruleFunction', resp?.ruleFunction!);
-                form.setValue('sourceIdentifier', resp?.sourceIdentifier!);
-                form.setValue('sourceText', `${sourceText} (${resp?.sourceIdentifier!})`);
-                form.setValue('targetValueIdentifier', resp?.targetValueIdentifier!);
-                form.setValue('targetValueText', resp?.targetValueText!);
-                form.setValue('targetType', resp?.targetType!);
-                setSelectedFieldType(resp.ruleFunction!);
+            }).then((resp: Rule) => {
+                const sourceQuestion = resp.sourceQuestion?.label || '';
+
+                setSourceValues(resp.sourceValues || []);
+                setQuestion(resp?.sourceQuestion);
+
+                form.setValue('anySourceValue', resp?.anySourceValue);
+                form.setValue('comparator', resp.comparator);
+                form.setValue('description', resp.description);
+                form.setValue('ruleFunction', resp.ruleFunction);
+                form.setValue('sourceIdentifier', resp.sourceQuestion?.questionIdentifier || '');
+                form.setValue('sourceText', `${sourceQuestion} (${resp?.sourceQuestion?.questionIdentifier!})`);
+                form.setValue('targetIdentifiers', resp?.targets?.map((target) => target.targetIdentifier || '') || []);
+                form.setValue(
+                    'targetValueText',
+                    resp.targets?.map((target) => target.label || '')
+                );
+                form.setValue('targetType', resp.targetType || Rule.targetType.QUESTION);
+
+                setSelectedFieldType(resp.ruleFunction);
+                setTargets(resp.targets || []);
             });
         }
     }, [ruleId]);
@@ -73,18 +67,22 @@ const AddBusinessRule = () => {
         } else {
             PageRuleControllerService.updatePageRuleUsingPut({
                 authorization: authorization(),
-                page: Number(pageId),
+                id: Number(pageId),
                 ruleId: Number(ruleId),
                 request: data
-            }).then((resp) => {
-                showAlert({ type: 'success', header: 'updated', message: resp.message });
-            });
+            })
+                .then((resp) => {
+                    showAlert({ type: 'success', header: 'updated', message: resp.message });
+                })
+                .catch((err) => {
+                    console.log('error', err);
+                });
         }
         handleCancel();
     });
 
     const handleCancel = () => {
-        navigate('../');
+        navigate(`/page-builder/pages/${pageId}/business-rules`);
     };
 
     const handleDeleteRule = () => {
@@ -99,12 +97,12 @@ const AddBusinessRule = () => {
     };
 
     const fieldTypeTab = [
-        { name: 'Enable' },
-        { name: 'Disable' },
-        { name: 'Date validation' },
-        { name: 'Hide' },
-        { name: 'Unhide' },
-        { name: 'Require If' }
+        { value: Rule.ruleFunction.ENABLE, display: 'Enable' },
+        { value: Rule.ruleFunction.DISABLE, display: 'Disable' },
+        { value: Rule.ruleFunction.DATE_COMPARE, display: 'Date compare' },
+        { value: Rule.ruleFunction.HIDE, display: 'Hide' },
+        { value: Rule.ruleFunction.UNHIDE, display: 'Uhide' },
+        { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' }
     ];
 
     const title = !ruleId ? 'Add new' : 'Edit';
@@ -145,19 +143,22 @@ const AddBusinessRule = () => {
                                     </Grid>
                                     <Grid col={9}>
                                         {ruleId ? (
-                                            <label>{ruleFunction}</label>
+                                            <label>
+                                                {fieldTypeTab.find((tab) => tab.value === ruleFunction)?.display ||
+                                                    'Enable'}
+                                            </label>
                                         ) : (
                                             <ButtonGroup type="segmented">
                                                 {fieldTypeTab.map((field, index) => (
                                                     <Button
                                                         key={index}
                                                         type="button"
-                                                        outline={field.name !== selectedFieldType}
+                                                        outline={field.value !== selectedFieldType}
                                                         onClick={() => {
-                                                            setSelectedFieldType(field.name);
-                                                            form.setValue('ruleFunction', field.name);
+                                                            setSelectedFieldType(field.value);
+                                                            form.setValue('ruleFunction', field.value);
                                                         }}>
-                                                        {field.name}
+                                                        {field.display}
                                                     </Button>
                                                 ))}
                                             </ButtonGroup>
@@ -166,7 +167,11 @@ const AddBusinessRule = () => {
                                 </Grid>
                                 {selectedFieldType == '' ? null : (
                                     <FormProvider {...form}>
-                                        <BusinessRulesForm />
+                                        <BusinessRulesForm
+                                            targets={targets}
+                                            question={question}
+                                            sourceValues={sourceValues}
+                                        />
                                     </FormProvider>
                                 )}
                             </div>

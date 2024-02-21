@@ -219,6 +219,6 @@ describe('InvestigationGeneralFields component', () => {
 
         // Provider/facility id
         const providerId = getByTestId('providerSearch.providerId');
-        expect(providerId).toHaveValue('providerId');
+        expect(providerId).toHaveValue('');
     });
 });
