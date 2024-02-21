@@ -15,6 +15,8 @@ import {
     SourceQuestion,
     Target
 } from 'apps/page-builder/generated';
+import { mapComparatorToString } from './helpers/mapComparatorToString';
+import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
 
 type QuestionProps = {
     id: number;
@@ -95,15 +97,23 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
 
     const handleRuleDescription = () => {
         let description = '';
-        const logic = form.watch('comparator');
+        const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
         const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        console.log({
+            logic,
+            sourceValues,
+            sourceValueDescription,
+            selectedSource,
+            targetQuestions,
+            form: form.getValues()
+        });
 
-        if (selectedSource.length && targetQuestions.length && logic) {
+        if (selectedSource && targetQuestions.length && logic) {
             const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
-            description = `${sourceDescription} ${logic} ${sourceValueDescription} ${form.watch(
-                'ruleFunction'
-            )} ${targetValue}`;
+            description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
+                form.getValues('ruleFunction')
+            )} "${targetValue}"`;
             form.setValue('description', description);
         }
     };
