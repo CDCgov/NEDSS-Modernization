@@ -1,7 +1,7 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.patient.PatientAddressEntityLocatorListener;
+import gov.cdc.nbs.patient.PatientEntityLocatorListener;
 import gov.cdc.nbs.patient.PatientCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 @Setter
 @Entity
 @Table(name = "Entity_locator_participation")
-@EntityListeners(PatientAddressEntityLocatorListener.class)
+@EntityListeners(PatientEntityLocatorListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "class_cd", discriminatorType = DiscriminatorType.STRING)
 public abstract class EntityLocatorParticipation {

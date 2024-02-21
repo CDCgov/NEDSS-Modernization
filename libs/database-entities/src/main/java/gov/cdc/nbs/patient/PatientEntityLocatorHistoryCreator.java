@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Component
-public class PatientAddressEntityLocatorHistoryCreator {
+public class PatientEntityLocatorHistoryCreator {
     private static final int ENTITY_PARAMETER = 1;
     private static final int LOCATOR_PARAMETER = 2;
     private static final int VERSION_PARAMETER = 3;
@@ -69,7 +69,7 @@ public class PatientAddressEntityLocatorHistoryCreator {
             and version_ctrl_nbr = ?
         """;
 
-    public PatientAddressEntityLocatorHistoryCreator(JdbcTemplate template) {
+    public PatientEntityLocatorHistoryCreator(JdbcTemplate template) {
         this.template = template;
     }
 
