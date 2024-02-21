@@ -1,4 +1,4 @@
-import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ErrorMessage, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Concept, Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
@@ -6,7 +6,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import React, { ChangeEvent } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { validPageNameRule } from 'validation/entry';
+import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { dataMartNameRule } from 'validation/entry/dataMartNameRule';
 
 type AddNewPageFieldProps = {
@@ -150,20 +150,24 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
             <Controller
                 control={form.control}
                 name="pageDescription"
-                render={({ field: { onChange, value, name } }) => (
-                    <Input
-                        onChange={(d: any) => {
-                            onChange(d);
-                        }}
-                        label="Page description"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
-                        aria-label={'enter a description for the page'}
-                        type="text"
-                        multiline
-                        defaultValue={value}
-                    />
+                rules={maxLengthRule(2000)}
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                    <>
+                        <Input
+                            onChange={(d: any) => {
+                                onChange(d);
+                            }}
+                            label="Page description"
+                            name={name}
+                            htmlFor={name}
+                            id={name}
+                            aria-label={'enter a description for the page'}
+                            type="text"
+                            multiline
+                            defaultValue={value}
+                        />
+                        {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
+                    </>
                 )}
             />
             <Controller

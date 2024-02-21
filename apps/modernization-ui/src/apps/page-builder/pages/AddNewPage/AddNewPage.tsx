@@ -99,8 +99,8 @@ export const AddNewPage = () => {
                     window.location.href = `/nbs/page-builder/api/v1/pages/${response.pageId}/edit`;
                 }
             })
-            .catch(() => {
-                alertError({ message: 'Failed to create page' });
+            .catch((error) => {
+                alertError({ message: error.body.message || 'Failed to create page' });
             });
     });
 
