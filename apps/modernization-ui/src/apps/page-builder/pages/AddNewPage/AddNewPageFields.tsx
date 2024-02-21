@@ -154,9 +154,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <>
                         <Input
-                            onChange={(d: any) => {
-                                onChange(d);
-                            }}
+                            onChange={onChange}
                             label="Page description"
                             name={name}
                             htmlFor={name}
