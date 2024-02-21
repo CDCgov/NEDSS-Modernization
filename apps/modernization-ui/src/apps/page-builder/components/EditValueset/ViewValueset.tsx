@@ -16,6 +16,7 @@ type Props = {
     onAccept: () => void;
     onEditDetails: () => void;
     onAddConcept: () => void;
+    onEditConcept: (concept: Concept) => void;
     onSort: (sort: ConceptSort | undefined) => void;
 };
 export const ViewValueset = ({
@@ -27,6 +28,7 @@ export const ViewValueset = ({
     onAccept,
     onEditDetails,
     onAddConcept,
+    onEditConcept,
     onSort
 }: Props) => {
     return (
@@ -35,7 +37,7 @@ export const ViewValueset = ({
             <div className={styles.content}>
                 <ValuesetDetails valueset={valueset} onEdit={onEditDetails} />
                 <div className={styles.sectionText}>Value set concepts</div>
-                <ConceptTable loading={isLoading} concepts={concepts} onSort={onSort} />
+                <ConceptTable loading={isLoading} concepts={concepts} onSort={onSort} onEditConcept={onEditConcept} />
                 {concepts.length === 0 ? (
                     <div className={styles.noConceptsSection}>
                         <div className={styles.noConceptText}>

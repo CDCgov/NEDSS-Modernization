@@ -11,6 +11,13 @@
         height: 100%;
         overflow-y: auto;
 
+        .editValuesetButton {
+            box-shadow: none;
+            margin-right: 0 !important;
+            color: colors.$primary;
+            padding: 0;
+        }
+
         .detailsHeader {
             display: flex;
             align-items: center;

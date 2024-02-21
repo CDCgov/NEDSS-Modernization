@@ -1,4 +1,4 @@
-import { Valueset } from 'apps/page-builder/generated';
+import { Concept, Valueset } from 'apps/page-builder/generated';
 import { ConceptSort, useFindConcepts } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { PageProvider, Status, usePage } from 'page';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { EditValuesetDetails } from './EditValuesetDetails';
 import { ViewValueset } from './ViewValueset';
 import { CreateConcept } from './CreateConcept';
 import styles from './edit-valueset.module.scss';
+import { EditConcept } from './EditConcept';
 
 type Props = {
     valueset: Valueset;
@@ -23,26 +24,12 @@ export const EditValueset = (props: Props) => {
 };
 
 const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValuesetUpdated }: Props) => {
-    const [state, setState] = useState<'view' | 'create-concept' | 'edit'>('view');
+    const [state, setState] = useState<'view' | 'create-concept' | 'edit-concept' | 'edit-valueset'>('view');
+    const [editedConcept, setEditedConcept] = useState<Concept | undefined>(undefined);
     const { response, isLoading, search } = useFindConcepts();
     const { page, ready, firstPage, reload } = usePage();
 
     const [sort, setSort] = useState<ConceptSort | undefined>(undefined);
-
-    const handleClose = () => {
-        setState('view');
-        onClose();
-    };
-
-    const handleCancel = () => {
-        setState('view');
-        onCancel();
-    };
-
-    const handleAccept = () => {
-        setState('view');
-        onAccept();
-    };
 
     useEffect(() => {
         search({ codeSetNm: valueset.code });
@@ -72,6 +59,36 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValueset
         ready(response?.totalElements ?? 0, currentPage);
     }, [response]);
 
+    const handleClose = () => {
+        setState('view');
+        onClose();
+    };
+
+    const handleCancel = () => {
+        setState('view');
+        onCancel();
+    };
+
+    const handleAccept = () => {
+        setState('view');
+        onAccept();
+    };
+
+    const handleConceptCreated = () => {
+        firstPage();
+        setState('view');
+    };
+
+    const handleEditConcept = (concept: Concept) => {
+        setEditedConcept(concept);
+        setState('edit-concept');
+    };
+
+    const handleConceptUpdated = () => {
+        firstPage();
+        setState('view');
+    };
+
     return (
         <div className={styles.editValueset}>
             {state === 'view' && (
@@ -80,14 +97,15 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValueset
                     concepts={response?.content ?? []}
                     isLoading={isLoading}
                     onClose={handleClose}
-                    onEditDetails={() => setState('edit')}
+                    onEditDetails={() => setState('edit-valueset')}
                     onAddConcept={() => setState('create-concept')}
+                    onEditConcept={handleEditConcept}
                     onSort={setSort}
                     onCancel={handleCancel}
                     onAccept={handleAccept}
                 />
             )}
-            {state === 'edit' && (
+            {state === 'edit-valueset' && (
                 <EditValuesetDetails
                     valueset={valueset}
                     onValuesetUpdated={onValuesetUpdated}
@@ -100,10 +118,16 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValueset
                     valuesetName={valueset.code}
                     onCancel={() => setState('view')}
                     onClose={handleClose}
-                    onCreated={() => {
-                        firstPage();
-                        setState('view');
-                    }}
+                    onCreated={handleConceptCreated}
+                />
+            )}
+            {state === 'edit-concept' && editedConcept && (
+                <EditConcept
+                    valueset={valueset.code}
+                    concept={editedConcept}
+                    onClose={handleClose}
+                    onCancel={() => setState('view')}
+                    onUpdated={handleConceptUpdated}
                 />
             )}
         </div>
