@@ -82,7 +82,7 @@ const AddBusinessRule = () => {
     });
 
     const handleCancel = () => {
-        navigate('../business-rules');
+        navigate(`/page-builder/pages/${pageId}/business-rules`);
     };
 
     const handleDeleteRule = () => {
