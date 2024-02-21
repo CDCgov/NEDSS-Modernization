@@ -1,4 +1,4 @@
-import { ErrorMessage, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { ErrorMessage, Icon, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
 import { Concept, Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
@@ -151,19 +151,10 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 control={form.control}
                 name="pageDescription"
                 rules={maxLengthRule(2000)}
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <>
-                        <Input
-                            onChange={onChange}
-                            label="Page description"
-                            name={name}
-                            htmlFor={name}
-                            id={name}
-                            aria-label={'enter a description for the page'}
-                            type="text"
-                            multiline
-                            defaultValue={value}
-                        />
+                        <Label htmlFor={name}>Page description</Label>
+                        <Textarea onChange={onChange} onBlur={onBlur} defaultValue={value} name={name} id={name} />
                         {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
                     </>
                 )}
