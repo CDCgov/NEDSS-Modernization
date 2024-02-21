@@ -429,7 +429,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                     control={form.control}
                     name="providerSearch.providerId"
                     rules={{
-                        required: { value: true, message: `ID is required` }
+                        required: { value: true, message: `Ordering facility is required` }
                     }}
                     render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                         <>
@@ -451,6 +451,9 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 <Controller
                     control={form.control}
                     name="providerSearch.providerId"
+                    rules={{
+                        required: { value: true, message: `Ordering provider is required` }
+                    }}
                     render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
                         <>
                             <ProviderAutocomplete
