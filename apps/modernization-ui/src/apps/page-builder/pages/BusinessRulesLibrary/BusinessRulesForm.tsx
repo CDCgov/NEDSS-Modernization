@@ -100,14 +100,6 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
         const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
-        console.log({
-            logic,
-            sourceValues,
-            sourceValueDescription,
-            selectedSource,
-            targetQuestions,
-            form: form.getValues()
-        });
 
         if (selectedSource && targetQuestions.length && logic) {
             const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
