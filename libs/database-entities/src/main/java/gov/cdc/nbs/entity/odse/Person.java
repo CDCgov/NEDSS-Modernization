@@ -553,8 +553,7 @@ public class Person {
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
-        EntityLocatorParticipation added = this.nbsEntity.add(address);
-        return added;
+        return this.nbsEntity.add(address);
     }
 
     public void update(final PatientCommand.UpdateAddress address) {

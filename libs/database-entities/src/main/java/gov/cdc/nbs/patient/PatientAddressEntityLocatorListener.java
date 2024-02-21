@@ -9,7 +9,7 @@ import javax.persistence.PreUpdate;
 public class PatientAddressEntityLocatorListener {
     private final PatientAddressEntityLocatorHistoryCreator creator;
 
-    public PatientAddressEntityLocatorListener(PatientAddressEntityLocatorHistoryCreator entityLocatorHistoryCreator, PatientAddressPostalLocatorHistoryCreator postalLocatorHistoryCreator) {
+    public PatientAddressEntityLocatorListener(PatientAddressEntityLocatorHistoryCreator entityLocatorHistoryCreator) {
         this.creator = entityLocatorHistoryCreator;
     }
 
