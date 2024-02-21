@@ -553,19 +553,15 @@ public class Person {
     }
 
     public EntityLocatorParticipation add(final PatientCommand.AddAddress address) {
-        EntityLocatorParticipation added = this.nbsEntity.add(address);
-        changed(address);
-        return added;
+        return this.nbsEntity.add(address);
     }
 
     public void update(final PatientCommand.UpdateAddress address) {
         this.nbsEntity.update(address);
-        changed(address);
     }
 
     public void delete(final PatientCommand.DeleteAddress address) {
         this.nbsEntity.delete(address);
-        changed(address);
     }
 
     public List<PostalEntityLocatorParticipation> addresses() {
@@ -737,14 +733,10 @@ public class Person {
 
     public void update(PatientCommand.UpdateIdentification info) {
         this.nbsEntity.update(info);
-
-        changed(info);
     }
 
     public void delete(PatientCommand.DeleteIdentification info) {
         this.nbsEntity.delete(info);
-
-        changed(info);
     }
 
     public void update(final PatientCommand.UpdateEthnicityInfo info) {

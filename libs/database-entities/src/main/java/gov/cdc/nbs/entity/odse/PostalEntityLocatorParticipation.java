@@ -1,18 +1,14 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
+import gov.cdc.nbs.patient.PatientAddressPostalLocatorListener;
 import gov.cdc.nbs.patient.PatientCommand;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
+@EntityListeners(PatientAddressPostalLocatorListener.class)
 public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
 
     static final String POSTAL_CLASS_CODE = "PST";

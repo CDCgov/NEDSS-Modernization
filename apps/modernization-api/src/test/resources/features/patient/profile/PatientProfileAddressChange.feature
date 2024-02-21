@@ -16,6 +16,8 @@ Feature: Patient Profile Address Changes
     And the patient has an address
     When a patient's address is changed
     Then the patient profile has the expected address
+    And the patient entity locator history contains the previous version
+    And the patient postal locator history contains the previous version
 
   Scenario: I can remove a patient's existing address
     Given I am logged into NBS
@@ -24,6 +26,8 @@ Feature: Patient Profile Address Changes
     When a patient's address is removed
     Then the patient does not have the expected address
     And the profile has no associated addresses
+    And the patient entity locator history contains the previous version
+    And the patient postal locator history contains the previous version
 
   Scenario: I cannot add a patient's address without proper permission
     Given I am logged into NBS
