@@ -1,16 +1,16 @@
 @use 'styles/colors';
 @use 'styles/animation';
 
-.reorder-section {
-    .reorder-section__toggle {
+.section {
+    .toggle {
         cursor: pointer;
     }
-    .reorder-section__handle {
+    .handle {
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    .reorder-section__tile {
+    .tile {
         background-color: colors.$base-white;
         display: flex;
         align-items: center;
@@ -18,11 +18,14 @@
         padding: 0.9rem 1.5rem;
         z-index: 500;
     }
-    .reorder-section__subsections {
+    .subsections {
         margin-left: 1rem;
         &.closed {
             height: 0;
             display: none;
         }
+    }
+    &.hidden {
+        height: 0px;
     }
 }

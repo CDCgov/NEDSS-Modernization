@@ -1,5 +1,5 @@
 import { Icon } from 'components/Icon/Icon';
-import './ReorderSection.scss';
+import styles from './reorder-section.module.scss';
 import { PagesSection } from 'apps/page-builder/generated/models/PagesSection';
 import { useEffect, useState } from 'react';
 import { ReorderSubsection } from '../ReorderSubsection/ReorderSubsection';
@@ -33,27 +33,27 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
         <Draggable draggableId={section.id!.toString()} index={index}>
             {(provided: DraggableProvided) => (
                 <div
-                    className={`reorder-section ${visible ? '' : 'hidden'}`}
+                    className={`${styles.section} ${visible ? '' : styles.hidden}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
-                    <div className="reorder-section__tile">
-                        <div className="reorder-section__toggle" onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
+                    <div className={styles.tile}>
+                        <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
                             {subsectionsOpen ? (
                                 <Icon name={'expand-more'} size={'xs'} />
                             ) : (
                                 <Icon name={'navigate-next'} size={'xs'} />
                             )}
                         </div>
-                        <div className="reorder-section__handle" {...provided.dragHandleProps}>
+                        <div className={styles.handle} {...provided.dragHandleProps}>
                             <Icon name={'drag'} size={'m'} />
                         </div>
                         <Icon name={'group'} size={'m'} />
                         <p>{section.name}</p>
                     </div>
-                    <div className={`reorder-section__subsections ${subsectionsOpen ? '' : 'closed'}`}>
+                    <div className={`${styles.subsections} ${subsectionsOpen ? '' : styles.closed}`}>
                         <Droppable droppableId={section.id!.toString()} type="subsection">
                             {(prov) => (
-                                <div {...prov.droppableProps} ref={prov.innerRef} className="reorder-section__tiles">
+                                <div {...prov.droppableProps} ref={prov.innerRef}>
                                     {subsections
                                         ? subsections.map((subsection: any, i: number) => {
                                               return (
