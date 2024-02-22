@@ -43,6 +43,12 @@
 
                 label {
                     margin: 0 !important;
+                    display: flex;
+                    align-items: center;
+
+                    ::before {
+                        margin-top: 0;
+                    }
                 }
             }
 
