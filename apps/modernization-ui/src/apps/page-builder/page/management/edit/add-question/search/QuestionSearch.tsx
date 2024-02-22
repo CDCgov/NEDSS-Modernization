@@ -8,6 +8,7 @@ import { QuestionSearchTable } from './table/QuestionSearchTable';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import styles from './question-search.module.scss';
+import { useAlert } from 'alert';
 
 type Props = {
     pageId: number;
@@ -19,15 +20,12 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     const { page, ready, firstPage, reload } = usePage();
     const [query, setQuery] = useState<string>('');
     const [sort, setSort] = useState<AddableQuestionSort | undefined>(undefined);
-    const { isLoading, search, response } = useFindAddableQuestions();
+    const { isLoading, search, response, error } = useFindAddableQuestions();
     const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
+    const { alertError } = useAlert();
 
     useEffect(() => {
-        search({ pageId });
-    }, [pageId]);
-
-    useEffect(() => {
-        if (page.status === Status.Requested) {
+        if (page.status === Status.Requested && !isLoading) {
             setSelectedQuestions([]);
             search({
                 searchText: query,
@@ -48,9 +46,13 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     }, [query, sort]);
 
     useEffect(() => {
-        const currentPage = response?.number ? response?.number + 1 : 1;
-        ready(response?.totalElements ?? 0, currentPage);
-    }, [response]);
+        if (response) {
+            const currentPage = response?.number ? response?.number + 1 : 1;
+            ready(response?.totalElements ?? 0, currentPage);
+        } else if (error) {
+            alertError({ message: 'Failed to retrieve questions' });
+        }
+    }, [response, error]);
 
     const handleSelectedQuestionChange = (mode: SelectionMode, id: number) => {
         if (mode === 'deselect') {
