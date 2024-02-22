@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import javax.persistence.PreUpdate;
 
 @Component
-public class PatientEntityLocatorListener {
+public class PatientEntityLocatorHistoryListener {
     private final PatientEntityLocatorHistoryCreator creator;
 
-    public PatientEntityLocatorListener(PatientEntityLocatorHistoryCreator entityLocatorHistoryCreator) {
+    public PatientEntityLocatorHistoryListener(PatientEntityLocatorHistoryCreator entityLocatorHistoryCreator) {
         this.creator = entityLocatorHistoryCreator;
     }
 
