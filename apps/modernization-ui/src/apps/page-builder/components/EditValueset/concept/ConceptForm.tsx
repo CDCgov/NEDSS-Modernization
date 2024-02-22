@@ -14,7 +14,9 @@ type Props = {
 };
 export const ConceptForm = ({ isEditing = false }: Props) => {
     const form = useFormContext<CreateConceptRequest>();
-    const [alwaysEffective, setAlwaysEffective] = useState<boolean>(true);
+    const [alwaysEffective, setAlwaysEffective] = useState<boolean>(
+        !isEditing || form.getValues('effectiveToTime') === undefined
+    );
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
 
     return (
@@ -109,8 +111,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         checked={alwaysEffective}
                         onChange={() => {
                             setAlwaysEffective(true);
-                            form.setValue('effectiveToTime', undefined);
-                            form.trigger('adminComments'); // Trigger validation
+                            form.setValue('effectiveToTime', '', { shouldDirty: true, shouldValidate: true });
                         }}
                     />
                     <Radio
@@ -121,7 +122,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         checked={!alwaysEffective}
                         onChange={() => {
                             setAlwaysEffective(false);
-                            form.trigger('effectiveToTime');
+                            form.setValue('effectiveToTime', '', { shouldDirty: true, shouldValidate: true });
                         }}
                     />
                     <Controller
@@ -142,23 +143,33 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                 <Controller
                     control={form.control}
                     name="status"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { value } }) => (
                         <div className={styles.radioButtons}>
                             <Radio
                                 id="status_ACTIVE"
                                 name="status"
-                                value={'ACTIVE'}
+                                value={CreateConceptRequest.status.ACTIVE}
                                 label="ACTIVE"
-                                onChange={onChange}
-                                checked={value === 'ACTIVE'}
+                                onChange={() => {
+                                    form.setValue('status', CreateConceptRequest.status.ACTIVE, {
+                                        shouldDirty: true,
+                                        shouldValidate: true
+                                    });
+                                }}
+                                checked={value === CreateConceptRequest.status.ACTIVE}
                             />
                             <Radio
                                 id="status_INACTIVE"
                                 name="status"
-                                value={'INACTIVE'}
+                                value={CreateConceptRequest.status.INACTIVE}
                                 label="INACTIVE"
-                                onChange={onChange}
-                                checked={value === 'INACTIVE'}
+                                onChange={() => {
+                                    form.setValue('status', CreateConceptRequest.status.INACTIVE, {
+                                        shouldDirty: true,
+                                        shouldValidate: true
+                                    });
+                                }}
+                                checked={value === CreateConceptRequest.status.INACTIVE}
                             />
                         </div>
                     )}

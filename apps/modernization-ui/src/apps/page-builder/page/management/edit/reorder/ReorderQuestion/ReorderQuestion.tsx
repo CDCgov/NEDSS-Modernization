@@ -1,5 +1,5 @@
 import { PagesQuestion } from 'apps/page-builder/generated';
-import './ReorderQuestion.scss';
+import styles from './reorder-question.module.scss';
 import { Icon } from 'components/Icon/Icon';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 
@@ -14,11 +14,11 @@ export const ReorderQuestion = ({ question, index, visible }: Props) => {
         <Draggable draggableId={question.id!.toString()} index={index}>
             {(prov: DraggableProvided) => (
                 <div
-                    className={`reorder-question ${visible ? '' : 'hidden'}`}
+                    className={`${styles.question} ${visible ? '' : styles.hidden}`}
                     ref={prov.innerRef}
                     {...prov.draggableProps}>
-                    <div className="reorder-question__tile">
-                        <div className="reorder-question__handle" {...prov.dragHandleProps}>
+                    <div className={styles.tile}>
+                        <div className={styles.handle} {...prov.dragHandleProps}>
                             <Icon name={'drag'} size={'m'} />
                         </div>
                         <Icon name={'question'} size={'m'} />

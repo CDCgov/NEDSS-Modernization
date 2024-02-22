@@ -1,7 +1,7 @@
 import { ModalRef, ModalFooter, ModalToggleButton, ButtonGroup } from '@trussworks/react-uswds';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { RefObject, useState } from 'react';
-import './ReorderModal.scss';
+import styles from './reorder-modal.module.scss';
 import { ReorderSection } from '../ReorderSection/ReorderSection';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import { Icon } from 'components/Icon/Icon';
@@ -22,8 +22,8 @@ export const ReorderModal = ({ modalRef, pageName, alertMessage }: ReorderProps)
         <ModalComponent
             modalRef={modalRef}
             modalHeading={
-                <div className="reorder-modal__header">
-                    <h3>Reorder</h3>
+                <div className={styles.header}>
+                    <h2>Reorder</h2>
                 </div>
             }
             modalBody={
@@ -32,19 +32,16 @@ export const ReorderModal = ({ modalRef, pageName, alertMessage }: ReorderProps)
                     onDragStart={handleDragStart}
                     onDragUpdate={handleDragUpdate}>
                     {loading ? <Spinner /> : null}
-                    <div className="reorder-modal">
+                    <div className={styles.modal}>
                         {alertMessage ? <AlertBanner type={'prompt'}>{alertMessage}</AlertBanner> : null}
-                        <div className="reorder-modal__content">
-                            <div className="reorder-modal__top">
+                        <div className={styles.content}>
+                            <div className={styles.top}>
                                 <Icon name="folder" />
                                 <p>{pageName}</p>
                             </div>
                             <Droppable droppableId="all-sections" type="section">
                                 {(provided) => (
-                                    <div
-                                        {...provided.droppableProps}
-                                        ref={provided.innerRef}
-                                        className="reorder-modal__tiles">
+                                    <div {...provided.droppableProps} ref={provided.innerRef}>
                                         {sections
                                             ? sections.map((section: any, i: number) => {
                                                   return (

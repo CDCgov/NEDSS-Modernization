@@ -11,6 +11,8 @@ import './BusinessRulesLibraryTable.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Rule } from 'apps/page-builder/generated';
 import React from 'react';
+import { mapComparatorToString } from './helpers/mapComparatorToString';
+import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
 
 export enum Column {
     SourceFields = 'Source Field',
@@ -42,29 +44,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
     const { page } = useGetPageDetails();
-
-    const mapLogic = ({ comparator, ruleFunction }: any) => {
-        if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
-            switch (comparator) {
-                case '<':
-                    return 'Less than';
-                case '<=':
-                    return 'Less than or equal to';
-                case '>=':
-                    return 'Greater than';
-                default:
-                    return 'Greater than';
-            }
-        } else {
-            switch (comparator) {
-                case '=':
-                    return 'Equal to';
-                default:
-                    return 'Not equal to';
-            }
-        }
-    };
-
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
     const asTableRow = (rule: Rule): TableBody => ({
@@ -73,9 +52,13 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>{rule.sourceQuestion.label}</Link>
+                title: (
+                    <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>
+                        {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
+                    </Link>
+                )
             },
-            { id: 2, title: <div className="event-text">{mapLogic(rule)}</div> || null },
+            { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> || null },
             {
                 id: 3,
                 title:
@@ -92,7 +75,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
             },
             {
                 id: 4,
-                title: <div>{rule?.ruleFunction}</div> || null
+                title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div> || null
             },
             {
                 id: 5,
@@ -101,7 +84,9 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                         <div>
                             {rule.targets?.map((target, index) => (
                                 <React.Fragment key={index}>
-                                    <span>{target.label}</span>
+                                    <span>
+                                        {target.label} ({target.targetIdentifier})
+                                    </span>
                                     <br />
                                 </React.Fragment>
                             ))}

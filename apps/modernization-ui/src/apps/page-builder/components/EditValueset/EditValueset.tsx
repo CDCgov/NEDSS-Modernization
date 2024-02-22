@@ -1,19 +1,19 @@
-import { Button, Icon } from '@trussworks/react-uswds';
-import { Valueset } from 'apps/page-builder/generated';
+import { Concept, Valueset } from 'apps/page-builder/generated';
 import { ConceptSort, useFindConcepts } from 'apps/page-builder/hooks/api/useFindConcepts';
-import { ButtonBar } from '../ButtonBar/ButtonBar';
-import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
-import { ConceptTable } from './concept/ConceptTable';
-import styles from './edit-valueset.module.scss';
-import { useEffect, useState } from 'react';
 import { PageProvider, Status, usePage } from 'page';
-import { CreateConcept } from './concept/CreateConcept';
+import { useEffect, useState } from 'react';
+import { EditValuesetDetails } from './EditValuesetDetails';
+import { ViewValueset } from './ViewValueset';
+import { CreateConcept } from './CreateConcept';
+import styles from './edit-valueset.module.scss';
+import { EditConcept } from './EditConcept';
 
 type Props = {
     valueset: Valueset;
     onClose: () => void;
     onCancel: () => void;
     onAccept: () => void;
+    onValuesetUpdated: () => void;
 };
 export const EditValueset = (props: Props) => {
     return (
@@ -23,8 +23,9 @@ export const EditValueset = (props: Props) => {
     );
 };
 
-const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel }: Props) => {
-    const [state, setState] = useState<'view' | 'create'>('view');
+const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel, onValuesetUpdated }: Props) => {
+    const [state, setState] = useState<'view' | 'create-concept' | 'edit-concept' | 'edit-valueset'>('view');
+    const [editedConcept, setEditedConcept] = useState<Concept | undefined>(undefined);
     const { response, isLoading, search } = useFindConcepts();
     const { page, ready, firstPage, reload } = usePage();
 
@@ -58,76 +59,77 @@ const EditValuesetContent = ({ valueset, onClose, onAccept, onCancel }: Props) =
         ready(response?.totalElements ?? 0, currentPage);
     }, [response]);
 
+    const handleClose = () => {
+        setState('view');
+        onClose();
+    };
+
+    const handleCancel = () => {
+        setState('view');
+        onCancel();
+    };
+
+    const handleAccept = () => {
+        setState('view');
+        onAccept();
+    };
+
+    const handleConceptCreated = () => {
+        firstPage();
+        setState('view');
+    };
+
+    const handleEditConcept = (concept: Concept) => {
+        setEditedConcept(concept);
+        setState('edit-concept');
+    };
+
+    const handleConceptUpdated = () => {
+        firstPage();
+        setState('view');
+    };
+
     return (
         <div className={styles.editValueset}>
-            <CloseableHeader title={<div className={styles.addValuesetHeader}>Add value set</div>} onClose={onClose} />
-            <div className={styles.content}>
-                <div className={styles.sectionText}>Value set details</div>
-                <div className={styles.valuesetInfo}>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET TYPE</div>
-                        <div>{valueset.type}</div>
-                    </div>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET CODE</div>
-                        <div>{valueset.code}</div>
-                    </div>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET NAME</div>
-                        <div>{valueset.name}</div>
-                    </div>
-                    <div className={styles.data}>
-                        <div className={styles.title}>VALUE SET DESCRIPTION</div>
-                        <div>{valueset.description}</div>
-                    </div>
-                </div>
-                {state === 'view' && (
-                    <>
-                        <div className={styles.sectionText}>Value set concepts</div>
-                        <ConceptTable loading={isLoading} concepts={response?.content ?? []} onSort={setSort} />
-                        {response?.content?.length === 0 ? (
-                            <div className={styles.noConceptsSection}>
-                                <div className={styles.noConceptText}>
-                                    No value set concept is displayed. Please click the button below to add a new value
-                                    set concept.
-                                </div>
-                                <div>
-                                    <Button type="button" outline onClick={() => setState('create')}>
-                                        Add new concept
-                                    </Button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className={styles.addConceptLinkSection}>
-                                <button className={styles.addConceptButton} onClick={() => setState('create')}>
-                                    <Icon.Add size={3} /> Add new concept
-                                </button>
-                            </div>
-                        )}
-                    </>
-                )}
-                {state === 'create' && (
-                    <CreateConcept
-                        valuesetName={valueset.code}
-                        onCancel={() => setState('view')}
-                        onCreated={() => {
-                            firstPage();
-                            setState('view');
-                        }}
-                    />
-                )}
-            </div>
-            <ButtonBar>
-                <Button disabled={state === 'create'} onClick={onCancel} type="button" outline>
-                    Cancel
-                </Button>
-                <Button
-                    disabled={state === 'create' || response?.content?.length == 0}
-                    onClick={onAccept}
-                    type="button">
-                    Continue
-                </Button>
-            </ButtonBar>
+            {state === 'view' && (
+                <ViewValueset
+                    valueset={valueset}
+                    concepts={response?.content ?? []}
+                    isLoading={isLoading}
+                    onClose={handleClose}
+                    onEditDetails={() => setState('edit-valueset')}
+                    onAddConcept={() => setState('create-concept')}
+                    onEditConcept={handleEditConcept}
+                    onSort={setSort}
+                    onCancel={handleCancel}
+                    onAccept={handleAccept}
+                />
+            )}
+            {state === 'edit-valueset' && (
+                <EditValuesetDetails
+                    valueset={valueset}
+                    onValuesetUpdated={onValuesetUpdated}
+                    onClose={handleClose}
+                    onCancel={() => setState('view')}
+                />
+            )}
+            {state === 'create-concept' && (
+                <CreateConcept
+                    valuesetName={valueset.code}
+                    onCancel={() => setState('view')}
+                    onClose={handleClose}
+                    onCreated={handleConceptCreated}
+                />
+            )}
+            {state === 'edit-concept' && editedConcept && (
+                <EditConcept
+                    valueset={valueset.code}
+                    concept={editedConcept}
+                    onClose={handleClose}
+                    onCancel={() => setState('view')}
+                    onUpdated={handleConceptUpdated}
+                />
+            )}
         </div>
     );
 };

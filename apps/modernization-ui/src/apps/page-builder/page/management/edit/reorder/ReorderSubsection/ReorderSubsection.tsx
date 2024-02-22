@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import './ReorderSubsection.scss';
+import styles from './reorder-subsection.module.scss';
 import { Icon } from 'components/Icon/Icon';
 import { ReorderQuestion } from '../ReorderQuestion/ReorderQuestion';
 import { PagesSubSection } from 'apps/page-builder/generated/models/PagesSubSection';
@@ -32,27 +32,27 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
         <Draggable draggableId={subsection.id!.toString()} index={index}>
             {(provided: DraggableProvided) => (
                 <div
-                    className={`reorder-subsection ${visible ? '' : 'hidden'}`}
+                    className={`${styles.subsection} ${visible ? '' : styles.hidden}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
-                    <div className={`reorder-subsection__tile`}>
-                        <div className="reorder-section__toggle" onClick={() => setQuestionsOpen(!questionsOpen)}>
+                    <div className={styles.tile}>
+                        <div className={styles.toggle} onClick={() => setQuestionsOpen(!questionsOpen)}>
                             {!questionsOpen ? (
                                 <Icon name={'navigate-next'} size="xs" />
                             ) : (
                                 <Icon name={'expand-more'} size="xs" />
                             )}
                         </div>
-                        <div className="reorder-subsection__handle" {...provided.dragHandleProps}>
+                        <div className={styles.handle} {...provided.dragHandleProps}>
                             <Icon name={'drag'} size={'m'} />
                         </div>
                         <Icon name={'subsection'} size={'m'} />
                         {subsection.name}
                     </div>
-                    <div className={`reorder-subsection__questions ${!questionsOpen ? 'closed' : ''}`}>
+                    <div className={`${styles.questions} ${!questionsOpen ? styles.closed : ''}`}>
                         <Droppable droppableId={subsection.id!.toString()} type="question">
                             {(prov) => (
-                                <div {...prov.droppableProps} ref={prov.innerRef} className="reorder-questions__tiles">
+                                <div {...prov.droppableProps} ref={prov.innerRef}>
                                     {questions
                                         ? questions.map((question: any, i: number) => {
                                               return (
