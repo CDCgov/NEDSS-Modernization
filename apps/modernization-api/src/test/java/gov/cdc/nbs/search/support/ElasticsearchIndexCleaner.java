@@ -1,4 +1,4 @@
-package gov.cdc.nbs.support.search;
+package gov.cdc.nbs.search.support;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,6 @@ public class ElasticsearchIndexCleaner {
   }
 
   public void clean(final String index) {
-
     try {
       client.deleteByQuery(delete -> delete.index(index)
           .query(

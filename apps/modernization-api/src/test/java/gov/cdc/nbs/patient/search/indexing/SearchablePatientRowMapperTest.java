@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.Month;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class SearchablePatientDocumentRowMapperTest {
+class SearchablePatientRowMapperTest {
 
   @Test
   void should_map_from_result_set() throws SQLException {
@@ -24,7 +26,12 @@ class SearchablePatientDocumentRowMapperTest {
     when(resultSet.getString(columns.local())).thenReturn("local-value");
     when(resultSet.getString(columns.status())).thenReturn("status-value");
 
-    when(resultSet.getString(columns.birthday())).thenReturn("1943-11-03T00:00:00");
+    when(resultSet.getObject(columns.birthday(), LocalDateTime.class)).thenReturn(
+        LocalDateTime.of(
+            1943, Month.NOVEMBER, 3,
+            0, 0, 0
+        )
+    );
 
     when(resultSet.getString(columns.deceased())).thenReturn("deceased-value");
     when(resultSet.getString(columns.gender())).thenReturn("gender-value");
@@ -37,7 +44,7 @@ class SearchablePatientDocumentRowMapperTest {
     assertThat(mapped.identifier()).isEqualTo(373L);
     assertThat(mapped.local()).isEqualTo("local-value");
     assertThat(mapped.status()).isEqualTo("status-value");
-    assertThat(mapped.birthday()).isEqualTo("1943-11-03T00:00:00");
+    assertThat(mapped.birthday()).isEqualTo("1943-11-03");
     assertThat(mapped.deceased()).isEqualTo("deceased-value");
     assertThat(mapped.gender()).isEqualTo("gender-value");
     assertThat(mapped.ethnicity()).isEqualTo("ethnicity-value");

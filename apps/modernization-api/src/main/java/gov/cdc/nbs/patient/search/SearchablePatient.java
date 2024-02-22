@@ -1,9 +1,15 @@
 package gov.cdc.nbs.patient.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import gov.cdc.nbs.search.LocalDateWithTimeJsonDeserializer;
+import gov.cdc.nbs.search.LocalDateWithTimeJsonSerializer;
+import gov.cdc.nbs.search.WithoutSpecialCharactersJsonSerializer;
 
-import java.util.Collection;
+import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 
 public record SearchablePatient(
     @JsonProperty("person_uid")
@@ -13,7 +19,9 @@ public record SearchablePatient(
     @JsonProperty("record_status_cd")
     String status,
     @JsonProperty("birth_time")
-    String birthday,
+    @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
+    @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)
+    LocalDate birthday,
     @JsonProperty("deceased_ind_cd")
     String deceased,
     @JsonProperty("curr_sex_cd")
@@ -21,24 +29,24 @@ public record SearchablePatient(
     @JsonProperty("ethnic_group_ind")
     String ethnicity,
     @JsonProperty("name")
-    Collection<Name> names,
+    List<Name> names,
     @JsonProperty("address")
-    Collection<Address> addresses,
+    List<Address> addresses,
     @JsonProperty("phone")
-    Collection<Phone> phones,
+    List<Phone> phones,
     @JsonProperty("email")
-    Collection<Email> emails,
+    List<Email> emails,
     @JsonProperty("race")
-    Collection<Race> races,
+    List<Race> races,
     @JsonProperty("entity_id")
-    Collection<Identification> identifications
+    List<Identification> identifications
 ) {
 
   public SearchablePatient(
       long identifier,
       String local,
       String status,
-      String birthday,
+      LocalDate birthday,
       String deceased,
       String gender,
       String ethnicity
@@ -64,12 +72,15 @@ public record SearchablePatient(
       @JsonProperty("nm_use_cd")
       String use,
       @JsonProperty("firstNm")
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
       String first,
       @JsonProperty("firstNmSndx")
       String firstSoundex,
       @JsonProperty("middleNm")
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
       String middle,
       @JsonProperty("lastNm")
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
       String last,
       @JsonProperty("lastNmSndx")
       String lastSoundex,
@@ -102,6 +113,7 @@ public record SearchablePatient(
 
   public record Phone(
       @JsonProperty("telephoneNbr")
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
       String number,
       @JsonProperty("extensionTxt")
       String extension
@@ -121,6 +133,7 @@ public record SearchablePatient(
   public record Identification(
       @JsonProperty("typeCd")
       String type,
+      @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class, as = String.class)
       @JsonProperty("rootExtensionTxt")
       String value,
       @JsonProperty("recordStatusCd")
@@ -136,5 +149,10 @@ public record SearchablePatient(
       String detail
   ) {
 
+  }
+
+  @JsonProperty("cd")
+  String type() {
+    return "PAT";
   }
 }

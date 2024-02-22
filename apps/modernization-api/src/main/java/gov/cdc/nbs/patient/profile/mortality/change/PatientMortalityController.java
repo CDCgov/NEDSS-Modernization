@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.mortality.change;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.patient.RequestContext;
-import gov.cdc.nbs.patient.search.indexing.PatientSearchIndexer;
+import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,33 +15,33 @@ import java.time.Instant;
 @Controller
 class PatientMortalityController {
 
-    private final Clock clock;
-    private final PatientMortalityChangeService service;
+  private final Clock clock;
+  private final PatientMortalityChangeService service;
 
-    private final PatientSearchIndexer indexer;
+  private final PatientIndexer indexer;
 
-    PatientMortalityController(
-        final Clock clock,
-        final PatientMortalityChangeService service,
-        final PatientSearchIndexer indexer
-    ) {
-        this.clock = clock;
-        this.service = service;
-        this.indexer = indexer;
-    }
+  PatientMortalityController(
+      final Clock clock,
+      final PatientMortalityChangeService service,
+      final PatientIndexer indexer
+  ) {
+    this.clock = clock;
+    this.service = service;
+    this.indexer = indexer;
+  }
 
-    @MutationMapping("updatePatientMortality")
-    @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('EDIT-PATIENT')")
-    public PatientMortalityChangeResult update(@Argument UpdatePatientMortality input) {
+  @MutationMapping("updatePatientMortality")
+  @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('EDIT-PATIENT')")
+  public PatientMortalityChangeResult update(@Argument UpdatePatientMortality input) {
 
-        NbsUserDetails user = SecurityUtil.getUserDetails();
+    NbsUserDetails user = SecurityUtil.getUserDetails();
 
-        RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
+    RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
 
-        service.update(context, input);
+    service.update(context, input);
 
-        indexer.index(input.patient());
+    indexer.index(input.patient());
 
-        return new PatientMortalityChangeResult(input.patient());
-    }
+    return new PatientMortalityChangeResult(input.patient());
+  }
 }
