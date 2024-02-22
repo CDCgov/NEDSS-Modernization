@@ -4,12 +4,11 @@
 import type { County } from '../models/County';
 import type { CreateValuesetRequest } from '../models/CreateValuesetRequest';
 import type { Page_ValueSetOption_ } from '../models/Page_ValueSetOption_';
-import type { UpdatedValueSetResponse } from '../models/UpdatedValueSetResponse';
+import type { UpdateValueSetRequest } from '../models/UpdateValueSetRequest';
 import type { Valueset } from '../models/Valueset';
 import type { ValueSetOption } from '../models/ValueSetOption';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
-import type { ValueSetUpdateRequest } from '../models/ValueSetUpdateRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -115,37 +114,6 @@ export class ValueSetControllerService {
     }
 
     /**
-     * updateValueSet
-     * @returns UpdatedValueSetResponse OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateValueSetUsingPost({
-        authorization,
-        update,
-    }: {
-        authorization: string,
-        /**
-         * update
-         */
-        update: ValueSetUpdateRequest,
-    }): CancelablePromise<UpdatedValueSetResponse | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/valueset/update',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: update,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * getValueset
      * @returns Valueset OK
      * @throws ApiError
@@ -169,6 +137,45 @@ export class ValueSetControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * updateValueSet
+     * @returns Valueset OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updateValueSetUsingPut({
+        authorization,
+        codeSetNm,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * codeSetNm
+         */
+        codeSetNm: string,
+        /**
+         * request
+         */
+        request: UpdateValueSetRequest,
+    }): CancelablePromise<Valueset | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/valueset/{codeSetNm}',
+            path: {
+                'codeSetNm': codeSetNm,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

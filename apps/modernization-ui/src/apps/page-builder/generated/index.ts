@@ -107,7 +107,6 @@ export { UpdateCodedQuestionRequest } from './models/UpdateCodedQuestionRequest'
 export { UpdateConceptRequest } from './models/UpdateConceptRequest';
 export { UpdateDateQuestionRequest } from './models/UpdateDateQuestionRequest';
 export type { UpdateDefault } from './models/UpdateDefault';
-export { UpdatedValueSetResponse } from './models/UpdatedValueSetResponse';
 export type { UpdateHyperlink } from './models/UpdateHyperlink';
 export { UpdateNumericQuestionRequest } from './models/UpdateNumericQuestionRequest';
 export type { UpdatePageQuestionRequest } from './models/UpdatePageQuestionRequest';
@@ -117,6 +116,7 @@ export type { UpdateStaticResponse } from './models/UpdateStaticResponse';
 export type { UpdateSubSectionRequest } from './models/UpdateSubSectionRequest';
 export type { UpdateTabRequest } from './models/UpdateTabRequest';
 export { UpdateTextQuestionRequest } from './models/UpdateTextQuestionRequest';
+export type { UpdateValueSetRequest } from './models/UpdateValueSetRequest';
 export type { Valueset } from './models/Valueset';
 export type { ValueSetByOIDResponse } from './models/ValueSetByOIDResponse';
 export type { ValueSetByOIDResults } from './models/ValueSetByOIDResults';
@@ -124,8 +124,6 @@ export type { ValueSetConcept } from './models/ValueSetConcept';
 export type { ValueSetOption } from './models/ValueSetOption';
 export type { ValueSetSearchRequest } from './models/ValueSetSearchRequest';
 export { ValueSetStateChangeResponse } from './models/ValueSetStateChangeResponse';
-export type { ValueSetUpdateRequest } from './models/ValueSetUpdateRequest';
-export type { ValueSetUpdateShort } from './models/ValueSetUpdateShort';
 
 export { AvailableQuestionControllerService } from './services/AvailableQuestionControllerService';
 export { ConceptControllerService } from './services/ConceptControllerService';

@@ -5,15 +5,19 @@ import { ConceptControllerService, CreateConceptRequest } from 'apps/page-builde
 import { authorization } from 'authorization';
 import { externalizeDateTime } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ConceptForm } from './ConceptForm';
-import styles from './create-concept.module.scss';
+import { ConceptForm } from './concept/ConceptForm';
+import styles from './edit-valueset.module.scss';
+import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+import { ButtonBar } from '../ButtonBar/ButtonBar';
+
 type Props = {
     onCreated: () => void;
     onCancel: () => void;
+    onClose: () => void;
     valuesetName: string;
 };
-export const CreateConcept = ({ onCreated, onCancel, valuesetName }: Props) => {
-    const { alertError } = useAlert();
+export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Props) => {
+    const { alertError, alertSuccess } = useAlert();
     const form = useForm<CreateConceptRequest>({
         mode: 'onBlur',
         defaultValues: { status: CreateConceptRequest.status.ACTIVE }
@@ -27,22 +31,28 @@ export const CreateConcept = ({ onCreated, onCancel, valuesetName }: Props) => {
             },
             codeSetNm: valuesetName
         })
-            .then(() => onCreated())
+            .then(() => {
+                alertSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
+                onCreated();
+            })
             .catch(() => alertError({ message: 'Failed to create concept' }));
     };
     return (
-        <div className={styles.createConcepts}>
-            <FormProvider {...form}>
-                <ConceptForm />
-            </FormProvider>
-            <div className={styles.buttons}>
+        <>
+            <CloseableHeader title={<div className={styles.addValuesetHeader}>Add concept</div>} onClose={onClose} />
+            <div className={styles.content}>
+                <FormProvider {...form}>
+                    <ConceptForm />
+                </FormProvider>
+            </div>
+            <ButtonBar>
                 <Button type="button" outline onClick={onCancel}>
                     Cancel
                 </Button>
                 <Button disabled={!form.formState.isValid} type="button" onClick={handleCreate}>
                     Add concept
                 </Button>
-            </div>
-        </div>
+            </ButtonBar>
+        </>
     );
 };

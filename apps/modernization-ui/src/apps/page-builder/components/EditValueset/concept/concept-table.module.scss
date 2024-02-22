@@ -1,0 +1,19 @@
+@use 'styles/colors';
+.conceptTable {
+    thead tr th {
+        &:nth-of-type(5) {
+            width: 3.5rem;
+        }
+    }
+
+    .editConceptButton {
+        box-shadow: none;
+        margin-right: 0 !important;
+        color: colors.$primary;
+        padding: 0;
+
+        &:hover {
+            box-shadow: none;
+        }
+    }
+}
