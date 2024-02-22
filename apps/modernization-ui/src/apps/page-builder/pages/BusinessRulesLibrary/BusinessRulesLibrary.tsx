@@ -7,9 +7,12 @@ import { Breadcrumb } from 'breadcrumb';
 import { Rule } from '../../generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { authorization } from 'authorization';
+import { Status, usePage } from 'page';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(BusinessRuleContext);
+    const { page: curPage, ready, firstPage, reload } = usePage();
+
     const [rules, setRules] = useState<Rule[]>([]);
     const [totalElements, setTotalElements] = useState(0);
     const { page } = useGetPageDetails();
@@ -20,7 +23,14 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
 
         try {
             if (page) {
-                const response = await fetchBusinessRules(token, searchQuery, page.id, sortBy, currentPage, pageSize);
+                const response = await fetchBusinessRules(
+                    token,
+                    searchQuery,
+                    page.id,
+                    sortBy,
+                    curPage.current,
+                    curPage.pageSize
+                );
                 const { content, totalElements } = response;
                 setRules(content || []);
                 setTotalElements(totalElements || 0);
@@ -32,8 +42,10 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
     };
 
     useEffect(() => {
-        getBusinessRules();
-    }, [searchQuery, currentPage, pageSize, sortBy, filter, page]);
+        if (curPage.status === Status.Requested) {
+            getBusinessRules();
+        }
+    }, [curPage.status]);
 
     return (
         <>

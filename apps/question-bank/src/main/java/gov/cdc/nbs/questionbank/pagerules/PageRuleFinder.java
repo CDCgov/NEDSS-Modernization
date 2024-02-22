@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 class PageRuleFinder {
-  private static final String FIND_BY_RULE_ID = """   
+  private static final String FIND_BY_RULE_ID = """
       select
            [rule].wa_rule_metadata_uid        as [ruleId],
            [rule].wa_template_uid             as [template],
@@ -34,11 +34,11 @@ class PageRuleFinder {
            0                                  as [TotalCount]
        from WA_rule_metadata [rule]
        left join WA_question [question] on [rule].source_question_identifier = [question].question_identifier
-       left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id 
+       left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id
        where  [rule].wa_rule_metadata_uid =:ruleId
        """;
 
-  private String findByPageId = """   
+  private String findByPageId = """
       select
            [rule].wa_rule_metadata_uid        as [ruleId],
            [rule].wa_template_uid             as [template],
@@ -53,20 +53,20 @@ class PageRuleFinder {
            [question].question_label          as [sourceQuestionLabel],
            [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
            [question].wa_question_uid         as [sourceQuestionId],
-           (SELECT COUNT(*) 
-                  FROM WA_rule_metadata [rule] 
-                      WHERE [rule].wa_rule_metadata_uid = :pageId)
+           (SELECT COUNT(*)
+                  FROM WA_rule_metadata [rule]
+                      WHERE [rule].wa_template_uid = :pageId)
                                               as [TotalCount]
        from WA_rule_metadata [rule]
        left join WA_question [question] on [rule].source_question_identifier = [question].question_identifier
-       left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id 
+       left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id
        where   [rule].wa_template_uid =:pageId
        order by [rule].add_time
        offset :offset rows
        fetch next :pageSize rows only
        """;
 
-  private String findBySearchValue = """   
+  private String findBySearchValue = """
       select
            [rule].wa_rule_metadata_uid        as [ruleId],
            [rule].wa_template_uid             as [template],
@@ -81,16 +81,16 @@ class PageRuleFinder {
            [question].question_label          as [sourceQuestionLabel],
            [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
            [question].wa_question_uid         as [sourceQuestionId],
-           (SELECT COUNT(*) 
-                  FROM WA_rule_metadata [rule]  
+           (SELECT COUNT(*)
+                  FROM WA_rule_metadata [rule]
                      where  [rule].wa_template_uid =:pageId
                      and  ( UPPER(source_values) LIKE CONCAT('%', UPPER(:searchValue), '%')
                            OR UPPER(target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
                           )
-           ) as [TotalCount] 
+           ) as [TotalCount]
        from WA_rule_metadata [rule]
        left join WA_question [question] on [rule].source_question_identifier = [question].question_identifier
-       left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id 
+       left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id
        where  [rule].wa_template_uid =:pageId
        and  ( UPPER(source_values) LIKE CONCAT('%', UPPER(:searchValue), '%')
              OR UPPER(target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
@@ -151,9 +151,7 @@ class PageRuleFinder {
             "pageId", pageId,
             "searchValue", searchValue,
             "offset", offset,
-            "pageSize", pageSize
-        )
-    );
+            "pageSize", pageSize));
     List<Rule> result = this.template.query(query, parameters, mapper);
     long totalRowsCount = ((PageRuleMapper) mapper).getTotalRowsCount();
     return new PageImpl<>(result, pageable, totalRowsCount);

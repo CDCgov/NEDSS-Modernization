@@ -13,6 +13,7 @@ import { Rule } from 'apps/page-builder/generated';
 import React from 'react';
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
+import { usePage } from 'page';
 
 export enum Column {
     SourceFields = 'Source Field',
@@ -42,6 +43,8 @@ type Props = {
 export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
+    const { page: curPage, ready, firstPage, reload } = usePage();
+
     const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
     const { page } = useGetPageDetails();
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
