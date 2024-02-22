@@ -47,8 +47,8 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
 
     useEffect(() => {
         if (response) {
-            const currentPage = response?.number ? response?.number + 1 : 1;
-            ready(response?.totalElements ?? 0, currentPage);
+            const currentPage = response.number ? response.number + 1 : 1;
+            ready(response.totalElements ?? 0, currentPage);
         } else if (error) {
             alertError({ message: 'Failed to retrieve questions' });
         }
