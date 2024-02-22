@@ -6,6 +6,9 @@ import static org.mockito.Mockito.when;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -49,20 +52,12 @@ class ValueSetUpdaterTest {
     verify(codeset).update(new ValueSetCommand.Update("new_name", "new description"));
   }
 
-  @Test
-  void should_fail_bad_name_space() {
+  @ParameterizedTest
+  @NullSource
+  @ValueSource(strings = {"new name", "new_name!"})
+  void should_fail_bad_name(String name) {
     // given an invalid update request
-    final UpdateValueSetRequest request = new UpdateValueSetRequest("new name", "new description");
-
-    // when the update command is applied
-    // then an exception is thrown
-    assertThrows(ValuesetUpdateException.class, () -> updater.update("valueset", request));
-  }
-
-  @Test
-  void should_fail_bad_name_special_char() {
-    // given an invalid update request
-    final UpdateValueSetRequest request = new UpdateValueSetRequest("new_name!", "new description");
+    final UpdateValueSetRequest request = new UpdateValueSetRequest(name, "new description");
 
     // when the update command is applied
     // then an exception is thrown
