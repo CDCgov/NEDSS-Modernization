@@ -39,7 +39,7 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
     };
     return (
         <>
-            <CloseableHeader title={<div className={styles.addValuesetHeader}>Edit value set</div>} onClose={onClose} />
+            <CloseableHeader title={<div className={styles.addValuesetHeader}>Add concept</div>} onClose={onClose} />
             <div className={styles.content}>
                 <FormProvider {...form}>
                     <ConceptForm />

@@ -57,7 +57,7 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
                     Cancel
                 </Button>
                 <Button disabled={!isDirty || !isValid} type="button" onClick={handleSave}>
-                    Save change
+                    Save changes
                 </Button>
             </ButtonBar>
         </>

@@ -58,7 +58,7 @@ export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpd
                     disabled={!form.formState.isDirty || !form.formState.isValid}
                     type="button"
                     onClick={handleUpdateValueset}>
-                    Save change
+                    Save changes
                 </Button>
             </ButtonBar>
         </>
