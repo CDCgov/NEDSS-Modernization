@@ -203,17 +203,19 @@ const AddBusinessRule = () => {
                     </div>
                     <div className="edit-rules">
                         <div className="edit-rules__buttons">
-                            {ruleId ? (
-                                <ModalToggleButton
-                                    opener
-                                    modalRef={deleteWarningModal}
-                                    type="button"
-                                    className="delete-btn"
-                                    unstyled>
-                                    <Icon.Delete size={3} className="margin-right-2px" />
-                                    <span>Delete</span>
-                                </ModalToggleButton>
-                            ) : null}
+                            <div>
+                                {ruleId ? (
+                                    <ModalToggleButton
+                                        opener
+                                        modalRef={deleteWarningModal}
+                                        type="button"
+                                        className="delete-btn"
+                                        unstyled>
+                                        <Icon.Delete size={3} className="margin-right-2px" />
+                                        <span>Delete</span>
+                                    </ModalToggleButton>
+                                ) : null}
+                            </div>
                             <div>
                                 <Button type="button" outline onClick={handleCancel}>
                                     Cancel
