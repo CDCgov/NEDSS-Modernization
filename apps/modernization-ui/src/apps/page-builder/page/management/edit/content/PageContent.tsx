@@ -11,6 +11,7 @@ import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
 import { EditValuesetModal } from '../edit-valueset/EditValuesetModal';
+import { EditQuestionModal } from '../edit-question/EditQuestionModal';
 
 type Props = {
     tab: PagesTab;
@@ -124,6 +125,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 }
             />
             <AddQuestionModal onAddQuestion={handleAddQuestionClose} modal={addQuestionModalRef} />
+            <EditQuestionModal question={currentEditQuestion} modal={editQuestionModalRef} />
             <EditValuesetModal
                 onValuesetChanged={handleValuesetEdited}
                 modal={editValuesetModalRef}
