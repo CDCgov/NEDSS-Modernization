@@ -4,7 +4,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import graphql.com.google.common.collect.Ordering;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 class ElasticsearchPatientSearcher implements PatientSearcher {
@@ -52,6 +50,7 @@ class ElasticsearchPatientSearcher implements PatientSearcher {
     try {
       SearchResponse<SearchablePatient> response = client.search(
           search -> search.index("person")
+              .source(source -> source.fetch(false))
               .postFilter(filter)
               .query(query)
               .sort(sorting)
@@ -62,28 +61,35 @@ class ElasticsearchPatientSearcher implements PatientSearcher {
 
       HitsMetadata<SearchablePatient> hits = response.hits();
 
-      List<Long> ids = hits.hits()
-          .stream()
-          .map(Hit::source)
-          .filter(Objects::nonNull)
-          .map(SearchablePatient::identifier)
-          .toList();
-
       long total = hits.total().value();
 
-      List<PatientSearchResult> results = finder.find(ids)
-          .stream()
-          .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
-          .toList();
-
-      return new PageImpl<>(
-          results,
-          pageable,
-          total
-      );
+      return total > 0
+          ? paged(hits, pageable)
+          : Page.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
       throw new IllegalStateException("An unexpected error occurred when searching for patients.", exception);
     }
+  }
+
+  private Page<PatientSearchResult> paged(
+      final HitsMetadata<SearchablePatient> hits,
+      final Pageable pageable
+  ) {
+    List<Long> ids = hits.hits()
+        .stream()
+        .map(hit -> Long.parseLong(hit.id()))
+        .toList();
+
+    List<PatientSearchResult> results = finder.find(ids)
+        .stream()
+        .sorted(Ordering.explicit(ids).onResultOf(PatientSearchResult::patient))
+        .toList();
+
+    return new PageImpl<>(
+        results,
+        pageable,
+        hits.total().value()
+    );
   }
 }

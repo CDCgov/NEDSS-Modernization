@@ -7,10 +7,19 @@ Feature: Patient Search
     And I want patients sorted by "relevance" "desc"
     And I have a patient
 
-  Scenario: I can find a patient by Patient ID
+  Scenario: I can find a patient by Patient ID using the short id
     Given patients are available for search
+    And I would like to search for a patient using a short ID
     When I search for patients
-    Then the patient search results contains the Patient ID
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using the local id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
 
   Scenario: I can find patients with active record status
     Given I have another patient
@@ -37,12 +46,12 @@ Feature: Patient Search
     Given I can "findInactive" any "patient"
     And the patient is superseded
     And patients are available for search
-    And I would like patients that are "superceded"
+    And I would like patients that are "superseded"
     When I search for patients
     Then the search results have a patient with a "status" equal to "SUPERCEDED"
 
-  Scenario: I cant search for superceded records without the correct permission
-    Given I would like patients that are "superceded"
+  Scenario: I cant search for superseded records without the correct permission
+    Given I would like patients that are "superseded"
     When I search for patients
     Then I am not able to execute the search
 

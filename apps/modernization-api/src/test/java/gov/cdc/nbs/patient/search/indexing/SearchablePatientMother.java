@@ -64,10 +64,6 @@ public class SearchablePatientMother {
     List<SearchablePatient> patients = identifiers
         .map(identifier -> this.resolver.resolve(identifier.id()))
         .flatMap(Optional::stream)
-        .peek(
-            patient -> System.getLogger("Indexing Patient")
-                .log(System.Logger.Level.INFO, patient)
-        )
         .toList();
 
     this.indexer.index(patients);

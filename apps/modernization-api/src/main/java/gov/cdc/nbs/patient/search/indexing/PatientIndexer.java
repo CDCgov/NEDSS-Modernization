@@ -19,4 +19,5 @@ public class PatientIndexer {
   public void index(final long patient) {
     this.resolver.resolve(patient).ifPresent(this.indexer::index);
   }
+
 }

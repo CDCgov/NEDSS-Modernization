@@ -46,7 +46,7 @@ class PatientSearchRequester {
                 address2
                 city
                 state
-                zipcode               
+                zipcode
             }
           }
           total

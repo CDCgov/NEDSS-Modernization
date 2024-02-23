@@ -2,16 +2,20 @@ package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
 public class PatientSearchCriteriaSteps {
 
+  private final Active<PatientIdentifier> patient;
   private final Active<PatientFilter> criteria;
 
   PatientSearchCriteriaSteps(
+      final Active<PatientIdentifier> patient,
       final Active<PatientFilter> criteria
   ) {
+    this.patient = patient;
     this.criteria = criteria;
   }
 
@@ -61,6 +65,19 @@ public class PatientSearchCriteriaSteps {
     this.criteria.active(new PatientFilter(recordStatus));
   }
 
+  @Given("I would like to search for a patient using a short ID")
+  public void i_would_like_to_search_for_a_patient_using_a_short_ID() {
 
+    this.patient.maybeActive().ifPresent(
+        found -> this.criteria.active(criteria -> criteria.withId(String.valueOf(found.shortId())))
+    );
 
+  }
+
+  @Given("I would like to search for a patient using a local ID")
+  public void i_would_like_to_search_for_a_patient_using_a_local_ID() {
+    this.patient.maybeActive().ifPresent(
+        found -> this.criteria.active(criteria -> criteria.withId(found.local()))
+    );
+  }
 }

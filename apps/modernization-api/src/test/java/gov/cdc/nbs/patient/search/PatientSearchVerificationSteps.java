@@ -9,8 +9,8 @@ import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 public class PatientSearchVerificationSteps {
 
@@ -67,7 +67,6 @@ public class PatientSearchVerificationSteps {
     JsonPathResultMatchers pathMatcher = matchingPath(field, "*");
 
     this.results.active()
-        .andDo(print())
         .andExpect(pathMatcher.value(matchingValue(field, value)));
 
   }
@@ -78,7 +77,6 @@ public class PatientSearchVerificationSteps {
     JsonPathResultMatchers pathMatcher = matchingPath(field, "*");
 
     this.results.active()
-        .andDo(print())
         .andExpect(pathMatcher.value(not(matchingValue(field, value))));
 
   }
@@ -131,7 +129,6 @@ public class PatientSearchVerificationSteps {
   @Then("the patient is in the search result(s)")
   public void the_patient_is_in_the_search_results() throws Exception {
     this.results.active()
-        .andDo(print())
         .andExpect(
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
@@ -167,6 +164,6 @@ public class PatientSearchVerificationSteps {
 
   @Then("the Patient Search Results are not accessible")
   public void the_patient_search_results_are_not_accessible() throws Exception {
-    this.results.active().andDo(print()).andExpect(accessDenied());
+    this.results.active().andExpect(accessDenied());
   }
 }
