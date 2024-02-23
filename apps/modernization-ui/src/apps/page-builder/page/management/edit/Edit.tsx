@@ -14,13 +14,13 @@ import { ModalRef } from '@trussworks/react-uswds';
 import { useRef } from 'react';
 import { ReorderModal } from './reorder/ReorderModal/ReorderModal';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesTab } from 'apps/page-builder/generated';
 
 export const Edit = () => {
     const { page, fetch, refresh } = useGetPageDetails();
 
     const manageSectionModalRef = useRef<ModalRef>(null);
     const addSectionModalRef = useRef<ModalRef>(null);
-    const reorderModalRef = useRef<ModalRef>(null);
 
     const handleManageSection = () => {
         manageSectionModalRef.current?.toggleModal(undefined, true);
@@ -30,27 +30,12 @@ export const Edit = () => {
         addSectionModalRef.current?.toggleModal(undefined, true);
     };
 
-    const handleReorderModal = () => {
-        reorderModalRef.current?.toggleModal(undefined, true);
-    };
-
-    const handleUpdateSuccess = () => {
-        refresh();
-    };
-
     return (
         <>
             {page ? (
                 <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
                     <ManageSectionModal addSecModalRef={addSectionModalRef} manageSecModalRef={manageSectionModalRef} />
-                    <EditPageContent
-                        handleManageSection={handleManageSection}
-                        handleAddSection={handleAddSection}
-                        handleReorderModal={handleReorderModal}
-                    />
-                    <DragDropProvider pageData={page} currentTab={0} successCallBack={handleUpdateSuccess}>
-                        <ReorderModal modalRef={reorderModalRef} pageName={page.name} />
-                    </DragDropProvider>
+                    <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>
             ) : (
                 <Loading center />
@@ -62,11 +47,18 @@ export const Edit = () => {
 type EditPageContentProps = {
     handleManageSection?: () => void;
     handleAddSection?: () => void;
-    handleReorderModal: () => void;
 };
 
-const EditPageContent = ({ handleManageSection, handleAddSection, handleReorderModal }: EditPageContentProps) => {
+const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageContentProps) => {
     const { page, selected, refresh } = usePageManagement();
+    const reorderModalRef = useRef<ModalRef>(null);
+    const handleReorderModal = () => {
+        reorderModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const handleUpdateSuccess = () => {
+        refresh();
+    };
 
     return (
         <PageManagementLayout name={page.name} mode={page.status}>
@@ -86,6 +78,12 @@ const EditPageContent = ({ handleManageSection, handleAddSection, handleReorderM
                     handleReorderModal={handleReorderModal}
                 />
             )}
+            <DragDropProvider
+                pageData={page}
+                currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
+                successCallBack={handleUpdateSuccess}>
+                <ReorderModal modalRef={reorderModalRef} />
+            </DragDropProvider>
         </PageManagementLayout>
     );
 };

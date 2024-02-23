@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesResponse, PagesSection, PagesTab } from '../generated';
-import { moveQuestionInArray } from '../helpers/moveObjectInArray';
+// import { moveQuestionInArray } from '../helpers/moveObjectInArray';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 import { UserContext } from 'user';
 
@@ -38,153 +38,230 @@ const DragDropProvider: React.FC<{
     useEffect(() => {
         if (pageData) {
             if (pageData.tabs) {
+                setTabs(pageData.tabs);
                 if (pageData.tabs[currentTab]) {
                     setSections(pageData.tabs![currentTab].sections!);
-                    setTabs(pageData.tabs);
                 }
             }
         }
     }, [pageData, currentTab]);
 
-    // handling movement of subsection in the same section
-    const moveSubsectionWithinSection: DragDropProps = (source, destination) => {
-        const findId = sections.filter((section) => {
-            return section.id!.toString() === destination.droppableId;
-        });
-        if (destination.index === findId[0].subSections?.length! - 1) {
-            afterId = findId[0].subSections![findId[0].subSections?.length! - 1].id!;
-        } else if (destination.index === 0) {
-            afterId = Number(destination.droppableId);
-        } else if (source.index < destination.index) {
-            afterId = findId[0].subSections![destination.index].id!;
-        } else {
-            afterId = findId[0].subSections![destination.index - 1].id!;
+    const moveSectionWithinSameTab: DragDropProps = (source, destination) => {
+        if (pageData?.tabs) {
+            const targetTab = pageData.tabs.filter((tab) => {
+                return tab.id.toString() === destination.droppableId;
+            });
+            if (destination.index === tabs.length - 1) {
+                afterId = targetTab[0].sections[tabs.length - 1].id!;
+            } else if (destination.index === 0) {
+                afterId = targetTab[0].id!;
+            } else if (source.index < destination.index) {
+                afterId = targetTab[0].sections[destination.index].id!;
+            } else {
+                afterId = targetTab[0].sections[destination.index - 1].id!;
+            }
+            targetTab[0].sections.splice(destination.index, 0, targetTab[0].sections.splice(source.index, 1)[0]);
         }
-        findId[0].subSections.splice(destination.index, 0, findId[0].subSections.splice(source.index, 1)[0]);
+    };
+
+    const moveSectionDifferentTab: DragDropProps = (source, destination) => {
+        const destinationTab = pageData?.tabs?.filter((page) => {
+            return page.id.toString() === destination.droppableId;
+        });
+        const originTab = pageData?.tabs?.filter((page) => {
+            return page.id.toString() === source.droppableId;
+        });
+        if (destinationTab && originTab) {
+            if (destination.index === destinationTab[0].sections?.length! - 1) {
+                afterId = destinationTab[0].sections![destinationTab[0].sections?.length! - 1].id!;
+            } else if (destination.index === 0) {
+                afterId = Number(destination.droppableId);
+            } else if (source.index < destination.index) {
+                afterId = destinationTab[0].sections![destination.index].id!;
+            } else {
+                afterId = destinationTab[0].sections![destination.index - 1].id!;
+            }
+            destinationTab[0].sections.splice(destination.index, 0, originTab[0].sections.splice(source.index, 1)[0]);
+        }
+    };
+
+    // handling movement of subsection in the same section
+    const moveSubsectionWithinSameSection: DragDropProps = (source, destination) => {
+        if (pageData?.tabs) {
+            const targetTab = pageData?.tabs?.filter((tab) => {
+                return tab.sections.some((section) => {
+                    return section.id.toString() === destination.droppableId;
+                });
+            });
+            const findId = targetTab[0].sections.filter((section) => {
+                return section.id!.toString() === destination.droppableId;
+            });
+            if (destination.index === findId[0].subSections?.length! - 1) {
+                afterId = findId[0].subSections![findId[0].subSections?.length! - 1].id!;
+            } else if (destination.index === 0) {
+                afterId = Number(destination.droppableId);
+            } else if (source.index < destination.index) {
+                afterId = findId[0].subSections![destination.index].id!;
+            } else {
+                afterId = findId[0].subSections![destination.index - 1].id!;
+            }
+            findId[0].subSections.splice(destination.index, 0, findId[0].subSections.splice(source.index, 1)[0]);
+        }
     };
 
     // handling movement of subsection between sections
     const moveSubsectionDifferentSection: DragDropProps = (source, destination) => {
-        const sourceOrder = sections.find((section) => section.id.toString() === source.droppableId)?.subSections || [];
-        const destinationOrder =
-            sections.find((section) => section.id.toString() === destination.droppableId)?.subSections || [];
-        const [removed] = sourceOrder!.splice(source.index, 1);
-        destinationOrder!.splice(destination.index, 0, removed);
-
-        const updatedSections = sections.map((section) =>
-            section.id.toString() === source.droppableId
-                ? { ...section, subSections: sourceOrder }
-                : section.id.toString() === destination.droppableId
-                ? { ...section, subSections: destinationOrder }
-                : section
-        );
-        const findId = sections.filter((section) => {
-            return section.id.toString() === destination.droppableId;
-        });
-        if (findId[0].subSections![destination.index - 1]) {
-            afterId = findId[0].subSections![destination.index - 1].id!;
-        } else {
-            afterId = Number(destination.droppableId);
+        // moving subsections between sections
+        if (pageData?.tabs) {
+            const [sourceTab] = pageData.tabs.filter((tab) =>
+                tab.sections.some((section) => {
+                    if (section.id!.toString() === source.droppableId.toString()) {
+                        return section;
+                    }
+                })
+            );
+            const [destinationTab] = pageData.tabs.filter((tab) =>
+                tab.sections.some((section) => {
+                    if (section.id!.toString() === destination.droppableId.toString()) {
+                        return section;
+                    }
+                })
+            );
+            // extract the source/destination subsections from the section
+            const sourceSection = sourceTab.sections!.filter((section) => {
+                if (section.id!.toString() === source.droppableId.toString()) {
+                    return section;
+                }
+            });
+            const destinationSection = destinationTab.sections!.filter((section) => {
+                if (section.id!.toString() === destination.droppableId.toString()) {
+                    afterId = section.id!;
+                    return section;
+                }
+            });
+            const sourceOrder =
+                sourceSection.find((section) => section.id!.toString() === source.droppableId)?.subSections || [];
+            const destinationOrder =
+                destinationSection.find((section) => section.id!.toString() === destination.droppableId)?.subSections ||
+                [];
+            const [removed] = sourceOrder!.splice(source.index, 1);
+            destinationOrder!.splice(destination.index, 0, removed);
+            if (destinationOrder![destination.index - 1]) {
+                afterId = destinationOrder![destination.index - 1].id!;
+            }
         }
-        setSections(updatedSections);
     };
 
     // handling movement of question in the same subsection
-    const moveQuestionWithinSubsection: DragDropProps = (source, destination) => {
-        const isolatedSection = sections.filter((section) =>
-            section.subSections!.some((subSections) => {
-                if (subSections.id!.toString() === source.droppableId.toString()) {
-                    return subSections;
-                }
-            })
-        );
-        // isolate subSection
-        const [isolatedSubsection] = isolatedSection.map((section) =>
-            section.subSections?.filter((subsection) => {
+    const moveQuestionWithinSameSubsection: DragDropProps = (source, destination) => {
+        if (pageData?.tabs) {
+            // Drill down to Subsection
+            const isolatedTab = pageData.tabs.filter((tab) => {
+                return tab.sections.some((section) => {
+                    return section.subSections.some((subSections) => {
+                        if (subSections.id!.toString() === source.droppableId.toString()) {
+                            return subSections;
+                        }
+                    });
+                });
+            });
+            const isolatedSection = isolatedTab[0].sections.filter((section) => {
+                return section.subSections!.some((subSection) => {
+                    if (subSection.id!.toString() === source.droppableId.toString()) {
+                        return subSection;
+                    }
+                });
+            });
+            const isolatedSubsection = isolatedSection[0].subSections.filter((subsection) => {
                 if (subsection.id!.toString() === source.droppableId.toString()) {
                     return subsection;
                 }
-            })
-        );
-        if (destination.index === isolatedSubsection![0].questions!.length - 1) {
-            afterId = isolatedSubsection![0].questions![isolatedSubsection![0].questions!.length - 1].id!;
-        } else if (destination.index === 0) {
-            afterId = isolatedSubsection![0].id!;
-        } else if (source.index < destination.index) {
-            afterId = isolatedSubsection![0].questions![destination.index].id!;
-        } else {
-            afterId = isolatedSubsection![0].questions![destination.index - 1].id!;
-        }
-        const updatedOrder = moveQuestionInArray(isolatedSubsection![0]!.questions!, source.index, destination.index);
+            });
 
-        const updatedSections = sections.map((section) => {
-            return {
-                ...section,
-                subSections: section.subSections!.map((subsection) =>
-                    subsection.id!.toString() !== source.droppableId
-                        ? subsection
-                        : { ...subsection, questions: updatedOrder }
-                )
-            };
-        });
-        setSections(updatedSections);
+            if (destination.index === isolatedSubsection![0].questions!.length - 1) {
+                afterId = isolatedSubsection![0].questions![isolatedSubsection![0].questions!.length - 1].id!;
+            } else if (destination.index === 0) {
+                afterId = isolatedSubsection![0].id!;
+            } else if (source.index < destination.index) {
+                afterId = isolatedSubsection![0].questions![destination.index].id!;
+            } else {
+                afterId = isolatedSubsection![0].questions![destination.index - 1].id!;
+            }
+            isolatedSubsection[0].questions.splice(
+                destination.index,
+                0,
+                isolatedSubsection[0].questions.splice(source.index, 1)[0]
+            );
+        }
     };
 
     // handling movement of question between subsections
     const moveQuestionDifferentSubsection: DragDropProps = (source, destination) => {
-        // moving subsections between sections
-        const [sourceSection] = sections.filter((section) =>
-            section.subSections!.some((sectionsubsection) => {
-                if (sectionsubsection.id!.toString() === source.droppableId.toString()) {
-                    return sectionsubsection;
+        // Drill down source + destination
+        if (pageData?.tabs) {
+            const sourceTab = pageData.tabs.filter((tab) => {
+                return tab.sections.some((section) => {
+                    return section.subSections.some((subSections) => {
+                        if (subSections.id!.toString() === source.droppableId.toString()) {
+                            return subSections;
+                        }
+                    });
+                });
+            });
+            const sourceSection = sourceTab[0].sections.filter((section) => {
+                return section.subSections!.some((subSection) => {
+                    if (subSection.id!.toString() === source.droppableId.toString()) {
+                        return subSection;
+                    }
+                });
+            });
+            const sourceSubsection = sourceSection[0].subSections.filter((subsection) => {
+                if (subsection.id!.toString() === source.droppableId.toString()) {
+                    return subsection;
                 }
-            })
-        );
-        const [destinationSection] = sections.filter((section) =>
-            section.subSections!.some((sectionsubsection) => {
-                if (sectionsubsection.id!.toString() === destination.droppableId.toString()) {
-                    return sectionsubsection;
+            });
+
+            const destinationTab = pageData.tabs.filter((tab) => {
+                return tab.sections.some((section) => {
+                    return section.subSections.some((subSections) => {
+                        if (subSections.id!.toString() === destination.droppableId.toString()) {
+                            return subSections;
+                        }
+                    });
+                });
+            });
+            const destinationSection = destinationTab[0].sections.filter((section) => {
+                return section.subSections!.some((subSection) => {
+                    if (subSection.id!.toString() === destination.droppableId.toString()) {
+                        return subSection;
+                    }
+                });
+            });
+            const destinationSubsection = destinationSection[0].subSections.filter((subsection) => {
+                if (subsection.id!.toString() === destination.droppableId.toString()) {
+                    return subsection;
                 }
-            })
-        );
+            });
 
-        // extract the source/destination subsections from the section
-        const sourceSubsection = sourceSection.subSections!.filter((subsection) => {
-            if (subsection.id!.toString() === source.droppableId.toString()) {
-                return subsection;
-            }
-        });
-        const destinationSubsection = destinationSection.subSections!.filter((subsection) => {
-            if (subsection.id!.toString() === destination.droppableId.toString()) {
-                afterId = subsection.id!;
-                return subsection;
-            }
-        });
+            const sourceOrder =
+                sourceSubsection.find((subsection) => subsection.id!.toString() === source.droppableId)?.questions ||
+                [];
+            const destinationOrder =
+                destinationSubsection.find((subsection) => subsection.id!.toString() === destination.droppableId)
+                    ?.questions || [];
+            const [removed] = sourceOrder!.splice(source.index, 1);
+            destinationOrder!.splice(destination.index, 0, removed);
 
-        const sourceOrder =
-            sourceSubsection.find((subsection) => subsection.id!.toString() === source.droppableId)?.questions || [];
-        const destinationOrder =
-            destinationSubsection.find((subsection) => subsection.id!.toString() === destination.droppableId)
-                ?.questions || [];
-        const [removed] = sourceOrder!.splice(source.index, 1);
-        destinationOrder!.splice(destination.index, 0, removed);
-        if (destinationOrder![destination.index - 1]) {
-            afterId = destinationOrder![destination.index - 1].id!;
+            if (destination.index === destinationSubsection[0].questions.length! - 1) {
+                afterId = destinationSubsection[0].questions[destinationSubsection[0].questions.length - 1].id!;
+            } else if (destination.index === 0) {
+                afterId = Number(destination.droppableId);
+            } else if (source.index < destination.index) {
+                afterId = destinationSubsection[0].questions[destination.index].id!;
+            } else {
+                afterId = destinationSubsection[0].questions[destination.index - 1].id!;
+            }
         }
-
-        const updatedSections = sections.map((section) => {
-            return {
-                ...section,
-                subSections: section.subSections!.map((subsection) =>
-                    subsection.id!.toString() === source.droppableId
-                        ? { ...subsection, questions: sourceOrder }
-                        : subsection.id!.toString() === destination.droppableId
-                        ? { ...subsection, questions: destinationOrder }
-                        : subsection
-                )
-            };
-        });
-        setSections(updatedSections);
     };
 
     // determining if its diff section or same section for subsection movement
@@ -192,7 +269,7 @@ const DragDropProvider: React.FC<{
         if (source.droppableId !== destination.droppableId) {
             moveSubsectionDifferentSection(source, destination);
         } else {
-            moveSubsectionWithinSection(source, destination);
+            moveSubsectionWithinSameSection(source, destination);
         }
     };
 
@@ -200,22 +277,17 @@ const DragDropProvider: React.FC<{
         if (source.droppableId !== destination.droppableId) {
             moveQuestionDifferentSubsection(source, destination);
         } else {
-            moveQuestionWithinSubsection(source, destination);
+            moveQuestionWithinSameSubsection(source, destination);
         }
     };
 
     // move sections
     const handleSectionMove: DragDropProps = (source, destination) => {
-        if (destination.index === sections.length - 1) {
-            afterId = sections[sections.length - 1].id!;
-        } else if (destination.index === 0) {
-            afterId = pageData!.tabs![currentTab].id!;
-        } else if (source.index < destination.index) {
-            afterId = sections[destination.index].id!;
+        if (source.droppableId !== destination.droppableId) {
+            moveSectionDifferentTab(source, destination);
         } else {
-            afterId = sections[destination.index - 1].id!;
+            moveSectionWithinSameTab(source, destination);
         }
-        sections.splice(destination.index, 0, sections.splice(source.index, 1)[0]);
     };
 
     const handleTabMove: DragDropProps = (source, destination) => {
@@ -247,14 +319,14 @@ const DragDropProvider: React.FC<{
         setDragTarget({ droppableId: '', index: 999, source: 999 });
         if (!result.destination) return;
         const { source, destination, type } = result;
-        if (source.droppableId === 'all-sections') {
+        if (type === 'tab') {
+            handleTabMove(source, destination);
+        } else if (type === 'section') {
             handleSectionMove(source, destination);
-        } else if (type === 'question') {
-            handleQuestionMove(source, destination);
         } else if (type === 'subsection') {
             handleSubsectionMove(source, destination);
-        } else {
-            handleTabMove(source, destination);
+        } else if (type === 'question') {
+            handleQuestionMove(source, destination);
         }
         reorderObjects(token, afterId, moveId, pageData!.id).then(() => {
             successCallBack!();
