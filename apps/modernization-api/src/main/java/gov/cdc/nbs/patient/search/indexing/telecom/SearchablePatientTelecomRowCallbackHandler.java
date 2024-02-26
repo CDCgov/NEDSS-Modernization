@@ -11,10 +11,6 @@ import java.util.List;
 
 class SearchablePatientTelecomRowCallbackHandler implements RowCallbackHandler {
 
-  record Column(SearchablePatientEmailMapper.Column email, SearchablePatientPhoneMapper.Column phone) {
-  }
-
-
   private final SearchablePatientEmailMapper emailRowMapper;
   private final Collection<SearchablePatient.Email> emails;
   private final SearchablePatientPhoneMapper phoneRowMapper;

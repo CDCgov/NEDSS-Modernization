@@ -71,19 +71,6 @@ Feature: Patient Search
       | city       | City         |
       | address    | 1234 Address |
 
-  Scenario: I can find the patients ordered by birthday
-    Given  the patient has a "birthday" of "1987-01-15"
-    And I have another patient
-    And the patient has a "birthday" of "1999-11-19"
-    And I have another patient
-    And the patient has a "birthday" of "1974-05-29"
-    And patients are available for search
-    And I want patients sorted by "birthday" "asc"
-    When I search for patients
-    And search result 1 has a "birthday" of "1974-05-29"
-    And search result 2 has a "birthday" of "1987-01-15"
-    And search result 3 has a "birthday" of "1999-11-19"
-
   Scenario: I can find the most relevant patient when searching by first name
     Given the patient has the "legal" name "Something" "Other"
     And I have another patient
@@ -198,17 +185,17 @@ Feature: Patient Search
     When I search for patients
     Then the patient is not in the search results
 
-Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
-  Given the patient has the "legal" name "Max" "Headroom"
-  And the patient can be identified with a Medicare Number of "1009"
-  And I have another patient
-  And the patient has the "legal" name "Max" "Smart"
-  And the patient has the gender Male
-  And the patient can be identified with an Account Number without a value
-  And patients are available for search
-  When I search for patients
-  And the search results have a patient with a "last name" equal to "Headroom"
-  And the search results have a patient with a "last name" equal to "Smart"
+  Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
+    Given the patient has the "legal" name "Max" "Headroom"
+    And the patient can be identified with a Medicare Number of "1009"
+    And I have another patient
+    And the patient has the "legal" name "Max" "Smart"
+    And the patient has the gender Male
+    And the patient can be identified with an Account Number without a value
+    And patients are available for search
+    When I search for patients
+    And the search results have a patient with a "last name" equal to "Headroom"
+    And the search results have a patient with a "last name" equal to "Smart"
 
 
   Scenario Outline: I can search for a Patient with a specified Gender

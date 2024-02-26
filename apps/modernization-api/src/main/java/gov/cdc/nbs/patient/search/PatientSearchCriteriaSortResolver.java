@@ -26,7 +26,7 @@ class PatientSearchCriteriaSortResolver {
 
     return switch (sorting.getProperty()) {
       case "relevance" -> asSortOption("_score", order);
-      case "lastNm" -> asSortOption("last_nm", order);
+      case "lastNm" -> asSortOption("name", "name.lastNm.keyword", order);
       case "birthTime" -> asSortOption("birth_time", order);
       default -> asSortOption(sorting.getProperty(), order);
     };
