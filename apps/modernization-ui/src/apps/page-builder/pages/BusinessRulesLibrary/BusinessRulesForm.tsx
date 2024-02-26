@@ -166,6 +166,8 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
+    console.log('form', form.getValues());
+
     return (
         <>
             <Grid row className="inline-field">
@@ -177,7 +179,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                 <Grid col={9}>
                     {form.watch('sourceText') ? (
                         <div className="source-question-display">
-                            {form.getValues('sourceText')} ({form.getValues('sourceIdentifier')})
+                            {form.getValues('sourceText')}
                             <Icon.Close onClick={handleResetSourceQuestion} />
                         </div>
                     ) : (
