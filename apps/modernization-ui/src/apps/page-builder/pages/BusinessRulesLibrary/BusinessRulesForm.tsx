@@ -166,8 +166,6 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
-    console.log('form', form.getValues());
-
     return (
         <>
             <Grid row className="inline-field">
