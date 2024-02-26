@@ -2,17 +2,13 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientPhoneLocatorHistoryListener;
 
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue(TeleEntityLocatorParticipation.TELECOM_CLASS_CODE)
+@EntityListeners(PatientPhoneLocatorHistoryListener.class)
 public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
     static final String TELECOM_CLASS_CODE = "TELE";

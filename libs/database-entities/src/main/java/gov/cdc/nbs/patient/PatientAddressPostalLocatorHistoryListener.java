@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 import javax.persistence.PreUpdate;
 
 @Component
-public class PatientAddressPostalLocatorListener {
+public class PatientAddressPostalLocatorHistoryListener {
     private final PatientAddressPostalLocatorHistoryCreator creator;
     private final JdbcTemplate template;
 
 
-    public PatientAddressPostalLocatorListener(PatientAddressPostalLocatorHistoryCreator creator, JdbcTemplate template) {
+    public PatientAddressPostalLocatorHistoryListener(PatientAddressPostalLocatorHistoryCreator creator, JdbcTemplate template) {
         this.creator = creator;
         this.template = template;
     }
