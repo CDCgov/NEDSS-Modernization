@@ -6,8 +6,6 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
 
-import java.util.List;
-
 public class SearchablePatientSteps {
 
   private final Available<PatientIdentifier> patients;
@@ -39,14 +37,7 @@ public class SearchablePatientSteps {
 
   @Given("I am looking for one of them")
   public void I_am_looking_for_one_of_them() {
-    List<SearchablePatient> list = this.availableSearchablePatient.all().toList();
-
-    int size = list.size();
-
-    SearchablePatient picked = list.get(size - 1);
-    this.activeSearchablePatient.active(picked);
-
-    //    this.availableSearchablePatient.random().ifPresent(this.activeSearchablePatient::active);
+    this.availableSearchablePatient.random().ifPresent(this.activeSearchablePatient::active);
   }
 
   @Given("patients are available for search")

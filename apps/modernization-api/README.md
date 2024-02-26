@@ -28,18 +28,18 @@ docker-compose up test-db -d
 To run all tests:
 
 ```bash
-./gradlew test
+./gradlew :modernization-api:test
 ```
 
-To execute specific test tags:
+To execute specific tagged feature tests:
 
-```bash
-./gradlew test -Dcucumber.filter.tags="@patient_create" --tests "RunCucumberTestz"
+```shell
+./gradlew -Dtest.single="RunCucumber" -Dcucumber.filter.tags="@patient_create" :modernization-api:test
 ```
 
 ## Running
 
-The Modernization API can be started from the root directory by runninng:
+The Modernization API can be started from the root directory by executing:
 
 ```bash
 ./gradlew :modernization-api:bootRun

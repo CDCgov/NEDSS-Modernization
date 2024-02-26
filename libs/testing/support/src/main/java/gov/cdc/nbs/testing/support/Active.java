@@ -1,12 +1,9 @@
 package gov.cdc.nbs.testing.support;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-@Component
 public class Active<I> {
 
   private final Supplier<I> initializer;

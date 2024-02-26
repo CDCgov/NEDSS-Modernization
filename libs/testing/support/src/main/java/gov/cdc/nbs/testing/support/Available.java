@@ -1,13 +1,16 @@
 package gov.cdc.nbs.testing.support;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class Available<V> {
+
+  private static final SecureRandom RANDOM = new SecureRandom();
+
 
   public record Indexed<V>(int index, V item) {
   }
@@ -54,7 +57,7 @@ public class Available<V> {
       return Optional.empty();
     }
 
-    int index = ThreadLocalRandom.current().nextInt(0, items.size());
+    int index = RANDOM.nextInt(0, items.size());
     return this.items.stream()
         .skip(index)
         .findFirst();
