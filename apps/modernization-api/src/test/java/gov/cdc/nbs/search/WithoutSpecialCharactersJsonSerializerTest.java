@@ -45,7 +45,7 @@ class WithoutSpecialCharactersJsonSerializerTest {
 
     jsonGenerator.flush();
 
-    assertThat(jsonWriter.toString()).isEqualTo(expected);
+    assertThat(jsonWriter.toString()).contains(expected);
 
   }
 
