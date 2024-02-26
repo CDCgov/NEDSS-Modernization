@@ -5,7 +5,7 @@ import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.race.ExistingPatientRaceException;
-import gov.cdc.nbs.patient.search.PatientSearchIndexer;
+import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,12 +20,12 @@ class PatientRaceChangeController {
   private final Clock clock;
   private final PatientRaceChangeService service;
 
-  private final PatientSearchIndexer indexer;
+  private final PatientIndexer indexer;
 
   PatientRaceChangeController(
       final Clock clock,
       final PatientRaceChangeService service,
-      final PatientSearchIndexer indexer
+      final PatientIndexer indexer
   ) {
     this.clock = clock;
     this.service = service;
