@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -117,14 +118,33 @@ class PageRuleFinder {
     return !result.isEmpty() ? result.get(0) : null;
   }
 
+  private String resolveSort(String sort) {
+    switch (sort) {
+      case "sourcefields":
+        return "rule_desc_txt";
+      case "function":
+        return "rule_cd";
+      case "values":
+        return "source_values";
+      case "logic":
+        return "logic";
+      case "id":
+        return "wa_rule_metadata_uid";
+      default:
+        return DEFAULT_SORT_COLUMN;
+    }
+  }
+
   Page<Rule> findByPageId(final long pageId, final Pageable pageable) {
     int pageSize = pageable.getPageSize();
     int offset = pageable.getPageNumber() * pageSize;
-    Sort sort = pageable.getSort();
+    String sort = pageable.getSort().toList().get(0).getProperty().toLowerCase();
+    Direction direction =
+        pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.ASC : Direction.DESC;
     String query = findByPageId;
-    if (sort.isSorted()) {
+    if (pageable.getSort().isSorted() && !DEFAULT_SORT_COLUMN.equals(sort)) {
       query = findByPageId.replace(DEFAULT_SORT_COLUMN,
-          DEFAULT_SORT_COLUMN + "," + sort.toString().replace(": ", " "));
+          DEFAULT_SORT_COLUMN + "," + resolveSort(sort).replace(": ", " ") + " " + direction);
     }
     SqlParameterSource parameters = new MapSqlParameterSource(
         Map.of("pageId", pageId,

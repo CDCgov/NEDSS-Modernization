@@ -1,19 +1,21 @@
 /* eslint-disable camelcase */
 import { PageRuleControllerService } from 'apps/page-builder/generated';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { authorization } from 'authorization';
 
 export const fetchBusinessRules = async (
-    authorization: string,
-    searchValue: string,
-    pageId: number,
-    sort: any,
-    currentPage: number,
-    pageSize: number
+    searchValue?: string,
+    sort?: any,
+    currentPage?: number,
+    pageSize?: number
 ) => {
+    const {page} = useGetPageDetails();
+
     if (!searchValue) {
         try {
             const response = await PageRuleControllerService.getAllPageRuleUsingGet({
-                authorization,
-                id: pageId,
+                authorization: authorization(),
+                id: page?.id ?? 0,
                 page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
                 size: pageSize,
                 sort: ''
@@ -28,9 +30,9 @@ export const fetchBusinessRules = async (
         };
         try {
             const response_1 = await PageRuleControllerService.findPageRuleUsingPost({
-                authorization,
+                authorization: authorization(),
                 request,
-                id: pageId,
+                id: page?.id ?? 0,
                 page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
                 size: pageSize,
                 sort

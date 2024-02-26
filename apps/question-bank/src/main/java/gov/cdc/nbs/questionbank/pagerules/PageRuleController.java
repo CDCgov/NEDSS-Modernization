@@ -79,7 +79,7 @@ public class PageRuleController {
   }
 
   @GetMapping
-  public Page<Rule> getAllPageRule(@PageableDefault(size = 25) Pageable pageable,
+  public Page<Rule> getAllPageRule(@PageableDefault(size = 25, sort = "add_time") Pageable pageable,
       @PathVariable Long id) {
     return pageRuleFinder.findByPageId(id, pageable);
   }
@@ -87,7 +87,7 @@ public class PageRuleController {
   @PostMapping("/search")
   public Page<Rule> findPageRule(@PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
-      @PageableDefault(size = 25) Pageable pageable) {
+      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     return pageRuleFinder.searchPageRule(pageId, request, pageable);
   }
 
