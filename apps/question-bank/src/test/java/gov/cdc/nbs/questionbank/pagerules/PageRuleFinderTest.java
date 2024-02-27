@@ -148,6 +148,21 @@ class PageRuleFinderTest {
     assertNotNull(actualResponsPage);
   }
 
+  @Test
+  void getSearchRules_validSearchRequest_returnSearchRules_noSort() {
+    Long pageId = 100l;
+    Rule expectedResponse = getRuleResponse();
+    Pageable pageable = PageRequest.of(0, 20);
+    Sort sort = mock(Sort.class);
+
+    SearchPageRuleRequest request = new SearchPageRuleRequest("something");
+
+    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
+        .thenReturn(Collections.singletonList(expectedResponse));
+    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
+    assertNotNull(actualResponsPage);
+  }
+
 
   Rule getRuleResponse() {
     return new Rule(100,
