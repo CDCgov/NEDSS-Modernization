@@ -16,18 +16,8 @@ class SearchablePatientConfiguration {
   SimpleIndex patientIndex(
       @Value("${nbs.search.patient.index.name}") final String index,
       @Value("${nbs.search.patient.index.mapping}") final Resource resource
-  ) {
-    try {
-      return new SimpleIndex(index, Paths.get(resource.getURI()));
-    } catch (IOException exception) {
-      throw new IllegalStateException(
-          String.format(
-              "Unable to resolve the descriptor for the %s index",
-              index
-          ),
-          exception
-      );
-    }
+  ) throws IOException {
+    return new SimpleIndex(index, Paths.get(resource.getURI()));
   }
 
 
