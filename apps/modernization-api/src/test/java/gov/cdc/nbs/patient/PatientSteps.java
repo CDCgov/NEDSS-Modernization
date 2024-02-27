@@ -5,7 +5,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.Before;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -13,11 +12,17 @@ import java.time.LocalDate;
 @Transactional
 public class PatientSteps {
 
-  @Autowired
-  Active<PatientIdentifier> patient;
 
-  @Autowired
-  PatientMother mother;
+  private final Active<PatientIdentifier> patient;
+  private final PatientMother mother;
+
+  PatientSteps(
+      final Active<PatientIdentifier> patient,
+      final PatientMother mother
+  ) {
+    this.patient = patient;
+    this.mother = mother;
+  }
 
   //  Make sure that patients are cleaned up after everything else
   @Before(order = 15000)
@@ -160,4 +165,15 @@ public class PatientSteps {
   public void the_patient_has_the_race_category(final String category) {
     patient.maybeActive().ifPresent(current -> mother.withRace(current, category));
   }
+
+  @Given("$the patient has the ethnicity {ethnicity}^")
+  public void the_patient_has_the_ethnicity(final String ethnicity) {
+    patient.maybeActive().ifPresent(current -> mother.withEthnicity(current, ethnicity));
+  }
+
+  @Given("the patient has the ethnicity {ethnicity}, specifically {ethnicityDetail}")
+  public void the_patient_has_the_ethnicity_specifically(final String ethnicity, final String detail) {
+    patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, ethnicity, detail));
+  }
+
 }

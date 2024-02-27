@@ -5,19 +5,19 @@ import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,80 +25,93 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientProfileEthnicitySteps {
 
-    @Autowired
-    Active<PatientInput> input;
+  @Autowired
+  Active<PatientInput> input;
 
-    @Autowired
-    Active<Person> patient;
+  @Autowired
+  Active<Person> patient;
 
-    @Autowired
-    EntityManager entityManager;
+  @Autowired
+  EntityManager entityManager;
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+  @Autowired
+  Available<PatientIdentifier> patients;
 
-    @Autowired
-    PatientEthnicityController controller;
+  @Autowired
+  PatientEthnicityController controller;
 
-    private EthnicityInput updates;
+  private EthnicityInput updates;
 
-    @Before("@patient_update")
-    public void reset() {
-        this.updates = null;
-    }
+  @Before("@patient_update")
+  public void reset() {
+    this.updates = null;
+  }
 
-    @Given("the new patient's ethnicity is entered")
-    public void the_new_patient_ethnicity_is_entered() {
-        PatientInput active = this.input.active();
+  @Given("the new patient's ethnicity is entered")
+  public void the_new_patient_ethnicity_is_entered() {
+    PatientInput active = this.input.active();
 
-        active.setEthnicity(RandomUtil.getRandomString());
-    }
+    active.setEthnicity(RandomUtil.getRandomString());
+  }
 
-    @Then("the new patient has the entered ethnicity")
-    public void the_new_patient_has_the_entered_ethnicity() {
-        Person actual = this.patient.active();
-        PatientInput expected = this.input.active();
+  @Then("the new patient has the entered ethnicity")
+  public void the_new_patient_has_the_entered_ethnicity() {
+    Person actual = this.patient.active();
+    PatientInput expected = this.input.active();
 
-        assertThat(actual)
-            .extracting(Person::getEthnicity)
-            .returns(expected.getAsOf(), PatientEthnicity::asOf)
-            .returns(expected.getEthnicity(), PatientEthnicity::ethnicGroup);
-    }
+    assertThat(actual)
+        .extracting(Person::getEthnicity)
+        .returns(expected.getAsOf(), PatientEthnicity::asOf)
+        .returns(expected.getEthnicity(), PatientEthnicity::ethnicGroup);
+  }
 
-    @When("a patient's ethnicity is changed")
-    public void a_patient_ethnicity_is_changed() {
+  @When("a patient's ethnicity is changed")
+  public void a_patient_ethnicity_is_changed() {
 
-        PatientIdentifier patient = this.patients.one();
+    PatientIdentifier patient = this.patients.one();
 
-        this.updates = new EthnicityInput();
-        this.updates.setPatient(patient.id());
-        this.updates.setAsOf(RandomUtil.getRandomDateInPast());
-        this.updates.setEthnicGroup(RandomUtil.getRandomString());
-        this.updates.setUnknownReason(RandomUtil.getRandomString());
+    this.updates = new EthnicityInput();
+    this.updates.setPatient(patient.id());
+    this.updates.setAsOf(RandomUtil.getRandomDateInPast());
+    this.updates.setEthnicGroup(RandomUtil.getRandomString());
+    this.updates.setUnknownReason(RandomUtil.getRandomString());
 
-        controller.update(this.updates);
-    }
+    controller.update(this.updates);
+  }
 
-    @Then("the patient has the changed ethnicity")
-    @Transactional
-    public void the_patient_has_the_changed_ethnicity() {
-        PatientIdentifier patient = this.patients.one();
+  @When("a patient's {ethnicity} ethnicity is changed to specifically be {ethnicityDetail}")
+  public void a_patient_ethnicity_is_changed_to_include(final String ethnicity, final String detail) {
+    PatientIdentifier patient = this.patients.one();
 
-        Person actual = this.entityManager.find(Person.class, patient.id());
+    this.updates = new EthnicityInput();
+    this.updates.setPatient(patient.id());
+    this.updates.setAsOf(RandomUtil.getRandomDateInPast());
+    this.updates.setEthnicGroup(ethnicity);
+    this.updates.setDetailed(List.of(detail));
 
-        assertThat(actual)
-            .extracting(Person::getEthnicity)
-            .returns(updates.getAsOf(), PatientEthnicity::asOf)
-            .returns(updates.getEthnicGroup(), PatientEthnicity::ethnicGroup)
-            .returns(updates.getUnknownReason(), PatientEthnicity::unknownReason)
-            ;
-    }
+    controller.update(this.updates);
+  }
 
-    @Then("I am unable to change a patient's ethnicity")
-    public void i_am_unable_to_change_a_patient_ethnicity() {
-        EthnicityInput changes = new EthnicityInput();
+  @Then("the patient has the changed ethnicity")
+  @Transactional
+  public void the_patient_has_the_changed_ethnicity() {
+    PatientIdentifier patient = this.patients.one();
 
-        assertThatThrownBy(() -> controller.update(changes))
-            .isInstanceOf(AccessDeniedException.class);
-    }
+    Person actual = this.entityManager.find(Person.class, patient.id());
+
+    assertThat(actual)
+        .extracting(Person::getEthnicity)
+        .returns(updates.getAsOf(), PatientEthnicity::asOf)
+        .returns(updates.getEthnicGroup(), PatientEthnicity::ethnicGroup)
+        .returns(updates.getUnknownReason(), PatientEthnicity::unknownReason)
+    ;
+  }
+
+  @Then("I am unable to change a patient's ethnicity")
+  public void i_am_unable_to_change_a_patient_ethnicity() {
+    EthnicityInput changes = new EthnicityInput();
+
+    assertThatThrownBy(() -> controller.update(changes))
+        .isInstanceOf(AccessDeniedException.class);
+  }
 }
