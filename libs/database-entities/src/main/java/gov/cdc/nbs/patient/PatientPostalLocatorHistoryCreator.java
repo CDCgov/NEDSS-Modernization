@@ -4,7 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PatientAddressPostalLocatorHistoryCreator {
+public class PatientPostalLocatorHistoryCreator {
     private static final int VERSION_PARAMETER = 1;
     private static final int LOCATOR_PARAMETER = 2;
     private final JdbcTemplate template;
@@ -75,7 +75,7 @@ public class PatientAddressPostalLocatorHistoryCreator {
         where postal_locator_uid = ?
     """;
 
-    public PatientAddressPostalLocatorHistoryCreator(JdbcTemplate template) {
+    public PatientPostalLocatorHistoryCreator(JdbcTemplate template) {
         this.template = template;
     }
 

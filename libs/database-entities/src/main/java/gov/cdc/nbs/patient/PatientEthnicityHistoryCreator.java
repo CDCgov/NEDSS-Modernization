@@ -9,7 +9,7 @@ public class PatientEthnicityHistoryCreator {
     private static final int PATIENT_PARAMETER = 2;
     private static final int GROUP_CODE_PARAMETER = 3;
     private final JdbcTemplate template;
-    private static final String CREATE_ETHNICITY_LOCATOR_HIST = """
+    private static final String CREATE_ETHNIC_GROUP_HIST = """
         insert into Person_ethnic_group_hist (
             person_uid,
             ethnic_group_cd,
@@ -50,7 +50,7 @@ public class PatientEthnicityHistoryCreator {
 
     public void createPersonEthnicityLocatorHistory(long personUid, String personEthnicityGroupCd, int version) {
         this.template.update(
-                CREATE_ETHNICITY_LOCATOR_HIST,
+                CREATE_ETHNIC_GROUP_HIST,
                 statement -> {
                     statement.setInt(VERSION_PARAMETER, version);
                     statement.setLong(PATIENT_PARAMETER, personUid);
