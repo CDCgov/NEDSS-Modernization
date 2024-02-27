@@ -38,14 +38,20 @@ const tableColumns = [
 type Props = {
     summaries: Rule[];
     onSortChange: (sort: BusinessRuleSort | undefined) => void;
+    onQueryChange: (query: string) => void;
     qtnModalRef: RefObject<ModalRef>;
+    isLoading?: boolean;
 };
 
-export const BusinessRulesLibraryTable = ({ summaries, qtnModalRef, onSortChange }: Props) => {
+export const BusinessRulesLibraryTable = ({
+    summaries,
+    qtnModalRef,
+    onSortChange,
+    onQueryChange,
+    isLoading
+}: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
-
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
 
     const { page } = useGetPageDetails();
     const { page: curPage, request } = usePage();
@@ -58,7 +64,11 @@ export const BusinessRulesLibraryTable = ({ summaries, qtnModalRef, onSortChange
         tableDetails: [
             {
                 id: 1,
-                title: <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>{rule.sourceQuestion.label}</Link>
+                title: (
+                    <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>
+                        {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
+                    </Link>
+                )
             },
             { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
             {
@@ -84,7 +94,9 @@ export const BusinessRulesLibraryTable = ({ summaries, qtnModalRef, onSortChange
                     <div>
                         {rule.targets?.map((target, index) => (
                             <React.Fragment key={index}>
-                                <span>{target.label}</span>
+                                <span>
+                                    {target.label} ({target.targetIdentifier})
+                                </span>
                                 <br />
                             </React.Fragment>
                         ))}
@@ -197,7 +209,7 @@ export const BusinessRulesLibraryTable = ({ summaries, qtnModalRef, onSortChange
                 </NavLinkButton>
             </div>
             <div>
-                <SearchBar onChange={setSearchQuery} />
+                <SearchBar onChange={onQueryChange} />
             </div>
             <TableComponent
                 display="zebra"
@@ -216,7 +228,6 @@ export const BusinessRulesLibraryTable = ({ summaries, qtnModalRef, onSortChange
                 isLoading={isLoading}
             />
             {summaries.length === 0 && !isLoading && dataNotAvailableElement}
-            {summaries.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
     );

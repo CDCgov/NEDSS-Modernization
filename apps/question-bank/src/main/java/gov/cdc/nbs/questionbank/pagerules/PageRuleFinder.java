@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.pagerules;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -93,8 +92,8 @@ class PageRuleFinder {
        left join WA_question [question] on [rule].source_question_identifier = [question].question_identifier
        left join [NBS_SRTE]..Codeset [CodeSet] on  [question].code_set_group_id = [CodeSet].code_set_group_id
        where  [rule].wa_template_uid =:pageId
-       and  ( UPPER(source_values) LIKE CONCAT('%', UPPER(:searchValue), '%')
-             OR UPPER(target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
+       and  ( UPPER([rule].source_values) LIKE CONCAT('%', UPPER(:searchValue), '%')
+             OR UPPER([rule].target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
             )
        order by [rule].add_time
        offset :offset rows
@@ -160,16 +159,18 @@ class PageRuleFinder {
     String searchValue = request.searchValue();
     int pageSize = pageable.getPageSize();
     int offset = pageable.getPageNumber() * pageSize;
-    Sort sort = pageable.getSort();
+    String sort = pageable.getSort().toList().get(0).getProperty().toLowerCase();
+    Direction direction =
+        pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.ASC : Direction.DESC;
     String query = findBySearchValue;
-    if (sort.isSorted()) {
-      query = findBySearchValue.replace(DEFAULT_SORT_COLUMN,
-          DEFAULT_SORT_COLUMN + "," + sort.toString().replace(": ", " "));
+    if (pageable.getSort().isSorted() && !DEFAULT_SORT_COLUMN.equals(sort)) {
+      query = findByPageId.replace(DEFAULT_SORT_COLUMN,
+          DEFAULT_SORT_COLUMN + "," + resolveSort(sort).replace(": ", " ") + " " + direction);
     }
     SqlParameterSource parameters = new MapSqlParameterSource(
         Map.of(
             "pageId", pageId,
-            "searchValue", searchValue,
+            "searchValue", (searchValue == null ? "" : searchValue),
             "offset", offset,
             "pageSize", pageSize));
     List<Rule> result = this.template.query(query, parameters, mapper);

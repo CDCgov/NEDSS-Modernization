@@ -8,7 +8,7 @@ import { BusinessRuleSort, useFetchPageRules } from 'apps/page-builder/hooks/api
 import { useAlert } from 'alert';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
-    const { isLoading, search, response, error } = useFetchPageRules();
+    const { search, response, error, isLoading } = useFetchPageRules();
     const { page: curPage, ready, firstPage, reload } = usePage();
     const [sort, setSort] = useState<BusinessRuleSort | undefined>(undefined);
     const [query, setQuery] = useState<string>('');
@@ -20,29 +20,14 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
         search({ sort: undefined, page: 0, pageSize: 10 });
     }, []);
 
-    // const getBusinessRules = async () => {
-    //     setIsLoading(true);
-
-    //     try {
-    //         if (page) {
-    //             const response = await fetchBusinessRules(searchQuery, sortBy, curPage.current, curPage.pageSize);
-    //             const { content, totalElements } = response;
-    //             setRules(content || []);
-    //             setTotalElements(totalElements || 0);
-    //             setIsLoading(false);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error', error);
-    //     }
-    // };
-
     useEffect(() => {
         if (curPage.status === Status.Requested) {
             search({
                 pageId: page?.id,
                 page: curPage.current - 1,
                 pageSize: curPage.pageSize,
-                sort: sort
+                sort: sort,
+                query: query
             });
         }
     }, [curPage.status]);
@@ -57,11 +42,8 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
 
     useEffect(() => {
         if (response) {
-            console.log(response?.number);
             const currentPage = response?.number ? response?.number + 1 : 1;
             ready(response?.totalElements ?? 0, currentPage);
-            console.log('is this why');
-            console.log(response?.content);
         } else if (error) {
             showAlert({ message: error, type: 'error' });
         }
@@ -89,6 +71,8 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
                             summaries={response?.content ?? []}
                             qtnModalRef={modalRef}
                             onSortChange={setSort}
+                            onQueryChange={setQuery}
+                            isLoading={isLoading}
                         />
                     </div>
                 </div>

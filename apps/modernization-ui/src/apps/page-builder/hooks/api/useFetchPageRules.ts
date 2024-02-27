@@ -1,4 +1,4 @@
-import { PageRuleControllerService, Page_Rule_ } from 'apps/page-builder/generated';
+import { PageRuleControllerService, Page_Rule_, SearchPageRuleRequest } from 'apps/page-builder/generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
@@ -10,6 +10,7 @@ export type FetchBusinessRules = {
     page?: number;
     pageSize?: number;
     sort?: BusinessRuleSort;
+    query?: string;
 };
 
 export enum RuleSortField {
@@ -62,13 +63,16 @@ export const useFetchPageRules = () => {
             const sortString = state.search.sort
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
+            
+            const request : SearchPageRuleRequest = {searchValue: state.search.query};
 
-            PageRuleControllerService.getAllPageRuleUsingGet({
+            PageRuleControllerService.findPageRuleUsingPost({
                 authorization: authorization(),
                 id: Number (pageId),
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString
+                sort: sortString,
+                request: request
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => dispatch({ type: 'complete', rules: response }));
