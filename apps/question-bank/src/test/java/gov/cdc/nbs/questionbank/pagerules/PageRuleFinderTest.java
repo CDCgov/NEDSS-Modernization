@@ -152,8 +152,7 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules_noSort() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20);
-    Sort sort = mock(Sort.class);
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("add_time"));
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("something");
 
