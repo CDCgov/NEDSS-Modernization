@@ -2,9 +2,10 @@ import { render } from '@testing-library/react';
 import { ReorderModal } from './ReorderModal';
 import { PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PageManagementProvider } from '../../../usePageManagement';
 
 describe('when ReorderModal renders', () => {
-    const content: PagesResponse = {
+    const page: PagesResponse = {
         id: 123,
         name: 'Test Page',
         status: 'status-value',
@@ -33,16 +34,37 @@ describe('when ReorderModal renders', () => {
             }
         ]
     };
+    const fetch = () => {
+        jest.fn();
+    };
+    
+    const refresh = () => {
+        jest.fn();
+    };
     const props = {
         modalRef: { current: null },
         pageName: 'Test Page'
     };
+    it('should display Tab', () => {
+        const { getByText } = render(
+            <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                <DragDropProvider pageData={page} currentTab={0}>
+                    <ReorderModal {...props} />
+                </DragDropProvider>
+            </PageManagementProvider>
+        );
+        expect(getByText('Test Tab')).toBeTruthy();
+    });
+
     it('should display Sections', () => {
         const { getByText } = render(
-            <DragDropProvider pageData={content} currentTab={0}>
-                <ReorderModal {...props} />
-            </DragDropProvider>
+            <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                <DragDropProvider pageData={page} currentTab={0}>
+                    <ReorderModal {...props} />
+                </DragDropProvider>
+            </PageManagementProvider>
         );
-        expect(getByText('Test Page')).toBeTruthy();
+        expect(getByText('Section1')).toBeTruthy();
+        expect(getByText('Section2')).toBeTruthy();
     });
 });

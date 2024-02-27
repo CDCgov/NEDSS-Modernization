@@ -1,44 +1,43 @@
-import { Icon } from 'components/Icon/Icon';
-import styles from './reorder-section.module.scss';
-import { PagesSection } from 'apps/page-builder/generated/models/PagesSection';
-import { useEffect, useState } from 'react';
-import { ReorderSubsection } from '../ReorderSubsection/ReorderSubsection';
-import { Draggable, DraggableProvided, Droppable } from 'react-beautiful-dnd';
-import { PagesSubSection } from 'apps/page-builder/generated';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
+import { PagesSection, PagesTab } from 'apps/page-builder/generated';
+import { useEffect, useState } from 'react';
+import { Draggable, DraggableProvided, Droppable } from 'react-beautiful-dnd';
+import { ReorderSection } from '../ReorderSection/ReorderSection';
+import { Icon } from 'components/Icon/Icon';
+import styles from './reorder-tab.module.scss';
 
 type Props = {
     index: number;
-    section: PagesSection;
+    tab: PagesTab;
     visible: boolean;
 };
 
-export const ReorderSection = ({ section, index, visible }: Props) => {
-    const [subsections, setSubsections] = useState<PagesSubSection[]>([]);
-    const [subsectionsOpen, setSubsectionsOpen] = useState(true);
+export const ReorderTab = ({ tab, index, visible }: Props) => {
+    const [sections, setSections] = useState<PagesSection[]>([]);
+    const [sectionsOpen, setSectionsOpen] = useState(true);
     const { closeId } = useDragDrop();
 
     useEffect(() => {
-        if (!section.subSections) return;
-        setSubsections(section.subSections);
-    }, [section]);
+        if (!tab.sections) return;
+        setSections(tab.sections);
+    }, [tab]);
 
     useEffect(() => {
-        if (closeId.id === section.id!.toString()) {
-            setSubsectionsOpen(false);
-        }
+        if (closeId.id === tab.id!.toString()) {
+            setSectionsOpen(false);
+        } else setSectionsOpen(sectionsOpen);
     }, [closeId]);
 
     return (
-        <Draggable draggableId={section.id!.toString()} index={index}>
+        <Draggable draggableId={tab.id!.toString()} index={index}>
             {(provided: DraggableProvided) => (
                 <div
-                    className={`${styles.section} ${visible ? '' : styles.hidden}`}
+                    className={`${styles.tab} ${visible ? '' : styles.hidden}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
                     <div className={styles.tile}>
-                        <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
-                            {subsectionsOpen ? (
+                        <div className={styles.toggle} onClick={() => setSectionsOpen(!sectionsOpen)}>
+                            {sectionsOpen ? (
                                 <Icon name={'expand-more'} size={'s'} />
                             ) : (
                                 <Icon name={'navigate-next'} size={'s'} />
@@ -47,25 +46,25 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                         <div className={styles.handle} {...provided.dragHandleProps}>
                             <Icon name={'drag'} size={'m'} />
                         </div>
-                        <Icon name={'group'} size={'m'} />
-                        <p>{section.name}</p>
+                        <Icon name={'folder'} size={'m'} />
+                        <p>{tab.name}</p>
                     </div>
-                    <div className={`${styles.subsections} ${subsectionsOpen ? '' : styles.closed}`}>
-                        <Droppable droppableId={section.id!.toString()} type="subsection">
+                    <div className={`${styles.sections} ${sectionsOpen ? '' : styles.closed}`}>
+                        <Droppable droppableId={tab.id!.toString()} type="section">
                             {(prov, snapshot) => (
                                 <div
                                     className={styles.droppable}
                                     {...prov.droppableProps}
                                     ref={prov.innerRef}
                                     style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
-                                    {subsections
-                                        ? subsections.map((subsection: any, i: number) => {
+                                    {sections
+                                        ? sections.map((section: any, i: number) => {
                                               return (
-                                                  <ReorderSubsection
-                                                      subsection={subsection}
-                                                      key={subsection.id.toString()}
+                                                  <ReorderSection
+                                                      section={section}
+                                                      key={section.id.toString()}
                                                       index={i}
-                                                      visible={subsection.visible}
+                                                      visible={section.visible}
                                                   />
                                               );
                                           })
