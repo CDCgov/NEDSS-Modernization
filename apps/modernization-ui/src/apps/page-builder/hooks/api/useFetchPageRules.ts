@@ -1,9 +1,22 @@
-import { PageRuleControllerService, Page_Rule_, SearchPageRuleRequest } from 'apps/page-builder/generated';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { PageRuleControllerService, Pageable, Rule, SearchPageRuleRequest, Sort } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Direction } from 'sorting/Sort';
+
+export type PageRules = {
+    content?: Rule[];
+    empty?: boolean;
+    first?: boolean;
+    last?: boolean;
+    number?: number;
+    numberOfElements?: number;
+    pageable?: Pageable;
+    size?: number;
+    sort?: Sort;
+    totalElements?: number;
+    totalPages?: number;
+};
 
 export type FetchBusinessRules = {
     pageId?: number;
@@ -30,12 +43,12 @@ export type BusinessRuleSort = {
 type State =
     | { status: 'idle' }
     | { status: 'searching'; search: FetchBusinessRules }
-    | { status: 'complete'; rules: Page_Rule_ | void }
+    | { status: 'complete'; rules: PageRules | void }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'search'; search: FetchBusinessRules }
-    | { type: 'complete'; rules: Page_Rule_ | void }
+    | { type: 'complete'; rules: PageRules | void }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
@@ -56,19 +69,19 @@ const reducer = (_state: State, action: Action): State => {
 export const useFetchPageRules = () => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const {pageId} = useParams();
+    const { pageId } = useParams();
 
     useEffect(() => {
         if (state.status === 'searching') {
             const sortString = state.search.sort
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
-            
-            const request : SearchPageRuleRequest = {searchValue: state.search.query};
+
+            const request: SearchPageRuleRequest = { searchValue: state.search.query };
 
             PageRuleControllerService.findPageRuleUsingPost({
                 authorization: authorization(),
-                id: Number (pageId),
+                id: Number(pageId),
                 page: state.search.page,
                 size: state.search.pageSize,
                 sort: sortString,

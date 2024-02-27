@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import javax.xml.bind.annotation.XmlElement.DEFAULT;
 
 
 @Component
@@ -122,7 +123,7 @@ class PageRuleFinder {
          [CodeSet].code_set_nm,
          [question1].wa_question_uid,
          [rule].add_time
-         order by [rule].add_time
+         order by [rule].sortReplace
          offset :offset rows
          fetch next :pageSize rows only
          """;
@@ -130,6 +131,7 @@ class PageRuleFinder {
   private final NamedParameterJdbcTemplate template;
   private final RowMapper<Rule> mapper;
   private static final String DEFAULT_SORT_COLUMN = "add_time";
+  private static final String REPLACE_STRING = "sortReplace";
 
 
 
@@ -172,8 +174,10 @@ class PageRuleFinder {
       Direction direction =
           pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.ASC : Direction.DESC;
       if (!DEFAULT_SORT_COLUMN.equals(sort)) {
-        query = findBySearchValue.replace(DEFAULT_SORT_COLUMN,
+        query = findBySearchValue.replace(REPLACE_STRING,
             DEFAULT_SORT_COLUMN + "," + resolveSort(sort).replace(": ", " ") + " " + direction);
+      } else {
+        query = findBySearchValue.replace(REPLACE_STRING, DEFAULT_SORT_COLUMN);
       }
     }
 
