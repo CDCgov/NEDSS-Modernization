@@ -2,6 +2,7 @@ import { screen, render } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { BrowserRouter } from 'react-router-dom';
 import { Rule } from 'apps/page-builder/generated';
+import { PageProvider } from 'page';
 
 describe('BusinessRulesLibraryTable', () => {
     const modalRef = { current: null };
@@ -28,7 +29,14 @@ describe('BusinessRulesLibraryTable', () => {
 
             render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} pages={pages} />
+                    <PageProvider>
+                        <BusinessRulesLibraryTable
+                            summaries={summaries}
+                            qtnModalRef={modalRef}
+                            onSortChange={jest.fn()}
+                            onQueryChange={jest.fn()}
+                        />
+                    </PageProvider>
                 </BrowserRouter>
             );
 
@@ -66,7 +74,14 @@ describe('BusinessRulesLibraryTable', () => {
 
             const { findAllByRole } = render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} pages={pages} />
+                    <PageProvider>
+                        <BusinessRulesLibraryTable
+                            summaries={summaries}
+                            qtnModalRef={modalRef}
+                            onSortChange={jest.fn()}
+                            onQueryChange={jest.fn()}
+                        />
+                    </PageProvider>
                 </BrowserRouter>
             );
 
