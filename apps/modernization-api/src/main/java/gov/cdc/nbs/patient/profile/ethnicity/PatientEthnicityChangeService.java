@@ -7,32 +7,31 @@ import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.event.PatientEventEmitter;
+import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @Transactional
-public class PatientEthnicityUpdater {
+public class PatientEthnicityChangeService {
 
-    private final EntityManager entityManager;
     private final PatientEventEmitter emitter;
+    private final PatientProfileService patientProfileService;
 
-    PatientEthnicityUpdater(
-        final EntityManager entityManager,
-        final PatientEventEmitter emitter
+    PatientEthnicityChangeService(
+            final PatientEventEmitter emitter, PatientProfileService patientProfileService
     ) {
-        this.entityManager = entityManager;
         this.emitter = emitter;
+        this.patientProfileService = patientProfileService;
     }
 
 
     public void update(final RequestContext context, final EthnicityInput input) {
 
-        Person patient = managed(input.getPatient());
+        Person patient = patientProfileService.findPatientById(input.getPatient());
 
         patient.update(
             new PatientCommand.UpdateEthnicityInfo(
@@ -95,10 +94,6 @@ public class PatientEthnicityUpdater {
             context.requestedBy(),
             context.requestedAt()
         );
-    }
-
-    private Person managed(final long patient) {
-        return this.entityManager.find(Person.class, patient);
     }
 
     private PatientEvent asChanged(final Person patient) {
