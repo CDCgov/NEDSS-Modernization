@@ -159,6 +159,18 @@ const AddBusinessRule = () => {
                                 <h2>{`${title} business rules`}</h2>
                             </div>
                             <div className="edit-rules__content">
+                                {ruleId ? (
+                                    <Grid row className="inline-field">
+                                        <Grid col={3}>
+                                            <Label className="input-label" htmlFor="ruleId">
+                                                Rule Id
+                                            </Label>
+                                        </Grid>
+                                        <Grid col={9}>
+                                            <label>{ruleId}</label>
+                                        </Grid>
+                                    </Grid>
+                                ) : null}
                                 <Grid row className="inline-field">
                                     <Grid col={3}>
                                         <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
