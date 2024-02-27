@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,12 +60,12 @@ class PageRuleFinderTest {
     assertNotNull(actualResponsPage);
   }
 
-  @Test
+  @ParameterizedTest
+  @ValueSource(strings = {"sourcefields", "function", "values", "logic", "id", "random", "add_time"})
   void getSearchRules_validSearchRequest_returnSearchRules() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
     Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
-    Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
 
@@ -72,96 +74,6 @@ class PageRuleFinderTest {
     Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
     assertNotNull(actualResponsPage);
   }
-
-  @Test
-  void getSearchRules_validSearchRequest_returnSearchRules_searchFunction() {
-    Long pageId = 100l;
-    Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("function"));
-    Sort sort = mock(Sort.class);
-
-    SearchPageRuleRequest request = new SearchPageRuleRequest("function");
-
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
-    assertNotNull(actualResponsPage);
-  }
-
-  @Test
-  void getSearchRules_validSearchRequest_returnSearchRules_searchValues() {
-    Long pageId = 100l;
-    Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("values"));
-    Sort sort = mock(Sort.class);
-
-    SearchPageRuleRequest request = new SearchPageRuleRequest("values");
-
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
-    assertNotNull(actualResponsPage);
-  }
-
-  @Test
-  void getSearchRules_validSearchRequest_returnSearchRules_searchLogic() {
-    Long pageId = 100l;
-    Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("logic"));
-    Sort sort = mock(Sort.class);
-
-    SearchPageRuleRequest request = new SearchPageRuleRequest("logic");
-
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
-    assertNotNull(actualResponsPage);
-  }
-
-  @Test
-  void getSearchRules_validSearchRequest_returnSearchRules_searchId() {
-    Long pageId = 100l;
-    Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("id"));
-    Sort sort = mock(Sort.class);
-
-    SearchPageRuleRequest request = new SearchPageRuleRequest("id");
-
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
-    assertNotNull(actualResponsPage);
-  }
-
-  @Test
-  void getSearchRules_validSearchRequest_returnSearchRules_searchRandom() {
-    Long pageId = 100l;
-    Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("something"));
-    Sort sort = mock(Sort.class);
-
-    SearchPageRuleRequest request = new SearchPageRuleRequest("something");
-
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
-    assertNotNull(actualResponsPage);
-  }
-
-  @Test
-  void getSearchRules_validSearchRequest_returnSearchRules_noSort() {
-    Long pageId = 100l;
-    Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("add_time"));
-
-    SearchPageRuleRequest request = new SearchPageRuleRequest("something");
-
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
-    assertNotNull(actualResponsPage);
-  }
-
 
   Rule getRuleResponse() {
     return new Rule(100,
