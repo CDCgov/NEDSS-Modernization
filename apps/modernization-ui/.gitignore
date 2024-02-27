@@ -5,5 +5,3 @@ ui/cypress/videos
 #storybook
 ui/storybook-static
 /coverage
-
-.vscode/settings.json
