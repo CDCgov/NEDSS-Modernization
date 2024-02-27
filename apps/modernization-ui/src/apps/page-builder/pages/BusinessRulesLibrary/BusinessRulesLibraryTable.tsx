@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { RefObject, useContext, useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
-import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
 import { Link } from 'react-router-dom';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
@@ -13,7 +12,7 @@ import { Rule } from 'apps/page-builder/generated';
 import React from 'react';
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
-import { Status, usePage } from 'page';
+import { usePage } from 'page';
 import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
 
 export enum Column {
@@ -169,20 +168,6 @@ export const BusinessRulesLibraryTable = ({
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
             </ModalToggleButton>
-        </div>
-    );
-
-    const searchAvailableElement = (
-        <div className="no-data-available">
-            <label className="no-text">Still can't find what are you're looking for?</label>
-            <label className="margin-bottom-1em search-desc">
-                Please try searching in the local library before creating new
-            </label>
-            <div>
-                <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
-                    Create New
-                </NavLinkButton>
-            </div>
         </div>
     );
 
