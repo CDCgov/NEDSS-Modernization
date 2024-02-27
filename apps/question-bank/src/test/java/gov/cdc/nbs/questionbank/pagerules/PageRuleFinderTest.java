@@ -77,7 +77,7 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules_searchFunction() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("function"));
     Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("function");
@@ -92,7 +92,7 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules_searchValues() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("values"));
     Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("values");
@@ -107,7 +107,7 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules_searchLogic() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("logic"));
     Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("logic");
@@ -122,7 +122,7 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules_searchId() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("id"));
     Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("id");
@@ -137,7 +137,7 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules_searchRandom() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("something"));
     Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("something");
