@@ -1,13 +1,13 @@
-import { PagesQuestion } from '../../../../../generated';
+import { PagesQuestion } from 'apps/page-builder/generated';
 import styles from './preview-question.module.scss';
-import { Input } from '../../../../../../../components/FormInputs/Input';
+import { Input } from 'components/FormInputs/Input';
 import { Icon } from '@trussworks/react-uswds';
-import { SelectInput } from '../../../../../../../components/FormInputs/SelectInput';
-import { RadioButtons } from '../../../../../components/RadioButton/RadioButton';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { useEffect, useState } from 'react';
-import { Selectable } from '../../../../../../../options';
-import { ConceptOptionsResponse, ConceptOptionsService } from '../../../../../../../generated';
-import { authorization } from '../../../../../../../authorization';
+import { Selectable } from 'options';
+import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
+import { authorization } from 'authorization';
 
 type Props = {
     question: PagesQuestion;
