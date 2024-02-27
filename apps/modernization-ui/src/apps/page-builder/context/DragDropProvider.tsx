@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesResponse, PagesSection, PagesTab } from '../generated';
-// import { moveQuestionInArray } from '../helpers/moveObjectInArray';
 import { reorderObjects } from '../services/reorderObjectsAPI';
 import { UserContext } from 'user';
 
