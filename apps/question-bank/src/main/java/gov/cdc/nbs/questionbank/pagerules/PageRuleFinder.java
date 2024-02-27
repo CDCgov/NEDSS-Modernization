@@ -165,14 +165,19 @@ class PageRuleFinder {
     String searchValue = request.searchValue();
     int pageSize = pageable.getPageSize();
     int offset = pageable.getPageNumber() * pageSize;
-    String sort = pageable.getSort().toList().get(0).getProperty().toLowerCase();
-    Direction direction =
-        pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.ASC : Direction.DESC;
     String query = findBySearchValue;
-    if (pageable.getSort().isSorted() && !DEFAULT_SORT_COLUMN.equals(sort)) {
-      query = findBySearchValue.replace(DEFAULT_SORT_COLUMN,
-          DEFAULT_SORT_COLUMN + "," + resolveSort(sort).replace(": ", " ") + " " + direction);
+
+    if (pageable.getSort().isSorted()) {
+      String sort = pageable.getSort().toList().get(0).getProperty().toLowerCase();
+      Direction direction =
+          pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.ASC : Direction.DESC;
+      if (!DEFAULT_SORT_COLUMN.equals(sort)) {
+        query = findBySearchValue.replace(DEFAULT_SORT_COLUMN,
+            DEFAULT_SORT_COLUMN + "," + resolveSort(sort).replace(": ", " ") + " " + direction);
+      }
     }
+
+
     SqlParameterSource parameters = new MapSqlParameterSource(
         Map.of(
             "pageId", pageId,

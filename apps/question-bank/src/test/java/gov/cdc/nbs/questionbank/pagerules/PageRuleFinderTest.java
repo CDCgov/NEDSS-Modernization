@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.pagerules;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.RowMapper;
@@ -46,16 +47,14 @@ class PageRuleFinderTest {
   void getAllRules_validPageId_returnAllRules() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = mock(Pageable.class);
-    Sort sort = mock(Sort.class);
-    when(sort.isSorted()).thenReturn(true);
-    when(sort.toString()).thenReturn("searchField");
-    when(pageable.getSort()).thenReturn(sort);
+    Pageable pageable = PageRequest.of(0, 20);
+
+    SearchPageRuleRequest request = new SearchPageRuleRequest("");
 
     when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
         .thenReturn(Collections.singletonList(expectedResponse));
 
-    Page<Rule> actualResponsPage = pageRuleFinder.findByPageId(pageId, pageable);
+    Page<Rule> actualResponsPage = pageRuleFinder.searchPageRule(pageId, request, pageable);
     assertNotNull(actualResponsPage);
   }
 
@@ -63,14 +62,10 @@ class PageRuleFinderTest {
   void getSearchRules_validSearchRequest_returnSearchRules() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = mock(Pageable.class);
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
     Sort sort = mock(Sort.class);
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
-
-    when(sort.isSorted()).thenReturn(true);
-    when(sort.toString()).thenReturn("searchField");
-    when(pageable.getSort()).thenReturn(sort);
 
     when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
         .thenReturn(Collections.singletonList(expectedResponse));
@@ -89,8 +84,7 @@ class PageRuleFinderTest {
         new ArrayList<>(),
         Rule.Comparator.EQUAL_TO,
         Rule.TargetType.QUESTION,
-        new ArrayList<>()
-    );
+        new ArrayList<>());
   }
 
 
