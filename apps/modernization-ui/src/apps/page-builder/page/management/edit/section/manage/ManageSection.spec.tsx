@@ -54,7 +54,7 @@ describe('when ManageSection renders', () => {
 
     it('should show the heading', () => {
         const { getByTestId } = render(
-            <DragDropProvider pageData={content} currentTab={0}>
+            <DragDropProvider pageData={content}>
                 <ManageSection
                     pageId={1}
                     tab={tabData}
@@ -70,7 +70,7 @@ describe('when ManageSection renders', () => {
 
     it('should display two buttons', () => {
         const { container } = render(
-            <DragDropProvider pageData={content} currentTab={0}>
+            <DragDropProvider pageData={content}>
                 <ManageSection
                     pageId={1}
                     tab={tabData}

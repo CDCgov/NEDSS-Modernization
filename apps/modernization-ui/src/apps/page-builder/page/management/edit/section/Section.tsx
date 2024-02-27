@@ -1,10 +1,4 @@
-import {
-    PagesQuestion,
-    PagesSection,
-    PagesSubSection,
-    SubSectionControllerService,
-    PagesTab
-} from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
@@ -206,10 +200,7 @@ export const Section = ({
                 className={'manage-section-modal'}
                 forceAction
                 isLarge>
-                <DragDropProvider
-                    pageData={page}
-                    currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
-                    successCallBack={handleReorderSubsection}>
+                <DragDropProvider pageData={page} successCallBack={handleReorderSubsection}>
                     <ManageSubsection
                         section={section}
                         alert={alert}

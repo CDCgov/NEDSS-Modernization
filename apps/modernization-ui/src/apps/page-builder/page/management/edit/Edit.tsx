@@ -14,7 +14,6 @@ import { ModalRef } from '@trussworks/react-uswds';
 import { useRef } from 'react';
 import { ReorderModal } from './reorder/ReorderModal/ReorderModal';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
-import { PagesTab } from 'apps/page-builder/generated';
 
 export const Edit = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -62,26 +61,23 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
 
     return (
         <PageManagementLayout name={page.name} mode={page.status}>
-            <PageHeader page={page} tabs={page.tabs ?? []} selected={selected} onAddTabSuccess={refresh}>
-                <PageManagementMenu>
-                    <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
-                        Business rules
-                    </NavLinkButton>
-                    <NavLinkButton to={'..'}>Preview</NavLinkButton>
-                </PageManagementMenu>
-            </PageHeader>
-            {selected && (
-                <PageContent
-                    tab={selected}
-                    handleManageSection={handleManageSection}
-                    handleAddSection={handleAddSection}
-                    handleReorderModal={handleReorderModal}
-                />
-            )}
-            <DragDropProvider
-                pageData={page}
-                currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
-                successCallBack={handleUpdateSuccess}>
+            <DragDropProvider pageData={page} successCallBack={handleUpdateSuccess}>
+                <PageHeader page={page} tabs={page.tabs ?? []} onAddTabSuccess={refresh}>
+                    <PageManagementMenu>
+                        <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
+                            Business rules
+                        </NavLinkButton>
+                        <NavLinkButton to={'..'}>Preview</NavLinkButton>
+                    </PageManagementMenu>
+                </PageHeader>
+                {selected && (
+                    <PageContent
+                        tab={selected}
+                        handleManageSection={handleManageSection}
+                        handleAddSection={handleAddSection}
+                        handleReorderModal={handleReorderModal}
+                    />
+                )}
                 <ReorderModal modalRef={reorderModalRef} />
             </DragDropProvider>
         </PageManagementLayout>
