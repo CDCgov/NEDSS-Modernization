@@ -130,17 +130,31 @@ const PreviewPageContent = () => {
                             </>
                         )}
                         <Tooltip position="top" label="Preview in NBS Classic">
-                            <a href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`} className={styles.link}>
+                            <a
+                                href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
+                                className={styles.link}
+                                target="_blank"
+                                rel="noopener noreferrer">
                                 <Icon.Visibility size={3} />
                             </a>
                         </Tooltip>
-                        <Tooltip position="top" label="Clone this page">
-                            <a href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`} className={styles.link}>
-                                <Icon.ContentCopy size={3} />
-                            </a>
-                        </Tooltip>
+                        {page.status !== 'Published' ? (
+                            <Tooltip position="top" label="Clone this page">
+                                <a
+                                    href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`}
+                                    className={styles.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    <Icon.ContentCopy size={3} />
+                                </a>
+                            </Tooltip>
+                        ) : null}
                         <Tooltip position="top" label="Print this page">
-                            <a href={`/nbs/page-builder/api/v1/pages/${page.id}/print`} className={styles.link}>
+                            <a
+                                href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
+                                className={styles.link}
+                                target="_blank"
+                                rel="noopener noreferrer">
                                 <Icon.Print size={3} />
                             </a>
                         </Tooltip>

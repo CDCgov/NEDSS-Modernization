@@ -20,7 +20,7 @@ export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
     const handleCreate = () => {
         ValueSetControllerService.createUsingPost({ authorization: authorization(), request: { ...form.getValues() } })
             .then((response: Valueset) => {
-                alertSuccess({ message: `Successfully created value set ${response.code}` });
+                alertSuccess({ message: `Successfully created value set: ${response.name}` });
                 onCreated(response.code);
             })
             .catch((error) => alertError({ message: error.message }));

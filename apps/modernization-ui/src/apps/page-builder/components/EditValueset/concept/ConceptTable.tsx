@@ -1,3 +1,4 @@
+import { Button, Icon } from '@trussworks/react-uswds';
 import { Concept } from 'apps/page-builder/generated';
 import { ConceptSort, SortField } from 'apps/page-builder/hooks/api/useFindConcepts';
 import { TableBody, TableComponent } from 'components/Table';
@@ -5,26 +6,30 @@ import { internalizeDate } from 'date';
 import { usePage } from 'page';
 import { useEffect, useState } from 'react';
 import { Direction } from 'sorting/Sort';
+import styles from './concept-table.module.scss';
 
 export enum Column {
     LOCAL_CODE = 'Local code',
     DISPLAY = 'UI display name',
     CONCEPT_CODE = 'Concept code',
-    EFFECTIVE_DATE = 'Effective date'
+    EFFECTIVE_DATE = 'Effective date',
+    EDIT_ICON = ''
 }
 
 const tableHeaders = [
     { name: Column.LOCAL_CODE, sortable: true },
     { name: Column.DISPLAY, sortable: true },
     { name: Column.CONCEPT_CODE, sortable: true },
-    { name: Column.EFFECTIVE_DATE, sortable: true }
+    { name: Column.EFFECTIVE_DATE, sortable: true },
+    { name: Column.EDIT_ICON, sortable: false }
 ];
 type Props = {
     concepts: Concept[];
     loading: boolean;
     onSort: (sort: ConceptSort | undefined) => void;
+    onEditConcept: (concept: Concept) => void;
 };
-export const ConceptTable = ({ concepts, loading, onSort }: Props) => {
+export const ConceptTable = ({ concepts, loading, onSort, onEditConcept }: Props) => {
     const { page, request } = usePage();
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
 
@@ -42,6 +47,19 @@ export const ConceptTable = ({ concepts, loading, onSort }: Props) => {
                 {
                     id: 3,
                     title: internalizeDate(concept.effectiveFromTime)
+                },
+                {
+                    id: 4,
+                    title: (
+                        <Button
+                            type="button"
+                            outline
+                            className={styles.editConceptButton}
+                            aria-label={`edit concept: ${concept.localCode}`}
+                            onClick={() => onEditConcept(concept)}>
+                            <Icon.Edit size={3} />
+                        </Button>
+                    )
                 }
             ]
         };
@@ -82,6 +100,7 @@ export const ConceptTable = ({ concepts, loading, onSort }: Props) => {
     return (
         <div>
             <TableComponent
+                className={styles.conceptTable}
                 tableHead={tableHeaders}
                 tableBody={tableRows}
                 display="zebra"

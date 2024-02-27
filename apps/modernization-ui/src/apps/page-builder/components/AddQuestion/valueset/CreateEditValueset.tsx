@@ -21,6 +21,12 @@ export const CreateEditValueset = ({ onClose, onCancel, onAccept }: Props) => {
         }
     }, [valueset]);
 
+    const handleValuesetUpdated = () => {
+        if (valueset) {
+            fetch(valueset?.code);
+        }
+    };
+
     return (
         <>
             {state === 'create' && (
@@ -34,7 +40,13 @@ export const CreateEditValueset = ({ onClose, onCancel, onAccept }: Props) => {
                 />
             )}
             {state === 'edit' && valueset && (
-                <EditValueset onAccept={onAccept} onCancel={onCancel} onClose={onClose} valueset={valueset} />
+                <EditValueset
+                    onAccept={onAccept}
+                    onCancel={onCancel}
+                    onClose={onClose}
+                    valueset={valueset}
+                    onValuesetUpdated={handleValuesetUpdated}
+                />
             )}
         </>
     );

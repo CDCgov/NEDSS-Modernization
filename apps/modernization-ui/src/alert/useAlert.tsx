@@ -4,7 +4,7 @@ import './alert.scss';
 
 type AlertType = 'success' | 'warning' | 'error' | 'info';
 
-type Message = { header?: string; message?: string };
+type Message = { header?: string; message?: string | ReactNode };
 
 type Alert = { type: AlertType } & Message;
 

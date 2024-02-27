@@ -1,11 +1,12 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -13,22 +14,20 @@ import java.util.Optional;
 
 @Component
 class PageRuleMapper implements RowMapper<Rule> {
-  record Column(int ruleId, int template, int ruleFunction, int description, int sourceQuestion,
-                int ruleExpression, int sourceValues, int comparator, int targetType, int targetQuestions,
-                int sourceQuestionLabel, int sourceQuestionCodeSet, int sourceQuestionId, int totalCount) {
+  record Column(int ruleId, int template, int ruleFunction, int description, int sourceQuestion, int ruleExpression,
+                int sourceValues, int comparator, int targetType, int targetQuestions, int sourceQuestionLabel,
+                int sourceQuestionCodeSet, int sourceQuestionId, int targetQuestionsLabels, int totalCount) {
 
   }
 
 
   private final Column columns;
-  private final WaQuestionRepository waQuestionRepository;
 
 
-  PageRuleMapper(final WaQuestionRepository waQuestionRepository) {
+  PageRuleMapper() {
     this.columns = new PageRuleMapper.Column(1, 2, 3, 4,
         5, 6, 7, 8, 9, 10,
-        11, 12, 13, 14);
-    this.waQuestionRepository = waQuestionRepository;
+        11, 12, 13, 14, 15);
   }
 
   private Long totalRowsCount = 0l;
@@ -44,12 +43,10 @@ class PageRuleMapper implements RowMapper<Rule> {
     String sourceValues = rs.getString(columns.sourceValues());
     String comparator = rs.getString(columns.comparator());
     String targetType = rs.getString(columns.targetType());
-    String targetQuestions = rs.getString(columns.targetQuestions());
     String sourceQuestionLabel = rs.getString(columns.sourceQuestionLabel());
     String sourceQuestionCodeSet = rs.getString(columns.sourceQuestionCodeSet());
     long sourceQuestionId = rs.getLong(columns.sourceQuestionId());
     totalRowsCount = rs.getLong(columns.totalCount());
-
     Rule.RuleFunction functionEnum = getFunctionEnum(function);
     Rule.Comparator comparatorEnum = getComparatorEnum(comparator);
     Rule.TargetType targetTypeEnum = getTargetTypeEnum(targetType);
@@ -59,15 +56,37 @@ class PageRuleMapper implements RowMapper<Rule> {
     List<String> sourceValuesList = null;
     if (sourceValues != null)
       sourceValuesList = Arrays.asList(sourceValues.split(","));
-    List<Rule.Target> targets = findLabelsByIdentifiers(Arrays.asList(targetQuestions.split(",")));
+
+    List<Rule.Target> targets =
+        getTargets(rs.getString(columns.targetQuestions()), rs.getString(columns.targetQuestionsLabels()));
+
     return new Rule(ruleId, template, functionEnum, description, sourceQuestionInfo, anySource,
         sourceValuesList, comparatorEnum, targetTypeEnum, targets);
   }
 
-  private List<Rule.Target> findLabelsByIdentifiers(List<String> targetValue) {
-    return waQuestionRepository.findLabelsByIdentifiers(targetValue).stream().map(
-        question -> new Rule.Target(question[0].toString(), question[1].toString())).toList();
+  private List<Rule.Target> getTargets(String identifiers, String labels) {
+    List<String> targetQuestions = identifiers != null ?
+        Arrays.stream(identifiers.split(",")).toList() : null;
+
+    List<String> targetQuestionsLabels = labels != null ?
+        Arrays.stream(labels.split(",")).toList() : null;
+
+    List<Rule.Target> targets = new ArrayList<>();
+    if (targetQuestions != null) {
+      int index = 0;
+      while (index < targetQuestions.size()) {
+        String identifier = targetQuestions.get(index);
+        if (targetQuestionsLabels != null && index < targetQuestionsLabels.size()) {
+          targets.add(new Rule.Target(identifier, targetQuestionsLabels.get(index)));
+        } else {
+          targets.add(new Rule.Target(identifier, null));
+        }
+        index++;
+      }
+    }
+    return targets;
   }
+
 
   public Long getTotalRowsCount() {
     return totalRowsCount;

@@ -61,8 +61,16 @@ const AddBusinessRule = () => {
                 authorization: authorization(),
                 id: Number(pageId),
                 request: data
-            }).then((resp) => {
-                showAlert({ type: 'success', header: 'added', message: resp.message });
+            }).then(() => {
+                showAlert({
+                    type: 'success',
+                    message: (
+                        <>
+                            The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
+                            added. Please click the unique name to edit.
+                        </>
+                    )
+                });
             });
         } else {
             PageRuleControllerService.updatePageRuleUsingPut({
@@ -71,8 +79,16 @@ const AddBusinessRule = () => {
                 ruleId: Number(ruleId),
                 request: data
             })
-                .then((resp) => {
-                    showAlert({ type: 'success', header: 'updated', message: resp.message });
+                .then(() => {
+                    showAlert({
+                        type: 'success',
+                        message: (
+                            <>
+                                The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
+                                updated. Please click the unique name to edit.
+                            </>
+                        )
+                    });
                 })
                 .catch((err) => {
                     console.log('error', err);
@@ -90,9 +106,17 @@ const AddBusinessRule = () => {
             authorization: authorization(),
             id: Number(pageId),
             ruleId: Number(ruleId)
-        }).then((resp: any) => {
+        }).then(() => {
             handleCancel();
-            showAlert({ type: 'success', header: 'Deleted', message: resp });
+            showAlert({
+                type: 'success',
+                message: (
+                    <>
+                        The business rule <span className="bold-text">'{form.getValues('sourceText')}'</span> was
+                        successfully deleted.
+                    </>
+                )
+            });
         });
     };
 
@@ -179,17 +203,19 @@ const AddBusinessRule = () => {
                     </div>
                     <div className="edit-rules">
                         <div className="edit-rules__buttons">
-                            {ruleId ? (
-                                <ModalToggleButton
-                                    opener
-                                    modalRef={deleteWarningModal}
-                                    type="button"
-                                    className="delete-btn"
-                                    unstyled>
-                                    <Icon.Delete size={3} className="margin-right-2px" />
-                                    <span>Delete</span>
-                                </ModalToggleButton>
-                            ) : null}
+                            <div>
+                                {ruleId ? (
+                                    <ModalToggleButton
+                                        opener
+                                        modalRef={deleteWarningModal}
+                                        type="button"
+                                        className="delete-btn"
+                                        unstyled>
+                                        <Icon.Delete size={3} className="margin-right-2px" />
+                                        <span>Delete</span>
+                                    </ModalToggleButton>
+                                ) : null}
+                            </div>
                             <div>
                                 <Button type="button" outline onClick={handleCancel}>
                                     Cancel

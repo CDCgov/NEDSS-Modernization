@@ -92,7 +92,7 @@ const PageInformation = () => {
         </div>
     );
 
-    const isEditable = ['Initial draft', 'Published with draft', 'Draft'].includes(page?.status);
+    const isEditable = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status);
 
     return (
         <section className={styles.information}>

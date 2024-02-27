@@ -1,0 +1,31 @@
+@use 'styles/colors';
+@use 'styles/animation';
+
+.section {
+    .toggle {
+        cursor: pointer;
+    }
+    .handle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .tile {
+        background-color: colors.$base-white;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 1.5rem;
+        z-index: 500;
+    }
+    .subsections {
+        margin-left: 1rem;
+        &.closed {
+            height: 0;
+            display: none;
+        }
+    }
+    &.hidden {
+        height: 0px;
+    }
+}

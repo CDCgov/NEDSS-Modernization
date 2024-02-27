@@ -11,6 +11,24 @@
         height: 100%;
         overflow-y: auto;
 
+        .editValuesetButton {
+            box-shadow: none;
+            margin-right: 0 !important;
+            color: colors.$primary;
+            padding: 0;
+        }
+
+        .detailsHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            svg {
+                color: colors.$primary;
+                cursor: pointer;
+            }
+        }
+
         .sectionText {
             color: colors.$base-darker;
             font-size: 1.375rem;

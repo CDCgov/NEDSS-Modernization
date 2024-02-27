@@ -23,13 +23,12 @@ class CountryCodedValueFinder {
     Collection<CodedValue> all() {
         return this.factory.select(
                 values.id,
-                values.codeDescTxt
-            ).from(values)
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
-            .fetch()
-            .stream()
-            .map(this::map)
-            .toList();
+                values.codeDescTxt).from(values)
+                .orderBy(new OrderSpecifier<>(Order.ASC, values.codeDescTxt))
+                .fetch()
+                .stream()
+                .map(this::map)
+                .toList();
     }
 
     private CodedValue map(final Tuple tuple) {

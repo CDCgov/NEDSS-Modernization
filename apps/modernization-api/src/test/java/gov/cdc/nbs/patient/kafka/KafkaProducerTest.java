@@ -26,9 +26,6 @@ class KafkaProducerTest {
     @Mock
     private KafkaTemplate<String, PatientRequest> kafkaEnvelopeTemplate;
 
-    @Mock
-    ElasticsearchPersonRepository elasticPersonRepository;
-
     @InjectMocks
     private KafkaProducer producer;
 

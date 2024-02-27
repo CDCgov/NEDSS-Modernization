@@ -171,7 +171,7 @@
     bottom: 0;
     width: 100%;
     padding: 1.5rem;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
     border: 1px solid colors.$base-lightest;
@@ -193,4 +193,8 @@
             background: colors.$base-white !important;
         }
     }
+}
+
+.bold-text {
+    font-weight: bold;
 }
