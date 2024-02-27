@@ -62,10 +62,10 @@ class PageRuleFinderTest {
 
   @ParameterizedTest
   @ValueSource(strings = {"sourcefields", "function", "values", "logic", "id", "random", "add_time"})
-  void getSearchRules_validSearchRequest_returnSearchRules() {
+  void getSearchRules_validSearchRequest_returnSearchRules(String value) {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
-    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by("sourcefields"));
+    Pageable pageable = PageRequest.of(0, 20).withSort(Sort.by(value));
 
     SearchPageRuleRequest request = new SearchPageRuleRequest("searchValue");
 
