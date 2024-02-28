@@ -4,7 +4,6 @@ import { ManageSection } from './ManageSection';
 import { RefObject, useEffect, useState } from 'react';
 import './ManageSectionModal.scss';
 import { usePageManagement } from '../../../usePageManagement';
-import { PagesTab } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { useAlert } from 'alert';
 
@@ -54,10 +53,7 @@ export const ManageSectionModal = ({ addSecModalRef, manageSecModalRef }: Manage
                 ref={manageSectionModalRef}
                 forceAction
                 isLarge>
-                <DragDropProvider
-                    pageData={page}
-                    currentTab={page.tabs?.findIndex((x: PagesTab) => x.name === selected?.name) ?? 0}
-                    successCallBack={onReorderSuccess}>
+                <DragDropProvider pageData={page} successCallBack={onReorderSuccess}>
                     <ManageSection
                         pageId={page.id}
                         alert={alert}
