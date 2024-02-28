@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
-
 @Configuration
 class SearchableLabReportConfiguration {
 
@@ -14,7 +12,7 @@ class SearchableLabReportConfiguration {
   SimpleIndex labReportIndex(
       @Value("${nbs.search.lab-report.index.name}") final String index,
       @Value("${nbs.search.lab-report.index.mapping}") final String location
-  ) throws IOException {
+  ) {
     return new SimpleIndex(index, location);
   }
 
