@@ -4,7 +4,6 @@ import gov.cdc.nbs.search.SimpleIndex;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,13 +18,12 @@ class ElasticsearchIndexEnsurerTest {
 
     ElasticsearchIndexExistenceVerifier verifier = mock(ElasticsearchIndexExistenceVerifier.class);
 
-    Path dummy = mock(Path.class);
 
-    SimpleIndex existing = new SimpleIndex("existing", dummy);
+    SimpleIndex existing = new SimpleIndex("existing", "location");
 
     List<SimpleIndex> indices = List.of(
         existing,
-        new SimpleIndex("other", dummy)
+        new SimpleIndex("other", "location")
     );
 
     when(verifier.notExists(any())).thenReturn(List.of(existing));
@@ -49,13 +47,11 @@ class ElasticsearchIndexEnsurerTest {
 
     ElasticsearchIndexExistenceVerifier verifier = mock(ElasticsearchIndexExistenceVerifier.class);
 
-    Path dummy = mock(Path.class);
-
-    SimpleIndex existing = new SimpleIndex("existing", dummy);
+    SimpleIndex existing = new SimpleIndex("existing", "location");
 
     List<SimpleIndex> indices = List.of(
         existing,
-        new SimpleIndex("other", dummy)
+        new SimpleIndex("other", "location")
     );
 
     when(verifier.notExists(any())).thenReturn(Collections.emptyList());
@@ -79,13 +75,11 @@ class ElasticsearchIndexEnsurerTest {
 
     ElasticsearchIndexExistenceVerifier verifier = mock(ElasticsearchIndexExistenceVerifier.class);
 
-    Path dummy = mock(Path.class);
-
-    SimpleIndex existing = new SimpleIndex("existing", dummy);
+    SimpleIndex existing = new SimpleIndex("existing", "location");
 
     List<SimpleIndex> indices = List.of(
         existing,
-        new SimpleIndex("other", dummy)
+        new SimpleIndex("other", "location")
     );
 
     when(verifier.notExists(any())).thenReturn(List.of(existing));
