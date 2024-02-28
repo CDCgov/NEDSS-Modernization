@@ -104,7 +104,12 @@
     }
   }
 
-  .readonlySelectDropdown:disabled {
-    background-color: #ffffff !important;
+  .readonlySelectDropdown {
+    &:disabled,
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: colors.$base-white !important;
+    }
   }
 }
