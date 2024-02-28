@@ -172,15 +172,14 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         if (anySourceValueToggle) {
             form.reset({
                 ...form.getValues(),
-                comparator: undefined,
+                comparator: Rule.comparator.EQUAL_TO,
                 sourceValues: undefined
             });
         }
     }, [anySourceValueToggle]);
 
     useEffect(() => {
-        setAnySource(!form.watch('anySourceValue'));
-        console.log(anySourceValueToggle);
+        setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
 
     return (
@@ -253,13 +252,12 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         <Grid col={9}>
                             <SelectInput
                                 className="text-input"
-                                defaultValue={value}
+                                defaultValue={anySourceValueToggle ? Rule.comparator.EQUAL_TO : value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 options={logicList}
                                 error={error?.message}
-                                disabled={form.watch('anySourceValue')}
-                                required
+                                disabled={anySourceValueToggle}
                             />
                         </Grid>
                     </Grid>

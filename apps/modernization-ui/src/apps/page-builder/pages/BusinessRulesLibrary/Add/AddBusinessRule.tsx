@@ -13,7 +13,7 @@ import { ConfirmationModal } from 'confirmation';
 const AddBusinessRule = () => {
     const navigate = useNavigate();
     const form = useForm<CreateRuleRequest>({
-        defaultValues: { targetType: Rule.targetType.SUBSECTION, anySourceValue: false },
+        defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false },
         mode: 'onChange'
     });
 
@@ -125,12 +125,16 @@ const AddBusinessRule = () => {
         { value: Rule.ruleFunction.DISABLE, display: 'Disable' },
         { value: Rule.ruleFunction.DATE_COMPARE, display: 'Date validation' },
         { value: Rule.ruleFunction.HIDE, display: 'Hide' },
-        { value: Rule.ruleFunction.UNHIDE, display: 'Uhide' },
+        { value: Rule.ruleFunction.UNHIDE, display: 'Unhide' },
         { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' }
     ];
 
     const title = !ruleId ? 'Add new' : 'Edit';
     const ruleFunction = form.watch('ruleFunction');
+
+    useEffect(() => {
+        form.reset({ ruleFunction: ruleFunction, targetType: Rule.targetType.QUESTION });
+    }, [ruleFunction]);
 
     return (
         <>
