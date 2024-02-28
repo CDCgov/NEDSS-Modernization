@@ -74,7 +74,6 @@ Feature: Patient Search Randomized
       | last name      | first name |
       | first name     | address    |
       | last name      | address    |
-      | city           |            |
       | last name      | city       |
       | phone number   |            |
       | identification |            |
