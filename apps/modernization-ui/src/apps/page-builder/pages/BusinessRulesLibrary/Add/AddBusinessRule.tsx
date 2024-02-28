@@ -125,7 +125,7 @@ const AddBusinessRule = () => {
         { value: Rule.ruleFunction.DISABLE, display: 'Disable' },
         { value: Rule.ruleFunction.DATE_COMPARE, display: 'Date validation' },
         { value: Rule.ruleFunction.HIDE, display: 'Hide' },
-        { value: Rule.ruleFunction.UNHIDE, display: 'Uhide' },
+        { value: Rule.ruleFunction.UNHIDE, display: 'Unhide' },
         { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' }
     ];
 
