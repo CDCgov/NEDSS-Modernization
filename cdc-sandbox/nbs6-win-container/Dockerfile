@@ -35,12 +35,15 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 WORKDIR /nbs
 COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-#Unzip and Wildfly Zip as ContainerUser to set permissions
+# Unzip and Wildfly Zip as ContainerUser to set permissions
 USER ContainerUser
-RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
+RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs
+
+# Cleanup
+USER ContainerAdministrator
+USER rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
 
 # Configure Task Schedular. Requires Administrator Permissions
-USER ContainerAdministrator
 COPY task-scheduler.ps1 task-scheduler.ps1
 RUN C:\nbs\task-scheduler.ps1
 
