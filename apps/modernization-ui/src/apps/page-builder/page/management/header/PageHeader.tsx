@@ -17,7 +17,6 @@ const PageHeader = ({ page, tabs, onAddTabSuccess, children }: PageHeaderProps) 
             <div>
                 <div className={styles.title}>
                     <h2>{page.name}</h2>
-                    <p>{page.description}</p>
                 </div>
                 {children}
             </div>
