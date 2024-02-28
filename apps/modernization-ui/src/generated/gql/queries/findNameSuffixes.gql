@@ -1,9 +1,0 @@
-query findNameSuffixes($page: Page){
-    findNameSuffixes(page: $page){
-        content{
-            key
-            value
-        }
-        total
-    }
-}
