@@ -18,12 +18,7 @@ const PreviewSection = ({ section }: PreviewSectionType) => {
         <section className={styles.section}>
             <PreviewSectionHeader section={section} isExpanded={isExpanded} onExpandedChange={handleExpandedChange} />
             {isExpanded &&
-                section.name === 'Patient Information' &&
-                section?.subSections.map((subsection, k) => (
-                    <>
-                        <PreviewSubsection subsection={subsection} key={k} />
-                    </>
-                ))}
+                section?.subSections.map((subsection, k) => <PreviewSubsection subsection={subsection} key={k} />)}
         </section>
     );
 };

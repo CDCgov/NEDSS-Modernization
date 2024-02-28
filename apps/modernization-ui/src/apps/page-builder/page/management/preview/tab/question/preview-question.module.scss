@@ -103,4 +103,8 @@
       border: 1px solid colors.$base;
     }
   }
+
+  .readonlySelectDropdown:disabled {
+    background-color: #ffffff !important;
+  }
 }
