@@ -30,9 +30,8 @@ public class CtContact {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "subject_entity_phc_uid",
-        nullable = false
-    )
+            name = "subject_entity_phc_uid",
+            nullable = false)
     private PublicHealthCase subjectEntityPhcUid;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -181,387 +180,48 @@ public class CtContact {
         this.id = id;
     }
 
-    public String getLocalId() {
-        return localId;
+    public void setVersionCtrlNbr(Short versionCtrlNbr) {
+        this.versionCtrlNbr = versionCtrlNbr;
     }
 
     public void setLocalId(String localId) {
         this.localId = localId;
     }
 
-    public NBSEntity getSubjectNBSEntityUid() {
-        return subjectNBSEntityUid;
-    }
-
     public void setSubjectNBSEntityUid(NBSEntity subjectNBSEntityUid) {
         this.subjectNBSEntityUid = subjectNBSEntityUid;
-    }
-
-    public NBSEntity getContactNBSEntityUid() {
-        return contactNBSEntityUid;
     }
 
     public void setContactNBSEntityUid(NBSEntity contactNBSEntityUid) {
         this.contactNBSEntityUid = contactNBSEntityUid;
     }
 
-    public PublicHealthCase getSubjectEntityPhcUid() {
-        return subjectEntityPhcUid;
-    }
-
     public void setSubjectEntityPhcUid(PublicHealthCase subjectEntityPhcUid) {
         this.subjectEntityPhcUid = subjectEntityPhcUid;
-    }
-
-    public PublicHealthCase getContactEntityPhcUid() {
-        return contactEntityPhcUid;
-    }
-
-    public void setContactEntityPhcUid(PublicHealthCase contactEntityPhcUid) {
-        this.contactEntityPhcUid = contactEntityPhcUid;
-    }
-
-    public String getRecordStatusCd() {
-        return recordStatusCd;
     }
 
     public void setRecordStatusCd(String recordStatusCd) {
         this.recordStatusCd = recordStatusCd;
     }
 
-    public Instant getRecordStatusTime() {
-        return recordStatusTime;
-    }
-
     public void setRecordStatusTime(Instant recordStatusTime) {
         this.recordStatusTime = recordStatusTime;
-    }
-
-    public Long getAddUserId() {
-        return addUserId;
     }
 
     public void setAddUserId(Long addUserId) {
         this.addUserId = addUserId;
     }
 
-    public Instant getAddTime() {
-        return addTime;
-    }
-
     public void setAddTime(Instant addTime) {
         this.addTime = addTime;
-    }
-
-    public Instant getLastChgTime() {
-        return lastChgTime;
     }
 
     public void setLastChgTime(Instant lastChgTime) {
         this.lastChgTime = lastChgTime;
     }
 
-    public Long getLastChgUserId() {
-        return lastChgUserId;
-    }
-
     public void setLastChgUserId(Long lastChgUserId) {
         this.lastChgUserId = lastChgUserId;
     }
 
-    public String getProgAreaCd() {
-        return progAreaCd;
-    }
-
-    public void setProgAreaCd(String progAreaCd) {
-        this.progAreaCd = progAreaCd;
-    }
-
-    public String getJurisdictionCd() {
-        return jurisdictionCd;
-    }
-
-    public void setJurisdictionCd(String jurisdictionCd) {
-        this.jurisdictionCd = jurisdictionCd;
-    }
-
-    public Long getProgramJurisdictionOid() {
-        return programJurisdictionOid;
-    }
-
-    public void setProgramJurisdictionOid(Long programJurisdictionOid) {
-        this.programJurisdictionOid = programJurisdictionOid;
-    }
-
-    public Character getSharedIndCd() {
-        return sharedIndCd;
-    }
-
-    public void setSharedIndCd(Character sharedIndCd) {
-        this.sharedIndCd = sharedIndCd;
-    }
-
-    public String getContactStatus() {
-        return contactStatus;
-    }
-
-    public void setContactStatus(String contactStatus) {
-        this.contactStatus = contactStatus;
-    }
-
-    public String getPriorityCd() {
-        return priorityCd;
-    }
-
-    public void setPriorityCd(String priorityCd) {
-        this.priorityCd = priorityCd;
-    }
-
-    public String getGroupNameCd() {
-        return groupNameCd;
-    }
-
-    public void setGroupNameCd(String groupNameCd) {
-        this.groupNameCd = groupNameCd;
-    }
-
-    public Instant getInvestigatorAssignedDate() {
-        return investigatorAssignedDate;
-    }
-
-    public void setInvestigatorAssignedDate(Instant investigatorAssignedDate) {
-        this.investigatorAssignedDate = investigatorAssignedDate;
-    }
-
-    public String getDispositionCd() {
-        return dispositionCd;
-    }
-
-    public void setDispositionCd(String dispositionCd) {
-        this.dispositionCd = dispositionCd;
-    }
-
-    public Instant getDispositionDate() {
-        return dispositionDate;
-    }
-
-    public void setDispositionDate(Instant dispositionDate) {
-        this.dispositionDate = dispositionDate;
-    }
-
-    public Instant getNamedOnDate() {
-        return namedOnDate;
-    }
-
-    public void setNamedOnDate(Instant namedOnDate) {
-        this.namedOnDate = namedOnDate;
-    }
-
-    public String getRelationshipCd() {
-        return relationshipCd;
-    }
-
-    public void setRelationshipCd(String relationshipCd) {
-        this.relationshipCd = relationshipCd;
-    }
-
-    public String getHealthStatusCd() {
-        return healthStatusCd;
-    }
-
-    public void setHealthStatusCd(String healthStatusCd) {
-        this.healthStatusCd = healthStatusCd;
-    }
-
-    public String getTxt() {
-        return txt;
-    }
-
-    public void setTxt(String txt) {
-        this.txt = txt;
-    }
-
-    public String getSymptomCd() {
-        return symptomCd;
-    }
-
-    public void setSymptomCd(String symptomCd) {
-        this.symptomCd = symptomCd;
-    }
-
-    public Instant getSymptomOnsetDate() {
-        return symptomOnsetDate;
-    }
-
-    public void setSymptomOnsetDate(Instant symptomOnsetDate) {
-        this.symptomOnsetDate = symptomOnsetDate;
-    }
-
-    public String getSymptomTxt() {
-        return symptomTxt;
-    }
-
-    public void setSymptomTxt(String symptomTxt) {
-        this.symptomTxt = symptomTxt;
-    }
-
-    public String getRiskFactorCd() {
-        return riskFactorCd;
-    }
-
-    public void setRiskFactorCd(String riskFactorCd) {
-        this.riskFactorCd = riskFactorCd;
-    }
-
-    public String getRiskFactorTxt() {
-        return riskFactorTxt;
-    }
-
-    public void setRiskFactorTxt(String riskFactorTxt) {
-        this.riskFactorTxt = riskFactorTxt;
-    }
-
-    public String getEvaluationCompletedCd() {
-        return evaluationCompletedCd;
-    }
-
-    public void setEvaluationCompletedCd(String evaluationCompletedCd) {
-        this.evaluationCompletedCd = evaluationCompletedCd;
-    }
-
-    public Instant getEvaluationDate() {
-        return evaluationDate;
-    }
-
-    public void setEvaluationDate(Instant evaluationDate) {
-        this.evaluationDate = evaluationDate;
-    }
-
-    public String getEvaluationTxt() {
-        return evaluationTxt;
-    }
-
-    public void setEvaluationTxt(String evaluationTxt) {
-        this.evaluationTxt = evaluationTxt;
-    }
-
-    public String getTreatmentInitiatedCd() {
-        return treatmentInitiatedCd;
-    }
-
-    public void setTreatmentInitiatedCd(String treatmentInitiatedCd) {
-        this.treatmentInitiatedCd = treatmentInitiatedCd;
-    }
-
-    public Instant getTreatmentStartDate() {
-        return treatmentStartDate;
-    }
-
-    public void setTreatmentStartDate(Instant treatmentStartDate) {
-        this.treatmentStartDate = treatmentStartDate;
-    }
-
-    public String getTreatmentNotStartRsnCd() {
-        return treatmentNotStartRsnCd;
-    }
-
-    public void setTreatmentNotStartRsnCd(String treatmentNotStartRsnCd) {
-        this.treatmentNotStartRsnCd = treatmentNotStartRsnCd;
-    }
-
-    public String getTreatmentEndCd() {
-        return treatmentEndCd;
-    }
-
-    public void setTreatmentEndCd(String treatmentEndCd) {
-        this.treatmentEndCd = treatmentEndCd;
-    }
-
-    public Instant getTreatmentEndDate() {
-        return treatmentEndDate;
-    }
-
-    public void setTreatmentEndDate(Instant treatmentEndDate) {
-        this.treatmentEndDate = treatmentEndDate;
-    }
-
-    public String getTreatmentNotEndRsnCd() {
-        return treatmentNotEndRsnCd;
-    }
-
-    public void setTreatmentNotEndRsnCd(String treatmentNotEndRsnCd) {
-        this.treatmentNotEndRsnCd = treatmentNotEndRsnCd;
-    }
-
-    public String getTreatmentTxt() {
-        return treatmentTxt;
-    }
-
-    public void setTreatmentTxt(String treatmentTxt) {
-        this.treatmentTxt = treatmentTxt;
-    }
-
-    public Short getVersionCtrlNbr() {
-        return versionCtrlNbr;
-    }
-
-    public void setVersionCtrlNbr(Short versionCtrlNbr) {
-        this.versionCtrlNbr = versionCtrlNbr;
-    }
-
-    public NBSEntity getThirdPartyNBSEntityUid() {
-        return thirdPartyNBSEntityUid;
-    }
-
-    public void setThirdPartyNBSEntityUid(NBSEntity thirdPartyNBSEntityUid) {
-        this.thirdPartyNBSEntityUid = thirdPartyNBSEntityUid;
-    }
-
-    public Act getThirdPartyEntityPhcUid() {
-        return thirdPartyEntityPhcUid;
-    }
-
-    public void setThirdPartyEntityPhcUid(Act thirdPartyEntityPhcUid) {
-        this.thirdPartyEntityPhcUid = thirdPartyEntityPhcUid;
-    }
-
-    public String getProcessingDecisionCd() {
-        return processingDecisionCd;
-    }
-
-    public void setProcessingDecisionCd(String processingDecisionCd) {
-        this.processingDecisionCd = processingDecisionCd;
-    }
-
-    public String getSubjectEntityEpiLinkId() {
-        return subjectEntityEpiLinkId;
-    }
-
-    public void setSubjectEntityEpiLinkId(String subjectEntityEpiLinkId) {
-        this.subjectEntityEpiLinkId = subjectEntityEpiLinkId;
-    }
-
-    public String getContactEntityEpiLinkId() {
-        return contactEntityEpiLinkId;
-    }
-
-    public void setContactEntityEpiLinkId(String contactEntityEpiLinkId) {
-        this.contactEntityEpiLinkId = contactEntityEpiLinkId;
-    }
-
-    public Long getNamedDuringInterviewUid() {
-        return namedDuringInterviewUid;
-    }
-
-    public void setNamedDuringInterviewUid(Long namedDuringInterviewUid) {
-        this.namedDuringInterviewUid = namedDuringInterviewUid;
-    }
-
-    public String getContactReferralBasisCd() {
-        return contactReferralBasisCd;
-    }
-
-    public void setContactReferralBasisCd(String contactReferralBasisCd) {
-        this.contactReferralBasisCd = contactReferralBasisCd;
-    }
 }

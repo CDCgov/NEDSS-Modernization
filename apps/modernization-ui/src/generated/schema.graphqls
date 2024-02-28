@@ -1,133 +1,3 @@
-type CodeValueGeneralId {
-    codeSetNm: String!
-    code: ID!
-}
-
-type StateCountyCodeValueResults {
-    content: [StateCountyCodeValue!]!
-    total: Int!
-}
-
-type NaicsIndustryCode {
-    id: ID!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: DateTime
-    effectiveToTime: DateTime
-    keyInfoTxt: String
-    indentLevelNbr: Int
-    isModifiableInd: String
-    parentIsCd: String
-    statusCd: String
-    statusTime: String
-    codeSetNm: String
-    seqNum: Int
-    nbsUid: Int
-    sourceConceptId: String
-}
-
-type AssigningAuthorResults {
-    content: [AssigningAuthor!]!
-    total: Int!
-}
-
-type AssigningAuthor {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type IdentificationTypesResults {
-    content: [IdentificationTypes!]!
-    total: Int!
-}
-
-type IdentificationTypes {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type PhoneAndEmailUseResults {
-    content: [PhoneAndEmailUse!]!
-    total: Int!
-}
-
-type PhoneAndEmailUse {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type PhoneAndEmailTypeResults {
-    content: [PhoneAndEmailType!]!
-    total: Int!
-}
-
-type PhoneAndEmailType {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type AddressUseResults {
-    content: [AddressUse!]!
-    total: Int!
-}
-
-type AddressUse {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type AddressTypeResults {
-    content: [AddressType!]!
-    total: Int!
-}
-
-type AddressType {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type DegreeResults {
-    content: [Degree!]!
-    total: Int!
-}
-
-type Degree {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type NamePrefixResults {
-    content: [NamePrefix!]!
-    total: Int!
-}
-
-type NamePrefix {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type NameTypeResults {
-    content: [NameType!]!
-    total: Int!
-}
-
-type NameType {
-    id: CodeValueGeneralId!
-    codeShortDescTxt: String!
-}
-
-type KeyValuePairResults {
-    content: [KeyValuePair!]!
-    total: Int!
-}
-
-type KeyValuePair {
-    key: String!
-    value: String!
-}
-
 type CodedValue {
     value: String!
     name: String!
@@ -145,40 +15,7 @@ type StateCodedValue {
     abbreviation: String!
 }
 
-type StateCountyCodeValue {
-    id: ID!
-    assigningAuthorityCd: String
-    assigningAuthorityDescTxt: String
-    codeDescTxt: String
-    codeShortDescTxt: String
-    effectiveFromTime: DateTime
-    effectiveToTime: DateTime
-    excludedTxt: String
-    indentLevelNbr: Int
-    isModifiableInd: Int
-    parentIsCd: Int
-    statusCd: Int
-    statusTime: DateTime
-    codeSetNm: String
-    seqNum: Int
-    nbsUid: Int
-    sourceConceptId: String
-    codeSystemCd: String
-    codeSystemDescTxt: String
-
-}
 extend type Query {
-    findNameSuffixes(page: Page): KeyValuePairResults!
-    findAllNameTypes(page: Page): NameTypeResults!
-    findAllNamePrefixes(page: Page): NamePrefixResults!
-    findAllDegrees(page: Page): DegreeResults!
-    findAllAddressTypes(page: Page): AddressTypeResults!
-    findAllAddressUses(page: Page): AddressUseResults!
-    findAllPhoneAndEmailType(page: Page): PhoneAndEmailTypeResults!
-    findAllPhoneAndEmailUse(page: Page): PhoneAndEmailUseResults!
-    findAllIdentificationTypes(page: Page): IdentificationTypesResults!
-    findAllAssigningAuthorities(page: Page): AssigningAuthorResults!
-    findAllStateCountyCodeValues(stateCode: String, page: Page): [StateCountyCodeValue!]!
     maritalStatuses: [CodedValue!]!
     primaryOccupations: [CodedValue!]!
     educationLevels: [CodedValue!]!
@@ -588,69 +425,6 @@ extend type Query {
 
 type ResultedTest {
   name: String!
-}
-extend type Query {
-  findOrganizationById(id: ID!): Organization
-  findAllOrganizations(page: Page): OrganizationResults!
-  findOrganizationsByFilter(
-    filter: OrganizationFilter!
-    page: Page
-  ): OrganizationResults!
-}
-
-type OrganizationResults {
-  content: [Organization]!
-  total: Int!
-}
-
-input OrganizationFilter {
-  id: ID
-  displayNm: String
-  streetAddr1: String
-  streetAddr2: String
-  cityCd: String
-  cityDescTxt: String
-  stateCd: String
-  zipCd: String
-}
-
-type Organization {
-  id: ID
-  addReasonCd: String
-  addTime: DateTime
-  addUserId: ID
-  cd: String
-  cdDescTxt: String
-  description: String
-  durationAmt: String
-  durationUnitCd: String
-  fromTime: DateTime
-  lastChgReasonCd: String
-  lastChgTime: DateTime
-  lastChgUserId: Int
-  localId: String
-  recordStatusCd: RecordStatus
-  recordStatusTime: DateTime
-  standardIndustryClassCd: String
-  standardIndustryDescTxt: String
-  statusCd: String
-  statusTime: DateTime
-  toTime: DateTime
-  userAffiliationTxt: String
-  displayNm: String
-  streetAddr1: String
-  streetAddr2: String
-  cityCd: String
-  cityDescTxt: String
-  stateCd: String
-  cntyCd: String
-  cntryCd: String
-  zipCd: String
-  phoneNbr: String
-  phoneCntryCd: String
-  versionCtrlNbr: Int
-  electronicInd: String
-  edxInd: String
 }
 extend type Query {
     findAllOutbreaks(page: Page): OutbreakResults!
@@ -1866,58 +1640,6 @@ type PatientBirthAndGenderChangeResult {
     patient: Int!
 }
 extend type Query {
-  findPlaceById(id: ID!): Place
-  findAllPlaces(page: Page): [Place]!
-  findPlacesByFilter(filter: PlaceFilter!, page: Page): [Place]!
-}
-
-input PlaceFilter {
-  id: ID
-  description: String
-  nm: String
-  streetAddr1: String
-  streetAddr2: String
-  cityCd: String
-  cityDescTxt: String
-  stateCd: String
-  zipCd: String
-}
-
-type Place {
-  id: ID
-  addReasonCd: String
-  addTime: DateTime
-  addUserId: Int
-  cd: String
-  cdDescTxt: String
-  description: String
-  durationAmt: String
-  durationUnitCd: String
-  fromTime: DateTime
-  lastChgReasonCd: String
-  lastChgTime: DateTime
-  lastChgUserId: Int
-  localId: String
-  nm: String
-  recordStatusCd: String
-  recordStatusTime: DateTime
-  statusCd: String
-  statusTime: DateTime
-  toTime: DateTime
-  userAffiliationTxt: String
-  streetAddr1: String
-  streetAddr2: String
-  cityCd: String
-  cityDescTxt: String
-  stateCd: String
-  zipCd: String
-  cntyCd: String
-  cntryCd: String
-  phoneNbr: String
-  phoneCntryCd: String
-  versionCtrlNbr: Int
-}
-extend type Query {
   findAllProgramAreas(page: Page): [ProgramAreaCode]!
 }
 
@@ -2011,19 +1733,6 @@ enum PregnancyStatus {
   YES
   NO
   UNKNOWN
-}
-extend type Query {
-    findSnomedCodedResults(searchText: String!, page: Page): SnomedCodedResults!
-}
-
-type SnomedCodedResults {
-    content: [SnomedCode]!
-    total: Int!
-}
-
-type SnomedCode {
-    id: String
-    snomedDescTxt: String
 }
 extend type Query {
     findAllUsers(page: Page): UserResults!
