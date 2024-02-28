@@ -6,12 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,55 +26,25 @@ import java.util.Set;
 @Builder
 @Table(catalog = "NBS_SRTE", name = "Lab_test")
 public class LabTest implements Serializable {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EmbeddedId
-    private LabTestId id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EmbeddedId
+  private LabTestId id;
 
-    @MapsId("laboratoryId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "laboratory_id", nullable = false)
-    private LabCodingSystem laboratory;
+  @MapsId("laboratoryId")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "laboratory_id", nullable = false)
+  private LabCodingSystem laboratory;
 
-    @Column(name = "lab_test_desc_txt", length = 100)
-    private String labTestDescTxt;
+  @Column(name = "lab_test_desc_txt", length = 100)
+  private String labTestDescTxt;
 
-    @Column(name = "test_type_cd", nullable = false, length = 20)
-    private String testTypeCd;
+  @Column(name = "test_type_cd", nullable = false, length = 20)
+  private String testTypeCd;
 
-    @Column(name = "nbs_uid", nullable = false)
-    private Long nbsUid;
+  @Column(name = "nbs_uid", nullable = false)
+  private Long nbsUid;
 
-    @Column(name = "effective_from_time")
-    private Instant effectiveFromTime;
-
-    @Column(name = "effective_to_time")
-    private Instant effectiveToTime;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "default_prog_area_cd")
-    private ProgramAreaCode defaultProgAreaCd;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "default_condition_cd")
-    private ConditionCode defaultConditionCd;
-
-    @Column(name = "drug_test_ind")
-    private Character drugTestInd;
-
-    @Column(name = "organism_result_test_ind")
-    private Character organismResultTestInd;
-
-    @Column(name = "indent_level_nbr")
-    private Short indentLevelNbr;
-
-    @Column(name = "pa_derivation_exclude_cd")
-    private Character paDerivationExcludeCd;
-
-    @OneToMany(mappedBy = "labTest")
-    @Builder.Default
-    private Set<LabtestLoinc> labtestLoincs = new LinkedHashSet<>();
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "labTest")
-    private LabtestProgareaMapping labtestProgareaMapping;
+  @Column(name = "pa_derivation_exclude_cd")
+  private Character paDerivationExcludeCd;
 
 }

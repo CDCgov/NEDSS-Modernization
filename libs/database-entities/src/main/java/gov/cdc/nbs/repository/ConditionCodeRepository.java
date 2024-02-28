@@ -7,7 +7,7 @@ import gov.cdc.nbs.entity.srte.ConditionCode;
 import gov.cdc.nbs.entity.srte.CountryCode;
 
 public interface ConditionCodeRepository
-        extends JpaRepository<ConditionCode, String>, QuerydslPredicateExecutor<CountryCode> {
+        extends JpaRepository<ConditionCode, String>, QuerydslPredicateExecutor<ConditionCode> {
                 
 
 }
