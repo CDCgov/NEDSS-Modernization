@@ -52,24 +52,4 @@ public class LoincCode implements Serializable {
   @Column(name = "pa_derivation_exclude_cd")
   private Character paDerivationExcludeCd;
 
-  @Column(name = "effective_to_time")
-  private Instant effectiveToTime;
-
-  @Column(name = "related_class_cd", length = 50)
-  private String relatedClassCd;
-
-  @Column(name = "pa_derivation_exclude_cd")
-  private Character paDerivationExcludeCd;
-
-  @OneToMany(mappedBy = "loincCd")
-  @Builder.Default
-  private Set<LabtestLoinc> labtestLoincs = new LinkedHashSet<>();
-
-  @OneToMany(mappedBy = "loincCd")
-  @Builder.Default
-  private Set<LoincSnomedCondition> loincSnomedConditions = new LinkedHashSet<>();
-
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "loincCode")
-  private LoincCondition loincCondition;
-
 }
