@@ -24,6 +24,10 @@ logging:
     nbs:
       classic:
         outgoing: INFO   # Logs any RestTemplate interactions with NBC Classic
+    gov:
+      cdc:
+        nbs:
+          search: DEBUG
 
 nbs:
   ui:
