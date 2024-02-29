@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
 import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
-import { RefObject, useContext, useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
-import { BusinessRuleContext } from '../../context/BusinessContext';
 import { SearchBar } from './SearchBar';
 import { Link } from 'react-router-dom';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
@@ -13,37 +12,49 @@ import { Rule } from 'apps/page-builder/generated';
 import React from 'react';
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
+import { usePage } from 'page';
+import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
 
 export enum Column {
-    SourceFields = 'Source Field',
+    SourceQuestion = 'Source question',
     Logic = 'Logic',
     Values = 'Values',
     Function = 'Function',
-    Target = 'Target Fields',
+    TargetQuestions = 'Target(s)',
     ID = 'ID'
 }
 
 // Sorting temporarily disabled until API is ready
 const tableColumns = [
-    { name: Column.SourceFields, sortable: true },
+    { name: Column.SourceQuestion, sortable: true },
     { name: Column.Logic, sortable: true },
-    { name: Column.Values, sortable: false },
+    { name: Column.Values, sortable: true },
     { name: Column.Function, sortable: true },
-    { name: Column.Target, sortable: false },
+    { name: Column.TargetQuestions, sortable: false },
     { name: Column.ID, sortable: true }
 ];
 
 type Props = {
     summaries: Rule[];
-    pages?: any;
+    onSortChange: (sort: BusinessRuleSort | undefined) => void;
+    onQueryChange: (query: string) => void;
     qtnModalRef: RefObject<ModalRef>;
+    isLoading?: boolean;
 };
 
-export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Props) => {
+export const BusinessRulesLibraryTable = ({
+    summaries,
+    qtnModalRef,
+    onSortChange,
+    onQueryChange,
+    isLoading
+}: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
-    const { searchQuery, setSearchQuery, setCurrentPage, setSortBy, isLoading } = useContext(BusinessRuleContext);
+
     const { page } = useGetPageDetails();
+    const { page: curPage, request } = usePage();
+
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
     const asTableRow = (rule: Rule): TableBody => ({
@@ -58,85 +69,84 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                     </Link>
                 )
             },
-            { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> || null },
+            { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
             {
                 id: 3,
-                title:
-                    (
-                        <div>
-                            {rule?.sourceValues?.map((value, index) => (
-                                <React.Fragment key={index}>
-                                    <span>{value}</span>
-                                    <br />
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    ) || null
+                title: (
+                    <div>
+                        {rule?.sourceValues?.map((value, index) => (
+                            <React.Fragment key={index}>
+                                <span>{value}</span>
+                                <br />
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )
             },
             {
                 id: 4,
-                title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div> || null
+                title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>
             },
             {
                 id: 5,
-                title:
-                    (
-                        <div>
-                            {rule.targets?.map((target, index) => (
-                                <React.Fragment key={index}>
-                                    <span>
-                                        {target.label} ({target.targetIdentifier})
-                                    </span>
-                                    <br />
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    ) || null
+                title: (
+                    <div>
+                        {rule.targets?.map((target, index) => (
+                            <React.Fragment key={index}>
+                                <span>
+                                    {target.label} ({target.targetIdentifier})
+                                </span>
+                                <br />
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )
             },
             {
                 id: 6,
-                title: <div>{rule.id}</div> || null
+                title: <div>{rule.id}</div>
             }
         ]
     });
 
     const asTableRows = (rules: Rule[] | undefined): TableBody[] => rules?.map(asTableRow) || [];
 
-    /*
-     * Converts header and Direction to API compatible sort string such as "name,asc"
-     */
-    const toSortString = (name: string, direction: Direction): string => {
-        if (name && direction && direction !== Direction.None) {
-            switch (name) {
-                case Column.SourceFields:
-                    return `sourceQuestionIdentifier,${direction}`;
-                case Column.Logic:
-                    return `logic,${direction}`;
-                case Column.Values:
-                    return `sourceValue,${direction}`;
-                case Column.Function:
-                    return `ruleCd,${direction}`;
-                case Column.Target:
-                    return `targetQuestionIdentifier,${direction}`;
-                case Column.ID:
-                    return `id,${direction}`;
-                default:
-                    return '';
-            }
-        }
-        return '';
-    };
-
     useEffect(() => {
         setTableRows(asTableRows(summaries));
     }, [summaries]);
 
-    const handleSort = (name: string, direction: Direction): void => {
-        if (pages?.currentPage > 1 && setCurrentPage) {
-            setCurrentPage(1);
+    const handleSort = (name: string, direction: Direction) => {
+        if (direction === Direction.None) {
+            onSortChange(undefined);
+            return;
         }
-        if (name && Direction) {
-            setSortBy(toSortString(name, direction));
+
+        let sortField: RuleSortField | undefined = undefined;
+        switch (name) {
+            case Column.SourceQuestion:
+                sortField = RuleSortField.SOURCE;
+                break;
+            case Column.Logic:
+                sortField = RuleSortField.LOGIC;
+                break;
+            case Column.Values:
+                sortField = RuleSortField.VALUE;
+                break;
+            case Column.Function:
+                sortField = RuleSortField.FUNCTION;
+                break;
+            case Column.TargetQuestions:
+                sortField = RuleSortField.TARGET;
+                break;
+            case Column.ID:
+                sortField = RuleSortField.ID;
+                break;
+        }
+
+        if (sortField) {
+            onSortChange({ field: sortField, direction });
+        } else {
+            onSortChange(undefined);
         }
     };
 
@@ -158,20 +168,6 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 disabled={!Object.keys(selectedQuestion).length}>
                 Add to page
             </ModalToggleButton>
-        </div>
-    );
-
-    const searchAvailableElement = (
-        <div className="no-data-available">
-            <label className="no-text">Still can't find what are you're looking for?</label>
-            <label className="margin-bottom-1em search-desc">
-                Please try searching in the local library before creating new
-            </label>
-            <div>
-                <NavLinkButton className="submit-btn" type="outline" to={`${redirectRuleURL}/add`}>
-                    Create New
-                </NavLinkButton>
-            </div>
         </div>
     );
 
@@ -198,7 +194,7 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 </NavLinkButton>
             </div>
             <div>
-                <SearchBar onChange={setSearchQuery} />
+                <SearchBar onChange={onQueryChange} />
             </div>
             <TableComponent
                 display="zebra"
@@ -207,17 +203,16 @@ export const BusinessRulesLibraryTable = ({ summaries, pages, qtnModalRef }: Pro
                 tableHeader=""
                 tableHead={tableColumns}
                 tableBody={tableRows}
-                isPagination={true}
-                pageSize={pages?.pageSize}
-                totalResults={pages.totalElements}
-                currentPage={pages?.currentPage}
-                handleNext={setCurrentPage}
+                isPagination
+                pageSize={curPage.pageSize}
+                totalResults={curPage.total}
+                currentPage={curPage.current}
+                handleNext={request}
                 sortData={handleSort}
-                rangeSelector={true}
+                rangeSelector
                 isLoading={isLoading}
             />
             {summaries.length === 0 && !isLoading && dataNotAvailableElement}
-            {summaries.length > 0 && searchQuery && searchAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
     );

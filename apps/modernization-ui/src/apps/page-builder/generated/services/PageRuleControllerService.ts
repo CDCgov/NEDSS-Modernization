@@ -14,49 +14,6 @@ import { request as __request } from '../core/request';
 export class PageRuleControllerService {
 
     /**
-     * getAllPageRule
-     * @returns Page_Rule_ OK
-     * @throws ApiError
-     */
-    public static getAllPageRuleUsingGet({
-        authorization,
-        id,
-        page,
-        size,
-        sort,
-    }: {
-        authorization: string,
-        /**
-         * id
-         */
-        id: number,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Rule_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules',
-            path: {
-                'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * createBusinessRule
      * @returns CreateRuleResponse Created
      * @throws ApiError

@@ -1,0 +1,34 @@
+@use 'styles/colors';
+@use 'styles/animation';
+
+.tab {
+    .toggle {
+        width: 1rem;
+        cursor: pointer;
+    }
+    .handle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .tile {
+        background-color: colors.$base-white;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 1.75rem;
+        z-index: 500;
+    }
+    .sections {
+        &.closed {
+            height: 0;
+            display: none;
+        }
+        .droppable {
+            min-height: 1px;
+        }
+    }
+    &.hidden {
+        height: 0px;
+    }
+}

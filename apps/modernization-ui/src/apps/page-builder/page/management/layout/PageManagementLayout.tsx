@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { Breadcrumb } from 'breadcrumb';
 
@@ -11,6 +12,12 @@ type PageBuilderLayoutProps = {
 };
 
 const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) => {
+    const { pathname } = useLocation();
+    const pathNames = pathname.split('/');
+    let isEditing = false;
+    if (pathname && pathNames.length > 0) {
+        isEditing = pathNames[pathNames.length - 1] === 'edit';
+    }
     return (
         <section className={styles.management}>
             <header>
@@ -20,7 +27,10 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                 <Breadcrumb start="/page-builder/pages" currentPage={name}>
                     Page library
                 </Breadcrumb>
-                <span className={classNames(styles.mode)}>PREVIEWING: {mode}</span>
+                <span className={classNames(isEditing ? styles.modeEditing : styles.mode)}>
+                    {isEditing ? 'EDITING: ' : 'PREVIEWING: '}
+                    {mode}
+                </span>
             </div>
             <div className={styles.content}>{children}</div>
         </section>

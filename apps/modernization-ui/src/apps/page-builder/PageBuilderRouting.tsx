@@ -8,6 +8,7 @@ import { PageDetails } from './page/management/preview/PageDetails/PageDetails';
 import { AddNewPage } from './pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import AddBusinessRule from './pages/BusinessRulesLibrary/Add/AddBusinessRule';
+import { PageProvider } from 'page';
 
 const routing: RouteObject[] = [
     {
@@ -64,7 +65,11 @@ const routing: RouteObject[] = [
                                 children: [
                                     {
                                         index: true,
-                                        element: <BusinessRulesLibrary />
+                                        element: (
+                                            <PageProvider>
+                                                <BusinessRulesLibrary />
+                                            </PageProvider>
+                                        )
                                     },
                                     {
                                         path: 'add',

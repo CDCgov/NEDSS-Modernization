@@ -2,6 +2,7 @@ import { screen, render } from '@testing-library/react';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { BrowserRouter } from 'react-router-dom';
 import { Rule } from 'apps/page-builder/generated';
+import { PageProvider } from 'page';
 
 describe('BusinessRulesLibraryTable', () => {
     const modalRef = { current: null };
@@ -28,16 +29,23 @@ describe('BusinessRulesLibraryTable', () => {
 
             render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} pages={pages} />
+                    <PageProvider>
+                        <BusinessRulesLibraryTable
+                            summaries={summaries}
+                            qtnModalRef={modalRef}
+                            onSortChange={jest.fn()}
+                            onQueryChange={jest.fn()}
+                        />
+                    </PageProvider>
                 </BrowserRouter>
             );
 
             const tableHeads = await screen.findAllByRole('columnheader');
-            expect(tableHeads[0]).toHaveTextContent('Source Field');
+            expect(tableHeads[0]).toHaveTextContent('Source question');
             expect(tableHeads[1]).toHaveTextContent('Logic');
             expect(tableHeads[2]).toHaveTextContent('Values');
             expect(tableHeads[3]).toHaveTextContent('Function');
-            expect(tableHeads[4]).toHaveTextContent('Target Fields');
+            expect(tableHeads[4]).toHaveTextContent('Target(s)');
             expect(tableHeads[5]).toHaveTextContent('ID');
         });
     });
@@ -66,7 +74,14 @@ describe('BusinessRulesLibraryTable', () => {
 
             const { findAllByRole } = render(
                 <BrowserRouter>
-                    <BusinessRulesLibraryTable summaries={summaries} qtnModalRef={modalRef} pages={pages} />
+                    <PageProvider>
+                        <BusinessRulesLibraryTable
+                            summaries={summaries}
+                            qtnModalRef={modalRef}
+                            onSortChange={jest.fn()}
+                            onQueryChange={jest.fn()}
+                        />
+                    </PageProvider>
                 </BrowserRouter>
             );
 

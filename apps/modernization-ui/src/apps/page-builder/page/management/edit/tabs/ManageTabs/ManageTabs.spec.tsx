@@ -44,7 +44,7 @@ const content: PagesResponse = {
 };
 
 const { getByTestId } = render(
-    <DragDropProvider pageData={content} currentTab={0}>
+    <DragDropProvider pageData={content}>
         <ManageTabs pageId={0} onAddSuccess={jest.fn()} tabs={content.tabs!} />
     </DragDropProvider>
 )

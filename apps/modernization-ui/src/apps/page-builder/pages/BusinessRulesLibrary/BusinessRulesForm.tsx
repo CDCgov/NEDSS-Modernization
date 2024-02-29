@@ -17,6 +17,7 @@ import {
 } from 'apps/page-builder/generated';
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
+import { mapLogicForDateCompare } from './helpers/mapLogicForDateCompare';
 
 type QuestionProps = {
     id: number;
@@ -44,6 +45,8 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const [targetQuestions, setTargetQuestions] = useState<QuestionProps[]>([]);
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
+    const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
+
     const { pageId } = useParams();
     const [sourceDescription, setSourceDescription] = useState<string>(
         form.watch('sourceText') && form.watch('sourceIdentifier')
@@ -77,7 +80,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const handleChangeSource = (data: QuestionProps[]) => {
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
-        form.setValue('sourceText', data[0].name);
+        form.setValue('sourceText', `${data[0].name} (${data[0].question})`);
         setSourceDescription(`${data[0].name} (${data[0].question})`);
         fetchSourceValueSets(data[0].valueSet);
     };
@@ -100,12 +103,16 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
         const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
 
         if (selectedSource && targetQuestions.length && logic) {
-            const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
-            description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
-                form.getValues('ruleFunction')
-            )} "${targetValue}"`;
+            if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
+                description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
+                    form.getValues('ruleFunction')
+                )} "${targetValue}"`;
+            } else {
+                description = '';
+            }
             form.setValue('description', description);
         }
     };
@@ -166,6 +173,20 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
+    useEffect(() => {
+        if (anySourceValueToggle) {
+            form.reset({
+                ...form.getValues(),
+                comparator: Rule.comparator.EQUAL_TO,
+                sourceValues: undefined
+            });
+        }
+    }, [anySourceValueToggle]);
+
+    useEffect(() => {
+        setAnySource(form.watch('anySourceValue'));
+    }, [form.watch('anySourceValue')]);
+
     return (
         <>
             <Grid row className="inline-field">
@@ -177,7 +198,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                 <Grid col={9}>
                     {form.watch('sourceText') ? (
                         <div className="source-question-display">
-                            {form.getValues('sourceText')} ({form.getValues('sourceIdentifier')})
+                            {form.getValues('sourceText')}
                             <Icon.Close onClick={handleResetSourceQuestion} />
                         </div>
                     ) : (
@@ -224,7 +245,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                 control={form.control}
                 name="comparator"
                 rules={{
-                    required: { value: true, message: 'This field is required.' }
+                    required: { value: anySourceValueToggle ?? false, message: 'This field is required.' }
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
@@ -236,13 +257,12 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         <Grid col={9}>
                             <SelectInput
                                 className="text-input"
-                                defaultValue={value}
+                                defaultValue={anySourceValueToggle ? Rule.comparator.EQUAL_TO : value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 options={logicList}
                                 error={error?.message}
-                                disabled={form.watch('anySourceValue')}
-                                required
+                                disabled={anySourceValueToggle}
                             />
                         </Grid>
                     </Grid>
@@ -316,7 +336,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             <Grid row className="inline-field">
                 <Grid col={3}>
                     <Label className="input-label" htmlFor="targetQuestions" requiredMarker>
-                        Target Question(s)
+                        Target(s)
                     </Label>
                 </Grid>
                 <Grid col={9}>
@@ -379,6 +399,27 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     </Grid>
                 )}
             />
+            {ruleFunction != Rule.ruleFunction.DATE_COMPARE ? (
+                <Grid row className="inline-field">
+                    <Grid col={3}>
+                        <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
+                            Error message
+                        </Label>
+                    </Grid>
+                    <Grid col={9}>
+                        <Input
+                            readOnly
+                            type="text"
+                            multiline
+                            value={`'${sourceDescription}' must be ${mapLogicForDateCompare(
+                                form.getValues('comparator')
+                            )} ${targetQuestions.map((val) => `${val.name} (${val.question})`).join(', ')}`}
+                            name={'errorMessage'}
+                            id={'errorMessage'}
+                        />
+                    </Grid>
+                </Grid>
+            ) : null}
             {pageId && (
                 <>
                     <TargetQuestion
@@ -386,13 +427,16 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         getList={handleChangeTargetQuestion}
                         pageId={pageId}
                         header="Target question"
+                        ruleFunction={ruleFunction}
                     />
                     <TargetQuestion
                         modalRef={sourceModalRef}
                         getList={handleChangeSource}
                         multiSelected={false}
                         header="Source question"
+                        isSource={true}
                         pageId={pageId}
+                        ruleFunction={ruleFunction}
                     />
                 </>
             )}

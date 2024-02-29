@@ -10,6 +10,14 @@ Feature: Patient Demographics Ethnicity Changes
     Then the patient has the changed ethnicity
     And the patient ethnicity changed event is emitted
 
+  Scenario: I can update a patient's ethnicity and history is added
+    Given I am logged into NBS
+    And I have the authorities: "FIND-PATIENT,EDIT-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And the patient has the ethnicity Hispanic or Latino, specifically Spaniard
+    When a patient's Hispanic or Latino ethnicity is changed to specifically be Cuban
+    Then the patient has the changed ethnicity
+    And the patient ethnicity history contains the previous version
+
   Scenario: I cannot update a patient's ethnicity without proper permission
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"

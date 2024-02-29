@@ -23,13 +23,12 @@ class PrimaryOccupationValueSetFinder {
     Collection<CodedValue> all() {
         return this.factory.select(
                 values.id,
-                values.codeShortDescTxt
-            ).from(values)
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
-            .fetch()
-            .stream()
-            .map(this::map)
-            .toList();
+                values.codeShortDescTxt).from(values)
+                .orderBy(new OrderSpecifier<>(Order.ASC, values.codeShortDescTxt))
+                .fetch()
+                .stream()
+                .map(this::map)
+                .toList();
     }
 
     private CodedValue map(final Tuple tuple) {

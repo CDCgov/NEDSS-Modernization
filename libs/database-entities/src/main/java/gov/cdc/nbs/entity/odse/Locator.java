@@ -48,67 +48,11 @@ public abstract class Locator {
         this.recordStatusTime = command.requestedOn();
     }
 
-    public String getAddReasonCd() {
-        return addReasonCd;
-    }
-
-    public void setAddReasonCd(String addReasonCd) {
-        this.addReasonCd = addReasonCd;
-    }
-
-    public Instant getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(Instant addTime) {
-        this.addTime = addTime;
-    }
-
-    public Long getAddUserId() {
-        return addUserId;
-    }
-
-    public void setAddUserId(Long addUserId) {
-        this.addUserId = addUserId;
-    }
-
-    public String getLastChgReasonCd() {
-        return lastChgReasonCd;
-    }
-
-    public void setLastChgReasonCd(String lastChgReasonCd) {
-        this.lastChgReasonCd = lastChgReasonCd;
-    }
-
-    public Instant getLastChgTime() {
-        return lastChgTime;
-    }
-
-    public void setLastChgTime(Instant lastChgTime) {
-        this.lastChgTime = lastChgTime;
-    }
-
-    public Long getLastChgUserId() {
-        return lastChgUserId;
-    }
-
-    public void setLastChgUserId(Long lastChgUserId) {
-        this.lastChgUserId = lastChgUserId;
-    }
-
     public String getRecordStatusCd() {
         return recordStatusCd;
     }
 
     public void setRecordStatusCd(String recordStatusCd) {
         this.recordStatusCd = recordStatusCd;
-    }
-
-    public Instant getRecordStatusTime() {
-        return recordStatusTime;
-    }
-
-    public void setRecordStatusTime(Instant recordStatusTime) {
-        this.recordStatusTime = recordStatusTime;
     }
 }

@@ -67,8 +67,6 @@ Write-Output "Release Tag to Download Zip From: $releaseTag"
 
 # Update Variables
 $zip_file_name = $env:GITHUB_ZIP_FILE_NAME -replace "<version>", $releaseTag
-$user_guide_name_version = $releaseTag.Trim("v")
-$user_guide_name = $env:USER_GUIDE_DOC_NAME -replace "<version>", $user_guide_name_version
 # Set Zip File Name
 $zip_url = ($githubRelease.assets | Where-Object { $_.name -like "$zip_file_name" }).browser_download_url
 # Download Zip File. System.Net.WebClient is faster then using Invoke-WebRequest
@@ -78,6 +76,8 @@ Write-Output "Downloaded Zip File: $zip_file_name"
 # Extract ZIP to temporary directory
 Expand-Archive -LiteralPath "$zip_file_name" -Force
 $zip_folder = $zip_file_name.Trim(".zip")
+# Get User Guide Name
+$user_guide_name = $(Get-ChildItem -Path $zip_folder\$zip_folder\*"User Guide.pdf" -Recurse).Name
 # Move zip file the final destination
 $zip_user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder\$user_guide_name"
 $user_guide_directory = "C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME"

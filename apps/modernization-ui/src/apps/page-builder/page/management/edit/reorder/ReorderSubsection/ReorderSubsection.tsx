@@ -25,7 +25,7 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
     useEffect(() => {
         if (closeId.id === subsection.id!.toString()) {
             setQuestionsOpen(false);
-        } else setQuestionsOpen(true);
+        }
     }, [closeId]);
 
     return (
@@ -38,9 +38,9 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setQuestionsOpen(!questionsOpen)}>
                             {!questionsOpen ? (
-                                <Icon name={'navigate-next'} size="xs" />
+                                <Icon name={'navigate-next'} size="s" />
                             ) : (
-                                <Icon name={'expand-more'} size="xs" />
+                                <Icon name={'expand-more'} size="s" />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
@@ -51,8 +51,12 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
                     </div>
                     <div className={`${styles.questions} ${!questionsOpen ? styles.closed : ''}`}>
                         <Droppable droppableId={subsection.id!.toString()} type="question">
-                            {(prov) => (
-                                <div {...prov.droppableProps} ref={prov.innerRef}>
+                            {(prov, snapshot) => (
+                                <div
+                                    className={styles.droppable}
+                                    {...prov.droppableProps}
+                                    ref={prov.innerRef}
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
                                     {questions
                                         ? questions.map((question: any, i: number) => {
                                               return (

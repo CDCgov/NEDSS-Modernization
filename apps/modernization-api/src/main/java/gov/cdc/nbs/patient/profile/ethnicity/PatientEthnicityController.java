@@ -16,11 +16,11 @@ import java.time.Instant;
 class PatientEthnicityController {
 
     private final Clock clock;
-    private final PatientEthnicityUpdater service;
+    private final PatientEthnicityChangeService service;
 
     PatientEthnicityController(
         final Clock clock,
-        final PatientEthnicityUpdater service
+        final PatientEthnicityChangeService service
     ) {
         this.clock = clock;
         this.service = service;
