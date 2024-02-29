@@ -20,7 +20,7 @@ export enum Column {
     Logic = 'Logic',
     Values = 'Values',
     Function = 'Function',
-    TargetQuestions = 'Target questions',
+    TargetQuestions = 'Target(s)',
     ID = 'ID'
 }
 

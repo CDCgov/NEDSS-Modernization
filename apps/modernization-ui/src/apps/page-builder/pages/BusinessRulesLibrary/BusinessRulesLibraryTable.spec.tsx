@@ -45,7 +45,7 @@ describe('BusinessRulesLibraryTable', () => {
             expect(tableHeads[1]).toHaveTextContent('Logic');
             expect(tableHeads[2]).toHaveTextContent('Values');
             expect(tableHeads[3]).toHaveTextContent('Function');
-            expect(tableHeads[4]).toHaveTextContent('Target questions');
+            expect(tableHeads[4]).toHaveTextContent('Target(s)');
             expect(tableHeads[5]).toHaveTextContent('ID');
         });
     });
