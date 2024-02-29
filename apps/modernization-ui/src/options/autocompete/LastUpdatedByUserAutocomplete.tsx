@@ -16,7 +16,7 @@ type Props = {
     onChange?: (value?: string) => void;
 };
 
-const CreatedByUserAutocomplete = ({ form, id, label, placeholder, value, defaultValue, onChange }: Props) => {
+const LastUpdatedByUserAutocomplete = ({ form, id, label, placeholder, value, defaultValue, onChange }: Props) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
@@ -28,10 +28,10 @@ const CreatedByUserAutocomplete = ({ form, id, label, placeholder, value, defaul
     const { options, suggest, reset } = useUserOptionsAutocomplete({ initialCriteria: entered });
 
     useEffect(() => {
-        const createdBy = form.getValues('createdBy');
-        const isDirty = form.getFieldState('createdBy').isDirty;
+        const lastUpdatedBy = form.getValues('lastUpdatedBy');
+        const isDirty = form.getFieldState('lastUpdatedBy').isDirty;
         const currentEntered = inputRef?.current?.value?.length || 0;
-        if (currentEntered > 6 && isDirty === false && !createdBy) {
+        if (currentEntered > 6 && isDirty === false && !lastUpdatedBy) {
             setEntered('');
         }
     });
@@ -103,4 +103,4 @@ const CreatedByUserAutocomplete = ({ form, id, label, placeholder, value, defaul
     );
 };
 
-export { CreatedByUserAutocomplete };
+export { LastUpdatedByUserAutocomplete };

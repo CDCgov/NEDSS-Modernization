@@ -14,7 +14,7 @@ import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { ChangeEvent, ReactElement } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
-import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { LastUpdatedByUserAutocomplete } from 'options/autocompete/LastUpdatedByUserAutocomplete';
 import { CreatedByUserAutocomplete } from 'options/autocompete/CreatedByUserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
@@ -272,8 +272,14 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                 <Controller
                     control={form.control}
                     name="lastUpdatedBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
+                    render={({ field: { onChange, value, name } }) => (
+                        <LastUpdatedByUserAutocomplete
+                            form={form}
+                            id={name}
+                            label="Event updated by user"
+                            defaultValue={value as string | undefined}
+                            onChange={onChange}
+                        />
                     )}
                 />
             </>
