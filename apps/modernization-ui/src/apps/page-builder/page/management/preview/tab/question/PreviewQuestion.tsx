@@ -39,8 +39,10 @@ export const PreviewQuestion = ({ question }: Props) => {
     const componentWithoutStaticType = (
         <>
             <div className={styles.questionHeader}>
-                <div className={styles.name}>{question.name}</div>
-                <div className={styles.identifier}>{`(${question.question ?? ''})`}</div>
+                <div className={styles.name}>
+                    <span className={styles.title}>{question.name}</span>
+                    <span className={styles.identifier}>{`(${question.question ?? ''})`}</span>
+                </div>
             </div>
             <div className={question.dataType === 'DATE' ? styles.inputContent : styles.inputContentCovered}>
                 {(displayComponent === 1007 ||
