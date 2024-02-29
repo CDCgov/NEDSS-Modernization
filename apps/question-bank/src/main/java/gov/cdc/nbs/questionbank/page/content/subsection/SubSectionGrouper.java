@@ -1,78 +1,62 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import gov.cdc.nbs.questionbank.entity.WaRdbMetadata;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
-import gov.cdc.nbs.questionbank.question.QuestionManagementUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.util.Collection;
+import java.util.List;
+
 
 @Transactional
 @Component
 public class SubSectionGrouper {
 
   private final EntityManager entityManager;
-  private final QuestionManagementUtil questionManagementUtil;
-  private final SubSectionQuestionFinder finder;
+  private final SubSectionValidator subSectionValidator;
 
-  public SubSectionGrouper(final EntityManager entityManager, QuestionManagementUtil questionManagementUtil,
-      final SubSectionQuestionFinder finder) {
+  public SubSectionGrouper(final EntityManager entityManager,
+      final SubSectionValidator subSectionValidator) {
     this.entityManager = entityManager;
-    this.finder = finder;
-    this.questionManagementUtil = questionManagementUtil;
+    this.subSectionValidator = subSectionValidator;
   }
 
-
   public void group(Long pageId, GroupSubSectionRequest request, Long userId) {
-    if (request.blockName() == null) {
+    subSectionValidator.validateIfCanBeGrouped(pageId, request.id());
+    validateEntries(request);
+    WaTemplate page = entityManager.find(WaTemplate.class, pageId);
+    page.groupSubSection(asCommand(userId, request));
+  }
+
+  public void unGroup(Long pageId, long subsectionId, Long userId) {
+    WaTemplate page = entityManager.find(WaTemplate.class, pageId);
+    List<Long> batches =
+        subSectionValidator.getSubsectionElements(pageId, subsectionId).stream().map(WaUiMetadata::getId).toList();
+    page.unGroupSubSection(asCommand(userId, subsectionId, batches));
+  }
+
+  private void validateEntries(GroupSubSectionRequest request) {
+    if (request.blockName() == null || request.blockName().trim().isEmpty()) {
       throw new UpdateSubSectionException("SubSection Block Name is required");
+    }
+    if (request.repeatingNbr() > 5) {
+      throw new UpdateSubSectionException("Valid repeat Number values include 0-5");
     }
     int totalPercentage = 0;
     for (GroupSubSectionRequest.Batch b : request.batches()) {
       if (b.batchTableColumnWidth() == 0) {
-        throw new UpdateSubSectionException("batch TableColumnWidth is required");
+        throw new UpdateSubSectionException("Batch TableColumnWidth is required");
       }
       totalPercentage += b.batchTableColumnWidth();
     }
     if (totalPercentage != 100) {
-      throw new UpdateSubSectionException("the total of batch TableColumnWidth must calculate to 100");
+      throw new UpdateSubSectionException("The total of batch TableColumnWidth must calculate to 100");
     }
-    WaTemplate page = entityManager.find(WaTemplate.class, pageId);
-    if (page == null) {
-      throw new PageNotFoundException(pageId);
-    }
-
-    Collection<RdbQuestion> temp = finder.resolve(pageId);
-    for (GroupSubSectionRequest.Batch b : request.batches()) {
-      for (RdbQuestion question : temp) {
-        if (b.id() == question.waIdentifier()) {
-          WaRdbMetadata cur = entityManager.find(WaRdbMetadata.class, question.identifier());
-          cur.groupQuestion(asCommand(userId, request.repeatingNbr()));
-        }
-      }
-    }
-    page.groupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
-  }
-
-  public void unGroup(Long pageId, UnGroupSubSectionRequest request, Long userId) {
-    WaTemplate page = entityManager.find(WaTemplate.class, pageId);
-    if (page == null) {
-      throw new PageNotFoundException(pageId);
-    }
-    page.unGroupSubSection(asCommand(userId, request), questionManagementUtil.getQuestionNbsUiComponentUids());
-  }
-
-  private PageContentCommand.GroupSubsectionRdb asCommand(
-      Long userId,
-      int repeatingNbr) {
-    return new PageContentCommand.GroupSubsectionRdb(repeatingNbr, userId, Instant.now());
   }
 
   private PageContentCommand.GroupSubsection asCommand(
@@ -89,12 +73,12 @@ public class SubSectionGrouper {
 
   private PageContentCommand.UnGroupSubsection asCommand(
       Long userId,
-      UnGroupSubSectionRequest request) {
+      long subsectionId,
+      List<Long> batches) {
     return new PageContentCommand.UnGroupSubsection(
-        request.id(),
-        request.batches(),
+        subsectionId,
+        batches,
         userId,
         Instant.now());
   }
-
 }

@@ -5,23 +5,16 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.exception.BadRequestException;
 import gov.cdc.nbs.questionbank.page.PageMother;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.UnGroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Transactional
 public class UnGroupSubsectionSteps {
@@ -47,14 +40,10 @@ public class UnGroupSubsectionSteps {
             .filter(u -> u.getNbsUiComponentUid() == 1016l)
             .findFirst()
             .orElseThrow();
-        List<Long> batches = Arrays.asList(101l, 102l);
         try {
             subsectionController.unGroupSubSection(
                 page.getId(),
-                new UnGroupSubSectionRequest(
-                    section.getId(),
-                    batches
-                ),
+                section.getId(),
                 user.getCurrentUserDetails());
 
         } catch (AccessDeniedException e) {
