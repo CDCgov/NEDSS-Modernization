@@ -55,10 +55,15 @@ export const PreviewQuestion = ({ question }: Props) => {
                         defaultValue={''}
                         options={conceptState}
                         data-testid="dropdown-input"
+                        disabled={true}
+                        className={styles.readonlySelectDropdown}
                     />
                 )}
                 {displayComponent === 1001 && <RadioButtons options={conceptState} />}
-                {(displayComponent === 1008 || displayComponent === 1009 || displayComponent === 1019) && (
+                {(displayComponent === 1008 ||
+                    displayComponent === 1009 ||
+                    displayComponent === 1019 ||
+                    displayComponent === 1017) && (
                     <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
                 )}
             </div>

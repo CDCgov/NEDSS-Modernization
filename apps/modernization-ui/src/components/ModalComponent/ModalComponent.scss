@@ -40,6 +40,18 @@
     &.tall {
         min-height: 50rem;
         height: 50rem;
+        .usa-modal__heading {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .usa-button {
+                position: relative;
+                margin: 0;
+                top: unset;
+                right: unset;
+            }
+        }
         .usa-modal__content {
             height: 100%;
         }

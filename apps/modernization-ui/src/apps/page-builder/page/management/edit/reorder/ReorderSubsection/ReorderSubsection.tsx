@@ -25,7 +25,7 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
     useEffect(() => {
         if (closeId.id === subsection.id!.toString()) {
             setQuestionsOpen(false);
-        } else setQuestionsOpen(true);
+        }
     }, [closeId]);
 
     return (

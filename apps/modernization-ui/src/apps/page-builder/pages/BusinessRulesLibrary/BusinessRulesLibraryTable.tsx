@@ -16,21 +16,21 @@ import { usePage } from 'page';
 import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
 
 export enum Column {
-    SourceFields = 'Source Field',
+    SourceQuestion = 'Source Question',
     Logic = 'Logic',
     Values = 'Values',
     Function = 'Function',
-    Target = 'Target Fields',
+    TargetQuestions = 'Target Questions',
     ID = 'ID'
 }
 
 // Sorting temporarily disabled until API is ready
 const tableColumns = [
-    { name: Column.SourceFields, sortable: true },
+    { name: Column.SourceQuestion, sortable: true },
     { name: Column.Logic, sortable: true },
     { name: Column.Values, sortable: true },
     { name: Column.Function, sortable: true },
-    { name: Column.Target, sortable: false },
+    { name: Column.TargetQuestions, sortable: false },
     { name: Column.ID, sortable: true }
 ];
 
@@ -123,7 +123,7 @@ export const BusinessRulesLibraryTable = ({
 
         let sortField: RuleSortField | undefined = undefined;
         switch (name) {
-            case Column.SourceFields:
+            case Column.SourceQuestion:
                 sortField = RuleSortField.SOURCE;
                 break;
             case Column.Logic:
@@ -135,7 +135,7 @@ export const BusinessRulesLibraryTable = ({
             case Column.Function:
                 sortField = RuleSortField.FUNCTION;
                 break;
-            case Column.Target:
+            case Column.TargetQuestions:
                 sortField = RuleSortField.TARGET;
                 break;
             case Column.ID:

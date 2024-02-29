@@ -59,73 +59,74 @@ class PageRuleFinder {
             [rule].add_time
             """;
 
-  private String findBySearchValue = """
-      select
-         [rule].wa_rule_metadata_uid        as [ruleId],
-         [rule].wa_template_uid             as [template],
-         [rule].rule_cd                     as [function],
-         [rule].rule_desc_txt               as [description],
-         [rule].source_question_identifier  as [sourceQuestion],
-         [rule].rule_expression             as [ruleExpression],
-         [rule].source_values               as [sourceValues],
-         [rule].logic                       as [comparator],
-         [rule].target_type                 as [targetType],
-         [rule].target_question_identifier  as [targetQuestions],
-         [question1].question_label          as [sourceQuestionLabel],
-         [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
-         [question1].wa_question_uid         as [sourceQuestionId],
-         STRING_AGG([question2].question_label, ', ') WITHIN GROUP
-        (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
-         as [targetQuestionLabels],
-         (SELECT COUNT(*)
-      from WA_rule_metadata [rule]
-        left join WA_question [question1] on [rule].source_question_identifier = [question1].question_identifier
-        left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
-        left join WA_question [question2]
-            on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
-      where [rule].wa_template_uid =:pageId
-        and
-        (
-         UPPER([rule].source_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
-         OR UPPER([question1].question_label) LIKE CONCAT('%', UPPER(:searchValue), '%')
-         OR UPPER([rule].target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
-         OR CHARINDEX(',' + :searchValue + ',', ',' + [question2].question_label + ',') > 0
-         OR [rule].wa_rule_metadata_uid  LIKE CONCAT('%', :searchValue, '%')
-        )
-         ) as [TotalCount]
-      from WA_rule_metadata [rule]
-        left join WA_question [question1] on [rule].source_question_identifier = [question1].question_identifier
-        left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
-        left join WA_question [question2]
-            on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
-      where [rule].wa_template_uid =:pageId
-        and
-        (
-           UPPER([rule].source_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
-           OR UPPER([question1].question_label) LIKE CONCAT('%', UPPER(:searchValue), '%')
-           OR UPPER([rule].target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
-           OR CHARINDEX(',' + :searchValue + ',', ',' + [question2].question_label + ',') > 0
-           OR [rule].wa_rule_metadata_uid  LIKE CONCAT('%', :searchValue, '%')
-        )
-      group by
-         [rule].wa_rule_metadata_uid,
-         [rule].wa_template_uid,
-         [rule].rule_cd,
-         [rule].rule_desc_txt,
-         [rule].source_question_identifier,
-         [rule].rule_expression,
-         [rule].source_values,
-         [rule].logic,
-         [rule].target_type,
-         [rule].target_question_identifier,
-         [question1].question_label,
-         [CodeSet].code_set_nm,
-         [question1].wa_question_uid,
-         [rule].add_time
-         order by [rule].sortReplace
-         offset :offset rows
-         fetch next :pageSize rows only
-         """;
+  private String findBySearchValue =
+      """
+          select
+             [rule].wa_rule_metadata_uid        as [ruleId],
+             [rule].wa_template_uid             as [template],
+             [rule].rule_cd                     as [function],
+             [rule].rule_desc_txt               as [description],
+             [rule].source_question_identifier  as [sourceQuestion],
+             [rule].rule_expression             as [ruleExpression],
+             [rule].source_values               as [sourceValues],
+             [rule].logic                       as [comparator],
+             [rule].target_type                 as [targetType],
+             [rule].target_question_identifier  as [targetQuestions],
+             [question1].question_label          as [sourceQuestionLabel],
+             [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
+             [question1].wa_question_uid         as [sourceQuestionId],
+             STRING_AGG([question2].question_label, ', ') WITHIN GROUP
+            (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
+             as [targetQuestionLabels],
+             (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
+              from WA_rule_metadata [rule]
+                left join WA_question [question1] on [rule].source_question_identifier = [question1].question_identifier
+                left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
+                left join WA_question [question2]
+                    on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
+              where [rule].wa_template_uid =:pageId
+                and
+                (
+                UPPER([rule].source_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
+                OR UPPER([question1].question_label) LIKE CONCAT('%', UPPER(:searchValue), '%')
+                OR UPPER([rule].target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
+                OR CHARINDEX(',' + :searchValue + ',', ',' + [question2].question_label + ',') > 0
+                OR [rule].wa_rule_metadata_uid  LIKE CONCAT('%', :searchValue, '%')
+                )
+             ) as [totalCount]
+          from WA_rule_metadata [rule]
+            left join WA_question [question1] on [rule].source_question_identifier = [question1].question_identifier
+            left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
+            left join WA_question [question2]
+                on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
+          where [rule].wa_template_uid =:pageId
+            and
+            (
+               UPPER([rule].source_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
+               OR UPPER([question1].question_label) LIKE CONCAT('%', UPPER(:searchValue), '%')
+               OR UPPER([rule].target_question_identifier) LIKE CONCAT('%', UPPER(:searchValue), '%')
+               OR CHARINDEX(',' + :searchValue + ',', ',' + [question2].question_label + ',') > 0
+               OR [rule].wa_rule_metadata_uid  LIKE CONCAT('%', :searchValue, '%')
+            )
+          group by
+             [rule].wa_rule_metadata_uid,
+             [rule].wa_template_uid,
+             [rule].rule_cd,
+             [rule].rule_desc_txt,
+             [rule].source_question_identifier,
+             [rule].rule_expression,
+             [rule].source_values,
+             [rule].logic,
+             [rule].target_type,
+             [rule].target_question_identifier,
+             [question1].question_label,
+             [CodeSet].code_set_nm,
+             [question1].wa_question_uid,
+             [rule].add_time
+             order by sortReplace
+             offset :offset rows
+             fetch next :pageSize rows only
+             """;
 
   private final NamedParameterJdbcTemplate template;
   private final RowMapper<Rule> mapper;
@@ -148,15 +149,15 @@ class PageRuleFinder {
   private String resolveSort(String sort) {
     switch (sort) {
       case "sourcefields":
-        return "rule_desc_txt";
+        return "[question1].question_label";
       case "function":
-        return "rule_cd";
+        return "[rule].rule_cd";
       case "values":
-        return "source_values";
+        return "[rule].source_values";
       case "logic":
-        return "logic";
+        return "[rule].logic";
       case "id":
-        return "wa_rule_metadata_uid";
+        return "[rule].wa_rule_metadata_uid";
       default:
         return DEFAULT_SORT_COLUMN;
     }
@@ -171,12 +172,12 @@ class PageRuleFinder {
     if (pageable.getSort().isSorted()) {
       String sort = pageable.getSort().toList().get(0).getProperty().toLowerCase();
       Direction direction =
-          pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.ASC : Direction.DESC;
+          pageable.getSort().toList().get(0).getDirection().isAscending() ? Direction.DESC : Direction.ASC;
       if (!DEFAULT_SORT_COLUMN.equals(sort)) {
         query = findBySearchValue.replace(REPLACE_STRING,
-            DEFAULT_SORT_COLUMN + "," + resolveSort(sort).replace(": ", " ") + " " + direction);
+            resolveSort(sort).replace(": ", " ") + " " + direction);
       } else {
-        query = findBySearchValue.replace(REPLACE_STRING, DEFAULT_SORT_COLUMN);
+        query = findBySearchValue.replace(REPLACE_STRING, "[rule]." + DEFAULT_SORT_COLUMN + " " + "desc");
       }
     }
 

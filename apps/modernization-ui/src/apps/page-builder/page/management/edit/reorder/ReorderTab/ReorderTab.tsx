@@ -25,7 +25,7 @@ export const ReorderTab = ({ tab, index, visible }: Props) => {
     useEffect(() => {
         if (closeId.id === tab.id!.toString()) {
             setSectionsOpen(false);
-        } else setSectionsOpen(sectionsOpen);
+        }
     }, [closeId]);
 
     return (

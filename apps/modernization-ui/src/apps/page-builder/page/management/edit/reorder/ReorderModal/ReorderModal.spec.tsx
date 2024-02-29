@@ -48,7 +48,7 @@ describe('when ReorderModal renders', () => {
     it('should display Tab', () => {
         const { getByText } = render(
             <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
-                <DragDropProvider pageData={page} currentTab={0}>
+                <DragDropProvider pageData={page}>
                     <ReorderModal {...props} />
                 </DragDropProvider>
             </PageManagementProvider>
@@ -59,7 +59,7 @@ describe('when ReorderModal renders', () => {
     it('should display Sections', () => {
         const { getByText } = render(
             <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
-                <DragDropProvider pageData={page} currentTab={0}>
+                <DragDropProvider pageData={page}>
                     <ReorderModal {...props} />
                 </DragDropProvider>
             </PageManagementProvider>
