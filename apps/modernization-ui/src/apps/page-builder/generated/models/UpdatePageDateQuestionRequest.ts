@@ -8,7 +8,7 @@ import type { ReportingInfo } from './ReportingInfo';
 export type UpdatePageDateQuestionRequest = {
     adminComments?: string;
     allowFutureDates?: boolean;
-    datamartInfo: ReportingInfo;
+    dataMartInfo: ReportingInfo;
     displayControl?: number;
     enabled: boolean;
     label: string;
@@ -20,11 +20,7 @@ export type UpdatePageDateQuestionRequest = {
 };
 
 export namespace UpdatePageDateQuestionRequest {
-
     export enum mask {
-        DATE = 'DATE',
+        DATE = 'DATE'
     }
-
-
 }
-

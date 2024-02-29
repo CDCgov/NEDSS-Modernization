@@ -7,7 +7,7 @@ import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdatePageTextQuestionRequest = {
     adminComments?: string;
-    datamartInfo: ReportingInfo;
+    dataMartInfo: ReportingInfo;
     defaultValue?: string;
     displayControl?: number;
     enabled: boolean;
@@ -18,4 +18,3 @@ export type UpdatePageTextQuestionRequest = {
     tooltip: string;
     visible: boolean;
 };
-

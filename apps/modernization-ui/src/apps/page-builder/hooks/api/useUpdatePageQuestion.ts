@@ -1,10 +1,13 @@
 import {
+    CancelablePromise,
+    PageQuestionControllerService,
     PagesQuestion,
     UpdatePageCodedQuestionRequest,
     UpdatePageDateQuestionRequest,
     UpdatePageNumericQuestionRequest,
     UpdatePageTextQuestionRequest
 } from 'apps/page-builder/generated';
+import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 export type UpdatePageQuestionRequest =
@@ -44,14 +47,48 @@ export const useUpdatePageQuestion = () => {
 
     useEffect(() => {
         if (state.status === 'updating') {
-            // PageQuestionControllerService.updatePageQuestionUsingPut({
-            //     authorization: authorization(),
-            //     page: state.page,
-            //     questionId: state.questionId,
-            //     request: state.request
-            // })
-            //     .catch((error) => dispatch({ type: 'error', error: error.message }))
-            //     .then((response) => response && dispatch({ type: 'complete', response }));
+            let request: CancelablePromise<PagesQuestion>;
+
+            switch (state.request.questionType) {
+                case 'CODED':
+                    request = PageQuestionControllerService.updateCodedQuestionUsingPut({
+                        authorization: authorization(),
+                        page: state.page,
+                        questionId: state.questionId,
+                        request: state.request
+                    });
+                    break;
+                case 'TEXT':
+                    request = PageQuestionControllerService.updateTextQuestionUsingPut({
+                        authorization: authorization(),
+                        page: state.page,
+                        questionId: state.questionId,
+                        request: state.request
+                    });
+                    break;
+                case 'DATE':
+                    request = PageQuestionControllerService.updateDateQuestionUsingPut({
+                        authorization: authorization(),
+                        page: state.page,
+                        questionId: state.questionId,
+                        request: state.request
+                    });
+                    break;
+                case 'NUMERIC':
+                    request = PageQuestionControllerService.updateNumericQuestionUsingPut({
+                        authorization: authorization(),
+                        page: state.page,
+                        questionId: state.questionId,
+                        request: state.request
+                    });
+                    break;
+                default:
+                    dispatch({ type: 'error', error: 'Failed to update question' });
+                    throw new Error('Failed to determine question type.');
+            }
+            request
+                .catch((error) => dispatch({ type: 'error', error: error.message }))
+                .then((response) => response && dispatch({ type: 'complete', response: response }));
         }
     }, [state.status]);
 

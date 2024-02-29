@@ -7,7 +7,7 @@ import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdatePageNumericQuestionRequest = {
     adminComments?: string;
-    datamartInfo: ReportingInfo;
+    dataMartInfo: ReportingInfo;
     defaultValue?: number;
     displayControl?: number;
     enabled: boolean;
@@ -25,7 +25,6 @@ export type UpdatePageNumericQuestionRequest = {
 };
 
 export namespace UpdatePageNumericQuestionRequest {
-
     export enum mask {
         NUM = 'NUM',
         NUM_DD = 'NUM_DD',
@@ -33,9 +32,6 @@ export namespace UpdatePageNumericQuestionRequest {
         NUM_MM = 'NUM_MM',
         NUM_SN = 'NUM_SN',
         NUM_TEMP = 'NUM_TEMP',
-        NUM_YYYY = 'NUM_YYYY',
+        NUM_YYYY = 'NUM_YYYY'
     }
-
-
 }
-

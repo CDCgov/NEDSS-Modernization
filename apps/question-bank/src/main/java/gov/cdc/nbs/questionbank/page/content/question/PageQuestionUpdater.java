@@ -77,7 +77,7 @@ public class PageQuestionUpdater {
     if (request.tooltip() == null) {
       throw new UpdatePageQuestionException("Tooltip is a required field");
     }
-    if (request.datamartInfo().reportLabel() == null || request.datamartInfo().reportLabel().trim().length() == 0) {
+    if (request.dataMartInfo().reportLabel() == null || request.dataMartInfo().reportLabel().trim().length() == 0) {
       throw new UpdatePageQuestionException("Default label in report is a required field");
     }
     if (request.messagingInfo() == null) {
@@ -117,7 +117,7 @@ public class PageQuestionUpdater {
         request.displayControl(),
         request.defaultValue(),
         request.fieldLength(),
-        request.datamartInfo(),
+        request.dataMartInfo(),
         request.messagingInfo().includedInMessage(),
         request.messagingInfo().messageVariableId(),
         request.messagingInfo().labelInMessage(),
@@ -150,7 +150,7 @@ public class PageQuestionUpdater {
         request.maxValue(),
         request.relatedUnitsLiteral(),
         request.relatedUnitsValueSet(),
-        request.datamartInfo(),
+        request.dataMartInfo(),
         request.messagingInfo().includedInMessage(),
         request.messagingInfo().messageVariableId(),
         request.messagingInfo().labelInMessage(),
@@ -178,7 +178,7 @@ public class PageQuestionUpdater {
         request.displayControl(),
         request.mask().toString(),
         request.allowFutureDates(),
-        request.datamartInfo(),
+        request.dataMartInfo(),
         request.messagingInfo().includedInMessage(),
         request.messagingInfo().messageVariableId(),
         request.messagingInfo().labelInMessage(),
@@ -206,7 +206,7 @@ public class PageQuestionUpdater {
         request.displayControl(),
         request.defaultValue(),
         request.valueSet(),
-        request.datamartInfo(),
+        request.dataMartInfo(),
         request.messagingInfo().includedInMessage(),
         request.messagingInfo().messageVariableId(),
         request.messagingInfo().labelInMessage(),

@@ -60,6 +60,11 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
         setCurrentEditQuestion(undefined);
     };
 
+    const handleQuestionUpdated = () => {
+        setCurrentEditQuestion(undefined);
+        refresh();
+    };
+
     const handleAddQuestionClose = (questions: number[]) => {
         if (questions.length > 0 && subsectionId && page.id) {
             add(questions, subsectionId, page.id);
@@ -108,6 +113,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
             />
             <AddQuestionModal onAddQuestion={handleAddQuestionClose} modal={addQuestionModalRef} />
             <EditQuestionModal
+                onUpdated={handleQuestionUpdated}
                 onClosed={handleEditQuestionClose}
                 question={currentEditQuestion}
                 modal={editQuestionModalRef}

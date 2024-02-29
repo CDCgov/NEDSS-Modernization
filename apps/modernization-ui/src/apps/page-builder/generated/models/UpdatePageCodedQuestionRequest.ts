@@ -7,7 +7,7 @@ import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdatePageCodedQuestionRequest = {
     adminComments?: string;
-    datamartInfo: ReportingInfo;
+    dataMartInfo: ReportingInfo;
     defaultValue?: string;
     displayControl?: number;
     enabled: boolean;

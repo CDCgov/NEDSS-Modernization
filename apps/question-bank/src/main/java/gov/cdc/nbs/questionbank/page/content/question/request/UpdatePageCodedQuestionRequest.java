@@ -16,7 +16,7 @@ public record UpdatePageCodedQuestionRequest(
     Long valueSet,
     String defaultValue,
     // reporting
-    @ApiModelProperty(required = true) ReportingInfo datamartInfo,
+    @ApiModelProperty(required = true) ReportingInfo dataMartInfo,
     // messaging
     @ApiModelProperty(required = true) MessagingInfo messagingInfo,
     // admin

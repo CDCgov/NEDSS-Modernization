@@ -4,10 +4,9 @@ import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { useFetchEditableQuestion } from 'apps/page-builder/hooks/api/useFetchEditableQuestion';
-import { UpdatePageQuestionRequest, useUpdatePageQuestion } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
+import { useUpdatePageQuestion } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
 import { RefObject, useEffect } from 'react';
 import { FormProvider, useForm, useFormState } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { usePageManagement } from '../../usePageManagement';
 import './EditQuestionModal.scss';
 import styles from './edit-question-modal.module.scss';
@@ -16,11 +15,17 @@ type Props = {
     modal: RefObject<ModalRef>;
     question?: PagesQuestion;
     onClosed: () => void;
+    onUpdated: () => void;
 };
-export const EditQuestionModal = ({ modal, question, onClosed }: Props) => {
+export const EditQuestionModal = ({ modal, question, onClosed, onUpdated }: Props) => {
     const handleClose = () => {
         modal.current?.toggleModal();
         onClosed();
+    };
+
+    const handleUpdated = () => {
+        modal.current?.toggleModal();
+        onUpdated();
     };
     return (
         <Modal
@@ -32,7 +37,9 @@ export const EditQuestionModal = ({ modal, question, onClosed }: Props) => {
             aria-labelledby="edit-question-modal"
             aria-describedby="edit-question-modal">
             <div className={styles.modal}>
-                {question && <EditQuestionContent question={question} onClose={handleClose} />}
+                {question && (
+                    <EditQuestionContent question={question} onClose={handleClose} onUpdated={handleUpdated} />
+                )}
             </div>
         </Modal>
     );
@@ -40,20 +47,20 @@ export const EditQuestionModal = ({ modal, question, onClosed }: Props) => {
 
 type ContentProps = {
     onClose: () => void;
+    onUpdated: () => void;
     question: PagesQuestion;
 };
-const EditQuestionContent = ({ onClose, question }: ContentProps) => {
+const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => {
     const { page } = usePageManagement();
     const { response: editableQuestion, fetch } = useFetchEditableQuestion();
     const form = useForm<EditPageQuestionForm>({ mode: 'onBlur' });
     const { alertError, alertSuccess } = useAlert();
-    const { pageId } = useParams();
     const { response, error, update } = useUpdatePageQuestion();
     const { isDirty, isValid } = useFormState(form);
 
     const handleSave = () => {
-        if (pageId && question?.id) {
-            update(Number(pageId), question.id, {} as UpdatePageQuestionRequest);
+        if (question?.id) {
+            update(page.id, question.id, { ...form.getValues() });
         }
     };
 
@@ -81,7 +88,7 @@ const EditQuestionContent = ({ onClose, question }: ContentProps) => {
     useEffect(() => {
         if (response) {
             alertSuccess({ message: 'Successfully updated question' });
-            onClose();
+            onUpdated();
         } else if (error) {
             alertError({ message: 'Failed to update question' });
         }

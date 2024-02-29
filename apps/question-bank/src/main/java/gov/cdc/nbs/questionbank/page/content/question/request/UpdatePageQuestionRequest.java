@@ -19,7 +19,7 @@ public sealed interface UpdatePageQuestionRequest permits UpdatePageTextQuestion
   long displayControl();
 
   // reporting
-  ReportingInfo datamartInfo();
+  ReportingInfo dataMartInfo();
 
   // messaging
   MessagingInfo messagingInfo();

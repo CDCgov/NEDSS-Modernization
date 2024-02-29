@@ -1,4 +1,4 @@
-import { CreateQuestionForm } from 'apps/page-builder/components/AddQuestion/QuestionForm';
+import { AdditionalQuestionFields } from 'apps/page-builder/components/AddQuestion/QuestionForm';
 import { AdministrativeFields } from 'apps/page-builder/components/AddQuestion/fields/AdministrativeFields';
 import { BasicInformationFields } from 'apps/page-builder/components/AddQuestion/fields/BasicInformationFields';
 import { DataMartFields } from 'apps/page-builder/components/AddQuestion/fields/DataMartFields';
@@ -12,7 +12,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { EditFields } from './EditFields';
 import styles from './edit-question-form.module.scss';
 
-export type EditPageQuestionForm = Omit<UpdatePageQuestionRequest & CreateQuestionForm, 'codeSet'> & {
+export type EditPageQuestionForm = Omit<UpdatePageQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';
 };
 

@@ -22,7 +22,7 @@ public record UpdatePageNumericQuestionRequest(
     String relatedUnitsLiteral,
     Long relatedUnitsValueSet,
     // reporting
-    @ApiModelProperty(required = true) ReportingInfo datamartInfo,
+    @ApiModelProperty(required = true) ReportingInfo dataMartInfo,
     // messaging
     @ApiModelProperty(required = true) MessagingInfo messagingInfo,
     // admin
