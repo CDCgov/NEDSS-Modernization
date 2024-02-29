@@ -23,6 +23,7 @@ type CommonProps = {
     getList: (data: QuestionProps[]) => void;
     multiSelected?: boolean;
     header?: string;
+    isSource?: boolean;
 };
 
 type QuestionProps = {
@@ -31,9 +32,12 @@ type QuestionProps = {
     name: string;
     selected: boolean;
     valueSet: string;
+    displayComponent?: number;
 };
 
-const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = true }: CommonProps) => {
+const codedDisplayType = [1024, 1025, 1013, 1007, 1031, 1027, 1028];
+
+const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = true, isSource = false }: CommonProps) => {
     const [activeTab, setActiveTab] = useState(0);
     const [sourceList, setSourceList] = useState<QuestionProps[]>([]);
     const [subsectionOpen, setSubsectionOpen] = useState(false);
@@ -80,16 +84,30 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
         setSourceList(updateList);
     };
 
-    const handleSourceList = (question: QuestionProps[]) => {
-        const newList = question.map((qtn: QuestionProps) => ({
-            name: qtn.name,
-            id: qtn.id,
-            question: qtn.question,
-            valueSet: qtn.valueSet,
-            selected: false
-        }));
+    const isCoded = (question: QuestionProps) => codedDisplayType.includes(question.displayComponent ?? 0);
 
-        setSourceList(newList);
+    const handleSourceList = (question: QuestionProps[]) => {
+        if (isSource) {
+            const filteredList = question.filter(isCoded);
+
+            const newList = filteredList.map((qtn: QuestionProps) => ({
+                name: qtn.name,
+                id: qtn.id,
+                question: qtn.question,
+                valueSet: qtn.valueSet,
+                selected: false
+            }));
+            setSourceList(newList);
+        } else {
+            const newList = question.map((qtn: QuestionProps) => ({
+                name: qtn.name,
+                id: qtn.id,
+                question: qtn.question,
+                valueSet: qtn.valueSet,
+                selected: false
+            }));
+            setSourceList(newList);
+        }
     };
 
     return (

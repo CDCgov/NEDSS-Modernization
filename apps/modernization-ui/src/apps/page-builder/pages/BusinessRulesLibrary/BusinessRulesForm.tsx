@@ -392,6 +392,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         getList={handleChangeSource}
                         multiSelected={false}
                         header="Source question"
+                        isSource={true}
                         pageId={pageId}
                     />
                 </>
