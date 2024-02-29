@@ -14,9 +14,8 @@ class GeneralCodedValueQuery {
     private final QCodeValueGeneral values;
 
     GeneralCodedValueQuery(
-        final JPAQueryFactory factory,
-        final QCodeValueGeneral values
-    ) {
+            final JPAQueryFactory factory,
+            final QCodeValueGeneral values) {
         this.factory = factory;
         this.values = values;
     }
@@ -24,12 +23,11 @@ class GeneralCodedValueQuery {
     Stream<Tuple> all(final String set) {
         return this.factory.select(
                 values.id.code,
-                values.codeShortDescTxt
-            ).from(values)
-            .where(values.id.codeSetNm.eq(set))
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
-            .fetch()
-            .stream();
+                values.codeShortDescTxt).from(values)
+                .where(values.id.codeSetNm.eq(set))
+                .orderBy(new OrderSpecifier<>(Order.ASC, values.codeShortDescTxt))
+                .fetch()
+                .stream();
     }
 
 }

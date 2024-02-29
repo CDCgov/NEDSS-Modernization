@@ -29,19 +29,19 @@
     .questionHeader {
       display: flex;
       align-items: flex-start;
-      width: 70%;
+      width: 45%;
       margin-left: 2.5rem;
 
       .name {
-        font-size: 0.9rem;
-        font-weight: 600;
-      }
-
-      .identifier {
-        font-size: 0.8rem;
-        margin-top: 0.1rem;
-        margin-left: 0.2rem;
-        align-items: center;
+        .title {
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+        .identifier {
+          font-size: 0.7rem;
+          font-weight: 400;
+          margin-left: 0.2rem;
+        }
       }
 
     }
@@ -59,11 +59,11 @@
         }
 
       .inputContent {
-        width: 60%;
+        width: 25rem;
       }
 
       .inputContentCovered {
-        width: 66%;
+        width: 27rem;
       }
 
       .icon {
@@ -80,7 +80,7 @@
     a {
       padding-left: 1rem;
       font-size: 0.875rem;
-      font-weight: 400;
+      font-weight: 650;
     }
   }
 
@@ -105,6 +105,7 @@
   }
 
   .readonlySelectDropdown {
+    width: 27rem;
     &:disabled,
     &:hover,
     &:active,

@@ -16,11 +16,11 @@ import { usePage } from 'page';
 import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
 
 export enum Column {
-    SourceQuestion = 'Source Question',
+    SourceQuestion = 'Source question',
     Logic = 'Logic',
     Values = 'Values',
     Function = 'Function',
-    TargetQuestions = 'Target Questions',
+    TargetQuestions = 'Target(s)',
     ID = 'ID'
 }
 
