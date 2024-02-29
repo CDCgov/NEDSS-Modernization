@@ -5,28 +5,27 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 @Component
 @Transactional
 public class PatientPhoneChangeService {
 
-    private final EntityManager entityManager;
     private final IdGeneratorService idGeneratorService;
+    private final PatientProfileService patientProfileService;
 
     public PatientPhoneChangeService(
-        final EntityManager entityManager,
-        final IdGeneratorService idGeneratorService
+            final IdGeneratorService idGeneratorService,
+            final PatientProfileService patientProfileService
     ) {
-        this.entityManager = entityManager;
         this.idGeneratorService = idGeneratorService;
+        this.patientProfileService = patientProfileService;
     }
 
     public PatientPhoneAdded add(final RequestContext context, final NewPatientPhoneInput input) {
-        Person patient = managed(input.patient());
+        Person patient = patientProfileService.findPatientById(input.patient());
 
         EntityLocatorParticipation added = patient.add(
             new PatientCommand.AddPhone(
@@ -55,9 +54,8 @@ public class PatientPhoneChangeService {
     }
 
     public void update(final RequestContext context, final UpdatePatientPhoneInput input) {
-        Person patient = managed(input.patient());
 
-        patient.update(
+        this.patientProfileService.using(input.patient(), found -> found.update(
             new PatientCommand.UpdatePhone(
                 input.patient(),
                 input.id(),
@@ -73,24 +71,19 @@ public class PatientPhoneChangeService {
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
+        ));
 
     }
 
     public void delete(final RequestContext context, final DeletePatientPhoneInput input) {
-        Person patient = managed(input.patient());
 
-        patient.delete(
+        this.patientProfileService.using(input.patient(), found -> found.delete(
             new PatientCommand.DeletePhone(
                 input.patient(),
                 input.id(),
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
-    }
-
-    private Person managed(final long patient) {
-        return this.entityManager.find(Person.class, patient);
+        ));
     }
 }

@@ -8,9 +8,9 @@ nbs:
       pageBuilder:
         enabled: true
         page:
-          library: 
+          library:
             enabled: true
-          management: 
+          management:
             create:
               enabled: true
             edit:
@@ -36,3 +36,10 @@ testing:
     starting: -20000000 # a negative id should reduce conflicts of ids in a live system
   database:
     image: cdc-sandbox-nbs-mssql
+
+logging:
+  level:
+    gov:
+      cdc:
+        nbs:
+          search: DEBUG

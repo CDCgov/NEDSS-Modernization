@@ -1,39 +1,53 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './BusinessRulesLibrary.scss';
-import { BusinessRuleContext } from '../../context/BusinessContext';
-import { fetchBusinessRules } from './useBusinessRulesAPI';
 import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { Breadcrumb } from 'breadcrumb';
-import { Rule } from '../../generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { authorization } from 'authorization';
+import { Status, usePage } from 'page';
+import { BusinessRuleSort, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
+import { useAlert } from 'alert';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
-    const { searchQuery, sortBy, filter, currentPage, pageSize, setIsLoading } = useContext(BusinessRuleContext);
-    const [rules, setRules] = useState<Rule[]>([]);
-    const [totalElements, setTotalElements] = useState(0);
+    const { search, response, error, isLoading } = useFetchPageRules();
+    const { page: curPage, ready, firstPage, reload } = usePage();
+    const [sort, setSort] = useState<BusinessRuleSort | undefined>(undefined);
+    const [query, setQuery] = useState<string>('');
+    const { showAlert } = useAlert();
+
     const { page } = useGetPageDetails();
 
-    const getBusinessRules = async () => {
-        const token = authorization();
-        setIsLoading(true);
-
-        try {
-            if (page) {
-                const response = await fetchBusinessRules(token, searchQuery, page.id, sortBy, currentPage, pageSize);
-                const { content, totalElements } = response;
-                setRules(content || []);
-                setTotalElements(totalElements || 0);
-                setIsLoading(false);
-            }
-        } catch (error) {
-            console.error('Error', error);
-        }
-    };
+    useEffect(() => {
+        search({ sort: undefined, page: 0, pageSize: 10 });
+    }, []);
 
     useEffect(() => {
-        getBusinessRules();
-    }, [searchQuery, currentPage, pageSize, sortBy, filter, page]);
+        if (curPage.status === Status.Requested) {
+            search({
+                pageId: page?.id,
+                page: curPage.current - 1,
+                pageSize: curPage.pageSize,
+                sort: sort,
+                query: query
+            });
+        }
+    }, [curPage.status]);
+
+    useEffect(() => {
+        if (curPage.current === 1) {
+            reload();
+        } else {
+            firstPage();
+        }
+    }, [query, sort]);
+
+    useEffect(() => {
+        if (response) {
+            const currentPage = response?.number ? response?.number + 1 : 1;
+            ready(response?.totalElements ?? 0, currentPage);
+        } else if (error) {
+            showAlert({ message: error, type: 'error' });
+        }
+    }, [response, error]);
 
     return (
         <>
@@ -54,9 +68,11 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
                 <div className="business-rules-library__container">
                     <div className="business-rules-library__table">
                         <BusinessRulesLibraryTable
-                            summaries={rules}
+                            summaries={response?.content ?? []}
                             qtnModalRef={modalRef}
-                            pages={{ currentPage, pageSize, totalElements }}
+                            onSortChange={setSort}
+                            onQueryChange={setQuery}
+                            isLoading={isLoading}
                         />
                     </div>
                 </div>

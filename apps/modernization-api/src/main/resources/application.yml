@@ -22,6 +22,9 @@ nbs:
     port: 1433
   search:
     patient:
+      index:
+        name: person
+        mapping: classpath:search/patient/patient.index.json
       results:
         max: 25
   authentication:

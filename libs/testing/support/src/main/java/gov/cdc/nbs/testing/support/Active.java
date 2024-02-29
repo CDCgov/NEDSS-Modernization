@@ -1,31 +1,53 @@
 package gov.cdc.nbs.testing.support;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-@Component
 public class Active<I> {
 
+  private final Supplier<I> initializer;
   private I item;
+
+  public Active(final Supplier<I> initializer) {
+    this.initializer = initializer;
+  }
+
+  public Active() {
+    this(() -> null);
+  }
+
+  public Active(final I initial) {
+    this(() -> initial);
+  }
 
   public void active(final I next) {
     this.item = next;
   }
 
   public void active(final UnaryOperator<I> next, final Supplier<I> initializer) {
-    if (this.item != null) {
-      this.item = initializer.get();
+    I existing = existing();
+
+    if (existing == null) {
+      existing = initializer.get();
     }
-    this.item = next.apply(this.item);
+
+    this.item = next.apply(existing);
   }
 
   public void active(final UnaryOperator<I> next) {
-    if (this.item != null) {
+    I existing = existing();
+    if (existing != null) {
       this.item = next.apply(this.item);
     }
+  }
+
+  private I existing() {
+    if (this.item == null) {
+      this.item = this.initializer.get();
+    }
+
+    return this.item;
   }
 
   public void reset() {
@@ -33,7 +55,7 @@ public class Active<I> {
   }
 
   public Optional<I> maybeActive() {
-    return Optional.ofNullable(this.item);
+    return Optional.ofNullable(existing());
   }
 
   public I active() {

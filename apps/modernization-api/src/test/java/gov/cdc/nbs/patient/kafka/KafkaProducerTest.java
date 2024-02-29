@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.kafka;
 
 import gov.cdc.nbs.message.patient.event.PatientRequest;
-import gov.cdc.nbs.repository.elasticsearch.ElasticsearchPersonRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -23,36 +22,33 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 @ExtendWith(MockitoExtension.class)
 class KafkaProducerTest {
 
-    @Mock
-    private KafkaTemplate<String, PatientRequest> kafkaEnvelopeTemplate;
+  @Mock
+  private KafkaTemplate<String, PatientRequest> kafkaEnvelopeTemplate;
 
-    @Mock
-    ElasticsearchPersonRepository elasticPersonRepository;
+  @InjectMocks
+  private KafkaProducer producer;
 
-    @InjectMocks
-    private KafkaProducer producer;
+  public KafkaProducerTest() {
+    producer = new KafkaProducer();
+  }
 
-    public KafkaProducerTest() {
-        producer = new KafkaProducer();
-    }
+  @Test
+  void testPatientSearchEvent() {
+    var message = new PatientRequest.Delete("Request-ID", 1L, 2L);
+    ListenableFuture<SendResult<String, PatientRequest>> future = new SettableListenableFuture<>();
+    Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
 
-    @Test
-    void testPatientSearchEvent() {
-        var message = new PatientRequest.Delete("Request-ID", 1L, 2L);
-        ListenableFuture<SendResult<String, PatientRequest>> future = new SettableListenableFuture<>();
-        Mockito.when(kafkaEnvelopeTemplate.send(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(future);
+    producer.requestPatientEventEnvelope(message);
 
-        producer.requestPatientEventEnvelope(message);
+    ArgumentCaptor<PatientRequest> envelopeEventArgumentCaptor = ArgumentCaptor.forClass(PatientRequest.class);
+    verify(kafkaEnvelopeTemplate).send(nullable(String.class), eq("Request-ID"),
+        envelopeEventArgumentCaptor.capture());
 
-        ArgumentCaptor<PatientRequest> envelopeEventArgumentCaptor = ArgumentCaptor.forClass(PatientRequest.class);
-        verify(kafkaEnvelopeTemplate).send(nullable(String.class), eq("Request-ID"),
-            envelopeEventArgumentCaptor.capture());
+    PatientRequest actualRecord = envelopeEventArgumentCaptor.getValue();
+    assertThat(actualRecord.requestId()).isEqualTo("Request-ID");
+    assertThat(actualRecord.patientId()).isEqualTo(1L);
+    assertThat(actualRecord.userId()).isEqualTo(2L);
 
-        PatientRequest actualRecord = envelopeEventArgumentCaptor.getValue();
-        assertThat(actualRecord.requestId()).isEqualTo("Request-ID");
-        assertThat(actualRecord.patientId()).isEqualTo(1L);
-        assertThat(actualRecord.userId()).isEqualTo(2L);
-
-        verifyNoMoreInteractions(kafkaEnvelopeTemplate);
-    }
+    verifyNoMoreInteractions(kafkaEnvelopeTemplate);
+  }
 }

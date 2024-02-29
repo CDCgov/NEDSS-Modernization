@@ -46,7 +46,7 @@ const props = {
 };
 
 const { getByTestId } = render(
-    <DragDropProvider pageData={content} currentTab={0}>
+    <DragDropProvider pageData={content}>
         <DragDropContext onDragEnd={() => {}}>
             <Droppable droppableId="testId">
                 {(provided) => (

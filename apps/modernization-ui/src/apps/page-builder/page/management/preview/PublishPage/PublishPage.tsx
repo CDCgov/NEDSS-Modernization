@@ -29,7 +29,7 @@ export const PublishPage = ({ modalRef }: Props) => {
                 authorization,
                 page: page.id
             }).then((response) => {
-                setConditions(response.conditions);
+                setConditions(response?.conditions);
             });
         }
     }, [page]);

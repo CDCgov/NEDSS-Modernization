@@ -77,7 +77,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const handleChangeSource = (data: QuestionProps[]) => {
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
-        form.setValue('sourceText', data[0].name);
+        form.setValue('sourceText', `${data[0].name} (${data[0].question})`);
         setSourceDescription(`${data[0].name} (${data[0].question})`);
         fetchSourceValueSets(data[0].valueSet);
     };
@@ -177,7 +177,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                 <Grid col={9}>
                     {form.watch('sourceText') ? (
                         <div className="source-question-display">
-                            {form.getValues('sourceText')} ({form.getValues('sourceIdentifier')})
+                            {form.getValues('sourceText')}
                             <Icon.Close onClick={handleResetSourceQuestion} />
                         </div>
                     ) : (

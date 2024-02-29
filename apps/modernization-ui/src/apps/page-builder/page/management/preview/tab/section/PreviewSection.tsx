@@ -1,19 +1,24 @@
 import { PagesSection } from 'apps/page-builder/generated';
-import { Heading } from 'components/heading';
 
 import styles from './preview-section.module.scss';
+import { PreviewSubsection } from '../subsection/PreviewSubsection';
+import { PreviewSectionHeader } from './PreviewSectionHeader';
+import { useState } from 'react';
 
 type PreviewSectionType = {
     section: PagesSection;
 };
 
 const PreviewSection = ({ section }: PreviewSectionType) => {
+    const [isExpanded, setIsExpanded] = useState(true);
+    const handleExpandedChange = (expanded: boolean) => {
+        setIsExpanded(expanded);
+    };
     return (
         <section className={styles.section}>
-            <header>
-                <Heading level={2}>{section.name}</Heading>
-                <p>{section.subSections.length} sub sections</p>
-            </header>
+            <PreviewSectionHeader section={section} isExpanded={isExpanded} onExpandedChange={handleExpandedChange} />
+            {isExpanded &&
+                section?.subSections.map((subsection, k) => <PreviewSubsection subsection={subsection} key={k} />)}
         </section>
     );
 };
