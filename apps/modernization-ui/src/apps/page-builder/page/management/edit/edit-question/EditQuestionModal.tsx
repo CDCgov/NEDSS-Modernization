@@ -11,6 +11,7 @@ import { usePageManagement } from '../../usePageManagement';
 import './EditQuestionModal.scss';
 import styles from './edit-question-modal.module.scss';
 import { EditPageQuestion, EditPageQuestionForm } from './form/EditPageQuestion';
+import { Spinner } from 'components/Spinner';
 type Props = {
     modal: RefObject<ModalRef>;
     question?: PagesQuestion;
@@ -55,7 +56,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
     const { response: editableQuestion, fetch } = useFetchEditableQuestion();
     const form = useForm<EditPageQuestionForm>({ mode: 'onBlur' });
     const { alertError, alertSuccess } = useAlert();
-    const { response, error, update } = useUpdatePageQuestion();
+    const { isLoading, response, error, update } = useUpdatePageQuestion();
     const { isDirty, isValid } = useFormState(form);
 
     const handleSave = () => {
@@ -96,6 +97,11 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
 
     return (
         <>
+            {isLoading && (
+                <div className={styles.loadingIndicator}>
+                    <Spinner />
+                </div>
+            )}
             <CloseableHeader title="Edit question" onClose={onClose} />
             <div className={styles.content}>
                 <div className={styles.formWrapper}>

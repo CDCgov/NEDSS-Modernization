@@ -10,4 +10,10 @@
         display: flex;
         justify-content: center;
     }
+
+    .loadingIndicator {
+        .spinner {
+            max-height: 80svh;
+        }
+    }
 }
