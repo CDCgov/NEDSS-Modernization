@@ -386,6 +386,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         getList={handleChangeTargetQuestion}
                         pageId={pageId}
                         header="Target question"
+                        ruleFunction={ruleFunction}
                     />
                     <TargetQuestion
                         modalRef={sourceModalRef}
@@ -394,6 +395,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         header="Source question"
                         isSource={true}
                         pageId={pageId}
+                        ruleFunction={ruleFunction}
                     />
                 </>
             )}

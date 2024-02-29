@@ -9,7 +9,7 @@ import {
     Tag,
     Icon as UswIcon
 } from '@trussworks/react-uswds';
-import { PagesResponse } from 'apps/page-builder/generated';
+import { PagesResponse, Rule } from 'apps/page-builder/generated';
 import { RefObject, useState } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './TargetQuestion.scss';
@@ -24,6 +24,7 @@ type CommonProps = {
     multiSelected?: boolean;
     header?: string;
     isSource?: boolean;
+    ruleFunction: string;
 };
 
 type QuestionProps = {
@@ -33,11 +34,20 @@ type QuestionProps = {
     selected: boolean;
     valueSet: string;
     displayComponent?: number;
+    dataType?: string;
 };
 
 const codedDisplayType = [1024, 1025, 1013, 1007, 1031, 1027, 1028];
 
-const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = true, isSource = false }: CommonProps) => {
+const TargetQuestion = ({
+    modalRef,
+    pageId,
+    getList,
+    header,
+    multiSelected = true,
+    isSource = false,
+    ruleFunction
+}: CommonProps) => {
     const [activeTab, setActiveTab] = useState(0);
     const [sourceList, setSourceList] = useState<QuestionProps[]>([]);
     const [subsectionOpen, setSubsectionOpen] = useState(false);
@@ -86,18 +96,33 @@ const TargetQuestion = ({ modalRef, pageId, getList, header, multiSelected = tru
 
     const isCoded = (question: QuestionProps) => codedDisplayType.includes(question.displayComponent ?? 0);
 
+    const isDate = (question: QuestionProps) => question.dataType === 'DATE';
+
     const handleSourceList = (question: QuestionProps[]) => {
         if (isSource) {
-            const filteredList = question.filter(isCoded);
+            if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+                const filteredList = question.filter(isDate);
 
-            const newList = filteredList.map((qtn: QuestionProps) => ({
-                name: qtn.name,
-                id: qtn.id,
-                question: qtn.question,
-                valueSet: qtn.valueSet,
-                selected: false
-            }));
-            setSourceList(newList);
+                const newList = filteredList.map((qtn: QuestionProps) => ({
+                    name: qtn.name,
+                    id: qtn.id,
+                    question: qtn.question,
+                    valueSet: qtn.valueSet,
+                    selected: false
+                }));
+                setSourceList(newList);
+            } else {
+                const filteredList = question.filter(isCoded);
+
+                const newList = filteredList.map((qtn: QuestionProps) => ({
+                    name: qtn.name,
+                    id: qtn.id,
+                    question: qtn.question,
+                    valueSet: qtn.valueSet,
+                    selected: false
+                }));
+                setSourceList(newList);
+            }
         } else {
             const newList = question.map((qtn: QuestionProps) => ({
                 name: qtn.name,
