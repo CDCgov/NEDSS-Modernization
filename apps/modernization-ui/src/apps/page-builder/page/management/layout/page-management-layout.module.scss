@@ -33,6 +33,12 @@
             text-transform: uppercase;
             background: colors.$info;
         }
+        .modeEditing {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.125rem;
+            text-transform: uppercase;
+            background: colors.$warning;
+        }
     }
 }
 
