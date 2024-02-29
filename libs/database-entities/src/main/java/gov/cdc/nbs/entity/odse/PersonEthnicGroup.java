@@ -2,19 +2,12 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientEthnicityHistoryListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -22,6 +15,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "Person_ethnic_group")
+@EntityListeners(PatientEthnicityHistoryListener.class)
 public class PersonEthnicGroup {
     @EmbeddedId
     private PersonEthnicGroupId id;
