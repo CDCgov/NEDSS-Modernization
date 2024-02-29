@@ -13,7 +13,7 @@ import { ConfirmationModal } from 'confirmation';
 const AddBusinessRule = () => {
     const navigate = useNavigate();
     const form = useForm<CreateRuleRequest>({
-        defaultValues: { targetType: Rule.targetType.SUBSECTION, anySourceValue: false },
+        defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false },
         mode: 'onChange'
     });
 
@@ -135,6 +135,10 @@ const AddBusinessRule = () => {
 
     const title = !ruleId ? 'Add new' : 'Edit';
     const ruleFunction = form.watch('ruleFunction');
+
+    useEffect(() => {
+        form.reset({ ruleFunction: ruleFunction, targetType: Rule.targetType.QUESTION });
+    }, [ruleFunction]);
 
     return (
         <>

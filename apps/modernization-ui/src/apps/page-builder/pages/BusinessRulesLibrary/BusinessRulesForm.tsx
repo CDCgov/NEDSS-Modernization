@@ -45,6 +45,8 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const [targetQuestions, setTargetQuestions] = useState<QuestionProps[]>([]);
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
+    const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
+
     const { pageId } = useParams();
     const [sourceDescription, setSourceDescription] = useState<string>(
         form.watch('sourceText') && form.watch('sourceIdentifier')
@@ -171,6 +173,20 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
+    useEffect(() => {
+        if (anySourceValueToggle) {
+            form.reset({
+                ...form.getValues(),
+                comparator: Rule.comparator.EQUAL_TO,
+                sourceValues: undefined
+            });
+        }
+    }, [anySourceValueToggle]);
+
+    useEffect(() => {
+        setAnySource(form.watch('anySourceValue'));
+    }, [form.watch('anySourceValue')]);
+
     return (
         <>
             <Grid row className="inline-field">
@@ -229,7 +245,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                 control={form.control}
                 name="comparator"
                 rules={{
-                    required: { value: true, message: 'This field is required.' }
+                    required: { value: anySourceValueToggle ?? false, message: 'This field is required.' }
                 }}
                 render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <Grid row className="inline-field">
@@ -241,13 +257,12 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                         <Grid col={9}>
                             <SelectInput
                                 className="text-input"
-                                defaultValue={value}
+                                defaultValue={anySourceValueToggle ? Rule.comparator.EQUAL_TO : value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 options={logicList}
                                 error={error?.message}
-                                disabled={form.watch('anySourceValue')}
-                                required
+                                disabled={anySourceValueToggle}
                             />
                         </Grid>
                     </Grid>
