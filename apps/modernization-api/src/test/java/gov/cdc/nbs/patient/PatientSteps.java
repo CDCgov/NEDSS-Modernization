@@ -160,4 +160,9 @@ public class PatientSteps {
   public void the_patient_has_the_race_category(final String category) {
     patient.maybeActive().ifPresent(current -> mother.withRace(current, category));
   }
+
+  @Given("the patient race of {raceCategory} includes {raceDetail}")
+  public void the_patient_race_of_category_includes(final String category, final String detail) {
+    patient.maybeActive().ifPresent(current -> mother.withRaceIncluding(current, category, detail));
+  }
 }

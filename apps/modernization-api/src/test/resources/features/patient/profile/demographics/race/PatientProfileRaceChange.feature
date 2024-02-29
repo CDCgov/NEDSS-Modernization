@@ -47,6 +47,19 @@ Feature: Patient Profile Race Changes
     Then the patient's race includes Bangladeshi within the category Asian
     And the patient's race includes Taiwanese within the category Asian
 
+  Scenario: I can change a patient's existing detailed races
+    Given the patient has the race category Asian
+    And the patient race of Asian includes Bangladeshi
+    And the patient race of Asian includes Taiwanese
+    And the patient has the race category Other
+    And I want to set the patient's detailed race to Taiwanese
+    When I update a patient's race category of Asian as of 04/17/2020
+    And I view the Patient Profile Races
+    Then the patient's race includes the category Other
+    And the patient's race includes Taiwanese within the category Asian
+    And the patient's race does not include Bangladeshi within the category Asian
+    And the patient race history contains the previous version
+
   Scenario: I can remove a patient's existing race
     Given the patient has the race category Asian
     And the patient has the race category Other

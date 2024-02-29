@@ -131,4 +131,16 @@ public class PatientProfileRaceSteps {
             ).value(hasItem(equalTo(detail)))
         );
   }
+
+  @Then("the patient's race does not include {raceDetail} within the category {raceCategory}")
+  public void the_patients_race_does_not_include_the_detail(final String detail, final String category) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findPatientProfile.races.content[?(@.category.id=='%s')].detailed[?(@.id=='%s')]",
+                category,
+                detail
+            ).doesNotExist()
+        );
+  }
 }
