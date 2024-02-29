@@ -1,5 +1,6 @@
 import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
-import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { LastUpdatedByUserAutocomplete } from 'options/autocompete/LastUpdatedByUserAutocomplete';
+import { CreatedByUserAutocomplete } from 'options/autocompete/CreatedByUserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -392,15 +393,27 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
             <Controller
                 control={form.control}
                 name="createdBy"
-                render={({ field: { onChange } }) => (
-                    <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                render={({ field: { onChange, value, name } }) => (
+                    <CreatedByUserAutocomplete
+                        form={form}
+                        id={name}
+                        label="Event created by user"
+                        defaultValue={value as string | undefined}
+                        onChange={onChange}
+                    />
                 )}
             />
             <Controller
                 control={form.control}
                 name="lastUpdatedBy"
-                render={({ field: { onChange } }) => (
-                    <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
+                render={({ field: { onChange, value, name } }) => (
+                    <LastUpdatedByUserAutocomplete
+                        form={form}
+                        id={name}
+                        label="Event updated by user"
+                        defaultValue={value as string | undefined}
+                        onChange={onChange}
+                    />
                 )}
             />
             <Controller

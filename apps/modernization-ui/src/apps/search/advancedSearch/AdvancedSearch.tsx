@@ -274,7 +274,6 @@ export const AdvancedSearch = () => {
 
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
-
         if (!isEmpty(filter)) {
             // send filter for encryption
             const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
