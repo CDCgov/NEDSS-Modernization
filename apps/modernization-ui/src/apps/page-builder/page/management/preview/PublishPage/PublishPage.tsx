@@ -2,7 +2,7 @@ import { Label, Textarea, Button, Form, ModalRef, ModalToggleButton, ErrorMessag
 import { maxLengthRule } from 'validation/entry';
 import { Controller, useForm } from 'react-hook-form';
 import styles from './publish-page.module.scss';
-import { RefObject, useEffect, useState } from 'react';
+import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import { authorization as getAuthorization } from 'authorization';
 import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
@@ -10,9 +10,10 @@ import { useAlert } from 'alert';
 
 type Props = {
     modalRef: RefObject<ModalRef>;
+    onPublishing?: Dispatch<SetStateAction<boolean>>;
 };
 
-export const PublishPage = ({ modalRef }: Props) => {
+export const PublishPage = ({ modalRef, onPublishing }: Props) => {
     const { page, refresh } = usePageManagement();
     const publishForm = useForm({
         mode: 'onBlur',
@@ -35,21 +36,13 @@ export const PublishPage = ({ modalRef }: Props) => {
     }, [page]);
 
     const onSubmit = handleSubmit((data) => {
-        try {
-            PagePublishControllerService.publishPageUsingPut({
-                authorization,
-                id: page.id,
-                request: { versionNotes: data.notes }
-            }).then(() => {
-                modalRef.current?.toggleModal();
-                showAlert({
-                    type: 'success',
-                    header: 'Success',
-                    message: `${page.name} was successfully published.`
-                });
-                refresh();
-            });
-        } catch (error) {
+        if (onPublishing) {
+            onPublishing(true);
+        }
+        const onError = (error: Error | unknown) => {
+            if (onPublishing) {
+                onPublishing(false);
+            }
             modalRef.current?.toggleModal();
             if (error instanceof Error) {
                 console.error(error);
@@ -66,6 +59,28 @@ export const PublishPage = ({ modalRef }: Props) => {
                     message: 'An unknown error occurred'
                 });
             }
+        };
+        try {
+            PagePublishControllerService.publishPageUsingPut({
+                authorization,
+                id: page.id,
+                request: { versionNotes: data.notes }
+            })
+                .then(() => {
+                    if (onPublishing) {
+                        onPublishing(false);
+                    }
+                    modalRef.current?.toggleModal();
+                    showAlert({
+                        type: 'success',
+                        header: 'Success',
+                        message: `${page.name} was successfully published.`
+                    });
+                    refresh();
+                })
+                .catch(onError);
+        } catch (error) {
+            onError(error);
         }
     });
 
