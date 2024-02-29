@@ -56,12 +56,14 @@ const AddBusinessRule = () => {
     }, [ruleId]);
 
     const onSubmit = form.handleSubmit(async (data) => {
-        if (!ruleId) {
-            PageRuleControllerService.createBusinessRuleUsingPost({
-                authorization: authorization(),
-                id: Number(pageId),
-                request: data
-            }).then(() => {
+        try {
+            if (!ruleId) {
+                await PageRuleControllerService.createBusinessRuleUsingPost({
+                    authorization: authorization(),
+                    id: Number(pageId),
+                    request: data
+                });
+
                 showAlert({
                     type: 'success',
                     message: (
@@ -71,30 +73,32 @@ const AddBusinessRule = () => {
                         </>
                     )
                 });
-            });
-        } else {
-            PageRuleControllerService.updatePageRuleUsingPut({
-                authorization: authorization(),
-                id: Number(pageId),
-                ruleId: Number(ruleId),
-                request: data
-            })
-                .then(() => {
-                    showAlert({
-                        type: 'success',
-                        message: (
-                            <>
-                                The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
-                                updated. Please click the unique name to edit.
-                            </>
-                        )
-                    });
-                })
-                .catch((err) => {
-                    console.log('error', err);
+                handleCancel();
+            } else {
+                await PageRuleControllerService.updatePageRuleUsingPut({
+                    authorization: authorization(),
+                    id: Number(pageId),
+                    ruleId: Number(ruleId),
+                    request: data
                 });
+
+                showAlert({
+                    type: 'success',
+                    message: (
+                        <>
+                            The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
+                            updated. Please click the unique name to edit.
+                        </>
+                    )
+                });
+                handleCancel();
+            }
+        } catch (error) {
+            showAlert({
+                type: 'error',
+                message: 'There was an error. Please try again.'
+            });
         }
-        handleCancel();
     });
 
     const handleCancel = () => {
