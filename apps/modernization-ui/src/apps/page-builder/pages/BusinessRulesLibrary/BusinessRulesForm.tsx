@@ -192,7 +192,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             <Grid row className="inline-field">
                 <Grid col={3}>
                     <Label className="input-label" htmlFor="sourceQuestion" requiredMarker>
-                        Source Question
+                        Source question
                     </Label>
                 </Grid>
                 <Grid col={9}>
@@ -380,7 +380,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     <Grid row className="inline-field">
                         <Grid col={3} className="rule-description-label">
                             <Label htmlFor={name} className="input-label">
-                                Rule Description
+                                Rule description
                             </Label>
                         </Grid>
                         <Grid col={9}>
