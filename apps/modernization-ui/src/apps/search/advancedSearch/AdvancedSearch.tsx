@@ -330,12 +330,9 @@ export const AdvancedSearch = () => {
     };
 
     const handleClearAll = () => {
-        // Clears validation, search submit will not work. Does not change values shown in autocomplete
-        const elementCreatedBy = document.querySelector('input[name="createdBy"]');
-        const elementLastUpdatedBy = document.querySelector('input[name="lastUpdatedBy"]');
         setTimeout(() => {
-            elementCreatedBy.value = '';
-            elementLastUpdatedBy.value = '';
+            (document.getElementById('lastUpdatedBy') as HTMLInputElement).value = '';
+            (document.getElementById('createdBy') as HTMLInputElement).value = '';
         }, 700);
 
         setPersonFilter({ recordStatus: [RecordStatus.Active] });
