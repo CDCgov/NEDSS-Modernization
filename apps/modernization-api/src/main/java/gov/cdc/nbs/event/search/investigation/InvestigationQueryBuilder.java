@@ -82,8 +82,12 @@ public class InvestigationQueryBuilder {
     }
     // pregnancy status
     if (filter.getPregnancyStatus() != null) {
-      var status = filter.getPregnancyStatus().toString().substring(0, 1);
-      builder.must(QueryBuilders.matchQuery(Investigation.PREGNANT_IND_CD, status));
+      builder.must(
+          QueryBuilders.termQuery(
+              Investigation.PREGNANT_IND_CD,
+              filter.getPregnancyStatus().value()
+          )
+      );
     }
     // Event Id / Type
     if (filter.getEventId() != null) {
