@@ -166,12 +166,11 @@ public class PatientSteps {
     patient.maybeActive().ifPresent(current -> mother.withRace(current, category));
   }
 
-<<<<<<< HEAD
   @Given("the patient race of {raceCategory} includes {raceDetail}")
   public void the_patient_race_of_category_includes(final String category, final String detail) {
     patient.maybeActive().ifPresent(current -> mother.withRaceIncluding(current, category, detail));
   }
-=======
+
   @Given("$the patient has the ethnicity {ethnicity}^")
   public void the_patient_has_the_ethnicity(final String ethnicity) {
     patient.maybeActive().ifPresent(current -> mother.withEthnicity(current, ethnicity));
@@ -181,6 +180,4 @@ public class PatientSteps {
   public void the_patient_has_the_ethnicity_specifically(final String ethnicity, final String detail) {
     patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, ethnicity, detail));
   }
-
->>>>>>> main
 }
