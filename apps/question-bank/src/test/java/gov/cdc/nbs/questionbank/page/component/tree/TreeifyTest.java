@@ -223,6 +223,7 @@ class TreeifyTest {
             "rdb-column-name",
             "default-label-in-report",
             "dataMart-column-name",
+            false,
             false
         )
     ).collect(Treeify.asTree());
@@ -282,6 +283,7 @@ class TreeifyTest {
             "rdb-column-name",
             "default-label-in-report",
             "dataMart-column-name",
+            false,
             false
         ),
         new FlattenedComponent(13L, 1010, "Tab", true, 6)

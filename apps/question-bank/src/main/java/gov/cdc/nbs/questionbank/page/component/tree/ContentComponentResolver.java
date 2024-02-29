@@ -56,7 +56,8 @@ class ContentComponentResolver {
         component.defaultRdbTableName(),
         component.rdbColumnName(),
         component.defaultLabelInReport(),
-        component.dataMartColumnName()
+        component.dataMartColumnName(),
+        component.isPublished()
     );
   }
 

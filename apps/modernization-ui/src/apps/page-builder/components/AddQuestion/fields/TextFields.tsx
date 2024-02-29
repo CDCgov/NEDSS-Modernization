@@ -8,8 +8,10 @@ import { maxLengthRule } from 'validation/entry';
 
 type Props = {
     maskOptions: Option[];
+    editing?: boolean;
+    published?: boolean;
 };
-export const TextFields = ({ maskOptions }: Props) => {
+export const TextFields = ({ maskOptions, editing = false, published = false }: Props) => {
     const form = useFormContext<CreateTextQuestionRequest>();
     const mask = useWatch({ control: form.control, name: 'mask', exact: true });
     const [textMaskOptions, setTextMaskOptions] = useState<Option[]>([]);
@@ -39,7 +41,7 @@ export const TextFields = ({ maskOptions }: Props) => {
             <Controller
                 control={form.control}
                 name="mask"
-                rules={{ required: { value: true, message: 'Mask is required' } }}
+                rules={{ required: { value: !editing, message: 'Mask is required' } }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Mask"
@@ -54,7 +56,8 @@ export const TextFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required
+                        required={!editing}
+                        disabled={editing}
                     />
                 )}
             />
@@ -63,7 +66,7 @@ export const TextFields = ({ maskOptions }: Props) => {
                 name="fieldLength"
                 rules={{
                     required: {
-                        value: mask === CreateTextQuestionRequest.mask.TXT,
+                        value: !published && mask === CreateTextQuestionRequest.mask.TXT,
                         message: 'Field length is required'
                     },
                     ...maxLengthRule(4)
@@ -81,8 +84,8 @@ export const TextFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={mask !== CreateTextQuestionRequest.mask.TXT}
-                        required={mask === CreateTextQuestionRequest.mask.TXT}
+                        disabled={published || mask !== CreateTextQuestionRequest.mask.TXT}
+                        required={!published && mask === CreateTextQuestionRequest.mask.TXT}
                     />
                 )}
             />

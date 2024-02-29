@@ -1,16 +1,29 @@
 package gov.cdc.nbs.questionbank.page.content.question.request;
 
-public record UpdatePageQuestionRequest(
-    String questionLabel,
-    String tooltip,
-    String display,
-    String enabled,
-    String required,
-    String defaultValue,
-    String fieldLength,
-    String defaultLabelInReport,
-    String dataMartColumnName,
-    String adminComments
-) {
+import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 
+public sealed interface UpdatePageQuestionRequest permits UpdatePageTextQuestionRequest,
+    UpdatePageNumericQuestionRequest, UpdatePageDateQuestionRequest, UpdatePageCodedQuestionRequest {
+  // general
+  String label();
+
+  String tooltip();
+
+  boolean visible();
+
+  boolean enabled();
+
+  boolean required();
+
+  long displayControl();
+
+  // reporting
+  ReportingInfo datamartInfo();
+
+  // messaging
+  MessagingInfo messagingInfo();
+
+  // admin
+  String adminComments();
 }

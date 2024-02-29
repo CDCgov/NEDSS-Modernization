@@ -150,7 +150,7 @@ public class QuestionRequestMother {
         UpdateTextQuestionRequest updateTextQuestionRequest = new UpdateTextQuestionRequest();
         setCommon(updateTextQuestionRequest);
         updateTextQuestionRequest.setType(UpdateQuestionRequest.DataType.TEXT);
-        updateTextQuestionRequest.setMask(UpdateTextQuestionRequest.TextMask.TXT);
+        updateTextQuestionRequest.setMask(CreateTextQuestionRequest.TextMask.TXT);
         updateTextQuestionRequest.setFieldLength(10);
         updateTextQuestionRequest.setDefaultValue("default value");
         return updateTextQuestionRequest;
@@ -160,7 +160,7 @@ public class QuestionRequestMother {
         UpdateDateQuestionRequest updateDateQuestionRequest = new UpdateDateQuestionRequest();
         setCommon(updateDateQuestionRequest);
         updateDateQuestionRequest.setType(UpdateQuestionRequest.DataType.DATE);
-        updateDateQuestionRequest.setMask(UpdateDateQuestionRequest.DateMask.DATE);
+        updateDateQuestionRequest.setMask(CreateDateQuestionRequest.DateMask.DATE);
         updateDateQuestionRequest.setAllowFutureDates(true);
         return updateDateQuestionRequest;
     }
@@ -178,7 +178,7 @@ public class QuestionRequestMother {
         UpdateNumericQuestionRequest updateNumericQuestionRequest = new UpdateNumericQuestionRequest();
         setCommon(updateNumericQuestionRequest);
         updateNumericQuestionRequest.setType(UpdateQuestionRequest.DataType.NUMERIC);
-        updateNumericQuestionRequest.setMask(UpdateNumericQuestionRequest.NumericMask.NUM);
+        updateNumericQuestionRequest.setMask(CreateNumericQuestionRequest.NumericMask.NUM);
         updateNumericQuestionRequest.setMinValue(10l);
         updateNumericQuestionRequest.setMaxValue(50l);
         updateNumericQuestionRequest.setDefaultValue(25l);

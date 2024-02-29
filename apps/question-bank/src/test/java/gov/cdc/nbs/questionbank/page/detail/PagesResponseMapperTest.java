@@ -289,8 +289,8 @@ class PagesResponseMapperTest {
                             "default-rdb-table-name",
                             "rdb-column-name",
                             "default-label-in-report",
-                            "dataMart-column-name"
-
+                            "dataMart-column-name",
+                            false
                         )
                     )
                 )

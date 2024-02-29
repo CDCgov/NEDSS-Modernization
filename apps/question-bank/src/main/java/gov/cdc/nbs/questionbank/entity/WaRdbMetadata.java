@@ -117,4 +117,15 @@ public class WaRdbMetadata {
     this.recordStatusTime = command.requestedOn();
   }
 
+  public void update(
+      String defaultLabelInReport,
+      String dataMartColumnName,
+      long user,
+      Instant requestedOn) {
+    this.rptAdminColumnNm = defaultLabelInReport;
+    this.userDefinedColumnNm = dataMartColumnName;
+    this.lastChgTime = requestedOn;
+    this.lastChgUserId = user;
+  }
+
 }

@@ -1,16 +1,26 @@
-import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { RefObject } from 'react';
-import './EditQuestionModal.scss';
-import styles from './edit-question-modal.module.scss';
+import { Button, Modal, ModalRef } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
+import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
 import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
 import { PagesQuestion } from 'apps/page-builder/generated';
+import { useFetchEditableQuestion } from 'apps/page-builder/hooks/api/useFetchEditableQuestion';
+import { UpdatePageQuestionRequest, useUpdatePageQuestion } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
+import { RefObject, useEffect } from 'react';
+import { FormProvider, useForm, useFormState } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { usePageManagement } from '../../usePageManagement';
+import './EditQuestionModal.scss';
+import styles from './edit-question-modal.module.scss';
+import { EditPageQuestion, EditPageQuestionForm } from './form/EditPageQuestion';
 type Props = {
     modal: RefObject<ModalRef>;
     question?: PagesQuestion;
+    onClosed: () => void;
 };
-export const EditQuestionModal = ({ modal, question }: Props) => {
+export const EditQuestionModal = ({ modal, question, onClosed }: Props) => {
     const handleClose = () => {
         modal.current?.toggleModal();
+        onClosed();
     };
     return (
         <Modal
@@ -22,7 +32,7 @@ export const EditQuestionModal = ({ modal, question }: Props) => {
             aria-labelledby="edit-question-modal"
             aria-describedby="edit-question-modal">
             <div className={styles.modal}>
-                <EditQuestionContent question={question} onClose={handleClose} />
+                {question && <EditQuestionContent question={question} onClose={handleClose} />}
             </div>
         </Modal>
     );
@@ -30,13 +40,71 @@ export const EditQuestionModal = ({ modal, question }: Props) => {
 
 type ContentProps = {
     onClose: () => void;
-    question?: PagesQuestion;
+    question: PagesQuestion;
 };
 const EditQuestionContent = ({ onClose, question }: ContentProps) => {
+    const { page } = usePageManagement();
+    const { response: editableQuestion, fetch } = useFetchEditableQuestion();
+    const form = useForm<EditPageQuestionForm>({ mode: 'onBlur' });
+    const { alertError, alertSuccess } = useAlert();
+    const { pageId } = useParams();
+    const { response, error, update } = useUpdatePageQuestion();
+    const { isDirty, isValid } = useFormState(form);
+
+    const handleSave = () => {
+        if (pageId && question?.id) {
+            update(Number(pageId), question.id, {} as UpdatePageQuestionRequest);
+        }
+    };
+
+    useEffect(() => {
+        fetch(page.id, question.id);
+    }, [question.id]);
+
+    useEffect(() => {
+        if (editableQuestion) {
+            let unitType: 'literal' | 'coded' | undefined;
+            if (editableQuestion.relatedUnitsLiteral) {
+                unitType = 'literal';
+            } else if (editableQuestion.relatedUnitsValueSet) {
+                unitType = 'coded';
+            }
+            form.reset({
+                ...editableQuestion,
+                questionType: editableQuestion.questionType as 'TEXT' | 'CODED' | 'NUMERIC' | 'DATE',
+                relatedUnits: unitType !== undefined,
+                unitType: unitType
+            });
+        }
+    }, [editableQuestion]);
+
+    useEffect(() => {
+        if (response) {
+            alertSuccess({ message: 'Successfully updated question' });
+            onClose();
+        } else if (error) {
+            alertError({ message: 'Failed to update question' });
+        }
+    }, [error, response]);
+
     return (
         <>
             <CloseableHeader title="Edit question" onClose={onClose} />
-            Question: {question?.id}
+            <div className={styles.content}>
+                <div className={styles.formWrapper}>
+                    <FormProvider {...form}>
+                        <EditPageQuestion page={page.id} question={question} onFindValueSet={() => {}} />
+                    </FormProvider>
+                </div>
+            </div>
+            <ButtonBar>
+                <Button type="button" onClick={onClose}>
+                    Cancel
+                </Button>
+                <Button disabled={!isDirty || !isValid} type="button" onClick={handleSave}>
+                    Save changes
+                </Button>
+            </ButtonBar>
         </>
     );
 };

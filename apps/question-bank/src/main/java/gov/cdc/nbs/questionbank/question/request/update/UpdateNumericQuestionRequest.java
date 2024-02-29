@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request.update;
 
+import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest.NumericMask;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,15 +15,4 @@ public class UpdateNumericQuestionRequest extends UpdateQuestionRequest {
   private String relatedUnitsLiteral;
   private Long relatedUnitsValueSet;
 
-
-
-  public enum NumericMask {
-    NUM_DD,
-    NUM_MM,
-    NUM_YYYY,
-    NUM,
-    NUM_EXT,
-    NUM_SN,
-    NUM_TEMP
-  }
 }

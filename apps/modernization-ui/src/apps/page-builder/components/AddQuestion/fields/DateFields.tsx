@@ -8,8 +8,9 @@ import styles from '../question-form.module.scss';
 
 type Props = {
     maskOptions: Option[];
+    published?: boolean;
 };
-export const DateFields = ({ maskOptions }: Props) => {
+export const DateFields = ({ maskOptions, published }: Props) => {
     const form = useFormContext<CreateDateQuestionRequest>();
     const [allowFuture, setAllowFuture] = useState<boolean>(false);
     const [dateMaskOptions, setDateMaskOptions] = useState<Option[]>([]);
@@ -62,6 +63,7 @@ export const DateFields = ({ maskOptions }: Props) => {
                         form.setValue('allowFutureDates', true);
                     }}
                     checked={allowFuture}
+                    disabled={published}
                 />
                 <Radio
                     id="allowFutureDates no"
@@ -73,6 +75,7 @@ export const DateFields = ({ maskOptions }: Props) => {
                         form.setValue('allowFutureDates', false);
                     }}
                     checked={!allowFuture}
+                    disabled={published}
                 />
             </div>
         </>

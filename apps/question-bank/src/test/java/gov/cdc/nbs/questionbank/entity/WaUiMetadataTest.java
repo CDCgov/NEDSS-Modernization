@@ -200,7 +200,7 @@ class WaUiMetadataTest {
         assertEquals("F", tabMetadata.getRequiredInd());
         assertEquals(1, tabMetadata.getVersionCtrlNbr().intValue());
         assertEquals('F', tabMetadata.getStandardNndIndCd().charValue());
-        assertEquals('T', tabMetadata.getPublishIndCd().charValue());
+        assertEquals(null, tabMetadata.getPublishIndCd());
         assertEquals("T", tabMetadata.getEnableInd());
 
         assertEquals(command.requestedOn(), tabMetadata.getAddTime());

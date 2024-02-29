@@ -26,8 +26,8 @@ record FlattenedComponent(
     String rdbColumnName,
     String defaultLabelInReport,
     String dataMartColumnName,
-    boolean isGrouped
-) {
+    boolean isGrouped,
+    boolean isPublished) {
 
   FlattenedComponent(
       long identifier,
@@ -37,8 +37,33 @@ record FlattenedComponent(
       int order
 
   ) {
-    this(identifier, type, name, visible, order, false, null, null, null, null, null, false, false, false, false, null,
+    this(
+        identifier,
+        type,
+        name,
+        visible,
+        order,
+        false,
         null,
-        null, null, null, null, null, null, null, null, false);
+        null,
+        null,
+        null,
+        null,
+        false,
+        false,
+        false,
+        false,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        false,
+        false);
   }
 }

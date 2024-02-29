@@ -24,15 +24,13 @@ class PagesResponseMapper {
         detailed.status(),
         detailed.description(),
         0,
-        mapAll(this::asRule, rules)
-    );
+        mapAll(this::asRule, rules));
   }
 
   PagesResponse asResponse(
       final PageDescription detailed,
       final Collection<PagesRule> rules,
-      final ComponentNode component
-  ) {
+      final ComponentNode component) {
 
     Collection<PagesResponse.PagesTab> tabs = (component instanceof PageNode page)
         ? mapAll(this::asTab, page.children())
@@ -45,8 +43,7 @@ class PagesResponseMapper {
         detailed.description(),
         component.identifier(),
         tabs,
-        mapAll(this::asRule, rules)
-    );
+        mapAll(this::asRule, rules));
   }
 
   private static <I, O> Collection<O> mapAll(final Function<I, O> fn, final Collection<I> items) {
@@ -61,8 +58,7 @@ class PagesResponseMapper {
         rule.values(),
         rule.function(),
         rule.source(),
-        rule.target()
-    );
+        rule.target());
   }
 
   private PagesResponse.PagesTab asTab(final TabNode tab) {
@@ -71,8 +67,7 @@ class PagesResponseMapper {
         tab.definition().name(),
         tab.definition().order(),
         tab.definition().visible(),
-        mapAll(this::asSection, tab.children())
-    );
+        mapAll(this::asSection, tab.children()));
   }
 
   private PagesResponse.PagesSection asSection(final SectionNode section) {
@@ -81,8 +76,7 @@ class PagesResponseMapper {
         section.definition().name(),
         section.definition().order(),
         section.definition().visible(),
-        mapAll(this::asSubSection, section.children())
-    );
+        mapAll(this::asSubSection, section.children()));
   }
 
   private PagesResponse.PagesSubSection asSubSection(final SubSectionNode subsection) {
@@ -92,15 +86,14 @@ class PagesResponseMapper {
         subsection.definition().order(),
         subsection.definition().visible(),
         subsection.isGrouped(),
-        mapAll(this::asQuestion, subsection.children())
-    );
+        mapAll(this::asQuestion, subsection.children()));
   }
 
   private PagesResponse.PagesQuestion asQuestion(final ContentNode content) {
     long id = content.identifier();
     String adminComments = content.attributes().adminComments();
     boolean isStandard = content.attributes().isStandard();
-    String standard = content.attributes().standard();
+    String standard = content.attributes().standard(); // PHIN or LOCAL
     String questionIdentifier = content.attributes().question();
     String name = content.definition().name();
     int order = content.definition().order();
@@ -111,7 +104,7 @@ class PagesResponseMapper {
     String mask = content.attributes().mask();
     boolean allowFutureDates = content instanceof InputNode input && input.allowFutureDates();
     String questionToolTop = content.attributes().toolTip();
-    boolean display = content.definition().visible();
+    boolean visible = content.definition().visible();
     boolean enabled = content.attributes().enabled();
     boolean required = content.attributes().required();
     String defaultValue = content.attributes().defaultValue();
@@ -122,6 +115,7 @@ class PagesResponseMapper {
     String rdbColumnName = content.attributes().rdbColumnName();
     String defaultLabelInReport = content.attributes().defaultLabelInReport();
     String dataMartColumnName = content.attributes().dataMartColumnName();
+    boolean isPublished = content.attributes().isPublished();
     return new PagesResponse.PagesQuestion(
         id,
         isStandard,
@@ -136,7 +130,7 @@ class PagesResponseMapper {
         mask,
         allowFutureDates,
         questionToolTop,
-        display,
+        visible,
         enabled,
         required,
         defaultValue,
@@ -147,8 +141,8 @@ class PagesResponseMapper {
         defaultRdbTableName,
         rdbColumnName,
         defaultLabelInReport,
-        dataMartColumnName
-    );
+        dataMartColumnName,
+        isPublished);
   }
 
 }

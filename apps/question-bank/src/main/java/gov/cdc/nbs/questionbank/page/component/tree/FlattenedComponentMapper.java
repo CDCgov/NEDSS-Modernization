@@ -38,14 +38,15 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int rdbColumnName,
       int defaultLabelInReport,
       int dataMartColumnName,
-      int blockName
+      int blockName,
+      int isPublished
 
   ) {
     Column() {
       this(1, 2, 3, 4, 5, 6, 7, 8, 9,
           10, 11, 12, 13, 14, 15, 16,
           17, 18, 19, 20, 21, 22,
-          23, 24, 25, 26);
+          23, 24, 25, 26, 27);
     }
   }
 
@@ -87,6 +88,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String dataMartColumnName = resultSet.getString(this.columns.dataMartColumnName());
 
     boolean isSubsectionGrouped = resultSet.getString(this.columns.blockName()) != null;
+    boolean isPublished = resolveBoolean(this.columns.isPublished, resultSet);
 
     return new FlattenedComponent(
         identifier,
@@ -114,8 +116,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         rdbColumnName,
         defaultLabelInReport,
         dataMartColumnName,
-        isSubsectionGrouped
-    );
+        isSubsectionGrouped,
+        isPublished);
   }
 
   private boolean resolveBoolean(final int column, final ResultSet resultSet) throws SQLException {

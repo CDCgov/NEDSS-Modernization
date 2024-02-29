@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request.update;
 
+import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest.DateMask;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,9 +9,4 @@ import lombok.Setter;
 public class UpdateDateQuestionRequest extends UpdateQuestionRequest {
   private DateMask mask;
   private boolean allowFutureDates;
-
-
-  public enum DateMask {
-    DATE
-  }
 }

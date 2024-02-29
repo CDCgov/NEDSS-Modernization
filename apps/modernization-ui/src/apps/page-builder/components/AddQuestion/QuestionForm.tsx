@@ -8,6 +8,7 @@ import { MessagingFields } from './fields/MessagingFields';
 import { QuestionSpecificFields } from './fields/QuestionSpecificFields';
 import { UserInterfaceFields } from './fields/UserInterfaceFields';
 import styles from './question-form.module.scss';
+import { HorizontalRule } from '../FormDivider/HorizontalRule';
 
 export type CreateQuestionForm = Omit<CreateQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';
@@ -43,17 +44,17 @@ export const QuestionForm = ({ question, onFindValueSet }: Props) => {
         <div className={styles.form}>
             <BasicInformationFields editing={question !== undefined} />
             <QuestionSpecificFields onFindValueSet={onFindValueSet} />
-            <div className={styles.divider} />
+            <HorizontalRule />
             <UserInterfaceFields />
             {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
                 <>
-                    <div className={styles.divider} />
+                    <HorizontalRule />
                     <DataMartFields editing={question !== undefined} />
-                    <div className={styles.divider} />
-                    <MessagingFields editing={question !== undefined} />
+                    <HorizontalRule />
+                    <MessagingFields />
                 </>
             )}
-            <div className={styles.divider} />
+            <HorizontalRule />
             <AdministrativeFields />
         </div>
     );

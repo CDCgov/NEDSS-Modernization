@@ -96,7 +96,7 @@ export class QuestionControllerService {
      * @returns any Created
      * @throws ApiError
      */
-    public static updateCodedQuestionUsingPut({
+    public static updateCodedQuestionUsingPut1({
         authorization,
         id,
         request,
@@ -165,7 +165,7 @@ export class QuestionControllerService {
      * @returns any Created
      * @throws ApiError
      */
-    public static updateDateQuestionUsingPut({
+    public static updateDateQuestionUsingPut1({
         authorization,
         id,
         request,
@@ -234,7 +234,7 @@ export class QuestionControllerService {
      * @returns any Created
      * @throws ApiError
      */
-    public static updateNumericQuestionUsingPut({
+    public static updateNumericQuestionUsingPut1({
         authorization,
         id,
         request,
@@ -345,7 +345,7 @@ export class QuestionControllerService {
      * @returns any Created
      * @throws ApiError
      */
-    public static updateTextQuestionUsingPut({
+    public static updateTextQuestionUsingPut1({
         authorization,
         id,
         request,

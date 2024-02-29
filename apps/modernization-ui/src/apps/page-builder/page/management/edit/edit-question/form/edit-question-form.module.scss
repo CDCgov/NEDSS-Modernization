@@ -1,0 +1,20 @@
+@use 'styles/colors';
+
+.form {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 4rem;
+}
+
+.toggleGroup {
+    display: flex;
+    gap: 1rem;
+}
+
+.toggleLabel {
+    margin-top: 1.5rem;
+}
+
+.mandatory {
+    color: colors.$mandatory;
+}

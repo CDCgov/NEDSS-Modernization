@@ -12,8 +12,10 @@ import { AdditionalQuestionFields } from '../QuestionForm';
 
 type Props = {
     maskOptions: Option[];
+    editing?: boolean;
+    published?: boolean;
 };
-export const NumericFields = ({ maskOptions }: Props) => {
+export const NumericFields = ({ maskOptions, editing = false, published = false }: Props) => {
     const form = useFormContext<CreateNumericQuestionRequest & AdditionalQuestionFields>();
     const [mask, relatedUnits, unitType] = useWatch({
         control: form.control,
@@ -21,24 +23,25 @@ export const NumericFields = ({ maskOptions }: Props) => {
         exact: true
     });
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
-    const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(false);
+    const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(unitType !== undefined || unitType !== '');
     const [valueSets, setValueSets] = useState<Selectable[]>([]);
 
     useEffect(() => {
         ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) =>
             setValueSets(response)
         );
-
-        form.reset({
-            ...form.getValues(),
-            fieldLength: undefined,
-            defaultValue: undefined,
-            relatedUnits: false,
-            unitType: undefined,
-            relatedUnitsLiteral: undefined,
-            relatedUnitsValueSet: undefined,
-            mask: CreateNumericQuestionRequest.mask.NUM
-        });
+        if (!editing) {
+            form.reset({
+                ...form.getValues(),
+                fieldLength: undefined,
+                defaultValue: undefined,
+                relatedUnits: false,
+                unitType: undefined,
+                relatedUnitsLiteral: undefined,
+                relatedUnitsValueSet: undefined,
+                mask: CreateNumericQuestionRequest.mask.NUM
+            });
+        }
     }, []);
 
     useEffect(() => {
@@ -66,7 +69,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
             <Controller
                 control={form.control}
                 name="mask"
-                rules={{ required: { value: true, message: 'Mask is required' } }}
+                rules={{ required: { value: !published, message: 'Mask is required' } }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Mask"
@@ -81,7 +84,8 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required
+                        disabled={published}
+                        required={!published}
                     />
                 )}
             />
@@ -90,7 +94,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                 name="fieldLength"
                 rules={{
                     required: {
-                        value: mask === CreateNumericQuestionRequest.mask.NUM,
+                        value: !published && mask === CreateNumericQuestionRequest.mask.NUM,
                         message: 'Field length is required'
                     },
                     ...maxLengthRule(10)
@@ -108,8 +112,8 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={mask !== CreateNumericQuestionRequest.mask.NUM}
-                        required={mask === CreateNumericQuestionRequest.mask.NUM}
+                        disabled={published || mask !== CreateNumericQuestionRequest.mask.NUM}
+                        required={!published && mask === CreateNumericQuestionRequest.mask.NUM}
                     />
                 )}
             />
@@ -146,6 +150,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
+                        disabled={published}
                     />
                 )}
             />
@@ -164,6 +169,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
+                        disabled={published}
                     />
                 )}
             />
@@ -181,6 +187,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         form.setValue('relatedUnits', true);
                     }}
                     checked={relatedUnitsToggle}
+                    disabled={published}
                 />
                 <Radio
                     id="allowFutureDates no"
@@ -192,6 +199,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                         form.setValue('relatedUnits', false);
                     }}
                     checked={!relatedUnitsToggle}
+                    disabled={published}
                 />
             </div>
             {relatedUnits && (
@@ -199,7 +207,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                     <Controller
                         control={form.control}
                         name="unitType"
-                        rules={{ required: { value: true, message: 'Unit type is required' } }}
+                        rules={{ required: { value: !published, message: 'Unit type is required' } }}
                         render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                             <SelectInput
                                 label="Units type"
@@ -217,7 +225,8 @@ export const NumericFields = ({ maskOptions }: Props) => {
                                 id={name}
                                 htmlFor={name}
                                 error={error?.message}
-                                required
+                                required={!published}
+                                disabled={published}
                             />
                         )}
                     />
@@ -226,7 +235,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                             control={form.control}
                             name="relatedUnitsLiteral"
                             rules={{
-                                required: { value: true, message: 'Literal units value is required' },
+                                required: { value: !published, message: 'Literal units value is required' },
                                 ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
@@ -240,7 +249,8 @@ export const NumericFields = ({ maskOptions }: Props) => {
                                     name={name}
                                     id={name}
                                     htmlFor={name}
-                                    required
+                                    required={!published}
+                                    disabled={published}
                                 />
                             )}
                         />
@@ -250,7 +260,7 @@ export const NumericFields = ({ maskOptions }: Props) => {
                             control={form.control}
                             name="relatedUnitsValueSet"
                             rules={{
-                                required: { value: true, message: 'Related units value set is required' },
+                                required: { value: !published, message: 'Related units value set is required' },
                                 ...maxLengthRule(50)
                             }}
                             render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
@@ -267,7 +277,8 @@ export const NumericFields = ({ maskOptions }: Props) => {
                                     name={name}
                                     id={name}
                                     htmlFor={name}
-                                    required
+                                    required={!published}
+                                    disabled={published}
                                 />
                             )}
                         />
