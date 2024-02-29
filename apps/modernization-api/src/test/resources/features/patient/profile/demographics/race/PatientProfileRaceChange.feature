@@ -55,4 +55,5 @@ Feature: Patient Profile Race Changes
     And I view the Patient Profile Races
     Then the patient's race does not include the category Other
     And the patient's race includes the category Asian
+    Then the patient race history contains the previous version
 

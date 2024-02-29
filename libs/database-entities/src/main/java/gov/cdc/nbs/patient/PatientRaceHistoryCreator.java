@@ -53,12 +53,12 @@ public class PatientRaceHistoryCreator {
         this.template = template;
     }
 
-    public void createPersonRaceHistory(final long person, final String raceCode, final int version) {
+    public void createPersonRaceHistory(final long personUid, final String raceCode, final int version) {
         this.template.update(
                 CREATE_PERSON_RACE_HIST,
                 statement -> {
                     statement.setInt(VERSION_PARAMETER, version);
-                    statement.setLong(PATIENT_PARAMETER, person);
+                    statement.setLong(PATIENT_PARAMETER, personUid);
                     statement.setString(RACE_CODE_PARAMETER, raceCode);
                 }
         );

@@ -534,17 +534,14 @@ public class Person {
 
     public void add(final PatientCommand.AddRace added) {
         this.race.patient(this).add(added);
-        changed(added);
     }
 
     public void update(final PatientCommand.UpdateRaceInfo changes) {
         this.race.update(this, changes);
-        changed(changes);
     }
 
     public void delete(final PatientCommand.DeleteRaceInfo info) {
         this.race.delete(info);
-        changed(info);
     }
 
 
