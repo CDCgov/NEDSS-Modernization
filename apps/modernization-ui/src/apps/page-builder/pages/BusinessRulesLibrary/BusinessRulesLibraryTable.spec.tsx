@@ -41,11 +41,11 @@ describe('BusinessRulesLibraryTable', () => {
             );
 
             const tableHeads = await screen.findAllByRole('columnheader');
-            expect(tableHeads[0]).toHaveTextContent('Source Question');
+            expect(tableHeads[0]).toHaveTextContent('Source question');
             expect(tableHeads[1]).toHaveTextContent('Logic');
             expect(tableHeads[2]).toHaveTextContent('Values');
             expect(tableHeads[3]).toHaveTextContent('Function');
-            expect(tableHeads[4]).toHaveTextContent('Target Questions');
+            expect(tableHeads[4]).toHaveTextContent('Target questions');
             expect(tableHeads[5]).toHaveTextContent('ID');
         });
     });

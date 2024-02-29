@@ -17,6 +17,7 @@ import {
 } from 'apps/page-builder/generated';
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
+import { mapLogicForDateCompare } from './helpers/mapLogicForDateCompare';
 
 type QuestionProps = {
     id: number;
@@ -100,12 +101,16 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
         const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
 
         if (selectedSource && targetQuestions.length && logic) {
-            const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
-            description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
-                form.getValues('ruleFunction')
-            )} "${targetValue}"`;
+            if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
+                description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
+                    form.getValues('ruleFunction')
+                )} "${targetValue}"`;
+            } else {
+                description = '';
+            }
             form.setValue('description', description);
         }
     };
@@ -316,7 +321,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             <Grid row className="inline-field">
                 <Grid col={3}>
                     <Label className="input-label" htmlFor="targetQuestions" requiredMarker>
-                        Target Question(s)
+                        Target(s)
                     </Label>
                 </Grid>
                 <Grid col={9}>
@@ -379,6 +384,27 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     </Grid>
                 )}
             />
+            {ruleFunction != Rule.ruleFunction.DATE_COMPARE ? (
+                <Grid row className="inline-field">
+                    <Grid col={3}>
+                        <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
+                            Error message
+                        </Label>
+                    </Grid>
+                    <Grid col={9}>
+                        <Input
+                            readOnly
+                            type="text"
+                            multiline
+                            value={`'${sourceDescription}' must be ${mapLogicForDateCompare(
+                                form.getValues('comparator')
+                            )} ${targetQuestions.map((val) => `${val.name} (${val.question})`).join(', ')}`}
+                            name={'errorMessage'}
+                            id={'errorMessage'}
+                        />
+                    </Grid>
+                </Grid>
+            ) : null}
             {pageId && (
                 <>
                     <TargetQuestion
