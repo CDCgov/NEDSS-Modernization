@@ -36,7 +36,7 @@ public class SubSectionValidator {
         throw new ValidateSubsectionException("Subsection includes questions that are considered 'core'");
       if (element.getPublishIndCd() != null && element.getPublishIndCd() == 'T')
         throw new ValidateSubsectionException("Subsection includes a question(s) that has already been published.");
-      if (element.getNbsUiComponentUid().intValue() == ROLLINGNOTE && subsectionElements.size() > 1)
+      if (element.getNbsUiComponentUid().equals(ROLLINGNOTE) && subsectionElements.size() > 1)
         throw new ValidateSubsectionException("Subsection can only have the Repeating Note field " +
             "and no other fields in the repeating block subsection.");
     }

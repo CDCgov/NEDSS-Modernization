@@ -20,7 +20,12 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String defaultRdbTableName,
       String rdbColumnName,
       String defaultLabelInReport,
-      String dataMartColumnName) {
+      String dataMartColumnName,
+      int nbsComponentId,
+      String dataLocation,
+      String publishIndicator
+  ) {
+
 
   }
 
