@@ -274,6 +274,7 @@ export const AdvancedSearch = () => {
 
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
         let search = '';
+
         if (!isEmpty(filter)) {
             // send filter for encryption
             const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
@@ -329,6 +330,14 @@ export const AdvancedSearch = () => {
     };
 
     const handleClearAll = () => {
+        // Clears validation, search submit will not work. Does not change values shown in autocomplete
+        const elementCreatedBy = document.querySelector('input[name="createdBy"]');
+        const elementLastUpdatedBy = document.querySelector('input[name="lastUpdatedBy"]');
+        setTimeout(() => {
+            elementCreatedBy.value = '';
+            elementLastUpdatedBy.value = '';
+        }, 700);
+
         setPersonFilter({ recordStatus: [RecordStatus.Active] });
         setInvestigationFilter(undefined);
         setLabReportFilter(undefined);

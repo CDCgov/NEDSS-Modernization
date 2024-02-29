@@ -15,6 +15,7 @@ import { ChangeEvent, ReactElement } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { CreatedByUserAutocomplete } from 'options/autocompete/CreatedByUserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 
@@ -256,11 +257,18 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                 <Controller
                     control={form.control}
                     name="createdBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                    render={({ field: { onChange, value, name } }) => (
+                        <CreatedByUserAutocomplete
+                            form={form}
+                            id={name}
+                            label="Event created by user"
+                            defaultValue={value as string | undefined}
+                            onChange={onChange}
+                        />
                     )}
                 />
-
+            </>
+            <>
                 <Controller
                     control={form.control}
                     name="lastUpdatedBy"
