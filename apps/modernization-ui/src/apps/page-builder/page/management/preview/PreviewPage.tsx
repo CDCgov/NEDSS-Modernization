@@ -214,15 +214,16 @@ const PreviewPageContent = () => {
             ) : (
                 <ModalComponent
                     modalRef={publishingLoaderRef}
+                    size="width"
                     closer
                     modalBody={
                         <div className={styles.loaderContent}>
                             <Loading center className={styles.loaderIcon} />
                             <div className={styles.loaderText}>
-                                <Heading level={3}>Publishing...</Heading>
+                                <Heading level={2}>Publishing...</Heading>
                             </div>
                             <div className={styles.loaderText}>
-                                <Heading level={3}>This may take a moment</Heading>
+                                <Heading level={2}>This may take a moment</Heading>
                             </div>
                         </div>
                     }

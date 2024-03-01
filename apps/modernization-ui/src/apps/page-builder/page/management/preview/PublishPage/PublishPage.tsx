@@ -88,12 +88,12 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
         <Form onSubmit={onSubmit} className={styles.form}>
             <div className={styles.body}>
                 <p>
-                    You have indicated that you would like to publish the {page.name} page. Please enter the version
-                    notes below, review the related condition(s), then select publish to continue, or select cancel to
-                    return to view the page.
+                    You have indicated that you would like to publish the <b>"{page.name}"</b> page. Please enter the
+                    <b> version notes </b> below, review the <b> related condition(s)</b>, then select <b> publish </b>{' '}
+                    to continue, or select <b> cancel </b> to return to view the page.
                 </p>
                 <p className={styles.required}>
-                    <span>*</span> Indicates a required field.
+                    <span className={styles.requiredIndicator}>*</span> Indicates a required field.
                 </p>
                 <Controller
                     control={control}
@@ -101,7 +101,12 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     rules={{ required: { value: true, message: 'Version notes required' }, ...maxLengthRule(2000) }}
                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                         <>
-                            <Label htmlFor={name}>Version notes</Label>
+                            <Label htmlFor={name}>
+                                Version notes{' '}
+                                <span className={styles.required}>
+                                    <span>*</span>
+                                </span>
+                            </Label>
                             <Textarea onChange={onChange} defaultValue={value} name={name} id={name} rows={1} />
                             {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
                         </>
