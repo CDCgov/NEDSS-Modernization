@@ -1,3 +1,4 @@
+@validate_page_question_data_mart
 Feature: I can validate a Data Mart Column Name for a question on a page
 
   Background:
@@ -11,6 +12,9 @@ Feature: I can validate a Data Mart Column Name for a question on a page
     And I add a question to a page
 
   Scenario: Validation passes for a valid Data Mart Column Name
-    Given I send
+    Given I send a request to validate a Data Mart Column Name for a page
+    Then The validation "passes"
 
   Scenario: Validation fails for an invalid Data Mart Column Name
+    Given I send a request to validate a Data Mart Column Name that is already in use for a page
+    Then The validation "fails"
