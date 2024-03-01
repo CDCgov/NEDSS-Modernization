@@ -285,7 +285,6 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                                     <MultiSelectInput
                                         value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
                                         onChange={(value) => {
-                                            console.log('e', value);
                                             handleSourceValueChange(value);
                                         }}
                                         options={sourceValueList}
