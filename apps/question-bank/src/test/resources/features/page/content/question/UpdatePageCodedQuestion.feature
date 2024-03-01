@@ -30,7 +30,7 @@ Feature: I can update a coded question on a page
       | requiredInMessage   | false                          |
       | hl7DataType         | CE                             |
     And I send the create coded question request
-    And I add a question to a page
+    And I add the "codedUpdateQuestionId" question to a page
 
   Scenario: I can update a coded question on a page
     Given I have the following update coded question request for a page:

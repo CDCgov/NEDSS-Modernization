@@ -30,7 +30,7 @@ Feature: I can update a numeric question on a page
       | dataMartColumnName  | NUM_UPP_DMT                    |
       | includedInMessage   | false                          |
     And I send the create numeric question request
-    And I add a question to a page
+    And I add the "updateNumericQuestionId" question to a page
 
   Scenario: I can update a numeric question on a page
     Given I have the following update numeric question request for a page:

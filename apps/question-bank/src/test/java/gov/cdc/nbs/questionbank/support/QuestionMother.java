@@ -75,6 +75,13 @@ public class QuestionMother {
         .orElseThrow(() -> new IllegalStateException("No questions are available"));
   }
 
+  public WaQuestion findByUniqueId(String id) {
+    return allQuestions.stream()
+        .filter(q -> q.getQuestionIdentifier().equals(id))
+        .findFirst()
+        .orElseThrow(() -> new IllegalStateException("No questions are available"));
+  }
+
   private WaQuestion createTextQuestion() {
     WaQuestion q = QuestionEntityMother.textQuestion();
     q = questionRepository.save(q);

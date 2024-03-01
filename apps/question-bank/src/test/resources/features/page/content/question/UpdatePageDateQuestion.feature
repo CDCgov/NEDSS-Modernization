@@ -29,8 +29,9 @@ Feature: I can update a date question on a page
       | labelInMessage      | Message Label               |
       | codeSystem          | ABNORMAL_FLAGS_HL7          |
       | requiredInMessage   | false                       |
+      | hl7DataType         | CE                          |
     And I send the create date question request
-    And I add a question to a page
+    And I add the "dateUpdateQuestionId" question to a page
 
   Scenario: I can update a date question on a page
     Given I have the following update date question request for a page:

@@ -27,7 +27,7 @@ Feature: I can update a text question on a page
       | dataMartColumnName  | UpdatePageTextDmart         |
       | includedInMessage   | false                       |
     And I send the create text question request
-    And I add a question to a page
+    And I add the "updatePageText" question to a page
 
   Scenario: I can update a text question on a page
     Given I have the following update text question request for a page:
