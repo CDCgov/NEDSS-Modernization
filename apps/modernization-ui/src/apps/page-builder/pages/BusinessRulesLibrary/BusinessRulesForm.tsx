@@ -36,7 +36,6 @@ interface Props {
     targets?: Target[];
     question?: SourceQuestion;
     sourceValues?: string[];
-    isEditing: boolean;
 }
 
 const BusinessRulesForm = ({ question, sourceValues }: Props) => {
@@ -135,11 +134,11 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             value: Rule.comparator.LESS_THAN
         },
         {
-            name: 'Less or equal to',
+            name: 'Less than or equal to',
             value: Rule.comparator.LESS_THAN_OR_EQUAL_TO
         },
         {
-            name: 'Greater or equal to',
+            name: 'Greater than or equal to',
             value: Rule.comparator.GREATER_THAN_OR_EQUAL_TO
         },
         {
@@ -176,11 +175,11 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
 
     useEffect(() => {
         if (anySourceValueToggle) {
-            form.reset({
-                ...form.getValues(),
-                comparator: Rule.comparator.EQUAL_TO,
-                sourceValues: undefined
-            });
+            // form.reset({
+            //     ...form.getValues(),
+            //     comparator: Rule.comparator.EQUAL_TO,
+            //     sourceValues: undefined
+            // });
         }
     }, [anySourceValueToggle]);
 
@@ -409,12 +408,12 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     </Grid>
                     <Grid col={9}>
                         <Input
-                            readOnly
+                            readOnly={true}
                             type="text"
                             multiline
-                            value={`'${sourceDescription}' must be ${mapLogicForDateCompare(
-                                form.getValues('comparator')
-                            )} ${targetQuestions.map((val) => `${val.name} (${val.question})`).join(', ')}`}
+                            defaultValue={`'${form.watch('sourceText')}' must be ${mapLogicForDateCompare(
+                                form.watch('comparator')
+                            )} '${form.watch('targetValueText')?.[0]} (${form.watch('targetIdentifiers')?.[0]})'`}
                             name={'errorMessage'}
                             id={'errorMessage'}
                         />
