@@ -8,7 +8,6 @@ import { UserInterfaceFields } from 'apps/page-builder/components/AddQuestion/fi
 import { HorizontalRule } from 'apps/page-builder/components/FormDivider/HorizontalRule';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { UpdatePageQuestionRequest } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
-import { useFormContext, useWatch } from 'react-hook-form';
 import { EditFields } from './EditFields';
 import styles from './edit-question-form.module.scss';
 
@@ -23,28 +22,17 @@ type Props = {
 };
 
 export const EditPageQuestion = ({ page, question, onFindValueSet }: Props) => {
-    const form = useFormContext<EditPageQuestionForm>();
-    const displayControl = useWatch<EditPageQuestionForm>({
-        control: form.control,
-        name: 'displayControl',
-        exact: true
-    });
-
     return (
         <div className={styles.form}>
             <BasicInformationFields editing />
             <QuestionSpecificFields editing published={question?.isPublished} onFindValueSet={onFindValueSet} />
             <HorizontalRule />
-            <UserInterfaceFields />
+            <UserInterfaceFields published={question?.isPublished} />
             <EditFields />
-            {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
-                <>
-                    <HorizontalRule />
-                    <DataMartFields editing page={page} questionId={question?.id} />
-                    <HorizontalRule />
-                    <MessagingFields />
-                </>
-            )}
+            <HorizontalRule />
+            <DataMartFields editing page={page} questionId={question?.id} />
+            <HorizontalRule />
+            <MessagingFields />
             <HorizontalRule />
             <AdministrativeFields />
         </div>

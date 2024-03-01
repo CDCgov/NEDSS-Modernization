@@ -11,9 +11,7 @@
         justify-content: center;
     }
 
-    .loadingIndicator {
-        .spinner {
-            max-height: 80svh;
-        }
+    .loadingIndicator div {
+        max-height: 80svh;
     }
 }

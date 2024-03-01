@@ -20,11 +20,10 @@ export type AdditionalQuestionFields = {
 };
 
 type Props = {
-    question?: CreateQuestionForm;
     onFindValueSet: () => void;
 };
 
-export const QuestionForm = ({ question, onFindValueSet }: Props) => {
+export const QuestionForm = ({ onFindValueSet }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const displayControl = useWatch<CreateQuestionForm>({
         control: form.control,
@@ -42,14 +41,14 @@ export const QuestionForm = ({ question, onFindValueSet }: Props) => {
 
     return (
         <div className={styles.form}>
-            <BasicInformationFields editing={question !== undefined} />
+            <BasicInformationFields />
             <QuestionSpecificFields onFindValueSet={onFindValueSet} />
             <HorizontalRule />
             <UserInterfaceFields />
             {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
                 <>
                     <HorizontalRule />
-                    <DataMartFields editing={question !== undefined} />
+                    <DataMartFields />
                     <HorizontalRule />
                     <MessagingFields />
                 </>
