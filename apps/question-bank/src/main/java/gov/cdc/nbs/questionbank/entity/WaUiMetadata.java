@@ -385,28 +385,28 @@ public class WaUiMetadata {
       this.nbsUiComponentUid = command.displayControl();
     }
 
-    // Reporting
-    updateReporting(command);
-
-    // Messaging
-    updateMessaging(command);
-  }
-
-  private void updateReporting(PageContentCommand.QuestionUpdate command) {
-    // Reporting
     if (command.displayControl() == READONLY_USER_ENTERED) {
       this.waRdbMetadatum = null;
       this.waNndMetadatum = null;
     } else {
-      if (this.waRdbMetadatum == null) {
-        this.waRdbMetadatum = new WaRdbMetadata(this, command);
-      } else {
-        this.waRdbMetadatum.update(
-            command.datamartInfo().reportLabel(),
-            command.datamartInfo().dataMartColumnName(),
-            command.userId(),
-            command.requestedOn());
-      }
+      // Reporting
+      updateReporting(command);
+
+      // Messaging
+      updateMessaging(command);
+    }
+  }
+
+  private void updateReporting(PageContentCommand.QuestionUpdate command) {
+    // Reporting
+    if (this.waRdbMetadatum == null) {
+      this.waRdbMetadatum = new WaRdbMetadata(this, command);
+    } else {
+      this.waRdbMetadatum.update(
+          command.datamartInfo().reportLabel(),
+          command.datamartInfo().dataMartColumnName(),
+          command.userId(),
+          command.requestedOn());
     }
   }
 
