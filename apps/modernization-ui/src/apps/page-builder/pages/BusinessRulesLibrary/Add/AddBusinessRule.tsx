@@ -24,9 +24,11 @@ const AddBusinessRule = () => {
     const { pageId, ruleId } = useParams();
     const deleteWarningModal = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
+    const [loading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (ruleId) {
+            setIsLoading(true);
             PageRuleControllerService.viewRuleResponseUsingGet({
                 authorization: authorization(),
                 ruleId: Number(ruleId)
@@ -51,6 +53,7 @@ const AddBusinessRule = () => {
 
                 setSelectedFieldType(resp.ruleFunction);
                 setTargets(resp.targets || []);
+                setIsLoading(false);
             });
         }
     }, [ruleId]);
@@ -136,10 +139,6 @@ const AddBusinessRule = () => {
     const title = !ruleId ? 'Add new' : 'Edit';
     const ruleFunction = form.watch('ruleFunction');
 
-    useEffect(() => {
-        form.reset({ ruleFunction: ruleFunction, targetType: Rule.targetType.QUESTION });
-    }, [ruleFunction]);
-
     return (
         <>
             <ConfirmationModal
@@ -200,7 +199,10 @@ const AddBusinessRule = () => {
                                                         outline={field.value !== selectedFieldType}
                                                         onClick={() => {
                                                             setSelectedFieldType(field.value);
-                                                            form.setValue('ruleFunction', field.value);
+                                                            form.reset({
+                                                                ruleFunction: ruleFunction,
+                                                                targetType: Rule.targetType.QUESTION
+                                                            });
                                                         }}>
                                                         {field.display}
                                                     </Button>
@@ -209,7 +211,7 @@ const AddBusinessRule = () => {
                                         )}
                                     </Grid>
                                 </Grid>
-                                {selectedFieldType == '' ? null : (
+                                {selectedFieldType == '' && !loading ? null : (
                                     <FormProvider {...form}>
                                         <BusinessRulesForm
                                             targets={targets}
