@@ -22,7 +22,7 @@ export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Pro
     const { isLoading, search, response } = useFindValuesets();
 
     useEffect(() => {
-        search({});
+        search({ query: undefined, sort: undefined, page: 0, pageSize: 10 });
     }, []);
 
     useEffect(() => {

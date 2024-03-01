@@ -76,10 +76,11 @@ class PageRuleControllerTest {
     int size = 1;
     String sort = "id";
     Pageable pageRequest = PageRequest.of(page, size, Sort.by(sort));
+    SearchPageRuleRequest request = new SearchPageRuleRequest("");
     List<Rule> content = getRuleList();
-    when(pageRuleFinder.findByPageId(123456L, pageRequest))
+    when(pageRuleFinder.searchPageRule(123456L, request, pageRequest))
         .thenReturn(new PageImpl<>(content, pageRequest, content.size()));
-    Page<Rule> ruleResponse = pageRuleController.getAllPageRule(pageRequest, 123456L);
+    Page<Rule> ruleResponse = pageRuleController.findPageRule(123456L, request, pageRequest);
     assertNotNull(ruleResponse);
   }
 

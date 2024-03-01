@@ -16,6 +16,7 @@ Feature: Patient Profile Phone Changes
     And the patient has a phone
     When a patient's phone is changed
     Then the patient has the expected phone
+    And the patient phone locator history contains the previous version
 
   Scenario: I can remove a patient's existing phone
     Given I am logged into NBS
@@ -23,6 +24,7 @@ Feature: Patient Profile Phone Changes
     And the patient has a phone
     When a patient's phone is removed
     Then the patient does not have the expected phone
+    And the patient phone locator history contains the previous version
 
   Scenario: I cannot add a patient's phone without proper permission
     Given I am logged into NBS

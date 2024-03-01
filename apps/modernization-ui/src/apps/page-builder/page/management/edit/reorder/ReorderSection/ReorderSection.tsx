@@ -26,7 +26,7 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
     useEffect(() => {
         if (closeId.id === section.id!.toString()) {
             setSubsectionsOpen(false);
-        } else setSubsectionsOpen(subsectionsOpen);
+        }
     }, [closeId]);
 
     return (
@@ -39,9 +39,9 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                     <div className={styles.tile}>
                         <div className={styles.toggle} onClick={() => setSubsectionsOpen(!subsectionsOpen)}>
                             {subsectionsOpen ? (
-                                <Icon name={'expand-more'} size={'xs'} />
+                                <Icon name={'expand-more'} size={'s'} />
                             ) : (
-                                <Icon name={'navigate-next'} size={'xs'} />
+                                <Icon name={'navigate-next'} size={'s'} />
                             )}
                         </div>
                         <div className={styles.handle} {...provided.dragHandleProps}>
@@ -52,8 +52,12 @@ export const ReorderSection = ({ section, index, visible }: Props) => {
                     </div>
                     <div className={`${styles.subsections} ${subsectionsOpen ? '' : styles.closed}`}>
                         <Droppable droppableId={section.id!.toString()} type="subsection">
-                            {(prov) => (
-                                <div {...prov.droppableProps} ref={prov.innerRef}>
+                            {(prov, snapshot) => (
+                                <div
+                                    className={styles.droppable}
+                                    {...prov.droppableProps}
+                                    ref={prov.innerRef}
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
                                     {subsections
                                         ? subsections.map((subsection: any, i: number) => {
                                               return (

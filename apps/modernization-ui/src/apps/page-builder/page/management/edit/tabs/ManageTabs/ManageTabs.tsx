@@ -147,13 +147,13 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 size={'tall'}
                 modalRef={modalRef}
                 modalHeading={
-                    <div className={styles.modalHeader}>
-                        <Heading level={4}>Manage tabs</Heading>
+                    <>
+                        Manage tabs
                         <Button type="button" onClick={() => setAddEdit(true)}>
                             <Icon.Add className="margin-right-05em add-tab-icon" />
                             <span>Add new tab</span>
                         </Button>
-                    </div>
+                    </>
                 }
                 modalBody={
                     <div className={styles.modalBody}>
@@ -177,9 +177,12 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                                 onDragEnd={handleDragEnd}
                                 onDragStart={handleDragStart}
                                 onDragUpdate={handleDragUpdate}>
-                                <Droppable droppableId="all-tabs" type="tabs">
-                                    {(provided) => (
-                                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                                <Droppable droppableId="all-tabs" type="tab">
+                                    {(provided, snapshot) => (
+                                        <div
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                            style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
                                             {tabs.map((tab, i) => {
                                                 return (
                                                     <ManageTabsTile

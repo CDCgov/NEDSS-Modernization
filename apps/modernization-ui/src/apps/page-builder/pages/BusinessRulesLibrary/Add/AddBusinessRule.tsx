@@ -13,7 +13,7 @@ import { ConfirmationModal } from 'confirmation';
 const AddBusinessRule = () => {
     const navigate = useNavigate();
     const form = useForm<CreateRuleRequest>({
-        defaultValues: { targetType: Rule.targetType.SUBSECTION, anySourceValue: false },
+        defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false },
         mode: 'onChange'
     });
 
@@ -56,29 +56,49 @@ const AddBusinessRule = () => {
     }, [ruleId]);
 
     const onSubmit = form.handleSubmit(async (data) => {
-        if (!ruleId) {
-            PageRuleControllerService.createBusinessRuleUsingPost({
-                authorization: authorization(),
-                id: Number(pageId),
-                request: data
-            }).then((resp) => {
-                showAlert({ type: 'success', header: 'added', message: resp.message });
-            });
-        } else {
-            PageRuleControllerService.updatePageRuleUsingPut({
-                authorization: authorization(),
-                id: Number(pageId),
-                ruleId: Number(ruleId),
-                request: data
-            })
-                .then((resp) => {
-                    showAlert({ type: 'success', header: 'updated', message: resp.message });
-                })
-                .catch((err) => {
-                    console.log('error', err);
+        try {
+            if (!ruleId) {
+                await PageRuleControllerService.createBusinessRuleUsingPost({
+                    authorization: authorization(),
+                    id: Number(pageId),
+                    request: data
                 });
+
+                showAlert({
+                    type: 'success',
+                    message: (
+                        <>
+                            The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
+                            added. Please click the unique name to edit.
+                        </>
+                    )
+                });
+                handleCancel();
+            } else {
+                await PageRuleControllerService.updatePageRuleUsingPut({
+                    authorization: authorization(),
+                    id: Number(pageId),
+                    ruleId: Number(ruleId),
+                    request: data
+                });
+
+                showAlert({
+                    type: 'success',
+                    message: (
+                        <>
+                            The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully
+                            updated. Please click the unique name to edit.
+                        </>
+                    )
+                });
+                handleCancel();
+            }
+        } catch (error) {
+            showAlert({
+                type: 'error',
+                message: 'There was an error. Please try again.'
+            });
         }
-        handleCancel();
     });
 
     const handleCancel = () => {
@@ -90,9 +110,17 @@ const AddBusinessRule = () => {
             authorization: authorization(),
             id: Number(pageId),
             ruleId: Number(ruleId)
-        }).then((resp: any) => {
+        }).then(() => {
             handleCancel();
-            showAlert({ type: 'success', header: 'Deleted', message: resp });
+            showAlert({
+                type: 'success',
+                message: (
+                    <>
+                        The business rule <span className="bold-text">'{form.getValues('sourceText')}'</span> was
+                        successfully deleted.
+                    </>
+                )
+            });
         });
     };
 
@@ -101,12 +129,16 @@ const AddBusinessRule = () => {
         { value: Rule.ruleFunction.DISABLE, display: 'Disable' },
         { value: Rule.ruleFunction.DATE_COMPARE, display: 'Date validation' },
         { value: Rule.ruleFunction.HIDE, display: 'Hide' },
-        { value: Rule.ruleFunction.UNHIDE, display: 'Uhide' },
+        { value: Rule.ruleFunction.UNHIDE, display: 'Unhide' },
         { value: Rule.ruleFunction.REQUIRE_IF, display: 'Require if' }
     ];
 
     const title = !ruleId ? 'Add new' : 'Edit';
     const ruleFunction = form.watch('ruleFunction');
+
+    useEffect(() => {
+        form.reset({ ruleFunction: ruleFunction, targetType: Rule.targetType.QUESTION });
+    }, [ruleFunction]);
 
     return (
         <>
@@ -135,6 +167,18 @@ const AddBusinessRule = () => {
                                 <h2>{`${title} business rules`}</h2>
                             </div>
                             <div className="edit-rules__content">
+                                {ruleId ? (
+                                    <Grid row className="inline-field">
+                                        <Grid col={3}>
+                                            <Label className="input-label" htmlFor="ruleId">
+                                                Rule Id
+                                            </Label>
+                                        </Grid>
+                                        <Grid col={9}>
+                                            <label>{ruleId}</label>
+                                        </Grid>
+                                    </Grid>
+                                ) : null}
                                 <Grid row className="inline-field">
                                     <Grid col={3}>
                                         <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
@@ -179,17 +223,19 @@ const AddBusinessRule = () => {
                     </div>
                     <div className="edit-rules">
                         <div className="edit-rules__buttons">
-                            {ruleId ? (
-                                <ModalToggleButton
-                                    opener
-                                    modalRef={deleteWarningModal}
-                                    type="button"
-                                    className="delete-btn"
-                                    unstyled>
-                                    <Icon.Delete size={3} className="margin-right-2px" />
-                                    <span>Delete</span>
-                                </ModalToggleButton>
-                            ) : null}
+                            <div>
+                                {ruleId ? (
+                                    <ModalToggleButton
+                                        opener
+                                        modalRef={deleteWarningModal}
+                                        type="button"
+                                        className="delete-btn"
+                                        unstyled>
+                                        <Icon.Delete size={3} className="margin-right-2px" />
+                                        <span>Delete</span>
+                                    </ModalToggleButton>
+                                ) : null}
+                            </div>
                             <div>
                                 <Button type="button" outline onClick={handleCancel}>
                                     Cancel

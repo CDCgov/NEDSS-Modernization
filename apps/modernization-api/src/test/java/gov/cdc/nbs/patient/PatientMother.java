@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -215,7 +216,8 @@ public class PatientMother {
 
   public void withRace(
       final PatientIdentifier identifier,
-      final String race) {
+      final String race
+  ) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -225,6 +227,25 @@ public class PatientMother {
             race,
             this.settings.createdBy(),
             this.settings.createdOn()));
+  }
+
+  public void withRaceIncluding(
+      final PatientIdentifier identifier,
+      final String race,
+      final String detail
+  ) {
+    Person patient = managed(identifier);
+
+    patient.update(
+        new PatientCommand.UpdateRaceInfo(
+            identifier.id(),
+            RandomUtil.getRandomDateInPast(),
+            race,
+            List.of(detail),
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
   }
 
   public void withName(final PatientIdentifier identifier) {
@@ -455,16 +476,54 @@ public class PatientMother {
 
   }
 
-  public void withEthnicity(final PatientIdentifier identifier) {
+  public void withEthnicity(
+      final PatientIdentifier identifier,
+      final String ethnicity
+  ) {
     Person patient = managed(identifier);
 
     patient.update(
         new PatientCommand.UpdateEthnicityInfo(
             identifier.id(),
             RandomUtil.getRandomDateInPast(),
-            RandomUtil.ethnicity(),
+            ethnicity,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()));
+            this.settings.createdOn())
+    );
+  }
+
+  public void withSpecificEthnicity(
+      final PatientIdentifier identifier,
+      final String ethnicity,
+      final String detail
+  ) {
+    Person patient = managed(identifier);
+
+    patient.update(
+        new PatientCommand.UpdateEthnicityInfo(
+            identifier.id(),
+            RandomUtil.getRandomDateInPast(),
+            ethnicity,
+            null,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
+
+    patient.add(
+        new PatientCommand.AddDetailedEthnicity(
+            identifier.id(),
+            detail,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
+
+
+  }
+
+  public void withEthnicity(final PatientIdentifier identifier) {
+    withEthnicity(identifier, RandomUtil.ethnicity());
   }
 }

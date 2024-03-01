@@ -18,3 +18,13 @@
     padding: 0.4rem 0.75rem;
     border-radius: 0.25rem;
 }
+.loaderContent {
+    padding: 4rem;
+    .loaderIcon {
+        margin-bottom: 1.5rem;
+    }
+    .loaderText {
+        display: flex;
+        justify-content: center;
+    }
+}

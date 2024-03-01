@@ -4,8 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import gov.cdc.nbs.graphql.GraphQLRequest;
+import gov.cdc.nbs.search.support.SortCriteria;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
 class PatientSearchRequester {
@@ -43,7 +46,7 @@ class PatientSearchRequester {
                 address2
                 city
                 state
-                zipcode               
+                zipcode
             }
           }
           total
@@ -79,7 +82,7 @@ class PatientSearchRequester {
                       .put("sortDirection", sorting.direction().name())
                       .put("sortField", sorting.field())
               )
-      );
+      ).andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");
     }

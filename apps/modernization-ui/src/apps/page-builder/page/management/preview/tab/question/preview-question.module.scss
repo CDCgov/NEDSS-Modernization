@@ -1,0 +1,116 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.question {
+  margin: 1.5rem;
+  background: colors.$base-white;
+
+  .borderedContainer {
+    padding: 1rem;
+    border-radius: 0.3125rem 0.3125rem;
+
+    @extend %thin;
+  }
+
+  .reorderIcon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 0.75rem;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    .unStyledButton {
+      text-decoration: unset;
+    }
+    .questionHeader {
+      display: flex;
+      align-items: flex-start;
+      width: 45%;
+      margin-left: 2.5rem;
+
+      .name {
+        .title {
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+        .identifier {
+          font-size: 0.7rem;
+          font-weight: 400;
+          margin-left: 0.2rem;
+        }
+      }
+
+    }
+
+    .questionContent {
+      display: flex;
+      width: 100%;
+      align-items: center;
+
+        .inputContent,
+        .inputContentCovered {
+          .questionInput {
+            margin-top: 0 !important;
+          }
+        }
+
+      .inputContent {
+        width: 25rem;
+      }
+
+      .inputContentCovered {
+        width: 27rem;
+      }
+
+      .icon {
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .staticHyperlink {
+    padding: 1.5rem;
+    border-radius: 0.3125rem;
+    border: 1px solid colors.$cool-accent-darker;
+
+    a {
+      padding-left: 2rem;
+      font-size: 0.875rem;
+      font-weight: 650;
+    }
+  }
+
+  .staticComment,
+  .staticParticipantsList,
+  .staticOriginalDocList {
+    padding: 1.5rem 2rem 1.5rem;
+    border-radius: 0.3125rem;
+    border: 1px solid colors.$base-lighter;
+  }
+
+  .staticLineSeparator {
+    padding: 2rem 2rem;
+    border-radius: 0.3125rem;
+    border: 1px solid colors.$base-lighter;
+
+    div {
+      width: 100%;
+      height: 0.1rem;
+      border: 1px solid colors.$base;
+    }
+  }
+
+  .readonlySelectDropdown {
+    width: 27rem;
+    &:disabled,
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: colors.$base-white !important;
+    }
+  }
+}

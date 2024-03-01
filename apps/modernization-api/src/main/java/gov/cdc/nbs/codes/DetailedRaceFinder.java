@@ -24,26 +24,24 @@ class DetailedRaceFinder {
         return this.factory.select(
                 values.id,
                 values.codeShortDescTxt,
-                values.parentIsCd
-            ).from(values)
-            .fetch()
-            .stream()
-            .map(this::map)
-            .toList();
+                values.parentIsCd).from(values)
+                .fetch()
+                .stream()
+                .map(this::map)
+                .toList();
     }
 
     Collection<GroupedCodedValue> all(final String category) {
         return this.factory.select(
                 values.id,
                 values.codeShortDescTxt,
-                values.parentIsCd
-            ).from(values)
-            .where(values.parentIsCd.eq(category))
-            .orderBy(new OrderSpecifier<>(Order.ASC, values.indentLevelNbr))
-            .fetch()
-            .stream()
-            .map(this::map)
-            .toList();
+                values.parentIsCd).from(values)
+                .where(values.parentIsCd.eq(category))
+                .orderBy(new OrderSpecifier<>(Order.ASC, values.codeShortDescTxt))
+                .fetch()
+                .stream()
+                .map(this::map)
+                .toList();
     }
 
     private GroupedCodedValue map(final Tuple tuple) {

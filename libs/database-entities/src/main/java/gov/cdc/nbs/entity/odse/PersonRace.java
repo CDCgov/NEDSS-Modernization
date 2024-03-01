@@ -2,19 +2,12 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientRaceHistoryListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -23,6 +16,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "Person_race")
 @IdClass(PersonRaceId.class)
+@EntityListeners(PatientRaceHistoryListener.class)
 public class PersonRace {
 
     @Id

@@ -21,9 +21,7 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
     # Userguide file name 
     FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
     # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
-    GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip"   \
-    # Full user guide name with file format to be configured in NBS6 container". <version> will be replaced in entrypoint script.
-    USER_GUIDE_DOC_NAME="NBS <version> User Guide.docx"
+    GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip"
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
 RUN New-Item -ItemType directory -Path C:\nbs ; \
@@ -35,10 +33,15 @@ RUN New-Item -ItemType directory -Path C:\nbs ; \
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 WORKDIR /nbs
 COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-#Unzip and Wildfly Zip
-RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs; rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
+# Unzip and Wildfly Zip as ContainerUser to set permissions
+USER ContainerUser
+RUN Expand-Archive -Path C:\nbs\$env:S3_ZIP_NAME.zip; mv C:\nbs\$env:S3_ZIP_NAME\wildfly-10.0.0.Final C:\nbs
 
-# Configure Task Schedular
+# Cleanup
+USER ContainerAdministrator
+RUN rm C:\nbs\$env:S3_ZIP_NAME.zip; rm C:\nbs\$env:S3_ZIP_NAME
+
+# Configure Task Schedular. Requires Administrator Permissions
 COPY task-scheduler.ps1 task-scheduler.ps1
 RUN C:\nbs\task-scheduler.ps1
 
