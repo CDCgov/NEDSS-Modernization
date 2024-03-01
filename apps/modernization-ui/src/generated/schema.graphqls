@@ -610,13 +610,14 @@ extend type Query {
     findInvestigationsForPatient(patient: ID!, page: Page, openOnly: Boolean): PatientInvestigationResults
 }
 extend type Query {
-  findLabReportsForPatient(personUid: Int!, page: Page): [PatientLabReport!]!
+  findLabReportsForPatient(personUid: Int!, page: Page): PatientLabReportResults
   findLabReportsForPatientCount(personUid: Int!): Int
 }
 
 type PatientLabReportResults {
   content: [PatientLabReport]!
   total: Int!
+  number: Int!
 }
 
 input PatientLabReportFilter {
@@ -657,7 +658,6 @@ type PersonParticipation2 {
   personCd: String!
   firstName: String
   lastName: String
-
 }
 
 type OrganizationParticipation2 {

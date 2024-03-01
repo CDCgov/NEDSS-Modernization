@@ -1,32 +1,36 @@
 query findLabReportsForPatient($personUid: Int!, $page: Page){
     findLabReportsForPatient(personUid: $personUid, page: $page){
-        id
-        observationUid
-        addTime
-        effectiveFromTime
-        programAreaCd
-        jurisdictionCodeDescTxt
-        localId
-        electronicInd
-        associatedInvestigations{
-            publicHealthCaseUid
-            cdDescTxt
+        content{
+            id
+            observationUid
+            addTime
+            effectiveFromTime
+            programAreaCd
+            jurisdictionCodeDescTxt
             localId
+            electronicInd
+            associatedInvestigations{
+                publicHealthCaseUid
+                cdDescTxt
+                localId
+            }
+            personParticipations{
+                typeCd
+                personCd
+                firstName
+                lastName
+            }
+            organizationParticipations{
+                typeCd
+                name
+            }
+            observations{
+                domainCd
+                cdDescTxt
+                displayName
+            }
         }
-        personParticipations{
-            typeCd
-            personCd
-            firstName
-            lastName
-        }
-        organizationParticipations{
-            typeCd
-            name
-        }
-        observations{
-            domainCd
-            cdDescTxt
-            displayName
-        }
+        total
+        number
     }
 }

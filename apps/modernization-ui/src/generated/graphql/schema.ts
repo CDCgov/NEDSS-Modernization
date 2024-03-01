@@ -1208,6 +1208,7 @@ export type PatientLabReportFilter = {
 export type PatientLabReportResults = {
   __typename?: 'PatientLabReportResults';
   content: Array<Maybe<PatientLabReport>>;
+  number: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
@@ -1794,7 +1795,7 @@ export type Query = {
   findInvestigationsByFilter: InvestigationResults;
   findInvestigationsForPatient?: Maybe<PatientInvestigationResults>;
   findLabReportsByFilter: LabReportResults;
-  findLabReportsForPatient: Array<PatientLabReport>;
+  findLabReportsForPatient?: Maybe<PatientLabReportResults>;
   findLabReportsForPatientCount?: Maybe<Scalars['Int']['output']>;
   findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
@@ -2500,7 +2501,7 @@ export type FindLabReportsForPatientQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReportsForPatientQuery = { __typename?: 'Query', findLabReportsForPatient: Array<{ __typename?: 'PatientLabReport', id: string, observationUid: number, addTime: any, effectiveFromTime?: any | null, programAreaCd: string, jurisdictionCodeDescTxt: string, localId: string, electronicInd?: string | null, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid: number, cdDescTxt: string, localId: string }>, personParticipations: Array<{ __typename?: 'PersonParticipation2', typeCd: string, personCd: string, firstName?: string | null, lastName?: string | null }>, organizationParticipations: Array<{ __typename?: 'OrganizationParticipation2', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation2', domainCd: string, cdDescTxt: string, displayName?: string | null }> }> };
+export type FindLabReportsForPatientQuery = { __typename?: 'Query', findLabReportsForPatient?: { __typename?: 'PatientLabReportResults', total: number, number: number, content: Array<{ __typename?: 'PatientLabReport', id: string, observationUid: number, addTime: any, effectiveFromTime?: any | null, programAreaCd: string, jurisdictionCodeDescTxt: string, localId: string, electronicInd?: string | null, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid: number, cdDescTxt: string, localId: string }>, personParticipations: Array<{ __typename?: 'PersonParticipation2', typeCd: string, personCd: string, firstName?: string | null, lastName?: string | null }>, organizationParticipations: Array<{ __typename?: 'OrganizationParticipation2', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation2', domainCd: string, cdDescTxt: string, displayName?: string | null }> } | null> } | null };
 
 export type FindLabReportsForPatientCountQueryVariables = Exact<{
   personUid: Scalars['Int']['input'];
@@ -4813,34 +4814,38 @@ export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReport
 export const FindLabReportsForPatientDocument = gql`
     query findLabReportsForPatient($personUid: Int!, $page: Page) {
   findLabReportsForPatient(personUid: $personUid, page: $page) {
-    id
-    observationUid
-    addTime
-    effectiveFromTime
-    programAreaCd
-    jurisdictionCodeDescTxt
-    localId
-    electronicInd
-    associatedInvestigations {
-      publicHealthCaseUid
-      cdDescTxt
+    content {
+      id
+      observationUid
+      addTime
+      effectiveFromTime
+      programAreaCd
+      jurisdictionCodeDescTxt
       localId
+      electronicInd
+      associatedInvestigations {
+        publicHealthCaseUid
+        cdDescTxt
+        localId
+      }
+      personParticipations {
+        typeCd
+        personCd
+        firstName
+        lastName
+      }
+      organizationParticipations {
+        typeCd
+        name
+      }
+      observations {
+        domainCd
+        cdDescTxt
+        displayName
+      }
     }
-    personParticipations {
-      typeCd
-      personCd
-      firstName
-      lastName
-    }
-    organizationParticipations {
-      typeCd
-      name
-    }
-    observations {
-      domainCd
-      cdDescTxt
-      displayName
-    }
+    total
+    number
   }
 }
     `;
