@@ -103,7 +103,6 @@ export type { Tab } from './models/Tab';
 export type { Target } from './models/Target';
 export type { Template } from './models/Template';
 export type { TextQuestion } from './models/TextQuestion';
-export type { UnGroupSubSectionRequest } from './models/UnGroupSubSectionRequest';
 export { UpdateCodedQuestionRequest } from './models/UpdateCodedQuestionRequest';
 export { UpdateConceptRequest } from './models/UpdateConceptRequest';
 export { UpdateDateQuestionRequest } from './models/UpdateDateQuestionRequest';

@@ -42,6 +42,7 @@ public class WaUiMetadata {
   private static final Long READ_ONLY_COMMENTS_ID = 1014L;
   private static final Long READ_ONLY_PARTICIPANTS_LIST_ID = 1030L;
   private static final Long ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID = 1036L;
+  private static final Long READONLY_USER_ENTERED = 1026l;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -379,15 +380,40 @@ public class WaUiMetadata {
     this.requiredInd = command.required() ? "T" : "F";
     this.adminComment = command.adminComments();
 
+    // updatable if not published
+    if (!Character.valueOf('T').equals(publishIndCd)) {
+      this.nbsUiComponentUid = command.displayControl();
+    }
+
     // Reporting
-    waRdbMetadatum.update(
-        command.datamartInfo().reportLabel(),
-        command.datamartInfo().dataMartColumnName(),
-        command.userId(),
-        command.requestedOn());
+    updateReporting(command);
 
     // Messaging
-    if (command.includedInMessage()) {
+    updateMessaging(command);
+  }
+
+  private void updateReporting(PageContentCommand.QuestionUpdate command) {
+    // Reporting
+    if (command.displayControl() == READONLY_USER_ENTERED) {
+      this.waRdbMetadatum = null;
+      this.waNndMetadatum = null;
+    } else {
+      if (this.waRdbMetadatum == null) {
+        this.waRdbMetadatum = new WaRdbMetadata(this, command);
+      } else {
+        this.waRdbMetadatum.update(
+            command.datamartInfo().reportLabel(),
+            command.datamartInfo().dataMartColumnName(),
+            command.userId(),
+            command.requestedOn());
+      }
+    }
+  }
+
+  private void updateMessaging(PageContentCommand.QuestionUpdate command) {
+    if (!command.includedInMessage()) {
+      waNndMetadatum = null;
+    } else {
       this.questionOidSystemTxt = command.codeSystemName();
       this.questionOid = command.codeSystemOid();
       if (waNndMetadatum == null) {
@@ -408,15 +434,7 @@ public class WaUiMetadata {
             command.userId(),
             command.requestedOn());
       }
-    } else {
-      waNndMetadatum = null;
     }
-
-    // updatable if not published
-    if (!Character.valueOf('T').equals(publishIndCd)) {
-      this.nbsUiComponentUid = command.displayControl();
-    }
-
   }
 
   public void update(PageContentCommand.UpdateReadOnlyComments command) {

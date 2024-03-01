@@ -112,6 +112,16 @@ public class WaRdbMetadata {
     added(command);
   }
 
+  public WaRdbMetadata(WaUiMetadata waUiMetadata, PageContentCommand.QuestionUpdate command) {
+    this.setRdbColumnNm(command.datamartInfo().rdbColumnName());
+    this.setRdbTableNm(command.datamartInfo().defaultRdbTableName());
+    this.setRptAdminColumnNm(command.datamartInfo().reportLabel());
+    this.setUserDefinedColumnNm(command.datamartInfo().dataMartColumnName());
+    this.setWaTemplateUid(waUiMetadata.getWaTemplateUid());
+    this.setQuestionIdentifier(waUiMetadata.getQuestionIdentifier());
+    this.setWaUiMetadataUid(waUiMetadata);
+    added(command);
+  }
 
   private void added(PageContentCommand command) {
     this.addTime = command.requestedOn();

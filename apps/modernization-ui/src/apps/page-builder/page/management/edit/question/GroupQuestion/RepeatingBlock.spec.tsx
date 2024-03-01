@@ -27,6 +27,7 @@ const subSections: PagesSubSection = {
     name: 'test subsection',
     order: 2,
     questions: [dateQuestion, dropDownQuestion],
+    isGroupable: true,
     visible: true
 };
 
@@ -40,13 +41,15 @@ type GroupQuestionFormType = GroupSubSectionRequest & PagesSubSection & Addition
 const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm<GroupQuestionFormType>({
         defaultValues: {
-            name: "subsection.name",
-            batches: [{
-                batchTableAppearIndCd: undefined,
-                batchTableColumnWidth: undefined,
-                batchTableHeader: undefined,
-                id: 1234
-            }],
+            name: 'subsection.name',
+            batches: [
+                {
+                    batchTableAppearIndCd: undefined,
+                    batchTableColumnWidth: undefined,
+                    batchTableHeader: undefined,
+                    id: 1234
+                }
+            ],
             blockName: undefined,
             id: 1234,
             visibleText: 'Y',
@@ -67,7 +70,6 @@ const setup = () => {
 };
 
 describe('when Subsection renders', () => {
-
     it('should display input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');

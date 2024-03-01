@@ -39,6 +39,7 @@ describe('when ReorderSubsection renders', () => {
         isGrouped: false,
         name: 'Test Subsection',
         order: 1,
+        isGroupable: true,
         questions: [
             {
                 allowFutureDates: true,
@@ -83,7 +84,15 @@ describe('when ReorderSubsection renders', () => {
                 <Droppable droppableId="testId">
                     {(provided) => (
                         <div {...provided.droppableProps} ref={provided.innerRef} className="test__subsections">
-                            <ManageSubsectionTile subsection={subsection} setOnAction={jest.fn()} action={true} onDelete={jest.fn()} index={1} setEdit={jest.fn()} onChangeVisibility={jest.fn()}/>
+                            <ManageSubsectionTile
+                                subsection={subsection}
+                                setOnAction={jest.fn()}
+                                action={true}
+                                onDelete={jest.fn()}
+                                index={1}
+                                setEdit={jest.fn()}
+                                onChangeVisibility={jest.fn()}
+                            />
                         </div>
                     )}
                 </Droppable>

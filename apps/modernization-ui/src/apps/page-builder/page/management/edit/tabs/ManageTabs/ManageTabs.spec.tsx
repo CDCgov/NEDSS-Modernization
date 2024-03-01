@@ -1,4 +1,4 @@
-import { ManageTabs } from "./ManageTabs";
+import { ManageTabs } from './ManageTabs';
 import { render } from '@testing-library/react';
 import { PagesResponse } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
@@ -26,7 +26,8 @@ const content: PagesResponse = {
                             name: 'Subsection1',
                             visible: true,
                             order: 1,
-                            questions: []
+                            questions: [],
+                            isGroupable: true
                         },
                         {
                             id: 456,
@@ -34,7 +35,8 @@ const content: PagesResponse = {
                             name: 'Subsection2',
                             visible: true,
                             order: 2,
-                            questions: []
+                            questions: [],
+                            isGroupable: true
                         }
                     ]
                 }
@@ -47,11 +49,11 @@ const { getByTestId } = render(
     <DragDropProvider pageData={content}>
         <ManageTabs pageId={0} onAddSuccess={jest.fn()} tabs={content.tabs!} />
     </DragDropProvider>
-)
+);
 
 describe('when ManageTabs renders', () => {
     it('should display tabs', () => {
         expect(getByTestId('label')).toBeInTheDocument();
         expect(getByTestId('label')).toHaveTextContent('Test Tab (1)');
-    })
-})
+    });
+});

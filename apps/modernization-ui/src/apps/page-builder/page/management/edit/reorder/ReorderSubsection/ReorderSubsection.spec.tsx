@@ -39,6 +39,7 @@ describe('when ReorderSubsection renders', () => {
         isGrouped: false,
         name: 'Test Section',
         order: 1,
+        isGroupable: true,
         questions: [
             {
                 allowFutureDates: true,

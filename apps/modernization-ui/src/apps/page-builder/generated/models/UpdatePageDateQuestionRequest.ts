@@ -20,7 +20,11 @@ export type UpdatePageDateQuestionRequest = {
 };
 
 export namespace UpdatePageDateQuestionRequest {
+
     export enum mask {
-        DATE = 'DATE'
+        DATE = 'DATE',
     }
+
+
 }
+

@@ -80,12 +80,16 @@ public class PageQuestionUpdater {
     if (request.tooltip() == null) {
       throw new UpdatePageQuestionException("Tooltip is a required field");
     }
-    if (request.dataMartInfo().reportLabel() == null || request.dataMartInfo().reportLabel().trim().length() == 0) {
-      throw new UpdatePageQuestionException("Default label in report is a required field");
+
+    if (request.displayControl() != 1026) { // Readonly User entered text, number, or date
+      if (request.dataMartInfo().reportLabel() == null || request.dataMartInfo().reportLabel().trim().length() == 0) {
+        throw new UpdatePageQuestionException("Default label in report is a required field");
+      }
+      if (request.messagingInfo() == null) {
+        throw new UpdatePageQuestionException("Included in Message is a required field");
+      }
     }
-    if (request.messagingInfo() == null) {
-      throw new UpdatePageQuestionException("Included in Message is a required field");
-    }
+
   }
 
   private WaTemplate findPage(Long pageId) {

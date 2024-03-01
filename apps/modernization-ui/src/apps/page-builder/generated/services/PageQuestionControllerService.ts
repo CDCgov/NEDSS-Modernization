@@ -4,7 +4,6 @@
 import type { AddQuestionRequest } from '../models/AddQuestionRequest';
 import type { AddQuestionResponse } from '../models/AddQuestionResponse';
 import type { EditableQuestion } from '../models/EditableQuestion';
-import type { PagesQuestion } from '../models/PagesQuestion';
 import type { UpdatePageCodedQuestionRequest } from '../models/UpdatePageCodedQuestionRequest';
 import type { UpdatePageDateQuestionRequest } from '../models/UpdatePageDateQuestionRequest';
 import type { UpdatePageNumericQuestionRequest } from '../models/UpdatePageNumericQuestionRequest';
@@ -19,7 +18,7 @@ export class PageQuestionControllerService {
 
     /**
      * updateCodedQuestion
-     * @returns PagesQuestion OK
+     * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
@@ -42,7 +41,7 @@ export class PageQuestionControllerService {
          * request
          */
         request: UpdatePageCodedQuestionRequest,
-    }): CancelablePromise<PagesQuestion | any> {
+    }): CancelablePromise<EditableQuestion | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{page}/questions/coded/{questionId}',
@@ -64,7 +63,7 @@ export class PageQuestionControllerService {
 
     /**
      * updateDateQuestion
-     * @returns PagesQuestion OK
+     * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
@@ -87,7 +86,7 @@ export class PageQuestionControllerService {
          * request
          */
         request: UpdatePageDateQuestionRequest,
-    }): CancelablePromise<PagesQuestion | any> {
+    }): CancelablePromise<EditableQuestion | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{page}/questions/date/{questionId}',
@@ -109,7 +108,7 @@ export class PageQuestionControllerService {
 
     /**
      * updateNumericQuestion
-     * @returns PagesQuestion OK
+     * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
@@ -132,7 +131,7 @@ export class PageQuestionControllerService {
          * request
          */
         request: UpdatePageNumericQuestionRequest,
-    }): CancelablePromise<PagesQuestion | any> {
+    }): CancelablePromise<EditableQuestion | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{page}/questions/numeric/{questionId}',
@@ -154,7 +153,7 @@ export class PageQuestionControllerService {
 
     /**
      * updateTextQuestion
-     * @returns PagesQuestion OK
+     * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
@@ -177,7 +176,7 @@ export class PageQuestionControllerService {
          * request
          */
         request: UpdatePageTextQuestionRequest,
-    }): CancelablePromise<PagesQuestion | any> {
+    }): CancelablePromise<EditableQuestion | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{page}/questions/text/{questionId}',

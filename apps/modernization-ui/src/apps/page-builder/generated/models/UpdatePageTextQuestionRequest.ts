@@ -18,3 +18,4 @@ export type UpdatePageTextQuestionRequest = {
     tooltip: string;
     visible: boolean;
 };
+
