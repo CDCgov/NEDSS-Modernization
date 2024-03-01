@@ -175,11 +175,11 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
 
     useEffect(() => {
         if (anySourceValueToggle) {
-            // form.reset({
-            //     ...form.getValues(),
-            //     comparator: Rule.comparator.EQUAL_TO,
-            //     sourceValues: undefined
-            // });
+            form.reset({
+                ...form.getValues(),
+                comparator: Rule.comparator.EQUAL_TO,
+                sourceValues: undefined
+            });
         }
     }, [anySourceValueToggle]);
 

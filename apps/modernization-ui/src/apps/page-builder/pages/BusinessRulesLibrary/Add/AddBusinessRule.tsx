@@ -33,7 +33,6 @@ const AddBusinessRule = () => {
                 authorization: authorization(),
                 ruleId: Number(ruleId)
             }).then((resp: Rule) => {
-                console.log('response', resp);
                 const sourceQuestion = resp.sourceQuestion?.label || '';
 
                 setSourceValues(resp.sourceValues || []);
