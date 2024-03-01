@@ -122,13 +122,17 @@ public class CreateDateQuestionSteps {
         map.get("rdbColumnName"),
         map.get("dataMartColumnName")));
 
-    request.setMessagingInfo(new MessagingInfo(
-        "true".equals(map.get("includedInMessage").toLowerCase()),
-        map.get("messageVariableId"),
-        map.get("labelInMessage"),
-        map.get("codeSystem"),
-        "true".equals(map.get("requiredInMessage").toLowerCase()),
-        map.get("hl7DataType")));
+    if ("false".equals(map.get("includedInMessage"))) {
+      request.setMessagingInfo(new MessagingInfo(false, null, null, null, false, null));
+    } else {
+      request.setMessagingInfo(new MessagingInfo(
+          "true".equals(map.get("includedInMessage").toLowerCase()),
+          map.get("messageVariableId"),
+          map.get("labelInMessage"),
+          map.get("codeSystem"),
+          "true".equals(map.get("requiredInMessage").toLowerCase()),
+          map.get("hl7DataType")));
+    }
     return request;
   }
 
