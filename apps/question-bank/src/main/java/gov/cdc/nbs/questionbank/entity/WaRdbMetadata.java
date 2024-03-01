@@ -69,8 +69,13 @@ public class WaRdbMetadata {
   @Column(name = "block_pivot_nbr")
   private Integer blockPivotNbr;
 
-  public void groupQuestion(PageContentCommand.GroupSubsectionRdb command) {
+  public void groupSubsectionQuestions(PageContentCommand.GroupSubsectionRdb command) {
     this.blockPivotNbr = command.repeatingNbr();
+    changed(command);
+  }
+
+  public void unGroupSubsectionQuestions(PageContentCommand.UnGroupSubsectionRdb command) {
+    this.blockPivotNbr = null;
     changed(command);
   }
 

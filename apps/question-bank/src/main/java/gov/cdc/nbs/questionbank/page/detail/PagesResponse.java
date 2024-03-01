@@ -79,6 +79,8 @@ public record PagesResponse(
       @ApiModelProperty(required = true)
       boolean isGrouped,
       @ApiModelProperty(required = true)
+      boolean isGroupable,
+      @ApiModelProperty(required = true)
       Collection<PagesQuestion> questions
   ) {
   }

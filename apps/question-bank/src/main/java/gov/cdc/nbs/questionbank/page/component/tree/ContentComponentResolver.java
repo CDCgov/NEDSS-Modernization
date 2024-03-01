@@ -21,10 +21,9 @@ class ContentComponentResolver {
       return asEntry(entry, flattened);
     } else if (type instanceof SelectionNode.Type selection) {
       return asSelection(selection, flattened);
-    } else if(type instanceof StaticNode.Type staticNode) {
+    } else if (type instanceof StaticNode.Type staticNode) {
       return asStatic(staticNode, flattened);
-    }
-    else {
+    } else {
       throw new IllegalStateException("Unresolvable Content Component Type: " + type);
     }
   }
@@ -56,7 +55,10 @@ class ContentComponentResolver {
         component.defaultRdbTableName(),
         component.rdbColumnName(),
         component.defaultLabelInReport(),
-        component.dataMartColumnName()
+        component.dataMartColumnName(),
+        component.type(),
+        component.dataLocation(),
+        component.publishIndicator()
     );
   }
 
@@ -89,7 +91,7 @@ class ContentComponentResolver {
     );
   }
 
-  private StaticNode asStatic(final StaticNode.Type type, final  FlattenedComponent flattened) {
+  private StaticNode asStatic(final StaticNode.Type type, final FlattenedComponent flattened) {
     return new StaticNode(
         flattened.identifier(),
         type,

@@ -1,21 +1,22 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
-import gov.cdc.nbs.questionbank.page.component.ComponentNode;
-import gov.cdc.nbs.questionbank.page.component.ContentNode;
-import gov.cdc.nbs.questionbank.page.component.PageNode;
-import gov.cdc.nbs.questionbank.page.component.SectionNode;
-import gov.cdc.nbs.questionbank.page.component.StaticNode;
-import gov.cdc.nbs.questionbank.page.component.SubSectionNode;
-import gov.cdc.nbs.questionbank.page.component.TabNode;
+import gov.cdc.nbs.questionbank.page.component.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PagesResponseMapperTest {
+
+  public static final int ROLLINGNOTE = 1019;
+
+  PagesResponseMapper mapper = new PagesResponseMapper();
+
 
   @Test
   void should_map_page_to_response() {
@@ -26,7 +27,6 @@ class PagesResponseMapperTest {
         "page-description-value"
     );
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of());
 
@@ -53,7 +53,6 @@ class PagesResponseMapperTest {
         )
     );
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, rules);
 
@@ -92,8 +91,6 @@ class PagesResponseMapperTest {
     );
 
     PageDescription description = mock(PageDescription.class);
-
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -142,7 +139,6 @@ class PagesResponseMapperTest {
 
     PageDescription description = mock(PageDescription.class);
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -204,7 +200,6 @@ class PagesResponseMapperTest {
 
     PageDescription description = mock(PageDescription.class);
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -289,7 +284,10 @@ class PagesResponseMapperTest {
                             "default-rdb-table-name",
                             "rdb-column-name",
                             "default-label-in-report",
-                            "dataMart-column-name"
+                            "dataMart-column-name",
+                            1007,
+                            "data_location",
+                            "publish_ind_cd"
 
                         )
                     )
@@ -300,7 +298,6 @@ class PagesResponseMapperTest {
 
     PageDescription description = mock(PageDescription.class);
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -335,6 +332,99 @@ class PagesResponseMapperTest {
             )
     );
 
+  }
+
+  @Test
+  void return_is_groupable_subsection() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode.Attributes question2 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    ContentNode contentNode2 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question2.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question1.publishIndicator()).thenReturn(null);
+    when(question2.publishIndicator()).thenReturn("F");
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(question2.nbsComponentId()).thenReturn(1008);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(contentNode2.attributes()).thenReturn(question2);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1, contentNode2));
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertTrue(result);
+  }
+
+  @Test
+  void return_is_not_groupable_subsection_include_core() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question1.publishIndicator()).thenReturn("T");
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
+
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertFalse(result);
+  }
+
+  @Test
+  void return_is_not_groupable_subsection_include_published_question() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.publishIndicator()).thenReturn(null);
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
+    when(question1.dataLocation()).thenReturn("test");
+    boolean invalidDataLocation = mapper.isSubsectionGrouable(subsection);
+    assertFalse(invalidDataLocation);
+
+    when(question1.dataLocation()).thenReturn(null);
+    boolean nullDataLocation = mapper.isSubsectionGrouable(subsection);
+    assertFalse(nullDataLocation);
+
+  }
+
+  @Test
+  void return_is_not_groupable_subsection_include_not_only_rolling_question() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode.Attributes question2 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    ContentNode contentNode2 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question2.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question1.publishIndicator()).thenReturn(null);
+    when(question2.publishIndicator()).thenReturn("F");
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(question2.nbsComponentId()).thenReturn(ROLLINGNOTE);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(contentNode2.attributes()).thenReturn(question2);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1, contentNode2));
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertFalse(result);
+  }
+
+  @Test
+  void return_is_groupable_subsection_include_only_rolling_question() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.publishIndicator()).thenReturn(null);
+    when(question1.nbsComponentId()).thenReturn(ROLLINGNOTE);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertTrue(result);
   }
 }
 

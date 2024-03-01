@@ -14,13 +14,6 @@ Feature: Group Subsection
         When I send a group subsection request
         Then the subsection is grouped
 
-    Scenario: I cannot group a subsection contains static elements
-        Given I am logged in 
-        And I can "LDFAdministration" any "System"
-        And the page has a static element named "firststatic" in the 1st sub-section
-        When I send a group subsection request
-        Then a bad request exception is thrown
-
 
     Scenario: I cannot group a subsection without logging in
         Given I am not logged in
