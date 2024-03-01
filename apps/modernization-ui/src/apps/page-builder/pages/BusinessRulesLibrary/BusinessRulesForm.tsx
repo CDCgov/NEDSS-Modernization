@@ -36,6 +36,7 @@ interface Props {
     targets?: Target[];
     question?: SourceQuestion;
     sourceValues?: string[];
+    isEditing: boolean;
 }
 
 const BusinessRulesForm = ({ question, sourceValues }: Props) => {
@@ -47,7 +48,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
 
-    const { pageId } = useParams();
+    const { pageId, ruleId } = useParams();
     const [sourceDescription, setSourceDescription] = useState<string>(
         form.watch('sourceText') && form.watch('sourceIdentifier')
             ? `${form.watch('sourceText')} (${form.watch('sourceIdentifier')})`
@@ -399,7 +400,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     </Grid>
                 )}
             />
-            {ruleFunction != Rule.ruleFunction.DATE_COMPARE ? (
+            {ruleFunction == Rule.ruleFunction.DATE_COMPARE && ruleId ? (
                 <Grid row className="inline-field">
                     <Grid col={3}>
                         <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
