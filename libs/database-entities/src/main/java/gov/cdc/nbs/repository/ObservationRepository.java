@@ -1,6 +1,8 @@
 package gov.cdc.nbs.repository;
 
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -86,18 +88,28 @@ public interface ObservationRepository
                 JOIN act on o.observation_uid =act.act_uid
                 JOIN Participation par on par.act_uid = o.observation_uid
                 JOIN person p on p.person_uid = par.subject_entity_uid
-                JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code              
+                JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code
                 and o.record_status_cd in ('PROCESSED', 'UNPROCESSED')
                 and o.ctrl_cd_display_form = 'LabReport'
             WHERE
                 p.person_parent_uid = :personUid
                 ORDER BY id
-                OFFSET :pageNumber * :pageSize ROWS
-                FETCH NEXT :pageSize ROWS ONLY
-                            """, nativeQuery = true)
-
-    List<PatientLabReport> findLabReportsForPatient(
+                            """,
+            countQuery = """
+                    SELECT COUNT(*)
+                    FROM observation o
+                        JOIN act on o.observation_uid =act.act_uid
+                        JOIN Participation par on par.act_uid = o.observation_uid
+                        JOIN person p on p.person_uid = par.subject_entity_uid
+                        LEFT JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code
+                        AND o.obs_domain_cd_st_1 = 'Result'
+                        and o.record_status_cd in ('PROCESSED', 'UNPROCESSED')
+                        and o.ctrl_cd_display_form = 'LabReport'
+                    WHERE
+                        p.person_parent_uid = :personUid
+                                    """,
+            nativeQuery = true)
+    Page<PatientLabReport> findLabReportsForPatient(
             @Param("personUid") Long personUid,
-            @Param("pageNumber") Integer pageNumber,
-            @Param("pageSize") Integer pageSize);
+            Pageable pageable);
 }
