@@ -20,7 +20,6 @@ import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQ
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.content.question.response.ValidationResponse;
-import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
@@ -80,7 +79,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/text/{questionId}")
-  public PagesQuestion updateTextQuestion(
+  public EditableQuestion updateTextQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageTextQuestionRequest request,
@@ -89,7 +88,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/numeric/{questionId}")
-  public PagesQuestion updateNumericQuestion(
+  public EditableQuestion updateNumericQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageNumericQuestionRequest request,
@@ -98,7 +97,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/coded/{questionId}")
-  public PagesQuestion updateCodedQuestion(
+  public EditableQuestion updateCodedQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageCodedQuestionRequest request,
@@ -107,7 +106,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/date/{questionId}")
-  public PagesQuestion updateDateQuestion(
+  public EditableQuestion updateDateQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageDateQuestionRequest request,

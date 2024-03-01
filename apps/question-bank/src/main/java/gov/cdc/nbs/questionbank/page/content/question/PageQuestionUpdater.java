@@ -6,18 +6,17 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.exception.UpdatePageQuestionException;
+import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageDateQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
-import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
@@ -28,15 +27,18 @@ public class PageQuestionUpdater {
 
   private final EntityManager entityManager;
   private final ConceptFinder conceptFinder;
+  private final EditableQuestionFinder finder;
 
   public PageQuestionUpdater(
       final EntityManager entityManager,
-      final ConceptFinder conceptFinder) {
+      final ConceptFinder conceptFinder,
+      final EditableQuestionFinder finder) {
     this.entityManager = entityManager;
     this.conceptFinder = conceptFinder;
+    this.finder = finder;
   }
 
-  public PagesQuestion update(
+  public EditableQuestion update(
       Long pageId,
       Long questionId,
       UpdatePageQuestionRequest request,
@@ -44,8 +46,9 @@ public class PageQuestionUpdater {
     validateRequest(request);
     Concept codeSystem = findCodeSystem(request.messagingInfo());
     WaTemplate page = findPage(pageId);
-    WaUiMetadata metadata = page.updateQuestion(asUpdate(request, codeSystem, questionId, user));
-    return toPagesQuestion(metadata);
+    page.updateQuestion(asUpdate(request, codeSystem, questionId, user));
+    entityManager.flush();
+    return finder.find(pageId, questionId);
   }
 
 
@@ -218,35 +221,4 @@ public class PageQuestionUpdater {
         user,
         Instant.now());
   }
-
-  private PagesQuestion toPagesQuestion(WaUiMetadata waUiMetadata) {
-    return new PagesQuestion(
-        waUiMetadata.getId(),
-        waUiMetadata.getStandardQuestionIndCd() != null && waUiMetadata.getStandardQuestionIndCd() == 'T',
-        waUiMetadata.getQuestionType(),
-        waUiMetadata.getQuestionIdentifier(),
-        waUiMetadata.getQuestionLabel(),
-        waUiMetadata.getOrderNbr(),
-        waUiMetadata.getSubGroupNm(),
-        waUiMetadata.getDescTxt(),
-        waUiMetadata.getCoinfectionIndCd() != null && waUiMetadata.getCoinfectionIndCd() == 'T',
-        waUiMetadata.getDataType(),
-        waUiMetadata.getMask(),
-        waUiMetadata.getFutureDateIndCd() != null && waUiMetadata.getFutureDateIndCd() == 'T',
-        waUiMetadata.getQuestionToolTip(),
-        "T".equals(waUiMetadata.getDisplayInd()),
-        "T".equals(waUiMetadata.getEnableInd()),
-        "T".equals(waUiMetadata.getRequiredInd()),
-        waUiMetadata.getDefaultValue(),
-        waUiMetadata.getCodeset() != null ? waUiMetadata.getCodeset().getValueSetNm() : null,
-        waUiMetadata.getNbsUiComponentUid(),
-        waUiMetadata.getAdminComment(),
-        waUiMetadata.getFieldSize(),
-        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getRdbTableNm() : null,
-        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getRdbColumnNm() : null,
-        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getRptAdminColumnNm() : null,
-        waUiMetadata.getWaRdbMetadatum() != null ? waUiMetadata.getWaRdbMetadatum().getUserDefinedColumnNm() : null,
-        Character.valueOf('T').equals(waUiMetadata.getPublishIndCd()));
-  }
-
 }

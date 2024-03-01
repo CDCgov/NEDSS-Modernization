@@ -19,8 +19,8 @@ Feature: Create coded question
       | adminComments       | Admin comments               |
       | reportLabel         | reportLabel                  |
       | defaultRdbTableName | defaultRdbTableName          |
-      | rdbColumnName       | RDB_COL                      |
-      | dataMartColumnName  | DATA_MART_COL                |
+      | rdbColumnName       | CODED_RDB_COL                |
+      | dataMartColumnName  | CODED_CREATE_DATA_MART_COL   |
       | includedInMessage   | true                         |
       | messageVariableId   | msgVariableId                |
       | labelInMessage      | Message Label                |

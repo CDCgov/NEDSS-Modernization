@@ -5,10 +5,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.Map;
 import org.springframework.test.web.servlet.ResultActions;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.testing.support.Active;
@@ -18,19 +21,24 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class CreateTextQuestionSteps {
-
+  private final ObjectMapper mapper;
   private final CreateQuestionRequester requester;
   private final Active<ResultActions> response;
   private final ConceptFinder conceptFinder;
+  private final QuestionMother mother;
   private CreateTextQuestionRequest textRequest;
 
   public CreateTextQuestionSteps(
       final CreateQuestionRequester requester,
       final Active<ResultActions> response,
-      final ConceptFinder conceptFinder) {
+      final ConceptFinder conceptFinder,
+      final QuestionMother mother,
+      final ObjectMapper mapper) {
     this.requester = requester;
     this.response = response;
     this.conceptFinder = conceptFinder;
+    this.mother = mother;
+    this.mapper = mapper;
   }
 
   @Given("I have the following create text question request:")
@@ -41,6 +49,11 @@ public class CreateTextQuestionSteps {
   @When("I send the create text question request")
   public void send_create_text_question_request() throws Exception {
     response.active(requester.send(textRequest));
+
+    TextQuestion q = mapper.readValue(
+        response.active().andReturn().getResponse().getContentAsString(),
+        TextQuestion.class);
+    mother.addManaged(q.id());
   }
 
   @Then("the text question is created")
@@ -105,13 +118,17 @@ public class CreateTextQuestionSteps {
         map.get("rdbColumnName"),
         map.get("dataMartColumnName")));
 
-    request.setMessagingInfo(new MessagingInfo(
-        "true".equals(map.get("includedInMessage").toLowerCase()),
-        map.get("messageVariableId"),
-        map.get("labelInMessage"),
-        map.get("codeSystem"),
-        "true".equals(map.get("requiredInMessage").toLowerCase()),
-        map.get("hl7DataType")));
+    if ("false".equals(map.get("includedInMessage"))) {
+      request.setMessagingInfo(new MessagingInfo(false, null, null, null, false, null));
+    } else {
+      request.setMessagingInfo(new MessagingInfo(
+          "true".equals(map.get("includedInMessage").toLowerCase()),
+          map.get("messageVariableId"),
+          map.get("labelInMessage"),
+          map.get("codeSystem"),
+          "true".equals(map.get("requiredInMessage").toLowerCase()),
+          map.get("hl7DataType")));
+    }
     return request;
   }
 

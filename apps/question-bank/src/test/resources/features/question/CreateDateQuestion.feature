@@ -20,8 +20,8 @@ Feature: Create date question
       | adminComments       | Admin comments              |
       | reportLabel         | reportLabel                 |
       | defaultRdbTableName | defaultRdbTableName         |
-      | rdbColumnName       | RDB_COL                     |
-      | dataMartColumnName  | DATA_MART_COL               |
+      | rdbColumnName       | DATE_CREATE_RDB_COL         |
+      | dataMartColumnName  | DATE_CREATE_DATA_MART_COL   |
       | includedInMessage   | true                        |
       | messageVariableId   | msgVariableId               |
       | labelInMessage      | Message Label               |

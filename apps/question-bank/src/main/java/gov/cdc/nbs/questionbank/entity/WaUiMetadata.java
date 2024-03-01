@@ -388,13 +388,26 @@ public class WaUiMetadata {
 
     // Messaging
     if (command.includedInMessage()) {
-      waNndMetadatum.update(
-          command.messageVariableId(),
-          command.labelInMessage(),
-          command.requiredInMessage(),
-          command.hl7DataType(),
-          command.userId(),
-          command.requestedOn());
+      this.questionOidSystemTxt = command.codeSystemName();
+      this.questionOid = command.codeSystemOid();
+      if (waNndMetadatum == null) {
+        waNndMetadatum = new WaNndMetadatum(
+            this,
+            command.messageVariableId(),
+            command.labelInMessage(),
+            command.requiredInMessage(),
+            command.hl7DataType(),
+            command.userId(),
+            command.requestedOn());
+      } else {
+        waNndMetadatum.update(
+            command.messageVariableId(),
+            command.labelInMessage(),
+            command.requiredInMessage(),
+            command.hl7DataType(),
+            command.userId(),
+            command.requestedOn());
+      }
     } else {
       waNndMetadatum = null;
     }

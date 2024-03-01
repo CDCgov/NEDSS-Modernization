@@ -5,10 +5,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.Map;
 import org.springframework.test.web.servlet.ResultActions;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.question.CodeSet;
+import gov.cdc.nbs.questionbank.question.model.Question.CodedQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.testing.support.Active;
@@ -18,7 +21,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class CreateCodedQuestionSteps {
-
+  private final ObjectMapper mapper;
+  private final QuestionMother mother;
   private final CreateQuestionRequester requester;
   private final Active<ResultActions> response;
   private final ConceptFinder conceptFinder;
@@ -27,10 +31,14 @@ public class CreateCodedQuestionSteps {
   public CreateCodedQuestionSteps(
       final CreateQuestionRequester requester,
       final Active<ResultActions> response,
-      final ConceptFinder conceptFinder) {
+      final ConceptFinder conceptFinder,
+      final ObjectMapper mapper,
+      final QuestionMother mother) {
     this.requester = requester;
     this.response = response;
     this.conceptFinder = conceptFinder;
+    this.mapper = mapper;
+    this.mother = mother;
   }
 
   @Given("I have the following create coded question request:")
@@ -41,6 +49,11 @@ public class CreateCodedQuestionSteps {
   @When("I send the create coded question request")
   public void send_create_coded_question_request() throws Exception {
     response.active(requester.send(codedRequest));
+
+    CodedQuestion q = mapper.readValue(
+        response.active().andReturn().getResponse().getContentAsString(),
+        CodedQuestion.class);
+    mother.addManaged(q.id());
   }
 
   @Then("the coded question is created")

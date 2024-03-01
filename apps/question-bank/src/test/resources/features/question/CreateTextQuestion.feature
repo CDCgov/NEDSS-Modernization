@@ -21,8 +21,8 @@ Feature: Create text question
       | adminComments       | Admin comments              |
       | reportLabel         | reportLabel                 |
       | defaultRdbTableName | defaultRdbTableName         |
-      | rdbColumnName       | RDB_COL                     |
-      | dataMartColumnName  | DATA_MART_COL               |
+      | rdbColumnName       | TXT_CREATE_RDB_COL          |
+      | dataMartColumnName  | TXT_CREATE_DATA_MART_COL    |
       | includedInMessage   | true                        |
       | messageVariableId   | msgVariableId               |
       | labelInMessage      | Message Label               |

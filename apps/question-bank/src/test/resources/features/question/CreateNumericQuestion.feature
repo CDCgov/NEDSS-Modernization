@@ -24,8 +24,8 @@ Feature: Create numeric question
       | adminComments       | Admin comments                 |
       | reportLabel         | reportLabel                    |
       | defaultRdbTableName | defaultRdbTableName            |
-      | rdbColumnName       | RDB_COL                        |
-      | dataMartColumnName  | DATA_MART_COL                  |
+      | rdbColumnName       | NUM_RDB_COL                    |
+      | dataMartColumnName  | NUM_CREATE_DATA_MART_COL       |
       | includedInMessage   | true                           |
       | messageVariableId   | msgVariableId                  |
       | labelInMessage      | Message Label                  |
