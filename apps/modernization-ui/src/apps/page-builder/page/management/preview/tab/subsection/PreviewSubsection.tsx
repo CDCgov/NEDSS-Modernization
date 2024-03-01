@@ -9,6 +9,7 @@ type Props = {
 };
 
 export const PreviewSubsection = ({ subsection }: Props) => {
+    const { visible } = subsection;
     const [isExpanded, setIsExpanded] = useState(true);
 
     const handleExpandedChange = (expanded: boolean) => {
@@ -16,16 +17,20 @@ export const PreviewSubsection = ({ subsection }: Props) => {
     };
 
     return (
-        <div className={styles.subsection}>
-            <PreviewSubsectionHeader
-                subsection={subsection}
-                isExpanded={isExpanded}
-                onExpandedChange={handleExpandedChange}
-            />
-            <div className={styles.questionWrapper}>
-                {isExpanded &&
-                    subsection.questions.map((question, k) => <PreviewQuestion question={question} key={k} />)}
-            </div>
-        </div>
+        <>
+            {visible && (
+                <div className={styles.subsection}>
+                    <PreviewSubsectionHeader
+                        subsection={subsection}
+                        isExpanded={isExpanded}
+                        onExpandedChange={handleExpandedChange}
+                    />
+                    <div className={styles.questionWrapper}>
+                        {isExpanded &&
+                            subsection.questions.map((question, k) => <PreviewQuestion question={question} key={k} />)}
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
