@@ -14,6 +14,9 @@ import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.QuestionUpdate;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestion;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuestion;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTextQuestion;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
@@ -331,6 +334,230 @@ class WaUiMetadataTest {
     assertThrows(PageContentModificationException.class, () -> textQuestion.update(command));
   }
 
+  @Test
+  void should_update_numeric_question() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata numericQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateNumericQuestion command = updateNumericQuestion(now);
+
+    // When the question is updated
+    numericQuestion.update(command);
+
+    // Then the appropriate fields are updated
+    assertThat(numericQuestion.getMask()).isEqualTo(command.mask());
+    assertThat(numericQuestion.getFieldSize()).isEqualTo(command.fieldLength().toString());
+    assertThat(numericQuestion.getDefaultValue()).isEqualTo(command.defaultValue().toString());
+    assertThat(numericQuestion.getMinValue()).isEqualTo(command.minValue());
+    assertThat(numericQuestion.getMaxValue()).isEqualTo(command.maxValue());
+    assertThat(numericQuestion.getUnitTypeCd()).isEqualTo("LITERAL");
+    assertThat(numericQuestion.getUnitValue()).isEqualTo(command.relatedUnitsLiteral());
+    assertThat(numericQuestion.getWaNndMetadatum()).isNull();
+  }
+
+  @Test
+  void should_update_numeric_question_related() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata numericQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateNumericQuestion command = new PageContentCommand.UpdateNumericQuestion(
+        36l,
+        "new label",
+        "new tooltip",
+        false,
+        false,
+        false,
+        1007,
+        "NUM",
+        3,
+        0l,
+        0l,
+        999l,
+        null,
+        123l,
+        new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
+        true,
+        "messageVariable",
+        "messageLabel",
+        "codeSystemOid",
+        "codeSystemName",
+        true,
+        "hl7DataType",
+        "admin comments",
+        1l,
+        now);
+
+    // When the question is updated
+    numericQuestion.update(command);
+
+    // Then the appropriate fields are updated
+    assertThat(numericQuestion.getUnitTypeCd()).isEqualTo("CODED");
+    assertThat(numericQuestion.getUnitValue()).isEqualTo(command.relatedUnitsValueSet().toString());
+  }
+
+  @Test
+  void should_not_update_non_numeric_question() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    TextQuestionEntity question = QuestionEntityMother.textQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata numericQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateNumericQuestion command = updateNumericQuestion(now);
+
+    // When the question is updated an exception is thrown
+    assertThrows(PageContentModificationException.class, () -> numericQuestion.update(command));
+  }
+
+  @Test
+  void should_update_date_question() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    DateQuestionEntity question = QuestionEntityMother.dateQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateDateQuestion command = updateDateQuestion(now);
+
+    // When the question is updated
+    dateQuestion.update(command);
+
+    // Then the appropriate fields are updated
+    assertThat(dateQuestion.getMask()).isEqualTo(command.mask());
+    assertThat(dateQuestion.getFutureDateIndCd()).isEqualTo(command.allowFutureDates() ? 'T' : 'F');
+  }
+
+  @Test
+  void should_not_update_non_date_question() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    TextQuestionEntity question = QuestionEntityMother.textQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateDateQuestion command = updateDateQuestion(now);
+
+
+    // When the question is updated an exception is thrown
+    assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
+  }
+
+  @Test
+  void should_update_coded_question() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateCodedQuestion command = updateCodedQuestion(now);
+
+    // When the question is updated
+    dateQuestion.update(command);
+
+    // Then the appropriate fields are updated
+    assertThat(dateQuestion.getDefaultValue()).isEqualTo(command.defaultValue());
+    assertThat(dateQuestion.getCodeSetGroupId()).isEqualTo(command.valueset());
+    assertThat(dateQuestion.getWaRdbMetadatum()).isNull();
+    assertThat(dateQuestion.getWaNndMetadatum()).isNull();
+  }
+
+  @Test
+  void should_update_coded_question_published() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+    dateQuestion.setPublishIndCd('T');
+
+    // And a valid update command
+    UpdateCodedQuestion command = updateCodedQuestion(now);
+
+    // When the question is updated
+    dateQuestion.update(command);
+
+    // Then the appropriate fields are updated
+    assertThat(dateQuestion.getDefaultValue()).isEqualTo(command.defaultValue());
+    // value set is not updated and matches original
+    assertThat(dateQuestion.getCodeSetGroupId()).isEqualTo(question.getCodeSetGroupId());
+  }
+
+  @Test
+  void should_not_update_non_coded_question() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    TextQuestionEntity question = QuestionEntityMother.textQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateCodedQuestion command = updateCodedQuestion(now);
+
+    // When the question is updated an exception is thrown
+    assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
+  }
+
   private void validateMessaging(WaUiMetadata question, QuestionUpdate command) {
     assertThat(question.getWaNndMetadatum().getQuestionIdentifierNnd()).isEqualTo(command.messageVariableId());
     assertThat(question.getWaNndMetadatum().getQuestionRequiredNnd())
@@ -365,6 +592,83 @@ class WaUiMetadataTest {
         1007,
         "default",
         30,
+        new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
+        true,
+        "messageVariable",
+        "messageLabel",
+        "codeSystemOid",
+        "codeSystemName",
+        true,
+        "hl7DataType",
+        "admin comments",
+        1l,
+        requestedOn);
+  }
+
+  private PageContentCommand.UpdateNumericQuestion updateNumericQuestion(Instant requestedOn) {
+    return new PageContentCommand.UpdateNumericQuestion(
+        36l,
+        "new label",
+        "new tooltip",
+        true,
+        true,
+        true,
+        1007,
+        "NUM",
+        3,
+        0l,
+        0l,
+        999l,
+        "literal related",
+        null,
+        new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
+        false,
+        "messageVariable",
+        "messageLabel",
+        "codeSystemOid",
+        "codeSystemName",
+        true,
+        "hl7DataType",
+        "admin comments",
+        1l,
+        requestedOn);
+  }
+
+  private PageContentCommand.UpdateDateQuestion updateDateQuestion(Instant requestedOn) {
+    return new PageContentCommand.UpdateDateQuestion(
+        36l,
+        "new label",
+        "new tooltip",
+        false,
+        false,
+        false,
+        1007,
+        "DATE",
+        false,
+        new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
+        true,
+        "messageVariable",
+        "messageLabel",
+        "codeSystemOid",
+        "codeSystemName",
+        true,
+        "hl7DataType",
+        "admin comments",
+        1l,
+        requestedOn);
+  }
+
+  private PageContentCommand.UpdateCodedQuestion updateCodedQuestion(Instant requestedOn) {
+    return new PageContentCommand.UpdateCodedQuestion(
+        36l,
+        "new label",
+        "new tooltip",
+        false,
+        false,
+        false,
+        1026l, // readonly user entered
+        "DATE",
+        999l,
         new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
         true,
         "messageVariable",

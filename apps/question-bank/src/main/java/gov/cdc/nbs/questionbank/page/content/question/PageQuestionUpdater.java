@@ -82,7 +82,9 @@ public class PageQuestionUpdater {
     }
 
     if (request.displayControl() != 1026) { // Readonly User entered text, number, or date
-      if (request.dataMartInfo().reportLabel() == null || request.dataMartInfo().reportLabel().trim().length() == 0) {
+      if (request.dataMartInfo() == null ||
+          request.dataMartInfo().reportLabel() == null ||
+          request.dataMartInfo().reportLabel().trim().length() == 0) {
         throw new UpdatePageQuestionException("Default label in report is a required field");
       }
       if (request.messagingInfo() == null) {
