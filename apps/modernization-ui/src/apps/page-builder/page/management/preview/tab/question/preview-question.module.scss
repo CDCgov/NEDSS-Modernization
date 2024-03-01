@@ -113,4 +113,8 @@
       background-color: colors.$base-white !important;
     }
   }
+
+  .requiredIndicator {
+    color: colors.$error;
+  }
 }

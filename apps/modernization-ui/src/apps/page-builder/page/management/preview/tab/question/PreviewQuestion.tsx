@@ -40,7 +40,10 @@ export const PreviewQuestion = ({ question }: Props) => {
         <>
             <div className={styles.questionHeader}>
                 <div className={styles.name}>
-                    <span className={styles.title}>{question.name}</span>
+                    <span className={styles.title}>
+                        {question?.required && <span className={styles.requiredIndicator}>* </span>}
+                        {question.name}
+                    </span>
                     <span className={styles.identifier}>{`(${question.question ?? ''})`}</span>
                 </div>
             </div>
