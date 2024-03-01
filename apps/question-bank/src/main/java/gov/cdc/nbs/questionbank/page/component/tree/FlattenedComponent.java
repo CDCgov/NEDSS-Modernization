@@ -27,6 +27,7 @@ record FlattenedComponent(
     String defaultLabelInReport,
     String dataMartColumnName,
     boolean isGrouped,
+    String dataLocation,
     boolean isPublished) {
 
   FlattenedComponent(
@@ -34,9 +35,7 @@ record FlattenedComponent(
       int type,
       String name,
       boolean visible,
-      int order
-
-  ) {
+      int order) {
     this(
         identifier,
         type,
@@ -64,6 +63,7 @@ record FlattenedComponent(
         null,
         null,
         false,
+        null,
         false);
   }
 }

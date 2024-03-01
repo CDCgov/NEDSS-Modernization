@@ -6,8 +6,9 @@ import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
 import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.GroupSubsectionRdb;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UnGroupSubsectionRdb;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
@@ -442,6 +443,10 @@ public class WaTemplate {
         at,
         addedBy,
         addedOn);
+    if (type == 1008l) {
+      component.setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
+      component.setPublishIndCd('F');
+    }
 
     WaRdbMetadata rdbComponent = new WaRdbMetadata(this, component, addedOn, addedBy);
     addRdb(rdbComponent);
@@ -753,8 +758,7 @@ public class WaTemplate {
   }
 
 
-  public void groupSubSection(PageContentCommand.GroupSubsection command, List<Long> questionNbsUiComponentUids) {
-
+  public void groupSubSection(PageContentCommand.GroupSubsection command) {
     verifyDraftType();
     int max = 0;
     for (WaUiMetadata entry : uiMetadata) {
@@ -766,16 +770,15 @@ public class WaTemplate {
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
-        .filter(batch -> {
-          if (!(questionNbsUiComponentUids.contains(batch.getNbsUiComponentUid()))) {
-            throw new UpdateSubSectionException("Can only group the question elements");
-          }
-          return true;
-        }).forEach(questionBatch -> {
+        .forEach(questionBatch -> {
           questionBatch.updateQuestionBatch(command, finalMax);
+          if (questionBatch.getWaRdbMetadatum() != null) {
+            questionBatch.getWaRdbMetadatum()
+                .groupSubsectionQuestions(
+                    new GroupSubsectionRdb(command.repeatingNbr(), command.userId(), Instant.now()));
+          }
           changed(command);
         });
-
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
@@ -787,21 +790,19 @@ public class WaTemplate {
   }
 
 
-  public void unGroupSubSection(PageContentCommand.UnGroupSubsection command, List<Long> questionNbsUiComponentUids) {
-
+  public void unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
     verifyDraftType();
 
     List<Long> batchIds = command.batches();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
-        .filter(batch -> {
-          if (!(questionNbsUiComponentUids.contains(batch.getNbsUiComponentUid()))) {
-            throw new UpdateSubSectionException("Can only ungroup the question elements");
-          }
-          return true;
-        }).forEach(questionBatch -> {
+        .forEach(questionBatch -> {
           questionBatch.updateQuestionBatch(command);
           changed(command);
+          if (questionBatch.getWaRdbMetadatum() != null) {
+            questionBatch.getWaRdbMetadatum().
+                unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
+          }
         });
 
     WaUiMetadata subsection = uiMetadata.stream()

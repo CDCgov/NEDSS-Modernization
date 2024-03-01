@@ -43,6 +43,7 @@ class ContentComponentResolverTest {
         "default-label-in-report",
         "dataMart-column-name",
         false,
+        "data_location",
         true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -101,7 +102,8 @@ class ContentComponentResolverTest {
         "default-label-in-report",
         "dataMart-column-name",
         false,
-        false);
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -157,7 +159,8 @@ class ContentComponentResolverTest {
         "default-label-in-report",
         "dataMart-column-name",
         false,
-        false);
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -213,7 +216,8 @@ class ContentComponentResolverTest {
         "default-label-in-report",
         "dataMart-column-name",
         false,
-        false);
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 

@@ -632,6 +632,12 @@ public class WaUiMetadata {
     added(command);
   }
 
+  public WaUiMetadata(long id, Integer orderNbr, Long nbsUiComponentUid) {
+    this.id = id;
+    this.orderNbr = orderNbr;
+    this.nbsUiComponentUid = nbsUiComponentUid;
+  }
+
   public void update(UpdateSection command) {
     setVisible(command.visible());
     this.questionLabel = command.label();
@@ -722,24 +728,32 @@ public class WaUiMetadata {
   }
 
   public void update(PageContentCommand.GroupSubsection command, int questionGroupSeqNbr) {
-    this.blockNm = command.blockName();
+    this.blockNm = command.blockName().toUpperCase();
     this.questionGroupSeqNbr = questionGroupSeqNbr;
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command, int groupSeqNbr) {
-    this.blockNm = command.blockName();
+    this.blockNm = command.blockName().toUpperCase();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
-    this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
-    this.batchTableHeader = batch.batchTableHeader();
+    this.batchTableAppearIndCd = batch.batchTableAppearIndCd() != 'N' ? 'Y' : 'N';
+    this.batchTableHeader = batch.batchTableHeader() == null ? extractFromQuestionLabel() : batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();
     this.questionGroupSeqNbr = groupSeqNbr;
     updated(command);
   }
 
+  private String extractFromQuestionLabel() {
+    if (this.getQuestionLabel() != null && this.getQuestionLabel().length() > 50)
+      return this.getQuestionLabel().substring(0, 49);
+    else
+      return this.getQuestionLabel();
+  }
+
   public void update(PageContentCommand.UnGroupSubsection command) {
     this.blockNm = null;
+    this.questionGroupSeqNbr = null;
     updated(command);
   }
 
@@ -748,6 +762,7 @@ public class WaUiMetadata {
     this.batchTableAppearIndCd = null;
     this.batchTableHeader = null;
     this.batchTableColumnWidth = null;
+    this.questionGroupSeqNbr = null;
     updated(command);
   }
 

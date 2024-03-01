@@ -17,6 +17,8 @@ import java.util.function.Function;
 @Service
 class PagesResponseMapper {
 
+  public static final int ROLLINGNOTE = 1019;
+
   PagesResponse asResponse(final PageDescription detailed, final Collection<PagesRule> rules) {
     return new PagesResponse(
         detailed.identifier(),
@@ -80,12 +82,14 @@ class PagesResponseMapper {
   }
 
   private PagesResponse.PagesSubSection asSubSection(final SubSectionNode subsection) {
+    boolean isGroupable = isSubsectionGrouable(subsection);
     return new PagesResponse.PagesSubSection(
         subsection.identifier(),
         subsection.definition().name(),
         subsection.definition().order(),
         subsection.definition().visible(),
         subsection.isGrouped(),
+        isGroupable,
         mapAll(this::asQuestion, subsection.children()));
   }
 
@@ -145,4 +149,16 @@ class PagesResponseMapper {
         isPublished);
   }
 
+  boolean isSubsectionGrouable(SubSectionNode subsectionNode) {
+
+    for (ContentNode content : subsectionNode.children()) {
+      if (content.attributes().dataLocation() == null || !content.attributes().dataLocation().contains("ANSWER_TXT"))
+        return false;
+      if (content.attributes().isPublished())
+        return false;
+      if (content.attributes().nbsComponentId() == ROLLINGNOTE && subsectionNode.children().size() > 1)
+        return false;
+    }
+    return true;
+  }
 }

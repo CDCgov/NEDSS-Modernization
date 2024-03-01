@@ -36,8 +36,8 @@ class FlattenedComponentFinder {
           [WaRdbMetadatum].rpt_admin_column_nm    as [Default_label_in_report],
           [WaRdbMetadatum].user_defined_column_nm as [data-mart-column-name],
           [component].block_nm                    as [blockName],
+          [component].data_location               as [dataLocation],
           [component].publish_ind_cd              as [is_published]
-
       from WA_UI_metadata [component]
           left join WA_RDB_metadata [WaRdbMetadatum] on
               [WaRdbMetadatum].wa_ui_metadata_uid = [component].[wa_ui_metadata_uid]
