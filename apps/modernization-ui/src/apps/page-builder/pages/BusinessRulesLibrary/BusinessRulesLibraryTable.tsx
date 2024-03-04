@@ -74,12 +74,16 @@ export const BusinessRulesLibraryTable = ({
                 id: 3,
                 title: (
                     <div>
-                        {rule?.sourceValues?.map((value, index) => (
-                            <React.Fragment key={index}>
-                                <span>{value}</span>
-                                <br />
-                            </React.Fragment>
-                        ))}
+                        {!rule.anySourceValue ? (
+                            rule?.sourceValues?.map((value, index) => (
+                                <React.Fragment key={index}>
+                                    <span>{value}</span>
+                                    <br />
+                                </React.Fragment>
+                            ))
+                        ) : (
+                            <div>Any source value</div>
+                        )}
                     </div>
                 )
             },

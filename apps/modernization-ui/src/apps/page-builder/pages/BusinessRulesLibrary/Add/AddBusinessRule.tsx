@@ -61,6 +61,8 @@ const AddBusinessRule = () => {
     const onSubmit = form.handleSubmit(async (data) => {
         try {
             if (!ruleId) {
+                console.log('data', data);
+                data.anySourceValue ?? data.sourceValues?.push({ id: '', text: '' });
                 await PageRuleControllerService.createBusinessRuleUsingPost({
                     authorization: authorization(),
                     id: Number(pageId),
@@ -200,7 +202,7 @@ const AddBusinessRule = () => {
                                                         onClick={() => {
                                                             setSelectedFieldType(field.value);
                                                             form.reset({
-                                                                ruleFunction: ruleFunction,
+                                                                ruleFunction: field.value,
                                                                 targetType: Rule.targetType.QUESTION
                                                             });
                                                         }}>

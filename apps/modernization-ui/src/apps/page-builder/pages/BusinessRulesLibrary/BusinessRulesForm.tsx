@@ -102,7 +102,10 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         let description = '';
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
-        const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        const sourceValueDescription =
+            sourceValues?.length && !anySourceValueToggle
+                ? sourceValues?.map((value) => value.text).join(', ')
+                : 'any source value';
         const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
 
         if (selectedSource && targetQuestions.length && logic) {
@@ -184,6 +187,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     }, [anySourceValueToggle]);
 
     useEffect(() => {
+        console.log('ruleFunctin', form.watch('ruleFunction'));
         setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
 
