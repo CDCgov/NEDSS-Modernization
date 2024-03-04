@@ -14,11 +14,6 @@ public class CreateDateQuestionRequest extends CreateQuestionRequest {
   private boolean allowFutureDates;
 
 
-  public enum DateMask {
-    DATE
-  }
-
-
   public enum DateDisplayControl {
     USER_ENTERED(1008, "User entered text, number, or date"),
     READONLY_USER_ENTERED(1026, "Readonly User entered text, number, or date"),

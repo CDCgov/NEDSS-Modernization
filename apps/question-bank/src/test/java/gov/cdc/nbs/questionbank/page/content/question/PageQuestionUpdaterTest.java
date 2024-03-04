@@ -1,180 +1,184 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
-import gov.cdc.nbs.questionbank.entity.WaRdbMetadata;
-import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
-import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
-import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
-import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest.DataType;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.page.content.question.exception.UpdatePageQuestionException;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
+import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 
 @ExtendWith(MockitoExtension.class)
 class PageQuestionUpdaterTest {
 
-
   @Mock
   private EntityManager entityManager;
+  @Mock
+  private ConceptFinder conceptFinder;
+  @Mock
+  private EditableQuestionFinder finder;
 
   @InjectMocks
   private PageQuestionUpdater updater;
 
-
   @Test
-  void should_update_text_question_from_page() {
-    WaTemplate page = new WaTemplate();
-    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    List<WaUiMetadata> waUiMetadataList = prepareWaUiMetadataList();
-    page.setUiMetadata(waUiMetadataList);
-    UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
+  void should_validate_request() {
+    // given a null request
+    UpdatePageQuestionRequest request = null;
 
-    PagesQuestion textQuestion = updater.updatePageQuestion(1l, 100l, request, 3l);
-
-    boolean required = request.required().equals("T");
-    boolean display = request.required().equals("T");
-    boolean enabled = request.required().equals("T");
-    Assert.assertEquals(required, textQuestion.required());
-    Assert.assertEquals(display, textQuestion.display());
-    Assert.assertEquals(enabled, textQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(), textQuestion.defaultLabelInReport());
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
   }
 
   @Test
-  void should_update_coded_question_from_page() {
-    WaTemplate page = new WaTemplate();
-    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    List<WaUiMetadata> waUiMetadataList = prepareWaUiMetadataList();
-    page.setUiMetadata(waUiMetadataList);
-    UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
+  void should_validate_request_label() {
+    // given a null request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        null,
+        "tooltip",
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        null,
+        null,
+        null);
 
-    PagesQuestion codedQuestion = updater.updatePageQuestion(1l, 200l, request, 3l);
-
-    boolean required = request.required().equals("T");
-    boolean display = request.required().equals("T");
-    boolean enabled = request.required().equals("T");
-
-    Assert.assertEquals(required, codedQuestion.required());
-    Assert.assertEquals(display, codedQuestion.display());
-    Assert.assertEquals(enabled, codedQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(), codedQuestion.defaultLabelInReport());
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
   }
 
   @Test
-  void should_update_date_question_from_page() {
-    WaTemplate page = new WaTemplate();
-    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    List<WaUiMetadata> waUiMetadataList = prepareWaUiMetadataList();
-    page.setUiMetadata(waUiMetadataList);
-    UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
+  void should_validate_request_tooltip() {
+    // given a null request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        "label",
+        null,
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        null,
+        null,
+        null);
 
-    PagesQuestion dateQuestion = updater.updatePageQuestion(1l, 300l, request, 3l);
-
-    boolean required = request.required().equals("T");
-    boolean display = request.required().equals("T");
-    boolean enabled = request.required().equals("T");
-
-    Assert.assertEquals(required, dateQuestion.required());
-    Assert.assertEquals(display, dateQuestion.display());
-    Assert.assertEquals(enabled, dateQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(), dateQuestion.defaultLabelInReport());
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
   }
 
   @Test
-  void should_update_numeric_question_from_page() {
-    WaTemplate page = new WaTemplate();
-    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    List<WaUiMetadata> waUiMetadataList = prepareWaUiMetadataList();
-    page.setUiMetadata(waUiMetadataList);
-    UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
+  void should_validate_request_datamart() {
+    // given a null request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        "label",
+        "tooltip",
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        null,
+        new MessagingInfo(false, null, null, null, false, null),
+        null);
 
-    PagesQuestion numericQuestion = updater.updatePageQuestion(1l, 400l, request, 3l);
-
-    boolean required = request.required().equals("T");
-    boolean display = request.required().equals("T");
-    boolean enabled = request.required().equals("T");
-
-    Assert.assertEquals(required, numericQuestion.required());
-    Assert.assertEquals(display, numericQuestion.display());
-    Assert.assertEquals(enabled, numericQuestion.enabled());
-    assertEquals(request.defaultLabelInReport(), numericQuestion.defaultLabelInReport());
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
   }
 
+  @Test
+  void should_validate_request_datamart_report_label() {
+    // given a null request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        "label",
+        "tooltip",
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        new ReportingInfo(null, "rdbTable", "rdb", "dmart"),
+        new MessagingInfo(false, null, null, null, false, null),
+        null);
 
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
+  }
 
   @Test
-  void should_not_update_question_from_page_no_page_found() {
-    UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
+  void should_validate_request_datamart_report_label_empty() {
+    // given a null request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        "label",
+        "tooltip",
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        new ReportingInfo("", "rdbTable", "rdb", "dmart"),
+        new MessagingInfo(false, null, null, null, false, null),
+        null);
+
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
+  }
+
+  @Test
+  void should_validate_request_messaging() {
+    // given a null request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        "label",
+        "tooltip",
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        new ReportingInfo("value", "rdbTable", "rdb", "dmart"),
+        null,
+        null);
+
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
+  }
+
+  @Test
+  void should_fail_to_find_page() {
+    // given a valid request
+    UpdatePageQuestionRequest request = new UpdatePageTextQuestionRequest(
+        "label",
+        "tooltip",
+        false,
+        false,
+        false,
+        1008l,
+        "default",
+        50,
+        new ReportingInfo("value", "rdbTable", "rdb", "dmart"),
+        new MessagingInfo(false, null, null, null, false, null),
+        null);
+
+    // and an invalid page
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-    assertThrows(PageNotFoundException.class, () -> updater.updatePageQuestion(1l, 2l, request, 3l));
-  }
-
-  @Test
-  void should_not_update_question_from_page_no_question_found() {
-    WaTemplate page = new WaTemplate();
-    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
-    List<WaUiMetadata> waUiMetadataList = prepareWaUiMetadataList();
-    page.setUiMetadata(waUiMetadataList);
-    UpdatePageQuestionRequest request = prepareUpdatePageQuestionRequest();
-
-    PageContentModificationException exception =
-        assertThrows(PageContentModificationException.class, () -> updater.updatePageQuestion(1l, 7l, request, 3l));
-
-    Assertions.assertEquals("Unable to update a question from a page, the page does not contain the question",
-        exception.getMessage());
-  }
-
-  private UpdatePageQuestionRequest prepareUpdatePageQuestionRequest() {
-    return new UpdatePageQuestionRequest("updatedQuestionLbl", "updatedTooltip",
-        "T", "T", "T", "", "100",
-        "updatedRptLabel", "updatedDataMart", "updatedAdminComments");
-  }
-
-  private List<WaUiMetadata> prepareWaUiMetadataList() {
-    List<WaUiMetadata> waUiMetadataList = new ArrayList<>();
-    waUiMetadataList.add(getWaUiMetadata(100l, DataType.TEXT.toString()));
-    waUiMetadataList.add(getWaUiMetadata(200l, DataType.CODED.toString()));
-    waUiMetadataList.add(getWaUiMetadata(300l, DataType.DATE.toString()));
-    waUiMetadataList.add(getWaUiMetadata(400l, DataType.NUMERIC.toString()));
-    return waUiMetadataList;
-  }
-
-  private WaUiMetadata getWaUiMetadata(long id, String dataType) {
-    WaUiMetadata waUiMetadata = new WaUiMetadata();
-    waUiMetadata.setDataType(dataType);
-    waUiMetadata.setId(id);
-    waUiMetadata.setQuestionIdentifier("q_identifier_100");
-    waUiMetadata.setQuestionToolTip("test");
-    waUiMetadata.setQuestionLabel("test");
-    waUiMetadata.setEnableInd("F");
-    waUiMetadata.setDisplayInd("F");
-    waUiMetadata.setEnableInd("F");
-    waUiMetadata.setFieldSize("5");
-    waUiMetadata.setDefaultValue("test");
-    waUiMetadata.setStandardQuestionIndCd('F');
-    waUiMetadata.setNbsUiComponentUid(1008l);
-    waUiMetadata.setOrderNbr(7);
-
-    WaRdbMetadata waRdbMetadatum = new WaRdbMetadata();
-    waRdbMetadatum.setWaUiMetadataUid(waUiMetadata);
-    waRdbMetadatum.setRptAdminColumnNm("test");
-    waRdbMetadatum.setUserDefinedColumnNm("test");
-    waUiMetadata.setWaRdbMetadatum(waRdbMetadatum);
-    return waUiMetadata;
+    // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
   }
 
 }

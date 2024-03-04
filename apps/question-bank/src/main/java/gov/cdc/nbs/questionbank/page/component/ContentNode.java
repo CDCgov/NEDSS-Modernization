@@ -23,10 +23,7 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String dataMartColumnName,
       int nbsComponentId,
       String dataLocation,
-      String publishIndicator
-  ) {
-
-
+      boolean isPublished) {
   }
 
 

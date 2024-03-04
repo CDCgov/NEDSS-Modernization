@@ -19,17 +19,6 @@ public class CreateNumericQuestionRequest extends CreateQuestionRequest {
   private Long relatedUnitsValueSet;
 
 
-  public enum NumericMask {
-    NUM_DD,
-    NUM_MM,
-    NUM_YYYY,
-    NUM,
-    NUM_EXT,
-    NUM_SN,
-    NUM_TEMP
-  }
-
-
   public enum NumericDisplayControl {
     USER_ENTERED(1008, "User entered text, number, or date"),
     READONLY_USER_ENTERED(1026, "Readonly User entered text, number, or date"),

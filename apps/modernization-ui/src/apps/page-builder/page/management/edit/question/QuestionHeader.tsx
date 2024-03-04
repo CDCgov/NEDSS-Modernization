@@ -1,4 +1,4 @@
-import { Icon } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQuestion';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
@@ -42,7 +42,9 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={`${styles.questionButtons} question-header-button`}>
-                <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" onClick={onEditQuestion} />
+                <Button unstyled className={styles.editButton} type="button" onClick={onEditQuestion}>
+                    <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
+                </Button>
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Not required</div>

@@ -8,18 +8,24 @@ import { TextFields } from './TextFields';
 
 type Props = {
     onFindValueSet: () => void;
+    editing?: boolean;
+    published?: boolean;
 };
-export const QuestionSpecificFields = ({ onFindValueSet }: Props) => {
+export const QuestionSpecificFields = ({ onFindValueSet, editing = false, published = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const questionType = useWatch({ control: form.control, name: 'questionType', exact: true });
     const { options: maskOptions } = useOptions('NBS_MASK_TYPE');
 
     return (
         <>
-            {questionType === 'CODED' && <CodedFields onFindValueSet={onFindValueSet} />}
-            {questionType === 'NUMERIC' && <NumericFields maskOptions={maskOptions} />}
-            {questionType === 'TEXT' && <TextFields maskOptions={maskOptions} />}
-            {questionType === 'DATE' && <DateFields maskOptions={maskOptions} />}
+            {questionType === 'CODED' && <CodedFields published={published} onFindValueSet={onFindValueSet} />}
+            {questionType === 'NUMERIC' && (
+                <NumericFields editing={editing} published={published} maskOptions={maskOptions} />
+            )}
+            {questionType === 'TEXT' && (
+                <TextFields editing={editing} published={published} maskOptions={maskOptions} />
+            )}
+            {questionType === 'DATE' && <DateFields published={published} maskOptions={maskOptions} />}
         </>
     );
 };

@@ -24,8 +24,7 @@ class PagesResponseMapperTest {
         1381L,
         "page-name-value",
         "page-status-value",
-        "page-description-value"
-    );
+        "page-description-value");
 
 
     PagesResponse response = mapper.asResponse(description, List.of());
@@ -49,9 +48,7 @@ class PagesResponseMapperTest {
             "values-value",
             "function-value",
             "source-value",
-            "target-value"
-        )
-    );
+            "target-value"));
 
 
     PagesResponse response = mapper.asResponse(description, rules);
@@ -64,9 +61,7 @@ class PagesResponseMapperTest {
             () -> assertThat(rule.values()).isEqualTo("values-value"),
             () -> assertThat(rule.function()).isEqualTo("function-value"),
             () -> assertThat(rule.sourceField()).isEqualTo("source-value"),
-            () -> assertThat(rule.targetField()).isEqualTo("target-value")
-        )
-    );
+            () -> assertThat(rule.targetField()).isEqualTo("target-value")));
   }
 
   @Test
@@ -77,18 +72,13 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        )
-    );
+            1)).add(
+                new TabNode(
+                    1667L,
+                    new ComponentNode.Definition(
+                        "tab-name-value",
+                        true,
+                        2)));
 
     PageDescription description = mock(PageDescription.class);
 
@@ -101,9 +91,7 @@ class PagesResponseMapperTest {
             () -> assertThat(tab.id()).isEqualTo(1667L),
             () -> assertThat(tab.name()).isEqualTo("tab-name-value"),
             () -> assertThat(tab.visible()).isTrue(),
-            () -> assertThat(tab.order()).isEqualTo(2)
-        )
-    );
+            () -> assertThat(tab.order()).isEqualTo(2)));
 
   }
 
@@ -115,27 +103,19 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        ).add(
-            new SectionNode(
-                1669L,
-                new ComponentNode.Definition(
-                    "section-name-value",
-                    true,
-                    3
-                )
-            )
-        )
-    );
+            1)).add(
+                new TabNode(
+                    1667L,
+                    new ComponentNode.Definition(
+                        "tab-name-value",
+                        true,
+                        2)).add(
+                            new SectionNode(
+                                1669L,
+                                new ComponentNode.Definition(
+                                    "section-name-value",
+                                    true,
+                                    3))));
 
     PageDescription description = mock(PageDescription.class);
 
@@ -151,10 +131,7 @@ class PagesResponseMapperTest {
                     () -> assertThat(section.id()).isEqualTo(1669L),
                     () -> assertThat(section.name()).isEqualTo("section-name-value"),
                     () -> assertThat(section.visible()).isTrue(),
-                    () -> assertThat(section.order()).isEqualTo(3)
-                )
-            )
-    );
+                    () -> assertThat(section.order()).isEqualTo(3))));
 
   }
 
@@ -166,37 +143,26 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        ).add(
-            new SectionNode(
-                1669L,
-                new ComponentNode.Definition(
-                    "section-name-value",
-                    true,
-                    3
-                )
-            ).add(
-                new SubSectionNode(
-                    1693L,
+            1)).add(
+                new TabNode(
+                    1667L,
                     new ComponentNode.Definition(
-                        "sub-section-name-value",
+                        "tab-name-value",
                         true,
-                        4
-                    ),
-                    false
-                )
-            )
-        )
-    );
+                        2)).add(
+                            new SectionNode(
+                                1669L,
+                                new ComponentNode.Definition(
+                                    "section-name-value",
+                                    true,
+                                    3)).add(
+                                        new SubSectionNode(
+                                            1693L,
+                                            new ComponentNode.Definition(
+                                                "sub-section-name-value",
+                                                true,
+                                                4),
+                                            false))));
 
     PageDescription description = mock(PageDescription.class);
 
@@ -214,11 +180,7 @@ class PagesResponseMapperTest {
                             () -> assertThat(subSection.id()).isEqualTo(1693L),
                             () -> assertThat(subSection.name()).isEqualTo("sub-section-name-value"),
                             () -> assertThat(subSection.visible()).isTrue(),
-                            () -> assertThat(subSection.order()).isEqualTo(4)
-                        )
-                    )
-            )
-    );
+                            () -> assertThat(subSection.order()).isEqualTo(4)))));
 
   }
 
@@ -230,71 +192,55 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        ).add(
-            new SectionNode(
-                1669L,
-                new ComponentNode.Definition(
-                    "section-name-value",
-                    true,
-                    3
-                )
-            ).add(
-                new SubSectionNode(
-                    1693L,
+            1)).add(
+                new TabNode(
+                    1667L,
                     new ComponentNode.Definition(
-                        "sub-section-name-value",
+                        "tab-name-value",
                         true,
-                        4
-                    )
-                    , false
-                ).add(
-                    new StaticNode(
-                        1697L,
-                        StaticNode.Type.HYPERLINK,
-                        new ComponentNode.Definition(
-                            "question-name-value",
-                            true,
-                            5
-                        ),
-                        new ContentNode.Attributes(
-                            true,
-                            "standard-value",
-                            "question-value",
-                            "data-type-value",
-                            "sub-group-value",
-                            "description-value",
-                            true,
-                            false,
-                            true,
-                            "mask-value",
-                            "tool-tip-value",
-                            "default-value-value",
-                            "admin-comments",
-                            "10",
-                            "default-rdb-table-name",
-                            "rdb-column-name",
-                            "default-label-in-report",
-                            "dataMart-column-name",
-                            1007,
-                            "data_location",
-                            "publish_ind_cd"
-
-                        )
-                    )
-                )
-            )
-        )
-    );
+                        2)).add(
+                            new SectionNode(
+                                1669L,
+                                new ComponentNode.Definition(
+                                    "section-name-value",
+                                    true,
+                                    3)).add(
+                                        new SubSectionNode(
+                                            1693L,
+                                            new ComponentNode.Definition(
+                                                "sub-section-name-value",
+                                                true,
+                                                4),
+                                            false).add(
+                                                new StaticNode(
+                                                    1697L,
+                                                    StaticNode.Type.HYPERLINK,
+                                                    new ComponentNode.Definition(
+                                                        "question-name-value",
+                                                        true,
+                                                        5),
+                                                    new ContentNode.Attributes(
+                                                        true,
+                                                        "standard-value",
+                                                        "question-value",
+                                                        "data-type-value",
+                                                        "sub-group-value",
+                                                        "description-value",
+                                                        true,
+                                                        false,
+                                                        true,
+                                                        "mask-value",
+                                                        "tool-tip-value",
+                                                        "default-value-value",
+                                                        "admin-comments",
+                                                        "10",
+                                                        "default-rdb-table-name",
+                                                        "rdb-column-name",
+                                                        "default-label-in-report",
+                                                        "dataMart-column-name",
+                                                        1007,
+                                                        "data_location",
+                                                        false))))));
 
     PageDescription description = mock(PageDescription.class);
 
@@ -325,12 +271,7 @@ class PagesResponseMapperTest {
                                 () -> assertThat(question.mask()).isEqualTo("mask-value"),
                                 () -> assertThat(question.tooltip()).isEqualTo("tool-tip-value"),
                                 () -> assertThat(question.defaultValue()).isEqualTo("default-value-value"),
-                                () -> assertThat(question.displayComponent()).isEqualTo(1003L)
-                            )
-                        )
-                    )
-            )
-    );
+                                () -> assertThat(question.displayComponent()).isEqualTo(1003L))))));
 
   }
 
@@ -344,8 +285,8 @@ class PagesResponseMapperTest {
 
     when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
     when(question2.dataLocation()).thenReturn("test_ANSWER_TXT_test");
-    when(question1.publishIndicator()).thenReturn(null);
-    when(question2.publishIndicator()).thenReturn("F");
+    when(question1.isPublished()).thenReturn(false);
+    when(question2.isPublished()).thenReturn(false);
     when(question1.nbsComponentId()).thenReturn(1007);
     when(question2.nbsComponentId()).thenReturn(1008);
     when(contentNode1.attributes()).thenReturn(question1);
@@ -362,7 +303,7 @@ class PagesResponseMapperTest {
     SubSectionNode subsection = mock(SubSectionNode.class);
 
     when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
-    when(question1.publishIndicator()).thenReturn("T");
+    when(question1.isPublished()).thenReturn(true);
     when(question1.nbsComponentId()).thenReturn(1007);
     when(contentNode1.attributes()).thenReturn(question1);
     when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
@@ -377,7 +318,7 @@ class PagesResponseMapperTest {
     ContentNode contentNode1 = mock(InputNode.class);
     SubSectionNode subsection = mock(SubSectionNode.class);
 
-    when(question1.publishIndicator()).thenReturn(null);
+    when(question1.isPublished()).thenReturn(false);
     when(question1.nbsComponentId()).thenReturn(1007);
     when(contentNode1.attributes()).thenReturn(question1);
     when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
@@ -401,8 +342,8 @@ class PagesResponseMapperTest {
 
     when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
     when(question2.dataLocation()).thenReturn("test_ANSWER_TXT_test");
-    when(question1.publishIndicator()).thenReturn(null);
-    when(question2.publishIndicator()).thenReturn("F");
+    when(question1.isPublished()).thenReturn(false);
+    when(question2.isPublished()).thenReturn(false);
     when(question1.nbsComponentId()).thenReturn(1007);
     when(question2.nbsComponentId()).thenReturn(ROLLINGNOTE);
     when(contentNode1.attributes()).thenReturn(question1);
@@ -418,7 +359,7 @@ class PagesResponseMapperTest {
     ContentNode contentNode1 = mock(InputNode.class);
     SubSectionNode subsection = mock(SubSectionNode.class);
 
-    when(question1.publishIndicator()).thenReturn(null);
+    when(question1.isPublished()).thenReturn(false);
     when(question1.nbsComponentId()).thenReturn(ROLLINGNOTE);
     when(contentNode1.attributes()).thenReturn(question1);
     when(subsection.children()).thenReturn(Arrays.asList(contentNode1));

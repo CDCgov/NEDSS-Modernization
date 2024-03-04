@@ -77,7 +77,10 @@ const codedDisplayOptions: SelectOption[] = [
     }
 ];
 
-export const UserInterfaceFields = () => {
+type Props = {
+    published?: boolean;
+};
+export const UserInterfaceFields = ({ published = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const questionType = useWatch({ control: form.control, name: 'questionType', exact: true });
 
@@ -146,16 +149,17 @@ export const UserInterfaceFields = () => {
             <Controller
                 control={form.control}
                 name="displayControl"
-                rules={{ required: { value: true, message: 'Display Type required' } }}
+                rules={{ required: { value: !published, message: 'Display Type required' } }}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Display Type"
                         data-testid="displayType"
-                        required
+                        required={!published}
                         defaultValue={value}
                         onChange={onChange}
                         error={error?.message}
                         options={getDisplayTypeOptions()}
+                        disabled={published}
                     />
                 )}
             />
