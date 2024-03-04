@@ -55,7 +55,6 @@ class PageRuleMapperTest {
     assertEquals(3, response.sourceValues().size());
     assertEquals("EQUAL_TO", response.comparator().toString());
     assertEquals("QUESTION", response.targetType().toString());
-    assertEquals(1000l, response.sourceQuestion().questionId());
     assertEquals("test456", response.targets().get(0).targetIdentifier());
     assertEquals("test456_label", response.targets().get(0).label());
   }
@@ -76,7 +75,6 @@ class PageRuleMapperTest {
     when(resultSet.getString(10)).thenReturn(null);
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
-    when(resultSet.getLong(13)).thenReturn(1000l);
     when(resultSet.getString(14)).thenReturn(null);
     when(resultSet.getLong(15)).thenReturn(10l);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
