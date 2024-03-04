@@ -1,0 +1,17 @@
+.modal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .content {
+        padding: 1.5rem;
+        height: 100%;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .loadingIndicator div {
+        max-height: 80svh;
+    }
+}

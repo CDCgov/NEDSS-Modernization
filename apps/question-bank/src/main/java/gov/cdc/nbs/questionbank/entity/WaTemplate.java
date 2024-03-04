@@ -6,8 +6,9 @@ import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.PageNameVerifier;
 import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.GroupSubsectionRdb;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UnGroupSubsectionRdb;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
 import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
@@ -216,6 +217,27 @@ public class WaTemplate {
     return components;
   }
 
+  public WaUiMetadata updateQuestion(PageContentCommand.QuestionUpdate command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // find question within page
+    WaUiMetadata question = findQuestion(command.question());
+
+    if (command instanceof PageContentCommand.UpdateTextQuestion textCommand) {
+      question.update(textCommand);
+    } else if (command instanceof PageContentCommand.UpdateDateQuestion dateCommand) {
+      question.update(dateCommand);
+    } else if (command instanceof PageContentCommand.UpdateNumericQuestion numericCommand) {
+      question.update(numericCommand);
+    } else if (command instanceof PageContentCommand.UpdateCodedQuestion codedCommand) {
+      question.update(codedCommand);
+    }
+
+    changed(command);
+    return question;
+  }
+
   public WaUiMetadata updateTab(PageContentCommand.UpdateTab command) {
     // Can only modify Draft pages
     verifyDraftType();
@@ -421,6 +443,10 @@ public class WaTemplate {
         at,
         addedBy,
         addedOn);
+    if (type == 1008l) {
+      component.setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
+      component.setPublishIndCd('F');
+    }
 
     WaRdbMetadata rdbComponent = new WaRdbMetadata(this, component, addedOn, addedBy);
     addRdb(rdbComponent);
@@ -732,8 +758,7 @@ public class WaTemplate {
   }
 
 
-  public void groupSubSection(PageContentCommand.GroupSubsection command, List<Long> questionNbsUiComponentUids) {
-
+  public void groupSubSection(PageContentCommand.GroupSubsection command) {
     verifyDraftType();
     int max = 0;
     for (WaUiMetadata entry : uiMetadata) {
@@ -745,16 +770,15 @@ public class WaTemplate {
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
-        .filter(batch -> {
-          if (!(questionNbsUiComponentUids.contains(batch.getNbsUiComponentUid()))) {
-            throw new UpdateSubSectionException("Can only group the question elements");
-          }
-          return true;
-        }).forEach(questionBatch -> {
+        .forEach(questionBatch -> {
           questionBatch.updateQuestionBatch(command, finalMax);
+          if (questionBatch.getWaRdbMetadatum() != null) {
+            questionBatch.getWaRdbMetadatum()
+                .groupSubsectionQuestions(
+                    new GroupSubsectionRdb(command.repeatingNbr(), command.userId(), Instant.now()));
+          }
           changed(command);
         });
-
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
@@ -766,21 +790,19 @@ public class WaTemplate {
   }
 
 
-  public void unGroupSubSection(PageContentCommand.UnGroupSubsection command, List<Long> questionNbsUiComponentUids) {
-
+  public void unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
     verifyDraftType();
 
     List<Long> batchIds = command.batches();
     uiMetadata.stream()
         .filter(ui -> batchIds.contains(ui.getId()))
-        .filter(batch -> {
-          if (!(questionNbsUiComponentUids.contains(batch.getNbsUiComponentUid()))) {
-            throw new UpdateSubSectionException("Can only ungroup the question elements");
-          }
-          return true;
-        }).forEach(questionBatch -> {
+        .forEach(questionBatch -> {
           questionBatch.updateQuestionBatch(command);
           changed(command);
+          if (questionBatch.getWaRdbMetadatum() != null) {
+            questionBatch.getWaRdbMetadatum().
+                unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
+          }
         });
 
     WaUiMetadata subsection = uiMetadata.stream()
@@ -811,23 +833,14 @@ public class WaTemplate {
     changed(command);
   }
 
-
-  public WaUiMetadata updatePageQuestion(PageContentCommand.UpdatePageQuestion command) {
-    // Can only modify Draft pages
-    verifyDraftType();
-
-    // ensure page already contain question
-    WaUiMetadata question = uiMetadata.stream()
+  private WaUiMetadata findQuestion(long id) {
+    return uiMetadata.stream()
         .filter(e -> e.getId() != null
-            && e.getId().equals(command.question()))
+            && e.getId().equals(id))
         .findFirst()
-        .orElseThrow(() -> new PageContentModificationException(
-            "Unable to update a question from a page, the page does not contain the question"));
-
-    question.update(command, question.getDataType());
-    changed(command);
-    return question;
+        .orElseThrow(() -> new PageContentModificationException("Failed to find question"));
   }
+
 
 
 }

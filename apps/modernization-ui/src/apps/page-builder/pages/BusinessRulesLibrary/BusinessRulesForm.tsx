@@ -47,7 +47,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
 
-    const { pageId } = useParams();
+    const { pageId, ruleId } = useParams();
     const [sourceDescription, setSourceDescription] = useState<string>(
         form.watch('sourceText') && form.watch('sourceIdentifier')
             ? `${form.watch('sourceText')} (${form.watch('sourceIdentifier')})`
@@ -102,7 +102,10 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
         let description = '';
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
-        const sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        const sourceValueDescription =
+            sourceValues?.length && !anySourceValueToggle
+                ? sourceValues?.map((value) => value.text).join(', ')
+                : 'any source value';
         const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
 
         if (selectedSource && targetQuestions.length && logic) {
@@ -134,11 +137,11 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             value: Rule.comparator.LESS_THAN
         },
         {
-            name: 'Less or equal to',
+            name: 'Less than or equal to',
             value: Rule.comparator.LESS_THAN_OR_EQUAL_TO
         },
         {
-            name: 'Greater or equal to',
+            name: 'Greater than or equal to',
             value: Rule.comparator.GREATER_THAN_OR_EQUAL_TO
         },
         {
@@ -285,7 +288,6 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                                     <MultiSelectInput
                                         value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
                                         onChange={(value) => {
-                                            console.log('e', value);
                                             handleSourceValueChange(value);
                                         }}
                                         options={sourceValueList}
@@ -399,7 +401,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     </Grid>
                 )}
             />
-            {ruleFunction != Rule.ruleFunction.DATE_COMPARE ? (
+            {ruleFunction == Rule.ruleFunction.DATE_COMPARE && ruleId ? (
                 <Grid row className="inline-field">
                     <Grid col={3}>
                         <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
@@ -408,12 +410,12 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                     </Grid>
                     <Grid col={9}>
                         <Input
-                            readOnly
+                            readOnly={true}
                             type="text"
                             multiline
-                            value={`'${sourceDescription}' must be ${mapLogicForDateCompare(
-                                form.getValues('comparator')
-                            )} ${targetQuestions.map((val) => `${val.name} (${val.question})`).join(', ')}`}
+                            defaultValue={`'${form.watch('sourceText')}' must be ${mapLogicForDateCompare(
+                                form.watch('comparator')
+                            )} '${form.watch('targetValueText')?.[0]} (${form.watch('targetIdentifiers')?.[0]})'`}
                             name={'errorMessage'}
                             id={'errorMessage'}
                         />

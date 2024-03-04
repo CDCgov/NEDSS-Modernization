@@ -1,4 +1,7 @@
+import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { usePageQuestionDataMartValidation } from 'apps/page-builder/hooks/api/usePageQuestionValidation';
+import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
 import { ChangeEvent, useEffect } from 'react';
@@ -6,13 +9,13 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
-import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
-import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 
 type Props = {
     editing?: boolean;
+    page?: number;
+    questionId?: number;
 };
-export const DataMartFields = ({ editing = false }: Props) => {
+export const DataMartFields = ({ editing = false, page, questionId }: Props) => {
     const { options: rdbTableNames } = useOptions('NBS_PH_DOMAINS');
     const form = useFormContext<CreateQuestionForm>();
     const [displayControl, subgroup, dataMartColumnName, rdbColumnName] = useWatch({
@@ -27,6 +30,8 @@ export const DataMartFields = ({ editing = false }: Props) => {
     const { isValid: isValidDataMartColumnName, validate: validateDataMartColumnName } = useQuestionValidation(
         QuestionValidationRequest.field.DATA_MART_COLUMN_NAME
     );
+    const { isValid: isValidPageDataMartColumnName, validate: validatePageDataMartColumnName } =
+        usePageQuestionDataMartValidation();
 
     useEffect(() => {
         if (displayControl?.toString() !== '1026') {
@@ -43,7 +48,11 @@ export const DataMartFields = ({ editing = false }: Props) => {
 
     const handleDataMartColumnNameValidation = (columnName: string | undefined) => {
         if (columnName) {
-            validateDataMartColumnName(columnName);
+            if (!editing) {
+                validateDataMartColumnName(columnName);
+            } else if (page && questionId) {
+                validatePageDataMartColumnName(page, questionId, columnName);
+            }
         }
     };
 
@@ -66,12 +75,12 @@ export const DataMartFields = ({ editing = false }: Props) => {
     }, [isValidRdbColumn]);
 
     useEffect(() => {
-        if (isValidDataMartColumnName === false) {
+        if (isValidDataMartColumnName === false || isValidPageDataMartColumnName === false) {
             form.setError('dataMartInfo.dataMartColumnName', {
                 message: `A Data mart column named: ${dataMartColumnName} already exists in the system`
             });
         }
-    }, [isValidDataMartColumnName]);
+    }, [isValidDataMartColumnName, isValidPageDataMartColumnName]);
 
     return (
         <>
@@ -105,7 +114,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
                 control={form.control}
                 name="dataMartInfo.defaultRdbTableName"
                 rules={{
-                    required: { value: true, message: 'Default RDB table name is required' },
+                    required: { value: !editing, message: 'Default RDB table name is required' },
                     ...maxLengthRule(50)
                 }}
                 render={({ field: { onChange, name, value }, fieldState: { error } }) => (
@@ -120,7 +129,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         name={name}
                         id={name}
                         htmlFor={name}
-                        required
+                        required={!editing}
                     />
                 )}
             />
@@ -128,7 +137,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
                 control={form.control}
                 name="dataMartInfo.rdbColumnName"
                 rules={{
-                    required: { value: true, message: 'RDB column name is required' },
+                    required: { value: !editing, message: 'RDB column name is required' },
                     pattern: {
                         value: alphanumericUnderscoreNotStartingWithNumber,
                         message: 'Must not start with a number and valid characters are A-Z, a-z, 0-9, or _'
@@ -153,7 +162,7 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         id={name}
                         htmlFor={name}
                         disabled={editing}
-                        required
+                        required={!editing}
                     />
                 )}
             />
@@ -180,7 +189,6 @@ export const DataMartFields = ({ editing = false }: Props) => {
                         className="field-space"
                         defaultValue={value}
                         type="text"
-                        disabled={editing}
                         error={error?.message}
                         name={name}
                         id={name}

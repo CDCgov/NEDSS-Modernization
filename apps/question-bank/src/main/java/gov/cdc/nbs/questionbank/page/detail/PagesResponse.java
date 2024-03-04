@@ -6,17 +6,13 @@ import java.util.Collection;
 import java.util.List;
 
 public record PagesResponse(
-    @ApiModelProperty(required = true)
-    long id,
-    @ApiModelProperty(required = true)
-    String name,
-    @ApiModelProperty(required = true)
-    String status,
+    @ApiModelProperty(required = true) long id,
+    @ApiModelProperty(required = true) String name,
+    @ApiModelProperty(required = true) String status,
     String description,
     long root,
     Collection<PagesTab> tabs,
-    Collection<PageRule> rules
-) {
+    Collection<PageRule> rules) {
 
   PagesResponse(
       long id,
@@ -24,8 +20,7 @@ public record PagesResponse(
       String status,
       String description,
       long root,
-      Collection<PageRule> rules
-  ) {
+      Collection<PageRule> rules) {
     this(
         id,
         name,
@@ -33,67 +28,45 @@ public record PagesResponse(
         description,
         root,
         List.of(),
-        rules
-    );
+        rules);
   }
 
   public record PagesTab(
-      @ApiModelProperty(required = true)
-      long id,
-      @ApiModelProperty(required = true)
-      String name,
-      @ApiModelProperty(required = true)
-      int order,
-      @ApiModelProperty(required = true)
-      boolean visible,
-      @ApiModelProperty(required = true)
-      Collection<PagesSection> sections
-  ) {
+      @ApiModelProperty(required = true) long id,
+      @ApiModelProperty(required = true) String name,
+      @ApiModelProperty(required = true) int order,
+      @ApiModelProperty(required = true) boolean visible,
+      @ApiModelProperty(required = true) Collection<PagesSection> sections) {
   }
 
 
   public record PagesSection(
-      @ApiModelProperty(required = true)
-      long id,
-      @ApiModelProperty(required = true)
-      String name,
-      @ApiModelProperty(required = true)
-      int order,
-      @ApiModelProperty(required = true)
-      boolean visible,
-      @ApiModelProperty(required = true)
-      Collection<PagesSubSection> subSections
-  ) {
+      @ApiModelProperty(required = true) long id,
+      @ApiModelProperty(required = true) String name,
+      @ApiModelProperty(required = true) int order,
+      @ApiModelProperty(required = true) boolean visible,
+      @ApiModelProperty(required = true) Collection<PagesSubSection> subSections) {
   }
 
 
   public record PagesSubSection(
-      @ApiModelProperty(required = true)
-      long id,
-      @ApiModelProperty(required = true)
-      String name,
-      @ApiModelProperty(required = true)
-      int order,
-      @ApiModelProperty(required = true)
-      boolean visible,
-      @ApiModelProperty(required = true)
-      boolean isGrouped,
-      @ApiModelProperty(required = true)
-      Collection<PagesQuestion> questions
-  ) {
+      @ApiModelProperty(required = true) long id,
+      @ApiModelProperty(required = true) String name,
+      @ApiModelProperty(required = true) int order,
+      @ApiModelProperty(required = true) boolean visible,
+      @ApiModelProperty(required = true) boolean isGrouped,
+      @ApiModelProperty(required = true) boolean isGroupable,
+      @ApiModelProperty(required = true) Collection<PagesQuestion> questions) {
   }
 
 
   public record PagesQuestion(
-      @ApiModelProperty(required = true)
-      long id,
+      @ApiModelProperty(required = true) long id,
       boolean isStandard,
       String standard,
       String question,
-      @ApiModelProperty(required = true)
-      String name,
-      @ApiModelProperty(required = true)
-      int order,
+      @ApiModelProperty(required = true) String name,
+      @ApiModelProperty(required = true) int order,
       String subGroup,
       String description,
       boolean coInfection,
@@ -101,7 +74,7 @@ public record PagesResponse(
       String mask,
       boolean allowFutureDates,
       String tooltip,
-      boolean display,
+      boolean visible,
       boolean enabled,
       boolean required,
       String defaultValue,
@@ -112,8 +85,8 @@ public record PagesResponse(
       String defaultRdbTableName,
       String rdbColumnName,
       String defaultLabelInReport,
-      String dataMartColumnName
-  ) {
+      String dataMartColumnName,
+      boolean isPublished) {
   }
 
 
@@ -124,7 +97,6 @@ public record PagesResponse(
       String values,
       String function,
       String sourceField,
-      String targetField
-  ) {
+      String targetField) {
   }
 }

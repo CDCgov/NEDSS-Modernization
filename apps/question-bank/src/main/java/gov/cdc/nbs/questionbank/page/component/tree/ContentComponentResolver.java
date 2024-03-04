@@ -21,10 +21,9 @@ class ContentComponentResolver {
       return asEntry(entry, flattened);
     } else if (type instanceof SelectionNode.Type selection) {
       return asSelection(selection, flattened);
-    } else if(type instanceof StaticNode.Type staticNode) {
+    } else if (type instanceof StaticNode.Type staticNode) {
       return asStatic(staticNode, flattened);
-    }
-    else {
+    } else {
       throw new IllegalStateException("Unresolvable Content Component Type: " + type);
     }
   }
@@ -33,8 +32,7 @@ class ContentComponentResolver {
     return new ComponentNode.Definition(
         component.name(),
         component.visible(),
-        component.order()
-    );
+        component.order());
   }
 
   private ContentNode.Attributes asAttributes(final FlattenedComponent component) {
@@ -56,8 +54,10 @@ class ContentComponentResolver {
         component.defaultRdbTableName(),
         component.rdbColumnName(),
         component.defaultLabelInReport(),
-        component.dataMartColumnName()
-    );
+        component.dataMartColumnName(),
+        component.type(),
+        component.dataLocation(),
+        component.isPublished());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {
@@ -66,8 +66,7 @@ class ContentComponentResolver {
         type,
         asDefinition(flattened),
         asAttributes(flattened),
-        flattened.allowFutureDates()
-    );
+        flattened.allowFutureDates());
   }
 
   private EntryNode asEntry(final EntryNode.Type type, final FlattenedComponent flattened) {
@@ -75,8 +74,7 @@ class ContentComponentResolver {
         flattened.identifier(),
         type,
         asDefinition(flattened),
-        asAttributes(flattened)
-    );
+        asAttributes(flattened));
   }
 
   private SelectionNode asSelection(final SelectionNode.Type type, final FlattenedComponent flattened) {
@@ -85,17 +83,15 @@ class ContentComponentResolver {
         type,
         asDefinition(flattened),
         asAttributes(flattened),
-        flattened.valueSet()
-    );
+        flattened.valueSet());
   }
 
-  private StaticNode asStatic(final StaticNode.Type type, final  FlattenedComponent flattened) {
+  private StaticNode asStatic(final StaticNode.Type type, final FlattenedComponent flattened) {
     return new StaticNode(
         flattened.identifier(),
         type,
         asDefinition(flattened),
-        asAttributes(flattened)
-    );
+        asAttributes(flattened));
   }
 
 }

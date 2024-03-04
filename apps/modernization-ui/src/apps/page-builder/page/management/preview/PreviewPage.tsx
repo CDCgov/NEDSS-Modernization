@@ -51,12 +51,15 @@ const PreviewPageContent = () => {
             PageControllerService.savePageDraftUsingPut({
                 authorization,
                 id: page.id
-            }).then(() => {
+            }).then((response) => {
                 showAlert({
                     type: 'success',
                     header: 'Success',
                     message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`
                 });
+                if (response && response.templateId) {
+                    navigate(`/page-builder/pages/${response.templateId}`);
+                }
                 refresh();
             });
         } catch (error) {
@@ -214,15 +217,16 @@ const PreviewPageContent = () => {
             ) : (
                 <ModalComponent
                     modalRef={publishingLoaderRef}
+                    size="width"
                     closer
                     modalBody={
                         <div className={styles.loaderContent}>
                             <Loading center className={styles.loaderIcon} />
                             <div className={styles.loaderText}>
-                                <Heading level={3}>Publishing...</Heading>
+                                <Heading level={2}>Publishing...</Heading>
                             </div>
                             <div className={styles.loaderText}>
-                                <Heading level={3}>This may take a moment</Heading>
+                                <Heading level={2}>This may take a moment</Heading>
                             </div>
                         </div>
                     }

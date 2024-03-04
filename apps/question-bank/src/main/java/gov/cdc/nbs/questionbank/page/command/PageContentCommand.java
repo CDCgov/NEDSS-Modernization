@@ -5,8 +5,8 @@ import java.util.List;
 
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
-import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 
 
 public sealed interface PageContentCommand {
@@ -177,16 +177,22 @@ public sealed interface PageContentCommand {
       long subsection,
       String blockName,
       List<GroupSubSectionRequest.Batch> batches,
-      long repeatingNbr,
+      Integer repeatingNbr,
       long userId,
       Instant requestedOn) implements PageContentCommand {
   }
+
 
   public record GroupSubsectionRdb(
       int repeatingNbr,
       long userId,
       Instant requestedOn) implements PageContentCommand {
+  }
 
+
+  public record UnGroupSubsectionRdb(
+      long userId,
+      Instant requestedOn) implements PageContentCommand {
   }
 
 
@@ -222,14 +228,151 @@ public sealed interface PageContentCommand {
       Instant requestedOn) implements PageContentCommand {
   }
 
+  public sealed interface QuestionUpdate extends PageContentCommand {
+    long question();
 
-  public record UpdatePageQuestion(
-      Long question,
-      UpdatePageQuestionRequest updatePageQuestionRequest,
-      long userId,
-      Instant requestedOn) implements PageContentCommand {
+    String label();
+
+    String tooltip();
+
+    boolean visible();
+
+    boolean enabled();
+
+    boolean required();
+
+    long displayControl();
+
+    ReportingInfo datamartInfo();
+
+    boolean includedInMessage();
+
+    String messageVariableId();
+
+    String labelInMessage();
+
+    String codeSystemOid();
+
+    String codeSystemName();
+
+    boolean requiredInMessage();
+
+    String hl7DataType();
+
+    String adminComments();
   }
 
+  public record UpdateTextQuestion(
+      long question,
+      String label,
+      String tooltip,
+      boolean visible,
+      boolean enabled,
+      boolean required,
+      long displayControl,
+      // text specific
+      String defaultValue,
+      Integer fieldLength,
+      // reporting
+      ReportingInfo datamartInfo,
+      // messaging
+      boolean includedInMessage,
+      String messageVariableId,
+      String labelInMessage,
+      String codeSystemOid,
+      String codeSystemName,
+      boolean requiredInMessage,
+      String hl7DataType,
+      // admin
+      String adminComments,
+      long userId,
+      Instant requestedOn) implements QuestionUpdate {
+  }
+
+  public record UpdateNumericQuestion(
+      long question,
+      String label,
+      String tooltip,
+      boolean visible,
+      boolean enabled,
+      boolean required,
+      long displayControl,
+      // numeric specific
+      String mask,
+      Integer fieldLength,
+      Long defaultValue,
+      Long minValue,
+      Long maxValue,
+      String relatedUnitsLiteral,
+      Long relatedUnitsValueSet,
+      // reporting
+      ReportingInfo datamartInfo,
+      // messaging
+      boolean includedInMessage,
+      String messageVariableId,
+      String labelInMessage,
+      String codeSystemOid,
+      String codeSystemName,
+      boolean requiredInMessage,
+      String hl7DataType,
+      // admin
+      String adminComments,
+      long userId,
+      Instant requestedOn) implements QuestionUpdate {
+  }
+  public record UpdateDateQuestion(
+      long question,
+      String label,
+      String tooltip,
+      boolean visible,
+      boolean enabled,
+      boolean required,
+      long displayControl,
+      // date specific
+      String mask,
+      boolean allowFutureDates,
+      // reporting
+      ReportingInfo datamartInfo,
+      // messaging
+      boolean includedInMessage,
+      String messageVariableId,
+      String labelInMessage,
+      String codeSystemOid,
+      String codeSystemName,
+      boolean requiredInMessage,
+      String hl7DataType,
+      // admin
+      String adminComments,
+      long userId,
+      Instant requestedOn) implements QuestionUpdate {
+  }
+
+  public record UpdateCodedQuestion(
+      long question,
+      String label,
+      String tooltip,
+      boolean visible,
+      boolean enabled,
+      boolean required,
+      long displayControl,
+      // coded specific
+      String defaultValue,
+      long valueset,
+      // reporting
+      ReportingInfo datamartInfo,
+      // messaging
+      boolean includedInMessage,
+      String messageVariableId,
+      String labelInMessage,
+      String codeSystemOid,
+      String codeSystemName,
+      boolean requiredInMessage,
+      String hl7DataType,
+      // admin
+      String adminComments,
+      long userId,
+      Instant requestedOn) implements QuestionUpdate {
+  }
 
 
 }

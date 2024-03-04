@@ -8,6 +8,7 @@ import { MessagingFields } from './fields/MessagingFields';
 import { QuestionSpecificFields } from './fields/QuestionSpecificFields';
 import { UserInterfaceFields } from './fields/UserInterfaceFields';
 import styles from './question-form.module.scss';
+import { HorizontalRule } from '../FormDivider/HorizontalRule';
 
 export type CreateQuestionForm = Omit<CreateQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';
@@ -19,11 +20,10 @@ export type AdditionalQuestionFields = {
 };
 
 type Props = {
-    question?: CreateQuestionForm;
     onFindValueSet: () => void;
 };
 
-export const QuestionForm = ({ question, onFindValueSet }: Props) => {
+export const QuestionForm = ({ onFindValueSet }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
     const displayControl = useWatch<CreateQuestionForm>({
         control: form.control,
@@ -41,19 +41,19 @@ export const QuestionForm = ({ question, onFindValueSet }: Props) => {
 
     return (
         <div className={styles.form}>
-            <BasicInformationFields editing={question !== undefined} />
+            <BasicInformationFields />
             <QuestionSpecificFields onFindValueSet={onFindValueSet} />
-            <div className={styles.divider} />
+            <HorizontalRule />
             <UserInterfaceFields />
             {displayControl?.toString() !== '1026' && ( // hide data mart and messaging if display control = 'Readonly User text, number, or date'
                 <>
-                    <div className={styles.divider} />
-                    <DataMartFields editing={question !== undefined} />
-                    <div className={styles.divider} />
-                    <MessagingFields editing={question !== undefined} />
+                    <HorizontalRule />
+                    <DataMartFields />
+                    <HorizontalRule />
+                    <MessagingFields />
                 </>
             )}
-            <div className={styles.divider} />
+            <HorizontalRule />
             <AdministrativeFields />
         </div>
     );

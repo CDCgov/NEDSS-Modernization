@@ -1,12 +1,22 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
-import javax.persistence.*;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
@@ -14,7 +24,6 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
-import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest.DataType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +42,7 @@ public class WaUiMetadata {
   private static final Long READ_ONLY_COMMENTS_ID = 1014L;
   private static final Long READ_ONLY_PARTICIPANTS_LIST_ID = 1030L;
   private static final Long ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID = 1036L;
+  private static final Long READONLY_USER_ENTERED = 1026l;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -208,19 +218,31 @@ public class WaUiMetadata {
   @Column(name = "block_nm", length = 30)
   private String blockNm;
 
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "waUiMetadataUid",
-      cascade = {CascadeType.PERSIST,
-          CascadeType.REMOVE},
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      mappedBy = "waUiMetadataUid",
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.REMOVE
+      },
       orphanRemoval = true)
   private WaRdbMetadata waRdbMetadatum;
 
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      mappedBy = "waUiMetadataUid",
+      cascade = {
+          CascadeType.PERSIST,
+          CascadeType.REMOVE
+      },
+      orphanRemoval = true)
+  private WaNndMetadatum waNndMetadatum;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "codeSetGroup")
   private Codeset codeset;
 
   public WaUiMetadata() {
     this.standardNndIndCd = 'F';
-    this.publishIndCd = 'T';
     this.enableInd = "T";
     this.displayInd = "T";
     this.requiredInd = "F";
@@ -266,6 +288,153 @@ public class WaUiMetadata {
 
 
     this.added(command);
+  }
+
+  public void update(PageContentCommand.UpdateTextQuestion command) {
+    if (!"TEXT".equals(dataType)) {
+      throw new PageContentModificationException("Targeted question is not a TEXT question");
+    }
+    updateSharedQuestionFields(command);
+
+    // always updatable
+    this.defaultValue = command.defaultValue();
+
+    // updatable if not published
+    if (!Character.valueOf('T').equals(publishIndCd)) {
+      this.fieldSize = command.fieldLength().toString();
+    }
+
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UpdateNumericQuestion command) {
+    if (!"NUMERIC".equals(dataType)) {
+      throw new PageContentModificationException("Targeted question is not a NUMERIC question");
+    }
+
+    updateSharedQuestionFields(command);
+
+    // always updatable
+    this.defaultValue = String.valueOf(command.defaultValue());
+
+    // updatable if not published
+    if (!Character.valueOf('T').equals(publishIndCd)) {
+      this.mask = command.mask();
+      this.fieldSize = String.valueOf(command.fieldLength());
+      this.minValue = command.minValue();
+      this.maxValue = command.maxValue();
+
+      if (command.relatedUnitsValueSet() != null) {
+        this.unitTypeCd = UnitType.CODED.toString();
+        this.unitValue = command.relatedUnitsValueSet().toString();
+      } else if (command.relatedUnitsLiteral() != null && !command.relatedUnitsLiteral().isBlank()) {
+        this.unitTypeCd = UnitType.LITERAL.toString();
+        this.unitValue = command.relatedUnitsLiteral();
+      }
+    }
+
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UpdateDateQuestion command) {
+    if (!"DATE".equals(dataType)) {
+      throw new PageContentModificationException("Targeted question is not a DATE question");
+    }
+
+    updateSharedQuestionFields(command);
+
+    // updatable if not published
+    if (!Character.valueOf('T').equals(publishIndCd)) {
+      this.mask = command.mask();
+      this.futureDateIndCd = command.allowFutureDates() ? 'T' : 'F';
+    }
+
+    updated(command);
+  }
+
+  public void update(PageContentCommand.UpdateCodedQuestion command) {
+    if (!"CODED".equals(dataType)) {
+      throw new PageContentModificationException("Targeted question is not a CODED question");
+    }
+
+    updateSharedQuestionFields(command);
+
+    // always updatable
+    this.defaultValue = command.defaultValue();
+
+    // updatable if not published
+    if (!Character.valueOf('T').equals(publishIndCd)) {
+      this.codeSetGroupId = command.valueset();
+    }
+
+    updated(command);
+  }
+
+  // Updates the fields that are common between different question types
+  private void updateSharedQuestionFields(PageContentCommand.QuestionUpdate command) {
+    // always updatable
+    this.questionLabel = command.label();
+    this.questionToolTip = command.tooltip();
+    this.displayInd = command.visible() ? "T" : "F";
+    this.enableInd = command.enabled() ? "T" : "F";
+    this.requiredInd = command.required() ? "T" : "F";
+    this.adminComment = command.adminComments();
+
+    // updatable if not published
+    if (!Character.valueOf('T').equals(publishIndCd)) {
+      this.nbsUiComponentUid = command.displayControl();
+    }
+
+    if (command.displayControl() == READONLY_USER_ENTERED) {
+      this.waRdbMetadatum = null;
+      this.waNndMetadatum = null;
+    } else {
+      // Reporting
+      updateReporting(command);
+
+      // Messaging
+      updateMessaging(command);
+    }
+  }
+
+  private void updateReporting(PageContentCommand.QuestionUpdate command) {
+    // Reporting
+    if (this.waRdbMetadatum == null) {
+      this.waRdbMetadatum = new WaRdbMetadata(this, command);
+    } else {
+      this.waRdbMetadatum.update(
+          command.datamartInfo().reportLabel(),
+          command.datamartInfo().dataMartColumnName(),
+          command.userId(),
+          command.requestedOn());
+    }
+  }
+
+  private void updateMessaging(PageContentCommand.QuestionUpdate command) {
+    if (!command.includedInMessage()) {
+      waNndMetadatum = null;
+    } else {
+      this.questionOidSystemTxt = command.codeSystemName();
+      this.questionOid = command.codeSystemOid();
+      if (waNndMetadatum == null) {
+        waNndMetadatum = new WaNndMetadatum(
+            this,
+            command.messageVariableId(),
+            command.labelInMessage(),
+            command.requiredInMessage(),
+            command.hl7DataType(),
+            command.userId(),
+            command.requestedOn());
+      } else {
+        waNndMetadatum.update(
+            command.messageVariableId(),
+            command.labelInMessage(),
+            command.requiredInMessage(),
+            command.hl7DataType(),
+            command.userId(),
+            command.requestedOn());
+      }
+    }
   }
 
   public void update(PageContentCommand.UpdateReadOnlyComments command) {
@@ -366,6 +535,7 @@ public class WaUiMetadata {
     // Defaults
     this.standardNndIndCd = 'F';
     this.standardQuestionIndCd = 'F';
+    this.publishIndCd = null;
 
     // User specified
     this.waTemplateUid = page;
@@ -385,6 +555,7 @@ public class WaUiMetadata {
     this.subGroupNm = command.question().getSubGroupNm();
     this.dataType = command.question().getDataType();
     this.otherValueIndCd = command.question().getOtherValueIndCd();
+    this.coinfectionIndCd = command.question().getCoinfectionIndCd();
 
     // Question type specific fields
     if (command.question() instanceof TextQuestionEntity t) {
@@ -410,6 +581,18 @@ public class WaUiMetadata {
     }
     if (command.question().getRdbTableNm() != null) {
       this.waRdbMetadatum = new WaRdbMetadata(page, this, command);
+    }
+
+    // If question is 'included in message', create WaNNDMetadata entry
+    if (Character.valueOf('T').equals(command.question().getNndMsgInd())) {
+      this.waNndMetadatum = new WaNndMetadatum(
+          this,
+          command.question().getQuestionIdentifierNnd(),
+          command.question().getQuestionLabelNnd(),
+          Character.valueOf('R').equals(command.question().getQuestionRequiredNnd()),
+          command.question().getQuestionDataTypeNnd(),
+          command.userId(),
+          command.requestedOn());
     }
 
     // Audit info
@@ -466,6 +649,12 @@ public class WaUiMetadata {
 
     // Audit
     added(command);
+  }
+
+  public WaUiMetadata(long id, Integer orderNbr, Long nbsUiComponentUid) {
+    this.id = id;
+    this.orderNbr = orderNbr;
+    this.nbsUiComponentUid = nbsUiComponentUid;
   }
 
   public void update(UpdateSection command) {
@@ -548,6 +737,7 @@ public class WaUiMetadata {
         original.getCoinfectionIndCd(),
         original.getBlockNm(),
         original.waRdbMetadatum,
+        original.waNndMetadatum,
         original.codeset);
 
   }
@@ -557,24 +747,32 @@ public class WaUiMetadata {
   }
 
   public void update(PageContentCommand.GroupSubsection command, int questionGroupSeqNbr) {
-    this.blockNm = command.blockName();
+    this.blockNm = command.blockName().toUpperCase();
     this.questionGroupSeqNbr = questionGroupSeqNbr;
     updated(command);
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command, int groupSeqNbr) {
-    this.blockNm = command.blockName();
+    this.blockNm = command.blockName().toUpperCase();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
-    this.batchTableAppearIndCd = batch.batchTableAppearIndCd();
-    this.batchTableHeader = batch.batchTableHeader();
+    this.batchTableAppearIndCd = batch.batchTableAppearIndCd() != 'N' ? 'Y' : 'N';
+    this.batchTableHeader = batch.batchTableHeader() == null ? extractFromQuestionLabel() : batch.batchTableHeader();
     this.batchTableColumnWidth = batch.batchTableColumnWidth();
     this.questionGroupSeqNbr = groupSeqNbr;
     updated(command);
   }
 
+  private String extractFromQuestionLabel() {
+    if (this.getQuestionLabel() != null && this.getQuestionLabel().length() > 50)
+      return this.getQuestionLabel().substring(0, 49);
+    else
+      return this.getQuestionLabel();
+  }
+
   public void update(PageContentCommand.UnGroupSubsection command) {
     this.blockNm = null;
+    this.questionGroupSeqNbr = null;
     updated(command);
   }
 
@@ -583,25 +781,7 @@ public class WaUiMetadata {
     this.batchTableAppearIndCd = null;
     this.batchTableHeader = null;
     this.batchTableColumnWidth = null;
-    updated(command);
-  }
-
-  public void update(PageContentCommand.UpdatePageQuestion command, String dataType) {
-    this.questionLabel = command.updatePageQuestionRequest().questionLabel();
-    this.questionToolTip = command.updatePageQuestionRequest().tooltip();
-    this.displayInd = command.updatePageQuestionRequest().display();
-    this.enableInd = command.updatePageQuestionRequest().enabled();
-    this.requiredInd = command.updatePageQuestionRequest().required();
-    this.adminComment = command.updatePageQuestionRequest().adminComments();
-    if (!dataType.equals(DataType.DATE.toString()))
-      this.defaultValue = command.updatePageQuestionRequest().defaultValue();
-    if (dataType.equals(DataType.TEXT.toString()) || dataType.equals(DataType.NUMERIC.toString()))
-      this.fieldSize = command.updatePageQuestionRequest().fieldLength();
-
-    if (this.waRdbMetadatum != null) {
-      this.waRdbMetadatum.setRptAdminColumnNm(command.updatePageQuestionRequest().defaultLabelInReport());
-      this.waRdbMetadatum.setUserDefinedColumnNm(command.updatePageQuestionRequest().dataMartColumnName());
-    }
+    this.questionGroupSeqNbr = null;
     updated(command);
   }
 

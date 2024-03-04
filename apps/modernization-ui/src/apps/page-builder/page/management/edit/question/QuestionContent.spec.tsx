@@ -41,6 +41,7 @@ const subSections: PagesSubSection = {
     name: 'test subsection',
     order: 2,
     questions: [dateQuestion, dropDownQuestion],
+    isGroupable: true,
     visible: true
 };
 

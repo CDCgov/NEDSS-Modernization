@@ -14,21 +14,6 @@ public class CreateTextQuestionRequest extends CreateQuestionRequest {
   private Integer fieldLength;
   private String defaultValue;
 
-
-  public enum TextMask {
-    TXT,
-    CENSUS_TRACT,
-    TXT_EMAIL,
-    TXT_ID10,
-    TXT_ID12,
-    TXT_ID15,
-    TXT_PHONE,
-    TXT_SSN,
-    TXT_IDTB,
-    TXT_ZIP
-  }
-
-
   public enum TextDisplayControl {
     USER_ENTERED(1008, "User entered text, number, or date"),
     MULTI_LINE_USER_ENTERED(1009, "Multi-line user-entered text"),

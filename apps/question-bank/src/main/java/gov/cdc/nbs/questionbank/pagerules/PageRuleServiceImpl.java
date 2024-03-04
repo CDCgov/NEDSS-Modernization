@@ -746,6 +746,7 @@ public class PageRuleServiceImpl implements PageRuleService {
     ruleMetadata.setWaTemplateUid(page);
     ruleMetadata.setRuleExpression(ruleData.ruleExpression());
     ruleMetadata.setId(ruleMetadata.getId());
+    ruleMetadata.setRuleDescText(request.description());
 
     return ruleMetadata;
   }

@@ -1,21 +1,22 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
-import gov.cdc.nbs.questionbank.page.component.ComponentNode;
-import gov.cdc.nbs.questionbank.page.component.ContentNode;
-import gov.cdc.nbs.questionbank.page.component.PageNode;
-import gov.cdc.nbs.questionbank.page.component.SectionNode;
-import gov.cdc.nbs.questionbank.page.component.StaticNode;
-import gov.cdc.nbs.questionbank.page.component.SubSectionNode;
-import gov.cdc.nbs.questionbank.page.component.TabNode;
+import gov.cdc.nbs.questionbank.page.component.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PagesResponseMapperTest {
+
+  public static final int ROLLINGNOTE = 1019;
+
+  PagesResponseMapper mapper = new PagesResponseMapper();
+
 
   @Test
   void should_map_page_to_response() {
@@ -23,10 +24,8 @@ class PagesResponseMapperTest {
         1381L,
         "page-name-value",
         "page-status-value",
-        "page-description-value"
-    );
+        "page-description-value");
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of());
 
@@ -49,11 +48,8 @@ class PagesResponseMapperTest {
             "values-value",
             "function-value",
             "source-value",
-            "target-value"
-        )
-    );
+            "target-value"));
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, rules);
 
@@ -65,9 +61,7 @@ class PagesResponseMapperTest {
             () -> assertThat(rule.values()).isEqualTo("values-value"),
             () -> assertThat(rule.function()).isEqualTo("function-value"),
             () -> assertThat(rule.sourceField()).isEqualTo("source-value"),
-            () -> assertThat(rule.targetField()).isEqualTo("target-value")
-        )
-    );
+            () -> assertThat(rule.targetField()).isEqualTo("target-value")));
   }
 
   @Test
@@ -78,22 +72,15 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        )
-    );
+            1)).add(
+                new TabNode(
+                    1667L,
+                    new ComponentNode.Definition(
+                        "tab-name-value",
+                        true,
+                        2)));
 
     PageDescription description = mock(PageDescription.class);
-
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -104,9 +91,7 @@ class PagesResponseMapperTest {
             () -> assertThat(tab.id()).isEqualTo(1667L),
             () -> assertThat(tab.name()).isEqualTo("tab-name-value"),
             () -> assertThat(tab.visible()).isTrue(),
-            () -> assertThat(tab.order()).isEqualTo(2)
-        )
-    );
+            () -> assertThat(tab.order()).isEqualTo(2)));
 
   }
 
@@ -118,31 +103,22 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        ).add(
-            new SectionNode(
-                1669L,
-                new ComponentNode.Definition(
-                    "section-name-value",
-                    true,
-                    3
-                )
-            )
-        )
-    );
+            1)).add(
+                new TabNode(
+                    1667L,
+                    new ComponentNode.Definition(
+                        "tab-name-value",
+                        true,
+                        2)).add(
+                            new SectionNode(
+                                1669L,
+                                new ComponentNode.Definition(
+                                    "section-name-value",
+                                    true,
+                                    3))));
 
     PageDescription description = mock(PageDescription.class);
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -155,10 +131,7 @@ class PagesResponseMapperTest {
                     () -> assertThat(section.id()).isEqualTo(1669L),
                     () -> assertThat(section.name()).isEqualTo("section-name-value"),
                     () -> assertThat(section.visible()).isTrue(),
-                    () -> assertThat(section.order()).isEqualTo(3)
-                )
-            )
-    );
+                    () -> assertThat(section.order()).isEqualTo(3))));
 
   }
 
@@ -170,41 +143,29 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        ).add(
-            new SectionNode(
-                1669L,
-                new ComponentNode.Definition(
-                    "section-name-value",
-                    true,
-                    3
-                )
-            ).add(
-                new SubSectionNode(
-                    1693L,
+            1)).add(
+                new TabNode(
+                    1667L,
                     new ComponentNode.Definition(
-                        "sub-section-name-value",
+                        "tab-name-value",
                         true,
-                        4
-                    ),
-                    false
-                )
-            )
-        )
-    );
+                        2)).add(
+                            new SectionNode(
+                                1669L,
+                                new ComponentNode.Definition(
+                                    "section-name-value",
+                                    true,
+                                    3)).add(
+                                        new SubSectionNode(
+                                            1693L,
+                                            new ComponentNode.Definition(
+                                                "sub-section-name-value",
+                                                true,
+                                                4),
+                                            false))));
 
     PageDescription description = mock(PageDescription.class);
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -219,11 +180,7 @@ class PagesResponseMapperTest {
                             () -> assertThat(subSection.id()).isEqualTo(1693L),
                             () -> assertThat(subSection.name()).isEqualTo("sub-section-name-value"),
                             () -> assertThat(subSection.visible()).isTrue(),
-                            () -> assertThat(subSection.order()).isEqualTo(4)
-                        )
-                    )
-            )
-    );
+                            () -> assertThat(subSection.order()).isEqualTo(4)))));
 
   }
 
@@ -235,72 +192,58 @@ class PagesResponseMapperTest {
         new ComponentNode.Definition(
             "page-name-value",
             true,
-            1
-        )
-    ).add(
-        new TabNode(
-            1667L,
-            new ComponentNode.Definition(
-                "tab-name-value",
-                true,
-                2
-            )
-        ).add(
-            new SectionNode(
-                1669L,
-                new ComponentNode.Definition(
-                    "section-name-value",
-                    true,
-                    3
-                )
-            ).add(
-                new SubSectionNode(
-                    1693L,
+            1)).add(
+                new TabNode(
+                    1667L,
                     new ComponentNode.Definition(
-                        "sub-section-name-value",
+                        "tab-name-value",
                         true,
-                        4
-                    )
-                    , false
-                ).add(
-                    new StaticNode(
-                        1697L,
-                        StaticNode.Type.HYPERLINK,
-                        new ComponentNode.Definition(
-                            "question-name-value",
-                            true,
-                            5
-                        ),
-                        new ContentNode.Attributes(
-                            true,
-                            "standard-value",
-                            "question-value",
-                            "data-type-value",
-                            "sub-group-value",
-                            "description-value",
-                            true,
-                            false,
-                            true,
-                            "mask-value",
-                            "tool-tip-value",
-                            "default-value-value",
-                            "admin-comments",
-                            "10",
-                            "default-rdb-table-name",
-                            "rdb-column-name",
-                            "default-label-in-report",
-                            "dataMart-column-name"
-
-                        )
-                    )
-                )
-            )
-        )
-    );
+                        2)).add(
+                            new SectionNode(
+                                1669L,
+                                new ComponentNode.Definition(
+                                    "section-name-value",
+                                    true,
+                                    3)).add(
+                                        new SubSectionNode(
+                                            1693L,
+                                            new ComponentNode.Definition(
+                                                "sub-section-name-value",
+                                                true,
+                                                4),
+                                            false).add(
+                                                new StaticNode(
+                                                    1697L,
+                                                    StaticNode.Type.HYPERLINK,
+                                                    new ComponentNode.Definition(
+                                                        "question-name-value",
+                                                        true,
+                                                        5),
+                                                    new ContentNode.Attributes(
+                                                        true,
+                                                        "standard-value",
+                                                        "question-value",
+                                                        "data-type-value",
+                                                        "sub-group-value",
+                                                        "description-value",
+                                                        true,
+                                                        false,
+                                                        true,
+                                                        "mask-value",
+                                                        "tool-tip-value",
+                                                        "default-value-value",
+                                                        "admin-comments",
+                                                        "10",
+                                                        "default-rdb-table-name",
+                                                        "rdb-column-name",
+                                                        "default-label-in-report",
+                                                        "dataMart-column-name",
+                                                        1007,
+                                                        "data_location",
+                                                        false))))));
 
     PageDescription description = mock(PageDescription.class);
 
-    PagesResponseMapper mapper = new PagesResponseMapper();
 
     PagesResponse response = mapper.asResponse(description, List.of(), page);
 
@@ -328,13 +271,101 @@ class PagesResponseMapperTest {
                                 () -> assertThat(question.mask()).isEqualTo("mask-value"),
                                 () -> assertThat(question.tooltip()).isEqualTo("tool-tip-value"),
                                 () -> assertThat(question.defaultValue()).isEqualTo("default-value-value"),
-                                () -> assertThat(question.displayComponent()).isEqualTo(1003L)
-                            )
-                        )
-                    )
-            )
-    );
+                                () -> assertThat(question.displayComponent()).isEqualTo(1003L))))));
 
+  }
+
+  @Test
+  void return_is_groupable_subsection() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode.Attributes question2 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    ContentNode contentNode2 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question2.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question1.isPublished()).thenReturn(false);
+    when(question2.isPublished()).thenReturn(false);
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(question2.nbsComponentId()).thenReturn(1008);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(contentNode2.attributes()).thenReturn(question2);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1, contentNode2));
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertTrue(result);
+  }
+
+  @Test
+  void return_is_not_groupable_subsection_include_core() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question1.isPublished()).thenReturn(true);
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
+
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertFalse(result);
+  }
+
+  @Test
+  void return_is_not_groupable_subsection_include_published_question() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.isPublished()).thenReturn(false);
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
+    when(question1.dataLocation()).thenReturn("test");
+    boolean invalidDataLocation = mapper.isSubsectionGrouable(subsection);
+    assertFalse(invalidDataLocation);
+
+    when(question1.dataLocation()).thenReturn(null);
+    boolean nullDataLocation = mapper.isSubsectionGrouable(subsection);
+    assertFalse(nullDataLocation);
+
+  }
+
+  @Test
+  void return_is_not_groupable_subsection_include_not_only_rolling_question() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode.Attributes question2 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    ContentNode contentNode2 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question2.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    when(question1.isPublished()).thenReturn(false);
+    when(question2.isPublished()).thenReturn(false);
+    when(question1.nbsComponentId()).thenReturn(1007);
+    when(question2.nbsComponentId()).thenReturn(ROLLINGNOTE);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(contentNode2.attributes()).thenReturn(question2);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1, contentNode2));
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertFalse(result);
+  }
+
+  @Test
+  void return_is_groupable_subsection_include_only_rolling_question() {
+    ContentNode.Attributes question1 = mock(ContentNode.Attributes.class);
+    ContentNode contentNode1 = mock(InputNode.class);
+    SubSectionNode subsection = mock(SubSectionNode.class);
+
+    when(question1.isPublished()).thenReturn(false);
+    when(question1.nbsComponentId()).thenReturn(ROLLINGNOTE);
+    when(contentNode1.attributes()).thenReturn(question1);
+    when(subsection.children()).thenReturn(Arrays.asList(contentNode1));
+    when(question1.dataLocation()).thenReturn("test_ANSWER_TXT_test");
+    boolean result = mapper.isSubsectionGrouable(subsection);
+    assertTrue(result);
   }
 }
 

@@ -42,8 +42,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
-    );
+        false,
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -68,9 +69,8 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
                 () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value"),
-                () -> assertThat(component.allowFutureDates()).isTrue()
-            )
-        );
+                () -> assertThat(component.allowFutureDates()).isTrue(),
+                () -> assertThat(component.attributes().isPublished()).isTrue()));
   }
 
   @Test
@@ -101,8 +101,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
-    );
+        false,
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -126,9 +127,7 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().coInfection()).isTrue(),
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
-                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")
-            )
-        );
+                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")));
   }
 
   @Test
@@ -159,8 +158,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
-    );
+        false,
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -184,9 +184,7 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().coInfection()).isTrue(),
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
-                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")
-            )
-        );
+                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")));
   }
 
   @Test
@@ -217,8 +215,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
-    );
+        false,
+        "data_location",
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -242,9 +241,7 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().coInfection()).isTrue(),
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
-                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")
-            )
-        );
+                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")));
   }
 
   @Test
@@ -255,8 +252,7 @@ class ContentComponentResolverTest {
         1002,
         "invalid",
         true,
-        1
-    );
+        1);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 

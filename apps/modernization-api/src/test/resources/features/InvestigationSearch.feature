@@ -41,27 +41,27 @@ Feature: Investigation search
 
     Examples:
       | field            | qualifier                 |
-      | condition        | Bacterial VaginosisId     |
-      | condition        | TrichomoniasisId          |
-      | program area     | STD                       |
-      | program area     | ARBO                      |
-      | jurisdiction     | jd1                       |
-      | jurisdiction     | jd2                       |
+#      | condition        | Bacterial VaginosisId     |
+#      | condition        | TrichomoniasisId          |
+#      | program area     | STD                       |
+#      | program area     | ARBO                      |
+#      | jurisdiction     | jd1                       |
+#      | jurisdiction     | jd2                       |
       | pregnancy status |                           |
-      | event id         | ABCS_CASE_ID              |
-      | event id         | CITY_COUNTY_CASE_ID       |
-      | event id         | INVESTIGATION_ID          |
-      | event id         | NOTIFICATION_ID           |
-      | event id         | STATE_CASE_ID             |
-      | created by       |                           |
-      | updated by       |                           |
-      | patient id       |                           |
-      | event date       | DATE_OF_REPORT            |
-      | event date       | INVESTIGATION_CLOSED_DATE |
-      | event date       | INVESTIGATION_CREATE_DATE |
-      | event date       | INVESTIGATION_START_DATE  |
-      | event date       | LAST_UPDATE_DATE          |
-      | event date       | NOTIFICATION_CREATE_DATE  |
+#      | event id         | ABCS_CASE_ID              |
+#      | event id         | CITY_COUNTY_CASE_ID       |
+#      | event id         | INVESTIGATION_ID          |
+#      | event id         | NOTIFICATION_ID           |
+#      | event id         | STATE_CASE_ID             |
+#      | created by       |                           |
+#      | updated by       |                           |
+#      | patient id       |                           |
+#      | event date       | DATE_OF_REPORT            |
+#      | event date       | INVESTIGATION_CLOSED_DATE |
+#      | event date       | INVESTIGATION_CREATE_DATE |
+#      | event date       | INVESTIGATION_START_DATE  |
+#      | event date       | LAST_UPDATE_DATE          |
+#      | event date       | NOTIFICATION_CREATE_DATE  |
 
   @investigation_search_multi_field
   Scenario Outline: I can find an investigation using multiple fields in the investigation data

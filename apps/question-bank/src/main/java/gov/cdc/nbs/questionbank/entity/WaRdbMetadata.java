@@ -69,8 +69,13 @@ public class WaRdbMetadata {
   @Column(name = "block_pivot_nbr")
   private Integer blockPivotNbr;
 
-  public void groupQuestion(PageContentCommand.GroupSubsectionRdb command) {
+  public void groupSubsectionQuestions(PageContentCommand.GroupSubsectionRdb command) {
     this.blockPivotNbr = command.repeatingNbr();
+    changed(command);
+  }
+
+  public void unGroupSubsectionQuestions(PageContentCommand.UnGroupSubsectionRdb command) {
+    this.blockPivotNbr = null;
     changed(command);
   }
 
@@ -107,6 +112,16 @@ public class WaRdbMetadata {
     added(command);
   }
 
+  public WaRdbMetadata(WaUiMetadata waUiMetadata, PageContentCommand.QuestionUpdate command) {
+    this.setRdbColumnNm(command.datamartInfo().rdbColumnName());
+    this.setRdbTableNm(command.datamartInfo().defaultRdbTableName());
+    this.setRptAdminColumnNm(command.datamartInfo().reportLabel());
+    this.setUserDefinedColumnNm(command.datamartInfo().dataMartColumnName());
+    this.setWaTemplateUid(waUiMetadata.getWaTemplateUid());
+    this.setQuestionIdentifier(waUiMetadata.getQuestionIdentifier());
+    this.setWaUiMetadataUid(waUiMetadata);
+    added(command);
+  }
 
   private void added(PageContentCommand command) {
     this.addTime = command.requestedOn();
@@ -115,6 +130,17 @@ public class WaRdbMetadata {
     this.lastChgUserId = command.userId();
     this.recordStatusCd = ACTIVE;
     this.recordStatusTime = command.requestedOn();
+  }
+
+  public void update(
+      String defaultLabelInReport,
+      String dataMartColumnName,
+      long user,
+      Instant requestedOn) {
+    this.rptAdminColumnNm = defaultLabelInReport;
+    this.userDefinedColumnNm = dataMartColumnName;
+    this.lastChgTime = requestedOn;
+    this.lastChgUserId = user;
   }
 
 }

@@ -52,6 +52,38 @@ export class PageRuleControllerService {
     }
 
     /**
+     * getAllRules
+     * @returns Rule OK
+     * @throws ApiError
+     */
+    public static getAllRulesUsingGet({
+        authorization,
+        id,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+    }): CancelablePromise<Array<Rule>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/nbs/page-builder/api/v1/pages/{id}/rules/getAll',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
      * findPageRule
      * @returns Page_Rule_ OK
      * @returns any Created
