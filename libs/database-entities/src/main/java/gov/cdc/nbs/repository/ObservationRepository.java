@@ -13,51 +13,6 @@ import gov.cdc.nbs.entity.projections.Observation2;
 
 public interface ObservationRepository
         extends JpaRepository<Observation, Long>, QuerydslPredicateExecutor<Observation> {
-    @Query(value = """
-             SELECT
-                o2.cd,
-                o2.cd_desc_txt cdDescTxt,
-                o2.obs_domain_cd_st_1 domainCd,
-                o2.status_cd statusCd,
-                o2.alt_cd altCd,
-                o2.alt_cd_desc_txt altDescTxt,
-                o2.alt_cd_system_cd altCdSystemCd,
-                ovc.display_name displayName,
-                ovc.code AS ovcCode,
-                ovc.alt_cd ovcAltCode,
-                ovc.alt_cd_desc_txt ovcAltDescTxt,
-                ovc.alt_cd_system_cd ovcAltCdSystemCd
-            FROM
-                observation o2
-                LEFT JOIN Obs_value_coded ovc ON ovc.observation_uid = o2.observation_uid
-            WHERE
-                o2.observation_uid in(
-                SELECT
-                    ar.source_act_uid
-                FROM
-                    act_relationship ar
-                WHERE
-                    ar.target_act_uid = :observationUid
-                )
-                    """, nativeQuery = true)
-    List<Observation2> findAllObservationsAssociatedWithAnObservation(
-            @Param("observationUid") Long observationUid);
-
-    @Query(value = """
-            SELECT COUNT(*)
-            FROM observation o
-                JOIN act on o.observation_uid =act.act_uid
-                JOIN Participation par on par.act_uid = o.observation_uid
-                JOIN person p on p.person_uid = par.subject_entity_uid
-                LEFT JOIN nbs_srte.dbo.jurisdiction_code jc ON o.jurisdiction_cd = jc.code
-                AND o.obs_domain_cd_st_1 = 'Result'
-                and o.record_status_cd in ('PROCESSED', 'UNPROCESSED')
-                and o.ctrl_cd_display_form = 'LabReport'
-            WHERE
-                p.person_parent_uid = :personUid
-                            """, nativeQuery = true)
-    long findLabReportsForPatientCount(
-            @Param("personUid") Long personUid);
 
     @Query(value = """
                 SELECT

@@ -26,10 +26,4 @@ class PatientLabReportResolver {
     Page<PatientLabReport> resolve(@Argument("personUid") final long personUid, @Argument GraphQLPage page) {
         return observationRepository.findLabReportsForPatient(personUid, GraphQLPage.toPageable(page, maxPageSize));
     }
-
-    @QueryMapping(name = "findLabReportsForPatientCount")
-    @PreAuthorize("hasAuthority('FIND-PATIENT')")
-    long resolve(@Argument("personUid") final long personUid) {
-        return observationRepository.findLabReportsForPatientCount(personUid);
-    }
 }

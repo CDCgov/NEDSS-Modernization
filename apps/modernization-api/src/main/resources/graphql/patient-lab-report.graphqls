@@ -1,6 +1,5 @@
 extend type Query {
   findLabReportsForPatient(personUid: Int!, page: Page): PatientLabReportResults
-  findLabReportsForPatientCount(personUid: Int!): Int
 }
 
 type PatientLabReportResults {
