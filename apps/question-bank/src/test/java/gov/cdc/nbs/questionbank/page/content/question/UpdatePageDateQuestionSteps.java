@@ -12,7 +12,7 @@ import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageDateQuestionRequest;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
-import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.DateMask;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -64,7 +64,7 @@ public class UpdatePageDateQuestionSteps {
         "true".equals(map.get("enabled")),
         "true".equals(map.get("required")),
         Long.valueOf(map.get("displayControl")),
-        CreateDateQuestionRequest.DateMask.valueOf(map.get("mask")),
+        DateMask.valueOf(map.get("mask")),
         "true".equals(map.get("allowFutureDates")),
         reportingInfo,
         messagingInfo,

@@ -79,7 +79,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/text/{questionId}")
-  public EditableQuestion updateTextQuestion(
+  public EditableQuestion updatePageTextQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageTextQuestionRequest request,
@@ -88,7 +88,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/numeric/{questionId}")
-  public EditableQuestion updateNumericQuestion(
+  public EditableQuestion updatePageNumericQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageNumericQuestionRequest request,
@@ -97,7 +97,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/coded/{questionId}")
-  public EditableQuestion updateCodedQuestion(
+  public EditableQuestion updatePageCodedQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageCodedQuestionRequest request,
@@ -106,7 +106,7 @@ public class PageQuestionController {
   }
 
   @PutMapping("questions/date/{questionId}")
-  public EditableQuestion updateDateQuestion(
+  public EditableQuestion updatePageDateQuestion(
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageDateQuestionRequest request,

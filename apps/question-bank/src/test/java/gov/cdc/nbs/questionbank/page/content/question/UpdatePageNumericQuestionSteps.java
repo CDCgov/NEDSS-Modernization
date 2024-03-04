@@ -12,7 +12,7 @@ import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
-import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.NumericMask;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -64,7 +64,7 @@ public class UpdatePageNumericQuestionSteps {
         "true".equals(map.get("enabled")),
         "true".equals(map.get("required")),
         Long.valueOf(map.get("displayControl")),
-        CreateNumericQuestionRequest.NumericMask.valueOf(map.get("mask")),
+        NumericMask.valueOf(map.get("mask")),
         tryParseInt(map.get("fieldLength")),
         tryParseLong(map.get("defaultValue")),
         tryParseLong(map.get("minValue")),

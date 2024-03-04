@@ -17,12 +17,12 @@ import { request as __request } from '../core/request';
 export class PageQuestionControllerService {
 
     /**
-     * updateCodedQuestion
+     * updatePageCodedQuestion
      * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
-    public static updateCodedQuestionUsingPut({
+    public static updatePageCodedQuestionUsingPut({
         authorization,
         page,
         questionId,
@@ -62,12 +62,12 @@ export class PageQuestionControllerService {
     }
 
     /**
-     * updateDateQuestion
+     * updatePageDateQuestion
      * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
-    public static updateDateQuestionUsingPut({
+    public static updatePageDateQuestionUsingPut({
         authorization,
         page,
         questionId,
@@ -107,12 +107,12 @@ export class PageQuestionControllerService {
     }
 
     /**
-     * updateNumericQuestion
+     * updatePageNumericQuestion
      * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
-    public static updateNumericQuestionUsingPut({
+    public static updatePageNumericQuestionUsingPut({
         authorization,
         page,
         questionId,
@@ -152,12 +152,12 @@ export class PageQuestionControllerService {
     }
 
     /**
-     * updateTextQuestion
+     * updatePageTextQuestion
      * @returns EditableQuestion OK
      * @returns any Created
      * @throws ApiError
      */
-    public static updateTextQuestionUsingPut({
+    public static updatePageTextQuestionUsingPut({
         authorization,
         page,
         questionId,

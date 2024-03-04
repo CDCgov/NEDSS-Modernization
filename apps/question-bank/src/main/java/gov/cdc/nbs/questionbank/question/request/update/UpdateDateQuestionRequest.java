@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request.update;
 
-import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest.DateMask;
+import gov.cdc.nbs.questionbank.question.request.create.DateMask;
 import lombok.Getter;
 import lombok.Setter;
 

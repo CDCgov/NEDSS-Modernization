@@ -555,6 +555,7 @@ public class WaUiMetadata {
     this.subGroupNm = command.question().getSubGroupNm();
     this.dataType = command.question().getDataType();
     this.otherValueIndCd = command.question().getOtherValueIndCd();
+    this.coinfectionIndCd = command.question().getCoinfectionIndCd();
 
     // Question type specific fields
     if (command.question() instanceof TextQuestionEntity t) {

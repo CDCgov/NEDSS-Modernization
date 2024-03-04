@@ -11,6 +11,7 @@ import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.model.Question.NumericQuestion;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.NumericMask;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
@@ -119,7 +120,7 @@ public class CreateNumericQuestionSteps {
     request.setSubgroup(map.get("subgroup"));
     request.setAdminComments(map.get("adminComments"));
 
-    request.setMask(CreateNumericQuestionRequest.NumericMask.valueOf(map.get("mask")));
+    request.setMask(NumericMask.valueOf(map.get("mask")));
     request.setFieldLength(Integer.valueOf(map.get("fieldLength")));
     request.setDefaultValue(Long.valueOf(map.get("defaultValue")));
     request.setMinValue(Long.valueOf(map.get("minValue")));

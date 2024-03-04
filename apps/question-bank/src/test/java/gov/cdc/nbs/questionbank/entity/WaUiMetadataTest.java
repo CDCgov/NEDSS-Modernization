@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -24,7 +22,6 @@ import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 
-@ExtendWith(MockitoExtension.class)
 class WaUiMetadataTest {
 
   @Test
@@ -181,6 +178,7 @@ class WaUiMetadataTest {
     assertEquals(question.getSubGroupNm(), metadata.getSubGroupNm());
     assertEquals(question.getDataType(), metadata.getDataType());
     assertEquals(question.getOtherValueIndCd(), metadata.getOtherValueIndCd());
+    assertEquals(question.getCoinfectionIndCd(), metadata.getCoinfectionIndCd());
   }
 
   private WaTemplate page() {

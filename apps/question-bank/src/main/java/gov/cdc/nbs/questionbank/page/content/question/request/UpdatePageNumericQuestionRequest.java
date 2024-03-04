@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.question.request;
 
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
-import gov.cdc.nbs.questionbank.question.request.create.CreateNumericQuestionRequest.NumericMask;
+import gov.cdc.nbs.questionbank.question.request.create.NumericMask;
 import io.swagger.annotations.ApiModelProperty;
 
 public record UpdatePageNumericQuestionRequest(

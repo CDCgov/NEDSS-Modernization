@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.question.request.update;
 
-
-import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest.TextMask;
+import gov.cdc.nbs.questionbank.question.request.create.TextMask;
 import lombok.Getter;
 import lombok.Setter;
 

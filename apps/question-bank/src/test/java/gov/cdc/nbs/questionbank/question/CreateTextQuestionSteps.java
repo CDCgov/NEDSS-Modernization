@@ -11,6 +11,7 @@ import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.TextMask;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
@@ -103,7 +104,7 @@ public class CreateTextQuestionSteps {
 
     request.setUniqueName(map.get("uniqueName"));
     request.setDescription(map.get("description"));
-    request.setMask(CreateTextQuestionRequest.TextMask.valueOf(map.get("mask")));
+    request.setMask(TextMask.valueOf(map.get("mask")));
     request.setDisplayControl(Long.valueOf(map.get("displayControl")));
     request.setFieldLength(Integer.valueOf(map.get("fieldLength")));
     request.setDefaultValue(map.get("defaultValue"));

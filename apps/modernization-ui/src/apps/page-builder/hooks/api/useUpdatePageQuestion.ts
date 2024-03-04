@@ -51,7 +51,7 @@ export const useUpdatePageQuestion = () => {
 
             switch (state.request.questionType) {
                 case 'CODED':
-                    request = PageQuestionControllerService.updateCodedQuestionUsingPut({
+                    request = PageQuestionControllerService.updatePageCodedQuestionUsingPut({
                         authorization: authorization(),
                         page: state.page,
                         questionId: state.questionId,
@@ -59,7 +59,7 @@ export const useUpdatePageQuestion = () => {
                     });
                     break;
                 case 'TEXT':
-                    request = PageQuestionControllerService.updateTextQuestionUsingPut({
+                    request = PageQuestionControllerService.updatePageTextQuestionUsingPut({
                         authorization: authorization(),
                         page: state.page,
                         questionId: state.questionId,
@@ -67,7 +67,7 @@ export const useUpdatePageQuestion = () => {
                     });
                     break;
                 case 'DATE':
-                    request = PageQuestionControllerService.updateDateQuestionUsingPut({
+                    request = PageQuestionControllerService.updatePageDateQuestionUsingPut({
                         authorization: authorization(),
                         page: state.page,
                         questionId: state.questionId,
@@ -75,7 +75,7 @@ export const useUpdatePageQuestion = () => {
                     });
                     break;
                 case 'NUMERIC':
-                    request = PageQuestionControllerService.updateNumericQuestionUsingPut({
+                    request = PageQuestionControllerService.updatePageNumericQuestionUsingPut({
                         authorization: authorization(),
                         page: state.page,
                         questionId: state.questionId,

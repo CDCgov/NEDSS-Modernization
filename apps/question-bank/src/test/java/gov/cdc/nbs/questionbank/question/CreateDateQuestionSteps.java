@@ -11,6 +11,7 @@ import gov.cdc.nbs.questionbank.question.model.Question.DateQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.question.request.create.CreateDateQuestionRequest;
+import gov.cdc.nbs.questionbank.question.request.create.DateMask;
 import gov.cdc.nbs.questionbank.support.QuestionMother;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
@@ -113,7 +114,7 @@ public class CreateDateQuestionSteps {
     request.setSubgroup(map.get("subgroup"));
     request.setAdminComments(map.get("adminComments"));
 
-    request.setMask(CreateDateQuestionRequest.DateMask.valueOf(map.get("mask")));
+    request.setMask(DateMask.valueOf(map.get("mask")));
     request.setAllowFutureDates("true".equals(map.get("allowFutureDates").toLowerCase()));
 
     request.setDataMartInfo(new ReportingInfo(
