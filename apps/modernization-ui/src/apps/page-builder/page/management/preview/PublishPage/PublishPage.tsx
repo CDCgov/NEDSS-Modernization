@@ -122,7 +122,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     Cancel
                 </ModalToggleButton>
                 <Button type="submit" disabled={!publishForm.formState.isValid}>
-                    Submit
+                    Publish
                 </Button>
             </div>
         </Form>
