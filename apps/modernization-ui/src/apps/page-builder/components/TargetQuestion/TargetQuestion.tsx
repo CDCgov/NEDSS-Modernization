@@ -9,7 +9,7 @@ import {
     Tag,
     Icon as UswIcon
 } from '@trussworks/react-uswds';
-import { PageRuleControllerService, PagesResponse, Question, Rule, Target } from 'apps/page-builder/generated';
+import { PageRuleControllerService, PagesResponse, Rule, Target } from 'apps/page-builder/generated';
 import { RefObject, useState } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './TargetQuestion.scss';
@@ -114,15 +114,15 @@ const TargetQuestion = ({
         setSourceList(newList);
     };
 
-    const isNotUsed = (question: QuestionProps) => !targetIdent?.includes(String(question.id));
+    const isNotUsed = (question: QuestionProps) => !targetIdent?.includes(question.question);
 
     useEffect(() => {
         const targetsIdentifiers: string[] = [];
 
         if (allRules) {
             console.log('nope');
-            allRules.map((rule: Rule, key) => {
-                rule.targets.map((target: Target, key) => {
+            allRules.map((rule: Rule) => {
+                rule.targets.map((target: Target) => {
                     targetsIdentifiers.push(target.targetIdentifier ?? '');
                 });
             });
@@ -130,14 +130,14 @@ const TargetQuestion = ({
         }
     }, [allRules]);
 
-    const handleTargetUniqueList = async () => {
+    useEffect(() => {
         PageRuleControllerService.getAllRulesUsingGet({
             authorization: authorization(),
             id: Number(pageId) ?? 0
         }).then((response) => {
             setAllRules(response);
         });
-    };
+    }, []);
 
     const handleSourceList = (question: QuestionProps[]) => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
@@ -153,11 +153,7 @@ const TargetQuestion = ({
                 const filteredList = question.filter(isCoded);
                 handleList(filteredList);
             } else {
-                handleTargetUniqueList();
-                console.log(allRules);
                 const filteredList = question.filter(isNotUsed).filter(isNotStatic);
-                // console.log(allRules);
-                console.log(filteredList);
                 handleList(filteredList);
             }
         }
