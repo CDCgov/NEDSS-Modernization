@@ -61,7 +61,6 @@ const AddBusinessRule = () => {
     const onSubmit = form.handleSubmit(async (data) => {
         try {
             if (!ruleId) {
-                console.log('data', data);
                 data.anySourceValue ?? data.sourceValues?.push({ id: '', text: '' });
                 await PageRuleControllerService.createBusinessRuleUsingPost({
                     authorization: authorization(),

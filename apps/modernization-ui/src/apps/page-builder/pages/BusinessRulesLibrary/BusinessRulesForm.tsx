@@ -187,7 +187,6 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     }, [anySourceValueToggle]);
 
     useEffect(() => {
-        console.log('ruleFunctin', form.watch('ruleFunction'));
         setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
 
