@@ -120,7 +120,6 @@ const TargetQuestion = ({
         const targetsIdentifiers: string[] = [];
 
         if (allRules) {
-            console.log('nope');
             allRules.map((rule: Rule) => {
                 rule.targets.map((target: Target) => {
                     targetsIdentifiers.push(target.targetIdentifier ?? '');
