@@ -9,7 +9,7 @@ import {
     Tag,
     Icon as UswIcon
 } from '@trussworks/react-uswds';
-import { PagesResponse, Rule } from 'apps/page-builder/generated';
+import { PageRuleControllerService, PagesResponse, Rule, Target } from 'apps/page-builder/generated';
 import { RefObject, useState } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './TargetQuestion.scss';
@@ -54,6 +54,8 @@ const TargetQuestion = ({
     const [subsectionOpen, setSubsectionOpen] = useState(false);
     const [sourceId, setSource] = useState(-1);
     const [page, setPage] = useState<PagesResponse>();
+    const [allRules, setAllRules] = useState<Rule[]>();
+    const [targetIdent, setTargetIdent] = useState<string[]>();
 
     useEffect(() => {
         if (pageId) {
@@ -101,41 +103,57 @@ const TargetQuestion = ({
 
     const isNotStatic = (question: QuestionProps) => !staticType.includes(question.displayComponent ?? 0);
 
+    const handleList = (question: QuestionProps[]) => {
+        const newList = question.map((qtn: QuestionProps) => ({
+            name: qtn.name,
+            id: qtn.id,
+            question: qtn.question,
+            valueSet: qtn.valueSet,
+            selected: false
+        }));
+        setSourceList(newList);
+    };
+
+    const isNotUsed = (question: QuestionProps) => !targetIdent?.includes(question.question);
+
+    useEffect(() => {
+        const targetsIdentifiers: string[] = [];
+
+        if (allRules) {
+            allRules.map((rule: Rule) => {
+                rule.targets.map((target: Target) => {
+                    targetsIdentifiers.push(target.targetIdentifier ?? '');
+                });
+            });
+            setTargetIdent(targetsIdentifiers);
+        }
+    }, [allRules]);
+
+    useEffect(() => {
+        PageRuleControllerService.getAllRulesUsingGet({
+            authorization: authorization(),
+            id: Number(pageId) ?? 0
+        }).then((response) => {
+            setAllRules(response);
+        });
+    }, []);
+
     const handleSourceList = (question: QuestionProps[]) => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
-            const filteredList = question.filter(isDate);
-
-            const newList = filteredList.map((qtn: QuestionProps) => ({
-                name: qtn.name,
-                id: qtn.id,
-                question: qtn.question,
-                valueSet: qtn.valueSet,
-                selected: false
-            }));
-            setSourceList(newList);
+            if (isSource) {
+                const filteredList = question.filter(isDate);
+                handleList(filteredList);
+            } else {
+                const filteredList = question.filter(isDate);
+                handleList(filteredList);
+            }
         } else {
             if (isSource) {
                 const filteredList = question.filter(isCoded);
-
-                const newList = filteredList.map((qtn: QuestionProps) => ({
-                    name: qtn.name,
-                    id: qtn.id,
-                    question: qtn.question,
-                    valueSet: qtn.valueSet,
-                    selected: false
-                }));
-                setSourceList(newList);
+                handleList(filteredList);
             } else {
-                const filteredList = question.filter(isNotStatic);
-
-                const newList = filteredList.map((qtn: QuestionProps) => ({
-                    name: qtn.name,
-                    id: qtn.id,
-                    question: qtn.question,
-                    valueSet: qtn.valueSet,
-                    selected: false
-                }));
-                setSourceList(newList);
+                const filteredList = question.filter(isNotUsed).filter(isNotStatic);
+                handleList(filteredList);
             }
         }
     };
