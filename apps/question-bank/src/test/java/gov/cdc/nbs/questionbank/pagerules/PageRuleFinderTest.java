@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PageRuleFinderTest {
@@ -43,6 +43,18 @@ class PageRuleFinderTest {
 
     Rule actualResponse = pageRuleFinder.findByRuleId(ruleId);
     assertNotNull(actualResponse);
+  }
+
+  @Test
+  void getAllRules_withoutPageable() {
+    Long pageId = 100L;
+    Rule expectedResponse = getRuleResponse();
+
+    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
+        .thenReturn(Collections.singletonList(expectedResponse));
+
+    List<Rule> actualResponsPage = pageRuleFinder.getAllRules(pageId);
+    assertNotNull(actualResponsPage);
   }
 
   @Test

@@ -84,6 +84,17 @@ class PageRuleControllerTest {
     assertNotNull(ruleResponse);
   }
 
+  @Test
+  void findAllPageRules() throws Exception {
+    List<Rule> content = new ArrayList<Rule>();
+
+    when(pageRuleFinder.getAllRules(123L))
+        .thenReturn(content);
+
+    List<Rule> ruleResponse = pageRuleController.getAllRules(123L);
+    assertNotNull(ruleResponse);
+  }
+
 
   @Test
   void findPageRuleTest() throws Exception {
