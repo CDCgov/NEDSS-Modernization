@@ -15,6 +15,36 @@ public interface ObservationRepository
         extends JpaRepository<Observation, Long>, QuerydslPredicateExecutor<Observation> {
 
     @Query(value = """
+             SELECT
+                o2.cd,
+                o2.cd_desc_txt cdDescTxt,
+                o2.obs_domain_cd_st_1 domainCd,
+                o2.status_cd statusCd,
+                o2.alt_cd altCd,
+                o2.alt_cd_desc_txt altDescTxt,
+                o2.alt_cd_system_cd altCdSystemCd,
+                ovc.display_name displayName,
+                ovc.code AS ovcCode,
+                ovc.alt_cd ovcAltCode,
+                ovc.alt_cd_desc_txt ovcAltDescTxt,
+                ovc.alt_cd_system_cd ovcAltCdSystemCd
+            FROM
+                observation o2
+                LEFT JOIN Obs_value_coded ovc ON ovc.observation_uid = o2.observation_uid
+            WHERE
+                o2.observation_uid in(
+                SELECT
+                    ar.source_act_uid
+                FROM
+                    act_relationship ar
+                WHERE
+                    ar.target_act_uid = :observationUid
+                )
+                    """, nativeQuery = true)
+    List<Observation2> findAllObservationsAssociatedWithAnObservation(
+            @Param("observationUid") Long observationUid);
+
+    @Query(value = """
                 SELECT
                 o.observation_uid id,
                 act.class_cd classCd,
