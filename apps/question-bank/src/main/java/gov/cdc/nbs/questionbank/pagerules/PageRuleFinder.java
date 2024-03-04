@@ -58,6 +58,55 @@ class PageRuleFinder {
             [question1].wa_question_uid,
             [rule].add_time
             """;
+  private String findByPageId =
+      """
+             select
+             [rule].wa_rule_metadata_uid        as [ruleId],
+             [rule].wa_template_uid             as [template],
+             [rule].rule_cd                     as [function],
+             [rule].rule_desc_txt               as [description],
+             [rule].source_question_identifier  as [sourceQuestion],
+             [rule].rule_expression             as [ruleExpression],
+             [rule].source_values               as [sourceValues],
+             [rule].logic                       as [comparator],
+             [rule].target_type                 as [targetType],
+             [rule].target_question_identifier  as [targetQuestions],
+             [question1].question_label          as [sourceQuestionLabel],
+             [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
+             [question1].wa_question_uid         as [sourceQuestionId],
+             STRING_AGG([question2].question_label, ', ') WITHIN GROUP
+            (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
+             as [targetQuestionLabels],
+             (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
+              from WA_rule_metadata [rule]
+                left join WA_question [question1] on [rule].source_question_identifier = [question1].question_identifier
+                left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
+                left join WA_question [question2]
+                    on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
+              where [rule].wa_template_uid =:pageId
+             ) as [totalCount]
+          from WA_rule_metadata [rule]
+            left join WA_question [question1] on [rule].source_question_identifier = [question1].question_identifier
+            left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
+            left join WA_question [question2]
+                on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
+          where [rule].wa_template_uid =:pageId
+          group by
+             [rule].wa_rule_metadata_uid,
+             [rule].wa_template_uid,
+             [rule].rule_cd,
+             [rule].rule_desc_txt,
+             [rule].source_question_identifier,
+             [rule].rule_expression,
+             [rule].source_values,
+             [rule].logic,
+             [rule].target_type,
+             [rule].target_question_identifier,
+             [question1].question_label,
+             [CodeSet].code_set_nm,
+             [question1].wa_question_uid,
+             [rule].add_time
+               """;
 
   private String findBySearchValue =
       """
@@ -191,5 +240,14 @@ class PageRuleFinder {
     List<Rule> result = this.template.query(query, parameters, mapper);
     long totalRowsCount = ((PageRuleMapper) mapper).getTotalRowsCount();
     return new PageImpl<>(result, pageable, totalRowsCount);
+  }
+
+  List<Rule> getAllRules(long pageId) {
+    String query = findByPageId;
+
+    SqlParameterSource parameters = new MapSqlParameterSource(
+        Map.of(
+            "pageId", pageId));
+    return this.template.query(query, parameters, mapper);
   }
 }
