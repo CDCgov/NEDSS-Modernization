@@ -72,7 +72,7 @@ export const useFetchPageRules = () => {
     const { pageId } = useParams();
 
     useEffect(() => {
-        if (state.status === 'searching') {
+        if (state.status === 'searching' && pageId) {
             const sortString = state.search.sort
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
