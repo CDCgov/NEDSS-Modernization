@@ -51,12 +51,15 @@ const PreviewPageContent = () => {
             PageControllerService.savePageDraftUsingPut({
                 authorization,
                 id: page.id
-            }).then(() => {
+            }).then((response) => {
                 showAlert({
                     type: 'success',
                     header: 'Success',
                     message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`
                 });
+                if (response && response.templateId) {
+                    navigate(`/page-builder/pages/${response.templateId}`);
+                }
                 refresh();
             });
         } catch (error) {
