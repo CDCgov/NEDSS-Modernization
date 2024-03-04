@@ -27,8 +27,7 @@ export const ContactForm = ({ control, errors }: any) => {
                             onChange={onChange}
                             label="Phone number"
                             defaultValue={value}
-                            mask="___-___-____"
-                            // pattern="\d{3}-\d{3}-\d{0,4}|\d{3}-\d{0,3}|\d{0,3}"
+                            pattern="\d{3}-\d{3}-\d{0,4}|\d{3}-\d{0,3}|\d{0,3}"
                             error={
                                 errors &&
                                 errors.phoneNumber &&
