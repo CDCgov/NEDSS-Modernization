@@ -1208,6 +1208,7 @@ export type PatientLabReportFilter = {
 export type PatientLabReportResults = {
   __typename?: 'PatientLabReportResults';
   content: Array<Maybe<PatientLabReport>>;
+  number: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
@@ -1794,8 +1795,7 @@ export type Query = {
   findInvestigationsByFilter: InvestigationResults;
   findInvestigationsForPatient?: Maybe<PatientInvestigationResults>;
   findLabReportsByFilter: LabReportResults;
-  findLabReportsForPatient: Array<PatientLabReport>;
-  findLabReportsForPatientCount?: Maybe<Scalars['Int']['output']>;
+  findLabReportsForPatient?: Maybe<PatientLabReportResults>;
   findMorbidityReportsForPatient?: Maybe<PatientMorbidityResults>;
   findPatientNamedByContact?: Maybe<PatientNamedByContactResults>;
   findPatientProfile?: Maybe<PatientProfile>;
@@ -1918,11 +1918,6 @@ export type QueryFindLabReportsByFilterArgs = {
 
 export type QueryFindLabReportsForPatientArgs = {
   page?: InputMaybe<Page>;
-  personUid: Scalars['Int']['input'];
-};
-
-
-export type QueryFindLabReportsForPatientCountArgs = {
   personUid: Scalars['Int']['input'];
 };
 
@@ -2500,14 +2495,8 @@ export type FindLabReportsForPatientQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReportsForPatientQuery = { __typename?: 'Query', findLabReportsForPatient: Array<{ __typename?: 'PatientLabReport', id: string, observationUid: number, addTime: any, effectiveFromTime?: any | null, programAreaCd: string, jurisdictionCodeDescTxt: string, localId: string, electronicInd?: string | null, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid: number, cdDescTxt: string, localId: string }>, personParticipations: Array<{ __typename?: 'PersonParticipation2', typeCd: string, personCd: string, firstName?: string | null, lastName?: string | null }>, organizationParticipations: Array<{ __typename?: 'OrganizationParticipation2', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation2', domainCd: string, cdDescTxt: string, displayName?: string | null }> }> };
+export type FindLabReportsForPatientQuery = { __typename?: 'Query', findLabReportsForPatient?: { __typename?: 'PatientLabReportResults', total: number, number: number, content: Array<{ __typename?: 'PatientLabReport', id: string, observationUid: number, addTime: any, effectiveFromTime?: any | null, programAreaCd: string, jurisdictionCodeDescTxt: string, localId: string, electronicInd?: string | null, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation2', publicHealthCaseUid: number, cdDescTxt: string, localId: string }>, personParticipations: Array<{ __typename?: 'PersonParticipation2', typeCd: string, personCd: string, firstName?: string | null, lastName?: string | null }>, organizationParticipations: Array<{ __typename?: 'OrganizationParticipation2', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation2', domainCd: string, cdDescTxt: string, displayName?: string | null }> } | null> } | null };
 
-export type FindLabReportsForPatientCountQueryVariables = Exact<{
-  personUid: Scalars['Int']['input'];
-}>;
-
-
-export type FindLabReportsForPatientCountQuery = { __typename?: 'Query', findLabReportsForPatientCount?: number | null };
 
 export type FindMorbidityReportsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -2663,9 +2652,9 @@ export type AddPatientAddressMutationFn = Apollo.MutationFunction<AddPatientAddr
  * });
  */
 export function useAddPatientAddressMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientAddressMutation, AddPatientAddressMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPatientAddressMutation, AddPatientAddressMutationVariables>(AddPatientAddressDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddPatientAddressMutation, AddPatientAddressMutationVariables>(AddPatientAddressDocument, options);
+}
 export type AddPatientAddressMutationHookResult = ReturnType<typeof useAddPatientAddressMutation>;
 export type AddPatientAddressMutationResult = Apollo.MutationResult<AddPatientAddressMutation>;
 export type AddPatientAddressMutationOptions = Apollo.BaseMutationOptions<AddPatientAddressMutation, AddPatientAddressMutationVariables>;
@@ -2697,9 +2686,9 @@ export type AddPatientIdentificationMutationFn = Apollo.MutationFunction<AddPati
  * });
  */
 export function useAddPatientIdentificationMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>(AddPatientIdentificationDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>(AddPatientIdentificationDocument, options);
+}
 export type AddPatientIdentificationMutationHookResult = ReturnType<typeof useAddPatientIdentificationMutation>;
 export type AddPatientIdentificationMutationResult = Apollo.MutationResult<AddPatientIdentificationMutation>;
 export type AddPatientIdentificationMutationOptions = Apollo.BaseMutationOptions<AddPatientIdentificationMutation, AddPatientIdentificationMutationVariables>;
@@ -2731,9 +2720,9 @@ export type AddPatientNameMutationFn = Apollo.MutationFunction<AddPatientNameMut
  * });
  */
 export function useAddPatientNameMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientNameMutation, AddPatientNameMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPatientNameMutation, AddPatientNameMutationVariables>(AddPatientNameDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddPatientNameMutation, AddPatientNameMutationVariables>(AddPatientNameDocument, options);
+}
 export type AddPatientNameMutationHookResult = ReturnType<typeof useAddPatientNameMutation>;
 export type AddPatientNameMutationResult = Apollo.MutationResult<AddPatientNameMutation>;
 export type AddPatientNameMutationOptions = Apollo.BaseMutationOptions<AddPatientNameMutation, AddPatientNameMutationVariables>;
@@ -2765,9 +2754,9 @@ export type AddPatientPhoneMutationFn = Apollo.MutationFunction<AddPatientPhoneM
  * });
  */
 export function useAddPatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>(AddPatientPhoneDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>(AddPatientPhoneDocument, options);
+}
 export type AddPatientPhoneMutationHookResult = ReturnType<typeof useAddPatientPhoneMutation>;
 export type AddPatientPhoneMutationResult = Apollo.MutationResult<AddPatientPhoneMutation>;
 export type AddPatientPhoneMutationOptions = Apollo.BaseMutationOptions<AddPatientPhoneMutation, AddPatientPhoneMutationVariables>;
@@ -2805,9 +2794,9 @@ export type AddPatientRaceMutationFn = Apollo.MutationFunction<AddPatientRaceMut
  * });
  */
 export function useAddPatientRaceMutation(baseOptions?: Apollo.MutationHookOptions<AddPatientRaceMutation, AddPatientRaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddPatientRaceMutation, AddPatientRaceMutationVariables>(AddPatientRaceDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddPatientRaceMutation, AddPatientRaceMutationVariables>(AddPatientRaceDocument, options);
+}
 export type AddPatientRaceMutationHookResult = ReturnType<typeof useAddPatientRaceMutation>;
 export type AddPatientRaceMutationResult = Apollo.MutationResult<AddPatientRaceMutation>;
 export type AddPatientRaceMutationOptions = Apollo.BaseMutationOptions<AddPatientRaceMutation, AddPatientRaceMutationVariables>;
@@ -2839,9 +2828,9 @@ export type CreatePatientMutationFn = Apollo.MutationFunction<CreatePatientMutat
  * });
  */
 export function useCreatePatientMutation(baseOptions?: Apollo.MutationHookOptions<CreatePatientMutation, CreatePatientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePatientMutation, CreatePatientMutationVariables>(CreatePatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreatePatientMutation, CreatePatientMutationVariables>(CreatePatientDocument, options);
+}
 export type CreatePatientMutationHookResult = ReturnType<typeof useCreatePatientMutation>;
 export type CreatePatientMutationResult = Apollo.MutationResult<CreatePatientMutation>;
 export type CreatePatientMutationOptions = Apollo.BaseMutationOptions<CreatePatientMutation, CreatePatientMutationVariables>;
@@ -2879,9 +2868,9 @@ export type DeletePatientMutationFn = Apollo.MutationFunction<DeletePatientMutat
  * });
  */
 export function useDeletePatientMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientMutation, DeletePatientMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientMutation, DeletePatientMutationVariables>(DeletePatientDocument, options);
+}
 export type DeletePatientMutationHookResult = ReturnType<typeof useDeletePatientMutation>;
 export type DeletePatientMutationResult = Apollo.MutationResult<DeletePatientMutation>;
 export type DeletePatientMutationOptions = Apollo.BaseMutationOptions<DeletePatientMutation, DeletePatientMutationVariables>;
@@ -2913,9 +2902,9 @@ export type DeletePatientAddressMutationFn = Apollo.MutationFunction<DeletePatie
  * });
  */
 export function useDeletePatientAddressMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>(DeletePatientAddressDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>(DeletePatientAddressDocument, options);
+}
 export type DeletePatientAddressMutationHookResult = ReturnType<typeof useDeletePatientAddressMutation>;
 export type DeletePatientAddressMutationResult = Apollo.MutationResult<DeletePatientAddressMutation>;
 export type DeletePatientAddressMutationOptions = Apollo.BaseMutationOptions<DeletePatientAddressMutation, DeletePatientAddressMutationVariables>;
@@ -2947,9 +2936,9 @@ export type DeletePatientEmailMutationFn = Apollo.MutationFunction<DeletePatient
  * });
  */
 export function useDeletePatientEmailMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>(DeletePatientEmailDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>(DeletePatientEmailDocument, options);
+}
 export type DeletePatientEmailMutationHookResult = ReturnType<typeof useDeletePatientEmailMutation>;
 export type DeletePatientEmailMutationResult = Apollo.MutationResult<DeletePatientEmailMutation>;
 export type DeletePatientEmailMutationOptions = Apollo.BaseMutationOptions<DeletePatientEmailMutation, DeletePatientEmailMutationVariables>;
@@ -2981,9 +2970,9 @@ export type DeletePatientIdentificationMutationFn = Apollo.MutationFunction<Dele
  * });
  */
 export function useDeletePatientIdentificationMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>(DeletePatientIdentificationDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>(DeletePatientIdentificationDocument, options);
+}
 export type DeletePatientIdentificationMutationHookResult = ReturnType<typeof useDeletePatientIdentificationMutation>;
 export type DeletePatientIdentificationMutationResult = Apollo.MutationResult<DeletePatientIdentificationMutation>;
 export type DeletePatientIdentificationMutationOptions = Apollo.BaseMutationOptions<DeletePatientIdentificationMutation, DeletePatientIdentificationMutationVariables>;
@@ -3015,9 +3004,9 @@ export type DeletePatientNameMutationFn = Apollo.MutationFunction<DeletePatientN
  * });
  */
 export function useDeletePatientNameMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientNameMutation, DeletePatientNameMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientNameMutation, DeletePatientNameMutationVariables>(DeletePatientNameDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientNameMutation, DeletePatientNameMutationVariables>(DeletePatientNameDocument, options);
+}
 export type DeletePatientNameMutationHookResult = ReturnType<typeof useDeletePatientNameMutation>;
 export type DeletePatientNameMutationResult = Apollo.MutationResult<DeletePatientNameMutation>;
 export type DeletePatientNameMutationOptions = Apollo.BaseMutationOptions<DeletePatientNameMutation, DeletePatientNameMutationVariables>;
@@ -3049,9 +3038,9 @@ export type DeletePatientPhoneMutationFn = Apollo.MutationFunction<DeletePatient
  * });
  */
 export function useDeletePatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>(DeletePatientPhoneDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>(DeletePatientPhoneDocument, options);
+}
 export type DeletePatientPhoneMutationHookResult = ReturnType<typeof useDeletePatientPhoneMutation>;
 export type DeletePatientPhoneMutationResult = Apollo.MutationResult<DeletePatientPhoneMutation>;
 export type DeletePatientPhoneMutationOptions = Apollo.BaseMutationOptions<DeletePatientPhoneMutation, DeletePatientPhoneMutationVariables>;
@@ -3082,9 +3071,9 @@ export type DeletePatientRaceMutationFn = Apollo.MutationFunction<DeletePatientR
  * });
  */
 export function useDeletePatientRaceMutation(baseOptions?: Apollo.MutationHookOptions<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>(DeletePatientRaceDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>(DeletePatientRaceDocument, options);
+}
 export type DeletePatientRaceMutationHookResult = ReturnType<typeof useDeletePatientRaceMutation>;
 export type DeletePatientRaceMutationResult = Apollo.MutationResult<DeletePatientRaceMutation>;
 export type DeletePatientRaceMutationOptions = Apollo.BaseMutationOptions<DeletePatientRaceMutation, DeletePatientRaceMutationVariables>;
@@ -3115,9 +3104,9 @@ export type UpdateEthnicityMutationFn = Apollo.MutationFunction<UpdateEthnicityM
  * });
  */
 export function useUpdateEthnicityMutation(baseOptions?: Apollo.MutationHookOptions<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>(UpdateEthnicityDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>(UpdateEthnicityDocument, options);
+}
 export type UpdateEthnicityMutationHookResult = ReturnType<typeof useUpdateEthnicityMutation>;
 export type UpdateEthnicityMutationResult = Apollo.MutationResult<UpdateEthnicityMutation>;
 export type UpdateEthnicityMutationOptions = Apollo.BaseMutationOptions<UpdateEthnicityMutation, UpdateEthnicityMutationVariables>;
@@ -3149,9 +3138,9 @@ export type UpdatePatientAddressMutationFn = Apollo.MutationFunction<UpdatePatie
  * });
  */
 export function useUpdatePatientAddressMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>(UpdatePatientAddressDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>(UpdatePatientAddressDocument, options);
+}
 export type UpdatePatientAddressMutationHookResult = ReturnType<typeof useUpdatePatientAddressMutation>;
 export type UpdatePatientAddressMutationResult = Apollo.MutationResult<UpdatePatientAddressMutation>;
 export type UpdatePatientAddressMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAddressMutation, UpdatePatientAddressMutationVariables>;
@@ -3182,9 +3171,9 @@ export type UpdatePatientAdministrativeMutationFn = Apollo.MutationFunction<Upda
  * });
  */
 export function useUpdatePatientAdministrativeMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>(UpdatePatientAdministrativeDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>(UpdatePatientAdministrativeDocument, options);
+}
 export type UpdatePatientAdministrativeMutationHookResult = ReturnType<typeof useUpdatePatientAdministrativeMutation>;
 export type UpdatePatientAdministrativeMutationResult = Apollo.MutationResult<UpdatePatientAdministrativeMutation>;
 export type UpdatePatientAdministrativeMutationOptions = Apollo.BaseMutationOptions<UpdatePatientAdministrativeMutation, UpdatePatientAdministrativeMutationVariables>;
@@ -3215,9 +3204,9 @@ export type UpdatePatientBirthAndGenderMutationFn = Apollo.MutationFunction<Upda
  * });
  */
 export function useUpdatePatientBirthAndGenderMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientBirthAndGenderMutation, UpdatePatientBirthAndGenderMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientBirthAndGenderMutation, UpdatePatientBirthAndGenderMutationVariables>(UpdatePatientBirthAndGenderDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientBirthAndGenderMutation, UpdatePatientBirthAndGenderMutationVariables>(UpdatePatientBirthAndGenderDocument, options);
+}
 export type UpdatePatientBirthAndGenderMutationHookResult = ReturnType<typeof useUpdatePatientBirthAndGenderMutation>;
 export type UpdatePatientBirthAndGenderMutationResult = Apollo.MutationResult<UpdatePatientBirthAndGenderMutation>;
 export type UpdatePatientBirthAndGenderMutationOptions = Apollo.BaseMutationOptions<UpdatePatientBirthAndGenderMutation, UpdatePatientBirthAndGenderMutationVariables>;
@@ -3248,9 +3237,9 @@ export type UpdatePatientGeneralInfoMutationFn = Apollo.MutationFunction<UpdateP
  * });
  */
 export function useUpdatePatientGeneralInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>(UpdatePatientGeneralInfoDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>(UpdatePatientGeneralInfoDocument, options);
+}
 export type UpdatePatientGeneralInfoMutationHookResult = ReturnType<typeof useUpdatePatientGeneralInfoMutation>;
 export type UpdatePatientGeneralInfoMutationResult = Apollo.MutationResult<UpdatePatientGeneralInfoMutation>;
 export type UpdatePatientGeneralInfoMutationOptions = Apollo.BaseMutationOptions<UpdatePatientGeneralInfoMutation, UpdatePatientGeneralInfoMutationVariables>;
@@ -3282,9 +3271,9 @@ export type UpdatePatientIdentificationMutationFn = Apollo.MutationFunction<Upda
  * });
  */
 export function useUpdatePatientIdentificationMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>(UpdatePatientIdentificationDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>(UpdatePatientIdentificationDocument, options);
+}
 export type UpdatePatientIdentificationMutationHookResult = ReturnType<typeof useUpdatePatientIdentificationMutation>;
 export type UpdatePatientIdentificationMutationResult = Apollo.MutationResult<UpdatePatientIdentificationMutation>;
 export type UpdatePatientIdentificationMutationOptions = Apollo.BaseMutationOptions<UpdatePatientIdentificationMutation, UpdatePatientIdentificationMutationVariables>;
@@ -3315,9 +3304,9 @@ export type UpdatePatientMortalityMutationFn = Apollo.MutationFunction<UpdatePat
  * });
  */
 export function useUpdatePatientMortalityMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientMortalityMutation, UpdatePatientMortalityMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientMortalityMutation, UpdatePatientMortalityMutationVariables>(UpdatePatientMortalityDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientMortalityMutation, UpdatePatientMortalityMutationVariables>(UpdatePatientMortalityDocument, options);
+}
 export type UpdatePatientMortalityMutationHookResult = ReturnType<typeof useUpdatePatientMortalityMutation>;
 export type UpdatePatientMortalityMutationResult = Apollo.MutationResult<UpdatePatientMortalityMutation>;
 export type UpdatePatientMortalityMutationOptions = Apollo.BaseMutationOptions<UpdatePatientMortalityMutation, UpdatePatientMortalityMutationVariables>;
@@ -3349,9 +3338,9 @@ export type UpdatePatientNameMutationFn = Apollo.MutationFunction<UpdatePatientN
  * });
  */
 export function useUpdatePatientNameMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>(UpdatePatientNameDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>(UpdatePatientNameDocument, options);
+}
 export type UpdatePatientNameMutationHookResult = ReturnType<typeof useUpdatePatientNameMutation>;
 export type UpdatePatientNameMutationResult = Apollo.MutationResult<UpdatePatientNameMutation>;
 export type UpdatePatientNameMutationOptions = Apollo.BaseMutationOptions<UpdatePatientNameMutation, UpdatePatientNameMutationVariables>;
@@ -3383,9 +3372,9 @@ export type UpdatePatientPhoneMutationFn = Apollo.MutationFunction<UpdatePatient
  * });
  */
 export function useUpdatePatientPhoneMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>(UpdatePatientPhoneDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>(UpdatePatientPhoneDocument, options);
+}
 export type UpdatePatientPhoneMutationHookResult = ReturnType<typeof useUpdatePatientPhoneMutation>;
 export type UpdatePatientPhoneMutationResult = Apollo.MutationResult<UpdatePatientPhoneMutation>;
 export type UpdatePatientPhoneMutationOptions = Apollo.BaseMutationOptions<UpdatePatientPhoneMutation, UpdatePatientPhoneMutationVariables>;
@@ -3416,9 +3405,9 @@ export type UpdatePatientRaceMutationFn = Apollo.MutationFunction<UpdatePatientR
  * });
  */
 export function useUpdatePatientRaceMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>(UpdatePatientRaceDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>(UpdatePatientRaceDocument, options);
+}
 export type UpdatePatientRaceMutationHookResult = ReturnType<typeof useUpdatePatientRaceMutation>;
 export type UpdatePatientRaceMutationResult = Apollo.MutationResult<UpdatePatientRaceMutation>;
 export type UpdatePatientRaceMutationOptions = Apollo.BaseMutationOptions<UpdatePatientRaceMutation, UpdatePatientRaceMutationVariables>;
@@ -3447,17 +3436,17 @@ export const AddressTypesDocument = gql`
  * });
  */
 export function useAddressTypesQuery(baseOptions?: Apollo.QueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
+}
 export function useAddressTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
+}
 export function useAddressTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<AddressTypesQuery, AddressTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AddressTypesQuery, AddressTypesQueryVariables>(AddressTypesDocument, options);
+}
 export type AddressTypesQueryHookResult = ReturnType<typeof useAddressTypesQuery>;
 export type AddressTypesLazyQueryHookResult = ReturnType<typeof useAddressTypesLazyQuery>;
 export type AddressTypesSuspenseQueryHookResult = ReturnType<typeof useAddressTypesSuspenseQuery>;
@@ -3487,17 +3476,17 @@ export const AddressUsesDocument = gql`
  * });
  */
 export function useAddressUsesQuery(baseOptions?: Apollo.QueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
+}
 export function useAddressUsesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
+}
 export function useAddressUsesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<AddressUsesQuery, AddressUsesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AddressUsesQuery, AddressUsesQueryVariables>(AddressUsesDocument, options);
+}
 export type AddressUsesQueryHookResult = ReturnType<typeof useAddressUsesQuery>;
 export type AddressUsesLazyQueryHookResult = ReturnType<typeof useAddressUsesLazyQuery>;
 export type AddressUsesSuspenseQueryHookResult = ReturnType<typeof useAddressUsesSuspenseQuery>;
@@ -3527,17 +3516,17 @@ export const AssigningAuthoritiesDocument = gql`
  * });
  */
 export function useAssigningAuthoritiesQuery(baseOptions?: Apollo.QueryHookOptions<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
+}
 export function useAssigningAuthoritiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
+}
 export function useAssigningAuthoritiesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AssigningAuthoritiesQuery, AssigningAuthoritiesQueryVariables>(AssigningAuthoritiesDocument, options);
+}
 export type AssigningAuthoritiesQueryHookResult = ReturnType<typeof useAssigningAuthoritiesQuery>;
 export type AssigningAuthoritiesLazyQueryHookResult = ReturnType<typeof useAssigningAuthoritiesLazyQuery>;
 export type AssigningAuthoritiesSuspenseQueryHookResult = ReturnType<typeof useAssigningAuthoritiesSuspenseQuery>;
@@ -3569,17 +3558,17 @@ export const CountiesDocument = gql`
  * });
  */
 export function useCountiesQuery(baseOptions?: Apollo.QueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
+}
 export function useCountiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
+}
 export function useCountiesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CountiesQuery, CountiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<CountiesQuery, CountiesQueryVariables>(CountiesDocument, options);
+}
 export type CountiesQueryHookResult = ReturnType<typeof useCountiesQuery>;
 export type CountiesLazyQueryHookResult = ReturnType<typeof useCountiesLazyQuery>;
 export type CountiesSuspenseQueryHookResult = ReturnType<typeof useCountiesSuspenseQuery>;
@@ -3609,17 +3598,17 @@ export const CountriesDocument = gql`
  * });
  */
 export function useCountriesQuery(baseOptions?: Apollo.QueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
+}
 export function useCountriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
+}
 export function useCountriesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CountriesQuery, CountriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<CountriesQuery, CountriesQueryVariables>(CountriesDocument, options);
+}
 export type CountriesQueryHookResult = ReturnType<typeof useCountriesQuery>;
 export type CountriesLazyQueryHookResult = ReturnType<typeof useCountriesLazyQuery>;
 export type CountriesSuspenseQueryHookResult = ReturnType<typeof useCountriesSuspenseQuery>;
@@ -3649,17 +3638,17 @@ export const DegreesDocument = gql`
  * });
  */
 export function useDegreesQuery(baseOptions?: Apollo.QueryHookOptions<DegreesQuery, DegreesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
+}
 export function useDegreesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DegreesQuery, DegreesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
+}
 export function useDegreesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<DegreesQuery, DegreesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DegreesQuery, DegreesQueryVariables>(DegreesDocument, options);
+}
 export type DegreesQueryHookResult = ReturnType<typeof useDegreesQuery>;
 export type DegreesLazyQueryHookResult = ReturnType<typeof useDegreesLazyQuery>;
 export type DegreesSuspenseQueryHookResult = ReturnType<typeof useDegreesSuspenseQuery>;
@@ -3689,17 +3678,17 @@ export const DetailedEthnicitiesDocument = gql`
  * });
  */
 export function useDetailedEthnicitiesQuery(baseOptions?: Apollo.QueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
+}
 export function useDetailedEthnicitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
+}
 export function useDetailedEthnicitiesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DetailedEthnicitiesQuery, DetailedEthnicitiesQueryVariables>(DetailedEthnicitiesDocument, options);
+}
 export type DetailedEthnicitiesQueryHookResult = ReturnType<typeof useDetailedEthnicitiesQuery>;
 export type DetailedEthnicitiesLazyQueryHookResult = ReturnType<typeof useDetailedEthnicitiesLazyQuery>;
 export type DetailedEthnicitiesSuspenseQueryHookResult = ReturnType<typeof useDetailedEthnicitiesSuspenseQuery>;
@@ -3731,17 +3720,17 @@ export const DetailedRacesDocument = gql`
  * });
  */
 export function useDetailedRacesQuery(baseOptions?: Apollo.QueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
+}
 export function useDetailedRacesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
+}
 export function useDetailedRacesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<DetailedRacesQuery, DetailedRacesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DetailedRacesQuery, DetailedRacesQueryVariables>(DetailedRacesDocument, options);
+}
 export type DetailedRacesQueryHookResult = ReturnType<typeof useDetailedRacesQuery>;
 export type DetailedRacesLazyQueryHookResult = ReturnType<typeof useDetailedRacesLazyQuery>;
 export type DetailedRacesSuspenseQueryHookResult = ReturnType<typeof useDetailedRacesSuspenseQuery>;
@@ -3771,17 +3760,17 @@ export const EducationLevelsDocument = gql`
  * });
  */
 export function useEducationLevelsQuery(baseOptions?: Apollo.QueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
+}
 export function useEducationLevelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
+}
 export function useEducationLevelsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<EducationLevelsQuery, EducationLevelsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<EducationLevelsQuery, EducationLevelsQueryVariables>(EducationLevelsDocument, options);
+}
 export type EducationLevelsQueryHookResult = ReturnType<typeof useEducationLevelsQuery>;
 export type EducationLevelsLazyQueryHookResult = ReturnType<typeof useEducationLevelsLazyQuery>;
 export type EducationLevelsSuspenseQueryHookResult = ReturnType<typeof useEducationLevelsSuspenseQuery>;
@@ -3811,17 +3800,17 @@ export const EthnicGroupsDocument = gql`
  * });
  */
 export function useEthnicGroupsQuery(baseOptions?: Apollo.QueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
+}
 export function useEthnicGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
+}
 export function useEthnicGroupsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<EthnicGroupsQuery, EthnicGroupsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<EthnicGroupsQuery, EthnicGroupsQueryVariables>(EthnicGroupsDocument, options);
+}
 export type EthnicGroupsQueryHookResult = ReturnType<typeof useEthnicGroupsQuery>;
 export type EthnicGroupsLazyQueryHookResult = ReturnType<typeof useEthnicGroupsLazyQuery>;
 export type EthnicGroupsSuspenseQueryHookResult = ReturnType<typeof useEthnicGroupsSuspenseQuery>;
@@ -3851,17 +3840,17 @@ export const EthnicityUnknownReasonsDocument = gql`
  * });
  */
 export function useEthnicityUnknownReasonsQuery(baseOptions?: Apollo.QueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
+}
 export function useEthnicityUnknownReasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
+}
 export function useEthnicityUnknownReasonsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<EthnicityUnknownReasonsQuery, EthnicityUnknownReasonsQueryVariables>(EthnicityUnknownReasonsDocument, options);
+}
 export type EthnicityUnknownReasonsQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsQuery>;
 export type EthnicityUnknownReasonsLazyQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsLazyQuery>;
 export type EthnicityUnknownReasonsSuspenseQueryHookResult = ReturnType<typeof useEthnicityUnknownReasonsSuspenseQuery>;
@@ -3892,17 +3881,17 @@ export const FindAllConditionCodesDocument = gql`
  * });
  */
 export function useFindAllConditionCodesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
+}
 export function useFindAllConditionCodesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
+}
 export function useFindAllConditionCodesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllConditionCodesQuery, FindAllConditionCodesQueryVariables>(FindAllConditionCodesDocument, options);
+}
 export type FindAllConditionCodesQueryHookResult = ReturnType<typeof useFindAllConditionCodesQuery>;
 export type FindAllConditionCodesLazyQueryHookResult = ReturnType<typeof useFindAllConditionCodesLazyQuery>;
 export type FindAllConditionCodesSuspenseQueryHookResult = ReturnType<typeof useFindAllConditionCodesSuspenseQuery>;
@@ -3938,17 +3927,17 @@ export const FindAllEthnicityValuesDocument = gql`
  * });
  */
 export function useFindAllEthnicityValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
+}
 export function useFindAllEthnicityValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
+}
 export function useFindAllEthnicityValuesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllEthnicityValuesQuery, FindAllEthnicityValuesQueryVariables>(FindAllEthnicityValuesDocument, options);
+}
 export type FindAllEthnicityValuesQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesQuery>;
 export type FindAllEthnicityValuesLazyQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesLazyQuery>;
 export type FindAllEthnicityValuesSuspenseQueryHookResult = ReturnType<typeof useFindAllEthnicityValuesSuspenseQuery>;
@@ -3998,17 +3987,17 @@ export const FindAllJurisdictionsDocument = gql`
  * });
  */
 export function useFindAllJurisdictionsQuery(baseOptions?: Apollo.QueryHookOptions<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
+}
 export function useFindAllJurisdictionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
+}
 export function useFindAllJurisdictionsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllJurisdictionsQuery, FindAllJurisdictionsQueryVariables>(FindAllJurisdictionsDocument, options);
+}
 export type FindAllJurisdictionsQueryHookResult = ReturnType<typeof useFindAllJurisdictionsQuery>;
 export type FindAllJurisdictionsLazyQueryHookResult = ReturnType<typeof useFindAllJurisdictionsLazyQuery>;
 export type FindAllJurisdictionsSuspenseQueryHookResult = ReturnType<typeof useFindAllJurisdictionsSuspenseQuery>;
@@ -4045,17 +4034,17 @@ export const FindAllOutbreaksDocument = gql`
  * });
  */
 export function useFindAllOutbreaksQuery(baseOptions?: Apollo.QueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
+}
 export function useFindAllOutbreaksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
+}
 export function useFindAllOutbreaksSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllOutbreaksQuery, FindAllOutbreaksQueryVariables>(FindAllOutbreaksDocument, options);
+}
 export type FindAllOutbreaksQueryHookResult = ReturnType<typeof useFindAllOutbreaksQuery>;
 export type FindAllOutbreaksLazyQueryHookResult = ReturnType<typeof useFindAllOutbreaksLazyQuery>;
 export type FindAllOutbreaksSuspenseQueryHookResult = ReturnType<typeof useFindAllOutbreaksSuspenseQuery>;
@@ -4091,17 +4080,17 @@ export const FindAllPatientIdentificationTypesDocument = gql`
  * });
  */
 export function useFindAllPatientIdentificationTypesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
+}
 export function useFindAllPatientIdentificationTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
+}
 export function useFindAllPatientIdentificationTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllPatientIdentificationTypesQuery, FindAllPatientIdentificationTypesQueryVariables>(FindAllPatientIdentificationTypesDocument, options);
+}
 export type FindAllPatientIdentificationTypesQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesQuery>;
 export type FindAllPatientIdentificationTypesLazyQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesLazyQuery>;
 export type FindAllPatientIdentificationTypesSuspenseQueryHookResult = ReturnType<typeof useFindAllPatientIdentificationTypesSuspenseQuery>;
@@ -4137,17 +4126,17 @@ export const FindAllProgramAreasDocument = gql`
  * });
  */
 export function useFindAllProgramAreasQuery(baseOptions?: Apollo.QueryHookOptions<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
+}
 export function useFindAllProgramAreasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
+}
 export function useFindAllProgramAreasSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllProgramAreasQuery, FindAllProgramAreasQueryVariables>(FindAllProgramAreasDocument, options);
+}
 export type FindAllProgramAreasQueryHookResult = ReturnType<typeof useFindAllProgramAreasQuery>;
 export type FindAllProgramAreasLazyQueryHookResult = ReturnType<typeof useFindAllProgramAreasLazyQuery>;
 export type FindAllProgramAreasSuspenseQueryHookResult = ReturnType<typeof useFindAllProgramAreasSuspenseQuery>;
@@ -4183,17 +4172,17 @@ export const FindAllRaceValuesDocument = gql`
  * });
  */
 export function useFindAllRaceValuesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
+}
 export function useFindAllRaceValuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
+}
 export function useFindAllRaceValuesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllRaceValuesQuery, FindAllRaceValuesQueryVariables>(FindAllRaceValuesDocument, options);
+}
 export type FindAllRaceValuesQueryHookResult = ReturnType<typeof useFindAllRaceValuesQuery>;
 export type FindAllRaceValuesLazyQueryHookResult = ReturnType<typeof useFindAllRaceValuesLazyQuery>;
 export type FindAllRaceValuesSuspenseQueryHookResult = ReturnType<typeof useFindAllRaceValuesSuspenseQuery>;
@@ -4230,17 +4219,17 @@ export const FindAllUsersDocument = gql`
  * });
  */
 export function useFindAllUsersQuery(baseOptions?: Apollo.QueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
+}
 export function useFindAllUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
+}
 export function useFindAllUsersSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindAllUsersQuery, FindAllUsersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindAllUsersQuery, FindAllUsersQueryVariables>(FindAllUsersDocument, options);
+}
 export type FindAllUsersQueryHookResult = ReturnType<typeof useFindAllUsersQuery>;
 export type FindAllUsersLazyQueryHookResult = ReturnType<typeof useFindAllUsersLazyQuery>;
 export type FindAllUsersSuspenseQueryHookResult = ReturnType<typeof useFindAllUsersSuspenseQuery>;
@@ -4293,17 +4282,17 @@ export const FindContactsNamedByPatientDocument = gql`
  * });
  */
 export function useFindContactsNamedByPatientQuery(baseOptions: Apollo.QueryHookOptions<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
+}
 export function useFindContactsNamedByPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
+}
 export function useFindContactsNamedByPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindContactsNamedByPatientQuery, FindContactsNamedByPatientQueryVariables>(FindContactsNamedByPatientDocument, options);
+}
 export type FindContactsNamedByPatientQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientQuery>;
 export type FindContactsNamedByPatientLazyQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientLazyQuery>;
 export type FindContactsNamedByPatientSuspenseQueryHookResult = ReturnType<typeof useFindContactsNamedByPatientSuspenseQuery>;
@@ -4333,17 +4322,17 @@ export const FindDistinctCodedResultsDocument = gql`
  * });
  */
 export function useFindDistinctCodedResultsQuery(baseOptions: Apollo.QueryHookOptions<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
+}
 export function useFindDistinctCodedResultsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
+}
 export function useFindDistinctCodedResultsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindDistinctCodedResultsQuery, FindDistinctCodedResultsQueryVariables>(FindDistinctCodedResultsDocument, options);
+}
 export type FindDistinctCodedResultsQueryHookResult = ReturnType<typeof useFindDistinctCodedResultsQuery>;
 export type FindDistinctCodedResultsLazyQueryHookResult = ReturnType<typeof useFindDistinctCodedResultsLazyQuery>;
 export type FindDistinctCodedResultsSuspenseQueryHookResult = ReturnType<typeof useFindDistinctCodedResultsSuspenseQuery>;
@@ -4373,17 +4362,17 @@ export const FindDistinctResultedTestDocument = gql`
  * });
  */
 export function useFindDistinctResultedTestQuery(baseOptions: Apollo.QueryHookOptions<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
+}
 export function useFindDistinctResultedTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
+}
 export function useFindDistinctResultedTestSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindDistinctResultedTestQuery, FindDistinctResultedTestQueryVariables>(FindDistinctResultedTestDocument, options);
+}
 export type FindDistinctResultedTestQueryHookResult = ReturnType<typeof useFindDistinctResultedTestQuery>;
 export type FindDistinctResultedTestLazyQueryHookResult = ReturnType<typeof useFindDistinctResultedTestLazyQuery>;
 export type FindDistinctResultedTestSuspenseQueryHookResult = ReturnType<typeof useFindDistinctResultedTestSuspenseQuery>;
@@ -4428,17 +4417,17 @@ export const FindDocumentsForPatientDocument = gql`
  * });
  */
 export function useFindDocumentsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
+}
 export function useFindDocumentsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
+}
 export function useFindDocumentsForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindDocumentsForPatientQuery, FindDocumentsForPatientQueryVariables>(FindDocumentsForPatientDocument, options);
+}
 export type FindDocumentsForPatientQueryHookResult = ReturnType<typeof useFindDocumentsForPatientQuery>;
 export type FindDocumentsForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsForPatientLazyQuery>;
 export type FindDocumentsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindDocumentsForPatientSuspenseQuery>;
@@ -4493,17 +4482,17 @@ export const FindDocumentsRequiringReviewForPatientDocument = gql`
  * });
  */
 export function useFindDocumentsRequiringReviewForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
+}
 export function useFindDocumentsRequiringReviewForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
+}
 export function useFindDocumentsRequiringReviewForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindDocumentsRequiringReviewForPatientQuery, FindDocumentsRequiringReviewForPatientQueryVariables>(FindDocumentsRequiringReviewForPatientDocument, options);
+}
 export type FindDocumentsRequiringReviewForPatientQueryHookResult = ReturnType<typeof useFindDocumentsRequiringReviewForPatientQuery>;
 export type FindDocumentsRequiringReviewForPatientLazyQueryHookResult = ReturnType<typeof useFindDocumentsRequiringReviewForPatientLazyQuery>;
 export type FindDocumentsRequiringReviewForPatientSuspenseQueryHookResult = ReturnType<typeof useFindDocumentsRequiringReviewForPatientSuspenseQuery>;
@@ -4601,17 +4590,17 @@ export const FindInvestigationsByFilterDocument = gql`
  * });
  */
 export function useFindInvestigationsByFilterQuery(baseOptions: Apollo.QueryHookOptions<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
+}
 export function useFindInvestigationsByFilterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
+}
 export function useFindInvestigationsByFilterSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindInvestigationsByFilterQuery, FindInvestigationsByFilterQueryVariables>(FindInvestigationsByFilterDocument, options);
+}
 export type FindInvestigationsByFilterQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterQuery>;
 export type FindInvestigationsByFilterLazyQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterLazyQuery>;
 export type FindInvestigationsByFilterSuspenseQueryHookResult = ReturnType<typeof useFindInvestigationsByFilterSuspenseQuery>;
@@ -4661,17 +4650,17 @@ export const FindInvestigationsForPatientDocument = gql`
  * });
  */
 export function useFindInvestigationsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
+}
 export function useFindInvestigationsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
+}
 export function useFindInvestigationsForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindInvestigationsForPatientQuery, FindInvestigationsForPatientQueryVariables>(FindInvestigationsForPatientDocument, options);
+}
 export type FindInvestigationsForPatientQueryHookResult = ReturnType<typeof useFindInvestigationsForPatientQuery>;
 export type FindInvestigationsForPatientLazyQueryHookResult = ReturnType<typeof useFindInvestigationsForPatientLazyQuery>;
 export type FindInvestigationsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindInvestigationsForPatientSuspenseQuery>;
@@ -4795,17 +4784,17 @@ export const FindLabReportsByFilterDocument = gql`
  * });
  */
 export function useFindLabReportsByFilterQuery(baseOptions: Apollo.QueryHookOptions<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
+}
 export function useFindLabReportsByFilterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
+}
 export function useFindLabReportsByFilterSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindLabReportsByFilterQuery, FindLabReportsByFilterQueryVariables>(FindLabReportsByFilterDocument, options);
+}
 export type FindLabReportsByFilterQueryHookResult = ReturnType<typeof useFindLabReportsByFilterQuery>;
 export type FindLabReportsByFilterLazyQueryHookResult = ReturnType<typeof useFindLabReportsByFilterLazyQuery>;
 export type FindLabReportsByFilterSuspenseQueryHookResult = ReturnType<typeof useFindLabReportsByFilterSuspenseQuery>;
@@ -4813,34 +4802,38 @@ export type FindLabReportsByFilterQueryResult = Apollo.QueryResult<FindLabReport
 export const FindLabReportsForPatientDocument = gql`
     query findLabReportsForPatient($personUid: Int!, $page: Page) {
   findLabReportsForPatient(personUid: $personUid, page: $page) {
-    id
-    observationUid
-    addTime
-    effectiveFromTime
-    programAreaCd
-    jurisdictionCodeDescTxt
-    localId
-    electronicInd
-    associatedInvestigations {
-      publicHealthCaseUid
-      cdDescTxt
+    content {
+      id
+      observationUid
+      addTime
+      effectiveFromTime
+      programAreaCd
+      jurisdictionCodeDescTxt
       localId
+      electronicInd
+      associatedInvestigations {
+        publicHealthCaseUid
+        cdDescTxt
+        localId
+      }
+      personParticipations {
+        typeCd
+        personCd
+        firstName
+        lastName
+      }
+      organizationParticipations {
+        typeCd
+        name
+      }
+      observations {
+        domainCd
+        cdDescTxt
+        displayName
+      }
     }
-    personParticipations {
-      typeCd
-      personCd
-      firstName
-      lastName
-    }
-    organizationParticipations {
-      typeCd
-      name
-    }
-    observations {
-      domainCd
-      cdDescTxt
-      displayName
-    }
+    total
+    number
   }
 }
     `;
@@ -4863,59 +4856,22 @@ export const FindLabReportsForPatientDocument = gql`
  * });
  */
 export function useFindLabReportsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
+}
 export function useFindLabReportsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
+}
 export function useFindLabReportsForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>(FindLabReportsForPatientDocument, options);
+}
 export type FindLabReportsForPatientQueryHookResult = ReturnType<typeof useFindLabReportsForPatientQuery>;
 export type FindLabReportsForPatientLazyQueryHookResult = ReturnType<typeof useFindLabReportsForPatientLazyQuery>;
 export type FindLabReportsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindLabReportsForPatientSuspenseQuery>;
 export type FindLabReportsForPatientQueryResult = Apollo.QueryResult<FindLabReportsForPatientQuery, FindLabReportsForPatientQueryVariables>;
-export const FindLabReportsForPatientCountDocument = gql`
-    query findLabReportsForPatientCount($personUid: Int!) {
-  findLabReportsForPatientCount(personUid: $personUid)
-}
-    `;
 
-/**
- * __useFindLabReportsForPatientCountQuery__
- *
- * To run a query within a React component, call `useFindLabReportsForPatientCountQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindLabReportsForPatientCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFindLabReportsForPatientCountQuery({
- *   variables: {
- *      personUid: // value for 'personUid'
- *   },
- * });
- */
-export function useFindLabReportsForPatientCountQuery(baseOptions: Apollo.QueryHookOptions<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>(FindLabReportsForPatientCountDocument, options);
-      }
-export function useFindLabReportsForPatientCountLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>(FindLabReportsForPatientCountDocument, options);
-        }
-export function useFindLabReportsForPatientCountSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>(FindLabReportsForPatientCountDocument, options);
-        }
-export type FindLabReportsForPatientCountQueryHookResult = ReturnType<typeof useFindLabReportsForPatientCountQuery>;
-export type FindLabReportsForPatientCountLazyQueryHookResult = ReturnType<typeof useFindLabReportsForPatientCountLazyQuery>;
-export type FindLabReportsForPatientCountSuspenseQueryHookResult = ReturnType<typeof useFindLabReportsForPatientCountSuspenseQuery>;
-export type FindLabReportsForPatientCountQueryResult = Apollo.QueryResult<FindLabReportsForPatientCountQuery, FindLabReportsForPatientCountQueryVariables>;
 export const FindMorbidityReportsForPatientDocument = gql`
     query findMorbidityReportsForPatient($patient: ID!, $page: Page) {
   findMorbidityReportsForPatient(patient: $patient, page: $page) {
@@ -4965,17 +4921,17 @@ export const FindMorbidityReportsForPatientDocument = gql`
  * });
  */
 export function useFindMorbidityReportsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
+}
 export function useFindMorbidityReportsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
+}
 export function useFindMorbidityReportsForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindMorbidityReportsForPatientQuery, FindMorbidityReportsForPatientQueryVariables>(FindMorbidityReportsForPatientDocument, options);
+}
 export type FindMorbidityReportsForPatientQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientQuery>;
 export type FindMorbidityReportsForPatientLazyQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientLazyQuery>;
 export type FindMorbidityReportsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindMorbidityReportsForPatientSuspenseQuery>;
@@ -5028,17 +4984,17 @@ export const FindPatientNamedByContactDocument = gql`
  * });
  */
 export function useFindPatientNamedByContactQuery(baseOptions: Apollo.QueryHookOptions<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
+}
 export function useFindPatientNamedByContactLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
+}
 export function useFindPatientNamedByContactSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindPatientNamedByContactQuery, FindPatientNamedByContactQueryVariables>(FindPatientNamedByContactDocument, options);
+}
 export type FindPatientNamedByContactQueryHookResult = ReturnType<typeof useFindPatientNamedByContactQuery>;
 export type FindPatientNamedByContactLazyQueryHookResult = ReturnType<typeof useFindPatientNamedByContactLazyQuery>;
 export type FindPatientNamedByContactSuspenseQueryHookResult = ReturnType<typeof useFindPatientNamedByContactSuspenseQuery>;
@@ -5375,17 +5331,17 @@ export const FindPatientProfileDocument = gql`
  * });
  */
 export function useFindPatientProfileQuery(baseOptions?: Apollo.QueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
+}
 export function useFindPatientProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
+}
 export function useFindPatientProfileSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindPatientProfileQuery, FindPatientProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindPatientProfileQuery, FindPatientProfileQueryVariables>(FindPatientProfileDocument, options);
+}
 export type FindPatientProfileQueryHookResult = ReturnType<typeof useFindPatientProfileQuery>;
 export type FindPatientProfileLazyQueryHookResult = ReturnType<typeof useFindPatientProfileLazyQuery>;
 export type FindPatientProfileSuspenseQueryHookResult = ReturnType<typeof useFindPatientProfileSuspenseQuery>;
@@ -5450,17 +5406,17 @@ export const FindPatientsByFilterDocument = gql`
  * });
  */
 export function useFindPatientsByFilterQuery(baseOptions: Apollo.QueryHookOptions<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>(FindPatientsByFilterDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>(FindPatientsByFilterDocument, options);
+}
 export function useFindPatientsByFilterLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>(FindPatientsByFilterDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>(FindPatientsByFilterDocument, options);
+}
 export function useFindPatientsByFilterSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>(FindPatientsByFilterDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindPatientsByFilterQuery, FindPatientsByFilterQueryVariables>(FindPatientsByFilterDocument, options);
+}
 export type FindPatientsByFilterQueryHookResult = ReturnType<typeof useFindPatientsByFilterQuery>;
 export type FindPatientsByFilterLazyQueryHookResult = ReturnType<typeof useFindPatientsByFilterLazyQuery>;
 export type FindPatientsByFilterSuspenseQueryHookResult = ReturnType<typeof useFindPatientsByFilterSuspenseQuery>;
@@ -5505,17 +5461,17 @@ export const FindTreatmentsForPatientDocument = gql`
  * });
  */
 export function useFindTreatmentsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
+}
 export function useFindTreatmentsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
+}
 export function useFindTreatmentsForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindTreatmentsForPatientQuery, FindTreatmentsForPatientQueryVariables>(FindTreatmentsForPatientDocument, options);
+}
 export type FindTreatmentsForPatientQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientQuery>;
 export type FindTreatmentsForPatientLazyQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientLazyQuery>;
 export type FindTreatmentsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindTreatmentsForPatientSuspenseQuery>;
@@ -5560,17 +5516,17 @@ export const FindVaccinationsForPatientDocument = gql`
  * });
  */
 export function useFindVaccinationsForPatientQuery(baseOptions: Apollo.QueryHookOptions<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
+}
 export function useFindVaccinationsForPatientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
+}
 export function useFindVaccinationsForPatientSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<FindVaccinationsForPatientQuery, FindVaccinationsForPatientQueryVariables>(FindVaccinationsForPatientDocument, options);
+}
 export type FindVaccinationsForPatientQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientQuery>;
 export type FindVaccinationsForPatientLazyQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientLazyQuery>;
 export type FindVaccinationsForPatientSuspenseQueryHookResult = ReturnType<typeof useFindVaccinationsForPatientSuspenseQuery>;
@@ -5600,17 +5556,17 @@ export const GenderUnknownReasonsDocument = gql`
  * });
  */
 export function useGenderUnknownReasonsQuery(baseOptions?: Apollo.QueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
+}
 export function useGenderUnknownReasonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
+}
 export function useGenderUnknownReasonsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GenderUnknownReasonsQuery, GenderUnknownReasonsQueryVariables>(GenderUnknownReasonsDocument, options);
+}
 export type GenderUnknownReasonsQueryHookResult = ReturnType<typeof useGenderUnknownReasonsQuery>;
 export type GenderUnknownReasonsLazyQueryHookResult = ReturnType<typeof useGenderUnknownReasonsLazyQuery>;
 export type GenderUnknownReasonsSuspenseQueryHookResult = ReturnType<typeof useGenderUnknownReasonsSuspenseQuery>;
@@ -5640,17 +5596,17 @@ export const GendersDocument = gql`
  * });
  */
 export function useGendersQuery(baseOptions?: Apollo.QueryHookOptions<GendersQuery, GendersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
+}
 export function useGendersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GendersQuery, GendersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
+}
 export function useGendersSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GendersQuery, GendersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GendersQuery, GendersQueryVariables>(GendersDocument, options);
+}
 export type GendersQueryHookResult = ReturnType<typeof useGendersQuery>;
 export type GendersLazyQueryHookResult = ReturnType<typeof useGendersLazyQuery>;
 export type GendersSuspenseQueryHookResult = ReturnType<typeof useGendersSuspenseQuery>;
@@ -5680,17 +5636,17 @@ export const IdentificationTypesDocument = gql`
  * });
  */
 export function useIdentificationTypesQuery(baseOptions?: Apollo.QueryHookOptions<IdentificationTypesQuery, IdentificationTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
+}
 export function useIdentificationTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IdentificationTypesQuery, IdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
+}
 export function useIdentificationTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<IdentificationTypesQuery, IdentificationTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<IdentificationTypesQuery, IdentificationTypesQueryVariables>(IdentificationTypesDocument, options);
+}
 export type IdentificationTypesQueryHookResult = ReturnType<typeof useIdentificationTypesQuery>;
 export type IdentificationTypesLazyQueryHookResult = ReturnType<typeof useIdentificationTypesLazyQuery>;
 export type IdentificationTypesSuspenseQueryHookResult = ReturnType<typeof useIdentificationTypesSuspenseQuery>;
@@ -5720,17 +5676,17 @@ export const MaritalStatusesDocument = gql`
  * });
  */
 export function useMaritalStatusesQuery(baseOptions?: Apollo.QueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
+}
 export function useMaritalStatusesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
+}
 export function useMaritalStatusesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MaritalStatusesQuery, MaritalStatusesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MaritalStatusesQuery, MaritalStatusesQueryVariables>(MaritalStatusesDocument, options);
+}
 export type MaritalStatusesQueryHookResult = ReturnType<typeof useMaritalStatusesQuery>;
 export type MaritalStatusesLazyQueryHookResult = ReturnType<typeof useMaritalStatusesLazyQuery>;
 export type MaritalStatusesSuspenseQueryHookResult = ReturnType<typeof useMaritalStatusesSuspenseQuery>;
@@ -5760,17 +5716,17 @@ export const NameTypesDocument = gql`
  * });
  */
 export function useNameTypesQuery(baseOptions?: Apollo.QueryHookOptions<NameTypesQuery, NameTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
+}
 export function useNameTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NameTypesQuery, NameTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
+}
 export function useNameTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<NameTypesQuery, NameTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<NameTypesQuery, NameTypesQueryVariables>(NameTypesDocument, options);
+}
 export type NameTypesQueryHookResult = ReturnType<typeof useNameTypesQuery>;
 export type NameTypesLazyQueryHookResult = ReturnType<typeof useNameTypesLazyQuery>;
 export type NameTypesSuspenseQueryHookResult = ReturnType<typeof useNameTypesSuspenseQuery>;
@@ -5800,17 +5756,17 @@ export const PhoneTypesDocument = gql`
  * });
  */
 export function usePhoneTypesQuery(baseOptions?: Apollo.QueryHookOptions<PhoneTypesQuery, PhoneTypesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
+}
 export function usePhoneTypesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PhoneTypesQuery, PhoneTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
+}
 export function usePhoneTypesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PhoneTypesQuery, PhoneTypesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PhoneTypesQuery, PhoneTypesQueryVariables>(PhoneTypesDocument, options);
+}
 export type PhoneTypesQueryHookResult = ReturnType<typeof usePhoneTypesQuery>;
 export type PhoneTypesLazyQueryHookResult = ReturnType<typeof usePhoneTypesLazyQuery>;
 export type PhoneTypesSuspenseQueryHookResult = ReturnType<typeof usePhoneTypesSuspenseQuery>;
@@ -5840,17 +5796,17 @@ export const PhoneUsesDocument = gql`
  * });
  */
 export function usePhoneUsesQuery(baseOptions?: Apollo.QueryHookOptions<PhoneUsesQuery, PhoneUsesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
+}
 export function usePhoneUsesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PhoneUsesQuery, PhoneUsesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
+}
 export function usePhoneUsesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PhoneUsesQuery, PhoneUsesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PhoneUsesQuery, PhoneUsesQueryVariables>(PhoneUsesDocument, options);
+}
 export type PhoneUsesQueryHookResult = ReturnType<typeof usePhoneUsesQuery>;
 export type PhoneUsesLazyQueryHookResult = ReturnType<typeof usePhoneUsesLazyQuery>;
 export type PhoneUsesSuspenseQueryHookResult = ReturnType<typeof usePhoneUsesSuspenseQuery>;
@@ -5880,17 +5836,17 @@ export const PreferredGendersDocument = gql`
  * });
  */
 export function usePreferredGendersQuery(baseOptions?: Apollo.QueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
+}
 export function usePreferredGendersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
+}
 export function usePreferredGendersSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PreferredGendersQuery, PreferredGendersQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PreferredGendersQuery, PreferredGendersQueryVariables>(PreferredGendersDocument, options);
+}
 export type PreferredGendersQueryHookResult = ReturnType<typeof usePreferredGendersQuery>;
 export type PreferredGendersLazyQueryHookResult = ReturnType<typeof usePreferredGendersLazyQuery>;
 export type PreferredGendersSuspenseQueryHookResult = ReturnType<typeof usePreferredGendersSuspenseQuery>;
@@ -5920,17 +5876,17 @@ export const PrefixesDocument = gql`
  * });
  */
 export function usePrefixesQuery(baseOptions?: Apollo.QueryHookOptions<PrefixesQuery, PrefixesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
+}
 export function usePrefixesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrefixesQuery, PrefixesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
+}
 export function usePrefixesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PrefixesQuery, PrefixesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PrefixesQuery, PrefixesQueryVariables>(PrefixesDocument, options);
+}
 export type PrefixesQueryHookResult = ReturnType<typeof usePrefixesQuery>;
 export type PrefixesLazyQueryHookResult = ReturnType<typeof usePrefixesLazyQuery>;
 export type PrefixesSuspenseQueryHookResult = ReturnType<typeof usePrefixesSuspenseQuery>;
@@ -5960,17 +5916,17 @@ export const PrimaryLanguagesDocument = gql`
  * });
  */
 export function usePrimaryLanguagesQuery(baseOptions?: Apollo.QueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
+}
 export function usePrimaryLanguagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
+}
 export function usePrimaryLanguagesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PrimaryLanguagesQuery, PrimaryLanguagesQueryVariables>(PrimaryLanguagesDocument, options);
+}
 export type PrimaryLanguagesQueryHookResult = ReturnType<typeof usePrimaryLanguagesQuery>;
 export type PrimaryLanguagesLazyQueryHookResult = ReturnType<typeof usePrimaryLanguagesLazyQuery>;
 export type PrimaryLanguagesSuspenseQueryHookResult = ReturnType<typeof usePrimaryLanguagesSuspenseQuery>;
@@ -6000,17 +5956,17 @@ export const PrimaryOccupationsDocument = gql`
  * });
  */
 export function usePrimaryOccupationsQuery(baseOptions?: Apollo.QueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
+}
 export function usePrimaryOccupationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
+}
 export function usePrimaryOccupationsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PrimaryOccupationsQuery, PrimaryOccupationsQueryVariables>(PrimaryOccupationsDocument, options);
+}
 export type PrimaryOccupationsQueryHookResult = ReturnType<typeof usePrimaryOccupationsQuery>;
 export type PrimaryOccupationsLazyQueryHookResult = ReturnType<typeof usePrimaryOccupationsLazyQuery>;
 export type PrimaryOccupationsSuspenseQueryHookResult = ReturnType<typeof usePrimaryOccupationsSuspenseQuery>;
@@ -6040,17 +5996,17 @@ export const RaceCategoriesDocument = gql`
  * });
  */
 export function useRaceCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
+}
 export function useRaceCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
+}
 export function useRaceCategoriesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<RaceCategoriesQuery, RaceCategoriesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<RaceCategoriesQuery, RaceCategoriesQueryVariables>(RaceCategoriesDocument, options);
+}
 export type RaceCategoriesQueryHookResult = ReturnType<typeof useRaceCategoriesQuery>;
 export type RaceCategoriesLazyQueryHookResult = ReturnType<typeof useRaceCategoriesLazyQuery>;
 export type RaceCategoriesSuspenseQueryHookResult = ReturnType<typeof useRaceCategoriesSuspenseQuery>;
@@ -6081,17 +6037,17 @@ export const StatesDocument = gql`
  * });
  */
 export function useStatesQuery(baseOptions?: Apollo.QueryHookOptions<StatesQuery, StatesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
+}
 export function useStatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StatesQuery, StatesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
+}
 export function useStatesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<StatesQuery, StatesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<StatesQuery, StatesQueryVariables>(StatesDocument, options);
+}
 export type StatesQueryHookResult = ReturnType<typeof useStatesQuery>;
 export type StatesLazyQueryHookResult = ReturnType<typeof useStatesLazyQuery>;
 export type StatesSuspenseQueryHookResult = ReturnType<typeof useStatesSuspenseQuery>;
@@ -6121,17 +6077,17 @@ export const SuffixesDocument = gql`
  * });
  */
 export function useSuffixesQuery(baseOptions?: Apollo.QueryHookOptions<SuffixesQuery, SuffixesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
+}
 export function useSuffixesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SuffixesQuery, SuffixesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
+}
 export function useSuffixesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<SuffixesQuery, SuffixesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<SuffixesQuery, SuffixesQueryVariables>(SuffixesDocument, options);
+}
 export type SuffixesQueryHookResult = ReturnType<typeof useSuffixesQuery>;
 export type SuffixesLazyQueryHookResult = ReturnType<typeof useSuffixesLazyQuery>;
 export type SuffixesSuspenseQueryHookResult = ReturnType<typeof useSuffixesSuspenseQuery>;
