@@ -9,10 +9,7 @@ import { ToggleButton } from '../../ToggleButton';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
 
-type Props = {
-    editing?: boolean;
-};
-export const MessagingFields = ({ editing = false }: Props) => {
+export const MessagingFields = () => {
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
     const { options: hl7Options } = useOptions('NBS_HL7_DATA_TYPE');
     const form = useFormContext<CreateQuestionForm>();
@@ -47,7 +44,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                 render={({ field: { onChange, name, value } }) => (
                     <div className={styles.toggleGroup}>
                         <div>Not included</div>
-                        <ToggleButton checked={value} disabled={editing} name={name} id={name} onChange={onChange} />
+                        <ToggleButton checked={value === true} name={name} id={name} onChange={onChange} />
                         <div>Included</div>
                     </div>
                 )}
@@ -140,7 +137,7 @@ export const MessagingFields = ({ editing = false }: Props) => {
                             <div>Not required</div>
                             <ToggleButton
                                 className="requiredInMessage"
-                                checked={value}
+                                checked={value === true}
                                 name="includedInMessage"
                                 disabled={!includedInMessage}
                                 onChange={onChange}

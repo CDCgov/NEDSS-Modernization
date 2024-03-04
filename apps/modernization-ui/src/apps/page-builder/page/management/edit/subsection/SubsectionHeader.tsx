@@ -5,7 +5,7 @@ import { Icon as IconComponent } from 'components/Icon/Icon';
 import { useRef } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
-import { PagesSubSection, SubSectionControllerService, UnGroupSubSectionRequest } from 'apps/page-builder/generated';
+import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { GroupQuestion } from '../question/GroupQuestion/GroupQuestion';
 import { ConfirmationModal } from 'confirmation';
 import { authorization } from 'authorization';
@@ -36,15 +36,11 @@ export const SubsectionHeader = ({
     const { showAlert } = useAlert();
 
     const handleUngroup = () => {
-        const request: UnGroupSubSectionRequest = {
-            batches: subsection.questions.map((question) => question.id),
-            id: subsection.id
-        };
         try {
-            SubSectionControllerService.unGroupSubSectionUsingPost({
+            SubSectionControllerService.unGroupSubSectionUsingGet({
                 authorization: authorization(),
                 page: page.id,
-                request: request
+                subSectionId: subsection.id
             }).then(() => {
                 showAlert({
                     type: 'success',

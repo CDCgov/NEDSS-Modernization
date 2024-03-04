@@ -54,6 +54,19 @@ public class AddQuestionToPageSteps {
     activeResponse.active(requester.request(page.getId(), subsection.getId(), request));
   }
 
+  @Given("I add the {string} question to a page")
+  public void i_add_question_page(String questionUniqueId) throws Exception {
+    WaQuestion question = questionMother.findByUniqueId(questionUniqueId);
+    WaTemplate page = pageMother.one();
+    WaUiMetadata subsection = page.getUiMetadata().stream()
+        .filter(ui -> ui.getNbsUiComponentUid() == 1016l)
+        .findFirst()
+        .orElseThrow();
+    AddQuestionRequest request = new AddQuestionRequest(Collections.singletonList(question.getId()));
+
+    activeResponse.active(requester.request(page.getId(), subsection.getId(), request));
+  }
+
   @Then("the question is added to the page at order number {int}")
   public void the_question_is_added_to_the_page(Integer order) throws Exception {
     MockHttpServletResponse result = activeResponse.active().andExpect(status().isOk()).andReturn().getResponse();

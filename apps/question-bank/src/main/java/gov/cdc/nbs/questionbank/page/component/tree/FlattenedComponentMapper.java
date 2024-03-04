@@ -40,14 +40,38 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int dataMartColumnName,
       int blockName,
       int dataLocation,
-      int publishIndicator
+      int isPublished
 
   ) {
     Column() {
-      this(1, 2, 3, 4, 5, 6, 7, 8, 9,
-          10, 11, 12, 13, 14, 15, 16,
-          17, 18, 19, 20, 21, 22,
-          23, 24, 25, 26, 27, 28);
+      this(1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28);
     }
   }
 
@@ -89,8 +113,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String dataMartColumnName = resultSet.getString(this.columns.dataMartColumnName());
 
     boolean isSubsectionGrouped = resultSet.getString(this.columns.blockName()) != null;
+    boolean isPublished = resolveBoolean(this.columns.isPublished, resultSet);
     String dataLocation = resultSet.getString(this.columns.dataLocation());
-    String publishIndicator = resultSet.getString(this.columns.publishIndicator);
 
     return new FlattenedComponent(
         identifier,
@@ -120,8 +144,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         dataMartColumnName,
         isSubsectionGrouped,
         dataLocation,
-        publishIndicator
-    );
+        isPublished);
   }
 
   private boolean resolveBoolean(final int column, final ResultSet resultSet) throws SQLException {

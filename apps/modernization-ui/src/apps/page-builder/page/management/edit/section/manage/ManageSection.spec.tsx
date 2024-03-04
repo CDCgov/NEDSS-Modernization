@@ -1,4 +1,4 @@
-import { render} from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 import { ManageSection } from './ManageSection';
@@ -27,6 +27,7 @@ describe('when ManageSection renders', () => {
                                 name: 'Subsection1',
                                 visible: true,
                                 order: 1,
+                                isGroupable: true,
                                 questions: []
                             },
                             {
@@ -35,6 +36,7 @@ describe('when ManageSection renders', () => {
                                 name: 'Subsection2',
                                 visible: true,
                                 order: 2,
+                                isGroupable: true,
                                 questions: []
                             }
                         ]
@@ -55,29 +57,17 @@ describe('when ManageSection renders', () => {
     it('should show the heading', () => {
         const { getByTestId } = render(
             <DragDropProvider pageData={content}>
-                <ManageSection
-                    pageId={1}
-                    tab={tabData}
-                    key={1}
-                    onContentChange={jest.fn()}
-                    onCancel={jest.fn()}
-                />
+                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={jest.fn()} onCancel={jest.fn()} />
             </DragDropProvider>
         );
         const header = getByTestId('header');
         expect(header).toHaveTextContent('Manage sections');
-    })
+    });
 
     it('should display two buttons', () => {
         const { container } = render(
             <DragDropProvider pageData={content}>
-                <ManageSection
-                    pageId={1}
-                    tab={tabData}
-                    key={1}
-                    onContentChange={jest.fn()}
-                    onCancel={jest.fn()}
-                />
+                <ManageSection pageId={1} tab={tabData} key={1} onContentChange={jest.fn()} onCancel={jest.fn()} />
             </DragDropProvider>
         );
         const buttons = container.getElementsByTagName('button');

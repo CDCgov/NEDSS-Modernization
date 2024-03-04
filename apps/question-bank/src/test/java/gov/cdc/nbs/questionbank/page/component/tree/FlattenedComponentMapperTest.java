@@ -39,7 +39,7 @@ class FlattenedComponentMapperTest {
     when(resultSet.getString(columns.defaultLabelInReport())).thenReturn("default-label-in-Report");
     when(resultSet.getString(columns.dataMartColumnName())).thenReturn("dataMart-column-name");
     when(resultSet.getString(columns.dataLocation())).thenReturn("test");
-    when(resultSet.getString(columns.publishIndicator())).thenReturn("F");
+    when(resultSet.getString(columns.isPublished())).thenReturn("F");
 
     FlattenedComponentMapper mapper = new FlattenedComponentMapper(columns);
 

@@ -31,12 +31,10 @@ class TreeifyTest {
   void should_reduce_to_a_single_page() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
-        page -> assertThat(page).isInstanceOf(PageNode.class)
-    );
+        page -> assertThat(page).isInstanceOf(PageNode.class));
 
   }
 
@@ -45,17 +43,14 @@ class TreeifyTest {
 
     Optional<ComponentNode> actual = Stream.of(
         new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(3L, 1010, "Tab", true, 2)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
             .asInstanceOf(type(PageNode.class))
             .extracting(PageNode::children, collection(TabNode.class))
             .satisfiesExactly(
-                tab -> assertThat(tab.identifier()).isEqualTo(3L)
-            )
-    );
+                tab -> assertThat(tab.identifier()).isEqualTo(3L)));
 
   }
 
@@ -65,8 +60,7 @@ class TreeifyTest {
     Optional<ComponentNode> actual = Stream.of(
         new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
         new FlattenedComponent(3L, 1010, "Tab One", true, 2),
-        new FlattenedComponent(5L, 1010, "Tab Two", true, 3)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(5L, 1010, "Tab Two", true, 3)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -74,9 +68,7 @@ class TreeifyTest {
             .extracting(PageNode::children, collection(TabNode.class))
             .satisfiesExactly(
                 tab -> assertThat(tab.identifier()).isEqualTo(3L),
-                tab -> assertThat(tab.identifier()).isEqualTo(5L)
-            )
-    );
+                tab -> assertThat(tab.identifier()).isEqualTo(5L)));
   }
 
   @Test
@@ -85,8 +77,7 @@ class TreeifyTest {
     Optional<ComponentNode> actual = Stream.of(
         new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
         new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section", true, 3)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(5L, 1015, "Section", true, 3)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -96,10 +87,7 @@ class TreeifyTest {
                 tab -> assertThat(tab)
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
-                        section -> assertThat(section.identifier()).isEqualTo(5L)
-                    )
-            )
-    );
+                        section -> assertThat(section.identifier()).isEqualTo(5L))));
 
   }
 
@@ -110,8 +98,7 @@ class TreeifyTest {
         new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
         new FlattenedComponent(3L, 1010, "Tab", true, 2),
         new FlattenedComponent(5L, 1015, "Section One", true, 3),
-        new FlattenedComponent(7L, 1015, "Section Two", true, 4)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(7L, 1015, "Section Two", true, 4)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -122,10 +109,7 @@ class TreeifyTest {
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
                         section -> assertThat(section.identifier()).isEqualTo(5L),
-                        section -> assertThat(section.identifier()).isEqualTo(7L)
-                    )
-            )
-    );
+                        section -> assertThat(section.identifier()).isEqualTo(7L))));
 
   }
 
@@ -136,8 +120,7 @@ class TreeifyTest {
         new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
         new FlattenedComponent(3L, 1010, "Tab", true, 2),
         new FlattenedComponent(5L, 1015, "Section", true, 3),
-        new FlattenedComponent(7L, 1016, "Sub Section", true, 4)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(7L, 1016, "Sub Section", true, 4)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -148,13 +131,9 @@ class TreeifyTest {
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
                         section -> assertThat(section).extracting(SectionNode::children,
-                                collection(SubSectionNode.class))
+                            collection(SubSectionNode.class))
                             .satisfiesExactly(
-                                subSection -> assertThat(subSection.identifier()).isEqualTo(7L)
-                            )
-                    )
-            )
-    );
+                                subSection -> assertThat(subSection.identifier()).isEqualTo(7L)))));
 
   }
 
@@ -166,8 +145,7 @@ class TreeifyTest {
         new FlattenedComponent(3L, 1010, "Tab", true, 2),
         new FlattenedComponent(5L, 1015, "Section", true, 3),
         new FlattenedComponent(7L, 1016, "Sub Section One", true, 4),
-        new FlattenedComponent(11L, 1016, "Sub Section One", true, 5)
-    ).collect(Treeify.asTree());
+        new FlattenedComponent(11L, 1016, "Sub Section One", true, 5)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -178,14 +156,10 @@ class TreeifyTest {
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
                         section -> assertThat(section).extracting(SectionNode::children,
-                                collection(SubSectionNode.class))
+                            collection(SubSectionNode.class))
                             .satisfiesExactly(
                                 subSection -> assertThat(subSection.identifier()).isEqualTo(7L),
-                                subSection -> assertThat(subSection.identifier()).isEqualTo(11L)
-                            )
-                    )
-            )
-    );
+                                subSection -> assertThat(subSection.identifier()).isEqualTo(11L)))));
 
   }
 
@@ -225,9 +199,8 @@ class TreeifyTest {
             "dataMart-column-name",
             false,
             "data_location",
-            "publish_ind_cd"
-        )
-    ).collect(Treeify.asTree());
+            true))
+        .collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -238,15 +211,11 @@ class TreeifyTest {
                     .extracting(TabNode::children, collection(SectionNode.class))
                     .satisfiesExactly(
                         section -> assertThat(section).extracting(SectionNode::children,
-                                collection(SubSectionNode.class))
+                            collection(SubSectionNode.class))
                             .satisfiesExactly(
                                 subSection -> assertThat(subSection).extracting(SubSectionNode::children,
-                                        collection(ContentNode.class))
-                                    .satisfiesExactly(content -> assertThat(content.identifier()).isEqualTo(11L))
-                            )
-                    )
-            )
-    );
+                                    collection(ContentNode.class))
+                                    .satisfiesExactly(content -> assertThat(content.identifier()).isEqualTo(11L))))));
 
   }
 
@@ -286,10 +255,8 @@ class TreeifyTest {
             "dataMart-column-name",
             false,
             "data_location",
-            "publish_ind_cd"
-        ),
-        new FlattenedComponent(13L, 1010, "Tab", true, 6)
-    ).collect(Treeify.asTree());
+            true),
+        new FlattenedComponent(13L, 1010, "Tab", true, 6)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -297,9 +264,7 @@ class TreeifyTest {
             .extracting(PageNode::children, collection(TabNode.class))
             .satisfiesExactly(
                 tab -> assertThat(tab.identifier()).isEqualTo(3L),
-                tab -> assertThat(tab.identifier()).isEqualTo(13L)
-            )
-    );
+                tab -> assertThat(tab.identifier()).isEqualTo(13L)));
 
   }
 }

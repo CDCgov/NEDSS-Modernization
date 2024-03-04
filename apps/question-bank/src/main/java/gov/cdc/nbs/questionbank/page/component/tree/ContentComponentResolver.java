@@ -32,8 +32,7 @@ class ContentComponentResolver {
     return new ComponentNode.Definition(
         component.name(),
         component.visible(),
-        component.order()
-    );
+        component.order());
   }
 
   private ContentNode.Attributes asAttributes(final FlattenedComponent component) {
@@ -58,8 +57,7 @@ class ContentComponentResolver {
         component.dataMartColumnName(),
         component.type(),
         component.dataLocation(),
-        component.publishIndicator()
-    );
+        component.isPublished());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {
@@ -68,8 +66,7 @@ class ContentComponentResolver {
         type,
         asDefinition(flattened),
         asAttributes(flattened),
-        flattened.allowFutureDates()
-    );
+        flattened.allowFutureDates());
   }
 
   private EntryNode asEntry(final EntryNode.Type type, final FlattenedComponent flattened) {
@@ -77,8 +74,7 @@ class ContentComponentResolver {
         flattened.identifier(),
         type,
         asDefinition(flattened),
-        asAttributes(flattened)
-    );
+        asAttributes(flattened));
   }
 
   private SelectionNode asSelection(final SelectionNode.Type type, final FlattenedComponent flattened) {
@@ -87,8 +83,7 @@ class ContentComponentResolver {
         type,
         asDefinition(flattened),
         asAttributes(flattened),
-        flattened.valueSet()
-    );
+        flattened.valueSet());
   }
 
   private StaticNode asStatic(final StaticNode.Type type, final FlattenedComponent flattened) {
@@ -96,8 +91,7 @@ class ContentComponentResolver {
         flattened.identifier(),
         type,
         asDefinition(flattened),
-        asAttributes(flattened)
-    );
+        asAttributes(flattened));
   }
 
 }

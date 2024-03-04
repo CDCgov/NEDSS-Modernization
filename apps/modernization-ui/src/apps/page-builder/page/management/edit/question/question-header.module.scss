@@ -41,6 +41,10 @@
         font-size: 1.25rem;
         cursor: pointer;
 
+        .editButton {
+            padding: 0;
+        }
+
         .divider {
             color: colors.$base-light;
         }

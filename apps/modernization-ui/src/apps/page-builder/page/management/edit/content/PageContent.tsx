@@ -2,15 +2,15 @@ import { ModalRef } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
 import { PagesQuestion, PagesTab } from 'apps/page-builder/generated';
 import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useEffect, useRef, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import { AddQuestionModal } from '../add-question/modal/AddQuestionModal';
+import { EditQuestionModal } from '../edit-question/EditQuestionModal';
+import { EditStaticElementModal } from '../edit-staticelement/EditStaticElementModal';
+import { EditValuesetModal } from '../edit-valueset/EditValuesetModal';
 import { Sections } from '../section/Sections';
-import { EditStaticElement } from '../staticelement/EditStaticElement';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
-import { EditValuesetModal } from '../edit-valueset/EditValuesetModal';
 
 type Props = {
     tab: PagesTab;
@@ -47,26 +47,23 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
         addQuestionModalRef.current?.toggleModal();
     };
 
-    const onCloseModal = () => {
-        if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
-            editStaticElementRef.current?.toggleModal(undefined, false);
-        } else {
-            editQuestionModalRef.current?.toggleModal(undefined, false);
+    const handleEditQuestion = (question: PagesQuestion) => {
+        setCurrentEditQuestion(question);
+        if (staticTypes.includes(question?.displayComponent ?? 0)) {
+            editStaticElementRef.current?.toggleModal(undefined, true);
+        } else if (questionTypes.includes(question?.displayComponent ?? 0)) {
+            editQuestionModalRef.current?.toggleModal(undefined, true);
         }
+    };
+
+    const handleEditQuestionClose = () => {
         setCurrentEditQuestion(undefined);
     };
 
-    const handleEditQuestion = (question: PagesQuestion) => {
-        setCurrentEditQuestion(question);
+    const handleQuestionUpdated = () => {
+        setCurrentEditQuestion(undefined);
+        refresh();
     };
-
-    useEffect(() => {
-        if (staticTypes.includes(currentEditQuestion?.displayComponent!)) {
-            editStaticElementRef.current?.toggleModal(undefined, true);
-        } else if (questionTypes.includes(currentEditQuestion?.displayComponent!)) {
-            editQuestionModalRef.current?.toggleModal(undefined, true);
-        }
-    }, [currentEditQuestion]);
 
     const handleAddQuestionClose = (questions: number[]) => {
         if (questions.length > 0 && subsectionId && page.id) {
@@ -114,16 +111,18 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 onManageSection={() => handleManageSection?.()}
                 onReorderModal={() => handleReorderModal?.()}
             />
-            <ModalComponent
-                modalRef={editStaticElementRef}
-                modalHeading={'Edit static elements'}
-                modalBody={
-                    currentEditQuestion !== undefined && (
-                        <EditStaticElement question={currentEditQuestion} onCloseModal={onCloseModal} />
-                    )
-                }
-            />
             <AddQuestionModal onAddQuestion={handleAddQuestionClose} modal={addQuestionModalRef} />
+            <EditQuestionModal
+                onUpdated={handleQuestionUpdated}
+                onClosed={handleEditQuestionClose}
+                question={currentEditQuestion}
+                modal={editQuestionModalRef}
+            />
+            <EditStaticElementModal
+                onClosed={handleEditQuestionClose}
+                question={currentEditQuestion}
+                modal={editStaticElementRef}
+            />
             <EditValuesetModal
                 onValuesetChanged={handleValuesetEdited}
                 modal={editValuesetModalRef}

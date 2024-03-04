@@ -42,7 +42,7 @@ describe('when ReorderQuestion renders', () => {
         coInfection: true,
         dataType: 'asdf',
         description: 'asdf',
-        display: true,
+        visible: true,
         enabled: true,
         mask: 'asdf',
         question: 'asdf',

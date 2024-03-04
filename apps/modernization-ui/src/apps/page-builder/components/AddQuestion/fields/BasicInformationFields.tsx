@@ -82,7 +82,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             label="LOCAL"
                             onChange={onChange}
                             checked={value === 'LOCAL'}
-                            readOnly={editing}
+                            disabled={editing}
                         />
                         <Radio
                             id="codeSet_PHIN"
@@ -91,7 +91,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                             label="PHIN"
                             onChange={onChange}
                             checked={value === 'PHIN'}
-                            readOnly={editing}
+                            disabled={editing}
                         />
                     </div>
                 )}
@@ -212,7 +212,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                                     key={k}
                                     type="button"
                                     outline={field.value !== questionType}
-                                    disabled={editing}
+                                    disabled={editing && field.value !== questionType}
                                     onClick={() => {
                                         onChange(field.value);
                                     }}>

@@ -28,6 +28,7 @@ describe('when ReorderSection renders', () => {
                                 name: 'Subsection1',
                                 visible: true,
                                 order: 1,
+                                isGroupable: true,
                                 questions: []
                             },
                             {
@@ -36,6 +37,7 @@ describe('when ReorderSection renders', () => {
                                 name: 'Subsection2',
                                 visible: true,
                                 order: 2,
+                                isGroupable: true,
                                 questions: []
                             }
                         ]
@@ -55,6 +57,7 @@ describe('when ReorderSection renders', () => {
                 name: 'Subsection1',
                 visible: true,
                 order: 1,
+                isGroupable: true,
                 questions: []
             },
             {
@@ -63,6 +66,7 @@ describe('when ReorderSection renders', () => {
                 name: 'Subsection2',
                 visible: true,
                 order: 2,
+                isGroupable: true,
                 questions: []
             }
         ],

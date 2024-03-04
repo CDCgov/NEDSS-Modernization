@@ -4,62 +4,54 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 4rem;
+}
 
-    .divider {
-        width: 100%;
-        margin: 1.5rem 0;
-        height: 0.0625rem;
-        border-radius: 0.3125rem;
-        background: colors.$base-lighter;
-    }
+.radioButtons {
+    display: flex;
+    gap: 1.38rem;
+    margin-top: 1.5rem;
+}
 
-    .radioButtons {
-        display: flex;
-        gap: 1.38rem;
-        margin-top: 1.5rem;
-    }
+.helpText {
+    color: colors.$base-darkest;
+    font-size: 0.875rem;
+    line-height: 1.4175rem;
+    margin-top: 0.38rem;
+}
 
-    .yesNoRadioButtons {
-        display: flex;
-        gap: 4rem;
-    }
+.yesNoRadioButtons {
+    display: flex;
+    gap: 4rem;
+}
 
-    .helpText {
-        color: colors.$base-darkest;
-        font-size: 0.875rem;
-        line-height: 1.4175rem;
-        margin-top: 0.38rem;
-    }
+.textaArea {
+    height: 2.5rem;
+    min-height: 2.5rem;
+}
 
-    .textaArea {
-        height: 2.5rem;
-        min-height: 2.5rem;
-    }
+.buttonGroup {
+    justify-content: flex-start !important;
+    margin-top: 0.25rem;
+}
 
-    .buttonGroup {
-        justify-content: flex-start !important;
-        margin-top: 0.25rem;
-    }
+.fieldInfo {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
 
-    .fieldInfo {
-        margin-top: 0.25rem;
-        font-size: 0.875rem;
-    }
+.toggleGroup {
+    display: flex;
+    gap: 1rem;
+}
 
-    .toggleGroup {
-        display: flex;
-        gap: 1rem;
-    }
+.toggleLabel {
+    margin-top: 1.5rem;
+}
 
-    .toggleLabel {
-        margin-top: 1.5rem;
-    }
+.mandatory {
+    color: colors.$mandatory;
+}
 
-    .mandatory {
-        color: colors.$mandatory;
-    }
-
-    .valuesetSearchButton {
-        margin-top: 1.5rem;
-    }
+.valuesetSearchButton {
+    margin-top: 1.5rem;
 }

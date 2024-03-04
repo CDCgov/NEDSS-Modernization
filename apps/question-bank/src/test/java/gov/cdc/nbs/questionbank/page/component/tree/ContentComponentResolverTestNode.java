@@ -44,8 +44,7 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        "publish_ind_cd"
-    );
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -70,9 +69,8 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
                 () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value"),
-                () -> assertThat(component.allowFutureDates()).isTrue()
-            )
-        );
+                () -> assertThat(component.allowFutureDates()).isTrue(),
+                () -> assertThat(component.attributes().isPublished()).isTrue()));
   }
 
   @Test
@@ -105,8 +103,7 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        "publish_ind_cd"
-    );
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -130,9 +127,7 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().coInfection()).isTrue(),
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
-                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")
-            )
-        );
+                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")));
   }
 
   @Test
@@ -165,8 +160,7 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        "publish_ind_cd"
-    );
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -190,9 +184,7 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().coInfection()).isTrue(),
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
-                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")
-            )
-        );
+                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")));
   }
 
   @Test
@@ -225,8 +217,7 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        "publish_ind_cd"
-    );
+        true);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -250,9 +241,7 @@ class ContentComponentResolverTest {
                 () -> assertThat(component.attributes().coInfection()).isTrue(),
                 () -> assertThat(component.attributes().mask()).isEqualTo("mask-value"),
                 () -> assertThat(component.attributes().toolTip()).isEqualTo("tool-tip-value"),
-                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")
-            )
-        );
+                () -> assertThat(component.attributes().defaultValue()).isEqualTo("default-value-value")));
   }
 
   @Test
@@ -263,8 +252,7 @@ class ContentComponentResolverTest {
         1002,
         "invalid",
         true,
-        1
-    );
+        1);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 

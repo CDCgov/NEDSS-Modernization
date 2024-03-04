@@ -12,11 +12,11 @@ export type PagesQuestion = {
     defaultRdbTableName?: string;
     defaultValue?: string;
     description?: string;
-    display?: boolean;
     displayComponent?: number;
     enabled?: boolean;
     fieldLength?: string;
     id: number;
+    isPublished?: boolean;
     isStandard?: boolean;
     mask?: string;
     name: string;
@@ -28,5 +28,6 @@ export type PagesQuestion = {
     subGroup?: string;
     tooltip?: string;
     valueSet?: string;
+    visible?: boolean;
 };
 
