@@ -70,7 +70,7 @@ export const useGetPageDetails = (): Interaction => {
 
     const value = {
         error: state.status === 'error' ? state.error : undefined,
-        loading: state.status === 'fetching',
+        loading: state.status === 'fetching' || state.status === 'refreshing',
         page: state.status === 'complete' || state.status === 'refreshing' ? state.details : undefined,
         fetch: (page: number) => dispatch({ type: 'fetch', page }),
         refresh: () => (state.status === 'complete' ? dispatch({ type: 'refresh', details: state.details }) : undefined)

@@ -9,6 +9,7 @@ import { Icon as NbsIcon } from 'components/Icon/Icon';
 import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { Button, Icon } from '@trussworks/react-uswds';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
+import { usePageManagement } from '../../usePageManagement';
 
 type Props = {
     defaultValue: string;
@@ -41,9 +42,10 @@ export const QuestionContent = ({
     onEditValueset
 }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
+    const { loading } = usePageManagement();
 
     useEffect(() => {
-        if (valueSet) {
+        if (valueSet && !loading) {
             ConceptOptionsService.allUsingGet({
                 authorization: authorization(),
                 name: valueSet
@@ -51,7 +53,7 @@ export const QuestionContent = ({
                 setConceptState(resp.options);
             });
         }
-    }, [valueSet]);
+    }, [valueSet, loading]);
 
     const renderLabelWithComponent = (
         <div className={styles.content}>

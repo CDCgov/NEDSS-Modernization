@@ -66,7 +66,7 @@ describe('when page loads', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <PageContent tab={tabs} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -80,7 +80,7 @@ describe('when page loads', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <PageContent tab={tabs} />
                     </PageManagementProvider>
                 </AlertProvider>
