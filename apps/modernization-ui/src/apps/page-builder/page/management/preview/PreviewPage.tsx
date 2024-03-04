@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Icon, ModalRef, ModalToggleButton, Tooltip } from '@trussworks/react-uswds';
 import {
     PageHeader,
@@ -21,6 +21,7 @@ import { PageControllerService } from '../../../generated/services/PageControlle
 import { authorization as getAuthorization } from 'authorization';
 import { useAlert } from 'alert';
 import { useNavigate } from 'react-router-dom';
+import { Heading } from '../../../../../components/heading';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -39,9 +40,11 @@ const PreviewPageContent = () => {
     const saveTemplateRef = useRef<ModalRef>(null);
     const deleteDraftRef = useRef<ModalRef>(null);
     const publishDraftRef = useRef<ModalRef>(null);
+    const publishingLoaderRef = useRef<ModalRef>(null);
     const authorization = getAuthorization();
     const { showAlert } = useAlert();
     const navigate = useNavigate();
+    const [isPublishing, setIsPublishing] = useState(false);
 
     const handleCreateDraft = () => {
         try {
@@ -200,13 +203,32 @@ const PreviewPageContent = () => {
                     deleteDraftRef.current?.toggleModal();
                 }}
             />
-            <ModalComponent
-                modalRef={publishDraftRef}
-                modalHeading="Publish page"
-                size="wide"
-                closer
-                modalBody={<PublishPage modalRef={publishDraftRef} />}
-            />
+            {!isPublishing ? (
+                <ModalComponent
+                    modalRef={publishDraftRef}
+                    modalHeading="Publish page"
+                    size="wide"
+                    closer
+                    modalBody={<PublishPage modalRef={publishDraftRef} onPublishing={setIsPublishing} />}
+                />
+            ) : (
+                <ModalComponent
+                    modalRef={publishingLoaderRef}
+                    size="width"
+                    closer
+                    modalBody={
+                        <div className={styles.loaderContent}>
+                            <Loading center className={styles.loaderIcon} />
+                            <div className={styles.loaderText}>
+                                <Heading level={2}>Publishing...</Heading>
+                            </div>
+                            <div className={styles.loaderText}>
+                                <Heading level={2}>This may take a moment</Heading>
+                            </div>
+                        </div>
+                    }
+                />
+            )}
         </>
     );
 };

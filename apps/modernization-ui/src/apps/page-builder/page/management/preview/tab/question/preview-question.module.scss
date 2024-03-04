@@ -78,7 +78,7 @@
     border: 1px solid colors.$cool-accent-darker;
 
     a {
-      padding-left: 1rem;
+      padding-left: 2rem;
       font-size: 0.875rem;
       font-weight: 650;
     }
@@ -112,5 +112,9 @@
     &:focus {
       background-color: colors.$base-white !important;
     }
+  }
+
+  .requiredIndicator {
+    color: colors.$mandatory;
   }
 }

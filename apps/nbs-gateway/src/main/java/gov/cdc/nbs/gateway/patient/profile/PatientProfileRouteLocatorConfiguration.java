@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.patient.profile;
 
+import gov.cdc.nbs.gateway.RouteOrdering;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -22,22 +23,24 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
 class PatientProfileRouteLocatorConfiguration {
 
-    @Bean
-    RouteLocator patientProfileLocator(
-        final RouteLocatorBuilder builder,
-        @Qualifier("default") final GatewayFilter globalFilter,
-        final PatientProfileService parameters
-    ) {
-        return builder.routes()
-            .route(
-                "patient-profile",
-                route -> route.query("ContextAction", "ViewFile|FileSummary")
-                    .filters(
-                        filter -> filter.setPath("/nbs/redirect/patientProfile")
-                            .filter(globalFilter)
-                    )
-                    .uri(parameters.uri())
-            )
-            .build();
-    }
+  @Bean
+  RouteLocator patientProfileLocator(
+      final RouteLocatorBuilder builder,
+      @Qualifier("default") final GatewayFilter globalFilter,
+      final PatientProfileService parameters
+  ) {
+    return builder.routes()
+        .route(
+            "patient-profile",
+            route -> route
+                .order(RouteOrdering.PATIENT_PROFILE.order())
+                .query("ContextAction", "ViewFile|FileSummary")
+                .filters(
+                    filter -> filter.setPath("/nbs/redirect/patientProfile")
+                        .filter(globalFilter)
+                )
+                .uri(parameters.uri())
+        )
+        .build();
+  }
 }

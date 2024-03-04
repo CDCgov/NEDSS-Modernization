@@ -27,6 +27,10 @@ nbs:
         mapping: /search/patient/patient.index.json
       results:
         max: 25
+    lab-report:
+      index:
+        name: lab_report
+        mapping: classpath:search/lab-report/lab-report.index.json
   authentication:
     paths:
       ignored:

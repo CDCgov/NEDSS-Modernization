@@ -38,6 +38,7 @@ type QuestionProps = {
 };
 
 const codedDisplayType = [1024, 1025, 1013, 1007, 1031, 1027, 1028];
+const staticType = [1014, 1003, 1012, 1030, 1036];
 
 const TargetQuestion = ({
     modalRef,
@@ -98,20 +99,22 @@ const TargetQuestion = ({
 
     const isDate = (question: QuestionProps) => question.dataType === 'DATE';
 
-    const handleSourceList = (question: QuestionProps[]) => {
-        if (isSource) {
-            if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
-                const filteredList = question.filter(isDate);
+    const isNotStatic = (question: QuestionProps) => !staticType.includes(question.displayComponent ?? 0);
 
-                const newList = filteredList.map((qtn: QuestionProps) => ({
-                    name: qtn.name,
-                    id: qtn.id,
-                    question: qtn.question,
-                    valueSet: qtn.valueSet,
-                    selected: false
-                }));
-                setSourceList(newList);
-            } else {
+    const handleSourceList = (question: QuestionProps[]) => {
+        if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            const filteredList = question.filter(isDate);
+
+            const newList = filteredList.map((qtn: QuestionProps) => ({
+                name: qtn.name,
+                id: qtn.id,
+                question: qtn.question,
+                valueSet: qtn.valueSet,
+                selected: false
+            }));
+            setSourceList(newList);
+        } else {
+            if (isSource) {
                 const filteredList = question.filter(isCoded);
 
                 const newList = filteredList.map((qtn: QuestionProps) => ({
@@ -122,16 +125,18 @@ const TargetQuestion = ({
                     selected: false
                 }));
                 setSourceList(newList);
+            } else {
+                const filteredList = question.filter(isNotStatic);
+
+                const newList = filteredList.map((qtn: QuestionProps) => ({
+                    name: qtn.name,
+                    id: qtn.id,
+                    question: qtn.question,
+                    valueSet: qtn.valueSet,
+                    selected: false
+                }));
+                setSourceList(newList);
             }
-        } else {
-            const newList = question.map((qtn: QuestionProps) => ({
-                name: qtn.name,
-                id: qtn.id,
-                question: qtn.question,
-                valueSet: qtn.valueSet,
-                selected: false
-            }));
-            setSourceList(newList);
         }
     };
 

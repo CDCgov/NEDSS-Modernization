@@ -42,7 +42,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
+        false,
+        "data_location",
+        "publish_ind_cd"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -101,7 +103,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
+        false,
+        "data_location",
+        "publish_ind_cd"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -159,7 +163,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
+        false,
+        "data_location",
+        "publish_ind_cd"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
@@ -217,7 +223,9 @@ class ContentComponentResolverTest {
         "rdb-column-name",
         "default-label-in-report",
         "dataMart-column-name",
-        false
+        false,
+        "data_location",
+        "publish_ind_cd"
     );
 
     ContentComponentResolver resolver = new ContentComponentResolver();
