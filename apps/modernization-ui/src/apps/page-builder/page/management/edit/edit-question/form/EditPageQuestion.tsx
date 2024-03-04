@@ -18,14 +18,13 @@ export type EditPageQuestionForm = Omit<UpdatePageQuestionRequest & AdditionalQu
 type Props = {
     page: number;
     question?: PagesQuestion;
-    onFindValueSet: () => void;
 };
 
-export const EditPageQuestion = ({ page, question, onFindValueSet }: Props) => {
+export const EditPageQuestion = ({ page, question }: Props) => {
     return (
         <div className={styles.form}>
             <BasicInformationFields editing />
-            <QuestionSpecificFields editing published={question?.isPublished} onFindValueSet={onFindValueSet} />
+            <QuestionSpecificFields editing published={question?.isPublished} />
             <HorizontalRule />
             <UserInterfaceFields published={question?.isPublished} />
             <EditFields />
