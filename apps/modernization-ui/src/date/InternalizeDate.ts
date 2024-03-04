@@ -1,19 +1,20 @@
 /* eslint-disable no-redeclare */
-import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
-import { INTERNAL_DATE_FORMAT } from './Dates';
 
 function internalizeDate(input: string): string;
 function internalizeDate(input: Date): string;
 function internalizeDate(input: string | null | undefined): null;
 function internalizeDate(input: Date | null | undefined): null;
 function internalizeDate(input: string | Date | null | undefined) {
-    if (input) {
-        if (typeof input === 'string') {
-            return format(parseISO(input), INTERNAL_DATE_FORMAT);
-        } else if (input instanceof Date) {
-            return format(input, INTERNAL_DATE_FORMAT);
-        }
+    if (typeof input === 'string') {
+        return internalizeDate(parseISO(input));
+    } else if (input instanceof Date) {
+        return input.toLocaleDateString('en-US', {
+            timeZone: 'UTC',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
     }
 
     return null;
