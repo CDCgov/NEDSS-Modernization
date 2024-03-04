@@ -99,7 +99,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     control={control}
                     name="notes"
                     rules={{ required: { value: true, message: 'Version notes required' }, ...maxLengthRule(2000) }}
-                    render={({ field: { onChange, name, value }, fieldState: { error } }) => (
+                    render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                         <>
                             <Label htmlFor={name}>
                                 Version notes{' '}
@@ -107,7 +107,14 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                                     <span>*</span>
                                 </span>
                             </Label>
-                            <Textarea onChange={onChange} defaultValue={value} name={name} id={name} rows={1} />
+                            <Textarea
+                                onChange={onChange}
+                                defaultValue={value}
+                                name={name}
+                                id={name}
+                                rows={1}
+                                onBlur={onBlur}
+                            />
                             {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
                         </>
                     )}
