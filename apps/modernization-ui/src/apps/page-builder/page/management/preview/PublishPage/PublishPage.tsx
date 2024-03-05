@@ -102,7 +102,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                         <>
                             <Label htmlFor={name}>
-                                Version notes{' '}
+                                <b>Version notes </b>
                                 <span className={styles.required}>
                                     <span>*</span>
                                 </span>
