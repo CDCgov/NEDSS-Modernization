@@ -8,11 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestion;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestionValueset;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.exception.UpdatePageQuestionException;
 import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionValuesetRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageDateQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
@@ -50,6 +52,22 @@ public class PageQuestionUpdater {
     entityManager.flush();
     return finder.find(pageId, questionId);
   }
+
+  public EditableQuestion update(
+      Long pageId,
+      Long questionId,
+      UpdatePageCodedQuestionValuesetRequest request,
+      Long user) {
+    if (request == null) {
+      throw new UpdatePageQuestionException("Invalid request");
+    }
+
+    WaTemplate page = findPage(pageId);
+    page.updateQuestionValueset(asUpdate(questionId, request, user));
+    entityManager.flush();
+    return finder.find(pageId, questionId);
+  }
+
 
 
   private PageContentCommand.QuestionUpdate asUpdate(
@@ -226,5 +244,12 @@ public class PageQuestionUpdater {
         request.adminComments(),
         user,
         Instant.now());
+  }
+
+  private UpdateCodedQuestionValueset asUpdate(
+      long questionId,
+      UpdatePageCodedQuestionValuesetRequest request,
+      Long user) {
+    return new PageContentCommand.UpdateCodedQuestionValueset(questionId, request.valueset(), user, Instant.now());
   }
 }

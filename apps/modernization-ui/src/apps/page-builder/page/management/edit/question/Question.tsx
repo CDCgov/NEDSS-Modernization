@@ -12,11 +12,19 @@ type Props = {
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
     onEditValueset: (valuesetName: string) => void;
+    onChangeValueset: (id: PagesQuestion) => void;
 };
 
 const staticComponents = [1003, 1036, 1012, 1014, 1030, undefined];
 
-export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion, onEditValueset }: Props) => {
+export const Question = ({
+    question,
+    onRequiredChange,
+    onEditQuestion,
+    onDeleteQuestion,
+    onEditValueset,
+    onChangeValueset
+}: Props) => {
     const modal = useRef<ModalRef>(null);
     const [confirmModal, setConfirmModal] = useState(false);
 
@@ -65,6 +73,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     type={question.dataType ?? ''}
                     displayComponent={question.displayComponent}
                     onEditValueset={onEditValueset}
+                    onChangeValueset={() => onChangeValueset(question)}
                 />
             </div>
         </div>
