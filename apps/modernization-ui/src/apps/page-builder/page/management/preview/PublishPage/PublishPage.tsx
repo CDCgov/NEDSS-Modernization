@@ -122,13 +122,20 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
             </div>
             <div className={styles.conditions}>
                 <h4>Related condition(s)</h4>
-                {conditions ? conditions.map((condition, i) => <p key={i}>{condition.name}</p>) : null}
+                {conditions?.length ? (
+                    conditions.map((condition, i) => <p key={i}>{condition.name}</p>)
+                ) : (
+                    <ErrorMessage>
+                        At least one condition must be related to this page before it can be published. Please update
+                        the Page Details by mapping Related Condition(s) to the page.
+                    </ErrorMessage>
+                )}
             </div>
             <div className={styles.footer}>
                 <ModalToggleButton type="button" closer outline modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
-                <Button type="submit" disabled={!publishForm.formState.isValid}>
+                <Button type="submit" disabled={!publishForm.formState.isValid || !conditions?.length}>
                     Publish
                 </Button>
             </div>
