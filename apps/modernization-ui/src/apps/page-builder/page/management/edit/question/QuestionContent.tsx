@@ -112,16 +112,17 @@ export const QuestionContent = ({
                         <Icon.Edit className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
-
-                    <Button
-                        className={styles.unStyledButton}
-                        type="button"
-                        onClick={onChangeValueset}
-                        unstyled
-                        disabled={isPublished}>
-                        <Icon.Edit className="margin-right-2px" />
-                        <span> Change value set</span>
-                    </Button>
+                    {!isPublished && (
+                        <Button
+                            className={styles.unStyledButton}
+                            type="button"
+                            onClick={onChangeValueset}
+                            unstyled
+                            disabled={isPublished}>
+                            <Icon.Edit className="margin-right-2px" />
+                            <span> Change value set</span>
+                        </Button>
+                    )}
                 </div>
             )}
         </div>
