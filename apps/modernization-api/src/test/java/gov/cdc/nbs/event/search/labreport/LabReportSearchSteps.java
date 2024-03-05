@@ -1,6 +1,5 @@
-package gov.cdc.nbs;
+package gov.cdc.nbs.event.search.labreport;
 
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.LabReportFilter.EntryMethod;
 import gov.cdc.nbs.event.search.LabReportFilter.EventStatus;
@@ -12,38 +11,51 @@ import gov.cdc.nbs.event.search.LabReportFilter.LaboratoryEventIdType;
 import gov.cdc.nbs.event.search.LabReportFilter.ProcessingStatus;
 import gov.cdc.nbs.event.search.LabReportFilter.ProviderType;
 import gov.cdc.nbs.event.search.LabReportFilter.UserType;
-import gov.cdc.nbs.event.search.labreport.LabReportFinder;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.repository.JurisdictionCodeRepository;
 import gov.cdc.nbs.repository.elasticsearch.LabReportRepository;
+import gov.cdc.nbs.search.support.SortCriteria;
 import gov.cdc.nbs.support.EventMother;
-import gov.cdc.nbs.testing.interaction.http.Authenticated;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class LabReportSearchSteps {
   private static final Long PATIENT_ID = 8888888L;
 
-  @Autowired
-  Authenticated authenticated;
+  private final LabReportSearchRequester requester;
+  private final Active<Pageable> paging;
+  private final Active<SortCriteria> sorting;
+  private final Active<ResultActions> response;
 
-  @Autowired
-  LabReportRepository labReportRepository;
-  @Autowired
-  JurisdictionCodeRepository jurisdictionCodeRepository;
-  @Autowired
-  LabReportFinder labReportFinder;
-  private List<LabReport> results;
-  private final Pageable page = Pageable.ofSize(25);
+  private final LabReportRepository labReportRepository;
+  private final JurisdictionCodeRepository jurisdictionCodeRepository;
+
+  LabReportSearchSteps(
+      final LabReportSearchRequester requester,
+      final Active<Pageable> paging,
+      final Active<SortCriteria> sorting,
+      final Active<ResultActions> response,
+      final LabReportRepository labReportRepository,
+      final JurisdictionCodeRepository jurisdictionCodeRepository
+  ) {
+    this.requester = requester;
+    this.paging = paging;
+    this.sorting = sorting;
+    this.response = response;
+    this.labReportRepository = labReportRepository;
+    this.jurisdictionCodeRepository = jurisdictionCodeRepository;
+  }
 
   @Given("A lab report exist")
   public void lab_report_exist() {
@@ -55,11 +67,17 @@ public class LabReportSearchSteps {
   @When("I search laboratory events by {string} {string}")
   public void i_search_patients_by_laboratory_events(String field, String qualifier) {
     var filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
-    results = search(filter);
+    search(filter);
   }
 
-  private List<LabReport> search(final LabReportFilter filter) {
-    return authenticated.perform(() -> labReportFinder.find(filter, page).getContent());
+  private void search(final LabReportFilter filter) {
+    this.response.active(
+        requester.search(
+            filter,
+            paging.active(),
+            sorting.active()
+        )
+    );
   }
 
   @When("I search laboratory events by {string} {string} {string} {string} {string} {string}")
@@ -68,12 +86,14 @@ public class LabReportSearchSteps {
     LabReportFilter filter = updateLabReportFilter(new LabReportFilter(), field, qualifier);
     updateLabReportFilter(filter, field2, qualifier2);
     updateLabReportFilter(filter, field3, qualifier3);
-    results = search(filter);
+    search(filter);
   }
 
   @Then("I find the lab report")
-  public void i_find_the_lab_report() {
-    assertThat(results).isNotEmpty();
+  public void i_find_the_lab_report() throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.findLabReportsByFilter.total").value(greaterThan(0)));
+
   }
 
   private void addJurisdictionEntries() {

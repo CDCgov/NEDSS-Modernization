@@ -31,6 +31,8 @@ nbs:
       index:
         name: lab_report
         mapping: classpath:search/lab-report/lab-report.index.json
+      results:
+        max: ${nbs.max-page-size}
   authentication:
     paths:
       ignored:

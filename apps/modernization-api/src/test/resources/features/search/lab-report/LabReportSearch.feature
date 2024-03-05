@@ -2,10 +2,10 @@
 Feature: Lab report search
 
   Background:
-    Given I am logged in
-    And I can "FIND" any "PATIENT"
-    And I can "VIEW" any "OBSERVATIONLABREPORT" for "STD" within all jurisdictions
-    And I can "VIEW" any "OBSERVATIONLABREPORT" for "ARBO" within all jurisdictions
+    Given I am logged into NBS
+    And I can "find" any "patient"
+    And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
+    And I can "view" any "ObservationLabReport" for "ARBO" within all jurisdictions
 
   @lab_report_search_single_field
   Scenario Outline: I can find a lab report by one field in the laboratory report

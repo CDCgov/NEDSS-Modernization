@@ -125,7 +125,7 @@ public class PermissionSteps {
           response = investigationResolver.findInvestigationsByFilter(new InvestigationFilter(), page);
           break;
         case "findLabReport":
-          response = labReportResolver.findLabReportsByFilter(new LabReportFilter(), page);
+          response = labReportResolver.search(new LabReportFilter(), page);
           break;
         default:
           throw new RuntimeException("Invalid searchType: " + searchType);
