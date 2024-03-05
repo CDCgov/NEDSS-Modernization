@@ -2,9 +2,7 @@ package gov.cdc.nbs;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.event.search.InvestigationFilter;
-import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.event.search.investigation.InvestigationResolver;
-import gov.cdc.nbs.event.search.labreport.LabReportResolver;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
@@ -32,7 +30,6 @@ import static org.junit.Assert.assertNull;
 public class PermissionSteps {
 
   private final Active<ActiveUser> activeUser;
-  private final LabReportResolver labReportResolver;
   private final InvestigationResolver investigationResolver;
   private final Active<UserDetails> activeUserDetails;
 
@@ -41,12 +38,10 @@ public class PermissionSteps {
 
   public PermissionSteps(
       final Active<ActiveUser> activeUser,
-      final LabReportResolver labReportResolver,
       final InvestigationResolver investigationResolver,
       final Active<UserDetails> activeUserDetails
   ) {
     this.activeUser = activeUser;
-    this.labReportResolver = labReportResolver;
     this.investigationResolver = investigationResolver;
     this.activeUserDetails = activeUserDetails;
   }
@@ -123,9 +118,6 @@ public class PermissionSteps {
       switch (searchType) {
         case "findInvestigation":
           response = investigationResolver.findInvestigationsByFilter(new InvestigationFilter(), page);
-          break;
-        case "findLabReport":
-          response = labReportResolver.search(new LabReportFilter(), page);
           break;
         default:
           throw new RuntimeException("Invalid searchType: " + searchType);

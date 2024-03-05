@@ -11,7 +11,7 @@ class PaginationSupportConfiguration {
 
   @Bean
   Active<Pageable> activePageable(
-      @Value("${nbs.max-page-size}") final int size
+      @Value("${nbs.search.max-page-size}") final int size
   ) {
     return new Active<>(() -> Pageable.ofSize(size));
   }

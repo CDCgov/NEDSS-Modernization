@@ -10,8 +10,8 @@ import { request as __request } from '../core/request';
 export class ProviderOptionsService {
 
     /**
-     * NBS User Option Autocomplete
-     * Provides options from Users that have a name matching a criteria.
+     * NBS Provider Option Autocomplete
+     * Provides options from Providers that have a name matching a criteria.
      * @returns Option OK
      * @throws ApiError
      */
