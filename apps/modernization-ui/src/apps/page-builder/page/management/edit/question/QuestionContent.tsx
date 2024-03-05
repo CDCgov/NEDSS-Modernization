@@ -20,6 +20,7 @@ type Props = {
     valueSet: string;
     id: number;
     isStandard: boolean;
+    isPublished: boolean;
     onEditValueset: (valuesetName: string) => void;
 };
 
@@ -39,6 +40,7 @@ export const QuestionContent = ({
     displayComponent,
     defaultValue,
     isStandard,
+    isPublished,
     onEditValueset
 }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
@@ -108,7 +110,12 @@ export const QuestionContent = ({
                         <Icon.Edit className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
-                    <Button className={styles.unStyledButton} type="button" onClick={() => {}} unstyled>
+                    <Button
+                        className={styles.unStyledButton}
+                        type="button"
+                        onClick={() => {}}
+                        unstyled
+                        disabled={!isPublished}>
                         <Icon.Edit className="margin-right-2px" />
                         <span> Change value set</span>
                     </Button>
