@@ -20,9 +20,7 @@ import { useAlert } from 'alert';
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
     { value: 'HYP', name: 'Hyperlink' },
-    { value: 'COM', name: 'Comments (read-only)' },
-    { value: 'PAR', name: 'Participant list (read-only)' },
-    { value: 'ELE', name: 'Electronic document list (read-only)' }
+    { value: 'COM', name: 'Comments (read-only)' }
 ];
 
 type AddStaticElementModalProps = {
