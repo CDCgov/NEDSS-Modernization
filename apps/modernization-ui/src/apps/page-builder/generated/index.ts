@@ -113,6 +113,7 @@ export type { UpdatePageCodedQuestionRequest } from './models/UpdatePageCodedQue
 export type { UpdatePageCodedQuestionValuesetRequest } from './models/UpdatePageCodedQuestionValuesetRequest';
 export { UpdatePageDateQuestionRequest } from './models/UpdatePageDateQuestionRequest';
 export { UpdatePageNumericQuestionRequest } from './models/UpdatePageNumericQuestionRequest';
+export type { UpdatePageQuestionRequiredRequest } from './models/UpdatePageQuestionRequiredRequest';
 export type { UpdatePageTextQuestionRequest } from './models/UpdatePageTextQuestionRequest';
 export type { UpdateReadOnlyComments } from './models/UpdateReadOnlyComments';
 export type { UpdateSectionRequest } from './models/UpdateSectionRequest';

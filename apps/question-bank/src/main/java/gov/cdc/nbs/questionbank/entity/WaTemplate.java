@@ -217,6 +217,19 @@ public class WaTemplate {
     return components;
   }
 
+  public WaUiMetadata updateRequired(PageContentCommand.SetQuestionRequired command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // find question within page
+    WaUiMetadata question = findQuestion(command.question());
+
+    question.update(command);
+
+    changed(command);
+    return question;
+  }
+
   public WaUiMetadata updateQuestion(PageContentCommand.QuestionUpdate command) {
     // Can only modify Draft pages
     verifyDraftType();
@@ -853,7 +866,5 @@ public class WaTemplate {
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find question"));
   }
-
-
 
 }

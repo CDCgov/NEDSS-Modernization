@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     question: PagesQuestion;
-    onRequiredChange: (id: number) => void;
+    onRequiredChange: (id: number, required: boolean) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
     onEditValueset: (valuesetName: string) => void;
@@ -38,7 +38,7 @@ export const Question = ({
             <div className={styles.borderedContainer}>
                 <QuestionHeader
                     question={question}
-                    onRequiredChange={() => onRequiredChange(question.id)}
+                    onRequiredChange={(required) => onRequiredChange(question.id, required)}
                     onEditQuestion={() => onEditQuestion(question)}
                     onDeleteQuestion={() => {
                         onDeleteQuestion(question.id, question.displayComponent ?? 0);
