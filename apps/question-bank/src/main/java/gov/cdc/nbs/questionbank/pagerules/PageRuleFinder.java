@@ -31,7 +31,6 @@ class PageRuleFinder {
             [rule].target_question_identifier  as [targetQuestions],
             [question1].question_label          as [sourceQuestionLabel],
             [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
-            [question1].wa_question_uid         as [sourceQuestionId],
             STRING_AGG([question2].question_label, ',') WITHIN GROUP
              (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',')) as [targetQuestionLabels],
                 0                                  as [TotalCount]
@@ -73,7 +72,6 @@ class PageRuleFinder {
              [rule].target_question_identifier  as [targetQuestions],
              [question1].question_label          as [sourceQuestionLabel],
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
-             [question1].wa_question_uid         as [sourceQuestionId],
              STRING_AGG([question2].question_label, ', ') WITHIN GROUP
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
              as [targetQuestionLabels],

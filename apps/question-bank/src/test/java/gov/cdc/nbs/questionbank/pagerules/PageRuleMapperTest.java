@@ -34,9 +34,8 @@ class PageRuleMapperTest {
     when(resultSet.getString(10)).thenReturn("test456,test789,test123");
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
-    when(resultSet.getLong(13)).thenReturn(1000l);
-    when(resultSet.getString(14)).thenReturn("test456_label,test789_label");
-    when(resultSet.getLong(15)).thenReturn(10l);
+    when(resultSet.getString(13)).thenReturn("test456_label,test789_label");
+    when(resultSet.getLong(14)).thenReturn(10l);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
     validate(actualResponse);
     long rowsCount = pageRuleMapper.getTotalRowsCount();
@@ -75,8 +74,8 @@ class PageRuleMapperTest {
     when(resultSet.getString(10)).thenReturn(null);
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
-    when(resultSet.getString(14)).thenReturn(null);
-    when(resultSet.getLong(15)).thenReturn(10l);
+    when(resultSet.getString(13)).thenReturn(null);
+    when(resultSet.getLong(14)).thenReturn(10l);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
 
     assertNull(actualResponse.sourceValues());
