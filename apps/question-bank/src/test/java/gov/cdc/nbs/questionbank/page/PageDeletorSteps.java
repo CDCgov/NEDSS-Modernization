@@ -1,7 +1,9 @@
 package gov.cdc.nbs.questionbank.page;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,35 +38,24 @@ public class PageDeletorSteps {
     public void i_create_a_delete_page_request_with_draft_page() {
         WaTemplate temp = pageMother.one();
         temp.setTemplateType(PageConstants.DRAFT);
-        currPage.active(temp);
-    }
-
-    @Given("I create a delete page request with published with draft page")
-    public void i_create_a_delete_page_request_with_published_with_draft_page() {
-        WaTemplate temp = pageMother.one();
-        temp.setTemplateType(PageConstants.PUBLISHED_WITH_DRAFT);
         temp.setFormCd("PG_testing");
-        WaTemplate draftPage = pageMother.createPageDraft(temp);
-        currPage.active(temp);
-        this.draftPage.active(draftPage);
+        WaTemplate publishWithDraft = pageMother.createPagePublishedWithDraft(temp);
+        currPage.active(publishWithDraft);
+        this.draftPage.active(temp);
     }
 
     @When("I send a delete page request")
     public void i_send_a_delete_page_request() {
         try {
             this.response.active(request.deletePageRequest(
-                    currPage.active().getId()));
+                draftPage.active().getId()));
         } catch (Exception e) {
             exceptionHolder.setException(e);
         }
     }
 
-    @Then("the page is deleted")
-    public void the_page_is_deleted() {
-        assertEquals(Optional.empty(), waTemplateRepository.findById(currPage.active().getId()));
-    }
 
-    @Then("the page is deleted and changed to published")
+    @Then("the draft is deleted and the page changed to published")
     public void the_page_deleted_and_changed_to_published() {
         Optional<WaTemplate> temp = waTemplateRepository.findById(currPage.active().getId());
         assertEquals(PageConstants.PUBLISHED, temp.get().getTemplateType());
