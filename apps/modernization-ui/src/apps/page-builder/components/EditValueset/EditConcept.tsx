@@ -21,7 +21,11 @@ type Props = {
 export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }: Props) => {
     const form = useForm<UpdateConceptRequest>({
         mode: 'onBlur',
-        defaultValues: { ...concept, effectiveToTime: internalizeDate(concept.effectiveToTime) ?? undefined }
+        defaultValues: {
+            ...concept,
+            effectiveToTime: internalizeDate(concept.effectiveToTime) ?? undefined,
+            effectiveFromTime: internalizeDate(concept.effectiveFromTime) ?? internalizeDate(new Date())
+        }
     });
     const { isDirty, isValid } = useFormState(form);
     const { alertError, alertSuccess } = useAlert();
@@ -30,7 +34,8 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
     const handleSave = () => {
         update(valueset, concept.localCode, {
             ...form.getValues(),
-            effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined
+            effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined,
+            effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString()
         });
     };
 
