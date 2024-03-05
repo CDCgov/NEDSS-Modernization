@@ -39,13 +39,14 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
         <div className={styles.header}>
             <div className={styles.typeDisplay}>
                 {question.isStandard && <div className={styles.standardIndicator}>S</div>}
+                {!question.isStandard && question.isPublished && <div className={styles.publishedIndicator}>P</div>}
                 <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
             </div>
             <div className={`${styles.questionButtons} question-header-button`}>
                 <Button unstyled className={styles.editButton} type="button" onClick={onEditQuestion}>
                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
-                {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
+                {!question.isStandard && !question.isPublished && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Not required</div>
                 <ToggleButton defaultChecked={question.required} onChange={onRequiredChange} />

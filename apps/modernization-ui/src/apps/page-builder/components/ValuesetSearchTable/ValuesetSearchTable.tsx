@@ -1,10 +1,10 @@
-import { ValueSetOption } from 'apps/page-builder/generated';
-import { TableComponent, TableBody } from 'components/Table';
 import { Button, Icon } from '@trussworks/react-uswds';
+import { ValueSetOption } from 'apps/page-builder/generated';
+import { SortField, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
 import { Search } from 'components/Search/Search';
+import { TableBody, TableComponent } from 'components/Table';
 import { Status, usePage } from 'page';
 import { useEffect, useState } from 'react';
-import { SortField, ValuesetSort } from 'apps/page-builder/hooks/api/useFindValueset';
 import { Direction } from 'sorting';
 import styles from './valueset-search-table.module.scss';
 
@@ -29,7 +29,7 @@ type Props = {
     onQuerySubmit: (query: string) => void;
     onSelectionChange: (id: number) => void;
     onSortChange: (sort: ValuesetSort | undefined) => void;
-    onCreateNew: () => void;
+    onCreateNew?: () => void;
 };
 export const ValuesetSearchTable = ({
     isLoading,
@@ -128,9 +128,11 @@ export const ValuesetSearchTable = ({
                         id="question-search"
                         value={query}
                     />
-                    <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
-                        Create new value set
-                    </Button>
+                    {onCreateNew && (
+                        <Button type="button" className={styles.createNewButton} outline onClick={onCreateNew}>
+                            Create new value set
+                        </Button>
+                    )}
                 </div>
             </div>
             <div className={styles.tableContainer}>

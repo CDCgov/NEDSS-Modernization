@@ -15,6 +15,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionValuesetRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageDateQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
@@ -110,6 +111,15 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable("questionId") Long questionId,
       @RequestBody UpdatePageDateQuestionRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return updater.update(pageId, questionId, request, details.getId());
+  }
+
+  @PutMapping("questions/coded/{questionId}/valueset")
+  public EditableQuestion updatePageCodedQuestionValueset(
+      @PathVariable("page") Long pageId,
+      @PathVariable("questionId") Long questionId,
+      @RequestBody UpdatePageCodedQuestionValuesetRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }

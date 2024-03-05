@@ -238,6 +238,19 @@ public class WaTemplate {
     return question;
   }
 
+  public WaUiMetadata updateQuestionValueset(PageContentCommand.UpdateCodedQuestionValueset command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // find question within page
+    WaUiMetadata question = findQuestion(command.question());
+
+    question.update(command);
+
+    changed(command);
+    return question;
+  }
+
   public WaUiMetadata updateTab(PageContentCommand.UpdateTab command) {
     // Can only modify Draft pages
     verifyDraftType();
@@ -800,8 +813,8 @@ public class WaTemplate {
           questionBatch.updateQuestionBatch(command);
           changed(command);
           if (questionBatch.getWaRdbMetadatum() != null) {
-            questionBatch.getWaRdbMetadatum().
-                unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
+            questionBatch.getWaRdbMetadatum()
+                .unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
           }
         });
 
