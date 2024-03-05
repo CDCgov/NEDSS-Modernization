@@ -67,7 +67,7 @@ const TargetQuestion = ({
 
     const visible = true;
     const selectedRecord = sourceList.filter((list) => list.selected);
-    const isSelectedAll = selectedRecord?.length === sourceList.length;
+    const isSelectedAll = sourceList.length !== 0 && selectedRecord?.length === sourceList.length;
 
     const handleSelectAll = (e: any) => {
         setSourceList((prevState: any) => prevState.map((list: any) => ({ ...list, selected: e.target.checked })));
