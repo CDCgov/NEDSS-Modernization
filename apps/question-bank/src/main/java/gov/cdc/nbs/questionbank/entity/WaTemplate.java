@@ -860,7 +860,6 @@ public class WaTemplate {
   }
 
   private WaUiMetadata findQuestion(long id) {
-
     return uiMetadata.stream()
         .filter(e -> e.getId() != null
             && e.getId().equals(id))
