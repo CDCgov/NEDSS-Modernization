@@ -59,4 +59,4 @@ const internalized = (content: GraphQLPatientLabReport): PatientLabReport => ({
     isElectronic: content.electronicInd === 'Y'
 });
 
-export const transform = (result: Result): PatientLabReport[] => mapNonNull(internalized, result);
+export const transform = (result: Result): PatientLabReport[] => mapNonNull(internalized, result?.content);

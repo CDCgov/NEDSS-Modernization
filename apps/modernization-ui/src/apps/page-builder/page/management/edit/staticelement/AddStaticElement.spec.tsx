@@ -25,7 +25,7 @@ describe('When page loads', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -39,7 +39,7 @@ describe('When page loads', () => {
         const { getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -55,7 +55,7 @@ describe('When line separator is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -80,7 +80,7 @@ describe('When hyperlink is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -106,7 +106,7 @@ describe('When comments is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -132,7 +132,7 @@ describe('When participants is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -158,7 +158,7 @@ describe('When electronic doc list is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -183,7 +183,7 @@ describe('When all inputs are entered', () => {
         const { getByTestId, findByTestId, getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>

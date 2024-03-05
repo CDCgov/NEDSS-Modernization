@@ -37,7 +37,7 @@ describe('when ReorderModal renders', () => {
     const fetch = () => {
         jest.fn();
     };
-    
+
     const refresh = () => {
         jest.fn();
     };
@@ -47,7 +47,7 @@ describe('when ReorderModal renders', () => {
     };
     it('should display Tab', () => {
         const { getByText } = render(
-            <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+            <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                 <DragDropProvider pageData={page}>
                     <ReorderModal {...props} />
                 </DragDropProvider>
@@ -58,7 +58,7 @@ describe('when ReorderModal renders', () => {
 
     it('should display Sections', () => {
         const { getByText } = render(
-            <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+            <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                 <DragDropProvider pageData={page}>
                     <ReorderModal {...props} />
                 </DragDropProvider>

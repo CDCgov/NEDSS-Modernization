@@ -16,7 +16,7 @@ import { ReorderModal } from './reorder/ReorderModal/ReorderModal';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
 
 export const Edit = () => {
-    const { page, fetch, refresh } = useGetPageDetails();
+    const { page, fetch, refresh, loading } = useGetPageDetails();
 
     const manageSectionModalRef = useRef<ModalRef>(null);
     const addSectionModalRef = useRef<ModalRef>(null);
@@ -32,7 +32,7 @@ export const Edit = () => {
     return (
         <>
             {page ? (
-                <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={loading}>
                     <ManageSectionModal addSecModalRef={addSectionModalRef} manageSecModalRef={manageSectionModalRef} />
                     <EditPageContent handleManageSection={handleManageSection} handleAddSection={handleAddSection} />
                 </PageManagementProvider>

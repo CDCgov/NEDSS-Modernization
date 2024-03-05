@@ -9,6 +9,7 @@ type Interactions = {
     fetch: (page: number) => void;
     refresh: () => void;
     select: (tab: PagesTab) => void;
+    loading: boolean;
 };
 
 export const PageManagementContext = createContext<Interactions | undefined>(undefined);
@@ -18,13 +19,14 @@ type PageManagementProviderProps = {
     fetch: (page: number) => void;
     refresh: () => void;
     children: ReactNode;
+    loading: boolean;
 };
 
-const PageManagementProvider = ({ page, children, fetch, refresh }: PageManagementProviderProps) => {
+const PageManagementProvider = ({ page, children, fetch, refresh, loading }: PageManagementProviderProps) => {
     const [selected, setSelected] = useState<number>(0);
 
     const select = (tab: PagesTab) => setSelected(page.tabs?.indexOf(tab) ?? 0);
-    const value = useMemo(() => {
+    const base = useMemo(() => {
         return {
             page,
             selected: page.tabs?.[selected],
@@ -33,6 +35,10 @@ const PageManagementProvider = ({ page, children, fetch, refresh }: PageManageme
             select
         };
     }, [JSON.stringify(page), selected]);
+
+    const value = useMemo(() => {
+        return { ...base, loading: loading };
+    }, [base, loading]);
 
     return <PageManagementContext.Provider value={value}>{children}</PageManagementContext.Provider>;
 };

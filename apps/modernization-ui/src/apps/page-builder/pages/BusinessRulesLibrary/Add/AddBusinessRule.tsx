@@ -106,7 +106,11 @@ const AddBusinessRule = () => {
     });
 
     const handleCancel = () => {
-        navigate(`/page-builder/pages/${pageId}/business-rules`);
+        if (pageId) {
+            navigate(`/page-builder/pages/${pageId}/business-rules`);
+        } else {
+            navigate(`../`);
+        }
     };
 
     const handleDeleteRule = () => {

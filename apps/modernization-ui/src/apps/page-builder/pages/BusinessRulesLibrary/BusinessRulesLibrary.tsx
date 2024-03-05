@@ -18,19 +18,19 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
 
     useEffect(() => {
         search({ sort: undefined, page: 0, pageSize: 10 });
-    }, []);
+    }, [page?.id]);
 
     useEffect(() => {
-        if (curPage.status === Status.Requested) {
+        if (curPage.status === Status.Requested && page?.id) {
             search({
-                pageId: page?.id,
+                pageId: page.id,
                 page: curPage.current - 1,
                 pageSize: curPage.pageSize,
                 sort: sort,
                 query: query
             });
         }
-    }, [curPage.status]);
+    }, [curPage.status, page?.id]);
 
     useEffect(() => {
         if (curPage.current === 1) {

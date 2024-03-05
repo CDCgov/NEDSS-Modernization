@@ -68,7 +68,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     });
 
     return (
-        <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn}>
+        <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
             <AlertProvider>
                 <FormProvider {...methods}>{children}</FormProvider>
             </AlertProvider>
