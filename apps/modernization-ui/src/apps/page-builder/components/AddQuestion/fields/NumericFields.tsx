@@ -23,7 +23,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
         exact: true
     });
     const [numericMaskOptions, setNumericMaskOptions] = useState<Option[]>([]);
-    const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(unitType !== undefined || unitType !== '');
+    const [relatedUnitsToggle, setRelatedUnitsToggle] = useState(unitType !== undefined && unitType !== '');
     const [valueSets, setValueSets] = useState<Selectable[]>([]);
 
     useEffect(() => {
