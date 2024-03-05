@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.content.question.exception.UpdatePageQuestionException;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionValuesetRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
@@ -178,6 +179,12 @@ class PageQuestionUpdaterTest {
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
     // Then an exception will be thrown
+    assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
+  }
+
+  @Test
+  void should_validate_valueset_update_null() {
+    UpdatePageCodedQuestionValuesetRequest request = null;
     assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
   }
 
