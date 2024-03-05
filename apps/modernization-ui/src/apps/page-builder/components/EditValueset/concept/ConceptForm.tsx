@@ -99,32 +99,34 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         />
                     )}
                 />
-                <Controller
-                    control={form.control}
-                    name="effectiveFromTime"
-                    rules={{ required: { value: true, message: 'Effective from time is required' } }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <DatePickerInput
-                            defaultValue={value}
-                            label="Effective from time"
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            required
-                        />
-                    )}
-                />
-                <Controller
-                    control={form.control}
-                    name="effectiveToTime"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <DatePickerInput
-                            defaultValue={value}
-                            label="Effective to time"
-                            onChange={onChange}
-                            onBlur={onBlur}
-                        />
-                    )}
-                />
+                <div className={styles.effectiveTimeWrapper}>
+                    <Controller
+                        control={form.control}
+                        name="effectiveFromTime"
+                        rules={{ required: { value: true, message: 'Effective from time is required' } }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <DatePickerInput
+                                defaultValue={value}
+                                label="Effective from time"
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                required
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={form.control}
+                        name="effectiveToTime"
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <DatePickerInput
+                                defaultValue={value}
+                                label="Effective to time"
+                                onChange={onChange}
+                                onBlur={onBlur}
+                            />
+                        )}
+                    />
+                </div>
                 <Controller
                     control={form.control}
                     name="status"

@@ -22,5 +22,14 @@
             color: colors.$base-darker;
             font-weight: 700;
         }
+
+        .effectiveTimeWrapper {
+            display: flex;
+            justify-content: space-between;
+
+            > div {
+                max-width: 50%;
+            }
+        }
     }
 }
