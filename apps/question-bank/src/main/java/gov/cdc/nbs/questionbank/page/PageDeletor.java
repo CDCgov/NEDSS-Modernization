@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
 import javax.persistence.EntityManager;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
@@ -15,13 +16,13 @@ public class PageDeletor {
 
     private final EntityManager entityManager;
 
-    private final PageDraftFinder pageDraftFinder;
+    private final PageUidFinder pageUidFinder;
 
     public PageDeletor(
-            final EntityManager entityManager,
-            final PageDraftFinder pageDraftFinder) {
+        final EntityManager entityManager,
+        final PageUidFinder pageUidFinder) {
         this.entityManager = entityManager;
-        this.pageDraftFinder = pageDraftFinder;
+        this.pageUidFinder = pageUidFinder;
     }
 
 
@@ -34,23 +35,21 @@ public class PageDeletor {
         }
 
         if (page.getTemplateType().equals(PageConstants.DRAFT)) {
-            entityManager.remove(page);
-        } else if (page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
-            Long draftPageId = pageDraftFinder.findDraftTemplate(page);
 
-            WaTemplate draftPage = entityManager.find(WaTemplate.class, draftPageId);
+            Long publishedWithDraft = pageUidFinder.findTemplateByType(page.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT);
 
-            if (draftPage == null) {
+            WaTemplate publishedWithDraftPage = entityManager.find(WaTemplate.class, publishedWithDraft);
+
+            if (publishedWithDraftPage == null) {
                 throw new PageNotFoundException();
             }
+            publishedWithDraftPage.setTemplateType(PageConstants.PUBLISHED);
 
-            entityManager.remove(draftPage);
+            entityManager.remove(page);
 
-            page.setTemplateType(PageConstants.PUBLISHED);
         } else {
             throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
         }
-
         return new PageDeleteResponse(page.getId(), PageConstants.DRAFT_DELETE_SUCCESS);
     }
 
