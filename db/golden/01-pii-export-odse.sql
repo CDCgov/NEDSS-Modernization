@@ -333,7 +333,7 @@ BEGIN
     SELECT edx_activity_detail_log_uid, log_comment
     FROM dbo.EDX_activity_detail_log Eadl
     JOIN dbo.EDX_activity_log Eal ON Eal.edx_activity_log_uid = Eadl.edx_activity_log_uid
-    WHERE  @fromTime IS NULL OR (record_status_time IS NOT NULL AND record_status_time > @fromTime)
+    WHERE @fromTime IS NULL OR (record_status_time IS NOT NULL AND record_status_time > @fromTime)
 END
 GO
 
@@ -348,7 +348,7 @@ AS
 BEGIN
     SELECT edx_activity_log_uid, Entity_nm
     FROM dbo.EDX_activity_log
-    WHERE  @fromTime IS NULL OR (record_status_time IS NOT NULL AND record_status_time > @fromTime)
+    WHERE @fromTime IS NULL OR (record_status_time IS NOT NULL AND record_status_time > @fromTime)
 END
 GO
 
@@ -363,7 +363,7 @@ AS
 BEGIN
     SELECT EDX_Document_uid, original_payload
     FROM dbo.EDX_Document
-    WHERE  @fromTime IS NULL OR add_time > @fromTime
+    WHERE @fromTime IS NULL OR add_time > @fromTime
 END
 GO
 
@@ -379,7 +379,7 @@ BEGIN
     SELECT msg_observation_uid, elr_activity_log_seq,
            process_time, subject_nm, report_fac_nm, detail_txt
     FROM dbo.ELR_activity_log
-    WHERE  @fromTime IS NULL OR process_time > @fromTime
+    WHERE @fromTime IS NULL OR process_time > @fromTime
 END
 GO
 
@@ -394,7 +394,7 @@ AS
 BEGIN
     SELECT recordId, payloadName, errorMessage
     FROM dbo.ELRWorkerQueue
-    WHERE  @fromTime IS NULL OR (receivedTime IS NOT NULL AND receivedTime > @fromTime)
+    WHERE @fromTime IS NULL OR (receivedTime IS NOT NULL AND receivedTime > @fromTime)
 END
 GO
 
@@ -409,7 +409,7 @@ AS
 BEGIN
     SELECT entity_uid, entity_id_seq, root_extension_txt
     FROM dbo.Entity_id
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
         (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
         (add_time IS NOT NULL AND add_time > @fromTime)
 END
@@ -426,22 +426,22 @@ AS
 BEGIN
     SELECT entity_uid, locator_uid, as_of_date
     FROM dbo.Entity_locator_participation
-    WHERE  @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
+    WHERE @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
 END
 GO
 
-IF (object_id('pii_Entity_loca_participation_hist') is not null)
-    DROP PROCEDURE [dbo].[pii_Entity_loca_participation_hist]
+IF (object_id('pii_Entity_loc_participation_hist') is not null)
+    DROP PROCEDURE [dbo].[pii_Entity_loc_participation_hist]
 GO
 
-CREATE PROCEDURE [dbo].[pii_Entity_loca_participation_hist]
+CREATE PROCEDURE [dbo].[pii_Entity_loc_participation_hist]
 @fromTime Datetime = null
 
 AS
 BEGIN
     SELECT entity_uid, locator_uid, version_ctrl_nbr, as_of_date
     FROM dbo.Entity_loc_participation_hist
-    WHERE  @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
+    WHERE @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
 END
 GO
 
@@ -456,7 +456,7 @@ AS
 BEGIN
     SELECT export_receiving_facility_uid, admin_comment
     FROM dbo.Export_receiving_facility
-    WHERE  @fromTime IS NULL OR last_chg_time > @fromTime
+    WHERE @fromTime IS NULL OR last_chg_time > @fromTime
 END
 GO
 
@@ -473,7 +473,7 @@ BEGIN
            activity_from_time, activity_to_time, effective_from_time, effective_to_time,
            txt, age_at_vacc, material_lot_nm, material_expiration_time
     FROM dbo.Intervention
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
            (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
            (add_time IS NOT NULL AND add_time > @fromTime)
 END
@@ -492,7 +492,7 @@ BEGIN
            activity_from_time, activity_to_time, effective_from_time, effective_to_time,
            txt, age_at_vacc, material_lot_nm, material_expiration_time
     FROM dbo.Intervention_hist
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
            (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
            (add_time IS NOT NULL AND add_time > @fromTime)
 END
@@ -509,7 +509,7 @@ AS
 BEGIN
     SELECT interview_uid, interview_date
     FROM dbo.Interview
-    WHERE  @fromTime IS NULL OR last_chg_time > @fromTime
+    WHERE @fromTime IS NULL OR last_chg_time > @fromTime
 END
 GO
 
@@ -524,7 +524,7 @@ AS
 BEGIN
     SELECT interview_hist_uid, interview_date
     FROM dbo.Interview_hist
-    WHERE  @fromTime IS NULL OR last_chg_time > @fromTime
+    WHERE @fromTime IS NULL OR last_chg_time > @fromTime
 END
 GO
 
@@ -708,7 +708,7 @@ AS
 BEGIN
     SELECT nbs_document_uid, txt, sending_facility_nm
     FROM dbo.NBS_document
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
            (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
            (add_time > @fromTime)
 END
@@ -725,7 +725,7 @@ AS
 BEGIN
     SELECT nbs_document_hist_uid, txt, sending_facility_nm
     FROM dbo.NBS_document_hist
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
            (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
            (add_time > @fromTime)
 END
@@ -742,7 +742,7 @@ AS
 BEGIN
     SELECT nbs_note_uid, note
     FROM dbo.NBS_note
-    WHERE  @fromTime IS NULL OR last_chg_time > @fromTime
+    WHERE @fromTime IS NULL OR last_chg_time > @fromTime
 END
 GO
 
@@ -757,7 +757,7 @@ AS
 BEGIN
     SELECT notification_uid, txt
     FROM dbo.Notification
-    WHERE  @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
+    WHERE @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
 END
 GO
 
@@ -772,7 +772,7 @@ AS
 BEGIN
     SELECT notification_uid, version_ctrl_nbr, txt
     FROM dbo.Notification_hist
-    WHERE  @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
+    WHERE @fromTime IS NULL OR (last_chg_time IS NOT NULL AND last_chg_time > @fromTime)
 END
 GO
 
@@ -878,7 +878,7 @@ BEGIN
     SELECT observation_uid,
            txt, rpt_to_state_time
     FROM dbo.Observation
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
            (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
            (add_time IS NOT NULL AND add_time > @fromTime)
 END
@@ -896,9 +896,136 @@ BEGIN
     SELECT observation_uid, version_ctrl_nbr,
            txt, rpt_to_state_time
     FROM dbo.Observation_hist
-    WHERE  @fromTime IS NULL OR
+    WHERE @fromTime IS NULL OR
            (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
            (add_time IS NOT NULL AND add_time > @fromTime)
 END
 GO
 
+IF (object_id('pii_Organization') is not null)
+    DROP PROCEDURE [dbo].[pii_Organization]
+GO
+
+CREATE PROCEDURE [dbo].[pii_Organization]
+@fromTime Datetime = null
+
+AS
+BEGIN
+    SELECT organization_uid,
+           description, display_nm, city_desc_txt, zip_cd
+    FROM dbo.Organization
+    WHERE @fromTime IS NULL OR
+        (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
+        (add_time IS NOT NULL AND add_time > @fromTime)
+END
+GO
+
+IF (object_id('pii_Organization_hist') is not null)
+    DROP PROCEDURE [dbo].[pii_Organization_hist]
+GO
+
+CREATE PROCEDURE [dbo].[pii_Organization_hist]
+@fromTime Datetime = null
+
+AS
+BEGIN
+    SELECT organization_uid, version_ctrl_nbr,
+           description, display_nm, city_desc_txt, zip_cd
+    FROM dbo.Organization_hist
+    WHERE @fromTime IS NULL OR
+        (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
+        (add_time IS NOT NULL AND add_time > @fromTime)
+END
+GO
+
+IF (object_id('pii_Organization_name') is not null)
+    DROP PROCEDURE [dbo].[pii_Organization_name]
+GO
+
+CREATE PROCEDURE [dbo].[pii_Organization_name]
+@fromTime Datetime = null
+
+AS
+BEGIN
+    SELECT nm.organization_uid, organization_name_seq, nm_txt
+    FROM dbo.Organization_name nm
+    INNER JOIN dbo.Organization org 
+        ON org.organization_uid = nm.organization_uid
+    WHERE @fromTime IS NULL OR
+        (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
+        (add_time IS NOT NULL AND add_time > @fromTime)
+END
+GO
+
+IF (object_id('pii_Organization_name_hist') is not null)
+    DROP PROCEDURE [dbo].[pii_Organization_name_hist]
+GO
+
+CREATE PROCEDURE [dbo].[pii_Organization_name_hist]
+@fromTime Datetime = null
+
+AS
+BEGIN
+    SELECT nm.organization_uid, organization_name_seq, nm_txt
+    FROM dbo.Organization_name_hist nm
+    INNER JOIN dbo.Organization_hist org
+        ON org.organization_uid = nm.organization_uid
+    WHERE @fromTime IS NULL OR
+        (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
+        (add_time IS NOT NULL AND add_time > @fromTime)
+END
+GO
+
+IF (object_id('pii_Person') is not null)
+    DROP PROCEDURE [dbo].[pii_Person]
+GO
+
+CREATE PROCEDURE [dbo].[pii_Person]
+@fromTime Datetime = null
+
+AS
+BEGIN
+    SELECT person_uid,
+           age_calc, age_calc_time, age_reported, age_reported_time,
+           birth_time, birth_time_calc, deceased_time, description,
+           mothers_maiden_nm, first_nm, last_nm, middle_nm, nm_prefix, nm_suffix, preferred_nm,
+           hm_street_addr1, hm_street_addr2, hm_city_cd, hm_city_desc_txt,
+           hm_zip_cd, hm_cnty_cd, hm_phone_nbr, hm_email_addr, cell_phone_nbr,
+           wk_street_addr1, wk_street_addr2, wk_city_cd, wk_city_desc_txt,
+           wk_zip_cd, wk_cnty_cd, wk_phone_nbr, wk_email_addr,
+           SSN, medicaid_num, dl_num, birth_city_cd, birth_city_desc_txt,
+           as_of_date_admin, as_of_date_ethnicity, as_of_date_general, as_of_date_morbidity, as_of_date_sex
+
+    FROM dbo.Person
+    WHERE @fromTime IS NULL OR
+        (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
+        (add_time IS NOT NULL AND add_time > @fromTime)
+END
+GO
+
+IF (object_id('pii_Person_hist') is not null)
+    DROP PROCEDURE [dbo].[pii_Person_hist]
+GO
+
+CREATE PROCEDURE [dbo].[pii_Person_hist]
+@fromTime Datetime = null
+
+AS
+BEGIN
+    SELECT person_uid, version_ctrl_nbr,
+           age_calc, age_calc_time, age_reported, age_reported_time,
+           birth_time, birth_time_calc, deceased_time, description,
+           mothers_maiden_nm, first_nm, last_nm, middle_nm, nm_prefix, nm_suffix, preferred_nm,
+           hm_street_addr1, hm_street_addr2, hm_city_cd, hm_city_desc_txt,
+           hm_zip_cd, hm_cnty_cd, hm_phone_nbr, hm_email_addr, cell_phone_nbr,
+           wk_street_addr1, wk_street_addr2, wk_city_cd, wk_city_desc_txt,
+           wk_zip_cd, wk_cnty_cd, wk_phone_nbr, wk_email_addr,
+           SSN, medicaid_num, dl_num, birth_city_cd, birth_city_desc_txt,
+           as_of_date_admin, as_of_date_ethnicity, as_of_date_general, as_of_date_morbidity, as_of_date_sex
+
+    FROM dbo.Person_hist
+    WHERE @fromTime IS NULL OR
+        (last_chg_time IS NOT NULL AND last_chg_time > @fromTime) OR
+        (add_time IS NOT NULL AND add_time > @fromTime)
+END
+GO
