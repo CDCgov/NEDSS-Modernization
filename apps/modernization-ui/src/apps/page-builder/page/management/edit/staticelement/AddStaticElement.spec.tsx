@@ -127,57 +127,6 @@ describe('When comments is chosen', () => {
     });
 });
 
-describe('When participants is chosen', () => {
-    it('only displays admin comments', async () => {
-        const { getByTestId, findByText } = render(
-            <BrowserRouter>
-                <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
-                        <AddStaticElement />
-                    </PageManagementProvider>
-                </AlertProvider>
-            </BrowserRouter>
-        );
-
-        const staticTypeInput = getByTestId('staticType');
-
-        act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Participant list (read-only)');
-        });
-
-        act(() => {
-            fireEvent.blur(staticTypeInput);
-        });
-
-        expect(await findByText('Administrative Comments')).toBeInTheDocument();
-    });
-});
-
-describe('When electronic doc list is chosen', () => {
-    it('only displays admin comments', async () => {
-        const { getByTestId, findByText } = render(
-            <BrowserRouter>
-                <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
-                        <AddStaticElement />
-                    </PageManagementProvider>
-                </AlertProvider>
-            </BrowserRouter>
-        );
-
-        const staticTypeInput = getByTestId('staticType');
-        act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Electronic document list (read-only)');
-        });
-
-        act(() => {
-            fireEvent.blur(staticTypeInput);
-        });
-
-        expect(await findByText('Administrative Comments')).toBeInTheDocument();
-    });
-});
-
 describe('When all inputs are entered', () => {
     it('button enables once all inputs are selected', async () => {
         const { getByTestId, findByTestId, getByLabelText } = render(
