@@ -217,6 +217,19 @@ public class WaTemplate {
     return components;
   }
 
+  public WaUiMetadata updateRequired(PageContentCommand.SetQuestionRequired command) {
+    // Can only modify Draft pages
+    verifyDraftType();
+
+    // find question within page
+    WaUiMetadata question = findQuestion(command.question());
+
+    question.update(command);
+
+    changed(command);
+    return question;
+  }
+
   public WaUiMetadata updateQuestion(PageContentCommand.QuestionUpdate command) {
     // Can only modify Draft pages
     verifyDraftType();
@@ -800,8 +813,8 @@ public class WaTemplate {
           questionBatch.updateQuestionBatch(command);
           changed(command);
           if (questionBatch.getWaRdbMetadatum() != null) {
-            questionBatch.getWaRdbMetadatum().
-                unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
+            questionBatch.getWaRdbMetadatum()
+                .unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
           }
         });
 
@@ -834,13 +847,12 @@ public class WaTemplate {
   }
 
   private WaUiMetadata findQuestion(long id) {
+
     return uiMetadata.stream()
         .filter(e -> e.getId() != null
             && e.getId().equals(id))
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find question"));
   }
-
-
 
 }

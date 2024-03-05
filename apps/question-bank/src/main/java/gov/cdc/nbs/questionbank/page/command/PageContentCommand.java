@@ -375,4 +375,12 @@ public sealed interface PageContentCommand {
   }
 
 
+  public record SetQuestionRequired(
+      boolean required,
+      long question,
+      long userId,
+      Instant requestedOn)
+      implements PageContentCommand {
+  }
+
 }

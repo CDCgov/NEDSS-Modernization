@@ -7,6 +7,7 @@ import type { EditableQuestion } from '../models/EditableQuestion';
 import type { UpdatePageCodedQuestionRequest } from '../models/UpdatePageCodedQuestionRequest';
 import type { UpdatePageDateQuestionRequest } from '../models/UpdatePageDateQuestionRequest';
 import type { UpdatePageNumericQuestionRequest } from '../models/UpdatePageNumericQuestionRequest';
+import type { UpdatePageQuestionRequiredRequest } from '../models/UpdatePageQuestionRequiredRequest';
 import type { UpdatePageTextQuestionRequest } from '../models/UpdatePageTextQuestionRequest';
 import type { ValidationResponse } from '../models/ValidationResponse';
 
@@ -309,6 +310,51 @@ export class PageQuestionControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * updatePageQuestionRequired
+     * @returns EditableQuestion OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static updatePageQuestionRequiredUsingPut({
+        authorization,
+        page,
+        questionId,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * questionId
+         */
+        questionId: number,
+        /**
+         * request
+         */
+        request: UpdatePageQuestionRequiredRequest,
+    }): CancelablePromise<EditableQuestion | any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}/required',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

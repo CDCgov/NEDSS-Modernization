@@ -7,7 +7,7 @@ import styles from './question-header.module.scss';
 
 type Props = {
     question: PagesQuestion;
-    onRequiredChange?: () => void;
+    onRequiredChange: (required: boolean) => void;
     onEditQuestion?: () => void;
     onDeleteQuestion?: () => void;
 };
@@ -48,7 +48,10 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
                 {!question.isStandard && <DeleteQuestion onDelete={onDeleteQuestion} />}
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Not required</div>
-                <ToggleButton defaultChecked={question.required} onChange={onRequiredChange} />
+                <ToggleButton
+                    defaultChecked={question.required}
+                    onChange={() => onRequiredChange(!question.required)}
+                />
                 <div className={styles.requiredToggle}>Required</div>
             </div>
         </div>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.SetQuestionRequired;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
@@ -16,6 +17,7 @@ import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQue
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageDateQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequiredRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
 import gov.cdc.nbs.questionbank.question.model.Question.MessagingInfo;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
@@ -51,6 +53,16 @@ public class PageQuestionUpdater {
     return finder.find(pageId, questionId);
   }
 
+  public EditableQuestion setRequired(Long pageId, Long questionId, UpdatePageQuestionRequiredRequest request,
+      Long user) {
+    if (request == null) {
+      throw new UpdatePageQuestionException("Invalid request");
+    }
+    WaTemplate page = findPage(pageId);
+    page.updateRequired(asUpdate(request.required(), questionId, user));
+
+    return finder.find(pageId, questionId);
+  }
 
   private PageContentCommand.QuestionUpdate asUpdate(
       UpdatePageQuestionRequest request,
@@ -226,5 +238,9 @@ public class PageQuestionUpdater {
         request.adminComments(),
         user,
         Instant.now());
+  }
+
+  private SetQuestionRequired asUpdate(boolean required, long questionId, long user) {
+    return new PageContentCommand.SetQuestionRequired(required, questionId, user, Instant.now());
   }
 }

@@ -11,6 +11,7 @@ import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
+import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
 
 type Props = {
     subsection: PagesSubSection;
@@ -40,6 +41,7 @@ export const Subsection = ({
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
     const { showAlert } = useAlert();
+    const { setRequired } = useSetPageQuestionRequired();
 
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
@@ -71,8 +73,9 @@ export const Subsection = ({
         }
     };
 
-    const handleRequiredChange = (id: number) => {
-        console.log('update question NYI', id);
+    const handleRequiredChange = (question: number, required: boolean) => {
+        setRequired(page.id, question, required);
+        refresh();
     };
 
     return (

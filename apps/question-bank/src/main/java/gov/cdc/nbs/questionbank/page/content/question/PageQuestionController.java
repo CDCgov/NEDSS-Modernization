@@ -17,6 +17,7 @@ import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageDateQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageNumericQuestionRequest;
+import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequiredRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.content.question.response.ValidationResponse;
@@ -60,6 +61,15 @@ public class PageQuestionController {
       @PathVariable("page") Long page,
       @PathVariable("questionId") Long questionId) {
     return finder.find(page, questionId);
+  }
+
+  @PutMapping("questions/{questionId}/required")
+  public EditableQuestion updatePageQuestionRequired(
+      @PathVariable("page") Long page,
+      @PathVariable("questionId") Long questionId,
+      @RequestBody UpdatePageQuestionRequiredRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+    return updater.setRequired(page, questionId, request, details.getId());
   }
 
   @GetMapping("questions/{questionId}/datamart/validate")

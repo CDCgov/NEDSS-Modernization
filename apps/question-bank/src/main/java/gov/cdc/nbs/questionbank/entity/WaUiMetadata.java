@@ -18,6 +18,7 @@ import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.SetQuestionRequired;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
@@ -663,6 +664,11 @@ public class WaUiMetadata {
     updated(command);
   }
 
+  public void update(SetQuestionRequired command) {
+    setRequired(command.required());
+    updated(command);
+  }
+
   private void added(PageContentCommand command) {
     this.addTime = command.requestedOn();
     this.addUserId = command.userId();
@@ -744,6 +750,10 @@ public class WaUiMetadata {
 
   private void setVisible(boolean visible) {
     this.displayInd = visible ? "T" : "F";
+  }
+
+  private void setRequired(boolean required) {
+    this.requiredInd = required ? "T" : "F";
   }
 
   public void update(PageContentCommand.GroupSubsection command, int questionGroupSeqNbr) {
