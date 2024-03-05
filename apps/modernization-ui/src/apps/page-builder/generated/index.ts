@@ -110,6 +110,7 @@ export type { UpdateDefault } from './models/UpdateDefault';
 export type { UpdateHyperlink } from './models/UpdateHyperlink';
 export { UpdateNumericQuestionRequest } from './models/UpdateNumericQuestionRequest';
 export type { UpdatePageCodedQuestionRequest } from './models/UpdatePageCodedQuestionRequest';
+export type { UpdatePageCodedQuestionValuesetRequest } from './models/UpdatePageCodedQuestionValuesetRequest';
 export { UpdatePageDateQuestionRequest } from './models/UpdatePageDateQuestionRequest';
 export { UpdatePageNumericQuestionRequest } from './models/UpdatePageNumericQuestionRequest';
 export type { UpdatePageQuestionRequiredRequest } from './models/UpdatePageQuestionRequiredRequest';

@@ -1,0 +1,9 @@
+.modal {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .loadingIndicator div {
+        max-height: 80svh;
+    }
+}

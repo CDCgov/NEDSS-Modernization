@@ -1,11 +1,10 @@
 import { render } from '@testing-library/react';
-import { PagesResponse, PagesSubSection, PagesQuestion } from 'apps/page-builder/generated';
-import { GroupQuestion } from './GroupQuestion';
-import { useForm, FormProvider } from 'react-hook-form';
-import { ReactNode } from 'react';
-import { GroupSubSectionRequest } from 'apps/page-builder/generated';
-import { PageManagementProvider } from '../../../usePageManagement';
 import { AlertProvider } from 'alert';
+import { GroupSubSectionRequest, PagesQuestion, PagesResponse, PagesSubSection } from 'apps/page-builder/generated';
+import { ReactNode } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PageManagementProvider } from '../../../usePageManagement';
+import { GroupQuestion } from './GroupQuestion';
 
 type Additional = {
     repeatNumber: number;

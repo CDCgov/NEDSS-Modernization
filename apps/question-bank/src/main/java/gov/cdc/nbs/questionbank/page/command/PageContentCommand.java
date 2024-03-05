@@ -374,6 +374,12 @@ public sealed interface PageContentCommand {
       Instant requestedOn) implements QuestionUpdate {
   }
 
+  public record UpdateCodedQuestionValueset(
+      long question,
+      long valueset,
+      long userId,
+      Instant requestedOn) implements PageContentCommand {
+  }
 
   public record SetQuestionRequired(
       boolean required,

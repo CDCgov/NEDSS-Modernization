@@ -213,7 +213,7 @@ export const BusinessRulesLibraryTable = ({
                 currentPage={curPage.current}
                 handleNext={request}
                 sortData={handleSort}
-                rangeSelector
+                rangeSelector={isLoading === true || summaries.length > 0}
                 isLoading={isLoading}
             />
             {summaries.length === 0 && !isLoading && dataNotAvailableElement}

@@ -13,6 +13,7 @@ import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.QuestionUpdate;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestion;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestionValueset;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTextQuestion;
@@ -553,6 +554,48 @@ class WaUiMetadataTest {
     UpdateCodedQuestion command = updateCodedQuestion(now);
 
     // When the question is updated an exception is thrown
+    assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
+  }
+
+  @Test
+  void should_fail_update_coded_valueset_not_coded() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    DateQuestionEntity question = QuestionEntityMother.dateQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+
+    // And a valid update command
+    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1l, 2l, 3l, Instant.now());
+
+    // When the question is updated, an exception is thrown
+    assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
+  }
+
+  @Test
+  void should_fail_update_coded_valueset_published() {
+    Instant now = Instant.now();
+    // Given a text question
+    WaTemplate page = page();
+    CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
+    PageContentCommand.AddQuestion create = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        12,
+        1L,
+        now);
+    WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
+    dateQuestion.setPublishIndCd('T');
+    // And a valid update command
+    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1l, 2l, 3l, Instant.now());
+
+    // When the question is updated, an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
   }
 

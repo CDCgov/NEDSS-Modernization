@@ -21,7 +21,7 @@ type Props = {
     onQuestionCreated: (id: number) => void;
 };
 export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
-    const [state, setState] = useState<'create' | 'findValueset' | 'createValueset' | 'editValueset'>('create');
+    const [state, setState] = useState<'create' | 'findValueset' | 'createValueset'>('create');
     const { createQuestion, questionId, error } = useCreateQuestion();
     const { alertError } = useAlert();
     const form = useForm<CreateQuestionForm>({

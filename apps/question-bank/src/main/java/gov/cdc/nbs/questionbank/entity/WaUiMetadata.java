@@ -19,6 +19,7 @@ import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.UnitType;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.SetQuestionRequired;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestionValueset;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateSubsection;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
@@ -368,6 +369,21 @@ public class WaUiMetadata {
       this.codeSetGroupId = command.valueset();
     }
 
+    updated(command);
+  }
+
+
+  public void update(UpdateCodedQuestionValueset command) {
+    if (!"CODED".equals(dataType)) {
+      throw new PageContentModificationException("Targeted question is not a CODED question");
+    }
+
+    // updatable if not published
+    if (Character.valueOf('T').equals(publishIndCd)) {
+      throw new PageContentModificationException("Unable to change valueset for published question");
+    }
+
+    this.codeSetGroupId = command.valueset();
     updated(command);
   }
 

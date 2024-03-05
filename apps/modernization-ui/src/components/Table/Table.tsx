@@ -178,19 +178,17 @@ export const TableComponent = ({
                     </tbody>
                 </Table>
                 <footer>
-                    {totalResults > 0 ? (
-                        <div className={styles.range}>
-                            {!rangeSelector ? (
-                                <>
-                                    Showing {tableBody?.length} of {totalResults}
-                                </>
-                            ) : (
-                                <>
-                                    Showing <RangeToggle contextName={contextName} /> of {totalResults}
-                                </>
-                            )}
-                        </div>
-                    ) : null}
+                    <div className={styles.range}>
+                        {!rangeSelector ? (
+                            <>
+                                Showing {tableBody?.length} of {totalResults}
+                            </>
+                        ) : (
+                            <>
+                                Showing <RangeToggle contextName={contextName} /> of {totalResults}
+                            </>
+                        )}
+                    </div>
 
                     {isPagination && totalResults >= pageSize && (
                         <Pagination
