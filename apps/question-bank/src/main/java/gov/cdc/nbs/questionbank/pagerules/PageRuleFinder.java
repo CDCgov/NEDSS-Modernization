@@ -39,7 +39,7 @@ class PageRuleFinder {
            left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
            left join WA_UI_Metadata [question2]
              on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
-          where [rule].wa_template_uid =:pageId and [question1].wa_template_uid = :pageId and [question2].wa_template_uid = :pageId
+          where [rule].wa_rule_metadata_uid = :ruleId
 
           group by
             [rule].wa_rule_metadata_uid,
