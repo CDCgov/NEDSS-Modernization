@@ -19,12 +19,20 @@ const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
 
-export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
+export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onDeleteQuestion }: Props) => {
     const [required, setRequired] = useState<boolean>(question.required === true);
 
     useEffect(() => {
-        setRequired(question.required === true);
+        if (question.required !== undefined) {
+            setRequired(question.required);
+        }
     }, [question.required]);
+
+    useEffect(() => {
+        if (required !== question.required) {
+            onRequiredChange(required);
+        }
+    }, [required]);
 
     const getHeadingText = (displayComponent: number | undefined) => {
         switch (displayComponent) {
@@ -59,8 +67,7 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
                 <ToggleButton
                     checked={required}
                     onChange={() => {
-                        setRequired(!question.required);
-                        onRequiredChange(!question.required);
+                        setRequired(!required);
                     }}
                 />
                 <div className={styles.requiredToggle}>Required</div>
