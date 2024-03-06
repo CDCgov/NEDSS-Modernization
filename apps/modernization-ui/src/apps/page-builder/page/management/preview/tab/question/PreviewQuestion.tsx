@@ -11,6 +11,7 @@ import { authorization } from 'authorization';
 
 type Props = {
     question: PagesQuestion;
+    isGrouped?: boolean;
 };
 
 const hyperlinkId = 1003;
@@ -21,7 +22,7 @@ const originalElecDocId = 1036;
 
 const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, participantListId, originalElecDocId];
 
-export const PreviewQuestion = ({ question }: Props) => {
+export const PreviewQuestion = ({ question, isGrouped }: Props) => {
     const { name, displayComponent, defaultValue, valueSet } = question;
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
 
@@ -103,7 +104,7 @@ export const PreviewQuestion = ({ question }: Props) => {
     return (
         <div className={styles.question}>
             {!staticTypes.includes(displayComponent ?? 0) ? (
-                <div className={styles.borderedContainer}>
+                <div className={!isGrouped ? styles.borderedContainer : ''}>
                     <div className={styles.content}>
                         <div className={styles.questionContent}>{componentWithoutStaticType}</div>
                     </div>
