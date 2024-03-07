@@ -242,9 +242,15 @@ export const BusinessRulesLibraryTable = ({
             <div className="no-data-info">
                 <span className="no-items">No items to display</span>
                 <p>Click 'Add new business rule' to add new rule</p>
-                <NavLinkButton className="submit-btn" to={`${redirectRuleURL}/add`}>
-                    Add new business rule
-                </NavLinkButton>
+                {page?.status === 'Published' ? (
+                    <Button type="button" disabled>
+                        Add new business rule
+                    </Button>
+                ) : (
+                    <NavLinkButton className="submit-btn" to={`${redirectRuleURL}/add`}>
+                        Add new business rule
+                    </NavLinkButton>
+                )}
             </div>
         </div>
     );

@@ -5,6 +5,7 @@ import { Rule } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Breadcrumb } from 'breadcrumb';
 import styles from './view-business-rule.module.scss';
+import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
 
 export const ViewBusinessRule = () => {
     const { ruleId } = useParams();
@@ -16,6 +17,7 @@ export const ViewBusinessRule = () => {
                 authorization: authorization(),
                 ruleId: Number(ruleId)
             }).then((response: Rule) => {
+                console.log(response);
                 setRule(response);
             });
         }
@@ -30,18 +32,31 @@ export const ViewBusinessRule = () => {
                     <table cellSpacing={0}>
                         <thead>
                             <th>Function</th>
-                            <th>Require if</th>
+                            <th>
+                                {rule?.ruleFunction === 'DATE_COMPARE'
+                                    ? 'Date validation'
+                                    : rule?.ruleFunction
+                                    ? rule.ruleFunction.charAt(0).toUpperCase() +
+                                      rule.ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase()
+                                    : ''}
+                            </th>
                         </thead>
                         <tr>
-                            <td>Source</td>
+                            <td>Rule Id</td>
+                            <td>{rule?.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Source question</td>
                             <td>
                                 {rule?.sourceQuestion.label} ({rule?.sourceQuestion.questionIdentifier})
                             </td>
                         </tr>
-                        <tr>
-                            <td>Any source value</td>
-                            <td>{rule?.anySourceValue ? 'True' : 'False'}</td>
-                        </tr>
+                        {rule?.ruleFunction !== 'DATE_COMPARE' ? (
+                            <tr>
+                                <td>Any source value</td>
+                                <td>{rule?.anySourceValue ? 'True' : 'False'}</td>
+                            </tr>
+                        ) : null}
                         <tr>
                             <td>Logic</td>
                             <td>
@@ -51,14 +66,22 @@ export const ViewBusinessRule = () => {
                                     : ''}
                             </td>
                         </tr>
-                        <tr>
-                            <td>Source value(s)</td>
-                            <td>
-                                {rule?.sourceValues?.map((value, key) => (
-                                    <span key={key}>{value}</span>
-                                ))}
-                            </td>
-                        </tr>
+                        {rule?.ruleFunction !== 'DATE_COMPARE' ? (
+                            <tr>
+                                <td>Source value(s)</td>
+                                <td>
+                                    {rule?.sourceValues?.map((value, key) => (
+                                        <span key={key}>{value}</span>
+                                    ))}
+                                </td>
+                            </tr>
+                        ) : null}
+                        {rule?.targetType ? (
+                            <tr>
+                                <td>Target type</td>
+                                <td>{rule?.targetType}</td>
+                            </tr>
+                        ) : null}
                         <tr>
                             <td>Target(s)</td>
                             <td>
@@ -72,6 +95,18 @@ export const ViewBusinessRule = () => {
                         <tr>
                             <td>Rule description</td>
                             <td>{rule?.description}</td>
+                        </tr>
+                        <tr>
+                            <td>Error message</td>
+                            <td>
+                                {rule?.targets.map((target, i) => (
+                                    <span key={i} className={styles.full}>
+                                        ${rule?.sourceQuestion.label} (${rule?.sourceQuestion.questionIdentifier})' must
+                                        be ${mapLogicForDateCompare(rule!.comparator)} '${target.label} ($
+                                        {target.targetIdentifier})
+                                    </span>
+                                ))}
+                            </td>
                         </tr>
                     </table>
                 </div>
