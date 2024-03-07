@@ -149,13 +149,8 @@ const TargetQuestion = ({
 
     const handleSourceCases = (question: QuestionProps[]): QuestionProps[] => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
-            if (isSource) {
-                const filteredList = question.filter(isDate);
-                return filteredList;
-            } else {
-                const filteredList = question.filter(isDate);
-                return filteredList;
-            }
+            const filteredList = question.filter(isDate);
+            return filteredList;
         } else {
             if (isSource) {
                 const filteredList = question.filter(isCoded);
