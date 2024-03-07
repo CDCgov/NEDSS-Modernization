@@ -13,7 +13,6 @@ import {
     PageRuleControllerService,
     PagesResponse,
     PagesSection,
-    PagesSubSection,
     PagesTab,
     Rule,
     Target
@@ -168,7 +167,7 @@ const TargetQuestion = ({
 
     useEffect(() => {
         if (fetchPage) {
-            let result: PagesResponse = {
+            const result: PagesResponse = {
                 id: fetchPage.id,
                 description: fetchPage.description,
                 name: fetchPage.name,
@@ -178,7 +177,7 @@ const TargetQuestion = ({
                 tabs: []
             };
             fetchPage.tabs?.forEach((tab: PagesTab) => {
-                let newTab: PagesTab = {
+                const newTab: PagesTab = {
                     id: tab.id,
                     name: tab.name,
                     sections: [],
@@ -187,7 +186,7 @@ const TargetQuestion = ({
                 };
 
                 tab.sections.forEach((section: PagesSection) => {
-                    let newSection: PagesSection = {
+                    const newSection: PagesSection = {
                         id: section.id,
                         name: section.name,
                         order: section.order,
