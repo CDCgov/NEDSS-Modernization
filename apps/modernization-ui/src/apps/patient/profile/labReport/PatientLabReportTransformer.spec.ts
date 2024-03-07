@@ -1,9 +1,13 @@
-import { PatientLabReport as GraphQLPatientLabReport } from 'generated/graphql/schema';
+import { PatientLabReport as GraphQLPatientLabReport, PatientLabReportResults } from 'generated/graphql/schema';
 import { transform } from './PatientLabReportTransformer';
 
 describe('when the result does not have content', () => {
     it('should return an empty array of reports when reports in empty', () => {
-        const result: GraphQLPatientLabReport[] = [];
+        const result = {
+            content: [],
+            total: 0,
+            number: 0
+        };
 
         const actual = transform(result);
 
@@ -13,49 +17,53 @@ describe('when the result does not have content', () => {
 
 describe('when the result has content', () => {
     it('should return transformed lab reports', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: '2023-03-29T00:00:00Z',
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'Y',
-                associatedInvestigations: [],
-                personParticipations: [
-                    {
-                        typeCd: 'PATSBJ',
-                        personCd: 'PAT',
-                        firstName: 'provider-first-name',
-                        lastName: 'provider-last-name'
-                    }
-                ],
-                organizationParticipations: [
-                    {
-                        typeCd: 'AUT',
-                        name: 'reporting-Facility-value'
-                    },
-                    {
-                        typeCd: 'ORD',
-                        name: 'ordering-Facility-value'
-                    }
-                ],
-                observations: [
-                    {
-                        domainCd: 'OTHER',
-                        cdDescTxt: 'No Information Given',
-                        displayName: null
-                    },
-                    {
-                        domainCd: 'Result',
-                        cdDescTxt: 'Acid-Fast Stain',
-                        displayName: 'abnormal presence of'
-                    }
-                ]
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: '2023-03-29T00:00:00Z',
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'Y',
+                    associatedInvestigations: [],
+                    personParticipations: [
+                        {
+                            typeCd: 'PATSBJ',
+                            personCd: 'PAT',
+                            firstName: 'provider-first-name',
+                            lastName: 'provider-last-name'
+                        }
+                    ],
+                    organizationParticipations: [
+                        {
+                            typeCd: 'AUT',
+                            name: 'reporting-Facility-value'
+                        },
+                        {
+                            typeCd: 'ORD',
+                            name: 'ordering-Facility-value'
+                        }
+                    ],
+                    observations: [
+                        {
+                            domainCd: 'OTHER',
+                            cdDescTxt: 'No Information Given',
+                            displayName: null
+                        },
+                        {
+                            domainCd: 'Result',
+                            cdDescTxt: 'Acid-Fast Stain',
+                            displayName: 'abnormal presence of'
+                        }
+                    ]
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(
@@ -74,27 +82,31 @@ describe('when the result has content', () => {
     });
 
     it('should return a transformed lab report with a reporting facility', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: '2023-03-29T00:00:00Z',
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'N',
-                associatedInvestigations: [],
-                personParticipations: [],
-                organizationParticipations: [
-                    {
-                        typeCd: 'AUT',
-                        name: 'reporting-Facility-value'
-                    }
-                ],
-                observations: []
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: '2023-03-29T00:00:00Z',
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'N',
+                    associatedInvestigations: [],
+                    personParticipations: [],
+                    organizationParticipations: [
+                        {
+                            typeCd: 'AUT',
+                            name: 'reporting-Facility-value'
+                        }
+                    ],
+                    observations: []
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(
@@ -107,35 +119,39 @@ describe('when the result has content', () => {
     });
 
     it('should return a transformed lab report with an ordering provider', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: '2023-03-29T00:00:00Z',
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'N',
-                associatedInvestigations: [],
-                personParticipations: [
-                    {
-                        typeCd: 'PATSBJ',
-                        personCd: 'PAT',
-                        firstName: 'patient-first-name',
-                        lastName: 'patient-last-name'
-                    },
-                    {
-                        typeCd: 'ORD',
-                        personCd: 'PRV',
-                        firstName: 'provider-first-name',
-                        lastName: 'provider-last-name'
-                    }
-                ],
-                organizationParticipations: [],
-                observations: []
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: '2023-03-29T00:00:00Z',
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'N',
+                    associatedInvestigations: [],
+                    personParticipations: [
+                        {
+                            typeCd: 'PATSBJ',
+                            personCd: 'PAT',
+                            firstName: 'patient-first-name',
+                            lastName: 'patient-last-name'
+                        },
+                        {
+                            typeCd: 'ORD',
+                            personCd: 'PRV',
+                            firstName: 'provider-first-name',
+                            lastName: 'provider-last-name'
+                        }
+                    ],
+                    organizationParticipations: [],
+                    observations: []
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(
@@ -148,34 +164,38 @@ describe('when the result has content', () => {
     });
 
     it('should return a transformed lab report with an ordering facility', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: '2023-03-29T00:00:00Z',
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'N',
-                associatedInvestigations: [],
-                personParticipations: [
-                    {
-                        typeCd: 'PATSBJ',
-                        personCd: 'PAT',
-                        firstName: 'provider-first-name',
-                        lastName: 'provider-last-name'
-                    }
-                ],
-                organizationParticipations: [
-                    {
-                        typeCd: 'ORD',
-                        name: 'ordering-Facility-value'
-                    }
-                ],
-                observations: []
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: '2023-03-29T00:00:00Z',
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'N',
+                    associatedInvestigations: [],
+                    personParticipations: [
+                        {
+                            typeCd: 'PATSBJ',
+                            personCd: 'PAT',
+                            firstName: 'provider-first-name',
+                            lastName: 'provider-last-name'
+                        }
+                    ],
+                    organizationParticipations: [
+                        {
+                            typeCd: 'ORD',
+                            name: 'ordering-Facility-value'
+                        }
+                    ],
+                    observations: []
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(
@@ -188,33 +208,37 @@ describe('when the result has content', () => {
     });
 
     it('should return a transformed lab report with a Test Result', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: '2023-03-29T00:00:00Z',
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'N',
-                associatedInvestigations: [],
-                personParticipations: [],
-                organizationParticipations: [],
-                observations: [
-                    {
-                        domainCd: 'OTHER',
-                        cdDescTxt: 'No Information Given',
-                        displayName: null
-                    },
-                    {
-                        domainCd: 'Result',
-                        cdDescTxt: 'test-name',
-                        displayName: 'result-value'
-                    }
-                ]
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: '2023-03-29T00:00:00Z',
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'N',
+                    associatedInvestigations: [],
+                    personParticipations: [],
+                    organizationParticipations: [],
+                    observations: [
+                        {
+                            domainCd: 'OTHER',
+                            cdDescTxt: 'No Information Given',
+                            displayName: null
+                        },
+                        {
+                            domainCd: 'Result',
+                            cdDescTxt: 'test-name',
+                            displayName: 'result-value'
+                        }
+                    ]
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(
@@ -232,24 +256,28 @@ describe('when the result has content', () => {
     });
 
     it('should return a transformed lab report associated with an investigation', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: '2023-03-29T00:00:00Z',
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'N',
-                associatedInvestigations: [
-                    { publicHealthCaseUid: 571, localId: 'investigation-local', cdDescTxt: 'condition-value' }
-                ],
-                personParticipations: [],
-                organizationParticipations: [],
-                observations: []
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: '2023-03-29T00:00:00Z',
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'N',
+                    associatedInvestigations: [
+                        { publicHealthCaseUid: 571, localId: 'investigation-local', cdDescTxt: 'condition-value' }
+                    ],
+                    personParticipations: [],
+                    organizationParticipations: [],
+                    observations: []
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(
@@ -268,49 +296,53 @@ describe('when the result has content', () => {
     });
 
     it('should return null for collectedOn date and not transform a null effectiveFromTime value to a date with for collectedOn', () => {
-        const result: GraphQLPatientLabReport[] = [
-            {
-                id: '10066376',
-                observationUid: 10066376,
-                addTime: '2023-03-27T00:00:00Z',
-                effectiveFromTime: null,
-                programAreaCd: 'program-area-value',
-                jurisdictionCodeDescTxt: 'jurisdiction-value',
-                localId: 'local-id-value',
-                electronicInd: 'N',
-                associatedInvestigations: [],
-                personParticipations: [
-                    {
-                        typeCd: 'PATSBJ',
-                        personCd: 'PAT',
-                        firstName: 'provider-first-name',
-                        lastName: 'provider-last-name'
-                    }
-                ],
-                organizationParticipations: [
-                    {
-                        typeCd: 'AUT',
-                        name: 'reporting-Facility-value'
-                    },
-                    {
-                        typeCd: 'ORD',
-                        name: 'ordering-Facility-value'
-                    }
-                ],
-                observations: [
-                    {
-                        domainCd: 'OTHER',
-                        cdDescTxt: 'No Information Given',
-                        displayName: null
-                    },
-                    {
-                        domainCd: 'Result',
-                        cdDescTxt: 'Acid-Fast Stain',
-                        displayName: 'abnormal presence of'
-                    }
-                ]
-            }
-        ];
+        const result = {
+            content: [
+                {
+                    id: '10066376',
+                    observationUid: 10066376,
+                    addTime: '2023-03-27T00:00:00Z',
+                    effectiveFromTime: null,
+                    programAreaCd: 'program-area-value',
+                    jurisdictionCodeDescTxt: 'jurisdiction-value',
+                    localId: 'local-id-value',
+                    electronicInd: 'N',
+                    associatedInvestigations: [],
+                    personParticipations: [
+                        {
+                            typeCd: 'PATSBJ',
+                            personCd: 'PAT',
+                            firstName: 'provider-first-name',
+                            lastName: 'provider-last-name'
+                        }
+                    ],
+                    organizationParticipations: [
+                        {
+                            typeCd: 'AUT',
+                            name: 'reporting-Facility-value'
+                        },
+                        {
+                            typeCd: 'ORD',
+                            name: 'ordering-Facility-value'
+                        }
+                    ],
+                    observations: [
+                        {
+                            domainCd: 'OTHER',
+                            cdDescTxt: 'No Information Given',
+                            displayName: null
+                        },
+                        {
+                            domainCd: 'Result',
+                            cdDescTxt: 'Acid-Fast Stain',
+                            displayName: 'abnormal presence of'
+                        }
+                    ]
+                }
+            ],
+            total: 1,
+            number: 0
+        };
         const actual = transform(result);
 
         expect(actual).toEqual(

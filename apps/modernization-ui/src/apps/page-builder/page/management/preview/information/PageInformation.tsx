@@ -98,10 +98,12 @@ const PageInformation = () => {
         <section className={styles.information}>
             <header>
                 <Heading level={2}>Page information</Heading>
-                <Button type="button" outline onClick={handleDownloadCSV} className={styles.icon}>
-                    <Icon.FileDownload />
-                    Metadata
-                </Button>
+                {false && (
+                    <Button type="button" outline onClick={handleDownloadCSV} className={styles.icon}>
+                        <Icon.FileDownload />
+                        Metadata
+                    </Button>
+                )}
             </header>
             <nav>
                 <div>{renderTabs}</div>

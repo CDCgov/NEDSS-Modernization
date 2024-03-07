@@ -7,7 +7,7 @@ import { NumericFields } from './NumericFields';
 import { TextFields } from './TextFields';
 
 type Props = {
-    onFindValueSet: () => void;
+    onFindValueSet?: () => void;
     editing?: boolean;
     published?: boolean;
 };
@@ -18,7 +18,9 @@ export const QuestionSpecificFields = ({ onFindValueSet, editing = false, publis
 
     return (
         <>
-            {questionType === 'CODED' && <CodedFields published={published} onFindValueSet={onFindValueSet} />}
+            {questionType === 'CODED' && (
+                <CodedFields editing={editing} published={published} onFindValueSet={onFindValueSet} />
+            )}
             {questionType === 'NUMERIC' && (
                 <NumericFields editing={editing} published={published} maskOptions={maskOptions} />
             )}

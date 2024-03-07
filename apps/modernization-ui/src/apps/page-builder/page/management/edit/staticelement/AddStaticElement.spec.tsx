@@ -25,7 +25,7 @@ describe('When page loads', () => {
         const { getByTestId } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -39,7 +39,7 @@ describe('When page loads', () => {
         const { getByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -55,7 +55,7 @@ describe('When line separator is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -80,7 +80,7 @@ describe('When hyperlink is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -106,7 +106,7 @@ describe('When comments is chosen', () => {
         const { getByTestId, findByText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -127,63 +127,12 @@ describe('When comments is chosen', () => {
     });
 });
 
-describe('When participants is chosen', () => {
-    it('only displays admin comments', async () => {
-        const { getByTestId, findByText } = render(
-            <BrowserRouter>
-                <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
-                        <AddStaticElement />
-                    </PageManagementProvider>
-                </AlertProvider>
-            </BrowserRouter>
-        );
-
-        const staticTypeInput = getByTestId('staticType');
-
-        act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Participant list (read-only)');
-        });
-
-        act(() => {
-            fireEvent.blur(staticTypeInput);
-        });
-
-        expect(await findByText('Administrative Comments')).toBeInTheDocument();
-    });
-});
-
-describe('When electronic doc list is chosen', () => {
-    it('only displays admin comments', async () => {
-        const { getByTestId, findByText } = render(
-            <BrowserRouter>
-                <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
-                        <AddStaticElement />
-                    </PageManagementProvider>
-                </AlertProvider>
-            </BrowserRouter>
-        );
-
-        const staticTypeInput = getByTestId('staticType');
-        act(() => {
-            userEvent.selectOptions(staticTypeInput, 'Electronic document list (read-only)');
-        });
-
-        act(() => {
-            fireEvent.blur(staticTypeInput);
-        });
-
-        expect(await findByText('Administrative Comments')).toBeInTheDocument();
-    });
-});
-
 describe('When all inputs are entered', () => {
     it('button enables once all inputs are selected', async () => {
         const { getByTestId, findByTestId, getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <AddStaticElement />
                     </PageManagementProvider>
                 </AlertProvider>

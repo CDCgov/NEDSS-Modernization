@@ -38,7 +38,7 @@ describe('When PageTabs renders', () => {
     it('should display the Manage Tabs button when passed onAddSuccess', () => {
         const { container } = render(
             <DragDropProvider pageData={content}>
-                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
+                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
                     <PageTabs pageId={999} tabs={content.tabs!} onAddSuccess={jest.fn()} />
                 </PageManagementProvider>
             </DragDropProvider>
@@ -49,7 +49,7 @@ describe('When PageTabs renders', () => {
     it('should not display the Manage Tabs button when not passed onAddSuccess', () => {
         const { container } = render(
             <DragDropProvider pageData={content}>
-                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
+                <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
                     <PageTabs pageId={999} tabs={content.tabs!} />
                 </PageManagementProvider>
             </DragDropProvider>

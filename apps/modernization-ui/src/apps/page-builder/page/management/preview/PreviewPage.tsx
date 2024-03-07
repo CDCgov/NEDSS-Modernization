@@ -27,7 +27,7 @@ const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
 
     return page ? (
-        <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+        <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
             <PreviewPageContent />
         </PageManagementProvider>
     ) : (

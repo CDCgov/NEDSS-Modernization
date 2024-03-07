@@ -1,0 +1,48 @@
+@use 'styles/colors';
+
+.view {
+    padding: 1rem;
+    .container {
+        background-color: colors.$base-white;
+        max-width: 55rem;
+        min-height: 40rem;
+        margin: 1.5rem auto;
+        padding: 1.5rem 0;
+        h2 {
+            text-align: center;
+            margin: 1.25rem 0 0 0;
+        }
+        .body {
+            max-width: 45rem;
+            margin: 4rem auto auto;
+            table {
+                width: 100%;
+                thead {
+                    th {
+                        border-bottom: 1px solid colors.$base-lighter;
+                        text-align: left;
+                        font-size: 1rem;
+                        padding-bottom: 1.5rem;
+                        &:first-of-type {
+                            width: 8.75rem;
+                        }
+                    }
+                }
+                tr td {
+                    font-weight: 400;
+                    padding: 1.75rem 1.5rem 0.75rem 0;
+                    vertical-align: top;
+                    &:first-of-type {
+                        width: 8.75rem;
+                    }
+                    span {
+                        display: inline-block;
+                        width: 50%;
+                        margin-bottom: 0.75rem;
+                        vertical-align: top;
+                    }
+                }
+            }
+        }
+    }
+}

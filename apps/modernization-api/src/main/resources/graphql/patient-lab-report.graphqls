@@ -1,11 +1,11 @@
 extend type Query {
-  findLabReportsForPatient(personUid: Int!, page: Page): [PatientLabReport!]!
-  findLabReportsForPatientCount(personUid: Int!): Int
+  findLabReportsForPatient(personUid: Int!, page: Page): PatientLabReportResults
 }
 
 type PatientLabReportResults {
   content: [PatientLabReport]!
   total: Int!
+  number: Int!
 }
 
 input PatientLabReportFilter {
@@ -46,7 +46,6 @@ type PersonParticipation2 {
   personCd: String!
   firstName: String
   lastName: String
-
 }
 
 type OrganizationParticipation2 {

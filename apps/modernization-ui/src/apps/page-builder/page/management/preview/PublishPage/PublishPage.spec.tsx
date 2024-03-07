@@ -1,8 +1,8 @@
-import { AlertProvider } from "alert";
-import { PageManagementProvider } from "../../usePageManagement";
-import { PublishPage } from "./PublishPage";
-import { render } from "@testing-library/react";
-import { PagesResponse } from "apps/page-builder/generated";
+import { AlertProvider } from 'alert';
+import { PageManagementProvider } from '../../usePageManagement';
+import { PublishPage } from './PublishPage';
+import { render } from '@testing-library/react';
+import { PagesResponse } from 'apps/page-builder/generated';
 
 describe('When PublishPage renders', () => {
     const modalRef = { current: null };
@@ -37,7 +37,7 @@ describe('When PublishPage renders', () => {
     };
     it('should display textarea', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
+            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
                 <AlertProvider>
                     <PublishPage modalRef={modalRef} />
                 </AlertProvider>
@@ -48,7 +48,7 @@ describe('When PublishPage renders', () => {
     });
     it('should display label', () => {
         const { container } = render(
-            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()}>
+            <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
                 <AlertProvider>
                     <PublishPage modalRef={modalRef} />
                 </AlertProvider>

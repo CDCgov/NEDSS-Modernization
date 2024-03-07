@@ -106,7 +106,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
             <div className={styles.content}>
                 <div className={styles.formWrapper}>
                     <FormProvider {...form}>
-                        <EditPageQuestion page={page.id} question={question} onFindValueSet={() => {}} />
+                        <EditPageQuestion page={page.id} question={question} />
                     </FormProvider>
                 </div>
             </div>

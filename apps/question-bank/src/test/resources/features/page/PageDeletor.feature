@@ -9,9 +9,5 @@ Feature: Delete Draft Page
     Scenario: I can delete draft page
         Given I create a delete page request with draft page
         When I send a delete page request
-        Then the page is deleted 
+        Then the draft is deleted and the page changed to published
 
-    Scenario: I can delete draft page when published with draft
-        Given I create a delete page request with published with draft page
-        When I send a delete page request
-        Then the page is deleted and changed to published

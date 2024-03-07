@@ -123,7 +123,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
     const [bodies, setBodies] = useState<TableBody[]>([]);
 
     const handleComplete = (data: FindLabReportsForPatientQuery) => {
-        setTotal(data?.findLabReportsForPatient?.length || 0);
+        setTotal(data?.findLabReportsForPatient?.total || 0);
         const content = transform(data?.findLabReportsForPatient);
         setItems(content);
         const sorted = sort(content, {});
@@ -171,6 +171,7 @@ export const LabReportTable = ({ patient, pageSize, allowAdd = false }: PatientL
             tableHeader={'Lab reports'}
             tableHead={headers}
             tableBody={bodies}
+            pageSize={pageSize}
             totalResults={total}
             currentPage={currentPage}
             handleNext={setCurrentPage}

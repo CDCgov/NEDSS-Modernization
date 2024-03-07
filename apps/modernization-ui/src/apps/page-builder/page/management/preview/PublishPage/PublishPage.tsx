@@ -99,15 +99,22 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                     control={control}
                     name="notes"
                     rules={{ required: { value: true, message: 'Version notes required' }, ...maxLengthRule(2000) }}
-                    render={({ field: { onChange, name, value }, fieldState: { error } }) => (
+                    render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                         <>
                             <Label htmlFor={name}>
-                                Version notes{' '}
+                                <b>Version notes </b>
                                 <span className={styles.required}>
                                     <span>*</span>
                                 </span>
                             </Label>
-                            <Textarea onChange={onChange} defaultValue={value} name={name} id={name} rows={1} />
+                            <Textarea
+                                onChange={onChange}
+                                defaultValue={value}
+                                name={name}
+                                id={name}
+                                rows={1}
+                                onBlur={onBlur}
+                            />
                             {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
                         </>
                     )}
@@ -115,14 +122,21 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
             </div>
             <div className={styles.conditions}>
                 <h4>Related condition(s)</h4>
-                {conditions ? conditions.map((condition, i) => <p key={i}>{condition.name}</p>) : null}
+                {conditions?.length ? (
+                    conditions.map((condition, i) => <p key={i}>{condition.name}</p>)
+                ) : (
+                    <ErrorMessage>
+                        At least one condition must be related to this page before it can be published. Please update
+                        the Page Details by mapping Related Condition(s) to the page.
+                    </ErrorMessage>
+                )}
             </div>
             <div className={styles.footer}>
                 <ModalToggleButton type="button" closer outline modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
-                <Button type="submit" disabled={!publishForm.formState.isValid}>
-                    Submit
+                <Button type="submit" disabled={!publishForm.formState.isValid || !conditions?.length}>
+                    Publish
                 </Button>
             </div>
         </Form>

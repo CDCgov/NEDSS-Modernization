@@ -49,7 +49,7 @@ describe('When modal loads with hyperlink element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={hyperlinkElement} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -63,7 +63,7 @@ describe('When modal loads with hyperlink element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={hyperlinkElement} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -79,7 +79,7 @@ describe('When modal loads with hyperlink element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={hyperlinkElement} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -95,7 +95,7 @@ describe('When modal loads with comments element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={commentsElement} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -109,7 +109,7 @@ describe('When modal loads with comments element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={commentsElement} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -126,7 +126,7 @@ describe('When modal loads with line separator element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={lineSeparatorElement} />
                     </PageManagementProvider>
                 </AlertProvider>
@@ -140,7 +140,7 @@ describe('When modal loads with line separator element', () => {
         const { getByLabelText } = render(
             <BrowserRouter>
                 <AlertProvider>
-                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh}>
+                    <PageManagementProvider page={page} fetch={fetch} refresh={refresh} loading={false}>
                         <EditStaticElement question={lineSeparatorElement} />
                     </PageManagementProvider>
                 </AlertProvider>

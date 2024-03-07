@@ -13,9 +13,10 @@ type Props = {
     onAddQuestion: (subsection: number) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onEditValueset: (valuesetName: string) => void;
+    onChangeValueset: (question: PagesQuestion) => void;
 };
 
-export const Sections = ({ sections, onAddQuestion, onEditQuestion, onEditValueset }: Props) => {
+export const Sections = ({ sections, onAddQuestion, onEditQuestion, onEditValueset, onChangeValueset }: Props) => {
     const { page, refresh } = usePageManagement();
 
     const sectionStatusModalRef = useRef<ModalRef>(null);
@@ -54,6 +55,7 @@ export const Sections = ({ sections, onAddQuestion, onEditQuestion, onEditValues
                     onDeleteSection={() => handleDeleteSection(s)}
                     onDeleteStatus={handleSubsectionStatusModal}
                     onEditValueset={onEditValueset}
+                    onChangeValueset={onChangeValueset}
                 />
             ))}
             <StatusModal

@@ -8,10 +8,11 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from '../question-form.module.scss';
 
 type Props = {
-    onFindValueSet: () => void;
+    onFindValueSet?: () => void;
     published?: boolean;
+    editing?: boolean;
 };
-export const CodedFields = ({ onFindValueSet, published = true }: Props) => {
+export const CodedFields = ({ onFindValueSet, editing = false, published = false }: Props) => {
     const form = useFormContext<CreateCodedQuestionRequest>();
     const valueSet = useWatch({ control: form.control, name: 'valueSet', exact: true });
     const [valueSets, setValueSets] = useState<ValueSetOption[]>([]);
@@ -56,7 +57,7 @@ export const CodedFields = ({ onFindValueSet, published = true }: Props) => {
                     />
                 )}
             />
-            {!published && (
+            {!published && !editing && (
                 <>
                     <Button className={styles.valuesetSearchButton} type="button" outline onClick={onFindValueSet}>
                         Search value set

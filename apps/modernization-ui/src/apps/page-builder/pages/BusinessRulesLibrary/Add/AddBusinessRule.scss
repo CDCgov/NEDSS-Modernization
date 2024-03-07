@@ -198,3 +198,9 @@
 .bold-text {
     font-weight: bold;
 }
+
+.multi-select__control {
+    &.multi-select__control--is-disabled {
+        background-color: colors.$disabled;
+    }
+}

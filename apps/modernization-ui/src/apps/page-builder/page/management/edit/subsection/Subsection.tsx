@@ -11,6 +11,7 @@ import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
+import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
 
 type Props = {
     subsection: PagesSubSection;
@@ -19,6 +20,7 @@ type Props = {
     onDeleteSubsection: (subsection: PagesSubSection) => void;
     onEditSubsection: (subsecition: PagesSubSection) => void;
     onEditValueset: (valuesetName: string) => void;
+    onChangeValueset: (question: PagesQuestion) => void;
 };
 
 const hyperlinkID = 1003;
@@ -35,11 +37,13 @@ export const Subsection = ({
     onEditQuestion,
     onDeleteSubsection,
     onEditSubsection,
-    onEditValueset
+    onEditValueset,
+    onChangeValueset
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
     const { showAlert } = useAlert();
+    const { setRequired } = useSetPageQuestionRequired();
 
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
@@ -71,8 +75,9 @@ export const Subsection = ({
         }
     };
 
-    const handleRequiredChange = (id: number) => {
-        console.log('update question NYI', id);
+    const handleRequiredChange = (question: number, required: boolean) => {
+        setRequired(page.id, question, required);
+        refresh();
     };
 
     return (
@@ -95,6 +100,7 @@ export const Subsection = ({
                             onDeleteQuestion={handleDeleteQuestion}
                             onRequiredChange={handleRequiredChange}
                             onEditValueset={onEditValueset}
+                            onChangeValueset={onChangeValueset}
                         />
                     ))}
                 </>

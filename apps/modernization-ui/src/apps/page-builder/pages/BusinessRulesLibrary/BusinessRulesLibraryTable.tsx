@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { TableBody, TableComponent } from 'components/Table/Table';
 import { RefObject, useEffect, useState } from 'react';
 import { Direction } from 'sorting';
@@ -113,7 +113,69 @@ export const BusinessRulesLibraryTable = ({
         ]
     });
 
-    const asTableRows = (rules: Rule[] | undefined): TableBody[] => rules?.map(asTableRow) || [];
+    const asTableViewRow = (rule: Rule): TableBody => ({
+        key: rule.id,
+        id: rule.template.toString(),
+        tableDetails: [
+            {
+                id: 1,
+                title: (
+                    <Link to={`/page-builder/pages/${page?.id}/business-rules/${rule.id}`}>
+                        {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
+                    </Link>
+                )
+            },
+            { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
+            {
+                id: 3,
+                title: (
+                    <div>
+                        {!rule.anySourceValue ? (
+                            rule?.sourceValues?.map((value, index) => (
+                                <React.Fragment key={index}>
+                                    <span>{value}</span>
+                                    <br />
+                                </React.Fragment>
+                            ))
+                        ) : (
+                            <div>Any source value</div>
+                        )}
+                    </div>
+                )
+            },
+            {
+                id: 4,
+                title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>
+            },
+            {
+                id: 5,
+                title: (
+                    <div>
+                        {rule.targets?.map((target, index) => (
+                            <React.Fragment key={index}>
+                                <span>
+                                    {target.label} ({target.targetIdentifier})
+                                </span>
+                                <br />
+                            </React.Fragment>
+                        ))}
+                    </div>
+                )
+            },
+            {
+                id: 6,
+                title: <div>{rule.id}</div>
+            }
+        ]
+    });
+
+    const asTableRows = (rules: Rule[] | undefined): TableBody[] => {
+        if (page?.status === 'Published') {
+            return rules?.map(asTableViewRow) || [];
+        } else {
+            return rules?.map(asTableRow) || [];
+        }
+    };
 
     useEffect(() => {
         setTableRows(asTableRows(summaries));
@@ -193,9 +255,15 @@ export const BusinessRulesLibraryTable = ({
                 <div className="business-rules-header">
                     <h3> {page?.name} | Business rules </h3>
                 </div>
-                <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
-                    Add new business rule
-                </NavLinkButton>
+                {page?.status === 'Published' ? (
+                    <Button type="button" disabled>
+                        Add new business rule
+                    </Button>
+                ) : (
+                    <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
+                        Add new business rule
+                    </NavLinkButton>
+                )}
             </div>
             <div>
                 <SearchBar onChange={onQueryChange} />
@@ -213,7 +281,7 @@ export const BusinessRulesLibraryTable = ({
                 currentPage={curPage.current}
                 handleNext={request}
                 sortData={handleSort}
-                rangeSelector
+                rangeSelector={isLoading === true || summaries.length > 0}
                 isLoading={isLoading}
             />
             {summaries.length === 0 && !isLoading && dataNotAvailableElement}
