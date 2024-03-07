@@ -100,6 +100,14 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch, cl
         onSearch(cleanLabFilter(labReportFilter), SEARCH_TYPE.LAB_REPORT);
     };
 
+    const recreateEventForm = () => {
+        const currentSearchType = searchType;
+        setSearchType(undefined);
+        setTimeout(() => {
+            setSearchType(currentSearchType);
+        }, 100);
+    };
+
     return (
         <>
             <div style={{ height: `calc(100vh - 405px)`, overflowY: 'auto' }}>
@@ -133,7 +141,10 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch, cl
                                     data-testid="clear"
                                     className="width-full clear-btn"
                                     type={'button'}
-                                    onClick={handleClearAll}
+                                    onClick={() => {
+                                        handleClearAll();
+                                        recreateEventForm();
+                                    }}
                                     outline>
                                     Clear all
                                 </Button>
