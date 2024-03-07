@@ -3,6 +3,7 @@ import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQu
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
 import { Heading } from 'components/heading';
+import { useEffect, useState } from 'react';
 import styles from './question-header.module.scss';
 
 type Props = {
@@ -18,7 +19,21 @@ const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
 
-export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion }: Props) => {
+export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onDeleteQuestion }: Props) => {
+    const [required, setRequired] = useState<boolean>(question.required === true);
+
+    useEffect(() => {
+        if (question.required !== undefined) {
+            setRequired(question.required);
+        }
+    }, [question.required]);
+
+    useEffect(() => {
+        if (required !== question.required) {
+            onRequiredChange(required);
+        }
+    }, [required]);
+
     const getHeadingText = (displayComponent: number | undefined) => {
         switch (displayComponent) {
             case hyperlinkId:
@@ -50,8 +65,10 @@ export const QuestionHeader = ({ question, onRequiredChange, onEditQuestion, onD
                 <div className={styles.divider}>|</div>
                 <div className={styles.requiredToggle}>Not required</div>
                 <ToggleButton
-                    defaultChecked={question.required}
-                    onChange={() => onRequiredChange(!question.required)}
+                    checked={required}
+                    onChange={() => {
+                        setRequired(!required);
+                    }}
                 />
                 <div className={styles.requiredToggle}>Required</div>
             </div>

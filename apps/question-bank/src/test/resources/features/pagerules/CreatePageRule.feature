@@ -73,7 +73,7 @@ Feature: Create Business Rule
         And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
          | id           | label         |
-         | INV143       | Age at Onset  |
+         | INV143       | Age at Illness Onset: |
 
         And the business rule should have "source values" of:
             | Male   |
@@ -106,7 +106,7 @@ Feature: Create Business Rule
         And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
             | id           | label         |
-            | INV143       | Age at Onset  |
+            | INV143       | Age at Illness Onset:  |
         And the business rule should have "source values" of:
             | Male   |
             | Female |
@@ -138,7 +138,7 @@ Feature: Create Business Rule
         And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
             | id           | label         |
-            | INV143       | Age at Onset  |
+            | INV143       | Age at Illness Onset:  |
         And the business rule should have "source values" of:
             | Male   |
             | Female |
@@ -170,7 +170,7 @@ Feature: Create Business Rule
         And the business rule should have "target type" of "QUESTION"
         And the business rule should have target questions list of:
             | id           | label         |
-            | INV143       | Age at Onset  |
+            | INV143       | Age at Illness Onset:  |
         And the business rule should have "source values" of:
             | Male   |
             | Female |

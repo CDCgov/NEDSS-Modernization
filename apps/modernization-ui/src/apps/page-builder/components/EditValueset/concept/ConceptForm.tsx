@@ -4,7 +4,7 @@ import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import styles from './concept-form.module.scss';
@@ -14,9 +14,6 @@ type Props = {
 };
 export const ConceptForm = ({ isEditing = false }: Props) => {
     const form = useFormContext<CreateConceptRequest>();
-    const [alwaysEffective, setAlwaysEffective] = useState<boolean>(
-        !isEditing || form.getValues('effectiveToTime') === undefined
-    );
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
 
     return (
@@ -102,40 +99,30 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         />
                     )}
                 />
-                <div className={styles.effectiveTimeSection}>
-                    <Radio
-                        id="alwaysEffective"
-                        name="alwaysEffective"
-                        value={'true'}
-                        label="Always effective"
-                        checked={alwaysEffective}
-                        onChange={() => {
-                            setAlwaysEffective(true);
-                            form.setValue('effectiveToTime', '', { shouldDirty: true, shouldValidate: true });
-                        }}
-                    />
-                    <Radio
-                        id="effectiveUntil"
-                        name="effectiveUntil"
-                        value={'false'}
-                        label="Effective until"
-                        checked={!alwaysEffective}
-                        onChange={() => {
-                            setAlwaysEffective(false);
-                            form.setValue('effectiveToTime', '', { shouldDirty: true, shouldValidate: true });
-                        }}
+                <div className={styles.effectiveTimeWrapper}>
+                    <Controller
+                        control={form.control}
+                        name="effectiveFromTime"
+                        rules={{ required: { value: true, message: 'Effective from time is required' } }}
+                        render={({ field: { onChange, onBlur, value } }) => (
+                            <DatePickerInput
+                                defaultValue={value}
+                                label="Effective from time"
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                required
+                            />
+                        )}
                     />
                     <Controller
                         control={form.control}
                         name="effectiveToTime"
-                        rules={{ required: { value: !alwaysEffective, message: 'Effective until date is required' } }}
                         render={({ field: { onChange, onBlur, value } }) => (
                             <DatePickerInput
                                 defaultValue={value}
+                                label="Effective to time"
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                disabled={alwaysEffective}
-                                required={!alwaysEffective}
                             />
                         )}
                     />
