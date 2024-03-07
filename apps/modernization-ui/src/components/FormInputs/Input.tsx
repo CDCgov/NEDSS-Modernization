@@ -4,28 +4,41 @@ import './Input.scss';
 import { EntryWrapper } from 'components/Entry';
 import { RefObject } from 'react';
 
-type InputProps = {
-    name?: string;
-    className?: string;
-    htmlFor?: string;
-    label?: string;
-    id?: string;
-    required?: boolean;
+type Value = NumberValue | OtherValue;
+
+type OtherValue = {
     type: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
-    error?: any;
-    onChange?: any;
+    inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
     defaultValue?: string | null;
-    placeholder?: string;
-    inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
-    flexBox?: boolean;
-    multiline?: boolean;
-    rows?: number;
-    textInputRef?: RefObject<HTMLInputElement>;
-    textAreaRef?: RefObject<HTMLTextAreaElement>;
-    mask?: string;
-    pattern?: string;
-    ariaLabel?: string;
-} & Omit<JSX.IntrinsicElements['input'], 'defaultValue'>;
+};
+
+type NumberValue = {
+    type: 'number';
+    inputMode?: 'numeric' | 'decimal';
+    defaultValue?: number | null;
+};
+
+type InputProps =
+    | ({
+          name?: string;
+          className?: string;
+          htmlFor?: string;
+          label?: string;
+          id?: string;
+          required?: boolean;
+          error?: string;
+          onChange?: any;
+          placeholder?: string;
+          flexBox?: boolean;
+          multiline?: boolean;
+          rows?: number;
+          textInputRef?: RefObject<HTMLInputElement>;
+          textAreaRef?: RefObject<HTMLTextAreaElement>;
+          mask?: string;
+          pattern?: string;
+          ariaLabel?: string;
+      } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'type' | 'inputMode'>) &
+          Value;
 
 export const Input = ({
     name,

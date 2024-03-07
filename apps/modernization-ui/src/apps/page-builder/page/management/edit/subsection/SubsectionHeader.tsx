@@ -91,11 +91,11 @@ export const SubsectionHeader = ({
                         <ModalToggleButton type="button" modalRef={ungroupSubsectionModalRef}>
                             <IconComponent name={'group'} size={'s'} /> Ungroup questions
                         </ModalToggleButton>
-                    ) : (
+                    ) : subsection.isGroupable && subsection.questions.length > 0 ? (
                         <ModalToggleButton type="button" modalRef={groupSubsectionModalRef}>
                             <IconComponent name={'group'} size={'s'} /> Group questions
                         </ModalToggleButton>
-                    )}
+                    ) : null}
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>

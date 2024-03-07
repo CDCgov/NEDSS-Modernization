@@ -91,7 +91,7 @@ export default function ContactFields({ id, title }: Props) {
                                     placeholder="1234"
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    type="tel"
+                                    type="number"
                                     label="Ext"
                                     defaultValue={value}
                                     htmlFor={name}

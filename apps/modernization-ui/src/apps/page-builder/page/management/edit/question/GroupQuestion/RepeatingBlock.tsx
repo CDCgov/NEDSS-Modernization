@@ -1,5 +1,5 @@
 import styles from './repeating-block.module.scss';
-import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { Batch, PagesQuestion } from 'apps/page-builder/generated';
@@ -12,28 +12,32 @@ type Props = {
 };
 
 export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
-    const [total, setTotal] = useState<number | undefined>(undefined);
-    const { control } = useFormContext();
-    const { fields } = useFieldArray({
-        control,
-        name: 'batches'
-    });
+    const [total, setTotal] = useState<number>(0);
+    const { control, getValues } = useFormContext();
 
-    const watchedWidth = useWatch({ control: control });
+    const watchedBatches = useWatch({ control: control, name: 'batches' });
 
-    const calcTotal = (batches: Batch[]) => {
-        return batches.reduce((n: any, { batchTableColumnWidth }: any) => n + parseInt(batchTableColumnWidth), 0);
+    const calcTotal = () => {
+        const appears = watchedBatches.filter((batch: Batch) => batch.batchTableAppearIndCd === 'Y');
+        const total = appears.reduce((n: number, { batchTableColumnWidth }: any) => {
+            if (batchTableColumnWidth) {
+                return n + parseInt(batchTableColumnWidth);
+            } else {
+                return n;
+            }
+        }, 0);
+        return total;
     };
 
     useEffect(() => {
-        const calculated = calcTotal(watchedWidth.batches);
-        setTotal(isNaN(calculated) ? undefined : calculated);
-        if (calcTotal(watchedWidth.batches) === 100) {
+        const calculated = calcTotal();
+        setTotal(isNaN(calculated) ? 0 : calculated);
+        if (calcTotal() === 100) {
             setValid(true);
         } else {
             setValid(false);
         }
-    }, [watchedWidth]);
+    }, [watchedBatches]);
 
     return (
         <div className={styles.block}>
@@ -61,7 +65,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {fields.map((item: any, index: number) => (
+                    {questions.map((batch: Batch, index: number) => (
                         <tr className={styles.row} key={index}>
                             <td className={styles.number}>
                                 <p>{index + 1}</p>
@@ -70,10 +74,8 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                             <td className={styles.appears}>
                                 <Controller
                                     control={control}
+                                    defaultValue={'Y'}
                                     name={`batches[${index}].batchTableAppearIndCd`}
-                                    rules={{
-                                        required: { value: true, message: "Select 'Yes' or 'No'" }
-                                    }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <SelectInput
                                             name={name}
@@ -93,7 +95,13 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches[${index}].batchTableHeader`}
                                     rules={{
-                                        required: { value: true, message: 'Enter label' }
+                                        required: {
+                                            value:
+                                                getValues(`batches[${index}].batchTableAppearIndCd`) === 'Y'
+                                                    ? true
+                                                    : false,
+                                            message: 'Enter label'
+                                        }
                                     }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <Input
@@ -111,13 +119,26 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches[${index}].batchTableColumnWidth`}
                                     rules={{
-                                        required: { value: true, message: 'Define width' }
+                                        required: {
+                                            value:
+                                                getValues(`batches[${index}].batchTableAppearIndCd`) === 'Y'
+                                                    ? true
+                                                    : false,
+                                            message: 'Define width'
+                                        },
+                                        pattern: {
+                                            value:
+                                                getValues(`batches[${index}].batchTableAppearIndCd`) === 'Y'
+                                                    ? /^[0-9]*[1-9][0-9]*$/
+                                                    : /^(?!)/,
+                                            message: 'Width must be a number greater than 0.'
+                                        }
                                     }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <Input
                                             type="number"
                                             name={name}
-                                            defaultValue={value}
+                                            defaultValue={batch?.batchTableAppearIndCd === 'N' ? undefined : value}
                                             onChange={onChange}
                                             error={error?.message}
                                         />

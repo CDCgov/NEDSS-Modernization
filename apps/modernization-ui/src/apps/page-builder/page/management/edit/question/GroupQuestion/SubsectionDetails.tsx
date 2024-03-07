@@ -75,7 +75,8 @@ export const SubsectionDetails = () => {
                         control={control}
                         name="blockName"
                         rules={{
-                            required: { value: true, message: 'Block name required.' }
+                            required: { value: true, message: 'Block name required.' },
+                            pattern: { value: /^[a-zA-Z0-9-_]*$/, message: 'Spaces are not allowed.' }
                         }}
                         render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                             <Input

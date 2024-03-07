@@ -73,7 +73,7 @@ describe('when Subsection renders', () => {
     it('should display input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');
-        expect(inputs.length).toBe(2);
+        expect(inputs.length).toBe(4);
     });
     it('should display table headers', () => {
         const { container } = setup();

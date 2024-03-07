@@ -46,14 +46,20 @@ export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
     });
     const { handleSubmit, reset } = methods;
     const { showAlert } = useAlert();
-
     const handleGroup = (data: GroupQuestionFormType) => {
         try {
             SubSectionControllerService.groupSubSectionUsingPost({
                 authorization: authorization(),
                 page: page.id,
                 request: {
-                    batches: data.batches,
+                    batches: data.batches!.map((batch: any) => ({
+                        batchTableAppearIndCd: batch.batchTableAppearIndCd,
+                        batchTableColumnWidth: batch.batchTableColumnWidth
+                            ? parseFloat(batch.batchTableColumnWidth)
+                            : 0,
+                        batchTableHeader: batch.batchTableHeader,
+                        id: batch.id
+                    })),
                     blockName: data.blockName,
                     id: data.id
                 }
