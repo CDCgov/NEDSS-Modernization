@@ -168,7 +168,6 @@ const TargetQuestion = ({
 
     useEffect(() => {
         if (fetchPage) {
-            console.log(isSource);
             let result: PagesResponse = {
                 id: fetchPage.id,
                 description: fetchPage.description,
@@ -337,7 +336,17 @@ const TargetQuestion = ({
             modalFooter={
                 <ModalFooter className="padding-2 margin-left-auto footer">
                     <ButtonGroup className="flex-justify-end">
-                        <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                        <ModalToggleButton
+                            modalRef={modalRef}
+                            closer
+                            outline
+                            data-testid="condition-cancel-btn"
+                            onClick={() => {
+                                setSubsectionOpen(false);
+                                setSource(0);
+                                setSourceList([]);
+                                setActiveTab(0);
+                            }}>
                             Cancel
                         </ModalToggleButton>
                         <ModalToggleButton
