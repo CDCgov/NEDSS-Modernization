@@ -12,7 +12,8 @@ Feature: Lab report search
     Given A lab report exist
     And I add the lab report criteria for "<field>"
     When I search for lab reports
-    Then I find the lab report
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
 
     Examples:
       | field                          |
@@ -45,7 +46,8 @@ Feature: Lab report search
     And I add the lab report criteria for "<field2>"
     And I add the lab report criteria for "<field3>"
     When I search for lab reports
-    Then I find the lab report
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
 
     Examples:
       | field                          | field2        | field3       |

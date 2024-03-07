@@ -106,6 +106,7 @@ class SearchableLabReportMother {
             Collections.singletonList(
                 ElasticsearchActId.builder()
                     .actIdSeq(2)
+                    .typeCd("FN")
                     .typeDescTxt("Filler Number")
                     .rootExtensionTxt("accession number")
                     .build()
@@ -140,6 +141,7 @@ class SearchableLabReportMother {
                 //  ordering provider
                 ElasticsearchPersonParticipation.builder()
                     .typeCd("ORD")
+                    .personCd("PRV")
                     .subjectClassCd("PSN")
                     .personRecordStatus("ACTIVE")
                     .entityId(PATIENT_ID)

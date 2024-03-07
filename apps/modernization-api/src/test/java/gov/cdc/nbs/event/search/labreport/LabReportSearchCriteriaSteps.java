@@ -1,10 +1,10 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
-import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
@@ -22,7 +22,6 @@ import java.util.Optional;
 
 public class LabReportSearchCriteriaSteps {
 
-  private final MotherSettings settings;
   private final Active<PatientIdentifier> patient;
   private final Active<ProgramAreaIdentifier> programArea;
   private final Active<JurisdictionIdentifier> jurisdiction;
@@ -30,14 +29,12 @@ public class LabReportSearchCriteriaSteps {
   private final Active<LabReportFilter> criteria;
 
   LabReportSearchCriteriaSteps(
-      final MotherSettings settings,
       final Active<PatientIdentifier> patient,
       final Active<ProgramAreaIdentifier> programArea,
       final Active<JurisdictionIdentifier> jurisdiction,
       final Active<LabReport> searchableLabReport,
       final Active<LabReportFilter> criteria
   ) {
-    this.settings = settings;
     this.patient = patient;
     this.programArea = programArea;
     this.jurisdiction = jurisdiction;
@@ -72,12 +69,14 @@ public class LabReportSearchCriteriaSteps {
           .map(lab -> PregnancyStatus.resolve(lab.getPregnantIndCd()))
           .ifPresent(filter::setPregnancyStatus);
 
-      case "accession number" -> filter.setEventId(
-          eventId(
-              LabReportFilter.LaboratoryEventIdType.ACCESSION_NUMBER,
-              "accession number"
-          )
-      );
+      case "accession number" -> filler()
+          .map(
+              filler ->
+                  eventId(
+                      LabReportFilter.LaboratoryEventIdType.ACCESSION_NUMBER,
+                      filler
+                  )
+          ).ifPresent(filter::setEventId);
 
       case "lab id" -> this.searchableLabReport.maybeActive()
           .map(lab -> eventId(
@@ -136,9 +135,13 @@ public class LabReportSearchCriteriaSteps {
 
       case "processing status" -> filter.setProcessingStatus(List.of(LabReportFilter.ProcessingStatus.UNPROCESSED));
 
-      case "created by" -> filter.setCreatedBy(settings.createdBy());
+      case "created by" -> this.searchableLabReport.maybeActive().map(
+          LabReport::getAddUserId
+      ).ifPresent(filter::setCreatedBy);
 
-      case "last updated by" -> filter.setLastUpdatedBy(settings.createdBy());
+      case "last updated by" -> this.searchableLabReport.maybeActive().map(
+          LabReport::getLastChgUserId
+      ).ifPresent(filter::setLastUpdatedBy);
 
       case "ordering facility" -> orderingFacility().map(
           provider -> providerSearch(
@@ -154,7 +157,7 @@ public class LabReportSearchCriteriaSteps {
           )
       );
 
-      case "reporting facility" -> orderingFacility().map(
+      case "reporting facility" -> reportingFacility().map(
           provider -> providerSearch(
               LabReportFilter.ProviderType.REPORTING_FACILITY,
               provider
@@ -183,7 +186,7 @@ public class LabReportSearchCriteriaSteps {
         value
     );
   }
-  
+
   private LabReportFilter.LaboratoryEventDateSearch eventDateSearch(
       final LabReportFilter.LabReportDateType type,
       final Instant from
@@ -224,6 +227,16 @@ public class LabReportSearchCriteriaSteps {
         .filter(participation -> Objects.equals("PATSBJ", participation.getTypeCd()))
         .findFirst()
         .map(ElasticsearchPersonParticipation::getEntityId);
+  }
+
+  private Optional<String> filler() {
+    return this.searchableLabReport.maybeActive()
+        .stream()
+        .map(LabReport::getActIds)
+        .flatMap(Collection::stream)
+        .filter(act -> Objects.equals("FN", act.getTypeCd()))
+        .findFirst()
+        .map(ElasticsearchActId::getRootExtensionTxt);
   }
 
   private LabReportFilter.LabReportProviderSearch providerSearch(
