@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand;
 
 import java.time.Instant;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -120,6 +122,32 @@ public class WaRuleMetadata {
     this.lastChgTime = command.requestedOn();
     this.lastChgUserId = command.userId();
     this.recordStatusTime = command.requestedOn();
+
+  }
+
+  public static WaRuleMetadata clone(WaRuleMetadata original) {
+    return new WaRuleMetadata(
+        null,
+        null,
+        original.getRuleCd(),
+        original.getRuleExpression(),
+        original.getErrormsgText(),
+        original.getSourceQuestionIdentifier(),
+        original.getTargetQuestionIdentifier(),
+        original.getRecordStatusCd(),
+        original.getRecordStatusTime(),
+        original.getAddTime(),
+        original.getAddUserId(),
+        original.getLastChgTime(),
+        original.getLastChgUserId(),
+        original.getRuleDescText(),
+        original.getJsFunction(),
+        original.getJsFunctionName(),
+        original.getUserRuleId(),
+        original.getLogic(),
+        original.getSourceValues(),
+        original.getTargetType()
+    );
 
   }
 
