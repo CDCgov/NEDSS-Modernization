@@ -5,16 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchObservation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
 import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
 import gov.cdc.nbs.entity.elasticsearch.Investigation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.entity.srte.JurisdictionCode;
 
 public class EventMother {
 
-    private static final Long PATIENT_ID = 8888888L;
     public static Long CREATED_BY = 999999L;
     public static Long UPDATED_BY = 999998L;
 
@@ -94,76 +90,6 @@ public class EventMother {
                 .lastChangeUserId(UPDATED_BY)
                 .programJurisdictionOid(DEKALB_ARBO_OID)
                 .notificationLocalId("notificationLocalId")
-                .build();
-    }
-
-    public static LabReport labReport_acidFastStain(Long personId) {
-        var now = Instant.now();
-        var actIds = Arrays.asList(
-                ElasticsearchActId.builder()
-                        .actIdSeq(2)
-                        .typeDescTxt("Filler Number")
-                        .rootExtensionTxt("accession number")
-                        .build());
-        var orgParticipations = Arrays.asList(
-            // ordering facility
-                ElasticsearchOrganizationParticipation.builder()
-                        .typeCd("ORD")
-                        .subjectClassCd("ORG")
-                        .entityId(PATIENT_ID)
-                        .build(),
-                //  reporting facility
-                ElasticsearchOrganizationParticipation.builder()
-                        .subjectClassCd("ORG")
-                        .typeCd("AUT")
-                        .entityId(PATIENT_ID)
-                        .build());
-        var personParticipations = Arrays.asList(
-            //  patient
-                ElasticsearchPersonParticipation.builder()
-                        .entityId(personId)
-                        .personCd("PAT")
-                        .typeCd("PATSBJ")
-                        .personRecordStatus("ACTIVE")
-                        .personParentUid(personId)
-                        .build(),
-                //  ordering provider
-                ElasticsearchPersonParticipation.builder()
-                        .typeCd("ORD")
-                        .subjectClassCd("PSN")
-                        .personRecordStatus("ACTIVE")
-                        .entityId(PATIENT_ID)
-                        .build());
-        var observations = Arrays.asList(
-            //  lab test
-                ElasticsearchObservation.builder()
-                        .cdDescTxt("Acid-Fast Stain")
-                        .displayName("abnormal")
-                        .build());
-        return LabReport.builder()
-                .id("Test_acid-fast-stain")
-                .classCd("OBS")
-                .moodCd("EVN")
-                .programJurisdictionOid(CLAYTON_STD_OID)
-                .programAreaCd("STD")
-                .jurisdictionCd(CLAYTON_CODE)
-                .pregnantIndCd("Y")
-                .localId("OBS10003024GA01")
-                .activityToTime(now)
-                .effectiveFromTime(now)
-                .rptToStateTime(now)
-                .addTime(now)
-                .observationLastChgTime(now)
-                .electronicInd("E")
-                .addUserId(CREATED_BY)
-                .lastChange(now)
-                .lastChgUserId(UPDATED_BY)
-                .versionCtrlNbr(1L)
-                .recordStatusCd("UNPROCESSED")
-                .actIds(actIds)
-                .organizationParticipations(orgParticipations)
-                .personParticipations(personParticipations)
-                .observations(observations)
                 .build();
     }
 

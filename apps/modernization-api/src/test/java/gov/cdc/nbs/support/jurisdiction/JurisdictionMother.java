@@ -1,10 +1,9 @@
-package gov.cdc.nbs.support.organization;
+package gov.cdc.nbs.support.jurisdiction;
 
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -17,35 +16,37 @@ import java.util.Map;
 
 @Component
 @ScenarioScope
-class OrganizationMother {
+class JurisdictionMother {
 
   private static final String DELETE_IN = """
       delete
-      from Organization
-      where organization_uid in (:identifiers);
-      delete from Entity where entity_uid in (:identifiers) and class_cd = 'ORG';
+      from NBS_SRTE.[dbo].Jurisdiction_code
+      where code in (:identifiers);
       """;
 
   private static final String CREATE = """
-      insert into Entity(entity_uid, class_cd) values (:identifier, 'ORG');
-      insert into Organization(organization_uid, display_nm, version_ctrl_nbr)
-      values (:identifier, :name, 1);
+      insert into NBS_SRTE.[dbo].Jurisdiction_code(
+        nbs_uid,
+        code,
+        type_cd,
+        code_desc_txt,
+        code_short_desc_txt
+      )
+      values (:identifier, :code, 'ALL', :name, :name)
       """;
 
   private final SequentialIdentityGenerator idGenerator;
   private final NamedParameterJdbcTemplate template;
-  private final Available<OrganizationIdentifier> available;
-  private final Active<OrganizationIdentifier> active;
+  private final Available<JurisdictionIdentifier> available;
+  private final Active<JurisdictionIdentifier> active;
 
-  OrganizationMother(
+  JurisdictionMother(
       final SequentialIdentityGenerator idGenerator,
-      final JdbcTemplate template,
-      final Available<OrganizationIdentifier> available,
-      final Active<OrganizationIdentifier> active
-  ) {
+      final NamedParameterJdbcTemplate template,
+      final Available<JurisdictionIdentifier> available,
+      final Active<JurisdictionIdentifier> active) {
     this.idGenerator = idGenerator;
-    this.template = new NamedParameterJdbcTemplate(template);
-
+    this.template = template;
     this.available = available;
     this.active = active;
   }
@@ -53,13 +54,13 @@ class OrganizationMother {
   @PostConstruct
   void reset() {
 
-    List<Long> created = this.available.all()
-        .map(OrganizationIdentifier::identifier)
+    List<String> created = this.available.all()
+        .map(JurisdictionIdentifier::code)
         .toList();
 
     if (!created.isEmpty()) {
 
-      Map<String, List<Long>> parameters = Map.of("identifiers", created);
+      Map<String, List<String>> parameters = Map.of("identifiers", created);
 
       template.execute(
           DELETE_IN,
@@ -73,12 +74,12 @@ class OrganizationMother {
   void create(final String name) {
 
     long identifier = idGenerator.next();
-    String localId = idGenerator.nextLocal("ORG");
+    String code = String.valueOf(identifier);
 
     Map<String, ? extends Serializable> parameters = Map.of(
         "identifier", identifier,
-        "name", name,
-        "local", localId
+        "code", code,
+        "name", name
     );
 
     template.execute(
@@ -87,7 +88,7 @@ class OrganizationMother {
         PreparedStatement::executeUpdate
     );
 
-    OrganizationIdentifier created = new OrganizationIdentifier(identifier);
+    JurisdictionIdentifier created = new JurisdictionIdentifier(identifier, code);
 
     this.available.available(created);
     this.active.active(created);

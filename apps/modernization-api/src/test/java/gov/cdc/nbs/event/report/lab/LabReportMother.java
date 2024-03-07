@@ -8,7 +8,9 @@ import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
+import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -40,6 +42,8 @@ public class LabReportMother {
   private final Active<LabReportIdentifier> active;
   private final Available<LabReportIdentifier> available;
 
+  private final Active<JurisdictionIdentifier> activeJurisdiction;
+  private final Active<ProgramAreaIdentifier> activeProgramArea;
   private final PatientMother patientMother;
 
   LabReportMother(
@@ -49,6 +53,8 @@ public class LabReportMother {
       final TestLabReportCleaner cleaner,
       final Active<LabReportIdentifier> active,
       final Available<LabReportIdentifier> available,
+      final Active<JurisdictionIdentifier> activeJurisdiction,
+      final Active<ProgramAreaIdentifier> activeProgramArea,
       final PatientMother patientMother
   ) {
     this.settings = settings;
@@ -57,6 +63,8 @@ public class LabReportMother {
     this.cleaner = cleaner;
     this.active = active;
     this.available = available;
+    this.activeJurisdiction = activeJurisdiction;
+    this.activeProgramArea = activeProgramArea;
     this.patientMother = patientMother;
   }
 
@@ -84,10 +92,12 @@ public class LabReportMother {
     observation.setCd("10570");
     observation.setCdDescTxt("Condition");
 
-    // Jurisdiction: Out of system
-    observation.setProgAreaCd("STD");
-    observation.setJurisdictionCd("999999");
-    observation.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
+    JurisdictionIdentifier jurisdiction = this.activeJurisdiction.active();
+    ProgramAreaIdentifier programArea = this.activeProgramArea.active();
+
+    observation.setProgAreaCd(programArea.code());
+    observation.setJurisdictionCd(jurisdiction.code());
+    observation.setProgramJurisdictionOid(programArea.oid(jurisdiction));
 
     observation.setAddTime(settings.createdOn());
     observation.setAddUserId(settings.createdBy());
