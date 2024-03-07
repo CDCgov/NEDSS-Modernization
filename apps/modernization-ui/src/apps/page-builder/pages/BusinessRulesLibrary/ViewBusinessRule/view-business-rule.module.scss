@@ -7,7 +7,7 @@
         max-width: 55rem;
         min-height: 40rem;
         margin: 1.5rem auto;
-        padding: 1.5rem 0;
+        padding: 1.5rem 0 4rem;
         h2 {
             text-align: center;
             margin: 1.25rem 0 0 0;
@@ -40,6 +40,9 @@
                         width: 50%;
                         margin-bottom: 0.75rem;
                         vertical-align: top;
+                        &.full {
+                            width: 100%;
+                        }
                     }
                 }
             }

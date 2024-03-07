@@ -38,6 +38,6 @@ import { PageProvider } from 'page';
             );
 
             const tableData = await findAllByRole('cell');
-            expect(tableData).toHaveLength(12);
+            expect(tableData).toHaveLength(16);
         });
     });
