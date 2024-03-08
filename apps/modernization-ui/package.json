@@ -98,6 +98,7 @@
         "@types/node": "^18.11.5",
         "@typescript-eslint/eslint-plugin": "^5.32.0",
         "@typescript-eslint/parser": "^5.32.0",
+        "cypress": "^13.6.6",
         "eslint": "^8.21.0",
         "eslint-config-google": "^0.14.0",
         "eslint-config-prettier": "^8.5.0",
