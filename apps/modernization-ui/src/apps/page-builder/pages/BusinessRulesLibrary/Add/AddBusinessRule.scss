@@ -101,11 +101,9 @@
                     align-items: center;
                     justify-content: space-between;
                     width: 28.0625rem;
-                    height: 2.5rem;
                     flex-shrink: 0;
                     border: 1px solid colors.$base-black;
-                    padding-left: 1rem;
-                    padding-right: 0.6rem;
+                    padding: 0.6rem 1rem 0.6rem;
                 }
 
                 a {

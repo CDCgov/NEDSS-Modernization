@@ -36,13 +36,18 @@ interface Props {
     targets?: Target[];
     question?: SourceQuestion;
     sourceValues?: string[];
+    selectedFieldType: string;
 }
 
-const BusinessRulesForm = ({ question, sourceValues }: Props) => {
+type FieldTypes = {
+    [key: string]: QuestionProps[];
+};
+
+const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
-    const [targetQuestions, setTargetQuestions] = useState<QuestionProps[]>([]);
+    const [targetQuestions, setTargetQuestions] = useState<FieldTypes>({});
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
@@ -70,7 +75,10 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     };
 
     const handleChangeTargetQuestion = (data: QuestionProps[]) => {
-        setTargetQuestions(data);
+        setTargetQuestions({
+            ...targetQuestions,
+            [selectedFieldType]: data
+        });
         const value = data.map((val) => val.question);
         const text = data.map((val) => val.name);
         form.setValue('targetIdentifiers', value);
@@ -87,7 +95,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
 
     useEffect(() => {
         handleRuleDescription();
-    }, [targetQuestions, selectedSource]);
+    }, [targetQuestions[selectedFieldType], selectedSource]);
 
     useEffect(() => {
         if (question?.codeSetName) {
@@ -96,7 +104,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     }, []);
 
     const targetValueIdentifier = form.watch('targetIdentifiers') || [];
-    const isTargetQuestionSelected = targetQuestions.length || targetValueIdentifier.length;
+    const isTargetQuestionSelected = targetQuestions[selectedFieldType]?.length || targetValueIdentifier.length;
 
     const handleRuleDescription = () => {
         let description = '';
@@ -106,9 +114,9 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
             sourceValues?.length && !anySourceValueToggle
                 ? sourceValues?.map((value) => value.text).join(', ')
                 : 'any source value';
-        const targetValue = targetQuestions.map((val) => `${val.name} (${val.question})`);
+        const targetValue = targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`);
 
-        if (selectedSource && targetQuestions.length && logic) {
+        if (selectedSource && targetQuestions[selectedFieldType]?.length && logic) {
             if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
                 description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                     form.getValues('ruleFunction')
@@ -189,6 +197,15 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
     useEffect(() => {
         setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
+
+    const renderErrorListAsString = () => {
+        let errors = '';
+        const length = form.watch('targetValueText')?.length || 0;
+        form.watch('targetValueText')?.map((val, k) => {
+            errors += `${val} (${form.watch('targetIdentifiers')[k]})${length - 1 === k ? '' : ', '}`;
+        });
+        return errors;
+    };
 
     return (
         <>
@@ -415,7 +432,7 @@ const BusinessRulesForm = ({ question, sourceValues }: Props) => {
                             multiline
                             defaultValue={`'${form.watch('sourceText')}' must be ${mapLogicForDateCompare(
                                 form.watch('comparator')
-                            )} '${form.watch('targetValueText')?.[0]} (${form.watch('targetIdentifiers')?.[0]})'`}
+                            )} '${renderErrorListAsString()}'`}
                             name={'errorMessage'}
                             id={'errorMessage'}
                         />
