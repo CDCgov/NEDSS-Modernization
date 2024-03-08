@@ -26,7 +26,10 @@ const SubSectionsDropdown = ({ pageId, selectedQuestionIdentifiers, onSelect }: 
         if (pageId) {
             fetchPageDetails(authorization(), Number(pageId)).then((data) => {
                 const sections = data.tabs?.map((tab) => tab.sections).flat();
-                const subs = sections?.map((section) => section.subSections).flat();
+                const subs = sections
+                    ?.map((section) => section.subSections)
+                    .flat()
+                    .filter((sub) => sub.questions.length);
 
                 setSubSections(subs ?? []);
             });
