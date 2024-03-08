@@ -206,7 +206,8 @@ const AddBusinessRule = () => {
                                                             setSelectedFieldType(field.value);
                                                             form.reset({
                                                                 ruleFunction: field.value,
-                                                                targetType: Rule.targetType.QUESTION
+                                                                targetType: Rule.targetType.QUESTION,
+                                                                anySourceValue: false
                                                             });
                                                         }}>
                                                         {field.display}

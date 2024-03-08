@@ -189,7 +189,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
             form.reset({
                 ...form.getValues(),
                 comparator: Rule.comparator.EQUAL_TO,
-                sourceValues: undefined
+                sourceValues: []
             });
         }
     }, [anySourceValueToggle]);
