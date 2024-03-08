@@ -16,6 +16,7 @@ public class SQLBasedOptionResolver {
   private static final String PREFIX_CRITERIA_PARAMETER = "prefixCriteria";
   private static final String LIMIT_PARAMETER = "limit";
   private static final String SQL_WILDCARD = "%";
+  private static final String QUICK_CODE = "quickCode";
 
   private final String query;
   private final NamedParameterJdbcTemplate template;
@@ -32,6 +33,7 @@ public class SQLBasedOptionResolver {
     Map<String, Object> parameters = Map.of(
         CRITERIA_PARAMETER, withWildcard(keyword),
         PREFIX_CRITERIA_PARAMETER, withPrefixWildcard(keyword),
+        QUICK_CODE, keyword,
         LIMIT_PARAMETER, limit);
     return this.template.query(
         this.query,

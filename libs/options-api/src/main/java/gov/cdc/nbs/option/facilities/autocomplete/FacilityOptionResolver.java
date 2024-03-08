@@ -8,18 +8,20 @@ import org.springframework.stereotype.Component;
 public class FacilityOptionResolver extends SQLBasedOptionResolver {
 
     private static final String QUERY = """
-            with [facility]([value], [name]) as (
+            with [facility]([value], [name], [quickCode]) as (
                 select
                     organization_uid,
-                    display_nm
+                    display_nm,
+                    root_extension_txt
                 from Organization
+                left join Entity_id on entity_uid=organization_uid and type_cd='QEC'
             )
             select
                 [value],
                 [name],
                 row_number() over( order by [name])
             from [facility]
-            where [name] like :criteria OR [name] like :prefixCriteria
+            where [quickCode]=:quickCode or [name] like :criteria or [name] like :prefixCriteria
 
             order by
                 [name]

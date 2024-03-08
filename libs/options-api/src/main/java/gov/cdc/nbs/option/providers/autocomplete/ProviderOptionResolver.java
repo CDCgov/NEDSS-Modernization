@@ -8,11 +8,13 @@ import org.springframework.stereotype.Component;
 public class ProviderOptionResolver extends SQLBasedOptionResolver {
 
     private static final String QUERY = """
-            with [user]([value], [name]) as (
+            with [user]([value], [name], [quickCode]) AS (
                 select
                     person_uid,
-                    ISNULL(first_nm + ' ', '') + ISNULL(last_nm, '')
+                    ISNULL(first_nm + ' ', '') + ISNULL(last_nm, ''),
+                    root_extension_txt
                 from Person
+                left join Entity_id on entity_uid=person_uid and type_cd='QEC'
                 where
                     cd='PRV'
             )
@@ -21,7 +23,7 @@ public class ProviderOptionResolver extends SQLBasedOptionResolver {
                 [name],
                 row_number() over( order by [name])
             from [user]
-            where [name] like :criteria OR [name] like :prefixCriteria
+            where [quickCode]=:quickCode or [name] like :criteria or [name] like :prefixCriteria
 
             order by
                 [name]
