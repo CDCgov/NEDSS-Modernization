@@ -1,9 +1,5 @@
 package gov.cdc.nbs.event.search.labreport;
 
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchActId;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchOrganizationParticipation;
-import gov.cdc.nbs.entity.elasticsearch.ElasticsearchPersonParticipation;
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -12,9 +8,7 @@ import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -25,14 +19,14 @@ public class LabReportSearchCriteriaSteps {
   private final Active<PatientIdentifier> patient;
   private final Active<ProgramAreaIdentifier> programArea;
   private final Active<JurisdictionIdentifier> jurisdiction;
-  private final Active<LabReport> searchableLabReport;
+  private final Active<SearchableLabReport> searchableLabReport;
   private final Active<LabReportFilter> criteria;
 
   LabReportSearchCriteriaSteps(
       final Active<PatientIdentifier> patient,
       final Active<ProgramAreaIdentifier> programArea,
       final Active<JurisdictionIdentifier> jurisdiction,
-      final Active<LabReport> searchableLabReport,
+      final Active<SearchableLabReport> searchableLabReport,
       final Active<LabReportFilter> criteria
   ) {
     this.patient = patient;
@@ -66,7 +60,7 @@ public class LabReportSearchCriteriaSteps {
           .ifPresent(filter::setJurisdictions);
 
       case "pregnancy status" -> this.searchableLabReport.maybeActive()
-          .map(lab -> PregnancyStatus.resolve(lab.getPregnantIndCd()))
+          .map(lab -> PregnancyStatus.resolve(lab.pregnancyStatus()))
           .ifPresent(filter::setPregnancyStatus);
 
       case "accession number" -> filler()
@@ -81,7 +75,7 @@ public class LabReportSearchCriteriaSteps {
       case "lab id" -> this.searchableLabReport.maybeActive()
           .map(lab -> eventId(
                   LabReportFilter.LaboratoryEventIdType.LAB_ID,
-                  lab.getLocalId()
+                  lab.local()
               )
           );
 
@@ -89,7 +83,7 @@ public class LabReportSearchCriteriaSteps {
           .map(
               lab -> eventDateSearch(
                   LabReportFilter.LabReportDateType.DATE_OF_REPORT,
-                  lab.getActivityToTime()
+                  lab.reportedOn()
               )
           ).ifPresent(filter::setEventDate);
 
@@ -97,7 +91,7 @@ public class LabReportSearchCriteriaSteps {
           .map(
               lab -> eventDateSearch(
                   LabReportFilter.LabReportDateType.DATE_RECEIVED_BY_PUBLIC_HEALTH,
-                  lab.getRptToStateTime()
+                  lab.receivedOn()
               )
           ).ifPresent(filter::setEventDate);
 
@@ -105,7 +99,7 @@ public class LabReportSearchCriteriaSteps {
           .map(
               lab -> eventDateSearch(
                   LabReportFilter.LabReportDateType.DATE_OF_SPECIMEN_COLLECTION,
-                  lab.getEffectiveFromTime()
+                  lab.collectedOn()
               )
           ).ifPresent(filter::setEventDate);
 
@@ -113,7 +107,7 @@ public class LabReportSearchCriteriaSteps {
           .map(
               lab -> eventDateSearch(
                   LabReportFilter.LabReportDateType.LAB_REPORT_CREATE_DATE,
-                  lab.getAddTime()
+                  lab.createdOn()
               )
           ).ifPresent(filter::setEventDate);
 
@@ -121,7 +115,7 @@ public class LabReportSearchCriteriaSteps {
           .map(
               lab -> eventDateSearch(
                   LabReportFilter.LabReportDateType.LAST_UPDATE_DATE,
-                  lab.getObservationLastChgTime()
+                  lab.updatedOn()
               )
           ).ifPresent(filter::setEventDate);
 
@@ -133,14 +127,14 @@ public class LabReportSearchCriteriaSteps {
 
       case "event status" -> filter.setEventStatus(List.of(LabReportFilter.EventStatus.NEW));
 
-      case "processing status" -> filter.setProcessingStatus(List.of(LabReportFilter.ProcessingStatus.UNPROCESSED));
+      case "processing status" -> processingStatus().map(List::of).ifPresent(filter::setProcessingStatus);
 
       case "created by" -> this.searchableLabReport.maybeActive().map(
-          LabReport::getAddUserId
+          SearchableLabReport::createdBy
       ).ifPresent(filter::setCreatedBy);
 
       case "last updated by" -> this.searchableLabReport.maybeActive().map(
-          LabReport::getLastChgUserId
+          SearchableLabReport::updatedBy
       ).ifPresent(filter::setLastUpdatedBy);
 
       case "ordering facility" -> orderingFacility().map(
@@ -163,9 +157,11 @@ public class LabReportSearchCriteriaSteps {
               provider
           )
       );
-      case "resulted test" -> filter.setResultedTest("Acid-Fast Stain");
+      case "resulted test" ->  test().map(SearchableLabReport.LabTest::name)
+          .ifPresent(filter::setResultedTest);
 
-      case "coded result" -> filter.setCodedResult("abnormal");
+      case "coded result" -> test().map(SearchableLabReport.LabTest::result)
+          .ifPresent(filter::setCodedResult);
 
       case "patient id" -> this.patient.maybeActive()
           .map(PatientIdentifier::id)
@@ -189,54 +185,75 @@ public class LabReportSearchCriteriaSteps {
 
   private LabReportFilter.LaboratoryEventDateSearch eventDateSearch(
       final LabReportFilter.LabReportDateType type,
-      final Instant from
+      final LocalDate from
   ) {
-    LocalDate localDate = from.atZone(ZoneId.systemDefault()).toLocalDate();
     return new LabReportFilter.LaboratoryEventDateSearch(
         type,
-        localDate.minusDays(5),
-        localDate.plusDays(2));
+        from.minusDays(5),
+        from.plusDays(2));
   }
 
 
   private Optional<Long> orderingFacility() {
     return this.searchableLabReport.maybeActive()
         .stream()
-        .map(LabReport::getOrganizationParticipations)
+        .map(SearchableLabReport::organizations)
         .flatMap(Collection::stream)
-        .filter(participation -> Objects.equals("ORD", participation.getTypeCd()))
+        .filter(participation -> Objects.equals("ORD", participation.type()))
         .findFirst()
-        .map(ElasticsearchOrganizationParticipation::getEntityId);
+        .map(SearchableLabReport.Organization::identifier);
   }
 
   private Optional<Long> reportingFacility() {
     return this.searchableLabReport.maybeActive()
         .stream()
-        .map(LabReport::getOrganizationParticipations)
+        .map(SearchableLabReport::organizations)
         .flatMap(Collection::stream)
-        .filter(participation -> Objects.equals("AUT", participation.getTypeCd()))
+        .filter(participation -> Objects.equals("AUT", participation.type()))
         .findFirst()
-        .map(ElasticsearchOrganizationParticipation::getEntityId);
+        .map(SearchableLabReport.Organization::identifier);
   }
 
   private Optional<Long> orderingProvider() {
     return this.searchableLabReport.maybeActive()
         .stream()
-        .map(LabReport::getPersonParticipations)
+        .map(SearchableLabReport::people)
         .flatMap(Collection::stream)
-        .filter(participation -> Objects.equals("PATSBJ", participation.getTypeCd()))
+        .filter(SearchableLabReport.Person.Provider.class::isInstance)
+        .map(SearchableLabReport.Person.Provider.class::cast)
+        .filter(participation -> Objects.equals("ORD", participation.type()))
         .findFirst()
-        .map(ElasticsearchPersonParticipation::getEntityId);
+        .map(SearchableLabReport.Person.Provider::identifier);
   }
 
   private Optional<String> filler() {
     return this.searchableLabReport.maybeActive()
         .stream()
-        .map(LabReport::getActIds)
+        .map(SearchableLabReport::identifiers)
         .flatMap(Collection::stream)
-        .filter(act -> Objects.equals("FN", act.getTypeCd()))
+        .filter(act -> Objects.equals("FN", act.type()))
         .findFirst()
-        .map(ElasticsearchActId::getRootExtensionTxt);
+        .map(SearchableLabReport.Identifier::value);
+  }
+
+  private Optional<SearchableLabReport.LabTest> test() {
+    return this.searchableLabReport.maybeActive()
+        .stream()
+        .map(SearchableLabReport::tests)
+        .flatMap(Collection::stream)
+        .findFirst();
+  }
+
+  private Optional<LabReportFilter.ProcessingStatus> processingStatus() {
+    return this.searchableLabReport.maybeActive()
+        .map(SearchableLabReport::status)
+        .map(this::resolveProcessingStatus);
+  }
+
+  private LabReportFilter.ProcessingStatus resolveProcessingStatus(final String status) {
+    return Objects.equals(status, "UNPROCESSED")
+        ? LabReportFilter.ProcessingStatus.UNPROCESSED
+        : LabReportFilter.ProcessingStatus.PROCESSED;
   }
 
   private LabReportFilter.LabReportProviderSearch providerSearch(

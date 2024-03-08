@@ -2,6 +2,8 @@ package gov.cdc.nbs.event.report.lab;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
+import gov.cdc.nbs.entity.odse.ActId;
+import gov.cdc.nbs.entity.odse.ActIdId;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 @Transactional
@@ -169,6 +173,11 @@ public class LabReportMother {
     lab.setElectronicInd('Y');
   }
 
+  void enteredExternally(final LabReportIdentifier identifier) {
+    Observation lab = managed(identifier);
+    lab.setElectronicInd('E');
+  }
+
   void orderedBy(final LabReportIdentifier identifier, final ProviderIdentifier provider) {
     Observation lab = managed(identifier);
 
@@ -187,6 +196,30 @@ public class LabReportMother {
     participation.setActUid(act);
 
     act.addParticipation(participation);
+  }
+
+  void filledBy(final LabReportIdentifier identifier, final String number) {
+    Observation lab = managed(identifier);
+
+    Act act = lab.getAct();
+
+    // need an id and seq
+    ActId filler = new ActId(new ActIdId(act.getId(), act.getActIds().size()));
+    filler.setTypeCd("FN");
+    filler.setTypeCd("Filler Number");
+    filler.setRootExtensionTxt(number);
+
+    act.addIdentifier(filler);
+  }
+
+  void forPregnantPatient(final LabReportIdentifier identifier) {
+    Observation lab = managed(identifier);
+    lab.setPregnantIndCd("Y");
+  }
+
+  void receivedOn(final LabReportIdentifier identifier, final Instant date) {
+    Observation lab = managed(identifier);
+    lab.setRptToStateTime(date);
   }
 
   private Observation managed(final LabReportIdentifier identifier) {

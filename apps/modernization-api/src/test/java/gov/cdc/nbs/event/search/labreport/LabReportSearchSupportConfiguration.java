@@ -1,6 +1,5 @@
 package gov.cdc.nbs.event.search.labreport;
 
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
@@ -19,13 +18,13 @@ class LabReportSearchSupportConfiguration {
 
   @Bean
   @ScenarioScope
-  Active<LabReport> activeSearchableLabReport() {
+  Active<SearchableLabReport> activeSearchableLabReport() {
     return new Active<>();
   }
 
   @Bean
   @ScenarioScope
-  Available<LabReport> availableSearchableLabReport() {
+  Available<SearchableLabReport> availableSearchableLabReport() {
     return new Available<>();
   }
 }

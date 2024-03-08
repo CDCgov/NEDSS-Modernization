@@ -45,7 +45,7 @@ const getPatient = (labReport: LabReport): LabReportPersonParticipation | undefi
     return labReport.personParticipations.find((p) => p.typeCd === 'PATSBJ');
 };
 
-const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
+const getOrderingProviderName = (labReport: LabReport): string | undefined => {
     const provider = labReport.personParticipations.find((p) => p.typeCd === 'ORD' && p.personCd === 'PRV');
     if (provider) {
         return `${provider.firstName} ${provider.lastName}`;
@@ -120,10 +120,10 @@ const LabReportSearchResult = ({ item }: LabReportSearchResultProps) => {
                         </Grid>
                         <Grid col={12} className="margin-bottom-2">
                             <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
-                                ORDERING PROVIDOR
+                                ORDERING PROVIDER
                             </p>
                             <p className="margin-0 font-sans-1xs text-normal">
-                                {getOrderingProvidorName(item) ?? <NoData />}
+                                {getOrderingProviderName(item) ?? <NoData />}
                             </p>
                         </Grid>
                         <SearchCriteriaContext.Consumer>

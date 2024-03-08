@@ -119,10 +119,7 @@ public class LabReport {
 
   @Field(name = "organization_participations", type = FieldType.Nested)
   private List<ElasticsearchOrganizationParticipation> organizationParticipations;
-
-  @Field(name = "material_participations", type = FieldType.Nested)
-  private List<ElasticsearchMaterialParticipation> materialParticipations;
-
+  
   @Field(name = "observations", type = FieldType.Nested)
   private List<ElasticsearchObservation> observations;
 

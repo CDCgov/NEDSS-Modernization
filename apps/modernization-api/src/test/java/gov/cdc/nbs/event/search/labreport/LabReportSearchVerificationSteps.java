@@ -1,6 +1,5 @@
 package gov.cdc.nbs.event.search.labreport;
 
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
@@ -10,11 +9,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class LabReportSearchVerificationSteps {
 
-  private final Active<LabReport> labReport;
+  private final Active<SearchableLabReport> labReport;
   private final Active<ResultActions> response;
 
   LabReportSearchVerificationSteps(
-      final Active<LabReport> labReport,
+      final Active<SearchableLabReport> labReport,
       final Active<ResultActions> response
   ) {
     this.labReport = labReport;
@@ -27,12 +26,11 @@ public class LabReportSearchVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findLabReportsByFilter.content[?(@.id=='%s')]",
-                String.valueOf(this.labReport.active().getId())
+                String.valueOf(this.labReport.active().identifier())
             )
                 .exists()
         );
-    ;
-  }
+     }
 
   @Then("there is only one lab report search result")
   public void there_is_only_one_patient_search_result() throws Exception {
