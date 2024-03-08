@@ -4,14 +4,8 @@ import { CreateCondition } from 'apps/page-builder/components/CreateCondition/Cr
 import { ImportTemplate } from 'apps/page-builder/components/ImportTemplate/ImportTemplate';
 import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
 import { ConditionSearch } from 'apps/page-builder/condition';
-import {
-    Concept,
-    Condition,
-    ConditionControllerService,
-    PageControllerService,
-    PageCreateRequest,
-    Template
-} from 'apps/page-builder/generated';
+import { Concept, Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
+import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
 import { authorization } from 'authorization';
@@ -39,6 +33,7 @@ export const AddNewPage = () => {
     const createConditionModal = useRef<ModalRef>(null);
     const importTemplateModal = useRef<ModalRef>(null);
     const navigate = useNavigate();
+    const { conditions: availableConditions } = useFindConditionsNotInUse();
     const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const [templates, setTemplates] = useState<Template[]>([]);
@@ -67,10 +62,11 @@ export const AddNewPage = () => {
             .catch((error: any) => {
                 console.log('Error', error);
             });
-        ConditionControllerService.findConditionsNotInUseUsingGet({ authorization: token }).then((data) =>
-            setConditions(data)
-        );
     }, []);
+
+    useEffect(() => {
+        setConditions(availableConditions);
+    }, [availableConditions]);
 
     useEffect(() => {
         fetchTemplates(authorization(), watch.eventType ?? ' ').then((data) => {

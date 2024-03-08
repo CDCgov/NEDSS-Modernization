@@ -1,34 +1,34 @@
+import { Button, Form, Icon } from '@trussworks/react-uswds';
 import {
     Concept,
-    Condition,
     PageInformation,
     PageInformationChangeRequest,
     PageInformationService,
     SelectableCondition
 } from 'apps/page-builder/generated';
-import { fetchConditions } from 'apps/page-builder/services/conditionAPI';
+import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
-import React, { useEffect, useState } from 'react';
-import { Button, Form, Icon } from '@trussworks/react-uswds';
+import { authorization } from 'authorization';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAlert } from '../../../../../../alert';
+import { LinkButton } from '../../../../../../components/button';
+import { PagesBreadcrumb } from '../../../../components/PagesBreadcrumb/PagesBreadcrumb';
+import { useGetPageDetails } from '../../useGetPageDetails';
 import './PageDetails.scss';
 import { PageDetailsField } from './PageDetailsField';
-import { useNavigate, useParams } from 'react-router-dom';
-import { authorization } from 'authorization';
-import { PagesBreadcrumb } from '../../../../components/PagesBreadcrumb/PagesBreadcrumb';
-import { useForm } from 'react-hook-form';
-import { useAlert } from '../../../../../../alert';
-import { useGetPageDetails } from '../../useGetPageDetails';
-import { LinkButton } from '../../../../../../components/button';
 
 export const PageDetails = () => {
     const token = authorization();
     const { pageId } = useParams();
     const [pageEvent, setPageEvent] = useState('');
-    const [conditions, setConditions] = useState<Condition[]>([]);
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const navigate = useNavigate();
     const { alertError, alertSuccess } = useAlert();
     const { page } = useGetPageDetails();
+    const { conditions } = useFindConditionsNotInUse(Number(pageId));
+    const [publishedConditions, setPublishedConditions] = useState<SelectableCondition[]>([]);
     const isEnabled = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status ?? '');
     const pageStatus = page?.status;
 
@@ -44,28 +44,22 @@ export const PageDetails = () => {
             .catch((error) => {
                 console.log('Error', error);
             });
-        fetchConditions(token).then((data) => {
-            setConditions(data);
-        });
     }, []);
     useEffect(() => {
         if (pageId) {
-            const getConditions = (data?: SelectableCondition[]) => {
-                return data?.map((dt: SelectableCondition) => dt.value);
-            };
             PageInformationService.find({
                 authorization: token,
                 page: Number(pageId)
             }).then((data: PageInformation) => {
-                setPageEvent(data?.eventType?.value ?? '');
-                const condition = getConditions(data.conditions);
+                setPageEvent(data.eventType.value ?? '');
+                setPublishedConditions(data.conditions.filter((c) => c.published));
                 form.reset({
                     ...form.getValues(),
                     datamart: data.datamart,
                     messageMappingGuide: data?.messageMappingGuide?.value,
                     description: data?.description,
                     name: data.name,
-                    conditions: condition
+                    conditions: data.conditions?.filter((c) => !c.published).map((c) => c.value)
                 });
             });
         }
@@ -77,7 +71,10 @@ export const PageDetails = () => {
         PageInformationService.change({
             authorization: token,
             page: Number(pageId),
-            request
+            request: {
+                ...request,
+                conditions: request.conditions?.concat(publishedConditions.map((p) => p.value ?? ''))
+            }
         })
             .then(() => {
                 alertSuccess({ message: 'You have successfully performed a task' });
@@ -108,14 +105,16 @@ export const PageDetails = () => {
                             <div className="fields-info">
                                 All fields with <span className="mandatory-indicator">*</span> are required
                             </div>
-                            <PageDetailsField
-                                conditions={conditions}
-                                form={form}
-                                mmgs={mmgs}
-                                eventType={pageEvent}
-                                isEnabled={!isEnabled}
-                                pageStatus={pageStatus}
-                            />
+                            <FormProvider {...form}>
+                                <PageDetailsField
+                                    conditions={conditions}
+                                    publishedConditions={publishedConditions}
+                                    mmgs={mmgs}
+                                    eventType={pageEvent}
+                                    isEnabled={!isEnabled}
+                                    pageStatus={pageStatus}
+                                />
+                            </FormProvider>
                         </>
                     </div>
                 </div>

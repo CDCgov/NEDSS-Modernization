@@ -11,10 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 
@@ -53,8 +49,9 @@ public class ConditionController {
   }
 
   @GetMapping("available")
-  public List<Condition> findConditionsNotInUse() {
-    return searcher.findAvailable();
+  public List<Condition> findConditionsNotInUse(
+      @RequestParam("page") final Long page) {
+    return searcher.findAvailable(page);
   }
 
   @GetMapping

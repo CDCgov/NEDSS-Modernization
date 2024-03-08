@@ -1,18 +1,24 @@
-import React, { ChangeEvent } from 'react';
-import { Concept, Condition, PageControllerService, PageInformationChangeRequest } from 'apps/page-builder/generated';
+import { ErrorMessage, Label, Textarea } from '@trussworks/react-uswds';
+import {
+    Concept,
+    Condition,
+    PageControllerService,
+    PageInformationChangeRequest,
+    SelectableCondition
+} from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import { Controller, UseFormReturn } from 'react-hook-form';
-import { ErrorMessage, Label, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
+import { ChangeEvent } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { authorization } from '../../../../../../authorization';
 import { maxLengthRule, validPageNameRule } from '../../../../../../validation/entry';
 import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNameRule';
-import { authorization } from '../../../../../../authorization';
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
+    publishedConditions: SelectableCondition[];
     mmgs: Concept[];
-    form: UseFormReturn<PageInformationChangeRequest, any>;
     eventType: string;
     isEnabled: boolean;
     pageStatus: string | undefined;
@@ -31,12 +37,12 @@ const eventTypeOptions = [
 export const PageDetailsField = ({
     conditions,
     mmgs,
-    form,
     eventType,
     isEnabled,
-    pageStatus
+    pageStatus,
+    publishedConditions
 }: AddNewPageFieldProps) => {
-    const { control } = form;
+    const form = useFormContext<PageInformationChangeRequest>();
     const validatePageName = async (val: string) => {
         const response = await PageControllerService.validatePageRequestUsingPost({
             authorization: authorization(),
@@ -49,8 +55,22 @@ export const PageDetailsField = ({
 
     return (
         <>
+            <MultiSelectInput
+                name={'publishedConditions'}
+                id={'publishedConditions'}
+                label="Published condition(s)"
+                disabled
+                aria-label={'conditions for the page that have been published'}
+                options={publishedConditions.map((m) => {
+                    return {
+                        name: m.name ?? '',
+                        value: m.value ?? ''
+                    };
+                })}
+                value={publishedConditions.map((c) => c.value ?? '')}
+            />
             <Controller
-                control={control}
+                control={form.control}
                 name="conditions"
                 render={({ field: { onChange, value, name } }) => (
                     <MultiSelectInput
@@ -70,16 +90,8 @@ export const PageDetailsField = ({
                     />
                 )}
             />
-            <p>Can't find the condition you're looking for?</p>
-            <ModalToggleButton modalRef={null!} unstyled>
-                <p>Search and add condition(s)</p>
-            </ModalToggleButton>{' '}
-            <span className="operator">or</span>
-            <ModalToggleButton modalRef={null!} unstyled>
-                <p>Create a new condition here</p>
-            </ModalToggleButton>
             <Controller
-                control={control}
+                control={form.control}
                 name="name"
                 rules={{
                     required: { value: true, message: 'Name is required.' },
@@ -108,7 +120,7 @@ export const PageDetailsField = ({
             />
             <SelectInput label="Event type" value={eventType} options={eventTypeOptions} disabled />
             <Controller
-                control={control}
+                control={form.control}
                 name="messageMappingGuide"
                 rules={{ required: { value: true, message: 'Reporting mechanism is required.' } }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
@@ -135,7 +147,7 @@ export const PageDetailsField = ({
                 )}
             />
             <Controller
-                control={control}
+                control={form.control}
                 name="description"
                 rules={maxLengthRule(2000)}
                 render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
@@ -154,7 +166,7 @@ export const PageDetailsField = ({
                 )}
             />
             <Controller
-                control={control}
+                control={form.control}
                 name="datamart"
                 rules={dataMartNameRule}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (

@@ -29,8 +29,8 @@ public class ConditionSearcher {
     this.factory = factory;
   }
 
-  // query for all conditions that are not associated with a page
-  public List<Condition> findAvailable() {
+  // query for all conditions that are not associated with a page or are associated with the given page
+  public List<Condition> findAvailable(Long page) {
     return factory.select(
         conditionTable.id,
         conditionTable.conditionShortNm,
@@ -42,7 +42,7 @@ public class ConditionSearcher {
         conditionTable.statusCd)
         .from(conditionTable)
         .leftJoin(pageMappingTable).on(pageMappingTable.conditionCd.eq(conditionTable.id))
-        .where(pageMappingTable.waTemplateUid.isNull())
+        .where(pageMappingTable.waTemplateUid.isNull().or(pageMappingTable.waTemplateUid.id.eq(page)))
         .orderBy(conditionTable.conditionShortNm.asc())
         .fetch()
         .stream()
