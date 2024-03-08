@@ -13,6 +13,7 @@ public class SQLBasedOptionResolver {
 
 
   private static final String CRITERIA_PARAMETER = "criteria";
+  private static final String PREFIX_CRITERIA_PARAMETER = "prefixCriteria";
   private static final String LIMIT_PARAMETER = "limit";
   private static final String SQL_WILDCARD = "%";
 
@@ -30,16 +31,19 @@ public class SQLBasedOptionResolver {
   public Collection<Option> resolve(final String keyword, final int limit) {
     Map<String, Object> parameters = Map.of(
         CRITERIA_PARAMETER, withWildcard(keyword),
-        LIMIT_PARAMETER, limit
-    );
+        PREFIX_CRITERIA_PARAMETER, withPrefixWildcard(keyword),
+        LIMIT_PARAMETER, limit);
     return this.template.query(
         this.query,
         new MapSqlParameterSource(parameters),
-        this.mapper
-    );
+        this.mapper);
   }
 
   private String withWildcard(final String value) {
     return value + SQL_WILDCARD;
+  }
+
+  private String withPrefixWildcard(final String value) {
+    return SQL_WILDCARD + ' ' + value + SQL_WILDCARD;
   }
 }

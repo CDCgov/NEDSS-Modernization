@@ -19,7 +19,7 @@ public class FacilityOptionResolver extends SQLBasedOptionResolver {
                 [name],
                 row_number() over( order by [name])
             from [facility]
-            where [name] like :criteria
+            where [name] like :criteria OR [name] like :prefixCriteria
 
             order by
                 [name]

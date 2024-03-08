@@ -21,7 +21,7 @@ public class ProviderOptionResolver extends SQLBasedOptionResolver {
                 [name],
                 row_number() over( order by [name])
             from [user]
-            where [name] like :criteria
+            where [name] like :criteria OR [name] like :prefixCriteria
 
             order by
                 [name]
