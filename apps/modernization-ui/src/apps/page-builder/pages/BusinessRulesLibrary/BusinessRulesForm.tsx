@@ -182,7 +182,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
 
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
-        // setSourceDescription('');
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
         form.setValue('sourceValues', []);
