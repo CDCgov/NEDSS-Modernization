@@ -76,7 +76,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
         form.setValue('targetIdentifiers', identifiers);
         form.setValue('targetValueText', texts);
         setTargetDescriptions(descriptions);
-        console.log('data', data);
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {

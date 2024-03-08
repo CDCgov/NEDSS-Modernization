@@ -34,7 +34,6 @@ const AddBusinessRule = () => {
                 ruleId: Number(ruleId)
             }).then((resp: Rule) => {
                 const sourceQuestion = resp.sourceQuestion?.label || '';
-                console.log('resp', resp);
                 setSourceValues(resp.sourceValues || []);
                 setQuestion(resp?.sourceQuestion);
 
