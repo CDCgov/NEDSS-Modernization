@@ -256,8 +256,13 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                 <Controller
                     control={form.control}
                     name="createdBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                    render={({ field: { onChange, value, name } }) => (
+                        <UserAutocomplete 
+                            id={name} 
+                            label="Event created by user"
+                            defaultValue={value as string | undefined}
+                            onChange={onChange}
+                        />
                     )}
                 />
 
