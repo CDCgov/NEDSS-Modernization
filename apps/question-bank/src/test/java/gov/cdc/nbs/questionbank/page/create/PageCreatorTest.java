@@ -3,9 +3,13 @@ package gov.cdc.nbs.questionbank.page.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
+import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -34,6 +38,9 @@ class PageCreatorTest {
 
   @Mock
   private WaUiMetadataRepository waUiMetadatumRepository;
+
+  @Mock
+  WaRuleMetaDataRepository waRuleMetaDataRepository;
 
   @Mock
   private PageValidator validator;
@@ -75,6 +82,18 @@ class PageCreatorTest {
     List<WaUiMetadata> result = pageCreator.copyWaTemplateUIMetaData(oldPage, newPage);
     assertNotNull(result);
     assertEquals(newPage.getId(), result.get(0).getWaTemplateUid().getId());
+
+  }
+
+  @Test
+  void testCopyWaTemplateRuleMetaData() {
+    WaTemplate oldPage = getTemplate(10l);
+    when(waRuleMetaDataRepository.findByWaTemplateUid(Mockito.any()))
+        .thenReturn(List.of(getwaRuleMetaDtum(oldPage)));
+    WaTemplate newPage = getTemplate(20l);
+    List<WaRuleMetadata> result = pageCreator.copyWaTemplateRuleMetaData(oldPage, newPage);
+    assertNotNull(result);
+    assertEquals(newPage.getId(), result.get(0).getWaTemplateUid());
 
   }
 
@@ -126,6 +145,12 @@ class PageCreatorTest {
   private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage) {
     WaUiMetadata record = new WaUiMetadata();
     record.setWaTemplateUid(aPage);
+    return record;
+  }
+
+  private WaRuleMetadata getwaRuleMetaDtum(WaTemplate aPage) {
+    WaRuleMetadata record = new WaRuleMetadata();
+    record.setWaTemplateUid(aPage.getId());
     return record;
   }
 
