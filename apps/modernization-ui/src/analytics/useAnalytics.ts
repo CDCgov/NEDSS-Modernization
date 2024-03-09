@@ -19,7 +19,8 @@ const useAnalyticsSettings = (): AnalyticsSettings => {
             const host = settings.analytics?.host;
 
             const options = {
-                api_host: host
+                api_host: host,
+                capture_pageview: false
             };
 
             setAnalyticsSettings({
