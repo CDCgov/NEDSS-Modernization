@@ -5,6 +5,7 @@ import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestio
 import { useEffect, useRef, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import { AddQuestionModal } from '../add-question/modal/AddQuestionModal';
+import { ChangeValuesetModal } from '../change-valueset/ChangeValuesetModal';
 import { EditQuestionModal } from '../edit-question/EditQuestionModal';
 import { EditStaticElementModal } from '../edit-staticelement/EditStaticElementModal';
 import { EditValuesetModal } from '../edit-valueset/EditValuesetModal';
@@ -41,6 +42,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
     const addQuestionModalRef = useRef<ModalRef>(null);
     const editQuestionModalRef = useRef<ModalRef>(null);
     const editValuesetModalRef = useRef<ModalRef>(null);
+    const changeValuesetModalRef = useRef<ModalRef>(null);
 
     const handleAddQuestion = (subsection: number) => {
         setSubsectionId(subsection);
@@ -78,7 +80,11 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
 
     const handleValuesetEdited = () => {
         refresh();
-        editValuesetModalRef.current?.toggleModal();
+    };
+
+    const handleChangeValueset = (question: PagesQuestion) => {
+        setCurrentEditQuestion(question);
+        changeValuesetModalRef.current?.toggleModal();
     };
 
     useEffect(() => {
@@ -105,6 +111,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 onEditQuestion={handleEditQuestion}
                 onAddQuestion={handleAddQuestion}
                 onEditValueset={handleEditValueset}
+                onChangeValueset={handleChangeValueset}
             />
             <PageSideMenu
                 onAddSection={() => handleAddSection?.()}
@@ -127,6 +134,12 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 onValuesetChanged={handleValuesetEdited}
                 modal={editValuesetModalRef}
                 valuesetName={currentEditValueset}
+            />
+            <ChangeValuesetModal
+                page={page.id}
+                onValuesetChanged={handleValuesetEdited}
+                modal={changeValuesetModalRef}
+                question={currentEditQuestion}
             />
         </div>
     );

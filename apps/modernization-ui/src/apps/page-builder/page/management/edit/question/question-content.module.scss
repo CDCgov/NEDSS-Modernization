@@ -1,4 +1,5 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .question {
     padding: 1.5rem;
@@ -24,9 +25,9 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-         .unStyledButton {
-             text-decoration: unset;
-         }
+        .unStyledButton {
+            text-decoration: unset;
+        }
         .questionHeader {
             display: flex;
             align-items: flex-start;
@@ -37,7 +38,6 @@
                 margin-left: 0.5rem;
                 align-items: center;
             }
-            
         }
 
         .questionContent {

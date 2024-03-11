@@ -61,6 +61,31 @@
     display: flex;
     justify-content: flex-end;
   }
+  .grouped {
+    .groupedForm {
+      display: flex;
+      border-bottom: 2px solid colors.$border;
+      .groupedQuestionName {
+        width: 100%;
+        padding: 1rem 1rem 0.5rem;
+        border-left: 1px solid colors.$border;
+        &:first-child {
+          border: none;
+        }
+      }
+    }
+    .groupedInfo {
+      padding-left: 1rem;
+    }
+    .groupedQuestionsSection {
+      margin: 1rem 2rem 1rem;
+      border: 1px solid colors.$border;
+      border-radius: 0.3125rem 0.3125rem;
+    }
+    .footer {
+      padding: 0 1.5rem 1rem;
+    }
+  }
 }
 #confirmation .usa-modal #confirmation-description {
   font-weight: 300;

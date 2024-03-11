@@ -14,8 +14,7 @@ public record Rule(
     List<String> sourceValues,
     @ApiModelProperty(required = true) Comparator comparator,
     @ApiModelProperty(required = true) TargetType targetType,
-    @ApiModelProperty(required = true) List<Target> targets
-) {
+    @ApiModelProperty(required = true) List<Target> targets) {
 
   public record CreateRuleRequest(
       @ApiModelProperty(required = true) RuleFunction ruleFunction,
@@ -35,7 +34,7 @@ public record Rule(
   }
 
 
-  public record SourceQuestion(long questionId, String questionIdentifier, String label, String codeSetName) {
+  public record SourceQuestion(String questionIdentifier, String label, String codeSetName) {
   }
 
 
@@ -50,6 +49,7 @@ public record Rule(
     HIDE("Hide"),
     REQUIRE_IF("Require If"),
     UNHIDE("Unhide");
+
     private final String value;
 
     RuleFunction(String value) {
@@ -69,6 +69,7 @@ public record Rule(
     GREATER_THAN_OR_EQUAL_TO(">="),
     LESS_THAN("<"),
     LESS_THAN_OR_EQUAL_TO("<=");
+
     private final String value;
 
     Comparator(String value) {
@@ -88,6 +89,5 @@ public record Rule(
 
 
 }
-
 
 

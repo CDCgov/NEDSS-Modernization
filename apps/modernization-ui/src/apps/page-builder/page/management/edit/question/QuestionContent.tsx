@@ -20,7 +20,9 @@ type Props = {
     valueSet: string;
     id: number;
     isStandard: boolean;
+    isPublished: boolean;
     onEditValueset: (valuesetName: string) => void;
+    onChangeValueset: () => void;
 };
 
 const hyperlinkId = 1003;
@@ -39,7 +41,9 @@ export const QuestionContent = ({
     displayComponent,
     defaultValue,
     isStandard,
-    onEditValueset
+    isPublished,
+    onEditValueset,
+    onChangeValueset
 }: Props) => {
     const [conceptState, setConceptState] = useState<Selectable[]>([]);
     const { loading } = usePageManagement();
@@ -108,10 +112,17 @@ export const QuestionContent = ({
                         <Icon.Edit className="margin-right-2px" />
                         <span> Edit value set</span>
                     </Button>
-                    <Button className={styles.unStyledButton} type="button" onClick={() => {}} unstyled>
-                        <Icon.Edit className="margin-right-2px" />
-                        <span> Change value set</span>
-                    </Button>
+                    {!isPublished && (
+                        <Button
+                            className={styles.unStyledButton}
+                            type="button"
+                            onClick={onChangeValueset}
+                            unstyled
+                            disabled={isPublished}>
+                            <Icon.Edit className="margin-right-2px" />
+                            <span> Change value set</span>
+                        </Button>
+                    )}
                 </div>
             )}
         </div>

@@ -8,15 +8,23 @@ import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     question: PagesQuestion;
-    onRequiredChange: (id: number) => void;
+    onRequiredChange: (id: number, required: boolean) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteQuestion: (id: number, componentId: number) => void;
     onEditValueset: (valuesetName: string) => void;
+    onChangeValueset: (id: PagesQuestion) => void;
 };
 
 const staticComponents = [1003, 1036, 1012, 1014, 1030, undefined];
 
-export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQuestion, onEditValueset }: Props) => {
+export const Question = ({
+    question,
+    onRequiredChange,
+    onEditQuestion,
+    onDeleteQuestion,
+    onEditValueset,
+    onChangeValueset
+}: Props) => {
     const modal = useRef<ModalRef>(null);
     const [confirmModal, setConfirmModal] = useState(false);
 
@@ -30,7 +38,7 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
             <div className={styles.borderedContainer}>
                 <QuestionHeader
                     question={question}
-                    onRequiredChange={() => onRequiredChange(question.id)}
+                    onRequiredChange={(required) => onRequiredChange(question.id, required)}
                     onEditQuestion={() => onEditQuestion(question)}
                     onDeleteQuestion={() => {
                         onDeleteQuestion(question.id, question.displayComponent ?? 0);
@@ -61,9 +69,11 @@ export const Question = ({ question, onRequiredChange, onEditQuestion, onDeleteQ
                     name={question.name}
                     id={question.id}
                     isStandard={question.isStandard ?? false}
+                    isPublished={question.isPublished ?? false}
                     type={question.dataType ?? ''}
                     displayComponent={question.displayComponent}
                     onEditValueset={onEditValueset}
+                    onChangeValueset={() => onChangeValueset(question)}
                 />
             </div>
         </div>

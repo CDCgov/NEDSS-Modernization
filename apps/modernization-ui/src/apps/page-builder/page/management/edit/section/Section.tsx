@@ -21,6 +21,7 @@ type Props = {
     onDeleteSection: () => void;
     onDeleteStatus: () => void;
     onEditValueset: (valuesetName: string) => void;
+    onChangeValueset: (question: PagesQuestion) => void;
 };
 
 export const Section = ({
@@ -29,7 +30,8 @@ export const Section = ({
     onEditQuestion,
     onDeleteSection,
     onDeleteStatus,
-    onEditValueset
+    onEditValueset,
+    onChangeValueset
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -137,6 +139,7 @@ export const Section = ({
                             onDeleteSubsection={handleDeleteSubsection}
                             onEditSubsection={handleEditSubsection}
                             onEditValueset={onEditValueset}
+                            onChangeValueset={onChangeValueset}
                         />
                     ))}
                 </div>

@@ -11,10 +11,13 @@
             max-width: 40rem;
         }
 
-        .effectiveTimeSection {
+        .effectiveTimeWrapper {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+
+            > div {
+                max-width: 50%;
+            }
         }
 
         .radioButtons {

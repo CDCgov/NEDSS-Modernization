@@ -218,6 +218,7 @@ const AddBusinessRule = () => {
                                 {selectedFieldType == '' && !loading ? null : (
                                     <FormProvider {...form}>
                                         <BusinessRulesForm
+                                            selectedFieldType={selectedFieldType}
                                             targets={targets}
                                             question={question}
                                             sourceValues={sourceValues}

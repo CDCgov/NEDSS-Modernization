@@ -12,7 +12,7 @@ type Props = {
     onCancel: () => void;
     onClose: () => void;
     onAccept: (selected: number) => void;
-    onCreateNew: () => void;
+    onCreateNew?: () => void;
 };
 export const ValuesetSearch = ({ onCancel, onClose, onAccept, onCreateNew }: Props) => {
     const [selectedValueset, setSelectedValueset] = useState<number | undefined>(undefined);

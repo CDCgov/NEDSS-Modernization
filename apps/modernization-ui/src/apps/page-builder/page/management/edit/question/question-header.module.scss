@@ -30,6 +30,24 @@
             font-weight: 700;
             line-height: 1.4175rem;
         }
+
+        .publishedIndicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.125rem;
+            background: colors.$cool-accent;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.75rem;
+
+            color: colors.$base-white;
+            text-align: center;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.4175rem;
+        }
     }
 
     .questionButtons {

@@ -10,6 +10,7 @@ import { PagesQuestion } from 'apps/page-builder/generated';
 import { UpdatePageQuestionRequest } from 'apps/page-builder/hooks/api/useUpdatePageQuestion';
 import { EditFields } from './EditFields';
 import styles from './edit-question-form.module.scss';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 export type EditPageQuestionForm = Omit<UpdatePageQuestionRequest & AdditionalQuestionFields, 'codeSet'> & {
     codeSet: 'LOCAL' | 'PHIN';
@@ -21,6 +22,9 @@ type Props = {
 };
 
 export const EditPageQuestion = ({ page, question }: Props) => {
+    const form = useFormContext<EditPageQuestionForm>();
+    const displayControl = useWatch({ control: form.control, name: 'displayControl', exact: true });
+
     return (
         <div className={styles.form}>
             <BasicInformationFields editing />
@@ -28,10 +32,14 @@ export const EditPageQuestion = ({ page, question }: Props) => {
             <HorizontalRule />
             <UserInterfaceFields published={question?.isPublished} />
             <EditFields />
-            <HorizontalRule />
-            <DataMartFields editing page={page} questionId={question?.id} />
-            <HorizontalRule />
-            <MessagingFields />
+            {displayControl?.toString() !== '1026' && (
+                <>
+                    <HorizontalRule />
+                    <DataMartFields editing page={page} questionId={question?.id} />
+                    <HorizontalRule />
+                    <MessagingFields />
+                </>
+            )}
             <HorizontalRule />
             <AdministrativeFields />
         </div>

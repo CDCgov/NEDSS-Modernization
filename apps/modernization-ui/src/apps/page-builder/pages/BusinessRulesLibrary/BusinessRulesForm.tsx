@@ -38,13 +38,18 @@ interface Props {
     targets?: Target[];
     question?: SourceQuestion;
     sourceValues?: string[];
+    selectedFieldType: string;
 }
 
-const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
+type FieldTypes = {
+    [key: string]: QuestionProps[] | PagesQuestion[];
+};
+
+const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
-    const [targetQuestions, setTargetQuestions] = useState<QuestionProps[] | PagesQuestion[]>([]);
+    const [targetQuestions, setTargetQuestions] = useState<FieldTypes>({});
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
     const [selectedSource, setSelectedSource] = useState<QuestionProps[] | PagesQuestion[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
@@ -68,14 +73,15 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
     };
 
     const handleChangeTargetQuestion = (data: QuestionProps[] | PagesQuestion[]) => {
-        setTargetQuestions(data);
-        const descriptions = data.map((target) => `${target.name} (${target.question})`);
-        const identifiers = data.map((question) => question?.question || '');
-        const texts = data.map((question) => question.name);
+        setTargetQuestions({
+            ...targetQuestions,
+            [selectedFieldType]: data
+        });
 
-        form.setValue('targetIdentifiers', identifiers);
-        form.setValue('targetValueText', texts);
-        setTargetDescriptions(descriptions);
+        const values = data.map((val) => val.question || '');
+        const text = data.map((val) => val.name);
+        form.setValue('targetIdentifiers', values);
+        form.setValue('targetValueText', text);
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
@@ -88,7 +94,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
     useEffect(() => {
         handleRuleDescription();
     }, [
-        targetQuestions,
+        targetQuestions[selectedFieldType],
         selectedSource,
         targetDescriptions,
         form.getValues('comparator'),
@@ -106,7 +112,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
     }, [targets]);
 
     const targetValueIdentifiers = form.watch('targetIdentifiers') || [];
-    const isTargetQuestionSelected = targetQuestions.length || targetValueIdentifiers.length;
+    const isTargetQuestionSelected = targetQuestions[selectedFieldType]?.length || targetValueIdentifiers.length;
 
     const handleRuleDescription = () => {
         let description = '';
@@ -117,9 +123,9 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
             sourceValues?.length && !anySourceValueToggle
                 ? sourceValues?.map((value) => value.text).join(', ')
                 : 'any source value';
-        const targetValues = targetQuestions.map((val) => `${val.name} (${val.question})`);
+        const targetValues = targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`);
 
-        if (selectedSource && targetQuestions.length && logic && sourceText) {
+        if (selectedSource && targetQuestions[selectedFieldType]?.length && logic && sourceText) {
             if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
                 description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                     form.getValues('ruleFunction')
@@ -192,7 +198,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
         form.setValue('targetType', value);
         form.setValue('targetIdentifiers', []);
         form.setValue('targetValueText', []);
-        setTargetQuestions([]);
+        setTargetQuestions({});
         setTargetDescriptions([]);
         form.setValue('description', '');
     };
@@ -210,6 +216,15 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
     useEffect(() => {
         setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
+
+    const renderErrorListAsString = () => {
+        let errors = '';
+        const length = form.watch('targetValueText')?.length || 0;
+        form.watch('targetValueText')?.map((val, k) => {
+            errors += `${val} (${form.watch('targetIdentifiers')[k]})${length - 1 === k ? '' : ', '}`;
+        });
+        return errors;
+    };
 
     return (
         <>
@@ -444,7 +459,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets }: Props) => {
                             multiline
                             defaultValue={`'${form.watch('sourceText')}' must be ${mapLogicForDateCompare(
                                 form.watch('comparator')
-                            )} '${form.watch('targetValueText')?.[0]} (${form.watch('targetIdentifiers')?.[0]})'`}
+                            )} '${renderErrorListAsString()}'`}
                             name={'errorMessage'}
                             id={'errorMessage'}
                         />

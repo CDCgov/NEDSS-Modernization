@@ -9,6 +9,7 @@ import { AddNewPage } from './pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import AddBusinessRule from './pages/BusinessRulesLibrary/Add/AddBusinessRule';
 import { PageProvider } from 'page';
+import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
 
 const routing: RouteObject[] = [
     {
@@ -70,6 +71,10 @@ const routing: RouteObject[] = [
                                                 <BusinessRulesLibrary />
                                             </PageProvider>
                                         )
+                                    },
+                                    {
+                                        path: ':ruleId',
+                                        element: <ViewBusinessRule />
                                     },
                                     {
                                         path: 'add',
