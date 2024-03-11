@@ -97,6 +97,7 @@ class PagesResponseMapper {
     long id = content.identifier();
     String adminComments = content.attributes().adminComments();
     boolean isStandard = content.attributes().isStandard();
+    boolean isStandardNnd = content.attributes().isStandardNnd();
     String standard = content.attributes().standard(); // PHIN or LOCAL
     String questionIdentifier = content.attributes().question();
     String name = content.definition().name();
@@ -120,13 +121,16 @@ class PagesResponseMapper {
     String defaultLabelInReport = content.attributes().defaultLabelInReport();
     String dataMartColumnName = content.attributes().dataMartColumnName();
     boolean isPublished = content.attributes().isPublished();
+    int questionGroupSeq = content.attributes().questionGroupSeq();
     return new PagesResponse.PagesQuestion(
         id,
+        isStandardNnd,
         isStandard,
         standard,
         questionIdentifier,
         name,
         order,
+        questionGroupSeq,
         subGroup,
         description,
         coInfection,

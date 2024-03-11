@@ -3,6 +3,7 @@ package gov.cdc.nbs.questionbank.page.component;
 public abstract sealed class ContentNode extends ComponentNode permits EntryNode, InputNode, SelectionNode, StaticNode {
 
   public record Attributes(
+      boolean isStandardNnd,
       boolean isStandard,
       String standard,
       String question,
@@ -23,7 +24,8 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String dataMartColumnName,
       int nbsComponentId,
       String dataLocation,
-      boolean isPublished) {
+      boolean isPublished,
+      int questionGroupSeq) {
   }
 
 

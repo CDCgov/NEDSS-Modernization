@@ -6,6 +6,8 @@ record FlattenedComponent(
     String name,
     boolean visible,
     int order,
+    int questionGroupSeq,
+    boolean isStandardNnd,
     boolean isStandard,
     String standard,
     String question,
@@ -35,13 +37,16 @@ record FlattenedComponent(
       int type,
       String name,
       boolean visible,
-      int order) {
+      int order,
+      int questionGroupSeq) {
     this(
         identifier,
         type,
         name,
         visible,
         order,
+        questionGroupSeq,
+        false,
         false,
         null,
         null,
