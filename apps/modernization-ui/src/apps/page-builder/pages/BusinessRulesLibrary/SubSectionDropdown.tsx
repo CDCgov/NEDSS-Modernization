@@ -14,14 +14,11 @@ const SubSectionsDropdown = ({ pageId, selectedSubsectionIdentifiers, onSelect }
     const [subSections, setSubSections] = useState<PagesSubSection[]>([]);
     const [selectedSubsections, setSelectedSubsections] = useState<string[]>([]);
 
-    console.log('selectedQuestionidentifiers', selectedSubsectionIdentifiers);
     const handleSelectSubsection = (subSectionIds: string[]) => {
-        console.log('subsectionIds on change', subSectionIds);
         const selected: PagesSubSection[] = subSections.filter((section) =>
             subSectionIds.includes(section.id.toString())
         );
 
-        console.log('test', selected);
         setSelectedSubsections(selected.map((section) => section.id.toString()));
         onSelect(selected);
     };
@@ -29,7 +26,6 @@ const SubSectionsDropdown = ({ pageId, selectedSubsectionIdentifiers, onSelect }
     useEffect(() => {
         if (pageId) {
             fetchPageDetails(authorization(), Number(pageId)).then((data) => {
-                console.log('data', data);
                 const sections = data.tabs?.map((tab) => tab.sections).flat();
                 const subs = sections
                     ?.map((section) => section.subSections)

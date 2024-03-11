@@ -244,8 +244,6 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         return errors;
     };
 
-    console.log('form', form.getValues());
-
     return (
         <>
             <Grid row className="inline-field">
