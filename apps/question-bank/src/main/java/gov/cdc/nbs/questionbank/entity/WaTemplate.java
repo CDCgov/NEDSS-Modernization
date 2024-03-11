@@ -170,6 +170,7 @@ public class WaTemplate {
     this.waRdbMetadatums = new ArrayList<>();
   }
 
+  // Used for testing purposes only
   public WaTemplate(
       final String eventType,
       final String mappingGuide,
@@ -180,6 +181,7 @@ public class WaTemplate {
     this.busObjType = eventType;
     this.nndEntityIdentifier = mappingGuide;
     this.templateNm = name;
+    this.formCd = "PG_" + name.replace(" ", "_");
 
     this.addUserId = createdBy;
     this.addTime = createdOn;

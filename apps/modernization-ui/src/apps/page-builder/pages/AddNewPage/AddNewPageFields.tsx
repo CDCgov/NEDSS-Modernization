@@ -1,9 +1,10 @@
 import { ErrorMessage, Icon, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
-import { Concept, Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
+import { Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
+import { Option } from 'generated';
 import React, { ChangeEvent } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, validPageNameRule } from 'validation/entry';
@@ -15,7 +16,7 @@ type AddNewPageFieldProps = {
     createConditionModal: React.RefObject<ModalRef>;
     importTemplateModal: React.RefObject<ModalRef>;
     templates: Template[];
-    mmgs: Concept[];
+    mmgs: Option[];
 };
 export const AddNewPageFields = (props: AddNewPageFieldProps) => {
     const form = useFormContext<PageCreateRequest>();
@@ -136,12 +137,7 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
-                        options={props.mmgs.map((m) => {
-                            return {
-                                name: m.display ?? '',
-                                value: m.localCode ?? ''
-                            };
-                        })}
+                        options={props.mmgs}
                         error={error?.message}
                         required
                     />
