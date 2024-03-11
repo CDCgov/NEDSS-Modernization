@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
@@ -42,12 +43,20 @@ public class ConditionSearcher {
         conditionTable.statusCd)
         .from(conditionTable)
         .leftJoin(pageMappingTable).on(pageMappingTable.conditionCd.eq(conditionTable.id))
-        .where(pageMappingTable.waTemplateUid.isNull().or(pageMappingTable.waTemplateUid.id.eq(page)))
+        .where(resolveWhere(page))
         .orderBy(conditionTable.conditionShortNm.asc())
         .fetch()
         .stream()
         .map(this::toCondition)
         .toList();
+  }
+
+  private Predicate resolveWhere(Long page) {
+    if (page != null) {
+      return pageMappingTable.waTemplateUid.isNull().or(pageMappingTable.waTemplateUid.id.eq(page));
+    } else {
+      return pageMappingTable.waTemplateUid.isNull();
+    }
   }
 
   public Page<Condition> search(ReadConditionRequest request, Pageable pageable) {

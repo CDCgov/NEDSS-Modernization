@@ -1,11 +1,5 @@
 import { ErrorMessage, Label, Textarea } from '@trussworks/react-uswds';
-import {
-    Concept,
-    Condition,
-    PageControllerService,
-    PageInformationChangeRequest,
-    SelectableCondition
-} from 'apps/page-builder/generated';
+import { Concept, Condition, PageControllerService, PageInformationChangeRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
@@ -17,7 +11,6 @@ import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNam
 
 type AddNewPageFieldProps = {
     conditions: Condition[];
-    publishedConditions: SelectableCondition[];
     mmgs: Concept[];
     eventType: string;
     isEnabled: boolean;
@@ -34,14 +27,7 @@ const eventTypeOptions = [
     { value: 'VAC', name: 'Vaccination' }
 ];
 
-export const PageDetailsField = ({
-    conditions,
-    mmgs,
-    eventType,
-    isEnabled,
-    pageStatus,
-    publishedConditions
-}: AddNewPageFieldProps) => {
+export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageStatus }: AddNewPageFieldProps) => {
     const form = useFormContext<PageInformationChangeRequest>();
     const validatePageName = async (val: string) => {
         const response = await PageControllerService.validatePageRequestUsingPost({
@@ -55,20 +41,6 @@ export const PageDetailsField = ({
 
     return (
         <>
-            <MultiSelectInput
-                name={'publishedConditions'}
-                id={'publishedConditions'}
-                label="Published condition(s)"
-                disabled
-                aria-label={'conditions for the page that have been published'}
-                options={publishedConditions.map((m) => {
-                    return {
-                        name: m.name ?? '',
-                        value: m.value ?? ''
-                    };
-                })}
-                value={publishedConditions.map((c) => c.value ?? '')}
-            />
             <Controller
                 control={form.control}
                 name="conditions"

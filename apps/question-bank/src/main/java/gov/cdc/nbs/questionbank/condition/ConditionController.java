@@ -4,7 +4,7 @@ import gov.cdc.nbs.questionbank.condition.request.ReadConditionRequest;
 import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
 
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -49,9 +49,8 @@ public class ConditionController {
   }
 
   @GetMapping("available")
-  public List<Condition> findConditionsNotInUse(
-      @RequestParam("page") final Long page) {
-    return searcher.findAvailable(page);
+  public List<Condition> findConditionsNotInUse(@RequestParam("page") final Optional<Long> page) {
+    return searcher.findAvailable(page.orElse(null));
   }
 
   @GetMapping

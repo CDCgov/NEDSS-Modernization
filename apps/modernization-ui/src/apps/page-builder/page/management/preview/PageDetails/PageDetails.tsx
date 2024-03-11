@@ -3,8 +3,7 @@ import {
     Concept,
     PageInformation,
     PageInformationChangeRequest,
-    PageInformationService,
-    SelectableCondition
+    PageInformationService
 } from 'apps/page-builder/generated';
 import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
@@ -28,7 +27,6 @@ export const PageDetails = () => {
     const { alertError, alertSuccess } = useAlert();
     const { page } = useGetPageDetails();
     const { conditions } = useFindConditionsNotInUse(Number(pageId));
-    const [publishedConditions, setPublishedConditions] = useState<SelectableCondition[]>([]);
     const isEnabled = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status ?? '');
     const pageStatus = page?.status;
 
@@ -52,14 +50,13 @@ export const PageDetails = () => {
                 page: Number(pageId)
             }).then((data: PageInformation) => {
                 setPageEvent(data.eventType.value ?? '');
-                setPublishedConditions(data.conditions.filter((c) => c.published));
                 form.reset({
                     ...form.getValues(),
                     datamart: data.datamart,
                     messageMappingGuide: data?.messageMappingGuide?.value,
                     description: data?.description,
                     name: data.name,
-                    conditions: data.conditions?.filter((c) => !c.published).map((c) => c.value)
+                    conditions: data.conditions.map((c) => c.value)
                 });
             });
         }
@@ -73,7 +70,7 @@ export const PageDetails = () => {
             page: Number(pageId),
             request: {
                 ...request,
-                conditions: request.conditions?.concat(publishedConditions.map((p) => p.value ?? ''))
+                conditions: request.conditions
             }
         })
             .then(() => {
@@ -108,7 +105,6 @@ export const PageDetails = () => {
                             <FormProvider {...form}>
                                 <PageDetailsField
                                     conditions={conditions}
-                                    publishedConditions={publishedConditions}
                                     mmgs={mmgs}
                                     eventType={pageEvent}
                                     isEnabled={!isEnabled}
