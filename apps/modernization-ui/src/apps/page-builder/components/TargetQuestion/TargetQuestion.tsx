@@ -11,6 +11,7 @@ import {
 } from '@trussworks/react-uswds';
 import {
     PageRuleControllerService,
+    PagesQuestion,
     PagesResponse,
     PagesSection,
     PagesTab,
@@ -21,27 +22,19 @@ import { RefObject, useState } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './TargetQuestion.scss';
 import { Icon } from '../../../../components/Icon/Icon';
-import { fetchPageDetails } from '../../services/pagesAPI';
 import { authorization } from 'authorization';
+import { QuestionProps } from 'apps/page-builder/pages/BusinessRulesLibrary/BusinessRulesForm';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
 
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
-    pageId: string;
     getList: (data: QuestionProps[]) => void;
     multiSelected?: boolean;
     header?: string;
     isSource?: boolean;
     ruleFunction: string;
-};
-
-type QuestionProps = {
-    id: number;
-    question: string;
-    name: string;
-    selected: boolean;
-    valueSet: string;
-    displayComponent?: number;
-    dataType?: string;
+    targetType: string;
+    sourceQuestion?: QuestionProps[] | PagesQuestion[] | undefined;
 };
 
 const codedDisplayType = [1024, 1025, 1013, 1007, 1031, 1027, 1028];
@@ -49,29 +42,22 @@ const staticType = [1014, 1003, 1012, 1030, 1036];
 
 const TargetQuestion = ({
     modalRef,
-    pageId,
     getList,
     header,
     multiSelected = true,
     isSource = false,
-    ruleFunction
+    ruleFunction,
+    sourceQuestion
 }: CommonProps) => {
     const [activeTab, setActiveTab] = useState(0);
     const [sourceList, setSourceList] = useState<QuestionProps[]>([]);
     const [subsectionOpen, setSubsectionOpen] = useState(false);
     const [sourceId, setSource] = useState(-1);
-    const [fetchPage, setFetchPage] = useState<PagesResponse>();
-    const [page, setPage] = useState<PagesResponse>();
+    const [filteredPage, setFilteredPage] = useState<PagesResponse>();
     const [allRules, setAllRules] = useState<Rule[]>();
     const [targetIdent, setTargetIdent] = useState<string[]>();
 
-    useEffect(() => {
-        if (pageId) {
-            fetchPageDetails(authorization(), Number(pageId)).then((data) => {
-                setFetchPage(data);
-            });
-        }
-    }, [pageId, modalRef.current?.modalIsOpen]);
+    const { page } = useGetPageDetails();
 
     const visible = true;
     const selectedRecord = sourceList.filter((list) => list.selected);
@@ -97,7 +83,11 @@ const TargetQuestion = ({
                 id: qtn.id,
                 question: qtn.question,
                 valueSet: qtn.valueSet,
-                selected: false
+                selected: false,
+                displayComponent: qtn.displayComponent,
+                dataType: qtn.dataType,
+                questionGroupSeq: qtn.questionGroupSeq,
+                blockName: qtn.blockName
             }));
         }
         updateList[key] = { ...updateList[key], selected: e.target.checked };
@@ -117,12 +107,18 @@ const TargetQuestion = ({
             id: qtn.id,
             question: qtn.question,
             valueSet: qtn.valueSet,
-            selected: false
+            selected: false,
+            displayComponent: qtn.displayComponent,
+            dataType: qtn.dataType,
+            questionGroupSeq: qtn.questionGroupSeq,
+            blockName: qtn.blockName
         }));
         setSourceList(newList);
     };
 
     const isNotUsed = (question: QuestionProps) => !targetIdent?.includes(question.question);
+
+    const isNotSubsection = (question: QuestionProps) => question.displayComponent !== 1016;
 
     useEffect(() => {
         const targetsIdentifiers: string[] = [];
@@ -140,11 +136,14 @@ const TargetQuestion = ({
     useEffect(() => {
         PageRuleControllerService.getAllRulesUsingGet({
             authorization: authorization(),
-            id: Number(pageId) ?? 0
+            id: page?.id ?? 0
         }).then((response) => {
             setAllRules(response);
         });
     }, []);
+
+    const isSameGroup = (question: QuestionProps) =>
+        question.questionGroupSeq === sourceQuestion?.[0]?.questionGroupSeq;
 
     const handleSourceCases = (question: QuestionProps[]): QuestionProps[] => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
@@ -155,7 +154,10 @@ const TargetQuestion = ({
                 const filteredList = question.filter(isCoded);
                 return filteredList;
             } else {
-                const filteredList = question.filter(isNotUsed).filter(isNotStatic);
+                let filteredList = question.filter(isNotUsed).filter(isNotStatic);
+                if (sourceQuestion?.[0]?.blockName) {
+                    filteredList = filteredList.filter(isSameGroup).filter(isNotSubsection);
+                }
                 return filteredList;
             }
         }
@@ -166,17 +168,17 @@ const TargetQuestion = ({
     };
 
     useEffect(() => {
-        if (fetchPage) {
+        if (page) {
             const result: PagesResponse = {
-                id: fetchPage.id,
-                description: fetchPage.description,
-                name: fetchPage.name,
-                root: fetchPage.root,
-                rules: fetchPage.rules,
-                status: fetchPage.status,
+                id: page.id,
+                description: page.description,
+                name: page.name,
+                root: page.root,
+                rules: page.rules,
+                status: page.status,
                 tabs: []
             };
-            fetchPage.tabs?.forEach((tab: PagesTab) => {
+            page.tabs?.forEach((tab: PagesTab) => {
                 const newTab: PagesTab = {
                     id: tab.id,
                     name: tab.name,
@@ -210,9 +212,9 @@ const TargetQuestion = ({
                     newTab.sections.length > 0 && result?.tabs?.push(newTab);
                 }
             });
-            setPage(result);
+            setFilteredPage(result);
         }
-    }, [fetchPage, ruleFunction]);
+    }, [page, ruleFunction, sourceQuestion]);
 
     return (
         <ModalComponent
@@ -225,7 +227,7 @@ const TargetQuestion = ({
                     <h5>{`Please select ${header ? header.toLowerCase() : 'targeted questions'}.`}</h5>
                     <div className="target-question-tabs">
                         <ul className="tabs">
-                            {page?.tabs?.map(({ name }, key) => (
+                            {filteredPage?.tabs?.map(({ name }, key) => (
                                 <li
                                     key={key}
                                     className={activeTab === key ? 'active' : ''}
@@ -254,8 +256,8 @@ const TargetQuestion = ({
                     </div>
                     <div className="question-list-container">
                         <div className="tree-section">
-                            {page?.tabs?.[activeTab] &&
-                                page?.tabs?.[activeTab]?.sections?.map((section: any, key) => (
+                            {filteredPage?.tabs?.[activeTab] &&
+                                filteredPage?.tabs?.[activeTab]?.sections?.map((section: any, key) => (
                                     <div key={key} className={`reorder-section ${visible ? '' : 'hidden'}`}>
                                         <div className="reorder-section__tile">
                                             <div

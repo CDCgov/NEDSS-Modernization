@@ -59,7 +59,8 @@ class ContentComponentResolver {
         component.type(),
         component.dataLocation(),
         component.isPublished(),
-        component.questionGroupSeq());
+        component.questionGroupSeq(),
+        component.blockName());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {

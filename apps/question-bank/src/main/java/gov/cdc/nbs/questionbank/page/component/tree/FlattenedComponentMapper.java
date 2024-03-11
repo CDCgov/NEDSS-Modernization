@@ -121,6 +121,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     boolean isSubsectionGrouped = resultSet.getString(this.columns.blockName()) != null;
     boolean isPublished = resolveBoolean(this.columns.isPublished, resultSet);
     String dataLocation = resultSet.getString(this.columns.dataLocation());
+    String blockName = resultSet.getString(this.columns.blockName());
 
     return new FlattenedComponent(
         identifier,
@@ -152,7 +153,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         dataMartColumnName,
         isSubsectionGrouped,
         dataLocation,
-        isPublished);
+        isPublished,
+        blockName);
   }
 
   private boolean resolveBoolean(final int column, final ResultSet resultSet) throws SQLException {

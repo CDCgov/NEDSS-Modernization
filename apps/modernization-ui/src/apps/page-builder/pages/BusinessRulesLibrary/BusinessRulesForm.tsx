@@ -23,10 +23,14 @@ import SubSectionsDropdown from './SubSectionDropdown';
 
 export type QuestionProps = {
     id: number;
-    name: string;
     question: string;
+    name: string;
     selected: boolean;
     valueSet: string;
+    displayComponent: number;
+    dataType: string;
+    questionGroupSeq: number;
+    blockName: string;
 };
 
 type FieldProps = {
@@ -471,9 +475,10 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
                     <TargetQuestion
                         modalRef={TargetQtnModalRef}
                         getList={handleChangeTargetQuestion}
-                        pageId={pageId}
                         header="Target question"
                         ruleFunction={ruleFunction}
+                        sourceQuestion={selectedSource}
+                        targetType={''}
                     />
                     <TargetQuestion
                         modalRef={sourceModalRef}
@@ -481,8 +486,8 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
                         multiSelected={false}
                         header="Source question"
                         isSource={true}
-                        pageId={pageId}
                         ruleFunction={ruleFunction}
+                        targetType=""
                     />
                 </>
             )}

@@ -88,7 +88,8 @@ public record PagesResponse(
       String rdbColumnName,
       String defaultLabelInReport,
       String dataMartColumnName,
-      boolean isPublished) {
+      boolean isPublished,
+      String blockName) {
   }
 
 

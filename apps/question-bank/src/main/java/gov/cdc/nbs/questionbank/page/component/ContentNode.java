@@ -25,7 +25,8 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       int nbsComponentId,
       String dataLocation,
       boolean isPublished,
-      int questionGroupSeq) {
+      int questionGroupSeq,
+      String blockName) {
   }
 
 

@@ -30,7 +30,8 @@ record FlattenedComponent(
     String dataMartColumnName,
     boolean isGrouped,
     String dataLocation,
-    boolean isPublished) {
+    boolean isPublished,
+    String blockName) {
 
   FlattenedComponent(
       long identifier,
@@ -69,6 +70,7 @@ record FlattenedComponent(
         null,
         false,
         null,
-        false);
+        false,
+        null);
   }
 }

@@ -122,6 +122,7 @@ class PagesResponseMapper {
     String dataMartColumnName = content.attributes().dataMartColumnName();
     boolean isPublished = content.attributes().isPublished();
     int questionGroupSeq = content.attributes().questionGroupSeq();
+    String blockName = content.attributes().blockName();
     return new PagesResponse.PagesQuestion(
         id,
         isStandardNnd,
@@ -150,7 +151,8 @@ class PagesResponseMapper {
         rdbColumnName,
         defaultLabelInReport,
         dataMartColumnName,
-        isPublished);
+        isPublished,
+        blockName);
   }
 
   boolean isSubsectionGrouable(SubSectionNode subsectionNode) {
