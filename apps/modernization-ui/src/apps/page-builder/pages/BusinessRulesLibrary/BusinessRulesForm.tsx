@@ -59,6 +59,8 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
             : ''
     );
 
+    targetQuestions[selectedFieldType] = [];
+
     const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
             authorization: authorization(),
