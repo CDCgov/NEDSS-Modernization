@@ -1,13 +1,12 @@
-import { Radio } from "@trussworks/react-uswds";
-import { ChangeEvent } from "react";
+import { Radio } from '@trussworks/react-uswds';
+import { ChangeEvent } from 'react';
 
 type Props = {
     options: [];
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
-export const RadioGroup = ({options, onChange}: Props) => {
-    console.log(options);
+export const RadioGroup = ({ options, onChange }: Props) => {
     return (
         <div className="radio-group">
             {/* {options.map((option: Option[]) => {
