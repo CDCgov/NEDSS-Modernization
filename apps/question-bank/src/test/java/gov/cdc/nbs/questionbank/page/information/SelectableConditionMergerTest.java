@@ -20,6 +20,17 @@ class SelectableConditionMergerTest {
   }
 
   @Test
+  void merging_true_2() {
+    SelectableCondition a = new SelectableCondition("value", "name", false);
+    SelectableCondition b = new SelectableCondition("other value", "other name", true);
+    SelectableCondition merged = merger.merge(b, a);
+
+    assertThat(merged.value()).isEqualTo("other value");
+    assertThat(merged.name()).isEqualTo("other name");
+    assertThat(merged.published()).isTrue();
+  }
+
+  @Test
   void merging_false() {
     SelectableCondition a = new SelectableCondition("value", "name", false);
     SelectableCondition b = new SelectableCondition("value", "name", false);

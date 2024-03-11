@@ -20,7 +20,7 @@ import {
 import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
-    jest.spyOn(ConditionControllerService, 'findAllConditionsUsingGet').mockReturnValue(
+    jest.spyOn(ConditionControllerService, 'findConditionsNotInUseUsingGet').mockReturnValue(
         Promise.resolve([{ id: '1' }] as Condition[]) as CancelablePromise<Condition[]>
     );
     jest.spyOn(ConceptControllerService, 'findConceptsUsingGet').mockReturnValue(
