@@ -101,11 +101,7 @@ export const EventSearch = ({ investigationFilter, labReportFilter, onSearch, cl
     };
 
     const recreateEventForm = () => {
-        const currentSearchType = searchType;
         setSearchType(undefined);
-        setTimeout(() => {
-            setSearchType(currentSearchType);
-        }, 100);
     };
 
     return (
