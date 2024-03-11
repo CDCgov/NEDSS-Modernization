@@ -8,6 +8,8 @@ export const mapComparatorToString = (comparator: Rule.comparator) => {
             return 'Less than or equal to';
         case Rule.comparator.GREATER_THAN:
             return 'Greater than';
+        case Rule.comparator.GREATER_THAN_OR_EQUAL_TO:
+            return 'Greater than or equal to';
         case Rule.comparator.EQUAL_TO:
             return 'Equal to';
         case Rule.comparator.NOT_EQUAL_TO:

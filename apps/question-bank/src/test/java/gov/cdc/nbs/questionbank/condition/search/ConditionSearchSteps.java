@@ -75,6 +75,12 @@ public class ConditionSearchSteps {
     response.active(request.available());
   }
 
+  @When("i search for all available conditions and those related to a page")
+  public void search_for_all_available_with_page() {
+    Long page = mother.one().getId();
+    response.active(request.available(page));
+  }
+
   @Then("the condition is returned")
   public void the_condition_is_returned() throws Exception {
     response.active()
@@ -114,6 +120,16 @@ public class ConditionSearchSteps {
         .andExpect(
             jsonPath("$.[*].id")
                 .value(not(hasItem(this.activeCondition.active().id()))))
+        .andExpect(jsonPath("$.[*].id").isNotEmpty());
+  }
+
+  @Then("the condition is in the available conditions")
+  public void condition_is_in_available() throws Exception {
+    response.active()
+        .andExpect(status().isOk())
+        .andExpect(
+            jsonPath("$.[*].id")
+                .value(hasItem(this.activeCondition.active().id())))
         .andExpect(jsonPath("$.[*].id").isNotEmpty());
   }
 

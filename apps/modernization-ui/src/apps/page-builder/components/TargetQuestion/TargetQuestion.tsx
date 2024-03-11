@@ -9,7 +9,14 @@ import {
     Tag,
     Icon as UswIcon
 } from '@trussworks/react-uswds';
-import { PageRuleControllerService, PagesResponse, Rule, Target } from 'apps/page-builder/generated';
+import {
+    PageRuleControllerService,
+    PagesResponse,
+    PagesSection,
+    PagesTab,
+    Rule,
+    Target
+} from 'apps/page-builder/generated';
 import { RefObject, useState } from 'react';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import './TargetQuestion.scss';
@@ -53,6 +60,7 @@ const TargetQuestion = ({
     const [sourceList, setSourceList] = useState<QuestionProps[]>([]);
     const [subsectionOpen, setSubsectionOpen] = useState(false);
     const [sourceId, setSource] = useState(-1);
+    const [fetchPage, setFetchPage] = useState<PagesResponse>();
     const [page, setPage] = useState<PagesResponse>();
     const [allRules, setAllRules] = useState<Rule[]>();
     const [targetIdent, setTargetIdent] = useState<string[]>();
@@ -60,7 +68,7 @@ const TargetQuestion = ({
     useEffect(() => {
         if (pageId) {
             fetchPageDetails(authorization(), Number(pageId)).then((data) => {
-                setPage(data);
+                setFetchPage(data);
             });
         }
     }, [pageId, modalRef.current?.modalIsOpen]);
@@ -138,25 +146,73 @@ const TargetQuestion = ({
         });
     }, []);
 
-    const handleSourceList = (question: QuestionProps[]) => {
+    const handleSourceCases = (question: QuestionProps[]): QuestionProps[] => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
-            if (isSource) {
-                const filteredList = question.filter(isDate);
-                handleList(filteredList);
-            } else {
-                const filteredList = question.filter(isDate);
-                handleList(filteredList);
-            }
+            const filteredList = question.filter(isDate);
+            return filteredList;
         } else {
             if (isSource) {
                 const filteredList = question.filter(isCoded);
-                handleList(filteredList);
+                return filteredList;
             } else {
                 const filteredList = question.filter(isNotUsed).filter(isNotStatic);
-                handleList(filteredList);
+                return filteredList;
             }
         }
     };
+
+    const handleSourceList = (question: QuestionProps[]) => {
+        handleList(handleSourceCases(question));
+    };
+
+    useEffect(() => {
+        if (fetchPage) {
+            const result: PagesResponse = {
+                id: fetchPage.id,
+                description: fetchPage.description,
+                name: fetchPage.name,
+                root: fetchPage.root,
+                rules: fetchPage.rules,
+                status: fetchPage.status,
+                tabs: []
+            };
+            fetchPage.tabs?.forEach((tab: PagesTab) => {
+                const newTab: PagesTab = {
+                    id: tab.id,
+                    name: tab.name,
+                    sections: [],
+                    visible: tab.visible,
+                    order: tab.order
+                };
+
+                tab.sections.forEach((section: PagesSection) => {
+                    const newSection: PagesSection = {
+                        id: section.id,
+                        name: section.name,
+                        order: section.order,
+                        subSections: [],
+                        visible: section.visible
+                    };
+
+                    section.subSections.forEach((subsection: any) => {
+                        if (subsection.questions.length > 0) {
+                            if (handleSourceCases(subsection.questions).length > 0) {
+                                newSection?.subSections.push(subsection);
+                            }
+                        }
+                    });
+
+                    if (newSection) {
+                        newSection.subSections.length > 0 && newTab?.sections.push(newSection);
+                    }
+                });
+                if (newTab) {
+                    newTab.sections.length > 0 && result?.tabs?.push(newTab);
+                }
+            });
+            setPage(result);
+        }
+    }, [fetchPage, ruleFunction]);
 
     return (
         <ModalComponent
@@ -279,7 +335,17 @@ const TargetQuestion = ({
             modalFooter={
                 <ModalFooter className="padding-2 margin-left-auto footer">
                     <ButtonGroup className="flex-justify-end">
-                        <ModalToggleButton modalRef={modalRef} closer outline data-testid="condition-cancel-btn">
+                        <ModalToggleButton
+                            modalRef={modalRef}
+                            closer
+                            outline
+                            data-testid="condition-cancel-btn"
+                            onClick={() => {
+                                setSubsectionOpen(false);
+                                setSource(0);
+                                setSourceList([]);
+                                setActiveTab(0);
+                            }}>
                             Cancel
                         </ModalToggleButton>
                         <ModalToggleButton
