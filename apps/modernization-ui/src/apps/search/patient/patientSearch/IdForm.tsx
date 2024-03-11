@@ -28,6 +28,7 @@ export const IDForm = ({ control: form }: IDFormProps) => {
                                         };
                                     })}
                                     onChange={onChange}
+                                    id="identification.identificationType"
                                     htmlFor={'identificationType'}
                                     label="ID type"
                                 />

@@ -19,6 +19,7 @@ export const EthnicityForm = ({ control }: any) => {
                                         onChange={onChange}
                                         htmlFor={'ethnicity'}
                                         label="Ethnicity"
+                                        id="ethnicity"
                                         options={Object.values(searchCriteria.ethnicities).map((ethnicity) => {
                                             return {
                                                 name: ethnicity.codeDescTxt,
@@ -39,6 +40,7 @@ export const EthnicityForm = ({ control }: any) => {
                                         onChange={onChange}
                                         htmlFor={'race'}
                                         label="Race"
+                                        id="race"
                                         options={Object.values(searchCriteria.races).map((race) => {
                                             return {
                                                 name: race.codeDescTxt,

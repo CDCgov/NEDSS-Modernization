@@ -51,6 +51,7 @@ export const AddressForm = ({ control }: any) => {
                                     onChange={onChange}
                                     htmlFor={'state'}
                                     label="State"
+                                    id="state"
                                     options={searchCriteria.states}
                                 />
                             )}
