@@ -5,6 +5,7 @@ Feature: Page Information
     Given I am logged in
     And I can "LDFAdministration" any "System"
 
+  @page-information-fail
   Scenario: I can retrieve Information of a Page
     Given I have an Investigation page named "Testing Information" mapped by Generic Case Notification Message Mapping Guide v.2
     And the page has a "description" of "Testing Information Description"
