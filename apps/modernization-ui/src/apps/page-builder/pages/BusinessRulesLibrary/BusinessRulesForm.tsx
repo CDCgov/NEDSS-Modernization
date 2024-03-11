@@ -40,13 +40,14 @@ interface Props {
     question?: SourceQuestion;
     sourceValues?: string[];
     selectedFieldType: string;
+    onSubmitDisability: (isDisabled: boolean) => void;
 }
 
 type FieldTypes = {
     [key: string]: QuestionProps[] | PagesQuestion[];
 };
 
-const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets }: Props) => {
+const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets, onSubmitDisability }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
@@ -205,6 +206,8 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         form.watch('ruleFunction') === Rule.ruleFunction.DISABLE ||
         form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE ||
         form.watch('ruleFunction') === Rule.ruleFunction.HIDE;
+
+    onSubmitDisability(isTargetTypeEnabled && !form.getValues('sourceValues')?.length);
 
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
