@@ -34,7 +34,6 @@ const AddBusinessRule = () => {
                 ruleId: Number(ruleId)
             }).then((resp: Rule) => {
                 const sourceQuestion = resp.sourceQuestion?.label || '';
-
                 setSourceValues(resp.sourceValues || []);
                 setQuestion(resp?.sourceQuestion);
 
@@ -52,7 +51,7 @@ const AddBusinessRule = () => {
                 form.setValue('targetType', resp.targetType || Rule.targetType.QUESTION);
 
                 setSelectedFieldType(resp.ruleFunction);
-                setTargets(resp.targets || []);
+                setTargets(resp.targets);
                 setIsLoading(false);
             });
         }

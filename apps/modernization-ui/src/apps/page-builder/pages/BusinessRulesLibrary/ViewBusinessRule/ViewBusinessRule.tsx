@@ -17,7 +17,6 @@ export const ViewBusinessRule = () => {
                 authorization: authorization(),
                 ruleId: Number(ruleId)
             }).then((response: Rule) => {
-                console.log(response);
                 setRule(response);
             });
         }
