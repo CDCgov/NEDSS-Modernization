@@ -12,6 +12,7 @@ import {
     ConceptControllerService,
     CreateRuleRequest,
     PagesQuestion,
+    PagesSubSection,
     Rule,
     SourceQuestion,
     Target
@@ -74,7 +75,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         }
     };
 
-    const handleChangeTargetQuestion = (data: QuestionProps[] | PagesQuestion[]) => {
+    const handleChangeTargetQuestion = (data: QuestionProps[]) => {
         setTargetQuestions({
             ...targetQuestions,
             [selectedFieldType]: data
@@ -84,6 +85,20 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         const text = data.map((val) => val.name);
         form.setValue('targetIdentifiers', values);
         form.setValue('targetValueText', text);
+    };
+
+    const handleChangeTargetSubsections = (data: PagesSubSection[]) => {
+        setTargetQuestions({
+            ...targetQuestions,
+            [selectedFieldType]: data
+        });
+
+        const values = data.map((val) => val.id.toString());
+        form.setValue('targetIdentifiers', values);
+        form.setValue(
+            'targetValueText',
+            data.map((val) => val.name)
+        );
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
@@ -125,7 +140,10 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
             sourceValues?.length && !anySourceValueToggle
                 ? sourceValues?.map((value) => value.text).join(', ')
                 : 'any source value';
-        const targetValues = targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`);
+        const targetValues =
+            form.watch('targetType') == Rule.targetType.QUESTION
+                ? targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`)
+                : targetQuestions[selectedFieldType]?.map((val) => val.name);
 
         if (selectedSource && targetQuestions[selectedFieldType]?.length && logic && sourceText) {
             if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
@@ -394,8 +412,8 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
                     {form.watch('targetType') === Rule.targetType.SUBSECTION && pageId ? (
                         <SubSectionsDropdown
                             pageId={pageId}
-                            selectedQuestionIdentifiers={targetValueIdentifiers}
-                            onSelect={handleChangeTargetQuestion}
+                            selectedSubsectionIdentifiers={targetValueIdentifiers}
+                            onSelect={handleChangeTargetSubsections}
                         />
                     ) : null}
                     {isTargetQuestionSelected && form.watch('targetType') != Rule.targetType.SUBSECTION ? (
