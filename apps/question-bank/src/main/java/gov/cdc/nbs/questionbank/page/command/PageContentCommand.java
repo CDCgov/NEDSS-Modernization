@@ -183,22 +183,8 @@ public sealed interface PageContentCommand {
   }
 
 
-  public record GroupSubsectionRdb(
-      int repeatingNbr,
-      long userId,
-      Instant requestedOn) implements PageContentCommand {
-  }
-
-
-  public record UnGroupSubsectionRdb(
-      long userId,
-      Instant requestedOn) implements PageContentCommand {
-  }
-
-
   public record UnGroupSubsection(
       long subsection,
-      List<Long> batches,
       long userId,
       Instant requestedOn) implements PageContentCommand {
   }

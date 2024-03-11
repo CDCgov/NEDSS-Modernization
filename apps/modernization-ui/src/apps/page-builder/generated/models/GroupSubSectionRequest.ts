@@ -5,9 +5,8 @@
 import type { Batch } from './Batch';
 
 export type GroupSubSectionRequest = {
-    batches?: Array<Batch>;
-    blockName?: string;
-    id?: number;
-    repeatingNbr?: number;
+    batches: Array<Batch>;
+    blockName: string;
+    repeatingNbr: number;
 };
 

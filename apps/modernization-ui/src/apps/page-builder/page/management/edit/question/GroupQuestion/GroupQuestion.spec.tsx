@@ -52,9 +52,9 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
             name: 'subsection.name',
             batches: [
                 {
-                    batchTableAppearIndCd: undefined,
-                    batchTableColumnWidth: undefined,
-                    batchTableHeader: undefined,
+                    appearsInTable: undefined,
+                    width: undefined,
+                    label: undefined,
                     id: 1234
                 }
             ],

@@ -49,8 +49,9 @@ public class SubSectionValidator {
     if (page == null)
       throw new PageNotFoundException(pageId);
 
-    WaUiMetadata subsection = page.getUiMetadata().stream().filter
-            (w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION)).findFirst()
+    WaUiMetadata subsection = page.getUiMetadata()
+        .stream()
+        .filter(w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION)).findFirst()
         .orElseThrow(() -> new ValidateSubsectionException("Failed to find subsection with id: " + subsectionId));
 
     for (WaUiMetadata w : page.getUiMetadata()) {

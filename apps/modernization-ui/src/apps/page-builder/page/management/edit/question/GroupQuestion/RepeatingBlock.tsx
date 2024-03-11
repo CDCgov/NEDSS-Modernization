@@ -4,6 +4,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { useEffect, useState } from 'react';
+import { GroupQuestionFormType } from './GroupQuestion';
 
 type Props = {
     questions: PagesQuestion[];
@@ -13,27 +14,26 @@ type Props = {
 
 export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const [total, setTotal] = useState<number | undefined>(undefined);
-    const { control } = useFormContext();
+    const { control } = useFormContext<GroupQuestionFormType & { batches: Batch[] }>();
     const { fields } = useFieldArray({
         control,
         name: 'batches'
     });
 
-    const watchedWidth = useWatch({ control: control });
-
-    const calcTotal = (batches: Batch[]) => {
-        return batches.reduce((n: any, { batchTableColumnWidth }: any) => n + parseInt(batchTableColumnWidth), 0);
+    const watchedWidth = useWatch({ control: control, name: 'batches' });
+    const calcTotal = (batches: Batch[]): number => {
+        return batches.reduce((n, { width }) => n + parseInt(String(width ?? 0)), 0);
     };
 
     useEffect(() => {
-        const calculated = calcTotal(watchedWidth.batches);
+        const calculated = calcTotal(watchedWidth);
         setTotal(isNaN(calculated) ? undefined : calculated);
-        if (calcTotal(watchedWidth.batches) === 100) {
+        if (calcTotal(watchedWidth) === 100) {
             setValid(true);
         } else {
             setValid(false);
         }
-    }, [watchedWidth]);
+    }, [JSON.stringify(watchedWidth)]);
 
     return (
         <div className={styles.block}>
@@ -47,7 +47,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                             <p>No</p>
                         </th>
                         <th className={styles.name}>
-                            <p>Questions?</p>
+                            <p>Question</p>
                         </th>
                         <th className={styles.appears}>
                             <p>Appears in table</p>
@@ -61,28 +61,26 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {fields.map((item: any, index: number) => (
+                    {fields.map((item: Batch, index: number) => (
                         <tr className={styles.row} key={index}>
                             <td className={styles.number}>
                                 <p>{index + 1}</p>
                             </td>
-                            <td className={styles.name}>{questions[index]?.name}</td>
+                            <td className={styles.name}>{`${questions[index]?.name} (${questions[index]?.id})`}</td>
                             <td className={styles.appears}>
                                 <Controller
                                     control={control}
-                                    name={`batches[${index}].batchTableAppearIndCd`}
-                                    rules={{
-                                        required: { value: true, message: "Select 'Yes' or 'No'" }
-                                    }}
+                                    name={`batches.${index}.appearsInTable`}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <SelectInput
                                             name={name}
-                                            onChange={onChange}
-                                            defaultValue={value}
+                                            onChange={(e) => onChange(e.target.value === 'Y')}
+                                            defaultValue={value ? 'Y' : 'N'}
                                             options={[
                                                 { name: 'Yes', value: 'Y' },
                                                 { name: 'No', value: 'N' }
                                             ]}
+                                            required
                                             error={error?.message}
                                         />
                                     )}
@@ -91,7 +89,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                             <td className={styles.label}>
                                 <Controller
                                     control={control}
-                                    name={`batches[${index}].batchTableHeader`}
+                                    name={`batches.${index}.label`}
                                     rules={{
                                         required: { value: true, message: 'Enter label' }
                                     }}
@@ -109,7 +107,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                             <td className={styles.width}>
                                 <Controller
                                     control={control}
-                                    name={`batches[${index}].batchTableColumnWidth`}
+                                    name={`batches.${index}.width`}
                                     rules={{
                                         required: { value: true, message: 'Define width' }
                                     }}
@@ -117,7 +115,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                         <Input
                                             type="number"
                                             name={name}
-                                            defaultValue={value}
+                                            defaultValue={value?.toString() ?? ''}
                                             onChange={onChange}
                                             error={error?.message}
                                         />

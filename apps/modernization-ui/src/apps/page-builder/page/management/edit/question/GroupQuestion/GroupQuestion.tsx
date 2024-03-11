@@ -1,15 +1,19 @@
-import { GroupSubSectionRequest, PagesQuestion, PagesSubSection } from 'apps/page-builder/generated';
-import styles from './group-question.module.scss';
-import { useForm, FormProvider } from 'react-hook-form';
-import { Form, ModalRef } from '@trussworks/react-uswds';
+import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
+import {
+    GroupSubSectionRequest,
+    PagesQuestion,
+    PagesSubSection,
+    SubSectionControllerService,
+    UpdateSubSectionRequest
+} from 'apps/page-builder/generated';
+import { authorization } from 'authorization';
 import { RefObject, useState } from 'react';
-import { Button, ModalToggleButton } from '@trussworks/react-uswds';
+import { FormProvider, useForm } from 'react-hook-form';
+import { usePageManagement } from '../../../usePageManagement';
 import { RepeatingBlock } from './RepeatingBlock';
 import { SubsectionDetails } from './SubsectionDetails';
-import { SubSectionControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
-import { usePageManagement } from '../../../usePageManagement';
-import { useAlert } from 'alert';
+import styles from './group-question.module.scss';
 
 type Props = {
     subsection: PagesSubSection;
@@ -17,29 +21,24 @@ type Props = {
     modalRef: RefObject<ModalRef>;
 };
 
-type Additional = {
-    repeatNumber: number;
-    visibleText: string;
-};
-
-type GroupQuestionFormType = GroupSubSectionRequest & PagesSubSection & Additional;
+export type GroupQuestionFormType = GroupSubSectionRequest & UpdateSubSectionRequest;
 
 export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
     const { page, refresh } = usePageManagement();
     const [valid, setValid] = useState(false);
-    const init = {
+    const init: GroupQuestionFormType = {
         name: subsection.name,
         batches: questions.map((question) => ({
-            batchTableAppearIndCd: undefined,
-            batchTableColumnWidth: undefined,
-            batchTableHeader: undefined,
+            appearsInTable: true,
+            width: 0,
+            label: '',
             id: question.id
         })),
-        blockName: undefined,
-        id: subsection.id,
-        visibleText: subsection.visible ? 'Y' : 'N',
-        repeatNumber: 1
+        blockName: '',
+        visible: subsection.visible,
+        repeatingNbr: 1
     };
+    console.log('init', init);
     const methods = useForm<GroupQuestionFormType>({
         mode: 'onChange',
         defaultValues: { ...init }
@@ -48,14 +47,17 @@ export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
     const { showAlert } = useAlert();
 
     const handleGroup = (data: GroupQuestionFormType) => {
+        console.log('submitting with data: ', data);
+        console.log('init is', init);
         try {
             SubSectionControllerService.groupSubSectionUsingPost({
                 authorization: authorization(),
                 page: page.id,
+                subsection: subsection.id,
                 request: {
                     batches: data.batches,
                     blockName: data.blockName,
-                    id: data.id
+                    repeatingNbr: data.repeatingNbr
                 }
             }).then(() => {
                 modalRef.current?.toggleModal();
@@ -89,7 +91,7 @@ export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
     const handleSubsectionUpdate = (data: GroupQuestionFormType) => {
         const request = {
             name: data.name,
-            visible: data.visibleText === 'Y' ? true : false,
+            visible: data.visible,
             isGrouped: true
         };
         try {

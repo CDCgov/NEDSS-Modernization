@@ -1,21 +1,15 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
-import gov.cdc.nbs.questionbank.page.PageCommand;
-import gov.cdc.nbs.questionbank.page.PageNameVerifier;
-import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.GroupSubsectionRdb;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UnGroupSubsectionRdb;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
-import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,16 +22,19 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
+import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
+import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.PageNameVerifier;
+import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
+import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Getter
@@ -49,6 +46,8 @@ public class WaTemplate {
   private static final long TAB = 1010l;
   private static final long SECTION = 1015l;
   private static final long SUB_SECTION = 1016l;
+  private static final List<Long> containers = Arrays.asList(TAB, SECTION, SUB_SECTION);
+  private static final String FAILED_TO_FIND_SUBSECTION_WITH_ID = "Failed to find subsection with id: ";
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -517,7 +516,7 @@ public class WaTemplate {
         .findFirst()
         .orElseThrow(
             () -> new PageContentModificationException(
-                "Failed to find subsection with id: " + command.subsectionId()));
+                FAILED_TO_FIND_SUBSECTION_WITH_ID + command.subsectionId()));
 
     // If element after section is null, another subsection, section, or Tab then we can delete the subsection
     if (!isElementAtOrderNullOrOneOf(Arrays.asList(SUB_SECTION, SECTION, TAB), section.getOrderNbr() + 1)) {
@@ -550,7 +549,7 @@ public class WaTemplate {
         .findFirst()
         .orElseThrow(
             () -> new PageContentModificationException(
-                "Failed to find subsection with id: " + command.subsection()));
+                FAILED_TO_FIND_SUBSECTION_WITH_ID + command.subsection()));
 
     // Questions are inserted at the END of a subsection, so find the next container (or null if subsection is at end)
     Optional<WaUiMetadata> nextContainer = findNextElementOfComponent(
@@ -794,17 +793,14 @@ public class WaTemplate {
     }
     final int finalMax = ++max;
     List<Long> batchIds = command.batches().stream().map(GroupSubSectionRequest.Batch::id).toList();
-    uiMetadata.stream()
-        .filter(ui -> batchIds.contains(ui.getId()))
-        .forEach(questionBatch -> {
-          questionBatch.updateQuestionBatch(command, finalMax);
-          if (questionBatch.getWaRdbMetadatum() != null) {
-            questionBatch.getWaRdbMetadatum()
-                .groupSubsectionQuestions(
-                    new GroupSubsectionRdb(command.repeatingNbr(), command.userId(), Instant.now()));
-          }
-          changed(command);
-        });
+
+    List<WaUiMetadata> content = findSubsectionContent(command.subsection());
+    content.forEach(c -> {
+      if (!batchIds.contains(c.getId())) {
+        throw new PageContentModificationException("Unable to group question outside of targeted subsection");
+      }
+      c.updateQuestionBatch(command, finalMax);
+    });
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
@@ -818,18 +814,8 @@ public class WaTemplate {
 
   public void unGroupSubSection(PageContentCommand.UnGroupSubsection command) {
     verifyDraftType();
-
-    List<Long> batchIds = command.batches();
-    uiMetadata.stream()
-        .filter(ui -> batchIds.contains(ui.getId()))
-        .forEach(questionBatch -> {
-          questionBatch.updateQuestionBatch(command);
-          changed(command);
-          if (questionBatch.getWaRdbMetadatum() != null) {
-            questionBatch.getWaRdbMetadatum()
-                .unGroupSubsectionQuestions(new UnGroupSubsectionRdb(command.userId(), Instant.now()));
-          }
-        });
+    List<WaUiMetadata> questions = findSubsectionContent(command.subsection());
+    questions.forEach(question -> question.ungroup(command));
 
     WaUiMetadata subsection = uiMetadata.stream()
         .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
@@ -865,6 +851,23 @@ public class WaTemplate {
             && e.getId().equals(id))
         .findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find question"));
+  }
+
+  private List<WaUiMetadata> findSubsectionContent(long subsectionId) {
+    List<WaUiMetadata> metadata = getUiMetadata();
+    WaUiMetadata subsection = metadata.stream()
+        .filter(w -> w.getId() == subsectionId && w.getNbsUiComponentUid().equals(SUB_SECTION))
+        .findFirst()
+        .orElseThrow(() -> new PageContentModificationException(FAILED_TO_FIND_SUBSECTION_WITH_ID + subsectionId));
+
+    List<WaUiMetadata> content = new ArrayList<>();
+    for (WaUiMetadata w : metadata) {
+      if (w.getOrderNbr() > subsection.getOrderNbr() && containers.contains(w.getNbsUiComponentUid())) {
+        break;
+      } else if (w.getOrderNbr() > subsection.getOrderNbr())
+        content.add(w);
+    }
+    return content;
   }
 
 }
