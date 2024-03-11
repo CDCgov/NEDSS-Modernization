@@ -56,6 +56,8 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
     const [targetDescriptions, setTargetDescriptions] = useState<string[]>();
     const { pageId, ruleId } = useParams();
 
+    targetQuestions[selectedFieldType] = [];
+
     const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
             authorization: authorization(),
