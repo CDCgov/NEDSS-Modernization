@@ -11,6 +11,8 @@ import {
     Concept,
     ConceptControllerService,
     CreateRuleRequest,
+    PagesQuestion,
+    PagesSubSection,
     Rule,
     SourceQuestion,
     Target
@@ -18,8 +20,9 @@ import {
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
 import { mapLogicForDateCompare } from './helpers/mapLogicForDateCompare';
+import SubSectionsDropdown from './SubSectionDropdown';
 
-type QuestionProps = {
+export type QuestionProps = {
     id: number;
     name: string;
     question: string;
@@ -37,33 +40,32 @@ interface Props {
     question?: SourceQuestion;
     sourceValues?: string[];
     selectedFieldType: string;
+    onSubmitDisability: (isDisabled: boolean) => void;
 }
 
 type FieldTypes = {
-    [key: string]: QuestionProps[];
+    [key: string]: QuestionProps[] | PagesQuestion[];
 };
 
-const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props) => {
+const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets, onSubmitDisability }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
     const [targetQuestions, setTargetQuestions] = useState<FieldTypes>({});
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
-    const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
+    const [selectedSource, setSelectedSource] = useState<QuestionProps[] | PagesQuestion[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
-
+    const [targetDescriptions, setTargetDescriptions] = useState<string[]>();
     const { pageId, ruleId } = useParams();
-    const [sourceDescription, setSourceDescription] = useState<string>(
-        form.watch('sourceText') && form.watch('sourceIdentifier')
-            ? `${form.watch('sourceText')} (${form.watch('sourceIdentifier')})`
-            : ''
-    );
+
+    targetQuestions[selectedFieldType] = [];
 
     const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
             authorization: authorization(),
             codeSetNm
         });
+
         const list = content?.map((src: Concept) => ({ name: src.display, value: src.conceptCode }));
         setSourceValueList(list);
 
@@ -79,53 +81,83 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
             ...targetQuestions,
             [selectedFieldType]: data
         });
-        const value = data.map((val) => val.question);
+
+        const values = data.map((val) => val.question || '');
         const text = data.map((val) => val.name);
-        form.setValue('targetIdentifiers', value);
+        form.setValue('targetIdentifiers', values);
         form.setValue('targetValueText', text);
+    };
+
+    const handleChangeTargetSubsections = (data: PagesSubSection[]) => {
+        setTargetQuestions({
+            ...targetQuestions,
+            [selectedFieldType]: data
+        });
+
+        const values = data.map((val) => val.id.toString());
+        form.setValue('targetIdentifiers', values);
+        form.setValue(
+            'targetValueText',
+            data.map((val) => val.name)
+        );
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
         setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', `${data[0].name} (${data[0].question})`);
-        setSourceDescription(`${data[0].name} (${data[0].question})`);
         fetchSourceValueSets(data[0].valueSet);
     };
 
     useEffect(() => {
         handleRuleDescription();
-    }, [targetQuestions[selectedFieldType], selectedSource]);
+    }, [
+        targetQuestions[selectedFieldType],
+        selectedSource,
+        targetDescriptions,
+        form.getValues('comparator'),
+        form.getValues('ruleFunction')
+    ]);
 
     useEffect(() => {
         if (question?.codeSetName) {
             fetchSourceValueSets(question.codeSetName);
         }
-    }, []);
+    }, [question]);
 
-    const targetValueIdentifier = form.watch('targetIdentifiers') || [];
-    const isTargetQuestionSelected = targetQuestions[selectedFieldType]?.length || targetValueIdentifier.length;
+    useEffect(() => {
+        setTargetDescriptions(targets?.map((target) => `${target.label} (${target.targetIdentifier})`) || []);
+    }, [targets]);
+
+    const targetValueIdentifiers = form.watch('targetIdentifiers') || [];
+    const isTargetQuestionSelected = targetQuestions[selectedFieldType]?.length || targetValueIdentifiers.length;
 
     const handleRuleDescription = () => {
         let description = '';
+        const sourceText = form.watch('sourceText');
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
         const sourceValueDescription =
             sourceValues?.length && !anySourceValueToggle
                 ? sourceValues?.map((value) => value.text).join(', ')
                 : 'any source value';
-        const targetValue = targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`);
+        const targetValues =
+            form.watch('targetType') == Rule.targetType.QUESTION
+                ? targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`)
+                : targetQuestions[selectedFieldType]?.map((val) => val.name);
 
-        if (selectedSource && targetQuestions[selectedFieldType]?.length && logic) {
+        if (selectedSource && targetQuestions[selectedFieldType]?.length && logic && sourceText) {
             if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
-                description = `IF "${sourceDescription}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
+                description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                     form.getValues('ruleFunction')
-                )} "${targetValue}"`;
+                )} "${targetValues.join('", "')}"`;
             } else {
                 description = '';
             }
-            form.setValue('description', description);
+        } else {
+            description = '';
         }
+        form.setValue('description', description);
     };
 
     const nonDateCompare = [
@@ -175,13 +207,23 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
         form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE ||
         form.watch('ruleFunction') === Rule.ruleFunction.HIDE;
 
+    onSubmitDisability(isTargetTypeEnabled && !form.getValues('sourceValues')?.length);
+
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
-        setSourceDescription('');
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
         form.setValue('sourceValues', []);
         sourceModalRef.current?.toggleModal(undefined, true);
+    };
+
+    const handleTargetTypeChange = (value: Rule.targetType) => {
+        form.setValue('targetType', value);
+        form.setValue('targetIdentifiers', []);
+        form.setValue('targetValueText', []);
+        setTargetQuestions({});
+        setTargetDescriptions([]);
+        form.setValue('description', '');
     };
 
     useEffect(() => {
@@ -320,7 +362,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
                 <Controller
                     control={form.control}
                     name="targetType"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { value } }) => (
                         <Grid row className="inline-field">
                             <Grid col={3}>
                                 <Label className="input-label" htmlFor="targetType" requiredMarker>
@@ -335,7 +377,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
                                     value="QUESTION"
                                     id="targetType_Qtn"
                                     checked={value === 'QUESTION'}
-                                    onChange={onChange}
+                                    onChange={() => handleTargetTypeChange(Rule.targetType.QUESTION)}
                                     label="Question"
                                 />
                                 <Radio
@@ -344,7 +386,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
                                     name="targetType"
                                     value="SUBSECTION"
                                     checked={value === 'SUBSECTION'}
-                                    onChange={onChange}
+                                    onChange={() => handleTargetTypeChange(Rule.targetType.SUBSECTION)}
                                     label="Subsection"
                                 />
                             </Grid>
@@ -359,7 +401,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
                     </Label>
                 </Grid>
                 <Grid col={9}>
-                    {!isTargetQuestionSelected ? (
+                    {!isTargetQuestionSelected && form.watch('targetType') != Rule.targetType.SUBSECTION ? (
                         <div className="width-48-p margin-bottom-1em">
                             <ModalToggleButton
                                 modalRef={TargetQtnModalRef}
@@ -369,12 +411,20 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
                                 Search target question
                             </ModalToggleButton>
                         </div>
-                    ) : (
+                    ) : null}
+                    {form.watch('targetType') === Rule.targetType.SUBSECTION && pageId ? (
+                        <SubSectionsDropdown
+                            pageId={pageId}
+                            selectedSubsectionIdentifiers={targetValueIdentifiers}
+                            onSelect={handleChangeTargetSubsections}
+                        />
+                    ) : null}
+                    {isTargetQuestionSelected && form.watch('targetType') != Rule.targetType.SUBSECTION ? (
                         <div className="selected-target-questions-display">
-                            {form.getValues('targetValueText')?.map((target, index: number) => (
+                            {targetDescriptions?.map((target, index: number) => (
                                 <div className="margin-bottom-1" key={index}>
                                     <Icon.Check />
-                                    <span className="margin-left-1"> {`${target} (${target})`}</span>
+                                    <span className="margin-left-1"> {target}</span>
                                 </div>
                             ))}
 
@@ -389,7 +439,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType }: Props)
                                 </ModalToggleButton>
                             </div>
                         </div>
-                    )}
+                    ) : null}
                 </Grid>
             </Grid>
             <Controller
