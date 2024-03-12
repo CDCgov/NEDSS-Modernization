@@ -1,11 +1,11 @@
-import styles from './subsection-details.module.scss';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { Radio } from '@trussworks/react-uswds';
-import { GroupQuestionFormType } from './GroupQuestion';
+import styles from './subsection-details.module.scss';
+import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 
 export const SubsectionDetails = () => {
-    const { control } = useFormContext<GroupQuestionFormType>();
+    const { control } = useFormContext<GroupRequest>();
 
     return (
         <div className={styles.details}>

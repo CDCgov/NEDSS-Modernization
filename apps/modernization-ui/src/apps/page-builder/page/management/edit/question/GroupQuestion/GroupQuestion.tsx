@@ -1,146 +1,93 @@
-import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import {
-    GroupSubSectionRequest,
-    PagesQuestion,
-    PagesSubSection,
-    SubSectionControllerService,
-    UpdateSubSectionRequest
-} from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
-import { RefObject, useState } from 'react';
+import { ButtonBar } from 'apps/page-builder/components/ButtonBar/ButtonBar';
+import { CloseableHeader } from 'apps/page-builder/components/CloseableHeader/CloseableHeader';
+import { PagesQuestion, PagesSubSection } from 'apps/page-builder/generated';
+import { GroupRequest, useGroupSubsection } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { Spinner } from 'components/Spinner';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { usePageManagement } from '../../../usePageManagement';
 import { RepeatingBlock } from './RepeatingBlock';
 import { SubsectionDetails } from './SubsectionDetails';
 import styles from './group-question.module.scss';
 
 type Props = {
+    page: number;
     subsection: PagesSubSection;
     questions: PagesQuestion[];
-    modalRef: RefObject<ModalRef>;
+    onSuccess: () => void;
+    onCancel: () => void;
 };
 
-export type GroupQuestionFormType = GroupSubSectionRequest & UpdateSubSectionRequest;
-
-export const GroupQuestion = ({ subsection, questions, modalRef }: Props) => {
-    const { page, refresh } = usePageManagement();
-    const [valid, setValid] = useState(false);
-    const init: GroupQuestionFormType = {
-        name: subsection.name,
-        batches: questions.map((question) => ({
-            appearsInTable: true,
-            width: 0,
-            label: '',
-            id: question.id
-        })),
-        blockName: '',
-        visible: subsection.visible,
-        repeatingNbr: 1
-    };
-    console.log('init', init);
-    const methods = useForm<GroupQuestionFormType>({
-        mode: 'onChange',
-        defaultValues: { ...init }
-    });
-    const { handleSubmit, reset } = methods;
+export const GroupQuestion = ({ page, subsection, questions, onSuccess, onCancel }: Props) => {
     const { showAlert } = useAlert();
-
-    const handleGroup = (data: GroupQuestionFormType) => {
-        console.log('submitting with data: ', data);
-        console.log('init is', init);
-        try {
-            SubSectionControllerService.groupSubSectionUsingPost({
-                authorization: authorization(),
-                page: page.id,
-                subsection: subsection.id,
-                request: {
-                    batches: data.batches,
-                    blockName: data.blockName,
-                    repeatingNbr: data.repeatingNbr
-                }
-            }).then(() => {
-                modalRef.current?.toggleModal();
-                showAlert({
-                    type: 'success',
-                    header: 'Grouped',
-                    message: `You've successfully grouped ${data.blockName} subsection`
-                });
-                refresh();
-            });
-        } catch (error) {
-            modalRef.current?.toggleModal();
-            if (error instanceof Error) {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: error.message
-                });
-            } else {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: 'An unknown error occurred'
-                });
-            }
+    const { isLoading, error, response, group } = useGroupSubsection();
+    const [valid, setValid] = useState(false);
+    const form = useForm<GroupRequest>({
+        mode: 'onChange',
+        defaultValues: {
+            name: subsection.name,
+            batches: questions.map((question) => ({
+                appearsInTable: true,
+                width: 0,
+                label: '',
+                id: question.id
+            })),
+            blockName: '',
+            visible: subsection.visible,
+            repeatingNbr: 1
         }
-    };
-
-    const handleSubsectionUpdate = (data: GroupQuestionFormType) => {
-        const request = {
-            name: data.name,
-            visible: data.visible,
-            isGrouped: true
-        };
-        try {
-            SubSectionControllerService.updateSubSectionUsingPut({
-                authorization: authorization(),
-                page: page.id,
-                request: request,
-                subSectionId: subsection.id
-            });
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: error.message
-                });
-            } else {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: 'An unknown error occurred'
-                });
-            }
-        }
-    };
-
-    const onSubmit = handleSubmit((data) => {
-        handleGroup(data);
-        handleSubsectionUpdate(data);
     });
+
+    const handleCancel = () => {
+        form.reset();
+        onCancel();
+    };
+
+    const handleSubmit = () => {
+        group(page, subsection.id, { ...form.getValues() });
+    };
+
+    useEffect(() => {
+        if (response) {
+            showAlert({
+                type: 'success',
+                header: 'Grouped',
+                message: `You've successfully grouped ${form.getValues('blockName')} subsection`
+            });
+            form.reset();
+            onSuccess();
+        } else if (error) {
+            showAlert({
+                type: 'error',
+                header: 'error',
+                message: 'Failed to group subsection'
+            });
+        }
+    }, [error, response]);
 
     return (
         <div className={styles.groupQuestion}>
-            <FormProvider {...methods}>
-                <Form onSubmit={onSubmit} className={styles.form}>
+            {isLoading && (
+                <div className={styles.loadingIndicator}>
+                    <Spinner />
+                </div>
+            )}
+            <CloseableHeader title="Edit subsection" onClose={handleCancel} />
+            <div className={styles.content}>
+                <FormProvider {...form}>
                     <SubsectionDetails />
                     <RepeatingBlock questions={questions} valid={valid} setValid={setValid} />
-                    <div className={styles.footer}>
-                        <ModalToggleButton modalRef={modalRef} onClick={() => reset()} type="button" outline closer>
-                            Cancel
-                        </ModalToggleButton>
-                        <Button onClick={onSubmit} type="button" disabled={!valid}>
-                            Submit
-                        </Button>
-                    </div>
-                </Form>
-            </FormProvider>
+                </FormProvider>
+            </div>
+            <ButtonBar>
+                <Button onClick={handleCancel} type="button" outline>
+                    Cancel
+                </Button>
+                <Button onClick={handleSubmit} type="button" disabled={!valid}>
+                    Submit
+                </Button>
+            </ButtonBar>
         </div>
     );
 };

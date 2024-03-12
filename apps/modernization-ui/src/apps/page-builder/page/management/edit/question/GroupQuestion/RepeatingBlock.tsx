@@ -4,7 +4,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
 import { Batch, PagesQuestion } from 'apps/page-builder/generated';
 import { useEffect, useState } from 'react';
-import { GroupQuestionFormType } from './GroupQuestion';
+import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 
 type Props = {
     questions: PagesQuestion[];
@@ -14,7 +14,7 @@ type Props = {
 
 export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const [total, setTotal] = useState<number | undefined>(undefined);
-    const { control } = useFormContext<GroupQuestionFormType & { batches: Batch[] }>();
+    const { control } = useFormContext<GroupRequest & { batches: Batch[] }>();
     const { fields } = useFieldArray({
         control,
         name: 'batches'
@@ -129,10 +129,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     <tr>
                         <td className={`${!valid ? '' : styles.valid}`}>
                             <p>Columns must total 100%:</p>
-                            <h4>
-                                {total}
-                                {total ? '%' : null}
-                            </h4>
+                            <h4>{total}%</h4>
                         </td>
                     </tr>
                 </tfoot>

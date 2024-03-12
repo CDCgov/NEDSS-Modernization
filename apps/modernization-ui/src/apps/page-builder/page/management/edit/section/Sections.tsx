@@ -1,4 +1,4 @@
-import { PagesQuestion, PagesSection, SectionControllerService } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
 import { useRef } from 'react';
 import styles from './section.module.scss';
 import { ModalRef } from '@trussworks/react-uswds';
@@ -14,9 +14,17 @@ type Props = {
     onEditQuestion: (question: PagesQuestion) => void;
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;
+    onGroupQuestion: (subsection: PagesSubSection) => void;
 };
 
-export const Sections = ({ sections, onAddQuestion, onEditQuestion, onEditValueset, onChangeValueset }: Props) => {
+export const Sections = ({
+    sections,
+    onAddQuestion,
+    onEditQuestion,
+    onEditValueset,
+    onChangeValueset,
+    onGroupQuestion
+}: Props) => {
     const { page, refresh } = usePageManagement();
 
     const sectionStatusModalRef = useRef<ModalRef>(null);
@@ -56,6 +64,7 @@ export const Sections = ({ sections, onAddQuestion, onEditQuestion, onEditValues
                     onDeleteStatus={handleSubsectionStatusModal}
                     onEditValueset={onEditValueset}
                     onChangeValueset={onChangeValueset}
+                    onGroupQuestion={onGroupQuestion}
                 />
             ))}
             <StatusModal

@@ -1,7 +1,9 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .block {
-    border: 1px solid colors.$base-lighter;
+    @extend %thin;
+    @include borders.rounded();
     .header {
         padding: 1rem 1rem;
         background-color: colors.$cool-accent-lighter;
@@ -32,7 +34,7 @@
             border-bottom: 2px solid colors.$base-lighter;
             font-size: 1rem;
             font-weight: 700;
-            padding: .5rem 0 1rem;
+            padding: 0.5rem 0 1rem;
             p {
                 margin: 0;
             }

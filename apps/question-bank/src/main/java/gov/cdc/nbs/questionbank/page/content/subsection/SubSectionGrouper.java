@@ -47,7 +47,7 @@ public class SubSectionGrouper {
     for (GroupSubSectionRequest.Batch b : request.batches()) {
       if (b.appearsInTable()) {
         if (b.label() == null || b.label().trim().equals("")) {
-          throw new UpdateSubSectionException("Label is table is required");
+          throw new UpdateSubSectionException("Label in table is required");
         }
         if (b.width() == 0) {
           throw new UpdateSubSectionException("Batch TableColumnWidth is required");

@@ -1,16 +1,15 @@
-import styles from './subsection.module.scss';
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
-import { Icon as IconComponent } from 'components/Icon/Icon';
-import { useRef } from 'react';
-import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
-import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { GroupQuestion } from '../question/GroupQuestion/GroupQuestion';
-import { ConfirmationModal } from 'confirmation';
-import { authorization } from 'authorization';
-import { usePageManagement } from '../../usePageManagement';
 import { useAlert } from 'alert';
+import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
+import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
+import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
+import { authorization } from 'authorization';
+import { Icon as IconComponent } from 'components/Icon/Icon';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { ConfirmationModal } from 'confirmation';
+import { useRef } from 'react';
+import { usePageManagement } from '../../usePageManagement';
+import styles from './subsection.module.scss';
 
 type Props = {
     subsection: PagesSubSection;
@@ -19,6 +18,7 @@ type Props = {
     onExpandedChange: (isExpanded: boolean) => void;
     onDeleteSubsection: () => void;
     onEditSubsection: () => void;
+    onGroupQuestion: (subsection: PagesSubSection) => void;
 };
 
 export const SubsectionHeader = ({
@@ -27,10 +27,10 @@ export const SubsectionHeader = ({
     onAddQuestion,
     onExpandedChange,
     onDeleteSubsection,
-    onEditSubsection
+    onEditSubsection,
+    onGroupQuestion
 }: Props) => {
     const { page, refresh } = usePageManagement();
-    const groupSubsectionModalRef = useRef<ModalRef>(null);
     const ungroupSubsectionModalRef = useRef<ModalRef>(null);
     const addStaticElementModalRef = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
@@ -94,9 +94,9 @@ export const SubsectionHeader = ({
                     ) : (
                         <>
                             {subsection.isGroupable && subsection.questions.length > 0 && (
-                                <ModalToggleButton type="button" modalRef={groupSubsectionModalRef}>
+                                <Button type="button" onClick={() => onGroupQuestion(subsection)}>
                                     <IconComponent name={'group'} size={'s'} /> Group questions
-                                </ModalToggleButton>
+                                </Button>
                             )}
                         </>
                     )}
@@ -113,18 +113,6 @@ export const SubsectionHeader = ({
                     <Icon.ExpandMore size={4} onClick={() => onExpandedChange(true)} />
                 )}
             </div>
-            <ModalComponent
-                modalRef={groupSubsectionModalRef}
-                modalHeading={'Edit subsection'}
-                modalBody={
-                    <GroupQuestion
-                        subsection={subsection}
-                        questions={subsection.questions}
-                        modalRef={groupSubsectionModalRef}
-                    />
-                }
-                size="wide"
-            />
             <ConfirmationModal
                 modal={ungroupSubsectionModalRef}
                 title="Warning"
