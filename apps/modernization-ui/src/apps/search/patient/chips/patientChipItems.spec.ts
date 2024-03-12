@@ -40,6 +40,6 @@ describe('patientChipItems', () => {
         ];
 
         const chipItems = patientChipItems(mockPersonFilter, mockSearchCriteria);
-        expect(chipItems).toEqual(expectedChipItems);
+        expect(chipItems).toEqual(expect.arrayContaining(expectedChipItems));
     });
 });

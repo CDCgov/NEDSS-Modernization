@@ -11,14 +11,14 @@ export const AddressForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="address"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange, value, name } }) => (
                         <Input
                             onChange={onChange}
                             type="text"
                             label="Street address"
                             defaultValue={value}
-                            htmlFor="address"
-                            id="address"
+                            htmlFor={name}
+                            id={name}
                         />
                     )}
                 />
@@ -27,14 +27,14 @@ export const AddressForm = ({ control }: any) => {
                 <Controller
                     control={control}
                     name="city"
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange, value, name } }) => (
                         <Input
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
                             label="City"
-                            htmlFor="city"
-                            id="city"
+                            htmlFor={name}
+                            id={name}
                         />
                     )}
                 />
@@ -45,13 +45,13 @@ export const AddressForm = ({ control }: any) => {
                         <Controller
                             control={control}
                             name="state"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     onChange={onChange}
-                                    htmlFor={'state'}
                                     label="State"
-                                    id="state"
+                                    htmlFor={name}
+                                    id={name}
                                     options={searchCriteria.states}
                                 />
                             )}
