@@ -120,6 +120,9 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 },
                 notifyOnNetworkStatusChange: true
+            }).then((data: any) => {
+                handleComplete(data);
+                refetch();
             });
     }, [currentPage, patient]);
 
