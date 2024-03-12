@@ -1,7 +1,10 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
-.details, .block {
-    border: 1px solid colors.$base-lighter;
+.details,
+.block {
+    @extend %thin;
+    @include borders.rounded();
     width: 100%;
     .header {
         padding: 1rem 1rem;
@@ -12,10 +15,12 @@
     margin-bottom: 1.5rem;
     .row {
         margin: 1rem;
-        border: 1px solid colors.$base-lighter;
+        @extend %thin;
+        @include borders.rounded();
         display: flex;
         padding: 0.5rem;
-        .label, .field {
+        .label,
+        .field {
             width: 50%;
             p {
                 font-size: 1rem;

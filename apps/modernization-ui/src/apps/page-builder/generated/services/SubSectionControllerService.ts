@@ -52,44 +52,6 @@ export class SubSectionControllerService {
     }
 
     /**
-     * groupSubSection
-     * @returns any OK
-     * @throws ApiError
-     */
-    public static groupSubSectionUsingPost({
-        authorization,
-        page,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * request
-         */
-        request: GroupSubSectionRequest,
-    }): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/subsections/group',
-            path: {
-                'page': page,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * updateSubSection
      * @returns SubSection OK
      * @returns any Created
@@ -239,6 +201,50 @@ export class SubSectionControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * groupSubSection
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static groupSubSectionUsingPost({
+        authorization,
+        page,
+        request,
+        subsection,
+    }: {
+        authorization: string,
+        /**
+         * page
+         */
+        page: number,
+        /**
+         * request
+         */
+        request: GroupSubSectionRequest,
+        /**
+         * subsection
+         */
+        subsection: number,
+    }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{page}/subsections/{subsection}/group',
+            path: {
+                'page': page,
+                'subsection': subsection,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

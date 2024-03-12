@@ -11,7 +11,6 @@ import {
     Concept,
     ConceptControllerService,
     CreateRuleRequest,
-    PagesQuestion,
     PagesSubSection,
     Rule,
     SourceQuestion,
@@ -39,25 +38,21 @@ interface Props {
     targets?: Target[];
     question?: SourceQuestion;
     sourceValues?: string[];
-    selectedFieldType: string;
+    onSubmitDisability: (isDisabled: boolean) => void;
 }
 
-type FieldTypes = {
-    [key: string]: QuestionProps[] | PagesQuestion[];
-};
-
-const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets }: Props) => {
+const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const TargetQtnModalRef = useRef<ModalRef>(null);
     const sourceModalRef = useRef<ModalRef>(null);
-    const [targetQuestions, setTargetQuestions] = useState<FieldTypes>({});
+    const [targetQuestions, setTargetQuestions] = useState<QuestionProps[]>([]);
+    const [targetSubSections, setTargetSubSections] = useState<PagesSubSection[]>([]);
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
-    const [selectedSource, setSelectedSource] = useState<QuestionProps[] | PagesQuestion[]>([]);
+    const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
     const [targetDescriptions, setTargetDescriptions] = useState<string[]>();
     const { pageId, ruleId } = useParams();
-
-    targetQuestions[selectedFieldType] = [];
+    const [logicValue, setLogicValue] = useState('');
 
     const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
@@ -76,22 +71,20 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
     };
 
     const handleChangeTargetQuestion = (data: QuestionProps[]) => {
-        setTargetQuestions({
-            ...targetQuestions,
-            [selectedFieldType]: data
-        });
+        setTargetQuestions(data);
 
-        const values = data.map((val) => val.question || '');
+        const values = data.map((val) => val.question);
         const text = data.map((val) => val.name);
         form.setValue('targetIdentifiers', values);
         form.setValue('targetValueText', text);
+        setTargetDescriptions(data.map((val) => `${val.name} (${val.question})`));
+        if (!data.length) {
+            form.setValue('description', '');
+        }
     };
 
     const handleChangeTargetSubsections = (data: PagesSubSection[]) => {
-        setTargetQuestions({
-            ...targetQuestions,
-            [selectedFieldType]: data
-        });
+        setTargetSubSections(data);
 
         const values = data.map((val) => val.id.toString());
         form.setValue('targetIdentifiers', values);
@@ -99,6 +92,9 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
             'targetValueText',
             data.map((val) => val.name)
         );
+        if (!data.length) {
+            form.setValue('description', '');
+        }
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
@@ -106,13 +102,17 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', `${data[0].name} (${data[0].question})`);
         fetchSourceValueSets(data[0].valueSet);
+        if (!data.length) {
+            form.setValue('description', '');
+        }
     };
 
     useEffect(() => {
         handleRuleDescription();
     }, [
-        targetQuestions[selectedFieldType],
+        targetQuestions,
         selectedSource,
+        targetSubSections,
         targetDescriptions,
         form.getValues('comparator'),
         form.getValues('ruleFunction')
@@ -129,34 +129,41 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
     }, [targets]);
 
     const targetValueIdentifiers = form.watch('targetIdentifiers') || [];
-    const isTargetQuestionSelected = targetQuestions[selectedFieldType]?.length || targetValueIdentifiers.length;
+    const isTargetQuestionSelected =
+        targetQuestions.length || targetValueIdentifiers.length || targetSubSections.length;
 
     const handleRuleDescription = () => {
         let description = '';
         const sourceText = form.watch('sourceText');
         const logic = mapComparatorToString(form.getValues('comparator'));
         const sourceValues = form.watch('sourceValues');
-        const sourceValueDescription =
-            sourceValues?.length && !anySourceValueToggle
-                ? sourceValues?.map((value) => value.text).join(', ')
-                : 'any source value';
+        let sourceValueDescription = '';
+
+        if (sourceValues?.length && !anySourceValueToggle) {
+            sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        }
+
+        if (anySourceValueToggle) {
+            sourceValueDescription = 'any source value';
+        }
+
         const targetValues =
             form.watch('targetType') == Rule.targetType.QUESTION
-                ? targetQuestions[selectedFieldType]?.map((val) => `${val.name} (${val.question})`)
-                : targetQuestions[selectedFieldType]?.map((val) => val.name);
+                ? targetQuestions.map((val) => `${val.name} (${val.question || ''})`)
+                : targetSubSections.map((val) => val.name);
 
-        if (selectedSource && targetQuestions[selectedFieldType]?.length && logic && sourceText) {
-            if (ruleFunction != Rule.ruleFunction.DATE_COMPARE) {
-                description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
-                    form.getValues('ruleFunction')
-                )} "${targetValues.join('", "')}"`;
-            } else {
-                description = '';
-            }
-        } else {
-            description = '';
+        if (
+            ruleFunction != Rule.ruleFunction.DATE_COMPARE &&
+            sourceText &&
+            logic &&
+            sourceValueDescription &&
+            targetValues?.length
+        ) {
+            description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
+                form.getValues('ruleFunction')
+            )} "${targetValues.join('", "')}"`;
+            form.setValue('description', description);
         }
-        form.setValue('description', description);
     };
 
     const nonDateCompare = [
@@ -198,6 +205,9 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
         form.setValue('sourceValues', newValues);
         handleRuleDescription();
+        if (!data.length) {
+            form.setValue('description', '');
+        }
     };
 
     const isTargetTypeEnabled =
@@ -206,11 +216,31 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE ||
         form.watch('ruleFunction') === Rule.ruleFunction.HIDE;
 
+    const checkSubmitDisability = () => {
+        const sourceQuestion = form.watch('sourceText');
+        const anySourceValue = form.watch('anySourceValue');
+        const sourceValue = form.getValues('sourceValues')?.length;
+        const targetQuestionValue = targetQuestions?.length;
+        return !(
+            isTargetTypeEnabled &&
+            sourceQuestion &&
+            targetQuestionValue &&
+            (anySourceValue || (logicValue && sourceValue))
+        );
+    };
+
+    onSubmitDisability(checkSubmitDisability());
+
+    const removeNumericAndSymbols = (text: string | undefined) => {
+        return text?.replace(/\d+/g, '').replace('. ', '');
+    };
+
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
         form.setValue('sourceValues', []);
+        form.setValue('description', '');
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
@@ -218,7 +248,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
         form.setValue('targetType', value);
         form.setValue('targetIdentifiers', []);
         form.setValue('targetValueText', []);
-        setTargetQuestions({});
+        setTargetQuestions([]);
         setTargetDescriptions([]);
         form.setValue('description', '');
     };
@@ -236,6 +266,10 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
     useEffect(() => {
         setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
+
+    useEffect(() => {
+        setLogicValue(form.watch('comparator'));
+    }, [form.watch('comparator')]);
 
     const renderErrorListAsString = () => {
         let errors = '';
@@ -257,7 +291,7 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
                 <Grid col={9}>
                     {form.watch('sourceText') ? (
                         <div className="source-question-display">
-                            {form.getValues('sourceText')}
+                            {removeNumericAndSymbols(form.getValues('sourceText'))}
                             <Icon.Close onClick={handleResetSourceQuestion} />
                         </div>
                     ) : (
@@ -477,7 +511,9 @@ const BusinessRulesForm = ({ question, sourceValues, selectedFieldType, targets 
                             readOnly={true}
                             type="text"
                             multiline
-                            defaultValue={`'${form.watch('sourceText')}' must be ${mapLogicForDateCompare(
+                            defaultValue={`'${removeNumericAndSymbols(
+                                form.watch('sourceText')
+                            )}' must be ${mapLogicForDateCompare(
                                 form.watch('comparator')
                             )} '${renderErrorListAsString()}'`}
                             name={'errorMessage'}

@@ -1,8 +1,24 @@
 @use 'styles/colors';
 
 .groupQuestion {
-    height: calc(100% - 3.5rem);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .loadingIndicator div {
+        max-height: 80svh;
+    }
+
+    .content {
+        height: 100%;
+        overflow-y: auto;
+        padding: 1.25rem;
+    }
+
     .form {
+        height: 100%;
+        overflow-y: auto;
+
         width: 100%;
         min-width: 100%;
         max-width: unset;

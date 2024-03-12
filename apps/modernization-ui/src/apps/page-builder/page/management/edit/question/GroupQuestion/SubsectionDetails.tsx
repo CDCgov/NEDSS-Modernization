@@ -1,10 +1,11 @@
-import styles from './subsection-details.module.scss';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { Radio } from '@trussworks/react-uswds';
+import styles from './subsection-details.module.scss';
+import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 
 export const SubsectionDetails = () => {
-    const { control } = useFormContext();
+    const { control } = useFormContext<GroupRequest>();
 
     return (
         <div className={styles.details}>
@@ -42,23 +43,23 @@ export const SubsectionDetails = () => {
                 <div className={styles.field}>
                     <Controller
                         control={control}
-                        name="visibleText"
+                        name="visible"
                         render={({ field: { onChange, value, name } }) => (
                             <div className={styles.radio}>
                                 <Radio
                                     name={name}
                                     value="Y"
                                     id="visible"
-                                    checked={value === 'Y'}
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    checked={value}
+                                    onChange={(e) => onChange(e.target.value)}
                                     label="Yes"
                                 />
                                 <Radio
                                     id="notvisible"
                                     name={name}
                                     value="N"
-                                    checked={value === 'N'}
-                                    onChange={(e: any) => onChange(e.target.value)}
+                                    checked={!value}
+                                    onChange={(e) => onChange(e.target.value)}
                                     label="No"
                                 />
                             </div>
@@ -75,7 +76,8 @@ export const SubsectionDetails = () => {
                         control={control}
                         name="blockName"
                         rules={{
-                            required: { value: true, message: 'Block name required.' }
+                            required: { value: true, message: 'Block name required.' },
+                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' }
                         }}
                         render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                             <Input
@@ -97,7 +99,7 @@ export const SubsectionDetails = () => {
                 <div className={styles.field}>
                     <Controller
                         control={control}
-                        name="repeatNumber"
+                        name="repeatingNbr"
                         rules={{
                             required: { value: true, message: 'Repeat number required.' }
                         }}
