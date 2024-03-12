@@ -69,12 +69,13 @@
             justify-content: flex-end;
             align-items: center;
             font-size: 0.85rem;
-            h4 {
-                margin-left: 1.5rem;
-                width: 2rem;
+
+            .currentPercent {
+                font-weight: bold;
+                margin-left: 1rem;
                 color: colors.$secondary-vivid;
             }
-            &.valid h4 {
+            &.valid div {
                 color: colors.$base-darkest;
             }
         }

@@ -143,7 +143,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     <tr>
                         <td className={`${!valid ? '' : styles.valid}`}>
                             <p>Columns must total 100%:</p>
-                            <h4>{total}%</h4>
+                            <div className={styles.currentPercent}>{total}%</div>
                         </td>
                     </tr>
                 </tfoot>
