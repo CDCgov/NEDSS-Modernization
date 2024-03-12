@@ -1,6 +1,6 @@
 import { ModalRef } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
-import { PagesQuestion, PagesTab } from 'apps/page-builder/generated';
+import { PagesQuestion, PagesSubSection, PagesTab } from 'apps/page-builder/generated';
 import { useAddQuestionsToPage } from 'apps/page-builder/hooks/api/useAddQuestionsToPage';
 import { useEffect, useRef, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
@@ -12,6 +12,7 @@ import { EditValuesetModal } from '../edit-valueset/EditValuesetModal';
 import { Sections } from '../section/Sections';
 import { PageSideMenu } from './PageSideMenu';
 import styles from './page-content.module.scss';
+import { GroupQuestionModal } from '../question/GroupQuestion/GroupQuestionModal';
 
 type Props = {
     tab: PagesTab;
@@ -31,6 +32,7 @@ const staticTypes = [hyperlinkId, commentsReadOnlyId, lineSeparatorId, originalE
 const questionTypes = [1001, 1006, 1007, 1008, 1009, 1013, 1017, 1019, 1024, 1025, 1026, 1027, 1028, 1029, 1031, 1032];
 
 export const PageContent = ({ tab, handleAddSection, handleManageSection, handleReorderModal }: Props) => {
+    const [currentGroupSubsection, setCurrentGroupSubsection] = useState<PagesSubSection | undefined>(undefined);
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
     const [currentEditValueset, setCurrentEditValueset] = useState<string | undefined>(undefined);
     const [subsectionId, setSubsectionId] = useState<number>(-1);
@@ -43,6 +45,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
     const editQuestionModalRef = useRef<ModalRef>(null);
     const editValuesetModalRef = useRef<ModalRef>(null);
     const changeValuesetModalRef = useRef<ModalRef>(null);
+    const groupQuestionModalRef = useRef<ModalRef>(null);
 
     const handleAddQuestion = (subsection: number) => {
         setSubsectionId(subsection);
@@ -87,6 +90,11 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
         changeValuesetModalRef.current?.toggleModal();
     };
 
+    const handleGroupQuestion = (subsection: PagesSubSection) => {
+        setCurrentGroupSubsection(subsection);
+        groupQuestionModalRef.current?.toggleModal();
+    };
+
     useEffect(() => {
         if (response) {
             showAlert({
@@ -112,6 +120,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 onAddQuestion={handleAddQuestion}
                 onEditValueset={handleEditValueset}
                 onChangeValueset={handleChangeValueset}
+                onGroupQuestion={handleGroupQuestion}
             />
             <PageSideMenu
                 onAddSection={() => handleAddSection?.()}
@@ -141,6 +150,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 modal={changeValuesetModalRef}
                 question={currentEditQuestion}
             />
+            <GroupQuestionModal modal={groupQuestionModalRef} subsection={currentGroupSubsection} />
         </div>
     );
 };

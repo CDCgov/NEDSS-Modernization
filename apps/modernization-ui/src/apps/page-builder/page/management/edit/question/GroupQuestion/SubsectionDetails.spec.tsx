@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
-import { PagesSubSection } from 'apps/page-builder/generated';
-import { SubsectionDetails } from './SubsectionDetails';
-import { useForm, FormProvider } from 'react-hook-form';
+import { GroupSubSectionRequest, PagesSubSection } from 'apps/page-builder/generated';
 import { ReactNode } from 'react';
-import { GroupSubSectionRequest } from 'apps/page-builder/generated';
+import { FormProvider, useForm } from 'react-hook-form';
+import { SubsectionDetails } from './SubsectionDetails';
 
 type Additional = {
     repeatNumber: number;
@@ -15,13 +14,15 @@ type GroupQuestionFormType = GroupSubSectionRequest & PagesSubSection & Addition
 const Wrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm<GroupQuestionFormType>({
         defaultValues: {
-            name: "subsection.name",
-            batches: [{
-                batchTableAppearIndCd: undefined,
-                batchTableColumnWidth: undefined,
-                batchTableHeader: undefined,
-                id: 1234
-            }],
+            name: 'subsection.name',
+            batches: [
+                {
+                    appearsInTable: undefined,
+                    width: undefined,
+                    label: undefined,
+                    id: 1234
+                }
+            ],
             blockName: undefined,
             id: 1234,
             visibleText: 'Y',
@@ -42,7 +43,6 @@ const setup = () => {
 };
 
 describe('when Subsection renders', () => {
-
     it('should display input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');

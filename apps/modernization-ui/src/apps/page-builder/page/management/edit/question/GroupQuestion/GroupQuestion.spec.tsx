@@ -10,7 +10,6 @@ type Additional = {
     repeatNumber: number;
     visibleText: string;
 };
-const modalRef = { current: null };
 
 const page: PagesResponse = {
     id: 12039120,
@@ -52,9 +51,9 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
             name: 'subsection.name',
             batches: [
                 {
-                    batchTableAppearIndCd: undefined,
-                    batchTableColumnWidth: undefined,
-                    batchTableHeader: undefined,
+                    appearsInTable: undefined,
+                    width: undefined,
+                    label: undefined,
                     id: 1234
                 }
             ],
@@ -78,7 +77,13 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 const setup = () => {
     return render(
         <Wrapper>
-            <GroupQuestion subsection={subSections} questions={subSections.questions} modalRef={modalRef} />
+            <GroupQuestion
+                page={1}
+                subsection={subSections}
+                questions={subSections.questions}
+                onSuccess={jest.fn()}
+                onCancel={jest.fn()}
+            />
         </Wrapper>
     );
 };

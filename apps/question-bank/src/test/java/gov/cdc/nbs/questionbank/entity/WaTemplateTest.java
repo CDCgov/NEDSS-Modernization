@@ -46,9 +46,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an add section request is processed
     PageContentCommand.AddSection command = new PageContentCommand.AddSection(
@@ -355,9 +353,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
     // When an add subsection request is processed
     PageContentCommand.AddSubsection command = new PageContentCommand.AddSubsection(
         "subsection label",
@@ -432,9 +428,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an update subsection command is processed
     Instant now = Instant.now();
@@ -460,6 +454,27 @@ class WaTemplateTest {
         "updated subsection label",
         false,
         4,
+        998L,
+        now);
+
+    // Then an exception is thrown
+    assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
+  }
+
+  @Test
+  void subsection_update_error_invalid_id() {
+    // Given a template
+    WaTemplate page = new WaTemplate();
+
+    // And it has a tab
+    page.addTab(tab(page, 2L, 2));
+
+    // When an update subsection command is processed
+    Instant now = Instant.now();
+    PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
+        "updated subsection label",
+        false,
+        2l,
         998L,
         now);
 
@@ -501,9 +516,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an update section command is processed
     Instant now = Instant.now();
@@ -567,9 +580,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an update tab command is processed
     Instant now = Instant.now();
@@ -691,9 +702,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
 
     // When an add tab request is processed
     PageContentCommand.AddTab command = new PageContentCommand.AddTab(
@@ -850,9 +859,7 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate().publish(
         new PageCommand.Publish(
             227L,
-            Instant.parse("2022-01-18T01:15:50Z")
-        )
-    );
+            Instant.parse("2022-01-18T01:15:50Z")));
 
     // And a question exists
     WaQuestion question = QuestionEntityMother.textQuestion();

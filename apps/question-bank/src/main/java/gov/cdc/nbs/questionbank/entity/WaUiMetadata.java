@@ -779,21 +779,21 @@ public class WaUiMetadata {
   }
 
   public void updateQuestionBatch(PageContentCommand.GroupSubsection command, int groupSeqNbr) {
-    this.blockNm = command.blockName().toUpperCase();
     GroupSubSectionRequest.Batch batch = command.batches().stream().filter(b -> b.id() == this.id).findFirst()
         .orElseThrow(() -> new PageContentModificationException("Failed to find batch to update"));
-    this.batchTableAppearIndCd = batch.batchTableAppearIndCd() != 'N' ? 'Y' : 'N';
-    this.batchTableHeader = batch.batchTableHeader() == null ? extractFromQuestionLabel() : batch.batchTableHeader();
-    this.batchTableColumnWidth = batch.batchTableColumnWidth();
-    this.questionGroupSeqNbr = groupSeqNbr;
-    updated(command);
-  }
 
-  private String extractFromQuestionLabel() {
-    if (this.getQuestionLabel() != null && this.getQuestionLabel().length() > 50)
-      return this.getQuestionLabel().substring(0, 49);
-    else
-      return this.getQuestionLabel();
+    this.blockNm = command.blockName().toUpperCase();
+    this.batchTableAppearIndCd = batch.appearsInTable() ? 'Y' : 'N';
+    this.questionGroupSeqNbr = groupSeqNbr;
+    if (batch.appearsInTable()) {
+      this.batchTableHeader = batch.label();
+      this.batchTableColumnWidth = batch.width();
+    }
+
+    if (waRdbMetadatum != null) {
+      waRdbMetadatum.groupSubsectionQuestions(command);
+    }
+    updated(command);
   }
 
   public void update(PageContentCommand.UnGroupSubsection command) {
@@ -802,12 +802,16 @@ public class WaUiMetadata {
     updated(command);
   }
 
-  public void updateQuestionBatch(PageContentCommand.UnGroupSubsection command) {
+  public void ungroup(PageContentCommand.UnGroupSubsection command) {
     this.blockNm = null;
     this.batchTableAppearIndCd = null;
     this.batchTableHeader = null;
     this.batchTableColumnWidth = null;
     this.questionGroupSeqNbr = null;
+
+    if (waRdbMetadatum != null) {
+      waRdbMetadatum.unGroupSubsectionQuestions(command);
+    }
     updated(command);
   }
 

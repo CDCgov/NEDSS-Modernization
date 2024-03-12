@@ -12,30 +12,31 @@ import gov.cdc.nbs.testing.interaction.http.Authenticated;
 @Component
 public class SubsectionRequester {
 
-    private final Authenticated authenticated;
-    private final MockMvc mockMvc;
+  private final Authenticated authenticated;
+  private final MockMvc mockMvc;
 
-    public SubsectionRequester(
-            final Authenticated authenticated,
-            final MockMvc mockMvc) {
-        this.authenticated = authenticated;
-        this.mockMvc = mockMvc;
-    }
+  public SubsectionRequester(
+      final Authenticated authenticated,
+      final MockMvc mockMvc) {
+    this.authenticated = authenticated;
+    this.mockMvc = mockMvc;
+  }
 
-    ResultActions subsectionGroup(final long page, GroupSubSectionRequest request) throws Exception {
-        return mockMvc.perform(
-                this.authenticated.withUser(post("/api/v1/pages/{page}/subsections/group", page))
-                        .content(asJsonString(request))
-                        .contentType(MediaType.APPLICATION_JSON));
-    }
+  ResultActions subsectionGroup(final long page, final long subsection, GroupSubSectionRequest request)
+      throws Exception {
+    return mockMvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{page}/subsections/{subsection}/group", page, subsection))
+            .content(asJsonString(request))
+            .contentType(MediaType.APPLICATION_JSON));
+  }
 
-    ResultActions testing(final long page) throws Exception {
-        return mockMvc.perform(
-                this.authenticated.withUser(post("/api/v1/pages/{page}/subsections/testing", page))
-                        .contentType(MediaType.APPLICATION_JSON));
-    }
+  ResultActions testing(final long page) throws Exception {
+    return mockMvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{page}/subsections/testing", page))
+            .contentType(MediaType.APPLICATION_JSON));
+  }
 
-    private static String asJsonString(final Object obj) throws Exception {
-        return new ObjectMapper().writeValueAsString(obj);
-    }
+  private static String asJsonString(final Object obj) throws Exception {
+    return new ObjectMapper().writeValueAsString(obj);
+  }
 }
