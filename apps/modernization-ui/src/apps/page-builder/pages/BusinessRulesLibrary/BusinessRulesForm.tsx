@@ -48,7 +48,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     const [targetQuestions, setTargetQuestions] = useState<QuestionProps[]>([]);
     const [targetSubSections, setTargetSubSections] = useState<PagesSubSection[]>([]);
     const [sourceValueList, setSourceValueList] = useState<FieldProps[]>([]);
-    const [selectedSource, setSelectedSource] = useState<QuestionProps[]>([]);
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
     const [targetDescriptions, setTargetDescriptions] = useState<string[]>();
     const { pageId, ruleId } = useParams();
@@ -78,9 +77,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         form.setValue('targetIdentifiers', values);
         form.setValue('targetValueText', text);
         setTargetDescriptions(data.map((val) => `${val.name} (${val.question})`));
-        if (!data.length) {
-            form.setValue('description', '');
-        }
     };
 
     const handleChangeTargetSubsections = (data: PagesSubSection[]) => {
@@ -92,30 +88,25 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
             'targetValueText',
             data.map((val) => val.name)
         );
-        if (!data.length) {
-            form.setValue('description', '');
-        }
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
-        setSelectedSource(data);
+        // setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', `${data[0].name} (${data[0].question})`);
         fetchSourceValueSets(data[0].valueSet);
-        if (!data.length) {
-            form.setValue('description', '');
-        }
     };
 
     useEffect(() => {
         handleRuleDescription();
     }, [
-        targetQuestions,
-        selectedSource,
-        targetSubSections,
-        targetDescriptions,
+        form.watch('targetIdentifiers'),
+        form.watch('targetValueText'),
+        form.watch('sourceValues'),
         form.getValues('comparator'),
-        form.getValues('ruleFunction')
+        form.getValues('ruleFunction'),
+        form.watch('sourceIdentifier'),
+        form.watch('sourceText')
     ]);
 
     useEffect(() => {
@@ -149,19 +140,16 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
 
         const targetValues =
             form.watch('targetType') == Rule.targetType.QUESTION
-                ? targetQuestions.map((val) => `${val.name} (${val.question || ''})`)
+                ? targetDescriptions
                 : targetSubSections.map((val) => val.name);
 
-        if (
-            ruleFunction != Rule.ruleFunction.DATE_COMPARE &&
-            sourceText &&
-            logic &&
-            sourceValueDescription &&
-            targetValues?.length
-        ) {
+        if (ruleFunction !== Rule.ruleFunction.DATE_COMPARE && logic && sourceValues?.length && targetValues?.length) {
             description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                 form.getValues('ruleFunction')
             )} "${targetValues.join('", "')}"`;
+            form.setValue('description', description);
+        } else {
+            description = '';
             form.setValue('description', description);
         }
     };
@@ -205,9 +193,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
         form.setValue('sourceValues', newValues);
         handleRuleDescription();
-        if (!data.length) {
-            form.setValue('description', '');
-        }
     };
 
     const isTargetTypeEnabled =
@@ -236,11 +221,10 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     };
 
     const handleResetSourceQuestion = () => {
-        setSelectedSource([]);
+        // setSelectedSource([]);
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
         form.setValue('sourceValues', []);
-        form.setValue('description', '');
         sourceModalRef.current?.toggleModal(undefined, true);
     };
 
