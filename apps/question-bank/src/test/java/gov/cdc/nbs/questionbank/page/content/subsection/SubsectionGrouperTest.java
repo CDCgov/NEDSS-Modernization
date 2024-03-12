@@ -77,12 +77,51 @@ class SubsectionGrouperTest {
   }
 
   @Test
+  void should_not_update_invalid_repeatingNbr_negative() {
+    Long userId = 456L;
+    GroupSubSectionRequest request = new GroupSubSectionRequest("test", getValidBatchList(), -1);
+    UpdateSubSectionException exception =
+        assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, 100l, request, userId));
+    assertEquals("Valid repeat Number values include 0-5", exception.getMessage());
+  }
+
+  @Test
   void should_not_update_null_columWith() {
     GroupSubSectionRequest request = new GroupSubSectionRequest("BLOCK_X", getUnValidBatchColumnWidth(), 2);
     Long userId = 456L;
     UpdateSubSectionException exception =
         assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, 100l, request, userId));
     assertEquals("Batch TableColumnWidth is required", exception.getMessage());
+  }
+
+  @Test
+  void should_update_with_no_appears_entries() {
+    List<GroupSubSectionRequest.Batch> batchList = new ArrayList<>();
+    batchList.add(new GroupSubSectionRequest.Batch(101l, true, "header1", 25));
+    batchList.add(new GroupSubSectionRequest.Batch(102l, true, "header2", 75));
+    batchList.add(new GroupSubSectionRequest.Batch(103l, false, null, 0));
+    WaTemplate page = mock(WaTemplate.class);
+    when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
+    WaUiMetadata waUiMetadata = new WaUiMetadata();
+    GroupSubSectionRequest request = new GroupSubSectionRequest("BLOCK_X", batchList, (int) 2);
+    waUiMetadata.setId(100l);
+    waUiMetadata.setBlockNm(request.blockName());
+    doNothing().when(page).groupSubSection(any());
+
+    Long userId = 456L;
+    grouper.group(1l, 100l, request, userId);
+    verify(page).groupSubSection(any());
+  }
+
+  @Test
+  void should_not_update_empty_label() {
+    List<GroupSubSectionRequest.Batch> batchList = new ArrayList<>();
+    batchList.add(new GroupSubSectionRequest.Batch(101l, true, " ", 25));
+    GroupSubSectionRequest request = new GroupSubSectionRequest("BLOCK_X", batchList, 2);
+    Long userId = 456L;
+    UpdateSubSectionException exception =
+        assertThrows(UpdateSubSectionException.class, () -> grouper.group(1l, 100l, request, userId));
+    assertEquals("Label in table is required", exception.getMessage());
   }
 
   @Test
