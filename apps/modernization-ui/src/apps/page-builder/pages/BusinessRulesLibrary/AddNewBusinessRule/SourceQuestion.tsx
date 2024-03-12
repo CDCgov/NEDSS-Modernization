@@ -32,7 +32,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
 
     const isDate = (question: PagesQuestion) => question.dataType === 'DATE' || question.dataType === 'DATETIME';
 
-    const handleSourceCases = (question: PagesQuestion[]): PagesQuestion[] => {
+    const handleSourceCases = (question: PagesQuestion[], ruleFunction?: string) => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             const filteredList = question.filter(isDate);
             return filteredList;
@@ -115,7 +115,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
             <div className={styles.headerMessage}>Please select source question</div>
             <div className={styles.sourceTabs}>
                 <ul className={styles.tabs}>
-                    {page?.tabs?.map(({ name }, tabKey) => (
+                    {page?.tabs?.map((tab: PagesTab, tabKey) => (
                         <li
                             key={tabKey}
                             className={activeTab === tabKey ? styles.active : ''}
@@ -124,7 +124,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                 setActiveSection(0);
                                 setSourceList([]);
                             }}>
-                            {name}
+                            {tab.name}
                         </li>
                     ))}
                 </ul>
@@ -136,7 +136,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                 <div className={styles.sections}>
                     {filteredPage?.tabs?.[activeTab] &&
                         filteredPage?.tabs?.[activeTab]?.sections.map((section: PagesSection, key) => (
-                            <>
+                            <div key={key}>
                                 <div key={key} className={styles.section}>
                                     <div
                                         className={styles.sectionToggle}
@@ -164,7 +164,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                         ))}
                                     </div>
                                 )}
-                            </>
+                            </div>
                         ))}
                 </div>
                 <div className={styles.questionsList}>

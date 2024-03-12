@@ -312,7 +312,11 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
             </Modal>
 
             <Modal id={'targetQuestion'} ref={targetQuestionModalRef} isLarge>
-                <TargetQuestion ruleFunction={watch.ruleFunction} onCancel={handleCloseTargetQuestion} />
+                <TargetQuestion
+                    ruleFunction={watch.ruleFunction}
+                    onCancel={handleCloseTargetQuestion}
+                    sourceQuestion={sourceQuestion}
+                />
             </Modal>
         </>
     );

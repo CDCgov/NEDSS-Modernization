@@ -1,0 +1,32 @@
+@use 'styles/colors';
+@use 'styles/borders' as borders;
+
+.targetQuestion {
+  display: flex;
+  flex-direction: column;
+
+  .targetTabs {
+      .tabs {
+        display: flex;
+        @extend %thin-bottom;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.09);
+          li {
+              list-style: none;
+              display: inline-block;
+              cursor: pointer;
+              color: colors.$base-black;
+              font-family: Public Sans;
+              font-size: 1rem;
+              font-style: normal;
+              font-weight: 400;
+              line-height: normal;
+              background: colors.$base-white;
+              margin-right: 2.5rem;
+              padding-bottom: 0.62rem;
+              .active {
+                  border-bottom: 0.4375rem solid colors.$primary;
+              }
+          }
+      }
+  }
+}
