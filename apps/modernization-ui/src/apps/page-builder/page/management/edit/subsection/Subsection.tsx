@@ -19,6 +19,7 @@ type Props = {
     onAddQuestion: () => void;
     onDeleteSubsection: (subsection: PagesSubSection) => void;
     onEditSubsection: (subsecition: PagesSubSection) => void;
+    onGroupQuestion: (subsecition: PagesSubSection) => void;
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;
 };
@@ -37,6 +38,7 @@ export const Subsection = ({
     onEditQuestion,
     onDeleteSubsection,
     onEditSubsection,
+    onGroupQuestion,
     onEditValueset,
     onChangeValueset
 }: Props) => {
@@ -89,6 +91,7 @@ export const Subsection = ({
                 isExpanded={isExpanded}
                 onDeleteSubsection={() => onDeleteSubsection(subsection)}
                 onEditSubsection={() => onEditSubsection(subsection)}
+                onGroupQuestion={onGroupQuestion}
             />
             {isExpanded && (
                 <>

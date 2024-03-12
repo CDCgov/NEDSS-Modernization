@@ -110,14 +110,22 @@ export class ConditionControllerService {
      */
     public static findConditionsNotInUseUsingGet({
         authorization,
+        page,
     }: {
         authorization: string,
+        /**
+         * page
+         */
+        page: number,
     }): CancelablePromise<Array<Condition>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/page-builder/api/v1/conditions/available',
             headers: {
                 'Authorization': authorization,
+            },
+            query: {
+                'page': page,
             },
             errors: {
                 401: `Unauthorized`,

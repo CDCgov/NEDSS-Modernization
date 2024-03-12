@@ -1,16 +1,13 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
+import java.time.Instant;
+import javax.persistence.EntityManager;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
-import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.content.subsection.exception.UpdateSubSectionException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.util.List;
 
 
 @Transactional
@@ -26,33 +23,37 @@ public class SubSectionGrouper {
     this.subSectionValidator = subSectionValidator;
   }
 
-  public void group(Long pageId, GroupSubSectionRequest request, Long userId) {
-    subSectionValidator.validateIfCanBeGrouped(pageId, request.id());
-    validateEntries(request);
+  public void group(Long pageId, Long subsection, GroupSubSectionRequest request, Long userId) {
+    subSectionValidator.validateIfCanBeGrouped(pageId, subsection);
+    validate(request);
     WaTemplate page = entityManager.find(WaTemplate.class, pageId);
-    page.groupSubSection(asCommand(userId, request));
+    page.groupSubSection(asCommand(subsection, request, userId));
   }
 
   public void unGroup(Long pageId, long subsectionId, Long userId) {
     WaTemplate page = entityManager.find(WaTemplate.class, pageId);
-    List<Long> batches =
-        subSectionValidator.getSubsectionElements(pageId, subsectionId).stream().map(WaUiMetadata::getId).toList();
-    page.unGroupSubSection(asCommand(userId, subsectionId, batches));
+    page.unGroupSubSection(asCommand(userId, subsectionId));
   }
 
-  private void validateEntries(GroupSubSectionRequest request) {
-    if (request.blockName() == null || request.blockName().trim().isEmpty()) {
-      throw new UpdateSubSectionException("SubSection Block Name is required");
+  private void validate(GroupSubSectionRequest request) {
+    if (request.blockName() == null || !request.blockName().matches("^[\\w]*$")) {
+      throw new UpdateSubSectionException(
+          "SubSection Block Name is required and only allows alphanumeric or underscore");
     }
-    if (request.repeatingNbr() > 5) {
+    if (request.repeatingNbr() > 5 || request.repeatingNbr() < 0) {
       throw new UpdateSubSectionException("Valid repeat Number values include 0-5");
     }
     int totalPercentage = 0;
     for (GroupSubSectionRequest.Batch b : request.batches()) {
-      if (b.batchTableColumnWidth() == 0) {
-        throw new UpdateSubSectionException("Batch TableColumnWidth is required");
+      if (b.appearsInTable()) {
+        if (b.label() == null || b.label().trim().equals("")) {
+          throw new UpdateSubSectionException("Label in table is required");
+        }
+        if (b.width() == 0) {
+          throw new UpdateSubSectionException("Batch TableColumnWidth is required");
+        }
+        totalPercentage += b.width();
       }
-      totalPercentage += b.batchTableColumnWidth();
     }
     if (totalPercentage != 100) {
       throw new UpdateSubSectionException("The total of batch TableColumnWidth must calculate to 100");
@@ -60,10 +61,11 @@ public class SubSectionGrouper {
   }
 
   private PageContentCommand.GroupSubsection asCommand(
-      Long userId,
-      GroupSubSectionRequest request) {
+      long subsection,
+      GroupSubSectionRequest request,
+      long userId) {
     return new PageContentCommand.GroupSubsection(
-        request.id(),
+        subsection,
         request.blockName(),
         request.batches(),
         request.repeatingNbr(),
@@ -73,11 +75,9 @@ public class SubSectionGrouper {
 
   private PageContentCommand.UnGroupSubsection asCommand(
       Long userId,
-      long subsectionId,
-      List<Long> batches) {
+      long subsectionId) {
     return new PageContentCommand.UnGroupSubsection(
         subsectionId,
-        batches,
         userId,
         Instant.now());
   }

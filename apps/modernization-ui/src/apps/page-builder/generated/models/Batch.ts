@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type Batch = {
-    batchTableAppearIndCd?: string;
-    batchTableColumnWidth?: number;
-    batchTableHeader?: string;
-    id?: number;
+    appearsInTable: boolean;
+    id: number;
+    label?: string;
+    width?: number;
 };
 

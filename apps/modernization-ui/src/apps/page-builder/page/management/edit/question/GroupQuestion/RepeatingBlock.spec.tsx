@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
-import { PagesSubSection, PagesQuestion } from 'apps/page-builder/generated';
-import { RepeatingBlock } from './RepeatingBlock';
-import { useForm, FormProvider } from 'react-hook-form';
+import { GroupSubSectionRequest, PagesQuestion, PagesSubSection } from 'apps/page-builder/generated';
 import { ReactNode } from 'react';
-import { GroupSubSectionRequest } from 'apps/page-builder/generated';
+import { FormProvider, useForm } from 'react-hook-form';
+import { RepeatingBlock } from './RepeatingBlock';
 
 const dateQuestion: PagesQuestion = {
     id: 3,
@@ -44,9 +43,9 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
             name: 'subsection.name',
             batches: [
                 {
-                    batchTableAppearIndCd: undefined,
-                    batchTableColumnWidth: undefined,
-                    batchTableHeader: undefined,
+                    appearsInTable: undefined,
+                    width: undefined,
+                    label: undefined,
                     id: 1234
                 }
             ],

@@ -42,8 +42,16 @@ public class ConditionSearchRequest {
   }
 
   ResultActions available() {
+    return available(null);
+  }
+
+  ResultActions available(Long page) {
     try {
-      MockHttpServletRequestBuilder builder = get("/api/v1/conditions/available")
+      String url = "/api/v1/conditions/available";
+      if (page != null) {
+        url += "?page=" + page.toString();
+      }
+      MockHttpServletRequestBuilder builder = get(url)
           .contentType(MediaType.APPLICATION_JSON);
       return mvc.perform(this.authenticated.withUser(builder));
     } catch (Exception exception) {
