@@ -260,4 +260,4 @@ const AddBusinessRule = () => {
     );
 };
 
-export default AddBusinessRule;
+// export default AddBusinessRule;

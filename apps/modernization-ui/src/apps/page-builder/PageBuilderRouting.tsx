@@ -7,9 +7,9 @@ import { PreviewPage } from './page/management/preview';
 import { PageDetails } from './page/management/preview/PageDetails/PageDetails';
 import { AddNewPage } from './pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import AddBusinessRule from './pages/BusinessRulesLibrary/Add/AddBusinessRule';
 import { PageProvider } from 'page';
 import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
+import { AddBusinessRule } from './pages/BusinessRulesLibrary/AddNewBusinessRule/AddBusinessRules';
 
 const routing: RouteObject[] = [
     {
