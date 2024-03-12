@@ -52,6 +52,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     const [anySourceValueToggle, setAnySource] = useState<boolean>(false);
     const [targetDescriptions, setTargetDescriptions] = useState<string[]>();
     const { pageId, ruleId } = useParams();
+    const [logicValue, setLogicValue] = useState('');
 
     const fetchSourceValueSets = async (codeSetNm: string) => {
         const content: Concept[] = await ConceptControllerService.findConceptsUsingGet({
@@ -215,7 +216,24 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         form.watch('ruleFunction') === Rule.ruleFunction.UNHIDE ||
         form.watch('ruleFunction') === Rule.ruleFunction.HIDE;
 
-    onSubmitDisability(isTargetTypeEnabled && !form.getValues('sourceValues')?.length);
+    const checkSubmitDisability = () => {
+        const sourceQuestion = form.watch('sourceText');
+        const anySourceValue = form.watch('anySourceValue');
+        const sourceValue = form.getValues('sourceValues')?.length;
+        const targetQuestionValue = targetQuestions?.length;
+        return !(
+            isTargetTypeEnabled &&
+            sourceQuestion &&
+            targetQuestionValue &&
+            (anySourceValue || (logicValue && sourceValue))
+        );
+    };
+
+    onSubmitDisability(checkSubmitDisability());
+
+    const removeNumericAndSymbols = (text: string | undefined) => {
+        return text?.replace(/\d+/g, '').replace('. ', '');
+    };
 
     const handleResetSourceQuestion = () => {
         setSelectedSource([]);
@@ -249,6 +267,10 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         setAnySource(form.watch('anySourceValue'));
     }, [form.watch('anySourceValue')]);
 
+    useEffect(() => {
+        setLogicValue(form.watch('comparator'));
+    }, [form.watch('comparator')]);
+
     const renderErrorListAsString = () => {
         let errors = '';
         const length = form.watch('targetValueText')?.length || 0;
@@ -269,7 +291,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                 <Grid col={9}>
                     {form.watch('sourceText') ? (
                         <div className="source-question-display">
-                            {form.getValues('sourceText')}
+                            {removeNumericAndSymbols(form.getValues('sourceText'))}
                             <Icon.Close onClick={handleResetSourceQuestion} />
                         </div>
                     ) : (
@@ -489,7 +511,9 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                             readOnly={true}
                             type="text"
                             multiline
-                            defaultValue={`'${form.watch('sourceText')}' must be ${mapLogicForDateCompare(
+                            defaultValue={`'${removeNumericAndSymbols(
+                                form.watch('sourceText')
+                            )}' must be ${mapLogicForDateCompare(
                                 form.watch('comparator')
                             )} '${renderErrorListAsString()}'`}
                             name={'errorMessage'}
