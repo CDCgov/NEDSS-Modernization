@@ -115,6 +115,7 @@ class SubsectionGrouperTest {
     WaUiMetadata subsection = mock(WaUiMetadata.class);
     when(subsection.getId()).thenReturn(1L);
     when(subsection.getNbsUiComponentUid()).thenReturn(1016L);
+    when(subsection.getOrderNbr()).thenReturn(3);
     PageContentCommand.GroupSubsection command = new PageContentCommand.GroupSubsection(
         1l,
         "BlockName",
@@ -123,7 +124,9 @@ class SubsectionGrouperTest {
         0,
         null);
     WaUiMetadata questionBatch1 = createBatch(101l, 1008l);
+    questionBatch1.setOrderNbr(4);
     WaUiMetadata questionBatch2 = createBatch(102l, 1008l);
+    questionBatch2.setOrderNbr(5);
     questionBatch2.setWaRdbMetadatum(new WaRdbMetadata());
     List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2);
     WaTemplate waTemplate = new WaTemplate();
@@ -139,12 +142,15 @@ class SubsectionGrouperTest {
     WaUiMetadata subsection = new WaUiMetadata();
     subsection.setId(1L);
     subsection.setNbsUiComponentUid(1016L);
+    subsection.setOrderNbr(3);
     PageContentCommand.UnGroupSubsection command = new PageContentCommand.UnGroupSubsection(
         1l,
         0,
         null);
     WaUiMetadata questionBatch1 = createBatch(2L, 1008l);
+    questionBatch1.setOrderNbr(4);
     WaUiMetadata questionBatch2 = createBatch(3L, 1008l);
+    questionBatch2.setOrderNbr(5);
     questionBatch2.setWaRdbMetadatum(new WaRdbMetadata());
     List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2);
     WaTemplate waTemplate = new WaTemplate();
@@ -157,14 +163,18 @@ class SubsectionGrouperTest {
   void should_not_ungroup_subsection_contains_non_question_elements() {
     WaUiMetadata subsection = new WaUiMetadata();
     subsection.setId(1L);
+    subsection.setOrderNbr(3);
     subsection.setNbsUiComponentUid(1016L);
     PageContentCommand.UnGroupSubsection command = new PageContentCommand.UnGroupSubsection(
         1l,
         0,
         null);
     WaUiMetadata questionBatch1 = createBatch(2L, 1008l);
+    questionBatch1.setOrderNbr(4);
     WaUiMetadata questionBatch2 = createBatch(3L, 1008l);
+    questionBatch2.setOrderNbr(5);
     WaUiMetadata nonQuestionBatch = createBatch(103l, 1014l);
+    nonQuestionBatch.setOrderNbr(6);
     List<WaUiMetadata> uiMetadata = Arrays.asList(subsection, questionBatch1, questionBatch2, nonQuestionBatch);
     WaTemplate waTemplate = new WaTemplate();
     waTemplate.setUiMetadata(uiMetadata);
