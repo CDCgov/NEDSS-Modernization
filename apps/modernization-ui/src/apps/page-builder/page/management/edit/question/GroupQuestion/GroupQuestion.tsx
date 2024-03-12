@@ -84,7 +84,7 @@ export const GroupQuestion = ({ page, subsection, questions, onSuccess, onCancel
                 <Button onClick={handleCancel} type="button" outline>
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} type="button" disabled={!valid}>
+                <Button onClick={handleSubmit} type="button" disabled={!valid || !form.formState.isValid}>
                     Submit
                 </Button>
             </ButtonBar>

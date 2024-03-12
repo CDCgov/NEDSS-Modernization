@@ -14,26 +14,36 @@ type Props = {
 
 export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const [total, setTotal] = useState<number | undefined>(undefined);
-    const { control } = useFormContext<GroupRequest & { batches: Batch[] }>();
+    const { control, resetField } = useFormContext<GroupRequest & { batches: Batch[] }>();
     const { fields } = useFieldArray({
         control,
         name: 'batches'
     });
 
-    const watchedWidth = useWatch({ control: control, name: 'batches' });
+    const batches = useWatch({ control: control, name: 'batches' });
     const calcTotal = (batches: Batch[]): number => {
         return batches.reduce((n, { width }) => n + parseInt(String(width ?? 0)), 0);
     };
 
     useEffect(() => {
-        const calculated = calcTotal(watchedWidth);
+        validateWidths();
+        batches.forEach((b, i) => {
+            if (!b.appearsInTable) {
+                resetField(`batches.${i}.label`);
+                resetField(`batches.${i}.width`);
+            }
+        });
+    }, [JSON.stringify(batches)]);
+
+    const validateWidths = () => {
+        const calculated = calcTotal(batches);
         setTotal(isNaN(calculated) ? undefined : calculated);
-        if (calcTotal(watchedWidth) === 100) {
+        if (calcTotal(batches) === 100) {
             setValid(true);
         } else {
             setValid(false);
         }
-    }, [JSON.stringify(watchedWidth)]);
+    };
 
     return (
         <div className={styles.block}>
@@ -91,7 +101,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches.${index}.label`}
                                     rules={{
-                                        required: { value: true, message: 'Enter label' }
+                                        required: { value: batches[index].appearsInTable, message: 'Enter label' }
                                     }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <Input
@@ -100,6 +110,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                             defaultValue={value}
                                             onChange={onChange}
                                             error={error?.message}
+                                            disabled={!batches[index].appearsInTable}
                                         />
                                     )}
                                 />
@@ -109,15 +120,18 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                     control={control}
                                     name={`batches.${index}.width`}
                                     rules={{
-                                        required: { value: true, message: 'Define width' }
+                                        required: { value: batches[index].appearsInTable, message: 'Define width' }
                                     }}
                                     render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                                         <Input
                                             type="number"
                                             name={name}
+                                            min={0}
+                                            max={100}
                                             defaultValue={value?.toString() ?? ''}
                                             onChange={onChange}
                                             error={error?.message}
+                                            disabled={!batches[index].appearsInTable}
                                         />
                                     )}
                                 />
