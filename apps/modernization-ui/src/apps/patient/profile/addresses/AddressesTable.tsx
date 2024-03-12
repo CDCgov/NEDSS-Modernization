@@ -135,8 +135,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     }
                 },
                 notifyOnNetworkStatusChange: true
-            }).then((data: any) => {
-                handleComplete(data);
+            }).then(() => {
                 refetch();
             });
     }, [currentPage, patient]);

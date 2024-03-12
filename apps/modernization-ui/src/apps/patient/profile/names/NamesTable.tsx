@@ -176,8 +176,7 @@ export const NamesTable = ({ patient }: Props) => {
                 }
             },
             notifyOnNetworkStatusChange: true
-        }).then((data: any) => {
-            handleComplete(data);
+        }).then(() => {
             refetch();
         });
     }, [currentPage, patient]);

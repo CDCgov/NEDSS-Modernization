@@ -138,6 +138,8 @@ export const IdentificationsTable = ({ patient }: Props) => {
                     }
                 },
                 notifyOnNetworkStatusChange: true
+            }).then(() => {
+                refetch();
             });
     }, [currentPage, patient]);
 
