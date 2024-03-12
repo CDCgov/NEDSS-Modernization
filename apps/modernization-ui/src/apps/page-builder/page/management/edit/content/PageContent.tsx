@@ -91,7 +91,6 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
     };
 
     const handleGroupQuestion = (subsection: PagesSubSection) => {
-        console.log('Here!');
         setCurrentGroupSubsection(subsection);
         groupQuestionModalRef.current?.toggleModal();
     };

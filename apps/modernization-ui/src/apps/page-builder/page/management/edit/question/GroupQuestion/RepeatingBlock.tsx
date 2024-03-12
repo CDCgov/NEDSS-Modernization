@@ -38,11 +38,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const validateWidths = () => {
         const calculated = calcTotal(batches);
         setTotal(isNaN(calculated) ? undefined : calculated);
-        if (calcTotal(batches) === 100) {
-            setValid(true);
-        } else {
-            setValid(false);
-        }
+        setValid(calcTotal(batches) === 100);
     };
 
     return (
