@@ -8,17 +8,18 @@ Feature: Lab report search
     And I can "view" any "ObservationLabReport" for "ARBO" within all jurisdictions
     And I have a patient
     And the patient has a "first name" of "Monterey"
-
-  Scenario Outline: I can search for Lab Reports
-    Given the patient has a lab report
+    And the patient has a lab report
     And the lab report is for a pregnant patient
     And the lab report was entered externally
     And the lab report was filled by "307947"
     And the lab report was received on 08/11/2017
     And the lab report has not been processed
+    And the lab report has an Acid-Fast Stain test with a coded result of abnormal
     And lab reports are available for search
     And I am searching for one of the Lab Reports
-    And I add the lab report criteria for "<field>"
+
+  Scenario Outline: I can search for Lab Reports
+    Given I add the lab report criteria for "<field>"
     When I search for lab reports
     Then the Lab Report search results contain the lab report
     And there is only one lab report search result
@@ -50,8 +51,7 @@ Feature: Lab report search
 
 
   Scenario Outline: I can find a lab report by many fields in the laboratory report
-    Given A lab report exist to search for
-    And I add the lab report criteria for "<field>"
+    Given I add the lab report criteria for "<field>"
     And I add the lab report criteria for "<field2>"
     And I add the lab report criteria for "<field3>"
     When I search for lab reports

@@ -8,7 +8,6 @@ import io.cucumber.java.en.Given;
 
 public class SearchableLabReportSteps {
 
-  private final Active<PatientIdentifier> patient;
   private final Active<SearchableLabReport> active;
   private final Available<SearchableLabReport> available;
   private final Available<LabReportIdentifier> labs;
@@ -21,19 +20,10 @@ public class SearchableLabReportSteps {
       final Available<LabReportIdentifier> labs,
       final SearchableLabReportMother mother
   ) {
-    this.patient = patient;
     this.active = active;
     this.available = available;
     this.labs = labs;
     this.mother = mother;
-  }
-
-
-  @Given("A lab report exist to search for")
-  public void lab_report_exist() {
-    this.patient.maybeActive()
-        .ifPresent(mother::create);
-
   }
 
   @Given("lab reports are available for search")

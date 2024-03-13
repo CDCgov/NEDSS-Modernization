@@ -17,15 +17,13 @@ class SearchableLabReportLabTestRowMapperTest {
     SearchableLabReportLabTestRowMapper.Column columns = new SearchableLabReportLabTestRowMapper.Column(
         2,
         3,
-        5,
-        7
+        5
     );
 
     ResultSet resultSet = mock(ResultSet.class);
 
     when(resultSet.getString(columns.name())).thenReturn("name-value");
     when(resultSet.getString(columns.result())).thenReturn("result-value");
-    when(resultSet.getString(columns.status())).thenReturn("status-value");
     when(resultSet.getString(columns.alternative())).thenReturn("alternative-value");
 
     SearchableLabReportLabTestRowMapper mapper = new SearchableLabReportLabTestRowMapper(columns);
@@ -34,7 +32,6 @@ class SearchableLabReportLabTestRowMapperTest {
 
     assertThat(mapped.name()).isEqualTo("name-value");
     assertThat(mapped.result()).isEqualTo("result-value");
-    assertThat(mapped.status()).isEqualTo("status-value");
     assertThat(mapped.alternative()).isEqualTo("alternative-value");
   }
 

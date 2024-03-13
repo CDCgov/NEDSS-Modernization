@@ -11,19 +11,23 @@ public class SearchableLabReportTestFinder {
 
   private static final String QUERY = """
       select
-          [coded].display_name,
-          [lab_result].cd_desc_txt,
-          [lab_result].[status_cd],
-          [lab_result].[alt_cd]
+          [lab_test].lab_test_desc_txt        as [Lab Test],
+          [coded_result].lab_result_desc_txt  as [coded_result],          
+          [resulted].[alt_cd]
       from  Act_relationship [lab_result_components]
-            
-          join observation [lab_result] on
-                  [lab_result].observation_uid = [lab_result_components].[source_act_uid]
-              and [lab_result].obs_domain_cd_st_1 = 'Result'
-            
+      
+          join observation [resulted] on
+                  [resulted].observation_uid = [lab_result_components].[source_act_uid]
+              and [resulted].obs_domain_cd_st_1 = 'Result'
+      
+          left join NBS_SRTE..Lab_test [lab_test] on
+                  [lab_test].lab_test_cd = [resulted].cd
+      
           left join [Obs_value_coded] [coded] on
-                  [coded].[observation_uid] = [lab_result].[observation_uid]
-            
+                  [coded].[observation_uid] = [resulted].[observation_uid]
+      
+          left join NBS_SRTE..Lab_result [coded_result] on
+                  [coded_result].[lab_result_cd] = [coded].code
             
       where [lab_result_components].target_act_uid = ?
               and [lab_result_components].type_cd = 'COMP'
@@ -32,8 +36,7 @@ public class SearchableLabReportTestFinder {
       """;
   private static final int NAME_COLUMN = 1;
   private static final int RESULT_COLUMN = 2;
-  private static final int STATUS_COLUMN = 3;
-  private static final int ALTERNATIVE_COLUMN = 4;
+  private static final int ALTERNATIVE_COLUMN = 3;
 
   private static final int LAB_REPORT_PARAMETER = 1;
 
@@ -46,7 +49,6 @@ public class SearchableLabReportTestFinder {
         new SearchableLabReportLabTestRowMapper.Column(
             NAME_COLUMN,
             RESULT_COLUMN,
-            STATUS_COLUMN,
             ALTERNATIVE_COLUMN
         )
     );

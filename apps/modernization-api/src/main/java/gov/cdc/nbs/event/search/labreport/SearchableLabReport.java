@@ -185,8 +185,6 @@ public record SearchableLabReport(
       String name,
       @JsonProperty("display_name")
       String result,
-      @JsonProperty("status_cd")
-      String status,
       @JsonProperty("alt_cd")
       String alternative
   ) {

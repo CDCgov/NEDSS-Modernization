@@ -98,4 +98,5 @@ public class LabReportSteps {
   public void the_lab_report_was_received_on(final Instant date) {
     activeReport.maybeActive().ifPresent(lab -> this.reportMother.receivedOn(lab, date));
   }
+
 }

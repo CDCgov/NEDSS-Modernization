@@ -63,7 +63,7 @@ public class LabReportSearchCriteriaSteps {
           .map(lab -> PregnancyStatus.resolve(lab.pregnancyStatus()))
           .ifPresent(filter::setPregnancyStatus);
 
-      case "accession number" -> filler()
+      case "accession number" -> accession()
           .map(
               filler ->
                   eventId(
@@ -226,7 +226,7 @@ public class LabReportSearchCriteriaSteps {
         .map(SearchableLabReport.Person.Provider::identifier);
   }
 
-  private Optional<String> filler() {
+  private Optional<String> accession() {
     return this.searchableLabReport.maybeActive()
         .stream()
         .map(SearchableLabReport::identifiers)

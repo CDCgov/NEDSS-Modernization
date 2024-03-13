@@ -11,7 +11,6 @@ class SearchableLabReportLabTestRowMapper implements RowMapper<SearchableLabRepo
   record Column(
       int name,
       int result,
-      int status,
       int alternative
   ) {
   }
@@ -30,13 +29,11 @@ class SearchableLabReportLabTestRowMapper implements RowMapper<SearchableLabRepo
   ) throws SQLException {
     String name = resultSet.getString(this.columns.name());
     String result = resultSet.getString(this.columns.result());
-    String status = resultSet.getString(this.columns.status());
     String alternative = resultSet.getString(this.columns.alternative());
 
     return new SearchableLabReport.LabTest(
         name,
         result,
-        status,
         alternative
     );
   }
