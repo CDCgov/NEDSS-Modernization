@@ -33,6 +33,13 @@ class PregnancyStatusTest {
   }
 
   @Test
+  void should_resolve_unexpected_value_to_null() {
+    PregnancyStatus resolved = PregnancyStatus.resolve("unexpected");
+
+    assertThat(resolved).isNull();
+  }
+
+  @Test
   void should_resolve_null_to_null() {
     PregnancyStatus resolved = PregnancyStatus.resolve(null);
 
