@@ -8,6 +8,12 @@ public class AdjustStrings {
         : null;
   }
 
+  public static String withoutHyphens(final String value) {
+    return value != null
+        ? value.replace("-", " ")
+        : null;
+  }
+
   private AdjustStrings() {
 
   }
