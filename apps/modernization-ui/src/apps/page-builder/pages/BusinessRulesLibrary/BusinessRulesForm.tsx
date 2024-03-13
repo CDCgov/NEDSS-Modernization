@@ -474,8 +474,8 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                                 onChange={onChange}
                                 type="text"
                                 multiline
-                                defaultValue={value}
-                                value={value}
+                                defaultValue={removeNumericAndSymbols(value)}
+                                value={removeNumericAndSymbols(value)}
                                 onBlur={onBlur}
                                 name={name}
                                 id={name}
