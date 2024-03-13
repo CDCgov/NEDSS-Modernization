@@ -30,7 +30,19 @@ public class LabReportSearchVerificationSteps {
             )
                 .exists()
         );
-     }
+  }
+
+  @Then("the Lab Report search results do not contain the lab report")
+  public void the_lab_report_search_results_do_not_contain_lab_report() throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findLabReportsByFilter.content[?(@.id=='%s')]",
+                String.valueOf(this.labReport.active().identifier())
+            )
+                .doesNotExist()
+        );
+  }
 
   @Then("there is only one lab report search result")
   public void there_is_only_one_patient_search_result() throws Exception {
@@ -48,4 +60,5 @@ public class LabReportSearchVerificationSteps {
   public void the_lab_report_search_results_are_not_accessible() throws Exception {
     this.response.active().andExpect(accessDenied());
   }
+
 }

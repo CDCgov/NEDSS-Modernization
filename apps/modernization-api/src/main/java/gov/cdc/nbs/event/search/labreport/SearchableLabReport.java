@@ -135,6 +135,8 @@ public record SearchableLabReport(
         String firstName,
         @JsonProperty("last_name")
         String lastName,
+        @JsonProperty("curr_sex_cd")
+        String gender,
         @JsonProperty("birth_time")
         @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class)
         @JsonDeserialize(using = LocalDateWithTimeJsonDeserializer.class)

@@ -18,6 +18,10 @@ public class SearchableLabReportIndexer {
     this.indexer = indexer;
   }
 
+  public void index(final SearchableLabReport item) {
+    this.indexer.index(INDEX, convert(item));
+  }
+
   public void index(final Collection<SearchableLabReport> items) {
     this.indexer.index(INDEX, items.stream().map(SearchableLabReportIndexer::convert));
   }

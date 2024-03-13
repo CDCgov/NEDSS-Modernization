@@ -453,21 +453,6 @@ public class Person {
         this.birthTimeCalc = this.birthTime;
     }
 
-    public Person revise(final PatientCommand.Revise revise) {
-
-        Person revision = new Person(revise.person(), this.localId);
-
-        revision.statusTime = revise.requestedOn();
-        revision.recordStatusCd = RecordStatus.ACTIVE;
-        revision.recordStatusTime = revise.requestedOn();
-
-        revision.addTime = revise.requestedOn();
-        revision.addUserId = revise.requester();
-        revision.personParentUid = this;
-
-        return revision;
-    }
-
     public PersonName add(final PatientCommand.AddName added) {
 
         Collection<PersonName> existing = ensureNames();

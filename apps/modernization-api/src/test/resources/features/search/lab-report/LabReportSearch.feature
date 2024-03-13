@@ -6,9 +6,14 @@ Feature: Lab report search
     And I can "find" any "patient"
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
     And I can "view" any "ObservationLabReport" for "ARBO" within all jurisdictions
+    And the "lab-creator" user exists
+    And the "lab-updater" user exists
     And I have a patient
     And the patient has a "first name" of "Monterey"
     And the patient has a lab report
+    And the patient has a lab report reported by Northside Hospital
+    And the lab report was ordered by the Emory University Hospital facility
+    And the lab report is for ARBO within Gwinnett County
     And the lab report is for a pregnant patient
     And the lab report was entered externally
     And the lab report was filled by "307947"
@@ -16,7 +21,66 @@ Feature: Lab report search
     And the lab report has not been processed
     And the lab report has an Acid-Fast Stain test with a coded result of abnormal
     And lab reports are available for search
-    And I am searching for one of the Lab Reports
+    And I am searching for the Lab Report
+
+  Scenario: I can search for Lab Reports for a specific patient
+    Given I have another patient
+    And the patient has a lab report
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I add the lab report criteria for "patient id"
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
+
+  Scenario: I can search for Lab Reports created by a specific user
+    Given the patient has a lab report
+    And the lab report was created by lab-creator on 01/27/2011
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find lab reports created by lab-creator
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
+
+  Scenario: I can search for Lab Reports updated by a specific user
+    Given the patient has a lab report
+    And the lab report was updated by lab-updater on 02/13/2013
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find lab reports updated by lab-updater
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
+
+  Scenario: I can search for NEW Lab Reports
+    Given the lab report was updated by lab-updater on 02/13/2013
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find new lab reports
+    When I search for lab reports
+    Then the Lab Report search results do not contain the lab report
+    And there is only one lab report search result
+
+  Scenario: I can search for updated Lab Reports
+    Given the lab report was updated by lab-updater on 02/13/2013
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find updated lab reports
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
+
+  Scenario: I can search for Lab Reports ordered by a specific provider
+    Given the patient has a lab report
+    And there is a provider named "Emilio" "Lizardo"
+    And the lab report was ordered by the provider
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find lab reports ordered by the provider
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
 
   Scenario Outline: I can search for Lab Reports
     Given I add the lab report criteria for "<field>"
@@ -34,20 +98,13 @@ Feature: Lab report search
       | date of report                 |
       | Date Received by Public Health |
       | Date of specimen collection    |
-      | lab report create date         |
-      | lab report update date         |
       | entry method                   |
       | entered by                     |
-      | event status                   |
       | processing status              |
-      | created by                     |
-      | last updated by                |
       | Ordering Facility              |
-      | Ordering Provider              |
       | Reporting Facility             |
       | resulted test                  |
       | coded result                   |
-      | patient id                     |
 
 
   Scenario Outline: I can find a lab report by many fields in the laboratory report
@@ -61,24 +118,18 @@ Feature: Lab report search
     Examples:
       | field                          | field2        | field3       |
       | program area                   | jurisdiction  | lab id       |
-      | jurisdiction                   | event status  | lab id       |
+      | jurisdiction                   | resulted test | lab id       |
       | pregnancy status               | jurisdiction  | lab id       |
       | accession number               | jurisdiction  | entry method |
       | lab id                         | jurisdiction  | entry method |
       | Date of Report                 | jurisdiction  | lab id       |
       | Date Received by Public Health | jurisdiction  | lab id       |
       | Date of specimen collection    | jurisdiction  | lab id       |
-      | lab report create date         | jurisdiction  | lab id       |
-      | lab report update date         | jurisdiction  | lab id       |
       | entry method                   | jurisdiction  | lab id       |
       | entered by                     | jurisdiction  | lab id       |
-      | event status                   | resulted test | lab id       |
       | processing status              | jurisdiction  | lab id       |
-      | created by                     | jurisdiction  | lab id       |
-      | last updated by                | jurisdiction  | lab id       |
       | Ordering Facility              | jurisdiction  | lab id       |
-      | Ordering Provider              | jurisdiction  | lab id       |
       | Reporting Facility             | jurisdiction  | lab id       |
       | resulted test                  | jurisdiction  | lab id       |
       | coded result                   | jurisdiction  | lab id       |
-      | patient id                     | jurisdiction  | lab id       |
+      | patient id                     | resulted test | lab id       |

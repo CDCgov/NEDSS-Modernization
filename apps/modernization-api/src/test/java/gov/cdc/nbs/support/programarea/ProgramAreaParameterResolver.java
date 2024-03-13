@@ -15,9 +15,9 @@ class ProgramAreaParameterResolver {
   private static final String QUERY = """
       select
           nbs_uid,
-          program_area_cd
+          prog_area_cd
       from NBS_SRTE.[dbo].Program_area_code
-      where program_area_desc_txt = ?
+      where prog_area_desc_txt = ?
       """;
   private static final int NAME_INDEX = 1;
 

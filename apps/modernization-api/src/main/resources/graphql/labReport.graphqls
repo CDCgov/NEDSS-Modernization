@@ -100,7 +100,6 @@ type LabReportPersonParticipation {
   birthTime: DateTime
   currSexCd: String
   typeCd: String
-  typeDescTxt: String
   firstName: String
   lastName: String
   personCd: String!

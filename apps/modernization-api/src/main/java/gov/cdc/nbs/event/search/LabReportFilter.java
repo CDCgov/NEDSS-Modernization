@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 public final class LabReportFilter implements EventFilter {
   private Long patientId;
-  private List<String> programAreas;
-  private List<Long> jurisdictions;
+  private List<String> programAreas = new ArrayList<>();
+  private List<Long> jurisdictions = new ArrayList<>();
   private PregnancyStatus pregnancyStatus;
   private LabReportEventId eventId;
   private LaboratoryEventDateSearch eventDate;
-  private List<EntryMethod> entryMethods;
-  private List<UserType> enteredBy;
-  private List<EventStatus> eventStatus;
-  private List<ProcessingStatus> processingStatus;
+  private List<EntryMethod> entryMethods = new ArrayList<>();
+  private List<UserType> enteredBy = new ArrayList<>();
+  private List<EventStatus> eventStatus = new ArrayList<>();
+  private List<ProcessingStatus> processingStatus = new ArrayList<>();
   private Long createdBy;
   private Long lastUpdatedBy;
   private LabReportProviderSearch providerSearch;
@@ -100,5 +101,10 @@ public final class LabReportFilter implements EventFilter {
     ORDERING_FACILITY,
     ORDERING_PROVIDER,
     REPORTING_FACILITY
+  }
+
+  public LabReportFilter withEventStatus(final EventStatus status) {
+    this.eventStatus.add(status);
+    return this;
   }
 }

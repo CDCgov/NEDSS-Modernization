@@ -27,8 +27,7 @@ class LabReportSearchRequester {
               personParticipations{
                   birthTime
                   currSexCd
-                  typeCd                  
-                  typeDescTxt
+                  typeCd
                   firstName
                   lastName
                   personCd
