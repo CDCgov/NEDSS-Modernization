@@ -206,12 +206,14 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         const anySourceValue = form.watch('anySourceValue');
         const sourceValue = form.getValues('sourceValues')?.length;
         const targetQuestionValue = targetQuestions?.length;
-        return !(
-            isTargetTypeEnabled &&
-            sourceQuestion &&
-            targetQuestionValue &&
-            (anySourceValue || (logicValue && sourceValue))
-        );
+        const targetDescriptionValue = targetDescriptions?.length;
+        return isTargetTypeEnabled
+            ? sourceQuestion && (targetQuestionValue || targetDescriptionValue)
+                ? anySourceValue
+                    ? false
+                    : !(logicValue && sourceValue)
+                : true
+            : !(sourceQuestion && logicValue && (targetQuestionValue || targetDescriptionValue));
     };
 
     onSubmitDisability(checkSubmitDisability());
