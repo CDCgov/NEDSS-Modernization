@@ -3,6 +3,8 @@ Feature: Provider Options REST API
 
   Background:
     Given there is a provider for "Tommy" "Oliver"
+    And there is a provider for "Tyler" "Tomkins"
+    And there is a provider for "Atom" "Moon"
     And there is a provider for "Tyler" "Durden"
     And there is a provider for "Tywin" "Lanister"
     And there is a provider for "Howard" "Moon"
@@ -15,6 +17,8 @@ Feature: Provider Options REST API
     When I am trying to find providers that start with "tom"
     Then there are options available
     And the option named "Tommy Oliver" is included
+    And the option named "Tyler Tomkins" is included
+    And the option named "Atom Moon" is not included
     And the option named "Tommy Callahan III" is included
     And the option named "Tommy Pickles" is not included
 
