@@ -13,7 +13,6 @@ const labReports: [LabReport] = [
         personParticipations: [
             {
                 typeCd: 'PATSBJ',
-                participationRecordStatus: 'ACTIVE',
                 typeDescTxt: 'Patient subject',
                 firstName: 'John',
                 lastName: 'Doe',

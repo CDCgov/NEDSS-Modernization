@@ -405,7 +405,6 @@ export type LabReportPersonParticipation = {
   currSexCd?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
-  participationRecordStatus?: Maybe<Scalars['String']['output']>;
   personCd: Scalars['String']['output'];
   personParentUid?: Maybe<Scalars['Int']['output']>;
   shortId?: Maybe<Scalars['Int']['output']>;
@@ -2465,7 +2464,7 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt?: string | null, localId?: string | null }> } | null> } };
+export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, typeDescTxt?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt?: string | null, localId?: string | null }> } | null> } };
 
 export type FindLabReportsForPatientQueryVariables = Exact<{
   personUid: Scalars['Int']['input'];
@@ -4655,7 +4654,6 @@ export const FindLabReportsByFilterDocument = gql`
         birthTime
         currSexCd
         typeCd
-        participationRecordStatus
         typeDescTxt
         firstName
         lastName
