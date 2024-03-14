@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import { SourceQuestion } from './SourceQuestion';
 import { SourceValueProp } from './AddBusinessRules';
 import { TargetQuestion } from './TargetQuestion';
+import { mapComparatorToString } from '../helpers/mapComparatorToString';
+import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
 
 type Props = {
     isEdit: boolean;
@@ -32,6 +34,8 @@ export const BusinessRulesForm = ({
 
     const [sourceQuestion, setSourceQuestion] = useState<PagesQuestion | undefined>(undefined);
     const [targetQuestions, setTargetQuestion] = useState<PagesQuestion[] | undefined>([]);
+
+    const [targetDescription, setTargetDescription] = useState<string[]>([]);
 
     const fieldTypeTab = [
         { value: Rule.ruleFunction.ENABLE, display: 'Enable' },
@@ -82,11 +86,11 @@ export const BusinessRulesForm = ({
 
     useEffect(() => {
         setSourceQuestion(editSourceQuestion);
-        console.log({ editSourceQuestion });
     }, [editSourceQuestion]);
 
     useEffect(() => {
         setTargetQuestion(editTargetQuestions);
+        setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
     }, [editTargetQuestions]);
 
     const handleTargetTypeChange = (value: Rule.targetType) => {
@@ -135,11 +139,57 @@ export const BusinessRulesForm = ({
         form.setValue('targetIdentifiers', values);
         form.setValue('targetValueText', text);
         setTargetQuestion(questions);
+        setTargetDescription(questions.map((val) => `${val.name} (${val.question})`));
     };
 
-    const handleRuleDescription = () => {
-      
-    }
+    useEffect(() => {
+        if (
+            watch.targetIdentifiers &&
+            (watch.anySourceValue || (watch.comparator && watch.sourceValues)) &&
+            watch.sourceIdentifier &&
+            targetDescription
+        ) {
+            const descrip = handleRuleDescription();
+            descrip !== form.getValues('description') && form.setValue('description', handleRuleDescription());
+        }
+    }, [
+        watch.targetIdentifiers,
+        watch.anySourceValue,
+        watch.comparator,
+        watch.ruleFunction,
+        watch.sourceValues,
+        watch.sourceIdentifier,
+        targetDescription
+    ]);
+
+    const handleRuleDescription = (): string => {
+        let description = '';
+        const sourceText = watch.sourceText;
+        const logic = mapComparatorToString(watch.comparator ?? undefined);
+        const sourceValues = watch.sourceValues;
+        const ruleFunction = watch.ruleFunction;
+        const targetType = watch.targetType;
+        let sourceValueDescription = '';
+
+        if (sourceValues?.length && !watch.anySourceValue) {
+            sourceValueDescription = sourceValues?.map((value) => value.text).join(', ');
+        }
+
+        if (watch.anySourceValue) {
+            sourceValueDescription = 'any source value';
+        }
+
+        const targetValues: string[] | undefined = targetType === Rule.targetType.QUESTION ? targetDescription : [];
+
+        if (ruleFunction !== Rule.ruleFunction.DATE_COMPARE && logic && sourceValues?.length && targetValues?.length) {
+            description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
+                form.getValues('ruleFunction')
+            )} "${targetValues.join('", "')}"`;
+        } else {
+            description = '';
+        }
+        return description;
+    };
 
     useEffect(() => {
         if (watch.anySourceValue) {

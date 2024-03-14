@@ -519,7 +519,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                         getList={handleChangeTargetQuestion}
                         header="Target question"
                         ruleFunction={ruleFunction}
-                        sourceQuestion={selectedSource}
                         targetType={''}
                     />
                     <TargetQuestion
