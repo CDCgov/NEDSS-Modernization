@@ -217,7 +217,7 @@ export const EditBusinessRule = () => {
                                 }}>
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={!checkIsValid() || checkIsDirty()}>
+                            <Button type="submit" disabled={!checkIsDirty() && !checkIsValid()}>
                                 Update
                             </Button>
                         </div>
