@@ -30,7 +30,7 @@ export const GroupQuestion = ({ page, subsection, questions, onSuccess, onCancel
             batches: questions.map((question) => ({
                 appearsInTable: true,
                 width: 0,
-                label: '',
+                label: question.name,
                 id: question.id
             })),
             blockName: '',
