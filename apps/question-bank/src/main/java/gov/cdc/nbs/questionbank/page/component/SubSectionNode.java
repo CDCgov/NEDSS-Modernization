@@ -8,14 +8,24 @@ public final class SubSectionNode extends LayoutNode {
 
   private final Collection<ContentNode> children;
   private boolean isGrouped;
+  private String questionIdentifier;
 
   public boolean isGrouped() {
     return isGrouped;
   }
 
-  public SubSectionNode(final long identifier, final Definition definition,boolean isGrouped) {
+  public String questionIdentifier() {
+    return questionIdentifier;
+  }
+
+  public SubSectionNode(
+      final long identifier,
+      final Definition definition,
+      boolean isGrouped,
+      String questionIdentifier) {
     super(identifier, LayoutNode.Type.SUB_SECTION, definition);
-    this.isGrouped=isGrouped;
+    this.isGrouped = isGrouped;
+    this.questionIdentifier = questionIdentifier;
     this.children = new ArrayList<>();
   }
 

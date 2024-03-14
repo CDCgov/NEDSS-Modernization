@@ -56,6 +56,7 @@ public record PagesResponse(
       @ApiModelProperty(required = true) boolean visible,
       @ApiModelProperty(required = true) boolean isGrouped,
       @ApiModelProperty(required = true) boolean isGroupable,
+      @ApiModelProperty(required = true) String questionIdentifier,
       @ApiModelProperty(required = true) Collection<PagesQuestion> questions) {
   }
 
