@@ -44,9 +44,9 @@ export const useDownloadPageMetadata = () => {
                     a.href = url;
                     a.download = 'PageMetadata.xlsx';
                     a.click();
-                });
-            // .catch((error) => dispatch({ type: 'error', error: error.message }))
-            // .then((response) => dispatch({ type: 'complete', concepts: response ?? [] }));
+                    dispatch({ type: 'complete' });
+                })
+                .catch((error) => dispatch({ type: 'error', error: error.message }));
         }
     }, [state.status]);
 
