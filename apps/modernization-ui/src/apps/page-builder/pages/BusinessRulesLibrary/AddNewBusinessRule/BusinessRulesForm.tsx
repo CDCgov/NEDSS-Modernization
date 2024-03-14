@@ -207,26 +207,41 @@ export const BusinessRulesForm = ({
                 control={form.control}
                 name="ruleFunction"
                 render={({ field: { onBlur, onChange, value } }) => (
-                    <ButtonGroup type="segmented">
-                        {fieldTypeTab.map((field, index) => (
-                            <Button
-                                key={index}
-                                type="button"
-                                outline={watch.ruleFunction !== field.value}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                value={value}
-                                onClick={() => {
-                                    form.reset({
-                                        ruleFunction: field.value,
-                                        targetType: Rule.targetType.QUESTION,
-                                        anySourceValue: false
-                                    });
-                                }}>
-                                {field.display}
-                            </Button>
-                        ))}
-                    </ButtonGroup>
+                    <>
+                        {isEdit && (
+                            <>
+                                <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
+                                    Function
+                                </Label>
+                                <Label htmlFor={'ruleFunction'}>
+                                    {fieldTypeTab.find((tab) => tab.value === form.getValues('ruleFunction'))
+                                        ?.display || 'Enable'}
+                                </Label>
+                            </>
+                        )}
+                        {!isEdit && (
+                            <ButtonGroup type="segmented">
+                                {fieldTypeTab.map((field, index) => (
+                                    <Button
+                                        key={index}
+                                        type="button"
+                                        outline={watch.ruleFunction !== field.value}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        value={value}
+                                        onClick={() => {
+                                            form.reset({
+                                                ruleFunction: field.value,
+                                                targetType: Rule.targetType.QUESTION,
+                                                anySourceValue: false
+                                            });
+                                        }}>
+                                        {field.display}
+                                    </Button>
+                                ))}
+                            </ButtonGroup>
+                        )}
+                    </>
                 )}
             />
             {watch.ruleFunction && (
