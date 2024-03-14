@@ -434,11 +434,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                         </div>
                     ) : null}
                     {form.watch('targetType') === Rule.targetType.SUBSECTION && pageId ? (
-                        <SubSectionsDropdown
-                            pageId={pageId}
-                            selectedSubsectionIdentifiers={targetValueIdentifiers}
-                            onSelect={handleChangeTargetSubsections}
-                        />
+                        <SubSectionsDropdown onSelect={handleChangeTargetSubsections} />
                     ) : null}
                     {isTargetQuestionSelected && form.watch('targetType') != Rule.targetType.SUBSECTION ? (
                         <div className="selected-target-questions-display">

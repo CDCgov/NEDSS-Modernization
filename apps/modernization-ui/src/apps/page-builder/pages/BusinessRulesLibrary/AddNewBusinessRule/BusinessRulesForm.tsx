@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
-import { CreateRuleRequest, PagesQuestion, Rule } from 'apps/page-builder/generated';
+import { CreateRuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './BusinessRulesForm.module.scss';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -11,6 +11,7 @@ import { SourceValueProp } from './AddBusinessRules';
 import { TargetQuestion } from './TargetQuestion';
 import { mapComparatorToString } from '../helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
+import SubSectionsDropdown from '../SubSectionDropdown';
 
 type Props = {
     isEdit: boolean;
@@ -142,6 +143,14 @@ export const BusinessRulesForm = ({
         setTargetDescription(questions.map((val) => `${val.name} (${val.question})`));
     };
 
+    const handleTargetSubsection = (subSections: PagesSubSection[]) => {
+        const values = subSections.map((val) => val.questionIdentifier ?? '');
+        const text = subSections.map((val) => val.name);
+        form.setValue('targetIdentifiers', values);
+        form.setValue('targetValueText', text);
+        setTargetDescription(subSections.map((val) => `${val.name} (${val.questionIdentifier})`));
+    };
+
     useEffect(() => {
         if (
             watch.targetIdentifiers &&
@@ -153,13 +162,13 @@ export const BusinessRulesForm = ({
             descrip !== form.getValues('description') && form.setValue('description', handleRuleDescription());
         }
     }, [
-        watch.targetIdentifiers,
+        JSON.stringify(watch.targetIdentifiers),
         watch.anySourceValue,
         watch.comparator,
         watch.ruleFunction,
-        watch.sourceValues,
+        JSON.stringify(watch.sourceValues),
         watch.sourceIdentifier,
-        targetDescription
+        JSON.stringify(targetDescription)
     ]);
 
     const handleRuleDescription = (): string => {
@@ -168,7 +177,6 @@ export const BusinessRulesForm = ({
         const logic = mapComparatorToString(watch.comparator ?? undefined);
         const sourceValues = watch.sourceValues;
         const ruleFunction = watch.ruleFunction;
-        const targetType = watch.targetType;
         let sourceValueDescription = '';
 
         if (sourceValues?.length && !watch.anySourceValue) {
@@ -179,9 +187,14 @@ export const BusinessRulesForm = ({
             sourceValueDescription = 'any source value';
         }
 
-        const targetValues: string[] | undefined = targetType === Rule.targetType.QUESTION ? targetDescription : [];
+        const targetValues: string[] | undefined = targetDescription;
 
-        if (ruleFunction !== Rule.ruleFunction.DATE_COMPARE && logic && sourceValues?.length && targetValues?.length) {
+        if (
+            ruleFunction !== Rule.ruleFunction.DATE_COMPARE &&
+            logic &&
+            sourceValueDescription &&
+            targetValues?.length
+        ) {
             description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                 form.getValues('ruleFunction')
             )} "${targetValues.join('", "')}"`;
@@ -233,8 +246,16 @@ export const BusinessRulesForm = ({
                                             form.reset({
                                                 ruleFunction: field.value,
                                                 targetType: Rule.targetType.QUESTION,
-                                                anySourceValue: false
+                                                anySourceValue: false,
+                                                targetIdentifiers: [],
+                                                targetValueText: [],
+                                                description: '',
+                                                sourceIdentifier: '',
+                                                sourceValues: [],
+                                                sourceText: ''
                                             });
+                                            setTargetQuestion(undefined);
+                                            setSourceQuestion(undefined);
                                         }}>
                                         {field.display}
                                     </Button>
@@ -383,7 +404,7 @@ export const BusinessRulesForm = ({
                             Target(s)
                         </Label>
                     </div>
-                    {targetQuestions?.length ?? 0 > 0 ? (
+                    {(targetQuestions?.length || 0) > 0 && (
                         <div className={styles.displayTargetQuestions}>
                             <>
                                 {targetQuestions?.map((question: PagesQuestion, key: number) => (
@@ -398,7 +419,8 @@ export const BusinessRulesForm = ({
                                 </Button>
                             </>
                         </div>
-                    ) : (
+                    )}
+                    {!(targetQuestions?.length || 0 > 0) && watch.targetType === Rule.targetType.QUESTION && (
                         <Button
                             type="button"
                             outline
@@ -406,6 +428,9 @@ export const BusinessRulesForm = ({
                             disabled={sourceQuestion === undefined}>
                             Search target question
                         </Button>
+                    )}
+                    {watch.targetType === Rule.targetType.SUBSECTION && (
+                        <SubSectionsDropdown onSelect={handleTargetSubsection} />
                     )}
 
                     <Controller

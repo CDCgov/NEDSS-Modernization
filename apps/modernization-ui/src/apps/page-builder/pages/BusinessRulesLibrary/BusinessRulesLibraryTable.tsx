@@ -103,27 +103,14 @@ export const BusinessRulesLibraryTable = ({
                 title: (
                     <div>
                         {rule.targets?.map((target, index) => {
-                            if (rule.targetType == Rule.targetType.SUBSECTION) {
-                                const subsections = getSubsections();
-                                const subsection = subsections?.find(
-                                    (sub) => sub.id == Number(target?.targetIdentifier)
-                                );
-                                return (
-                                    <React.Fragment key={index}>
-                                        <span>{subsection?.name}</span>
-                                        <br />
-                                    </React.Fragment>
-                                );
-                            } else {
-                                return (
-                                    <React.Fragment key={index}>
-                                        <span>
-                                            {target.label} ({target.targetIdentifier})
-                                        </span>
-                                        <br />
-                                    </React.Fragment>
-                                );
-                            }
+                            return (
+                                <React.Fragment key={index}>
+                                    <span>
+                                        {target.label} ({target.targetIdentifier})
+                                    </span>
+                                    <br />
+                                </React.Fragment>
+                            );
                         })}
                     </div>
                 )

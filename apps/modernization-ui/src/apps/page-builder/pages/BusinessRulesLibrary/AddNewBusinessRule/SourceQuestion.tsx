@@ -33,7 +33,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
 
     const isDate = (question: PagesQuestion) => question.dataType === 'DATE' || question.dataType === 'DATETIME';
 
-    const handleSourceCases = (question: PagesQuestion[], ruleFunction?: string) => {
+    const handleSourceCases = (question: PagesQuestion[]) => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             const filteredList = question.filter(isDate);
             return filteredList;
