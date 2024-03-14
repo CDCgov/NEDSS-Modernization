@@ -22,7 +22,15 @@ export const ReorderQuestion = ({ question, index, visible }: Props) => {
                             <Icon name={'drag'} size={'m'} />
                         </div>
                         <Icon name={'question'} size={'m'} />
-                        <p>{question.name}</p>
+                        {question.displayComponent === 1003 ? (
+                            <p> &#60; Hyperlink &#62;</p>
+                        ) : question.displayComponent === 1012 ? (
+                            <p> &#60; Line separator &#62;</p>
+                        ) : question.displayComponent === 1014 ? (
+                            <p> &#60; Comment &#62;</p>
+                        ) : (
+                            <p>{question.name}</p>
+                        )}
                     </div>
                 </div>
             )}
