@@ -451,22 +451,22 @@ export const AdvancedSearch = () => {
                         <div className="left-searchbar">
                             <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
                             <div
-                                className="grid-row flex-align-center"
+                                className="grid-row flex-align-center search-tabs"
                                 style={{ borderBottom: '1.5px solid lightgray' }}>
-                                <p
+                                <button
                                     className={`${
                                         activeTab === ACTIVE_TAB.PERSON && 'active'
-                                    } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
+                                    } text-normal font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0 usa-button--unstyled`}
                                     onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
                                     Patient search
-                                </p>
-                                <p
+                                </button>
+                                <button
                                     className={`${
                                         activeTab === ACTIVE_TAB.EVENT && 'active'
-                                    } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
+                                    } padding-bottom-1 text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0 usa-button--unstyled`}
                                     onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
                                     Event search
-                                </p>
+                                </button>
                             </div>
                             {activeTab === ACTIVE_TAB.PERSON ? (
                                 <PatientSearch
