@@ -1,12 +1,16 @@
-import { CreateRuleRequest, Rule } from 'apps/page-builder/generated';
+import { CreateRuleRequest, PageRuleControllerService, Rule } from 'apps/page-builder/generated';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Breadcrumb } from 'breadcrumb';
 import styles from './AddBusinessRule.module.scss';
 import { Button, Form } from '@trussworks/react-uswds';
 import { BusinessRulesForm } from './BusinessRulesForm';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { authorization } from 'authorization';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { useAlert } from 'alert';
+import { useNavigate } from 'react-router-dom';
 
-export type FieldProps = {
+export type SourceValueProp = {
     name: string;
     value: string;
 };
@@ -16,16 +20,47 @@ export const AddBusinessRule = () => {
         defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false }
     });
     const { options, fetch } = useOptions();
+    const navigate = useNavigate();
 
-    const onSubmit = () => {
-        console.log('submit add business rules');
+    const { page } = useGetPageDetails();
+
+    const { showAlert } = useAlert();
+
+    const onSubmit = form.handleSubmit(async (data) => {
+        try {
+            await PageRuleControllerService.createBusinessRuleUsingPost({
+                authorization: authorization(),
+                id: page?.id ?? 0,
+                request: data
+            });
+            showAlert({
+                type: 'success',
+                message: (
+                    <>
+                        The business rule <span className="bold-text">'{data.sourceText}'</span> is successfully added.
+                        Please click the unique name to edit.
+                    </>
+                )
+            });
+            redirectToLibrary();
+        } catch (error) {
+            showAlert({
+                type: 'error',
+                message: 'There was an error. Please try again.'
+            });
+            redirectToLibrary();
+        }
+    });
+
+    const redirectToLibrary = () => {
+        if (page?.id) {
+            navigate(`/page-builder/pages/${page.id}/business-rules`);
+        } else {
+            navigate(`../`);
+        }
     };
 
-    const handleSubmit = () => {
-        console.log('handle submit here');
-    };
-
-    const handleSourceList = (valueSet?: string) => {
+    const fetchSourceValues = (valueSet?: string) => {
         fetch(valueSet ?? '');
     };
 
@@ -38,7 +73,7 @@ export const AddBusinessRule = () => {
             <div className={styles.addRule}>
                 <Form onSubmit={onSubmit}>
                     <div className={styles.title}>
-                        <h2>Add new business rule</h2>
+                        <h2>Add new business rules</h2>
                     </div>
 
                     <div className={styles.content}>
@@ -46,16 +81,22 @@ export const AddBusinessRule = () => {
                             <BusinessRulesForm
                                 isEdit={false}
                                 sourceValues={options}
-                                handleSourceValues={handleSourceList}
+                                onFetchSourceValues={fetchSourceValues}
                             />
                         </FormProvider>
                     </div>
 
                     <div className={styles.footerBtns}>
-                        <Button outline onClick={() => form.reset()} type="button">
+                        <Button
+                            outline
+                            onClick={() => {
+                                form.reset();
+                                redirectToLibrary();
+                            }}
+                            type="button">
                             Cancel
                         </Button>
-                        <Button disabled={!form.formState.isValid} onClick={handleSubmit} type="button">
+                        <Button disabled={!form.formState.isValid} type="submit">
                             Add to library
                         </Button>
                     </div>

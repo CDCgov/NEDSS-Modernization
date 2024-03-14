@@ -7,22 +7,31 @@ import { MultiSelectInput } from 'components/selection/multi';
 import { Input } from 'components/FormInputs/Input';
 import { useEffect, useRef, useState } from 'react';
 import { SourceQuestion } from './SourceQuestion';
-import { FieldProps } from './AddBusinessRules';
+import { SourceValueProp } from './AddBusinessRules';
 import { TargetQuestion } from './TargetQuestion';
 
 type Props = {
     isEdit: boolean;
-    sourceValues: FieldProps[];
-    handleSourceValues: (valueSet?: string) => void;
+    sourceValues: SourceValueProp[];
+    editSourceQuestion?: PagesQuestion;
+    editTargetQuestions?: PagesQuestion[];
+    onFetchSourceValues: (valueSet?: string) => void;
 };
 
-export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) => {
+export const BusinessRulesForm = ({
+    sourceValues,
+    onFetchSourceValues,
+    isEdit,
+    editSourceQuestion,
+    editTargetQuestions
+}: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const watch = useWatch(form);
     const sourceQuestionModalRef = useRef<ModalRef>(null);
     const targetQuestionModalRef = useRef<ModalRef>(null);
 
     const [sourceQuestion, setSourceQuestion] = useState<PagesQuestion | undefined>(undefined);
+    const [targetQuestions, setTargetQuestion] = useState<PagesQuestion[] | undefined>([]);
 
     const fieldTypeTab = [
         { value: Rule.ruleFunction.ENABLE, display: 'Enable' },
@@ -65,6 +74,21 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
 
     const logicList = watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
 
+    useEffect(() => {
+        if (isEdit) {
+            onFetchSourceValues();
+        }
+    }, [isEdit]);
+
+    useEffect(() => {
+        setSourceQuestion(editSourceQuestion);
+        console.log({ editSourceQuestion });
+    }, [editSourceQuestion]);
+
+    useEffect(() => {
+        setTargetQuestion(editTargetQuestions);
+    }, [editTargetQuestions]);
+
     const handleTargetTypeChange = (value: Rule.targetType) => {
         form.reset({
             ...form.getValues(),
@@ -93,8 +117,9 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
 
     const handleSourceQuestion = (question?: PagesQuestion) => {
         form.setValue('sourceText', `${question?.name} (${question?.question})`);
+        form.setValue('sourceIdentifier', `${question?.question}`);
         setSourceQuestion(question);
-        handleSourceValues(question?.valueSet);
+        onFetchSourceValues(question?.valueSet ?? '');
     };
 
     const handleSourceValueChange = (data: string[]) => {
@@ -103,6 +128,18 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
         const newValues = matchedValues.map((value) => ({ id: value?.value, text: value?.name }));
         form.setValue('sourceValues', newValues);
     };
+
+    const handleTargetQuestion = (questions: PagesQuestion[]) => {
+        const values = questions.map((val) => val.question ?? '');
+        const text = questions.map((val) => val.name);
+        form.setValue('targetIdentifiers', values);
+        form.setValue('targetValueText', text);
+        setTargetQuestion(questions);
+    };
+
+    const handleRuleDescription = () => {
+      
+    }
 
     useEffect(() => {
         if (watch.anySourceValue) {
@@ -156,7 +193,12 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
                     ) : (
                         <div className="sourceQuestionDisplay">
                             {`${sourceQuestion.name} (${sourceQuestion.question})`}
-                            <Icon.Close onClick={() => setSourceQuestion(undefined)} />
+                            <Icon.Close
+                                onClick={() => {
+                                    setSourceQuestion(undefined);
+                                    form.setValue('sourceValues', undefined);
+                                }}
+                            />
                         </div>
                     )}
 
@@ -224,7 +266,7 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
                                         <div className={styles.content}>
                                             <MultiSelectInput
                                                 value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
-                                                onChange={(value) => {
+                                                onChange={(value: string[]) => {
                                                     handleSourceValueChange(value);
                                                 }}
                                                 options={sourceValues}
@@ -272,13 +314,30 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
                     )}
 
                     <div className={styles.targetQuestionTitle}>
-                        <Label htmlFor="sourceQuestion" requiredMarker>
+                        <Label htmlFor="targetQuestionTitle" requiredMarker>
                             Target(s)
                         </Label>
                     </div>
-                    <Button type="button" outline onClick={handleOpenTargetQuestion}>
-                        Search target question
-                    </Button>
+                    {targetQuestions?.length ?? 0 > 0 ? (
+                        <div className={styles.displayTargetQuestions}>
+                            <>
+                                {targetQuestions?.map((question: PagesQuestion, key: number) => (
+                                    <div key={key} className={styles.targetQuestion}>
+                                        <Icon.Check />
+                                        {`${question.name} (${question.question})`}
+                                    </div>
+                                ))}
+                            </>
+                        </div>
+                    ) : (
+                        <Button
+                            type="button"
+                            outline
+                            onClick={handleOpenTargetQuestion}
+                            disabled={sourceQuestion === undefined}>
+                            Search target question
+                        </Button>
+                    )}
 
                     <Controller
                         control={form.control}
@@ -316,6 +375,7 @@ export const BusinessRulesForm = ({ sourceValues, handleSourceValues }: Props) =
                     ruleFunction={watch.ruleFunction}
                     onCancel={handleCloseTargetQuestion}
                     sourceQuestion={sourceQuestion}
+                    onSubmit={handleTargetQuestion}
                 />
             </Modal>
         </>

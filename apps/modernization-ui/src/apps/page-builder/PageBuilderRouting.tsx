@@ -10,6 +10,7 @@ import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRules
 import { PageProvider } from 'page';
 import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
 import { AddBusinessRule } from './pages/BusinessRulesLibrary/AddNewBusinessRule/AddBusinessRules';
+import { EditBusinessRule } from './pages/BusinessRulesLibrary/AddNewBusinessRule/EditBusinessRules';
 
 const routing: RouteObject[] = [
     {
@@ -79,12 +80,12 @@ const routing: RouteObject[] = [
                                     {
                                         path: 'add',
                                         element: <AddBusinessRule />
+                                    },
+                                    {
+                                        path: 'edit/:ruleId',
+                                        element: <EditBusinessRule />
                                     }
                                 ]
-                            },
-                            {
-                                path: ':ruleId',
-                                element: <AddBusinessRule />
                             }
                         ]
                     }

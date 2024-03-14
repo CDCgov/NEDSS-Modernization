@@ -23,6 +23,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     const [filteredPage, setFilteredPage] = useState<PagesResponse>();
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
+    const [activeSubsection, setActiveSubsection] = useState<number>(0);
     const [sourceList, setSourceList] = useState<PagesQuestion[]>([]);
     const [questionSelect, setQuestionSelect] = useState<PagesQuestion | undefined>(undefined);
 
@@ -49,6 +50,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     const onReset = () => {
         setActiveTab(0);
         setActiveSection(0);
+        setActiveSubsection(0);
         setSourceList([]);
         setQuestionSelect(undefined);
     };
@@ -156,7 +158,12 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                 key={id}
                                                 className={styles.subsection}
                                                 onClick={() => {
-                                                    handleSourceQuestion(subsection.questions);
+                                                    if (activeSubsection === subsection.id) {
+                                                        setSourceList([]);
+                                                    } else {
+                                                        setActiveSubsection(subsection.id);
+                                                        handleSourceQuestion(subsection.questions);
+                                                    }
                                                 }}>
                                                 <Icon name={'group'} size={'m'} />
                                                 <span>{subsection.name}</span>

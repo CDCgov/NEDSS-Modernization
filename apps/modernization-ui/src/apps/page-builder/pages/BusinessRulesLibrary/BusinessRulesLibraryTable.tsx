@@ -64,7 +64,7 @@ export const BusinessRulesLibraryTable = ({
             {
                 id: 1,
                 title: (
-                    <Link to={`/page-builder/pages/${page?.id}/${rule.id}`}>
+                    <Link to={`/page-builder/pages/${page?.id}/business-rules/edit/${rule.id}`}>
                         {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
                     </Link>
                 )

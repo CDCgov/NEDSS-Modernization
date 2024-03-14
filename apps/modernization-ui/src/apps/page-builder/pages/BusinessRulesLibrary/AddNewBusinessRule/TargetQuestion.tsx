@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './TargetQuestion.module.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import {
-    PageRuleControllerService,
     PagesQuestion,
     PagesResponse,
     PagesSection,
@@ -12,27 +11,62 @@ import {
     Target
 } from 'apps/page-builder/generated';
 import { handleSourceCases } from './FilterPage';
-import { authorization } from 'authorization';
 import { Icon } from 'components/Icon/Icon';
 import { Button, Checkbox } from '@trussworks/react-uswds';
+import { useGetAllPageRules } from 'apps/page-builder/hooks/api/useGetAllPageRules';
 
 type Props = {
     ruleFunction?: string;
     sourceQuestion?: PagesQuestion;
+    onSubmit: (questions: PagesQuestion[]) => void;
     onCancel: () => void;
 };
 
 const staticType = [1014, 1003, 1012, 1030, 1036];
 
-export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props) => {
+export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmit }: Props) => {
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
+    const [activeSubsection, setActiveSubsection] = useState<number>(0);
     const [filteredPage, setFilteredPage] = useState<PagesResponse>();
     const [targetList, setTargetList] = useState<PagesQuestion[]>([]);
     const [targetIdent, setTargetIdent] = useState<string[]>([]);
-    const [allRules, setAllRules] = useState<Rule[]>();
+    const [selectedList, setSelectedList] = useState<PagesQuestion[]>([]);
+
+    const { fetch, rules } = useGetAllPageRules();
 
     const { page } = useGetPageDetails();
+
+    const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
+        const tempList = [...selectedList];
+
+        if (e.target.checked) {
+            tempList.push(question);
+            setSelectedList(tempList);
+        } else {
+            const index = tempList.findIndex((qtn) => qtn.id === question.id);
+            tempList.splice(index, 1);
+            setSelectedList(tempList);
+        }
+    };
+
+    const handleSelectAll = (questions: PagesQuestion[], e: React.ChangeEvent<HTMLInputElement>) => {
+        const tempList = [...selectedList];
+        if (e.target.checked) {
+            questions?.map((question) => {
+                if (!tempList.find((qtn) => qtn.id === question.id)) {
+                    tempList.push(question);
+                }
+            });
+            setSelectedList(tempList);
+        } else {
+            questions.map((question) => {
+                const index = tempList.findIndex((qtn) => qtn.id === question.id);
+                tempList.splice(index, 1);
+            });
+            setSelectedList(tempList);
+        }
+    };
 
     const isSameGroup = (question: PagesQuestion) => question.questionGroupSeq === sourceQuestion?.questionGroupSeq;
 
@@ -44,7 +78,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
 
     const isNotSubsection = (question: PagesQuestion) => question.displayComponent !== 1016;
 
-    const handleTargetCases = (question: PagesQuestion[], ruleFunction?: string) => {
+    const handleTargetCases = (question: PagesQuestion[]) => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             const filteredList = question.filter(isDate);
             return filteredList;
@@ -59,28 +93,30 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
 
     useEffect(() => {
         const targetsIdentifiers: string[] = [];
-
-        if (allRules) {
-            allRules.map((rule: Rule) => {
+        if (rules) {
+            rules.map((rule: Rule) => {
                 rule.targets.map((target: Target) => {
                     targetsIdentifiers.push(target.targetIdentifier ?? '');
                 });
             });
             setTargetIdent(targetsIdentifiers);
         }
-    }, [allRules]);
+    }, [rules]);
 
     useEffect(() => {
-        PageRuleControllerService.getAllRulesUsingGet({
-            authorization: authorization(),
-            id: page?.id ?? 0
-        }).then((response) => {
-            setAllRules(response);
-        });
+        fetch();
     }, []);
 
     const handleTargetQuestion = (questions: PagesQuestion[]) => {
         setTargetList(handleTargetCases(questions));
+    };
+
+    const onReset = () => {
+        setActiveTab(0);
+        setActiveSection(0);
+        setActiveSubsection(0);
+        setTargetList([]);
+        setSelectedList([]);
     };
 
     useEffect(() => {
@@ -147,6 +183,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
                             onClick={() => {
                                 setActiveTab(tabKey);
                                 setActiveSection(0);
+                                setTargetList([]);
                             }}>
                             {name}
                         </li>
@@ -180,7 +217,12 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
                                                 key={id}
                                                 className={styles.subsection}
                                                 onClick={() => {
-                                                    handleTargetQuestion(subsection.questions);
+                                                    if (activeSubsection === subsection.id) {
+                                                        setTargetList([]);
+                                                    } else {
+                                                        setActiveSubsection(subsection.id);
+                                                        handleTargetQuestion(subsection.questions);
+                                                    }
                                                 }}>
                                                 <Icon name={'group'} size={'m'} />
                                                 <span>{subsection.name}</span>
@@ -193,18 +235,19 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
                 </div>
                 <div className={styles.questionsList}>
                     <Checkbox
-                        onChange={() => console.log('handle select all')}
+                        onChange={(e) => handleSelectAll(targetList, e)}
                         id="hots1"
                         name={'race1'}
                         label="Select All"
                     />
                     {targetList.map((question: PagesQuestion, index) => (
                         <Checkbox
-                            onChange={() => console.log('fix this')}
+                            onChange={(e) => handleSelect(question, e)}
                             key={index}
+                            checked={selectedList.find((qtn) => qtn.id === question.id) !== undefined}
                             id={`sourceId${index}`}
                             name={`sourceName ${index}`}
-                            label={question?.name!}
+                            label={question?.name}
                         />
                     ))}
                 </div>
@@ -214,6 +257,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
                     type="button"
                     outline
                     onClick={() => {
+                        onReset?.();
                         onCancel?.();
                     }}>
                     Cancel
@@ -221,6 +265,8 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel }: Props
                 <Button
                     type="button"
                     onClick={() => {
+                        onSubmit(selectedList);
+                        onReset?.();
                         onCancel?.();
                     }}>
                     Continue
