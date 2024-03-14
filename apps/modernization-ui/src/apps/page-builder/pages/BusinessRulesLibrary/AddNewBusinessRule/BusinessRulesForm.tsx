@@ -377,6 +377,10 @@ export const BusinessRulesForm = ({
                                         {`${question.name} (${question.question})`}
                                     </div>
                                 ))}
+                                <Button type="button" outline onClick={handleOpenTargetQuestion}>
+                                    <Icon.Edit />
+                                    <span>Edit</span>
+                                </Button>
                             </>
                         </div>
                     ) : (
@@ -426,6 +430,7 @@ export const BusinessRulesForm = ({
                     onCancel={handleCloseTargetQuestion}
                     sourceQuestion={sourceQuestion}
                     onSubmit={handleTargetQuestion}
+                    editTargetQuestion={isEdit ? editTargetQuestions : undefined}
                 />
             </Modal>
         </>

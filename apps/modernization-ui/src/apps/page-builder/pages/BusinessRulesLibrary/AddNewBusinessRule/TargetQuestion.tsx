@@ -20,11 +20,12 @@ type Props = {
     sourceQuestion?: PagesQuestion;
     onSubmit: (questions: PagesQuestion[]) => void;
     onCancel: () => void;
+    editTargetQuestion?: PagesQuestion[];
 };
 
 const staticType = [1014, 1003, 1012, 1030, 1036];
 
-export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmit }: Props) => {
+export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmit, editTargetQuestion }: Props) => {
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
     const [activeSubsection, setActiveSubsection] = useState<number>(0);
@@ -92,16 +93,29 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
     };
 
     useEffect(() => {
+        if (editTargetQuestion) {
+            setSelectedList(editTargetQuestion);
+        }
+    }, [JSON.stringify(editTargetQuestion)]);
+
+    useEffect(() => {
         const targetsIdentifiers: string[] = [];
         if (rules) {
-            rules.map((rule: Rule) => {
-                rule.targets.map((target: Target) => {
-                    targetsIdentifiers.push(target.targetIdentifier ?? '');
+            rules.forEach((rule: Rule) => {
+                rule.targets.forEach((target: Target) => {
+                    if (
+                        editTargetQuestion?.find(
+                            (question: PagesQuestion) => question.question !== target.targetIdentifier
+                        )
+                    ) {
+                        targetsIdentifiers.push(target.targetIdentifier ?? '');
+                    }
                 });
             });
             setTargetIdent(targetsIdentifiers);
+            console.log({ targetsIdentifiers });
         }
-    }, [rules]);
+    }, [JSON.stringify(rules)]);
 
     useEffect(() => {
         fetch();
@@ -116,7 +130,6 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
         setActiveSection(0);
         setActiveSubsection(0);
         setTargetList([]);
-        setSelectedList([]);
     };
 
     useEffect(() => {

@@ -53,7 +53,7 @@ export const EditBusinessRule = () => {
         });
     }, [ruleId]);
 
-    const fetchSourceQuestion = (questionIdentifier?: string): PagesQuestion | undefined => {
+    const findSourceQuestion = (questionIdentifier?: string): PagesQuestion | undefined => {
         let result: PagesQuestion | undefined = undefined;
         page?.tabs?.map((tab: PagesTab) => {
             tab.sections?.map((section: PagesSection) => {
@@ -69,7 +69,7 @@ export const EditBusinessRule = () => {
         return result;
     };
 
-    const fetchTargetQuestion = (targets?: string[]): PagesQuestion[] => {
+    const findTargetQuestion = (targets?: string[]): PagesQuestion[] => {
         const targetQuestions: PagesQuestion[] = [];
         page?.tabs?.map((tab: PagesTab) => {
             tab.sections?.map((section: PagesSection) => {
@@ -150,8 +150,8 @@ export const EditBusinessRule = () => {
                                     isEdit
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
-                                    editSourceQuestion={fetchSourceQuestion(form.getValues('sourceIdentifier'))}
-                                    editTargetQuestions={fetchTargetQuestion(form.getValues('targetIdentifiers'))}
+                                    editSourceQuestion={findSourceQuestion(form.getValues('sourceIdentifier'))}
+                                    editTargetQuestions={findTargetQuestion(form.getValues('targetIdentifiers'))}
                                 />
                             </FormProvider>
                         </div>
