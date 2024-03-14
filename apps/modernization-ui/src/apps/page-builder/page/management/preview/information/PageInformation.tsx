@@ -1,18 +1,17 @@
 import { Button, Icon, Pagination } from '@trussworks/react-uswds';
-import { Heading } from 'components/heading';
-import { authorization } from 'authorization';
-import styles from './page-information.module.scss';
 import {
-    PageSummaryDownloadControllerService,
-    PageInformationService,
     PageInformation as InfoType,
     PageControllerService,
-    PageHistory
+    PageHistory,
+    PageInformationService
 } from 'apps/page-builder/generated';
+import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
+import { authorization } from 'authorization';
+import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { usePageManagement } from '../../usePageManagement';
+import styles from './page-information.module.scss';
 
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
@@ -24,6 +23,7 @@ const PageInformation = () => {
     const pageSize = 10;
     const navigate = useNavigate();
     const { page } = usePageManagement();
+    const { downloadMetadata } = useDownloadPageMetadata();
     const fetchPageHistory = async () => {
         PageControllerService?.getPageHistoryUsingGet?.({
             authorization: authorization(),
@@ -55,19 +55,8 @@ const PageInformation = () => {
         setCurrentPage(page);
         fetchPageHistory();
     };
-    const handleDownloadCSV = async () => {
-        PageSummaryDownloadControllerService.downloadPageMetadataUsingGet({
-            authorization: authorization(),
-            id: Number(pageId)
-        }).then((data) => {
-            const dataIn = data as Blob;
-            const newBlob = new Blob([dataIn], { type: '.xlsx' });
-            const downloadURL = window.URL.createObjectURL(newBlob);
-            const link = document.createElement('a');
-            link.href = downloadURL;
-            link.download = 'PageMetadata' + '.xlsx';
-            link.click();
-        });
+    const handleDownloadMetadata = async () => {
+        downloadMetadata(page.id);
     };
 
     const handleViewPage = () => {
@@ -98,12 +87,10 @@ const PageInformation = () => {
         <section className={styles.information}>
             <header>
                 <Heading level={2}>Page information</Heading>
-                {false && (
-                    <Button type="button" outline onClick={handleDownloadCSV} className={styles.icon}>
-                        <Icon.FileDownload />
-                        Metadata
-                    </Button>
-                )}
+                <Button type="button" outline onClick={handleDownloadMetadata} className={styles.icon}>
+                    <Icon.FileDownload />
+                    Metadata
+                </Button>
             </header>
             <nav>
                 <div>{renderTabs}</div>

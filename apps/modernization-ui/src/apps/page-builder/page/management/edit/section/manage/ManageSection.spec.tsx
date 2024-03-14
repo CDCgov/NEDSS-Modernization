@@ -28,6 +28,7 @@ describe('when ManageSection renders', () => {
                                 visible: true,
                                 order: 1,
                                 isGroupable: true,
+                                questionIdentifier: 'identifier',
                                 questions: []
                             },
                             {
@@ -37,6 +38,7 @@ describe('when ManageSection renders', () => {
                                 visible: true,
                                 order: 2,
                                 isGroupable: true,
+                                questionIdentifier: 'identifier',
                                 questions: []
                             }
                         ]

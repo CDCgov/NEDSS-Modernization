@@ -99,6 +99,20 @@ Feature: Patient Search
     And search result 2 has a "first name" of "Albert"
     And search result 2 has a "last name" of "Smyth"
 
+  Scenario: I can find the patient when searching for a hyphenated last name using a hyphen
+    Given the patient has the "legal" name "Something" "Other-than"
+    And patients are available for search
+    And I add the patient criteria for a "last name" equal to "Other-than"
+    When I search for patients
+    Then search result 1 has a "last name" of "Other-than"
+
+  Scenario: I can find the patient when searching for a hyphenated last name without using a hyphen
+    Given the patient has the "legal" name "Something" "Other-than"
+    And patients are available for search
+    And I add the patient criteria for a "last name" equal to "Other than"
+    When I search for patients
+    Then search result 1 has a "last name" of "Other-than"
+
   Scenario: I can search for a Patient and find them by their legal name
     Given the patient has the "legal" name "Something" "Other" as of "2022-01-01"
     And the patient has the "legal" name "This" "One" "Here", "Junior" as of "2022-11-13"
