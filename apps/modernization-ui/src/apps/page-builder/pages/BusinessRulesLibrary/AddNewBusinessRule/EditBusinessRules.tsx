@@ -87,6 +87,22 @@ export const EditBusinessRule = () => {
         return targetQuestions;
     };
 
+    const findTargetSubsection = (targets?: string[]): PagesSubSection[] => {
+        const targetQuestions: PagesSubSection[] = [];
+        page?.tabs?.map((tab: PagesTab) => {
+            tab.sections?.map((section: PagesSection) => {
+                section.subSections?.map((subsection: PagesSubSection) => {
+                    targets?.map((target) => {
+                        if (target === subsection.questionIdentifier) {
+                            targetQuestions.push(subsection);
+                        }
+                    });
+                });
+            });
+        });
+        return targetQuestions;
+    };
+
     const fetchSourceValues = (valueSet?: string) => {
         if (valueSet) {
             fetch(valueSet);
@@ -152,6 +168,7 @@ export const EditBusinessRule = () => {
                                     onFetchSourceValues={fetchSourceValues}
                                     editSourceQuestion={findSourceQuestion(form.getValues('sourceIdentifier'))}
                                     editTargetQuestions={findTargetQuestion(form.getValues('targetIdentifiers'))}
+                                    editTargetSubsections={findTargetSubsection(form.getValues('targetIdentifiers'))}
                                 />
                             </FormProvider>
                         </div>

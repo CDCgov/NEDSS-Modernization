@@ -10,7 +10,7 @@ import {
     Rule
 } from 'apps/page-builder/generated';
 import { Icon } from 'components/Icon/Icon';
-import { Button, Radio } from '@trussworks/react-uswds';
+import { Button, Radio, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 
 type Props = {
     ruleFunction?: string;
@@ -109,6 +109,10 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
         }
     }, [page, ruleFunction]);
 
+    const handleRemove = () => {
+        setQuestionSelect(undefined);
+    };
+
     return (
         <div className={styles.sourceQuestion}>
             <div className={styles.header}>
@@ -133,6 +137,14 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
             </div>
             <div className={styles.selectedQuestions}>
                 <div className={styles.title}>Selected questions</div>
+                {questionSelect && (
+                    <div className={styles.content}>
+                        <Tag className={styles.selectedQuestion}>
+                            {questionSelect.name} ({questionSelect.question})
+                        </Tag>
+                        <UswIcon.Close onClick={() => handleRemove()} />
+                    </div>
+                )}
             </div>
             <div className={styles.content}>
                 <div className={styles.sections}>

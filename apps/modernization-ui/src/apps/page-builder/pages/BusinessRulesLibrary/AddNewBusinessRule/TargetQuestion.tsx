@@ -12,7 +12,7 @@ import {
 } from 'apps/page-builder/generated';
 import { handleSourceCases } from './FilterPage';
 import { Icon } from 'components/Icon/Icon';
-import { Button, Checkbox } from '@trussworks/react-uswds';
+import { Button, Checkbox, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetAllPageRules } from 'apps/page-builder/hooks/api/useGetAllPageRules';
 
 type Props = {
@@ -37,6 +37,10 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
     const { fetch, rules } = useGetAllPageRules();
 
     const { page } = useGetPageDetails();
+
+    const handleRemove = (question: PagesQuestion) => {
+        setSelectedList(selectedList.filter((qtn) => qtn.id !== question.id));
+    };
 
     const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
@@ -79,12 +83,14 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
 
     const isNotSubsection = (question: PagesQuestion) => question.displayComponent !== 1016;
 
+    const isNotSource = (question: PagesQuestion) => question.question !== sourceQuestion?.question;
+
     const handleTargetCases = (question: PagesQuestion[]) => {
         if (ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
             const filteredList = question.filter(isDate);
             return filteredList;
         } else {
-            let filteredList = question.filter(isNotUsed).filter(isNotStatic);
+            let filteredList = question.filter(isNotUsed).filter(isNotStatic).filter(isNotSource);
             if (sourceQuestion?.blockName) {
                 filteredList = filteredList.filter(isSameGroup).filter(isNotSubsection);
             }
@@ -104,8 +110,8 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
             rules.forEach((rule: Rule) => {
                 rule.targets.forEach((target: Target) => {
                     if (
-                        editTargetQuestion?.find(
-                            (question: PagesQuestion) => question.question !== target.targetIdentifier
+                        !editTargetQuestion?.find(
+                            (question: PagesQuestion) => question.question === target.targetIdentifier
                         )
                     ) {
                         targetsIdentifiers.push(target.targetIdentifier ?? '');
@@ -113,7 +119,6 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                 });
             });
             setTargetIdent(targetsIdentifiers);
-            console.log({ targetsIdentifiers });
         }
     }, [JSON.stringify(rules)]);
 
@@ -205,6 +210,16 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
             </div>
             <div className={styles.selectedQuestions}>
                 <div className={styles.title}>Selected questions</div>
+                <div className={styles.content}>
+                    {selectedList.map((question, key) => (
+                        <div key={key} className={styles.selectedQuestion}>
+                            <Tag className={styles.selectedQuestion}>
+                                {question.name} ({question.question})
+                            </Tag>
+                            <UswIcon.Close onClick={() => handleRemove(question)} />
+                        </div>
+                    ))}
+                </div>
             </div>
             <div className={styles.content}>
                 <div className={styles.sections}>
@@ -231,6 +246,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                                                 className={styles.subsection}
                                                 onClick={() => {
                                                     if (activeSubsection === subsection.id) {
+                                                        setActiveSubsection(0);
                                                         setTargetList([]);
                                                     } else {
                                                         setActiveSubsection(subsection.id);

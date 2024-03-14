@@ -12,12 +12,15 @@ import { TargetQuestion } from './TargetQuestion';
 import { mapComparatorToString } from '../helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
 import SubSectionsDropdown from '../SubSectionDropdown';
+import { useParams } from 'react-router-dom';
+import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
 
 type Props = {
     isEdit: boolean;
     sourceValues: SourceValueProp[];
     editSourceQuestion?: PagesQuestion;
     editTargetQuestions?: PagesQuestion[];
+    editTargetSubsections?: PagesSubSection[];
     onFetchSourceValues: (valueSet?: string) => void;
 };
 
@@ -26,12 +29,14 @@ export const BusinessRulesForm = ({
     onFetchSourceValues,
     isEdit,
     editSourceQuestion,
-    editTargetQuestions
+    editTargetQuestions,
+    editTargetSubsections
 }: Props) => {
     const form = useFormContext<CreateRuleRequest>();
     const watch = useWatch(form);
     const sourceQuestionModalRef = useRef<ModalRef>(null);
     const targetQuestionModalRef = useRef<ModalRef>(null);
+    const { ruleId } = useParams();
 
     const [sourceQuestion, setSourceQuestion] = useState<PagesQuestion | undefined>(undefined);
     const [targetQuestions, setTargetQuestion] = useState<PagesQuestion[] | undefined>([]);
@@ -91,7 +96,9 @@ export const BusinessRulesForm = ({
 
     useEffect(() => {
         setTargetQuestion(editTargetQuestions);
-        setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
+        watch.targetType === Rule.targetType.SUBSECTION
+            ? setTargetDescription(editTargetSubsections?.map((qtn) => `${qtn.name} (${qtn.questionIdentifier})`) ?? [])
+            : setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
     }, [editTargetQuestions]);
 
     const handleTargetTypeChange = (value: Rule.targetType) => {
@@ -174,9 +181,12 @@ export const BusinessRulesForm = ({
     const handleRuleDescription = (): string => {
         let description = '';
         const sourceText = watch.sourceText;
-        const logic = mapComparatorToString(watch.comparator ?? undefined);
         const sourceValues = watch.sourceValues;
         const ruleFunction = watch.ruleFunction;
+        const logic =
+            ruleFunction === Rule.ruleFunction.DATE_COMPARE
+                ? mapLogicForDateCompare(watch.comparator)
+                : mapComparatorToString(watch.comparator);
         let sourceValueDescription = '';
 
         if (sourceValues?.length && !watch.anySourceValue) {
@@ -198,6 +208,8 @@ export const BusinessRulesForm = ({
             description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                 form.getValues('ruleFunction')
             )} "${targetValues.join('", "')}"`;
+        } else if (ruleFunction === Rule.ruleFunction.DATE_COMPARE && logic) {
+            description = `'${sourceText}' must be ${logic} '${targetValues.join('", "')}'`;
         } else {
             description = '';
         }
@@ -223,6 +235,12 @@ export const BusinessRulesForm = ({
                     <>
                         {isEdit && (
                             <>
+                                <Label className={styles.ruleIdTitle} htmlFor="ruleIdTitle">
+                                    Rule Id
+                                </Label>
+                                <Label className={styles.ruleId} htmlFor="ruleId">
+                                    {ruleId}
+                                </Label>
                                 <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
                                     Function
                                 </Label>
@@ -437,21 +455,41 @@ export const BusinessRulesForm = ({
                         control={form.control}
                         name="description"
                         render={({ field: { onChange, onBlur, value } }) => (
-                            <div className={styles.description}>
-                                <div className={styles.title}>
-                                    <Label htmlFor="description">Rule description</Label>
+                            <>
+                                <div className={styles.description}>
+                                    <div className={styles.title}>
+                                        <Label htmlFor="description">Rule description</Label>
+                                    </div>
+                                    <div className={styles.content}>
+                                        <Input
+                                            onChange={onChange}
+                                            type="text"
+                                            multiline
+                                            defaultValue={value}
+                                            value={value}
+                                            onBlur={onBlur}
+                                        />
+                                    </div>
                                 </div>
-                                <div className={styles.content}>
-                                    <Input
-                                        onChange={onChange}
-                                        type="text"
-                                        multiline
-                                        defaultValue={value}
-                                        value={value}
-                                        onBlur={onBlur}
-                                    />
-                                </div>
-                            </div>
+                                {isEdit && watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && (
+                                    <div className={styles.errorMessage}>
+                                        <div className={styles.title}>
+                                            <Label htmlFor="errorMessage" requiredMarker>
+                                                Error message
+                                            </Label>
+                                        </div>
+                                        <div className={styles.content}>
+                                            <Input
+                                                type="text"
+                                                multiline
+                                                defaultValue={value}
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </>
                         )}
                     />
                 </>
