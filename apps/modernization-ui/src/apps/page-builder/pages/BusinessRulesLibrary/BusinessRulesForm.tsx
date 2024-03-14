@@ -107,6 +107,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         form.getValues('ruleFunction'),
         form.watch('sourceIdentifier'),
         form.watch('sourceText')
+        form.watch('anySourceValue'),
     ]);
 
     useEffect(() => {
@@ -143,7 +144,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                 ? targetDescriptions
                 : targetSubSections.map((val) => val.name);
 
-        if (ruleFunction !== Rule.ruleFunction.DATE_COMPARE && logic && sourceValues?.length && targetValues?.length) {
+        if (ruleFunction !== Rule.ruleFunction.DATE_COMPARE && logic && targetValues?.length) {
             description = `IF "${sourceText}" is ${logic} ${sourceValueDescription} ${mapRuleFunctionToString(
                 form.getValues('ruleFunction')
             )} "${targetValues.join('", "')}"`;
