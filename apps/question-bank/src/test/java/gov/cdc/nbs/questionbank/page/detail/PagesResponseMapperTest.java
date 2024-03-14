@@ -162,7 +162,8 @@ class PagesResponseMapperTest {
                                                 "sub-section-name-value",
                                                 true,
                                                 4),
-                                            false))));
+                                            false,
+                                            "identifier"))));
 
     PageDescription description = mock(PageDescription.class);
 
@@ -180,6 +181,7 @@ class PagesResponseMapperTest {
                             () -> assertThat(subSection.id()).isEqualTo(1693L),
                             () -> assertThat(subSection.name()).isEqualTo("sub-section-name-value"),
                             () -> assertThat(subSection.visible()).isTrue(),
+                            () -> assertThat(subSection.questionIdentifier()).isEqualTo("identifier"),
                             () -> assertThat(subSection.order()).isEqualTo(4)))));
 
   }
@@ -211,7 +213,8 @@ class PagesResponseMapperTest {
                                                 "sub-section-name-value",
                                                 true,
                                                 4),
-                                            false).add(
+                                            false,
+                                            "identifier").add(
                                                 new StaticNode(
                                                     1697L,
                                                     StaticNode.Type.HYPERLINK,
