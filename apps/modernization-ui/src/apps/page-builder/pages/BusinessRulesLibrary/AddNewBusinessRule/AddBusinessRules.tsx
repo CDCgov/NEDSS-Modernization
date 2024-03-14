@@ -1,5 +1,5 @@
 import { CreateRuleRequest, PageRuleControllerService, Rule } from 'apps/page-builder/generated';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Breadcrumb } from 'breadcrumb';
 import styles from './AddBusinessRule.module.scss';
 import { Button, Form } from '@trussworks/react-uswds';
@@ -19,6 +19,7 @@ export const AddBusinessRule = () => {
     const form = useForm<CreateRuleRequest>({
         defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false }
     });
+    const watch = useWatch(form);
     const { options, fetch } = useOptions();
     const navigate = useNavigate();
 
@@ -64,6 +65,20 @@ export const AddBusinessRule = () => {
         fetch(valueSet ?? '');
     };
 
+    const checkIsValid = () => {
+        if (
+            watch.sourceIdentifier &&
+            (watch.targetIdentifiers?.length ?? 0 > 0) &&
+            watch.targetType &&
+            watch.ruleFunction &&
+            (watch.anySourceValue || (watch.comparator && watch.sourceValues))
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     return (
         <>
             <div className="breadcrumb-wrap">
@@ -96,7 +111,7 @@ export const AddBusinessRule = () => {
                             type="button">
                             Cancel
                         </Button>
-                        <Button disabled={!form.formState.isValid} type="submit">
+                        <Button disabled={!checkIsValid()} type="submit">
                             Add to library
                         </Button>
                     </div>

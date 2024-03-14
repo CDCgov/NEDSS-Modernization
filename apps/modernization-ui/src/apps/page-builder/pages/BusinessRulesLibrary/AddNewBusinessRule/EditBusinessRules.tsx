@@ -9,7 +9,7 @@ import {
 } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './EditBusinessRule.module.scss';
 import { Breadcrumb } from 'breadcrumb/Breadcrumb';
@@ -21,6 +21,7 @@ import { useAlert } from 'alert';
 
 export const EditBusinessRule = () => {
     const form = useForm<CreateRuleRequest>();
+    const watch = useWatch(form);
     const navigate = useNavigate();
     const { ruleId } = useParams();
 
@@ -31,6 +32,9 @@ export const EditBusinessRule = () => {
 
     const [selectedSourceValues, setSelectedSourceValues] = useState<string[] | undefined>(undefined);
 
+    const [initialSourceIdentifiers, setInitialSourceIdentifiers] = useState<string>('');
+    const [initialTargetIdentifiers, setInitialTargetIdentifiers] = useState<string[]>([]);
+
     useEffect(() => {
         PageRuleControllerService.viewRuleResponseUsingGet({
             authorization: authorization(),
@@ -38,6 +42,8 @@ export const EditBusinessRule = () => {
         }).then((response: Rule) => {
             fetchSourceValues(response.sourceQuestion.codeSetName ?? '');
             setSelectedSourceValues(response.sourceValues);
+            setInitialSourceIdentifiers(response.sourceQuestion.questionIdentifier ?? '');
+            setInitialTargetIdentifiers(response.targets.map((target) => target.targetIdentifier ?? '') ?? []);
 
             form.reset({
                 anySourceValue: response.anySourceValue,
@@ -148,6 +154,34 @@ export const EditBusinessRule = () => {
         }
     });
 
+    const checkIsValid = () => {
+        if (
+            watch.sourceIdentifier &&
+            (watch.targetIdentifiers?.length ?? 0 > 0) &&
+            watch.targetType &&
+            watch.ruleFunction &&
+            (watch.anySourceValue || (watch.comparator && watch.sourceValues))
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    const checkIsDirty = () => {
+        if (form.formState.isDirty) {
+            if (
+                JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) &&
+                JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers)
+            ) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    };
+
     return (
         <div className={styles.editBusinessRules}>
             {!isLoading && (
@@ -183,7 +217,7 @@ export const EditBusinessRule = () => {
                                 }}>
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={!form.formState.isValid}>
+                            <Button type="submit" disabled={!checkIsValid() || checkIsDirty()}>
                                 Update
                             </Button>
                         </div>

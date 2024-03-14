@@ -45,7 +45,6 @@ const SubSectionsDropdown = ({ onSelect }: Props) => {
 
             setSelectedSubsections(selected.map((section) => section.questionIdentifier));
         }
-        console.log(selectedSubsections);
     }, [form.watch('targetIdentifiers'), subSections]);
 
     const options = subSections.map((subSection) => ({ name: subSection.name, value: subSection.questionIdentifier }));

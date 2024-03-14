@@ -159,6 +159,10 @@ export const BusinessRulesForm = ({
     };
 
     useEffect(() => {
+        setTargetQuestion(undefined);
+    }, [watch.targetType]);
+
+    useEffect(() => {
         if (
             watch.targetIdentifiers &&
             (watch.anySourceValue || (watch.comparator && watch.sourceValues)) &&
@@ -231,6 +235,7 @@ export const BusinessRulesForm = ({
             <Controller
                 control={form.control}
                 name="ruleFunction"
+                rules={{ required: { value: true, message: 'Rule function is required' } }}
                 render={({ field: { onBlur, onChange, value } }) => (
                     <>
                         {isEdit && (
@@ -333,6 +338,9 @@ export const BusinessRulesForm = ({
                     <Controller
                         control={form.control}
                         name="comparator"
+                        rules={{
+                            required: { value: watch.anySourceValue ? false : true, message: 'Logic is required' }
+                        }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <div className={styles.comparator}>
                                 <div className={styles.title}>
@@ -360,6 +368,12 @@ export const BusinessRulesForm = ({
                             <Controller
                                 control={form.control}
                                 name="sourceValues"
+                                rules={{
+                                    required: {
+                                        value: watch.anySourceValue ? false : true,
+                                        message: 'Source value(s) is required'
+                                    }
+                                }}
                                 render={() => (
                                     <div className={styles.sourceValues}>
                                         <div className={styles.title}>
@@ -383,6 +397,7 @@ export const BusinessRulesForm = ({
                             <Controller
                                 control={form.control}
                                 name="targetType"
+                                rules={{ required: { value: true, message: 'Target type is required' } }}
                                 render={({ field: { value } }) => (
                                     <div className={styles.targetType}>
                                         <div className={styles.title}>
