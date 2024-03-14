@@ -27,7 +27,8 @@ const content: PagesResponse = {
                             visible: true,
                             order: 1,
                             questions: [],
-                            isGroupable: true
+                            isGroupable: true,
+                            questionIdentifier: 'identifier'
                         },
                         {
                             id: 456,
@@ -36,7 +37,8 @@ const content: PagesResponse = {
                             visible: true,
                             order: 2,
                             questions: [],
-                            isGroupable: true
+                            isGroupable: true,
+                            questionIdentifier: 'identifier'
                         }
                     ]
                 }
