@@ -53,7 +53,7 @@ export const useDownloadPageMetadata = () => {
     const value = {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'downloading',
-        download: (page: number) => dispatch({ type: 'download', page })
+        downloadMetadata: (page: number) => dispatch({ type: 'download', page })
     };
 
     return value;

@@ -23,7 +23,7 @@ const PageInformation = () => {
     const pageSize = 10;
     const navigate = useNavigate();
     const { page } = usePageManagement();
-    const { download } = useDownloadPageMetadata();
+    const { downloadMetadata } = useDownloadPageMetadata();
     const fetchPageHistory = async () => {
         PageControllerService?.getPageHistoryUsingGet?.({
             authorization: authorization(),
@@ -56,7 +56,7 @@ const PageInformation = () => {
         fetchPageHistory();
     };
     const handleDownloadMetadata = async () => {
-        download(page.id);
+        downloadMetadata(page.id);
     };
 
     const handleViewPage = () => {
