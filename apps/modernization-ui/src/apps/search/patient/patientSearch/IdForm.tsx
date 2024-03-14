@@ -18,7 +18,7 @@ export const IDForm = ({ control: form }: IDFormProps) => {
                         <Controller
                             control={form.control}
                             name="identification.identificationType"
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <SelectInput
                                     defaultValue={value}
                                     options={Object.values(searchCriteria.identificationTypes).map((type) => {
@@ -28,7 +28,8 @@ export const IDForm = ({ control: form }: IDFormProps) => {
                                         };
                                     })}
                                     onChange={onChange}
-                                    htmlFor={'identificationType'}
+                                    htmlFor={name}
+                                    id={name}
                                     label="ID type"
                                 />
                             )}
@@ -43,15 +44,15 @@ export const IDForm = ({ control: form }: IDFormProps) => {
                             control={form.control}
                             name="identification.identificationNumber"
                             rules={{ required: true }}
-                            render={({ field: { onChange, value } }) => (
+                            render={({ field: { onChange, value, name } }) => (
                                 <Input
                                     onChange={onChange}
                                     defaultValue={value}
                                     type="text"
                                     label="ID number"
                                     required
-                                    htmlFor="identificationNumber"
-                                    id="identificationNumber"
+                                    htmlFor={name}
+                                    id={name}
                                 />
                             )}
                         />

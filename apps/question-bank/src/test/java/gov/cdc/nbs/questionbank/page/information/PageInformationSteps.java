@@ -21,8 +21,7 @@ public class PageInformationSteps {
   PageInformationSteps(
       final Active<PageIdentifier> page,
       final PageInformationRequester requester,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.page = page;
     this.requester = requester;
     this.response = response;
@@ -45,7 +44,6 @@ public class PageInformationSteps {
   public void the_page_information_should_have_property_equal_to_value(final String property, final String value)
       throws Exception {
     JsonPathResultMatchers pathMatcher = matchingPath(property);
-
     this.response.active()
         .andExpect(pathMatcher.value(matchingValue(property, value)));
   }

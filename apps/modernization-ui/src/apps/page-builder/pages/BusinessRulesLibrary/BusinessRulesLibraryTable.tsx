@@ -55,6 +55,13 @@ export const BusinessRulesLibraryTable = ({
     const { page } = useGetPageDetails();
     const { page: curPage, request } = usePage();
 
+    const getSubsections = () => {
+        if (page) {
+            const sections = page.tabs?.map((tab) => tab.sections).flat();
+            return sections?.map((section) => section.subSections).flat();
+        }
+    };
+
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
     const asTableRow = (rule: Rule): TableBody => ({
@@ -95,14 +102,29 @@ export const BusinessRulesLibraryTable = ({
                 id: 5,
                 title: (
                     <div>
-                        {rule.targets?.map((target, index) => (
-                            <React.Fragment key={index}>
-                                <span>
-                                    {target.label} ({target.targetIdentifier})
-                                </span>
-                                <br />
-                            </React.Fragment>
-                        ))}
+                        {rule.targets?.map((target, index) => {
+                            if (rule.targetType == Rule.targetType.SUBSECTION) {
+                                const subsections = getSubsections();
+                                const subsection = subsections?.find(
+                                    (sub) => sub.id == Number(target?.targetIdentifier)
+                                );
+                                return (
+                                    <React.Fragment key={index}>
+                                        <span>{subsection?.name}</span>
+                                        <br />
+                                    </React.Fragment>
+                                );
+                            } else {
+                                return (
+                                    <React.Fragment key={index}>
+                                        <span>
+                                            {target.label} ({target.targetIdentifier})
+                                        </span>
+                                        <br />
+                                    </React.Fragment>
+                                );
+                            }
+                        })}
                     </div>
                 )
             },
@@ -151,14 +173,29 @@ export const BusinessRulesLibraryTable = ({
                 id: 5,
                 title: (
                     <div>
-                        {rule.targets?.map((target, index) => (
-                            <React.Fragment key={index}>
-                                <span>
-                                    {target.label} ({target.targetIdentifier})
-                                </span>
-                                <br />
-                            </React.Fragment>
-                        ))}
+                        {rule.targets?.map((target, index) => {
+                            if (rule.targetType == Rule.targetType.SUBSECTION) {
+                                const subsections = getSubsections();
+                                const subsection = subsections?.find(
+                                    (sub) => sub.id == Number(target?.targetIdentifier)
+                                );
+                                return (
+                                    <React.Fragment key={index}>
+                                        <span>{subsection?.name}</span>
+                                        <br />
+                                    </React.Fragment>
+                                );
+                            } else {
+                                return (
+                                    <React.Fragment key={index}>
+                                        <span>
+                                            {target.label} ({target.targetIdentifier})
+                                        </span>
+                                        <br />
+                                    </React.Fragment>
+                                );
+                            }
+                        })}
                     </div>
                 )
             },

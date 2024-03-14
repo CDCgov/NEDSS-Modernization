@@ -25,6 +25,7 @@ const AddBusinessRule = () => {
     const deleteWarningModal = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
     const [loading, setIsLoading] = useState(false);
+    const [disableSubmit, setDisableSubmit] = useState(false);
 
     useEffect(() => {
         if (ruleId) {
@@ -219,10 +220,10 @@ const AddBusinessRule = () => {
                                 {selectedFieldType == '' && !loading ? null : (
                                     <FormProvider {...form}>
                                         <BusinessRulesForm
-                                            selectedFieldType={selectedFieldType}
                                             targets={targets}
                                             question={question}
                                             sourceValues={sourceValues}
+                                            onSubmitDisability={setDisableSubmit}
                                         />
                                     </FormProvider>
                                 )}
@@ -248,7 +249,7 @@ const AddBusinessRule = () => {
                                 <Button type="button" outline onClick={handleCancel}>
                                     Cancel
                                 </Button>
-                                <Button type="submit" className="lbr">
+                                <Button type="submit" className="lbr" disabled={disableSubmit}>
                                     {ruleId ? 'Update' : 'Add to library'}
                                 </Button>
                             </div>

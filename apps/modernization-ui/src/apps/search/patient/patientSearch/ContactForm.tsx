@@ -18,12 +18,11 @@ export const ContactForm = ({ control, errors }: any) => {
                             }
                         }
                     }}
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange, value, name } }) => (
                         <Input
                             type="text"
-                            name="phoneNumber"
-                            htmlFor={'phoneNumber'}
-                            id={'phoneNumber'}
+                            htmlFor={name}
+                            id={name}
                             onChange={onChange}
                             label="Phone number"
                             defaultValue={value}
@@ -47,14 +46,14 @@ export const ContactForm = ({ control, errors }: any) => {
                             message: 'Please enter a valid email address (example: youremail@website.com)'
                         }
                     }}
-                    render={({ field: { onChange, value } }) => (
+                    render={({ field: { onChange, value, name } }) => (
                         <Input
                             onChange={onChange}
                             defaultValue={value}
                             type="text"
                             label="Email"
-                            htmlFor="email"
-                            id="email"
+                            htmlFor={name}
+                            id={name}
                             error={errors && errors.email && errors.email.message}
                         />
                     )}

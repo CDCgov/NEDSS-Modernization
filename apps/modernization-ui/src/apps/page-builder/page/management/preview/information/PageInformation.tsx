@@ -9,7 +9,7 @@ import {
     PageControllerService,
     PageHistory
 } from 'apps/page-builder/generated';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { usePageManagement } from '../../usePageManagement';
@@ -19,7 +19,7 @@ const PageInformation = () => {
     const [totalResults, setTotalResults] = useState(4);
     const [currentPage, setCurrentPage] = useState(0);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
-    const [pageInfo, setPageInfo] = useState<InfoType>({});
+    const [pageInfo, setPageInfo] = useState<InfoType | undefined>();
     const { pageId } = useParams();
     const pageSize = 10;
     const navigate = useNavigate();

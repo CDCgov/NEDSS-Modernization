@@ -1,74 +1,93 @@
 package gov.cdc.nbs.questionbank.page.information;
 
-import gov.cdc.nbs.accumulation.Accumulator;
-import gov.cdc.nbs.questionbank.page.ConditionRowMapper;
-import gov.cdc.nbs.questionbank.page.EventTypeRowMapper;
-import gov.cdc.nbs.questionbank.page.MessageMappingGuideRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import gov.cdc.nbs.accumulation.Accumulator;
+import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.QPageCondMapping;
+import gov.cdc.nbs.questionbank.entity.QWaTemplate;
+import gov.cdc.nbs.questionbank.entity.condition.QConditionCode;
+import gov.cdc.nbs.questionbank.page.SelectableCondition;
+import gov.cdc.nbs.questionbank.page.SelectableEventType;
+import gov.cdc.nbs.questionbank.page.SelectableMessageMappingGuide;
 
 @Component
 class PageInformationFinder {
+  private static final QWaTemplate page = QWaTemplate.waTemplate;
+  private static final QCodeValueGeneral eventType = new QCodeValueGeneral("event_type");
+  private static final QCodeValueGeneral mmg = QCodeValueGeneral.codeValueGeneral;
+  private static final QPageCondMapping conditionMapping = QPageCondMapping.pageCondMapping;
+  private static final QConditionCode condition = QConditionCode.conditionCode;
+  private static final SelectableConditionMerger merger = new SelectableConditionMerger();
 
-  private static final String QUERY = """
-      select
-          [page].wa_template_uid                      as [page],
-          [object].code                               as [event_type_value],
-          [object].code_short_desc_txt                as [event_type_name],
-          [message_mapping_guide].code                as [message_mapping_guide_value],
-          [message_mapping_guide].code_short_desc_txt as [message_mapping_guide_name],
-          [page].template_nm                          as [name],
-          [page].datamart_nm                          as [datamart],
-          [page].desc_txt                             as [description],
-          [condition].[condition_cd]                  as [condition_value],
-          [condition].condition_short_nm              as [condition_name]
-      from WA_template [page]
-          join [NBS_SRTE]..Code_value_general [object] on
-                  [object].[code_set_nm] = 'BUS_OBJ_TYPE'
-              and [object].code = [page].bus_obj_type
-            
-          join [NBS_SRTE]..Code_value_general [message_mapping_guide] on
-                  [message_mapping_guide].[code_set_nm] = 'NBS_MSG_PROFILE'
-              and [message_mapping_guide].code = [page].nnd_entity_identifier
-            
-          left join Page_cond_mapping [mapping] on
-                  [mapping].wa_template_uid = [page].wa_template_uid
-            
-          left join NBS_SRTE..Condition_code [condition] on
-                  [condition].condition_cd = [mapping].condition_cd
-            
-      where [page].[wa_template_uid] = ?
-      """;
+  private final JPAQueryFactory factory;
 
-  private final JdbcTemplate template;
-  private final PageInformationRowMapper mapper;
-  private final PageInformationMerger merger;
-
-  PageInformationFinder(final JdbcTemplate template) {
-    this.template = template;
-    this.mapper = new PageInformationRowMapper(
-        new PageInformationRowMapper.Columns(
-            1,
-            new EventTypeRowMapper.Columns(2, 3),
-            new MessageMappingGuideRowMapper.Columns(4, 5),
-            6,
-            7,
-            8,
-            new ConditionRowMapper.Columns(9, 10)
-        )
-    );
-    this.merger = new PageInformationMerger();
+  public PageInformationFinder(final JPAQueryFactory factory) {
+    this.factory = factory;
   }
 
-  Optional<PageInformation> find(final long page) {
-    return this.template.query(
-            QUERY,
-            statement -> statement.setLong(1, page),
-            this.mapper
-        ).stream()
-        .collect(Accumulator.accumulating(PageInformation::page, this.merger::merge))
-        ;
+  Optional<PageInformation> find(final long id) {
+    // Find page 
+    PageInformation pageInfo = toPageInfo(factory.select(
+        page.id,
+        eventType.id.code,
+        eventType.codeShortDescTxt,
+        mmg.id.code,
+        mmg.codeShortDescTxt,
+        page.templateNm,
+        page.datamartNm,
+        page.descTxt)
+        .from(page)
+        .join(eventType).on(eventType.id.codeSetNm.eq("BUS_OBJ_TYPE").and(eventType.id.code.eq(page.busObjType)))
+        .join(mmg).on(mmg.id.codeSetNm.eq("NBS_MSG_PROFILE").and(mmg.id.code.eq(page.nndEntityIdentifier)))
+        .where(page.id.eq(id))
+        .fetchFirst());
+
+    if (pageInfo != null) {
+      pageInfo.conditions().addAll(getConditions(id));
+    }
+    return Optional.ofNullable(pageInfo);
+  }
+
+  private List<SelectableCondition> getConditions(Long id) {
+    return factory.select(
+        condition.id,
+        condition.conditionShortNm,
+        page.publishIndCd)
+        .from(page)
+        .leftJoin(conditionMapping).on(conditionMapping.waTemplateUid.id.eq(page.id))
+        .leftJoin(condition).on(condition.id.eq(conditionMapping.conditionCd))
+        .where(page.formCd.eq(JPAExpressions.select(page.formCd).from(page).where(page.id.eq(id))))
+        .fetch()
+        .stream()
+        .map(this::toSelectableCondition)
+        .collect(Accumulator.collecting(SelectableCondition::value, merger::merge));
+  }
+
+  private SelectableCondition toSelectableCondition(Tuple row) {
+    return new SelectableCondition(
+        row.get(condition.id),
+        row.get(condition.conditionShortNm),
+        Character.valueOf('T').equals(row.get(page.publishIndCd)));
+  }
+
+
+  private PageInformation toPageInfo(Tuple row) {
+    if (row == null) {
+      return null;
+    }
+    return new PageInformation(
+        row.get(page.id),
+        new SelectableEventType(row.get(eventType.id.code), row.get(eventType.codeShortDescTxt)),
+        new SelectableMessageMappingGuide(row.get(mmg.id.code), row.get(mmg.codeShortDescTxt)),
+        row.get(page.templateNm),
+        row.get(page.datamartNm),
+        row.get(page.descTxt),
+        new ArrayList<>());
   }
 }

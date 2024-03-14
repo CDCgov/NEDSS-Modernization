@@ -4,6 +4,7 @@ Feature: Facility Options REST API
   Background:
     Given there is a facility for "afacility"
     And there is a facility for "abfacility"
+    And there is a facility for "the abfacility"
     And there is a facility for "bfacility"
     And there is a facility for "cfacility"
     And there is a facility for "tafacility"
@@ -16,6 +17,7 @@ Feature: Facility Options REST API
     Then there are options available
     And the option named "afacility" is included
     And the option named "abfacility" is included
+    And the option named "the abfacility" is included
     And the option named "bfacility" is not included
 
   Scenario: I can find a specific number of facilities

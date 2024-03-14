@@ -1,0 +1,17 @@
+.group-question-modal {
+    height: 85vh;
+
+    overflow: hidden;
+    .usa-modal__content {
+        height: 85vh;
+        overflow: hidden;
+        .usa-modal__main {
+            height: 100%;
+        }
+    }
+    .usa-input,
+    .usa-select,
+    .usa-textarea {
+        max-width: 35rem;
+    }
+}
