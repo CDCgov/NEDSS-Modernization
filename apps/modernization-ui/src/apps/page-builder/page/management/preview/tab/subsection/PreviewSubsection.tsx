@@ -33,9 +33,13 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                 <div className={styles.grouped}>
                                     <div className={styles.groupedForm}>
                                         {subsection.questions.map((question, k) => (
-                                            <div className={styles.groupedQuestionName} key={k}>
-                                                <Heading level={3}>{question.name}</Heading>
-                                            </div>
+                                            <>
+                                                {question.visible && (
+                                                    <div className={styles.groupedQuestionName} key={k}>
+                                                        <Heading level={3}>{question.name}</Heading>
+                                                    </div>
+                                                )}
+                                            </>
                                         ))}
                                     </div>
                                     <p className={styles.groupedInfo}>No data has been entered.</p>
