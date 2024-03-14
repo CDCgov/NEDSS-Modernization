@@ -10,7 +10,6 @@ export type PagesSubSection = {
     isGrouped: boolean;
     name: string;
     order: number;
-    questionIdentifier: string;
     questions: Array<PagesQuestion>;
     visible: boolean;
 };

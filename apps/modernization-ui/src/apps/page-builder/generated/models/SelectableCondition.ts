@@ -4,7 +4,6 @@
 
 export type SelectableCondition = {
     name?: string;
-    published?: boolean;
     value?: string;
 };
 
