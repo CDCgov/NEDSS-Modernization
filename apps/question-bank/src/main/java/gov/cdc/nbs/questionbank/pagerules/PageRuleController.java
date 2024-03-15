@@ -24,26 +24,22 @@ import org.springframework.web.bind.annotation.*;
 public class PageRuleController {
 
   private final PageRuleService pageRuleService;
-
   private final UserDetailsProvider userDetailsProvider;
-
-
-
   private final PageRuleDeleter pageRuleDeleter;
-
   private final PageRuleCreator pageRuleCreator;
-
   private final PageRuleFinder pageRuleFinder;
 
-  public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider,
-      PageRuleDeleter pageRuleDeleter, PageRuleCreator pageRuleCreator,
-      PageRuleFinder pageRuleFinder) {
+  public PageRuleController(
+      final PageRuleService pageRuleService,
+      final UserDetailsProvider userDetailsProvider,
+      final PageRuleDeleter pageRuleDeleter,
+      final PageRuleCreator pageRuleCreator,
+      final PageRuleFinder pageRuleFinder) {
     this.userDetailsProvider = userDetailsProvider;
     this.pageRuleService = pageRuleService;
     this.pageRuleDeleter = pageRuleDeleter;
     this.pageRuleCreator = pageRuleCreator;
     this.pageRuleFinder = pageRuleFinder;
-
   }
 
   @PostMapping()

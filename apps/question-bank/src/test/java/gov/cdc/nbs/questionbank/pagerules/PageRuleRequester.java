@@ -12,42 +12,34 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
-public class PageRuleRequest {
+public class PageRuleRequester {
   private final Authenticated authenticated;
   private final MockMvc mvc;
+  private final ObjectMapper mapper;
 
-  PageRuleRequest(
+  PageRuleRequester(
       final Authenticated authenticated,
       final MockMvc mvc,
       final ObjectMapper mapper) {
     this.authenticated = authenticated;
     this.mvc = mvc;
+    this.mapper = mapper;
   }
 
-  ResultActions createBusinessRule(final long page, RuleRequest requests) {
-    try {
-      return mvc.perform(
-          this.authenticated.withUser(post("/api/v1/pages/{page}/rules", page))
-              .content(asJsonString(requests))
-              .contentType(MediaType.APPLICATION_JSON));
-    } catch (Exception exception) {
-      throw new IllegalStateException("Unable to execute Page Rule Create request", exception);
-    }
+  ResultActions createBusinessRule(final long page, RuleRequest requests) throws Exception {
+    return mvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{page}/rules", page))
+            .content(mapper.writeValueAsString(requests))
+            .contentType(MediaType.APPLICATION_JSON));
+
   }
 
-  ResultActions request(final long page, final long ruleId) {
-    try {
-      return mvc.perform(
-          this.authenticated
-              .withUser(get("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)));
-    } catch (Exception exception) {
-      throw new IllegalStateException("Unable to execute page rule request", exception);
-    }
+  ResultActions request(final long page, final long ruleId) throws Exception {
+    return mvc.perform(
+        this.authenticated
+            .withUser(get("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)));
   }
 
-  private static String asJsonString(final Object obj) throws Exception {
-    return new ObjectMapper().writeValueAsString(obj);
-  }
 
   public void deleteBusinessRule(final long page, final long ruleId) {
     try {

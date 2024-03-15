@@ -130,7 +130,7 @@ public class DateCompareCreator {
   }
 
   String createExpression(String sourceIdentifier, String targetIdentifier, String comparator) {
-    return String.format("%s  %s  ^ DT ( %s )", sourceIdentifier, comparator, targetIdentifier);
+    return String.format("%s %s  ^ DT ( %s )", sourceIdentifier, comparator, targetIdentifier);
   }
 
   String createErrorMessage(String sourceLabel, List<String> targetLabels, String comparator) {
