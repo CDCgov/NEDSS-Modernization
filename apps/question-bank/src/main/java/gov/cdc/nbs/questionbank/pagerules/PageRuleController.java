@@ -50,7 +50,7 @@ public class PageRuleController {
       @RequestBody RuleRequest request,
       @PathVariable("id") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    return pageRuleCreator.createPageRule(details.getId(), request, page);
+    return pageRuleCreator.createPageRule(request, page, details.getId());
   }
 
   @DeleteMapping("{ruleId}")

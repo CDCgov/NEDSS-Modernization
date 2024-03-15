@@ -46,7 +46,7 @@ public class PageRuleCreator {
     this.entityManager = entityManager;
   }
 
-  public Rule createPageRule(Long userId, RuleRequest request, long page) {
+  public Rule createPageRule(RuleRequest request, long page, Long userId) {
 
     WaTemplate template = entityManager.find(WaTemplate.class, page);
     if (template == null) {
@@ -74,7 +74,7 @@ public class PageRuleCreator {
     return finder.findByRuleId(ruleMetadata.getId());
   }
 
-  private RuleRequest addSourceValues(RuleRequest request, long page) {
+  RuleRequest addSourceValues(RuleRequest request, long page) {
     List<Concept> concepts = conceptFinder.findByQuestionIdentifier(request.sourceIdentifier(), page);
     List<SourceValue> sourceValues = concepts.stream()
         .map(c -> new SourceValue(c.localCode(), c.display()))

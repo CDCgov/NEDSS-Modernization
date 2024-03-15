@@ -73,8 +73,8 @@ public class CreatePageRuleSteps {
   public void rule_is_created() throws Exception {
     response.active()
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.ruleFunction", equalTo(ruleRequest.ruleFunction().toString())));
+        .andExpect(jsonPath("$.ruleFunction", equalTo(ruleRequest.ruleFunction().toString())))
+        .andExpect(jsonPath("$.description", equalTo(ruleRequest.description().toString())));
   }
-
 
 }
