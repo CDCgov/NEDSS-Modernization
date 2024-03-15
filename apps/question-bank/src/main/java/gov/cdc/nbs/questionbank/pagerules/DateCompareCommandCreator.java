@@ -8,7 +8,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
-public class DateCompareCreator {
+public class DateCompareCommandCreator {
   // function name
   // source Identifier
   // source Identifier
@@ -77,7 +77,7 @@ public class DateCompareCreator {
     return new PageContentCommand.UpdateRuleCommand(
         null,
         request.description(),
-        request.comparator().toString(),
+        request.comparator().getValue(),
         request.sourceIdentifier(),
         null,
         targetIdentifier,
@@ -111,9 +111,9 @@ public class DateCompareCreator {
     return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         null,
-        request.ruleFunction().toString(),
+        request.ruleFunction().getValue(),
         request.description(),
-        request.comparator().toString(),
+        request.comparator().getValue(),
         request.sourceIdentifier(),
         null,
         targetIdentifier,

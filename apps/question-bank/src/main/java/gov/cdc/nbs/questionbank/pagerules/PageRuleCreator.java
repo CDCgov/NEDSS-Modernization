@@ -19,28 +19,28 @@ import gov.cdc.nbs.questionbank.valueset.model.Concept;
 public class PageRuleCreator {
 
   private final WaRuleMetaDataRepository repository;
-  private final DateCompareCreator dateCompareCreator;
-  private final EnableDisableCreator enableDisableCreator;
-  private final HideUnhideCreator hideUnhideCreator;
-  private final RequireIfCreator requireIfCreator;
+  private final DateCompareCommandCreator dateCommandCreator;
+  private final EnableDisableCommandCreator enableDisableCommandCreator;
+  private final HideUnhideCommandCreator hideUnhideCommandCreator;
+  private final RequireIfCommandCreator requireIfCommandCreator;
   private final PageRuleFinder finder;
   private final ConceptFinder conceptFinder;
   private final EntityManager entityManager;
 
   public PageRuleCreator(
       final WaRuleMetaDataRepository waRuleMetaDataRepository,
-      final DateCompareCreator dateCompareCreator,
-      final EnableDisableCreator enableDisableCreator,
-      final HideUnhideCreator hideUnhideCreator,
-      final RequireIfCreator requireIfCreator,
+      final DateCompareCommandCreator dateCommandCreator,
+      final EnableDisableCommandCreator enableDisableCommandCreator,
+      final HideUnhideCommandCreator hideUnhideCommandCreator,
+      final RequireIfCommandCreator requireIfCommandCreator,
       final PageRuleFinder finder,
       final ConceptFinder conceptFinder,
       final EntityManager entityManager) {
     this.repository = waRuleMetaDataRepository;
-    this.dateCompareCreator = dateCompareCreator;
-    this.enableDisableCreator = enableDisableCreator;
-    this.hideUnhideCreator = hideUnhideCreator;
-    this.requireIfCreator = requireIfCreator;
+    this.dateCommandCreator = dateCommandCreator;
+    this.enableDisableCommandCreator = enableDisableCommandCreator;
+    this.hideUnhideCommandCreator = hideUnhideCommandCreator;
+    this.requireIfCommandCreator = requireIfCommandCreator;
     this.finder = finder;
     this.conceptFinder = conceptFinder;
     this.entityManager = entityManager;
@@ -63,10 +63,10 @@ public class PageRuleCreator {
 
     long availableId = repository.findNextAvailableID();
     PageContentCommand.AddRuleCommand command = switch (request.ruleFunction()) {
-      case DATE_COMPARE -> dateCompareCreator.create(availableId, request, page, userId);
-      case DISABLE, ENABLE -> enableDisableCreator.create(availableId, request, page, userId);
-      case HIDE, UNHIDE -> hideUnhideCreator.create(availableId, request, page, userId);
-      case REQUIRE_IF -> requireIfCreator.create(availableId, request, page, userId);
+      case DATE_COMPARE -> dateCommandCreator.create(availableId, request, page, userId);
+      case DISABLE, ENABLE -> enableDisableCommandCreator.create(availableId, request, page, userId);
+      case HIDE, UNHIDE -> hideUnhideCommandCreator.create(availableId, request, page, userId);
+      case REQUIRE_IF -> requireIfCommandCreator.create(availableId, request, page, userId);
       default -> throw new RuleException("Unsupported function specified");
     };
 

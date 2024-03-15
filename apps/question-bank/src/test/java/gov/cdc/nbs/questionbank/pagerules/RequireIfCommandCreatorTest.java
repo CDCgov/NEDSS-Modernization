@@ -3,11 +3,16 @@ package gov.cdc.nbs.questionbank.pagerules;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.pagerules.Rule.Comparator;
+import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
+import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
-class RequireIfCreatorTest {
+class RequireIfCommandCreatorTest {
 
-  private final RequireIfCreator creator = new RequireIfCreator();
+  private final RequireIfCommandCreator creator = new RequireIfCommandCreator();
 
   @Test
   void function_name() {
@@ -217,4 +222,57 @@ class RequireIfCreatorTest {
     assertThat(actual).isEqualTo(expected);
   }
 
+  @Test
+  void creates_command() {
+    RuleRequest request = new RuleRequest(
+        RuleFunction.REQUIRE_IF,
+        "description",
+        "INV154",
+        false,
+        Arrays.asList(
+            new SourceValue("D", "Days"),
+            new SourceValue("H", "Hours"),
+            new SourceValue("N", "Minutes")),
+        Comparator.EQUAL_TO,
+        TargetType.SUBSECTION,
+        Arrays.asList("DEM161", "DEM196"),
+        "source text",
+        Arrays.asList());
+    PageContentCommand.AddRuleCommand command = creator.create(1887l, request, 3l, 9l);
+    assertThat(command).isNotNull();
+    assertThat(command.targetType()).isEqualTo("SUBSECTION");
+    assertThat(command.ruleFunction()).isEqualTo("Require If");
+    assertThat(command.description()).isEqualTo("description");
+    assertThat(command.comparator()).isEqualTo("=");
+    assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
+    assertThat(command.page()).isEqualTo(3l);
+    assertThat(command.userId()).isEqualTo(9l);
+    assertThat(command.ruleId()).isEqualTo(1887l);
+  }
+
+
+  @Test
+  void update_command() {
+    RuleRequest request = new RuleRequest(
+        RuleFunction.REQUIRE_IF,
+        "description",
+        "INV154",
+        false,
+        Arrays.asList(
+            new SourceValue("D", "Days"),
+            new SourceValue("H", "Hours"),
+            new SourceValue("N", "Minutes")),
+        Comparator.EQUAL_TO,
+        TargetType.QUESTION,
+        Arrays.asList("DEM161", "DEM196"),
+        "source text",
+        Arrays.asList());
+    PageContentCommand.UpdateRuleCommand command = creator.update(1887l, request, 3l);
+    assertThat(command).isNotNull();
+    assertThat(command.targetType()).isEqualTo("QUESTION");
+    assertThat(command.description()).isEqualTo("description");
+    assertThat(command.comparator()).isEqualTo("=");
+    assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
+    assertThat(command.userId()).isEqualTo(3l);
+  }
 }

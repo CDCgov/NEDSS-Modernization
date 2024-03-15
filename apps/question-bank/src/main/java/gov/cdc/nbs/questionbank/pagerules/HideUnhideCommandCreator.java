@@ -12,7 +12,7 @@ import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
-public class HideUnhideCreator {
+public class HideUnhideCommandCreator {
 
   private static final String ANY_SOURCE_VALUE =
       """
@@ -90,9 +90,9 @@ public class HideUnhideCreator {
     return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         request.targetType().toString(),
-        request.ruleFunction().toString(),
+        request.ruleFunction().getValue(),
         request.description(),
-        request.comparator().toString(),
+        request.comparator().getValue(),
         request.sourceIdentifier(),
         sourceValues,
         targetIdentifier,
@@ -129,7 +129,7 @@ public class HideUnhideCreator {
     return new PageContentCommand.UpdateRuleCommand(
         request.targetType().toString(),
         request.description(),
-        request.comparator().toString(),
+        request.comparator().getValue(),
         request.sourceIdentifier(),
         sourceValues,
         targetIdentifier,

@@ -9,7 +9,7 @@ import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
-public class RequireIfCreator {
+public class RequireIfCommandCreator {
 
   // function name
   // source id
@@ -79,9 +79,9 @@ public class RequireIfCreator {
     return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         request.targetType().toString(),
-        request.ruleFunction().toString(),
+        request.ruleFunction().getValue(),
         request.description(),
-        request.comparator().toString(),
+        request.comparator().getValue(),
         request.sourceIdentifier(),
         sourceValues,
         targetIdentifier,
@@ -122,7 +122,7 @@ public class RequireIfCreator {
     return new PageContentCommand.UpdateRuleCommand(
         request.targetType().toString(),
         request.description(),
-        request.comparator().toString(),
+        request.comparator().getValue(),
         request.sourceIdentifier(),
         sourceValues,
         targetIdentifier,

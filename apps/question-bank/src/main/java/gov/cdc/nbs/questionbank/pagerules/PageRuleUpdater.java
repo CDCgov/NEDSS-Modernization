@@ -20,18 +20,18 @@ public class PageRuleUpdater {
   private final EntityManager entityManager;
   private final ConceptFinder conceptFinder;
   private final PageRuleFinder finder;
-  private final DateCompareCreator dateCompareCreator;
-  private final EnableDisableCreator enableDisableCreator;
-  private final HideUnhideCreator hideUnhideCreator;
-  private final RequireIfCreator requireIfCreator;
+  private final DateCompareCommandCreator dateCompareCreator;
+  private final EnableDisableCommandCreator enableDisableCreator;
+  private final HideUnhideCommandCreator hideUnhideCreator;
+  private final RequireIfCommandCreator requireIfCreator;
 
   public PageRuleUpdater(
       final EntityManager entityManager,
       final ConceptFinder conceptFinder,
-      final DateCompareCreator dateCompareCreator,
-      final EnableDisableCreator enableDisableCreator,
-      final HideUnhideCreator hideUnhideCreator,
-      final RequireIfCreator requireIfCreator,
+      final DateCompareCommandCreator dateCompareCreator,
+      final EnableDisableCommandCreator enableDisableCreator,
+      final HideUnhideCommandCreator hideUnhideCreator,
+      final RequireIfCommandCreator requireIfCreator,
       final PageRuleFinder finder) {
     this.entityManager = entityManager;
     this.conceptFinder = conceptFinder;
@@ -75,7 +75,7 @@ public class PageRuleUpdater {
     return finder.findByRuleId(rule.getId());
   }
 
-  private RuleRequest addSourceValues(RuleRequest request, long page) {
+  RuleRequest addSourceValues(RuleRequest request, long page) {
     List<Concept> concepts = conceptFinder.findByQuestionIdentifier(request.sourceIdentifier(), page);
     List<SourceValue> sourceValues = concepts.stream()
         .map(c -> new SourceValue(c.localCode(), c.display()))
