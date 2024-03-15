@@ -69,6 +69,11 @@ export const SubsectionHeader = ({
         }
     };
 
+    const handleOpenGroup = () => {
+        setCloseOptions(true);
+        onGroupQuestion(subsection);
+    };
+
     return (
         <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''}`}>
             <div className={styles.info}>
@@ -100,7 +105,7 @@ export const SubsectionHeader = ({
                     ) : (
                         <>
                             {subsection.isGroupable && subsection.questions.length > 0 && (
-                                <Button type="button" onClick={() => onGroupQuestion(subsection)}>
+                                <Button type="button" onClick={handleOpenGroup}>
                                     <IconComponent name={'group'} size={'s'} /> Group questions
                                 </Button>
                             )}
