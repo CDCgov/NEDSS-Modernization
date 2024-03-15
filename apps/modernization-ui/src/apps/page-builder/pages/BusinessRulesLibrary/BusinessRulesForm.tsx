@@ -91,7 +91,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     };
 
     const handleChangeSource = (data: QuestionProps[]) => {
-        // setSelectedSource(data);
         form.setValue('sourceIdentifier', data[0].question);
         form.setValue('sourceText', `${data[0].name} (${data[0].question})`);
         fetchSourceValueSets(data[0].valueSet);
@@ -248,7 +247,6 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     };
 
     const handleResetSourceQuestion = () => {
-        // setSelectedSource([]);
         form.setValue('sourceIdentifier', '');
         form.setValue('sourceText', '');
         form.setValue('sourceValues', []);
