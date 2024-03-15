@@ -22,6 +22,8 @@ class ContentComponentResolverTest {
         "name-value",
         true,
         1,
+        1,
+        false,
         false,
         "standard-value",
         "question-value",
@@ -44,7 +46,8 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        true);
+        true,
+        "block_name");
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -81,6 +84,8 @@ class ContentComponentResolverTest {
         "name-value",
         true,
         1,
+        1,
+        false,
         false,
         "standard-value",
         "question-value",
@@ -103,7 +108,8 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        true);
+        true,
+        "block_name");
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -138,6 +144,8 @@ class ContentComponentResolverTest {
         "name-value",
         true,
         1,
+        1,
+        false,
         false,
         "standard-value",
         "question-value",
@@ -160,7 +168,8 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        true);
+        true,
+        "block_name");
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -195,6 +204,8 @@ class ContentComponentResolverTest {
         "name-value",
         true,
         1,
+        1,
+        false,
         false,
         "standard-value",
         "question-value",
@@ -217,7 +228,8 @@ class ContentComponentResolverTest {
         "dataMart-column-name",
         false,
         "data_location",
-        true);
+        true,
+        "block_name");
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -252,6 +264,7 @@ class ContentComponentResolverTest {
         1002,
         "invalid",
         true,
+        1,
         1);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
