@@ -211,6 +211,21 @@ Feature: Patient Search
     And the search results have a patient with a "last name" equal to "Headroom"
     And the search results have a patient with a "last name" equal to "Smart"
 
+  Scenario: I can search for a Patient using a specific Identification in lower case when it's stored in upper
+    Given the patient can be identified with a "DL" of "A123"
+    And patients are available for search
+    And I add the patient criteria for an "identification type" equal to "DL"
+    And I add the patient criteria for an "identification value" equal to "a"
+    When I search for patients
+    Then the patient is in the search results
+
+  Scenario: I can search for a Patient using a specific Identification in upper case when it's stored in lower
+    Given the patient can be identified with a "DL" of "a123"
+    And patients are available for search
+    And I add the patient criteria for an "identification type" equal to "DL"
+    And I add the patient criteria for an "identification value" equal to "A"
+    When I search for patients
+    Then the patient is in the search results
 
   Scenario Outline: I can search for a Patient with a specified Gender
     Given the patient has the gender Male
