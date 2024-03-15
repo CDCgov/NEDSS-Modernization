@@ -251,7 +251,7 @@ class PatientSearchCriteriaQueryResolver {
                                       .value(type)))
                               .must(
                                   must -> must.prefix(
-                                      prefix -> prefix.field("entity_id.rootExtensionTxt")
+                                      prefix -> prefix.field("entity_id.rootExtensionTxt").caseInsensitive(true)
                                           .value(value)))))));
     }
     return Optional.empty();

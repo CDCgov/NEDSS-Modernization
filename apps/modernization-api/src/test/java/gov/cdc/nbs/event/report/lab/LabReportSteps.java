@@ -8,6 +8,8 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+
 @Transactional
 public class LabReportSteps {
 
@@ -69,6 +71,21 @@ public class LabReportSteps {
     activeReport.maybeActive().ifPresent(reportMother::electronic);
   }
 
+  @Given("the lab report was entered externally")
+  public void the_lab_report_was_entered_externally() {
+    activeReport.maybeActive().ifPresent(reportMother::enteredExternally);
+  }
+
+  @Given("the lab report is for a pregnant patient")
+  public void the_lab_report_is_for_a_pregnant_patient() {
+    activeReport.maybeActive().ifPresent(reportMother::forPregnantPatient);
+  }
+
+  @Given("the lab report was filled by {string}")
+  public void the_lab_report_was_filled_by(final String filler) {
+    activeReport.maybeActive().ifPresent(lab -> reportMother.filledBy(lab, filler));
+  }
+
   @Given("the lab report was ordered by the provider")
   public void the_lab_report_was_ordered_by_the_provider() {
     activeReport.maybeActive()
@@ -76,4 +93,10 @@ public class LabReportSteps {
             .ifPresent(provider -> reportMother.orderedBy(lab, provider))
         );
   }
+
+  @Given("the lab report was received on {date}")
+  public void the_lab_report_was_received_on(final Instant date) {
+    activeReport.maybeActive().ifPresent(lab -> this.reportMother.receivedOn(lab, date));
+  }
+
 }

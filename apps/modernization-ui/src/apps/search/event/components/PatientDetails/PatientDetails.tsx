@@ -1,14 +1,21 @@
 import { useNavigate } from 'react-router';
 import { Grid } from '@trussworks/react-uswds';
-import { PersonParticipation } from 'generated/graphql/schema';
 import { NoData } from 'components/NoData';
 
 import { calculateAge } from 'utils/util';
 import { formattedName } from 'utils';
 import { internalizeDate } from 'date';
 
+type Detail = {
+    birthTime?: any;
+    firstName?: string | null;
+    lastName?: string | null;
+    currSexCd?: string | null;
+    shortId?: number | null;
+};
+
 type PatientDetailsProps = {
-    patient: PersonParticipation | null | undefined;
+    patient: Detail | null | undefined;
 };
 
 const PatientDetails = ({ patient }: PatientDetailsProps) => {

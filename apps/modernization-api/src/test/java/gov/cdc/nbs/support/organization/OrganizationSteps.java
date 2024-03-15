@@ -16,10 +16,6 @@ public class OrganizationSteps {
     this.resolver = resolver;
   }
 
-  public void reset() {
-    this.mother.reset();
-  }
-
   @Given("there is an organization named {string}")
   public void there_is_an_organization(final String name) {
     this.mother.create(name);

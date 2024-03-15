@@ -7,30 +7,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class FacilityOptionResolver extends SQLBasedOptionResolver {
 
-    private static final String QUERY = """
-            with [facility]([value], [name], [quickCode]) as (
-                select
-                    organization_uid,
-                    display_nm,
-                    root_extension_txt
-                from Organization
-                left join Entity_id on entity_uid=organization_uid and type_cd='QEC'
-            )
-            select
-                [value],
-                [name],
-                row_number() over( order by [name])
-            from [facility]
-            where [quickCode]=:quickCode or [name] like :criteria or [name] like :prefixCriteria
+  private static final String QUERY =
+      """
+          with [facility]([value], [name], [quickCode]) as (
+              select
+                  organization_uid,
+                  display_nm + IIF(root_extension_txt is null or root_extension_txt='', '', ' [' + root_extension_txt + ']'),
+                  root_extension_txt
+              from Organization
+              left join Entity_id on entity_uid=organization_uid and type_cd='QEC'
+          )
+          select
+              [value],
+              [name],
+              row_number() over( order by [name])
+          from [facility]
+          where [quickCode]=:quickCode or [name] like :criteria or [name] like :prefixCriteria
 
-            order by
-                [name]
+          order by
+              [name]
 
-            offset 0 rows
-            fetch next :limit rows only
-            """;
+          offset 0 rows
+          fetch next :limit rows only
+          """;
 
-    public FacilityOptionResolver(final NamedParameterJdbcTemplate template) {
-        super(QUERY, template);
-    }
+  public FacilityOptionResolver(final NamedParameterJdbcTemplate template) {
+    super(QUERY, template);
+  }
 }
