@@ -37,6 +37,7 @@ class ContentComponentResolver {
 
   private ContentNode.Attributes asAttributes(final FlattenedComponent component) {
     return new ContentNode.Attributes(
+        component.isStandardNnd(),
         component.isStandard(),
         component.standard(),
         component.question(),
@@ -57,7 +58,9 @@ class ContentComponentResolver {
         component.dataMartColumnName(),
         component.type(),
         component.dataLocation(),
-        component.isPublished());
+        component.isPublished(),
+        component.questionGroupSeq(),
+        component.blockName());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {

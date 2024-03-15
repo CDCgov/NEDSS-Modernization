@@ -18,6 +18,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int name,
       int visible,
       int order,
+      int questionGroupSeq,
+      int isStandardNnd,
       int isStandard,
       int standard,
       int question,
@@ -71,7 +73,9 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
           25,
           26,
           27,
-          28);
+          28,
+          29,
+          30);
     }
   }
 
@@ -90,7 +94,9 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String name = resultSet.getString(this.columns.name());
     boolean visible = resolveBoolean(this.columns.visible(), resultSet);
     int order = resultSet.getInt(this.columns.order());
+    int questionGroupSeq = resultSet.getInt(this.columns.questionGroupSeq());
     boolean isStandard = resolveBoolean(this.columns.isStandard(), resultSet);
+    boolean isStandardNnd = resolveBoolean(this.columns.isStandardNnd(), resultSet);
     String standard = resultSet.getString(this.columns.standard());
     String question = resultSet.getString(this.columns.question());
     String dataType = resultSet.getString(this.columns.dataType());
@@ -115,6 +121,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     boolean isSubsectionGrouped = resultSet.getString(this.columns.blockName()) != null;
     boolean isPublished = resolveBoolean(this.columns.isPublished, resultSet);
     String dataLocation = resultSet.getString(this.columns.dataLocation());
+    String blockName = resultSet.getString(this.columns.blockName());
 
     return new FlattenedComponent(
         identifier,
@@ -122,6 +129,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         name,
         visible,
         order,
+        questionGroupSeq,
+        isStandardNnd,
         isStandard,
         standard,
         question,
@@ -144,7 +153,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         dataMartColumnName,
         isSubsectionGrouped,
         dataLocation,
-        isPublished);
+        isPublished,
+        blockName);
   }
 
   private boolean resolveBoolean(final int column, final ResultSet resultSet) throws SQLException {
