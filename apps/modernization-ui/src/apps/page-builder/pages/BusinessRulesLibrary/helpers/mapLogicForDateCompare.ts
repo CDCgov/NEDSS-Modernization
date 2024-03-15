@@ -1,6 +1,6 @@
 import { Rule } from 'apps/page-builder/generated';
 
-export const mapLogicForDateCompare = (logic: Rule.comparator) => {
+export const mapLogicForDateCompare = (logic?: Rule.comparator) => {
     switch (logic) {
         case Rule.comparator.EQUAL_TO:
             return '=';

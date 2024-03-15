@@ -1,0 +1,182 @@
+@use 'styles/colors';
+
+.ruleId {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+}
+
+.ruleFunction {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+        padding-top: 0.7rem;
+        justify-content: flex-start;
+    }
+
+    .content {
+        padding-top: 0.7rem;
+    }
+}
+
+.sourceQuestion {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+        padding-top: 0.6rem;
+    }
+
+    .content {
+        .sourceBtn {
+            min-width: 28.0625rem;
+        }
+        .sourceQuestionDisplay {
+            padding-top: 2.1rem;
+        }
+    }
+}
+
+.anySourceValue {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+
+    .content {
+        padding-top: 0.5rem;
+    }
+}
+
+.comparator {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+
+    .content {
+        padding-top: 0.5rem;
+        .input {
+            min-width: 28.0625rem;
+        }
+    }
+}
+
+.sourceValues {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+    .content {
+        padding-top: 1rem;
+        min-width: 28.0625rem;
+    }
+}
+
+.targetType {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+    .content {
+        display: flex;
+        flex-direction: row;
+        gap: 0.625rem;
+        padding-top: 0.8rem;
+
+        .radioBtn {
+            width: 8.25rem;
+            background-color: unset;
+        }
+    }
+}
+
+.targets {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+
+    .content {
+        display: flex;
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
+        .targetBtn {
+            min-width: 28.0625rem;
+            margin-top: 0;
+        }
+
+        .subsectionTargets {
+            min-width: 39rem;
+            max-width: 39rem;
+        }
+
+        .displayTargetQuestions {
+            border: 1px solid colors.$base-black;
+            padding: 0.88rem 1.25rem 0.88rem 1.25rem;
+            min-width: 39rem;
+            .targetQuestion {
+                margin-bottom: 0.62rem;
+            }
+
+            .edit {
+                border-top: 1px solid #55595b4d;
+                display: flex;
+                justify-content: flex-end;
+                padding-top: 0.5rem;
+                .btn {
+                    margin-top: 0;
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+}
+
+.description {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+
+    .content {
+        min-width: 39rem;
+        max-width: 39rem;
+    }
+}

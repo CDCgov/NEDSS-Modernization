@@ -224,6 +224,7 @@ class PagesResponseMapperTest {
                                                         5),
                                                     new ContentNode.Attributes(
                                                         true,
+                                                        true,
                                                         "standard-value",
                                                         "question-value",
                                                         "data-type-value",
@@ -243,7 +244,9 @@ class PagesResponseMapperTest {
                                                         "dataMart-column-name",
                                                         1007,
                                                         "data_location",
-                                                        false))))));
+                                                        false,
+                                                        1,
+                                                        "block_name"))))));
 
     PageDescription description = mock(PageDescription.class);
 

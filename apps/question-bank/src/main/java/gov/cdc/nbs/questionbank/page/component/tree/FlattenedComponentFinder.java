@@ -15,6 +15,8 @@ class FlattenedComponentFinder {
           [component].question_label              as [name],
           [component].display_ind                 as [visible],
           [component].order_nbr                   as [order],
+          [component].question_group_seq_nbr      as [questionGroupSeq],
+          [component].standard_nnd_ind_cd         as [is_standard_nnd],
           [component].standard_question_ind_cd    as [is_standard],
           [component].question_type               as [standard],
           [component].question_identifier         as [question],

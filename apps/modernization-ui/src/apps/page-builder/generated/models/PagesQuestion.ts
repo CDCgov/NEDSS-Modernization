@@ -5,6 +5,7 @@
 export type PagesQuestion = {
     adminComments?: string;
     allowFutureDates?: boolean;
+    blockName?: string;
     coInfection?: boolean;
     dataMartColumnName?: string;
     dataType?: string;
@@ -18,10 +19,12 @@ export type PagesQuestion = {
     id: number;
     isPublished?: boolean;
     isStandard?: boolean;
+    isStandardNnd?: boolean;
     mask?: string;
     name: string;
     order: number;
     question?: string;
+    questionGroupSeq?: number;
     rdbColumnName?: string;
     required?: boolean;
     standard?: string;

@@ -63,11 +63,13 @@ public record PagesResponse(
 
   public record PagesQuestion(
       @ApiModelProperty(required = true) long id,
+      boolean isStandardNnd,
       boolean isStandard,
       String standard,
       String question,
       @ApiModelProperty(required = true) String name,
       @ApiModelProperty(required = true) int order,
+      int questionGroupSeq,
       String subGroup,
       String description,
       boolean coInfection,
@@ -87,7 +89,8 @@ public record PagesResponse(
       String rdbColumnName,
       String defaultLabelInReport,
       String dataMartColumnName,
-      boolean isPublished) {
+      boolean isPublished,
+      String blockName) {
   }
 
 

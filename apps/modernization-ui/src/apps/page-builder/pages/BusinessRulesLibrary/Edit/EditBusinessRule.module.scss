@@ -1,0 +1,67 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.editRules {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    justify-content: space-between;
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: unset;
+        padding: 1.5rem;
+
+        justify-content: center;
+        min-width: unset;
+        align-items: center;
+        max-width: unset;
+        padding-bottom: 10rem;
+
+        .title {
+            display: flex;
+            justify-content: center;
+            padding-top: 1.25rem;
+        }
+
+        .container {
+            display: flex;
+            width: 60rem;
+            flex-direction: column;
+            background-color: colors.$base-white;
+            padding-bottom: 1.5rem;
+
+            .content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+
+    .footerBtns {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        justify-content: flex-end;
+        background-color: colors.$base-white;
+        border-top: 1px solid colors.$base-lightest;
+        padding: 1.2rem 1.2rem;
+        justify-content: space-between;
+
+        .deleteBtn {
+            .button {
+                box-shadow: none;
+                color: colors.$secondary;
+            }
+        }
+    }
+}
+
+.breadCrumb {
+    margin-top: 1rem;
+}
