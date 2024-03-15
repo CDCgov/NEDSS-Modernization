@@ -19,6 +19,7 @@ import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
 import { PatientTableActions } from '../PatientTableActions';
+import { useAdministrativeProfileContext } from '../AdministrativeProfileContext';
 
 const asEntry = (administrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(administrative?.asOf),
@@ -46,6 +47,7 @@ const headers = [
 ];
 
 export const AdministrativeTable = ({ patient }: Props) => {
+    const { changed } = useAdministrativeProfileContext();
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>(headers);
 
@@ -98,6 +100,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
             })
                 .then(() => {
                     refetch();
+                    changed();
                     showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
                 })
                 .then(() => actions.reset());
@@ -200,7 +203,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="add-patient-identification-modal"
+                    id="add-patient-admin-modal"
                     title="Add - Administrative">
                     <AdministrativeForm action={'Add'} entry={initial} onChange={onChanged} />
                 </EntryModal>
@@ -210,7 +213,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="edit-patient-identification-modal"
+                    id="edit-patient-admin-modal"
                     title="Edit - Administrative">
                     <AdministrativeForm
                         action={'Edit'}
