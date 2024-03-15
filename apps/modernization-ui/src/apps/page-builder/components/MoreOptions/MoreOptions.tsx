@@ -1,9 +1,14 @@
 import './MoreOptions.scss';
 import useComponentVisible from '../../helpers/useComponentVisible';
+import { useEffect } from 'react';
 
-export const MoreOptions = ({ children, header }: any) => {
+export const MoreOptions = ({ children, header, close }: any) => {
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-
+    useEffect(() => {
+        if (close === true) {
+            setIsComponentVisible(false);
+        }
+    }, [close]);
     return (
         <div className="more-options">
             <div
