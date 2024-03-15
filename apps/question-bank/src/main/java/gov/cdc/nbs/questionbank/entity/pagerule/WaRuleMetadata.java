@@ -106,6 +106,38 @@ public class WaRuleMetadata {
     this.userRuleId = "Rule" + this.id;
   }
 
+  public WaRuleMetadata(PageContentCommand.AddDateCompareRule command) {
+    this.ruleCd = command.ruleFunction();
+    this.ruleDescText = command.description();
+    this.logic = command.comparator();
+    this.sourceQuestionIdentifier = command.sourceIdentifier();
+    this.targetQuestionIdentifier = command.targetIdentifiers();
+    this.errormsgText = command.errorMessage();
+    this.jsFunction = command.javascript();
+    this.jsFunctionName = command.javascriptName();
+    this.waTemplateUid = command.page();
+    this.ruleExpression = command.expression();
+    this.userRuleId = "Rule" + command.ruleId();
+    added(command);
+  }
+
+  public WaRuleMetadata(PageContentCommand.AddEnableDisableRule command) {
+    this.targetType = command.targetType();
+    this.ruleCd = command.ruleFunction();
+    this.ruleDescText = command.description();
+    this.logic = command.comparator();
+    this.sourceValues = command.sourceValues();
+    this.sourceQuestionIdentifier = command.sourceIdentifier();
+    this.targetQuestionIdentifier = command.targetIdentifiers();
+    this.errormsgText = command.errorMessage();
+    this.jsFunction = command.javascript();
+    this.jsFunctionName = command.javascriptName();
+    this.waTemplateUid = command.page();
+    this.ruleExpression = command.expression();
+    this.userRuleId = "Rule" + command.ruleId();
+    added(command);
+  }
+
   public WaRuleMetadata(long pageId, PageContentCommand.AddRule command) {
     this.waTemplateUid = pageId;
     this.ruleCd = command.ruleCd();
@@ -117,6 +149,7 @@ public class WaRuleMetadata {
   }
 
   private void added(PageContentCommand command) {
+    this.recordStatusCd = ACTIVE;
     this.addTime = command.requestedOn();
     this.addUserId = command.userId();
     this.lastChgTime = command.requestedOn();
@@ -146,8 +179,7 @@ public class WaRuleMetadata {
         original.getUserRuleId(),
         original.getLogic(),
         original.getSourceValues(),
-        original.getTargetType()
-    );
+        original.getTargetType());
 
   }
 

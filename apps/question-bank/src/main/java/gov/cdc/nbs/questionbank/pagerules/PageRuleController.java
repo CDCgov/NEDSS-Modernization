@@ -5,7 +5,7 @@ import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
-import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -48,15 +48,11 @@ public class PageRuleController {
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public CreateRuleResponse createBusinessRule(
-      @RequestBody Rule.CreateRuleRequest request,
+  public Rule createBusinessRule(
+      @RequestBody RuleRequest request,
       @PathVariable("id") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    try {
-      return pageRuleCreator.createPageRule(details.getId(), request, page);
-    } catch (RuleException e) {
-      return new CreateRuleResponse(null, "Error in Creating a Rules");
-    }
+    return pageRuleCreator.createPageRule(details.getId(), request, page);
   }
 
   @DeleteMapping("{ruleId}")
@@ -68,8 +64,8 @@ public class PageRuleController {
   }
 
   @PutMapping("/{ruleId}")
-  public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
-      @RequestBody Rule.CreateRuleRequest request, @PathVariable Long id) throws RuleException {
+  public Rule updatePageRule(@PathVariable Long ruleId,
+      @RequestBody RuleRequest request, @PathVariable Long id) throws RuleException {
     Long userId = userDetailsProvider.getCurrentUserDetails().getId();
     return pageRuleService.updatePageRule(ruleId, request, userId, id);
   }

@@ -1,45 +1,41 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import java.time.Instant;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
-import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
 @Transactional
 public class PageRuleCreator {
 
-  private final WaRuleMetaDataRepository waRuleMetaDataRepository;
-
-  private final PageRuleHelper pageRuleHelper;
+  private final WaRuleMetaDataRepository repository;
+  private final DateCompareCreator dateCompareCreator;
+  private final EnableDisableCreator enableDisableCreator;
 
   public PageRuleCreator(
-      WaRuleMetaDataRepository waRuleMetaDataRepository,
-      PageRuleHelper pageRuleHelper) {
-    this.waRuleMetaDataRepository = waRuleMetaDataRepository;
-    this.pageRuleHelper = pageRuleHelper;
+      final WaRuleMetaDataRepository waRuleMetaDataRepository,
+      final DateCompareCreator dateCompareCreator,
+      final EnableDisableCreator enableDisableCreator) {
+    this.repository = waRuleMetaDataRepository;
+    this.dateCompareCreator = dateCompareCreator;
+    this.enableDisableCreator = enableDisableCreator;
   }
 
-  public CreateRuleResponse createPageRule(Long userId, Rule.CreateRuleRequest request, Long page) {
-    long availableId = waRuleMetaDataRepository.findNextAvailableID();
+  public Rule createPageRule(Long userId, RuleRequest request, long page) {
+    long availableId = repository.findNextAvailableID();
+    WaRuleMetadata ruleMetadata = switch (request.ruleFunction()) {
+      case DATE_COMPARE -> dateCompareCreator.create(availableId, request, page, userId);
+      case DISABLE, ENABLE -> enableDisableCreator.create(availableId, request, page, userId);
+      case HIDE -> null;
+      case REQUIRE_IF -> null;
+      case UNHIDE -> null;
+      default -> throw new RuleException("Unsupported function specified");
+    };
 
-    RuleData ruleData = pageRuleHelper.createRuleData(request, availableId);
-    WaRuleMetadata ruleMetadata = new WaRuleMetadata(asAddPageRule(ruleData, request, userId, page));
-
-    waRuleMetaDataRepository.save(ruleMetadata);
-    return new CreateRuleResponse(ruleMetadata.getId(), "The business rule '" + ruleMetadata.getJsFunctionName()
-        + "' is successfully added. Please click the unique name to edit");
-  }
-
-  private PageRuleCommand.AddPageRule asAddPageRule(
-      RuleData ruleData,
-      Rule.CreateRuleRequest request,
-      long userId,
-      long page) {
-    return new PageRuleCommand.AddPageRule(ruleData, request, Instant.now(), userId, page);
+    repository.save(ruleMetadata);
+    return null;
   }
 }
