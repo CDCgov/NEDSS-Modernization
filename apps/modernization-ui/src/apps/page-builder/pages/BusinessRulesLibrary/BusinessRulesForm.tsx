@@ -116,7 +116,18 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     }, [question]);
 
     useEffect(() => {
-        setTargetDescriptions(targets?.map((target) => `${target.label} (${target.targetIdentifier})`) || []);
+        setTargetDescriptions(
+            targets?.map((target) => {
+                const labelLength = target.label?.length;
+                if (target.label && labelLength) {
+                    const lastChar = target.label?.charAt(labelLength - 1);
+                    if (lastChar === ':') {
+                        return `${target.label.replace(':', '')} (${target.targetIdentifier})`;
+                    }
+                }
+                return `${target.label} (${target.targetIdentifier})`;
+            }) || []
+        );
     }, [targets]);
 
     const targetValueIdentifiers = form.watch('targetIdentifiers') || [];
@@ -226,6 +237,16 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         return text;
     };
 
+    const checkForSemicolon = (text: string | undefined) => {
+        const labelLength = text?.length;
+        if (labelLength) {
+            const lastChar = text.charAt(labelLength - 1);
+            if (lastChar === ':') {
+                return text.replace(':', '');
+            }
+        }
+    };
+
     const handleResetSourceQuestion = () => {
         // setSelectedSource([]);
         form.setValue('sourceIdentifier', '');
@@ -265,7 +286,17 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
         let errors = '';
         const length = form.watch('targetValueText')?.length || 0;
         form.watch('targetValueText')?.map((val, k) => {
-            errors += `${val} (${form.watch('targetIdentifiers')[k]})${length - 1 === k ? '' : ', '}`;
+            const labelLength = val?.length;
+            if (val && labelLength) {
+                const lastChar = val.charAt(labelLength - 1);
+                if (lastChar === ':') {
+                    errors += `${val.replace(':', '')} (${form.watch('targetIdentifiers')[k]})${
+                        length - 1 === k ? '' : ', '
+                    }`;
+                }
+            } else {
+                errors += `${val} (${form.watch('targetIdentifiers')[k]})${length - 1 === k ? '' : ', '}`;
+            }
         });
         return errors;
     };
@@ -478,8 +509,8 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                                 onChange={onChange}
                                 type="text"
                                 multiline
-                                defaultValue={removeNumericAndSymbols(value)}
-                                value={removeNumericAndSymbols(value)}
+                                defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
+                                value={checkForSemicolon(removeNumericAndSymbols(value))}
                                 onBlur={onBlur}
                                 name={name}
                                 id={name}
