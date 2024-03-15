@@ -28,4 +28,8 @@
             height: 0px;
         }
     }
+    &.dragging .tile{
+        border: 1px solid colors.$primary;
+        filter: drop-shadow(0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25));
+    }
 }
