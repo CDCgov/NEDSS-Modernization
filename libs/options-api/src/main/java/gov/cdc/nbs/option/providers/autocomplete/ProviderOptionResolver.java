@@ -7,32 +7,33 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProviderOptionResolver extends SQLBasedOptionResolver {
 
-    private static final String QUERY = """
-            with [user]([value], [name], [quickCode]) AS (
-                select
-                    person_uid,
-                    ISNULL(first_nm + ' ', '') + ISNULL(last_nm, ''),
-                    root_extension_txt
-                from Person
-                left join Entity_id on entity_uid=person_uid and type_cd='QEC'
-                where
-                    cd='PRV'
-            )
-            select
-                [value],
-                [name],
-                row_number() over( order by [name])
-            from [user]
-            where [quickCode]=:quickCode or [name] like :criteria or [name] like :prefixCriteria
+  private static final String QUERY =
+      """
+          with [user]([value], [name], [quickCode]) AS (
+              select
+                  person_uid,
+                  ISNULL(first_nm + ' ', '') + ISNULL(last_nm, '') + IIF(root_extension_txt is null or root_extension_txt='', '', ' [' + root_extension_txt + ']'),
+                  root_extension_txt
+              from Person
+              left join Entity_id on entity_uid=person_uid and type_cd='QEC'
+              where
+                  cd='PRV'
+          )
+          select
+              [value],
+              [name],
+              row_number() over( order by [name])
+          from [user]
+          where [quickCode]=:quickCode or [name] like :criteria or [name] like :prefixCriteria
 
-            order by
-                [name]
+          order by
+              [name]
 
-            offset 0 rows
-            fetch next :limit rows only
-            """;
+          offset 0 rows
+          fetch next :limit rows only
+          """;
 
-    public ProviderOptionResolver(final NamedParameterJdbcTemplate template) {
-        super(QUERY, template);
-    }
+  public ProviderOptionResolver(final NamedParameterJdbcTemplate template) {
+    super(QUERY, template);
+  }
 }
