@@ -25,9 +25,11 @@ export const ManageTabsTile = ({
 }: Props) => {
     return (
         <Draggable draggableId={tab.id!.toString()} index={index}>
-            {(provided: DraggableProvided) => (
+            {(provided: DraggableProvided, snapshot) => (
                 <div
-                    className={`${styles.tile} ${tab === selectedForDelete ? styles.delete : ''}`}
+                    className={`${styles.tile} ${tab === selectedForDelete ? styles.delete : ''} ${
+                        snapshot.isDragging ? styles.dragging : ''
+                    }`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
                     <div

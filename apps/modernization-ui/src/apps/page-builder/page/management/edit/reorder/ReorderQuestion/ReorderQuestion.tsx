@@ -12,9 +12,11 @@ type Props = {
 export const ReorderQuestion = ({ question, index, visible }: Props) => {
     return (
         <Draggable draggableId={question.id!.toString()} index={index}>
-            {(prov: DraggableProvided) => (
+            {(prov: DraggableProvided, snapshot) => (
                 <div
-                    className={`${styles.question} ${visible ? '' : styles.hidden}`}
+                    className={`${styles.question} ${visible ? '' : styles.hidden} ${
+                        snapshot.isDragging ? styles.dragging : ''
+                    }`}
                     ref={prov.innerRef}
                     {...prov.draggableProps}>
                     <div className={styles.tile}>
