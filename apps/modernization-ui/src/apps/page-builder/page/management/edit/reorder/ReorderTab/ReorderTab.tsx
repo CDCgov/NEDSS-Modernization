@@ -30,9 +30,11 @@ export const ReorderTab = ({ tab, index, visible }: Props) => {
 
     return (
         <Draggable draggableId={tab.id!.toString()} index={index}>
-            {(provided: DraggableProvided) => (
+            {(provided: DraggableProvided, snapshot) => (
                 <div
-                    className={`${styles.tab} ${visible ? '' : styles.hidden}`}
+                    className={`${styles.tab} ${visible ? '' : styles.hidden} ${
+                        snapshot.isDragging ? styles.dragging : ''
+                    }`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
                     <div className={styles.tile}>

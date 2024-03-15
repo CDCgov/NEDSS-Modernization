@@ -120,7 +120,7 @@ export const PhoneAndEmailTable = ({ patient }: Props) => {
                     }
                 },
                 notifyOnNetworkStatusChange: true
-            });
+            }).then(() => refetch());
     }, [currentPage, patient]);
 
     const onAdded = (entry: PhoneEmailEntry) => {

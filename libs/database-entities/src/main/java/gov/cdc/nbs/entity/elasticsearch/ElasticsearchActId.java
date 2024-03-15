@@ -17,33 +17,30 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ElasticsearchActId {
-    public static final String ID_FIELD = "id";
     public static final String ACT_ID_SEQ = "act_id_seq";
-    public static final String RECORD_STATUS = "record_status";
     public static final String ROOT_EXTENSION_TXT = "root_extension_txt";
     public static final String TYPE_CD = "type_cd";
     public static final String TYPE_DESC_TXT = "type_desc_txt";
-    public static final String LAST_CHANGE_TIME = "last_change_time";
 
-    @Field(name = ID_FIELD, type = FieldType.Long)
+    @Field(name = "id", type = FieldType.Long)
     private Long id;
 
-    @Field(name = ACT_ID_SEQ, type = FieldType.Integer)
+    @Field(name = "act_id_seq", type = FieldType.Integer)
     private Integer actIdSeq;
 
-    @Field(name = RECORD_STATUS, type = FieldType.Keyword)
+    @Field(name =  "record_status", type = FieldType.Keyword)
     private String recordStatus;
 
-    @Field(name = ROOT_EXTENSION_TXT, type = FieldType.Keyword)
+    @Field(name = "root_extension_txt", type = FieldType.Keyword)
     private String rootExtensionTxt;
 
-    @Field(name = TYPE_CD, type = FieldType.Keyword)
+    @Field(name = "type_cd", type = FieldType.Keyword)
     private String typeCd;
 
-    @Field(name = TYPE_DESC_TXT, type = FieldType.Text)
+    @Field(name = "type_desc_txt", type = FieldType.Text)
     private String typeDescTxt;
 
-    @Field(name = LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = "last_change_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant lastChangeTime;
 }

@@ -7,7 +7,7 @@ import { authorization } from 'authorization';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { ConfirmationModal } from 'confirmation';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './subsection.module.scss';
 
@@ -34,6 +34,7 @@ export const SubsectionHeader = ({
     const ungroupSubsectionModalRef = useRef<ModalRef>(null);
     const addStaticElementModalRef = useRef<ModalRef>(null);
     const { showAlert } = useAlert();
+    const [closeOptions, setCloseOptions] = useState(false);
 
     const handleUngroup = () => {
         try {
@@ -68,6 +69,11 @@ export const SubsectionHeader = ({
         }
     };
 
+    const handleOpenGroup = () => {
+        setCloseOptions(true);
+        onGroupQuestion(subsection);
+    };
+
     return (
         <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''}`}>
             <div className={styles.info}>
@@ -83,18 +89,23 @@ export const SubsectionHeader = ({
                 <Button type="button" className="add-btn" outline onClick={onAddQuestion}>
                     Add question
                 </Button>
-                <MoreOptions header={<Icon.MoreVert size={4} />}>
+                <MoreOptions
+                    header={<Icon.MoreVert size={4} onClick={() => setCloseOptions(false)} />}
+                    close={closeOptions}>
                     <Button type="button" onClick={onEditSubsection}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped ? (
-                        <ModalToggleButton type="button" modalRef={ungroupSubsectionModalRef}>
+                        <ModalToggleButton
+                            type="button"
+                            modalRef={ungroupSubsectionModalRef}
+                            onClick={() => setCloseOptions(true)}>
                             <IconComponent name={'group'} size={'s'} /> Ungroup questions
                         </ModalToggleButton>
                     ) : (
                         <>
                             {subsection.isGroupable && subsection.questions.length > 0 && (
-                                <Button type="button" onClick={() => onGroupQuestion(subsection)}>
+                                <Button type="button" onClick={handleOpenGroup}>
                                     <IconComponent name={'group'} size={'s'} /> Group questions
                                 </Button>
                             )}

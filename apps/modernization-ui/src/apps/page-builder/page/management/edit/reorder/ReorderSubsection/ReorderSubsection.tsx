@@ -30,9 +30,11 @@ export const ReorderSubsection = ({ subsection, index, visible }: Props) => {
 
     return (
         <Draggable draggableId={subsection.id!.toString()} index={index}>
-            {(provided: DraggableProvided) => (
+            {(provided: DraggableProvided, snapshot) => (
                 <div
-                    className={`${styles.subsection} ${visible ? '' : styles.hidden}`}
+                    className={`${styles.subsection} ${visible ? '' : styles.hidden} ${
+                        snapshot.isDragging ? styles.dragging : ''
+                    }`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
                     <div className={styles.tile}>

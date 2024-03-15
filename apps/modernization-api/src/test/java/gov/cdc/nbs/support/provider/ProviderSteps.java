@@ -1,6 +1,5 @@
 package gov.cdc.nbs.support.provider;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 
 public class ProviderSteps {
@@ -9,11 +8,6 @@ public class ProviderSteps {
 
   ProviderSteps(final ProviderMother mother) {
     this.mother = mother;
-  }
-
-  @Before
-  public void reset() {
-    this.mother.reset();
   }
 
   @Given("there is a provider named {string} {string}")

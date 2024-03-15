@@ -22,12 +22,6 @@ import {
 } from 'generated/graphql/schema';
 import { EncryptionControllerService } from 'generated/services/EncryptionControllerService';
 import { UserContext } from 'providers/UserContext';
-import {
-    downloadInvestigationSearchResultCsv,
-    downloadInvestigationSearchResultPdf,
-    downloadLabReportSearchResultCsv,
-    downloadLabReportSearchResultPdf
-} from 'utils/ExportUtil';
 import './AdvancedSearch.scss';
 import { AdvancedSearchChips } from 'apps/search/advancedSearch/components/chips/AdvancedSearchChips';
 import { InvestigationResults } from 'apps/search/event/components/InvestigationSearch/InvestigationResults';
@@ -39,6 +33,7 @@ import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
+import TabButton from './components/TabButton/TabButton';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -294,40 +289,6 @@ export const AdvancedSearch = () => {
         }
     };
 
-    // Generates a CSV of the results
-    const handleExportClick = () => {
-        const token = state.getToken();
-        switch (lastSearchType) {
-            case SEARCH_TYPE.INVESTIGATION:
-                if (investigationFilter && token) {
-                    downloadInvestigationSearchResultCsv(investigationFilter, token);
-                }
-                break;
-            case SEARCH_TYPE.LAB_REPORT:
-                if (labReportFilter && token) {
-                    downloadLabReportSearchResultCsv(labReportFilter, token);
-                }
-                break;
-        }
-    };
-
-    // Generates a PDF of the results
-    const handlePrintClick = () => {
-        const token = state.getToken();
-        switch (lastSearchType) {
-            case SEARCH_TYPE.INVESTIGATION:
-                if (investigationFilter && token) {
-                    downloadInvestigationSearchResultPdf(investigationFilter, token);
-                }
-                break;
-            case SEARCH_TYPE.LAB_REPORT:
-                if (labReportFilter && token) {
-                    downloadLabReportSearchResultPdf(labReportFilter, token);
-                }
-                break;
-        }
-    };
-
     const handleClearAll = () => {
         setPersonFilter({ recordStatus: [RecordStatus.Active] });
         setInvestigationFilter(undefined);
@@ -453,20 +414,16 @@ export const AdvancedSearch = () => {
                             <div
                                 className="grid-row flex-align-center"
                                 style={{ borderBottom: '1.5px solid lightgray' }}>
-                                <p
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.PERSON && 'active'
-                                    } text-normal type font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0`}
-                                    onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
-                                    Patient search
-                                </p>
-                                <p
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.EVENT && 'active'
-                                    } padding-bottom-1 type text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0`}
-                                    onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
-                                    Event search
-                                </p>
+                                <TabButton
+                                    title="Patient search"
+                                    active={activeTab === ACTIVE_TAB.PERSON}
+                                    onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}
+                                />
+                                <TabButton
+                                    title="Event search"
+                                    active={activeTab === ACTIVE_TAB.EVENT}
+                                    onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}
+                                />
                             </div>
                             {activeTab === ACTIVE_TAB.PERSON ? (
                                 <PatientSearch
@@ -614,32 +571,6 @@ export const AdvancedSearch = () => {
                                         </ul>
                                     )}
                                 </div>
-                                <Button
-                                    disabled={
-                                        (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                        (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                        (!patientData?.content || patientData?.content?.length === 0)
-                                    }
-                                    className="width-full margin-top-0"
-                                    style={{ display: 'none' }}
-                                    type={'button'}
-                                    onClick={handleExportClick}
-                                    outline>
-                                    Export
-                                </Button>
-                                <Button
-                                    disabled={
-                                        (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                        (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                        (!patientData?.content || patientData?.content?.length === 0)
-                                    }
-                                    className="width-full margin-top-0"
-                                    style={{ display: 'none' }}
-                                    type={'button'}
-                                    onClick={handlePrintClick}
-                                    outline>
-                                    Print
-                                </Button>
                             </div>
                         </Grid>
                         {submitted && !!resultTotal && (

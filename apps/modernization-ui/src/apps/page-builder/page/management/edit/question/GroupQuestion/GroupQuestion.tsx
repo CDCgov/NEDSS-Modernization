@@ -35,7 +35,7 @@ export const GroupQuestion = ({ page, subsection, questions, onSuccess, onCancel
             })),
             blockName: '',
             visible: subsection.visible,
-            repeatingNbr: 1
+            repeatingNbr: 0
         }
     });
 

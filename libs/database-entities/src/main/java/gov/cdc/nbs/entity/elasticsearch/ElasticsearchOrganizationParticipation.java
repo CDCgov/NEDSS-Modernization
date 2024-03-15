@@ -17,42 +17,36 @@ import lombok.Setter;
 @Setter
 @Builder
 public class ElasticsearchOrganizationParticipation {
-    public static final String ACT_UID = "act_uid";
     public static final String TYPE_CD = "type_cd";
     public static final String ENTITY_ID = "entity_id";
     public static final String SUBJECT_CLASS_CD = "subject_class_cd";
-    public static final String PARTICIPATION_LAST_CHANGE_TIME = "participation_last_change_time";
-    public static final String PARTICIPATION_RECORD_STATUS = "participation_record_status";
-    public static final String DISPLAY_NAME = "name";
-    public static final String ORGANIZATION_LAST_CHANGE_TIME = "organization_last_change_time";
-    public static final String PARTICIPATION_TYPE_DESC_TXT = "type_desc_txt";
 
-    @Field(name = ACT_UID, type = FieldType.Long)
+    @Field(name = "act_uid", type = FieldType.Long)
     private Long actUid;
 
-    @Field(name = TYPE_CD, type = FieldType.Keyword)
+    @Field(name = "type_cd", type = FieldType.Keyword)
     private String typeCd;
 
-    @Field(name = ENTITY_ID, type = FieldType.Long)
+    @Field(name = "entity_id", type = FieldType.Long)
     private Long entityId;
 
-    @Field(name = SUBJECT_CLASS_CD, type = FieldType.Keyword)
+    @Field(name = "subject_class_cd", type = FieldType.Keyword)
     private String subjectClassCd;
 
-    @Field(name = PARTICIPATION_RECORD_STATUS, type = FieldType.Keyword)
+    @Field(name = "participation_record_status", type = FieldType.Keyword)
     private String participationRecordStatus;
 
-    @Field(name = PARTICIPATION_TYPE_DESC_TXT, type = FieldType.Keyword)
+    @Field(name = "type_desc_txt", type = FieldType.Keyword)
     private String typeDescTxt;
 
-    @Field(name = PARTICIPATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = "participation_last_change_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant participationLastChangeTime;
 
-    @Field(name = DISPLAY_NAME, type = FieldType.Text)
+    @Field(name = "name", type = FieldType.Text)
     private String name;
 
-    @Field(name = ORGANIZATION_LAST_CHANGE_TIME, type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
+    @Field(name = "organization_last_change_time", type = FieldType.Date, format = {}, pattern = DATE_PATTERN)
     @ValueConverter(ElasticsearchInstantValueConverter.class)
     private Instant organizationLastChangeTime;
 
