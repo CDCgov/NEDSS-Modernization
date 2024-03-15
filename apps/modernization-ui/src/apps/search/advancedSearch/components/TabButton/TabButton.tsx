@@ -1,4 +1,5 @@
-import './TabButton.scss';
+import classNames from 'classnames';
+import style from './TabButton.module.scss';
 
 type TabButtonProps = {
     title: string;
@@ -8,12 +9,7 @@ type TabButtonProps = {
 
 const TabButton = ({ active, title, onClick }: TabButtonProps) => {
     return (
-        <button
-            role="tab"
-            onClick={onClick}
-            className={`${
-                active && 'active'
-            } text-normal font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0 usa-button--unstyled tab-button`}>
+        <button role="tab" onClick={onClick} className={classNames(style.tab, { [style.active]: active })}>
             {title}
         </button>
     );
