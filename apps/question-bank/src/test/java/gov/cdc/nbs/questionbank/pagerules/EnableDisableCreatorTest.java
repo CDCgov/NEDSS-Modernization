@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
+import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 
 class EnableDisableCreatorTest {
 
@@ -152,7 +153,8 @@ class EnableDisableCreatorTest {
         false,
         Arrays.asList("INV515"),
         Arrays.asList(new SourceValue("D", "Days"), new SourceValue("H", "Hours")),
-        "=");
+        "=",
+        TargetType.QUESTION);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -183,7 +185,8 @@ class EnableDisableCreatorTest {
         false,
         Arrays.asList("INV515"),
         Arrays.asList(new SourceValue("D", "Days"), new SourceValue("H", "Hours")),
-        "<>");
+        "<>",
+        TargetType.QUESTION);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -215,7 +218,8 @@ class EnableDisableCreatorTest {
         true,
         Arrays.asList("NBS102", "INV143"),
         null,
-        "=");
+        "=",
+        TargetType.QUESTION);
     assertThat(actual).isEqualTo(expected);
   }
 
@@ -247,7 +251,45 @@ class EnableDisableCreatorTest {
         true,
         Arrays.asList("NBS102", "INV143"),
         null,
-        "<>");
+        "<>",
+        TargetType.QUESTION);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+
+  void should_create_javascript_subsection() {
+    final String expected =
+        """
+            function ruleEnDisINV14411()
+            {
+             var foo = [];
+            $j('#INV144 :selected').each(function(i, selected){
+             foo[i] = $j(selected).val();
+             });
+
+             if(($j.inArray('D',foo) > -1) || ($j.inArray('Days'.replace(/^\s+|\s+$/g,''),foo) > -1) || ($j.inArray('H',foo) > -1) || ($j.inArray('Hours'.replace(/^\s+|\s+$/g,''),foo) > -1)){
+            pgSubSectionDisabled('NBS_UI_29');
+            pgSubSectionDisabled('NBS_INV_GENV2_UI_5');
+            pgSubSectionDisabled('NBS_UI_2');
+             } else {
+            pgSubSectionEnabled('NBS_UI_29');
+            pgSubSectionEnabled('NBS_INV_GENV2_UI_5');
+            pgSubSectionEnabled('NBS_UI_2');
+             }
+            }
+              """;
+    String functionName = creator.createJavascriptName(
+        "INV144",
+        11);
+    String actual = creator.createJavascript(
+        functionName,
+        "INV144",
+        false,
+        Arrays.asList("NBS_UI_29", "NBS_INV_GENV2_UI_5", "NBS_UI_2"),
+        Arrays.asList(new SourceValue("D", "Days"), new SourceValue("H", "Hours")),
+        "=",
+        TargetType.SUBSECTION);
     assertThat(actual).isEqualTo(expected);
   }
 

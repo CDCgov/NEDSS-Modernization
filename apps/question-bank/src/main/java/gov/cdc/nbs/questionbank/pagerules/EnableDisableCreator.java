@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
+import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
@@ -71,7 +72,8 @@ public class EnableDisableCreator {
         request.anySourceValue(),
         request.targetIdentifiers(),
         request.sourceValues(),
-        request.comparator().getValue());
+        request.comparator().getValue(),
+        request.targetType());
     String expression = createExpression(
         request.sourceIdentifier(),
         request.sourceValues(),
@@ -111,7 +113,8 @@ public class EnableDisableCreator {
         request.anySourceValue(),
         request.targetIdentifiers(),
         request.sourceValues(),
-        request.comparator().getValue());
+        request.comparator().getValue(),
+        request.targetType());
     String expression = createExpression(
         request.sourceIdentifier(),
         request.sourceValues(),
@@ -192,12 +195,13 @@ public class EnableDisableCreator {
       boolean anySourceValue,
       List<String> targetIdentifiers,
       List<SourceValue> sourceValues,
-      String comparator) {
+      String comparator,
+      TargetType targetType) {
     String enableCalls = targetIdentifiers.stream()
-        .map(this::pgEnabled)
+        .map(t -> pgEnabled(t, targetType))
         .collect(Collectors.joining("\n"));
     String disableCalls = targetIdentifiers.stream()
-        .map(this::pgDisabled)
+        .map(t -> pgDisabled(t, targetType))
         .collect(Collectors.joining("\n"));
 
     if (anySourceValue) {
@@ -225,12 +229,14 @@ public class EnableDisableCreator {
     return String.join(" || ", clauses);
   }
 
-  String pgEnabled(String targetIdentifier) {
-    return String.format("pgEnableElement('%s');", targetIdentifier);
+  String pgEnabled(String targetIdentifier, TargetType targetType) {
+    String method = TargetType.QUESTION.equals(targetType) ? "pgEnableElement" : "pgSubSectionEnabled";
+    return String.format("%s('%s');", method, targetIdentifier);
   }
 
-  String pgDisabled(String targetIdentifier) {
-    return String.format("pgDisableElement('%s');", targetIdentifier);
+  String pgDisabled(String targetIdentifier, TargetType targetType) {
+    String method = TargetType.QUESTION.equals(targetType) ? "pgDisableElement" : "pgSubSectionDisabled";
+    return String.format("%s('%s');", method, targetIdentifier);
   }
 
   String identifierIfClause(String value) {
