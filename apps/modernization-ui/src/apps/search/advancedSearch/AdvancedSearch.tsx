@@ -39,6 +39,7 @@ import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
+import TabButton from './components/TabButton/TabButton';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -451,22 +452,18 @@ export const AdvancedSearch = () => {
                         <div className="left-searchbar">
                             <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
                             <div
-                                className="grid-row flex-align-center search-tabs"
+                                className="grid-row flex-align-center"
                                 style={{ borderBottom: '1.5px solid lightgray' }}>
-                                <button
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.PERSON && 'active'
-                                    } text-normal font-sans-md padding-bottom-1 margin-x-2 cursor-pointer margin-top-2 margin-bottom-0 usa-button--unstyled`}
-                                    onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}>
-                                    Patient search
-                                </button>
-                                <button
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.EVENT && 'active'
-                                    } padding-bottom-1 text-normal font-sans-md cursor-pointer margin-top-2 margin-bottom-0 usa-button--unstyled`}
-                                    onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}>
-                                    Event search
-                                </button>
+                                <TabButton
+                                    title="Patient search"
+                                    active={activeTab === ACTIVE_TAB.PERSON}
+                                    onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}
+                                />
+                                <TabButton
+                                    title="Event search"
+                                    active={activeTab === ACTIVE_TAB.EVENT}
+                                    onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}
+                                />
                             </div>
                             {activeTab === ACTIVE_TAB.PERSON ? (
                                 <PatientSearch

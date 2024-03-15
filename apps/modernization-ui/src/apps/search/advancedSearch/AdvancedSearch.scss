@@ -199,15 +199,4 @@ button {
 
 .results-for:focus {
     outline: none !important;
-} 
-
-.search-tabs {
-    .usa-button--unstyled {
-        color: colors.$base-black;
-        text-decoration: none !important;
-        border-bottom: 0.4375rem solid transparent;
-        &.active {
-            border-bottom: 0.4375rem solid colors.$primary;
-        }
-    }
 }

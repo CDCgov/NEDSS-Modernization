@@ -1,0 +1,10 @@
+@use 'styles/colors';
+
+.tab-button {
+    color: colors.$base-black;
+    text-decoration: none !important;
+    border-bottom: 0.4375rem solid transparent;
+    &.active {
+        border-bottom: 0.4375rem solid colors.$primary;
+    }
+}
