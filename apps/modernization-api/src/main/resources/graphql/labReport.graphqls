@@ -5,99 +5,6 @@ extend type Query {
   ): LabReportResults!
 }
 
-type LabReportResults {
-  content: [LabReport]!
-  total: Int!
-}
-
-input LabReportFilter {
-  patientId: Int
-  programAreas: [String]
-  jurisdictions: [ID]
-  pregnancyStatus: PregnancyStatus
-  eventId: LabReportEventId
-  eventDate: LaboratoryEventDateSearch
-  entryMethods: [EntryMethod]
-  enteredBy: [UserType]
-  eventStatus: [EventStatus]
-  processingStatus: [LaboratoryReportStatus]
-  createdBy: ID
-  lastUpdatedBy: ID
-  providerSearch: LabReportProviderSearch
-  resultedTest: String
-  codedResult: String
-}
-
-input LabReportEventId {
-  labEventType: LaboratoryEventIdType!
-  labEventId: String!
-}
-
-type LabReport {
-  id: String
-  observationUid: Int
-  lastChange: DateTime
-  classCd: String
-  moodCd: String
-  observationLastChgTime: DateTime
-  cdDescTxt: String
-  recordStatusCd: String
-  programAreaCd: String
-  jurisdictionCd: Int
-  jurisdictionCodeDescTxt: String
-  pregnantIndCd: String
-  localId: String
-  activityToTime: DateTime
-  effectiveFromTime: DateTime
-  rptToStateTime: DateTime
-  addTime: DateTime
-  electronicInd: String
-  versionCtrlNbr: Int
-  addUserId: Int
-  lastChgUserId: Int
-  personParticipations: [PersonParticipation]
-  organizationParticipations: [OrganizationParticipation]
-  materialParticipations: [MaterialParticipation]
-  observations: [Observation]
-  actIds: [ActId]
-  associatedInvestigations: [AssociatedInvestigation]
-}
-
-type MaterialParticipation {
-  actUid: Int
-  typeCd: String
-  entityId: String
-  subjectClassCd: String
-  typeDescTxt: String
-  participationRecordStatus: String
-  participationLastChangeTime: DateTime
-  cd: String
-  cdDescTxt: String
-}
-
-type Observation {
-  cd: String
-  cdDescTxt: String
-  domainCd: String
-  statusCd: String
-  altCd: String
-  altDescTxt: String
-  altCdSystemCd: String
-  displayName: String
-  ovcCode: String
-  ovcAltCode: String
-  ovcAltDescTxt: String
-  ovcAltCdSystemCd: String
-}
-
-type AssociatedInvestigation {
-  publicHealthCaseUid: Int
-  cdDescTxt: String
-  localId: String
-  lastChgTime: DateTime
-  actRelationshipLastChgTime: DateTime
-}
-
 input LaboratoryEventDateSearch {
   type: LaboratoryReportEventDateType!
   from: Date!
@@ -146,4 +53,74 @@ enum EventStatus {
 enum LaboratoryReportStatus {
   PROCESSED
   UNPROCESSED
+}
+
+
+input LabReportFilter {
+  patientId: Int
+  programAreas: [String]
+  jurisdictions: [ID]
+  pregnancyStatus: PregnancyStatus
+  eventId: LabReportEventId
+  eventDate: LaboratoryEventDateSearch
+  entryMethods: [EntryMethod]
+  enteredBy: [UserType]
+  eventStatus: [EventStatus]
+  processingStatus: [LaboratoryReportStatus]
+  createdBy: ID
+  lastUpdatedBy: ID
+  providerSearch: LabReportProviderSearch
+  resultedTest: String
+  codedResult: String
+}
+
+input LabReportEventId {
+  labEventType: LaboratoryEventIdType!
+  labEventId: String!
+}
+
+type LabReportResults {
+  content: [LabReport]!
+  total: Int!
+}
+
+type LabReport {
+  id: String
+  jurisdictionCd: Int
+  jurisdictionCodeDescTxt: String
+  localId: String
+  addTime: DateTime
+  personParticipations: [LabReportPersonParticipation!]!
+  organizationParticipations: [LabReportOrganizationParticipation!]!
+  observations: [Observation!]!
+  associatedInvestigations: [AssociatedInvestigation!]!
+}
+
+type LabReportPersonParticipation {
+  birthTime: DateTime
+  currSexCd: String
+  typeCd: String
+  typeDescTxt: String
+  firstName: String
+  lastName: String
+  personCd: String!
+  personParentUid: Int
+  shortId: Int
+}
+
+type LabReportOrganizationParticipation {
+  typeCd: String
+  name: String
+}
+
+type Observation {
+  cdDescTxt: String
+  statusCd: String
+  altCd: String
+  displayName: String
+}
+
+type AssociatedInvestigation {
+  cdDescTxt: String
+  localId: String
 }

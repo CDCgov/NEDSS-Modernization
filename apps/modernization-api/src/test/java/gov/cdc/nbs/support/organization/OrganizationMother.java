@@ -1,21 +1,22 @@
 package gov.cdc.nbs.support.organization;
 
-import gov.cdc.nbs.option.Option;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Component
+@ScenarioScope
 class OrganizationMother {
 
   private static final String DELETE_IN = """
@@ -49,6 +50,7 @@ class OrganizationMother {
     this.active = active;
   }
 
+  @PostConstruct
   void reset() {
 
     List<Long> created = this.available.all()

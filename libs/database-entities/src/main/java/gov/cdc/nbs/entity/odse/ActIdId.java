@@ -19,10 +19,10 @@ import java.util.Objects;
 public class ActIdId implements Serializable {
     private static final long serialVersionUID = -3235932436005538820L;
     @Column(name = "act_uid", nullable = false)
-    private Long actUid;
+    private long actUid;
 
     @Column(name = "act_id_seq", nullable = false)
-    private Short actIdSeq;
+    private int actIdSeq;
 
     @Override
     public boolean equals(Object o) {

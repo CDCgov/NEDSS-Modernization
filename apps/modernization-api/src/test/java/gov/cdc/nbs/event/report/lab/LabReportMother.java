@@ -2,13 +2,17 @@ package gov.cdc.nbs.event.report.lab;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.odse.Act;
+import gov.cdc.nbs.entity.odse.ActId;
+import gov.cdc.nbs.entity.odse.ActIdId;
 import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.odse.Participation;
 import gov.cdc.nbs.entity.odse.ParticipationId;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.organization.OrganizationIdentifier;
+import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
 import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
 
 @Component
 @Transactional
@@ -40,6 +45,8 @@ public class LabReportMother {
   private final Active<LabReportIdentifier> active;
   private final Available<LabReportIdentifier> available;
 
+  private final Active<JurisdictionIdentifier> activeJurisdiction;
+  private final Active<ProgramAreaIdentifier> activeProgramArea;
   private final PatientMother patientMother;
 
   LabReportMother(
@@ -49,6 +56,8 @@ public class LabReportMother {
       final TestLabReportCleaner cleaner,
       final Active<LabReportIdentifier> active,
       final Available<LabReportIdentifier> available,
+      final Active<JurisdictionIdentifier> activeJurisdiction,
+      final Active<ProgramAreaIdentifier> activeProgramArea,
       final PatientMother patientMother
   ) {
     this.settings = settings;
@@ -57,6 +66,8 @@ public class LabReportMother {
     this.cleaner = cleaner;
     this.active = active;
     this.available = available;
+    this.activeJurisdiction = activeJurisdiction;
+    this.activeProgramArea = activeProgramArea;
     this.patientMother = patientMother;
   }
 
@@ -84,10 +95,12 @@ public class LabReportMother {
     observation.setCd("10570");
     observation.setCdDescTxt("Condition");
 
-    // Jurisdiction: Out of system
-    observation.setProgAreaCd("STD");
-    observation.setJurisdictionCd("999999");
-    observation.setProgramJurisdictionOid(1300200015L);   //  STD Out of System
+    JurisdictionIdentifier jurisdiction = this.activeJurisdiction.active();
+    ProgramAreaIdentifier programArea = this.activeProgramArea.active();
+
+    observation.setProgAreaCd(programArea.code());
+    observation.setJurisdictionCd(jurisdiction.code());
+    observation.setProgramJurisdictionOid(programArea.oid(jurisdiction));
 
     observation.setAddTime(settings.createdOn());
     observation.setAddUserId(settings.createdBy());
@@ -159,6 +172,11 @@ public class LabReportMother {
     lab.setElectronicInd('Y');
   }
 
+  void enteredExternally(final LabReportIdentifier identifier) {
+    Observation lab = managed(identifier);
+    lab.setElectronicInd('E');
+  }
+
   void orderedBy(final LabReportIdentifier identifier, final ProviderIdentifier provider) {
     Observation lab = managed(identifier);
 
@@ -177,6 +195,30 @@ public class LabReportMother {
     participation.setActUid(act);
 
     act.addParticipation(participation);
+  }
+
+  void filledBy(final LabReportIdentifier identifier, final String number) {
+    Observation lab = managed(identifier);
+
+    Act act = lab.getAct();
+
+    // need an id and seq
+    ActId filler = new ActId(new ActIdId(act.getId(), act.getActIds().size()));
+    filler.setTypeCd("FN");
+    filler.setTypeCd("Filler Number");
+    filler.setRootExtensionTxt(number);
+
+    act.addIdentifier(filler);
+  }
+
+  void forPregnantPatient(final LabReportIdentifier identifier) {
+    Observation lab = managed(identifier);
+    lab.setPregnantIndCd("Y");
+  }
+
+  void receivedOn(final LabReportIdentifier identifier, final Instant date) {
+    Observation lab = managed(identifier);
+    lab.setRptToStateTime(date);
   }
 
   private Observation managed(final LabReportIdentifier identifier) {

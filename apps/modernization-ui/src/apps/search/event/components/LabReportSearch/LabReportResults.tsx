@@ -1,5 +1,5 @@
 import { Grid, Pagination } from '@trussworks/react-uswds';
-import { LabReport, OrganizationParticipation, PersonParticipation } from 'generated/graphql/schema';
+import { LabReport, LabReportOrganizationParticipation, LabReportPersonParticipation } from 'generated/graphql/schema';
 import 'apps/search/advancedSearch/AdvancedSearch.scss';
 import { ClassicLink } from 'classic';
 import { NoData } from 'components/NoData';
@@ -41,12 +41,12 @@ export const LabReportResults = ({ data, totalResults, handlePagination, current
     );
 };
 
-const getPatient = (labReport: LabReport): PersonParticipation | undefined | null => {
-    return labReport.personParticipations?.find((p) => p?.typeDescTxt === 'Patient subject' || p?.typeCd === 'PATSBJ');
+const getPatient = (labReport: LabReport): LabReportPersonParticipation | undefined => {
+    return labReport.personParticipations.find((p) => p.typeCd === 'PATSBJ');
 };
 
-const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
-    const provider = labReport.personParticipations?.find((p) => p?.typeCd === 'ORD' && p?.personCd === 'PRV');
+const getOrderingProviderName = (labReport: LabReport): string | undefined => {
+    const provider = labReport.personParticipations.find((p) => p.typeCd === 'ORD' && p.personCd === 'PRV');
     if (provider) {
         return `${provider.firstName} ${provider.lastName}`;
     } else {
@@ -54,18 +54,15 @@ const getOrderingProvidorName = (labReport: LabReport): string | undefined => {
     }
 };
 
-const getReportingFacility = (labReport: LabReport): OrganizationParticipation | undefined | null => {
-    return labReport.organizationParticipations?.find((o) => o?.typeCd === 'AUT');
+const getReportingFacility = (labReport: LabReport): LabReportOrganizationParticipation | undefined => {
+    return labReport.organizationParticipations.find((o) => o?.typeCd === 'AUT');
 };
 
-const getDescription = (labReport: LabReport): string => {
+const getDescription = (labReport: LabReport): string | undefined => {
     // TODO - there could be multiple tests associated with one lab report. How to display them in UI
     const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
-    if (observation) {
-        return `${observation.cdDescTxt} = ${observation.displayName}`;
-    } else {
-        return 'No Data';
-    }
+
+    return observation && `${observation.cdDescTxt} = ${observation.displayName}`;
 };
 
 type LabReportSearchResultProps = {
@@ -74,6 +71,7 @@ type LabReportSearchResultProps = {
 
 const LabReportSearchResult = ({ item }: LabReportSearchResultProps) => {
     const patient = getPatient(item);
+    const description = getDescription(item);
     return (
         <div className="padding-x-3 padding-top-3 padding-bottom-2 margin-bottom-3 bg-white border border-base-light radius-md">
             <Grid row gap={3}>
@@ -95,17 +93,17 @@ const LabReportSearchResult = ({ item }: LabReportSearchResultProps) => {
                                 DATE RECEIVED
                             </p>
                             <p className="margin-0 font-sans-1xs text-normal">
-                                {internalizeDate(item.addTime) || 'No Data'}
+                                {internalizeDate(item.addTime) || <NoData />}
                             </p>
                         </Grid>
                         <Grid col={12} className="margin-bottom-2">
                             <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
                                 DESCRIPTION
                             </p>
-                            {getDescription(item) === 'No Data' ? (
-                                <NoData />
+                            {description ? (
+                                <p className="margin-0 font-sans-1xs text-normal">{description}</p>
                             ) : (
-                                <p className="margin-0 font-sans-1xs text-normal">{getDescription(item)}</p>
+                                <NoData />
                             )}
                         </Grid>
                     </Grid>
@@ -122,10 +120,10 @@ const LabReportSearchResult = ({ item }: LabReportSearchResultProps) => {
                         </Grid>
                         <Grid col={12} className="margin-bottom-2">
                             <p className="margin-0 text-normal search-result-item-label text-gray-50 margin-right-1">
-                                ORDERING PROVIDOR
+                                ORDERING PROVIDER
                             </p>
                             <p className="margin-0 font-sans-1xs text-normal">
-                                {getOrderingProvidorName(item) ?? <NoData />}
+                                {getOrderingProviderName(item) ?? <NoData />}
                             </p>
                         </Grid>
                         <SearchCriteriaContext.Consumer>
