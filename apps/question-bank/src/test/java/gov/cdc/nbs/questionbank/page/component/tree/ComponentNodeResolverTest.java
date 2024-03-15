@@ -18,7 +18,7 @@ class ComponentResolverTest {
   @Test
   void should_resolve_component_using_layout_resolver() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1002, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1002, "name-value", true, 1, 1);
 
     LayoutNode layout = mock(PageNode.class);
 
@@ -42,7 +42,7 @@ class ComponentResolverTest {
   @Test
   void should_resolve_component_using_component_resolver() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1008, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1008, "name-value", true, 1, 1);
 
     ContentNode content = mock(InputNode.class);
 
@@ -66,7 +66,7 @@ class ComponentResolverTest {
   @Test
   void should_not_resolve_for_invalid_component_type() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1008, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1008, "name-value", true, 1, 1);
 
     LayoutComponentResolver layoutResolver = mock(LayoutComponentResolver.class);
 

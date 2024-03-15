@@ -31,7 +31,7 @@ class TreeifyTest {
   void should_reduce_to_a_single_page() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class));
@@ -42,8 +42,8 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_tabs() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -58,9 +58,9 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_sibling_tabs() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab One", true, 2),
-        new FlattenedComponent(5L, 1010, "Tab Two", true, 3)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab One", true, 2, 2),
+        new FlattenedComponent(5L, 1010, "Tab Two", true, 3, 3)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -75,9 +75,9 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_tab_with_one_section() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section", true, 3)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2),
+        new FlattenedComponent(5L, 1015, "Section", true, 3, 3)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -95,10 +95,10 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_tab_with_sibling_sections() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section One", true, 3),
-        new FlattenedComponent(7L, 1015, "Section Two", true, 4)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2),
+        new FlattenedComponent(5L, 1015, "Section One", true, 3, 3),
+        new FlattenedComponent(7L, 1015, "Section Two", true, 4, 4)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -117,10 +117,10 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_tab_containing_a_section_with_one_sub_section() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section", true, 3),
-        new FlattenedComponent(7L, 1016, "Sub Section", true, 4)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2),
+        new FlattenedComponent(5L, 1015, "Section", true, 3, 3),
+        new FlattenedComponent(7L, 1016, "Sub Section", true, 4, 4)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -141,11 +141,11 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_tab_containing_a_section_with_sibling_sub_sections() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section", true, 3),
-        new FlattenedComponent(7L, 1016, "Sub Section One", true, 4),
-        new FlattenedComponent(11L, 1016, "Sub Section One", true, 5)).collect(Treeify.asTree());
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2),
+        new FlattenedComponent(5L, 1015, "Section", true, 3, 3),
+        new FlattenedComponent(7L, 1016, "Sub Section One", true, 4, 4),
+        new FlattenedComponent(11L, 1016, "Sub Section One", true, 5, 5)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)
@@ -167,16 +167,18 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_a_tab_containing_a_section_containing_a_sub_section_with_content() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section", true, 3),
-        new FlattenedComponent(7L, 1016, "Sub Section One", true, 4),
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2),
+        new FlattenedComponent(5L, 1015, "Section", true, 3, 3),
+        new FlattenedComponent(7L, 1016, "Sub Section One", true, 4, 4),
         new FlattenedComponent(
             11L,
             1007,
             "name-value",
             true,
             5,
+            5,
+            true,
             true,
             "standard-value",
             "question-value",
@@ -199,7 +201,8 @@ class TreeifyTest {
             "dataMart-column-name",
             false,
             "data_location",
-            true))
+            true,
+            "block_name"))
         .collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
@@ -223,16 +226,18 @@ class TreeifyTest {
   void should_reduce_to_a_page_containing_two_tabs_when_adding_a_tab_after_content() {
 
     Optional<ComponentNode> actual = Stream.of(
-        new FlattenedComponent(2L, 1002, "Page: Test", true, 1),
-        new FlattenedComponent(3L, 1010, "Tab", true, 2),
-        new FlattenedComponent(5L, 1015, "Section", true, 3),
-        new FlattenedComponent(7L, 1016, "Sub Section One", true, 4),
+        new FlattenedComponent(2L, 1002, "Page: Test", true, 1, 1),
+        new FlattenedComponent(3L, 1010, "Tab", true, 2, 2),
+        new FlattenedComponent(5L, 1015, "Section", true, 3, 3),
+        new FlattenedComponent(7L, 1016, "Sub Section One", true, 4, 4),
         new FlattenedComponent(
             11L,
             1007,
             "name-value",
             true,
             5,
+            5,
+            true,
             true,
             "standard-value",
             "question-value",
@@ -255,8 +260,9 @@ class TreeifyTest {
             "dataMart-column-name",
             false,
             "data_location",
-            true),
-        new FlattenedComponent(13L, 1010, "Tab", true, 6)).collect(Treeify.asTree());
+            true,
+            "block_name"),
+        new FlattenedComponent(13L, 1010, "Tab", true, 6, 6)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
         page -> assertThat(page).isInstanceOf(PageNode.class)

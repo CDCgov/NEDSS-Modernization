@@ -1,6 +1,6 @@
 import { Rule } from 'apps/page-builder/generated';
 
-export const mapComparatorToString = (comparator: Rule.comparator) => {
+export const mapComparatorToString = (comparator?: Rule.comparator) => {
     switch (comparator) {
         case Rule.comparator.LESS_THAN:
             return 'Less than';

@@ -6,6 +6,8 @@ record FlattenedComponent(
     String name,
     boolean visible,
     int order,
+    int questionGroupSeq,
+    boolean isStandardNnd,
     boolean isStandard,
     String standard,
     String question,
@@ -28,28 +30,23 @@ record FlattenedComponent(
     String dataMartColumnName,
     boolean isGrouped,
     String dataLocation,
-    boolean isPublished) {
+    boolean isPublished,
+    String blockName) {
 
   FlattenedComponent(
       long identifier,
       int type,
       String name,
       boolean visible,
-      int order) {
+      int order,
+      int questionGroupSeq) {
     this(
         identifier,
         type,
         name,
         visible,
         order,
-        false,
-        null,
-        null,
-        null,
-        null,
-        null,
-        false,
-        false,
+        questionGroupSeq,
         false,
         false,
         null,
@@ -57,6 +54,15 @@ record FlattenedComponent(
         null,
         null,
         null,
+        false,
+        false,
+        false,
+        false,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -64,6 +70,7 @@ record FlattenedComponent(
         null,
         false,
         null,
-        false);
+        false,
+        null);
   }
 }

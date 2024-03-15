@@ -16,7 +16,7 @@ class LayoutComponentResolverTest {
   @Test
   void should_resolve_page_component() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1002, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1002, "name-value", true, 1, 1);
 
     LayoutComponentResolver resolver = new LayoutComponentResolver();
 
@@ -30,15 +30,14 @@ class LayoutComponentResolverTest {
                 () -> assertThat(component.definition().visible()).isTrue(),
                 () -> assertThat(component.definition().order()).isEqualTo(1)
 
-            )
-        );
+            ));
 
   }
 
   @Test
   void should_resolve_tab_component() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1010, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1010, "name-value", true, 1, 1);
 
     LayoutComponentResolver resolver = new LayoutComponentResolver();
 
@@ -52,14 +51,13 @@ class LayoutComponentResolverTest {
                 () -> assertThat(component.definition().visible()).isTrue(),
                 () -> assertThat(component.definition().order()).isEqualTo(1)
 
-            )
-        );
+            ));
   }
 
   @Test
   void should_resolve_section_component() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1015, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1015, "name-value", true, 1, 1);
 
     LayoutComponentResolver resolver = new LayoutComponentResolver();
 
@@ -73,14 +71,13 @@ class LayoutComponentResolverTest {
                 () -> assertThat(component.definition().visible()).isTrue(),
                 () -> assertThat(component.definition().order()).isEqualTo(1)
 
-            )
-        );
+            ));
   }
 
   @Test
   void should_resolve_sub_section_component() {
 
-    FlattenedComponent flattened = new FlattenedComponent(2L, 1016, "name-value", true, 1);
+    FlattenedComponent flattened = new FlattenedComponent(2L, 1016, "name-value", true, 1, 1);
 
     LayoutComponentResolver resolver = new LayoutComponentResolver();
 
@@ -94,8 +91,7 @@ class LayoutComponentResolverTest {
                 () -> assertThat(component.definition().visible()).isTrue(),
                 () -> assertThat(component.definition().order()).isEqualTo(1)
 
-            )
-        );
+            ));
   }
 
   @Test
@@ -106,8 +102,8 @@ class LayoutComponentResolverTest {
         1022,
         "invalid",
         true,
-        1
-    );
+        1,
+        1);
 
     LayoutComponentResolver resolver = new LayoutComponentResolver();
 

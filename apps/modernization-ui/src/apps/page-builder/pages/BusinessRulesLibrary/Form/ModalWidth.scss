@@ -1,0 +1,20 @@
+@use 'styles/colors';
+
+.source-question-modal,
+.target-question-modal {
+    &.usa-modal--lg {
+        width: 69.25rem;
+        max-width: 69.25rem;
+    }
+}
+
+.source-value-multi-select {
+    .multi-select__control {
+        &.multi-select__control--is-disabled {
+            background-color: colors.$disabled;
+        }
+    }
+    .multi-select__placeholder {
+        color: #454545 !important;
+    }
+}
