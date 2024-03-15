@@ -2,53 +2,54 @@ package gov.cdc.nbs.questionbank.pagerules;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
-import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.valueset.concept.ConceptFinder;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 
 @Component
 @Transactional
-public class PageRuleCreator {
+public class PageRuleUpdater {
 
-  private final WaRuleMetaDataRepository repository;
+  private final EntityManager entityManager;
+  private final ConceptFinder conceptFinder;
+  private final PageRuleFinder finder;
   private final DateCompareCreator dateCompareCreator;
   private final EnableDisableCreator enableDisableCreator;
   private final HideUnhideCreator hideUnhideCreator;
   private final RequireIfCreator requireIfCreator;
-  private final PageRuleFinder finder;
-  private final ConceptFinder conceptFinder;
-  private final EntityManager entityManager;
 
-  public PageRuleCreator(
-      final WaRuleMetaDataRepository waRuleMetaDataRepository,
+  public PageRuleUpdater(
+      final EntityManager entityManager,
+      final ConceptFinder conceptFinder,
       final DateCompareCreator dateCompareCreator,
       final EnableDisableCreator enableDisableCreator,
       final HideUnhideCreator hideUnhideCreator,
       final RequireIfCreator requireIfCreator,
-      final PageRuleFinder finder,
-      final ConceptFinder conceptFinder,
-      final EntityManager entityManager) {
-    this.repository = waRuleMetaDataRepository;
+      final PageRuleFinder finder) {
+    this.entityManager = entityManager;
+    this.conceptFinder = conceptFinder;
     this.dateCompareCreator = dateCompareCreator;
     this.enableDisableCreator = enableDisableCreator;
     this.hideUnhideCreator = hideUnhideCreator;
     this.requireIfCreator = requireIfCreator;
     this.finder = finder;
-    this.conceptFinder = conceptFinder;
-    this.entityManager = entityManager;
   }
 
-  public Rule createPageRule(Long userId, RuleRequest request, long page) {
+  public Rule updatePageRule(Long ruleId, RuleRequest request, Long user) {
 
-    WaTemplate template = entityManager.find(WaTemplate.class, page);
+    WaRuleMetadata rule = entityManager.find(WaRuleMetadata.class, ruleId);
+    if (rule == null) {
+      throw new RuleException("Failed to find rule");
+    }
+
+    WaTemplate template = entityManager.find(WaTemplate.class, rule.getWaTemplateUid());
     if (template == null) {
       throw new RuleException("Invalid page specified");
     }
@@ -58,20 +59,20 @@ public class PageRuleCreator {
 
     // Souce values are empty if `any source value` is selected, we need to populate those
     if (request.anySourceValue()) {
-      request = addSourceValues(request, page);
+      request = addSourceValues(request, template.getId());
     }
 
-    long availableId = repository.findNextAvailableID();
-    PageContentCommand.AddRuleCommand command = switch (request.ruleFunction()) {
-      case DATE_COMPARE -> dateCompareCreator.create(availableId, request, page, userId);
-      case DISABLE, ENABLE -> enableDisableCreator.create(availableId, request, page, userId);
-      case HIDE, UNHIDE -> hideUnhideCreator.create(availableId, request, page, userId);
-      case REQUIRE_IF -> requireIfCreator.create(availableId, request, page, userId);
+    PageContentCommand.UpdateRuleCommand command = switch (request.ruleFunction()) {
+      case DATE_COMPARE -> dateCompareCreator.update(ruleId, request, user);
+      case DISABLE, ENABLE -> enableDisableCreator.update(ruleId, request, user);
+      case HIDE, UNHIDE -> hideUnhideCreator.update(ruleId, request, user);
+      case REQUIRE_IF -> requireIfCreator.update(ruleId, request, user);
       default -> throw new RuleException("Unsupported function specified");
     };
 
-    WaRuleMetadata ruleMetadata = repository.save(new WaRuleMetadata(command));
-    return finder.findByRuleId(ruleMetadata.getId());
+    rule.update(command);
+    entityManager.flush();
+    return finder.findByRuleId(rule.getId());
   }
 
   private RuleRequest addSourceValues(RuleRequest request, long page) {
@@ -91,4 +92,5 @@ public class PageRuleCreator {
         request.sourceText(),
         request.targetValueText());
   }
+
 }

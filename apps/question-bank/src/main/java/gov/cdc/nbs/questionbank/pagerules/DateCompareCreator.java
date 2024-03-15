@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
@@ -56,7 +55,41 @@ public class DateCompareCreator {
 
   private static final String JAVASCRIPT_CLOSE = " return {elements : errorElts, labels : errorMsgs}\n}\n";
 
-  public WaRuleMetadata create(long nextAvailableId, RuleRequest request, long page, long userId) {
+  public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
+    String targetIdentifier = String.join(" , ", request.targetIdentifiers());
+    String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
+    String errorMessage = createErrorMessage(
+        request.sourceText(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String javascript = createJavascript(
+        functionName,
+        request.sourceIdentifier(),
+        request.sourceText(),
+        request.targetIdentifiers(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String expression = createExpression(
+        request.sourceIdentifier(),
+        targetIdentifier,
+        request.comparator().getValue());
+
+    return new PageContentCommand.UpdateRuleCommand(
+        null,
+        request.description(),
+        request.comparator().toString(),
+        request.sourceIdentifier(),
+        null,
+        targetIdentifier,
+        errorMessage,
+        javascript,
+        functionName,
+        expression,
+        userId,
+        Instant.now());
+  }
+
+  public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
     String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
     String errorMessage = createErrorMessage(
@@ -75,7 +108,7 @@ public class DateCompareCreator {
         targetIdentifier,
         request.comparator().getValue());
 
-    PageContentCommand.AddRuleCommand command = new PageContentCommand.AddRuleCommand(
+    return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         null,
         request.ruleFunction().toString(),
@@ -91,8 +124,6 @@ public class DateCompareCreator {
         page,
         userId,
         Instant.now());
-
-    return new WaRuleMetadata(command);
   }
 
   String createJavascript(

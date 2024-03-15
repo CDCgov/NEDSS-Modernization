@@ -393,4 +393,19 @@ public sealed interface PageContentCommand {
       Instant requestedOn) implements PageContentCommand {
   }
 
+  public record UpdateRuleCommand(
+      String targetType,
+      String description,
+      String comparator,
+      String sourceIdentifier,
+      String sourceValues,
+      String targetIdentifiers,
+      String errorMessage,
+      String javascript,
+      String javascriptName,
+      String expression,
+      long userId,
+      Instant requestedOn) implements PageContentCommand {
+  }
+
 }

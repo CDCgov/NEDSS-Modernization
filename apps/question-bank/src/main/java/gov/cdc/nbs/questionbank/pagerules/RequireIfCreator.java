@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
@@ -53,7 +52,7 @@ public class RequireIfCreator {
       }
         """;
 
-  public WaRuleMetadata create(long nextAvailableId, RuleRequest request, long page, long userId) {
+  public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
     String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
@@ -77,7 +76,7 @@ public class RequireIfCreator {
         targetIdentifier,
         request.comparator().getValue());
 
-    PageContentCommand.AddRuleCommand command = new PageContentCommand.AddRuleCommand(
+    return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         request.targetType().toString(),
         request.ruleFunction().toString(),
@@ -93,9 +92,47 @@ public class RequireIfCreator {
         page,
         userId,
         Instant.now());
-    return new WaRuleMetadata(command);
   }
 
+
+  public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
+    String targetIdentifier = String.join(" , ", request.targetIdentifiers());
+    String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
+    String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
+    String errorMessage = createErrorMessage(
+        request.sourceText(),
+        request.sourceValues(),
+        request.anySourceValue(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String javascript = createJavascript(
+        functionName,
+        request.sourceIdentifier(),
+        request.anySourceValue(),
+        request.targetIdentifiers(),
+        request.sourceValues(),
+        request.comparator().getValue());
+    String expression = createExpression(
+        request.sourceIdentifier(),
+        request.sourceValues(),
+        request.anySourceValue(),
+        targetIdentifier,
+        request.comparator().getValue());
+
+    return new PageContentCommand.UpdateRuleCommand(
+        request.targetType().toString(),
+        request.description(),
+        request.comparator().toString(),
+        request.sourceIdentifier(),
+        sourceValues,
+        targetIdentifier,
+        errorMessage,
+        javascript,
+        functionName,
+        expression,
+        userId,
+        Instant.now());
+  }
 
   String createSourceValues(boolean anySourceValue, List<SourceValue> sourceValues) {
     if (anySourceValue) {

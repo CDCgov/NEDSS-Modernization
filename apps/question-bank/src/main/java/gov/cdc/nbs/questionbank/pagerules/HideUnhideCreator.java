@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
+import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 
 @Component
@@ -66,7 +66,7 @@ public class HideUnhideCreator {
           }
             """;
 
-  public WaRuleMetadata create(long nextAvailableId, RuleRequest request, long page, long userId) {
+  public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
     String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
@@ -78,12 +78,7 @@ public class HideUnhideCreator {
         request.comparator().getValue());
     String javascript = createJavascript(
         functionName,
-        request.sourceIdentifier(),
-        request.anySourceValue(),
-        request.targetIdentifiers(),
-        request.sourceValues(),
-        request.comparator().getValue(),
-        RuleFunction.HIDE.equals(request.ruleFunction()));
+        request);
     String expression = createExpression(
         request.sourceIdentifier(),
         request.sourceValues(),
@@ -92,7 +87,7 @@ public class HideUnhideCreator {
         request.comparator().getValue(),
         RuleFunction.ENABLE.equals(request.ruleFunction()));
 
-    PageContentCommand.AddRuleCommand command = new PageContentCommand.AddRuleCommand(
+    return new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         request.targetType().toString(),
         request.ruleFunction().toString(),
@@ -108,7 +103,42 @@ public class HideUnhideCreator {
         page,
         userId,
         Instant.now());
-    return new WaRuleMetadata(command);
+  }
+
+  public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
+    String targetIdentifier = String.join(" , ", request.targetIdentifiers());
+    String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
+    String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
+    String errorMessage = createErrorMessage(
+        request.sourceText(),
+        request.sourceValues(),
+        request.anySourceValue(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String javascript = createJavascript(
+        functionName,
+        request);
+    String expression = createExpression(
+        request.sourceIdentifier(),
+        request.sourceValues(),
+        request.anySourceValue(),
+        targetIdentifier,
+        request.comparator().getValue(),
+        RuleFunction.ENABLE.equals(request.ruleFunction()));
+
+    return new PageContentCommand.UpdateRuleCommand(
+        request.targetType().toString(),
+        request.description(),
+        request.comparator().toString(),
+        request.sourceIdentifier(),
+        sourceValues,
+        targetIdentifier,
+        errorMessage,
+        javascript,
+        functionName,
+        expression,
+        userId,
+        Instant.now());
   }
 
   String createSourceValues(boolean anySourceValue, List<SourceValue> sourceValues) {
@@ -161,28 +191,25 @@ public class HideUnhideCreator {
 
   String createJavascript(
       String functionName,
-      String sourceIdentifier,
-      boolean anySourceValue,
-      List<String> targetIdentifiers,
-      List<SourceValue> sourceValues,
-      String comparator,
-      boolean isHide) {
-    if (anySourceValue) {
-      comparator = "=";
+      RuleRequest request) {
+    if (request.anySourceValue()) {
+      String comparator = "=";
       return formatAnySourceValue(
           functionName,
-          sourceIdentifier,
-          isHide,
+          request.sourceIdentifier(),
+          RuleFunction.HIDE.equals(request.ruleFunction()),
           comparator,
-          targetIdentifiers);
+          request.targetIdentifiers(),
+          request.targetType());
     } else {
       return formatSpecificSourceValue(
           functionName,
-          sourceIdentifier,
-          isHide,
-          comparator,
-          targetIdentifiers,
-          sourceValues);
+          request.sourceIdentifier(),
+          RuleFunction.HIDE.equals(request.ruleFunction()),
+          request.comparator().getValue(),
+          request.targetIdentifiers(),
+          request.sourceValues(),
+          request.targetType());
     }
   }
 
@@ -192,18 +219,19 @@ public class HideUnhideCreator {
       boolean isHide,
       String comparator,
       List<String> targetIdentifiers,
-      List<SourceValue> sourceValues) {
+      List<SourceValue> sourceValues,
+      TargetType targetType) {
     String unHideCalls = targetIdentifiers.stream()
-        .map(this::pgUnhide)
+        .map(t -> pgUnhide(t, targetType))
         .collect(Collectors.joining("\n"));
     String hideCalls = targetIdentifiers.stream()
-        .map(this::pgHide)
+        .map(t -> pgHide(t, targetType))
         .collect(Collectors.joining("\n"));
     String unHideCalls2 = targetIdentifiers.stream()
-        .map(this::pgUnhide2)
+        .map(t -> pgUnhide2(t, targetType))
         .collect(Collectors.joining("\n"));
     String hideCalls2 = targetIdentifiers.stream()
-        .map(this::pgHide2)
+        .map(t -> pgHide2(t, targetType))
         .collect(Collectors.joining("\n"));
     return String.format(SPECIFIC_SOURCE_VALUES,
         functionName,
@@ -226,18 +254,19 @@ public class HideUnhideCreator {
       String sourceIdentifier,
       boolean isHide,
       String comparator,
-      List<String> targetIdentifiers) {
+      List<String> targetIdentifiers,
+      TargetType targetType) {
     String unHideCalls = targetIdentifiers.stream()
-        .map(this::pgUnhide)
+        .map(t -> pgUnhide(t, targetType))
         .collect(Collectors.joining("\n"));
     String hideCalls = targetIdentifiers.stream()
-        .map(this::pgHide)
+        .map(t -> pgHide(t, targetType))
         .collect(Collectors.joining("\n"));
     String unHideCalls2 = targetIdentifiers.stream()
-        .map(this::pgUnhide2)
+        .map(t -> pgUnhide2(t, targetType))
         .collect(Collectors.joining("\n"));
     String hideCalls2 = targetIdentifiers.stream()
-        .map(this::pgHide2)
+        .map(t -> pgHide2(t, targetType))
         .collect(Collectors.joining("\n"));
     return String.format(ANY_SOURCE_VALUE,
         functionName,
@@ -261,20 +290,24 @@ public class HideUnhideCreator {
     }
   }
 
-  String pgUnhide(String targetIdentifier) {
-    return String.format("pgUnhideElement('%s');", targetIdentifier);
+  String pgUnhide(String targetIdentifier, TargetType targetType) {
+    String method = TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
+    return String.format("%s('%s');", method, targetIdentifier);
   }
 
-  String pgHide(String targetIdentifier) {
-    return String.format("pgHideElement('%s');", targetIdentifier);
+  String pgHide(String targetIdentifier, TargetType targetType) {
+    String method = TargetType.QUESTION.equals(targetType) ? "pgHideElement" : "pgSubSectionHidden";
+    return String.format("%s('%s');", method, targetIdentifier);
   }
 
-  String pgUnhide2(String targetIdentifier) {
-    return String.format("pgUnhideElement('%s_2');", targetIdentifier);
+  String pgUnhide2(String targetIdentifier, TargetType targetType) {
+    String method = TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
+    return String.format("%s('%s_2');", method, targetIdentifier);
   }
 
-  String pgHide2(String targetIdentifier) {
-    return String.format("pgHideElement('%s_2');", targetIdentifier);
+  String pgHide2(String targetIdentifier, TargetType targetType) {
+    String method = TargetType.QUESTION.equals(targetType) ? "pgHideElement" : "pgSubSectionHidden";
+    return String.format("%s('%s_2');", method, targetIdentifier);
   }
 
   String createIf(List<SourceValue> sourceValues) {

@@ -1,12 +1,6 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
-import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
-import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
-import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,31 +8,39 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 @RequestMapping("/api/v1/pages/{id}/rules")
 public class PageRuleController {
 
-  private final PageRuleService pageRuleService;
-  private final UserDetailsProvider userDetailsProvider;
   private final PageRuleDeleter pageRuleDeleter;
   private final PageRuleCreator pageRuleCreator;
+  private final PageRuleUpdater pageRuleUpdater;
   private final PageRuleFinder pageRuleFinder;
 
   public PageRuleController(
-      final PageRuleService pageRuleService,
-      final UserDetailsProvider userDetailsProvider,
       final PageRuleDeleter pageRuleDeleter,
       final PageRuleCreator pageRuleCreator,
+      final PageRuleUpdater pageRuleUpdater,
       final PageRuleFinder pageRuleFinder) {
-    this.userDetailsProvider = userDetailsProvider;
-    this.pageRuleService = pageRuleService;
     this.pageRuleDeleter = pageRuleDeleter;
     this.pageRuleCreator = pageRuleCreator;
+    this.pageRuleUpdater = pageRuleUpdater;
     this.pageRuleFinder = pageRuleFinder;
   }
 
@@ -60,10 +62,11 @@ public class PageRuleController {
   }
 
   @PutMapping("/{ruleId}")
-  public Rule updatePageRule(@PathVariable Long ruleId,
-      @RequestBody RuleRequest request, @PathVariable Long id) throws RuleException {
-    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-    return pageRuleService.updatePageRule(ruleId, request, userId, id);
+  public Rule updatePageRule(
+      @PathVariable Long ruleId,
+      @RequestBody RuleRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) throws RuleException {
+    return pageRuleUpdater.updatePageRule(ruleId, request, details.getId());
   }
 
   @GetMapping("/{ruleId}")

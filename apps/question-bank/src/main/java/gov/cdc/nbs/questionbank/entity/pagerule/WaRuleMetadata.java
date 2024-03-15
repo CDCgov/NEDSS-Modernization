@@ -103,6 +103,21 @@ public class WaRuleMetadata {
     added(command);
   }
 
+
+  public void update(PageContentCommand.UpdateRuleCommand command) {
+    this.targetType = command.targetType();
+    this.ruleDescText = command.description();
+    this.logic = command.comparator();
+    this.sourceValues = command.sourceValues();
+    this.sourceQuestionIdentifier = command.sourceIdentifier();
+    this.targetQuestionIdentifier = command.targetIdentifiers();
+    this.errormsgText = command.errorMessage();
+    this.jsFunction = command.javascript();
+    this.jsFunctionName = command.javascriptName();
+    this.ruleExpression = command.expression();
+    updated(command);
+  }
+
   public WaRuleMetadata(long pageId, PageContentCommand.AddRule command) {
     this.waTemplateUid = pageId;
     this.ruleCd = command.ruleCd();
@@ -120,7 +135,11 @@ public class WaRuleMetadata {
     this.lastChgTime = command.requestedOn();
     this.lastChgUserId = command.userId();
     this.recordStatusTime = command.requestedOn();
+  }
 
+  private void updated(PageContentCommand command) {
+    this.lastChgTime = command.requestedOn();
+    this.lastChgUserId = command.userId();
   }
 
   public static WaRuleMetadata clone(WaRuleMetadata original) {
