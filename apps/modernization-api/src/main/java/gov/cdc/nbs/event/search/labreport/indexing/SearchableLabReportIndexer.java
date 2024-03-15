@@ -1,0 +1,33 @@
+package gov.cdc.nbs.event.search.labreport.indexing;
+
+import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
+import gov.cdc.nbs.search.ElasticsearchSimpleDocumentIndexer;
+import gov.cdc.nbs.search.SimpleDocument;
+import org.springframework.stereotype.Component;
+
+import java.util.Collection;
+
+
+@Component
+public class SearchableLabReportIndexer {
+
+  private static final String INDEX = "lab_report";
+  private final ElasticsearchSimpleDocumentIndexer indexer;
+
+  SearchableLabReportIndexer(final ElasticsearchSimpleDocumentIndexer indexer) {
+    this.indexer = indexer;
+  }
+
+  public void index(final Collection<SearchableLabReport> items) {
+    this.indexer.index(INDEX, items.stream().map(SearchableLabReportIndexer::convert));
+  }
+
+  private static SimpleDocument convert(final SearchableLabReport searchable) {
+    String identifier = String.valueOf(searchable.identifier());
+    return new SimpleDocument(
+        identifier,
+        searchable
+    );
+  }
+
+}

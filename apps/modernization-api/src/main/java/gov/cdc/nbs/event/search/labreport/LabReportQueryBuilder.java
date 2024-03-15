@@ -313,7 +313,7 @@ public class LabReportQueryBuilder {
               sort.getDirection()));
           break;
         default:
-          throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
+          sorts.add(SortBuilders.scoreSort());
       }
     });
     return sorts;

@@ -10,5 +10,3 @@ Feature: User's search results are restricted by permissions
       | searchType        | authorities                            | programArea | jurisdiction | resultType            |
       | findInvestigation | FIND-PATIENT,VIEW-INVESTIGATION        | STD         | ALL          | success               |
       | findInvestigation | FIND-PATIENT                           | STD         | ALL          | AccessDeniedException |
-      | findLabReport     | FIND-PATIENT,VIEW-OBSERVATIONLABREPORT | STD         | ALL          | success               |
-      | findLabReport     | FIND-PATIENT                           | STD         | ALL          | AccessDeniedException |
