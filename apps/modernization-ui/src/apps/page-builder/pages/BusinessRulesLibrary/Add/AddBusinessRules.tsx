@@ -3,7 +3,7 @@ import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Breadcrumb } from 'breadcrumb';
 import styles from './AddBusinessRule.module.scss';
 import { Button, Form } from '@trussworks/react-uswds';
-import { BusinessRulesForm } from './BusinessRulesForm';
+import { BusinessRulesForm } from '../Form/BusinessRulesForm';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { authorization } from 'authorization';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
@@ -81,41 +81,41 @@ export const AddBusinessRule = () => {
 
     return (
         <>
-            <div className="breadcrumb-wrap">
+            <div className={styles.breadCrumb}>
                 <Breadcrumb start="../">Business rules</Breadcrumb>
             </div>
 
             <div className={styles.addRule}>
-                <Form onSubmit={onSubmit}>
-                    <div className={styles.title}>
-                        <h2>Add new business rules</h2>
-                    </div>
-
-                    <div className={styles.content}>
-                        <FormProvider {...form}>
-                            <BusinessRulesForm
-                                isEdit={false}
-                                sourceValues={options}
-                                onFetchSourceValues={fetchSourceValues}
-                            />
-                        </FormProvider>
-                    </div>
-
-                    <div className={styles.footerBtns}>
-                        <Button
-                            outline
-                            onClick={() => {
-                                form.reset();
-                                redirectToLibrary();
-                            }}
-                            type="button">
-                            Cancel
-                        </Button>
-                        <Button disabled={!checkIsValid()} type="submit">
-                            Add to library
-                        </Button>
+                <Form onSubmit={onSubmit} className={styles.form}>
+                    <div className={styles.container}>
+                        <div className={styles.title}>
+                            <h2>Add new business rules</h2>
+                        </div>
+                        <div className={styles.content}>
+                            <FormProvider {...form}>
+                                <BusinessRulesForm
+                                    isEdit={false}
+                                    sourceValues={options}
+                                    onFetchSourceValues={fetchSourceValues}
+                                />
+                            </FormProvider>
+                        </div>
                     </div>
                 </Form>
+                <div className={styles.footerBtns}>
+                    <Button
+                        outline
+                        onClick={() => {
+                            form.reset();
+                            redirectToLibrary();
+                        }}
+                        type="button">
+                        Cancel
+                    </Button>
+                    <Button disabled={!checkIsValid()} type="submit" onClick={onSubmit}>
+                        Add to library
+                    </Button>
+                </div>
             </div>
         </>
     );

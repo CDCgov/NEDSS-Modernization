@@ -9,8 +9,8 @@ import { AddNewPage } from './pages/AddNewPage/AddNewPage';
 import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import { PageProvider } from 'page';
 import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
-import { AddBusinessRule } from './pages/BusinessRulesLibrary/AddNewBusinessRule/AddBusinessRules';
-import { EditBusinessRule } from './pages/BusinessRulesLibrary/AddNewBusinessRule/EditBusinessRules';
+import { AddBusinessRule } from './pages/BusinessRulesLibrary/Add/AddBusinessRules';
+import { EditBusinessRule } from './pages/BusinessRulesLibrary/Edit/EditBusinessRules';
 
 const routing: RouteObject[] = [
     {

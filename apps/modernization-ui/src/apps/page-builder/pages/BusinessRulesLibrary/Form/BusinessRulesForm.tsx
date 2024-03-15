@@ -6,14 +6,15 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { Input } from 'components/FormInputs/Input';
 import { useEffect, useRef, useState } from 'react';
-import { SourceQuestion } from './SourceQuestion';
-import { SourceValueProp } from './AddBusinessRules';
-import { TargetQuestion } from './TargetQuestion';
+import { SourceQuestion } from '../SourceQuestion/SourceQuestion';
+import { SourceValueProp } from '../Add/AddBusinessRules';
+import { TargetQuestion } from '../TargetQuestion/TargetQuestion';
 import { mapComparatorToString } from '../helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from '../helpers/mapRuleFunctionToString';
 import SubSectionsDropdown from '../SubSectionDropdown';
 import { useParams } from 'react-router-dom';
 import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
+import './ModalWidth.scss';
 
 type Props = {
     isEdit: boolean;
@@ -83,12 +84,6 @@ export const BusinessRulesForm = ({
     ];
 
     const logicList = watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE ? dateCompare : nonDateCompare;
-
-    useEffect(() => {
-        if (isEdit) {
-            onFetchSourceValues();
-        }
-    }, [isEdit]);
 
     useEffect(() => {
         setSourceQuestion(editSourceQuestion);
@@ -231,85 +226,101 @@ export const BusinessRulesForm = ({
     }, [watch.anySourceValue]);
 
     return (
-        <>
+        <div className={styles.businessRules}>
+            {isEdit && (
+                <div className={styles.ruleId}>
+                    <Label className={styles.title} htmlFor="ruleIdTitle">
+                        Rule Id
+                    </Label>
+                    <Label className={styles.content} htmlFor="ruleId">
+                        {ruleId}
+                    </Label>
+                </div>
+            )}
             <Controller
                 control={form.control}
                 name="ruleFunction"
                 rules={{ required: { value: true, message: 'Rule function is required' } }}
                 render={({ field: { onBlur, onChange, value } }) => (
-                    <>
+                    <div className={styles.ruleFunction}>
+                        <div className={styles.title}>
+                            <Label htmlFor="ruleFunction" requiredMarker>
+                                Function
+                            </Label>
+                        </div>
                         {isEdit && (
-                            <>
-                                <Label className={styles.ruleIdTitle} htmlFor="ruleIdTitle">
-                                    Rule Id
-                                </Label>
-                                <Label className={styles.ruleId} htmlFor="ruleId">
-                                    {ruleId}
-                                </Label>
-                                <Label className="input-label" htmlFor="ruleFunction" requiredMarker>
-                                    Function
-                                </Label>
+                            <div className={styles.content}>
                                 <Label htmlFor={'ruleFunction'}>
                                     {fieldTypeTab.find((tab) => tab.value === form.getValues('ruleFunction'))
                                         ?.display || 'Enable'}
                                 </Label>
-                            </>
+                            </div>
                         )}
                         {!isEdit && (
-                            <ButtonGroup type="segmented">
-                                {fieldTypeTab.map((field, index) => (
-                                    <Button
-                                        key={index}
-                                        type="button"
-                                        outline={watch.ruleFunction !== field.value}
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        onClick={() => {
-                                            form.reset({
-                                                ruleFunction: field.value,
-                                                targetType: Rule.targetType.QUESTION,
-                                                anySourceValue: false,
-                                                targetIdentifiers: [],
-                                                targetValueText: [],
-                                                description: '',
-                                                sourceIdentifier: '',
-                                                sourceValues: [],
-                                                sourceText: ''
-                                            });
-                                            setTargetQuestion(undefined);
-                                            setSourceQuestion(undefined);
-                                        }}>
-                                        {field.display}
-                                    </Button>
-                                ))}
-                            </ButtonGroup>
+                            <div className={styles.functionBtns}>
+                                <ButtonGroup type="segmented">
+                                    {fieldTypeTab.map((field, index) => (
+                                        <Button
+                                            key={index}
+                                            type="button"
+                                            outline={watch.ruleFunction !== field.value}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            onClick={() => {
+                                                form.reset({
+                                                    ruleFunction: field.value,
+                                                    targetType: Rule.targetType.QUESTION,
+                                                    anySourceValue: false,
+                                                    targetIdentifiers: [],
+                                                    targetValueText: [],
+                                                    description: '',
+                                                    sourceIdentifier: '',
+                                                    sourceValues: [],
+                                                    sourceText: ''
+                                                });
+                                                setTargetQuestion(undefined);
+                                                setSourceQuestion(undefined);
+                                            }}>
+                                            {field.display}
+                                        </Button>
+                                    ))}
+                                </ButtonGroup>
+                            </div>
                         )}
-                    </>
+                    </div>
                 )}
             />
             {watch.ruleFunction && (
                 <>
-                    <div className={styles.sourceQuestionTitle}>
-                        <Label htmlFor="sourceQuestion" requiredMarker>
-                            Source question
-                        </Label>
-                    </div>
-                    {sourceQuestion === undefined ? (
-                        <Button type="button" outline onClick={handleOpenSourceQuestion}>
-                            Search source question
-                        </Button>
-                    ) : (
-                        <div className="sourceQuestionDisplay">
-                            {`${sourceQuestion.name} (${sourceQuestion.question})`}
-                            <Icon.Close
-                                onClick={() => {
-                                    setSourceQuestion(undefined);
-                                    form.setValue('sourceValues', undefined);
-                                }}
-                            />
+                    <div className={styles.sourceQuestion}>
+                        <div className={styles.title}>
+                            <Label htmlFor="sourceQuestion" requiredMarker>
+                                Source question
+                            </Label>
                         </div>
-                    )}
+                        <div className={styles.content}>
+                            {sourceQuestion === undefined ? (
+                                <Button
+                                    type="button"
+                                    outline
+                                    onClick={handleOpenSourceQuestion}
+                                    className={styles.sourceBtn}>
+                                    Search source question
+                                </Button>
+                            ) : (
+                                <div className={styles.sourceQuestionDisplay}>
+                                    {`${sourceQuestion.name} (${sourceQuestion.question})`}
+                                    <Icon.Close
+                                        onClick={() => {
+                                            setSourceQuestion(undefined);
+                                            form.setValue('sourceValues', undefined);
+                                        }}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     {watch.ruleFunction && watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE && (
                         <Controller
@@ -350,7 +361,7 @@ export const BusinessRulesForm = ({
                                 </div>
                                 <div className={styles.content}>
                                     <SelectInput
-                                        className="text-input"
+                                        className={styles.input}
                                         defaultValue={watch.anySourceValue ? Rule.comparator.EQUAL_TO : value}
                                         onChange={onChange}
                                         onBlur={onBlur}
@@ -382,14 +393,16 @@ export const BusinessRulesForm = ({
                                             </Label>
                                         </div>
                                         <div className={styles.content}>
-                                            <MultiSelectInput
-                                                value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
-                                                onChange={(value: string[]) => {
-                                                    handleSourceValueChange(value);
-                                                }}
-                                                options={sourceValues}
-                                                disabled={form.watch('anySourceValue')}
-                                            />
+                                            <div className="source-value-multi-select">
+                                                <MultiSelectInput
+                                                    value={form?.getValues('sourceValues')?.map((val) => val?.id || '')}
+                                                    onChange={(value: string[]) => {
+                                                        handleSourceValueChange(value);
+                                                    }}
+                                                    options={sourceValues}
+                                                    disabled={form.watch('anySourceValue')}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -407,7 +420,7 @@ export const BusinessRulesForm = ({
                                         </div>
                                         <div className={styles.content}>
                                             <Radio
-                                                className="radio-button"
+                                                className={styles.radioBtn}
                                                 type="radio"
                                                 name="targetType"
                                                 value="QUESTION"
@@ -417,7 +430,7 @@ export const BusinessRulesForm = ({
                                                 label="Question"
                                             />
                                             <Radio
-                                                className="radio-button"
+                                                className={styles.radioBtn}
                                                 id="targetType_Sub"
                                                 name="targetType"
                                                 value="SUBSECTION"
@@ -432,39 +445,53 @@ export const BusinessRulesForm = ({
                         </>
                     )}
 
-                    <div className={styles.targetQuestionTitle}>
-                        <Label htmlFor="targetQuestionTitle" requiredMarker>
-                            Target(s)
-                        </Label>
-                    </div>
-                    {(targetQuestions?.length || 0) > 0 && (
-                        <div className={styles.displayTargetQuestions}>
-                            <>
-                                {targetQuestions?.map((question: PagesQuestion, key: number) => (
-                                    <div key={key} className={styles.targetQuestion}>
-                                        <Icon.Check />
-                                        {`${question.name} (${question.question})`}
-                                    </div>
-                                ))}
-                                <Button type="button" outline onClick={handleOpenTargetQuestion}>
-                                    <Icon.Edit />
-                                    <span>Edit</span>
-                                </Button>
-                            </>
+                    <div className={styles.targets}>
+                        <div className={styles.title}>
+                            <Label htmlFor="targetQuestionTitle" requiredMarker>
+                                Target(s)
+                            </Label>
                         </div>
-                    )}
-                    {!(targetQuestions?.length || 0 > 0) && watch.targetType === Rule.targetType.QUESTION && (
-                        <Button
-                            type="button"
-                            outline
-                            onClick={handleOpenTargetQuestion}
-                            disabled={sourceQuestion === undefined}>
-                            Search target question
-                        </Button>
-                    )}
-                    {watch.targetType === Rule.targetType.SUBSECTION && (
-                        <SubSectionsDropdown onSelect={handleTargetSubsection} />
-                    )}
+                        <div className={styles.content}>
+                            {(targetQuestions?.length || 0) > 0 && (
+                                <div className={styles.displayTargetQuestions}>
+                                    <div className={styles.title}>
+                                        {targetQuestions?.map((question: PagesQuestion, key: number) => (
+                                            <div key={key} className={styles.targetQuestion}>
+                                                <Icon.Check />
+                                                {`${question.name} (${question.question})`}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className={styles.edit}>
+                                        <Button
+                                            type="button"
+                                            outline
+                                            onClick={handleOpenTargetQuestion}
+                                            className={styles.btn}>
+                                            <Icon.Edit />
+                                            <span>Edit</span>
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                            {!(targetQuestions?.length || 0 > 0) && watch.targetType === Rule.targetType.QUESTION && (
+                                <Button
+                                    className={styles.targetBtn}
+                                    type="button"
+                                    outline
+                                    onClick={handleOpenTargetQuestion}
+                                    disabled={sourceQuestion === undefined}>
+                                    Search target question
+                                </Button>
+                            )}
+
+                            {watch.targetType === Rule.targetType.SUBSECTION && (
+                                <div className={styles.subsectionTargets}>
+                                    <SubSectionsDropdown onSelect={handleTargetSubsection} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     <Controller
                         control={form.control}
@@ -509,7 +536,7 @@ export const BusinessRulesForm = ({
                     />
                 </>
             )}
-            <Modal id={'sourceQuestion'} ref={sourceQuestionModalRef} isLarge>
+            <Modal id={'sourceQuestion'} ref={sourceQuestionModalRef} className={'source-question-modal'} isLarge>
                 <SourceQuestion
                     ruleFunction={watch.ruleFunction}
                     onSubmit={handleSourceQuestion}
@@ -517,7 +544,7 @@ export const BusinessRulesForm = ({
                 />
             </Modal>
 
-            <Modal id={'targetQuestion'} ref={targetQuestionModalRef} isLarge>
+            <Modal id={'targetQuestion'} ref={targetQuestionModalRef} className={'target-question-modal'} isLarge>
                 <TargetQuestion
                     ruleFunction={watch.ruleFunction}
                     onCancel={handleCloseTargetQuestion}
@@ -526,6 +553,6 @@ export const BusinessRulesForm = ({
                     editTargetQuestion={isEdit ? editTargetQuestions : undefined}
                 />
             </Modal>
-        </>
+        </div>
     );
 };

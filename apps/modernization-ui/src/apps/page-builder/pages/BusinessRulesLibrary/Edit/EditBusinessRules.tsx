@@ -8,24 +8,26 @@ import {
     Rule
 } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './EditBusinessRule.module.scss';
 import { Breadcrumb } from 'breadcrumb/Breadcrumb';
-import { BusinessRulesForm } from './BusinessRulesForm';
+import { BusinessRulesForm } from '../Form/BusinessRulesForm';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { Button, Form } from '@trussworks/react-uswds';
+import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { useAlert } from 'alert';
+import { ConfirmationModal } from 'confirmation';
 
 export const EditBusinessRule = () => {
     const form = useForm<CreateRuleRequest>();
     const watch = useWatch(form);
     const navigate = useNavigate();
     const { ruleId } = useParams();
+    const deleteWarningModal = useRef<ModalRef>(null);
 
-    const { options, fetch, isLoading } = useOptions();
+    const { options, fetch } = useOptions();
     const { page } = useGetPageDetails();
 
     const { showAlert } = useAlert();
@@ -112,13 +114,16 @@ export const EditBusinessRule = () => {
     const fetchSourceValues = (valueSet?: string) => {
         if (valueSet) {
             fetch(valueSet);
-        } else {
-            const matchedValues = options.filter((opt) => selectedSourceValues?.find((val) => val === opt.name));
-            const newValues = matchedValues.map((value) => ({ id: value.value, text: value.name }));
-
-            form.setValue('sourceValues', newValues);
         }
     };
+
+    useEffect(() => {
+        if (selectedSourceValues && options) {
+            const matchedValues = options.filter((opt) => selectedSourceValues?.find((val) => val === opt.name));
+            const newValues = matchedValues.map((value) => ({ id: value.value, text: value.name }));
+            form.setValue('sourceValues', newValues);
+        }
+    }, [JSON.stringify(selectedSourceValues), JSON.stringify(options)]);
 
     const redirectToLibrary = () => {
         if (page?.id) {
@@ -182,14 +187,43 @@ export const EditBusinessRule = () => {
         return false;
     };
 
+    const onDelete = () => {
+        PageRuleControllerService.deletePageRuleUsingDelete({
+            authorization: authorization(),
+            id: page?.id ?? 0,
+            ruleId: Number(ruleId)
+        }).then(() => {
+            redirectToLibrary();
+            showAlert({
+                type: 'success',
+                message: (
+                    <>
+                        The business rule <span className="bold-text">'{form.getValues('sourceText')}'</span> was
+                        successfully deleted.
+                    </>
+                )
+            });
+            deleteWarningModal.current?.toggleModal(undefined, true);
+        });
+    };
+
     return (
-        <div className={styles.editBusinessRules}>
-            {!isLoading && (
-                <>
-                    <div className="breadcrumb-wrap">
-                        <Breadcrumb start="../">Business rules</Breadcrumb>
-                    </div>
-                    <Form onSubmit={onSubmit}>
+        <>
+            <ConfirmationModal
+                modal={deleteWarningModal}
+                title="Warning"
+                message="Are you sure you want to delete this business rule?"
+                detail="Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
+                confirmText="Yes, delete"
+                onConfirm={onDelete}
+                onCancel={() => deleteWarningModal.current?.toggleModal(undefined, false)}
+            />
+            <div className={styles.breadCrumb}>
+                <Breadcrumb start="../">Business rules</Breadcrumb>
+            </div>
+            <div className={styles.editRules}>
+                <Form onSubmit={onSubmit} className={styles.form}>
+                    <div className={styles.container}>
                         <div className={styles.title}>
                             <h2>Edit business rules</h2>
                         </div>
@@ -206,24 +240,35 @@ export const EditBusinessRule = () => {
                                 />
                             </FormProvider>
                         </div>
-
-                        <div className={styles.footerBtns}>
-                            <Button
-                                type="button"
-                                outline
-                                onClick={() => {
-                                    form.reset();
-                                    redirectToLibrary();
-                                }}>
-                                Cancel
-                            </Button>
-                            <Button type="submit" disabled={!checkIsDirty() && !checkIsValid()}>
-                                Update
-                            </Button>
-                        </div>
-                    </Form>
-                </>
-            )}
-        </div>
+                    </div>
+                </Form>
+                <div className={styles.footerBtns}>
+                    <div className={styles.deleteBtn}>
+                        <Button
+                            type="button"
+                            outline
+                            onClick={() => deleteWarningModal.current?.toggleModal(undefined, true)}
+                            className={styles.button}>
+                            <Icon.Delete size={3} />
+                            Delete
+                        </Button>
+                    </div>
+                    <div className={styles.submitBtns}>
+                        <Button
+                            type="button"
+                            outline
+                            onClick={() => {
+                                form.reset();
+                                redirectToLibrary();
+                            }}>
+                            Cancel
+                        </Button>
+                        <Button type="submit" disabled={!checkIsDirty() && !checkIsValid()} onClick={onSubmit}>
+                            Update
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 };

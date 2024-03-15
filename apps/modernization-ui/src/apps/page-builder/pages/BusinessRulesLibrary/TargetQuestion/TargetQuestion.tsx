@@ -10,7 +10,6 @@ import {
     Rule,
     Target
 } from 'apps/page-builder/generated';
-import { handleSourceCases } from './FilterPage';
 import { Icon } from 'components/Icon/Icon';
 import { Button, Checkbox, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetAllPageRules } from 'apps/page-builder/hooks/api/useGetAllPageRules';
@@ -168,7 +167,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
 
                     section.subSections.forEach((subsection: PagesSubSection) => {
                         if (subsection.questions.length > 0) {
-                            if (handleSourceCases(subsection.questions).length > 0) {
+                            if (handleTargetCases(subsection.questions).length > 0) {
                                 newSection?.subSections.push(subsection);
                             }
                         }
@@ -191,94 +190,99 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
             <div className={styles.header}>
                 <h2>Target question</h2>
             </div>
-            <div className={styles.headerMessage}>Please select target question</div>
-            <div className={styles.targetTabs}>
-                <ul className={styles.tabs}>
-                    {filteredPage?.tabs?.map(({ name }, tabKey) => (
-                        <li
-                            key={tabKey}
-                            className={activeTab === tabKey ? styles.active : ''}
-                            onClick={() => {
-                                setActiveTab(tabKey);
-                                setActiveSection(0);
-                                setTargetList([]);
-                            }}>
-                            {name}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className={styles.selectedQuestions}>
-                <div className={styles.title}>Selected questions</div>
-                <div className={styles.content}>
-                    {selectedList.map((question, key) => (
-                        <div key={key} className={styles.selectedQuestion}>
-                            <Tag className={styles.selectedQuestion}>
-                                {question.name} ({question.question})
-                            </Tag>
-                            <UswIcon.Close onClick={() => handleRemove(question)} />
-                        </div>
-                    ))}
+            <div className={styles.body}>
+                <div className={styles.headerMessage}>Please select target question</div>
+                <div className={styles.targetTabs}>
+                    <ul className={styles.tabs}>
+                        {filteredPage?.tabs?.map(({ name }, tabKey) => (
+                            <li
+                                key={tabKey}
+                                className={activeTab === tabKey ? styles.active : ''}
+                                onClick={() => {
+                                    setActiveTab(tabKey);
+                                    setActiveSection(0);
+                                    setTargetList([]);
+                                }}>
+                                {name}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            </div>
-            <div className={styles.content}>
-                <div className={styles.sections}>
-                    {filteredPage?.tabs?.[activeTab] &&
-                        filteredPage?.tabs?.[activeTab]?.sections.map((section: PagesSection, key) => (
-                            <div key={key}>
-                                <div key={key} className={styles.section}>
-                                    <div
-                                        className={styles.sectionToggle}
-                                        onClick={() =>
-                                            activeSection === section.id
-                                                ? setActiveSection(0)
-                                                : setActiveSection(section.id)
-                                        }>
-                                        <Icon name={'group'} size={'m'} />
-                                        <span>{section.name}</span>
-                                    </div>
-                                </div>
-                                {activeSection === section.id && (
-                                    <div className={styles.subsections}>
-                                        {section.subSections.map((subsection: PagesSubSection, id) => (
-                                            <div
-                                                key={id}
-                                                className={styles.subsection}
-                                                onClick={() => {
-                                                    if (activeSubsection === subsection.id) {
-                                                        setActiveSubsection(0);
-                                                        setTargetList([]);
-                                                    } else {
-                                                        setActiveSubsection(subsection.id);
-                                                        handleTargetQuestion(subsection.questions);
-                                                    }
-                                                }}>
-                                                <Icon name={'group'} size={'m'} />
-                                                <span>{subsection.name}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                <div className={styles.selectedQuestions}>
+                    <div className={styles.title}>Selected questions: </div>
+                    <div className={styles.content}>
+                        {selectedList.map((question, key) => (
+                            <div key={key} className={styles.selectedQuestion}>
+                                <Tag className={styles.selectedQuestion}>
+                                    {question.name} ({question.question})
+                                </Tag>
+                                <UswIcon.Close onClick={() => handleRemove(question)} />
                             </div>
                         ))}
+                    </div>
                 </div>
-                <div className={styles.questionsList}>
-                    <Checkbox
-                        onChange={(e) => handleSelectAll(targetList, e)}
-                        id="hots1"
-                        name={'race1'}
-                        label="Select All"
-                    />
-                    {targetList.map((question: PagesQuestion, index) => (
-                        <Checkbox
-                            onChange={(e) => handleSelect(question, e)}
-                            key={index}
-                            checked={selectedList.find((qtn) => qtn.id === question.id) !== undefined}
-                            id={`sourceId${index}`}
-                            name={`sourceName ${index}`}
-                            label={question?.name}
-                        />
-                    ))}
+                <div className={styles.content}>
+                    <div className={styles.sections}>
+                        {filteredPage?.tabs?.[activeTab] &&
+                            filteredPage?.tabs?.[activeTab]?.sections.map((section: PagesSection, key) => (
+                                <div key={key}>
+                                    <div key={key} className={styles.section}>
+                                        <div
+                                            className={styles.sectionToggle}
+                                            onClick={() =>
+                                                activeSection === section.id
+                                                    ? setActiveSection(0)
+                                                    : setActiveSection(section.id)
+                                            }>
+                                            <Icon name={'group'} size={'m'} />
+                                            <span className={styles.name}>{section.name}</span>
+                                        </div>
+                                    </div>
+                                    {activeSection === section.id && (
+                                        <div className={styles.subsections}>
+                                            {section.subSections.map((subsection: PagesSubSection, id) => (
+                                                <div
+                                                    key={id}
+                                                    className={styles.subsection}
+                                                    onClick={() => {
+                                                        if (activeSubsection === subsection.id) {
+                                                            setActiveSubsection(0);
+                                                            setTargetList([]);
+                                                        } else {
+                                                            setActiveSubsection(subsection.id);
+                                                            handleTargetQuestion(subsection.questions);
+                                                        }
+                                                    }}>
+                                                    <Icon name={'group'} size={'m'} />
+                                                    <span className={styles.name}>{subsection.name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                    </div>
+                    <div className={styles.questionsList}>
+                        <div className={styles.selectAll}>
+                            <Checkbox
+                                onChange={(e) => handleSelectAll(targetList, e)}
+                                id="hots1"
+                                name={'race1'}
+                                label="Select All"
+                            />
+                        </div>
+                        {targetList.map((question: PagesQuestion, index) => (
+                            <div className={styles.question} key={index}>
+                                <Checkbox
+                                    onChange={(e) => handleSelect(question, e)}
+                                    checked={selectedList.find((qtn) => qtn.id === question.id) !== undefined}
+                                    id={`sourceId${index}`}
+                                    name={`sourceName ${index}`}
+                                    label={question?.name}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
             <div className={styles.footerBtn}>
