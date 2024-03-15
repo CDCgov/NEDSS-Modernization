@@ -195,6 +195,5 @@ public class EnableDisableCreator {
 
   String labelIfClause(String label) {
     return String.format("($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1)", label);
-
   }
 }

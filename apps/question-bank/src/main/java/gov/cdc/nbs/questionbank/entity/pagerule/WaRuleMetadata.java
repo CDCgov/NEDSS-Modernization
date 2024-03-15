@@ -138,6 +138,23 @@ public class WaRuleMetadata {
     added(command);
   }
 
+  public WaRuleMetadata(PageContentCommand.AddHideUnhideRule command) {
+    this.targetType = command.targetType();
+    this.ruleCd = command.ruleFunction();
+    this.ruleDescText = command.description();
+    this.logic = command.comparator();
+    this.sourceValues = command.sourceValues();
+    this.sourceQuestionIdentifier = command.sourceIdentifier();
+    this.targetQuestionIdentifier = command.targetIdentifiers();
+    this.errormsgText = command.errorMessage();
+    this.jsFunction = command.javascript();
+    this.jsFunctionName = command.javascriptName();
+    this.waTemplateUid = command.page();
+    this.ruleExpression = command.expression();
+    this.userRuleId = "Rule" + command.ruleId();
+    added(command);
+  }
+
   public WaRuleMetadata(long pageId, PageContentCommand.AddRule command) {
     this.waTemplateUid = pageId;
     this.ruleCd = command.ruleCd();
