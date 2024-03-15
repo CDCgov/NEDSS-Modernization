@@ -22,6 +22,11 @@ public class Available<V> {
     items = new ArrayList<>();
   }
 
+  public Available(final V initial) {
+    this.items = new ArrayList<>();
+    this.items.add(initial);
+  }
+
   public void reset() {
     this.items.clear();
   }

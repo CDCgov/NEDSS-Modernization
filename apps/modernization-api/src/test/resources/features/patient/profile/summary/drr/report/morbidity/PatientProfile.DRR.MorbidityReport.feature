@@ -15,8 +15,6 @@ Feature: Patient Profile Documents Requiring Review: Case Report
     And the morbidity report was ordered by the provider
     When I search for documents requiring review for the patient
     Then the Morbidity Report requiring review is returned
-    When I search for documents requiring review for the patient
-    Then the morbidity report requiring review is returned
     And the patient morbidity report requiring review was ordered by "Rupert Marmalade"
     And the patient morbidity report requiring review is not electronic
 

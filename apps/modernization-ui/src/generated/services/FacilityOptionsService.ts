@@ -10,8 +10,8 @@ import { request as __request } from '../core/request';
 export class FacilityOptionsService {
 
     /**
-     * NBS User Option Autocomplete
-     * Provides options from Users that have a name matching a criteria.
+     * NBS Facility Option Autocomplete
+     * Provides options from Facilities that have a name matching a criteria.
      * @returns Option OK
      * @throws ApiError
      */

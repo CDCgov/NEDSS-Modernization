@@ -22,12 +22,6 @@ import {
 } from 'generated/graphql/schema';
 import { EncryptionControllerService } from 'generated/services/EncryptionControllerService';
 import { UserContext } from 'providers/UserContext';
-import {
-    downloadInvestigationSearchResultCsv,
-    downloadInvestigationSearchResultPdf,
-    downloadLabReportSearchResultCsv,
-    downloadLabReportSearchResultPdf
-} from 'utils/ExportUtil';
 import './AdvancedSearch.scss';
 import { AdvancedSearchChips } from 'apps/search/advancedSearch/components/chips/AdvancedSearchChips';
 import { InvestigationResults } from 'apps/search/event/components/InvestigationSearch/InvestigationResults';
@@ -292,40 +286,6 @@ export const AdvancedSearch = () => {
             setSubmitted(false);
         } else {
             setSubmitted(true);
-        }
-    };
-
-    // Generates a CSV of the results
-    const handleExportClick = () => {
-        const token = state.getToken();
-        switch (lastSearchType) {
-            case SEARCH_TYPE.INVESTIGATION:
-                if (investigationFilter && token) {
-                    downloadInvestigationSearchResultCsv(investigationFilter, token);
-                }
-                break;
-            case SEARCH_TYPE.LAB_REPORT:
-                if (labReportFilter && token) {
-                    downloadLabReportSearchResultCsv(labReportFilter, token);
-                }
-                break;
-        }
-    };
-
-    // Generates a PDF of the results
-    const handlePrintClick = () => {
-        const token = state.getToken();
-        switch (lastSearchType) {
-            case SEARCH_TYPE.INVESTIGATION:
-                if (investigationFilter && token) {
-                    downloadInvestigationSearchResultPdf(investigationFilter, token);
-                }
-                break;
-            case SEARCH_TYPE.LAB_REPORT:
-                if (labReportFilter && token) {
-                    downloadLabReportSearchResultPdf(labReportFilter, token);
-                }
-                break;
         }
     };
 
@@ -611,32 +571,6 @@ export const AdvancedSearch = () => {
                                         </ul>
                                     )}
                                 </div>
-                                <Button
-                                    disabled={
-                                        (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                        (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                        (!patientData?.content || patientData?.content?.length === 0)
-                                    }
-                                    className="width-full margin-top-0"
-                                    style={{ display: 'none' }}
-                                    type={'button'}
-                                    onClick={handleExportClick}
-                                    outline>
-                                    Export
-                                </Button>
-                                <Button
-                                    disabled={
-                                        (!investigationData?.content || investigationData?.content?.length === 0) &&
-                                        (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                        (!patientData?.content || patientData?.content?.length === 0)
-                                    }
-                                    className="width-full margin-top-0"
-                                    style={{ display: 'none' }}
-                                    type={'button'}
-                                    onClick={handlePrintClick}
-                                    outline>
-                                    Print
-                                </Button>
                             </div>
                         </Grid>
                         {submitted && !!resultTotal && (
