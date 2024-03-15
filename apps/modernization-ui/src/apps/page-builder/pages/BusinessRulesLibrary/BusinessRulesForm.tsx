@@ -219,7 +219,11 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
     onSubmitDisability(checkSubmitDisability());
 
     const removeNumericAndSymbols = (text: string | undefined) => {
-        return text?.replace(/\d+/g, '').replace('. ', '');
+        const firstChar = text?.charAt(0);
+        if (firstChar && firstChar <= '9' && firstChar >= '0') {
+            return text?.replace(/\d+/, '').replace('. ', '');
+        }
+        return text;
     };
 
     const handleResetSourceQuestion = () => {
@@ -441,7 +445,7 @@ const BusinessRulesForm = ({ question, sourceValues, targets, onSubmitDisability
                             {targetDescriptions?.map((target, index: number) => (
                                 <div className="margin-bottom-1" key={index}>
                                     <Icon.Check />
-                                    <span className="margin-left-1"> {target}</span>
+                                    <span className="margin-left-1"> {removeNumericAndSymbols(target)}</span>
                                 </div>
                             ))}
 

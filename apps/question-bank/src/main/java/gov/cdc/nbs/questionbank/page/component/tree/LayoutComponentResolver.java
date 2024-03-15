@@ -34,8 +34,7 @@ class LayoutComponentResolver {
     return new ComponentNode.Definition(
         component.name(),
         component.visible(),
-        component.order()
-    );
+        component.order());
   }
 
   private PageNode asPage(final FlattenedComponent component) {
@@ -49,22 +48,20 @@ class LayoutComponentResolver {
   private TabNode asTab(final FlattenedComponent component) {
     return new TabNode(
         component.identifier(),
-        asDefinition(component)
-    );
+        asDefinition(component));
   }
 
   private SectionNode asSection(final FlattenedComponent component) {
     return new SectionNode(
         component.identifier(),
-        asDefinition(component)
-    );
+        asDefinition(component));
   }
 
   private SubSectionNode asSubSection(final FlattenedComponent component) {
     return new SubSectionNode(
         component.identifier(),
         asDefinition(component),
-        component.isGrouped()
-    );
+        component.isGrouped(),
+        component.question());
   }
 }
