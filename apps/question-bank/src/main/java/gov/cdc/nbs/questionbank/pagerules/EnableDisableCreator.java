@@ -58,7 +58,7 @@ public class EnableDisableCreator {
   public WaRuleMetadata create(long nextAvailableId, RuleRequest request, long page, long userId) {
     String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
-    PageContentCommand.AddEnableDisableRule command = new PageContentCommand.AddEnableDisableRule(
+    PageContentCommand.AddRuleCommand command = new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         request.targetType().toString(),
         request.ruleFunction().toString(),

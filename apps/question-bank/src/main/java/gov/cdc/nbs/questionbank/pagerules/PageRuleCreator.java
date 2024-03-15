@@ -15,16 +15,22 @@ public class PageRuleCreator {
   private final DateCompareCreator dateCompareCreator;
   private final EnableDisableCreator enableDisableCreator;
   private final HideUnhideCreator hideUnhideCreator;
+  private final RequireIfCreator requireIfCreator;
+  private final PageRuleFinder finder;
 
   public PageRuleCreator(
       final WaRuleMetaDataRepository waRuleMetaDataRepository,
       final DateCompareCreator dateCompareCreator,
       final EnableDisableCreator enableDisableCreator,
-      final HideUnhideCreator hideUnhideCreator) {
+      final HideUnhideCreator hideUnhideCreator,
+      final RequireIfCreator requireIfCreator,
+      final PageRuleFinder finder) {
     this.repository = waRuleMetaDataRepository;
     this.dateCompareCreator = dateCompareCreator;
     this.enableDisableCreator = enableDisableCreator;
     this.hideUnhideCreator = hideUnhideCreator;
+    this.requireIfCreator = requireIfCreator;
+    this.finder = finder;
   }
 
   public Rule createPageRule(Long userId, RuleRequest request, long page) {
@@ -33,11 +39,11 @@ public class PageRuleCreator {
       case DATE_COMPARE -> dateCompareCreator.create(availableId, request, page, userId);
       case DISABLE, ENABLE -> enableDisableCreator.create(availableId, request, page, userId);
       case HIDE, UNHIDE -> hideUnhideCreator.create(availableId, request, page, userId);
-      case REQUIRE_IF -> null;
+      case REQUIRE_IF -> requireIfCreator.create(availableId, request, page, userId);
       default -> throw new RuleException("Unsupported function specified");
     };
 
-    repository.save(ruleMetadata);
-    return null;
+    ruleMetadata = repository.save(ruleMetadata);
+    return finder.findByRuleId(ruleMetadata.getId());
   }
 }

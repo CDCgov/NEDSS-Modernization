@@ -375,39 +375,7 @@ public sealed interface PageContentCommand {
       implements PageContentCommand {
   }
 
-  public record AddDateCompareRule(
-      long ruleId,
-      String ruleFunction,
-      String description,
-      String comparator,
-      String sourceIdentifier,
-      String targetIdentifiers,
-      String errorMessage,
-      String javascript,
-      String javascriptName,
-      String expression,
-      long page,
-      long userId,
-      Instant requestedOn) implements PageContentCommand {
-  }
-  public record AddEnableDisableRule(
-      long ruleId,
-      String targetType,
-      String ruleFunction,
-      String description,
-      String comparator,
-      String sourceIdentifier,
-      String sourceValues,
-      String targetIdentifiers,
-      String errorMessage,
-      String javascript,
-      String javascriptName,
-      String expression,
-      long page,
-      long userId,
-      Instant requestedOn) implements PageContentCommand {
-  }
-  public record AddHideUnhideRule(
+  public record AddRuleCommand(
       long ruleId,
       String targetType,
       String ruleFunction,

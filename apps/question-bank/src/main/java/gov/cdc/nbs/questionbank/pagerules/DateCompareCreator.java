@@ -59,30 +59,35 @@ public class DateCompareCreator {
   public WaRuleMetadata create(long nextAvailableId, RuleRequest request, long page, long userId) {
     String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
+    String errorMessage = createErrorMessage(
+        request.sourceText(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String javascript = createJavascript(
+        functionName,
+        request.sourceIdentifier(),
+        request.sourceText(),
+        request.targetIdentifiers(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String expression = createExpression(
+        request.sourceIdentifier(),
+        targetIdentifier,
+        request.comparator().getValue());
 
-    PageContentCommand.AddDateCompareRule command = new PageContentCommand.AddDateCompareRule(
+    PageContentCommand.AddRuleCommand command = new PageContentCommand.AddRuleCommand(
         nextAvailableId,
+        null,
         request.ruleFunction().toString(),
         request.description(),
         request.comparator().toString(),
         request.sourceIdentifier(),
+        null,
         targetIdentifier,
-        createErrorMessage(
-            request.sourceText(),
-            request.targetValueText(),
-            request.comparator().getValue()),
-        createJavascript(
-            functionName,
-            request.sourceIdentifier(),
-            request.sourceText(),
-            request.targetIdentifiers(),
-            request.targetValueText(),
-            request.comparator().getValue()),
+        errorMessage,
+        javascript,
         functionName,
-        createExpression(
-            request.sourceIdentifier(),
-            targetIdentifier,
-            request.comparator().getValue()),
+        expression,
         page,
         userId,
         Instant.now());

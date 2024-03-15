@@ -69,37 +69,42 @@ public class HideUnhideCreator {
   public WaRuleMetadata create(long nextAvailableId, RuleRequest request, long page, long userId) {
     String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
-    PageContentCommand.AddHideUnhideRule command = new PageContentCommand.AddHideUnhideRule(
+    String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
+    String errorMessage = createErrorMessage(
+        request.sourceText(),
+        request.sourceValues(),
+        request.anySourceValue(),
+        request.targetValueText(),
+        request.comparator().getValue());
+    String javascript = createJavascript(
+        functionName,
+        request.sourceIdentifier(),
+        request.anySourceValue(),
+        request.targetIdentifiers(),
+        request.sourceValues(),
+        request.comparator().getValue(),
+        RuleFunction.HIDE.equals(request.ruleFunction()));
+    String expression = createExpression(
+        request.sourceIdentifier(),
+        request.sourceValues(),
+        request.anySourceValue(),
+        targetIdentifier,
+        request.comparator().getValue(),
+        RuleFunction.ENABLE.equals(request.ruleFunction()));
+
+    PageContentCommand.AddRuleCommand command = new PageContentCommand.AddRuleCommand(
         nextAvailableId,
         request.targetType().toString(),
         request.ruleFunction().toString(),
         request.description(),
         request.comparator().toString(),
         request.sourceIdentifier(),
-        createSourceValues(request.anySourceValue(), request.sourceValues()),
+        sourceValues,
         targetIdentifier,
-        createErrorMessage(
-            request.sourceText(),
-            request.sourceValues(),
-            request.anySourceValue(),
-            request.targetValueText(),
-            request.comparator().getValue()),
-        createJavascript(
-            functionName,
-            request.sourceIdentifier(),
-            request.anySourceValue(),
-            request.targetIdentifiers(),
-            request.sourceValues(),
-            request.comparator().getValue(),
-            RuleFunction.HIDE.equals(request.ruleFunction())),
+        errorMessage,
+        javascript,
         functionName,
-        createExpression(
-            request.sourceIdentifier(),
-            request.sourceValues(),
-            request.anySourceValue(),
-            targetIdentifier,
-            request.comparator().getValue(),
-            RuleFunction.ENABLE.equals(request.ruleFunction())),
+        expression,
         page,
         userId,
         Instant.now());

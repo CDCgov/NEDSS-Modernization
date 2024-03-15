@@ -1,16 +1,17 @@
 package gov.cdc.nbs.questionbank.entity.pagerule;
 
+import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-
-import gov.cdc.nbs.questionbank.pagerules.command.PageRuleCommand;
-
-import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -84,61 +85,8 @@ public class WaRuleMetadata {
   private String targetType;
 
 
-  public WaRuleMetadata(PageRuleCommand.AddPageRule command) {
-    this.ruleCd = command.ruleRequest().ruleFunction().getValue();
-    this.ruleDescText = command.ruleRequest().description();
-    this.sourceValues = command.ruleData().sourceValues();
-    this.logic = command.ruleRequest().comparator().getValue();
-    this.sourceQuestionIdentifier = command.ruleData().sourceIdentifier();
-    this.targetQuestionIdentifier = command.ruleData().targetIdentifiers();
-    this.targetType = command.ruleRequest().targetType().toString();
-    this.addTime = command.requestedOn();
-    this.addUserId = command.userId();
-    this.lastChgTime = command.requestedOn();
-    this.recordStatusCd = ACTIVE;
-    this.lastChgUserId = command.userId();
-    this.recordStatusTime = command.requestedOn();
-    this.errormsgText = command.ruleData().errorMsgText();
-    this.jsFunction = command.ruleData().jsFunctionNameHelper().jsFunction();
-    this.jsFunctionName = command.ruleData().jsFunctionNameHelper().jsFunctionName();
+  public WaRuleMetadata(PageContentCommand.AddRuleCommand command) {
     this.waTemplateUid = command.page();
-    this.ruleExpression = command.ruleData().ruleExpression();
-    this.userRuleId = "Rule" + this.id;
-  }
-
-  public WaRuleMetadata(PageContentCommand.AddDateCompareRule command) {
-    this.ruleCd = command.ruleFunction();
-    this.ruleDescText = command.description();
-    this.logic = command.comparator();
-    this.sourceQuestionIdentifier = command.sourceIdentifier();
-    this.targetQuestionIdentifier = command.targetIdentifiers();
-    this.errormsgText = command.errorMessage();
-    this.jsFunction = command.javascript();
-    this.jsFunctionName = command.javascriptName();
-    this.waTemplateUid = command.page();
-    this.ruleExpression = command.expression();
-    this.userRuleId = "Rule" + command.ruleId();
-    added(command);
-  }
-
-  public WaRuleMetadata(PageContentCommand.AddEnableDisableRule command) {
-    this.targetType = command.targetType();
-    this.ruleCd = command.ruleFunction();
-    this.ruleDescText = command.description();
-    this.logic = command.comparator();
-    this.sourceValues = command.sourceValues();
-    this.sourceQuestionIdentifier = command.sourceIdentifier();
-    this.targetQuestionIdentifier = command.targetIdentifiers();
-    this.errormsgText = command.errorMessage();
-    this.jsFunction = command.javascript();
-    this.jsFunctionName = command.javascriptName();
-    this.waTemplateUid = command.page();
-    this.ruleExpression = command.expression();
-    this.userRuleId = "Rule" + command.ruleId();
-    added(command);
-  }
-
-  public WaRuleMetadata(PageContentCommand.AddHideUnhideRule command) {
     this.targetType = command.targetType();
     this.ruleCd = command.ruleFunction();
     this.ruleDescText = command.description();
