@@ -1,0 +1,18 @@
+@use 'styles/colors';
+
+.tab {
+    background-color: colors.$clear;
+    border: 0;
+    border-radius: 0;
+    color: colors.$base-black;
+    text-decoration: none;
+    border-bottom: 0.4375rem solid transparent;
+    &.active {
+        border-bottom: 0.4375rem solid colors.$primary;
+    }
+    padding-bottom: 0.62rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-size: 1.0625rem;
+}
+
