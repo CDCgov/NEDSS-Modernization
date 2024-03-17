@@ -47,7 +47,11 @@ class ContentComponentResolverTest {
         false,
         "data_location",
         true,
-        "block_name");
+        "block_name",
+        null,
+        false,
+        null,
+        null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -109,7 +113,11 @@ class ContentComponentResolverTest {
         false,
         "data_location",
         true,
-        "block_name");
+        "block_name",
+        null,
+        false,
+        null,
+        null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -169,7 +177,11 @@ class ContentComponentResolverTest {
         false,
         "data_location",
         true,
-        "block_name");
+        "block_name",
+        null,
+        false,
+        null,
+        null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -229,7 +241,11 @@ class ContentComponentResolverTest {
         false,
         "data_location",
         true,
-        "block_name");
+        "block_name",
+        null,
+        false,
+        null,
+        null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 

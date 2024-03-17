@@ -60,7 +60,10 @@ class ContentComponentResolver {
         component.dataLocation(),
         component.isPublished(),
         component.questionGroupSeq(),
-        component.blockName());
+        component.blockName(),
+        component.appearsInBatch(),
+        component.batchLabel(),
+        component.batchWidth());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {

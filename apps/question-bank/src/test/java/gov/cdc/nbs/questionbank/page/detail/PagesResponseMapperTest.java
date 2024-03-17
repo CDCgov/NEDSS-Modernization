@@ -163,7 +163,9 @@ class PagesResponseMapperTest {
                                                 true,
                                                 4),
                                             false,
-                                            "identifier"))));
+                                            "identifier",
+                                            "block name",
+                                            3))));
 
     PageDescription description = mock(PageDescription.class);
 
@@ -182,6 +184,8 @@ class PagesResponseMapperTest {
                             () -> assertThat(subSection.name()).isEqualTo("sub-section-name-value"),
                             () -> assertThat(subSection.visible()).isTrue(),
                             () -> assertThat(subSection.questionIdentifier()).isEqualTo("identifier"),
+                            () -> assertThat(subSection.blockName()).isEqualTo("block name"),
+                            () -> assertThat(subSection.dataMartRepeatNumber()).isEqualTo(3),
                             () -> assertThat(subSection.order()).isEqualTo(4)))));
 
   }
@@ -214,7 +218,9 @@ class PagesResponseMapperTest {
                                                 true,
                                                 4),
                                             false,
-                                            "identifier").add(
+                                            "identifier",
+                                            null,
+                                            null).add(
                                                 new StaticNode(
                                                     1697L,
                                                     StaticNode.Type.HYPERLINK,
@@ -246,7 +252,10 @@ class PagesResponseMapperTest {
                                                         "data_location",
                                                         false,
                                                         1,
-                                                        "block_name"))))));
+                                                        "block_name",
+                                                        false,
+                                                        null,
+                                                        null))))));
 
     PageDescription description = mock(PageDescription.class);
 

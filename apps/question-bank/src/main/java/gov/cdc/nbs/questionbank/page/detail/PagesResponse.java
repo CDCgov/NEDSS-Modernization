@@ -57,6 +57,8 @@ public record PagesResponse(
       @ApiModelProperty(required = true) boolean isGrouped,
       @ApiModelProperty(required = true) boolean isGroupable,
       @ApiModelProperty(required = true) String questionIdentifier,
+      String blockName,
+      Integer dataMartRepeatNumber,
       @ApiModelProperty(required = true) Collection<PagesQuestion> questions) {
   }
 
@@ -90,7 +92,10 @@ public record PagesResponse(
       String defaultLabelInReport,
       String dataMartColumnName,
       boolean isPublished,
-      String blockName) {
+      String blockName,
+      boolean appearsInBatch,
+      String batchLabel,
+      Integer batchWidth) {
   }
 
 

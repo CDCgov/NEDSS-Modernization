@@ -62,6 +62,8 @@ class LayoutComponentResolver {
         component.identifier(),
         asDefinition(component),
         component.isGrouped(),
-        component.question());
+        component.question(),
+        component.blockName(),
+        component.dataMartRepeatNumber());
   }
 }
