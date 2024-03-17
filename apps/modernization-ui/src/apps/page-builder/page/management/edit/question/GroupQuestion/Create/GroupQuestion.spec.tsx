@@ -3,7 +3,7 @@ import { AlertProvider } from 'alert';
 import { GroupSubSectionRequest, PagesQuestion, PagesResponse, PagesSubSection } from 'apps/page-builder/generated';
 import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { PageManagementProvider } from '../../../usePageManagement';
+import { PageManagementProvider } from '../../../../usePageManagement';
 import { GroupQuestion } from './GroupQuestion';
 
 type Additional = {
@@ -78,13 +78,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 const setup = () => {
     return render(
         <Wrapper>
-            <GroupQuestion
-                page={1}
-                subsection={subSections}
-                questions={subSections.questions}
-                onSuccess={jest.fn()}
-                onCancel={jest.fn()}
-            />
+            <GroupQuestion page={1} subsection={subSections} onSuccess={jest.fn()} onCancel={jest.fn()} />
         </Wrapper>
     );
 };

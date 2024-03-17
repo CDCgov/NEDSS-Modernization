@@ -185,7 +185,6 @@ class PagesResponseMapperTest {
                             () -> assertThat(subSection.visible()).isTrue(),
                             () -> assertThat(subSection.questionIdentifier()).isEqualTo("identifier"),
                             () -> assertThat(subSection.blockName()).isEqualTo("block name"),
-                            () -> assertThat(subSection.dataMartRepeatNumber()).isEqualTo(3),
                             () -> assertThat(subSection.order()).isEqualTo(4)))));
 
   }
@@ -253,6 +252,7 @@ class PagesResponseMapperTest {
                                                         false,
                                                         1,
                                                         "block_name",
+                                                        null,
                                                         false,
                                                         null,
                                                         null))))));

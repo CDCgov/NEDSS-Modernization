@@ -61,6 +61,7 @@ class ContentComponentResolver {
         component.isPublished(),
         component.questionGroupSeq(),
         component.blockName(),
+        component.dataMartRepeatNumber(),
         component.appearsInBatch(),
         component.batchLabel(),
         component.batchWidth());

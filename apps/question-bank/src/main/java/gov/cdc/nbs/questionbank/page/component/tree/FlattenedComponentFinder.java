@@ -38,7 +38,7 @@ class FlattenedComponentFinder {
           [WaRdbMetadatum].rpt_admin_column_nm    as [Default_label_in_report],
           [WaRdbMetadatum].user_defined_column_nm as [data-mart-column-name],
           [component].block_nm                    as [blockName],
-          [component].question_group_seq_nbr    as  [dataMartRepeatNumber],
+          [WaRdbMetadatum].block_pivot_nbr        as  [dataMartRepeatNumber],
           [component].data_location               as [dataLocation],
           [component].publish_ind_cd              as [is_published],
           [component].batch_table_appear_ind_cd   as  [appearsInBatch],

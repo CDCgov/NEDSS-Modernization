@@ -1,10 +1,11 @@
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { PagesSubSection } from 'apps/page-builder/generated';
 import { RefObject } from 'react';
-import { GroupQuestion } from './GroupQuestion';
+import { GroupQuestion } from './Create/GroupQuestion';
 import './GroupQuestionModal.scss';
 import styles from './group-question-modal.module.scss';
 import { usePageManagement } from '../../../usePageManagement';
+import { UpdateGroupedQuestion } from './Update/UpdateGroupedQuestion';
 
 type Props = {
     modal: RefObject<ModalRef>;
@@ -31,13 +32,27 @@ export const GroupQuestionModal = ({ modal, subsection }: Props) => {
             aria-describedby="group-question-modal">
             <div className={styles.modal}>
                 {subsection && (
-                    <GroupQuestion
-                        page={page.id}
-                        subsection={subsection}
-                        questions={subsection.questions}
-                        onCancel={handleCancel}
-                        onSuccess={handleSuccess}
-                    />
+                    <>
+                        {!subsection.isGrouped ? (
+                            <>
+                                <GroupQuestion
+                                    page={page.id}
+                                    subsection={subsection}
+                                    onCancel={handleCancel}
+                                    onSuccess={handleSuccess}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <UpdateGroupedQuestion
+                                    page={page.id}
+                                    subsection={subsection}
+                                    onCancel={handleCancel}
+                                    onSuccess={handleSuccess}
+                                />
+                            </>
+                        )}
+                    </>
                 )}
             </div>
         </Modal>

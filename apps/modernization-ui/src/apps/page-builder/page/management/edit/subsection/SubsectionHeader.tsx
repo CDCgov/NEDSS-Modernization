@@ -69,9 +69,9 @@ export const SubsectionHeader = ({
         }
     };
 
-    const handleOpenGroup = () => {
+    const closeThenAct = (action: (subsection: PagesSubSection) => void) => {
         setCloseOptions(true);
-        onGroupQuestion(subsection);
+        action(subsection);
     };
 
     return (
@@ -92,7 +92,7 @@ export const SubsectionHeader = ({
                 <MoreOptions
                     header={<Icon.MoreVert size={4} onClick={() => setCloseOptions(false)} />}
                     close={closeOptions}>
-                    <Button type="button" onClick={onEditSubsection}>
+                    <Button type="button" onClick={() => closeThenAct(onEditSubsection)}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped ? (
@@ -105,7 +105,7 @@ export const SubsectionHeader = ({
                     ) : (
                         <>
                             {subsection.isGroupable && subsection.questions.length > 0 && (
-                                <Button type="button" onClick={handleOpenGroup}>
+                                <Button type="button" onClick={() => closeThenAct(onGroupQuestion)}>
                                     <IconComponent name={'group'} size={'s'} /> Group questions
                                 </Button>
                             )}

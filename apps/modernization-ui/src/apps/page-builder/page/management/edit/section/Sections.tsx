@@ -15,6 +15,7 @@ type Props = {
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;
     onGroupQuestion: (subsection: PagesSubSection) => void;
+    onEditGroupedSubsection: (subsection: PagesSubSection) => void;
 };
 
 export const Sections = ({
@@ -23,7 +24,8 @@ export const Sections = ({
     onEditQuestion,
     onEditValueset,
     onChangeValueset,
-    onGroupQuestion
+    onGroupQuestion,
+    onEditGroupedSubsection
 }: Props) => {
     const { page, refresh } = usePageManagement();
 
@@ -65,6 +67,7 @@ export const Sections = ({
                     onEditValueset={onEditValueset}
                     onChangeValueset={onChangeValueset}
                     onGroupQuestion={onGroupQuestion}
+                    onEditGroupedSubsection={onEditGroupedSubsection}
                 />
             ))}
             <StatusModal

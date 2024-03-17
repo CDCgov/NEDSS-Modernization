@@ -92,7 +92,6 @@ class PagesResponseMapper {
         isGroupable,
         subsection.questionIdentifier(),
         subsection.blockName(),
-        subsection.dataMartRepeatNumber(),
         mapAll(this::asQuestion, subsection.children()));
   }
 
@@ -126,6 +125,7 @@ class PagesResponseMapper {
     boolean isPublished = content.attributes().isPublished();
     int questionGroupSeq = content.attributes().questionGroupSeq();
     String blockName = content.attributes().blockName();
+    Integer dataMartRepeatNumber = content.attributes().dataMartRepeatNumber();
     boolean appearsInBatch = content.attributes().appearsInBatch();
     String batchLabel = content.attributes().batchLabel();
     Integer batchWidth = content.attributes().batchWidth();
@@ -159,6 +159,7 @@ class PagesResponseMapper {
         dataMartColumnName,
         isPublished,
         blockName,
+        dataMartRepeatNumber,
         appearsInBatch,
         batchLabel,
         batchWidth);
