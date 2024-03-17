@@ -14,7 +14,7 @@ type Props = {
 
 export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const [total, setTotal] = useState<number | undefined>(undefined);
-    const { control, resetField } = useFormContext<GroupRequest & { batches: Batch[] }>();
+    const { control, setValue } = useFormContext<GroupRequest & { batches: Batch[] }>();
     const { fields } = useFieldArray({
         control,
         name: 'batches'
@@ -29,8 +29,8 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
         validateWidths();
         batches.forEach((b, i) => {
             if (!b.appearsInTable) {
-                resetField(`batches.${i}.label`);
-                resetField(`batches.${i}.width`);
+                setValue(`batches.${i}.label`, '');
+                setValue(`batches.${i}.width`, 0);
             }
         });
     }, [JSON.stringify(batches)]);
