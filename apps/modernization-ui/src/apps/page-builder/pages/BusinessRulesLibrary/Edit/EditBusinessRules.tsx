@@ -43,7 +43,7 @@ export const EditBusinessRule = () => {
             ruleId: Number(ruleId)
         }).then((response: Rule) => {
             fetchSourceValues(response.sourceQuestion.codeSetName ?? '');
-            setSelectedSourceValues(response.sourceValues);
+            setSelectedSourceValues(response.sourceValues?.map((s) => s.trim()));
             setInitialSourceIdentifiers(response.sourceQuestion.questionIdentifier ?? '');
             setInitialTargetIdentifiers(response.targets.map((target) => target.targetIdentifier ?? '') ?? []);
 

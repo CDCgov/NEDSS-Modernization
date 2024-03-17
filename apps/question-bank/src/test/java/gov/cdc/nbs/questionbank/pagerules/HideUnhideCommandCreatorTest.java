@@ -471,4 +471,30 @@ class HideUnhideCommandCreatorTest {
     assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
     assertThat(command.userId()).isEqualTo(3l);
   }
+
+  @Test
+  void expression_unhide() {
+    String expected = "INV144 (  )  ^ S ( DEM161 )";
+    String actual = creator.createExpression(
+        "INV144",
+        null,
+        true,
+        "DEM161",
+        "=",
+        false);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void expression_hide() {
+    String expected = "INV144 (  )  ^ H ( DEM161 )";
+    String actual = creator.createExpression(
+        "INV144",
+        null,
+        true,
+        "DEM161",
+        "=",
+        true);
+    assertThat(actual).isEqualTo(expected);
+  }
 }
