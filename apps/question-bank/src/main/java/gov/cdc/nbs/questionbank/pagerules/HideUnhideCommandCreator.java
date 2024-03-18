@@ -67,7 +67,6 @@ public class HideUnhideCommandCreator {
             """;
 
   public PageContentCommand.AddRuleCommand create(long nextAvailableId, RuleRequest request, long page, long userId) {
-    String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), nextAvailableId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
     String errorMessage = createErrorMessage(
@@ -83,7 +82,7 @@ public class HideUnhideCommandCreator {
         request.sourceIdentifier(),
         request.sourceValues(),
         request.anySourceValue(),
-        targetIdentifier,
+        request.targetIdentifiers(),
         request.comparator().getValue(),
         RuleFunction.ENABLE.equals(request.ruleFunction()));
 
@@ -95,7 +94,7 @@ public class HideUnhideCommandCreator {
         request.comparator().getValue(),
         request.sourceIdentifier(),
         sourceValues,
-        targetIdentifier,
+        String.join(",", request.targetIdentifiers()),
         errorMessage,
         javascript,
         functionName,
@@ -106,7 +105,6 @@ public class HideUnhideCommandCreator {
   }
 
   public PageContentCommand.UpdateRuleCommand update(long currentId, RuleRequest request, long userId) {
-    String targetIdentifier = String.join(" , ", request.targetIdentifiers());
     String functionName = createJavascriptName(request.sourceIdentifier(), currentId);
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
     String errorMessage = createErrorMessage(
@@ -122,7 +120,7 @@ public class HideUnhideCommandCreator {
         request.sourceIdentifier(),
         request.sourceValues(),
         request.anySourceValue(),
-        targetIdentifier,
+        request.targetIdentifiers(),
         request.comparator().getValue(),
         RuleFunction.ENABLE.equals(request.ruleFunction()));
 
@@ -132,7 +130,7 @@ public class HideUnhideCommandCreator {
         request.comparator().getValue(),
         request.sourceIdentifier(),
         sourceValues,
-        targetIdentifier,
+        String.join(",", request.targetIdentifiers()),
         errorMessage,
         javascript,
         functionName,
@@ -175,12 +173,13 @@ public class HideUnhideCommandCreator {
       String sourceIdentifier,
       List<SourceValue> sourceValues,
       boolean anySourceValue,
-      String targetIdentifier,
+      List<String> targetIdentifiers,
       String comparator,
       boolean isHide) {
     String indicator = isHide ? "H" : "S";
     String values = anySourceValue ? "" : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
     String comparatorValue = anySourceValue ? "" : comparator;
+    String targetIdentifier = String.join(" , ", targetIdentifiers);
     return String.format("%s ( %s ) %s ^ %s ( %s )",
         sourceIdentifier,
         values,
