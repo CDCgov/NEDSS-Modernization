@@ -331,9 +331,7 @@ export const BusinessRulesForm = ({
                             ) : (
                                 <div className={styles.sourceQuestionDisplay}>
                                     <div className={styles.title}>
-                                        {`${checkForSemicolon(removeNumericAndSymbols(sourceQuestion.name))} (${
-                                            sourceQuestion.question
-                                        })`}
+                                        {`${removeNumericAndSymbols(sourceQuestion.name)} (${sourceQuestion.question})`}
                                     </div>
                                     <div className={styles.closeBtn}>
                                         <Icon.Close
@@ -484,9 +482,7 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
-                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name))} (${
-                                                    question.question
-                                                })`}
+                                                {`${removeNumericAndSymbols(question.name)} (${question.question})`}
                                             </div>
                                         ))}
                                     </div>
@@ -552,7 +548,7 @@ export const BusinessRulesForm = ({
                                             <Input
                                                 type="text"
                                                 multiline
-                                                defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
+                                                defaultValue={removeNumericAndSymbols(value)}
                                                 onChange={onChange}
                                                 onBlur={onBlur}
                                             />
