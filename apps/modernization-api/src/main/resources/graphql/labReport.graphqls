@@ -89,7 +89,7 @@ type LabReport {
   jurisdictionCd: Int
   jurisdictionCodeDescTxt: String
   localId: String
-  addTime: DateTime
+  addTime: Date
   personParticipations: [LabReportPersonParticipation!]!
   organizationParticipations: [LabReportOrganizationParticipation!]!
   observations: [Observation!]!
@@ -97,7 +97,7 @@ type LabReport {
 }
 
 type LabReportPersonParticipation {
-  birthTime: DateTime
+  birthTime: Date
   currSexCd: String
   typeCd: String
   firstName: String

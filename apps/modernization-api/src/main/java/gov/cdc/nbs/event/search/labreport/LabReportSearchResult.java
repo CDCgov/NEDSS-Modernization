@@ -21,7 +21,8 @@ record LabReportSearchResult(
      String firstName,
      String lastName,
      String personCd,
-     long personParentUid
+     long personParentUid,
+     String local
   ){}
 
   record OrganizationParticipation(

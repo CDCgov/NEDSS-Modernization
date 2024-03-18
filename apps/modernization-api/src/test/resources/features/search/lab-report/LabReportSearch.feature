@@ -32,6 +32,7 @@ Feature: Lab report search
     When I search for lab reports
     Then the Lab Report search results contain the lab report
     And there is only one lab report search result
+    And the Lab Report search results contain the patient short id
 
   Scenario: I can search for Lab Reports created by a specific user
     Given the patient has a lab report

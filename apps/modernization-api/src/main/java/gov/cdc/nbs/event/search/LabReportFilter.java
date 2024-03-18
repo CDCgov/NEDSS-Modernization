@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -60,7 +61,7 @@ public final class LabReportFilter implements EventFilter {
 
   public enum LaboratoryEventIdType {
     ACCESSION_NUMBER,
-    LAB_ID
+    LAB_ID;
   }
 
 
@@ -74,14 +75,34 @@ public final class LabReportFilter implements EventFilter {
 
 
   public enum EntryMethod {
-    ELECTRONIC,
-    MANUAL
+    ELECTRONIC("Y"),
+    MANUAL("N");
+
+    private final String value;
+
+    EntryMethod(final String value) {
+      this.value = value;
+    }
+
+    public String value() {
+      return value;
+    }
   }
 
 
   public enum UserType {
-    INTERNAL,
-    EXTERNAL
+    INTERNAL(null),
+    EXTERNAL("E");
+
+    private final String value;
+
+    UserType(final String value) {
+      this.value = value;
+    }
+
+    public String value() {
+      return value;
+    }
   }
 
 
@@ -93,7 +114,7 @@ public final class LabReportFilter implements EventFilter {
 
   public enum ProcessingStatus {
     PROCESSED,
-    UNPROCESSED
+    UNPROCESSED;
   }
 
 
@@ -106,5 +127,81 @@ public final class LabReportFilter implements EventFilter {
   public LabReportFilter withEventStatus(final EventStatus status) {
     this.eventStatus.add(status);
     return this;
+  }
+
+  public boolean includeNew() {
+    return this.eventStatus.contains(EventStatus.NEW);
+  }
+
+  public boolean includeUpdated() {
+    return this.eventStatus.contains(EventStatus.UPDATE);
+  }
+
+  public Optional<LabReportEventId> accession() {
+    if (this.eventId != null
+        && this.eventId.getLabEventId() != null
+        && this.eventId.getLabEventType() == LaboratoryEventIdType.ACCESSION_NUMBER
+    ) {
+      return Optional.of(this.eventId);
+    }
+    return Optional.empty();
+  }
+
+  public Optional<LabReportEventId> labId() {
+    if (this.eventId != null
+        && this.eventId.getLabEventId() != null
+        && this.eventId.getLabEventType() == LaboratoryEventIdType.LAB_ID
+    ) {
+      return Optional.of(this.eventId);
+    }
+    return Optional.empty();
+  }
+
+  public Optional<LaboratoryEventDateSearch> reportedOn() {
+    return (this.eventDate != null && this.eventDate.type == LabReportDateType.DATE_OF_REPORT)
+        ? Optional.of(this.eventDate)
+        : Optional.empty();
+  }
+
+  public Optional<LaboratoryEventDateSearch> receivedOn() {
+    return (this.eventDate != null && this.eventDate.type == LabReportDateType.DATE_RECEIVED_BY_PUBLIC_HEALTH)
+        ? Optional.of(this.eventDate)
+        : Optional.empty();
+  }
+
+  public Optional<LaboratoryEventDateSearch> collectedOn() {
+    return (this.eventDate != null && this.eventDate.type == LabReportDateType.DATE_OF_SPECIMEN_COLLECTION)
+        ? Optional.of(this.eventDate)
+        : Optional.empty();
+  }
+
+  public Optional<LaboratoryEventDateSearch> createdOn() {
+    return (this.eventDate != null && this.eventDate.type == LabReportDateType.LAB_REPORT_CREATE_DATE)
+        ? Optional.of(this.eventDate)
+        : Optional.empty();
+  }
+
+  public Optional<LaboratoryEventDateSearch> updatedOn() {
+    return (this.eventDate != null && this.eventDate.type == LabReportDateType.LAST_UPDATE_DATE)
+        ? Optional.of(this.eventDate)
+        : Optional.empty();
+  }
+
+  public Optional<Long> orderingProvider() {
+    return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.ORDERING_PROVIDER)
+        ? Optional.of(this.providerSearch.getProviderId())
+        : Optional.empty();
+  }
+
+  public Optional<Long> orderingFacility() {
+    return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.ORDERING_FACILITY)
+        ? Optional.of(this.providerSearch.getProviderId())
+        : Optional.empty();
+  }
+
+  public Optional<Long> reportingFacility() {
+    return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.REPORTING_FACILITY)
+        ? Optional.of(this.providerSearch.getProviderId())
+        : Optional.empty();
   }
 }

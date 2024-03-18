@@ -1,6 +1,8 @@
 package gov.cdc.nbs.event.search.labreport;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonDeserializer;
@@ -116,6 +118,11 @@ public record SearchableLabReport(
     );
   }
 
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "person_cd")
+  @JsonSubTypes({
+      @JsonSubTypes.Type(value = Person.Patient.class, name = "PAT"),
+      @JsonSubTypes.Type(value = Person.Provider.class, name = "PRV")
+  })
   public sealed interface Person {
 
     @JsonProperty("person_cd")
@@ -144,7 +151,7 @@ public record SearchableLabReport(
     ) implements Person {
       @Override
       public String code() {
-        return "PAT";
+        return "PAT" ;
       }
     }
 
@@ -163,7 +170,7 @@ public record SearchableLabReport(
     ) implements Person {
       @Override
       public String code() {
-        return "PRV";
+        return "PRV" ;
       }
     }
   }

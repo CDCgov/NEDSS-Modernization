@@ -1,5 +1,6 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
@@ -9,13 +10,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class LabReportSearchVerificationSteps {
 
+  private final Active<PatientIdentifier> patient;
   private final Active<SearchableLabReport> labReport;
   private final Active<ResultActions> response;
 
   LabReportSearchVerificationSteps(
+      final Active<PatientIdentifier> patient,
       final Active<SearchableLabReport> labReport,
       final Active<ResultActions> response
   ) {
+    this.patient = patient;
     this.labReport = labReport;
     this.response = response;
   }
@@ -41,6 +45,18 @@ public class LabReportSearchVerificationSteps {
                 String.valueOf(this.labReport.active().identifier())
             )
                 .doesNotExist()
+        );
+  }
+
+  @Then("the Lab Report search results contain the patient short id")
+  public void the_lab_report_search_results_contain_the_patient_short_id() throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findLabReportsByFilter.content[*].personParticipations[?(@.shortId=='%s')]",
+                String.valueOf(this.patient.active().shortId())
+            )
+                .exists()
         );
   }
 

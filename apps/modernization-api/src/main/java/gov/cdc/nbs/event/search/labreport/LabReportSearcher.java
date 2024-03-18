@@ -1,6 +1,7 @@
 package gov.cdc.nbs.event.search.labreport;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
@@ -24,15 +25,21 @@ class LabReportSearcher {
   private static final Permission PERMISSION = new Permission("View", "ObservationLabReport");
   private final PermissionScopeResolver resolver;
   private final LabReportSearchCriteriaFilterResolver filterResolver;
+  private final LabReportSearchCriteriaQueryResolver queryResolver;
+  private final LabReportSearchCriteriaSortResolver sortResolver;
   private final ElasticsearchClient client;
 
   LabReportSearcher(
       final PermissionScopeResolver resolver,
       final LabReportSearchCriteriaFilterResolver filterResolver,
+      final LabReportSearchCriteriaQueryResolver queryResolver,
+      final LabReportSearchCriteriaSortResolver sortResolver,
       final ElasticsearchClient client
   ) {
     this.resolver = resolver;
     this.filterResolver = filterResolver;
+    this.queryResolver = queryResolver;
+    this.sortResolver = sortResolver;
     this.client = client;
   }
 
@@ -43,13 +50,16 @@ class LabReportSearcher {
     PermissionScope scope = this.resolver.resolve(PERMISSION);
 
     Query filter = filterResolver.resolve(criteria, scope);
+    Query query = queryResolver.resolve(criteria);
+    List<SortOptions> sorting = sortResolver.resolve(pageable);
 
     try {
 
       SearchResponse<SearchableLabReport> response = client.search(
           search -> search.index("lab_report")
-              .source(source -> source.fetch(false))
               .postFilter(filter)
+              .query(query)
+              .sort(sorting)
               .from((int) pageable.getOffset())
               .size(pageable.getPageSize()),
           SearchableLabReport.class

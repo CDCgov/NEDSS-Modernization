@@ -1,5 +1,6 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import java.util.Collections;
 import java.util.List;
 
 class LabReportSearchResultConverter {
@@ -20,10 +21,8 @@ class LabReportSearchResultConverter {
         .map(LabReportSearchResultConverter::asObservation)
         .toList();
 
-    List<LabReportSearchResult.AssociatedInvestigation> associatedInvestigations = searchable.associated()
-        .stream()
-        .map(LabReportSearchResultConverter::asAssociatedInvestigation)
-        .toList();
+    List<LabReportSearchResult.AssociatedInvestigation> associatedInvestigations =
+        asAssociatedInvestigations(searchable.associated());
 
     return new LabReportSearchResult(
         String.valueOf(searchable.identifier()),
@@ -51,7 +50,8 @@ class LabReportSearchResultConverter {
         patient.firstName(),
         patient.lastName(),
         patient.code(),
-        patient.identifier()
+        patient.identifier(),
+        patient.local()
     );
   }
 
@@ -65,12 +65,14 @@ class LabReportSearchResultConverter {
         provider.firstName(),
         provider.lastName(),
         provider.code(),
-        provider.identifier()
+        provider.identifier(),
+        null
     );
   }
 
   private static LabReportSearchResult.OrganizationParticipation asOrganization(
-      final SearchableLabReport.Organization organization) {
+      final SearchableLabReport.Organization organization
+  ) {
     return new LabReportSearchResult.OrganizationParticipation(
         organization.type(),
         organization.name()
@@ -85,8 +87,19 @@ class LabReportSearchResultConverter {
     );
   }
 
+  private static List<LabReportSearchResult.AssociatedInvestigation> asAssociatedInvestigations(
+      final List<SearchableLabReport.Investigation> investigations
+  ) {
+    return investigations == null
+        ? Collections.emptyList()
+        : investigations.stream()
+        .map(LabReportSearchResultConverter::asAssociatedInvestigation)
+        .toList();
+  }
+
   private static LabReportSearchResult.AssociatedInvestigation asAssociatedInvestigation(
-      final SearchableLabReport.Investigation investigation) {
+      final SearchableLabReport.Investigation investigation
+  ) {
     return new LabReportSearchResult.AssociatedInvestigation(
         investigation.condition(),
         investigation.local()

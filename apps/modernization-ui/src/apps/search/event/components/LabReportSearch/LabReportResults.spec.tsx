@@ -9,14 +9,13 @@ const labReports: [LabReport] = [
         jurisdictionCd: 130006,
         jurisdictionCodeDescTxt: null,
         localId: 'OBS10001008GA01',
-        addTime: '2023-07-27T17:04:00.023Z',
+        addTime: '2023-07-27',
         personParticipations: [
             {
                 typeCd: 'PATSBJ',
-                typeDescTxt: 'Patient subject',
                 firstName: 'John',
                 lastName: 'Doe',
-                birthTime: '1990-01-01T00:00:00Z',
+                birthTime: '1990-01-01',
                 currSexCd: 'M',
                 personCd: 'PAT',
                 personParentUid: 10000001,

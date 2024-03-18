@@ -100,7 +100,8 @@ class LabReportSearchResultConverterTest {
             () -> assertThat(actual.firstName()).isEqualTo("first-name-one-value"),
             () -> assertThat(actual.lastName()).isEqualTo("last-name-one-value"),
             () -> assertThat(actual.personCd()).isEqualTo("PAT"),
-            () -> assertThat(actual.personParentUid()).isEqualTo(443L)
+            () -> assertThat(actual.personParentUid()).isEqualTo(443L),
+            () -> assertThat(actual.local()).isEqualTo("local-one-value")
         )
     );
   }
@@ -136,7 +137,8 @@ class LabReportSearchResultConverterTest {
             () -> assertThat(actual.firstName()).isEqualTo("first-name-two-value"),
             () -> assertThat(actual.lastName()).isEqualTo("last-name-two-value"),
             () -> assertThat(actual.personCd()).isEqualTo("PRV"),
-            () -> assertThat(actual.personParentUid()).isEqualTo(857L)
+            () -> assertThat(actual.personParentUid()).isEqualTo(857L),
+            () -> assertThat(actual.local()).isNull()
         )
     );
   }
