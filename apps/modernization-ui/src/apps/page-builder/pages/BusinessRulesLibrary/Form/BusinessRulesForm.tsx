@@ -158,12 +158,6 @@ export const BusinessRulesForm = ({
     }, [watch.targetType]);
 
     useEffect(() => {
-        console.log({ targetDescription });
-        console.log(watch.targetIdentifiers);
-        console.log(watch.comparator);
-        console.log(watch.sourceValues);
-        console.log(watch.sourceIdentifier);
-
         if (
             watch.targetIdentifiers &&
             (watch.anySourceValue ||
