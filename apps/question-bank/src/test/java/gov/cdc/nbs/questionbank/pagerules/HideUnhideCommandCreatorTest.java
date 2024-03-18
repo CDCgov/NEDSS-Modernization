@@ -479,7 +479,7 @@ class HideUnhideCommandCreatorTest {
         "INV144",
         null,
         true,
-        "DEM161",
+        Arrays.asList("DEM161"),
         "=",
         false);
     assertThat(actual).isEqualTo(expected);
@@ -492,7 +492,20 @@ class HideUnhideCommandCreatorTest {
         "INV144",
         null,
         true,
-        "DEM161",
+        Arrays.asList("DEM161"),
+        "=",
+        true);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void expression_hide_multi() {
+    String expected = "INV144 (  )  ^ H ( DEM161 , DEM162 )";
+    String actual = creator.createExpression(
+        "INV144",
+        null,
+        true,
+        Arrays.asList("DEM161", "DEM162"),
         "=",
         true);
     assertThat(actual).isEqualTo(expected);

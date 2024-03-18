@@ -19,7 +19,7 @@ class DateCompareCommandCreatorTest {
     String expected = "INV132 <  ^ DT ( INV162 , INV110 )";
     String expression = creator.createExpression(
         "INV132",
-        "INV162 , INV110",
+        Arrays.asList("INV162 , INV110"),
         "<");
     assertThat(expression).isEqualTo(expected);
   }
@@ -29,7 +29,7 @@ class DateCompareCommandCreatorTest {
     String expected = "INV132 <  ^ DT ( INV162 )";
     String expression = creator.createExpression(
         "INV132",
-        "INV162",
+        Arrays.asList("INV162"),
         "<");
     assertThat(expression).isEqualTo(expected);
   }
@@ -223,6 +223,7 @@ class DateCompareCommandCreatorTest {
     assertThat(command.description()).isEqualTo("description");
     assertThat(command.comparator()).isEqualTo("=");
     assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
+    assertThat(command.targetIdentifiers()).isEqualTo("DEM161,DEM196");
     assertThat(command.userId()).isEqualTo(3l);
   }
 }
