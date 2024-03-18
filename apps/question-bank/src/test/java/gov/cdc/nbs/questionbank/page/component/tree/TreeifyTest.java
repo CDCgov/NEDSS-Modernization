@@ -202,7 +202,11 @@ class TreeifyTest {
             false,
             "data_location",
             true,
-            "block_name"))
+            "block_name",
+            null,
+            false,
+            null,
+            null))
         .collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
@@ -261,7 +265,11 @@ class TreeifyTest {
             false,
             "data_location",
             true,
-            "block_name"),
+            "block_name",
+            null,
+            false,
+            null,
+            null),
         new FlattenedComponent(13L, 1010, "Tab", true, 6, 6)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
