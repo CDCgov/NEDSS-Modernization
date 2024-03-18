@@ -34,6 +34,7 @@ class FlattenedComponentMapperTest {
     when(resultSet.getString(columns.defaultValue())).thenReturn("default-value-value");
     when(resultSet.getString(columns.valueSet())).thenReturn("value-set-value");
     when(resultSet.getString(columns.blockName())).thenReturn("blockName");
+    when(resultSet.getInt(columns.dataMartRepeatNumber())).thenReturn(2);
     when(resultSet.getString(columns.defaultRdbTableName())).thenReturn("rdb-table-name");
     when(resultSet.getString(columns.rdbColumnName())).thenReturn("rdb-column-name");
     when(resultSet.getString(columns.defaultLabelInReport())).thenReturn("default-label-in-Report");
@@ -69,6 +70,7 @@ class FlattenedComponentMapperTest {
     assertThat(actual.rdbColumnName()).isEqualTo("rdb-column-name");
     assertThat(actual.defaultLabelInReport()).isEqualTo("default-label-in-Report");
     assertThat(actual.dataMartColumnName()).isEqualTo("dataMart-column-name");
+    assertThat(actual.dataMartRepeatNumber()).isEqualTo(2);
   }
 
   @Test
