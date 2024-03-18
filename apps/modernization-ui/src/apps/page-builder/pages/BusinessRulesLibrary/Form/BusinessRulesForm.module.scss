@@ -40,11 +40,22 @@
     }
 
     .content {
+      display: flex;
+      align-items: center;
         .sourceBtn {
             min-width: 28.0625rem;
         }
         .sourceQuestionDisplay {
-            padding-top: 2.1rem;
+          display: flex;
+          flex-direction: row;
+          padding-top: 1rem;
+            .title {
+                max-width: 28.0625rem;
+            }
+            .closeBtn {
+              display: flex;
+              align-items: center;
+            }
         }
     }
 }
@@ -166,6 +177,22 @@
 }
 
 .description {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+
+    .title {
+        min-width: 12rem;
+    }
+
+    .content {
+        min-width: 39rem;
+        max-width: 39rem;
+    }
+}
+
+.errorMessage {
     display: flex;
     flex-direction: row;
     gap: 1.5rem;

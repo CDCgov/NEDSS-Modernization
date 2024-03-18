@@ -187,10 +187,10 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
 
     return (
         <div className={styles.targetQuestion}>
-            <div className={styles.header}>
+            <div className={styles.headerTitle}>
                 <h2>Target question</h2>
             </div>
-            <div className={styles.body}>
+            <div className={styles.header}>
                 <div className={styles.headerMessage}>Please select target question</div>
                 <div className={styles.targetTabs}>
                     <ul className={styles.tabs}>
@@ -221,6 +221,8 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                         ))}
                     </div>
                 </div>
+            </div>
+            <div className={styles.body}>
                 <div className={styles.content}>
                     <div className={styles.sections}>
                         {filteredPage?.tabs?.[activeTab] &&

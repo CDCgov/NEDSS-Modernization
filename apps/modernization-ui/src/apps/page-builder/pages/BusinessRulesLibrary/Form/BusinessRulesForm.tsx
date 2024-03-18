@@ -158,9 +158,17 @@ export const BusinessRulesForm = ({
     }, [watch.targetType]);
 
     useEffect(() => {
+        console.log({ targetDescription });
+        console.log(watch.targetIdentifiers);
+        console.log(watch.comparator);
+        console.log(watch.sourceValues);
+        console.log(watch.sourceIdentifier);
+
         if (
             watch.targetIdentifiers &&
-            (watch.anySourceValue || (watch.comparator && watch.sourceValues)) &&
+            (watch.anySourceValue ||
+                (watch.comparator && watch.sourceValues) ||
+                (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && watch.comparator)) &&
             watch.sourceIdentifier &&
             targetDescription
         ) {
@@ -310,13 +318,17 @@ export const BusinessRulesForm = ({
                                 </Button>
                             ) : (
                                 <div className={styles.sourceQuestionDisplay}>
-                                    {`${sourceQuestion.name} (${sourceQuestion.question})`}
-                                    <Icon.Close
-                                        onClick={() => {
-                                            setSourceQuestion(undefined);
-                                            form.setValue('sourceValues', undefined);
-                                        }}
-                                    />
+                                    <div className={styles.title}>
+                                        {`${sourceQuestion.name} (${sourceQuestion.question})`}
+                                    </div>
+                                    <div className={styles.closeBtn}>
+                                        <Icon.Close
+                                            onClick={() => {
+                                                setSourceQuestion(undefined);
+                                                form.setValue('sourceValues', undefined);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </div>
