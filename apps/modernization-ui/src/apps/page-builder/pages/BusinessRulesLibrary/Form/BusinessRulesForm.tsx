@@ -106,6 +106,24 @@ export const BusinessRulesForm = ({
         });
     };
 
+    const removeNumericAndSymbols = (text: string | undefined) => {
+        const firstChar = text?.charAt(0);
+        if (firstChar && firstChar <= '9' && firstChar >= '0') {
+            return text?.replace(/\d+/, '').replace('. ', '');
+        }
+        return text;
+    };
+
+    const checkForSemicolon = (text: string | undefined) => {
+        const labelLength = text?.length;
+        if (labelLength) {
+            const lastChar = text.charAt(labelLength - 1);
+            if (lastChar === ':') {
+                return text.replace(':', '');
+            }
+        }
+    };
+
     const handleOpenSourceQuestion = () => {
         sourceQuestionModalRef.current?.toggleModal(undefined, true);
     };
@@ -313,7 +331,7 @@ export const BusinessRulesForm = ({
                             ) : (
                                 <div className={styles.sourceQuestionDisplay}>
                                     <div className={styles.title}>
-                                        {`${sourceQuestion.name} (${sourceQuestion.question})`}
+                                        {`${removeNumericAndSymbols(sourceQuestion.name)} (${sourceQuestion.question})`}
                                     </div>
                                     <div className={styles.closeBtn}>
                                         <Icon.Close
@@ -464,7 +482,7 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
-                                                {`${question.name} (${question.question})`}
+                                                {`${removeNumericAndSymbols(question.name)} (${question.question})`}
                                             </div>
                                         ))}
                                     </div>
@@ -513,8 +531,8 @@ export const BusinessRulesForm = ({
                                             onChange={onChange}
                                             type="text"
                                             multiline
-                                            defaultValue={value}
-                                            value={value}
+                                            defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
+                                            value={checkForSemicolon(removeNumericAndSymbols(value))}
                                             onBlur={onBlur}
                                         />
                                     </div>
