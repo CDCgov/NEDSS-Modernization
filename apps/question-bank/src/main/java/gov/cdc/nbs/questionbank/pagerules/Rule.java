@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import io.swagger.annotations.ApiModelProperty;
-
+import java.util.Arrays;
 import java.util.List;
 
 public record Rule(
@@ -46,6 +46,23 @@ public record Rule(
     public String getValue() {
       return this.value;
     }
+
+    public static RuleFunction valueFrom(String value) {
+      return Arrays.stream(Rule.RuleFunction.values())
+          .filter(f -> f.getValue().equalsIgnoreCase(value))
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException("Failed to find RuleFunction for value: " + value));
+    }
+
+    public static RuleFunction valueFromNullable(String value) {
+      if (value == null) {
+        return null;
+      }
+      return Arrays.stream(Rule.RuleFunction.values())
+          .filter(f -> f.getValue().equalsIgnoreCase(value))
+          .findFirst()
+          .orElse(null);
+    }
   }
 
 
@@ -65,6 +82,23 @@ public record Rule(
 
     public String getValue() {
       return this.value;
+    }
+
+    public static Comparator valueFrom(String value) {
+      return Arrays.stream(Rule.Comparator.values())
+          .filter(f -> f.getValue().equalsIgnoreCase(value))
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException("Failed to find Comparator for value: " + value));
+    }
+
+    public static Comparator valueFromNullable(String value) {
+      if (value == null) {
+        return null;
+      }
+      return Arrays.stream(Rule.Comparator.values())
+          .filter(f -> f.getValue().equalsIgnoreCase(value))
+          .findFirst()
+          .orElse(null);
     }
   }
 

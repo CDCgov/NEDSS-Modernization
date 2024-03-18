@@ -35,7 +35,7 @@ export const useGetAllPageRules = () => {
         if (state.status === 'fetching' && pageId) {
             PageRuleControllerService.getAllRulesUsingGet({
                 authorization: authorization(),
-                id: Number(pageId)
+                pageId: Number(pageId)
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => dispatch({ type: 'complete', rules: response }));

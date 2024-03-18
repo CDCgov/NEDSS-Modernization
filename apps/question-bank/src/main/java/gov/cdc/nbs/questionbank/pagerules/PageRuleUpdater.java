@@ -72,7 +72,7 @@ public class PageRuleUpdater {
 
     rule.update(command);
     entityManager.flush();
-    return finder.findByRuleId(rule.getId());
+    return finder.findById(rule.getId());
   }
 
   RuleRequest addSourceValues(RuleRequest request, long page) {

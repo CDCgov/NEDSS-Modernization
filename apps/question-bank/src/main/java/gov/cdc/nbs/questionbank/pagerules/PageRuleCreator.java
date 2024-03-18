@@ -71,7 +71,7 @@ public class PageRuleCreator {
     };
 
     WaRuleMetadata ruleMetadata = repository.save(new WaRuleMetadata(command));
-    return finder.findByRuleId(ruleMetadata.getId());
+    return finder.findById(ruleMetadata.getId());
   }
 
   RuleRequest addSourceValues(RuleRequest request, long page) {

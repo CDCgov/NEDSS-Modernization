@@ -81,7 +81,7 @@ export const useFetchPageRules = () => {
 
             PageRuleControllerService.findPageRuleUsingPost({
                 authorization: authorization(),
-                id: Number(pageId),
+                pageId: Number(pageId),
                 page: state.search.page,
                 size: state.search.pageSize,
                 sort: sortString,

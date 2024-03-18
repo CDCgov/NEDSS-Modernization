@@ -25,7 +25,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-@RequestMapping("/api/v1/pages/{id}/rules")
+@RequestMapping("/api/v1/pages/{pageId}/rules")
 public class PageRuleController {
 
   private final PageRuleDeleter pageRuleDeleter;
@@ -48,14 +48,14 @@ public class PageRuleController {
   @ResponseStatus(HttpStatus.CREATED)
   public Rule createBusinessRule(
       @RequestBody RuleRequest request,
-      @PathVariable("id") Long page,
+      @PathVariable("pageId") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return pageRuleCreator.createPageRule(request, page, details.getId());
   }
 
   @DeleteMapping("{ruleId}")
   public void deletePageRule(
-      @PathVariable("id") Long page,
+      @PathVariable("pageId") Long page,
       @PathVariable Long ruleId,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     pageRuleDeleter.delete(page, ruleId, details.getId());
@@ -70,19 +70,21 @@ public class PageRuleController {
   }
 
   @GetMapping("/{ruleId}")
-  public Rule viewRuleResponse(@PathVariable Long ruleId) {
-    return pageRuleFinder.findByRuleId(ruleId);
+  public Rule viewRuleResponse(
+      @PathVariable Long ruleId) {
+    return pageRuleFinder.findById(ruleId);
   }
 
   @PostMapping("/search")
-  public Page<Rule> findPageRule(@PathVariable("id") Long pageId,
+  public Page<Rule> findPageRule(
+      @PathVariable("pageId") Long pageId,
       @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     return pageRuleFinder.searchPageRule(pageId, request, pageable);
   }
 
   @GetMapping("/getAll")
-  public List<Rule> getAllRules(@PathVariable("id") Long pageId) {
+  public List<Rule> getAllRules(@PathVariable("pageId") Long pageId) {
     return pageRuleFinder.getAllRules(pageId);
   }
 }

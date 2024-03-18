@@ -103,7 +103,7 @@ class PageRuleCreatorTest {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findById(99l)).thenReturn(mockRule);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
@@ -130,7 +130,7 @@ class PageRuleCreatorTest {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findById(99l)).thenReturn(mockRule);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
@@ -157,7 +157,7 @@ class PageRuleCreatorTest {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findById(99l)).thenReturn(mockRule);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
@@ -184,7 +184,7 @@ class PageRuleCreatorTest {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findById(99l)).thenReturn(mockRule);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
@@ -211,7 +211,7 @@ class PageRuleCreatorTest {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findById(99l)).thenReturn(mockRule);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
@@ -238,7 +238,7 @@ class PageRuleCreatorTest {
     WaRuleMetadata rule = Mockito.mock(WaRuleMetadata.class);
     when(rule.getId()).thenReturn(99l);
     Rule mockRule = Mockito.mock(Rule.class);
-    when(finder.findByRuleId(99l)).thenReturn(mockRule);
+    when(finder.findById(99l)).thenReturn(mockRule);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Draft");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);

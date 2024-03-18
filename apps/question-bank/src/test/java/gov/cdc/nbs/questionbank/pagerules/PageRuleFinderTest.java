@@ -34,16 +34,6 @@ class PageRuleFinderTest {
     MockitoAnnotations.openMocks(this);
   }
 
-  @Test
-  void getRule_validRuleId_returnRule() {
-    Long ruleId = 123l;
-    Rule expectedResponse = getRuleResponse();
-    when(template.query(any(String.class), any(MapSqlParameterSource.class), any(RowMapper.class)))
-        .thenReturn(Collections.singletonList(expectedResponse));
-
-    Rule actualResponse = pageRuleFinder.findByRuleId(ruleId);
-    assertNotNull(actualResponse);
-  }
 
   @Test
   void getAllRules_withoutPageable() {

@@ -31,7 +31,7 @@ export const AddBusinessRule = () => {
         try {
             await PageRuleControllerService.createBusinessRuleUsingPost({
                 authorization: authorization(),
-                id: page?.id ?? 0,
+                pageId: page?.id ?? 0,
                 request: data
             });
             showAlert({

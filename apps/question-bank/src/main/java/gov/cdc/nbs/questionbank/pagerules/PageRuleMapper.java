@@ -1,15 +1,13 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 
 @Component
@@ -46,8 +44,8 @@ class PageRuleMapper implements RowMapper<Rule> {
     String sourceQuestionLabel = rs.getString(columns.sourceQuestionLabel());
     String sourceQuestionCodeSet = rs.getString(columns.sourceQuestionCodeSet());
     totalRowsCount = rs.getLong(columns.totalCount());
-    Rule.RuleFunction functionEnum = getFunctionEnum(function);
-    Rule.Comparator comparatorEnum = getComparatorEnum(comparator);
+    Rule.RuleFunction functionEnum = Rule.RuleFunction.valueFromNullable(function);
+    Rule.Comparator comparatorEnum = Rule.Comparator.valueFromNullable(comparator);
     Rule.TargetType targetTypeEnum = getTargetTypeEnum(targetType);
     Rule.SourceQuestion sourceQuestionInfo =
         new Rule.SourceQuestion(sourceQuestionIdentifier, sourceQuestionLabel, sourceQuestionCodeSet);
@@ -89,21 +87,12 @@ class PageRuleMapper implements RowMapper<Rule> {
     return totalRowsCount;
   }
 
-  private Rule.RuleFunction getFunctionEnum(String value) {
-    Optional<Rule.RuleFunction> functionEnum =
-        Arrays.stream(Rule.RuleFunction.values()).filter(f -> f.getValue().equalsIgnoreCase(value)).findFirst();
-    return functionEnum.isPresent() ? functionEnum.get() : null;
-  }
 
   private Rule.TargetType getTargetTypeEnum(String value) {
-    Optional<Rule.TargetType> targetTypeEnum =
-        Arrays.stream(Rule.TargetType.values()).filter(f -> f.toString().equalsIgnoreCase(value)).findFirst();
-    return targetTypeEnum.isPresent() ? targetTypeEnum.get() : null;
+    return Arrays.stream(Rule.TargetType.values())
+        .filter(f -> f.toString().equalsIgnoreCase(value))
+        .findFirst()
+        .orElse(null);
   }
 
-  private Rule.Comparator getComparatorEnum(String value) {
-    Optional<Rule.Comparator> comparatorEnum =
-        Arrays.stream(Rule.Comparator.values()).filter(f -> f.getValue().equalsIgnoreCase(value)).findFirst();
-    return comparatorEnum.isPresent() ? comparatorEnum.get() : null;
-  }
 }

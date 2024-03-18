@@ -19,14 +19,14 @@ export class PageRuleControllerService {
      */
     public static createBusinessRuleUsingPost({
         authorization,
-        id,
+        pageId,
         request,
     }: {
         authorization: string,
         /**
-         * id
+         * pageId
          */
-        id: number,
+        pageId: number,
         /**
          * request
          */
@@ -34,9 +34,9 @@ export class PageRuleControllerService {
     }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules',
+            url: '/nbs/page-builder/api/v1/pages/{pageId}/rules',
             path: {
-                'id': id,
+                'pageId': pageId,
             },
             headers: {
                 'Authorization': authorization,
@@ -57,19 +57,19 @@ export class PageRuleControllerService {
      */
     public static getAllRulesUsingGet({
         authorization,
-        id,
+        pageId,
     }: {
         authorization: string,
         /**
-         * id
+         * pageId
          */
-        id: number,
+        pageId: number,
     }): CancelablePromise<Array<Rule>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules/getAll',
+            url: '/nbs/page-builder/api/v1/pages/{pageId}/rules/getAll',
             path: {
-                'id': id,
+                'pageId': pageId,
             },
             headers: {
                 'Authorization': authorization,
@@ -90,7 +90,7 @@ export class PageRuleControllerService {
      */
     public static findPageRuleUsingPost({
         authorization,
-        id,
+        pageId,
         request,
         page,
         size,
@@ -98,9 +98,9 @@ export class PageRuleControllerService {
     }: {
         authorization: string,
         /**
-         * id
+         * pageId
          */
-        id: number,
+        pageId: number,
         /**
          * request
          */
@@ -111,9 +111,9 @@ export class PageRuleControllerService {
     }): CancelablePromise<Page_Rule_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules/search',
+            url: '/nbs/page-builder/api/v1/pages/{pageId}/rules/search',
             path: {
-                'id': id,
+                'pageId': pageId,
             },
             headers: {
                 'Authorization': authorization,
@@ -149,7 +149,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
+            url: '/nbs/page-builder/api/v1/pages/{pageId}/rules/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },
@@ -187,7 +187,7 @@ export class PageRuleControllerService {
     }): CancelablePromise<Rule | any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
+            url: '/nbs/page-builder/api/v1/pages/{pageId}/rules/{ruleId}',
             path: {
                 'ruleId': ruleId,
             },
@@ -210,14 +210,14 @@ export class PageRuleControllerService {
      */
     public static deletePageRuleUsingDelete({
         authorization,
-        id,
+        pageId,
         ruleId,
     }: {
         authorization: string,
         /**
-         * id
+         * pageId
          */
-        id: number,
+        pageId: number,
         /**
          * ruleId
          */
@@ -225,9 +225,9 @@ export class PageRuleControllerService {
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
+            url: '/nbs/page-builder/api/v1/pages/{pageId}/rules/{ruleId}',
             path: {
-                'id': id,
+                'pageId': pageId,
                 'ruleId': ruleId,
             },
             headers: {

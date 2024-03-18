@@ -189,7 +189,7 @@ export const EditBusinessRule = () => {
     const onDelete = () => {
         PageRuleControllerService.deletePageRuleUsingDelete({
             authorization: authorization(),
-            id: page?.id ?? 0,
+            pageId: page?.id ?? 0,
             ruleId: Number(ruleId)
         }).then(() => {
             redirectToLibrary();
