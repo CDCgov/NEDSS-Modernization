@@ -44,13 +44,15 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                     </div>
                                     <p className={styles.groupedInfo}>No data has been entered.</p>
                                     <div className={styles.groupedQuestionsSection}>
-                                        {subsection.questions.map((question, k) => (
-                                            <PreviewQuestion
-                                                question={question}
-                                                isGrouped={subsection.isGrouped}
-                                                key={k}
-                                            />
-                                        ))}
+                                        {subsection.questions
+                                            .filter((q) => q.appearsInBatch)
+                                            .map((question, k) => (
+                                                <PreviewQuestion
+                                                    question={question}
+                                                    isGrouped={subsection.isGrouped}
+                                                    key={k}
+                                                />
+                                            ))}
                                     </div>
                                     <div className={styles.footer}>
                                         <Button type="button" disabled={true}>
