@@ -1,4 +1,4 @@
-import { CreateRuleRequest, PageRuleControllerService, Rule } from 'apps/page-builder/generated';
+import { RuleRequest, PageRuleControllerService, Rule } from 'apps/page-builder/generated';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Breadcrumb } from 'breadcrumb';
 import styles from './AddBusinessRule.module.scss';
@@ -16,7 +16,7 @@ export type SourceValueProp = {
 };
 
 export const AddBusinessRule = () => {
-    const form = useForm<CreateRuleRequest>({
+    const form = useForm<RuleRequest>({
         defaultValues: { targetType: Rule.targetType.QUESTION, anySourceValue: false }
     });
     const watch = useWatch(form);

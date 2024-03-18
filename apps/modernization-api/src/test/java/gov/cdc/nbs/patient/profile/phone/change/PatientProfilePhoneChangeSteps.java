@@ -54,12 +54,12 @@ public class PatientProfilePhoneChangeSteps {
         RandomUtil.getRandomDateInPast(),
         RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-        RandomUtil.getRandomString(),
+        RandomUtil.getRandomString(19),
         faker.phoneNumber().cellPhone(),
         faker.phoneNumber().extension(),
         faker.internet().emailAddress(),
         faker.internet().url(),
-        RandomUtil.getRandomString(15));
+        RandomUtil.getRandomString(19));
 
     controller.add(newRequest);
   }

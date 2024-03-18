@@ -1,10 +1,9 @@
 package gov.cdc.nbs.questionbank.page.content.rule;
 
-import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.content.rule.exceptions.DeleteRuleException;
-import gov.cdc.nbs.questionbank.pagerules.PageRuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.PageRuleRequester;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -25,7 +24,7 @@ public class DeleteRuleSteps {
   Active<PageIdentifier> page;
 
   @Autowired
-  private PageRuleRequest requester;
+  private PageRuleRequester requester;
 
   private final Active<WaRuleMetadata> deleted = new Active<>();
 
