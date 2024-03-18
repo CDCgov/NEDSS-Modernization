@@ -4,20 +4,20 @@
 
 import type { SourceValue } from './SourceValue';
 
-export type CreateRuleRequest = {
+export type RuleRequest = {
     anySourceValue: boolean;
-    comparator: CreateRuleRequest.comparator;
+    comparator: RuleRequest.comparator;
     description?: string;
-    ruleFunction: CreateRuleRequest.ruleFunction;
+    ruleFunction: RuleRequest.ruleFunction;
     sourceIdentifier: string;
     sourceText?: string;
     sourceValues?: Array<SourceValue>;
     targetIdentifiers: Array<string>;
-    targetType: CreateRuleRequest.targetType;
+    targetType: RuleRequest.targetType;
     targetValueText?: Array<string>;
 };
 
-export namespace CreateRuleRequest {
+export namespace RuleRequest {
 
     export enum comparator {
         EQUAL_TO = 'EQUAL_TO',

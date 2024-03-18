@@ -122,13 +122,23 @@ public class CreateCodedQuestionSteps {
         map.get("rdbColumnName"),
         map.get("dataMartColumnName")));
 
-    request.setMessagingInfo(new MessagingInfo(
-        "true".equals(map.get("includedInMessage").toLowerCase()),
-        map.get("messageVariableId"),
-        map.get("labelInMessage"),
-        map.get("codeSystem"),
-        "true".equals(map.get("requiredInMessage").toLowerCase()),
-        map.get("hl7DataType")));
+    if ("true".equals(map.get("includedInMessage").toLowerCase())) {
+      request.setMessagingInfo(new MessagingInfo(
+          "true".equals(map.get("includedInMessage").toLowerCase()),
+          map.get("messageVariableId"),
+          map.get("labelInMessage"),
+          map.get("codeSystem"),
+          "true".equals(map.get("requiredInMessage").toLowerCase()),
+          map.get("hl7DataType")));
+    } else {
+      request.setMessagingInfo(new MessagingInfo(
+          false,
+          null,
+          null,
+          null,
+          false,
+          null));
+    }
     return request;
   }
 

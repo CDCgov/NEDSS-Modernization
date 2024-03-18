@@ -1,5 +1,5 @@
 import {
-    CreateRuleRequest,
+    RuleRequest,
     PageRuleControllerService,
     PagesQuestion,
     PagesSection,
@@ -21,7 +21,7 @@ import { useAlert } from 'alert';
 import { ConfirmationModal } from 'confirmation';
 
 export const EditBusinessRule = () => {
-    const form = useForm<CreateRuleRequest>();
+    const form = useForm<RuleRequest>();
     const watch = useWatch(form);
     const navigate = useNavigate();
     const { ruleId } = useParams();
@@ -43,7 +43,7 @@ export const EditBusinessRule = () => {
             ruleId: Number(ruleId)
         }).then((response: Rule) => {
             fetchSourceValues(response.sourceQuestion.codeSetName ?? '');
-            setSelectedSourceValues(response.sourceValues);
+            setSelectedSourceValues(response.sourceValues?.map((s) => s.trim()));
             setInitialSourceIdentifiers(response.sourceQuestion.questionIdentifier ?? '');
             setInitialTargetIdentifiers(response.targets.map((target) => target.targetIdentifier ?? '') ?? []);
 
@@ -137,7 +137,6 @@ export const EditBusinessRule = () => {
         try {
             await PageRuleControllerService.updatePageRuleUsingPut({
                 authorization: authorization(),
-                id: page?.id ?? 0,
                 ruleId: Number(ruleId) ?? 0,
                 request: data
             });

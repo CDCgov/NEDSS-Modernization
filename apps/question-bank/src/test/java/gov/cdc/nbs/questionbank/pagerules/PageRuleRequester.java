@@ -1,0 +1,54 @@
+package gov.cdc.nbs.questionbank.pagerules;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import gov.cdc.nbs.testing.interaction.http.Authenticated;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@Component
+public class PageRuleRequester {
+  private final Authenticated authenticated;
+  private final MockMvc mvc;
+  private final ObjectMapper mapper;
+
+  PageRuleRequester(
+      final Authenticated authenticated,
+      final MockMvc mvc,
+      final ObjectMapper mapper) {
+    this.authenticated = authenticated;
+    this.mvc = mvc;
+    this.mapper = mapper;
+  }
+
+  ResultActions createBusinessRule(final long page, RuleRequest requests) throws Exception {
+    return mvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{page}/rules", page))
+            .content(mapper.writeValueAsString(requests))
+            .contentType(MediaType.APPLICATION_JSON));
+
+  }
+
+  ResultActions request(final long page, final long ruleId) throws Exception {
+    return mvc.perform(
+        this.authenticated
+            .withUser(get("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)));
+  }
+
+
+  public void deleteBusinessRule(final long page, final long ruleId) {
+    try {
+      mvc.perform(
+          this.authenticated
+              .withUser(delete("/api/v1/pages/{page}/rules/{ruleId}", page, ruleId)))
+          .andExpect(status().isOk());
+    } catch (Exception exception) {
+      throw new IllegalStateException("Unable to execute Page Rule Delete request", exception);
+    }
+  }
+}

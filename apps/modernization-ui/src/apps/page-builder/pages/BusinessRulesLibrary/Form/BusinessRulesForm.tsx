@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
-import { CreateRuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
+import { RuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './BusinessRulesForm.module.scss';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -33,7 +33,7 @@ export const BusinessRulesForm = ({
     editTargetQuestions,
     editTargetSubsections
 }: Props) => {
-    const form = useFormContext<CreateRuleRequest>();
+    const form = useFormContext<RuleRequest>();
     const watch = useWatch(form);
     const sourceQuestionModalRef = useRef<ModalRef>(null);
     const targetQuestionModalRef = useRef<ModalRef>(null);

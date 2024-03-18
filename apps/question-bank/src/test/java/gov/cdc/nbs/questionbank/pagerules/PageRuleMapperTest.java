@@ -27,7 +27,7 @@ class PageRuleMapperTest {
     when(resultSet.getString(3)).thenReturn("Enable");
     when(resultSet.getString(4)).thenReturn("description");
     when(resultSet.getString(5)).thenReturn("test456");
-    when(resultSet.getString(6)).thenReturn("test( )test");
+    when(resultSet.getString(6)).thenReturn("test(  )test");
     when(resultSet.getString(7)).thenReturn("test1,test2,test3");
     when(resultSet.getString(8)).thenReturn("=");
     when(resultSet.getString(9)).thenReturn("QUESTION");

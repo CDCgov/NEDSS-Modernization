@@ -1,10 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateRuleRequest } from '../models/CreateRuleRequest';
-import type { CreateRuleResponse } from '../models/CreateRuleResponse';
 import type { Page_Rule_ } from '../models/Page_Rule_';
 import type { Rule } from '../models/Rule';
+import type { RuleRequest } from '../models/RuleRequest';
 import type { SearchPageRuleRequest } from '../models/SearchPageRuleRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -15,7 +14,7 @@ export class PageRuleControllerService {
 
     /**
      * createBusinessRule
-     * @returns CreateRuleResponse Created
+     * @returns Rule Created
      * @throws ApiError
      */
     public static createBusinessRuleUsingPost({
@@ -31,8 +30,8 @@ export class PageRuleControllerService {
         /**
          * request
          */
-        request: CreateRuleRequest,
-    }): CancelablePromise<CreateRuleResponse> {
+        request: RuleRequest,
+    }): CancelablePromise<Rule> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules',
@@ -167,35 +166,29 @@ export class PageRuleControllerService {
 
     /**
      * updatePageRule
-     * @returns CreateRuleResponse OK
+     * @returns Rule OK
      * @returns any Created
      * @throws ApiError
      */
     public static updatePageRuleUsingPut({
         authorization,
-        id,
         request,
         ruleId,
     }: {
         authorization: string,
         /**
-         * id
-         */
-        id: number,
-        /**
          * request
          */
-        request: CreateRuleRequest,
+        request: RuleRequest,
         /**
          * ruleId
          */
         ruleId: number,
-    }): CancelablePromise<CreateRuleResponse | any> {
+    }): CancelablePromise<Rule | any> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/nbs/page-builder/api/v1/pages/{id}/rules/{ruleId}',
             path: {
-                'id': id,
                 'ruleId': ruleId,
             },
             headers: {

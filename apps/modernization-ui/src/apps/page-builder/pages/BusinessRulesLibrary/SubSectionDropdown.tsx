@@ -1,4 +1,4 @@
-import { CreateRuleRequest, PagesSubSection } from 'apps/page-builder/generated';
+import { RuleRequest, PagesSubSection } from 'apps/page-builder/generated';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { MultiSelectInput } from 'components/selection/multi';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ const SubSectionsDropdown = ({ onSelect }: Props) => {
     const [subSections, setSubSections] = useState<PagesSubSection[]>([]);
     const [selectedSubsections, setSelectedSubsections] = useState<string[]>([]);
 
-    const form = useFormContext<CreateRuleRequest>();
+    const form = useFormContext<RuleRequest>();
 
     const { page } = useGetPageDetails();
 

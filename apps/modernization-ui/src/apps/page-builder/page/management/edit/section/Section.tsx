@@ -23,6 +23,7 @@ type Props = {
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;
     onGroupQuestion: (subsection: PagesSubSection) => void;
+    onEditGroupedSubsection: (subsection: PagesSubSection) => void;
 };
 
 export const Section = ({
@@ -33,7 +34,8 @@ export const Section = ({
     onDeleteStatus,
     onEditValueset,
     onChangeValueset,
-    onGroupQuestion
+    onGroupQuestion,
+    onEditGroupedSubsection
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
@@ -67,8 +69,12 @@ export const Section = ({
     };
 
     const handleEditSubsection = (subsection: PagesSubSection) => {
-        setEditSubsection(subsection);
-        editSubsectionModalRef.current?.toggleModal(undefined, true);
+        if (subsection.isGrouped) {
+            onEditGroupedSubsection(subsection);
+        } else {
+            setEditSubsection(subsection);
+            editSubsectionModalRef.current?.toggleModal(undefined, true);
+        }
     };
 
     const onCloseEditSubsectionModal = () => {

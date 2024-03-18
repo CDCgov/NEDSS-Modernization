@@ -26,7 +26,11 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String dataLocation,
       boolean isPublished,
       int questionGroupSeq,
-      String blockName) {
+      String blockName,
+      Integer dataMartRepeatNumber,
+      boolean appearsInBatch,
+      String batchLabel,
+      Integer batchWidth) {
   }
 
 
