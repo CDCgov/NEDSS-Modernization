@@ -5,6 +5,7 @@
 export type PagesQuestion = {
     adminComments?: string;
     allowFutureDates?: boolean;
+    appearsInBatch?: boolean;
     blockName?: string;
     coInfection?: boolean;
     dataMartColumnName?: string;
