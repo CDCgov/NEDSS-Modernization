@@ -206,6 +206,10 @@ class PageRuleFinder {
     }
   }
 
+  Page<Rule> newSearchPageRule(final long page, final SearchPageRuleRequest request, final Pageable pageable) {
+    return null;
+  }
+
   Page<Rule> searchPageRule(long pageId, SearchPageRuleRequest request, final Pageable pageable) {
     String searchValue = request.searchValue();
     int pageSize = pageable.getPageSize();

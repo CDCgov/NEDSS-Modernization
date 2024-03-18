@@ -64,7 +64,7 @@ class EnableDisableCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "=",
         true);
     assertThat(actual).isEqualTo(expected);
@@ -79,7 +79,7 @@ class EnableDisableCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "=",
         false);
     assertThat(actual).isEqualTo(expected);
@@ -94,7 +94,7 @@ class EnableDisableCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "<>",
         false);
     assertThat(actual).isEqualTo(expected);
@@ -109,7 +109,7 @@ class EnableDisableCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "<>",
         true);
     assertThat(actual).isEqualTo(expected);
@@ -124,7 +124,7 @@ class EnableDisableCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         true,
-        "INV515",
+        Arrays.asList("INV515"),
         "<>",
         true);
     assertThat(actual).isEqualTo(expected);
@@ -348,6 +348,7 @@ class EnableDisableCommandCreatorTest {
     assertThat(command.description()).isEqualTo("description");
     assertThat(command.comparator()).isEqualTo("=");
     assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
+    assertThat(command.targetIdentifiers()).isEqualTo("DEM161,DEM196");
     assertThat(command.userId()).isEqualTo(3l);
   }
 

@@ -64,7 +64,7 @@ class RequireIfCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "=");
     assertThat(actual).isEqualTo(expected);
   }
@@ -78,7 +78,7 @@ class RequireIfCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "=");
     assertThat(actual).isEqualTo(expected);
   }
@@ -92,7 +92,21 @@ class RequireIfCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
+        "<>");
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void expression_not_equal_disable_multi() {
+    String expected = "INV144 ( D , H ) <> ^ R ( INV515 , INV616 )";
+    String actual = creator.createExpression(
+        "INV144",
+        Arrays.asList(
+            new SourceValue("D", "Days"),
+            new SourceValue("H", "Hours")),
+        false,
+        Arrays.asList("INV515", "INV616"),
         "<>");
     assertThat(actual).isEqualTo(expected);
   }
@@ -106,7 +120,7 @@ class RequireIfCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
-        "INV515",
+        Arrays.asList("INV515"),
         "<>");
     assertThat(actual).isEqualTo(expected);
   }
@@ -120,7 +134,7 @@ class RequireIfCommandCreatorTest {
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         true,
-        "INV515",
+        Arrays.asList("INV515"),
         "<>");
     assertThat(actual).isEqualTo(expected);
   }
