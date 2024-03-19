@@ -42,7 +42,6 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
 
     useEffect(() => {
         if (selectedForEdit) {
-            console.log('SET', selectedForEdit);
             setAddEdit(true);
             form.setValue('name', selectedForEdit.name);
             form.setValue('visible', selectedForEdit.visible);

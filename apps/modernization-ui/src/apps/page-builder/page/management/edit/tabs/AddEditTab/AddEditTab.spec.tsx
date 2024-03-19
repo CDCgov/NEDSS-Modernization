@@ -12,14 +12,6 @@ jest.mock('react-router', () => ({
     useParams: jest.fn()
 }));
 
-// const tabData: PagesTab = {
-//     id: 123,
-//     name: 'tab-name',
-//     order: 1,
-//     visible: true,
-//     sections: []
-// };
-
 beforeEach(() => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ pageId: '1' });
 });
