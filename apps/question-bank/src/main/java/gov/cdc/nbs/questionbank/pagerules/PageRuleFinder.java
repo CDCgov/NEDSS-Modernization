@@ -35,7 +35,7 @@ class PageRuleFinder {
              (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',')) as [targetQuestionLabels],
                 0                                  as [TotalCount]
           from WA_rule_metadata [rule]
-           left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
+           left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier AND [question1].wa_template_uid = [rule].wa_template_uid
            left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
            left join WA_UI_Metadata [question2]
              on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
