@@ -2,69 +2,21 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
     findInvestigationsByFilter(filter: $filter, page: $page){
         content{
             id
-            recordStatus
-            lastChangeTime
-            publicHealthCaseUid
-            caseClassCd
-            outbreakName
-            caseTypeCd
             cdDescTxt
-            progAreaCd
-            jurisdictionCd
             jurisdictionCodeDescTxt
-            pregnantIndCd
             localId
-            rptFormCmpltTime
-            activityToTime
-            activityFromTime
             addTime
-            publicHealthCaseLastChgTime
-            addUserId
-            lastChangeUserId
-            currProcessStateCd
             investigationStatusCd
-            moodCd
-            notificationLocalId
-            notificationAddTime
             notificationRecordStatusCd
-            notificationLastChgTime
             personParticipations{
-                actUid
-                localId
-                typeCd
-                entityId
-                subjectClassCd
-                participationRecordStatus
-                typeDescTxt
-                participationLastChangeTime
-                firstName
-                lastName
                 birthTime
                 currSexCd
+                typeCd
+                firstName
+                lastName
                 personCd
                 personParentUid
-                personRecordStatus
-                personLastChangeTime
                 shortId
-            }
-            organizationParticipations{
-                actUid
-                typeCd
-                entityId
-                subjectClassCd
-                typeDescTxt
-                participationRecordStatus
-                participationLastChangeTime
-                name
-                organizationLastChangeTime
-            }
-            actIds{
-                id
-                recordStatus
-                actIdSeq
-                rootExtensionTxt
-                typeCd
-                lastChangeTime
             }
         }
         total

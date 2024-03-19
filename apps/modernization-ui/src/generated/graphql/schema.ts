@@ -19,26 +19,6 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
-export type ActId = {
-  __typename?: 'ActId';
-  actIdSeq?: Maybe<Scalars['Int']['output']>;
-  id?: Maybe<Scalars['Int']['output']>;
-  lastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  recordStatus?: Maybe<Scalars['String']['output']>;
-  rootExtensionTxt?: Maybe<Scalars['String']['output']>;
-  typeCd?: Maybe<Scalars['String']['output']>;
-};
-
-export type ActId2 = {
-  __typename?: 'ActId2';
-  actIdSeq?: Maybe<Scalars['Int']['output']>;
-  id?: Maybe<Scalars['Int']['output']>;
-  lastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  recordStatus?: Maybe<Scalars['String']['output']>;
-  rootExtensionTxt?: Maybe<Scalars['String']['output']>;
-  typeCd?: Maybe<Scalars['String']['output']>;
-};
-
 export type AdministrativeInput = {
   asOf?: InputMaybe<Scalars['DateTime']['input']>;
   comment?: InputMaybe<Scalars['String']['input']>;
@@ -247,36 +227,14 @@ export type IdentificationTypeId = {
 
 export type Investigation = {
   __typename?: 'Investigation';
-  actIds?: Maybe<Array<Maybe<ActId>>>;
-  activityFromTime?: Maybe<Scalars['DateTime']['output']>;
-  activityToTime?: Maybe<Scalars['DateTime']['output']>;
   addTime?: Maybe<Scalars['DateTime']['output']>;
-  addUserId?: Maybe<Scalars['Int']['output']>;
-  caseClassCd?: Maybe<Scalars['String']['output']>;
-  caseTypeCd?: Maybe<Scalars['String']['output']>;
   cdDescTxt?: Maybe<Scalars['String']['output']>;
-  currProcessStateCd?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   investigationStatusCd?: Maybe<Scalars['String']['output']>;
-  jurisdictionCd?: Maybe<Scalars['Int']['output']>;
   jurisdictionCodeDescTxt?: Maybe<Scalars['String']['output']>;
-  lastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  lastChangeUserId?: Maybe<Scalars['Int']['output']>;
   localId?: Maybe<Scalars['String']['output']>;
-  moodCd?: Maybe<Scalars['String']['output']>;
-  notificationAddTime?: Maybe<Scalars['DateTime']['output']>;
-  notificationLastChgTime?: Maybe<Scalars['DateTime']['output']>;
-  notificationLocalId?: Maybe<Scalars['String']['output']>;
   notificationRecordStatusCd?: Maybe<Scalars['String']['output']>;
-  organizationParticipations?: Maybe<Array<Maybe<OrganizationParticipation>>>;
-  outbreakName?: Maybe<Scalars['String']['output']>;
-  personParticipations?: Maybe<Array<Maybe<PersonParticipation>>>;
-  pregnantIndCd?: Maybe<Scalars['String']['output']>;
-  progAreaCd?: Maybe<Scalars['String']['output']>;
-  publicHealthCaseLastChgTime?: Maybe<Scalars['DateTime']['output']>;
-  publicHealthCaseUid?: Maybe<Scalars['Int']['output']>;
-  recordStatus?: Maybe<Scalars['String']['output']>;
-  rptFormCmpltTime?: Maybe<Scalars['DateTime']['output']>;
+  personParticipations: Array<InvestigationPersonParticipation>;
 };
 
 export type InvestigationEventDateSearch = {
@@ -321,9 +279,21 @@ export type InvestigationFilter = {
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
 };
 
+export type InvestigationPersonParticipation = {
+  __typename?: 'InvestigationPersonParticipation';
+  birthTime?: Maybe<Scalars['DateTime']['output']>;
+  currSexCd?: Maybe<Scalars['String']['output']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  personCd: Scalars['String']['output'];
+  personParentUid?: Maybe<Scalars['Int']['output']>;
+  shortId?: Maybe<Scalars['Int']['output']>;
+  typeCd?: Maybe<Scalars['String']['output']>;
+};
+
 export type InvestigationResults = {
   __typename?: 'InvestigationResults';
-  content: Array<Maybe<Investigation>>;
+  content: Array<Investigation>;
   total: Scalars['Int']['output'];
 };
 
@@ -787,19 +757,6 @@ export enum Operator {
 export type OrderingProvider = {
   __typename?: 'OrderingProvider';
   name?: Maybe<Scalars['String']['output']>;
-};
-
-export type OrganizationParticipation = {
-  __typename?: 'OrganizationParticipation';
-  actUid?: Maybe<Scalars['Int']['output']>;
-  entityId?: Maybe<Scalars['Int']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  organizationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  participationRecordStatus?: Maybe<Scalars['String']['output']>;
-  subjectClassCd?: Maybe<Scalars['String']['output']>;
-  typeCd?: Maybe<Scalars['String']['output']>;
-  typeDescTxt?: Maybe<Scalars['String']['output']>;
 };
 
 export type OrganizationParticipation2 = {
@@ -1675,27 +1632,6 @@ export type PersonInput = {
   stateHIVCase?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type PersonParticipation = {
-  __typename?: 'PersonParticipation';
-  actUid: Scalars['Int']['output'];
-  birthTime?: Maybe<Scalars['DateTime']['output']>;
-  currSexCd?: Maybe<Scalars['String']['output']>;
-  entityId: Scalars['Int']['output'];
-  firstName?: Maybe<Scalars['String']['output']>;
-  lastName?: Maybe<Scalars['String']['output']>;
-  localId?: Maybe<Scalars['String']['output']>;
-  participationLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  participationRecordStatus?: Maybe<Scalars['String']['output']>;
-  personCd: Scalars['String']['output'];
-  personLastChangeTime?: Maybe<Scalars['DateTime']['output']>;
-  personParentUid?: Maybe<Scalars['Int']['output']>;
-  personRecordStatus: Scalars['String']['output'];
-  shortId?: Maybe<Scalars['Int']['output']>;
-  subjectClassCd?: Maybe<Scalars['String']['output']>;
-  typeCd?: Maybe<Scalars['String']['output']>;
-  typeDescTxt?: Maybe<Scalars['String']['output']>;
-};
-
 export type PersonParticipation2 = {
   __typename?: 'PersonParticipation2';
   firstName?: Maybe<Scalars['String']['output']>;
@@ -1989,6 +1925,19 @@ export enum SortDirection {
   Desc = 'DESC'
 }
 
+/**
+ * type OrganizationParticipation {
+ *   actUid: Int
+ *   typeCd: String
+ *   entityId: Int
+ *   subjectClassCd: String
+ *   typeDescTxt: String
+ *   participationRecordStatus: String
+ *   participationLastChangeTime: DateTime
+ *   name: String
+ *   organizationLastChangeTime: DateTime
+ * }
+ */
 export enum SortField {
   BirthTime = 'birthTime',
   LastNm = 'lastNm',
@@ -2446,7 +2395,7 @@ export type FindInvestigationsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, recordStatus?: string | null, lastChangeTime?: any | null, publicHealthCaseUid?: number | null, caseClassCd?: string | null, outbreakName?: string | null, caseTypeCd?: string | null, cdDescTxt?: string | null, progAreaCd?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, pregnantIndCd?: string | null, localId?: string | null, rptFormCmpltTime?: any | null, activityToTime?: any | null, activityFromTime?: any | null, addTime?: any | null, publicHealthCaseLastChgTime?: any | null, addUserId?: number | null, lastChangeUserId?: number | null, currProcessStateCd?: string | null, investigationStatusCd?: string | null, moodCd?: string | null, notificationLocalId?: string | null, notificationAddTime?: any | null, notificationRecordStatusCd?: string | null, notificationLastChgTime?: any | null, personParticipations?: Array<{ __typename?: 'PersonParticipation', actUid: number, localId?: string | null, typeCd?: string | null, entityId: number, subjectClassCd?: string | null, participationRecordStatus?: string | null, typeDescTxt?: string | null, participationLastChangeTime?: any | null, firstName?: string | null, lastName?: string | null, birthTime?: any | null, currSexCd?: string | null, personCd: string, personParentUid?: number | null, personRecordStatus: string, personLastChangeTime?: any | null, shortId?: number | null } | null> | null, organizationParticipations?: Array<{ __typename?: 'OrganizationParticipation', actUid?: number | null, typeCd?: string | null, entityId?: number | null, subjectClassCd?: string | null, typeDescTxt?: string | null, participationRecordStatus?: string | null, participationLastChangeTime?: any | null, name?: string | null, organizationLastChangeTime?: any | null } | null> | null, actIds?: Array<{ __typename?: 'ActId', id?: number | null, recordStatus?: string | null, actIdSeq?: number | null, rootExtensionTxt?: string | null, typeCd?: string | null, lastChangeTime?: any | null } | null> | null } | null> } };
+export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
 
 export type FindInvestigationsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -4477,69 +4426,21 @@ export const FindInvestigationsByFilterDocument = gql`
   findInvestigationsByFilter(filter: $filter, page: $page) {
     content {
       id
-      recordStatus
-      lastChangeTime
-      publicHealthCaseUid
-      caseClassCd
-      outbreakName
-      caseTypeCd
       cdDescTxt
-      progAreaCd
-      jurisdictionCd
       jurisdictionCodeDescTxt
-      pregnantIndCd
       localId
-      rptFormCmpltTime
-      activityToTime
-      activityFromTime
       addTime
-      publicHealthCaseLastChgTime
-      addUserId
-      lastChangeUserId
-      currProcessStateCd
       investigationStatusCd
-      moodCd
-      notificationLocalId
-      notificationAddTime
       notificationRecordStatusCd
-      notificationLastChgTime
       personParticipations {
-        actUid
-        localId
-        typeCd
-        entityId
-        subjectClassCd
-        participationRecordStatus
-        typeDescTxt
-        participationLastChangeTime
-        firstName
-        lastName
         birthTime
         currSexCd
+        typeCd
+        firstName
+        lastName
         personCd
         personParentUid
-        personRecordStatus
-        personLastChangeTime
         shortId
-      }
-      organizationParticipations {
-        actUid
-        typeCd
-        entityId
-        subjectClassCd
-        typeDescTxt
-        participationRecordStatus
-        participationLastChangeTime
-        name
-        organizationLastChangeTime
-      }
-      actIds {
-        id
-        recordStatus
-        actIdSeq
-        rootExtensionTxt
-        typeCd
-        lastChangeTime
       }
     }
     total
