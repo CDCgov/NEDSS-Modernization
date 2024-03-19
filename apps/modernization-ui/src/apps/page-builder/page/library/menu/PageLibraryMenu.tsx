@@ -13,10 +13,10 @@ type Props = {
     filters: Filter[];
     onSearch: (keyword?: string) => void;
     onFilter: (filters: Filter[]) => void;
-    onDownload: () => void;
-    onPrint: () => void;
+    onDownloadCsv: () => void;
+    onDownloadPdf: () => void;
 };
-const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, onPrint }: Props) => {
+const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCsv, onDownloadPdf }: Props) => {
     const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
     return (
         <section className={styles.menu}>
@@ -57,19 +57,19 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownload, 
                     Page porting
                 </LinkButton>
                 <Button
-                    aria-label="download search results as csv"
+                    aria-label="download search results as pdf"
                     type="button"
-                    onClick={onPrint}
+                    onClick={onDownloadPdf}
                     className={styles.icon}
                     outline>
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
                 <Button
-                    aria-label="download search results as pdf"
+                    aria-label="download search results as csv"
                     type="button"
                     className={styles.icon}
                     outline
-                    onClick={onDownload}
+                    onClick={onDownloadCsv}
                     data-testid="file-download">
                     <Icon.FileDownload size={3} />
                 </Button>

@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,16 +36,22 @@ public class PageRuleController {
   private final PageRuleCreator pageRuleCreator;
   private final PageRuleUpdater pageRuleUpdater;
   private final PageRuleFinder pageRuleFinder;
+  private final PdfCreator pdfCreator;
+  private final CsvCreator csvCreator;
 
   public PageRuleController(
       final PageRuleDeleter pageRuleDeleter,
       final PageRuleCreator pageRuleCreator,
       final PageRuleUpdater pageRuleUpdater,
-      final PageRuleFinder pageRuleFinder) {
+      final PageRuleFinder pageRuleFinder,
+      final PdfCreator pdfCreator,
+      final CsvCreator csvCreator) {
     this.pageRuleDeleter = pageRuleDeleter;
     this.pageRuleCreator = pageRuleCreator;
     this.pageRuleUpdater = pageRuleUpdater;
     this.pageRuleFinder = pageRuleFinder;
+    this.pdfCreator = pdfCreator;
+    this.csvCreator = csvCreator;
   }
 
   @PostMapping()
@@ -75,10 +85,46 @@ public class PageRuleController {
   }
 
   @PostMapping("/search")
-  public Page<Rule> findPageRule(@PathVariable("id") Long pageId,
+  public Page<Rule> findPageRule(
+      @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     return pageRuleFinder.searchPageRule(pageId, request, pageable);
+  }
+
+  @PostMapping("/pdf")
+  public ResponseEntity<byte[]> downloadRulePdf(
+      @PathVariable("id") Long pageId,
+      @RequestBody SearchPageRuleRequest request,
+      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+    Page<Rule> rules = pageRuleFinder.searchPageRule(pageId, request, pageable);
+    byte[] pdf = pdfCreator.create(rules.toList());
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename("ManageRulesLibrary.pdf")
+                .build()
+                .toString())
+        .body(pdf);
+  }
+
+  @PostMapping("/csv")
+  public ResponseEntity<byte[]> downloadRuleCsv(
+      @PathVariable("id") Long pageId,
+      @RequestBody SearchPageRuleRequest request,
+      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+    Page<Rule> rules = pageRuleFinder.searchPageRule(pageId, request, pageable);
+
+    byte[] csv = csvCreator.create(rules.toList());
+    return ResponseEntity.ok()
+        .contentType(MediaType.TEXT_PLAIN)
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename("ManageRulesLibrary.csv")
+                .build()
+                .toString())
+        .body(csv);
   }
 
   @GetMapping("/getAll")
