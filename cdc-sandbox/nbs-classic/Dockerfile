@@ -27,7 +27,7 @@ RUN cp $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/Globals.j
 WORKDIR $NEDSS_HOME
 
 # Clean container dist directory
-RUN rm -rf build
+#RUN rm -rf build
 
 ENV JBOSS_HOME=build
 ENV JAVA_TOOL_OPTIONS=-Dfile.encoding=ISO-8859-1
@@ -41,7 +41,7 @@ FROM amazoncorretto:8
 # Installs
 #===============================================================================================================
 RUN yum update -y && yum -y install xmlstarlet saxon augeas bsdtar unzip xz gzip tar shadow-utils emacs && yum clean all
-
+RUN yum -y install nano
 # RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
 # 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
