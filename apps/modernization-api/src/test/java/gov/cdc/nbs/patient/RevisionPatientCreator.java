@@ -22,25 +22,31 @@ class RevisionPatientCreator {
         local_id,
         version_ctrl_nbr,
         cd,
+        birth_time,
+        curr_sex_cd,
         add_user_id,
         add_time,
         last_chg_user_id,
         last_chg_time,
         record_status_cd,
         record_status_time
-      ) values (
-        :mpr,
+      )
+      select
+        [mpr].person_uid,
         :identifier,
-        :local,
+        [mpr].local_id,
         1,
-        'PAT',
+        [mpr].cd,
+        [mpr].birth_time,
+        [mpr].curr_sex_cd,
         :by,
         getDate(),
         :by,
         getDate(),
         'ACTIVE',
         getDate()
-      )
+      from Person [mpr]
+      where [mpr].person_uid = :mpr
       ;
       
       insert into Person_name (
@@ -119,7 +125,6 @@ class RevisionPatientCreator {
         Map.of(
             "mpr", patient.id(),
             "identifier", id,
-            "local", patient.local(),
             "by", this.settings.createdBy()
         )
     );

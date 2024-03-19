@@ -45,8 +45,8 @@ class LabReportSearchCriteriaSortResolver {
 
   private static Function<Query.Builder, ObjectBuilder<Query>> onlyPatients() {
     return filter -> filter.term(
-        term -> term.field("person_participations.type_cd")
-            .value("PATSBJ")
+        term -> term.field("person_participations.person_cd")
+            .value("PAT")
     );
   }
 
