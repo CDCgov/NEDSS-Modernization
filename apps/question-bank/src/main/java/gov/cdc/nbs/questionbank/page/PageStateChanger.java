@@ -3,7 +3,6 @@ package gov.cdc.nbs.questionbank.page;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
@@ -40,30 +39,27 @@ public class PageStateChanger {
   public PageStateResponse savePageAsDraft(Long id) {
     PageStateResponse response = new PageStateResponse();
     try {
-      Optional<WaTemplate> result = templateRepository.findById(id);
-      if (result.isPresent()) {
-        WaTemplate page = result.get();
-        if (page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
-          throw new PageUpdateException(PageConstants.SAVE_DRAFT_NOCHANGE);
-        }
-        WaTemplate draftPage = createDraftCopy(page);
-        page.setTemplateType(PageConstants.PUBLISHED_WITH_DRAFT);
-
-        page = templateRepository.save(page);
-        draftPage = templateRepository.save(draftPage);
-        pageConMappingRepository.saveAll(draftPage.getConditionMappings());
-
-        List<WaUiMetadata> draftMappings = copyWaTemplateUIMetaData(page, draftPage);
-        waUiMetadataRepository.saveAll(draftMappings);
-
-        List<WaRuleMetadata> rules = copyRules(id, draftPage);
-        waRuleMetaDataRepository.saveAll(rules);
-
-        response.setMessage(PageConstants.SAVE_DRAFT_SUCCESS);
-        response.setTemplateId(draftPage.getId());
-      } else {
-        throw new PageUpdateException(PageConstants.SAVE_DRAFT_FAIL);
+      WaTemplate page =
+          templateRepository.findById(id).orElseThrow(() -> new PageUpdateException(PageConstants.SAVE_DRAFT_FAIL));
+      if (page.getTemplateType().equals(PageConstants.PUBLISHED_WITH_DRAFT)) {
+        throw new PageUpdateException(PageConstants.SAVE_DRAFT_NOCHANGE);
       }
+      WaTemplate draftPage = createDraftCopy(page);
+      page.setTemplateType(PageConstants.PUBLISHED_WITH_DRAFT);
+
+      page = templateRepository.save(page);
+      draftPage = templateRepository.save(draftPage);
+      pageConMappingRepository.saveAll(draftPage.getConditionMappings());
+
+      List<WaUiMetadata> draftMappings = copyWaTemplateUIMetaData(page, draftPage);
+      waUiMetadataRepository.saveAll(draftMappings);
+
+      List<WaRuleMetadata> rules = copyRules(id, draftPage.getId());
+      waRuleMetaDataRepository.saveAll(rules);
+
+      response.setMessage(PageConstants.SAVE_DRAFT_SUCCESS);
+      response.setTemplateId(draftPage.getId());
+
     } catch (PageUpdateException e) {
       throw e;
     } catch (Exception e) {
@@ -72,12 +68,12 @@ public class PageStateChanger {
     return response;
   }
 
-  public List<WaRuleMetadata> copyRules(long publishedPage, WaTemplate newPage) {
+  List<WaRuleMetadata> copyRules(long publishedPage, long newPage) {
     List<WaRuleMetadata> initialRuleMappings = new ArrayList<>();
     List<WaRuleMetadata> rules = waRuleMetaDataRepository.findByWaTemplateUid(publishedPage);
     for (WaRuleMetadata original : rules) {
       WaRuleMetadata clone = WaRuleMetadata.clone(original);
-      clone.setWaTemplateUid(newPage.getId());
+      clone.setWaTemplateUid(newPage);
       initialRuleMappings.add(clone);
     }
     return initialRuleMappings;
