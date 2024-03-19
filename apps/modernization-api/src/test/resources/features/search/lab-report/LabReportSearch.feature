@@ -1,5 +1,5 @@
 @lab_report_search
-Feature: Lab report search
+Feature: Lab Report Search
 
   Background:
     Given I am logged into NBS
