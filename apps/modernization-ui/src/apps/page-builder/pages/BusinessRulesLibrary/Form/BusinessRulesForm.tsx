@@ -121,7 +121,9 @@ export const BusinessRulesForm = ({
             if (lastChar === ':') {
                 return text.replace(':', '');
             }
+            return text;
         }
+        return text;
     };
 
     const handleOpenSourceQuestion = () => {
@@ -331,7 +333,9 @@ export const BusinessRulesForm = ({
                             ) : (
                                 <div className={styles.sourceQuestionDisplay}>
                                     <div className={styles.title}>
-                                        {`${removeNumericAndSymbols(sourceQuestion.name)} (${sourceQuestion.question})`}
+                                        {`${checkForSemicolon(removeNumericAndSymbols(sourceQuestion.name))} (${
+                                            sourceQuestion.question
+                                        })`}
                                     </div>
                                     <div className={styles.closeBtn}>
                                         <Icon.Close
@@ -482,7 +486,9 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
-                                                {`${removeNumericAndSymbols(question.name)} (${question.question})`}
+                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name))} (${
+                                                    question.question
+                                                })`}
                                             </div>
                                         ))}
                                     </div>
@@ -548,7 +554,7 @@ export const BusinessRulesForm = ({
                                             <Input
                                                 type="text"
                                                 multiline
-                                                defaultValue={removeNumericAndSymbols(value)}
+                                                defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
                                                 onChange={onChange}
                                                 onBlur={onBlur}
                                             />
