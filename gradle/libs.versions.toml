@@ -1,6 +1,6 @@
 [versions]
 springBoot = '2.7.18'
-spring-security = '5.8.9'
+spring-security = '5.8.11'
 jackson = '2.13.5'
 queryDSL = '5.0.0'
 graphql = '20.7'
