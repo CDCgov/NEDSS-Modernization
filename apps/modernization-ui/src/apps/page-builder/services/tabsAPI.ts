@@ -10,6 +10,7 @@ export const addTab = async (page: number, request: { name: string; visible: boo
 };
 
 export const updateTab = async (page: number, request: { name: string; visible: boolean }, tabId: number) => {
+    console.log('UPDATE', page, request, tabId);
     return await TabControllerService.updateTabUsingPut({
         authorization: authorization(),
         page: page,
