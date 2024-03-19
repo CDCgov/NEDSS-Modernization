@@ -5,7 +5,9 @@ import java.util.List;
 
 class LabReportSearchResultConverter {
 
-  static LabReportSearchResult convert(final SearchableLabReport searchable) {
+  static LabReportSearchResult convert(final SearchableLabReport searchable, final Double score) {
+
+    double relevance = score == null ? 0: score;
 
     List<LabReportSearchResult.PersonParticipation> personParticipations = searchable.people()
         .stream().map(LabReportSearchResultConverter::asPerson)
@@ -25,6 +27,7 @@ class LabReportSearchResultConverter {
         asAssociatedInvestigations(searchable.associated());
 
     return new LabReportSearchResult(
+        relevance,
         String.valueOf(searchable.identifier()),
         searchable.jurisdiction(),
         searchable.local(),

@@ -4,7 +4,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 class LabReportSearcher {
@@ -85,9 +83,8 @@ class LabReportSearcher {
   ) {
 
     List<LabReportSearchResult> results = hits.hits().stream()
-        .map(Hit::source)
-        .filter(Objects::nonNull)
-        .map(LabReportSearchResultConverter::convert)
+        .filter(hit -> hit.source() != null)
+        .map(hit -> LabReportSearchResultConverter.convert(hit.source(), hit.score()))
         .toList();
 
     return new PageImpl<>(

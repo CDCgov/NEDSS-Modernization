@@ -47,8 +47,8 @@ export type AdministrativeInput = {
 
 export type AssociatedInvestigation = {
   __typename?: 'AssociatedInvestigation';
-  cdDescTxt?: Maybe<Scalars['String']['output']>;
-  localId?: Maybe<Scalars['String']['output']>;
+  cdDescTxt: Scalars['String']['output'];
+  localId: Scalars['String']['output'];
 };
 
 export type AssociatedInvestigation2 = {
@@ -359,15 +359,15 @@ export type Jurisdiction = {
 
 export type LabReport = {
   __typename?: 'LabReport';
-  addTime?: Maybe<Scalars['Date']['output']>;
+  addTime: Scalars['Date']['output'];
   associatedInvestigations: Array<AssociatedInvestigation>;
-  id?: Maybe<Scalars['String']['output']>;
-  jurisdictionCd?: Maybe<Scalars['Int']['output']>;
-  jurisdictionCodeDescTxt?: Maybe<Scalars['String']['output']>;
-  localId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  jurisdictionCd: Scalars['Int']['output'];
+  localId: Scalars['String']['output'];
   observations: Array<Observation>;
   organizationParticipations: Array<LabReportOrganizationParticipation>;
   personParticipations: Array<LabReportPersonParticipation>;
+  relevance: Scalars['Float']['output'];
 };
 
 export type LabReportEventId = {
@@ -395,8 +395,8 @@ export type LabReportFilter = {
 
 export type LabReportOrganizationParticipation = {
   __typename?: 'LabReportOrganizationParticipation';
-  name?: Maybe<Scalars['String']['output']>;
-  typeCd?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  typeCd: Scalars['String']['output'];
 };
 
 export type LabReportPersonParticipation = {
@@ -2463,7 +2463,7 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', id?: string | null, jurisdictionCd?: number | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd?: string | null, name?: string | null }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt?: string | null, localId?: string | null }> } | null> } };
+export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }> } | null> } };
 
 export type FindLabReportsForPatientQueryVariables = Exact<{
   personUid: Scalars['Int']['input'];
@@ -4644,9 +4644,9 @@ export const FindLabReportsByFilterDocument = gql`
     query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage) {
   findLabReportsByFilter(filter: $filter, page: $page) {
     content {
+      relevance
       id
       jurisdictionCd
-      jurisdictionCodeDescTxt
       localId
       addTime
       personParticipations {

@@ -19,9 +19,9 @@ class LabReportSearchRequester {
         findLabReportsByFilter(filter: $filter, page: $page) {
           total
           content{
+              relevance
               id
               jurisdictionCd
-              jurisdictionCodeDescTxt
               localId
               addTime
               personParticipations{

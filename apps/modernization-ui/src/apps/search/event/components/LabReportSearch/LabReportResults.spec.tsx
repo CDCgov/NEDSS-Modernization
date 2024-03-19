@@ -5,9 +5,9 @@ import { LabReport } from 'generated/graphql/schema';
 
 const labReports: [LabReport] = [
     {
+        relevance: 0,
         id: '10056325',
         jurisdictionCd: 130006,
-        jurisdictionCodeDescTxt: null,
         localId: 'OBS10001008GA01',
         addTime: '2023-07-27',
         personParticipations: [

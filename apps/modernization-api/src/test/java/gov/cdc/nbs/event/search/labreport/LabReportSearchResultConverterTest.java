@@ -58,8 +58,9 @@ class LabReportSearchResultConverterTest {
         "entry-value"
     );
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, 101d);
 
+    assertThat(converted.relevance()).isEqualTo(101);
     assertThat(converted.id()).isEqualTo("1019");
     assertThat(converted.jurisdictionCd()).isEqualTo("jurisdiction-value");
     assertThat(converted.localId()).isEqualTo("local-value");
@@ -67,10 +68,23 @@ class LabReportSearchResultConverterTest {
   }
 
   @Test
+  void should_convert_to_result_with_default_score_when_score_is_null() {
+    SearchableLabReport searchable = mock(SearchableLabReport.class);
+    when(searchable.identifier()).thenReturn(509L);
+    when(searchable.people()).thenReturn(Collections.emptyList());
+    when(searchable.tests()).thenReturn(Collections.emptyList());
+    when(searchable.associated()).thenReturn(Collections.emptyList());
+    when(searchable.organizations()).thenReturn(Collections.emptyList());
+
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+
+    assertThat(converted.relevance()).isZero();
+  }
+
+  @Test
   void should_convert_to_result_with_patient() {
     SearchableLabReport searchable = mock(SearchableLabReport.class);
     when(searchable.identifier()).thenReturn(509L);
-    when(searchable.tests()).thenReturn(Collections.emptyList());
     when(searchable.tests()).thenReturn(Collections.emptyList());
     when(searchable.associated()).thenReturn(Collections.emptyList());
     when(searchable.organizations()).thenReturn(Collections.emptyList());
@@ -90,7 +104,7 @@ class LabReportSearchResultConverterTest {
         )
     );
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
 
     assertThat(converted.personParticipations()).satisfiesExactly(
         actual -> assertAll(
@@ -111,7 +125,6 @@ class LabReportSearchResultConverterTest {
     SearchableLabReport searchable = mock(SearchableLabReport.class);
     when(searchable.identifier()).thenReturn(509L);
     when(searchable.tests()).thenReturn(Collections.emptyList());
-    when(searchable.tests()).thenReturn(Collections.emptyList());
     when(searchable.associated()).thenReturn(Collections.emptyList());
     when(searchable.organizations()).thenReturn(Collections.emptyList());
 
@@ -127,7 +140,7 @@ class LabReportSearchResultConverterTest {
         )
     );
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
 
     assertThat(converted.personParticipations()).satisfiesExactly(
         actual -> assertAll(
@@ -150,7 +163,6 @@ class LabReportSearchResultConverterTest {
     when(searchable.identifier()).thenReturn(509L);
     when(searchable.people()).thenReturn(Collections.emptyList());
     when(searchable.tests()).thenReturn(Collections.emptyList());
-    when(searchable.tests()).thenReturn(Collections.emptyList());
     when(searchable.associated()).thenReturn(Collections.emptyList());
 
     when(searchable.organizations()).thenReturn(
@@ -171,7 +183,7 @@ class LabReportSearchResultConverterTest {
     );
 
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
 
     assertThat(converted.organizationParticipations()).satisfiesExactly(
         actual -> assertAll(
@@ -211,7 +223,7 @@ class LabReportSearchResultConverterTest {
     );
 
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
 
     assertThat(converted.observations()).satisfiesExactly(
         actual -> assertAll(
@@ -248,7 +260,7 @@ class LabReportSearchResultConverterTest {
         )
     );
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
 
     assertThat(converted.associatedInvestigations()).satisfiesExactly(
         actual -> assertAll(
