@@ -51,6 +51,56 @@ export class PageRuleControllerService {
     }
 
     /**
+     * downloadRuleCsv
+     * @returns string OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static downloadRuleCsvUsingPost({
+        authorization,
+        id,
+        request,
+        page,
+        size,
+        sort,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: SearchPageRuleRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<string | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{id}/rules/csv',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
      * getAllRules
      * @returns Rule OK
      * @throws ApiError
@@ -74,6 +124,56 @@ export class PageRuleControllerService {
             headers: {
                 'Authorization': authorization,
             },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * downloadRulePdf
+     * @returns string OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static downloadRulePdfUsingPost({
+        authorization,
+        id,
+        request,
+        page,
+        size,
+        sort,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: SearchPageRuleRequest,
+        page?: number,
+        size?: number,
+        sort?: string,
+    }): CancelablePromise<string | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{id}/rules/pdf',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
+            body: request,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
