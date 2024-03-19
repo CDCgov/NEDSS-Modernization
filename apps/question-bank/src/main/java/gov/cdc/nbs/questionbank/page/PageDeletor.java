@@ -14,43 +14,41 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 @Service
 public class PageDeletor {
 
-    private final EntityManager entityManager;
+  private final EntityManager entityManager;
+  private final PageUidFinder pageUidFinder;
 
-    private final PageUidFinder pageUidFinder;
+  public PageDeletor(
+      final EntityManager entityManager,
+      final PageUidFinder pageUidFinder) {
+    this.entityManager = entityManager;
+    this.pageUidFinder = pageUidFinder;
+  }
 
-    public PageDeletor(
-        final EntityManager entityManager,
-        final PageUidFinder pageUidFinder) {
-        this.entityManager = entityManager;
-        this.pageUidFinder = pageUidFinder;
+  @Transactional
+  public PageDeleteResponse deletePageDraft(Long id) {
+    WaTemplate page = entityManager.find(WaTemplate.class, id);
+
+    if (page == null) {
+      throw new PageNotFoundException();
     }
 
+    if (page.getTemplateType().equals(PageConstants.DRAFT)) {
 
-    @Transactional
-    public PageDeleteResponse deletePageDraft(Long id) {
-        WaTemplate page = entityManager.find(WaTemplate.class, id);
+      Long publishedWithDraft = pageUidFinder.findTemplateByType(page.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT);
 
-        if (page == null) {
-            throw new PageNotFoundException();
-        }
+      WaTemplate publishedWithDraftPage = entityManager.find(WaTemplate.class, publishedWithDraft);
 
-        if (page.getTemplateType().equals(PageConstants.DRAFT)) {
+      if (publishedWithDraftPage == null) {
+        throw new PageNotFoundException();
+      }
+      publishedWithDraftPage.setTemplateType(PageConstants.PUBLISHED);
 
-            Long publishedWithDraft = pageUidFinder.findTemplateByType(page.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT);
+      entityManager.remove(page);
 
-            WaTemplate publishedWithDraftPage = entityManager.find(WaTemplate.class, publishedWithDraft);
-
-            if (publishedWithDraftPage == null) {
-                throw new PageNotFoundException();
-            }
-            publishedWithDraftPage.setTemplateType(PageConstants.PUBLISHED);
-
-            entityManager.remove(page);
-
-        } else {
-            throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
-        }
-        return new PageDeleteResponse(page.getId(), PageConstants.DRAFT_DELETE_SUCCESS);
+    } else {
+      throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
     }
+    return new PageDeleteResponse(page.getId(), PageConstants.DRAFT_DELETE_SUCCESS);
+  }
 
 }
