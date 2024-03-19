@@ -33,7 +33,7 @@ public class CsvCreator {
 
       for (Rule r : rules) {
         List<String> row = Arrays.asList(
-            r.ruleFunction().toString(),
+            r.ruleFunction().getValue(),
             String.format("%s (%s)", r.sourceQuestion().label(), r.sourceQuestion().questionIdentifier()),
             r.comparator().getValue(),
             formatSourceValues(r.anySourceValue(), r.sourceValues()),
