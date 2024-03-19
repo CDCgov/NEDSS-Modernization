@@ -19,7 +19,7 @@ import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
 import { PatientTableActions } from '../PatientTableActions';
-import { useAdministrativeProfileContext } from '../AdministrativeProfileContext';
+// import { useAdministrativeProfileContext } from '../AdministrativeProfileContext';
 
 const asEntry = (administrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(administrative?.asOf),
@@ -47,7 +47,7 @@ const headers = [
 ];
 
 export const AdministrativeTable = ({ patient }: Props) => {
-    const { changed } = useAdministrativeProfileContext();
+    // const { changed } = useAdministrativeProfileContext();
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>(headers);
 
@@ -83,7 +83,8 @@ export const AdministrativeTable = ({ patient }: Props) => {
                         pageNumber: currentPage - 1,
                         pageSize: TOTAL_TABLE_DATA
                     }
-                }
+                },
+                notifyOnNetworkStatusChange: true
             });
     }, [currentPage, patient]);
 
@@ -100,7 +101,6 @@ export const AdministrativeTable = ({ patient }: Props) => {
             })
                 .then(() => {
                     refetch();
-                    changed();
                     showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
                 })
                 .then(() => actions.reset());

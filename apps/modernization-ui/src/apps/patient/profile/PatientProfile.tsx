@@ -17,7 +17,6 @@ import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
-import { AdministrativeProfileProvider } from './AdministrativeProfileContext';
 import styles from './patient-profile.module.scss';
 
 const openPrintableView = (patient: string | undefined) => () => {
@@ -85,123 +84,118 @@ export const PatientProfile = () => {
 
     return (
         <ProfileProvider id={id}>
-            <AdministrativeProfileProvider id={id}>
-                <div className="height-full main-banner">
-                    <div className="padding-left-2 padding-right-1 bg-white grid-row flex-align-center flex-justify border-bottom-style">
-                        <h1 className="font-sans-xl text-medium">Patient profile</h1>
-                        <div>
-                            <Button type={'button'} onClick={openPrintableView(patient?.id)}>
-                                <Icon.Print size={3} />
-                                Print
-                            </Button>
-                            {permissions.delete && (
-                                <ModalToggleButton
-                                    modalRef={modalRef}
-                                    opener
-                                    className={styles.destructive}
-                                    type={'submit'}>
-                                    <Icon.Delete size={3} />
-                                    Delete patient
-                                </ModalToggleButton>
-                            )}
-                            {deletability === DeletabilityResult.Deletable && (
-                                <ConfirmationModal
-                                    modal={modalRef}
-                                    title="Permanently delete patient?"
-                                    message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
-                                    cancelText="No, go back"
-                                    onCancel={() => {
-                                        modalRef.current?.toggleModal(undefined, false);
-                                    }}
-                                    confirmText="Yes, delete"
-                                    onConfirm={handleDeletePatient}
-                                />
-                            )}
-                            {deletability === DeletabilityResult.Has_Associations && (
-                                <MessageModal
-                                    modal={modalRef}
-                                    title={`The patient can not be deleted`}
-                                    message="This patient file has associated event records."
-                                    detail="The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator."
-                                />
-                            )}
-                            {deletability === DeletabilityResult.Is_Inactive && (
-                                <MessageModal
-                                    modal={modalRef}
-                                    title={`The patient can not be deleted`}
-                                    message="This patient file is inactive and cannot be deleted."
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <div className="main-body">
-                        {patient && summary && <PatientProfileSummary summary={summary} patient={patient} />}
-
-                        <div role="tablist" className="grid-row flex-align-center">
-                            <button
-                                className="tab-panel-unstyled-button"
-                                type="button"
-                                tabIndex={0}
-                                onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}
-                                role="tab"
-                                aria-labelledby="summary-tabpanel"
-                                aria-controls="summary-tabpanel"
-                                aria-selected={activeTab === ACTIVE_TAB.SUMMARY && 'true'}>
-                                <p
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.SUMMARY && 'active'
-                                    } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
-                                    {ACTIVE_TAB.SUMMARY}
-                                </p>
-                            </button>
-                            <button
-                                className="tab-panel-unstyled-button"
-                                type="button"
-                                tabIndex={0}
-                                onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}
-                                role="tab"
-                                aria-labelledby="events-tabpanel"
-                                aria-selected={activeTab === ACTIVE_TAB.EVENT && 'true'}
-                                aria-controls="events-tabpanel">
-                                <p
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.EVENT && 'active'
-                                    } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
-                                    {ACTIVE_TAB.EVENT}
-                                </p>
-                            </button>
-                            <button
-                                className="tab-panel-unstyled-button"
-                                type="button"
-                                tabIndex={0}
-                                onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}>
-                                <p
-                                    className={`${
-                                        activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
-                                    } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
-                                    {ACTIVE_TAB.DEMOGRAPHICS}
-                                </p>
-                            </button>
-                        </div>
-
-                        {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={patient?.id} />}
-                        {activeTab === ACTIVE_TAB.EVENT && (
-                            <Events patient={patient?.id} addEventsAllowed={patient?.status === 'ACTIVE'} />
+            <div className="height-full main-banner">
+                <div className="padding-left-2 padding-right-1 bg-white grid-row flex-align-center flex-justify border-bottom-style">
+                    <h1 className="font-sans-xl text-medium">Patient profile</h1>
+                    <div>
+                        <Button type={'button'} onClick={openPrintableView(patient?.id)}>
+                            <Icon.Print size={3} />
+                            Print
+                        </Button>
+                        {permissions.delete && (
+                            <ModalToggleButton
+                                modalRef={modalRef}
+                                opener
+                                className={styles.destructive}
+                                type={'submit'}>
+                                <Icon.Delete size={3} />
+                                Delete patient
+                            </ModalToggleButton>
                         )}
-                        {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics patient={patient} />}
-
-                        <div className="text-center margin-y-5">
-                            <Button
-                                outline
-                                type={'button'}
-                                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                                <Icon.ArrowUpward className="margin-right-1" />
-                                Back to top
-                            </Button>
-                        </div>
+                        {deletability === DeletabilityResult.Deletable && (
+                            <ConfirmationModal
+                                modal={modalRef}
+                                title="Permanently delete patient?"
+                                message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
+                                cancelText="No, go back"
+                                onCancel={() => {
+                                    modalRef.current?.toggleModal(undefined, false);
+                                }}
+                                confirmText="Yes, delete"
+                                onConfirm={handleDeletePatient}
+                            />
+                        )}
+                        {deletability === DeletabilityResult.Has_Associations && (
+                            <MessageModal
+                                modal={modalRef}
+                                title={`The patient can not be deleted`}
+                                message="This patient file has associated event records."
+                                detail="The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator."
+                            />
+                        )}
+                        {deletability === DeletabilityResult.Is_Inactive && (
+                            <MessageModal
+                                modal={modalRef}
+                                title={`The patient can not be deleted`}
+                                message="This patient file is inactive and cannot be deleted."
+                            />
+                        )}
                     </div>
                 </div>
-            </AdministrativeProfileProvider>
+                <div className="main-body">
+                    {patient && summary && <PatientProfileSummary summary={summary} patient={patient} />}
+
+                    <div role="tablist" className="grid-row flex-align-center">
+                        <button
+                            className="tab-panel-unstyled-button"
+                            type="button"
+                            tabIndex={0}
+                            onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}
+                            role="tab"
+                            aria-labelledby="summary-tabpanel"
+                            aria-controls="summary-tabpanel"
+                            aria-selected={activeTab === ACTIVE_TAB.SUMMARY && 'true'}>
+                            <p
+                                className={`${
+                                    activeTab === ACTIVE_TAB.SUMMARY && 'active'
+                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
+                                {ACTIVE_TAB.SUMMARY}
+                            </p>
+                        </button>
+                        <button
+                            className="tab-panel-unstyled-button"
+                            type="button"
+                            tabIndex={0}
+                            onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}
+                            role="tab"
+                            aria-labelledby="events-tabpanel"
+                            aria-selected={activeTab === ACTIVE_TAB.EVENT && 'true'}
+                            aria-controls="events-tabpanel">
+                            <p
+                                className={`${
+                                    activeTab === ACTIVE_TAB.EVENT && 'active'
+                                } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
+                                {ACTIVE_TAB.EVENT}
+                            </p>
+                        </button>
+                        <button
+                            className="tab-panel-unstyled-button"
+                            type="button"
+                            tabIndex={0}
+                            onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}>
+                            <p
+                                className={`${
+                                    activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
+                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
+                                {ACTIVE_TAB.DEMOGRAPHICS}
+                            </p>
+                        </button>
+                    </div>
+
+                    {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={patient?.id} />}
+                    {activeTab === ACTIVE_TAB.EVENT && (
+                        <Events patient={patient?.id} addEventsAllowed={patient?.status === 'ACTIVE'} />
+                    )}
+                    {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics patient={patient} />}
+
+                    <div className="text-center margin-y-5">
+                        <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                            <Icon.ArrowUpward className="margin-right-1" />
+                            Back to top
+                        </Button>
+                    </div>
+                </div>
+            </div>
         </ProfileProvider>
     );
 };
