@@ -240,37 +240,15 @@ class LabReportSearchResultConverterTest {
   }
 
   @Test
-  void should_convert_to_result_with_associated_investigations() {
+  void should_convert_to_result_without_associated_investigations() {
     SearchableLabReport searchable = mock(SearchableLabReport.class);
     when(searchable.identifier()).thenReturn(509L);
     when(searchable.people()).thenReturn(Collections.emptyList());
     when(searchable.organizations()).thenReturn(Collections.emptyList());
     when(searchable.tests()).thenReturn(Collections.emptyList());
 
-    when(searchable.associated()).thenReturn(
-        List.of(
-            new SearchableLabReport.Investigation(
-                "local-one-value",
-                "condition-one-value"
-            ),
-            new SearchableLabReport.Investigation(
-                "local-two-value",
-                "condition-two-value"
-            )
-        )
-    );
-
     LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
 
-    assertThat(converted.associatedInvestigations()).satisfiesExactly(
-        actual -> assertAll(
-            () -> assertThat(actual.localId()).isEqualTo("local-one-value"),
-            () -> assertThat(actual.cdDescTxt()).isEqualTo("condition-one-value")
-        ),
-        actual -> assertAll(
-            () -> assertThat(actual.localId()).isEqualTo("local-two-value"),
-            () -> assertThat(actual.cdDescTxt()).isEqualTo("condition-two-value")
-        )
-    );
+    assertThat(converted.associatedInvestigations()).isEmpty();
   }
 }

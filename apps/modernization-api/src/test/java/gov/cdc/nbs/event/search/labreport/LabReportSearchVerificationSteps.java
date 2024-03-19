@@ -62,14 +62,20 @@ public class LabReportSearchVerificationSteps {
         );
   }
 
+  @Then("there are no lab report search results available")
+  public void there_are_no_lab_report_search_results_available() throws Exception {
+    this.response.active()
+        .andExpect(jsonPath("$.data.findLabReportsByFilter.total").value(0));
+  }
+
   @Then("there is only one lab report search result")
-  public void there_is_only_one_patient_search_result() throws Exception {
+  public void there_is_only_one_lab_report_search_result() throws Exception {
     this.response.active()
         .andExpect(jsonPath("$.data.findLabReportsByFilter.total").value(1));
   }
 
-  @Then("there are {int} lab report search results")
-  public void there_is_are_x_patient_search_result(final int total) throws Exception {
+  @Then("there are {int} lab report search results available")
+  public void there_is_are_x_lab_report_search_result(final int total) throws Exception {
     this.response.active()
         .andExpect(jsonPath("$.data.findLabReportsByFilter.total").value(total));
   }

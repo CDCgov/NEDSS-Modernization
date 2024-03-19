@@ -20,7 +20,7 @@ class LabReportSearchCriteriaQueryResolver {
             withAccessionNumber(criteria),
             withLabIdentifier(criteria),
             withResultedTest(criteria),
-            withCodedTest(criteria)
+            withCodedResult(criteria)
         ).flatMap(Optional::stream)
         .map(QueryVariant::_toQuery)
         .reduce(
@@ -64,35 +64,23 @@ class LabReportSearchCriteriaQueryResolver {
   }
 
   private Optional<QueryVariant> withResultedTest(final LabReportFilter criteria) {
-    String result = criteria.getResultedTest();
-
-    if (result == null || result.isEmpty()) {
-      return Optional.empty();
-    }
-
-    return Optional.of(
-        NestedQuery.of(
+    return criteria.resultedTest().map(
+        test -> NestedQuery.of(
             nested -> nested.path("observations")
                 .scoreMode(ChildScoreMode.None)
                 .query(
                     query -> query.match(
                         match -> match.field("observations.cd_desc_txt")
-                            .query(result)
+                            .query(test)
                     )
                 )
         )
     );
   }
 
-  private Optional<QueryVariant> withCodedTest(final LabReportFilter criteria) {
-    String result = criteria.getCodedResult();
-
-    if (result == null || result.isEmpty()) {
-      return Optional.empty();
-    }
-
-    return Optional.of(
-        NestedQuery.of(
+  private Optional<QueryVariant> withCodedResult(final LabReportFilter criteria) {
+    return criteria.codedResult().map(
+        result -> NestedQuery.of(
             nested -> nested.path("observations")
                 .scoreMode(ChildScoreMode.None)
                 .query(

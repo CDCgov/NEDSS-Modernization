@@ -204,4 +204,16 @@ public final class LabReportFilter implements EventFilter {
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
   }
+
+  public Optional<String> resultedTest() {
+    return (this.resultedTest == null || this.resultedTest.isEmpty())
+        ? Optional.empty()
+        : Optional.of(this.resultedTest);
+  }
+
+  public Optional<String> codedResult() {
+    return (this.codedResult == null || this.codedResult.isEmpty())
+        ? Optional.empty()
+        : Optional.of(this.codedResult);
+  }
 }

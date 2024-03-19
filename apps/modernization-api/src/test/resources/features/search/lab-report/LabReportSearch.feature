@@ -6,8 +6,6 @@ Feature: Lab Report Search
     And I can "find" any "patient"
     And I can "view" any "ObservationLabReport" for "STD" within all jurisdictions
     And I can "view" any "ObservationLabReport" for "ARBO" within all jurisdictions
-    And the "lab-creator" user exists
-    And the "lab-updater" user exists
     And I have a patient
     And the patient has a "first name" of "Monterey"
     And the patient has a lab report
@@ -34,8 +32,15 @@ Feature: Lab Report Search
     And there is only one lab report search result
     And the Lab Report search results contain the patient short id
 
+  Scenario: I cannot find Lab Reports for a patient if the patient does not have any Lab Reports
+    Given I have another patient
+    And I add the lab report criteria for "patient id"
+    When I search for lab reports
+    Then there are no lab report search results available
+
   Scenario: I can search for Lab Reports created by a specific user
     Given the patient has a lab report
+    And the "lab-creator" user exists
     And the lab report was created by lab-creator on 01/27/2011
     And the lab report is available for search
     And I am searching for the Lab Report
@@ -44,8 +49,20 @@ Feature: Lab Report Search
     Then the Lab Report search results contain the lab report
     And there is only one lab report search result
 
+  Scenario: I can search for Lab Reports created on a specific day
+    Given the patient has a lab report
+    And the "lab-creator" user exists
+    And the lab report was created by lab-creator on 01/27/2011
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find lab reports created on 01/27/2011
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
+
   Scenario: I can search for Lab Reports updated by a specific user
     Given the patient has a lab report
+    And the "lab-updater" user exists
     And the lab report was updated by lab-updater on 02/13/2013
     And the lab report is available for search
     And I am searching for the Lab Report
@@ -54,8 +71,20 @@ Feature: Lab Report Search
     Then the Lab Report search results contain the lab report
     And there is only one lab report search result
 
+  Scenario: I can search for Lab Reports updated on a specific day
+    Given the patient has a lab report
+    And the "lab-updater" user exists
+    And the lab report was updated by lab-updater on 02/13/2013
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find lab reports updated on 02/13/2013
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result
+
   Scenario: I can search for NEW Lab Reports
-    Given the lab report was updated by lab-updater on 02/13/2013
+    Given the "lab-updater" user exists
+    And the lab report was updated by lab-updater on 02/13/2013
     And the lab report is available for search
     And I am searching for the Lab Report
     And I want to find new lab reports
@@ -63,14 +92,26 @@ Feature: Lab Report Search
     Then the Lab Report search results do not contain the lab report
     And there is only one lab report search result
 
-  Scenario: I can search for updated Lab Reports
-    Given the lab report was updated by lab-updater on 02/13/2013
+  Scenario: I can search for UPDATED Lab Reports
+    Given the "lab-updater" user exists
+    And the lab report was updated by lab-updater on 02/13/2013
     And the lab report is available for search
     And I am searching for the Lab Report
     And I want to find updated lab reports
     When I search for lab reports
     Then the Lab Report search results contain the lab report
     And there is only one lab report search result
+
+  Scenario: I can search for NEW and UPDATED Lab Reports
+    Given the "lab-updater" user exists
+    And the lab report was updated by lab-updater on 02/13/2013
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find new lab reports
+    And I want to find updated lab reports
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there are 2 lab report search results available
 
   Scenario: I can search for Lab Reports ordered by a specific provider
     Given the patient has a lab report

@@ -40,6 +40,18 @@ public class LabReportSearchCriteriaSteps {
     );
   }
 
+  @Given("I want to find lab reports created on {localDate}")
+  public void i_want_to_find_lab_reports_created_on(final LocalDate on) {
+    this.criteria.maybeActive().ifPresent(
+        criteria -> criteria.setEventDate(
+            eventDateSearch(
+                LabReportFilter.LabReportDateType.LAB_REPORT_CREATE_DATE,
+                on
+            )
+        )
+    );
+  }
+
   @Given("I want to find lab reports updated by {user}")
   public void i_want_to_find_lab_reports_updated_by(final ActiveUser user) {
     this.criteria.maybeActive().ifPresent(
@@ -47,18 +59,26 @@ public class LabReportSearchCriteriaSteps {
     );
   }
 
+  @Given("I want to find lab reports updated on {localDate}")
+  public void i_want_to_find_lab_reports_updated_on(final LocalDate on) {
+    this.criteria.maybeActive().ifPresent(
+        criteria -> criteria.setEventDate(
+            eventDateSearch(
+                LabReportFilter.LabReportDateType.LAST_UPDATE_DATE,
+                on
+            )
+        )
+    );
+  }
+
   @Given("I want to find new lab reports")
   public void i_want_to_find_new_lab_reports() {
-    this.criteria.maybeActive().ifPresent(
-        criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.NEW)
-    );
+    this.criteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.NEW));
   }
 
   @Given("I want to find updated lab reports")
   public void i_want_to_find_updated_lab_reports() {
-    this.criteria.maybeActive().ifPresent(
-        criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.UPDATE)
-    );
+    this.criteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.UPDATE));
   }
 
   @Given("I want to find lab reports ordered by the provider")
