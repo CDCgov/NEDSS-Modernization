@@ -19,7 +19,6 @@ import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
 import { PatientTableActions } from '../PatientTableActions';
-// import { useAdministrativeProfileContext } from '../AdministrativeProfileContext';
 
 const asEntry = (administrative: PatientAdministrative): AdministrativeEntry => ({
     asOf: internalizeDate(administrative?.asOf),
@@ -47,7 +46,6 @@ const headers = [
 ];
 
 export const AdministrativeTable = ({ patient }: Props) => {
-    // const { changed } = useAdministrativeProfileContext();
     const { showAlert } = useAlert();
     const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>(headers);
 
