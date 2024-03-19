@@ -350,11 +350,11 @@ type LabReportResults {
 }
 
 type LabReport {
-  id: String
-  jurisdictionCd: Int
-  jurisdictionCodeDescTxt: String
-  localId: String
-  addTime: DateTime
+  relevance: Float!
+  id: String!
+  jurisdictionCd: Int!
+  localId: String!
+  addTime: Date!
   personParticipations: [LabReportPersonParticipation!]!
   organizationParticipations: [LabReportOrganizationParticipation!]!
   observations: [Observation!]!
@@ -362,10 +362,9 @@ type LabReport {
 }
 
 type LabReportPersonParticipation {
-  birthTime: DateTime
+  birthTime: Date
   currSexCd: String
   typeCd: String
-  typeDescTxt: String
   firstName: String
   lastName: String
   personCd: String!
@@ -374,8 +373,8 @@ type LabReportPersonParticipation {
 }
 
 type LabReportOrganizationParticipation {
-  typeCd: String
-  name: String
+  typeCd: String!
+  name: String!
 }
 
 type Observation {
@@ -386,8 +385,8 @@ type Observation {
 }
 
 type AssociatedInvestigation {
-  cdDescTxt: String
-  localId: String
+  cdDescTxt: String!
+  localId: String!
 }
 extend type Query {
   findDistinctCodedResults(searchText: String!): [CodedResult!]!

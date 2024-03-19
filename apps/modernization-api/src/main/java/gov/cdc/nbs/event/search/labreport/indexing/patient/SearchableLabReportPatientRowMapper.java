@@ -17,6 +17,7 @@ class SearchableLabReportPatientRowMapper implements RowMapper<SearchableLabRepo
       int subjectType,
       int firstName,
       int lastName,
+      int gender,
       int birthday
   ) {
   }
@@ -41,6 +42,7 @@ class SearchableLabReportPatientRowMapper implements RowMapper<SearchableLabRepo
     String subjectType = resultSet.getString(this.columns.subjectType());
     String first = resultSet.getString(this.columns.firstName());
     String last = resultSet.getString(this.columns.lastName());
+    String gender = resultSet.getString(this.columns.gender());
     LocalDate birthday = LocalDateColumnMapper.map(resultSet, columns.birthday());
 
     return new SearchableLabReport.Person.Patient(
@@ -50,6 +52,7 @@ class SearchableLabReportPatientRowMapper implements RowMapper<SearchableLabRepo
         subjectType,
         first,
         last,
+        gender,
         birthday
     );
   }
