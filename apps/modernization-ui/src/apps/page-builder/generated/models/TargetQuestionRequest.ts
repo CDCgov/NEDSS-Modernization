@@ -6,8 +6,8 @@ import type { PagesQuestion } from './PagesQuestion';
 
 export type TargetQuestionRequest = {
     ruleFunction: TargetQuestionRequest.ruleFunction;
-    sourceQuestion: PagesQuestion;
-    targetQuestion?: PagesQuestion;
+    sourceQuestion?: PagesQuestion;
+    targetQuestion?: Array<PagesQuestion>;
 };
 
 export namespace TargetQuestionRequest {

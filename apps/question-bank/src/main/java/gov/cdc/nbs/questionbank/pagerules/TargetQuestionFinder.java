@@ -36,6 +36,8 @@ public class TargetQuestionFinder {
 
     PagesResponse result = null;
 
+    List<Long> selectedTargetIds = currentTargetQuestions(request);
+
     List<PagesTab> resultTabs = new ArrayList<>();
 
     for (PagesTab tab : page.get().tabs()) {
@@ -50,9 +52,15 @@ public class TargetQuestionFinder {
             if (question.dataType() != null) {
               if ((question.dataType().equals("DATE") || question.dataType().equals("DATETIME"))
                   && !question.isStandardNnd() && question.visible()
-                  && question.componentBehavior().contains("_data")
-                  && question.id() != request.sourceQuestion().id()) {
-                questionsResult.add(question);
+                  && question.componentBehavior().contains("_data")) {
+                if (request.targetQuestion() != null) {
+                  if (selectedTargetIds.contains(question.id())
+                      || question.id() != request.sourceQuestion().id()) {
+                    questionsResult.add(question);
+                  }
+                } else if (question.id() != request.sourceQuestion().id()) {
+                  questionsResult.add(question);
+                }
               }
             }
           }
@@ -104,10 +112,24 @@ public class TargetQuestionFinder {
     return targetIdentifiers;
   }
 
+  private List<Long> currentTargetQuestions(TargetQuestionRequest request) {
+    List<Long> result = new ArrayList<>();
+
+    if (request.targetQuestion() != null) {
+      for (PagesQuestion question : request.targetQuestion()) {
+        result.add(question.id());
+      }
+    }
+
+    return result;
+  }
+
   private PagesResponse filterOtherQuestions(Long id, TargetQuestionRequest request) {
     Optional<PagesResponse> page = pageResolver.resolve(id);
 
     List<String> targetIdentifiers = previousTargetQuestions(id);
+
+    List<Long> selectedTargetIds = currentTargetQuestions(request);
 
     PagesResponse result = null;
 
@@ -127,7 +149,7 @@ public class TargetQuestionFinder {
               if (question.questionGroupSeq() == request.sourceQuestion().questionGroupSeq()
                   && question.displayComponent() != 1016L && !targetIdentifiers.contains(question.question())) {
                 if (request.targetQuestion() != null) {
-                  if (question.id() == request.targetQuestion().id()
+                  if (selectedTargetIds.contains(question.id())
                       || question.id() != request.sourceQuestion().id()) {
                     questionsResult.add(question);
                   }
@@ -136,13 +158,12 @@ public class TargetQuestionFinder {
                 }
               }
             } else {
-              if (question.isStandardNnd() && question.componentBehavior().contains("_data")
-                  && question.questionGroupSeq() == 0
-                  && !targetIdentifiers.contains(question.question())) {
+              if (!question.isStandardNnd() && question.questionGroupSeq() == 0) {
                 if (request.ruleFunction() == RuleFunction.REQUIRE_IF) {
-                  if (!question.required()) {
+                  if (!question.required() && question.componentBehavior().contains("_data")
+                      && !targetIdentifiers.contains(question.question())) {
                     if (request.targetQuestion() != null) {
-                      if (question.id() == request.targetQuestion().id()
+                      if (selectedTargetIds.contains(question.id())
                           || question.id() != request.sourceQuestion().id()) {
                         questionsResult.add(question);
                       }
@@ -151,9 +172,11 @@ public class TargetQuestionFinder {
                     }
                   }
                 } else {
-                  if (question.componentBehavior().contains("Static")) {
+                  if ((question.componentBehavior().contains("Static")
+                      || question.componentBehavior().contains("_data"))
+                      && !targetIdentifiers.contains(question.question())) {
                     if (request.targetQuestion() != null) {
-                      if (question.id() == request.targetQuestion().id()
+                      if (selectedTargetIds.contains(question.id())
                           || question.id() != request.sourceQuestion().id()) {
                         questionsResult.add(question);
                       }
