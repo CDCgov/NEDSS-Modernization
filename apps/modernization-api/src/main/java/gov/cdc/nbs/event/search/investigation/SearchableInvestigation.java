@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import gov.cdc.nbs.event.search.labreport.SearchableLabReport;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonDeserializer;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonSerializer;
 
@@ -149,8 +148,8 @@ public record SearchableInvestigation(
 
   @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "person_cd")
   @JsonSubTypes({
-      @JsonSubTypes.Type(value = SearchableLabReport.Person.Patient.class, name = "PAT"),
-      @JsonSubTypes.Type(value = SearchableLabReport.Person.Provider.class, name = "PRV")
+      @JsonSubTypes.Type(value = SearchableInvestigation.Person.Patient.class, name = "PAT"),
+      @JsonSubTypes.Type(value = SearchableInvestigation.Person.Provider.class, name = "PRV")
   })
   public sealed interface Person {
 
