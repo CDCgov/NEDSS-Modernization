@@ -96,7 +96,8 @@ public record PagesResponse(
       boolean appearsInBatch,
       String batchLabel,
       Integer batchWidth,
-      String componentBehavior) {
+      String componentBehavior,
+      String componentName) {
   }
 
 

@@ -65,7 +65,8 @@ class ContentComponentResolver {
         component.appearsInBatch(),
         component.batchLabel(),
         component.batchWidth(),
-        component.componentBehavior());
+        component.componentBehavior(),
+        component.componentName());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {

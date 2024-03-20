@@ -174,14 +174,16 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                             ))}
                     </div>
                     <div className={styles.questionsList}>
-                        <div className={styles.selectAll}>
-                            <Checkbox
-                                onChange={(e) => handleSelectAll(targetList, e)}
-                                id="hots1"
-                                name={'race1'}
-                                label="Select All"
-                            />
-                        </div>
+                        {targetList.length > 0 && (
+                            <div className={styles.selectAll}>
+                                <Checkbox
+                                    onChange={(e) => handleSelectAll(targetList, e)}
+                                    id="hots1"
+                                    name={'race1'}
+                                    label="Select All"
+                                />
+                            </div>
+                        )}
                         {targetList.map((question: PagesQuestion, index) => (
                             <div className={styles.question} key={index}>
                                 <Checkbox
@@ -189,7 +191,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                                     checked={selectedList.find((qtn) => qtn.id === question.id) !== undefined}
                                     id={`sourceId${index}`}
                                     name={`sourceName ${index}`}
-                                    label={question?.name}
+                                    label={question?.name ? question.name : question.componentName}
                                 />
                             </div>
                         ))}

@@ -11,6 +11,7 @@ export type PagesQuestion = {
     blockName?: string;
     coInfection?: boolean;
     componentBehavior?: string;
+    componentName?: string;
     dataMartColumnName?: string;
     dataMartRepeatNumber?: number;
     dataType?: string;

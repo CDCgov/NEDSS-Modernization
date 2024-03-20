@@ -48,7 +48,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int appearsInBatch,
       int batchLabel,
       int batchWidth,
-      int componentBehavior) {
+      int componentBehavior,
+      int componentName) {
     Column() {
       this(1,
           2,
@@ -84,7 +85,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
           32,
           33,
           34,
-          35);
+          35,
+          36);
     }
   }
 
@@ -136,6 +138,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     String batchLabel = resultSet.getString(this.columns.batchLabel());
     Integer batchWidth = resultSet.getInt(this.columns.batchWidth());
     String componentBehavior = resultSet.getString(this.columns.componentBehavior());
+    String componentName = resultSet.getString(this.columns.componentName());
 
     return new FlattenedComponent(
         identifier,
@@ -173,7 +176,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         appearsInBatch,
         batchLabel,
         batchWidth,
-        componentBehavior);
+        componentBehavior,
+        componentName);
   }
 
   private boolean resolveBatchBoolean(final int column, final ResultSet resultSet) throws SQLException {

@@ -31,7 +31,8 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       boolean appearsInBatch,
       String batchLabel,
       Integer batchWidth,
-      String componentBehavior) {
+      String componentBehavior,
+      String componentName) {
   }
 
 

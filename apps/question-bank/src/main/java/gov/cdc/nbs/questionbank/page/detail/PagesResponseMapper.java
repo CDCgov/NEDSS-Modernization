@@ -131,6 +131,7 @@ class PagesResponseMapper {
     String batchLabel = content.attributes().batchLabel();
     Integer batchWidth = content.attributes().batchWidth();
     String componentBehavior = content.attributes().componentBehavior();
+    String componentName = content.attributes().componentName();
     return new PagesResponse.PagesQuestion(
         id,
         isStandardNnd,
@@ -165,7 +166,8 @@ class PagesResponseMapper {
         appearsInBatch,
         batchLabel,
         batchWidth,
-        componentBehavior);
+        componentBehavior,
+        componentName);
   }
 
   boolean isSubsectionGrouable(SubSectionNode subsectionNode) {

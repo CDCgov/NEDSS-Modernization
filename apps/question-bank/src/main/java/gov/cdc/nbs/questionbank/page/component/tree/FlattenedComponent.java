@@ -36,7 +36,8 @@ record FlattenedComponent(
     boolean appearsInBatch,
     String batchLabel,
     Integer batchWidth,
-    String componentBehavior) {
+    String componentBehavior,
+    String componentName) {
 
   FlattenedComponent(
       long identifier,
@@ -79,6 +80,7 @@ record FlattenedComponent(
         null,
         null,
         false,
+        null,
         null,
         null,
         null);

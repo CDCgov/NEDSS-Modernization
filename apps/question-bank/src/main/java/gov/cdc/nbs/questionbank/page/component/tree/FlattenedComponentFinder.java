@@ -44,7 +44,8 @@ class FlattenedComponentFinder {
           [component].batch_table_appear_ind_cd   as  [appearsInBatch],
           [component].batch_table_header          as  [batchLabel],
           [component].batch_table_column_width    as  [batchWidth],
-          [ui].component_behavior                 as  [componentBehavior]
+          [ui].component_behavior                 as  [componentBehavior],
+          [ui].type_cd_desc                       as  [componentName]
       from WA_UI_metadata [component]
           left join WA_RDB_metadata [WaRdbMetadatum] on
               [WaRdbMetadatum].wa_ui_metadata_uid = [component].[wa_ui_metadata_uid]
