@@ -74,6 +74,10 @@ export const AddBusinessRule = () => {
             (watch.anySourceValue || (watch.comparator && watch.sourceValues))
         ) {
             return true;
+        } else if (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            if (watch.sourceIdentifier && watch.comparator && watch.targetIdentifiers) {
+                return true;
+            }
         } else {
             return false;
         }
