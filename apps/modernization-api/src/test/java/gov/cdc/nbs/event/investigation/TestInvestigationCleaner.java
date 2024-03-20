@@ -1,4 +1,4 @@
-package gov.cdc.nbs.event.search.investigation;
+package gov.cdc.nbs.event.investigation;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

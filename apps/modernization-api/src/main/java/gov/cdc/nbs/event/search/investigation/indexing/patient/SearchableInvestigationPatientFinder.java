@@ -17,6 +17,7 @@ public class SearchableInvestigationPatientFinder {
           [participation].subject_class_cd,
           [name].first_nm,
           [name].last_nm,
+          [person].curr_sex_cd,
           [person].[birth_time]
       from [Participation] [participation]
       

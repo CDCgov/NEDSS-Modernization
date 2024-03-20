@@ -21,7 +21,7 @@ class SearchableInvestigationFinder {
           coalesce([investigation].case_class_cd,'UNASSIGNED') as case_class_cd,
           [investigation].[case_type_cd],
           [investigation].outbreak_name,
-          [investigation].cd_desc_txt,
+          [condition].condition_short_nm as cd_desc_txt,
           [investigation].cd as condition,
           [investigation].pregnant_ind_cd,
           [investigation].local_id,
@@ -32,15 +32,18 @@ class SearchableInvestigationFinder {
           [investigation].[rpt_form_cmplt_time],
           [investigation].[activity_from_time],
           [investigation].[activity_to_time],
-          [investigation].curr_process_state_cd,
+          coalesce([investigation].curr_process_state_cd,'UNASSIGNED') as processing_state,
           [investigation].investigation_status_cd,
           [notification].local_id as notification_local_id,
           [notification].add_time as notification_add_time,
           coalesce([notification].record_status_cd,'UNASSIGNED') as notification_record_status_cd
       from Public_health_case [investigation]
       
-          join act [act] on
+          join act on
                   [act].act_uid = [investigation].public_health_case_uid
+      
+          join nbs_srte.dbo.Condition_code [condition] on
+                          [condition].condition_cd = [investigation].cd
       
           join NBS_SRTE.dbo.Jurisdiction_code [jurisdiction] on
                   [jurisdiction].code = [investigation].jurisdiction_cd

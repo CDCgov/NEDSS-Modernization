@@ -16,9 +16,9 @@ public final class InvestigationFilter implements EventFilter {
     private static final String UNASSIGNED = "UNASSIGNED";
 
     private Long patientId;
-    private List<String> conditions;
-    private List<String> programAreas;
-    private List<Long> jurisdictions;
+    private List<String> conditions= new ArrayList<>();
+    private List<String> programAreas= new ArrayList<>();
+    private List<Long> jurisdictions= new ArrayList<>();
     private PregnancyStatus pregnancyStatus;
     private InvestigationEventId eventId;
     private EventDate eventDate;
@@ -27,7 +27,7 @@ public final class InvestigationFilter implements EventFilter {
     private ProviderFacilitySearch providerFacilitySearch;
     private Long investigatorId;
     private InvestigationStatus investigationStatus;
-    private List<String> outbreakNames;
+    private List<String> outbreakNames = new ArrayList<>();
     private List<CaseStatus> caseStatuses = new ArrayList<>();
     private List<NotificationStatus> notificationStatuses = new ArrayList<>();
     private List<ProcessingStatus> processingStatuses = new ArrayList<>();
@@ -141,4 +141,30 @@ public final class InvestigationFilter implements EventFilter {
         OPEN,
         CLOSED
     }
+
+    public void withCondition(final String condition) {
+        this.conditions.add(condition);
+    }
+
+    public void withProgramArea(final String programArea) {
+        this.programAreas.add(programArea);
+    }
+
+    public void withJurisdiction(final long jurisdiction) {
+        this.jurisdictions.add(jurisdiction);
+    }
+
+    public void withProcessingStatus(final ProcessingStatus status) {
+        this.processingStatuses.add(status);
+    }
+
+    public void withCaseStatus(final CaseStatus status) {
+        this.caseStatuses.add(status);
+    }
+
+    public void withNotificationStatus(final NotificationStatus status) {
+        this.notificationStatuses.add(status);
+    }
+
+
 }

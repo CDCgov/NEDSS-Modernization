@@ -340,9 +340,7 @@ public class InvestigationQueryBuilder {
               SUBJ_OF_PHC,
               sort.getDirection()));
           break;
-        default:
-          throw new IllegalArgumentException("Invalid sort operator specified: " + sort.getProperty());
-      }
+        }
     });
     return sorts;
   }

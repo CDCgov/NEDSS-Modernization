@@ -3,6 +3,7 @@ package gov.cdc.nbs.search;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
+import co.elastic.clients.util.MissingRequiredPropertyException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -40,20 +41,27 @@ public class ElasticsearchSimpleDocumentIndexer {
   }
 
   public void index(final String index, final Stream<SimpleDocument> documents) {
-    BulkRequest bulkRequest = documents.reduce(
-        new BulkRequest.Builder(),
-        (builder, document) -> builder.operations(
-            op -> op.index(
-                i -> i.index(index)
-                    .id(document.identifier())
-                    .document(document.payload())
-            )
-        ),
-        (current, next) -> current.operations(next.build().operations())
-    ).refresh(Refresh.WaitFor).build();
-
     try {
+      BulkRequest bulkRequest = documents.reduce(
+              new BulkRequest.Builder(),
+              (builder, document) -> builder.operations(
+                  op -> op.index(
+                      i -> i.index(index)
+                          .id(document.identifier())
+                          .document(document.payload())
+                  )
+              ),
+              (current, next) -> current.operations(next.build().operations())
+          ).refresh(Refresh.WaitFor)
+          .build();
+
       client.bulk(bulkRequest);
+    } catch (MissingRequiredPropertyException exception) {
+      LOGGER.log(
+          System.Logger.Level.ERROR,
+          () -> String.format("Indexing %s skipped.", index),
+          exception
+      );
     } catch (IOException exception) {
       LOGGER.log(
           System.Logger.Level.ERROR,
