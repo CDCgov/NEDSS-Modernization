@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
-import { Label } from '@trussworks/react-uswds';
+import { Radio } from '@trussworks/react-uswds';
 import styles from './subsection-details.module.scss';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { useEffect, useState } from 'react';
@@ -52,23 +52,21 @@ export const SubsectionDetails = () => {
                         name="visible"
                         render={({ field: { name } }) => (
                             <div className={styles.radio}>
-                                <Label htmlFor="visibleYes">Yes</Label>
-                                <input
-                                    type="radio"
+                                <Radio
                                     name={name}
                                     value="true"
                                     id="visible"
                                     checked={control._formValues.visible}
                                     onChange={() => setVisibleToggle('true')}
+                                    label="Yes"
                                 />
-                                <Label htmlFor="visibleNo">No</Label>
-                                <input
-                                    type="radio"
+                                <Radio
                                     id="notvisible"
                                     name={name}
                                     value={false.toString()}
                                     checked={!control._formValues.visible}
                                     onChange={() => setVisibleToggle('false')}
+                                    label="No"
                                 />
                             </div>
                         )}
