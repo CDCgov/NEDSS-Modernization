@@ -1,5 +1,5 @@
 import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
-import { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './section.module.scss';
 import { ModalRef } from '@trussworks/react-uswds';
 import { authorization } from 'authorization';
@@ -7,6 +7,7 @@ import { usePageManagement } from '../../usePageManagement';
 import { StatusModal } from '../../status/StatusModal';
 import { Section } from './Section';
 import { useAlert } from 'alert';
+import { ConfirmationModal } from '../../../../../../confirmation';
 
 type Props = {
     sections: PagesSection[];
@@ -35,6 +36,9 @@ export const Sections = ({
 
     const { showAlert } = useAlert();
 
+    const deleteSectionModalRef = useRef<ModalRef>(null);
+    const [selectedSectionToDelete, setSelectedSectionToDelete] = useState<PagesSection | undefined>(undefined);
+
     const handleSubsectionStatusModal = () => {
         subSectionStatusModalRef.current?.toggleModal(undefined, true);
     };
@@ -43,15 +47,26 @@ export const Sections = ({
         if (section.subSections.length > 0) {
             sectionStatusModalRef.current?.toggleModal(undefined, true);
         } else {
-            SectionControllerService.deleteSectionUsingDelete({
-                authorization: authorization(),
-                page: page.id,
-                sectionId: section.id
-            }).then(() => {
-                showAlert({ message: `You have successfully deleted section "${section.name}"`, type: `success` });
-                refresh();
-            });
+            setSelectedSectionToDelete(section);
+            deleteSectionModalRef.current?.toggleModal(undefined, true);
         }
+    };
+
+    const deleteSection = () => {
+        if (!selectedSectionToDelete) {
+            return;
+        }
+        SectionControllerService.deleteSectionUsingDelete({
+            authorization: authorization(),
+            page: page.id,
+            sectionId: selectedSectionToDelete.id
+        }).then(() => {
+            showAlert({
+                message: `You have successfully deleted section "${selectedSectionToDelete.name}"`,
+                type: `success`
+            });
+            refresh();
+        });
     };
 
     return (
@@ -93,6 +108,21 @@ export const Sections = ({
                     subSectionStatusModalRef.current?.toggleModal(undefined, false);
                 }}
                 confirmText="Okay"
+            />
+
+            <ConfirmationModal
+                modal={deleteSectionModalRef}
+                title="Warning"
+                message="Are you sure you want to delete the section?"
+                detail="Deleting this section cannot be undone. Are you sure you want to continue?"
+                confirmText="Yes, delete"
+                onConfirm={() => {
+                    deleteSection();
+                    deleteSectionModalRef.current?.toggleModal();
+                }}
+                onCancel={() => {
+                    deleteSectionModalRef.current?.toggleModal();
+                }}
             />
         </div>
     );

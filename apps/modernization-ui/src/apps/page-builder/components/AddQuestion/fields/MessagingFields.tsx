@@ -34,7 +34,6 @@ export const MessagingFields = () => {
             <Heading className={styles.heading} level={4}>
                 Messaging
             </Heading>
-            <div className={styles.fieldInfo}>These fields will not be displayed to your users</div>
             <label htmlFor="messagingInfo.includedInMessage" className={styles.toggleLabel}>
                 Included in message? <span className={styles.mandatory}>*</span>
             </label>
@@ -55,13 +54,13 @@ export const MessagingFields = () => {
                 rules={{
                     required: {
                         value: includedInMessage ?? false,
-                        message: 'Message ID is required'
+                        message: 'Message Variable ID is required'
                     },
                     ...maxLengthRule(50)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
-                        label="Message ID"
+                        label="Message Variable ID"
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}

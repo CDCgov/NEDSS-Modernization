@@ -145,9 +145,9 @@ const PreviewPageContent = () => {
                             </a>
                         </Tooltip>
                         {page.status !== 'Published' ? (
-                            <Tooltip position="top" label="Clone this page">
+                            <Tooltip position="top" label="Page porting">
                                 <a
-                                    href={`/nbs/page-builder/api/v1/pages/${page.id}/clone`}
+                                    href={`https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true`}
                                     className={styles.link}
                                     target="_blank"
                                     rel="noopener noreferrer">
