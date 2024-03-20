@@ -121,6 +121,7 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
                 onEditValueset={handleEditValueset}
                 onChangeValueset={handleChangeValueset}
                 onGroupQuestion={handleGroupQuestion}
+                onEditGroupedSubsection={handleGroupQuestion}
             />
             <PageSideMenu
                 onAddSection={() => handleAddSection?.()}

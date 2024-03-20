@@ -91,6 +91,7 @@ class PagesResponseMapper {
         subsection.isGrouped(),
         isGroupable,
         subsection.questionIdentifier(),
+        subsection.blockName(),
         mapAll(this::asQuestion, subsection.children()));
   }
 
@@ -124,6 +125,10 @@ class PagesResponseMapper {
     boolean isPublished = content.attributes().isPublished();
     int questionGroupSeq = content.attributes().questionGroupSeq();
     String blockName = content.attributes().blockName();
+    Integer dataMartRepeatNumber = content.attributes().dataMartRepeatNumber();
+    boolean appearsInBatch = content.attributes().appearsInBatch();
+    String batchLabel = content.attributes().batchLabel();
+    Integer batchWidth = content.attributes().batchWidth();
     return new PagesResponse.PagesQuestion(
         id,
         isStandardNnd,
@@ -153,7 +158,11 @@ class PagesResponseMapper {
         defaultLabelInReport,
         dataMartColumnName,
         isPublished,
-        blockName);
+        blockName,
+        dataMartRepeatNumber,
+        appearsInBatch,
+        batchLabel,
+        batchWidth);
   }
 
   boolean isSubsectionGrouable(SubSectionNode subsectionNode) {

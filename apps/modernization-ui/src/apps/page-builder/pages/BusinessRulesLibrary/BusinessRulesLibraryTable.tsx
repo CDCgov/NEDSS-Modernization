@@ -1,19 +1,18 @@
 /* eslint-disable camelcase */
 import { Button, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
-import { TableBody, TableComponent } from 'components/Table/Table';
-import { RefObject, useEffect, useState } from 'react';
-import { Direction } from 'sorting';
-import { SearchBar } from './SearchBar';
-import { Link } from 'react-router-dom';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import './BusinessRulesLibraryTable.scss';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Rule } from 'apps/page-builder/generated';
-import React from 'react';
+import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { TableBody, TableComponent } from 'components/Table/Table';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { usePage } from 'page';
+import React, { RefObject, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Direction } from 'sorting';
+import './BusinessRulesLibraryTable.scss';
+import { RuleSearchBar } from './RuleSearchBar';
 import { mapComparatorToString } from './helpers/mapComparatorToString';
 import { mapRuleFunctionToString } from './helpers/mapRuleFunctionToString';
-import { usePage } from 'page';
-import { BusinessRuleSort, RuleSortField } from 'apps/page-builder/hooks/api/useFetchPageRules';
 
 export enum Column {
     SourceQuestion = 'Source question',
@@ -40,6 +39,8 @@ type Props = {
     onQueryChange: (query: string) => void;
     qtnModalRef: RefObject<ModalRef>;
     isLoading?: boolean;
+    onDownloadCsv: () => void;
+    onDownloadPdf: () => void;
 };
 
 export const BusinessRulesLibraryTable = ({
@@ -47,7 +48,9 @@ export const BusinessRulesLibraryTable = ({
     qtnModalRef,
     onSortChange,
     onQueryChange,
-    isLoading
+    isLoading,
+    onDownloadCsv,
+    onDownloadPdf
 }: Props) => {
     const [tableRows, setTableRows] = useState<TableBody[]>([]);
     const [selectedQuestion, setSelectedQuestion] = useState<Rule[]>([]);
@@ -296,7 +299,7 @@ export const BusinessRulesLibraryTable = ({
                 )}
             </div>
             <div>
-                <SearchBar onChange={onQueryChange} />
+                <RuleSearchBar onChange={onQueryChange} onDownloadCsv={onDownloadCsv} onDownloadPdf={onDownloadPdf} />
             </div>
             <TableComponent
                 display="zebra"

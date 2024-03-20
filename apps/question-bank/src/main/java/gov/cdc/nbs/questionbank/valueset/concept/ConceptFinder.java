@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset.concept;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -14,11 +15,15 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.questionbank.entity.QCodeValueGeneral;
+import gov.cdc.nbs.questionbank.entity.QCodeset;
+import gov.cdc.nbs.questionbank.entity.QWaUiMetadata;
 import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.model.Concept.Status;
 
 @Component
 public class ConceptFinder {
+  private static final QWaUiMetadata uiMetadata = QWaUiMetadata.waUiMetadata;
+  private static final QCodeset codeset = QCodeset.codeset;
   private static final QCodeValueGeneral codeValueGeneralTable = QCodeValueGeneral.codeValueGeneral;
   private static final QCodeValueGeneral cvg2 = new QCodeValueGeneral("cvg2");
 
@@ -26,6 +31,21 @@ public class ConceptFinder {
 
   public ConceptFinder(final JPAQueryFactory factory) {
     this.factory = factory;
+  }
+
+  public List<Concept> findByQuestionIdentifier(String questionIdentifier, long page) {
+    String codeSetName = factory.select(codeset.id.codeSetNm)
+        .from(codeset)
+        .where(codeset.codeSetGroup.id.eq(
+            JPAExpressions.select(uiMetadata.codeSetGroupId)
+                .from(uiMetadata)
+                .where(uiMetadata.questionIdentifier.eq(questionIdentifier)
+                    .and(uiMetadata.waTemplateUid.id.eq(page)))))
+        .fetchFirst();
+    if (codeSetName == null) {
+      return new ArrayList<>();
+    }
+    return find(codeSetName);
   }
 
   public List<Concept> find(String codeSetNm) {

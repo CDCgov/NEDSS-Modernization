@@ -1,17 +1,10 @@
 package gov.cdc.nbs.questionbank.pagerules.exceptions;
 
-public class RuleException extends RuntimeException {
+import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
-    private final int errorCode;
+public class RuleException extends BadRequestException {
+  public RuleException(String message) {
+    super(message);
 
-    public RuleException(String message, int errorCode){
-        super(message);
-        this.errorCode = errorCode;
-
-    }
-
-    public int getErrorCode() {
-        return errorCode;
-    }
-
+  }
 }

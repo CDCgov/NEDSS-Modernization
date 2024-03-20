@@ -10,6 +10,7 @@ import java.util.Objects;
 class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
 
   private static final String TRUE_VALUE = "T";
+  private static final String BATCH_TRUE_VALUE = "Y";
 
 
   record Column(
@@ -41,10 +42,12 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int defaultLabelInReport,
       int dataMartColumnName,
       int blockName,
+      int dataMartRepeatNumber,
       int dataLocation,
-      int isPublished
-
-  ) {
+      int isPublished,
+      int appearsInBatch,
+      int batchLabel,
+      int batchWidth) {
     Column() {
       this(1,
           2,
@@ -75,7 +78,11 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
           27,
           28,
           29,
-          30);
+          30,
+          31,
+          32,
+          33,
+          34);
     }
   }
 
@@ -122,6 +129,10 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     boolean isPublished = resolveBoolean(this.columns.isPublished, resultSet);
     String dataLocation = resultSet.getString(this.columns.dataLocation());
     String blockName = resultSet.getString(this.columns.blockName());
+    Integer dataMartRepeatNumber = resultSet.getInt(this.columns.dataMartRepeatNumber());
+    boolean appearsInBatch = resolveBatchBoolean(this.columns.appearsInBatch(), resultSet);
+    String batchLabel = resultSet.getString(this.columns.batchLabel());
+    Integer batchWidth = resultSet.getInt(this.columns.batchWidth());
 
     return new FlattenedComponent(
         identifier,
@@ -154,8 +165,18 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         isSubsectionGrouped,
         dataLocation,
         isPublished,
-        blockName);
+        blockName,
+        dataMartRepeatNumber,
+        appearsInBatch,
+        batchLabel,
+        batchWidth);
   }
+
+  private boolean resolveBatchBoolean(final int column, final ResultSet resultSet) throws SQLException {
+    String value = resultSet.getString(column);
+    return Objects.equals(BATCH_TRUE_VALUE, value);
+  }
+
 
   private boolean resolveBoolean(final int column, final ResultSet resultSet) throws SQLException {
     String value = resultSet.getString(column);

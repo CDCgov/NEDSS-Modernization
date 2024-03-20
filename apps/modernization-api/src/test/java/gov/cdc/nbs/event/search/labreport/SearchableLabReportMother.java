@@ -39,6 +39,15 @@ class SearchableLabReportMother {
     this.cleaner.clean("lab_report");
   }
 
+  void searchable(final LabReportIdentifier identifier) {
+    this.resolver.resolve(identifier.identifier())
+        .ifPresent(
+            created -> {
+              this.indexer.index(created);
+              this.available.available(created);
+            }
+        );
+  }
 
   void searchable(final Stream<LabReportIdentifier> identifiers) {
 

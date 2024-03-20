@@ -788,6 +788,9 @@ public class WaUiMetadata {
     if (batch.appearsInTable()) {
       this.batchTableHeader = batch.label();
       this.batchTableColumnWidth = batch.width();
+    } else {
+      this.batchTableHeader = null;
+      this.batchTableColumnWidth = null;
     }
 
     if (waRdbMetadatum != null) {

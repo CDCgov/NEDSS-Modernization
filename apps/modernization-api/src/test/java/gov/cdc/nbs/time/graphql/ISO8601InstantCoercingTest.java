@@ -1,5 +1,7 @@
 package gov.cdc.nbs.time.graphql;
 
+import graphql.GraphQLContext;
+import graphql.execution.CoercedVariables;
 import graphql.language.NullValue;
 import graphql.language.StringValue;
 import graphql.schema.CoercingParseLiteralException;
@@ -8,6 +10,7 @@ import graphql.schema.CoercingSerializeException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,7 +21,14 @@ class ISO8601InstantCoercingTest {
   void should_serialize_Instant_as_ISO_8601_formatted_String() {
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
-    String actual = coercing.serialize(Instant.parse("2013-09-27T11:19:29Z"));
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    String actual = coercing.serialize(
+        Instant.parse("2013-09-27T11:19:29Z"),
+        context,
+        locale
+    );
 
     assertThat(actual).isEqualTo("2013-09-27T11:19:29Z");
   }
@@ -27,7 +37,10 @@ class ISO8601InstantCoercingTest {
   void should_throw_error_when_serializing_unknown_type() {
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
-    assertThatThrownBy(() -> coercing.serialize(null))
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    assertThatThrownBy(() -> coercing.serialize(null, context, locale))
         .isInstanceOf(CoercingSerializeException.class)
         .hasMessage("Expected an Instant object.");
 
@@ -38,7 +51,14 @@ class ISO8601InstantCoercingTest {
 
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
-    Instant actual = coercing.parseValue("2013-09-27T11:19:29Z");
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    Instant actual = coercing.parseValue(
+        "2013-09-27T11:19:29Z",
+        context,
+        locale
+    );
 
     assertThat(actual).isEqualTo("2013-09-27T11:19:29Z");
 
@@ -48,7 +68,15 @@ class ISO8601InstantCoercingTest {
   void should_throw_error_when_parsing_non_ISO8601_format() {
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
-    assertThatThrownBy(() -> coercing.parseValue("05/11/2011"))
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    assertThatThrownBy(() -> coercing.parseValue(
+            "05/11/2011",
+            context,
+            locale
+        )
+    )
         .isInstanceOf(CoercingParseValueException.class)
         .hasMessage("Not a valid datetime: '05/11/2011'.");
 
@@ -59,7 +87,15 @@ class ISO8601InstantCoercingTest {
 
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
-    Instant actual = coercing.parseLiteral(new StringValue("2013-09-27T11:19:29Z"));
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    Instant actual = coercing.parseLiteral(
+        new StringValue("2013-09-27T11:19:29Z"),
+        null,
+        context,
+        locale
+    );
 
     assertThat(actual).isEqualTo("2013-09-27T11:19:29Z");
 
@@ -70,9 +106,21 @@ class ISO8601InstantCoercingTest {
 
     ISO8601InstantCoercing coercing = new ISO8601InstantCoercing();
 
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+    CoercedVariables variables = CoercedVariables.emptyVariables();
+
     NullValue value = NullValue.of();
 
-    assertThatThrownBy(() -> coercing.parseLiteral(value))
+
+    assertThatThrownBy(
+        () -> coercing.parseLiteral(
+            value,
+            variables,
+            context,
+            locale
+        )
+    )
         .isInstanceOf(CoercingParseLiteralException.class)
         .hasMessage("Expected a StringValue.");
 

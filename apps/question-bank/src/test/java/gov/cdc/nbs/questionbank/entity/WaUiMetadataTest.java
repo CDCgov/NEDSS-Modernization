@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import java.time.Instant;
+import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
@@ -18,6 +19,7 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuesti
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTextQuestion;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
@@ -597,6 +599,46 @@ class WaUiMetadataTest {
 
     // When the question is updated, an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
+  }
+
+  @Test
+  void should_group() {
+    WaUiMetadata metadata = new WaUiMetadata();
+    metadata.setId(99l);
+    PageContentCommand.GroupSubsection groupCommand = new PageContentCommand.GroupSubsection(
+        0,
+        "BLOCK_NAME",
+        Arrays.asList(new GroupSubSectionRequest.Batch(99l, true, "question label", 100)),
+        2,
+        3l,
+        Instant.now());
+    metadata.updateQuestionBatch(groupCommand, 1);
+
+    assertThat(metadata.getBlockNm()).isEqualTo("BLOCK_NAME");
+    assertThat(metadata.getBatchTableAppearIndCd()).isEqualTo('Y');
+    assertThat(metadata.getQuestionGroupSeqNbr()).isEqualTo(1);
+    assertThat(metadata.getBatchTableHeader()).isEqualTo("question label");
+    assertThat(metadata.getBatchTableColumnWidth()).isEqualTo(100);
+  }
+
+  @Test
+  void should_clear_group() {
+    WaUiMetadata metadata = new WaUiMetadata();
+    metadata.setId(99l);
+    PageContentCommand.GroupSubsection groupCommand = new PageContentCommand.GroupSubsection(
+        0,
+        "BLOCK_NAME",
+        Arrays.asList(new GroupSubSectionRequest.Batch(99l, false, "question label", 100)),
+        2,
+        3l,
+        Instant.now());
+    metadata.updateQuestionBatch(groupCommand, 1);
+
+    assertThat(metadata.getBlockNm()).isEqualTo("BLOCK_NAME");
+    assertThat(metadata.getBatchTableAppearIndCd()).isEqualTo('N');
+    assertThat(metadata.getQuestionGroupSeqNbr()).isEqualTo(1);
+    assertThat(metadata.getBatchTableHeader()).isNull();
+    assertThat(metadata.getBatchTableColumnWidth()).isNull();
   }
 
   private void validateMessaging(WaUiMetadata question, QuestionUpdate command) {

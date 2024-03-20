@@ -113,10 +113,10 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
 
     return (
         <div className={styles.sourceQuestion}>
-            <div className={styles.header}>
+            <div className={styles.headerTitle}>
                 <h2>Source question</h2>
             </div>
-            <div className={styles.body}>
+            <div className={styles.header}>
                 <div className={styles.headerMessage}>Please select source question</div>
                 <div className={styles.sourceTabs}>
                     <ul className={styles.tabs}>
@@ -147,6 +147,8 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                         </div>
                     )}
                 </div>
+            </div>
+            <div className={styles.body}>
                 <div className={styles.content}>
                     <div className={styles.sections}>
                         {filteredPage?.tabs?.[activeTab] &&

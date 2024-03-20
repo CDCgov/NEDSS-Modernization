@@ -45,8 +45,6 @@ public class LabReportMother {
   private final Active<LabReportIdentifier> active;
   private final Available<LabReportIdentifier> available;
 
-  private final Active<JurisdictionIdentifier> activeJurisdiction;
-  private final Active<ProgramAreaIdentifier> activeProgramArea;
   private final PatientMother patientMother;
 
   LabReportMother(
@@ -56,8 +54,6 @@ public class LabReportMother {
       final TestLabReportCleaner cleaner,
       final Active<LabReportIdentifier> active,
       final Available<LabReportIdentifier> available,
-      final Active<JurisdictionIdentifier> activeJurisdiction,
-      final Active<ProgramAreaIdentifier> activeProgramArea,
       final PatientMother patientMother
   ) {
     this.settings = settings;
@@ -66,8 +62,6 @@ public class LabReportMother {
     this.cleaner = cleaner;
     this.active = active;
     this.available = available;
-    this.activeJurisdiction = activeJurisdiction;
-    this.activeProgramArea = activeProgramArea;
     this.patientMother = patientMother;
   }
 
@@ -76,8 +70,12 @@ public class LabReportMother {
     this.available.reset();
   }
 
-
-  void create(final PatientIdentifier patient, final OrganizationIdentifier organization) {
+  void create(
+      final PatientIdentifier patient,
+      final OrganizationIdentifier organization,
+      final JurisdictionIdentifier jurisdiction,
+      final ProgramAreaIdentifier programArea
+  ) {
     PatientIdentifier revision = patientMother.revise(patient);
     // Observation
     long identifier = idGenerator.next();
@@ -95,12 +93,7 @@ public class LabReportMother {
     observation.setCd("10570");
     observation.setCdDescTxt("Condition");
 
-    JurisdictionIdentifier jurisdiction = this.activeJurisdiction.active();
-    ProgramAreaIdentifier programArea = this.activeProgramArea.active();
-
-    observation.setProgAreaCd(programArea.code());
-    observation.setJurisdictionCd(jurisdiction.code());
-    observation.setProgramJurisdictionOid(programArea.oid(jurisdiction));
+    within(observation, programArea, jurisdiction);
 
     observation.setAddTime(settings.createdOn());
     observation.setAddUserId(settings.createdBy());
@@ -115,6 +108,16 @@ public class LabReportMother {
 
     LabReportIdentifier created = new LabReportIdentifier(identifier, local);
     include(created);
+  }
+
+  private void within(
+      final Observation observation,
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
+    observation.setProgAreaCd(programArea.code());
+    observation.setJurisdictionCd(jurisdiction.code());
+    observation.setProgramJurisdictionOid(programArea.oid(jurisdiction));
   }
 
   private void forPatient(final Observation observation, final long patient) {
@@ -162,6 +165,15 @@ public class LabReportMother {
     this.active.active(identifier);
   }
 
+  void within(
+      final LabReportIdentifier identifier,
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction
+  ) {
+    Observation lab = managed(identifier);
+    within(lab, programArea, jurisdiction);
+  }
+
   void unprocessed(final LabReportIdentifier identifier) {
     Observation lab = managed(identifier);
     lab.setRecordStatusCd("UNPROCESSED");
@@ -175,6 +187,27 @@ public class LabReportMother {
   void enteredExternally(final LabReportIdentifier identifier) {
     Observation lab = managed(identifier);
     lab.setElectronicInd('E');
+  }
+
+  void orderedBy(final LabReportIdentifier lab, final long organization) {
+    Observation observation = managed(lab);
+    Act act = observation.getAct();
+
+    // create the participation
+    ParticipationId identifier = new ParticipationId(organization, observation.getId(), ORDERED_BY);
+
+    Participation participation = new Participation();
+    participation.setId(identifier);
+    participation.setActClassCd(act.getClassCd());
+    participation.setSubjectClassCd(ORGANIZATION_CLASS);
+    participation.setRecordStatusCd(RecordStatus.ACTIVE);
+    participation.setRecordStatusTime(settings.createdOn());
+    participation.setAddTime(settings.createdOn());
+    participation.setAddUserId(settings.createdBy());
+    participation.setActUid(act);
+
+
+    act.addParticipation(participation);
   }
 
   void orderedBy(final LabReportIdentifier identifier, final ProviderIdentifier provider) {
@@ -205,7 +238,7 @@ public class LabReportMother {
     // need an id and seq
     ActId filler = new ActId(new ActIdId(act.getId(), act.getActIds().size()));
     filler.setTypeCd("FN");
-    filler.setTypeCd("Filler Number");
+    filler.setTypeDescTxt("Filler Number");
     filler.setRootExtensionTxt(number);
 
     act.addIdentifier(filler);
@@ -219,6 +252,27 @@ public class LabReportMother {
   void receivedOn(final LabReportIdentifier identifier, final Instant date) {
     Observation lab = managed(identifier);
     lab.setRptToStateTime(date);
+  }
+
+  void created(
+      final LabReportIdentifier identifier,
+      final long by,
+      final Instant on
+  ) {
+    Observation lab = managed(identifier);
+    lab.setAddTime(on);
+    lab.setAddUserId(by);
+  }
+
+  void updated(
+      final LabReportIdentifier identifier,
+      final long by,
+      final Instant on
+  ) {
+    Observation lab = managed(identifier);
+    lab.setLastChgUserId(by);
+    lab.setLastChgTime(on);
+    lab.setVersionCtrlNbr((short) (lab.getVersionCtrlNbr() + 1));
   }
 
   private Observation managed(final LabReportIdentifier identifier) {

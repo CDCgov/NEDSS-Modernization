@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatterBuilder;
 public class LocalDateWithTimeJsonDeserializer extends JsonDeserializer<LocalDate> {
 
   private static final DateTimeFormatter READER = new DateTimeFormatterBuilder()
-      .appendOptional(DateTimeFormatter.ofPattern("M/d/[uuuu][uu]"))
+      .appendOptional(DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss[.[SSS][SS][S]]"))
       .appendOptional(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
       .toFormatter();
 

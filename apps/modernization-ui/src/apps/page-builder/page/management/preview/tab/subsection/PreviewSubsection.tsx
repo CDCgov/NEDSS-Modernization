@@ -34,7 +34,7 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                     <div className={styles.groupedForm}>
                                         {subsection.questions.map((question, k) => (
                                             <>
-                                                {question.visible && (
+                                                {question.appearsInBatch && (
                                                     <div className={styles.groupedQuestionName} key={k}>
                                                         <Heading level={3}>{question.name}</Heading>
                                                     </div>

@@ -17,6 +17,7 @@ public class SearchableLabReportPatientFinder {
           [participation].subject_class_cd,
           [name].first_nm,
           [name].last_nm,
+          [person].curr_sex_cd,
           [person].[birth_time]
       from [Participation] [participation]
             
@@ -41,7 +42,8 @@ public class SearchableLabReportPatientFinder {
   private static final int SUBJECT_TYPE_COLUMN = 4;
   private static final int FIRST_NAME_COLUMN = 5;
   private static final int LAST_NAME_COLUMN = 6;
-  private static final int BIRTHDAY_COLUMN = 7;
+  private static final int GENDER_COLUMN = 7;
+  private static final int BIRTHDAY_COLUMN = 8;
   private static final int LAB_REPORT_PARAMETER = 1;
 
   private final JdbcTemplate template;
@@ -57,6 +59,7 @@ public class SearchableLabReportPatientFinder {
             SUBJECT_TYPE_COLUMN,
             FIRST_NAME_COLUMN,
             LAST_NAME_COLUMN,
+            GENDER_COLUMN,
             BIRTHDAY_COLUMN
         )
     );

@@ -81,7 +81,8 @@ export const AdministrativeTable = ({ patient }: Props) => {
                         pageNumber: currentPage - 1,
                         pageSize: TOTAL_TABLE_DATA
                     }
-                }
+                },
+                notifyOnNetworkStatusChange: true
             });
     }, [currentPage, patient]);
 
@@ -200,7 +201,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="add-patient-identification-modal"
+                    id="add-patient-admin-modal"
                     title="Add - Administrative">
                     <AdministrativeForm action={'Add'} entry={initial} onChange={onChanged} />
                 </EntryModal>
@@ -210,7 +211,7 @@ export const AdministrativeTable = ({ patient }: Props) => {
                 <EntryModal
                     onClose={actions.reset}
                     modal={modal}
-                    id="edit-patient-identification-modal"
+                    id="edit-patient-admin-modal"
                     title="Edit - Administrative">
                     <AdministrativeForm
                         action={'Edit'}

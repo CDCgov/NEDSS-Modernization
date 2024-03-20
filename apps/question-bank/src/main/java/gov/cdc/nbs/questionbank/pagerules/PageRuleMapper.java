@@ -51,7 +51,7 @@ class PageRuleMapper implements RowMapper<Rule> {
     Rule.TargetType targetTypeEnum = getTargetTypeEnum(targetType);
     Rule.SourceQuestion sourceQuestionInfo =
         new Rule.SourceQuestion(sourceQuestionIdentifier, sourceQuestionLabel, sourceQuestionCodeSet);
-    boolean anySource = ruleExpression.contains("( )");
+    boolean anySource = ruleExpression.contains("(  )");
     List<String> sourceValuesList = null;
     if (sourceValues != null)
       sourceValuesList = Arrays.asList(sourceValues.split(","));

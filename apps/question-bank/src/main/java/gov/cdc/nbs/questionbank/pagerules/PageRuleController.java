@@ -1,62 +1,66 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.authentication.UserDetailsProvider;
-import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
-import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
-import gov.cdc.nbs.questionbank.pagerules.response.CreateRuleResponse;
-import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 @RequestMapping("/api/v1/pages/{id}/rules")
 public class PageRuleController {
 
-  private final PageRuleService pageRuleService;
-
-  private final UserDetailsProvider userDetailsProvider;
-
-
-
   private final PageRuleDeleter pageRuleDeleter;
-
   private final PageRuleCreator pageRuleCreator;
-
+  private final PageRuleUpdater pageRuleUpdater;
   private final PageRuleFinder pageRuleFinder;
+  private final PdfCreator pdfCreator;
+  private final CsvCreator csvCreator;
 
-  public PageRuleController(PageRuleService pageRuleService, UserDetailsProvider userDetailsProvider,
-      PageRuleDeleter pageRuleDeleter, PageRuleCreator pageRuleCreator,
-      PageRuleFinder pageRuleFinder) {
-    this.userDetailsProvider = userDetailsProvider;
-    this.pageRuleService = pageRuleService;
+  public PageRuleController(
+      final PageRuleDeleter pageRuleDeleter,
+      final PageRuleCreator pageRuleCreator,
+      final PageRuleUpdater pageRuleUpdater,
+      final PageRuleFinder pageRuleFinder,
+      final PdfCreator pdfCreator,
+      final CsvCreator csvCreator) {
     this.pageRuleDeleter = pageRuleDeleter;
     this.pageRuleCreator = pageRuleCreator;
+    this.pageRuleUpdater = pageRuleUpdater;
     this.pageRuleFinder = pageRuleFinder;
-
+    this.pdfCreator = pdfCreator;
+    this.csvCreator = csvCreator;
   }
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public CreateRuleResponse createBusinessRule(
-      @RequestBody Rule.CreateRuleRequest request,
+  public Rule createBusinessRule(
+      @RequestBody RuleRequest request,
       @PathVariable("id") Long page,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
-    try {
-      return pageRuleCreator.createPageRule(details.getId(), request, page);
-    } catch (RuleException e) {
-      return new CreateRuleResponse(null, "Error in Creating a Rules");
-    }
+    return pageRuleCreator.createPageRule(request, page, details.getId());
   }
 
   @DeleteMapping("{ruleId}")
@@ -68,10 +72,11 @@ public class PageRuleController {
   }
 
   @PutMapping("/{ruleId}")
-  public CreateRuleResponse updatePageRule(@PathVariable Long ruleId,
-      @RequestBody Rule.CreateRuleRequest request, @PathVariable Long id) throws RuleException {
-    Long userId = userDetailsProvider.getCurrentUserDetails().getId();
-    return pageRuleService.updatePageRule(ruleId, request, userId, id);
+  public Rule updatePageRule(
+      @PathVariable Long ruleId,
+      @RequestBody RuleRequest request,
+      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) throws RuleException {
+    return pageRuleUpdater.updatePageRule(ruleId, request, details.getId());
   }
 
   @GetMapping("/{ruleId}")
@@ -80,10 +85,46 @@ public class PageRuleController {
   }
 
   @PostMapping("/search")
-  public Page<Rule> findPageRule(@PathVariable("id") Long pageId,
+  public Page<Rule> findPageRule(
+      @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     return pageRuleFinder.searchPageRule(pageId, request, pageable);
+  }
+
+  @PostMapping("/pdf")
+  public ResponseEntity<byte[]> downloadRulePdf(
+      @PathVariable("id") Long pageId,
+      @RequestBody SearchPageRuleRequest request,
+      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+    Page<Rule> rules = pageRuleFinder.searchPageRule(pageId, request, pageable);
+    byte[] pdf = pdfCreator.create(rules.toList());
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename("ManageRulesLibrary.pdf")
+                .build()
+                .toString())
+        .body(pdf);
+  }
+
+  @PostMapping("/csv")
+  public ResponseEntity<byte[]> downloadRuleCsv(
+      @PathVariable("id") Long pageId,
+      @RequestBody SearchPageRuleRequest request,
+      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+    Page<Rule> rules = pageRuleFinder.searchPageRule(pageId, request, pageable);
+
+    byte[] csv = csvCreator.create(rules.toList());
+    return ResponseEntity.ok()
+        .contentType(MediaType.TEXT_PLAIN)
+        .header(HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename("ManageRulesLibrary.csv")
+                .build()
+                .toString())
+        .body(csv);
   }
 
   @GetMapping("/getAll")

@@ -38,6 +38,7 @@ public class PatientMother {
   private final Available<PatientIdentifier> available;
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
+  private final RevisionPatientCreator revisionCreator;
 
   PatientMother(
       final MotherSettings settings,
@@ -48,7 +49,9 @@ public class PatientMother {
       final EntityManager entityManager,
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
-      final PatientCleaner cleaner) {
+      final PatientCleaner cleaner,
+      final RevisionPatientCreator revisionCreator
+  ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
@@ -58,6 +61,7 @@ public class PatientMother {
     this.available = available;
     this.active = active;
     this.cleaner = cleaner;
+    this.revisionCreator = revisionCreator;
     this.faker = new Faker(new Locale("en-us"));
   }
 
@@ -89,20 +93,7 @@ public class PatientMother {
   }
 
   public PatientIdentifier revise(final PatientIdentifier identifier) {
-    Person parent = managed(identifier);
-
-    long id = idGenerator.next();
-
-    Person revision = parent.revise(
-        new PatientCommand.Revise(
-            identifier.id(),
-            id,
-            this.settings.createdBy(),
-            this.settings.createdOn()));
-
-    this.entityManager.persist(revision);
-
-    return new PatientIdentifier(id, identifier.shortId(), identifier.local());
+    return this.revisionCreator.revise(identifier);
   }
 
   public void deleted(final PatientIdentifier identifier) {

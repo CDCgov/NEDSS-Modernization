@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
-import { CreateRuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
+import { RuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './BusinessRulesForm.module.scss';
 import { SelectInput } from 'components/FormInputs/SelectInput';
@@ -33,7 +33,7 @@ export const BusinessRulesForm = ({
     editTargetQuestions,
     editTargetSubsections
 }: Props) => {
-    const form = useFormContext<CreateRuleRequest>();
+    const form = useFormContext<RuleRequest>();
     const watch = useWatch(form);
     const sourceQuestionModalRef = useRef<ModalRef>(null);
     const targetQuestionModalRef = useRef<ModalRef>(null);
@@ -106,6 +106,26 @@ export const BusinessRulesForm = ({
         });
     };
 
+    const removeNumericAndSymbols = (text: string | undefined) => {
+        const firstChar = text?.charAt(0);
+        if (firstChar && firstChar <= '9' && firstChar >= '0') {
+            return text?.replace(/\d+/, '').replace('. ', '');
+        }
+        return text;
+    };
+
+    const checkForSemicolon = (text: string | undefined) => {
+        const labelLength = text?.length;
+        if (labelLength) {
+            const lastChar = text.charAt(labelLength - 1);
+            if (lastChar === ':') {
+                return text.replace(':', '');
+            }
+            return text;
+        }
+        return text;
+    };
+
     const handleOpenSourceQuestion = () => {
         sourceQuestionModalRef.current?.toggleModal(undefined, true);
     };
@@ -160,7 +180,9 @@ export const BusinessRulesForm = ({
     useEffect(() => {
         if (
             watch.targetIdentifiers &&
-            (watch.anySourceValue || (watch.comparator && watch.sourceValues)) &&
+            (watch.anySourceValue ||
+                (watch.comparator && watch.sourceValues) ||
+                (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && watch.comparator)) &&
             watch.sourceIdentifier &&
             targetDescription
         ) {
@@ -310,13 +332,19 @@ export const BusinessRulesForm = ({
                                 </Button>
                             ) : (
                                 <div className={styles.sourceQuestionDisplay}>
-                                    {`${sourceQuestion.name} (${sourceQuestion.question})`}
-                                    <Icon.Close
-                                        onClick={() => {
-                                            setSourceQuestion(undefined);
-                                            form.setValue('sourceValues', undefined);
-                                        }}
-                                    />
+                                    <div className={styles.title}>
+                                        {`${checkForSemicolon(removeNumericAndSymbols(sourceQuestion.name))} (${
+                                            sourceQuestion.question
+                                        })`}
+                                    </div>
+                                    <div className={styles.closeBtn}>
+                                        <Icon.Close
+                                            onClick={() => {
+                                                setSourceQuestion(undefined);
+                                                form.setValue('sourceValues', undefined);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -458,7 +486,9 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
-                                                {`${question.name} (${question.question})`}
+                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name))} (${
+                                                    question.question
+                                                })`}
                                             </div>
                                         ))}
                                     </div>
@@ -507,8 +537,8 @@ export const BusinessRulesForm = ({
                                             onChange={onChange}
                                             type="text"
                                             multiline
-                                            defaultValue={value}
-                                            value={value}
+                                            defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
+                                            value={checkForSemicolon(removeNumericAndSymbols(value))}
                                             onBlur={onBlur}
                                         />
                                     </div>
@@ -524,7 +554,7 @@ export const BusinessRulesForm = ({
                                             <Input
                                                 type="text"
                                                 multiline
-                                                defaultValue={value}
+                                                defaultValue={checkForSemicolon(removeNumericAndSymbols(value))}
                                                 onChange={onChange}
                                                 onBlur={onBlur}
                                             />

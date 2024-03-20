@@ -1,0 +1,46 @@
+@use 'styles/colors';
+
+.groupQuestion {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .loadingIndicator div {
+        max-height: 80svh;
+    }
+
+    .content {
+        height: 100%;
+        overflow-y: auto;
+        padding: 1.25rem;
+    }
+
+    .form {
+        height: 100%;
+        overflow-y: auto;
+
+        width: 100%;
+        min-width: 100%;
+        max-width: unset;
+        overflow-y: auto;
+        height: calc(100% - 5.5rem);
+        padding: 1.5rem;
+    }
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 0 -1.5rem;
+        padding: 0 1.5rem;
+        gap: 0.5rem;
+        position: absolute;
+        bottom: 0;
+        height: 5rem;
+        width: 100%;
+        background-color: colors.$base-white;
+        border-top: 1px solid colors.$base-lighter;
+        button {
+            margin: 0;
+        }
+    }
+}

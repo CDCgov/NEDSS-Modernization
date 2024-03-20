@@ -31,7 +31,11 @@ record FlattenedComponent(
     boolean isGrouped,
     String dataLocation,
     boolean isPublished,
-    String blockName) {
+    String blockName,
+    Integer dataMartRepeatNumber,
+    boolean appearsInBatch,
+    String batchLabel,
+    Integer batchWidth) {
 
   FlattenedComponent(
       long identifier,
@@ -71,6 +75,10 @@ record FlattenedComponent(
         false,
         null,
         false,
+        null,
+        null,
+        false,
+        null,
         null);
   }
 }

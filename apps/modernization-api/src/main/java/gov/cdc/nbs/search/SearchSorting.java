@@ -2,7 +2,11 @@ package gov.cdc.nbs.search;
 
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.util.ObjectBuilder;
 import org.springframework.data.domain.Sort;
+
+import java.util.function.Function;
 
 public class SearchSorting {
 
@@ -25,6 +29,23 @@ public class SearchSorting {
             field -> field.field(name)
                 .order(order)
                 .nested(nested -> nested.path(path))
+        )
+    );
+  }
+
+  public static SortOptions asFilteredSortOption(
+      final String path,
+      final String name,
+      final SortOrder order,
+      final Function<Query.Builder, ObjectBuilder<Query>> filter
+  ) {
+    return SortOptions.of(
+        sort -> sort.field(
+            field -> field.field(name)
+                .order(order)
+                .nested(nested -> nested.path(path)
+                    .filter(filter)
+                )
         )
     );
   }
