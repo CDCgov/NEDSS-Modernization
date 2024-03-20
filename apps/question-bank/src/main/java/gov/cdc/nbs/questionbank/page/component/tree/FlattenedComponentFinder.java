@@ -43,13 +43,17 @@ class FlattenedComponentFinder {
           [component].publish_ind_cd              as [is_published],
           [component].batch_table_appear_ind_cd   as  [appearsInBatch],
           [component].batch_table_header          as  [batchLabel],
-          [component].batch_table_column_width    as  [batchWidth]
+          [component].batch_table_column_width    as  [batchWidth],
+          [ui].component_behavior                 as  [componentBehavior]
       from WA_UI_metadata [component]
           left join WA_RDB_metadata [WaRdbMetadatum] on
               [WaRdbMetadatum].wa_ui_metadata_uid = [component].[wa_ui_metadata_uid]
 
           left join [NBS_SRTE]..Codeset [set] on
                   [set].code_set_group_id = [component].[code_set_group_id]
+
+          left join NBS_ui_component [ui] on
+                [ui].nbs_ui_component_uid = [component].nbs_ui_component_uid
 
       where   [component].wa_template_uid = ?
           and [component].order_nbr > 0

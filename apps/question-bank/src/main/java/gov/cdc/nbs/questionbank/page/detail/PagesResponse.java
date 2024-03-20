@@ -95,7 +95,8 @@ public record PagesResponse(
       Integer dataMartRepeatNumber,
       boolean appearsInBatch,
       String batchLabel,
-      Integer batchWidth) {
+      Integer batchWidth,
+      String componentBehavior) {
   }
 
 

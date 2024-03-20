@@ -10,6 +10,7 @@ export type PagesQuestion = {
     batchWidth?: number;
     blockName?: string;
     coInfection?: boolean;
+    componentBehavior?: string;
     dataMartColumnName?: string;
     dataMartRepeatNumber?: number;
     dataType?: string;

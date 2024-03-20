@@ -13,10 +13,11 @@ import {
 import { Icon } from 'components/Icon/Icon';
 import { Button, Checkbox, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetAllPageRules } from 'apps/page-builder/hooks/api/useGetAllPageRules';
+import { useGetTargetQuestions } from 'apps/page-builder/hooks/api/useGetTargetQuestions';
 
 type Props = {
-    ruleFunction?: string;
-    sourceQuestion?: PagesQuestion;
+    ruleFunction: Rule.ruleFunction;
+    sourceQuestion: PagesQuestion | undefined;
     onSubmit: (questions: PagesQuestion[]) => void;
     onCancel: () => void;
     editTargetQuestion?: PagesQuestion[];
@@ -33,13 +34,19 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
     const [targetIdent, setTargetIdent] = useState<string[]>([]);
     const [selectedList, setSelectedList] = useState<PagesQuestion[]>([]);
 
-    const { fetch, rules } = useGetAllPageRules();
+    const { fetch: fetchRules, rules } = useGetAllPageRules();
+
+    const { fetch, response } = useGetTargetQuestions();
 
     const { page } = useGetPageDetails();
 
     const handleRemove = (question: PagesQuestion) => {
         setSelectedList(selectedList.filter((qtn) => qtn.id !== question.id));
     };
+
+    useEffect(() => {
+        fetch(page?.id ?? 0, { ruleFunction: ruleFunction, sourceQuestion: sourceQuestion, targetQuestion: undefined });
+    }, [ruleFunction, JSON.stringify(sourceQuestion)]);
 
     const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
@@ -122,7 +129,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
     }, [JSON.stringify(rules)]);
 
     useEffect(() => {
-        fetch();
+        fetchRules();
     }, []);
 
     const handleTargetQuestion = (questions: PagesQuestion[]) => {

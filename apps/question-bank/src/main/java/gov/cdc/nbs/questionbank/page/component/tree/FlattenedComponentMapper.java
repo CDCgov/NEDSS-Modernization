@@ -47,7 +47,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
       int isPublished,
       int appearsInBatch,
       int batchLabel,
-      int batchWidth) {
+      int batchWidth,
+      int componentBehavior) {
     Column() {
       this(1,
           2,
@@ -82,7 +83,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
           31,
           32,
           33,
-          34);
+          34,
+          35);
     }
   }
 
@@ -133,6 +135,7 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
     boolean appearsInBatch = resolveBatchBoolean(this.columns.appearsInBatch(), resultSet);
     String batchLabel = resultSet.getString(this.columns.batchLabel());
     Integer batchWidth = resultSet.getInt(this.columns.batchWidth());
+    String componentBehavior = resultSet.getString(this.columns.componentBehavior());
 
     return new FlattenedComponent(
         identifier,
@@ -169,7 +172,8 @@ class FlattenedComponentMapper implements RowMapper<FlattenedComponent> {
         dataMartRepeatNumber,
         appearsInBatch,
         batchLabel,
-        batchWidth);
+        batchWidth,
+        componentBehavior);
   }
 
   private boolean resolveBatchBoolean(final int column, final ResultSet resultSet) throws SQLException {

@@ -95,11 +95,13 @@ export type { SelectableMessageMappingGuide } from './models/SelectableMessageMa
 export { SingleValueFilter } from './models/SingleValueFilter';
 export type { Sort } from './models/Sort';
 export type { SourceQuestion } from './models/SourceQuestion';
+export { SourceQuestionRequest } from './models/SourceQuestionRequest';
 export type { SourceValue } from './models/SourceValue';
 export type { Status } from './models/Status';
 export type { SubSection } from './models/SubSection';
 export type { Tab } from './models/Tab';
 export type { Target } from './models/Target';
+export { TargetQuestionRequest } from './models/TargetQuestionRequest';
 export type { Template } from './models/Template';
 export type { TextQuestion } from './models/TextQuestion';
 export { UpdateCodedQuestionRequest } from './models/UpdateCodedQuestionRequest';

@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.page.component.SectionNode;
 import gov.cdc.nbs.questionbank.page.component.SelectionNode;
 import gov.cdc.nbs.questionbank.page.component.SubSectionNode;
 import gov.cdc.nbs.questionbank.page.component.TabNode;
+import org.checkerframework.checker.units.qual.m;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -129,6 +130,7 @@ class PagesResponseMapper {
     boolean appearsInBatch = content.attributes().appearsInBatch();
     String batchLabel = content.attributes().batchLabel();
     Integer batchWidth = content.attributes().batchWidth();
+    String componentBehavior = content.attributes().componentBehavior();
     return new PagesResponse.PagesQuestion(
         id,
         isStandardNnd,
@@ -162,7 +164,8 @@ class PagesResponseMapper {
         dataMartRepeatNumber,
         appearsInBatch,
         batchLabel,
-        batchWidth);
+        batchWidth,
+        componentBehavior);
   }
 
   boolean isSubsectionGrouable(SubSectionNode subsectionNode) {
