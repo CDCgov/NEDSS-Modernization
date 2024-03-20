@@ -36,7 +36,9 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                             <>
                                                 {question.appearsInBatch && (
                                                     <div className={styles.groupedQuestionName} key={k}>
-                                                        <Heading level={3}>{question.name}</Heading>
+                                                        <Heading level={3}>
+                                                            {question.batchLabel ?? question.name}
+                                                        </Heading>
                                                     </div>
                                                 )}
                                             </>
