@@ -3,9 +3,15 @@ import { Input } from 'components/FormInputs/Input';
 import { Radio } from '@trussworks/react-uswds';
 import styles from './subsection-details.module.scss';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { useEffect, useState } from 'react';
 
 export const SubsectionDetails = () => {
-    const { control } = useFormContext<GroupRequest>();
+    const { control, setValue } = useFormContext<GroupRequest>();
+    const [visibleToggle, setVisibleToggle] = useState(control._formValues.visible ? 'true' : 'false');
+
+    useEffect(() => {
+        setValue('visible', visibleToggle === 'true' ? true : false);
+    }, [visibleToggle]);
 
     return (
         <div className={styles.details}>
@@ -44,22 +50,22 @@ export const SubsectionDetails = () => {
                     <Controller
                         control={control}
                         name="visible"
-                        render={({ field: { onChange, value, name } }) => (
+                        render={({ field: { name } }) => (
                             <div className={styles.radio}>
                                 <Radio
                                     name={name}
-                                    value="Y"
+                                    value="true"
                                     id="visible"
-                                    checked={value}
-                                    onChange={(e) => onChange(e.target.value)}
+                                    checked={control._formValues.visible}
+                                    onChange={() => setVisibleToggle('true')}
                                     label="Yes"
                                 />
                                 <Radio
                                     id="notvisible"
                                     name={name}
-                                    value="N"
-                                    checked={!value}
-                                    onChange={(e) => onChange(e.target.value)}
+                                    value={false.toString()}
+                                    checked={!control._formValues.visible}
+                                    onChange={() => setVisibleToggle('false')}
                                     label="No"
                                 />
                             </div>
