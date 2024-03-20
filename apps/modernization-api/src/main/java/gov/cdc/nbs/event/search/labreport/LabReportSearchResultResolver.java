@@ -1,6 +1,5 @@
 package gov.cdc.nbs.event.search.labreport;
 
-import gov.cdc.nbs.entity.elasticsearch.LabReport;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.graphql.GraphQLPageableMapper;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 class LabReportSearchResultResolver {
-  private final LabReportFinder finder;
+  private final LabReportSearcher finder;
   private final GraphQLPageableMapper mapper;
 
 
   LabReportSearchResultResolver(
-      final LabReportFinder finder,
+      final LabReportSearcher finder,
       final GraphQLPageableMapper mapper
   ) {
     this.finder = finder;
@@ -27,7 +26,7 @@ class LabReportSearchResultResolver {
 
   @QueryMapping("findLabReportsByFilter")
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-OBSERVATIONLABREPORT')")
-  Page<LabReport> search(
+  Page<LabReportSearchResult> search(
       @Argument final LabReportFilter filter,
       @Argument final GraphQLPage page
   ) {

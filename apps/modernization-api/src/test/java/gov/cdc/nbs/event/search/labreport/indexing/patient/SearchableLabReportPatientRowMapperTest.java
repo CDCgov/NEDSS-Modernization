@@ -23,7 +23,8 @@ class SearchableLabReportPatientRowMapperTest {
         7,
         11,
         13,
-        17
+        17,
+        19
     );
 
     ResultSet resultSet = mock(ResultSet.class);
@@ -33,6 +34,7 @@ class SearchableLabReportPatientRowMapperTest {
     when(resultSet.getString(columns.subjectType())).thenReturn("subject-type-value");
     when(resultSet.getString(columns.firstName())).thenReturn("first-name-value");
     when(resultSet.getString(columns.lastName())).thenReturn("last-name-value");
+    when(resultSet.getString(columns.gender())).thenReturn("gender-value");
     when(resultSet.getObject(columns.birthday(), LocalDateTime.class)).thenReturn(
         LocalDateTime.of(
             1943, Month.NOVEMBER, 3,
@@ -50,6 +52,7 @@ class SearchableLabReportPatientRowMapperTest {
     assertThat(mapped.subjectType()).isEqualTo("subject-type-value");
     assertThat(mapped.firstName()).isEqualTo("first-name-value");
     assertThat(mapped.lastName()).isEqualTo("last-name-value");
+    assertThat(mapped.gender()).isEqualTo("gender-value");
     assertThat(mapped.birthday()).isEqualTo("1943-11-03");
     assertThat(mapped.identifier()).isEqualTo(829L);
   }

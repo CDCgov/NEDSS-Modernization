@@ -36,7 +36,9 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                             <>
                                                 {question.appearsInBatch && (
                                                     <div className={styles.groupedQuestionName} key={k}>
-                                                        <Heading level={3}>{question.name}</Heading>
+                                                        <Heading level={3}>
+                                                            {question.batchLabel ?? question.name}
+                                                        </Heading>
                                                     </div>
                                                 )}
                                             </>
@@ -44,15 +46,13 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                     </div>
                                     <p className={styles.groupedInfo}>No data has been entered.</p>
                                     <div className={styles.groupedQuestionsSection}>
-                                        {subsection.questions
-                                            .filter((q) => q.appearsInBatch)
-                                            .map((question, k) => (
-                                                <PreviewQuestion
-                                                    question={question}
-                                                    isGrouped={subsection.isGrouped}
-                                                    key={k}
-                                                />
-                                            ))}
+                                        {subsection.questions.map((question, k) => (
+                                            <PreviewQuestion
+                                                question={question}
+                                                isGrouped={subsection.isGrouped}
+                                                key={k}
+                                            />
+                                        ))}
                                     </div>
                                     <div className={styles.footer}>
                                         <Button type="button" disabled={true}>

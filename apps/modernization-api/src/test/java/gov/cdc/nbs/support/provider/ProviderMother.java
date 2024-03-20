@@ -33,6 +33,7 @@ class ProviderMother {
       insert into Person_name(
         person_uid,
         person_name_seq,
+        nm_use_cd,
         first_nm,
         last_nm,
         status_cd,
@@ -40,6 +41,7 @@ class ProviderMother {
       ) values (
         :identifier,
         1,
+        'L',
         :first,
         :last,
         'A',

@@ -1,16 +1,15 @@
 query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage){
     findLabReportsByFilter(filter: $filter, page: $page){
         content{
+            relevance
             id
             jurisdictionCd
-            jurisdictionCodeDescTxt
             localId
             addTime
             personParticipations{
                 birthTime
                 currSexCd
                 typeCd
-                typeDescTxt
                 firstName
                 lastName
                 personCd

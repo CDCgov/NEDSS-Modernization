@@ -35,6 +35,8 @@ describe('BusinessRulesLibraryTable', () => {
                             qtnModalRef={modalRef}
                             onSortChange={jest.fn()}
                             onQueryChange={jest.fn()}
+                            onDownloadCsv={jest.fn()}
+                            onDownloadPdf={jest.fn()}
                         />
                     </PageProvider>
                 </BrowserRouter>
@@ -80,6 +82,8 @@ describe('BusinessRulesLibraryTable', () => {
                             qtnModalRef={modalRef}
                             onSortChange={jest.fn()}
                             onQueryChange={jest.fn()}
+                            onDownloadCsv={jest.fn()}
+                            onDownloadPdf={jest.fn()}
                         />
                     </PageProvider>
                 </BrowserRouter>

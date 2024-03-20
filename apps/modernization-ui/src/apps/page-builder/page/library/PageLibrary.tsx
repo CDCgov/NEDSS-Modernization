@@ -80,8 +80,8 @@ const PageLibraryContent = () => {
                         filters={filters}
                         onSearch={handleSearch}
                         onFilter={handleFilter}
-                        onDownload={handleDownloadCSV}
-                        onPrint={handleDownloadPDF}
+                        onDownloadCsv={handleDownloadCSV}
+                        onDownloadPdf={handleDownloadPDF}
                     />
                     {!config.loading && (
                         <PageLibraryTable
