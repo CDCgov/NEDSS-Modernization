@@ -13,7 +13,7 @@ type InvestigationResults {
 type InvestigationPersonParticipation {
     birthTime: DateTime
     currSexCd: String
-    typeCd: String
+    typeCd: String!
     firstName: String
     lastName: String
     personCd: String!
