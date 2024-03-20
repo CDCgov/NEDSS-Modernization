@@ -38,8 +38,8 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     };
 
     useEffect(() => {
-        if (ruleFunction) {
-            fetch(page?.id ?? 0, { ruleFunction: ruleFunction });
+        if (ruleFunction && page) {
+            fetch(page.id, { ruleFunction: ruleFunction });
         }
     }, [ruleFunction]);
 

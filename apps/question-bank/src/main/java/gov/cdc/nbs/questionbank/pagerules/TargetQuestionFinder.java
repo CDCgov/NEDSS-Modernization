@@ -54,8 +54,9 @@ public class TargetQuestionFinder {
                   && !question.isStandardNnd() && question.visible()
                   && question.componentBehavior().contains("_data")) {
                 if (request.targetQuestion() != null) {
-                  if (selectedTargetIds.contains(question.id())
-                      || question.id() != request.sourceQuestion().id()) {
+                  if (selectedTargetIds.contains(question.id())) {
+                    questionsResult.add(question);
+                  } else if (question.id() != request.sourceQuestion().id()) {
                     questionsResult.add(question);
                   }
                 } else if (question.id() != request.sourceQuestion().id()) {
@@ -160,11 +161,12 @@ public class TargetQuestionFinder {
             } else {
               if (!question.isStandardNnd() && question.questionGroupSeq() == 0) {
                 if (request.ruleFunction() == RuleFunction.REQUIRE_IF) {
-                  if (!question.required() && question.componentBehavior().contains("_data")
-                      && !targetIdentifiers.contains(question.question())) {
+                  if (!question.required() && question.componentBehavior().contains("_data")) {
                     if (request.targetQuestion() != null) {
-                      if (selectedTargetIds.contains(question.id())
-                          || question.id() != request.sourceQuestion().id()) {
+                      if (selectedTargetIds.contains(question.id())) {
+                        questionsResult.add(question);
+                      } else if (question.id() != request.sourceQuestion().id()
+                          && !targetIdentifiers.contains(question.question())) {
                         questionsResult.add(question);
                       }
                     } else if (question.id() != request.sourceQuestion().id()) {
@@ -173,14 +175,16 @@ public class TargetQuestionFinder {
                   }
                 } else {
                   if ((question.componentBehavior().contains("Static")
-                      || question.componentBehavior().contains("_data"))
-                      && !targetIdentifiers.contains(question.question())) {
+                      || question.componentBehavior().contains("_data"))) {
                     if (request.targetQuestion() != null) {
-                      if (selectedTargetIds.contains(question.id())
-                          || question.id() != request.sourceQuestion().id()) {
+                      if (selectedTargetIds.contains(question.id())) {
+                        questionsResult.add(question);
+                      } else if (question.id() != request.sourceQuestion().id()
+                          && !targetIdentifiers.contains(question.question())) {
                         questionsResult.add(question);
                       }
-                    } else if (question.id() != request.sourceQuestion().id()) {
+                    } else if (question.id() != request.sourceQuestion().id()
+                        && !targetIdentifiers.contains(question.question())) {
                       questionsResult.add(question);
                     }
                   }

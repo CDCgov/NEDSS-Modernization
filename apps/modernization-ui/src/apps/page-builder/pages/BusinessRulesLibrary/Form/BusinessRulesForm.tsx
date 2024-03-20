@@ -121,7 +121,9 @@ export const BusinessRulesForm = ({
             if (lastChar === ':') {
                 return text.replace(':', '');
             }
+            return text;
         }
+        return text;
     };
 
     const handleOpenSourceQuestion = () => {
@@ -184,8 +186,12 @@ export const BusinessRulesForm = ({
             watch.sourceIdentifier &&
             targetDescription
         ) {
+            console.log({ targetDescription });
+            console.log(watch.sourceText);
+
             const descrip = handleRuleDescription();
-            descrip !== form.getValues('description') && form.setValue('description', handleRuleDescription());
+            console.log({ descrip });
+            form.setValue('description', descrip);
         }
     }, [
         JSON.stringify(watch.targetIdentifiers),
