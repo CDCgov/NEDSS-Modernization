@@ -1,10 +1,30 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
-.manage {
-    button {
+.manageButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    padding: 0 0 0.5rem 0;
+}
+
+.manageTabModal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .modalBody {
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-decoration: none;
+        flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .buttonBar {
+        padding: 1.5rem;
+        @extend %thin-top;
+        display: flex;
+        justify-content: flex-end;
     }
 }

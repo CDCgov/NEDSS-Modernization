@@ -1,0 +1,10 @@
+.manageTabsHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+
+    .headerText {
+        font-size: 1.375rem;
+        font-weight: bold;
+    }
+}
