@@ -4,9 +4,10 @@ import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { ChangeEvent } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { ChangeEvent, useEffect } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+import { isBefore } from 'validation/date';
 import styles from './concept-form.module.scss';
 
 type Props = {
@@ -15,6 +16,11 @@ type Props = {
 export const ConceptForm = ({ isEditing = false }: Props) => {
     const form = useFormContext<CreateConceptRequest>();
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
+    const effectiveTo = useWatch({ control: form.control, name: 'effectiveToTime' });
+
+    useEffect(() => {
+        form.trigger('effectiveFromTime');
+    }, [effectiveTo]);
 
     return (
         <div className={styles.conceptForm}>
@@ -103,14 +109,18 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     <Controller
                         control={form.control}
                         name="effectiveFromTime"
-                        rules={{ required: { value: true, message: 'Effective from time is required' } }}
-                        render={({ field: { onChange, onBlur, value } }) => (
+                        rules={{
+                            required: { value: true, message: 'Effective from time is required' },
+                            validate: isBefore(effectiveTo)
+                        }}
+                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <DatePickerInput
                                 defaultValue={value}
                                 label="Effective from time"
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 required
+                                errorMessage={error?.message}
                             />
                         )}
                     />
