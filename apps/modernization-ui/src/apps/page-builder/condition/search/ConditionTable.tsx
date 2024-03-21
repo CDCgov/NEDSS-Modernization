@@ -114,7 +114,6 @@ export const ConditionTable = ({ conditions, isLoading, onSelectionChange, onSor
             currentPage={page.current}
             handleNext={request}
             selectable={true}
-            contextName="conditions"
             rangeSelector={true}
             handleSelected={handleSelect}
         />
