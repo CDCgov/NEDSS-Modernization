@@ -6,8 +6,8 @@ import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ChangeEvent, useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { isAfter } from 'validation/date/isAfter';
 import { maxLengthRule } from 'validation/entry';
-import { isBefore } from 'validation/date';
 import styles from './concept-form.module.scss';
 
 type Props = {
@@ -16,11 +16,11 @@ type Props = {
 export const ConceptForm = ({ isEditing = false }: Props) => {
     const form = useFormContext<CreateConceptRequest>();
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
-    const effectiveTo = useWatch({ control: form.control, name: 'effectiveToTime' });
+    const effectiveFrom = useWatch({ control: form.control, name: 'effectiveFromTime' });
 
     useEffect(() => {
-        form.trigger('effectiveFromTime');
-    }, [effectiveTo]);
+        form.trigger('effectiveToTime');
+    }, [effectiveFrom]);
 
     return (
         <div className={styles.conceptForm}>
@@ -110,8 +110,7 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                         control={form.control}
                         name="effectiveFromTime"
                         rules={{
-                            required: { value: true, message: 'Effective from time is required' },
-                            validate: isBefore(effectiveTo)
+                            required: { value: true, message: 'Effective from time is required' }
                         }}
                         render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <DatePickerInput
@@ -127,12 +126,14 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
                     <Controller
                         control={form.control}
                         name="effectiveToTime"
-                        render={({ field: { onChange, onBlur, value } }) => (
+                        rules={{ validate: isAfter(effectiveFrom) }}
+                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                             <DatePickerInput
                                 defaultValue={value}
                                 label="Effective to time"
                                 onChange={onChange}
                                 onBlur={onBlur}
+                                errorMessage={error?.message}
                             />
                         )}
                     />
