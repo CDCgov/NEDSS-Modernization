@@ -28,7 +28,7 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
             request: {
                 ...form.getValues(),
                 effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined,
-                effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? undefined
+                effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString()
             },
             codeSetNm: valuesetName
         })
