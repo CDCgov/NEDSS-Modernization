@@ -1,23 +1,22 @@
 import { FeatureGuard, FeatureLayout } from 'feature';
-import { Navigate, RouteObject } from 'react-router-dom';
-import PageBuilderContextProvider from './context/PageBuilderContext';
+import { PageProvider } from 'page';
+import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 import { PageLibrary } from './page/library/PageLibrary';
 import { Edit } from './page/management/edit/Edit';
 import { PreviewPage } from './page/management/preview';
 import { PageDetails } from './page/management/preview/PageDetails/PageDetails';
 import { AddNewPage } from './pages/AddNewPage/AddNewPage';
-import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
-import { PageProvider } from 'page';
-import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
 import { AddBusinessRule } from './pages/BusinessRulesLibrary/Add/AddBusinessRules';
+import { BusinessRulesLibrary } from './pages/BusinessRulesLibrary/BusinessRulesLibrary';
 import { EditBusinessRule } from './pages/BusinessRulesLibrary/Edit/EditBusinessRules';
+import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/ViewBusinessRule';
 
 const routing: RouteObject[] = [
     {
         path: '/page-builder',
         element: (
             <FeatureGuard guard={(features) => features.pageBuilder.enabled}>
-                <PageBuilderContextProvider />
+                <Outlet />
             </FeatureGuard>
         ),
         children: [
