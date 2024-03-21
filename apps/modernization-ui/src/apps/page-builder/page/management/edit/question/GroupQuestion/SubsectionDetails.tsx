@@ -83,7 +83,7 @@ export const SubsectionDetails = () => {
                         name="blockName"
                         rules={{
                             required: { value: true, message: 'Block name required.' },
-                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' }
+                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, 0-9, or _' }
                         }}
                         render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                             <Input
@@ -93,6 +93,7 @@ export const SubsectionDetails = () => {
                                 onChange={onChange}
                                 required
                                 error={error?.message}
+                                className="text-uppercase"
                             />
                         )}
                     />

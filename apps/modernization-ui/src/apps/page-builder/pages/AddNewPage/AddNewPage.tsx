@@ -142,9 +142,9 @@ export const AddNewPage = () => {
                 <div className="add-new-page__form">
                     <div className="add-new-page__content">
                         <h2 aria-label="Create new page">Create new page</h2>
-                        <h4>Let's fill out some information about your new page before creating it</h4>
+                        <h4>Let's fill out some information about your new page before creating it.</h4>
                         <div className="fields-info">
-                            All fields with <span className="mandatory-indicator">*</span> are required
+                            All fields with <span className="mandatory-indicator">*</span> are required.
                         </div>
                         <Controller
                             control={form.control}
