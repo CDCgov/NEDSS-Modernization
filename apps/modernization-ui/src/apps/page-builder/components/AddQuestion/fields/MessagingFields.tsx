@@ -54,13 +54,13 @@ export const MessagingFields = () => {
                 rules={{
                     required: {
                         value: includedInMessage ?? false,
-                        message: 'Message Variable ID is required'
+                        message: 'Message variable ID is required'
                     },
                     ...maxLengthRule(50)
                 }}
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
-                        label="Message Variable ID"
+                        label="Message variable ID"
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -172,7 +172,7 @@ export const MessagingFields = () => {
                 )}
             />
             <SelectInput
-                label="HL7 Segment"
+                label="HL7 segment"
                 value={'OBX-3.0'}
                 disabled
                 options={[{ name: 'OBX-3.0', value: 'OBX-3.0' }]}
