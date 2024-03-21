@@ -1,5 +1,6 @@
 .addEditTab {
     padding: 1.2rem 1.4rem;
+    width: 100%;
     .toggle {
         display: flex;
         flex-direction: row;
@@ -12,5 +13,9 @@
     }
     label {
         margin-top: 0;
+    }
+
+    .inputField {
+        max-width: unset;
     }
 }
