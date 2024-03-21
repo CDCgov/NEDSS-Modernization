@@ -569,7 +569,6 @@ export const BusinessRulesForm = ({
             <Modal id={'sourceQuestion'} ref={sourceQuestionModalRef} className={'source-question-modal'} isLarge>
                 <SourceQuestion
                     ruleFunction={watch.ruleFunction}
-                    editTargetQuestions={targetQuestions}
                     onSubmit={handleSourceQuestion}
                     onCancel={handleCloseSourceQuestion}
                 />

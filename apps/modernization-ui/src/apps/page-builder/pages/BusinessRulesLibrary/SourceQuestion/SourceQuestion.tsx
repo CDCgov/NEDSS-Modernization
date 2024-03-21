@@ -8,12 +8,11 @@ import { useGetSourceQuestion } from 'apps/page-builder/hooks/api/useGetSourceQu
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;
-    editTargetQuestions?: PagesQuestion[];
     onSubmit: (question?: PagesQuestion) => void;
     onCancel: () => void;
 };
 
-export const SourceQuestion = ({ ruleFunction, editTargetQuestions, onSubmit, onCancel }: Props) => {
+export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     const { page } = useGetPageDetails();
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
@@ -40,13 +39,9 @@ export const SourceQuestion = ({ ruleFunction, editTargetQuestions, onSubmit, on
 
     useEffect(() => {
         if (ruleFunction && page) {
-            if (editTargetQuestions) {
-                fetch(page.id, { ruleFunction: ruleFunction, targetQuestions: editTargetQuestions });
-            } else {
-                fetch(page.id, { ruleFunction: ruleFunction });
-            }
+            fetch(page.id, { ruleFunction: ruleFunction });
         }
-    }, [ruleFunction, JSON.stringify(editTargetQuestions)]);
+    }, [ruleFunction]);
 
     const handleRemove = () => {
         setQuestionSelect(undefined);
