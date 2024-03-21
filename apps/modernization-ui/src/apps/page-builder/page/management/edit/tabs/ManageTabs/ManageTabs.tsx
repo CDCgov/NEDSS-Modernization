@@ -178,14 +178,14 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                             </ModalToggleButton>
                         ) : null}
                         {addEdit && !selectedForEdit ? (
-                            <div>
+                            <>
                                 <Button type="button" outline onClick={() => resetEditPageTabs()}>
                                     Cancel
                                 </Button>
                                 <Button onClick={handleAdd} type="button" disabled={!form.formState.isValid}>
                                     Add tab
                                 </Button>
-                            </div>
+                            </>
                         ) : null}
                         {addEdit && selectedForEdit ? (
                             <>
