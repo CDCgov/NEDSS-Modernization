@@ -1,5 +1,5 @@
 import './MoreOptions.scss';
-import useComponentVisible from '../../helpers/useComponentVisible';
+import useComponentVisible from './useComponentVisible';
 import { useEffect } from 'react';
 
 export const MoreOptions = ({ children, header, close }: any) => {
