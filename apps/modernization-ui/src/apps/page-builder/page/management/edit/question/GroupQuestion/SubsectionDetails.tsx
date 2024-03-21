@@ -107,15 +107,20 @@ export const SubsectionDetails = () => {
                         control={control}
                         name="repeatingNbr"
                         rules={{
-                            required: { value: true, message: 'Repeat number required.' }
+                            required: { value: true, message: 'Repeat number required.' },
+                            max: { value: 5, message: 'Must be between 0 and 5' },
+                            min: { value: 0, message: 'Must be between 0 and 5' }
                         }}
-                        render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Input
                                 type="number"
                                 name={name}
                                 defaultValue={value?.toString()}
                                 onChange={onChange}
+                                onBlur={onBlur}
                                 required
+                                min={0}
+                                max={5}
                                 error={error?.message}
                             />
                         )}
