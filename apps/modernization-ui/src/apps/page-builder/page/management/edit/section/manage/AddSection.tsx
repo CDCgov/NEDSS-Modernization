@@ -124,7 +124,7 @@ export const AddSection = ({
             </Form>
             <div className={styles.footer}>
                 <div className={styles.footerBtns}>
-                    <Button type="button" onClick={onClose}>
+                    <Button type="button" outline onClick={onClose}>
                         Cancel
                     </Button>
                     {isEdit ? (
