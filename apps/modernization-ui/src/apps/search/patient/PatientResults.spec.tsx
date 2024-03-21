@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom'; // Import MemoryRouter for routing context
-import { PatientResults } from './PatientResults'; // Adjust the import path as necessary
+import { MemoryRouter } from 'react-router-dom';
+import { PatientResults } from './PatientResults';
 
 // Mock data for testing
 const mockData = [
