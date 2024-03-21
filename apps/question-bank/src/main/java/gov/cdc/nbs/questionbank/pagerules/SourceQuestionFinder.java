@@ -23,123 +23,124 @@ public class SourceQuestionFinder {
   }
 
   public PagesResponse filterQuestions(Long id, SourceQuestionRequest request) {
-    return request.ruleFunction() == RuleFunction.DATE_COMPARE ? filterDateQuestions(id, request)
-        : filterOtherQuestions(id, request);
+    return request.ruleFunction() == RuleFunction.DATE_COMPARE ? filterDateQuestions(id)
+        : filterOtherQuestions(id);
   }
 
-  private PagesResponse filterOtherQuestions(Long id, SourceQuestionRequest request) {
+  private PagesResponse filterOtherQuestions(Long id) {
     Optional<PagesResponse> page = pageResolver.resolve(id);
 
     PagesResponse result = null;
 
     List<PagesTab> resultTabs = new ArrayList<>();
 
-    for (PagesTab tab : page.get().tabs()) {
-      List<PagesSection> resultSections = new ArrayList<>();
-      for (PagesSection section : tab.sections()) {
+    if (!page.isEmpty()) {
+      for (PagesTab tab : page.get().tabs()) {
+        List<PagesSection> resultSections = new ArrayList<>();
+        for (PagesSection section : tab.sections()) {
 
-        List<PagesSubSection> resultSubSections = new ArrayList<>();
-        for (PagesSubSection subsection : section.subSections()) {
+          List<PagesSubSection> resultSubSections = new ArrayList<>();
+          for (PagesSubSection subsection : section.subSections()) {
 
-          Collection<PagesQuestion> questionsResult = new ArrayList<>();
-          for (PagesQuestion question : subsection.questions()) {
-            if (question.dataType() != null) {
-              if (question.dataType().equals("CODED") && !question.isStandardNnd()
-                  && question.componentBehavior().contains("_data") && (question.question() == "INV169"
-                      || (question.classCode().toUpperCase().equals("CODE_VALUE_GENERAL")))) {
+            Collection<PagesQuestion> questionsResult = new ArrayList<>();
+            for (PagesQuestion question : subsection.questions()) {
+              if (question.dataType() != null && question.dataType().equals("CODED") && !question.isStandardNnd()
+                  && question.componentBehavior().contains("_data") && (question.question().equals("INV169")
+                      || (question.classCode().equalsIgnoreCase("CODE_VALUE_GENERAL")))) {
                 questionsResult.add(question);
               }
             }
+
+            PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
+                subsection.order(),
+                subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
+                subsection.blockName(), questionsResult);
+
+            if (questionsResult.isEmpty()) {
+              resultSubSections.add(resultSubsection);
+            }
           }
 
-          PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-              subsection.order(),
-              subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-              subsection.blockName(), questionsResult);
+          PagesSection resultSection =
+              new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
 
-          if (questionsResult.size() > 0) {
-            resultSubSections.add(resultSubsection);
+          if (resultSubSections.isEmpty()) {
+            resultSections.add(resultSection);
           }
+
         }
 
-        PagesSection resultSection =
-            new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+        PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
 
-        if (resultSubSections.size() > 0) {
-          resultSections.add(resultSection);
+        if (resultSections.isEmpty()) {
+          resultTabs.add(resultTab);
         }
-
       }
 
-      PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
-
-      if (resultSections.size() > 0) {
-        resultTabs.add(resultTab);
+      if (resultTabs.isEmpty()) {
+        result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
+            page.get().description(), page.get().root(), resultTabs, page.get().rules());
       }
-    }
-
-    if (resultTabs.size() > 0) {
-      result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
-          page.get().description(), page.get().root(), resultTabs, page.get().rules());
     }
 
     return result;
+
   }
 
-  private PagesResponse filterDateQuestions(Long id, SourceQuestionRequest request) {
+  private PagesResponse filterDateQuestions(Long id) {
     Optional<PagesResponse> page = pageResolver.resolve(id);
 
     PagesResponse result = null;
 
     List<PagesTab> resultTabs = new ArrayList<>();
 
-    for (PagesTab tab : page.get().tabs()) {
-      List<PagesSection> resultSections = new ArrayList<>();
-      for (PagesSection section : tab.sections()) {
+    if (!page.isEmpty()) {
+      for (PagesTab tab : page.get().tabs()) {
+        List<PagesSection> resultSections = new ArrayList<>();
+        for (PagesSection section : tab.sections()) {
 
-        List<PagesSubSection> resultSubSections = new ArrayList<>();
-        for (PagesSubSection subsection : section.subSections()) {
+          List<PagesSubSection> resultSubSections = new ArrayList<>();
+          for (PagesSubSection subsection : section.subSections()) {
 
-          Collection<PagesQuestion> questionsResult = new ArrayList<>();
-          for (PagesQuestion question : subsection.questions()) {
-            if (question.dataType() != null) {
-              if ((question.dataType().equals("DATE")
-                  || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
-                  && question.componentBehavior().contains("_data")) {
+            Collection<PagesQuestion> questionsResult = new ArrayList<>();
+            for (PagesQuestion question : subsection.questions()) {
+              if (question.dataType() != null && question.dataType().equals("DATE")
+                  || question.dataType().equals("DATETIME") && !question.isStandardNnd() && question.visible()
+                      && question.componentBehavior().contains("_data")) {
                 questionsResult.add(question);
               }
             }
+
+            PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
+                subsection.order(),
+                subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
+                subsection.blockName(), questionsResult);
+
+            if (questionsResult.isEmpty()) {
+              resultSubSections.add(resultSubsection);
+            }
           }
 
-          PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-              subsection.order(),
-              subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-              subsection.blockName(), questionsResult);
+          PagesSection resultSection =
+              new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
 
-          if (questionsResult.size() > 0) {
-            resultSubSections.add(resultSubsection);
+          if (resultSubSections.isEmpty()) {
+            resultSections.add(resultSection);
           }
+
         }
 
-        PagesSection resultSection =
-            new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+        PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
 
-        if (resultSubSections.size() > 0) {
-          resultSections.add(resultSection);
+        if (resultSections.isEmpty()) {
+          resultTabs.add(resultTab);
         }
-
       }
 
-      PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
-
-      if (resultSections.size() > 0) {
-        resultTabs.add(resultTab);
+      if (resultTabs.isEmpty()) {
+        result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
+            page.get().description(), page.get().root(), resultTabs, page.get().rules());
       }
-    }
-
-    if (resultTabs.size() > 0) {
-      result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
-          page.get().description(), page.get().root(), resultTabs, page.get().rules());
     }
 
     return result;

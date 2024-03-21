@@ -20,7 +20,7 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
 
-public class TargetQuestionFinderTest {
+class TargetQuestionFinderTest {
 
   @Mock
   PagesResolver resolver;
