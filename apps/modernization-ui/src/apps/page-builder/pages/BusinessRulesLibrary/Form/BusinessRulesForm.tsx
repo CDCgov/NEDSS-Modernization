@@ -184,13 +184,9 @@ export const BusinessRulesForm = ({
                 (watch.comparator && watch.sourceValues) ||
                 (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && watch.comparator)) &&
             watch.sourceIdentifier &&
-            targetDescription
+            targetDescription.length
         ) {
-            console.log({ targetDescription });
-            console.log(watch.sourceText);
-
             const descrip = handleRuleDescription();
-            console.log({ descrip });
             form.setValue('description', descrip);
         }
     }, [
@@ -573,6 +569,7 @@ export const BusinessRulesForm = ({
             <Modal id={'sourceQuestion'} ref={sourceQuestionModalRef} className={'source-question-modal'} isLarge>
                 <SourceQuestion
                     ruleFunction={watch.ruleFunction}
+                    editTargetQuestions={targetQuestions}
                     onSubmit={handleSourceQuestion}
                     onCancel={handleCloseSourceQuestion}
                 />

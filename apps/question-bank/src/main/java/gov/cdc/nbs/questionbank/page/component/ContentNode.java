@@ -32,7 +32,8 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       String batchLabel,
       Integer batchWidth,
       String componentBehavior,
-      String componentName) {
+      String componentName,
+      String classCode) {
   }
 
 

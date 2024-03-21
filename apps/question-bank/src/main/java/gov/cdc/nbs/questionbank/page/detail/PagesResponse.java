@@ -97,7 +97,8 @@ public record PagesResponse(
       String batchLabel,
       Integer batchWidth,
       String componentBehavior,
-      String componentName) {
+      String componentName,
+      String classCode) {
   }
 
 

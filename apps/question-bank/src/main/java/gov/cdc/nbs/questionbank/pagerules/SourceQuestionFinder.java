@@ -13,6 +13,7 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
 
 @Component
 public class SourceQuestionFinder {
@@ -27,10 +28,24 @@ public class SourceQuestionFinder {
         : filterOtherQuestions(id, request);
   }
 
+  private List<Long> currentTargetQuestions(SourceQuestionRequest request) {
+    List<Long> result = new ArrayList<>();
+
+    if (request.targetQuestions() != null) {
+      for (PagesQuestion question : request.targetQuestions()) {
+        result.add(question.id());
+      }
+    }
+
+    return result;
+  }
+
   public PagesResponse filterOtherQuestions(Long id, SourceQuestionRequest request) {
     Optional<PagesResponse> page = pageResolver.resolve(id);
 
     PagesResponse result = null;
+
+    List<Long> selectedTargetIds = currentTargetQuestions(request);
 
     List<PagesTab> resultTabs = new ArrayList<>();
 
@@ -44,8 +59,16 @@ public class SourceQuestionFinder {
           Collection<PagesQuestion> questionsResult = new ArrayList<>();
           for (PagesQuestion question : subsection.questions()) {
             if (question.dataType() != null) {
-              if (question.dataType().equals("CODED")) {
-                questionsResult.add(question);
+              if (question.dataType().equals("CODED") && !question.isStandardNnd()
+                  && question.componentBehavior().contains("_data") && (question.question() == "INV169"
+                      || (question.classCode().toUpperCase().equals("CODE_VALUE_GENERAL")))) {
+                if (request.targetQuestions() != null) {
+                  if (!selectedTargetIds.contains(question.id())) {
+                    questionsResult.add(question);
+                  }
+                } else {
+                  questionsResult.add(question);
+                }
               }
             }
           }
@@ -91,6 +114,8 @@ public class SourceQuestionFinder {
 
     List<PagesTab> resultTabs = new ArrayList<>();
 
+    List<Long> selectedTargetIds = currentTargetQuestions(request);
+
     for (PagesTab tab : page.get().tabs()) {
       List<PagesSection> resultSections = new ArrayList<>();
       for (PagesSection section : tab.sections()) {
@@ -101,8 +126,16 @@ public class SourceQuestionFinder {
           Collection<PagesQuestion> questionsResult = new ArrayList<>();
           for (PagesQuestion question : subsection.questions()) {
             if (question.dataType() != null) {
-              if (question.dataType().equals("DATE") || question.dataType().equals("DATETIME")) {
-                questionsResult.add(question);
+              if ((question.dataType().equals("DATE")
+                  || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
+                  && question.componentBehavior().contains("_data")) {
+                if (request.targetQuestions() != null) {
+                  if (!selectedTargetIds.contains(question.id())) {
+                    questionsResult.add(question);
+                  }
+                } else {
+                  questionsResult.add(question);
+                }
               }
             }
           }

@@ -2,8 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { PagesQuestion } from './PagesQuestion';
+
 export type SourceQuestionRequest = {
     ruleFunction: SourceQuestionRequest.ruleFunction;
+    targetQuestions?: Array<PagesQuestion>;
 };
 
 export namespace SourceQuestionRequest {
