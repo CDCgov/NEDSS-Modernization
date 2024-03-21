@@ -1,4 +1,4 @@
-import { CreateTabRequest } from 'apps/page-builder/generated';
+import { CreateTabRequest, UpdateTabRequest } from 'apps/page-builder/generated';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
@@ -8,7 +8,7 @@ import styles from './addedittab.module.scss';
 type TabEntry = { name: string | undefined; visible: boolean; order: number };
 
 export const AddEditTab = () => {
-    const { control } = useFormContext<CreateTabRequest>();
+    const { control } = useFormContext<CreateTabRequest | UpdateTabRequest>();
 
     return (
         <div className={styles.addEditTab}>

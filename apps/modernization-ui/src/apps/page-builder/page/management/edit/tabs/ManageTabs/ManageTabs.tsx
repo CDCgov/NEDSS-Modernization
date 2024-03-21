@@ -7,8 +7,8 @@ import { Heading } from 'components/heading';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import './ManageTabModal.scss';
-import { ManageTabsHeader } from './ManageTabsHeader';
-import { ReorderableTabs } from './ReorderableTabs';
+import { ManageTabsHeader } from './header/ManageTabsHeader';
+import { ReorderableTabs } from '../ReorderableTabs/ReorderableTabs';
 import styles from './manageTabs.module.scss';
 
 type Props = {
