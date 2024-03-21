@@ -39,7 +39,7 @@ public class PatientProfileAddInvestigationSteps {
   Active<MockHttpServletResponse> activeResponse;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before

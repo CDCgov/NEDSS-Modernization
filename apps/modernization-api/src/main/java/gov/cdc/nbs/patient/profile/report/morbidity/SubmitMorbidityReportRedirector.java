@@ -22,63 +22,61 @@ import java.util.List;
 @RestController
 class SubmitMorbidityReportRedirector {
 
-    private static final String SUBMIT_AND_CREATE_INVESTIGATION = "SubmitAndCreateInvestigation";
-    private static final String LOCATION = "/AddObservationMorb2.do";
+  private static final String SUBMIT_AND_CREATE_INVESTIGATION = "SubmitAndCreateInvestigation";
+  private static final String LOCATION = "/AddObservationMorb2.do";
 
-    private final RestTemplate template;
-    private final ModernizedPatientProfileRedirectResolver resolver;
+  private final RestTemplate template;
+  private final ModernizedPatientProfileRedirectResolver resolver;
 
-    SubmitMorbidityReportRedirector(
-        @Qualifier("classic") final RestTemplate template,
-        final ModernizedPatientProfileRedirectResolver resolver) {
-        this.template = template;
-        this.resolver = resolver;
+  SubmitMorbidityReportRedirector(
+      @Qualifier("classicTemplate") final RestTemplate template,
+      final ModernizedPatientProfileRedirectResolver resolver) {
+    this.template = template;
+    this.resolver = resolver;
+  }
+
+  @PostMapping(
+      path = "/nbs/redirect/patient/report/morbidity/submit",
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  ResponseEntity<Void> submitted(
+      final HttpServletRequest request,
+      @RequestParam final MultiValueMap<String, String> data) {
+
+    if (shouldRedirectToClassic(data)) {
+      return redirectToClassic();
     }
 
-    @PostMapping(
-        path = "/nbs/redirect/patient/report/morbidity/submit",
-        consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-    )
-    ResponseEntity<Void> submitted(
-        final HttpServletRequest request,
-        @RequestParam final MultiValueMap<String, String> data
-    ) {
+    createMorbidityReport(data);
 
-        if (shouldRedirectToClassic(data)) {
-            return redirectToClassic();
-        }
+    return resolver.fromReturnPatient(request);
+  }
 
-        createMorbidityReport(data);
+  private void createMorbidityReport(final MultiValueMap<String, String> data) {
+    RequestEntity<MultiValueMap<String, String>> request = RequestEntity
+        .post(LOCATION)
+        .contentType(MediaType.MULTIPART_FORM_DATA)
+        .body(data);
 
-        return resolver.fromReturnPatient(request);
-    }
+    this.template.exchange(request, Void.class);
+  }
 
-    private void createMorbidityReport(final MultiValueMap<String, String> data) {
-        RequestEntity<MultiValueMap<String, String>> request = RequestEntity
-            .post(LOCATION)
-            .contentType(MediaType.MULTIPART_FORM_DATA)
-            .body(data);
+  private boolean shouldRedirectToClassic(final MultiValueMap<String, String> data) {
+    List<String> actions = data.get("ContextAction");
 
-        this.template.exchange(request, Void.class);
-    }
+    return actions != null && actions.contains(SUBMIT_AND_CREATE_INVESTIGATION);
 
-    private boolean shouldRedirectToClassic(final MultiValueMap<String, String> data) {
-        List<String> actions = data.get("ContextAction");
+  }
 
-        return actions != null && actions.contains(SUBMIT_AND_CREATE_INVESTIGATION);
-
-    }
-
-    private ResponseEntity<Void> redirectToClassic() {
-        //  The user chose to Submit the Morbidity Report and then Create an Investigation.  This does not navigate
-        //  back to the Patient Profile so the request can be redirected back to classic.
-        URI location = UriComponentsBuilder.fromPath("/nbs")
-            .path(LOCATION)
-            .queryParam("ContextAction", SUBMIT_AND_CREATE_INVESTIGATION)
-            .build()
-            .toUri();
-        return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
-            .location(location)
-            .build();
-    }
+  private ResponseEntity<Void> redirectToClassic() {
+    //  The user chose to Submit the Morbidity Report and then Create an Investigation.  This does not navigate
+    //  back to the Patient Profile so the request can be redirected back to classic.
+    URI location = UriComponentsBuilder.fromPath("/nbs")
+        .path(LOCATION)
+        .queryParam("ContextAction", SUBMIT_AND_CREATE_INVESTIGATION)
+        .build()
+        .toUri();
+    return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
+        .location(location)
+        .build();
+  }
 }

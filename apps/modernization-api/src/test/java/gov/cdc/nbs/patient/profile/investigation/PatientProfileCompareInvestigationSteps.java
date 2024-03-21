@@ -46,7 +46,7 @@ public class PatientProfileCompareInvestigationSteps {
   Active<MockHttpServletResponse> activeResponse;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before

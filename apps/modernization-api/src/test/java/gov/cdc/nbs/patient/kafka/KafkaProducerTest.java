@@ -28,10 +28,6 @@ class KafkaProducerTest {
   @InjectMocks
   private KafkaProducer producer;
 
-  public KafkaProducerTest() {
-    producer = new KafkaProducer();
-  }
-
   @Test
   void testPatientSearchEvent() {
     var message = new PatientRequest.Delete("Request-ID", 1L, 2L);

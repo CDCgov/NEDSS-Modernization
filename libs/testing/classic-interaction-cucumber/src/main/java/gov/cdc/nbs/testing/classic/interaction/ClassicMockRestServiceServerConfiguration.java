@@ -13,8 +13,8 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 class ClassicMockRestServiceServerConfiguration {
 
-  @Bean(name = "classic")
-  MockRestServiceServer classic(@Qualifier("classic") final RestTemplate template) {
+  @Bean(name = "classicRestService")
+  MockRestServiceServer classic(@Qualifier("classicTemplate") final RestTemplate template) {
     return MockRestServiceServer.bindTo(template)
         .build();
   }

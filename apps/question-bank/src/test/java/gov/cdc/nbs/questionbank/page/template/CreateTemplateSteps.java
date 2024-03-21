@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.client.response.DefaultResponseCreator;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.HashMap;
@@ -38,7 +37,7 @@ public class CreateTemplateSteps {
   CreateTemplateRequester requester;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
 

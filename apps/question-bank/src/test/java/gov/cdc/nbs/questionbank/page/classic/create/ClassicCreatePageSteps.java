@@ -28,7 +28,7 @@ public class ClassicCreatePageSteps {
 
   public ClassicCreatePageSteps(
       @Value("${nbs.wildfly.url:http://wildfly:7001}") String classicUrl,
-      @Qualifier("classic") final MockRestServiceServer server,
+      @Qualifier("classicRestService") final MockRestServiceServer server,
       final MockMvc mvc,
       final Authenticated authenticated) {
     this.classicUrl = classicUrl;

@@ -9,8 +9,8 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 class ClassicRestTemplateConfiguration {
 
-  @Bean(name = "classic")
-  RestTemplate classic(
+  @Bean(name = "classicTemplate")
+  RestTemplate classicTemplate(
       final ClassicPathResolver resolver,
       final ClassicOutgoingRequestInterceptor interceptor) throws MalformedURLException {
 

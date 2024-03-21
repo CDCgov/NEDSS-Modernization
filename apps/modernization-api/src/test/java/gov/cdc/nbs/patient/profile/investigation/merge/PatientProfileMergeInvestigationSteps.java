@@ -40,7 +40,7 @@ public class PatientProfileMergeInvestigationSteps {
   Authenticated authenticated;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before
@@ -57,10 +57,7 @@ public class PatientProfileMergeInvestigationSteps {
             content().formDataContains(
                 Map.of(
                     "ContextAction", "Submit",
-                    "method", "mergeSubmit"
-                )
-            )
-        )
+                    "method", "mergeSubmit")))
         .andRespond(withSuccess());
 
     long patient = activePatient.active().id();
@@ -71,9 +68,7 @@ public class PatientProfileMergeInvestigationSteps {
                 .param("ContextAction", "Submit")
                 .param("method", "mergeSubmit")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
-        )
-    );
+                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))));
 
   }
 
