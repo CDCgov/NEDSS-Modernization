@@ -1,6 +1,6 @@
 import { FeatureGuard, FeatureLayout } from 'feature';
 import { PageProvider } from 'page';
-import { Navigate, Outlet, RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 import { PageLibrary } from './page/library/PageLibrary';
 import { Edit } from './page/management/edit/Edit';
 import { PreviewPage } from './page/management/preview';
@@ -14,11 +14,6 @@ import { ViewBusinessRule } from './pages/BusinessRulesLibrary/ViewBusinessRule/
 const routing: RouteObject[] = [
     {
         path: '/page-builder',
-        element: (
-            <FeatureGuard guard={(features) => features.pageBuilder.enabled}>
-                <Outlet />
-            </FeatureGuard>
-        ),
         children: [
             {
                 index: true,
