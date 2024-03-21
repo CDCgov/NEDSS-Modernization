@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import styles from './SourceQuestion.module.scss';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { PagesQuestion, PagesSection, PagesSubSection, PagesTab, Rule } from 'apps/page-builder/generated';
 import { Icon } from 'components/Icon/Icon';
 import { Button, Radio, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetSourceQuestion } from 'apps/page-builder/hooks/api/useGetSourceQuestions';
+import { useParams } from 'react-router-dom';
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
-    const { page } = useGetPageDetails();
+    const { pageId } = useParams();
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
     const [sourceList, setSourceList] = useState<PagesQuestion[]>([]);
@@ -38,8 +38,10 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     };
 
     useEffect(() => {
-        if (ruleFunction && page) {
-            fetch(page.id, { ruleFunction: ruleFunction });
+        if (ruleFunction && pageId) {
+            console.log({ ruleFunction });
+
+            fetch(Number(pageId), { ruleFunction: ruleFunction });
         }
     }, [ruleFunction]);
 

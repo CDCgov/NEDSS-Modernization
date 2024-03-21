@@ -148,13 +148,16 @@ public class TargetQuestionFinder {
 
             if (request.sourceQuestion().blockName() != null) {
               if (question.questionGroupSeq() == request.sourceQuestion().questionGroupSeq()
-                  && question.displayComponent() != 1016L && !targetIdentifiers.contains(question.question())) {
+                  && question.displayComponent() != 1016L) {
                 if (request.targetQuestion() != null) {
-                  if (selectedTargetIds.contains(question.id())
-                      || question.id() != request.sourceQuestion().id()) {
+                  if (selectedTargetIds.contains(question.id())) {
+                    questionsResult.add(question);
+                  } else if (question.id() != request.sourceQuestion().id()
+                      && !targetIdentifiers.contains(question.question())) {
                     questionsResult.add(question);
                   }
-                } else if (question.id() != request.sourceQuestion().id()) {
+                } else if (question.id() != request.sourceQuestion().id()
+                    && !targetIdentifiers.contains(question.question())) {
                   questionsResult.add(question);
                 }
               }
