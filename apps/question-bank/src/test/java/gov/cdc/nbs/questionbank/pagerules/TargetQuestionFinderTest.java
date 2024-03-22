@@ -362,6 +362,27 @@ class TargetQuestionFinderTest {
   }
 
   @Test
+  void testFilterOtherQuestionsGroupWithSameTarget() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getPageGroup());
+    List<Rule> rules = getRules();
+
+    when(resolver.resolve(pageId)).thenReturn(page);
+    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
+    PagesQuestion sourceQuestion =
+        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 1, "IPO", "test decript",
+            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
+            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
+            "TESTING", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+
+    TargetQuestionRequest request =
+        new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, getSameTargets());
+    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
+    assertNotNull(result);
+  }
+
+  @Test
   void testFilterOtherQuestionsGroupWithSameRules() {
     Long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageGroup());
