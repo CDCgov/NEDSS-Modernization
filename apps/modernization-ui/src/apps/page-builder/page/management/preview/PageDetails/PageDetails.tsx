@@ -24,7 +24,7 @@ export const PageDetails = () => {
     const [pageEvent, setPageEvent] = useState('');
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const navigate = useNavigate();
-    const { alertError, alertSuccess } = useAlert();
+    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
     const { page } = useGetPageDetails();
     const { conditions } = useFindConditionsNotInUse(Number(pageId));
     const isEnabled = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status ?? '');

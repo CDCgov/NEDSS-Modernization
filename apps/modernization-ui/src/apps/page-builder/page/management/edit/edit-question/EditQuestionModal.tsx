@@ -55,7 +55,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
     const { page } = usePageManagement();
     const { response: editableQuestion, fetch } = useFetchEditableQuestion();
     const form = useForm<EditPageQuestionForm>({ mode: 'onBlur' });
-    const { alertError, alertSuccess } = useAlert();
+    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
     const { isLoading, response, error, update } = useUpdatePageQuestion();
     const { isDirty, isValid } = useFormState(form);
 

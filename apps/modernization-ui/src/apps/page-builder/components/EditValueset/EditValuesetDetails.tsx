@@ -16,7 +16,7 @@ type Props = {
     onValuesetUpdated: () => void;
 };
 export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpdated }: Props) => {
-    const { alertError, alertSuccess } = useAlert();
+    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
     const { response, error, update } = useUpdateValueset();
 
     const form = useForm<CreateValuesetRequest>({

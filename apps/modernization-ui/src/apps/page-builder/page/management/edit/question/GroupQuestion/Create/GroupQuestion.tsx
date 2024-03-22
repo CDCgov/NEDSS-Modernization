@@ -6,10 +6,11 @@ import { PagesSubSection } from 'apps/page-builder/generated';
 import { GroupRequest, useGroupSubsection } from 'apps/page-builder/hooks/api/useGroupSubsection';
 import { Spinner } from 'components/Spinner';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { RepeatingBlock } from '../RepeatingBlock';
 import { SubsectionDetails } from '../SubsectionDetails';
 import styles from './group-question.module.scss';
+import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 
 type Props = {
     page: number;
@@ -37,6 +38,8 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
             repeatingNbr: 0
         }
     });
+
+    const batches = useWatch({ control: form.control, name: 'batches' });
 
     const handleCancel = () => {
         form.reset();
@@ -73,6 +76,9 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 </div>
             )}
             <CloseableHeader title="Edit subsection" onClose={handleCancel} />
+            {batches.length > 20 && (
+                <AlertBanner type="error">Cannot group a subsection with more than 20 questions.</AlertBanner>
+            )}
             <div className={styles.content}>
                 <FormProvider {...form}>
                     <SubsectionDetails />
@@ -83,7 +89,10 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 <Button onClick={handleCancel} type="button" outline>
                     Cancel
                 </Button>
-                <Button onClick={handleSubmit} type="button" disabled={!valid || !form.formState.isValid}>
+                <Button
+                    onClick={handleSubmit}
+                    type="button"
+                    disabled={batches.length > 20 || !valid || !form.formState.isValid}>
                     Submit
                 </Button>
             </ButtonBar>

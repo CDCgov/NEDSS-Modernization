@@ -17,7 +17,7 @@ type Props = {
 };
 export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }: Props) => {
     const { response, error, update, isLoading } = useUpdatePageQuestionValueset();
-    const { alertError, alertSuccess } = useAlert();
+    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
     const handleClose = () => {
         modal.current?.toggleModal(undefined, false);
     };

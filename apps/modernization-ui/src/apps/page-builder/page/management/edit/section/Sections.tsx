@@ -11,7 +11,7 @@ import { ConfirmationModal } from '../../../../../../confirmation';
 
 type Props = {
     sections: PagesSection[];
-    onAddQuestion: (subsection: number) => void;
+    onAddQuestion: (subsection: PagesSubSection) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;

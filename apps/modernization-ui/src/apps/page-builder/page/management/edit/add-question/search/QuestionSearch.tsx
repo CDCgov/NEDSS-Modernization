@@ -22,7 +22,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     const [sort, setSort] = useState<AddableQuestionSort | undefined>(undefined);
     const { isLoading, search, response, error } = useFindAddableQuestions();
     const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
-    const { alertError } = useAlert();
+    const { showError: alertError } = useAlert();
 
     useEffect(() => {
         if (page.status === Status.Requested && !isLoading) {

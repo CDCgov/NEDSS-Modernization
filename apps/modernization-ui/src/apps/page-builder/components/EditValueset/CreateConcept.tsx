@@ -17,7 +17,7 @@ type Props = {
     valuesetName: string;
 };
 export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Props) => {
-    const { alertError, alertSuccess } = useAlert();
+    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
     const form = useForm<CreateConceptRequest>({
         mode: 'onBlur',
         defaultValues: { status: CreateConceptRequest.status.ACTIVE, effectiveFromTime: internalizeDate(new Date()) }

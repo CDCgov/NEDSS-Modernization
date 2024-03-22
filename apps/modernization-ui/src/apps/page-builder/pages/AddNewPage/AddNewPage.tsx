@@ -37,7 +37,7 @@ export const AddNewPage = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const { options: mmgs } = useOptions('NBS_MSG_PROFILE');
     const [templates, setTemplates] = useState<Template[]>([]);
-    const { alertError } = useAlert();
+    const { showError: alertError } = useAlert();
     const form = useForm<PageCreateRequest>({
         mode: 'onBlur',
         defaultValues: {

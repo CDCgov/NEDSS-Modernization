@@ -28,7 +28,7 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
         }
     });
     const { isDirty, isValid } = useFormState(form);
-    const { alertError, alertSuccess } = useAlert();
+    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
     const { response, error, update } = useUpdateConcept();
 
     const handleSave = () => {

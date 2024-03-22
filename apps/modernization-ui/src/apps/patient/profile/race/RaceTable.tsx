@@ -49,7 +49,7 @@ type RacesTableProps = {
 };
 
 const RacesTable = ({ patient }: RacesTableProps) => {
-    const { alertSuccess, alertError } = useAlert();
+    const { showSuccess: alertSuccess, showError: alertError } = useAlert();
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);

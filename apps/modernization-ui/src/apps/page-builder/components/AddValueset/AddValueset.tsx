@@ -14,7 +14,7 @@ type Props = {
     onCreated: (valueset: string) => void;
 };
 export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
-    const { alertSuccess, alertError } = useAlert();
+    const { showSuccess: alertSuccess, showError: alertError } = useAlert();
     const form = useForm<CreateValuesetRequest>({ mode: 'onBlur', defaultValues: { type: 'PHIN' } });
 
     const handleCreate = () => {
