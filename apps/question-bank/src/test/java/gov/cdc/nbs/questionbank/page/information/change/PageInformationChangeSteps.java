@@ -9,7 +9,6 @@ import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,8 +22,7 @@ public class PageInformationChangeSteps {
 
   PageInformationChangeSteps(
       final Active<PageIdentifier> page,
-      final PageInformationChangeRequester requester
-  ) {
+      final PageInformationChangeRequester requester) {
     this.page = page;
     this.requester = requester;
     this.request = new Active<>();
@@ -62,17 +60,14 @@ public class PageInformationChangeSteps {
     this.response.active(
         this.requester.request(
             this.page.active().id(),
-            this.request.active()
-        )
-    );
+            this.request.active()));
   }
 
   @Then("the page information cannot be changed because {string}")
   public void the_page_information_cannot_be_changed(final String error) throws Exception {
     this.response.active()
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.message", equalToIgnoringCase(error)))
-    ;
+        .andExpect(jsonPath("$.message", equalToIgnoringCase(error)));
   }
 
 }

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
-import gov.cdc.nbs.event.search.investigation.TestInvestigations;
+import gov.cdc.nbs.event.investigation.TestInvestigations;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;

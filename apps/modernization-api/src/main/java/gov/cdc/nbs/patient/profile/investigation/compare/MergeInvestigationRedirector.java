@@ -18,41 +18,37 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 class MergeInvestigationRedirector {
 
-    private static final String LOCATION = "/PageAction.do";
+  private static final String LOCATION = "/PageAction.do";
 
 
-    private final RestTemplate template;
-    private final ModernizedPatientProfileRedirectResolver resolver;
+  private final RestTemplate template;
+  private final ModernizedPatientProfileRedirectResolver resolver;
 
-    MergeInvestigationRedirector(
-        @Qualifier("classic")
-        final RestTemplate template,
-        final ModernizedPatientProfileRedirectResolver resolver
-    ) {
-        this.template = template;
-        this.resolver = resolver;
-    }
+  MergeInvestigationRedirector(
+      @Qualifier("classicTemplate") final RestTemplate template,
+      final ModernizedPatientProfileRedirectResolver resolver) {
+    this.template = template;
+    this.resolver = resolver;
+  }
 
-    @PostMapping(
-        path = "/nbs/redirect/patient/investigation/merge",
-        consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
-    )
-    ResponseEntity<Void> merge(
-        final HttpServletRequest request,
-        @RequestParam final MultiValueMap<String, String> data
-    ) {
+  @PostMapping(
+      path = "/nbs/redirect/patient/investigation/merge",
+      consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+  ResponseEntity<Void> merge(
+      final HttpServletRequest request,
+      @RequestParam final MultiValueMap<String, String> data) {
 
-        mergeInvestigation(data);
+    mergeInvestigation(data);
 
-        return resolver.fromReturnPatient(request);
-    }
+    return resolver.fromReturnPatient(request);
+  }
 
-    private void mergeInvestigation(final MultiValueMap<String, String> data) {
-        RequestEntity<MultiValueMap<String, String>> request = RequestEntity
-            .post(LOCATION)
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(data);
+  private void mergeInvestigation(final MultiValueMap<String, String> data) {
+    RequestEntity<MultiValueMap<String, String>> request = RequestEntity
+        .post(LOCATION)
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .body(data);
 
-        this.template.exchange(request, Void.class);
-    }
+    this.template.exchange(request, Void.class);
+  }
 }

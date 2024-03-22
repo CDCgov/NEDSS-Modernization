@@ -13,10 +13,9 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 class ClassicMockRestServiceServerConfiguration {
 
-    @Bean
-    @Qualifier("classic")
-    MockRestServiceServer classicMockRestServiceServer(@Qualifier("classic") final RestTemplate template) {
-        return MockRestServiceServer.bindTo(template)
-            .build();
-    }
+  @Bean(name = "classicRestService")
+  MockRestServiceServer classic(@Qualifier("classicTemplate") final RestTemplate template) {
+    return MockRestServiceServer.bindTo(template)
+        .build();
+  }
 }

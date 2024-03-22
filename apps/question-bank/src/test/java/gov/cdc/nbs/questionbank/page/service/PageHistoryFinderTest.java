@@ -47,6 +47,7 @@ class PageHistoryFinderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getPageHistory_validTemplateName_returnListOfPageHistory() {
     Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Arrays.asList(
@@ -62,6 +63,7 @@ class PageHistoryFinderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getPageHistory_validTemplateName_queryLabelNames() {
     Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Arrays.asList(
@@ -81,6 +83,7 @@ class PageHistoryFinderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getPageHistory_invalidTemplateName_returnEmptyList() {
     Pageable pageable = getPageable();
     List<PageHistory> expectedPageHistory = Collections.EMPTY_LIST;
@@ -106,8 +109,7 @@ class PageHistoryFinderTest {
           resultSet.getString("publishVersionNbr"),
           resultSet.getString("lastUpdatedDate"),
           resultSet.getString("lastUpdatedBy"),
-          resultSet.getString("notes")
-      );
+          resultSet.getString("notes"));
     };
     PageHistory pageHistory = pageHistoryRowMapper.mapRow(rs, 1);
     assertEquals("1.0", pageHistory.publishVersionNbr());
@@ -118,6 +120,7 @@ class PageHistoryFinderTest {
 
 
   @Test
+  @SuppressWarnings("unchecked")
   void getPageHistory_runtimeException_returnRuntimeExceptionWithMsg() {
     Pageable pageable = getPageable();
     when(jdbcTemplate.query(anyString(), (PreparedStatementSetter) any(), any(RowMapper.class)))
@@ -128,6 +131,7 @@ class PageHistoryFinderTest {
 
 
   @Test
+  @SuppressWarnings("unchecked")
   void testGetPageHistoryQueryAndMapping() {
     Pageable pageable = getPageable();
     Long pageId = 1L;

@@ -35,6 +35,7 @@ class PageRuleFinderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getRule_validRuleId_returnRule() {
     Long ruleId = 123l;
     Rule expectedResponse = getRuleResponse();
@@ -46,6 +47,7 @@ class PageRuleFinderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getAllRules_withoutPageable() {
     Long pageId = 100L;
     Rule expectedResponse = getRuleResponse();
@@ -58,6 +60,7 @@ class PageRuleFinderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getAllRules_validPageId_returnAllRules() {
     Long pageId = 100l;
     Rule expectedResponse = getRuleResponse();
@@ -73,6 +76,7 @@ class PageRuleFinderTest {
   }
 
   @ParameterizedTest
+  @SuppressWarnings("unchecked")
   @ValueSource(strings = {"sourcefields", "function", "values", "logic", "id", "random", "add_time"})
   void getSearchRules_validSearchRequest_returnSearchRules(String value) {
     Long pageId = 100l;

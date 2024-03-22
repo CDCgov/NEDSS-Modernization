@@ -1,9 +1,7 @@
 package gov.cdc.nbs.event.report.lab.test;
 
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
-import gov.cdc.nbs.support.organization.OrganizationIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
-import gov.cdc.nbs.testing.support.Available;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -73,8 +71,7 @@ public class CodedResultedTestMother {
 
   CodedResultedTestMother(
       final SequentialIdentityGenerator idGenerator,
-      final NamedParameterJdbcTemplate template,
-      final Available<OrganizationIdentifier> available
+      final NamedParameterJdbcTemplate template
   ) {
     this.idGenerator = idGenerator;
     this.template = template;

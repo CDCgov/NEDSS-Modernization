@@ -1,61 +1,62 @@
 package gov.cdc.nbs.questionbank.condition;
 
+import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionBadRequest;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionInternalServerError;
-import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
+import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
 
 @Service
-@RequiredArgsConstructor
 public class ConditionStatus {
-    @Autowired
-    private ConditionCodeRepository conditionCodeRepository;
 
-    @Autowired
-    private LdfPageSetRepository ldfPageSetRepository;
+  private final ConditionCodeRepository conditionCodeRepository;
+  private final LdfPageSetRepository ldfPageSetRepository;
 
-    public ConditionStatusResponse activateCondition(String id) {
-        ConditionStatusResponse response = new ConditionStatusResponse();
-        if (id == null) {
-            throw new ConditionBadRequest(null);
-        }
-        try {
-            int result = conditionCodeRepository.activateCondition(id);
-            response.setId(id);
-            if (result == 1) {
-                response.setStatusCd('A');
-            } else {
-                throw new ConditionInternalServerError(id);
-            }
-        } catch (Exception e) {
-            throw new ConditionInternalServerError(id);
-        }
-        ldfPageSetRepository.updateStatusBasedOnConditionCode();
-        return response;
+  public ConditionStatus(
+      final ConditionCodeRepository conditionCodeRepository,
+      final LdfPageSetRepository ldfPageSetRepository) {
+    this.conditionCodeRepository = conditionCodeRepository;
+    this.ldfPageSetRepository = ldfPageSetRepository;
+  }
+
+  public ConditionStatusResponse activateCondition(String id) {
+    ConditionStatusResponse response = new ConditionStatusResponse();
+    if (id == null) {
+      throw new ConditionBadRequest(null);
     }
-
-    public ConditionStatusResponse inactivateCondition(String id) {
-        ConditionStatusResponse response = new ConditionStatusResponse();
-        if (id == null) {
-            throw new ConditionInternalServerError(null);
-        }
-        try {
-            int result = conditionCodeRepository.inactivateCondition(id);
-            response.setId(id);
-            if (result == 1) {
-                response.setStatusCd('I');
-            } else {
-                throw new ConditionInternalServerError(id);
-            }
-        } catch (Exception e) {
-            throw new ConditionInternalServerError(id);
-        }
-        ldfPageSetRepository.updateStatusBasedOnConditionCode();
-        return response;
+    try {
+      int result = conditionCodeRepository.activateCondition(id);
+      response.setId(id);
+      if (result == 1) {
+        response.setStatusCd('A');
+      } else {
+        throw new ConditionInternalServerError(id);
+      }
+    } catch (Exception e) {
+      throw new ConditionInternalServerError(id);
     }
+    ldfPageSetRepository.updateStatusBasedOnConditionCode();
+    return response;
+  }
+
+  public ConditionStatusResponse inactivateCondition(String id) {
+    ConditionStatusResponse response = new ConditionStatusResponse();
+    if (id == null) {
+      throw new ConditionInternalServerError(null);
+    }
+    try {
+      int result = conditionCodeRepository.inactivateCondition(id);
+      response.setId(id);
+      if (result == 1) {
+        response.setStatusCd('I');
+      } else {
+        throw new ConditionInternalServerError(id);
+      }
+    } catch (Exception e) {
+      throw new ConditionInternalServerError(id);
+    }
+    ldfPageSetRepository.updateStatusBasedOnConditionCode();
+    return response;
+  }
 }

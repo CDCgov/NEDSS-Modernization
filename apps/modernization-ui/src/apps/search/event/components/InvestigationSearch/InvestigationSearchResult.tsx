@@ -1,11 +1,11 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Investigation, PersonParticipation } from 'generated/graphql/schema';
+import { Investigation, InvestigationPersonParticipation } from 'generated/graphql/schema';
 import { NoData } from 'components/NoData';
 import { ClassicLink } from 'classic';
 import { PatientDetails } from 'apps/search/event/components/PatientDetails';
 import { internalizeDate } from 'date';
 
-const getPatient = (investigation: Investigation): PersonParticipation | undefined | null => {
+const getPatient = (investigation: Investigation): InvestigationPersonParticipation | undefined | null => {
     return investigation.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
 };
 

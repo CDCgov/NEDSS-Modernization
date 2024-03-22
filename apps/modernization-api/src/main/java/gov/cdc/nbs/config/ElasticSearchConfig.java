@@ -19,32 +19,33 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("deprecation")
 public class ElasticSearchConfig {
 
-    @Value("${nbs.elasticsearch.url:http://localhost:9200}")
-    private String elasticSearchUrl;
+  @SuppressWarnings("squid:S6857") // False positive due to '//', this is not malformed
+  @Value("${nbs.elasticsearch.url:http://localhost:9200}")
+  private String elasticSearchUrl;
 
-    /**
-     * RestHighLevelClient is deprecated but no viable alternatives exist for spring-data-elasticsearch until Spring
-     * Boot 3.0.0 due to Jakarta EE 9 APIs.
-     *
-     * Links: https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#preface.versions
-     * https://github.com/spring-projects/spring-boot/issues/28598
-     *
-     * @throws MalformedURLException
-     */
-    @Bean
-    @SuppressWarnings("squid:S2095") // Sonar false positive - resource should be closed
-    public RestHighLevelClient client() throws MalformedURLException {
-        URL url = new URL(elasticSearchUrl);
-        log.info("Connecting to Elasticsearch with url: " + url);
-        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(url.getHost() + ":" + url.getPort())
-                .build();
-        return RestClients.create(clientConfiguration).rest();
-    }
+  /**
+   * RestHighLevelClient is deprecated but no viable alternatives exist for spring-data-elasticsearch until Spring Boot
+   * 3.0.0 due to Jakarta EE 9 APIs.
+   *
+   * Links: https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/#preface.versions
+   * https://github.com/spring-projects/spring-boot/issues/28598
+   *
+   * @throws MalformedURLException
+   */
+  @Bean
+  @SuppressWarnings("squid:S2095") // Sonar false positive - resource should be closed
+  public RestHighLevelClient client() throws MalformedURLException {
+    URL url = new URL(elasticSearchUrl);
+    log.info("Connecting to Elasticsearch with url: " + url);
+    ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+        .connectedTo(url.getHost() + ":" + url.getPort())
+        .build();
+    return RestClients.create(clientConfiguration).rest();
+  }
 
-    @Bean
-    public ElasticsearchOperations elasticsearchTemplate() throws MalformedURLException {
-        return new ElasticsearchRestTemplate(client());
-    }
+  @Bean
+  public ElasticsearchOperations elasticsearchTemplate() throws MalformedURLException {
+    return new ElasticsearchRestTemplate(client());
+  }
 
 }

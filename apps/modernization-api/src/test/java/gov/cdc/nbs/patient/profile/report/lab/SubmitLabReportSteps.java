@@ -40,7 +40,7 @@ public class SubmitLabReportSteps {
   Active<ResultActions> response;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before
@@ -57,12 +57,8 @@ public class SubmitLabReportSteps {
             content().formDataContains(
                 Map.of(
                     "ContextAction", "Submit",
-                    "other-data", "value"
-                )
-            )
-        )
-        .andRespond(withSuccess()
-        );
+                    "other-data", "value")))
+        .andRespond(withSuccess());
 
     long patient = patients.one();
 
@@ -75,9 +71,7 @@ public class SubmitLabReportSteps {
                 .param("other-data", "value")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .cookie(session.asCookie())
-                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
-        )
-    );
+                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))));
   }
 
   @Then("the lab report is submitted to Classic NBS")

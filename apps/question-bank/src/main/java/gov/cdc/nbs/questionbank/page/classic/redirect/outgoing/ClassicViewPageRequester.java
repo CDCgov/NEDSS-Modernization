@@ -13,7 +13,7 @@ public class ClassicViewPageRequester {
   private final RestTemplate template;
 
   public ClassicViewPageRequester(
-      @Qualifier("classic") final RestTemplate template) {
+      @Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
