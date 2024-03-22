@@ -16,7 +16,7 @@ type Props = {
     onValuesetUpdated: () => void;
 };
 export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpdated }: Props) => {
-    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const { response, error, update } = useUpdateValueset();
 
     const form = useForm<CreateValuesetRequest>({
@@ -35,10 +35,10 @@ export const EditValuesetDetails = ({ valueset, onClose, onCancel, onValuesetUpd
 
     useEffect(() => {
         if (response) {
-            alertSuccess({ message: 'Successfully updated value set' });
+            showSuccess({ message: 'Successfully updated value set' });
             onValuesetUpdated();
         } else if (error) {
-            alertError({ message: `Failed to update value set: ${valueset.name}` });
+            showError({ message: `Failed to update value set: ${valueset.name}` });
         }
     }, [response, error]);
 

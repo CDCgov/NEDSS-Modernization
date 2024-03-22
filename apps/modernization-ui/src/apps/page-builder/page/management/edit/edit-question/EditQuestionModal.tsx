@@ -55,7 +55,7 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
     const { page } = usePageManagement();
     const { response: editableQuestion, fetch } = useFetchEditableQuestion();
     const form = useForm<EditPageQuestionForm>({ mode: 'onBlur' });
-    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const { isLoading, response, error, update } = useUpdatePageQuestion();
     const { isDirty, isValid } = useFormState(form);
 
@@ -88,10 +88,10 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
 
     useEffect(() => {
         if (response) {
-            alertSuccess({ message: 'Successfully updated question' });
+            showSuccess({ message: 'Successfully updated question' });
             onUpdated();
         } else if (error) {
-            alertError({ message: 'Failed to update question' });
+            showError({ message: 'Failed to update question' });
         }
     }, [error, response]);
 

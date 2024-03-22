@@ -17,7 +17,7 @@ type Props = {
     valuesetName: string;
 };
 export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Props) => {
-    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const form = useForm<CreateConceptRequest>({
         mode: 'onBlur',
         defaultValues: { status: CreateConceptRequest.status.ACTIVE, effectiveFromTime: internalizeDate(new Date()) }
@@ -33,10 +33,10 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
             codeSetNm: valuesetName
         })
             .then(() => {
-                alertSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
+                showSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
                 onCreated();
             })
-            .catch(() => alertError({ message: 'Failed to create concept' }));
+            .catch(() => showError({ message: 'Failed to create concept' }));
     };
     return (
         <>

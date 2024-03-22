@@ -37,7 +37,7 @@ export const AddNewPage = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const { options: mmgs } = useOptions('NBS_MSG_PROFILE');
     const [templates, setTemplates] = useState<Template[]>([]);
-    const { showError: alertError } = useAlert();
+    const { showError } = useAlert();
     const form = useForm<PageCreateRequest>({
         mode: 'onBlur',
         defaultValues: {
@@ -85,7 +85,7 @@ export const AddNewPage = () => {
                 }
             })
             .catch((error) => {
-                alertError({ message: error.body.message || 'Failed to create page' });
+                showError({ message: error.body.message || 'Failed to create page' });
             });
     });
 

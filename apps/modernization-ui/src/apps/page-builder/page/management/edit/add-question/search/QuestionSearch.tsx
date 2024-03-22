@@ -22,7 +22,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
     const [sort, setSort] = useState<AddableQuestionSort | undefined>(undefined);
     const { isLoading, search, response, error } = useFindAddableQuestions();
     const [selectedQuestions, setSelectedQuestions] = useState<number[]>([]);
-    const { showError: alertError } = useAlert();
+    const { showError } = useAlert();
 
     useEffect(() => {
         if (page.status === Status.Requested && !isLoading) {
@@ -50,7 +50,7 @@ export const QuestionSearch = ({ pageId, onCreateNew, onCancel, onAccept }: Prop
             const currentPage = response.number ? response.number + 1 : 1;
             ready(response.totalElements ?? 0, currentPage);
         } else if (error) {
-            alertError({ message: 'Failed to retrieve questions' });
+            showError({ message: 'Failed to retrieve questions' });
         }
     }, [response, error]);
 

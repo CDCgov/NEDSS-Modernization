@@ -17,7 +17,7 @@ type Props = {
 };
 export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }: Props) => {
     const { response, error, update, isLoading } = useUpdatePageQuestionValueset();
-    const { showError: alertError, showSuccess: alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const handleClose = () => {
         modal.current?.toggleModal(undefined, false);
     };
@@ -30,11 +30,11 @@ export const ChangeValuesetModal = ({ modal, question, page, onValuesetChanged }
 
     useEffect(() => {
         if (response) {
-            alertSuccess({ message: 'Successfully updated question value set' });
+            showSuccess({ message: 'Successfully updated question value set' });
             onValuesetChanged();
             modal.current?.toggleModal(undefined, false);
         } else if (error) {
-            alertError({ message: 'Failed to update question value set' });
+            showError({ message: 'Failed to update question value set' });
         }
     }, [response, error]);
 
