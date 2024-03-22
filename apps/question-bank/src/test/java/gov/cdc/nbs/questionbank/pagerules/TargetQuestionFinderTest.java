@@ -302,6 +302,108 @@ class TargetQuestionFinderTest {
   }
 
   @Test
+  void testFilterOtherQuestionsGroup() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getPageGroup());
+    List<Rule> rules = getRules();
+
+    when(resolver.resolve(pageId)).thenReturn(page);
+    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
+    PagesQuestion sourceQuestion =
+        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 1, "IPO", "test decript",
+            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
+            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
+            "TESTING", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+
+    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
+    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
+    assertNotNull(result);
+  }
+
+  @Test
+  void testFilterOtherQuestionsGroupWithDiffGroupSource() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getPageGroup());
+    List<Rule> rules = getRules();
+
+    when(resolver.resolve(pageId)).thenReturn(page);
+    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
+    PagesQuestion sourceQuestion =
+        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
+            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
+            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
+            "SOMETHINGELSE", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+
+    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
+    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
+  @Test
+  void testFilterOtherQuestionsGroupWithDiffCompSource() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getPageGroupWithDiffComp());
+    List<Rule> rules = getRules();
+
+    when(resolver.resolve(pageId)).thenReturn(page);
+    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
+    PagesQuestion sourceQuestion =
+        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
+            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
+            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
+            "SOMETHINGELSE", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+
+    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
+    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
+  @Test
+  void testFilterOtherQuestionsGroupWithSameRules() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getPageGroup());
+    List<Rule> rules = getSameRules();
+
+    when(resolver.resolve(pageId)).thenReturn(page);
+    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
+    PagesQuestion sourceQuestion =
+        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 1, "IPO", "test decript",
+            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
+            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
+            "TESTING", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+
+    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
+    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
+  @Test
+  void testFilterOtherQuestionsGroupWithSameSource() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getPageGroup());
+    List<Rule> rules = getSameRules();
+
+    when(resolver.resolve(pageId)).thenReturn(page);
+    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
+    PagesQuestion sourceQuestion =
+        new PagesQuestion(1156355L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 1, "IPO", "test decript",
+            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
+            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
+            "TESTING", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+
+    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
+    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
+
+
+  @Test
   void testFilterOtherQuestionsRequireIf() {
     Long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
@@ -815,6 +917,48 @@ class TargetQuestionFinderTest {
         "The patient's name suffix", false, "CODED", null, false, "The patient's name suffix", true, true, false, null,
         "P_NM_SFX", 1007, null, null, "D_PATIENT", "PATIENT_NAME_SUFFIX", "Patient Name Suffix", "PATIENT_NAME_SUFFIX",
         false, null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+    Collection<PagesQuestion> questions = new ArrayList<>();
+    questions.add(question);
+    PagesSubSection subsection =
+        new PagesSubSection(4L, "test subsection", 3, false, false, false, null, null, questions);
+    Collection<PagesSubSection> subsections = new ArrayList<>();
+    subsections.add(subsection);
+    PagesSection section = new PagesSection(3L, "test", 2, false, subsections);
+    Collection<PagesSection> sections = new ArrayList<>();
+    sections.add(section);
+    PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
+    Collection<PagesTab> tabs = new ArrayList<>();
+    tabs.add(tab);
+    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
+    return page;
+  }
+
+  PagesResponse getPageGroup() {
+    PagesQuestion question = new PagesQuestion(1156355L, false, true, "SYS", "DEM107", "Suffix", 15, 1, "IPO",
+        "The patient's name suffix", false, "CODED", null, false, "The patient's name suffix", true, true, false, null,
+        "P_NM_SFX", 1007, null, null, "D_PATIENT", "PATIENT_NAME_SUFFIX", "Patient Name Suffix", "PATIENT_NAME_SUFFIX",
+        false, "TESTING", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
+    Collection<PagesQuestion> questions = new ArrayList<>();
+    questions.add(question);
+    PagesSubSection subsection =
+        new PagesSubSection(4L, "test subsection", 3, false, false, false, null, null, questions);
+    Collection<PagesSubSection> subsections = new ArrayList<>();
+    subsections.add(subsection);
+    PagesSection section = new PagesSection(3L, "test", 2, false, subsections);
+    Collection<PagesSection> sections = new ArrayList<>();
+    sections.add(section);
+    PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
+    Collection<PagesTab> tabs = new ArrayList<>();
+    tabs.add(tab);
+    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
+    return page;
+  }
+
+  PagesResponse getPageGroupWithDiffComp() {
+    PagesQuestion question = new PagesQuestion(1156355L, false, true, "SYS", "DEM107", "Suffix", 15, 1, "IPO",
+        "The patient's name suffix", false, "CODED", null, false, "The patient's name suffix", true, true, false, null,
+        "P_NM_SFX", 1016, null, null, "D_PATIENT", "PATIENT_NAME_SUFFIX", "Patient Name Suffix", "PATIENT_NAME_SUFFIX",
+        false, "TESTING", 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
     Collection<PagesQuestion> questions = new ArrayList<>();
     questions.add(question);
     PagesSubSection subsection =
