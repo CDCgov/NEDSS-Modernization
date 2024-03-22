@@ -114,7 +114,11 @@ export const SubsectionHeader = ({
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>
-                    <Button type="button" onClick={onDeleteSubsection}>
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            closeThenAct(onDeleteSubsection);
+                        }}>
                         <Icon.Delete size={3} /> Delete subsection
                     </Button>
                 </MoreOptions>
