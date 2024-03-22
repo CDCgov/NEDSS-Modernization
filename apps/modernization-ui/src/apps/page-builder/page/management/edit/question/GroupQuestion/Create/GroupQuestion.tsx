@@ -39,6 +39,21 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
         }
     });
 
+    useEffect(() => {
+        form.reset({
+            name: subsection.name,
+            batches: subsection.questions.map((question) => ({
+                appearsInTable: true,
+                width: 0,
+                label: question.name,
+                id: question.id
+            })),
+            blockName: '',
+            visible: subsection.visible,
+            repeatingNbr: 0
+        });
+    }, [JSON.stringify(subsection)]);
+
     const batches = useWatch({ control: form.control, name: 'batches' });
 
     const handleCancel = () => {
