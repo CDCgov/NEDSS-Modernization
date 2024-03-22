@@ -59,4 +59,8 @@ class InvestigationSearchResultConverter {
         null
     );
   }
+
+  private InvestigationSearchResultConverter() {
+
+  }
 }
