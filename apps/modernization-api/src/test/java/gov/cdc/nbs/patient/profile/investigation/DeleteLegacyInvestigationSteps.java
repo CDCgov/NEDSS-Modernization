@@ -39,7 +39,7 @@ public class DeleteLegacyInvestigationSteps {
   Active<ResultActions> activeResponse;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before
@@ -51,7 +51,7 @@ public class DeleteLegacyInvestigationSteps {
   public void a_legacy_investigation_is_deleted_from_classic_nbs() throws Exception {
 
     server.expect(
-            requestTo(classicUrl + "/nbs/ViewInvestigation1.do?ContextAction=ReturnToFileSummary&delete=true"))
+        requestTo(classicUrl + "/nbs/ViewInvestigation1.do?ContextAction=ReturnToFileSummary&delete=true"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -64,8 +64,7 @@ public class DeleteLegacyInvestigationSteps {
                 .param("delete", "true")
                 .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-        )
-    );
+        ));
   }
 
   @When("a newly created legacy investigation is deleted from Classic NBS")
@@ -85,8 +84,7 @@ public class DeleteLegacyInvestigationSteps {
                     .param("delete", "true")
                     .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-            )
-    );
+            ));
   }
 
   @Then("the legacy investigation delete is submitted to Classic NBS")

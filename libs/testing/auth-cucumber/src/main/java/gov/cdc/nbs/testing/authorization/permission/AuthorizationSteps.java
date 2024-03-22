@@ -1,31 +1,35 @@
 package gov.cdc.nbs.testing.authorization.permission;
 
+import java.util.Objects;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 @SuppressWarnings("java:S100")
 @Transactional
 public class AuthorizationSteps {
 
-  @Autowired
-  Active<ActiveUser> activeUser;
 
-  @Autowired
-  Available<ActiveUser> users;
+  private final Active<ActiveUser> activeUser;
+  private final Available<ActiveUser> users;
+  private final PermissionSetMother setMother;
+  private final AuthorizationRoleMother roleMother;
 
-  @Autowired
-  PermissionSetMother setMother;
 
-  @Autowired
-  AuthorizationRoleMother roleMother;
+  public AuthorizationSteps(
+      final Active<ActiveUser> activeUser,
+      final Available<ActiveUser> users,
+      final PermissionSetMother setMother,
+      final AuthorizationRoleMother roleMother) {
+    this.activeUser = activeUser;
+    this.users = users;
+    this.setMother = setMother;
+    this.roleMother = roleMother;
+  }
 
   @Before
   @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -37,8 +41,7 @@ public class AuthorizationSteps {
   @Given("I can {string} any {string}")
   public void the_active_user_can_operate_on_any_object(
       final String operation,
-      final String object
-  ) {
+      final String object) {
 
     ActiveUser user = activeUser.active();
 
@@ -52,14 +55,12 @@ public class AuthorizationSteps {
   public void the_active_user_can_operate_on_any_object_for_a_program_area_within_all_jurisdictions(
       final String operation,
       final String object,
-      final String programArea
-  ) {
+      final String programArea) {
     the_active_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
         operation,
         object,
         programArea,
-        "all"
-    );
+        "all");
   }
 
   @Given("I can {string} any {string} for {string} within {string}")
@@ -67,8 +68,7 @@ public class AuthorizationSteps {
       final String operation,
       final String object,
       final String programArea,
-      final String jurisdiction
-  ) {
+      final String jurisdiction) {
     ActiveUser user = activeUser.active();
 
     long set = setMother.allow(operation, object);
@@ -79,8 +79,7 @@ public class AuthorizationSteps {
   @Given("I can {string} a shared {string}")
   public void the_active_user_can_operate_on_a_shared_object(
       final String operation,
-      final String object
-  ) {
+      final String object) {
 
     ActiveUser user = activeUser.active();
 
@@ -95,8 +94,7 @@ public class AuthorizationSteps {
       final String operation,
       final String object,
       final String programArea,
-      final String jurisdiction
-  ) {
+      final String jurisdiction) {
     ActiveUser user = activeUser.active();
 
     long set = setMother.allow(operation, object);
@@ -109,15 +107,13 @@ public class AuthorizationSteps {
       final String user,
       final String operation,
       final String object,
-      final String programArea
-  ) {
+      final String programArea) {
     the_user_can_operate_on_any_object_for_a_program_area_within_a_jurisdiction(
         user,
         operation,
         object,
         programArea,
-        "all"
-    );
+        "all");
   }
 
   @Given("the {string} user can {string} any {string} for {string} within {string}")
@@ -126,8 +122,7 @@ public class AuthorizationSteps {
       final String operation,
       final String object,
       final String programArea,
-      final String jurisdiction
-  ) {
+      final String jurisdiction) {
 
     ActiveUser authorizedUser = this.users.all().filter(u -> Objects.equals(user, u.username()))
         .findFirst()

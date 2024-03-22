@@ -44,7 +44,7 @@ public class SubmitMorbidityReportSteps {
   Active<ResultActions> response;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before
@@ -57,7 +57,7 @@ public class SubmitMorbidityReportSteps {
   public void a_morbidity_report_is_submitted_from_classic_nbs() throws Exception {
 
     server.expect(
-            requestTo(classicUrl + "/nbs/AddObservationMorb2.do"))
+        requestTo(classicUrl + "/nbs/AddObservationMorb2.do"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(
             content().multipartDataContains(
@@ -80,8 +80,7 @@ public class SubmitMorbidityReportSteps {
                     .cookie(session.asCookie())
                     .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-            )
-    );
+            ));
   }
 
   @Then("the morbidity report is submitted to Classic NBS")
@@ -106,8 +105,7 @@ public class SubmitMorbidityReportSteps {
                     .cookie(session.asCookie())
                     .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
 
-            )
-    );
+            ));
   }
 
   @Then("I am redirected to Classic NBS to Create an Investigation from the Morbidity Report")

@@ -40,7 +40,7 @@ public class DeleteInvestigationSteps {
   Active<ResultActions> response;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before
@@ -58,10 +58,7 @@ public class DeleteInvestigationSteps {
                 Map.of(
                     "ContextAction", "FileSummary",
                     "method", "deleteSubmit",
-                    "other-data", "value"
-                )
-            )
-        )
+                    "other-data", "value")))
         .andRespond(withSuccess());
 
     long patient = activePatient.active().id();
@@ -73,9 +70,7 @@ public class DeleteInvestigationSteps {
                 .param("method", "deleteSubmit")
                 .param("other-data", "value")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))
-        )
-    );
+                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))));
   }
 
   @Then("the investigation delete is submitted to Classic NBS")
