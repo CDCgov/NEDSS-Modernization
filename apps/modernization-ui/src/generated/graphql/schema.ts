@@ -288,7 +288,7 @@ export type InvestigationPersonParticipation = {
   personCd: Scalars['String']['output'];
   personParentUid?: Maybe<Scalars['Int']['output']>;
   shortId?: Maybe<Scalars['Int']['output']>;
-  typeCd?: Maybe<Scalars['String']['output']>;
+  typeCd: Scalars['String']['output'];
 };
 
 export type InvestigationResults = {
@@ -1925,19 +1925,6 @@ export enum SortDirection {
   Desc = 'DESC'
 }
 
-/**
- * type OrganizationParticipation {
- *   actUid: Int
- *   typeCd: String
- *   entityId: Int
- *   subjectClassCd: String
- *   typeDescTxt: String
- *   participationRecordStatus: String
- *   participationLastChangeTime: DateTime
- *   name: String
- *   organizationLastChangeTime: DateTime
- * }
- */
 export enum SortField {
   BirthTime = 'birthTime',
   LastNm = 'lastNm',
@@ -2395,7 +2382,7 @@ export type FindInvestigationsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
+export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd: string, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
 
 export type FindInvestigationsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
