@@ -211,4 +211,11 @@ public class InvestigationSteps {
             )
         );
   }
+
+  @Given("the investigation is related to the {outbreak} outbreak")
+  public void the_investigation_is_related_to_the_outbreak(final String outbreak) {
+    this.investigation.maybeActive().ifPresent(
+        active -> mother.relatedToOutbreak(active, outbreak)
+    );
+  }
 }

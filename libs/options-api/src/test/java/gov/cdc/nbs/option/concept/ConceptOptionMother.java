@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-class ConceptMother {
+class ConceptOptionMother {
 
   private static final String DELETE_IN = """
       delete
@@ -35,7 +35,7 @@ class ConceptMother {
   private final NamedParameterJdbcTemplate template;
   private final Available<ConceptOption> availalbe;
 
-  ConceptMother(
+  ConceptOptionMother(
       final JdbcTemplate template) {
     this.template = new NamedParameterJdbcTemplate(template);
     this.availalbe = new Available<>();

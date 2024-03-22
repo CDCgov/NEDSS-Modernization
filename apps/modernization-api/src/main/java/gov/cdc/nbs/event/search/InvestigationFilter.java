@@ -167,6 +167,11 @@ public final class InvestigationFilter implements EventFilter {
     this.conditions.add(condition);
   }
 
+  public void withOutbreak(final String outbreak) {
+    this.outbreakNames.add(outbreak);
+  }
+
+
   public void withProgramArea(final String programArea) {
     this.programAreas.add(programArea);
   }

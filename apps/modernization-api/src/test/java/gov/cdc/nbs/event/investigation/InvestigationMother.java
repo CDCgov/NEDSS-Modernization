@@ -279,6 +279,14 @@ public class InvestigationMother {
 
   }
 
+  void relatedToOutbreak(
+      final InvestigationIdentifier identifier,
+      final String outbreak
+  ) {
+    PublicHealthCase investigation = managed(identifier);
+    investigation.outbreak(outbreak);
+  }
+
   void reportedBy(final InvestigationIdentifier identifier, final long organization) {
     PublicHealthCase investigation = managed(identifier);
     Act act = investigation.act();

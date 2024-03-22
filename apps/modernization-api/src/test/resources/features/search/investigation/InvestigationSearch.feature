@@ -36,6 +36,15 @@ Feature: Investigation search
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
 
+  Scenario: I can search for Investigations created on a specific day
+    Given the "investigation-creator" user exists
+    And the investigation was created by investigation-creator on 01/27/2011
+    And the investigation is available for search
+    And I want to find investigations created on 01/27/2011
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
   Scenario: I can search for Investigations updated by a specific user
     Given the "investigation-updater" user exists
     And the investigation was updated by investigation-updater on 02/13/2013
@@ -268,11 +277,19 @@ Feature: Investigation search
     And there is only one investigation search result
 
   Scenario: I can search for Investigations reported by a specific provider
-    Given the patient has a lab report
-    And there is a provider named "Robin" "Buckley"
+    Given there is a provider named "Robin" "Buckley"
     And the investigation was reported by the provider
     And the investigation is available for search
     And I want to find investigations reported by the provider
     When I search for investigations
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
+
+    Scenario: I can search for Investigations related to an outbreak
+      Given "Peanuts at Fratelli's Restaurant" caused an outbreak
+      And the investigation is related to the Peanuts at Fratelli's Restaurant outbreak
+      And the investigation is available for search
+      And I want to find investigations related to the Peanuts at Fratelli's Restaurant outbreak
+      When I search for investigations
+      Then the Investigation search results contain the Investigation
+      And there is only one investigation search result

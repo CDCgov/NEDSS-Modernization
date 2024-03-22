@@ -352,4 +352,10 @@ public class InvestigationSearchCriteriaSteps {
     );
   }
 
+  @Given("I want to find investigations related to the {outbreak} outbreak")
+  public void i_want_to_find_investigations_related_to_the_outbreak(final String outbreak) {
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> criteria.withOutbreak(outbreak)
+    );
+  }
 }
