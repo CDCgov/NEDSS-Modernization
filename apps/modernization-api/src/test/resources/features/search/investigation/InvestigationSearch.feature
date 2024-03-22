@@ -8,6 +8,7 @@ Feature: Investigation search
     And I can "VIEW" any "INVESTIGATION" for "ARBO" within all jurisdictions
     And I have a patient
     And the patient is a subject of an investigation
+    And investigations are available for search
     And I have another patient
     And the patient is a subject of an investigation
 
@@ -64,7 +65,7 @@ Feature: Investigation search
   Scenario: I cannot find Investigations when investigations are not within the Program Area
     Given the investigation is for ARBO within Dekalb County
     And the investigation is available for search
-    And I want to find investigations within the STD Program Area
+    And I want to find investigations within the BMIRD Program Area
     When I search for investigations
     Then there are no investigation search results available
 
@@ -128,28 +129,37 @@ Feature: Investigation search
     And I want to find investigations with a <status> status of <value>
     When I search for investigations
     Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
 
     Examples:
       | status       | value                  |
-      | processing   | UNASSIGNED             |
       | processing   | Awaiting Interview     |
       | processing   | Field Follow-up        |
       | processing   | No Follow-up           |
       | processing   | Open Case              |
       | processing   | Surveillance Follow-up |
-      | notification | UNASSIGNED             |
       | notification | Approved               |
       | notification | Completed              |
       | notification | Message Failed         |
       | notification | Pending Approval       |
       | notification | Rejected               |
-      | case         | UNASSIGNED             |
       | case         | Confirmed              |
       | case         | Not a Case             |
       | case         | Probable               |
       | case         | Suspect                |
       | case         | Unknown                |
 
+  Scenario Outline: I can find an investigation by different status fields
+    Given the investigation is available for search
+    And I want to find investigations with a <status> status of UNASSIGNED
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+
+    Examples:
+      | status       |
+      | processing   |
+      | notification |
+      | case         |
 
   Scenario: I can find investigations started on a specific day
     Given the investigation was started on 08/19/2011
