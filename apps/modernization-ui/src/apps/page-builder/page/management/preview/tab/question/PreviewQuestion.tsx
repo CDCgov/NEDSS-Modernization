@@ -61,8 +61,6 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         defaultValue={''}
                         options={conceptState}
                         data-testid="dropdown-input"
-                        disabled={true}
-                        className={styles.readonlySelectDropdown}
                     />
                 )}
                 {displayComponent === 1001 && <RadioButtons options={conceptState} />}
