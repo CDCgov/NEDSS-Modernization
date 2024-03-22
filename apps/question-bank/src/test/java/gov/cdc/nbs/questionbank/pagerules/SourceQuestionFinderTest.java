@@ -127,6 +127,50 @@ class SourceQuestionFinderTest {
     assertNotNull(result);
   }
 
+  @Test
+  void testFilterDateQuestionsWithDateTime() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getDatePageDateTime());
+    when(resolver.resolve(pageId)).thenReturn(page);
+    SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
+
+    PagesResponse result = sourceQuestionFinder.filterQuestions(pageId, request);
+    assertNotNull(result);
+  }
+
+  @Test
+  void testFilterDateQuestionsWithoutDataType() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getDatePageWithoutDataType());
+    when(resolver.resolve(pageId)).thenReturn(page);
+    SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
+
+    PagesResponse result = sourceQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
+  @Test
+  void testFilterDateQuestionsWithoutStandardNnd() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getDatePageWithoutStandardNnd());
+    when(resolver.resolve(pageId)).thenReturn(page);
+    SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
+
+    PagesResponse result = sourceQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
+  @Test
+  void testFilterDateQuestionWithoutVisible() {
+    Long pageId = 1L;
+    Optional<PagesResponse> page = Optional.of(getDatePageWithoutVisible());
+    when(resolver.resolve(pageId)).thenReturn(page);
+    SourceQuestionRequest request = new SourceQuestionRequest(Rule.RuleFunction.DATE_COMPARE);
+
+    PagesResponse result = sourceQuestionFinder.filterQuestions(pageId, request);
+    assertNull(result);
+  }
+
 
 
   PagesResponse getPage() {
@@ -239,6 +283,97 @@ class SourceQuestionFinderTest {
     PagesQuestion question = new PagesQuestion(1156348L, false, true, "SYS", "NBS104", "Information As of Date", 7, 0,
         "IPO", "As of Date is the last known date for which the information is valid.", false, "DATE", "DATE", false,
         "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
+        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
+        "User entered text, number, or date", null);
+    Collection<PagesQuestion> questions = new ArrayList<>();
+    questions.add(question);
+    PagesSubSection subsection =
+        new PagesSubSection(4L, "test subsection", 3, false, false, false, null, null, questions);
+    Collection<PagesSubSection> subsections = new ArrayList<>();
+    subsections.add(subsection);
+    PagesSection section = new PagesSection(3L, "test", 2, false, subsections);
+    Collection<PagesSection> sections = new ArrayList<>();
+    sections.add(section);
+    PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
+    Collection<PagesTab> tabs = new ArrayList<>();
+    tabs.add(tab);
+    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
+    return page;
+  }
+
+  PagesResponse getDatePageWithoutDataType() {
+    PagesQuestion question = new PagesQuestion(1156348L, false, true, "SYS", "NBS104", "Information As of Date", 7, 0,
+        "IPO", "As of Date is the last known date for which the information is valid.", false, null, "DATE", false,
+        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
+        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
+        "User entered text, number, or date", null);
+    Collection<PagesQuestion> questions = new ArrayList<>();
+    questions.add(question);
+    PagesSubSection subsection =
+        new PagesSubSection(4L, "test subsection", 3, false, false, false, null, null, questions);
+    Collection<PagesSubSection> subsections = new ArrayList<>();
+    subsections.add(subsection);
+    PagesSection section = new PagesSection(3L, "test", 2, false, subsections);
+    Collection<PagesSection> sections = new ArrayList<>();
+    sections.add(section);
+    PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
+    Collection<PagesTab> tabs = new ArrayList<>();
+    tabs.add(tab);
+    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
+    return page;
+  }
+
+  PagesResponse getDatePageDateTime() {
+    PagesQuestion question = new PagesQuestion(1156348L, false, true, "SYS", "NBS104", "Information As of Date", 7, 0,
+        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATETIME", "DATE",
+        false,
+        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
+        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
+        "User entered text, number, or date", null);
+    Collection<PagesQuestion> questions = new ArrayList<>();
+    questions.add(question);
+    PagesSubSection subsection =
+        new PagesSubSection(4L, "test subsection", 3, false, false, false, null, null, questions);
+    Collection<PagesSubSection> subsections = new ArrayList<>();
+    subsections.add(subsection);
+    PagesSection section = new PagesSection(3L, "test", 2, false, subsections);
+    Collection<PagesSection> sections = new ArrayList<>();
+    sections.add(section);
+    PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
+    Collection<PagesTab> tabs = new ArrayList<>();
+    tabs.add(tab);
+    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
+    return page;
+  }
+
+  PagesResponse getDatePageWithoutStandardNnd() {
+    PagesQuestion question = new PagesQuestion(1156348L, true, true, "SYS", "NBS104", "Information As of Date", 7, 0,
+        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATETIME", "DATE",
+        false,
+        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
+        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
+        "User entered text, number, or date", null);
+    Collection<PagesQuestion> questions = new ArrayList<>();
+    questions.add(question);
+    PagesSubSection subsection =
+        new PagesSubSection(4L, "test subsection", 3, false, false, false, null, null, questions);
+    Collection<PagesSubSection> subsections = new ArrayList<>();
+    subsections.add(subsection);
+    PagesSection section = new PagesSection(3L, "test", 2, false, subsections);
+    Collection<PagesSection> sections = new ArrayList<>();
+    sections.add(section);
+    PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
+    Collection<PagesTab> tabs = new ArrayList<>();
+    tabs.add(tab);
+    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
+    return page;
+  }
+
+  PagesResponse getDatePageWithoutVisible() {
+    PagesQuestion question = new PagesQuestion(1156348L, true, true, "SYS", "NBS104", "Information As of Date", 7, 0,
+        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATETIME", "DATE",
+        false,
+        "As of Date is the last known date for which the information is valid.", false, true, true, null, null, 1008,
         null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
         "User entered text, number, or date", null);
     Collection<PagesQuestion> questions = new ArrayList<>();

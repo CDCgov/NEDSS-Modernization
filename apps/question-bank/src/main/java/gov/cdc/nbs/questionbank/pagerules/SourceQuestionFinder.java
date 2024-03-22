@@ -104,9 +104,9 @@ public class SourceQuestionFinder {
 
             Collection<PagesQuestion> questionsResult = new ArrayList<>();
             for (PagesQuestion question : subsection.questions()) {
-              if (question.dataType() != null && question.dataType().equals("DATE")
-                  || question.dataType().equals("DATETIME") && !question.isStandardNnd() && question.visible()
-                      && question.componentBehavior().contains("_data")) {
+              if (question.dataType() != null && (question.dataType().equals("DATE")
+                  || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
+                  && question.componentBehavior().contains("_data")) {
                 questionsResult.add(question);
               }
             }
