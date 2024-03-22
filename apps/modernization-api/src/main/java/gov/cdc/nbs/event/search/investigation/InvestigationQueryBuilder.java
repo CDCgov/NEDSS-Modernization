@@ -323,24 +323,22 @@ public class InvestigationQueryBuilder {
     }
     Collection<SortBuilder<?>> sorts = new ArrayList<>();
     pageable.getSort().stream().forEach(sort -> {
-      switch (sort.getProperty()) {
-        case "lastNm":
-          sorts.add(createNestedSortWithFilter(
-              Investigation.PERSON_PARTICIPATIONS,
-              ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
-              ElasticsearchPersonParticipation.TYPE_CD,
-              SUBJ_OF_PHC,
-              sort.getDirection()));
-          break;
-        case "birthTime":
-          sorts.add(createNestedSortWithFilter(
-              Investigation.PERSON_PARTICIPATIONS,
-              ElasticsearchPersonParticipation.BIRTH_TIME,
-              ElasticsearchPersonParticipation.TYPE_CD,
-              SUBJ_OF_PHC,
-              sort.getDirection()));
-          break;
-        }
+      String property = sort.getProperty();
+      if (property.equals("lastNm")) {
+        sorts.add(createNestedSortWithFilter(
+            Investigation.PERSON_PARTICIPATIONS,
+            ElasticsearchPersonParticipation.LAST_NAME + ".keyword",
+            ElasticsearchPersonParticipation.TYPE_CD,
+            SUBJ_OF_PHC,
+            sort.getDirection()));
+      } else if (property.equals("birthTime")) {
+        sorts.add(createNestedSortWithFilter(
+            Investigation.PERSON_PARTICIPATIONS,
+            ElasticsearchPersonParticipation.BIRTH_TIME,
+            ElasticsearchPersonParticipation.TYPE_CD,
+            SUBJ_OF_PHC,
+            sort.getDirection()));
+      }
     });
     return sorts;
   }
