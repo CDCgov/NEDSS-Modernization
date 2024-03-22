@@ -18,6 +18,9 @@ import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
 public class SourceQuestionFinder {
   private final PagesResolver pageResolver;
 
+  private final String COMPONENT_BEHAVIOR_DATA = "_data";
+
+
   SourceQuestionFinder(final PagesResolver pageResolver) {
     this.pageResolver = pageResolver;
   }
@@ -45,7 +48,8 @@ public class SourceQuestionFinder {
             Collection<PagesQuestion> questionsResult = new ArrayList<>();
             for (PagesQuestion question : subsection.questions()) {
               if (question.dataType() != null && question.dataType().equals("CODED") && !question.isStandardNnd()
-                  && question.componentBehavior().contains("_data") && (question.question().equals("INV169")
+                  && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)
+                  && (question.question().equals("INV169")
                       || (question.classCode().equalsIgnoreCase("CODE_VALUE_GENERAL")))) {
                 questionsResult.add(question);
               }
@@ -56,7 +60,7 @@ public class SourceQuestionFinder {
                 subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
                 subsection.blockName(), questionsResult);
 
-            if (questionsResult.isEmpty()) {
+            if (!questionsResult.isEmpty()) {
               resultSubSections.add(resultSubsection);
             }
           }
@@ -64,7 +68,7 @@ public class SourceQuestionFinder {
           PagesSection resultSection =
               new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
 
-          if (resultSubSections.isEmpty()) {
+          if (!resultSubSections.isEmpty()) {
             resultSections.add(resultSection);
           }
 
@@ -72,12 +76,12 @@ public class SourceQuestionFinder {
 
         PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
 
-        if (resultSections.isEmpty()) {
+        if (!resultSections.isEmpty()) {
           resultTabs.add(resultTab);
         }
       }
 
-      if (resultTabs.isEmpty()) {
+      if (!resultTabs.isEmpty()) {
         result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
             page.get().description(), page.get().root(), resultTabs, page.get().rules());
       }
@@ -106,7 +110,7 @@ public class SourceQuestionFinder {
             for (PagesQuestion question : subsection.questions()) {
               if (question.dataType() != null && (question.dataType().equals("DATE")
                   || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
-                  && question.componentBehavior().contains("_data")) {
+                  && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
                 questionsResult.add(question);
               }
             }
@@ -116,7 +120,7 @@ public class SourceQuestionFinder {
                 subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
                 subsection.blockName(), questionsResult);
 
-            if (questionsResult.isEmpty()) {
+            if (!questionsResult.isEmpty()) {
               resultSubSections.add(resultSubsection);
             }
           }
@@ -124,7 +128,7 @@ public class SourceQuestionFinder {
           PagesSection resultSection =
               new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
 
-          if (resultSubSections.isEmpty()) {
+          if (!resultSubSections.isEmpty()) {
             resultSections.add(resultSection);
           }
 
@@ -132,12 +136,12 @@ public class SourceQuestionFinder {
 
         PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
 
-        if (resultSections.isEmpty()) {
+        if (!resultSections.isEmpty()) {
           resultTabs.add(resultTab);
         }
       }
 
-      if (resultTabs.isEmpty()) {
+      if (!resultTabs.isEmpty()) {
         result = new PagesResponse(page.get().id(), page.get().name(), page.get().status(),
             page.get().description(), page.get().root(), resultTabs, page.get().rules());
       }

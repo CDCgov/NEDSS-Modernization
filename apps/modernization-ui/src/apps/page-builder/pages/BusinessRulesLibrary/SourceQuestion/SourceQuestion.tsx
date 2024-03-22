@@ -5,6 +5,7 @@ import { Icon } from 'components/Icon/Icon';
 import { Button, Radio, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetSourceQuestion } from 'apps/page-builder/hooks/api/useGetSourceQuestions';
 import { useParams } from 'react-router-dom';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
 
 type Props = {
     ruleFunction?: Rule.ruleFunction;
@@ -13,7 +14,7 @@ type Props = {
 };
 
 export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
-    const { pageId } = useParams();
+    const { page } = useGetPageDetails();
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
     const [sourceList, setSourceList] = useState<PagesQuestion[]>([]);
@@ -38,12 +39,11 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     };
 
     useEffect(() => {
-        if (ruleFunction && pageId) {
+        if (ruleFunction && page) {
             console.log({ ruleFunction });
-
-            fetch(Number(pageId), { ruleFunction: ruleFunction });
+            fetch(page.id, { ruleFunction: ruleFunction });
         }
-    }, [ruleFunction]);
+    }, [ruleFunction, page]);
 
     const handleRemove = () => {
         setQuestionSelect(undefined);
