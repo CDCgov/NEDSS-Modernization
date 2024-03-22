@@ -351,12 +351,7 @@ class InvestigationSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field(SearchableInvestigation.PERSON_TYPE)
-                                    .value("ORD")
-                            )
-                        ).filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.PERSON_SUBJECT)
-                                    .value("PSN")
+                                    .value("InvestgrOfPHC")
                             )
                         ).must(
                             must -> must.term(
@@ -380,7 +375,7 @@ class InvestigationSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field(SearchableInvestigation.ORGANIZATION_TYPE)
-                                    .value("AUT")
+                                    .value("OrgAsReporterOfPHC")
                             )
                         ).must(
                             must -> must.term(
@@ -405,11 +400,6 @@ class InvestigationSearchCriteriaFilterResolver {
                             filter -> filter.term(
                                 term -> term.field(SearchableInvestigation.PERSON_TYPE)
                                     .value("PerAsReporterOfPHC")
-                            )
-                        ).filter(
-                            filter -> filter.term(
-                                term -> term.field(SearchableInvestigation.PERSON_SUBJECT)
-                                    .value("PSN")
                             )
                         ).must(
                             must -> must.term(

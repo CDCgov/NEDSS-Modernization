@@ -7,6 +7,7 @@ import gov.cdc.nbs.message.enums.PregnancyStatus;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.ParameterType;
@@ -20,17 +21,20 @@ public class InvestigationSearchCriteriaSteps {
   private final Active<PatientIdentifier> activePatient;
   private final Active<NotificationIdentifier> activeNotification;
   private final Active<InvestigationIdentifier> activeInvestigation;
+  private final Active<ProviderIdentifier> activeProvider;
 
   InvestigationSearchCriteriaSteps(
       final Active<InvestigationFilter> activeCriteria,
       final Active<PatientIdentifier> activePatient,
       final Active<NotificationIdentifier> activeNotification,
-      final Active<InvestigationIdentifier> activeInvestigation
+      final Active<InvestigationIdentifier> activeInvestigation,
+      final Active<ProviderIdentifier> activeProvider
   ) {
     this.activeCriteria = activeCriteria;
     this.activePatient = activePatient;
     this.activeNotification = activeNotification;
     this.activeInvestigation = activeInvestigation;
+    this.activeProvider = activeProvider;
   }
 
   @Given("I want to find investigations created by {user}")
@@ -104,6 +108,20 @@ public class InvestigationSearchCriteriaSteps {
                 on
             )
         )
+    );
+  }
+
+  @Given("I want to find open investigations")
+  public void i_want_to_find_open_investigations() {
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> criteria.setInvestigationStatus(InvestigationFilter.InvestigationStatus.OPEN)
+    );
+  }
+
+  @Given("I want to find closed investigations")
+  public void i_want_to_find_closed_investigations() {
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> criteria.setInvestigationStatus(InvestigationFilter.InvestigationStatus.CLOSED)
     );
   }
 
@@ -302,4 +320,36 @@ public class InvestigationSearchCriteriaSteps {
         )
     );
   }
+
+  @Given("I want to find investigations investigated by the provider")
+  public void i_want_to_find_investigations_investigated_by_the_provider() {
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> criteria.setInvestigatorId(this.activeProvider.active().identifier())
+    );
+  }
+
+  @Given("I want to find investigations reported by the {organization} facility")
+  public void i_want_to_find_investigations_reported_by_the_organization(final long organization) {
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> criteria.setProviderFacilitySearch(
+            new InvestigationFilter.ProviderFacilitySearch(
+                InvestigationFilter.ReportingEntityType.FACILITY,
+                organization
+            )
+        )
+    );
+  }
+
+  @Given("I want to find investigations reported by the provider")
+  public void i_want_to_find_investigations_reported_by_the_provider() {
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> criteria.setProviderFacilitySearch(
+            new InvestigationFilter.ProviderFacilitySearch(
+                InvestigationFilter.ReportingEntityType.PROVIDER,
+                this.activeProvider.active().identifier()
+            )
+        )
+    );
+  }
+
 }

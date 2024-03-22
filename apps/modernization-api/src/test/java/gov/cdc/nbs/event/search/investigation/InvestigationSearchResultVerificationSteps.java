@@ -50,6 +50,7 @@ public class InvestigationSearchResultVerificationSteps {
                 .exists()
         );
   }
+
   @Then("there is only one investigation search result")
   public void there_is_only_one_investigation_search_result() throws Exception {
     this.response.active()

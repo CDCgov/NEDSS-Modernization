@@ -169,6 +169,22 @@ Feature: Investigation search
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
 
+  Scenario: I can find open investigations
+    Given the investigation was closed on 09/17/2018
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want to find open investigations
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+
+  Scenario: I can find closed investigations
+    Given the investigation was closed on 09/17/2018
+    And the investigation is available for search
+    And I want to find closed investigations
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
   Scenario: I can find investigations closed on a specific day
     Given the investigation was closed on 09/17/2018
     And the investigation is available for search
@@ -232,3 +248,31 @@ Feature: Investigation search
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
 
+  Scenario: I can search for Investigations investigated by a specific provider
+    Given the patient has a lab report
+    And there is a provider named "Nancy" "Wheeler"
+    And the investigation was investigated by the provider
+    And the investigation is available for search
+    And I want to find investigations investigated by the provider
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can search for Investigations reported by a specific facility
+    Given the patient has a lab report
+    And the investigation was reported by the Emory University Hospital facility
+    And the investigation is available for search
+    And I want to find investigations reported by the Emory University Hospital facility
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can search for Investigations reported by a specific provider
+    Given the patient has a lab report
+    And there is a provider named "Robin" "Buckley"
+    And the investigation was reported by the provider
+    And the investigation is available for search
+    And I want to find investigations reported by the provider
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
