@@ -1,0 +1,13 @@
+@use 'styles/borders';
+
+.manageTabsHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem;
+    @extend %thin-bottom;
+
+    .headerText {
+        font-size: 1.375rem;
+        font-weight: bold;
+    }
+}

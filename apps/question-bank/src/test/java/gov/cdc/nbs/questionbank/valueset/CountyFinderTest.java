@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +26,7 @@ class CountyFinderTest {
   NamedParameterJdbcTemplate template;
 
   @Test
+  @SuppressWarnings("unchecked")
   void findByStateCodeTest() {
     String stateCode = "05";
     List<County> expectedResult = getCountyResponse();
@@ -41,8 +41,7 @@ class CountyFinderTest {
   List<County> getCountyResponse() {
     return Arrays.asList(
         new County("55077", "Wood,WV", "Wood County", "COUNTY_CCD"),
-        new County("55078", "Bennett,SD", "Bennett County", "COUNTY_CCD")
-    );
+        new County("55078", "Bennett,SD", "Bennett County", "COUNTY_CCD"));
   }
 
 }

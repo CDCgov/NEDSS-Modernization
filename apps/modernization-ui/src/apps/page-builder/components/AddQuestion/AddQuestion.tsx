@@ -23,7 +23,7 @@ type Props = {
 export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
     const [state, setState] = useState<'create' | 'findValueset' | 'createValueset'>('create');
     const { createQuestion, questionId, error } = useCreateQuestion();
-    const { alertError } = useAlert();
+    const { showError } = useAlert();
     const form = useForm<CreateQuestionForm>({
         mode: 'onBlur',
         defaultValues: {
@@ -41,7 +41,7 @@ export const AddQuestion = ({ onBack, onClose, onQuestionCreated }: Props) => {
             onQuestionCreated(questionId);
         }
         if (error) {
-            alertError({ message: error });
+            showError({ message: error });
         }
     }, [questionId, error]);
 

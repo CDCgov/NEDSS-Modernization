@@ -23,93 +23,93 @@ import io.cucumber.java.en.When;
 
 public class PatientProfileViewVaccinationSteps {
 
-    @Value("${nbs.wildfly.url:http://wildfly:7001}")
-    String classicUrl;
+  @Value("${nbs.wildfly.url:http://wildfly:7001}")
+  String classicUrl;
 
-    @Autowired
-    TestPatientIdentifier patients;
+  @Autowired
+  TestPatientIdentifier patients;
 
-    @Autowired
-    TestVaccinations vaccinations;
+  @Autowired
+  TestVaccinations vaccinations;
 
-    @Autowired
-    MockMvc mvc;
+  @Autowired
+  MockMvc mvc;
 
-    @Autowired
-    Active<SessionCookie> activeSession;
+  @Autowired
+  Active<SessionCookie> activeSession;
 
-    @Autowired
-    Active<MockHttpServletResponse> activeResponse;
+  @Autowired
+  Active<MockHttpServletResponse> activeResponse;
 
-    @Autowired
-    Active<UserDetails> activeUserDetails;
+  @Autowired
+  Active<UserDetails> activeUserDetails;
 
-    @Autowired
-    @Qualifier("classic")
-    MockRestServiceServer server;
+  @Autowired
+  @Qualifier("classicRestService")
+  MockRestServiceServer server;
 
-    @Before
-    public void reset() {
-        activeResponse.reset();
-        server.reset();
-    }
+  @Before
+  public void reset() {
+    activeResponse.reset();
+    server.reset();
+  }
 
-    @When("the Vaccination is viewed from the Patient Profile")
-    public void the_vaccination_is_viewed_from_the_patient_profile() throws Exception {
-        long patient = patients.one().id();
+  @When("the Vaccination is viewed from the Patient Profile")
+  public void the_vaccination_is_viewed_from_the_patient_profile() throws Exception {
+    long patient = patients.one().id();
 
-        server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
+    server.expect(
+        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
 
-        server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
+    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
 
-        long vaccination = vaccinations.one();
+    long vaccination = vaccinations.one();
 
-        String request = String.format(
-                "/nbs/api/profile/%d/vaccination/%d",
-                patient,
-                vaccination);
+    String request = String.format(
+        "/nbs/api/profile/%d/vaccination/%d",
+        patient,
+        vaccination);
 
-        activeResponse.active(
-                mvc.perform(
-                        MockMvcRequestBuilders.get(request)
-                                .cookie(activeSession.active().asCookie()))
-                        .andReturn()
-                        .getResponse());
-    }
+    activeResponse.active(
+        mvc.perform(
+            MockMvcRequestBuilders.get(request)
+                .cookie(activeSession.active().asCookie()))
+            .andReturn()
+            .getResponse());
+  }
 
-    @Then("the classic profile is prepared to view a Vaccination")
-    public void the_classic_profile_is_prepared_to_view_a_vaccination() {
-        server.verify();
-    }
+  @Then("the classic profile is prepared to view a Vaccination")
+  public void the_classic_profile_is_prepared_to_view_a_vaccination() {
+    server.verify();
+  }
 
-    @Then("I am redirected to Classic NBS to view a Vaccination")
-    public void i_am_redirected_to_classic_nbs_to_view_a_vaccination() {
-        long patient = patients.one().id();
-        long vaccination = vaccinations.one();
+  @Then("I am redirected to Classic NBS to view a Vaccination")
+  public void i_am_redirected_to_classic_nbs_to_view_a_vaccination() {
+    long patient = patients.one().id();
+    long vaccination = vaccinations.one();
 
-        String expected = "/nbs/PageAction.do?method=viewGenericLoad&businessObjectType=VAC&Action=DSFilePath&actUid="
-                + vaccination;
+    String expected = "/nbs/PageAction.do?method=viewGenericLoad&businessObjectType=VAC&Action=DSFilePath&actUid="
+        + vaccination;
 
-        MockHttpServletResponse response = activeResponse.active();
+    MockHttpServletResponse response = activeResponse.active();
 
-        assertThat(response.getRedirectedUrl()).contains(expected);
+    assertThat(response.getRedirectedUrl()).contains(expected);
 
-        assertThat(response.getCookies())
-                .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
-                    assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                });
-    }
+    assertThat(response.getCookies())
+        .satisfiesOnlyOnce(cookie -> {
+          assertThat(cookie.getName()).isEqualTo("Return-Patient");
+          assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
+        });
+  }
 
-    @Then("I am not allowed to view a Classic NBS Vaccination")
-    public void i_am_not_allowed_to_view_a_classic_nbs_vaccination() {
-        MockHttpServletResponse response = activeResponse.active();
+  @Then("I am not allowed to view a Classic NBS Vaccination")
+  public void i_am_not_allowed_to_view_a_classic_nbs_vaccination() {
+    MockHttpServletResponse response = activeResponse.active();
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
-    }
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+  }
 }

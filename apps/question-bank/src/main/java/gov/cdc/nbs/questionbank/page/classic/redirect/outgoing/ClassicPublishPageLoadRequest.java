@@ -8,27 +8,27 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class ClassicPublishPageLoadRequest {
-    private static final String LOCATION = "/ManagePage.do";
+  private static final String LOCATION = "/ManagePage.do";
 
-    private final RestTemplate template;
+  private final RestTemplate template;
 
-    public ClassicPublishPageLoadRequest(
-            @Qualifier("classic") final RestTemplate template) {
-        this.template = template;
-    }
+  public ClassicPublishPageLoadRequest(
+      @Qualifier("classicTemplate") final RestTemplate template) {
+    this.template = template;
+  }
 
-    public void request() {
+  public void request() {
 
-        String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
-                .queryParam("method", "publishPopUpLoad")
-                .build()
-                .toUriString();
+    String pageLocation = UriComponentsBuilder.fromPath(LOCATION)
+        .queryParam("method", "publishPopUpLoad")
+        .build()
+        .toUriString();
 
-        RequestEntity<Void> publishPageRequest = RequestEntity
-                .post(pageLocation)
-                .build();
+    RequestEntity<Void> publishPageRequest = RequestEntity
+        .post(pageLocation)
+        .build();
 
-        this.template.exchange(publishPageRequest, Void.class);
+    this.template.exchange(publishPageRequest, Void.class);
 
-    }
+  }
 }

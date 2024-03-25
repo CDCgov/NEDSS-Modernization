@@ -8,23 +8,21 @@ import org.springframework.web.client.RestTemplate;
 @Component
 class ClassicPatientSearchPreparer {
 
-    private static final String LOCATION = "/HomePage.do?method=patientSearchSubmit";
-    private final RestTemplate template;
+  private static final String LOCATION = "/HomePage.do?method=patientSearchSubmit";
+  private final RestTemplate template;
 
-    ClassicPatientSearchPreparer(
-        @Qualifier("classic") final RestTemplate template
-    ) {
-        this.template = template;
-    }
+  ClassicPatientSearchPreparer(@Qualifier("classicTemplate") final RestTemplate classic) {
+    this.template = classic;
+  }
 
-    void prepare() {
+  void prepare() {
 
-        RequestEntity<Void> request = RequestEntity
-            .get(LOCATION)
-            .build();
+    RequestEntity<Void> request = RequestEntity
+        .get(LOCATION)
+        .build();
 
-        this.template.exchange(request, Void.class);
+    this.template.exchange(request, Void.class);
 
-    }
+  }
 
 }

@@ -3,9 +3,15 @@ import { Input } from 'components/FormInputs/Input';
 import { Radio } from '@trussworks/react-uswds';
 import styles from './subsection-details.module.scss';
 import { GroupRequest } from 'apps/page-builder/hooks/api/useGroupSubsection';
+import { useEffect, useState } from 'react';
 
 export const SubsectionDetails = () => {
-    const { control } = useFormContext<GroupRequest>();
+    const { control, setValue } = useFormContext<GroupRequest>();
+    const [visibleToggle, setVisibleToggle] = useState(control._formValues.visible ? 'true' : 'false');
+
+    useEffect(() => {
+        setValue('visible', visibleToggle === 'true' ? true : false);
+    }, [visibleToggle]);
 
     return (
         <div className={styles.details}>
@@ -44,22 +50,22 @@ export const SubsectionDetails = () => {
                     <Controller
                         control={control}
                         name="visible"
-                        render={({ field: { onChange, value, name } }) => (
+                        render={({ field: { name } }) => (
                             <div className={styles.radio}>
                                 <Radio
                                     name={name}
-                                    value="Y"
+                                    value="true"
                                     id="visible"
-                                    checked={value}
-                                    onChange={(e) => onChange(e.target.value)}
+                                    checked={control._formValues.visible}
+                                    onChange={() => setVisibleToggle('true')}
                                     label="Yes"
                                 />
                                 <Radio
                                     id="notvisible"
                                     name={name}
-                                    value="N"
-                                    checked={!value}
-                                    onChange={(e) => onChange(e.target.value)}
+                                    value={false.toString()}
+                                    checked={!control._formValues.visible}
+                                    onChange={() => setVisibleToggle('false')}
                                     label="No"
                                 />
                             </div>
@@ -77,7 +83,7 @@ export const SubsectionDetails = () => {
                         name="blockName"
                         rules={{
                             required: { value: true, message: 'Block name required.' },
-                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, a-z, 0-9, or _' }
+                            pattern: { value: /^\w*$/, message: 'Valid characters are A-Z, 0-9, or _' }
                         }}
                         render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                             <Input
@@ -87,6 +93,7 @@ export const SubsectionDetails = () => {
                                 onChange={onChange}
                                 required
                                 error={error?.message}
+                                className="text-uppercase"
                             />
                         )}
                     />
@@ -101,15 +108,20 @@ export const SubsectionDetails = () => {
                         control={control}
                         name="repeatingNbr"
                         rules={{
-                            required: { value: true, message: 'Repeat number required.' }
+                            required: { value: true, message: 'Repeat number required.' },
+                            max: { value: 5, message: 'Must be between 0 and 5' },
+                            min: { value: 0, message: 'Must be between 0 and 5' }
                         }}
-                        render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Input
                                 type="number"
                                 name={name}
                                 defaultValue={value?.toString()}
                                 onChange={onChange}
+                                onBlur={onBlur}
                                 required
+                                min={0}
+                                max={5}
                                 error={error?.message}
                             />
                         )}

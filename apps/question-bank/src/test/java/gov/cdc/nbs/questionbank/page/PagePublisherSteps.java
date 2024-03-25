@@ -31,78 +31,78 @@ import io.cucumber.java.en.When;
 @Transactional
 public class PagePublisherSteps {
 
-    @Value("${nbs.wildfly.url:http://wildfly:7001}")
-    String classicUrl;
+  @Value("${nbs.wildfly.url:http://wildfly:7001}")
+  String classicUrl;
 
-    @Autowired
-    @Qualifier("classic")
-    MockRestServiceServer server;
+  @Autowired
+  @Qualifier("classicRestService")
+  MockRestServiceServer server;
 
-    @Autowired
-    private EntityManager entityManager;
+  @Autowired
+  private EntityManager entityManager;
 
-    @Autowired
-    private PageRequest pageRequest;
+  @Autowired
+  private PageRequest pageRequest;
 
-    private Active<ActiveUser> user;
-    private Active<ResultActions> response = new Active<>();
-    private Active<PagePublishRequest> request = new Active<>();
-    private Active<PageIdentifier> page;
+  private Active<ActiveUser> user;
+  private Active<ResultActions> response = new Active<>();
+  private Active<PagePublishRequest> request = new Active<>();
+  private Active<PageIdentifier> page;
 
-    public PagePublisherSteps(final Active<PageIdentifier> page,
-            final Active<ActiveUser> user) {
-        this.page = page;
-        this.user = user;
+  public PagePublisherSteps(final Active<PageIdentifier> page,
+      final Active<ActiveUser> user) {
+    this.page = page;
+    this.user = user;
+  }
+
+  @Given("the publish page request has version notes of {string}")
+  public void the_publish_page_request_has(String value) {
+    request.active(new PagePublishRequest(value));
+  }
+
+  @When("I send the publish page request")
+  public void i_send_the_publish_page_request() throws Exception {
+    response.active(classic(page.active().id(), request.active()));
+  }
+
+  private ResultActions classic(final long page, final PagePublishRequest request) {
+
+    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
+
+    server.expect(requestTo(classicUrl + "/nbs/PreviewPage.do?method=viewPageLoad&waTemplateUid=" + page))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
+
+    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=publishPopUpLoad"))
+        .andExpect(method(HttpMethod.POST))
+        .andRespond(withSuccess());
+
+    Map<String, String> form = new HashMap<>();
+
+    if (request.versionNotes() != null) {
+      form.put("selection.versionNote", request.versionNotes());
     }
 
-    @Given("the publish page request has version notes of {string}")
-    public void the_publish_page_request_has(String value) {
-        request.active(new PagePublishRequest(value));
-    }
+    server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=publishPage"))
+        .andExpect(method(HttpMethod.POST))
+        .andExpect(content().formDataContains(form))
+        .andRespond(req -> {
+          WaTemplate tempPage = entityManager.find(WaTemplate.class, page);
+          tempPage.publish(new PageCommand.Publish(user.active().id(), Instant.now()));
+          // need to flush to mock behavior done by classic
+          entityManager.flush();
+          DefaultResponseCreator response = withStatus(HttpStatus.FOUND);
+          return response.createResponse(req);
+        });
 
-    @When("I send the publish page request")
-    public void i_send_the_publish_page_request() throws Exception {
-        response.active(classic(page.active().id(), request.active()));
-    }
+    return this.pageRequest.publishPage(page, request);
+  }
 
-    private ResultActions classic(final long page, final PagePublishRequest request) {
-
-        server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=list&initLoad=true"))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
-
-        server.expect(requestTo(classicUrl + "/nbs/PreviewPage.do?method=viewPageLoad&waTemplateUid=" + page))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
-
-        server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=publishPopUpLoad"))
-                .andExpect(method(HttpMethod.POST))
-                .andRespond(withSuccess());
-
-        Map<String, String> form = new HashMap<>();
-
-        if (request.versionNotes() != null) {
-            form.put("selection.versionNote", request.versionNotes());
-        }
-
-        server.expect(requestTo(classicUrl + "/nbs/ManagePage.do?method=publishPage"))
-                .andExpect(method(HttpMethod.POST))
-                .andExpect(content().formDataContains(form))
-                .andRespond(req -> {
-                    WaTemplate tempPage = entityManager.find(WaTemplate.class, page);
-                    tempPage.publish(new PageCommand.Publish(user.active().id(), Instant.now()));
-                    // need to flush to mock behavior done by classic
-                    entityManager.flush();
-                    DefaultResponseCreator response = withStatus(HttpStatus.FOUND);
-                    return response.createResponse(req);
-                });
-
-        return this.pageRequest.publishPage(page, request);
-    }
-
-    @Then("the response of request is success")
-    public void the_response_of_request_is_success() throws Exception {
-        this.response.active().andExpect(status().isOk());
-    }
+  @Then("the response of request is success")
+  public void the_response_of_request_is_success() throws Exception {
+    this.response.active().andExpect(status().isOk());
+  }
 
 }

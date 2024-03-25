@@ -29,10 +29,9 @@ public class PagePrintSteps {
 
   PagePrintSteps(
       @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
-      @Qualifier("classic") final MockRestServiceServer server,
+      @Qualifier("classicRestService") final MockRestServiceServer server,
       final Active<PageIdentifier> page,
-      final PagePrintRequester requester
-  ) {
+      final PagePrintRequester requester) {
     this.classicUrl = classicUrl;
     this.page = page;
     this.server = server;
@@ -74,8 +73,6 @@ public class PagePrintSteps {
             header()
                 .string(
                     HttpHeaders.LOCATION,
-                    String.format("/nbs/PreviewPage.do?method=viewPageLoad&mode=print&waTemplateUid=%d", expected)
-                )
-        );
+                    String.format("/nbs/PreviewPage.do?method=viewPageLoad&mode=print&waTemplateUid=%d", expected)));
   }
 }

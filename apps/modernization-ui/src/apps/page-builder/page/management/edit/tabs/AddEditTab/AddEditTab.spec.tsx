@@ -3,20 +3,14 @@ import { AlertProvider } from 'alert';
 import { BrowserRouter } from 'react-router-dom';
 import { AddEditTab } from './AddEditTab';
 import Router from 'react-router';
-import { PagesTab } from 'apps/page-builder/generated';
+import { PagesTab, Tab } from 'apps/page-builder/generated';
+import { ManageTabs } from '../ManageTabs/ManageTabs';
+import { FormProvider, useForm } from 'react-hook-form';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useParams: jest.fn()
 }));
-
-const tabData: PagesTab = {
-    id: 123,
-    name: 'tab-name',
-    order: 1,
-    visible: true,
-    sections: []
-};
 
 beforeEach(() => {
     jest.spyOn(Router, 'useParams').mockReturnValue({ pageId: '1' });
@@ -28,16 +22,22 @@ afterEach(() => {
 
 describe('<AddEditTab />', () => {
     it('should render a grid with 3 inputs labels which are Tab Name, Tab Description, Visible', () => {
-        const { getByText, container } = render(
-            <BrowserRouter>
-                <AlertProvider>
-                    <AddEditTab tabData={tabData} onChanged={jest.fn()} />
-                </AlertProvider>
-            </BrowserRouter>
-        );
+        const FormWrapper = () => {
+            const formMethods = useForm<Tab>(); // Call useForm hook inside a functional component
+            return (
+                <BrowserRouter>
+                    <AlertProvider>
+                        <FormProvider {...formMethods}>
+                            <AddEditTab />
+                        </FormProvider>
+                    </AlertProvider>
+                </BrowserRouter>
+            );
+        };
+        const { getByText, container } = render(<FormWrapper />);
         const input = container.getElementsByTagName('input');
         expect(input).toHaveLength(2);
-        expect(getByText('Tab Name')).toBeInTheDocument();
+        expect(getByText('Tab name')).toBeInTheDocument();
         expect(getByText('Visible')).toBeInTheDocument();
     });
 });

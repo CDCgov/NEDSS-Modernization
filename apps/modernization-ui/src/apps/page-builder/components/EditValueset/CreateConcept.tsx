@@ -17,7 +17,7 @@ type Props = {
     valuesetName: string;
 };
 export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Props) => {
-    const { alertError, alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const form = useForm<CreateConceptRequest>({
         mode: 'onBlur',
         defaultValues: { status: CreateConceptRequest.status.ACTIVE, effectiveFromTime: internalizeDate(new Date()) }
@@ -27,15 +27,16 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
             authorization: authorization(),
             request: {
                 ...form.getValues(),
-                effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined
+                effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined,
+                effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString()
             },
             codeSetNm: valuesetName
         })
             .then(() => {
-                alertSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
+                showSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
                 onCreated();
             })
-            .catch(() => alertError({ message: 'Failed to create concept' }));
+            .catch((error) => showError({ message: error?.body?.message ?? 'Failed to create concept' }));
     };
     return (
         <>

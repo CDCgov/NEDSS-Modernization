@@ -3,13 +3,16 @@ package gov.cdc.nbs.questionbank.entity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.page.PageCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand.GroupSubsection;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.time.Instant;
-
+import java.util.Arrays;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -746,6 +749,166 @@ class WaTemplateTest {
     assertTrue(page.getUiMetadata().contains(questionMeta));
     assertEquals(question.getQuestionIdentifier(), page.getUiMetadata().get(3).getQuestionIdentifier());
     assertEquals(5, questionMeta.getOrderNbr().intValue());
+  }
+
+  @Test
+  void question_add_grouped_subsection() {
+    // Given a template
+    WaTemplate page = new WaTemplate();
+
+    // And it has a tab
+    page.addTab(tab(page, 2L, 2));
+
+    // And it has a section
+    page.addSection(section(page, 3L, 3));
+
+    // And it has a subsection that is grouped
+    page.addSubSection(subsection(page, 4L, 4));
+
+    // And a question exists
+    WaQuestion question = QuestionEntityMother.textQuestion();
+
+    // And an add question request is processed
+    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        4L,
+        98L,
+        Instant.now()));
+    questionMeta.setWaRdbMetadatum(new WaRdbMetadata());
+    questionMeta.setId(765l);
+
+    // And the subsection is grouped
+    page.groupSubSection(new GroupSubsection(
+        4l,
+        "BLOCK_NAME",
+        Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
+        5,
+        99l,
+        Instant.now()));
+
+    // Then the question is grouped
+    assertNotNull(questionMeta);
+    assertThat(questionMeta.getBlockNm()).isEqualTo("BLOCK_NAME");
+    assertThat(questionMeta.getBatchTableHeader()).isEqualTo("question label");
+    assertThat(questionMeta.getBatchTableColumnWidth()).isEqualTo(100);
+    assertThat(questionMeta.getBatchTableAppearIndCd()).isEqualTo('Y');
+    assertThat(questionMeta.getQuestionGroupSeqNbr()).isEqualTo(1);
+    assertThat(questionMeta.getWaRdbMetadatum().getBlockPivotNbr()).isEqualTo(5);
+  }
+
+  @Test
+  void question_add_question_to_grouped_subsection() {
+    // Given a template
+    WaTemplate page = new WaTemplate();
+
+    // And it has a tab
+    page.addTab(tab(page, 2L, 2));
+
+    // And it has a section
+    page.addSection(section(page, 3L, 3));
+
+    // And it has a subsection that is grouped
+    page.addSubSection(subsection(page, 4L, 4));
+
+    // And a question exists
+    WaQuestion question = QuestionEntityMother.textQuestion();
+
+    // And an add question request is processed
+    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        4L,
+        98L,
+        Instant.now()));
+    questionMeta.setWaRdbMetadatum(new WaRdbMetadata());
+    questionMeta.setId(765l);
+
+    // And the subsection is grouped
+    page.groupSubSection(new GroupSubsection(
+        4l,
+        "BLOCK_NAME",
+        Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
+        5,
+        99l,
+        Instant.now()));
+
+    // When a question is added to a grouped subsection
+    WaQuestion question2 = QuestionEntityMother.numericQuestion();
+
+    // And an add question request is processed
+    WaUiMetadata questionMeta2 = page.addQuestion(new PageContentCommand.AddQuestion(
+        page.getId(),
+        question2,
+        4L,
+        98L,
+        Instant.now()));
+
+    // Then it has proper values set
+    assertThat(questionMeta2).isNotNull();
+    assertThat(questionMeta2.getBlockNm()).isEqualTo("BLOCK_NAME");
+    assertThat(questionMeta2.getBatchTableHeader()).isNull();
+    assertThat(questionMeta2.getBatchTableColumnWidth()).isNull();
+    assertThat(questionMeta2.getBatchTableAppearIndCd()).isEqualTo('N');
+    assertThat(questionMeta2.getQuestionGroupSeqNbr()).isEqualTo(1);
+    assertThat(questionMeta2.getWaRdbMetadatum().getBlockPivotNbr()).isEqualTo(5);
+  }
+
+  @Test
+  void question_add_question_to_grouped_subsection_with_more_than_20() {
+    // Given a template
+    WaTemplate page = new WaTemplate();
+
+    // And it has a tab
+    page.addTab(tab(page, 2L, 2));
+
+    // And it has a section
+    page.addSection(section(page, 3L, 3));
+
+    // And it has a subsection that is grouped
+    page.addSubSection(subsection(page, 4L, 4));
+
+    // And a question exists
+    WaQuestion question = QuestionEntityMother.textQuestion();
+
+    // And an add question request is processed
+    WaUiMetadata questionMeta = page.addQuestion(new PageContentCommand.AddQuestion(
+        page.getId(),
+        question,
+        4L,
+        98L,
+        Instant.now()));
+    questionMeta.setWaRdbMetadatum(new WaRdbMetadata());
+    questionMeta.setId(765l);
+
+    // And the subsection is grouped
+    page.groupSubSection(new GroupSubsection(
+        4l,
+        "BLOCK_NAME",
+        Arrays.asList(new GroupSubSectionRequest.Batch(765l, true, "question label", 100)),
+        5,
+        99l,
+        Instant.now()));
+
+    // subsection is at order nbr 4
+    // so setting the first question to 24 makes it look like subsection already contains 20
+    questionMeta.setOrderNbr(24);
+
+    // And a question exists
+    WaQuestion question2 = QuestionEntityMother.numericQuestion();
+
+    // When an add question request is processed
+    PageContentCommand.AddQuestion command = new PageContentCommand.AddQuestion(
+        page.getId(),
+        question2,
+        4L,
+        98L,
+        Instant.now());
+    // then an exception is thrown due to the grouped subsection containing too many questions
+    assertThrows(
+        PageContentModificationException.class,
+        () -> page.addQuestion(command),
+        "Unable to add more than 20 questions to a grouped subsection");
   }
 
   @Test

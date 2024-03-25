@@ -24,7 +24,6 @@ type Props = {
 export const EditPageQuestion = ({ page, question }: Props) => {
     const form = useFormContext<EditPageQuestionForm>();
     const displayControl = useWatch({ control: form.control, name: 'displayControl', exact: true });
-
     return (
         <div className={styles.form}>
             <BasicInformationFields editing />
@@ -35,7 +34,7 @@ export const EditPageQuestion = ({ page, question }: Props) => {
             {displayControl?.toString() !== '1026' && (
                 <>
                     <HorizontalRule />
-                    <DataMartFields editing page={page} questionId={question?.id} />
+                    {!question?.isStandard && <DataMartFields editing page={page} questionId={question?.id} />}
                     <HorizontalRule />
                     <MessagingFields />
                 </>

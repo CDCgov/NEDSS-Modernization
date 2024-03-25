@@ -33,7 +33,7 @@ public class ImportTemplateSteps {
   Active<TemplateXml> template = new Active<>();
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Value("${nbs.wildfly.url:http://wildfly:7001}")
