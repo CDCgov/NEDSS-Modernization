@@ -11,13 +11,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class ClassicPublishPageRequester {
-    
+
   private static final String LOCATION = "/ManagePage.do";
 
   private final RestTemplate template;
 
   public ClassicPublishPageRequester(
-      @Qualifier("classic") final RestTemplate template) {
+      @Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 

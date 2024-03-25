@@ -87,7 +87,6 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
             <Heading className={styles.heading} level={4}>
                 Data mart
             </Heading>
-            <div className={styles.fieldInfo}>These fields will not be displayed to your users</div>
             <Controller
                 control={form.control}
                 name="dataMartInfo.reportLabel"

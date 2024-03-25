@@ -37,7 +37,7 @@ export const AddNewPage = () => {
     const [conditions, setConditions] = useState<Condition[]>([]);
     const { options: mmgs } = useOptions('NBS_MSG_PROFILE');
     const [templates, setTemplates] = useState<Template[]>([]);
-    const { alertError } = useAlert();
+    const { showError } = useAlert();
     const form = useForm<PageCreateRequest>({
         mode: 'onBlur',
         defaultValues: {
@@ -85,7 +85,7 @@ export const AddNewPage = () => {
                 }
             })
             .catch((error) => {
-                alertError({ message: error.body.message || 'Failed to create page' });
+                showError({ message: error.body.message || 'Failed to create page' });
             });
     });
 
@@ -142,9 +142,9 @@ export const AddNewPage = () => {
                 <div className="add-new-page__form">
                     <div className="add-new-page__content">
                         <h2 aria-label="Create new page">Create new page</h2>
-                        <h4>Let's fill out some information about your new page before creating it</h4>
+                        <h4>Let's fill out some information about your new page before creating it.</h4>
                         <div className="fields-info">
-                            All fields with <span className="mandatory-indicator">*</span> are required
+                            All fields with <span className="mandatory-indicator">*</span> are required.
                         </div>
                         <Controller
                             control={form.control}

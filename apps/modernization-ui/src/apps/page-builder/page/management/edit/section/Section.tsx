@@ -2,7 +2,7 @@ import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerServi
 import { SectionHeader } from './SectionHeader';
 import styles from './section.module.scss';
 import { Subsection } from '../subsection/Subsection';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal, ModalRef } from '@trussworks/react-uswds';
 import { AddSection } from './manage/AddSection';
 import { useAlert } from 'alert';
@@ -13,10 +13,11 @@ import { AlertInLineProps } from './manage/ManageSectionModal';
 import { ManageSubsection } from '../subsection/manage/ManageSubsection';
 import { authorization } from 'authorization';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { ConfirmationModal } from '../../../../../../confirmation';
 
 type Props = {
     section: PagesSection;
-    onAddQuestion: (subsection: number) => void;
+    onAddQuestion: (subsection: PagesSubSection) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteSection: () => void;
     onDeleteStatus: () => void;
@@ -57,6 +58,11 @@ export const Section = ({
     const { showAlert } = useAlert();
 
     const [alert, setAlert] = useState<AlertInLineProps | undefined>(undefined);
+
+    const deleteSubsectionModalRef = useRef<ModalRef>(null);
+    const [selectedSubsectionToDelete, setSelectedSubsectionToDelete] = useState<PagesSubSection | undefined>(
+        undefined
+    );
 
     useEffect(() => {
         if (alert !== undefined) {
@@ -106,18 +112,26 @@ export const Section = ({
         if (subsection.questions.length > 0) {
             onDeleteStatus();
         } else {
-            SubSectionControllerService.deleteSubSectionUsingDelete({
-                authorization: authorization(),
-                page: page.id,
-                subSectionId: subsection.id
-            }).then(() => {
-                showAlert({
-                    message: `You've successfully deleted "${subsection.name}"`,
-                    type: `success`
-                });
-                refresh();
-            });
+            setSelectedSubsectionToDelete(subsection);
+            deleteSubsectionModalRef.current?.toggleModal(undefined, true);
         }
+    };
+
+    const deleteSubsection = () => {
+        if (!selectedSubsectionToDelete) {
+            return;
+        }
+        SubSectionControllerService.deleteSubSectionUsingDelete({
+            authorization: authorization(),
+            page: page.id,
+            subSectionId: selectedSubsectionToDelete.id
+        }).then(() => {
+            showAlert({
+                message: `You've successfully deleted "${selectedSubsectionToDelete.name}"`,
+                type: `success`
+            });
+            refresh();
+        });
     };
 
     const handleReorderSubsection = () => {
@@ -143,7 +157,7 @@ export const Section = ({
                             subsection={subsection}
                             key={k}
                             onEditQuestion={onEditQuestion}
-                            onAddQuestion={() => onAddQuestion(subsection.id)}
+                            onAddQuestion={() => onAddQuestion(subsection)}
                             onDeleteSubsection={handleDeleteSubsection}
                             onEditSubsection={handleEditSubsection}
                             onEditValueset={onEditValueset}
@@ -224,6 +238,21 @@ export const Section = ({
                     />
                 </DragDropProvider>
             </Modal>
+
+            <ConfirmationModal
+                modal={deleteSubsectionModalRef}
+                title="Warning"
+                message="Are you sure you want to delete the subsection?"
+                detail="Deleting this subsection cannot be undone. Are you sure you want to continue?"
+                confirmText="Yes, delete"
+                onConfirm={() => {
+                    deleteSubsection();
+                    deleteSubsectionModalRef.current?.toggleModal();
+                }}
+                onCancel={() => {
+                    deleteSubsectionModalRef.current?.toggleModal();
+                }}
+            />
         </div>
     );
 };

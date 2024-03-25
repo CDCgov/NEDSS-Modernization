@@ -1,22 +1,21 @@
 package gov.cdc.nbs.questionbank.page;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.response.PageDetailResponse.PageRule;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PageFinder {
 
-  @Autowired
-  private WaRuleMetaDataRepository waRuleMetaDataRepository;
+  private final WaRuleMetaDataRepository waRuleMetaDataRepository;
+
+  public PageFinder(final WaRuleMetaDataRepository waRuleMetaDataRepository) {
+    this.waRuleMetaDataRepository = waRuleMetaDataRepository;
+  }
 
   public List<WaUiMetadata> mergeOrderedQuetionLists(List<WaUiMetadata> questions1, List<WaUiMetadata> questions2) {
     if (questions1.isEmpty() && !questions2.isEmpty()) {

@@ -18,9 +18,8 @@ class ClassicPageTemplateCreator {
   private final ClassicCreateTemplatePreparer preparer;
 
   ClassicPageTemplateCreator(
-      @Qualifier("classic") final RestTemplate template,
-      final ClassicCreateTemplatePreparer preparer
-  ) {
+      @Qualifier("classicTemplate") final RestTemplate template,
+      final ClassicCreateTemplatePreparer preparer) {
     this.template = template;
     this.preparer = preparer;
   }

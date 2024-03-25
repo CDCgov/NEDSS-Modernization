@@ -42,7 +42,8 @@ const props = {
     selectedForDelete: content.tabs![0],
     setSelectedForDelete: jest.fn(),
     deleteTab: jest.fn(),
-    reset: jest.fn()
+    reset: jest.fn(),
+    onChangeVisibility: jest.fn()
 };
 
 const { getByTestId } = render(

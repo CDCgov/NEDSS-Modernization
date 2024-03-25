@@ -557,22 +557,33 @@ public class WaTemplate {
     Optional<WaUiMetadata> nextContainer = findNextElementOfComponent(
         subsection.getOrderNbr() + 1,
         Arrays.asList(SUB_SECTION, SECTION, TAB));
-    Integer orderNumber;
+    Integer newOrderNumber;
     if (nextContainer.isEmpty()) {
-      orderNumber = uiMetadata.stream()
+      newOrderNumber = uiMetadata.stream()
           .mapToInt(WaUiMetadata::getOrderNbr)
           .max()
-          .orElseThrow(() -> new PageContentModificationException("Invalid state")) + 1;
+          .orElseThrow(() -> new PageContentModificationException("Invalid state"))
+          + 1;
     } else {
-      orderNumber = nextContainer.get().getOrderNbr();
+      newOrderNumber = nextContainer.get().getOrderNbr();
+    }
+
+    // If subsection is grouped, limit number of questions within the subsection to 20
+    if (subsection.getBlockNm() != null && newOrderNumber - subsection.getOrderNbr() >= 21) {
+      throw new PageContentModificationException("Unable to add more than 20 questions to a grouped subsection");
     }
 
     // Make room for new question
-    incrementAllFrom(orderNumber);
+    incrementAllFrom(newOrderNumber);
 
     // Add question
-    WaUiMetadata questionEntry = new WaUiMetadata(this, command, orderNumber);
+    WaUiMetadata questionEntry = new WaUiMetadata(this, command, newOrderNumber);
 
+    // If subsection is grouped, set appropriate fields
+    if (subsection.getBlockNm() != null) {
+      Integer pivotNumber = findPivotNumberInSubsection(subsection, newOrderNumber);
+      questionEntry.addToExistingGroup(subsection.getBlockNm(), subsection.getQuestionGroupSeqNbr(), pivotNumber);
+    }
     this.uiMetadata.add(questionEntry);
 
     this.uiMetadata.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
@@ -608,6 +619,17 @@ public class WaTemplate {
         .filter(ui -> ui.getOrderNbr() >= start)
         .filter(ui -> componentTypes.contains(ui.getNbsUiComponentUid()))
         .findFirst();
+  }
+
+  private Integer findPivotNumberInSubsection(WaUiMetadata subsection, Integer end) {
+    return uiMetadata.stream()
+        .filter(ui -> ui.getOrderNbr() >= subsection.getOrderNbr() && ui.getOrderNbr() < end)
+        .map(ui -> ui.getWaRdbMetadatum())
+        .filter(Objects::nonNull)
+        .map(rdb -> rdb.getBlockPivotNbr())
+        .filter(Objects::nonNull)
+        .findFirst()
+        .orElse(0);
   }
 
   private boolean isElementAtOrderNullOrOneOf(List<Long> validComponents, int orderNumber) {

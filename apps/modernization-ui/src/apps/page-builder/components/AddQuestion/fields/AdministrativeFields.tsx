@@ -12,7 +12,6 @@ export const AdministrativeFields = () => {
             <Heading className={styles.heading} level={4}>
                 Administrative
             </Heading>
-            <div className={styles.fieldInfo}>These fields will not be displayed to your users</div>
             <Controller
                 control={form.control}
                 name="adminComments"

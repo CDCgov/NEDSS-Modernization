@@ -19,7 +19,7 @@ public class TemplateImporter {
 
 
   public TemplateImporter(
-      @Qualifier("classic") final RestTemplate restTemplate,
+      @Qualifier("classicTemplate") final RestTemplate restTemplate,
       final TemplateFinder reader) {
     this.restTemplate = restTemplate;
     this.reader = reader;

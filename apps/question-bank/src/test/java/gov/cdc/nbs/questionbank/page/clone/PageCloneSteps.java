@@ -28,10 +28,9 @@ public class PageCloneSteps {
 
   PageCloneSteps(
       @Value("${nbs.wildfly.url:http://wildfly:7001}") final String classicUrl,
-      @Qualifier("classic") final MockRestServiceServer server,
+      @Qualifier("classicRestService") final MockRestServiceServer server,
       final Active<PageIdentifier> page,
-      final PageCloneRequester requester
-  ) {
+      final PageCloneRequester requester) {
     this.classicUrl = classicUrl;
     this.page = page;
     this.server = server;
@@ -83,9 +82,7 @@ public class PageCloneSteps {
         .andExpect(
             header().string(
                 HttpHeaders.LOCATION,
-                "/nbs/ManagePage.do?method=clonePageLoad"
-            )
-        ).andExpect(cookie().value("Return-Page", returning))
-    ;
+                "/nbs/ManagePage.do?method=clonePageLoad"))
+        .andExpect(cookie().value("Return-Page", returning));
   }
 }

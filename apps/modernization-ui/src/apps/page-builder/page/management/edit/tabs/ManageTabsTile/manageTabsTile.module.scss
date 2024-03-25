@@ -7,34 +7,39 @@
     color: colors.$base-darkest;
     padding: 1rem 1.5rem;
     background-color: colors.$base-white;
-    .handle {
+    .tabInfo {
         display: flex;
-        margin-right: 1rem;
-        img {
-            cursor: pointer;
-            width: 1rem;
-            max-width: unset;
-        }
-        p {
-            display: none;
-        }
-        &.inactive {
+        flex-grow: 1;
+        .handle {
+            display: flex;
+            margin-right: 1rem;
             img {
-                cursor: not-allowed;
+                cursor: pointer;
+                width: 1rem;
+                max-width: unset;
+            }
+            p {
+                display: none;
+            }
+            &.inactive {
+                img {
+                    cursor: not-allowed;
+                }
+            }
+        }
+        .label {
+            display: flex;
+            align-items: center;
+            width: 75%;
+            gap: 1rem;
+            font-size: 1rem;
+            font-weight: 400;
+            img {
+                height: 1rem;
             }
         }
     }
-    .label {
-        display: flex;
-        align-items: center;
-        width: 75%;
-        gap: 1rem;
-        font-size: 1rem;
-        font-weight: 400;
-        img {
-            height: 1rem;
-        }
-    }
+
     .buttons {
         color: colors.$primary;
         display: flex;
@@ -96,5 +101,4 @@
         border: 1px solid colors.$primary;
         filter: drop-shadow(0.25rem 0.25rem 0.25rem rgba(0, 0, 0, 0.25));
     }
-
 }

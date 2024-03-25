@@ -1,0 +1,11 @@
+.manage-tab-modal {
+    height: 85vh;
+    overflow: hidden;
+    .usa-modal__content {
+        height: 85vh;
+        overflow: hidden;
+        .usa-modal__main {
+            height: 100%;
+        }
+    }
+}

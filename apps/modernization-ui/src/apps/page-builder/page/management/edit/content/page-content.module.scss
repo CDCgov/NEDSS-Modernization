@@ -1,18 +1,23 @@
 @use 'styles/colors';
 
 .pageContent {
-    display: flex;
     width: 100%;
-
-    justify-content: space-between;
-    gap: 1.5rem;
-
+    display: grid;
+    grid-template-columns: 0 minmax(59.375rem, auto) minmax(12.5rem, auto);
     .invisible {
-        width: 7.25rem;
+        min-height: 10px;
     }
-
     .sideMenu {
+        text-align: right;
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: baseline;
         .list {
+            position: sticky;
+            top: 1rem;
+            right: 1rem;
             border-radius: 0.3125rem;
             border: 1px solid colors.$base-lighter;
             background: colors.$base-white;
@@ -22,7 +27,7 @@
             flex-grow: 1;
             padding: 0;
             margin: 0;
-
+            max-width: 250px;
             li {
                 display: flex;
                 padding: 1rem 1.5rem;
@@ -38,5 +43,20 @@
                 }
             }
         }
+    }
+}
+@media (min-width: 1200px) {
+    .pageContent {
+        grid-template-columns: 0 minmax(59.375rem, auto) minmax(12.5rem, auto);
+    }
+}
+@media (min-width: 1300px) {
+    .pageContent {
+        grid-template-columns: auto 59.375rem minmax(12.5rem, auto);
+    }
+}
+@media (min-width: 1500px) {
+    .pageContent {
+        grid-template-columns: minmax(12.5rem, auto) 61.875rem minmax(12.5rem, auto);
     }
 }

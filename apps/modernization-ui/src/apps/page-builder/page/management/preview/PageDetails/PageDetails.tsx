@@ -24,7 +24,7 @@ export const PageDetails = () => {
     const [pageEvent, setPageEvent] = useState('');
     const [mmgs, setMmgs] = useState<Concept[]>([]);
     const navigate = useNavigate();
-    const { alertError, alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const { page } = useGetPageDetails();
     const { conditions } = useFindConditionsNotInUse(Number(pageId));
     const isEnabled = ['Initial Draft', 'Published with Draft', 'Draft'].includes(page?.status ?? '');
@@ -74,12 +74,12 @@ export const PageDetails = () => {
             }
         })
             .then(() => {
-                alertSuccess({ message: 'You have successfully performed a task' });
+                showSuccess({ message: 'You have successfully performed a task' });
                 navigate('..');
                 form.reset();
             })
             .catch((error) => {
-                alertError({ message: error.body.message || 'Failed to save page' });
+                showError({ message: error.body.message || 'Failed to save page' });
             });
     });
 

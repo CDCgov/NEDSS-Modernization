@@ -133,6 +133,7 @@ export const AddSubSection = ({
                         <>
                             <Button
                                 type="button"
+                                outline
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();
@@ -150,6 +151,7 @@ export const AddSubSection = ({
                         <>
                             <Button
                                 type="button"
+                                outline
                                 onClick={() => {
                                     form.reset();
                                     onCancel?.();
