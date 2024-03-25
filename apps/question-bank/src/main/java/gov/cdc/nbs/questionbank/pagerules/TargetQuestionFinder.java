@@ -144,12 +144,110 @@ public class TargetQuestionFinder {
     return result;
   }
 
-  private PagesResponse filterOtherQuestions(Long id, TargetQuestionRequest request) {
-    Optional<PagesResponse> page = pageResolver.resolve(id);
-
+  private void processQuestions(TargetQuestionRequest request, PagesQuestion question,
+      Collection<PagesQuestion> questionsResult, Long id) {
+    List<Long> selectedTargetIds = currentTargetQuestions(request);
     List<String> targetIdentifiers = previousTargetQuestions(id);
 
-    List<Long> selectedTargetIds = currentTargetQuestions(request);
+
+    if (request.sourceQuestion().blockName() != null) {
+      if (question.questionGroupSeq() == request.sourceQuestion().questionGroupSeq()
+          && question.displayComponent() != 1016L) {
+        if (request.targetQuestion() != null) {
+          if (selectedTargetIds.contains(question.id())) {
+            questionsResult.add(question);
+          } else if (question.id() != request.sourceQuestion().id()
+              && !targetIdentifiers.contains(question.question())) {
+            questionsResult.add(question);
+          }
+        } else if (question.id() != request.sourceQuestion().id()
+            && !targetIdentifiers.contains(question.question())) {
+          questionsResult.add(question);
+        }
+      }
+    } else {
+      if (!question.isStandardNnd() && question.questionGroupSeq() == 0) {
+        if (request.ruleFunction() == RuleFunction.REQUIRE_IF) {
+          if (!question.required() && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
+            if (request.targetQuestion() != null) {
+              if (selectedTargetIds.contains(question.id())) {
+                questionsResult.add(question);
+              } else if (question.id() != request.sourceQuestion().id()
+                  && !targetIdentifiers.contains(question.question())) {
+                questionsResult.add(question);
+              }
+            } else if (question.id() != request.sourceQuestion().id()) {
+              questionsResult.add(question);
+            }
+          }
+        } else {
+          if ((question.componentBehavior().contains("Static")
+              || question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA))) {
+            if (request.targetQuestion() != null) {
+              if (selectedTargetIds.contains(question.id())) {
+                questionsResult.add(question);
+              } else if (question.id() != request.sourceQuestion().id()
+                  && !targetIdentifiers.contains(question.question())) {
+                questionsResult.add(question);
+              }
+            } else if (question.id() != request.sourceQuestion().id()
+                && !targetIdentifiers.contains(question.question())) {
+              questionsResult.add(question);
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  private void procesSubsections(PagesSubSection subsection, Long id, Collection<PagesSubSection> resultSubSections,
+      TargetQuestionRequest request) {
+    Collection<PagesQuestion> questionsResult = new ArrayList<>();
+    for (PagesQuestion question : subsection.questions()) {
+      processQuestions(request, question, questionsResult, id);
+    }
+
+    PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
+        subsection.order(),
+        subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
+        subsection.blockName(), questionsResult);
+
+    if (questionsResult.isEmpty()) {
+      resultSubSections.add(resultSubsection);
+    }
+  }
+
+  private void processSections(PagesSection section, TargetQuestionRequest request, Long id,
+      Collection<PagesSection> resultSections) {
+    List<PagesSubSection> resultSubSections = new ArrayList<>();
+    for (PagesSubSection subsection : section.subSections()) {
+      procesSubsections(subsection, id, resultSubSections, request);
+    }
+
+    PagesSection resultSection =
+        new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+
+    if (resultSubSections.isEmpty()) {
+      resultSections.add(resultSection);
+    }
+  }
+
+  private void processTabs(PagesTab tab, TargetQuestionRequest request, Long id, Collection<PagesTab> resultTabs) {
+    List<PagesSection> resultSections = new ArrayList<>();
+    for (PagesSection section : tab.sections()) {
+      processSections(section, request, id, resultSections);
+    }
+
+    PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
+
+    if (resultSections.isEmpty()) {
+      resultTabs.add(resultTab);
+    }
+  }
+
+  private PagesResponse filterOtherQuestions(Long id, TargetQuestionRequest request) {
+    Optional<PagesResponse> page = pageResolver.resolve(id);
 
     PagesResponse result = null;
 
@@ -157,90 +255,7 @@ public class TargetQuestionFinder {
 
     if (!page.isEmpty()) {
       for (PagesTab tab : page.get().tabs()) {
-        List<PagesSection> resultSections = new ArrayList<>();
-        for (PagesSection section : tab.sections()) {
-
-          List<PagesSubSection> resultSubSections = new ArrayList<>();
-          for (PagesSubSection subsection : section.subSections()) {
-
-            Collection<PagesQuestion> questionsResult = new ArrayList<>();
-            for (PagesQuestion question : subsection.questions()) {
-
-              if (request.sourceQuestion().blockName() != null) {
-                if (question.questionGroupSeq() == request.sourceQuestion().questionGroupSeq()
-                    && question.displayComponent() != 1016L) {
-                  if (request.targetQuestion() != null) {
-                    if (selectedTargetIds.contains(question.id())) {
-                      questionsResult.add(question);
-                    } else if (question.id() != request.sourceQuestion().id()
-                        && !targetIdentifiers.contains(question.question())) {
-                      questionsResult.add(question);
-                    }
-                  } else if (question.id() != request.sourceQuestion().id()
-                      && !targetIdentifiers.contains(question.question())) {
-                    questionsResult.add(question);
-                  }
-                }
-              } else {
-                if (!question.isStandardNnd() && question.questionGroupSeq() == 0) {
-                  if (request.ruleFunction() == RuleFunction.REQUIRE_IF) {
-                    if (!question.required() && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
-                      if (request.targetQuestion() != null) {
-                        if (selectedTargetIds.contains(question.id())) {
-                          questionsResult.add(question);
-                        } else if (question.id() != request.sourceQuestion().id()
-                            && !targetIdentifiers.contains(question.question())) {
-                          questionsResult.add(question);
-                        }
-                      } else if (question.id() != request.sourceQuestion().id()) {
-                        questionsResult.add(question);
-                      }
-                    }
-                  } else {
-                    if ((question.componentBehavior().contains("Static")
-                        || question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA))) {
-                      if (request.targetQuestion() != null) {
-                        if (selectedTargetIds.contains(question.id())) {
-                          questionsResult.add(question);
-                        } else if (question.id() != request.sourceQuestion().id()
-                            && !targetIdentifiers.contains(question.question())) {
-                          questionsResult.add(question);
-                        }
-                      } else if (question.id() != request.sourceQuestion().id()
-                          && !targetIdentifiers.contains(question.question())) {
-                        questionsResult.add(question);
-                      }
-                    }
-                  }
-                }
-              }
-
-            }
-
-            PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-                subsection.order(),
-                subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-                subsection.blockName(), questionsResult);
-
-            if (questionsResult.isEmpty()) {
-              resultSubSections.add(resultSubsection);
-            }
-          }
-
-          PagesSection resultSection =
-              new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
-
-          if (resultSubSections.isEmpty()) {
-            resultSections.add(resultSection);
-          }
-
-        }
-
-        PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
-
-        if (resultSections.isEmpty()) {
-          resultTabs.add(resultTab);
-        }
+        processTabs(tab, request, id, resultTabs);
       }
 
       if (resultTabs.isEmpty()) {

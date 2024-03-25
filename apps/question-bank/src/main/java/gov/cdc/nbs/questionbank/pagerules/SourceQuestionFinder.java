@@ -30,6 +30,59 @@ public class SourceQuestionFinder {
         : filterOtherQuestions(id);
   }
 
+  private void processQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
+    if (question.dataType() != null && question.dataType().equals("CODED") && !question.isStandardNnd()
+        && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)
+        && (question.question().equals("INV169")
+            || (question.classCode().equalsIgnoreCase("CODE_VALUE_GENERAL")))) {
+      questionsResult.add(question);
+    }
+  }
+
+  private void processSubsections(PagesSubSection subsection, Collection<PagesSubSection> resultSubSections) {
+    Collection<PagesQuestion> questionsResult = new ArrayList<>();
+    for (PagesQuestion question : subsection.questions()) {
+      processQuestions(question, questionsResult);
+    }
+
+    PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
+        subsection.order(),
+        subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
+        subsection.blockName(), questionsResult);
+
+    if (!questionsResult.isEmpty()) {
+      resultSubSections.add(resultSubsection);
+    }
+  }
+
+  private void processSections(PagesSection section, Collection<PagesSection> resultSections) {
+    List<PagesSubSection> resultSubSections = new ArrayList<>();
+    for (PagesSubSection subsection : section.subSections()) {
+      processSubsections(subsection, resultSubSections);
+
+    }
+
+    PagesSection resultSection =
+        new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+
+    if (!resultSubSections.isEmpty()) {
+      resultSections.add(resultSection);
+    }
+  }
+
+  private void processTabs(PagesTab tab, Collection<PagesTab> resultTabs) {
+    List<PagesSection> resultSections = new ArrayList<>();
+    for (PagesSection section : tab.sections()) {
+      processSections(section, resultSections);
+    }
+
+    PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
+
+    if (!resultSections.isEmpty()) {
+      resultTabs.add(resultTab);
+    }
+  }
+
   private PagesResponse filterOtherQuestions(Long id) {
     Optional<PagesResponse> page = pageResolver.resolve(id);
 
@@ -39,46 +92,7 @@ public class SourceQuestionFinder {
 
     if (!page.isEmpty()) {
       for (PagesTab tab : page.get().tabs()) {
-        List<PagesSection> resultSections = new ArrayList<>();
-        for (PagesSection section : tab.sections()) {
-
-          List<PagesSubSection> resultSubSections = new ArrayList<>();
-          for (PagesSubSection subsection : section.subSections()) {
-
-            Collection<PagesQuestion> questionsResult = new ArrayList<>();
-            for (PagesQuestion question : subsection.questions()) {
-              if (question.dataType() != null && question.dataType().equals("CODED") && !question.isStandardNnd()
-                  && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)
-                  && (question.question().equals("INV169")
-                      || (question.classCode().equalsIgnoreCase("CODE_VALUE_GENERAL")))) {
-                questionsResult.add(question);
-              }
-            }
-
-            PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-                subsection.order(),
-                subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-                subsection.blockName(), questionsResult);
-
-            if (!questionsResult.isEmpty()) {
-              resultSubSections.add(resultSubsection);
-            }
-          }
-
-          PagesSection resultSection =
-              new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
-
-          if (!resultSubSections.isEmpty()) {
-            resultSections.add(resultSection);
-          }
-
-        }
-
-        PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
-
-        if (!resultSections.isEmpty()) {
-          resultTabs.add(resultTab);
-        }
+        processTabs(tab, resultTabs);
       }
 
       if (!resultTabs.isEmpty()) {
@@ -91,6 +105,57 @@ public class SourceQuestionFinder {
 
   }
 
+  private void processDateQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
+    if (question.dataType() != null && (question.dataType().equals("DATE")
+        || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
+        && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
+      questionsResult.add(question);
+    }
+  }
+
+  private void processDateSubsections(PagesSubSection subsection, Collection<PagesSubSection> resultSubSections) {
+    Collection<PagesQuestion> questionsResult = new ArrayList<>();
+    for (PagesQuestion question : subsection.questions()) {
+      processDateQuestions(question, questionsResult);
+    }
+
+    PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
+        subsection.order(),
+        subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
+        subsection.blockName(), questionsResult);
+
+    if (!questionsResult.isEmpty()) {
+      resultSubSections.add(resultSubsection);
+    }
+  }
+
+  private void processDateSections(PagesSection section, Collection<PagesSection> resultSections) {
+    List<PagesSubSection> resultSubSections = new ArrayList<>();
+    for (PagesSubSection subsection : section.subSections()) {
+      processDateSubsections(subsection, resultSubSections);
+    }
+
+    PagesSection resultSection =
+        new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
+
+    if (!resultSubSections.isEmpty()) {
+      resultSections.add(resultSection);
+    }
+  }
+
+  private void processDateTabs(PagesTab tab, Collection<PagesTab> resultTabs) {
+    List<PagesSection> resultSections = new ArrayList<>();
+    for (PagesSection section : tab.sections()) {
+      processDateSections(section, resultSections);
+    }
+
+    PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
+
+    if (!resultSections.isEmpty()) {
+      resultTabs.add(resultTab);
+    }
+  }
+
   private PagesResponse filterDateQuestions(Long id) {
     Optional<PagesResponse> page = pageResolver.resolve(id);
 
@@ -100,45 +165,7 @@ public class SourceQuestionFinder {
 
     if (!page.isEmpty()) {
       for (PagesTab tab : page.get().tabs()) {
-        List<PagesSection> resultSections = new ArrayList<>();
-        for (PagesSection section : tab.sections()) {
-
-          List<PagesSubSection> resultSubSections = new ArrayList<>();
-          for (PagesSubSection subsection : section.subSections()) {
-
-            Collection<PagesQuestion> questionsResult = new ArrayList<>();
-            for (PagesQuestion question : subsection.questions()) {
-              if (question.dataType() != null && (question.dataType().equals("DATE")
-                  || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
-                  && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
-                questionsResult.add(question);
-              }
-            }
-
-            PagesSubSection resultSubsection = new PagesSubSection(subsection.id(), subsection.name(),
-                subsection.order(),
-                subsection.visible(), subsection.isGrouped(), subsection.isGroupable(), subsection.questionIdentifier(),
-                subsection.blockName(), questionsResult);
-
-            if (!questionsResult.isEmpty()) {
-              resultSubSections.add(resultSubsection);
-            }
-          }
-
-          PagesSection resultSection =
-              new PagesSection(section.id(), section.name(), section.order(), section.visible(), resultSubSections);
-
-          if (!resultSubSections.isEmpty()) {
-            resultSections.add(resultSection);
-          }
-
-        }
-
-        PagesTab resultTab = new PagesTab(tab.id(), tab.name(), tab.order(), tab.visible(), resultSections);
-
-        if (!resultSections.isEmpty()) {
-          resultTabs.add(resultTab);
-        }
+        processDateTabs(tab, resultTabs);
       }
 
       if (!resultTabs.isEmpty()) {
