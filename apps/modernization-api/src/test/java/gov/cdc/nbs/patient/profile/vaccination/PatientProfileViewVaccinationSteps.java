@@ -69,8 +69,8 @@ public class PatientProfileViewVaccinationSteps {
 
     long vaccination = vaccinations.one();
 
-    String request = String.format(
-        "/nbs/api/profile/%d/vaccination/%d",
+    String request = 
+        "/nbs/api/profile/%d/vaccination/%d".formatted(
         patient,
         vaccination);
 

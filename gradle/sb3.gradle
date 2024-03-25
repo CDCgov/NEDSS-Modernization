@@ -1,0 +1,12 @@
+rewrite {
+    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_0")
+    exclusion ("**/*.feature")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    rewrite("org.openrewrite.recipe:rewrite-spring:5.7.0")       
+}

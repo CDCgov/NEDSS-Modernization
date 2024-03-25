@@ -37,7 +37,7 @@ public class TabController {
 
     @PostMapping
     public Tab createTab(
-            @PathVariable("page") Long page,
+            @PathVariable Long page,
             @RequestBody CreateTabRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         return creator.create(page, request, details.getId());
@@ -45,7 +45,7 @@ public class TabController {
 
     @DeleteMapping("{tabId}")
     public void deleteTab(
-            @PathVariable("page") Long page,
+            @PathVariable Long page,
             @PathVariable Long tabId,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         deleter.delete(page, tabId, details.getId());
@@ -53,7 +53,7 @@ public class TabController {
 
     @PutMapping("{tabId}")
     public Tab updateTab(
-            @PathVariable("page") Long page,
+            @PathVariable Long page,
             @PathVariable Long tabId,
             @RequestBody UpdateTabRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {

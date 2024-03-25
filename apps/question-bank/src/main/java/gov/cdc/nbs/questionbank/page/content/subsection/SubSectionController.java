@@ -38,7 +38,7 @@ public class SubSectionController {
 
   @PostMapping
   public SubSection createSubsection(
-      @PathVariable("page") Long page,
+      @PathVariable Long page,
       @RequestBody CreateSubSectionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return creator.create(page, request, details.getId());
@@ -47,7 +47,7 @@ public class SubSectionController {
 
   @DeleteMapping("{subSectionId}")
   public void deleteSubSection(
-      @PathVariable("page") Long page,
+      @PathVariable Long page,
       @PathVariable Long subSectionId,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     deleter.delete(page, subSectionId, details.getId());
@@ -55,8 +55,8 @@ public class SubSectionController {
 
   @PutMapping("{subSectionId}")
   public SubSection updateSubSection(
-      @PathVariable("page") Long page,
-      @PathVariable("subSectionId") Long subSectionId,
+      @PathVariable Long page,
+      @PathVariable Long subSectionId,
       @RequestBody UpdateSubSectionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(page, subSectionId, request, details.getId());
@@ -64,8 +64,8 @@ public class SubSectionController {
 
   @PostMapping("{subsection}/group")
   public void groupSubSection(
-      @PathVariable("page") Long page,
-      @PathVariable("subsection") Long subsection,
+      @PathVariable Long page,
+      @PathVariable Long subsection,
       @RequestBody GroupSubSectionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     grouper.group(page, subsection, request, details.getId());
@@ -73,7 +73,7 @@ public class SubSectionController {
 
   @GetMapping("{subSectionId}/un-group")
   public void unGroupSubSection(
-      @PathVariable("page") Long page,
+      @PathVariable Long page,
       @PathVariable Long subSectionId,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     grouper.unGroup(page, subSectionId, details.getId());
@@ -81,7 +81,7 @@ public class SubSectionController {
 
   @GetMapping("{subSectionId}/validate")
   public void validateSubSection(
-      @PathVariable("page") Long page,
+      @PathVariable Long page,
       @PathVariable Long subSectionId,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     validator.validateIfCanBeGrouped(page, subSectionId);

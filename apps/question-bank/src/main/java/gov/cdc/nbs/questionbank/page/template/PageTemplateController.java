@@ -36,7 +36,7 @@ class PageTemplateController {
   @PostMapping
   ResponseEntity<Void> create(
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details,
-      @PathVariable("page") final long page,
+      @PathVariable final long page,
       @RequestBody final CreateTemplateRequest request
   ) {
     RequestContext context = new RequestContext(details.getId(), Instant.now());

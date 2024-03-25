@@ -9,8 +9,8 @@ import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
+import jakarta.annotation.Nonnull;
 
-import javax.annotation.Nonnull;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
@@ -45,7 +45,7 @@ public class DateCoercing implements Coercing<LocalDate, String> {
         throw new CoercingParseValueException("Expected a String");
       }
     } catch (DateTimeParseException e) {
-      throw new CoercingParseValueException(String.format("Not a valid date: '%s'.", input), e);
+      throw new CoercingParseValueException("Not a valid date: '%s'.".formatted(input), e);
     }
   }
 

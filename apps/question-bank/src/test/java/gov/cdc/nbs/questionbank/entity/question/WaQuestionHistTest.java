@@ -1,7 +1,8 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;

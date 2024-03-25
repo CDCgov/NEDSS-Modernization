@@ -24,7 +24,7 @@ public class AvailableQuestionController {
   @PostMapping("search")
   public Page<AvailableQuestion> findAvailableQuestions(
       @RequestBody AvailableQuestionCriteria request,
-      @PathVariable("pageId") Long pageId,
+      @PathVariable Long pageId,
       @PageableDefault(size = 25) Pageable pageable) {
     return finder.find(request, pageId, pageable);
   }

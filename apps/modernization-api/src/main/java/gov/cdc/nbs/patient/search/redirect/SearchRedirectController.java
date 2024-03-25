@@ -1,17 +1,18 @@
 package gov.cdc.nbs.patient.search.redirect;
 
-import java.util.Map;
+import gov.cdc.nbs.encryption.EncryptionService;
+import gov.cdc.nbs.event.search.InvestigationFilter;
+import gov.cdc.nbs.redirect.search.EventFilterResolver;
+import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-import gov.cdc.nbs.event.search.InvestigationFilter;
-import gov.cdc.nbs.redirect.search.EventFilterResolver;
-import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
-import gov.cdc.nbs.encryption.EncryptionService;
-import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.Map;
 
 @RestController
 public class SearchRedirectController {
@@ -38,7 +39,7 @@ public class SearchRedirectController {
    * Intercepts legacy home page search requests, pulls out the current user from the JSESSIONID, the search criteria
    * from the incomingParams map, and forwards the request to the modernization search page
    */
-  @ApiIgnore
+  @Hidden
   @PostMapping("/nbs/redirect/simpleSearch")
   public RedirectView redirectSimpleSearch(
       final RedirectAttributes attributes,
@@ -65,7 +66,7 @@ public class SearchRedirectController {
    * Intercepts legacy advanced search page requests, pulls out the current user from the JSESSIONID, and forwards the
    * request to the modernization search page
    */
-  @ApiIgnore
+  @Hidden
   @GetMapping("/nbs/redirect/advancedSearch")
   public RedirectView redirectAdvancedSearch() {
     return new RedirectView(ADVANCED_SEARCH);

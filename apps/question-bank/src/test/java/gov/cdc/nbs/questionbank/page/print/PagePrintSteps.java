@@ -73,6 +73,6 @@ public class PagePrintSteps {
             header()
                 .string(
                     HttpHeaders.LOCATION,
-                    String.format("/nbs/PreviewPage.do?method=viewPageLoad&mode=print&waTemplateUid=%d", expected)));
+                "/nbs/PreviewPage.do?method=viewPageLoad&mode=print&waTemplateUid=%d".formatted(expected)));
   }
 }

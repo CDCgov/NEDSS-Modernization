@@ -53,4 +53,4 @@ valueset:
   byidurl: https://phinvads.cdc.gov/baseStu3/ValueSet/
 
 logging:
-  file.path: ./log/
+  file.name.path: ./log/

@@ -51,7 +51,7 @@ public class PageCreator {
     if (request.dataMartName() != null && !request.dataMartName().isEmpty()) {
       Optional<WaTemplate> existingDataMartNm = templateRepository.findFirstByDatamartNm(request.dataMartName());
       if (existingDataMartNm.isPresent()) {
-        String finalMessage = String.format(PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS,
+        String finalMessage = PageConstants.ADD_PAGE_DATAMART_NAME_EXISTS.formatted(
             request.dataMartName());
         throw new PageCreateException(finalMessage);
       }

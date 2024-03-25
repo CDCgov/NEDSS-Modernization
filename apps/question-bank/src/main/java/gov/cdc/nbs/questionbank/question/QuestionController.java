@@ -93,32 +93,32 @@ public class QuestionController {
     }
 
     @PutMapping("text/{id}")
-    public Question updateTextQuestion(@PathVariable("id") Long id, @RequestBody UpdateTextQuestionRequest request) {
+    public Question updateTextQuestion(@PathVariable Long id, @RequestBody UpdateTextQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return updater.update(userId, id, request);
     }
 
     @PutMapping("numeric/{id}")
-    public Question updateNumericQuestion(@PathVariable("id") Long id,
+    public Question updateNumericQuestion(@PathVariable Long id,
         @RequestBody UpdateNumericQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return updater.update(userId, id, request);
     }
 
     @PutMapping("coded/{id}")
-    public Question updateCodedQuestion(@PathVariable("id") Long id, @RequestBody UpdateCodedQuestionRequest request) {
+    public Question updateCodedQuestion(@PathVariable Long id, @RequestBody UpdateCodedQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return updater.update(userId, id, request);
     }
 
     @PutMapping("date/{id}")
-    public Question updateDateQuestion(@PathVariable("id") Long id, @RequestBody UpdateDateQuestionRequest request) {
+    public Question updateDateQuestion(@PathVariable Long id, @RequestBody UpdateDateQuestionRequest request) {
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         return updater.update(userId, id, request);
     }
 
     @GetMapping("{id}")
-    public GetQuestionResponse getQuestion(@PathVariable("id") Long id) {
+    public GetQuestionResponse getQuestion(@PathVariable Long id) {
         log.debug("Receive get question request");
         GetQuestionResponse question = finder.find(id);
         log.debug("Found question");
@@ -126,7 +126,7 @@ public class QuestionController {
     }
 
     @PutMapping("{id}/status")
-    public Question setQuestionStatus(@PathVariable("id") Long id, @RequestBody QuestionStatusRequest request) {
+    public Question setQuestionStatus(@PathVariable Long id, @RequestBody QuestionStatusRequest request) {
         log.debug("Received update question status request");
         Long userId = userDetailsProvider.getCurrentUserDetails().getId();
         Question question = updater.setStatus(userId, id, request.active());

@@ -23,7 +23,7 @@ class PagePrintController {
   }
 
   @GetMapping
-  ResponseEntity<Void> print(@PathVariable("page") final long page) {
+  ResponseEntity<Void> print(@PathVariable final long page) {
     return this.redirector.redirect(page);
   }
 

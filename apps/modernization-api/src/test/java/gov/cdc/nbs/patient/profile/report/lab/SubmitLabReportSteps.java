@@ -15,7 +15,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Map;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;

@@ -62,7 +62,7 @@ public class PatientProfileAddLabReportSteps {
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    String request = String.format("/nbs/api/profile/%d/report/lab", patient);
+    String request = "/nbs/api/profile/%d/report/lab".formatted(patient);
 
     activeResponse.active(
         mvc.perform(

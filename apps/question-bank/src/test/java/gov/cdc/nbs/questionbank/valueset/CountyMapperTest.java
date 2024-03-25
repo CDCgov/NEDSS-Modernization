@@ -9,7 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

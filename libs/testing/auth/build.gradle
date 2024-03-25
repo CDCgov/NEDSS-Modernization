@@ -20,7 +20,8 @@ dependencies {
     implementation libs.springBoot
 
     implementation libs.bundles.jpa
-    implementation libs.bundles.queryDSL
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    
 
 
     implementation project(':authentication')

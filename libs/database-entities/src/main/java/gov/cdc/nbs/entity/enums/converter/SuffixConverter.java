@@ -1,7 +1,7 @@
 package gov.cdc.nbs.entity.enums.converter;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import gov.cdc.nbs.message.enums.Suffix;
 import gov.cdc.nbs.patient.SuffixStringConverter;

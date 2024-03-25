@@ -8,8 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
@@ -26,7 +26,7 @@ class GraphQLSecurityExceptionAdapter {
         final HttpServletRequest request,
         final HttpServletResponse response,
         final AuthenticationException exception
-    ) -> failure(response, String.format("Access denied. %s", exception.getMessage()));
+    ) -> failure(response, "Access denied. %s".formatted(exception.getMessage()));
 
   }
 
@@ -37,7 +37,7 @@ class GraphQLSecurityExceptionAdapter {
         .build();
 
 
-    response.setContentType(MediaType.APPLICATION_GRAPHQL_VALUE);
+    response.setContentType(MediaType.APPLICATION_GRAPHQL_RESPONSE_VALUE);
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
     response.getWriter().write(mapper.writeValueAsString(error));
   }

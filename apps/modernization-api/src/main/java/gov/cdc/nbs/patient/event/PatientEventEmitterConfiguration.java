@@ -12,7 +12,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 class PatientEventEmitterConfiguration {
 
     @Bean
-    @ConditionalOnProperty("kafka.enabled")
+    @ConditionalOnProperty(name = "kafka.enabled", havingValue = "true")
     PatientEventEmitter kafkaPatientEventEmitter(
         @Value("${kafkadef.topics.patient.request}") final String topic,
         final KafkaTemplate<String, PatientEvent> template

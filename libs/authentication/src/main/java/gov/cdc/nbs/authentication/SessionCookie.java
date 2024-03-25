@@ -1,7 +1,7 @@
 package gov.cdc.nbs.authentication;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 public record SessionCookie(String identifier) {

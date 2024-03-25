@@ -47,7 +47,7 @@ nbs:
 
 
 logging:
-  file:
+  file.name:
     path: ./log/
 
 spring:
@@ -63,7 +63,7 @@ spring:
         default_schema: dbo
         format_sql: true
         jdbc.time_zone: UTC
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        dialect: org.hibernate.dialect.SQLServerDialect
         hbm2ddl.jdbc_metadata_extraction_strategy: individually
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
@@ -82,6 +82,9 @@ spring:
       group-id: patient-group
       enable-auto-commit: false
       auto-offset-reset: earliest
+
+springdoc:
+  packages-to-scan: "gov.cdc.nbs"
 
 kafka:
   enabled: false

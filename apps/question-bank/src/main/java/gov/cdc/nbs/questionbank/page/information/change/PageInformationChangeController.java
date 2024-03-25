@@ -37,7 +37,7 @@ class PageInformationChangeController {
   @PutMapping("/information")
   ResponseEntity<Void> change(
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details,
-      @PathVariable("page") long page,
+      @PathVariable long page,
       @RequestBody final PageInformationChangeRequest request
   ) {
 

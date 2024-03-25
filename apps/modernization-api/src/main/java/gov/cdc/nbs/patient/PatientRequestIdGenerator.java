@@ -8,7 +8,7 @@ import java.util.UUID;
 public class PatientRequestIdGenerator {
 
     public String generate(final String type) {
-        return String.format("%s_%s", type, UUID.randomUUID());
+        return "%s_%s".formatted(type, UUID.randomUUID());
     }
 
 }

@@ -34,8 +34,10 @@ public interface WaTemplateRepository extends JpaRepository<WaTemplate, Long> {
     @Query("SELECT MAX(id) from WaTemplate")
     Long getMaxTemplateID();
 
-    @Query("SELECT v from WaTemplate v WHERE  " +
-            "  v.templateType IN ('Draft','Published') order by v.templateNm asc")
+    @Query("""
+            SELECT v from WaTemplate v WHERE  \
+              v.templateType IN ('Draft','Published') order by v.templateNm asc\
+            """)
     List<WaTemplate> getAllPagesOrderedByName();
 
     public Optional<WaTemplate> findByIdAndTemplateType(Long id, String type);

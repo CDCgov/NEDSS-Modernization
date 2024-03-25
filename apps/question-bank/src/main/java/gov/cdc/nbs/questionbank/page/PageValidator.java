@@ -45,7 +45,7 @@ public class PageValidator {
     }
 
     if (!validate(new PageValidationRequest(request.name()))) {
-      String finalMessage = String.format(PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS, request.name());
+      String finalMessage = PageConstants.ADD_PAGE_TEMPLATENAME_EXISTS.formatted(request.name());
       throw new PageCreateException(finalMessage);
     }
 

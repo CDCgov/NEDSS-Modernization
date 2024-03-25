@@ -75,8 +75,8 @@ public class PatientProfileViewDocumentSteps {
 
     long document = documents.active().identifier();
 
-    String request = String.format(
-        "/nbs/api/profile/%d/document/%d",
+    String request = 
+        "/nbs/api/profile/%d/document/%d".formatted(
         patient,
         document);
 

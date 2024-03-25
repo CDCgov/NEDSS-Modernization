@@ -1,6 +1,7 @@
 package gov.cdc.nbs.authentication;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ public class SecurityConfigurer {
   private HttpSecurity withStandardSecurity(final HttpSecurity http) throws Exception {
     return http
         //  disabled until the frontend can be altered to work with csrf
-        .csrf().disable()
+        .csrf(AbstractHttpConfigurer::disable)
         //
         .authorizeHttpRequests(requests -> requests.requestMatchers(ignoredPaths.paths()).permitAll())
         .authorizeHttpRequests(requests -> requests.anyRequest().authenticated())

@@ -18,7 +18,7 @@ import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;

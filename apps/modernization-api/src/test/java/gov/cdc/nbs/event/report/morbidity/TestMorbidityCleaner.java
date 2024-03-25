@@ -7,8 +7,8 @@ import gov.cdc.nbs.entity.odse.Observation;
 import gov.cdc.nbs.entity.odse.QObservation;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @Component
 class TestMorbidityCleaner {

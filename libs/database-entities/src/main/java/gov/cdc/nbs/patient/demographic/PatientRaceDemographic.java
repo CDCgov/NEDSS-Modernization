@@ -5,11 +5,11 @@ import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.demographic.race.ExistingPatientRaceException;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,16 +34,11 @@ public class PatientRaceDemographic {
   @Transient
   private Person patient;
 
-  @OneToMany(
-      mappedBy = "personUid",
-      fetch = FetchType.LAZY,
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.MERGE,
-          CascadeType.REMOVE
-      },
-      orphanRemoval = true
-  )
+  @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
   private List<PersonRace> races;
 
   protected PatientRaceDemographic() {
@@ -60,7 +55,7 @@ public class PatientRaceDemographic {
   }
 
   public void add(final PatientCommand.AddRace added) {
-    //  Add a PersonRace for the category
+    // Add a PersonRace for the category
     add(
         patient,
         new PatientCommand.AddRaceCategory(
@@ -68,11 +63,9 @@ public class PatientRaceDemographic {
             added.asOf(),
             added.category(),
             added.requester(),
-            added.requestedOn()
-        )
-    );
+            added.requestedOn()));
 
-    //  Add a PersonRace for each detail
+    // Add a PersonRace for each detail
     added.detailed().stream()
         .map(
             detail -> new PatientCommand.AddDetailedRace(
@@ -81,9 +74,7 @@ public class PatientRaceDemographic {
                 added.category(),
                 detail,
                 added.requester(),
-                added.requestedOn()
-            )
-        )
+                added.requestedOn()))
         .forEach(detail -> add(patient, detail));
   }
 
@@ -96,8 +87,7 @@ public class PatientRaceDemographic {
     races().stream()
         .filter(
             inCategory(category)
-                .and(race -> Objects.equals(race.getRecordStatusCd(), "ACTIVE"))
-        )
+                .and(race -> Objects.equals(race.getRecordStatusCd(), "ACTIVE")))
         .findFirst()
         .ifPresent(existing -> existingRaceCategoryError(existing.getRaceCategoryCd()));
   }
@@ -112,8 +102,7 @@ public class PatientRaceDemographic {
 
   public void update(
       final Person patient,
-      final PatientCommand.UpdateRaceInfo changes
-  ) {
+      final PatientCommand.UpdateRaceInfo changes) {
 
     // change all the races for this category
     Collection<PersonRace> changed = ensureRaces().stream()
@@ -139,10 +128,8 @@ public class PatientRaceDemographic {
                 changes.category(),
                 detail,
                 changes.requester(),
-                changes.requestedOn()
-            )
-        ).forEach(detail -> add(patient, detail));
-
+                changes.requestedOn()))
+        .forEach(detail -> add(patient, detail));
 
     ArrayList<String> removed = new ArrayList<>(existingDetails);
     removed.removeAll(detailed);
@@ -155,7 +142,7 @@ public class PatientRaceDemographic {
   }
 
   public void delete(final PatientCommand.DeleteRaceInfo info) {
-    //  Race is deleted by category, the details should be removed also
+    // Race is deleted by category, the details should be removed also
     ensureRaces().removeIf(inCategory(info.category()));
   }
 

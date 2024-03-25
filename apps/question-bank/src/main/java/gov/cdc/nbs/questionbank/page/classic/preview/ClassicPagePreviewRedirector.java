@@ -26,7 +26,7 @@ public class ClassicPagePreviewRedirector {
   }
 
   @GetMapping("/api/v1/pages/{page}/preview")
-  ResponseEntity<Void> view(@PathVariable("page") final long page) {
+  ResponseEntity<Void> view(@PathVariable final long page) {
     ReturningPageCookie pageCookie = new ReturningPageCookie(String.valueOf(page));
     preparer.prepare();
 

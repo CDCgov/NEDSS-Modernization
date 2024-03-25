@@ -49,7 +49,7 @@ public class ConditionController {
   }
 
   @GetMapping("available")
-  public List<Condition> findConditionsNotInUse(@RequestParam("page") final Optional<Long> page) {
+  public List<Condition> findConditionsNotInUse(@RequestParam final Optional<Long> page) {
     return searcher.findAvailable(page.orElse(null));
   }
 

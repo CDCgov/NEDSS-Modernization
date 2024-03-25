@@ -10,18 +10,18 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
 import gov.cdc.nbs.questionbank.page.PageCommand;
@@ -683,7 +683,7 @@ public class WaTemplate {
 
   private void checkUniqueName(final String name, final PageNameVerifier verifier) {
     if (!verifier.isUnique(name)) {
-      throw new PageUpdateException(String.format("Another Page is named %s", name));
+      throw new PageUpdateException("Another Page is named %s".formatted(name));
     }
   }
 
@@ -709,7 +709,7 @@ public class WaTemplate {
       final String datamart,
       final DatamartNameVerifier verifier) {
     if (!verifier.isUnique(datamart)) {
-      throw new PageUpdateException(String.format("Another Page is using the datamart named %s", datamart));
+      throw new PageUpdateException("Another Page is using the datamart named %s".formatted(datamart));
     }
   }
 
@@ -808,7 +808,7 @@ public class WaTemplate {
     boolean unique = verifier.isUnique(name);
 
     if (!unique) {
-      String message = String.format("Another Template is named %s", name);
+      String message = "Another Template is named %s".formatted(name);
       throw new TemplateCreationException(message);
     }
   }

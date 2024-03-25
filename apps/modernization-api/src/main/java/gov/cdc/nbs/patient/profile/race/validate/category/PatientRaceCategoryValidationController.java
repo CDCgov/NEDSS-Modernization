@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.profile.race.validate.category;
 
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,14 +39,10 @@ class PatientRaceCategoryValidationController {
           )
       }
   )
-  @ApiOperation(
-      value = "PatientRace",
-      nickname = "validateCategory"
-  )
   @PostMapping("categories/{category}/validate")
   ResponseEntity<ExistingRaceCategory> validate(
-      @PathVariable("patient") final long patient,
-      @PathVariable("category") final String category
+      @PathVariable final long patient,
+      @PathVariable final String category
   ) {
     return this.finder.find(patient, category)
         .map(this::invalid)

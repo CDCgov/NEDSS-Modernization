@@ -7,7 +7,7 @@ import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional

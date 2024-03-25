@@ -4,7 +4,7 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import gov.cdc.nbs.patient.PatientCommand;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
@@ -14,29 +14,21 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     static final String POSTAL_CLASS_CODE = "PST";
 
     @MapsId("locatorUid")
-    @OneToOne(
-        fetch = FetchType.LAZY,
-        cascade = {
+    @OneToOne(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.REMOVE
-        },
-        optional = false)
-    @JoinColumn(
-        referencedColumnName = "postal_locator_uid",
-        name = "locator_uid",
-        updatable = false,
-        insertable = false)
+    }, optional = false)
+    @JoinColumn(referencedColumnName = "postal_locator_uid", name = "locator_uid", updatable = false, insertable = false)
     private PostalLocator locator;
 
     public PostalEntityLocatorParticipation() {
     }
 
     public PostalEntityLocatorParticipation(
-        final NBSEntity nbs,
-        final EntityLocatorParticipationId identifier,
-        final PatientCommand.AddAddress address
-    ) {
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier,
+            final PatientCommand.AddAddress address) {
 
         super(address, nbs, identifier);
 
@@ -49,10 +41,9 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public PostalEntityLocatorParticipation(
-        final NBSEntity nbs,
-        final EntityLocatorParticipationId identifier,
-        final PatientCommand.UpdateBirth birth
-    ) {
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier,
+            final PatientCommand.UpdateBirth birth) {
         super(birth, nbs, identifier);
         this.cd = "F";
         this.useCd = "BIR";
@@ -62,10 +53,9 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     }
 
     public PostalEntityLocatorParticipation(
-        final NBSEntity nbs,
-        final EntityLocatorParticipationId identifier,
-        final PatientCommand.UpdateMortality mortality
-    ) {
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier,
+            final PatientCommand.UpdateMortality mortality) {
         super(mortality, nbs, identifier);
         this.cd = "U";
         this.useCd = "DTH";
@@ -118,9 +108,9 @@ public class PostalEntityLocatorParticipation extends EntityLocatorParticipation
     @Override
     public String toString() {
         return "PostalEntityLocatorParticipation{" +
-            "locator=" + locator +
-            ", cd='" + cd + '\'' +
-            ", use='" + useCd + '\'' +
-            '}';
+                "locator=" + locator +
+                ", cd='" + cd + '\'' +
+                ", use='" + useCd + '\'' +
+                '}';
     }
 }

@@ -69,8 +69,8 @@ public class PatientProfileViewContactSteps {
 
     long contact = tracings.one();
 
-    String request = String.format(
-        "/nbs/api/profile/%d/contact/%d",
+    String request = 
+        "/nbs/api/profile/%d/contact/%d".formatted(
         patient,
         contact);
 

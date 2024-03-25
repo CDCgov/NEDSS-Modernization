@@ -1,10 +1,10 @@
 [versions]
-springBoot = '2.7.18'
-spring-security = '5.8.11'
-jackson = '2.13.5'
+springBoot = '3.0.13'
+spring-security = '6.1.8'
+jackson = '2.14.3'
 queryDSL = '5.0.0'
 graphql = '20.7'
-spring-kafka = '2.9.13'
+spring-kafka = '3.0.15'
 junit-jupiter = '5.8.2'
 cucumber = '7.14.0'
 assertj = '3.24.2'
@@ -31,7 +31,8 @@ spring-security-web = { module = 'org.springframework.security:spring-security-w
 spring-security-oauth2-resource-server = { module = 'org.springframework.security:spring-security-oauth2-resource-server', version.ref = 'spring-security' }
 spring-security-oauth2-jose = { module = 'org.springframework.security:spring-security-oauth2-jose', version.ref = 'spring-security' }
 spring-security-test = { module = 'org.springframework.security:spring-security-test', version.ref = 'spring-security' }
-springfox = { module = 'io.springfox:springfox-boot-starter', version = '3.0.0' }
+open-api = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui', version = '2.1.0' }
+spring-validation = {module= 'org.springframework.boot:spring-boot-starter-validation', version = '3.0.13'}
 jackson-core = { module = 'com.fasterxml.jackson.core:jackson-core', version.ref = 'jackson' }
 jackson-datatype-jsr310 = { module = 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310', version.ref = 'jackson' }
 queryDSL-apt = { module = 'com.querydsl:querydsl-apt', version.ref = 'queryDSL' }
@@ -63,8 +64,7 @@ jdbc = ['springBoot', 'springBoot-jdbc']
 elasticsearch = ['parsson', 'elasticsearch-java']
 kafka = ['spring-kafka', 'snappy']
 testing = ['assertj-core', 'mockito-inline']
-queryDSL = ['queryDSL-apt', 'queryDSL-jpa']
-swagger = ['springfox']
+swagger = ['open-api','spring-validation']
 testcontainers = ['testcontainers', 'testcontainers-junit']
 testcontainers-elasticsearch = [
     'testcontainers',

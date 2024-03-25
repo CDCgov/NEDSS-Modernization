@@ -5,12 +5,12 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.sql.PreparedStatement;
 import java.time.Instant;
 import java.util.List;

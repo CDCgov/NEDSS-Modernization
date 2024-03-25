@@ -27,7 +27,7 @@ public class ClassicPageEditRedirector {
   }
 
   @GetMapping("/api/v1/pages/{page}/edit")
-  ResponseEntity<Void> edit(@PathVariable("page") final long page) {
+  ResponseEntity<Void> edit(@PathVariable final long page) {
     ReturningPageCookie pageCookie = new ReturningPageCookie(String.valueOf(page));
     preparer.prepare(page);
 

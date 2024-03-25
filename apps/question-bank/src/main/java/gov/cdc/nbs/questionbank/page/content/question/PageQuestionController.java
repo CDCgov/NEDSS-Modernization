@@ -51,7 +51,7 @@ public class PageQuestionController {
   @PostMapping("subsection/{subsection}/questions")
   public AddQuestionResponse addQuestionToPage(
       @PathVariable("page") Long pageId,
-      @PathVariable("subsection") Long subsection,
+      @PathVariable Long subsection,
       @RequestBody AddQuestionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return adder.addQuestions(pageId, subsection, request, details.getId());
@@ -59,15 +59,15 @@ public class PageQuestionController {
 
   @GetMapping("questions/{questionId}/edit")
   public EditableQuestion getEditableQuestion(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId) {
+      @PathVariable Long page,
+      @PathVariable Long questionId) {
     return finder.find(page, questionId);
   }
 
   @PutMapping("questions/{questionId}/required")
   public EditableQuestion updatePageQuestionRequired(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long page,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageQuestionRequiredRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.setRequired(page, questionId, request, details.getId());
@@ -75,16 +75,16 @@ public class PageQuestionController {
 
   @GetMapping("questions/{questionId}/datamart/validate")
   public ValidationResponse validateDatamart(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId,
-      @RequestParam("datamart") String datamart) {
+      @PathVariable Long page,
+      @PathVariable Long questionId,
+      @RequestParam String datamart) {
     return validator.validateDataMart(page, questionId, datamart);
   }
 
   @DeleteMapping("questions/{questionId}")
   public void deleteQuestion(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long page,
+      @PathVariable Long questionId,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     deleter.deleteQuestion(page, questionId, details.getId());
   }
@@ -92,7 +92,7 @@ public class PageQuestionController {
   @PutMapping("questions/text/{questionId}")
   public EditableQuestion updatePageTextQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageTextQuestionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
@@ -101,7 +101,7 @@ public class PageQuestionController {
   @PutMapping("questions/numeric/{questionId}")
   public EditableQuestion updatePageNumericQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageNumericQuestionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
@@ -110,7 +110,7 @@ public class PageQuestionController {
   @PutMapping("questions/coded/{questionId}")
   public EditableQuestion updatePageCodedQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageCodedQuestionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
@@ -119,7 +119,7 @@ public class PageQuestionController {
   @PutMapping("questions/date/{questionId}")
   public EditableQuestion updatePageDateQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageDateQuestionRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
@@ -128,7 +128,7 @@ public class PageQuestionController {
   @PutMapping("questions/coded/{questionId}/valueset")
   public EditableQuestion updatePageCodedQuestionValueset(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageCodedQuestionValuesetRequest request,
       @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());

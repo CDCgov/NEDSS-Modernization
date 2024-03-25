@@ -43,8 +43,8 @@ dependencies {
     implementation libs.mssql.jdbc
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
-    implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
     implementation libs.bundles.jackson
 

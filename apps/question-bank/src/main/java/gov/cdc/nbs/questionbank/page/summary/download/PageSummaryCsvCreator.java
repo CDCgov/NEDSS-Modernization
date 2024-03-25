@@ -60,7 +60,7 @@ public class PageSummaryCsvCreator {
 
   private String formatConditions(Collection<ConditionSummary> conditions) {
     return conditions.stream()
-        .map(c -> String.format("%s(%s)", c.name(), c.id()))
+        .map(c -> "%s(%s)".formatted(c.name(), c.id()))
         .collect(Collectors.joining(","));
   }
 }

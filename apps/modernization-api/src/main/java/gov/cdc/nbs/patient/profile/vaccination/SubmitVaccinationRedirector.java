@@ -1,17 +1,17 @@
 package gov.cdc.nbs.patient.profile.vaccination;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.net.URI;
 
-@ApiIgnore
+@Hidden
 @RestController
 class SubmitVaccinationRedirector {
 
@@ -26,7 +26,7 @@ class SubmitVaccinationRedirector {
     @PreAuthorize("hasAuthority('ADD-INTERVENTIONVACCINERECORD')")
     @GetMapping("/nbs/api/profile/{patient}/vaccination")
     ResponseEntity<Void> view(
-        @PathVariable("patient") final long patient
+        @PathVariable final long patient
     ) {
 
         URI location = UriComponentsBuilder.fromPath(LOCATION)

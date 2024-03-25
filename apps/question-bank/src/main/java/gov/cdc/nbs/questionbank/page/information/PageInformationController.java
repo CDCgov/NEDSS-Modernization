@@ -29,7 +29,7 @@ class PageInformationController {
   )
   @ApiOperation(value = "", nickname = "find")
   @GetMapping("/information")
-  Optional<PageInformation> find(@PathVariable("page") long page) {
+  Optional<PageInformation> find(@PathVariable long page) {
     return this.finder.find(page);
   }
 }

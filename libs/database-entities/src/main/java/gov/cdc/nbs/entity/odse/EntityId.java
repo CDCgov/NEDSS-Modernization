@@ -7,7 +7,7 @@ import gov.cdc.nbs.patient.PatientIdentificationHistoryListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -93,10 +93,9 @@ public class EntityId {
     }
 
     public EntityId(
-        final NBSEntity nbs,
-        final EntityIdId identifier,
-        final PatientCommand.AddIdentification added
-    ) {
+            final NBSEntity nbs,
+            final EntityIdId identifier,
+            final PatientCommand.AddIdentification added) {
         this.nbsEntityUid = nbs;
         this.id = identifier;
 

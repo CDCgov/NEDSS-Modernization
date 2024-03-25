@@ -37,7 +37,7 @@ public class SectionController {
 
     @PostMapping
     public Section createSection(
-            @PathVariable("page") Long page,
+            @PathVariable Long page,
             @RequestBody CreateSectionRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         return creator.create(page, request, details.getId());
@@ -45,16 +45,16 @@ public class SectionController {
 
     @DeleteMapping("{sectionId}")
     public void deleteSection(
-            @PathVariable("page") Long page,
-            @PathVariable("sectionId") Long sectionId,
+            @PathVariable Long page,
+            @PathVariable Long sectionId,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         deleter.deleteSection(page, sectionId, details.getId());
     }
 
     @PutMapping("{section}")
     public Section updateSection(
-            @PathVariable("page") Long page,
-            @PathVariable("section") Long section,
+            @PathVariable Long page,
+            @PathVariable Long section,
             @RequestBody UpdateSectionRequest request,
             @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
         return updater.update(page, section, request, details.getId());

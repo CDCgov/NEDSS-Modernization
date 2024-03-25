@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -106,8 +106,7 @@ public abstract class EntityLocatorParticipation {
     protected EntityLocatorParticipation(
             final PatientCommand command,
             final NBSEntity nbs,
-            final EntityLocatorParticipationId identifier
-    ) {
+            final EntityLocatorParticipationId identifier) {
         this.id = identifier;
         this.nbsEntity = nbs;
 

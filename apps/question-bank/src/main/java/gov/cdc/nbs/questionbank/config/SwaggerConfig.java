@@ -79,7 +79,7 @@ public class SwaggerConfig {
   private Type pageableMixin() {
     return new AlternateTypeBuilder()
         .fullyQualifiedClassName(
-            String.format("%s.generated.%s",
+            "%s.generated.%s".formatted(
                 Pageable.class.getPackage().getName(),
                 Pageable.class.getSimpleName()))
         .property(p -> p.name("page")
