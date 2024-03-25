@@ -117,4 +117,18 @@
   .requiredIndicator {
     color: colors.$mandatory;
   }
+
+  .multiElements {
+    display: flex;
+    .searchBtn,
+    .quickCodeLookupBtn {
+      margin-right: 0;
+    }
+    .dividerText {
+      margin: 0.7rem;
+    }
+    .quickCodeLookupBtn {
+      margin-left: 0.5rem;
+    }
+  }
 }
