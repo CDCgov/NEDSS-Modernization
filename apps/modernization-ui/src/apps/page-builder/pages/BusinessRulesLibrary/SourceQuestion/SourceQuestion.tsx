@@ -4,7 +4,6 @@ import { PagesQuestion, PagesSection, PagesSubSection, PagesTab, Rule } from 'ap
 import { Icon } from 'components/Icon/Icon';
 import { Button, Radio, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetSourceQuestion } from 'apps/page-builder/hooks/api/useGetSourceQuestions';
-import { useParams } from 'react-router-dom';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 
 type Props = {
