@@ -1,7 +1,13 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-
-import java.util.List;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
+import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
+import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
+import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,20 +27,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
-import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
-import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
-import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
-import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
-import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
-import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 @RequestMapping("/api/v1/pages/{id}/rules")
 @SuppressWarnings("squid:S107")
-public class PageRuleController {
+class PageRuleController {
 
   private final PageRuleDeleter pageRuleDeleter;
   private final PageRuleCreator pageRuleCreator;
@@ -45,7 +45,7 @@ public class PageRuleController {
   private final PdfCreator pdfCreator;
   private final CsvCreator csvCreator;
 
-  public PageRuleController(
+  PageRuleController(
       final TargetQuestionFinder targetQuestionFinder,
       final SourceQuestionFinder sourceQuestionFinder,
       final PageRuleDeleter pageRuleDeleter,
@@ -66,36 +66,36 @@ public class PageRuleController {
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
-  public Rule createBusinessRule(
+  Rule createBusinessRule(
       @RequestBody RuleRequest request,
       @PathVariable("id") Long page,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return pageRuleCreator.createPageRule(request, page, details.getId());
   }
 
   @DeleteMapping("{ruleId}")
-  public void deletePageRule(
+  void deletePageRule(
       @PathVariable("id") Long page,
       @PathVariable Long ruleId,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     pageRuleDeleter.delete(page, ruleId, details.getId());
   }
 
   @PutMapping("/{ruleId}")
-  public Rule updatePageRule(
+  Rule updatePageRule(
       @PathVariable Long ruleId,
       @RequestBody RuleRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) throws RuleException {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) throws RuleException {
     return pageRuleUpdater.updatePageRule(ruleId, request, details.getId());
   }
 
   @GetMapping("/{ruleId}")
-  public Rule viewRuleResponse(@PathVariable Long ruleId) {
+  Rule viewRuleResponse(@PathVariable Long ruleId) {
     return pageRuleFinder.findByRuleId(ruleId);
   }
 
   @PostMapping("/search")
-  public Page<Rule> findPageRule(
+  Page<Rule> findPageRule(
       @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
@@ -103,7 +103,7 @@ public class PageRuleController {
   }
 
   @PostMapping("/pdf")
-  public ResponseEntity<byte[]> downloadRulePdf(
+  ResponseEntity<byte[]> downloadRulePdf(
       @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
@@ -120,7 +120,7 @@ public class PageRuleController {
   }
 
   @PostMapping("/csv")
-  public ResponseEntity<byte[]> downloadRuleCsv(
+  ResponseEntity<byte[]> downloadRuleCsv(
       @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
       @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
@@ -138,7 +138,7 @@ public class PageRuleController {
   }
 
   @GetMapping("/getAll")
-  public List<Rule> getAllRules(@PathVariable("id") Long pageId) {
+  List<Rule> getAllRules(@PathVariable("id") Long pageId) {
     return pageRuleFinder.getAllRules(pageId);
   }
 

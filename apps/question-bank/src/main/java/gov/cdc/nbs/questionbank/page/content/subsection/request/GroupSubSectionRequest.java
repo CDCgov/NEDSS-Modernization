@@ -1,15 +1,16 @@
 package gov.cdc.nbs.questionbank.page.content.subsection.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
-import io.swagger.annotations.ApiModelProperty;
 
 public record GroupSubSectionRequest(
-    @ApiModelProperty(required = true) String blockName,
-    @ApiModelProperty(required = true) List<Batch> batches,
-    @ApiModelProperty(required = true) int repeatingNbr) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String blockName,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Batch> batches,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int repeatingNbr) {
   public record Batch(
-      @ApiModelProperty(required = true) long id,
-      @ApiModelProperty(required = true) boolean appearsInTable,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean appearsInTable,
       String label,
       int width) {
   }

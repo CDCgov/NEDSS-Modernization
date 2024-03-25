@@ -1,6 +1,5 @@
 package gov.cdc.nbs.questionbank.page.information;
 
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +26,6 @@ class PageInformationController {
       description = "The Page Information includes the event type, message mapping guide, name, datamart, description, and any related conditions",
       tags = "Page Information"
   )
-  @ApiOperation(value = "", nickname = "find")
   @GetMapping("/information")
   Optional<PageInformation> find(@PathVariable long page) {
     return this.finder.find(page);

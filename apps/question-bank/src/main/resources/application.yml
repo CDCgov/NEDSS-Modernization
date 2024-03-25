@@ -37,8 +37,8 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
-        hbm2ddl.jdbc_metadata_extraction_strategy: individually
+        dialect: org.hibernate.dialect.SQLServerDialect
+#        hbm2ddl.jdbc_metadata_extraction_strategy: individually
         jdbc.time_zone: UTC
         format_sql: true
         default_schema: dbo
@@ -48,6 +48,9 @@ spring:
     url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa
     password: fake.fake.fake.1234
+
+springdoc:
+  packages-to-scan: "gov.cdc.nbs.questionbank"
 
 valueset:
   byidurl: https://phinvads.cdc.gov/baseStu3/ValueSet/

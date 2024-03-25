@@ -1,16 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
@@ -22,7 +11,18 @@ import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestion
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.content.question.response.ValidationResponse;
-import springfox.documentation.annotations.ApiIgnore;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/pages/{page}/")
@@ -53,7 +53,7 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable Long subsection,
       @RequestBody AddQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return adder.addQuestions(pageId, subsection, request, details.getId());
   }
 
@@ -69,7 +69,7 @@ public class PageQuestionController {
       @PathVariable Long page,
       @PathVariable Long questionId,
       @RequestBody UpdatePageQuestionRequiredRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.setRequired(page, questionId, request, details.getId());
   }
 
@@ -85,7 +85,7 @@ public class PageQuestionController {
   public void deleteQuestion(
       @PathVariable Long page,
       @PathVariable Long questionId,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     deleter.deleteQuestion(page, questionId, details.getId());
   }
 
@@ -94,7 +94,7 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable Long questionId,
       @RequestBody UpdatePageTextQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
@@ -103,7 +103,7 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable Long questionId,
       @RequestBody UpdatePageNumericQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
@@ -112,7 +112,7 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable Long questionId,
       @RequestBody UpdatePageCodedQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
@@ -121,7 +121,7 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable Long questionId,
       @RequestBody UpdatePageDateQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
@@ -130,7 +130,7 @@ public class PageQuestionController {
       @PathVariable("page") Long pageId,
       @PathVariable Long questionId,
       @RequestBody UpdatePageCodedQuestionValuesetRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 }

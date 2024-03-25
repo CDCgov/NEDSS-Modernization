@@ -1,5 +1,8 @@
 package gov.cdc.nbs.questionbank.page.classic.edit;
 
+import gov.cdc.nbs.questionbank.page.classic.ClassicEditPagePreparer;
+import gov.cdc.nbs.questionbank.page.classic.ReturningPageCookie;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import gov.cdc.nbs.questionbank.page.classic.ClassicEditPagePreparer;
-import gov.cdc.nbs.questionbank.page.classic.ReturningPageCookie;
-import springfox.documentation.annotations.ApiIgnore;
 
-
-@ApiIgnore
+@Hidden
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ClassicPageEditRedirector {

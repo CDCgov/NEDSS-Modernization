@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.page.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-public record PageValidationRequest(@ApiModelProperty(required = true) String name) {
+public record PageValidationRequest(@Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name) {
 
 }

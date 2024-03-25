@@ -1,13 +1,13 @@
 package gov.cdc.nbs.questionbank.valueset.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ValueSetOption(
-    @ApiModelProperty(required = true) Long id,
-    @ApiModelProperty(required = true) String value,
-    @ApiModelProperty(required = true) String name,
-    @ApiModelProperty(required = true) String codeSetNm,
-    String description,
-    @ApiModelProperty(required = true) String type) {
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Long id,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String codeSetNm,
+                String description,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String type) {
 
 }

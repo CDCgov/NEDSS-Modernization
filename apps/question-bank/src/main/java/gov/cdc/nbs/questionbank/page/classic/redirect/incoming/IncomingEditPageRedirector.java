@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.classic.ReturningPageCookie;
-import springfox.documentation.annotations.ApiIgnore;
+import io.swagger.v3.oas.annotations.Hidden;
 
-
-@ApiIgnore
+@Hidden
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class IncomingEditPageRedirector {
@@ -28,7 +27,7 @@ public class IncomingEditPageRedirector {
   }
 
   @SuppressWarnings("squid:S3752") // Allow GET and POST on same method
-  @RequestMapping(path = "/api/v1/pages/return", method = {RequestMethod.GET, RequestMethod.POST})
+  @RequestMapping(path = "/api/v1/pages/return", method = { RequestMethod.GET, RequestMethod.POST })
   ResponseEntity<Void> returnToEdit(
       final HttpServletRequest request,
       @AuthenticationPrincipal final NbsUserDetails user) {
@@ -41,7 +40,8 @@ public class IncomingEditPageRedirector {
   }
 
   /**
-   * If the returning page cookie is present, route to the provided page. Else see if a page was recently created by the
+   * If the returning page cookie is present, route to the provided page. Else see
+   * if a page was recently created by the
    * current user and route to that page. Else fall back to the page library
    */
   private String getLocation(final HttpServletRequest request, long user) {
