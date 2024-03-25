@@ -96,12 +96,14 @@ export const SubsectionHeader = ({
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
                     {subsection.isGrouped ? (
-                        <ModalToggleButton
-                            type="button"
-                            modalRef={ungroupSubsectionModalRef}
-                            onClick={() => setCloseOptions(true)}>
-                            <IconComponent name={'group'} size={'s'} /> Ungroup questions
-                        </ModalToggleButton>
+                        page?.status !== 'Published with Draft' && (
+                            <ModalToggleButton
+                                type="button"
+                                modalRef={ungroupSubsectionModalRef}
+                                onClick={() => setCloseOptions(true)}>
+                                <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                            </ModalToggleButton>
+                        )
                     ) : (
                         <>
                             {subsection.isGroupable && subsection.questions.length > 0 && (
@@ -114,7 +116,11 @@ export const SubsectionHeader = ({
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>
-                    <Button type="button" onClick={onDeleteSubsection}>
+                    <Button
+                        type="button"
+                        onClick={() => {
+                            closeThenAct(onDeleteSubsection);
+                        }}>
                         <Icon.Delete size={3} /> Delete subsection
                     </Button>
                 </MoreOptions>
