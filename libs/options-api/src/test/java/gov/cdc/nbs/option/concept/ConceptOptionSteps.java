@@ -2,7 +2,6 @@ package gov.cdc.nbs.option.concept;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class ConceptOptionSteps {
 
