@@ -23,7 +23,9 @@ export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
                 alertSuccess({ message: `Successfully created value set: ${response.name}` });
                 onCreated(response.code);
             })
-            .catch((error) => alertError({ message: error.message }));
+            .catch((error) => {
+                alertError({ message: error?.body?.message ?? 'Failed to create value set' });
+            });
     };
 
     return (
