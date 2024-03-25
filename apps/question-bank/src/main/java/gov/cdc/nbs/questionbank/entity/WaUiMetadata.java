@@ -240,8 +240,6 @@ public class WaUiMetadata {
       orphanRemoval = true)
   private WaNndMetadatum waNndMetadatum;
 
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "codeSetGroup")
-  private Codeset codeset;
 
   public WaUiMetadata() {
     this.standardNndIndCd = 'F';
@@ -759,8 +757,7 @@ public class WaUiMetadata {
         original.getCoinfectionIndCd(),
         original.getBlockNm(),
         original.waRdbMetadatum,
-        original.waNndMetadatum,
-        original.codeset);
+        original.waNndMetadatum);
 
   }
 
