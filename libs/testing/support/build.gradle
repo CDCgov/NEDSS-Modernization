@@ -19,5 +19,6 @@ testing {
 dependencies {
 
     implementation libs.bundles.jdbc
+    implementation libs.cucumber.spring
 
 }

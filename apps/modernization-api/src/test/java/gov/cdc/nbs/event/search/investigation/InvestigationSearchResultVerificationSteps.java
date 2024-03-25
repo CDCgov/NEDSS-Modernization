@@ -5,8 +5,10 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class InvestigationSearchResultVerificationSteps {
@@ -48,6 +50,7 @@ public class InvestigationSearchResultVerificationSteps {
                 .exists()
         );
   }
+
   @Then("there is only one investigation search result")
   public void there_is_only_one_investigation_search_result() throws Exception {
     this.response.active()
@@ -63,5 +66,29 @@ public class InvestigationSearchResultVerificationSteps {
   @Then("the Investigation search results are not accessible")
   public void the_investigation_search_results_are_not_accessible() throws Exception {
     this.response.active().andExpect(accessDenied());
+  }
+
+  @Then("the {nth} investigation search result has a(n) {string} of {string}")
+  public void the_nth_search_result_has_a_x_of_y(
+      final int position,
+      final String field,
+      final String value
+  ) throws Exception {
+    int index = position - 1;
+
+    JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
+
+    this.response.active()
+        .andExpect(pathMatcher.value(hasItem(value)));
+  }
+
+  private JsonPathResultMatchers matchingPath(final String field, final String position) {
+    return switch (field.toLowerCase()) {
+      case "birthday" ->
+          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime", position);
+      case "last name" ->
+          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName", position);
+      default -> throw new AssertionError(String.format("Unexpected Investigation Search Result property %s", field));
+    };
   }
 }

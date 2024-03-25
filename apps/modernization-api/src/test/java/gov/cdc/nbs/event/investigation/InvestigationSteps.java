@@ -3,6 +3,7 @@ package gov.cdc.nbs.event.investigation;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.concept.ConceptParameterResolver;
@@ -19,6 +20,7 @@ public class InvestigationSteps {
   private final Active<PatientIdentifier> activePatient;
   private final Active<JurisdictionIdentifier> activeJurisdiction;
   private final Active<ProgramAreaIdentifier> activeProgramArea;
+  private final Active<ProviderIdentifier> activeProvider;
   private final Active<InvestigationIdentifier> investigation;
   private final InvestigationMother mother;
   private final ConceptParameterResolver resolver;
@@ -27,6 +29,7 @@ public class InvestigationSteps {
       final Active<PatientIdentifier> activePatient,
       final Active<JurisdictionIdentifier> activeJurisdiction,
       final Active<ProgramAreaIdentifier> activeProgramArea,
+      final Active<ProviderIdentifier> activeProvider,
       final Active<InvestigationIdentifier> investigation,
       final InvestigationMother mother,
       final ConceptParameterResolver resolver
@@ -34,6 +37,7 @@ public class InvestigationSteps {
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
+    this.activeProvider = activeProvider;
     this.investigation = investigation;
     this.mother = mother;
     this.resolver = resolver;
@@ -178,5 +182,40 @@ public class InvestigationSteps {
   public void the_investigation_is_related_to_county_case(final String number) {
     this.investigation.maybeActive()
         .ifPresent(active -> mother.relatedToCountyCase(active, number));
+  }
+
+  @Given("the investigation was investigated by the provider")
+  public void the_investigation_was_investigated_by_the_provider() {
+    this.investigation.maybeActive()
+        .ifPresent(
+            active -> mother.investigatedBy(
+                active,
+                activeProvider.active()
+            )
+        );
+  }
+
+  @Given("the investigation was reported by the {organization} facility")
+  public void the_lab_report_was_ordered_by_the_organization(final long organization) {
+    this.investigation.maybeActive()
+        .ifPresent(active -> mother.reportedBy(active, organization));
+  }
+
+  @Given("the investigation was reported by the provider")
+  public void the_investigation_was_reported_by_the_provider() {
+    this.investigation.maybeActive()
+        .ifPresent(
+            active -> mother.reportedBy(
+                active,
+                activeProvider.active()
+            )
+        );
+  }
+
+  @Given("the investigation is related to the {outbreak} outbreak")
+  public void the_investigation_is_related_to_the_outbreak(final String outbreak) {
+    this.investigation.maybeActive().ifPresent(
+        active -> mother.relatedToOutbreak(active, outbreak)
+    );
   }
 }

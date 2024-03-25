@@ -222,4 +222,8 @@ public class PublicHealthCase {
   public void pregnancyStatus(final String status) {
     this.pregnantIndCd = status;
   }
+
+  public void outbreak(final String outbreak) {
+    this.outbreakName = outbreak;
+  }
 }

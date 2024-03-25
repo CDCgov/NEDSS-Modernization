@@ -1,13 +1,14 @@
 package gov.cdc.nbs.patient.profile.identification;
 
 import gov.cdc.nbs.data.pagination.WindowedPagedResultSetHandler;
-import org.elasticsearch.core.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 class PatientIdentificationFinder {
