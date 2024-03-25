@@ -11,6 +11,7 @@ Feature: I can list all available value sets as options
     When I list all valueset options
     Then "active" is in the valueset options
 
+  @valueset-options-inactive
   Scenario: Inactive valuesets are not in the listed options
     Given I have a valueset named "deleted"
     And the valueset is "Inactive"
