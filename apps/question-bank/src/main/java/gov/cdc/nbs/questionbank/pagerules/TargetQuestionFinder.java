@@ -21,7 +21,7 @@ public class TargetQuestionFinder {
   private final PagesResolver pageResolver;
   private final PageRuleFinder ruleFinder;
 
-  private final String COMPONENT_BEHAVIOR_DATA = "_data";
+  private static final String componentBehaviorData = "_data";
 
   TargetQuestionFinder(final PagesResolver pageResolver, final PageRuleFinder ruleFinder) {
     this.pageResolver = pageResolver;
@@ -40,7 +40,7 @@ public class TargetQuestionFinder {
     if (question.dataType() != null && (question.dataType().equals("DATE")
         || question.dataType().equals("DATETIME"))
         && !question.isStandardNnd() && question.visible()
-        && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
+        && question.componentBehavior().contains(componentBehaviorData)) {
       if (request.targetQuestion() != null) {
         if (selectedTargetIds.contains(question.id())) {
           questionsResult.add(question);
@@ -144,6 +144,58 @@ public class TargetQuestionFinder {
     return result;
   }
 
+  private void ifBlock(TargetQuestionRequest request, List<Long> selectedTargetIds, PagesQuestion question,
+      List<String> targetIdentifiers, Collection<PagesQuestion> questionsResult) {
+    if (question.questionGroupSeq() == request.sourceQuestion().questionGroupSeq()
+        && question.displayComponent() != 1016L) {
+      if (request.targetQuestion() != null) {
+        if (selectedTargetIds.contains(question.id())) {
+          questionsResult.add(question);
+        } else if (question.id() != request.sourceQuestion().id()
+            && !targetIdentifiers.contains(question.question())) {
+          questionsResult.add(question);
+        }
+      } else if (question.id() != request.sourceQuestion().id()
+          && !targetIdentifiers.contains(question.question())) {
+        questionsResult.add(question);
+      }
+    }
+  }
+
+  private void ifRequireIf(TargetQuestionRequest request, List<Long> selectedTargetIds, PagesQuestion question,
+      List<String> targetIdentifiers, Collection<PagesQuestion> questionsResult) {
+    if (!question.required() && question.componentBehavior().contains(componentBehaviorData)) {
+      if (request.targetQuestion() != null) {
+        if (selectedTargetIds.contains(question.id())) {
+          questionsResult.add(question);
+        } else if (question.id() != request.sourceQuestion().id()
+            && !targetIdentifiers.contains(question.question())) {
+          questionsResult.add(question);
+        }
+      } else if (question.id() != request.sourceQuestion().id()) {
+        questionsResult.add(question);
+      }
+    }
+  }
+
+  private void ifNotRequireIf(TargetQuestionRequest request, List<Long> selectedTargetIds, PagesQuestion question,
+      List<String> targetIdentifiers, Collection<PagesQuestion> questionsResult) {
+    if ((question.componentBehavior().contains("Static")
+        || question.componentBehavior().contains(componentBehaviorData))) {
+      if (request.targetQuestion() != null) {
+        if (selectedTargetIds.contains(question.id())) {
+          questionsResult.add(question);
+        } else if (question.id() != request.sourceQuestion().id()
+            && !targetIdentifiers.contains(question.question())) {
+          questionsResult.add(question);
+        }
+      } else if (question.id() != request.sourceQuestion().id()
+          && !targetIdentifiers.contains(question.question())) {
+        questionsResult.add(question);
+      }
+    }
+  }
+
   private void processQuestions(TargetQuestionRequest request, PagesQuestion question,
       Collection<PagesQuestion> questionsResult, Long id) {
     List<Long> selectedTargetIds = currentTargetQuestions(request);
@@ -151,50 +203,13 @@ public class TargetQuestionFinder {
 
 
     if (request.sourceQuestion().blockName() != null) {
-      if (question.questionGroupSeq() == request.sourceQuestion().questionGroupSeq()
-          && question.displayComponent() != 1016L) {
-        if (request.targetQuestion() != null) {
-          if (selectedTargetIds.contains(question.id())) {
-            questionsResult.add(question);
-          } else if (question.id() != request.sourceQuestion().id()
-              && !targetIdentifiers.contains(question.question())) {
-            questionsResult.add(question);
-          }
-        } else if (question.id() != request.sourceQuestion().id()
-            && !targetIdentifiers.contains(question.question())) {
-          questionsResult.add(question);
-        }
-      }
+      ifBlock(request, selectedTargetIds, question, targetIdentifiers, questionsResult);
     } else {
       if (!question.isStandardNnd() && question.questionGroupSeq() == 0) {
         if (request.ruleFunction() == RuleFunction.REQUIRE_IF) {
-          if (!question.required() && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
-            if (request.targetQuestion() != null) {
-              if (selectedTargetIds.contains(question.id())) {
-                questionsResult.add(question);
-              } else if (question.id() != request.sourceQuestion().id()
-                  && !targetIdentifiers.contains(question.question())) {
-                questionsResult.add(question);
-              }
-            } else if (question.id() != request.sourceQuestion().id()) {
-              questionsResult.add(question);
-            }
-          }
+          ifRequireIf(request, selectedTargetIds, question, targetIdentifiers, questionsResult);
         } else {
-          if ((question.componentBehavior().contains("Static")
-              || question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA))) {
-            if (request.targetQuestion() != null) {
-              if (selectedTargetIds.contains(question.id())) {
-                questionsResult.add(question);
-              } else if (question.id() != request.sourceQuestion().id()
-                  && !targetIdentifiers.contains(question.question())) {
-                questionsResult.add(question);
-              }
-            } else if (question.id() != request.sourceQuestion().id()
-                && !targetIdentifiers.contains(question.question())) {
-              questionsResult.add(question);
-            }
-          }
+          ifNotRequireIf(request, selectedTargetIds, question, targetIdentifiers, questionsResult);
         }
       }
     }

@@ -18,7 +18,7 @@ import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
 public class SourceQuestionFinder {
   private final PagesResolver pageResolver;
 
-  private final String COMPONENT_BEHAVIOR_DATA = "_data";
+  private static final String componentBehaviorData = "_data";
 
 
   SourceQuestionFinder(final PagesResolver pageResolver) {
@@ -32,7 +32,7 @@ public class SourceQuestionFinder {
 
   private void processQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
     if (question.dataType() != null && question.dataType().equals("CODED") && !question.isStandardNnd()
-        && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)
+        && question.componentBehavior().contains(componentBehaviorData)
         && (question.question().equals("INV169")
             || (question.classCode().equalsIgnoreCase("CODE_VALUE_GENERAL")))) {
       questionsResult.add(question);
@@ -108,7 +108,7 @@ public class SourceQuestionFinder {
   private void processDateQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
     if (question.dataType() != null && (question.dataType().equals("DATE")
         || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
-        && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
+        && question.componentBehavior().contains(componentBehaviorData)) {
       questionsResult.add(question);
     }
   }
