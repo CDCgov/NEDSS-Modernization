@@ -21,7 +21,7 @@ public class TargetQuestionFinder {
   private final PagesResolver pageResolver;
   private final PageRuleFinder ruleFinder;
 
-  private static final String componentBehaviorData = "_data";
+  private static final String COMPONENT_BEHAVIOR_DATA = "_data";
 
   TargetQuestionFinder(final PagesResolver pageResolver, final PageRuleFinder ruleFinder) {
     this.pageResolver = pageResolver;
@@ -40,7 +40,7 @@ public class TargetQuestionFinder {
     if (question.dataType() != null && (question.dataType().equals("DATE")
         || question.dataType().equals("DATETIME"))
         && !question.isStandardNnd() && question.visible()
-        && question.componentBehavior().contains(componentBehaviorData)) {
+        && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
       if (request.targetQuestion() != null) {
         if (selectedTargetIds.contains(question.id())) {
           questionsResult.add(question);
@@ -164,7 +164,7 @@ public class TargetQuestionFinder {
 
   private void ifRequireIf(TargetQuestionRequest request, List<Long> selectedTargetIds, PagesQuestion question,
       List<String> targetIdentifiers, Collection<PagesQuestion> questionsResult) {
-    if (!question.required() && question.componentBehavior().contains(componentBehaviorData)) {
+    if (!question.required() && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
       if (request.targetQuestion() != null) {
         if (selectedTargetIds.contains(question.id())) {
           questionsResult.add(question);
@@ -181,7 +181,7 @@ public class TargetQuestionFinder {
   private void ifNotRequireIf(TargetQuestionRequest request, List<Long> selectedTargetIds, PagesQuestion question,
       List<String> targetIdentifiers, Collection<PagesQuestion> questionsResult) {
     if ((question.componentBehavior().contains("Static")
-        || question.componentBehavior().contains(componentBehaviorData))) {
+        || question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA))) {
       if (request.targetQuestion() != null) {
         if (selectedTargetIds.contains(question.id())) {
           questionsResult.add(question);
