@@ -1,6 +1,5 @@
 package gov.cdc.nbs.patient.kafka;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -13,27 +12,30 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class KafkaProducer {
 
-    @Autowired
-    private KafkaTemplate<String, PatientRequest> kafkaPatientEventTemplate;
+  private final KafkaTemplate<String, PatientRequest> kafkaPatientEventTemplate;
 
-    @Value("${kafkadef.topics.patient.request}")
-    private String patientTopic;
+  public KafkaProducer(final KafkaTemplate<String, PatientRequest> kafkaPatientEventTemplate) {
+    this.kafkaPatientEventTemplate = kafkaPatientEventTemplate;
+  }
 
-    public void requestPatientEventEnvelope(final PatientRequest request) {
+  @Value("${kafkadef.topics.patient.request}")
+  private String patientTopic;
 
-        kafkaPatientEventTemplate.send(patientTopic, request.requestId(), request).addCallback(
-                new ListenableFutureCallback<>() {
-                    @Override
-                    public void onFailure(Throwable ex) {
-                        log.error("Failed to send message key={} message={} error={}", request.requestId(), request,
-                                ex);
-                    }
+  public void requestPatientEventEnvelope(final PatientRequest request) {
 
-                    @Override
-                    public void onSuccess(SendResult<String, PatientRequest> result) {
-                        log.info("Sent message key={} message={} result={}", request.requestId(), request, result);
-                    }
-                });
-    }
+    kafkaPatientEventTemplate.send(patientTopic, request.requestId(), request).addCallback(
+        new ListenableFutureCallback<>() {
+          @Override
+          public void onFailure(Throwable ex) {
+            log.error("Failed to send message key={} message={} error={}", request.requestId(), request,
+                ex);
+          }
+
+          @Override
+          public void onSuccess(SendResult<String, PatientRequest> result) {
+            log.info("Sent message key={} message={} result={}", request.requestId(), request, result);
+          }
+        });
+  }
 
 }

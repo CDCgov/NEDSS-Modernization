@@ -1,6 +1,6 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
-import gov.cdc.nbs.event.search.investigation.TestInvestigations;
+import gov.cdc.nbs.event.investigation.TestInvestigations;
 import gov.cdc.nbs.patient.TestPatients;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
@@ -43,7 +43,7 @@ public class PatientProfileViewInvestigationSteps {
   Active<ResultActions> response;
 
   @Autowired
-  @Qualifier("classic")
+  @Qualifier("classicRestService")
   MockRestServiceServer server;
 
   @Before
@@ -56,7 +56,7 @@ public class PatientProfileViewInvestigationSteps {
     long patient = patients.one();
 
     server.expect(
-            requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
@@ -72,8 +72,7 @@ public class PatientProfileViewInvestigationSteps {
         investigation);
 
     response.active(
-        mvc.perform(authenticated.withUser(MockMvcRequestBuilders.get(request)))
-    );
+        mvc.perform(authenticated.withUser(MockMvcRequestBuilders.get(request))));
   }
 
   @Then("the classic profile is prepared to view an investigation")
@@ -92,8 +91,7 @@ public class PatientProfileViewInvestigationSteps {
     this.response.active()
         .andExpect(status().isCreated())
         .andExpect(header().string("Location", containsString(expected)))
-        .andExpect(cookie().value("Return-Patient", String.valueOf(patient)))
-    ;
+        .andExpect(cookie().value("Return-Patient", String.valueOf(patient)));
   }
 
   @Then("I am not allowed to view a Classic NBS Investigation")

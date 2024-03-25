@@ -17,10 +17,11 @@ export const ConceptForm = ({ isEditing = false }: Props) => {
     const form = useFormContext<CreateConceptRequest>();
     const { options: codeSystems } = useOptions('CODE_SYSTEM');
     const effectiveFrom = useWatch({ control: form.control, name: 'effectiveFromTime' });
+    const effectiveToTime = useWatch({ control: form.control, name: 'effectiveToTime' });
 
     useEffect(() => {
         form.trigger('effectiveToTime');
-    }, [effectiveFrom]);
+    }, [effectiveFrom, effectiveToTime]);
 
     return (
         <div className={styles.conceptForm}>

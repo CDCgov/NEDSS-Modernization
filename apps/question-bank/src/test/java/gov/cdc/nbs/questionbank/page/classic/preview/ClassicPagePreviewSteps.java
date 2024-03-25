@@ -31,7 +31,7 @@ public class ClassicPagePreviewSteps {
   public ClassicPagePreviewSteps(
       @Value("${nbs.wildfly.url:http://wildfly:7001}") String classicUrl,
       final Active<PageIdentifier> page,
-      @Qualifier("classic") final MockRestServiceServer server,
+      @Qualifier("classicRestService") final MockRestServiceServer server,
       final MockMvc mvc,
       final Authenticated authenticated) {
     this.classicUrl = classicUrl;

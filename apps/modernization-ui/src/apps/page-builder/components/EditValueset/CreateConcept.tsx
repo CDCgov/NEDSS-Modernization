@@ -36,7 +36,7 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
                 showSuccess({ message: `Successfully created concept: ${form.getValues('localCode')}` });
                 onCreated();
             })
-            .catch(() => showError({ message: 'Failed to create concept' }));
+            .catch((error) => alertError({ message: error?.body?.message ?? 'Failed to create concept' }));
     };
     return (
         <>

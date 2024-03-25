@@ -9,28 +9,27 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 class ClassicPatientProfilePreparer {
 
-    private static final String LOCATION = "/PatientSearchResults1.do";
+  private static final String LOCATION = "/PatientSearchResults1.do";
 
-    private final RestTemplate template;
+  private final RestTemplate template;
 
-    ClassicPatientProfilePreparer(
-        @Qualifier("classic") final RestTemplate template
-    ) {
-        this.template = template;
-    }
+  ClassicPatientProfilePreparer(
+      @Qualifier("classicTemplate") final RestTemplate template) {
+    this.template = template;
+  }
 
-    void prepare(final long patient) {
+  void prepare(final long patient) {
 
-        String profileLocation = UriComponentsBuilder.fromPath(LOCATION)
-            .queryParam("ContextAction", "ViewFile")
-            .queryParam("uid", patient)
-            .build()
-            .toUriString();
+    String profileLocation = UriComponentsBuilder.fromPath(LOCATION)
+        .queryParam("ContextAction", "ViewFile")
+        .queryParam("uid", patient)
+        .build()
+        .toUriString();
 
-        RequestEntity<Void> profileRequest = RequestEntity
-            .get(profileLocation)
-            .build();
+    RequestEntity<Void> profileRequest = RequestEntity
+        .get(profileLocation)
+        .build();
 
-        this.template.exchange(profileRequest, Void.class);
-    }
+    this.template.exchange(profileRequest, Void.class);
+  }
 }

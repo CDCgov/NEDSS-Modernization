@@ -23,80 +23,81 @@ import io.cucumber.java.en.When;
 
 public class PatientProfileAddLabReportSteps {
 
-    @Value("${nbs.wildfly.url:http://wildfly:7001}")
-    String classicUrl;
+  @Value("${nbs.wildfly.url:http://wildfly:7001}")
+  String classicUrl;
 
-    @Autowired
-    TestPatients patients;
-    @Autowired
-    MockMvc mvc;
+  @Autowired
+  TestPatients patients;
+  @Autowired
+  MockMvc mvc;
 
-    @Autowired
-    Active<SessionCookie> activeSession;
+  @Autowired
+  Active<SessionCookie> activeSession;
 
-    @Autowired
-    Active<MockHttpServletResponse> activeResponse;
+  @Autowired
+  Active<MockHttpServletResponse> activeResponse;
 
-    @Autowired
-    Active<UserDetails> activeUserDetails;
+  @Autowired
+  Active<UserDetails> activeUserDetails;
 
-    @Autowired
-    @Qualifier("classic")
-    MockRestServiceServer server;
-    @Before
-    public void clearServer() {
-        server.reset();
-    }
+  @Autowired
+  @Qualifier("classicRestService")
+  MockRestServiceServer server;
 
-    @When("a lab report is added from a Patient Profile")
-    public void lab_report_is_added_from_a_patient_profile() throws Exception {
-        long patient = patients.one();
+  @Before
+  public void clearServer() {
+    server.reset();
+  }
 
-        server.expect(
-                requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
+  @When("a lab report is added from a Patient Profile")
+  public void lab_report_is_added_from_a_patient_profile() throws Exception {
+    long patient = patients.one();
 
-        server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess());
+    server.expect(
+        requestTo(classicUrl + "/nbs/HomePage.do?method=patientSearchSubmit"))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
 
-        String request = String.format("/nbs/api/profile/%d/report/lab", patient);
+    server.expect(requestTo(classicUrl + "/nbs/PatientSearchResults1.do?ContextAction=ViewFile&uid=" + patient))
+        .andExpect(method(HttpMethod.GET))
+        .andRespond(withSuccess());
 
-        activeResponse.active(
-                mvc.perform(
-                        MockMvcRequestBuilders.get(request)
-                                .cookie(activeSession.active().asCookie()))
-                        .andReturn()
-                        .getResponse());
-    }
+    String request = String.format("/nbs/api/profile/%d/report/lab", patient);
 
-    @Then("the classic profile is prepared to add a lab report")
-    public void the_classic_profile_is_prepared_to_add_a_lab_report() {
-        server.verify();
-    }
+    activeResponse.active(
+        mvc.perform(
+            MockMvcRequestBuilders.get(request)
+                .cookie(activeSession.active().asCookie()))
+            .andReturn()
+            .getResponse());
+  }
 
-    @Then("I am redirected to Classic NBS to add a lab report")
-    public void i_am_redirected_to_classic_nbs_to_add_a_lab_report() {
-        long patient = patients.one();
+  @Then("the classic profile is prepared to add a lab report")
+  public void the_classic_profile_is_prepared_to_add_a_lab_report() {
+    server.verify();
+  }
 
-        String expected = "/nbs/ViewFile1.do?ContextAction=AddLab";
+  @Then("I am redirected to Classic NBS to add a lab report")
+  public void i_am_redirected_to_classic_nbs_to_add_a_lab_report() {
+    long patient = patients.one();
 
-        MockHttpServletResponse response = activeResponse.active();
+    String expected = "/nbs/ViewFile1.do?ContextAction=AddLab";
 
-        assertThat(response.getRedirectedUrl()).contains(expected);
+    MockHttpServletResponse response = activeResponse.active();
 
-        assertThat(response.getCookies())
-                .satisfiesOnlyOnce(cookie -> {
-                    assertThat(cookie.getName()).isEqualTo("Return-Patient");
-                    assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
-                });
-    }
+    assertThat(response.getRedirectedUrl()).contains(expected);
 
-    @Then("I am not allowed to add a Classic NBS lab report")
-    public void i_am_not_allowed_to_add_a_classic_nbs_lab_report() {
-        MockHttpServletResponse response = activeResponse.active();
+    assertThat(response.getCookies())
+        .satisfiesOnlyOnce(cookie -> {
+          assertThat(cookie.getName()).isEqualTo("Return-Patient");
+          assertThat(cookie.getValue()).isEqualTo(String.valueOf(patient));
+        });
+  }
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
-    }
+  @Then("I am not allowed to add a Classic NBS lab report")
+  public void i_am_not_allowed_to_add_a_classic_nbs_lab_report() {
+    MockHttpServletResponse response = activeResponse.active();
+
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+  }
 }

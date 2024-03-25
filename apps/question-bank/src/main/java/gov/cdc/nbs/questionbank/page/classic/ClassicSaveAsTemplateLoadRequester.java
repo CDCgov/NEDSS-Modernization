@@ -14,7 +14,7 @@ class ClassicSaveAsTemplateLoadRequester {
   private final RestTemplate template;
 
   ClassicSaveAsTemplateLoadRequester(
-      @Qualifier("classic") final RestTemplate template) {
+      @Qualifier("classicTemplate") final RestTemplate template) {
     this.template = template;
   }
 
