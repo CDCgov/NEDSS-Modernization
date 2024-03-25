@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Embeddable
@@ -27,4 +28,19 @@ public class LabResultId implements Serializable {
     this.laboratoryId = laboratoryId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    LabResultId that = (LabResultId) o;
+    return Objects.equals(labResultCd, that.labResultCd) && Objects.equals(laboratoryId,
+        that.laboratoryId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(labResultCd, laboratoryId);
+  }
 }
