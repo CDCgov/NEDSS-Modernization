@@ -14,9 +14,8 @@ type Props = {
     editing?: boolean;
     page?: number;
     questionId?: number;
-    disableWhenStandard?: boolean;
 };
-export const DataMartFields = ({ editing = false, page, questionId, disableWhenStandard }: Props) => {
+export const DataMartFields = ({ editing = false, page, questionId }: Props) => {
     const { options: rdbTableNames } = useOptions('NBS_PH_DOMAINS');
     const form = useFormContext<CreateQuestionForm>();
     const [displayControl, subgroup, dataMartColumnName, rdbColumnName] = useWatch({
@@ -107,7 +106,6 @@ export const DataMartFields = ({ editing = false, page, questionId, disableWhenS
                         id={name}
                         htmlFor={name}
                         required
-                        disabled={disableWhenStandard}
                     />
                 )}
             />
@@ -194,7 +192,6 @@ export const DataMartFields = ({ editing = false, page, questionId, disableWhenS
                         name={name}
                         id={name}
                         htmlFor={name}
-                        disabled={disableWhenStandard}
                     />
                 )}
             />
