@@ -28,7 +28,7 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
         }
     });
     const { isDirty, isValid } = useFormState(form);
-    const { alertError, alertSuccess } = useAlert();
+    const { showError, showSuccess } = useAlert();
     const { response, error, update } = useUpdateConcept();
 
     const handleSave = () => {
@@ -41,10 +41,10 @@ export const EditConcept = ({ valueset, concept, onClose, onCancel, onUpdated }:
 
     useEffect(() => {
         if (response) {
-            alertSuccess({ message: `Successfully update concept: ${concept.localCode}` });
+            showSuccess({ message: `Successfully update concept: ${concept.localCode}` });
             onUpdated();
         } else if (error) {
-            alertError({ message: `Failed to update concept: ${concept.localCode}` });
+            showError({ message: `Failed to update concept: ${concept.localCode}` });
         }
     }, [response, error]);
 

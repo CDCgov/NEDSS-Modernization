@@ -17,7 +17,7 @@ import { ConfirmationModal } from '../../../../../../confirmation';
 
 type Props = {
     section: PagesSection;
-    onAddQuestion: (subsection: number) => void;
+    onAddQuestion: (subsection: PagesSubSection) => void;
     onEditQuestion: (question: PagesQuestion) => void;
     onDeleteSection: () => void;
     onDeleteStatus: () => void;
@@ -157,7 +157,7 @@ export const Section = ({
                             subsection={subsection}
                             key={k}
                             onEditQuestion={onEditQuestion}
-                            onAddQuestion={() => onAddQuestion(subsection.id)}
+                            onAddQuestion={() => onAddQuestion(subsection)}
                             onDeleteSubsection={handleDeleteSubsection}
                             onEditSubsection={handleEditSubsection}
                             onEditValueset={onEditValueset}

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import './AlertBanner.scss';
 import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 
 export type AlertBannerProps = {
-    type?: string;
-    children?: any;
+    type?: 'success' | 'warning' | 'prompt' | 'info' | 'error' | undefined;
+    children?: ReactNode | ReactNode[];
     onClose?: () => void;
     expiration?: number;
 };
