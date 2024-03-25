@@ -55,11 +55,13 @@ describe('PatientResult', () => {
     });
 
     it('calls the onSelected callback when the legal name is clicked', () => {
-        const { getByText } = render(<PatientResult result={mockPatientSearchResult} onSelected={() => {}} />);
+        const onSelectedMock = jest.fn();
+        const { getByText } = render(<PatientResult result={mockPatientSearchResult} onSelected={onSelectedMock} />);
 
         const legalNameElement = getByText(
             `${mockPatientSearchResult.legalName.first} ${mockPatientSearchResult.legalName.last}`
         );
         fireEvent.click(legalNameElement);
+        expect(onSelectedMock).toHaveBeenCalled();
     });
 });
