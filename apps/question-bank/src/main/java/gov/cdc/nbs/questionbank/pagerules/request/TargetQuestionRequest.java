@@ -7,5 +7,4 @@ import io.swagger.annotations.ApiModelProperty;
 
 public record TargetQuestionRequest(@ApiModelProperty(required = true) Rule.RuleFunction ruleFunction,
     PagesQuestion sourceQuestion, Collection<PagesQuestion> targetQuestion) {
-
 }

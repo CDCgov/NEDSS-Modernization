@@ -310,7 +310,9 @@ class WaTemplateTest {
         1008,
         5,
         999L,
-        Instant.now());
+        Instant.now(),
+        null,
+        null);
 
     // When a delete subsection request is processed
     PageContentCommand.DeleteSubsection command = new PageContentCommand.DeleteSubsection(4L, 999L, Instant.now());
