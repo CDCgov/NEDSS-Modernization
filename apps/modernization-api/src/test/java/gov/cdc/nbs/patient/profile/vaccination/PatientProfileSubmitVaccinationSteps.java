@@ -64,7 +64,7 @@ public class PatientProfileSubmitVaccinationSteps {
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    String request = "/nbs/api/profile/%d/vaccination/".formatted(patient);
+    String request = "/nbs/api/profile/%d/vaccination".formatted(patient);
 
     activeResponse.active(
         mvc.perform(

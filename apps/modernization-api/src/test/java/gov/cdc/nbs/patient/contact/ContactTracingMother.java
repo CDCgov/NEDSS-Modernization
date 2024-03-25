@@ -5,11 +5,14 @@ import gov.cdc.nbs.entity.odse.NBSEntity;
 import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
 
 @Component
+@ScenarioScope
 class ContactTracingMother {
 
   private static final String TRACING_CLASS = "CON";
@@ -35,6 +38,7 @@ class ContactTracingMother {
     this.cleaner = cleaner;
   }
 
+  @PostConstruct
   void reset() {
     this.cleaner.clean(settings.starting());
     this.tracings.reset();

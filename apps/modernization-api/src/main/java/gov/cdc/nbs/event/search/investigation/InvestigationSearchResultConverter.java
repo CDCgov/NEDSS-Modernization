@@ -1,11 +1,13 @@
 package gov.cdc.nbs.event.search.investigation;
 
+import gov.cdc.nbs.event.search.RelevanceResolver;
+
 import java.util.List;
 
 class InvestigationSearchResultConverter {
 
   static InvestigationSearchResult convert(final SearchableInvestigation searchable, final Double score) {
-    double relevance = score == null ? 0 : score;
+    double relevance = RelevanceResolver.resolve(score);
 
     List<InvestigationSearchResult.PersonParticipation> people = searchable.people()
         .stream().map(InvestigationSearchResultConverter::asPerson)

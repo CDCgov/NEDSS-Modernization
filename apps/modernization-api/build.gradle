@@ -3,7 +3,6 @@ plugins {
     alias libs.plugins.springBoot
 }
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
-apply from: "${rootDir}/gradle/spring-dependency-override.gradle"
 
 group = 'gov.cdc.nbs.modernization'
 version = '1.0.0-SNAPSHOT'

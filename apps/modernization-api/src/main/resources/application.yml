@@ -62,9 +62,11 @@ spring:
         ddl-auto: validate
         default_schema: dbo
         format_sql: true
-#        jdbc.time_zone: UTC
+        jdbc:
+          time_zone: UTC
+        timezone:
+          default_storage: NORMALIZE
         dialect: org.hibernate.dialect.SQLServerDialect
-#        hbm2ddl.jdbc_metadata_extraction_strategy: individually
         type:
           preferred_instant_jdbc_type: TIMESTAMP
   datasource:
