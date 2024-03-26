@@ -48,11 +48,11 @@ const PageInformation = () => {
     };
     useEffect(() => {
         fetchPageInfo();
-        fetchPageHistory().then();
+        fetchPageHistory();
     }, [page]);
 
     useEffect(() => {
-        fetchPageHistory().then();
+        fetchPageHistory();
     }, [currentPage]);
 
     const handleNext = (page: number) => {
