@@ -179,14 +179,23 @@ export const EditBusinessRule = () => {
         const sourceValues = watch.sourceValues?.map((val) => val.text);
         console.log({ sourceValues });
         console.log({ selectedSourceValues });
-        if (
-            form.formState.isDirty ||
-            JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
-            JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers) ||
-            JSON.stringify(sourceValues) !== JSON.stringify(selectedSourceValues)
-        ) {
-            if (checkIsValid()) {
-                console.log('why');
+        if (watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE) {
+            if (
+                checkIsValid() &&
+                (form.formState.isDirty ||
+                    JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
+                    JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers) ||
+                    JSON.stringify(sourceValues) !== JSON.stringify(selectedSourceValues))
+            ) {
+                return true;
+            }
+        } else if (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            if (
+                checkIsValid() &&
+                (form.formState.isDirty ||
+                    JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
+                    JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers))
+            ) {
                 return true;
             }
         } else {
