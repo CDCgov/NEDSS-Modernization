@@ -88,9 +88,10 @@
                         display: flex;
                         flex-direction: row;
                         cursor: pointer;
+                        gap: 1rem;
 
-                        .name {
-                            padding-left: 1rem;
+                        .active {
+                          font-weight: bold;
                         }
                     }
                 }
@@ -104,9 +105,10 @@
                         padding-bottom: 1rem;
                         border-bottom: 1px solid colors.$base-lighter;
                         cursor: pointer;
+                        gap: 1rem;
 
-                        .name {
-                            padding-left: 1rem;
+                        .active {
+                            font-weight: bold;
                         }
                     }
                 }
