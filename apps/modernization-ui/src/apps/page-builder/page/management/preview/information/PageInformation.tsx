@@ -16,7 +16,7 @@ import styles from './page-information.module.scss';
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
     const [totalResults, setTotalResults] = useState(4);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
     const [pageInfo, setPageInfo] = useState<InfoType | undefined>();
     const { pageId } = useParams();
@@ -28,7 +28,7 @@ const PageInformation = () => {
         PageControllerService?.getPageHistoryUsingGet?.({
             authorization: authorization(),
             id: Number(pageId),
-            page: currentPage,
+            page: currentPage - 1,
             size: pageSize
         }).then((rep) => {
             setPageHistory(rep?.content ?? []);
@@ -48,12 +48,15 @@ const PageInformation = () => {
     };
     useEffect(() => {
         fetchPageInfo();
-        fetchPageHistory();
+        fetchPageHistory().then();
     }, [page]);
+
+    useEffect(() => {
+        fetchPageHistory().then();
+    }, [currentPage]);
 
     const handleNext = (page: number) => {
         setCurrentPage(page);
-        fetchPageHistory();
     };
     const handleDownloadMetadata = async () => {
         downloadMetadata(page.id);
@@ -149,7 +152,7 @@ const PageInformation = () => {
                     </div>
                     {totalResults >= pageSize && (
                         <Pagination
-                            className="margin-01 pagination"
+                            className="historyPagination"
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
                             pathname={'/'}
