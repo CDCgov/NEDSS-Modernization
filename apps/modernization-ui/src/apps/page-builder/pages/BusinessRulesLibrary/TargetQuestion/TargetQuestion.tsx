@@ -140,13 +140,16 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                                     <div key={key} className={styles.section}>
                                         <div
                                             className={styles.sectionToggle}
-                                            onClick={() =>
+                                            onClick={() => {
                                                 activeSection === section.id
                                                     ? setActiveSection(0)
-                                                    : setActiveSection(section.id)
-                                            }>
+                                                    : setActiveSection(section.id);
+                                                setTargetList([]);
+                                            }}>
                                             <Icon name={'group'} size={'m'} />
-                                            <span className={styles.name}>{section.name}</span>
+                                            <span className={activeSection === section.id ? styles.active : ''}>
+                                                {section.name}
+                                            </span>
                                         </div>
                                     </div>
                                     {activeSection === section.id && (
@@ -165,7 +168,12 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                                                         }
                                                     }}>
                                                     <Icon name={'group'} size={'m'} />
-                                                    <span className={styles.name}>{subsection.name}</span>
+                                                    <span
+                                                        className={
+                                                            activeSubsection === subsection.id ? styles.active : ''
+                                                        }>
+                                                        {subsection.name}
+                                                    </span>
                                                 </div>
                                             ))}
                                         </div>

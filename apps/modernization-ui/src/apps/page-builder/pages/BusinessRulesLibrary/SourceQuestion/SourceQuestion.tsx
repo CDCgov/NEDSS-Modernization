@@ -16,6 +16,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     const { page } = useGetPageDetails();
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
+    const [activeSubsection, setActiveSubsection] = useState<number>(0);
     const [sourceList, setSourceList] = useState<PagesQuestion[]>([]);
     const [questionSelect, setQuestionSelect] = useState<PagesQuestion | undefined>(undefined);
 
@@ -94,13 +95,16 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                     <div key={key} className={styles.section}>
                                         <div
                                             className={styles.sectionToggle}
-                                            onClick={() =>
+                                            onClick={() => {
                                                 activeSection === section.id
                                                     ? setActiveSection(0)
-                                                    : setActiveSection(section.id)
-                                            }>
+                                                    : setActiveSection(section.id);
+                                                setSourceList([]);
+                                            }}>
                                             <Icon name={'group'} size={'m'} />
-                                            <span className={styles.name}>{section.name}</span>
+                                            <span className={activeSection === section.id ? styles.active : ''}>
+                                                {section.name}
+                                            </span>
                                         </div>
                                     </div>
                                     {activeSection === section.id && (
@@ -110,10 +114,21 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
                                                     key={id}
                                                     className={styles.subsection}
                                                     onClick={() => {
-                                                        handleSourceQuestion(subsection.questions);
+                                                        if (activeSubsection === subsection.id) {
+                                                            setActiveSubsection(0);
+                                                            setSourceList([]);
+                                                        } else {
+                                                            handleSourceQuestion(subsection.questions);
+                                                            setActiveSubsection(subsection.id);
+                                                        }
                                                     }}>
                                                     <Icon name={'group'} size={'m'} />
-                                                    <span className={styles.name}>{subsection.name}</span>
+                                                    <span
+                                                        className={
+                                                            activeSubsection === subsection.id ? styles.active : ''
+                                                        }>
+                                                        {subsection.name}
+                                                    </span>
                                                 </div>
                                             ))}
                                         </div>
