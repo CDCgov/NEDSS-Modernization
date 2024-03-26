@@ -87,6 +87,7 @@
                     .sectionToggle {
                         display: flex;
                         flex-direction: row;
+                        cursor: pointer;
 
                         .name {
                             padding-left: 1rem;
@@ -102,6 +103,7 @@
                         padding-top: 1rem;
                         padding-bottom: 1rem;
                         border-bottom: 1px solid colors.$base-lighter;
+                        cursor: pointer;
 
                         .name {
                             padding-left: 1rem;
