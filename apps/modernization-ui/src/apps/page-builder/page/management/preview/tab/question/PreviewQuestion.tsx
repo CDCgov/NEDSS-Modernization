@@ -64,7 +64,10 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     />
                 )}
                 {displayComponent === 1001 && <RadioButtons options={conceptState} />}
-                {(displayComponent === 1008 || displayComponent === 1009 || displayComponent === 1019) && (
+                {(displayComponent === 1008 ||
+                    displayComponent === 1009 ||
+                    displayComponent === 1019 ||
+                    displayComponent === 1026) && (
                     <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
                 )}
                 {displayComponent === 1017 && (
