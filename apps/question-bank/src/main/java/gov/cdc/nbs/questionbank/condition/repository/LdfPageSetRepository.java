@@ -16,9 +16,9 @@ public interface LdfPageSetRepository extends JpaRepository<LdfPageSet, String> 
     @Modifying
     @Transactional
     @Query("""
-            UPDATE LdfPageSet l \
-            SET l.statusCd = (SELECT c.statusCd FROM ConditionCode c WHERE c.id = l.conditionCd) \
-            WHERE EXISTS (SELECT 1 FROM ConditionCode c WHERE c.id = l.conditionCd)\
+            UPDATE LdfPageSet l
+            SET l.statusCd = l.conditionCd.statusCd
+            WHERE l.conditionCd is not null
             """)
     void updateStatusBasedOnConditionCode();
 
