@@ -223,7 +223,7 @@ export const BusinessRulesForm = ({
             form.reset({
                 ...form.getValues(),
                 comparator: Rule.comparator.EQUAL_TO,
-                sourceValues: []
+                sourceValues: undefined
             });
         }
     }, [watch.anySourceValue]);
