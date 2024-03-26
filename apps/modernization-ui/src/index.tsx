@@ -4,6 +4,10 @@ import reportWebVitals from './reportWebVitals';
 import { AppRoutes } from 'routes/AppRoutes';
 
 import 'styles/global.scss';
+import { OpenAPI as ModernizationAPI } from 'generated';
+import { Config } from 'config';
+
+ModernizationAPI.BASE = Config.modernizationUrl;
 
 render(
     <StrictMode>

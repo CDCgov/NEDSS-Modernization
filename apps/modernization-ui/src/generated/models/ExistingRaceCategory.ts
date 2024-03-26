@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type ExistingRaceCategory = {
-    description?: string;
     identifier?: string;
+    description?: string;
 };
 

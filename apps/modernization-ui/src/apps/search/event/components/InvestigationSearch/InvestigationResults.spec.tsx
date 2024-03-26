@@ -5,6 +5,7 @@ import { InvestigationResults } from './InvestigationResults';
 
 const investigations: [Investigation] = [
     {
+        relevance: 63.1,
         id: '10056296',
         cdDescTxt: '2019 Novel Coronavirus',
         jurisdictionCodeDescTxt: 'Clayton County',

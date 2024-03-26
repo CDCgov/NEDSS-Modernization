@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import { ConceptOptionsService } from 'generated';
 import { Selectable } from 'options/selectable';
-import { authorization } from 'authorization';
 
 type State = { status: 'idle' | 'loading' } | { status: 'loaded'; options: Selectable[] };
 
@@ -42,8 +41,7 @@ const useConceptOptions = (valueSet: string, { lazy = true }: Settings): Concept
 
     useEffect(() => {
         if (state.status === 'loading') {
-            ConceptOptionsService.allUsingGet({
-                authorization: authorization(),
+            ConceptOptionsService.concepts({
                 name: valueSet
             }).then((response) => dispatch({ type: 'loaded', options: response.options }));
         }

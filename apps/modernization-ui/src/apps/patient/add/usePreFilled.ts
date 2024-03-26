@@ -1,19 +1,17 @@
 import { internalizeDate } from 'date';
 import { EncryptionControllerService } from 'generated';
 import { DefaultNewPatentEntry, NewPatientEntry } from 'apps/patient/add';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { UserContext } from 'user';
 import { orNull } from 'utils';
 
 const usePreFilled = (initial: DefaultNewPatentEntry): NewPatientEntry => {
-    const { state } = useContext(UserContext);
     const location = useLocation();
     const [prefilled, setPrefilled] = useState<NewPatientEntry>(initial);
 
     useEffect(() => {
         if (location?.state?.criteria) {
-            decrypt(location.state.criteria, state.getToken).then(withCriteria(initial)).then(setPrefilled);
+            decrypt(location.state.criteria).then(withCriteria(initial)).then(setPrefilled);
         }
     }, [location?.state?.criteria]);
 
@@ -45,10 +43,9 @@ const withCriteria =
         emailAddresses: [{ email: orNull(filter?.email) }]
     });
 
-const decrypt = (criteria: string, token: () => string | undefined) =>
-    EncryptionControllerService.decryptUsingPost({
-        encryptedString: criteria,
-        authorization: `Bearer ${token()}`
+const decrypt = (criteria: string) =>
+    EncryptionControllerService.decrypt({
+        requestBody: criteria
     });
 
 export { usePreFilled };

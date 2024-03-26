@@ -42,7 +42,6 @@ nbs:
         - /v3/api-docs/**
         - /swagger-ui/**
         - /swagger-resources/**
-        - /v2/api-docs/**
         - /login
 
 
@@ -59,16 +58,12 @@ spring:
   jpa:
     properties:
       hibernate:
-        ddl-auto: validate
         default_schema: dbo
         format_sql: true
         jdbc:
           time_zone: UTC
         timezone:
           default_storage: NORMALIZE
-        dialect: org.hibernate.dialect.SQLServerDialect
-        type:
-          preferred_instant_jdbc_type: TIMESTAMP
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa

@@ -3,7 +3,7 @@ import { Configuration } from './configuration';
 import { ConfigurationControllerService } from 'generated';
 
 const currentConfiguration = () =>
-    ConfigurationControllerService.getConfigurationUsingGet({
+    ConfigurationControllerService.getConfiguration({
         authorization: authorization()
     }).then((response) => response as Configuration);
 

@@ -19,11 +19,6 @@ export class ConditionOptionsService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/options/conditions',
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
         });
     }
 
@@ -37,13 +32,7 @@ export class ConditionOptionsService {
         criteria,
         limit = 15,
     }: {
-        /**
-         * criteria
-         */
         criteria: string,
-        /**
-         * limit
-         */
         limit?: number,
     }): CancelablePromise<Array<Option>> {
         return __request(OpenAPI, {
@@ -52,11 +41,6 @@ export class ConditionOptionsService {
             query: {
                 'criteria': criteria,
                 'limit': limit,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }
