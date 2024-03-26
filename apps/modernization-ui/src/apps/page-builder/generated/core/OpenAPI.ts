@@ -19,8 +19,8 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: Config.pageBuilderUrl,
-    VERSION: '1.0',
+    BASE: 'http://localhost:8095/nbs/page-builder',
+    VERSION: '0',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',
     TOKEN: undefined,

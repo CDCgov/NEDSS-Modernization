@@ -12,7 +12,7 @@ const props = {
 };
 
 const addSections = jest.fn();
-const mockAddSectionUsingPost = jest.spyOn(SectionControllerService, 'createSectionUsingPost');
+const mockAddSectionUsingPost = jest.spyOn(SectionControllerService, 'createSection');
 
 describe('AddSectionModal', () => {
     it('should render successfully', () => {

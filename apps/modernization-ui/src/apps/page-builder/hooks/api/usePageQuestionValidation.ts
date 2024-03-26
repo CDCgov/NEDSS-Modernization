@@ -1,5 +1,4 @@
 import { PageQuestionControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 type State =
@@ -36,8 +35,7 @@ export const usePageQuestionDataMartValidation = () => {
 
     useEffect(() => {
         if (state.status === 'validating') {
-            PageQuestionControllerService.validateDatamartUsingGet({
-                authorization: authorization(),
+            PageQuestionControllerService.validateDatamart({
                 page: state.page,
                 questionId: state.questionId,
                 datamart: state.dataMart

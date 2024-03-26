@@ -1,14 +1,13 @@
 import { Label, Radio } from '@trussworks/react-uswds';
 import { CreateNumericQuestionRequest, ValueSetControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput, Selectable } from 'components/FormInputs/SelectInput';
 import { Option } from 'generated';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import styles from '../question-form.module.scss';
 import { AdditionalQuestionFields } from '../QuestionForm';
+import styles from '../question-form.module.scss';
 
 type Props = {
     maskOptions: Option[];
@@ -27,9 +26,7 @@ export const NumericFields = ({ maskOptions, editing = false, published = false 
     const [valueSets, setValueSets] = useState<Selectable[]>([]);
 
     useEffect(() => {
-        ValueSetControllerService.findValueSetOptionsUsingGet({ authorization: authorization() }).then((response) =>
-            setValueSets(response)
-        );
+        ValueSetControllerService.findValueSetOptions().then((response) => setValueSets(response));
         if (!editing) {
             form.reset({
                 ...form.getValues(),

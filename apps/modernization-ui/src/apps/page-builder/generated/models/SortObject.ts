@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Sort = {
-    empty?: boolean;
+export type SortObject = {
     sorted?: boolean;
     unsorted?: boolean;
+    empty?: boolean;
 };
 

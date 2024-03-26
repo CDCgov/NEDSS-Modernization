@@ -6,7 +6,6 @@ import {
     PageInformationService
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
-import { authorization } from 'authorization';
 import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,11 +24,12 @@ const PageInformation = () => {
     const { page } = usePageManagement();
     const { downloadMetadata } = useDownloadPageMetadata();
     const fetchPageHistory = async () => {
-        PageControllerService?.getPageHistoryUsingGet?.({
-            authorization: authorization(),
+        PageControllerService.getPageHistory({
             id: Number(pageId),
-            page: currentPage - 1,
-            size: pageSize
+            pageable: {
+                page: currentPage - 1,
+                size: pageSize
+            }
         }).then((rep) => {
             setPageHistory(rep?.content ?? []);
             setTotalResults(rep?.totalElements ?? 0);
@@ -38,7 +38,6 @@ const PageInformation = () => {
 
     const fetchPageInfo = () => {
         PageInformationService.find({
-            authorization: authorization(),
             page: Number(pageId)
         })
             .then((data: InfoType) => {
@@ -106,7 +105,7 @@ const PageInformation = () => {
                             {renderBlock('Reporting Mechanism', pageInfo?.messageMappingGuide?.name)}
                         </div>
                         <div className={styles.informationBlock}>
-                            {renderBlock('Page name', pageInfo?.name!)}
+                            {renderBlock('Page name', pageInfo?.name)}
                             {renderBlock('Data mart name', pageInfo?.datamart)}
                         </div>
                         <div className={styles.informationBlock}>
@@ -156,9 +155,9 @@ const PageInformation = () => {
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
                             pathname={'/'}
-                            onClickNext={() => handleNext?.(currentPage + 1)}
-                            onClickPrevious={() => handleNext?.(currentPage - 1)}
-                            onClickPageNumber={(_, page) => handleNext?.(page)}
+                            onClickNext={() => handleNext(currentPage + 1)}
+                            onClickPrevious={() => handleNext(currentPage - 1)}
+                            onClickPageNumber={(_, page) => handleNext(page)}
                         />
                     )}
                 </div>

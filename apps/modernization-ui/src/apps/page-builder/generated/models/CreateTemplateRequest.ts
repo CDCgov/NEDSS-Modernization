@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type CreateTemplateRequest = {
-    description: string;
     name: string;
+    description: string;
 };
 

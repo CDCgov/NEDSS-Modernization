@@ -1,5 +1,4 @@
 import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 import { Direction } from 'sorting';
 
@@ -74,15 +73,24 @@ export const useConditionSearch = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : `${ConditionSortField.CONDITION},${Direction.Ascending}`;
 
-            ConditionControllerService.searchConditionsUsingPost({
-                authorization: authorization(),
-                search: { searchText: state.search.searchText ?? '', excludeInUse: true },
-                page: state.search.page,
-                size: state.search.pageSize,
-                sort: sortString
+            ConditionControllerService.searchConditions({
+                requestBody: {
+                    search: { searchText: state.search.searchText ?? '', excludeInUse: true },
+                    pageable: {
+                        page: state.search.page,
+                        size: state.search.pageSize,
+                        sort: sortString ? [sortString] : undefined
+                    }
+                }
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', response, search: state.search }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', response, search: state.search });
+                    } else {
+                        dispatch({ type: 'error', error: 'Failed to find conditions' });
+                    }
+                });
         }
     }, [state.status]);
 

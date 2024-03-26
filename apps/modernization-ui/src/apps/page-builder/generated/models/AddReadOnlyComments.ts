@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type AddReadOnlyComments = {
-    adminComments?: string;
     commentsText?: string;
+    adminComments?: string;
     subSectionId?: number;
 };
 

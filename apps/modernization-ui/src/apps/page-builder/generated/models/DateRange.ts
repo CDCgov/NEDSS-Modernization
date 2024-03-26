@@ -2,11 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Filter } from './Filter';
+import type { FilterJSON } from './FilterJSON';
 
-export type DateRangeFilter = (Filter & {
+export type DateRange = (FilterJSON & {
+    property?: string;
     after?: string;
     before?: string;
+} & {
     property: string;
 });
 

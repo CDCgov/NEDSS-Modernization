@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type SourceQuestion = {
-    codeSetName?: string;
-    label?: string;
     questionIdentifier?: string;
+    label?: string;
+    codeSetName?: string;
 };
 

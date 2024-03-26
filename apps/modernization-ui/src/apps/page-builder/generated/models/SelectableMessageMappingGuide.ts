@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type SelectableMessageMappingGuide = {
-    name?: string;
     value?: string;
+    name?: string;
 };
 

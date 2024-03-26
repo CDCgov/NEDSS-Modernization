@@ -52,8 +52,8 @@ class PagesResponseMapper {
     return items.stream().map(fn).toList();
   }
 
-  private PagesResponse.PageRule asRule(final PagesRule rule) {
-    return new PagesResponse.PageRule(
+  private PagesResponse.BusinessRule asRule(final PagesRule rule) {
+    return new PagesResponse.BusinessRule(
         rule.id(),
         rule.page(),
         rule.logic(),

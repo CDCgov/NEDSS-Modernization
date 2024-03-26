@@ -1,4 +1,4 @@
-import { PageSummaryService, Page_PageSummary_ } from 'apps/page-builder/generated';
+import { PageSummaryService, PagePageSummary } from 'apps/page-builder/generated';
 
 export const fetchPageSummaries = async (
     token: string,
@@ -6,13 +6,16 @@ export const fetchPageSummaries = async (
     sort?: string,
     currentPage?: number,
     pageSize?: number
-): Promise<Page_PageSummary_> =>
+): Promise<PagePageSummary> =>
     PageSummaryService.search({
-        authorization: token,
-        request: { search },
-        page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
-        size: pageSize,
-        sort
+        requestBody: {
+            request: { search },
+            pageable: {
+                page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
+                size: pageSize,
+                sort: sort ? [sort] : undefined
+            }
+        }
     });
 
 export const fetchSinglePageSummary = {};

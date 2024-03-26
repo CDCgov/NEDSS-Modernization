@@ -12,57 +12,30 @@ import { request as __request } from '../core/request';
 export class QuestionControllerHelperService {
 
     /**
-     * getDisplayControlOptions
-     * @returns DisplayControlOptions OK
+     * @returns QuestionValidationResponse OK
      * @throws ApiError
      */
-    public static getDisplayControlOptionsUsingGet({
-        authorization,
+    public static validate({
+        requestBody,
     }: {
-        authorization: string,
-    }): CancelablePromise<DisplayControlOptions> {
+        requestBody: QuestionValidationRequest,
+    }): CancelablePromise<QuestionValidationResponse> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/questions/displayControlOptions',
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            method: 'POST',
+            url: '/api/v1/questions/validate',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * validate
-     * @returns QuestionValidationResponse OK
-     * @returns any Created
+     * @returns DisplayControlOptions OK
      * @throws ApiError
      */
-    public static validateUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: QuestionValidationRequest,
-    }): CancelablePromise<QuestionValidationResponse | any> {
+    public static getDisplayControlOptions(): CancelablePromise<DisplayControlOptions> {
         return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/validate',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            method: 'GET',
+            url: '/api/v1/questions/displayControlOptions',
         });
     }
 

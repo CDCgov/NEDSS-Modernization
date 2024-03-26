@@ -8,7 +8,6 @@ import { PagesSection, PagesSubSection, SubSectionControllerService } from 'apps
 import { ManageSubsectionTile } from './ManageSubsectionTile/ManageSubsectionTile';
 import { AddSubSection } from './AddSubSection';
 import { usePageManagement } from '../../../usePageManagement';
-import { authorization } from 'authorization';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
 
@@ -32,8 +31,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
     };
 
     const onDelete = (subsection: PagesSubSection) => {
-        SubSectionControllerService.deleteSubSectionUsingDelete({
-            authorization: authorization(),
+        SubSectionControllerService.deleteSubSection({
             page: page.id,
             subSectionId: subsection.id
         }).then(() => {
@@ -48,11 +46,10 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
     };
 
     const handleChangeVisibility = (subsection: PagesSubSection, visibility: boolean) => {
-        SubSectionControllerService.updateSubSectionUsingPut({
-            authorization: authorization(),
+        SubSectionControllerService.updateSubSection({
             page: page.id,
             subSectionId: subsection.id,
-            request: { name: subsection.name, visible: visibility }
+            requestBody: { name: subsection.name, visible: visibility }
         }).then(() => {
             refresh?.();
             if (visibility) {
@@ -135,7 +132,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                             </div>
                             <p className={styles.sectionName}>{section?.name}</p>
                         </div>
-                        <Droppable droppableId={section.id!.toString()} type="subsection">
+                        <Droppable droppableId={section.id.toString()} type="subsection">
                             {(provided) => (
                                 <div
                                     className="manage-subsections"

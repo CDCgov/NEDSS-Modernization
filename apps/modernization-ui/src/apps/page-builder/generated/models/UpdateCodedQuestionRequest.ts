@@ -6,26 +6,26 @@ import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdateCodedQuestionRequest = {
-    adminComments?: string;
-    dataMartInfo?: ReportingInfo;
-    defaultValue?: string;
-    description?: string;
-    displayControl?: number;
-    label?: string;
-    messagingInfo?: MessagingInfo;
-    tooltip?: string;
-    type?: UpdateCodedQuestionRequest.type;
     uniqueName?: string;
+    description?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    dataMartInfo?: ReportingInfo;
+    messagingInfo?: MessagingInfo;
+    adminComments?: string;
+    type?: UpdateCodedQuestionRequest.type;
     valueSet?: number;
+    defaultValue?: string;
 };
 
 export namespace UpdateCodedQuestionRequest {
 
     export enum type {
-        CODED = 'CODED',
-        DATE = 'DATE',
-        NUMERIC = 'NUMERIC',
         TEXT = 'TEXT',
+        NUMERIC = 'NUMERIC',
+        DATE = 'DATE',
+        CODED = 'CODED',
     }
 
 

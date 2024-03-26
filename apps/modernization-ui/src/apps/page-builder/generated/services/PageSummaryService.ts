@@ -1,7 +1,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
+import type { Pageable } from '../models/Pageable';
+import type { PagePageSummary } from '../models/PagePageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -12,43 +13,22 @@ export class PageSummaryService {
 
     /**
      * Allows paginated searching of Page Summaries with filters.
-     * @returns Page_PageSummary_ OK
-     * @returns any Created
+     * @returns PagePageSummary OK
      * @throws ApiError
      */
     public static search({
-        authorization,
-        request,
-        page,
-        size,
-        sort,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: PageSummaryRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_PageSummary_ | any> {
+        requestBody: {
+            request?: PageSummaryRequest;
+            pageable?: Pageable;
+        },
+    }): CancelablePromise<PagePageSummary> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/search',
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            url: '/api/v1/pages/search',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { PageRuleControllerService } from 'apps/page-builder/generated';
-import { Rule } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { PageRuleControllerService, Rule } from 'apps/page-builder/generated';
 import { Breadcrumb } from 'breadcrumb';
-import styles from './view-business-rule.module.scss';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
+import styles from './view-business-rule.module.scss';
 
 export const ViewBusinessRule = () => {
     const { ruleId } = useParams();
@@ -13,8 +11,7 @@ export const ViewBusinessRule = () => {
 
     useEffect(() => {
         if (ruleId) {
-            PageRuleControllerService.viewRuleResponseUsingGet({
-                authorization: authorization(),
+            PageRuleControllerService.viewRuleResponse({
                 ruleId: Number(ruleId)
             }).then((response: Rule) => {
                 setRule(response);

@@ -1,5 +1,4 @@
 import { PageRuleControllerService, PagesResponse, SourceQuestionRequest } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 type State =
@@ -33,10 +32,9 @@ export const useGetSourceQuestion = () => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            PageRuleControllerService.getSourceQuestionsUsingPost({
-                authorization: authorization(),
+            PageRuleControllerService.getSourceQuestions({
                 id: state.id,
-                request: state.request
+                requestBody: state.request
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) =>

@@ -1,11 +1,10 @@
-import React from 'react';
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import { SectionControllerService, SubSectionControllerService } from 'apps/page-builder/generated';
-import { RefObject, useContext, useState } from 'react';
-import { UserContext } from 'user';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import './AddSectionModal.scss';
+import React, { RefObject, useContext, useState } from 'react';
+import { UserContext } from 'user';
 import { ToggleButton } from '../ToggleButton';
+import './AddSectionModal.scss';
 
 type CommonProps = {
     modalRef: RefObject<ModalRef>;
@@ -41,17 +40,15 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
     const handleSubmit = async () => {
         try {
             if (isSubSection) {
-                await SubSectionControllerService.createSubsectionUsingPost({
-                    authorization: token,
+                await SubSectionControllerService.createSubsection({
                     page: parseInt(pageId),
-                    request: { name: sectionName, sectionId, visible }
+                    requestBody: { name: sectionName, sectionId, visible }
                 });
                 onAddSection();
             } else {
-                await SectionControllerService.createSectionUsingPost({
-                    authorization: token,
+                await SectionControllerService.createSection({
                     page: parseInt(pageId),
-                    request: { name: sectionName, tabId, visible }
+                    requestBody: { name: sectionName, tabId, visible }
                 });
                 onAddSection();
             }

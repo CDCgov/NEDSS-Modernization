@@ -12,7 +12,7 @@ public record PagesResponse(
     String description,
     long root,
     Collection<PagesTab> tabs,
-    Collection<PageRule> rules) {
+    Collection<BusinessRule> rules) {
 
   PagesResponse(
       long id,
@@ -20,7 +20,7 @@ public record PagesResponse(
       String status,
       String description,
       long root,
-      Collection<PageRule> rules) {
+      Collection<BusinessRule> rules) {
     this(
         id,
         name,
@@ -102,7 +102,7 @@ public record PagesResponse(
   }
 
 
-  public record PageRule(
+  public record BusinessRule(
       long id,
       long page,
       String logic,

@@ -4,8 +4,8 @@
 
 export type County = {
     code?: string;
-    codeSetName?: string;
-    longName?: string;
     shortName?: string;
+    longName?: string;
+    codeSetName?: string;
 };
 

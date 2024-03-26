@@ -10,7 +10,7 @@ import {
     ConditionControllerService,
     PageControllerService,
     PageCreateResponse,
-    Page_Condition_,
+    PageCondition,
     ProgramArea,
     ProgramAreaControllerService,
     Template,
@@ -20,19 +20,19 @@ import {
 import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
-    jest.spyOn(ConditionControllerService, 'findConditionsNotInUseUsingGet').mockReturnValue(
+    jest.spyOn(ConditionControllerService, 'findConditionsNotInUse').mockReturnValue(
         Promise.resolve([{ id: '1' }] as Condition[]) as CancelablePromise<Condition[]>
     );
-    jest.spyOn(ConceptControllerService, 'findConceptsUsingGet').mockReturnValue(
+    jest.spyOn(ConceptControllerService, 'findConcepts').mockReturnValue(
         Promise.resolve([{ conceptCode: 'concept' }] as Concept[]) as CancelablePromise<Concept[]>
     );
-    jest.spyOn(TemplateControllerService, 'findAllTemplatesUsingGet').mockReturnValue(
+    jest.spyOn(TemplateControllerService, 'findAllTemplates').mockReturnValue(
         Promise.resolve([{ id: 2 }]) as CancelablePromise<Template[]>
     );
-    jest.spyOn(ConditionControllerService, 'searchConditionsUsingPost').mockReturnValue(
-        Promise.resolve({}) as CancelablePromise<Page_Condition_>
+    jest.spyOn(ConditionControllerService, 'searchConditions').mockReturnValue(
+        Promise.resolve({}) as CancelablePromise<PageCondition>
     );
-    jest.spyOn(ProgramAreaControllerService, 'getProgramAreasUsingGet').mockReturnValue(
+    jest.spyOn(ProgramAreaControllerService, 'getProgramAreas').mockReturnValue(
         Promise.resolve([] as ProgramArea[]) as CancelablePromise<ProgramArea[]>
     );
 });
@@ -105,7 +105,7 @@ describe('Add New Page', () => {
     });
 
     it('should redirect to classic on create page when non investigation is selected', async () => {
-        const savePage = jest.spyOn(PageControllerService, 'createPageUsingPost');
+        const savePage = jest.spyOn(PageControllerService, 'createPage');
         savePage.mockImplementation(
             (params) => Promise.resolve({} as PageCreateResponse) as CancelablePromise<PageCreateResponse>
         );

@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type CreateSectionRequest = {
-    name?: string;
     tabId?: number;
+    name?: string;
     visible?: boolean;
 };
 

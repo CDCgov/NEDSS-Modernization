@@ -5,10 +5,9 @@ import {
     ConceptControllerService,
     DateQuestion,
     NumericQuestion,
-    Page_Concept_ as PageConcept,
+    PageConcept,
     TextQuestion
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { Direction } from 'sorting';
 
 export type ConceptSearch = {
@@ -66,15 +65,22 @@ export const useFindConcepts = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
 
-            ConceptControllerService.searchConceptsUsingPost({
-                authorization: authorization(),
+            ConceptControllerService.searchConcepts({
                 codeSetNm: state.search.codeSetNm,
-                page: state.search.page,
-                size: state.search.pageSize,
-                sort: sortString
+                requestBody: {
+                    page: state.search.page,
+                    size: state.search.pageSize,
+                    sort: sortString ? [sortString] : undefined
+                }
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', concepts: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', concepts: response });
+                    } else {
+                        dispatch({ type: 'error', error: 'Failed to find concepts' });
+                    }
+                });
         }
     }, [state.status]);
 

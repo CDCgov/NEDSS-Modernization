@@ -1,24 +1,23 @@
+import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
 import {
-    RuleRequest,
     PageRuleControllerService,
     PagesQuestion,
     PagesSection,
     PagesSubSection,
     PagesTab,
-    Rule
+    Rule,
+    RuleRequest
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Breadcrumb } from 'breadcrumb/Breadcrumb';
+import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from './EditBusinessRule.module.scss';
-import { Breadcrumb } from 'breadcrumb/Breadcrumb';
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
-import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { useAlert } from 'alert';
-import { ConfirmationModal } from 'confirmation';
+import styles from './EditBusinessRule.module.scss';
 
 export const EditBusinessRule = () => {
     const form = useForm<RuleRequest>();
@@ -38,8 +37,7 @@ export const EditBusinessRule = () => {
     const [initialTargetIdentifiers, setInitialTargetIdentifiers] = useState<string[]>([]);
 
     useEffect(() => {
-        PageRuleControllerService.viewRuleResponseUsingGet({
-            authorization: authorization(),
+        PageRuleControllerService.viewRuleResponse({
             ruleId: Number(ruleId)
         }).then((response: Rule) => {
             fetchSourceValues(response.sourceQuestion.codeSetName ?? '');
@@ -134,10 +132,9 @@ export const EditBusinessRule = () => {
 
     const onSubmit = form.handleSubmit(async (data) => {
         try {
-            await PageRuleControllerService.updatePageRuleUsingPut({
-                authorization: authorization(),
-                ruleId: Number(ruleId) ?? 0,
-                request: data
+            await PageRuleControllerService.updatePageRule({
+                ruleId: Number(ruleId),
+                requestBody: data
             });
             showAlert({
                 type: 'success',
@@ -204,8 +201,7 @@ export const EditBusinessRule = () => {
     };
 
     const onDelete = () => {
-        PageRuleControllerService.deletePageRuleUsingDelete({
-            authorization: authorization(),
+        PageRuleControllerService.deletePageRule({
             id: page?.id ?? 0,
             ruleId: Number(ruleId)
         }).then(() => {

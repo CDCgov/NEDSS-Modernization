@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type ReadConditionRequest = {
-    excludeInUse?: boolean;
     searchText?: string;
+    excludeInUse?: boolean;
 };
 

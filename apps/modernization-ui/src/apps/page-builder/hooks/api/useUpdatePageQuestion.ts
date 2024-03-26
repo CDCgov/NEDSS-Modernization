@@ -1,13 +1,12 @@
 import {
     CancelablePromise,
+    EditableQuestion,
     PageQuestionControllerService,
-    PagesQuestion,
     UpdatePageCodedQuestionRequest,
     UpdatePageDateQuestionRequest,
     UpdatePageNumericQuestionRequest,
     UpdatePageTextQuestionRequest
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 export type UpdatePageQuestionRequest =
@@ -19,12 +18,12 @@ export type UpdatePageQuestionRequest =
 type State =
     | { status: 'idle' }
     | { status: 'updating'; page: number; questionId: number; request: UpdatePageQuestionRequest }
-    | { status: 'complete'; response: PagesQuestion }
+    | { status: 'complete'; response: EditableQuestion }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'update'; page: number; questionId: number; request: UpdatePageQuestionRequest }
-    | { type: 'complete'; response: PagesQuestion }
+    | { type: 'complete'; response: EditableQuestion }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
@@ -47,39 +46,35 @@ export const useUpdatePageQuestion = () => {
 
     useEffect(() => {
         if (state.status === 'updating') {
-            let request: CancelablePromise<PagesQuestion>;
+            let request: CancelablePromise<EditableQuestion>;
 
             switch (state.request.questionType) {
                 case 'CODED':
-                    request = PageQuestionControllerService.updatePageCodedQuestionUsingPut({
-                        authorization: authorization(),
+                    request = PageQuestionControllerService.updatePageCodedQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        request: state.request
+                        requestBody: state.request
                     });
                     break;
                 case 'TEXT':
-                    request = PageQuestionControllerService.updatePageTextQuestionUsingPut({
-                        authorization: authorization(),
+                    request = PageQuestionControllerService.updatePageTextQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        request: state.request
+                        requestBody: state.request
                     });
                     break;
                 case 'DATE':
-                    request = PageQuestionControllerService.updatePageDateQuestionUsingPut({
-                        authorization: authorization(),
+                    request = PageQuestionControllerService.updatePageDateQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        request: state.request
+                        requestBody: state.request
                     });
                     break;
                 case 'NUMERIC':
-                    request = PageQuestionControllerService.updatePageNumericQuestionUsingPut({
-                        authorization: authorization(),
+                    request = PageQuestionControllerService.updatePageNumericQuestion({
                         page: state.page,
                         questionId: state.questionId,
-                        request: state.request
+                        requestBody: state.request
                     });
                     break;
                 default:

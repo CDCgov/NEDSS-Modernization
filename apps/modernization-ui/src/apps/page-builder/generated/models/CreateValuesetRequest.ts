@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type CreateValuesetRequest = {
-    code: string;
-    description?: string;
-    name: string;
     type: string;
+    code: string;
+    name: string;
+    description?: string;
 };
 

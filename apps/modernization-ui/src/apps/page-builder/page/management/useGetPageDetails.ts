@@ -1,5 +1,4 @@
 import { PagesResponse, PagesService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -53,8 +52,7 @@ export const useGetPageDetails = (): Interaction => {
 
     useEffect(() => {
         if (state.status === 'fetching' || state.status === 'refreshing') {
-            PagesService.detailsUsingGet({
-                authorization: authorization(),
+            PagesService.details({
                 id: state.page
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))

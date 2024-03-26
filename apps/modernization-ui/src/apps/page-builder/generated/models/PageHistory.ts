@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type PageHistory = {
-    lastUpdatedBy?: string;
-    lastUpdatedDate?: string;
-    notes?: string;
     publishVersionNbr?: string;
+    lastUpdatedDate?: string;
+    lastUpdatedBy?: string;
+    notes?: string;
 };
 

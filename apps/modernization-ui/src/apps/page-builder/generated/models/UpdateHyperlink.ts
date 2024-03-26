@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type UpdateHyperlink = {
-    adminComments?: string;
     label?: string;
     linkUrl?: string;
+    adminComments?: string;
 };
 
