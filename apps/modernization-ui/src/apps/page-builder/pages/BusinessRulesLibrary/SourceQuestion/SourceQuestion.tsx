@@ -29,6 +29,7 @@ export const SourceQuestion = ({ ruleFunction, onSubmit, onCancel }: Props) => {
     const onReset = () => {
         setActiveTab(0);
         setActiveSection(0);
+        setActiveSubsection(0);
         setSourceList([]);
         setQuestionSelect(undefined);
     };

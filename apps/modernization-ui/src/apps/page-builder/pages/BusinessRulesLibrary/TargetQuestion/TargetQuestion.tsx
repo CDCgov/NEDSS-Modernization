@@ -43,6 +43,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                     sourceQuestion: sourceQuestion
                 });
             }
+            setSelectedList([]);
         }
     }, [ruleFunction, JSON.stringify(sourceQuestion)]);
 

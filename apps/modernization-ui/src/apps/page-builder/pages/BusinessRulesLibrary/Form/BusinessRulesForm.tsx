@@ -322,6 +322,9 @@ export const BusinessRulesForm = ({
                                         <Icon.Close
                                             onClick={() => {
                                                 setSourceQuestion(undefined);
+                                                setTargetQuestion(undefined);
+                                                form.setValue('targetIdentifiers', []);
+                                                form.setValue('targetValueText', undefined);
                                                 form.setValue('sourceValues', undefined);
                                             }}
                                         />
