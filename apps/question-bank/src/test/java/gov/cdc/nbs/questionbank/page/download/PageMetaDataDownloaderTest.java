@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -38,11 +39,6 @@ class PageMetaDataDownloaderTest {
     MockitoAnnotations.openMocks(this);
   }
 
-  @Captor
-  private ArgumentCaptor<PreparedStatementSetter> setterCaptor;
-
-  @Mock
-  private ResultSet resultSet;
 
   @Test
   void testDownloadPageMetadataByWaTemplateUid() throws IOException {
@@ -62,11 +58,13 @@ class PageMetaDataDownloaderTest {
     XSSFWorkbook workbook = new XSSFWorkbook();
     Sheet sheet = workbook.createSheet("TestSheet");
 
-    String[] header = {"Name", "Age", "Date"};
+    String[] header = {"Name", "Age", "Date", "Gender"};
     List<Object[]> dataList = Arrays.asList(
         new Object[] {"John Doe", 30, new Date()},
         new Object[] {"Jane Smith", 28, new Date()},
-        new Object[] {"Tom Brown", 35, new Date()});
+        new Object[] {"Tom Brown", 35, new Date()},
+        new Object[] {"Gender", "Male", new Date()});
+
     pageMetaDataDownloader.printSheet(workbook, sheet, header, dataList);
 
     Row headerRow = sheet.getRow(0);
@@ -109,29 +107,38 @@ class PageMetaDataDownloaderTest {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
-  void testFindPageMetadataByWaTemplateUid() throws SQLException {
+  void testFindPageMetadataByWaTemplateUid() {
     Long waTemplateUid = 1L;
-    when(jdbcTemplate.query(anyString(), setterCaptor.capture(), any(RowMapper.class))).thenAnswer(invocation -> {
-      Object[] row = new Object[] {"value1", "value2", "value3"};
-      return List.of(row);
-    });
-    when(resultSet.getMetaData()).thenReturn(mock(ResultSetMetaData.class));
-    when(resultSet.getMetaData().getColumnCount()).thenReturn(3);
-    when(resultSet.getObject(1)).thenReturn("value1");
-    when(resultSet.getObject(2)).thenReturn("value2");
-    when(resultSet.getObject(3)).thenReturn("value3");
+
+    when(jdbcTemplate.query(anyString(), any(PreparedStatementSetter.class), any(RowMapper.class))).thenAnswer(
+        invocation -> {
+          PreparedStatementSetter setter = invocation.getArgument(1);
+          setter.setValues(mock(PreparedStatement.class));
+
+          RowMapper<Object[]> rowMapper = invocation.getArgument(2);
+
+          // Create a mock ResultSet with metadata and values
+          ResultSet resultSet = mock(ResultSet.class);
+          ResultSetMetaData metaData = mock(ResultSetMetaData.class);
+          when(metaData.getColumnCount()).thenReturn(3);
+          when(resultSet.getMetaData()).thenReturn(metaData);
+          when(resultSet.getObject(1)).thenReturn("value1");
+          when(resultSet.getObject(2)).thenReturn("value2");
+          when(resultSet.getObject(3)).thenReturn("value3");
+
+          Object[] result = rowMapper.mapRow(resultSet, 1);
+          return List.of(result);
+        });
 
     List<Object[]> simpleQuestion = pageMetaDataDownloader.findSimpleQuestionByWaTemplateUid(waTemplateUid);
-    assertEquals(3, simpleQuestion.size());
-    List<Object[]> comprehensiveQuestion =
-        pageMetaDataDownloader.findComprehensiveQuestionByWaTemplateUid(waTemplateUid);
-    assertEquals(3, comprehensiveQuestion.size());
+    List<Object[]> comprehensive = pageMetaDataDownloader.findComprehensiveQuestionByWaTemplateUid(waTemplateUid);
+    List<Object[]> questionVocabulary = pageMetaDataDownloader.findPageQuestionVocabularyByWaTemplateUid(waTemplateUid);
     List<Object[]> pageVocabulary = pageMetaDataDownloader.findPageVocabularyByWaTemplateUid(waTemplateUid);
+
+    assertEquals(3, simpleQuestion.size());
+    assertEquals(3, comprehensive.size());
+    assertEquals(3, questionVocabulary.size());
     assertEquals(3, pageVocabulary.size());
-    List<Object[]> pageQuestionVocabulary =
-        pageMetaDataDownloader.findPageQuestionVocabularyByWaTemplateUid(waTemplateUid);
-    assertEquals(3, pageQuestionVocabulary.size());
   }
 
 
