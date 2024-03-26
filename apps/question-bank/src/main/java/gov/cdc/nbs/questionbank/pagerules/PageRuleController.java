@@ -33,6 +33,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 @RequestMapping("/api/v1/pages/{id}/rules")
+@SuppressWarnings("squid:S107")
 public class PageRuleController {
 
   private final PageRuleDeleter pageRuleDeleter;
