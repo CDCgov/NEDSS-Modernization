@@ -2,6 +2,7 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import styles from './section.module.scss';
 import classNames from 'classnames';
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
+import { useState } from 'react';
 
 type Props = {
     name: string;
@@ -23,6 +24,11 @@ export const SectionHeader = ({
     handleManageSubsection,
     isExpanded
 }: Props) => {
+    const [close, setClose] = useState(false);
+    const handleDeleteSectionClick = () => {
+        setClose(true);
+        handleDeleteSection();
+    };
     return (
         <div className={classNames(styles.header, { [styles.expanded]: isExpanded })}>
             <div className={styles.info}>
@@ -38,12 +44,12 @@ export const SectionHeader = ({
                 <Button type="button" onClick={handleManageSubsection} outline className={styles.settingBtn}>
                     <Icon.Settings size={3} />
                 </Button>
-                <MoreOptions header={<Icon.MoreVert size={4} />}>
+                <MoreOptions header={<Icon.MoreVert size={4} onClick={() => setClose(false)} />} close={close}>
                     <Button type="button" onClick={handleEditSection}>
                         <Icon.Edit size={3} /> Edit section
                     </Button>
 
-                    <Button type="button" onClick={handleDeleteSection}>
+                    <Button type="button" onClick={handleDeleteSectionClick}>
                         <Icon.Delete size={3} /> Delete section
                     </Button>
                 </MoreOptions>

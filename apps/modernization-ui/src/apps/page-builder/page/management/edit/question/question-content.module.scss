@@ -52,6 +52,23 @@
             .icon {
                 margin-left: 0.5rem;
             }
+
+            .multiElements {
+                display: flex;
+                .searchBtn,
+                .quickCodeLookupBtn {
+                    margin-top: 0.5rem;
+                    margin-right: 0;
+                    height: 2.5rem;
+                }
+                .dividerText {
+                    margin: 1rem;
+                    padding-top: 0.2rem;
+                }
+                .quickCodeLookupBtn {
+                    margin-left: 0.5rem;
+                }
+            }
         }
     }
 }

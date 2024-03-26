@@ -8,6 +8,7 @@ Feature: Investigation search
     And I can "VIEW" any "INVESTIGATION" for "ARBO" within all jurisdictions
     And I have a patient
     And the patient is a subject of an investigation
+    And investigations are available for search
     And I have another patient
     And the patient is a subject of an investigation
 
@@ -31,6 +32,15 @@ Feature: Investigation search
     And the investigation was created by investigation-creator on 01/27/2011
     And the investigation is available for search
     And I want to find investigations created by investigation-creator
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can search for Investigations created on a specific day
+    Given the "investigation-creator" user exists
+    And the investigation was created by investigation-creator on 01/27/2011
+    And the investigation is available for search
+    And I want to find investigations created on 01/27/2011
     When I search for investigations
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
@@ -64,7 +74,7 @@ Feature: Investigation search
   Scenario: I cannot find Investigations when investigations are not within the Program Area
     Given the investigation is for ARBO within Dekalb County
     And the investigation is available for search
-    And I want to find investigations within the STD Program Area
+    And I want to find investigations within the BMIRD Program Area
     When I search for investigations
     Then there are no investigation search results available
 
@@ -128,33 +138,58 @@ Feature: Investigation search
     And I want to find investigations with a <status> status of <value>
     When I search for investigations
     Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
 
     Examples:
       | status       | value                  |
-      | processing   | UNASSIGNED             |
       | processing   | Awaiting Interview     |
       | processing   | Field Follow-up        |
       | processing   | No Follow-up           |
       | processing   | Open Case              |
       | processing   | Surveillance Follow-up |
-      | notification | UNASSIGNED             |
       | notification | Approved               |
       | notification | Completed              |
       | notification | Message Failed         |
       | notification | Pending Approval       |
       | notification | Rejected               |
-      | case         | UNASSIGNED             |
       | case         | Confirmed              |
       | case         | Not a Case             |
       | case         | Probable               |
       | case         | Suspect                |
       | case         | Unknown                |
 
+  Scenario Outline: I can find an investigation by different status fields
+    Given the investigation is available for search
+    And I want to find investigations with a <status> status of UNASSIGNED
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+
+    Examples:
+      | status       |
+      | processing   |
+      | notification |
+      | case         |
 
   Scenario: I can find investigations started on a specific day
     Given the investigation was started on 08/19/2011
     And the investigation is available for search
     And I want to find investigations started on 08/19/2011
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can find open investigations
+    Given the investigation was closed on 09/17/2018
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want to find open investigations
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+
+  Scenario: I can find closed investigations
+    Given the investigation was closed on 09/17/2018
+    And the investigation is available for search
+    And I want to find closed investigations
     When I search for investigations
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
@@ -222,3 +257,39 @@ Feature: Investigation search
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
 
+  Scenario: I can search for Investigations investigated by a specific provider
+    Given the patient has a lab report
+    And there is a provider named "Nancy" "Wheeler"
+    And the investigation was investigated by the provider
+    And the investigation is available for search
+    And I want to find investigations investigated by the provider
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can search for Investigations reported by a specific facility
+    Given the patient has a lab report
+    And the investigation was reported by the Emory University Hospital facility
+    And the investigation is available for search
+    And I want to find investigations reported by the Emory University Hospital facility
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can search for Investigations reported by a specific provider
+    Given there is a provider named "Robin" "Buckley"
+    And the investigation was reported by the provider
+    And the investigation is available for search
+    And I want to find investigations reported by the provider
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+    Scenario: I can search for Investigations related to an outbreak
+      Given "Peanuts at Fratelli's Restaurant" caused an outbreak
+      And the investigation is related to the Peanuts at Fratelli's Restaurant outbreak
+      And the investigation is available for search
+      And I want to find investigations related to the Peanuts at Fratelli's Restaurant outbreak
+      When I search for investigations
+      Then the Investigation search results contain the Investigation
+      And there is only one investigation search result

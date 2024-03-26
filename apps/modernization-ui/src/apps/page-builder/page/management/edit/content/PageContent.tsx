@@ -35,9 +35,9 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
     const [currentGroupSubsection, setCurrentGroupSubsection] = useState<PagesSubSection | undefined>(undefined);
     const [currentEditQuestion, setCurrentEditQuestion] = useState<PagesQuestion>();
     const [currentEditValueset, setCurrentEditValueset] = useState<string | undefined>(undefined);
-    const [subsectionId, setSubsectionId] = useState<number>(-1);
-    const { error, response, add } = useAddQuestionsToPage();
-    const { showAlert } = useAlert();
+    const [currentSubsection, setCurrentSubsection] = useState<PagesSubSection | undefined>(undefined);
+    const { error, response, addQuestionsToPage } = useAddQuestionsToPage();
+    const { showAlert, showError } = useAlert();
     const { page, refresh } = usePageManagement();
 
     const editStaticElementRef = useRef<ModalRef>(null);
@@ -47,8 +47,8 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
     const changeValuesetModalRef = useRef<ModalRef>(null);
     const groupQuestionModalRef = useRef<ModalRef>(null);
 
-    const handleAddQuestion = (subsection: number) => {
-        setSubsectionId(subsection);
+    const handleAddQuestion = (subsection: PagesSubSection) => {
+        setCurrentSubsection(subsection);
         addQuestionModalRef.current?.toggleModal();
     };
 
@@ -71,8 +71,10 @@ export const PageContent = ({ tab, handleAddSection, handleManageSection, handle
     };
 
     const handleAddQuestionClose = (questions: number[]) => {
-        if (questions.length > 0 && subsectionId && page.id) {
-            add(questions, subsectionId, page.id);
+        if (currentSubsection?.isGrouped && (currentSubsection?.questions.length ?? 0) + questions.length > 20) {
+            showError({ message: 'Grouped subsections are limited to a total of 20 questions' });
+        } else if (questions.length > 0 && currentSubsection?.id && page.id) {
+            addQuestionsToPage(questions, currentSubsection.id, page.id);
         }
     };
 

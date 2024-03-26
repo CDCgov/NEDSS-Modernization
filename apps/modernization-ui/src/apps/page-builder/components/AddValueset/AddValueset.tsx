@@ -14,16 +14,18 @@ type Props = {
     onCreated: (valueset: string) => void;
 };
 export const AddValueset = ({ onClose, onCancel, onCreated }: Props) => {
-    const { alertSuccess, alertError } = useAlert();
+    const { showSuccess, showError } = useAlert();
     const form = useForm<CreateValuesetRequest>({ mode: 'onBlur', defaultValues: { type: 'PHIN' } });
 
     const handleCreate = () => {
         ValueSetControllerService.createUsingPost({ authorization: authorization(), request: { ...form.getValues() } })
             .then((response: Valueset) => {
-                alertSuccess({ message: `Successfully created value set: ${response.name}` });
+                showSuccess({ message: `Successfully created value set: ${response.name}` });
                 onCreated(response.code);
             })
-            .catch((error) => alertError({ message: error.message }));
+            .catch((error) => {
+                showError({ message: error?.body?.message ?? 'Failed to create value set' });
+            });
     };
 
     return (

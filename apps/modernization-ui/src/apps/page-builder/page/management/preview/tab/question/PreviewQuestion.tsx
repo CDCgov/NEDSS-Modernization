@@ -1,7 +1,7 @@
 import { PagesQuestion } from 'apps/page-builder/generated';
 import styles from './preview-question.module.scss';
 import { Input } from 'components/FormInputs/Input';
-import { Icon } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButton';
 import { useEffect, useState } from 'react';
@@ -61,16 +61,23 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         defaultValue={''}
                         options={conceptState}
                         data-testid="dropdown-input"
-                        disabled={true}
-                        className={styles.readonlySelectDropdown}
                     />
                 )}
                 {displayComponent === 1001 && <RadioButtons options={conceptState} />}
-                {(displayComponent === 1008 ||
-                    displayComponent === 1009 ||
-                    displayComponent === 1019 ||
-                    displayComponent === 1017) && (
+                {(displayComponent === 1008 || displayComponent === 1009 || displayComponent === 1019) && (
                     <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
+                )}
+                {displayComponent === 1017 && (
+                    <div className={styles.multiElements}>
+                        <Button type="button" className={styles.searchBtn} outline onClick={() => {}}>
+                            Search
+                        </Button>
+                        <span className={styles.dividerText}>Or</span>
+                        <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
+                        <Button type="button" className={styles.quickCodeLookupBtn} outline onClick={() => {}}>
+                            Quick code lookup
+                        </Button>
+                    </div>
                 )}
             </div>
             {question.dataType === 'DATE' && (

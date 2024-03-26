@@ -2,15 +2,20 @@ package gov.cdc.nbs.option.concept;
 
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class ConceptSteps {
+public class ConceptOptionSteps {
 
-  @Autowired
-  ConceptMother mother;
+  private final ConceptOptionMother mother;
 
-  @Autowired
-  RaceConceptMother raceConceptMother;
+  private final RaceConceptMother raceConceptMother;
+
+  ConceptOptionSteps(
+      final ConceptOptionMother mother,
+      final RaceConceptMother raceConceptMother
+  ) {
+    this.mother = mother;
+    this.raceConceptMother = raceConceptMother;
+  }
 
   @Before
   public void clean() {

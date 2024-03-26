@@ -98,6 +98,18 @@ export const QuestionContent = ({
                             multiline
                         />
                     )}
+                    {displayComponent === 1017 && (
+                        <div className={styles.multiElements}>
+                            <Button type="button" className={styles.searchBtn} outline onClick={() => {}}>
+                                Search
+                            </Button>
+                            <span className={styles.dividerText}>Or</span>
+                            <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
+                            <Button type="button" className={styles.quickCodeLookupBtn} outline onClick={() => {}}>
+                                Quick code lookup
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 {type === 'DATE' && <Icon.CalendarToday size={4} className={styles.icon} data-testid="calendar-icon" />}

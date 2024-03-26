@@ -799,6 +799,15 @@ public class WaUiMetadata {
     updated(command);
   }
 
+  public void addToExistingGroup(String blockName, Integer groupSeqNbr, Integer pivotNumber) {
+    this.blockNm = blockName;
+    this.batchTableAppearIndCd = 'N';
+    this.questionGroupSeqNbr = groupSeqNbr;
+    if (waRdbMetadatum != null) {
+      waRdbMetadatum.setBlockPivotNbr(pivotNumber);
+    }
+  }
+
   public void update(PageContentCommand.UnGroupSubsection command) {
     this.blockNm = null;
     this.questionGroupSeqNbr = null;

@@ -85,6 +85,20 @@ public record SearchableInvestigation(
     List<Identifier> identifiers
 ) {
 
+  public static final String IDENTIFICATION = "act_ids";
+  public static final String IDENTIFICATION_TYPE = "act_ids.type_cd";
+  public static final String IDENTIFICATION_SEQUENCE = "act_ids.act_id_seq";
+  public static final String IDENTIFICATION_VALUE = "act_ids.root_extension_txt";
+
+  public static final String PERSON = "person_participations";
+  public static final String PERSON_TYPE = "person_participations.type_cd";
+  public static final String PERSON_SUBJECT = "person_participations.subject_class_cd";
+  public static final String PERSON_IDENTIFIER = "person_participations.entity_id";
+
+  public static final String ORGANIZATION = "organization_participations";
+  public static final String ORGANIZATION_TYPE = "organization_participations.type_cd";
+  public static final String ORGANIZATION_IDENTIFIER = "organization_participations.entity_id";
+
   public SearchableInvestigation(
       long identifier,
       String classCode,

@@ -12,6 +12,7 @@ import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
+import gov.cdc.nbs.support.provider.ProviderIdentifier;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
@@ -274,6 +275,81 @@ public class InvestigationMother {
     relatedTo.setRootExtensionTxt(number);
 
     act.addIdentifier(relatedTo);
+
+  }
+
+  void relatedToOutbreak(
+      final InvestigationIdentifier identifier,
+      final String outbreak
+  ) {
+    PublicHealthCase investigation = managed(identifier);
+    investigation.outbreak(outbreak);
+  }
+
+  void reportedBy(final InvestigationIdentifier identifier, final long organization) {
+    PublicHealthCase investigation = managed(identifier);
+    Act act = investigation.act();
+
+
+    Participation participation = new Participation();
+    participation.setId(new ParticipationId(organization, identifier.identifier(), "OrgAsReporterOfPHC"));
+    participation.setActClassCd(act.getClassCd());
+    participation.setSubjectClassCd("ORG");
+    participation.setRecordStatusCd(RecordStatus.ACTIVE);
+    participation.setRecordStatusTime(settings.createdOn());
+    participation.setAddTime(settings.createdOn());
+    participation.setAddUserId(settings.createdBy());
+    participation.setActUid(act);
+
+
+    act.addParticipation(participation);
+  }
+
+  void reportedBy(
+      final InvestigationIdentifier identifier,
+      final ProviderIdentifier provider
+  ) {
+    PublicHealthCase investigation = managed(identifier);
+
+    Act act = investigation.act();
+
+    Participation participation = new Participation();
+    participation.setId(
+        new ParticipationId(
+            provider.identifier(),
+            identifier.identifier(),
+            "PerAsReporterOfPHC"
+        )
+    );
+    participation.setActClassCd(act.getClassCd());
+    participation.setSubjectClassCd("PSN");
+
+    participation.setRecordStatusCd(RecordStatus.ACTIVE);
+    participation.setRecordStatusTime(settings.createdOn());
+    participation.setAddTime(settings.createdOn());
+    participation.setAddUserId(settings.createdBy());
+    participation.setActUid(act);
+
+    act.addParticipation(participation);
+
+  }
+  void investigatedBy(final InvestigationIdentifier identifier, final ProviderIdentifier investigator) {
+    PublicHealthCase investigation = managed(identifier);
+
+    Act act = investigation.act();
+
+    Participation participation = new Participation();
+    participation.setId(new ParticipationId(investigator.identifier(), identifier.identifier(), "InvestgrOfPHC"));
+    participation.setActClassCd(act.getClassCd());
+    participation.setSubjectClassCd("PSN");
+
+    participation.setRecordStatusCd(RecordStatus.ACTIVE);
+    participation.setRecordStatusTime(settings.createdOn());
+    participation.setAddTime(settings.createdOn());
+    participation.setAddUserId(settings.createdBy());
+    participation.setActUid(act);
+
+    act.addParticipation(participation);
 
   }
 

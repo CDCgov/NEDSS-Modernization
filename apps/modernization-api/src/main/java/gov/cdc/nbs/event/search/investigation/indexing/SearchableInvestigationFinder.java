@@ -38,29 +38,55 @@ class SearchableInvestigationFinder {
           [notification].add_time as notification_add_time,
           coalesce([notification].record_status_cd,'UNASSIGNED') as notification_record_status_cd
       from Public_health_case [investigation]
-      
+            
           join act on
                   [act].act_uid = [investigation].public_health_case_uid
-      
+            
           join nbs_srte.dbo.Condition_code [condition] on
                           [condition].condition_cd = [investigation].cd
-      
+            
           join NBS_SRTE.dbo.Jurisdiction_code [jurisdiction] on
                   [jurisdiction].code = [investigation].jurisdiction_cd
-      
+            
           left join Act_relationship [notified] with (nolock) on
                   [notified].[target_act_uid] = [investigation].[public_health_case_uid]
               and [notified].type_cd = 'Notification'
               and [notified].[target_class_cd] = 'CASE'
               and [notified].[source_class_cd] = 'NOTF'
               and [notified].record_status_cd = 'ACTIVE'
-      
+            
           left join [Notification] [notification] with (nolock) on
                   [notification].[notification_uid] = [notified].[source_act_uid]
-      
+            
       where [investigation].[public_health_case_uid] = ?
       """;
   private static final int IDENTIFIER_PARAMETER = 1;
+  private static final int IDENTIFIER_COLUMN = 1;
+  private static final int CLASS_CODE_COLUMN = 2;
+  private static final int MOOD_COLUMN = 3;
+  private static final int PROGRAM_AREA_COLUMN = 4;
+  private static final int JURISDICTION_COLUMN = 5;
+  private static final int JURISDICTION_NAME_COLUMN = 6;
+  private static final int OID_COLUMN = 7;
+  private static final int CASE_CLASS_COLUMN = 8;
+  private static final int CASE_TYPE_COLUMN = 9;
+  private static final int OUTBREAK_COLUMN = 10;
+  private static final int CONDITION_NAME_COLUMN = 11;
+  private static final int CONDITION_COLUMN = 12;
+  private static final int PREGNANCY_STATUS_COLUMN = 13;
+  private static final int LOCAL_COLUMN = 14;
+  private static final int CREATED_BY_COLUMN = 15;
+  private static final int CREATED_ON_COLUMN = 16;
+  private static final int UPDATED_BY_COLUMN = 17;
+  private static final int UPDATED_ON_COLUMN = 18;
+  private static final int REPORTED_ON_COLUMN = 19;
+  private static final int STARTED_ON_COLUMN = 20;
+  private static final int CLOSED_ON_COLUMN = 21;
+  private static final int PROCESSING_COLUMN = 22;
+  private static final int STATUS_COLUMN = 23;
+  private static final int NOTIFICATION_COLUMN = 24;
+  private static final int NOTIFIED_ON_COLUMN = 25;
+  private static final int NOTIFICATION_STATUS_COLUMN = 26;
 
   private final JdbcTemplate template;
   private final SearchableInvestigationRowMapper mapper;
@@ -69,32 +95,32 @@ class SearchableInvestigationFinder {
     this.template = template;
     this.mapper = new SearchableInvestigationRowMapper(
         new SearchableInvestigationRowMapper.Column(
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19,
-            20,
-            21,
-            22,
-            23,
-            24,
-            25,
-            26
+            IDENTIFIER_COLUMN,
+            CLASS_CODE_COLUMN,
+            MOOD_COLUMN,
+            PROGRAM_AREA_COLUMN,
+            JURISDICTION_COLUMN,
+            JURISDICTION_NAME_COLUMN,
+            OID_COLUMN,
+            CASE_CLASS_COLUMN,
+            CASE_TYPE_COLUMN,
+            OUTBREAK_COLUMN,
+            CONDITION_NAME_COLUMN,
+            CONDITION_COLUMN,
+            PREGNANCY_STATUS_COLUMN,
+            LOCAL_COLUMN,
+            CREATED_BY_COLUMN,
+            CREATED_ON_COLUMN,
+            UPDATED_BY_COLUMN,
+            UPDATED_ON_COLUMN,
+            REPORTED_ON_COLUMN,
+            STARTED_ON_COLUMN,
+            CLOSED_ON_COLUMN,
+            PROCESSING_COLUMN,
+            STATUS_COLUMN,
+            NOTIFICATION_COLUMN,
+            NOTIFIED_ON_COLUMN,
+            NOTIFICATION_STATUS_COLUMN
         )
     );
   }

@@ -11,7 +11,7 @@ type InvestigationResults {
 }
 
 type InvestigationPersonParticipation {
-    birthTime: DateTime
+    birthTime: Date
     currSexCd: String
     typeCd: String!
     firstName: String
@@ -26,7 +26,7 @@ type Investigation {
     cdDescTxt: String
     jurisdictionCodeDescTxt: String
     localId: String
-    addTime: DateTime
+    addTime: Date
     investigationStatusCd: String
     notificationRecordStatusCd: String
     personParticipations: [InvestigationPersonParticipation!]!

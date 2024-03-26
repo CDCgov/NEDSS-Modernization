@@ -48,7 +48,7 @@ export const useAddQuestionsToPage = () => {
         error: state.status === 'error' ? state.error : undefined,
         isLoading: state.status === 'adding',
         response: state.status === 'complete' ? state.response : undefined,
-        add: (questions: number[], subsection: number, page: number) =>
+        addQuestionsToPage: (questions: number[], subsection: number, page: number) =>
             dispatch({ type: 'add', add: { questions, subsection, page } })
     };
 
