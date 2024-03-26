@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Pageable } from '../models/Pageable';
 import type { PagePageSummary } from '../models/PagePageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 
@@ -18,15 +17,32 @@ export class PageSummaryService {
      */
     public static search({
         requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
-        requestBody: {
-            request?: PageSummaryRequest;
-            pageable?: Pageable;
-        },
+        requestBody: PageSummaryRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PagePageSummary> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/search',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });

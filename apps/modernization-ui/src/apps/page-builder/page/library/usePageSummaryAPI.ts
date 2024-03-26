@@ -8,14 +8,10 @@ export const fetchPageSummaries = async (
     pageSize?: number
 ): Promise<PagePageSummary> =>
     PageSummaryService.search({
-        requestBody: {
-            request: { search },
-            pageable: {
-                page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
-                size: pageSize,
-                sort: sort ? [sort] : undefined
-            }
-        }
+        requestBody: { search },
+        page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
+        size: pageSize,
+        sort: sort ? [sort] : undefined
     });
 
 export const fetchSinglePageSummary = {};

@@ -82,16 +82,12 @@ const usePageSummarySearch = () => {
         if (state.status === 'searching') {
             PageSummaryService.search({
                 requestBody: {
-                    request: {
-                        search: state.keyword,
-                        filters: state.filters
-                    },
-                    pageable: {
-                        page: page.current - 1,
-                        size: page.pageSize,
-                        sort: sorting ? [sorting] : undefined
-                    }
-                }
+                    search: state.keyword,
+                    filters: state.filters
+                },
+                page: page.current - 1,
+                size: page.pageSize,
+                sort: sorting ? [sorting] : undefined
             })
                 .then((response) => ({
                     content: response.content ?? [],

@@ -13,11 +13,11 @@ export type PageQuestion = {
     totalPages?: number;
     totalElements?: number;
     pageable?: PageableObject;
+    numberOfElements?: number;
     number?: number;
-    sort?: SortObject;
     first?: boolean;
     last?: boolean;
-    numberOfElements?: number;
+    sort?: SortObject;
     size?: number;
     content?: Array<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)>;
     empty?: boolean;

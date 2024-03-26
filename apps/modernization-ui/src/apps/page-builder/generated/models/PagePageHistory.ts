@@ -10,11 +10,11 @@ export type PagePageHistory = {
     totalPages?: number;
     totalElements?: number;
     pageable?: PageableObject;
+    numberOfElements?: number;
     number?: number;
-    sort?: SortObject;
     first?: boolean;
     last?: boolean;
-    numberOfElements?: number;
+    sort?: SortObject;
     size?: number;
     content?: Array<PageHistory>;
     empty?: boolean;

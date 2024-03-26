@@ -10,11 +10,11 @@ export type PageAvailableQuestion = {
     totalPages?: number;
     totalElements?: number;
     pageable?: PageableObject;
+    numberOfElements?: number;
     number?: number;
-    sort?: SortObject;
     first?: boolean;
     last?: boolean;
-    numberOfElements?: number;
+    sort?: SortObject;
     size?: number;
     content?: Array<AvailableQuestion>;
     empty?: boolean;

@@ -10,13 +10,11 @@ export const fetchPageSummaries = (
 ): Promise<PagePageSummary> => {
     return PageSummaryService.search({
         requestBody: {
-            request: { search },
-            pageable: {
-                page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
-                size: pageSize,
-                sort: sort ? [sort] : undefined
-            }
-        }
+            search
+        },
+        page: currentPage && currentPage > 1 ? currentPage - 1 : 0,
+        size: pageSize,
+        sort: sort ? [sort] : undefined
     });
 };
 

@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page.summary.search;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,13 +27,11 @@ class PageSummarySearchController {
   @Operation(
       operationId = "search",
       summary = "Allows paginated searching of Page Summaries with filters.",
-      tags = "Page Summary"
-  )
+      tags = "Page Summary")
   @PostMapping("/search")
   Page<PageSummary> search(
       @RequestBody final PageSummaryRequest request,
-      @PageableDefault(size = 25, sort = "id") final Pageable pageable
-  ) {
+      @ParameterObject @PageableDefault(size = 25, sort = "id") final Pageable pageable) {
     PageSummaryCriteria criteria = PageSummaryCriteriaMapper.asCriteria(request);
 
     return searcher.find(criteria, pageable);
