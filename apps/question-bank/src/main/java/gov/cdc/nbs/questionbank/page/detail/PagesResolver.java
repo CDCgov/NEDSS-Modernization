@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
-class PagesResolver {
+public class PagesResolver {
 
   private final PageDescriptionFinder pageFinder;
   private final RuleFinder ruleFinder;
@@ -18,15 +18,14 @@ class PagesResolver {
       final PageDescriptionFinder pageFinder,
       final RuleFinder ruleFinder,
       final ComponentTreeResolver resolver,
-      final PagesResponseMapper mapper
-  ) {
+      final PagesResponseMapper mapper) {
     this.pageFinder = pageFinder;
     this.ruleFinder = ruleFinder;
     this.resolver = resolver;
     this.mapper = mapper;
   }
 
-  Optional<PagesResponse> resolve(final long page) {
+  public Optional<PagesResponse> resolve(final long page) {
     return this.pageFinder.find(page).map(this::withTree);
   }
 

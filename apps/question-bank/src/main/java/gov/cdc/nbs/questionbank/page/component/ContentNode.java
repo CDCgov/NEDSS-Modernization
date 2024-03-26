@@ -30,7 +30,10 @@ public abstract sealed class ContentNode extends ComponentNode permits EntryNode
       Integer dataMartRepeatNumber,
       boolean appearsInBatch,
       String batchLabel,
-      Integer batchWidth) {
+      Integer batchWidth,
+      String componentBehavior,
+      String componentName,
+      String classCode) {
   }
 
 

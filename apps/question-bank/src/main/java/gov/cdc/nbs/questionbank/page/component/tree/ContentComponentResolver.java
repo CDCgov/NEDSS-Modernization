@@ -64,7 +64,10 @@ class ContentComponentResolver {
         component.dataMartRepeatNumber(),
         component.appearsInBatch(),
         component.batchLabel(),
-        component.batchWidth());
+        component.batchWidth(),
+        component.componentBehavior(),
+        component.componentName(),
+        component.classCode());
   }
 
   private InputNode asInput(final InputNode.Type type, final FlattenedComponent flattened) {

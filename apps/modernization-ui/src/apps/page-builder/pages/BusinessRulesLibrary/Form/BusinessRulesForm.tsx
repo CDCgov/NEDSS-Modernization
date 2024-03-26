@@ -165,10 +165,10 @@ export const BusinessRulesForm = ({
                 (watch.comparator && watch.sourceValues) ||
                 (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && watch.comparator)) &&
             watch.sourceIdentifier &&
-            targetDescription
+            targetDescription.length
         ) {
             const descrip = handleRuleDescription();
-            descrip !== form.getValues('description') && form.setValue('description', handleRuleDescription());
+            form.setValue('description', descrip);
         }
     }, [
         JSON.stringify(watch.targetIdentifiers),

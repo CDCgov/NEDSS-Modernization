@@ -83,14 +83,21 @@ public class PageContentSteps {
   public void the_page_has_a_named_question_in_the_nth_sub_section(final String subSection, final int section) {
     PageIdentifier active = page.active();
 
-    mother.withContentIn(active, subSection, section, 1008L);
+    mother.withContentIn(active, subSection, section, 1008L, "DEM107", "CODED");
   }
 
   @Given("^the page has a static element named \"(.*)\" in the (\\d+)(?:st|nd|rd|th) sub-section")
   public void the_has_a_static_element_in_the_nth_sub_section(final String name, final int subsection) {
     PageIdentifier active = page.active();
 
-    mother.withContentIn(active, name, subsection, 1011L);
+    mother.withContentIn(active, name, subsection, 1011L, null, null);
+  }
+
+  @Given("^the page has a date question named \"(.*)\" in the (\\d+)(?:st|nd|rd|th) sub-section")
+  public void the_page_has_a_date_question_named_in_the_nth_sub_section(final String subSection, final int section) {
+    PageIdentifier active = page.active();
+
+    mother.withContentIn(active, subSection, section, 1008L, "INV124", "DATE");
   }
 
   @Given("the page has a question named {string} in the {string} sub-section")
