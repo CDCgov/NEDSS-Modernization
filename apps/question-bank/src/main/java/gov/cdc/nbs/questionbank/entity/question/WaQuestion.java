@@ -1,8 +1,7 @@
 package gov.cdc.nbs.questionbank.entity.question;
 
-import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
-import java.time.Instant;
-import java.util.List;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
+import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
@@ -16,17 +15,19 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import org.hibernate.annotations.Where;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
-import gov.cdc.nbs.questionbank.question.command.QuestionCommand.CreateQuestionCommand;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.Instant;
+import java.util.List;
+
+import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNonNull;
 
 @NoArgsConstructor
 @Getter
 @Entity
-@Where(clause = "data_type in ('DATE', 'TEXT', 'NUMERIC', 'CODED')")
+@SQLRestriction("data_type in ('DATE', 'TEXT', 'NUMERIC', 'CODED')")
 @Table(name = "WA_question", catalog = "NBS_ODSE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "data_type", discriminatorType = DiscriminatorType.STRING)

@@ -20,7 +20,6 @@ nbs:
         - /v3/api-docs/**
         - /swagger-ui/**
         - /swagger-resources/**
-        - /v2/api-docs/**
 
 spring:
   servlet.multipart.max-file-size: 10MB
@@ -37,14 +36,12 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.SQLServerDialect
-#        hbm2ddl.jdbc_metadata_extraction_strategy: individually
-        jdbc.time_zone: UTC
-        type.preferred_instant_jdbc_type: TIMESTAMP
-        format_sql: true
         default_schema: dbo
-    hibernate:
-      ddl-auto: none
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        timezone:
+          default_storage: NORMALIZE
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa
