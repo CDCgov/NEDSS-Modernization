@@ -1,7 +1,5 @@
 package gov.cdc.nbs.option.facility.autocomplete;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 
 public class FacilityOptionSteps {
@@ -12,14 +10,13 @@ public class FacilityOptionSteps {
     this.mother = mother;
   }
 
-  @Before("@facilities")
-  @After("@facilities")
-  public void clean() {
-    mother.reset();
-  }
-
   @Given("there is a facility for {string}")
   public void there_is_a_facility_for(final String name) {
     mother.create(name);
+  }
+
+  @Given("there is a facility for {string} that was added electronically")
+  public void there_is_an_electronic_facility(final String name) {
+    mother.electronic(name);
   }
 }

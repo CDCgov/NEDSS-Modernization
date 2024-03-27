@@ -11,11 +11,20 @@ public class FacilityOptionResolver extends SQLBasedOptionResolver {
       """
           with [facility]([value], [name], [quickCode]) as (
               select
-                  organization_uid,
-                  display_nm + IIF(root_extension_txt is null or root_extension_txt='', '', ' [' + root_extension_txt + ']'),
+                  [organization].organization_uid,
+                  [organization].display_nm + IIF(
+                        [quick_code].root_extension_txt is null
+                    or  [quick_code].root_extension_txt='',
+                    '',
+                    ' [' + [quick_code].root_extension_txt + ']'),
                   root_extension_txt
-              from Organization
-              left join Entity_id on entity_uid=organization_uid and type_cd='QEC'
+              from Organization [organization]
+                left join Entity_id [quick_code] on
+                  [quick_code].entity_uid = [organization].organization_uid
+                  and [quick_code].type_cd ='QEC'
+              where [organization].electronic_ind is null
+                or [organization].electronic_ind <> 'Y'
+              
           )
           select
               [value],
