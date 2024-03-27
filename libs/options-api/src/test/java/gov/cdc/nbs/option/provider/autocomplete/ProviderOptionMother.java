@@ -2,6 +2,8 @@ package gov.cdc.nbs.option.provider.autocomplete;
 
 import gov.cdc.nbs.option.Option;
 import gov.cdc.nbs.testing.support.Available;
+import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PreDestroy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,6 +18,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Component
+@ScenarioScope
 class ProviderOptionMother {
 
   private static final String DELETE_IN = """
@@ -27,25 +30,25 @@ class ProviderOptionMother {
 
   private static final String CREATE =
       """
-          insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
-            insert into Person(person_uid, version_ctrl_nbr, cd, first_nm, last_nm) values (:identifier, 1, 'PRV', :first, :last);
+      insert into Entity(entity_uid, class_cd) values (:identifier, 'PSN');
+      insert into Person(person_uid, version_ctrl_nbr, cd, first_nm, last_nm, electronic_ind) values (:identifier, 1, 'PRV', :first, :last, :electronic);
 
-            insert into Person_name(
-              person_uid,
-              person_name_seq,
-              first_nm,
-              last_nm,
-              status_cd,
-              status_time
-            ) values (
-              :identifier,
-              1,
-              :first,
-              :last,
-              'A',
-              GETDATE()
-            )
-            """;
+        insert into Person_name(
+          person_uid,
+          person_name_seq,
+          first_nm,
+          last_nm,
+          status_cd,
+          status_time
+        ) values (
+          :identifier,
+          1,
+          :first,
+          :last,
+          'A',
+          GETDATE()
+        )
+        """;
 
   private final NamedParameterJdbcTemplate template;
   private final Available<Option> available;
@@ -57,6 +60,7 @@ class ProviderOptionMother {
     this.identifier = new AtomicLong(Long.MIN_VALUE);
   }
 
+  @PreDestroy
   void reset() {
 
     List<String> codes = this.available.all()
@@ -80,6 +84,14 @@ class ProviderOptionMother {
   }
 
   void create(final String first, final String last) {
+    create(first,last, false);
+  }
+
+  void electronic(final String first, final String last) {
+    create(first, last, true);
+  }
+
+  void create(final String first, final String last, final boolean isElectronic) {
 
     String username = UUID.randomUUID().toString()
         .replace("-", "")
@@ -92,11 +104,15 @@ class ProviderOptionMother {
 
     long next = nextIdentifier();
 
+    String electronic = isElectronic ? "Y" : "N";
+
     Map<String, ? extends Serializable> parameters = Map.of(
         "username", username,
         "first", first,
         "last", last,
-        "identifier", next);
+        "identifier", next,
+        "electronic", electronic
+    );
 
     template.execute(
         CREATE,
