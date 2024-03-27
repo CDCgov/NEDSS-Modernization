@@ -9,7 +9,10 @@ export type PagesQuestion = {
     batchLabel?: string;
     batchWidth?: number;
     blockName?: string;
+    classCode?: string;
     coInfection?: boolean;
+    componentBehavior?: string;
+    componentName?: string;
     dataMartColumnName?: string;
     dataMartRepeatNumber?: number;
     dataType?: string;

@@ -47,7 +47,6 @@ export const EditBusinessRule = () => {
             setSelectedSourceValues(response.sourceValues?.map((s) => s.trim()));
             setInitialSourceIdentifiers(response.sourceQuestion.questionIdentifier ?? '');
             setInitialTargetIdentifiers(response.targets.map((target) => target.targetIdentifier ?? '') ?? []);
-
             form.reset({
                 anySourceValue: response.anySourceValue,
                 comparator: response.comparator,
@@ -134,23 +133,41 @@ export const EditBusinessRule = () => {
             (watch.anySourceValue || (watch.comparator && watch.sourceValues))
         ) {
             return true;
+        } else if (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            if (watch.sourceIdentifier && watch.comparator && watch.targetIdentifiers) {
+                return true;
+            }
         } else {
             return false;
         }
     };
 
-    const checkIsDirty = () => {
-        if (form.formState.isDirty) {
+    const ifDisabled = () => {
+        const sourceValues = watch.sourceValues?.map((val) => val.text);
+        console.log({ sourceValues });
+        console.log({ selectedSourceValues });
+        if (watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE) {
             if (
-                JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) &&
-                JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers)
+                checkIsValid() &&
+                (form.formState.isDirty ||
+                    JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
+                    JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers) ||
+                    JSON.stringify(sourceValues) !== JSON.stringify(selectedSourceValues))
+            ) {
+                return true;
+            }
+        } else if (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            if (
+                checkIsValid() &&
+                (form.formState.isDirty ||
+                    JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
+                    JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers))
             ) {
                 return true;
             }
         } else {
-            return true;
+            return false;
         }
-        return false;
     };
 
     const onDelete = () => {
@@ -232,7 +249,7 @@ export const EditBusinessRule = () => {
                             }}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={!checkIsDirty() && !checkIsValid()} onClick={onSubmit}>
+                        <Button type="submit" disabled={!ifDisabled()} onClick={onSubmit}>
                             Update
                         </Button>
                     </div>

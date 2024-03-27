@@ -462,7 +462,9 @@ public class WaTemplate {
       final long type,
       final int at,
       final long addedBy,
-      final Instant addedOn) {
+      final Instant addedOn,
+      final String identifier,
+      final String dataType) {
     WaUiMetadata component = new WaUiMetadata(
         this,
         type,
@@ -473,6 +475,11 @@ public class WaTemplate {
     if (type == 1008l) {
       component.setDataLocation("NBS_CASE_ANSWER.ANSWER_TXT");
       component.setPublishIndCd('F');
+      component.setDisplayInd("T");
+      component.setStandardNndIndCd('F');
+      component.setDataType(dataType);
+      component.setCodeSetGroupId(70L);
+      component.setQuestionIdentifier(identifier);
     }
 
     WaRdbMetadata rdbComponent = new WaRdbMetadata(this, component, addedOn, addedBy);
