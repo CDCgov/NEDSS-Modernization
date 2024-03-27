@@ -98,7 +98,10 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         control={control}
                         name="conditionShortNm"
                         rules={{
-                            pattern: { value: /^\w*$/, message: 'Condition name not valid' },
+                            pattern: {
+                                value: /^\w*$/,
+                                message: ' Condition name is not valid: Valid characters are A-Z, a-z, 0-9, or _'
+                            },
                             required: { value: true, message: 'Condition name is required' }
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
@@ -142,7 +145,10 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         name="code"
                         rules={{
                             required: { value: true, message: 'Condition Code required' },
-                            pattern: { value: /^\w*$/, message: 'Condition Code invalid' }
+                            pattern: {
+                                value: /^\w*$/,
+                                message: 'Condition code is not valid: Valid characters are A-Z, a-z, 0-9, or _'
+                            }
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
