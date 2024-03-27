@@ -1,4 +1,4 @@
-import { PageRuleControllerService, Rule } from 'apps/page-builder/generated';
+import { PageRuleControllerService, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Breadcrumb } from 'breadcrumb';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

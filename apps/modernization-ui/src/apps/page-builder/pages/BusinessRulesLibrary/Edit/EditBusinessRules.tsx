@@ -17,16 +17,8 @@ import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
-<<<<<<< HEAD
-import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { useAlert } from 'alert';
-import { ConfirmationModal } from 'confirmation';
-import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
-=======
 import styles from './EditBusinessRule.module.scss';
->>>>>>> main
+import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
 
 export const EditBusinessRule = () => {
     const form = useForm<RuleRequest>();
