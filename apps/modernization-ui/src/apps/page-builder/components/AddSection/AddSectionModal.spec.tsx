@@ -11,7 +11,6 @@ const props = {
     onAddSection: jest.fn()
 };
 
-const addSections = jest.fn();
 const mockAddSectionUsingPost = jest.spyOn(SectionControllerService, 'createSection');
 
 describe('AddSectionModal', () => {
@@ -80,9 +79,8 @@ describe('AddSectionModal', () => {
                 fireEvent.click(button);
 
                 expect(mockAddSectionUsingPost).toHaveBeenCalledWith({
-                    authorization: 'Bearer undefined',
                     page: 10056,
-                    request: {
+                    requestBody: {
                         name: 'Test Section',
                         visible: true,
                         tabId: 5
