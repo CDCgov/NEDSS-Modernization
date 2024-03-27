@@ -13,8 +13,7 @@ public class PatientSearchCriteriaSteps {
 
   PatientSearchCriteriaSteps(
       final Active<PatientIdentifier> patient,
-      final Active<PatientFilter> criteria
-  ) {
+      final Active<PatientFilter> criteria) {
     this.patient = patient;
     this.criteria = criteria;
   }
@@ -22,8 +21,7 @@ public class PatientSearchCriteriaSteps {
   @Given("I add the patient criteria for a(n) {string} equal to {string}")
   public void i_add_the_patient_criteria_for_a_field_that_is_value(
       final String field,
-      final String value
-  ) {
+      final String value) {
 
     if (field == null || field.isEmpty()) {
       return;
@@ -36,11 +34,11 @@ public class PatientSearchCriteriaSteps {
   private PatientFilter applyCriteria(
       final String field,
       final String value,
-      final PatientFilter criteria
-  ) {
+      final PatientFilter criteria) {
     switch (field.toLowerCase()) {
       case "first name" -> criteria.setFirstName(value);
       case "last name" -> criteria.setLastName(value);
+      case "disable soundex" -> criteria.setDisableSoundex(value.equals("true"));
       case "phone number" -> criteria.setPhoneNumber(value);
       case "email", "email address" -> criteria.setEmail(value);
       case "city" -> criteria.setCity(value);
@@ -69,15 +67,13 @@ public class PatientSearchCriteriaSteps {
   public void i_would_like_to_search_for_a_patient_using_a_short_ID() {
 
     this.patient.maybeActive().ifPresent(
-        found -> this.criteria.active(criteria -> criteria.withId(String.valueOf(found.shortId())))
-    );
+        found -> this.criteria.active(criteria -> criteria.withId(String.valueOf(found.shortId()))));
 
   }
 
   @Given("I would like to search for a patient using a local ID")
   public void i_would_like_to_search_for_a_patient_using_a_local_ID() {
     this.patient.maybeActive().ifPresent(
-        found -> this.criteria.active(criteria -> criteria.withId(found.local()))
-    );
+        found -> this.criteria.active(criteria -> criteria.withId(found.local())));
   }
 }
