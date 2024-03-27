@@ -3,7 +3,7 @@ import styles from './TargetQuestion.module.scss';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { PagesQuestion, PagesSection, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Icon } from 'components/Icon/Icon';
-import { Button, Checkbox, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
+import { Button, Checkbox, ErrorMessage, Tag, Icon as UswIcon } from '@trussworks/react-uswds';
 import { useGetTargetQuestions } from 'apps/page-builder/hooks/api/useGetTargetQuestions';
 
 type Props = {
@@ -20,6 +20,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
     const [activeSubsection, setActiveSubsection] = useState<number>(0);
     const [targetList, setTargetList] = useState<PagesQuestion[]>([]);
     const [selectedList, setSelectedList] = useState<PagesQuestion[]>([]);
+    const [formError, setFormError] = useState<boolean>(false);
 
     const { fetch, response } = useGetTargetQuestions();
 
@@ -46,6 +47,14 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
             setSelectedList([]);
         }
     }, [ruleFunction, JSON.stringify(sourceQuestion)]);
+
+    useEffect(() => {
+        if (selectedList.length >= 10) {
+            setFormError(true);
+        } else {
+            setFormError(false);
+        }
+    }, [selectedList]);
 
     const handleSelect = (question: PagesQuestion, e: React.ChangeEvent<HTMLInputElement>) => {
         const tempList = [...selectedList];
@@ -119,7 +128,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                     </ul>
                 </div>
                 <div className={styles.selectedQuestions}>
-                    <div className={styles.title}>Selected questions: </div>
+                    <div className={styles.title}>Selected questions:</div>
                     <div className={styles.content}>
                         {selectedList.map((question, key) => (
                             <div key={key} className={styles.selectedQuestion}>
@@ -129,6 +138,13 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                                 <UswIcon.Close onClick={() => handleRemove(question)} />
                             </div>
                         ))}
+                    </div>
+                    <div>
+                        {formError ? (
+                            <ErrorMessage>
+                                <p>You can not select more than 10 target fields.</p>
+                            </ErrorMessage>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -201,6 +217,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                                     id={`sourceId${index}`}
                                     name={`sourceName ${index}`}
                                     label={question?.name ? question.name : question.componentName}
+                                    disabled={formError}
                                 />
                             </div>
                         ))}
@@ -223,7 +240,8 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
                         onSubmit(selectedList);
                         onReset?.();
                         onCancel?.();
-                    }}>
+                    }}
+                    disabled={selectedList.length > 10}>
                     Continue
                 </Button>
             </div>
