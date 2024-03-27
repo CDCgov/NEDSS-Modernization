@@ -34,7 +34,7 @@ class PageRuleMapperTest {
     when(resultSet.getString(10)).thenReturn("test456,test789,test123");
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
-    when(resultSet.getString(13)).thenReturn("test456_label,test789_label");
+    when(resultSet.getString(13)).thenReturn("test456_label##test789_label");
     when(resultSet.getLong(14)).thenReturn(10l);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
     validate(actualResponse);
