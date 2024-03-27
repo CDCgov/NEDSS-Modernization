@@ -41,5 +41,13 @@ subprojects {
             languageVersion = JavaLanguageVersion.of(17)
             vendor = JvmVendorSpec.ADOPTIUM
         }
+
     }
+
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << '-parameters'
+        }
+    }
+
 }

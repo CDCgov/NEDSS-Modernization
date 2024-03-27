@@ -1,13 +1,12 @@
-import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
-import React, { useRef, useState } from 'react';
-import styles from './section.module.scss';
 import { ModalRef } from '@trussworks/react-uswds';
-import { authorization } from 'authorization';
-import { usePageManagement } from '../../usePageManagement';
-import { StatusModal } from '../../status/StatusModal';
-import { Section } from './Section';
 import { useAlert } from 'alert';
+import { PagesQuestion, PagesSection, PagesSubSection, SectionControllerService } from 'apps/page-builder/generated';
+import { useRef, useState } from 'react';
 import { ConfirmationModal } from '../../../../../../confirmation';
+import { StatusModal } from '../../status/StatusModal';
+import { usePageManagement } from '../../usePageManagement';
+import { Section } from './Section';
+import styles from './section.module.scss';
 
 type Props = {
     sections: PagesSection[];
@@ -56,8 +55,7 @@ export const Sections = ({
         if (!selectedSectionToDelete) {
             return;
         }
-        SectionControllerService.deleteSectionUsingDelete({
-            authorization: authorization(),
+        SectionControllerService.deleteSection({
             page: page.id,
             sectionId: selectedSectionToDelete.id
         }).then(() => {

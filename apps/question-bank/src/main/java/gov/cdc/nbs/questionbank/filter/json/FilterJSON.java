@@ -8,8 +8,7 @@ import gov.cdc.nbs.questionbank.filter.Filter;
 import gov.cdc.nbs.questionbank.filter.MultiValueFilter;
 import gov.cdc.nbs.questionbank.filter.SingleValueFilter;
 import gov.cdc.nbs.questionbank.filter.ValueFilter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -21,22 +20,18 @@ import java.util.Collection;
     @JsonSubTypes.Type(FilterJSON.SingleValue.class),
     @JsonSubTypes.Type(FilterJSON.MultiValue.class)
 })
-@ApiModel(value = "Filter")
+@Schema(title = "Filter")
 public sealed interface FilterJSON {
 
   String property();
 
   Filter asFilter();
 
-  @ApiModel(value = "SingleValueFilter")
+  @Schema(title = "SingleValueFilter")
   record SingleValue(
-      @ApiModelProperty(required = true)
-      String property,
-      @ApiModelProperty(required = true)
-      ValueFilter.Operator operator,
-      @ApiModelProperty(required = true)
-      String value
-  ) implements FilterJSON {
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String property,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ValueFilter.Operator operator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value) implements FilterJSON {
 
     @Override
     public Filter asFilter() {
@@ -46,15 +41,11 @@ public sealed interface FilterJSON {
   }
 
 
-  @ApiModel(value = "MultiValueFilter")
+  @Schema(title = "MultiValueFilter")
   record MultiValue(
-      @ApiModelProperty(required = true)
-      String property,
-      @ApiModelProperty(required = true)
-      ValueFilter.Operator operator,
-      @ApiModelProperty(required = true)
-      Collection<String> values
-  ) implements FilterJSON {
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String property,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) ValueFilter.Operator operator,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<String> values) implements FilterJSON {
 
     @Override
     public Filter asFilter() {
@@ -64,13 +55,10 @@ public sealed interface FilterJSON {
   }
 
 
-  @ApiModel(value = "DateFilter")
+  @Schema(title = "DateFilter")
   record Date(
-      @ApiModelProperty(required = true)
-      String property,
-      @ApiModelProperty(required = true)
-      DateFilter.Operator operator
-  ) implements FilterJSON {
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String property,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) DateFilter.Operator operator) implements FilterJSON {
 
     @Override
     public Filter asFilter() {
@@ -80,13 +68,11 @@ public sealed interface FilterJSON {
   }
 
 
-  @ApiModel(value = "DateRangeFilter")
+  @Schema(title = "DateRangeFilter")
   record DateRange(
-      @ApiModelProperty(required = true)
-      String property,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String property,
       LocalDate after,
-      LocalDate before
-  ) implements FilterJSON {
+      LocalDate before) implements FilterJSON {
 
     @Override
     public Filter asFilter() {

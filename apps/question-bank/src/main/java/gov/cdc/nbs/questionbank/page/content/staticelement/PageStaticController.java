@@ -1,5 +1,14 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
+import gov.cdc.nbs.questionbank.page.content.staticelement.response.UpdateStaticResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,17 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.DeleteElementRequest;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.StaticContentRequests;
-import gov.cdc.nbs.questionbank.page.content.staticelement.request.UpdateStaticRequests;
-import gov.cdc.nbs.questionbank.page.content.staticelement.response.AddStaticResponse;
-import gov.cdc.nbs.questionbank.page.content.staticelement.response.DeleteStaticResponse;
-import gov.cdc.nbs.questionbank.page.content.staticelement.response.UpdateStaticResponse;
-import lombok.extern.slf4j.Slf4j;
-import springfox.documentation.annotations.ApiIgnore;
-
-
 
 @Slf4j
 @RestController
@@ -30,7 +28,6 @@ public class PageStaticController {
     private final PageStaticDeletor pageStaticDeletor;
     private final PageStaticUpdater pageStaticUpdater;
 
-
     public PageStaticController(
             final PageStaticCreator pageStaticCreator,
             final PageStaticDeletor pageStaticDeletor,
@@ -40,12 +37,11 @@ public class PageStaticController {
         this.pageStaticUpdater = pageStaticUpdater;
     }
 
-
     @PostMapping("/line-separator")
     public AddStaticResponse addStaticLineSeparator(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.AddDefault request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         log.debug("Received request to add line separator in page");
         Long componentId = pageStaticCreator.addLineSeparator(pageId, request, details.getId());
         log.debug("Completed adding line separator");
@@ -57,7 +53,7 @@ public class PageStaticController {
     public AddStaticResponse addStaticHyperLink(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.AddHyperlink request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+        @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
 
         Long componentId = pageStaticCreator.addHyperLink(pageId, request, details.getId());
         return new AddStaticResponse(componentId);
@@ -67,7 +63,7 @@ public class PageStaticController {
     public AddStaticResponse addStaticReadOnlyComments(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.AddReadOnlyComments request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         Long componentId = pageStaticCreator.addReadOnlyComments(pageId, request, details.getId());
 
         return new AddStaticResponse(componentId);
@@ -77,7 +73,7 @@ public class PageStaticController {
     public AddStaticResponse addStaticReadOnlyParticipantsList(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.AddDefault request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         Long componentId = pageStaticCreator.addReadOnlyParticipantsList(pageId, request, details.getId());
 
         return new AddStaticResponse(componentId);
@@ -87,7 +83,7 @@ public class PageStaticController {
     public AddStaticResponse addStaticOriginalElectronicDocList(
             @PathVariable("page") Long pageId,
             @RequestBody StaticContentRequests.AddDefault request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         Long componentId = pageStaticCreator.addOriginalElectronicDocList(pageId, request, details.getId());
         return new AddStaticResponse(componentId);
     }
@@ -105,8 +101,7 @@ public class PageStaticController {
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
             @RequestBody UpdateStaticRequests.UpdateHyperlink request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
-    ) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         return pageStaticUpdater.updateHyperlink(componentId, request, details.getId());
     }
 
@@ -115,20 +110,17 @@ public class PageStaticController {
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
             @RequestBody UpdateStaticRequests.UpdateReadOnlyComments request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
-    ) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         return pageStaticUpdater.updateReadOnlyComments(componentId, request, details.getId());
     }
 
-    @PutMapping({"/{id}/line-separator", "/{id}/participants-list", "/{id}/elec-doc-list"})
+    @PutMapping({ "/{id}/line-separator", "/{id}/participants-list", "/{id}/elec-doc-list" })
     public UpdateStaticResponse updateDefaultStaticElement(
             @PathVariable("page") Long pageId,
             @PathVariable("id") Long componentId,
             @RequestBody UpdateStaticRequests.UpdateDefault request,
-            @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details
-    ) {
+            @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
         return pageStaticUpdater.updateDefaultStaticElement(componentId, request, details.getId());
     }
-
 
 }

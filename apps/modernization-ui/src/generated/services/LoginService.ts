@@ -14,26 +14,18 @@ export class LoginService {
      * NBS User Authentication
      * Provides options from Users that have a name matching a criteria.
      * @returns LoginResponse OK
-     * @returns any Created
      * @throws ApiError
      */
     public static login({
-        request,
+        requestBody,
     }: {
-        /**
-         * request
-         */
-        request: LoginRequest,
-    }): CancelablePromise<LoginResponse | any> {
+        requestBody: LoginRequest,
+    }): CancelablePromise<LoginResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/login',
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

@@ -43,12 +43,12 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     useEffect(() => {
         fetchFamilyOptions(token).then((response) => setFamilyOptions(response));
         fetchGroupOptions(token).then((response) => setGroupOptions(response));
-        fetchProgramAreaOptions(token).then((response) => setProgramAreaOptions(response));
+        fetchProgramAreaOptions().then((response) => setProgramAreaOptions(response ?? []));
         fetchCodingSystemOptions(token).then((response) => setSystemOptions(response));
     }, []);
 
     const onSubmit = handleSubmit(async (data) => {
-        await createCondition(token, data)
+        await createCondition(data)
             .then((response: Condition) => {
                 showAlert({ type: 'success', header: 'Created', message: 'Condition created successfully' });
                 resetInput();
@@ -98,7 +98,10 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         control={control}
                         name="conditionShortNm"
                         rules={{
-                            pattern: { value: /^\w*$/, message: 'Condition name not valid' },
+                            pattern: {
+                                value: /^\w*$/,
+                                message: ' Condition name is not valid: Valid characters are A-Z, a-z, 0-9, or _'
+                            },
                             required: { value: true, message: 'Condition name is required' }
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
@@ -142,7 +145,10 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                         name="code"
                         rules={{
                             required: { value: true, message: 'Condition Code required' },
-                            pattern: { value: /^\w*$/, message: 'Condition Code invalid' }
+                            pattern: {
+                                value: /^\w*$/,
+                                message: 'Condition code is not valid: Valid characters are A-Z, a-z, 0-9, or _'
+                            }
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
@@ -187,8 +193,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 onChange={onChange}
                                 options={familyOptions.map((option) => {
                                     return {
-                                        name: option.display!,
-                                        value: option.localCode!
+                                        name: option.display,
+                                        value: option.localCode
                                     };
                                 })}
                             />
@@ -205,8 +211,8 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                                 disabled={!isStdOrHivProgramArea(formWatch.progAreaCd)}
                                 options={groupOptions.map((option) => {
                                     return {
-                                        name: option.display!,
-                                        value: option.localCode!
+                                        name: option.display,
+                                        value: option.localCode
                                     };
                                 })}
                             />

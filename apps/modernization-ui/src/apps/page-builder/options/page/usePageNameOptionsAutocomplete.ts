@@ -1,5 +1,4 @@
 import { PageBuilderOptionsService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 
 import { AutocompleteOptionsResolver, SelectableAutocompletion, useSelectableAutocomplete } from 'options/autocompete';
 
@@ -11,7 +10,6 @@ type Settings = {
 const usePageNameOptionsAutocomplete = (settings: Settings = { initialCriteria: '' }): SelectableAutocompletion => {
     const resolver: AutocompleteOptionsResolver = (criteria: string, limit?: number) =>
         PageBuilderOptionsService.pageNamesAutocomplete({
-            authorization: authorization(),
             criteria,
             limit
         });

@@ -9,7 +9,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 
 @Component

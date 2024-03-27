@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import gov.cdc.nbs.authentication.entity.QAuthPermSet;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class PermissionSetCleaner {
@@ -17,8 +17,7 @@ class PermissionSetCleaner {
 
   PermissionSetCleaner(
       final EntityManager entityManager,
-      final JPAQueryFactory factory
-  ) {
+      final JPAQueryFactory factory) {
     this.entityManager = entityManager;
     this.factory = factory;
   }
@@ -30,6 +29,5 @@ class PermissionSetCleaner {
         .fetch()
         .forEach(this.entityManager::remove);
   }
-
 
 }

@@ -6,30 +6,30 @@ import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type EditableQuestion = {
-    adminComments?: string;
-    allowFutureDates?: boolean;
     codeSet: EditableQuestion.codeSet;
-    dataMartInfo: ReportingInfo;
-    defaultValue?: string;
+    uniqueName: string;
+    uniqueId: string;
+    subgroup: string;
     description: string;
-    displayControl: number;
-    enabled: boolean;
-    fieldLength?: number;
     label: string;
-    mask?: string;
-    maxValue?: number;
-    messagingInfo: MessagingInfo;
-    minValue?: number;
+    tooltip: string;
+    displayControl: number;
+    visible: boolean;
+    enabled: boolean;
+    required: boolean;
+    adminComments?: string;
     questionType?: string;
+    defaultValue?: string;
+    fieldLength?: number;
+    mask?: string;
+    allowFutureDates?: boolean;
+    valueSet?: number;
+    minValue?: number;
+    maxValue?: number;
     relatedUnitsLiteral?: string;
     relatedUnitsValueSet?: number;
-    required: boolean;
-    subgroup: string;
-    tooltip: string;
-    uniqueId: string;
-    uniqueName: string;
-    valueSet?: number;
-    visible: boolean;
+    dataMartInfo: ReportingInfo;
+    messagingInfo: MessagingInfo;
 };
 
 export namespace EditableQuestion {

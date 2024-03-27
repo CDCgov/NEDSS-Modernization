@@ -1,10 +1,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Page_PageHistory_ } from '../models/Page_PageHistory_';
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
 import type { PageDeleteResponse } from '../models/PageDeleteResponse';
+import type { PagePageHistory } from '../models/PagePageHistory';
 import type { PageStateResponse } from '../models/PageStateResponse';
 import type { PageValidationRequest } from '../models/PageValidationRequest';
 
@@ -15,170 +15,109 @@ import { request as __request } from '../core/request';
 export class PageControllerService {
 
     /**
-     * createPage
-     * @returns PageCreateResponse OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static createPageUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: PageCreateRequest,
-    }): CancelablePromise<PageCreateResponse | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * validatePageRequest
-     * @returns boolean OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static validatePageRequestUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: PageValidationRequest,
-    }): CancelablePromise<boolean | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/validate',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * deletePageDraft
-     * @returns PageDeleteResponse OK
-     * @throws ApiError
-     */
-    public static deletePageDraftUsingDelete({
-        authorization,
-        id,
-    }: {
-        authorization: string,
-        /**
-         * id
-         */
-        id: number,
-    }): CancelablePromise<PageDeleteResponse> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/pages/{id}/delete-draft',
-            path: {
-                'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-            },
-        });
-    }
-
-    /**
-     * savePageDraft
      * @returns PageStateResponse OK
-     * @returns any Created
      * @throws ApiError
      */
-    public static savePageDraftUsingPut({
-        authorization,
+    public static savePageDraft({
         id,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: number,
-    }): CancelablePromise<PageStateResponse | any> {
+    }): CancelablePromise<PageStateResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{id}/draft',
+            url: '/api/v1/pages/{id}/draft',
             path: {
                 'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }
 
     /**
-     * getPageHistory
-     * @returns Page_PageHistory_ OK
+     * @returns PageCreateResponse OK
      * @throws ApiError
      */
-    public static getPageHistoryUsingGet({
-        authorization,
+    public static createPage({
+        requestBody,
+    }: {
+        requestBody: PageCreateRequest,
+    }): CancelablePromise<PageCreateResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/pages',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @returns boolean OK
+     * @throws ApiError
+     */
+    public static validatePageRequest({
+        requestBody,
+    }: {
+        requestBody: PageValidationRequest,
+    }): CancelablePromise<boolean> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/pages/validate',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @returns PagePageHistory OK
+     * @throws ApiError
+     */
+    public static getPageHistory({
         id,
         page,
-        size,
+        size = 25,
         sort,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: number,
+        /**
+         * Zero-based page index (0..N)
+         */
         page?: number,
+        /**
+         * The size of the page to be returned
+         */
         size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_PageHistory_> {
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PagePageHistory> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{id}/page-history',
+            url: '/api/v1/pages/{id}/page-history',
             path: {
                 'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
             },
             query: {
                 'page': page,
                 'size': size,
                 'sort': sort,
             },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
+        });
+    }
+
+    /**
+     * @returns PageDeleteResponse OK
+     * @throws ApiError
+     */
+    public static deletePageDraft({
+        id,
+    }: {
+        id: number,
+    }): CancelablePromise<PageDeleteResponse> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/pages/{id}/delete-draft',
+            path: {
+                'id': id,
             },
         });
     }

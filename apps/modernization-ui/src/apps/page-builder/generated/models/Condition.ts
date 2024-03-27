@@ -3,13 +3,13 @@
 /* eslint-disable */
 
 export type Condition = {
-    coinfectionGroup?: string;
-    conditionFamily?: string;
     id: string;
     name: string;
+    programArea: string;
+    conditionFamily?: string;
+    coinfectionGroup?: string;
     nndInd?: string;
     page?: string;
-    programArea: string;
     status: string;
 };
 

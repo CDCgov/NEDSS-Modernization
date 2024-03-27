@@ -10,15 +10,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SubsectionValidatorTest {
@@ -103,8 +103,10 @@ class SubsectionValidatorTest {
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(page);
     ValidateSubsectionException exception = assertThrows(ValidateSubsectionException.class,
         () -> subSectionValidator.validateIfCanBeGrouped(1l, subsectionId));
-    assertEquals("Subsection can only have the Repeating Note field " +
-        "and no other fields in the repeating block subsection.", exception.getMessage());
+    assertEquals("""
+        Subsection can only have the Repeating Note field \
+        and no other fields in the repeating block subsection.\
+        """, exception.getMessage());
   }
 
   @Test

@@ -29,7 +29,7 @@ public interface WaQuestionRepository extends JpaRepository<WaQuestion, Long> {
         Pageable pageable);
 
     @Modifying
-    @Query("Update WaQuestion SET data_type =:type WHERE id=:id")
+    @Query("Update WaQuestion SET dataType =:type WHERE id=:id")
     public void setDataType(@Param("type") String type, @Param("id") Long id);
 
     @Query("SELECT q.questionIdentifier ,q.questionLabel FROM WaQuestion q WHERE q.questionIdentifier IN :identifiers")

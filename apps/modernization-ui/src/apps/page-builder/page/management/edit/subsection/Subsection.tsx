@@ -5,13 +5,12 @@ import {
     PagesQuestion,
     PagesSubSection
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization/authorization';
+import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
 import { useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
-import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
 
 type Props = {
     subsection: PagesSubSection;
@@ -57,17 +56,15 @@ export const Subsection = ({
 
     const handleDeleteQuestion = (id: number, componentId: number) => {
         if (staticElementTypes.includes(componentId)) {
-            PageStaticControllerService.deleteStaticElementUsingDelete({
-                authorization: authorization(),
+            PageStaticControllerService.deleteStaticElement({
                 page: page.id,
-                request: { componentId: id }
+                requestBody: { componentId: id }
             }).then(() => {
                 handleAlert(`Element deleted successfully`);
                 refresh();
             });
         } else {
-            PageQuestionControllerService.deleteQuestionUsingDelete({
-                authorization: authorization(),
+            PageQuestionControllerService.deleteQuestion({
                 page: page.id,
                 questionId: Number(id)
             }).then(() => {

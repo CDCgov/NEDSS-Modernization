@@ -6,9 +6,9 @@ import gov.cdc.nbs.event.search.labreport.indexing.SearchableLabReportResolver;
 import gov.cdc.nbs.search.support.ElasticsearchIndexCleaner;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;

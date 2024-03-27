@@ -12,7 +12,7 @@ const asUser = ({ identifier, firstName, lastName, permissions }: Me) => ({
     permissions
 });
 
-const currentUser = (): Promise<User> => UserService.meUsingGet({ authorization: authorization() }).then(asUser);
+const currentUser = (): Promise<User> => UserService.me({ authorization: authorization() }).then(asUser);
 
 type CurrentUserResponse = Awaited<ReturnType<typeof currentUser>>;
 

@@ -33,8 +33,7 @@ export const useGetAllPageRules = () => {
 
     useEffect(() => {
         if (state.status === 'fetching' && pageId) {
-            PageRuleControllerService.getAllRulesUsingGet({
-                authorization: authorization(),
+            PageRuleControllerService.getAllRules({
                 id: Number(pageId)
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))

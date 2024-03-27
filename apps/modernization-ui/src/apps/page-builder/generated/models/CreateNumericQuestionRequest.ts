@@ -6,24 +6,24 @@ import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type CreateNumericQuestionRequest = {
+    uniqueName?: string;
+    description?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    dataMartInfo?: ReportingInfo;
+    messagingInfo?: MessagingInfo;
     adminComments?: string;
     codeSet?: CreateNumericQuestionRequest.codeSet;
-    dataMartInfo?: ReportingInfo;
-    defaultValue?: number;
-    description?: string;
-    displayControl?: number;
-    fieldLength?: number;
-    label?: string;
+    uniqueId?: string;
+    subgroup?: string;
     mask?: CreateNumericQuestionRequest.mask;
-    maxValue?: number;
-    messagingInfo?: MessagingInfo;
+    fieldLength?: number;
+    defaultValue?: number;
     minValue?: number;
+    maxValue?: number;
     relatedUnitsLiteral?: string;
     relatedUnitsValueSet?: number;
-    subgroup?: string;
-    tooltip?: string;
-    uniqueId?: string;
-    uniqueName?: string;
 };
 
 export namespace CreateNumericQuestionRequest {
@@ -34,13 +34,13 @@ export namespace CreateNumericQuestionRequest {
     }
 
     export enum mask {
-        NUM = 'NUM',
         NUM_DD = 'NUM_DD',
-        NUM_EXT = 'NUM_EXT',
         NUM_MM = 'NUM_MM',
+        NUM_YYYY = 'NUM_YYYY',
+        NUM = 'NUM',
+        NUM_EXT = 'NUM_EXT',
         NUM_SN = 'NUM_SN',
         NUM_TEMP = 'NUM_TEMP',
-        NUM_YYYY = 'NUM_YYYY',
     }
 
 

@@ -17,8 +17,7 @@ export const fetchGroupOptions = (token: string) => {
 };
 
 export const fetchValueSetOptions = (token: string, codeSet: string) => {
-    return ConceptControllerService.findConceptsUsingGet({
-        authorization: token,
+    return ConceptControllerService.findConcepts({
         codeSetNm: codeSet
     });
 };

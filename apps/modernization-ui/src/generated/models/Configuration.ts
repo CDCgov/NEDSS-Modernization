@@ -8,7 +8,7 @@ import type { Settings } from './Settings';
 
 export type Configuration = {
     features?: Features;
-    properties?: Properties;
     settings?: Settings;
+    properties?: Properties;
 };
 

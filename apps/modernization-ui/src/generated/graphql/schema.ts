@@ -227,7 +227,7 @@ export type IdentificationTypeId = {
 
 export type Investigation = {
   __typename?: 'Investigation';
-  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addTime?: Maybe<Scalars['Date']['output']>;
   cdDescTxt?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   investigationStatusCd?: Maybe<Scalars['String']['output']>;
@@ -235,6 +235,7 @@ export type Investigation = {
   localId?: Maybe<Scalars['String']['output']>;
   notificationRecordStatusCd?: Maybe<Scalars['String']['output']>;
   personParticipations: Array<InvestigationPersonParticipation>;
+  relevance: Scalars['Float']['output'];
 };
 
 export type InvestigationEventDateSearch = {
@@ -281,7 +282,7 @@ export type InvestigationFilter = {
 
 export type InvestigationPersonParticipation = {
   __typename?: 'InvestigationPersonParticipation';
-  birthTime?: Maybe<Scalars['DateTime']['output']>;
+  birthTime?: Maybe<Scalars['Date']['output']>;
   currSexCd?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
@@ -2382,7 +2383,7 @@ export type FindInvestigationsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd: string, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
+export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', relevance: number, id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd: string, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
 
 export type FindInvestigationsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -4412,6 +4413,7 @@ export const FindInvestigationsByFilterDocument = gql`
     query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage) {
   findInvestigationsByFilter(filter: $filter, page: $page) {
     content {
+      relevance
       id
       cdDescTxt
       jurisdictionCodeDescTxt

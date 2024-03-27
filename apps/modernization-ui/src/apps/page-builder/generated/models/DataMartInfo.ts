@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type DataMartInfo = {
-    dataMartColumnName?: string;
     defaultLabelInReport?: string;
     defaultRdbTableName?: string;
     rdbColumnName?: string;
+    dataMartColumnName?: string;
 };
 

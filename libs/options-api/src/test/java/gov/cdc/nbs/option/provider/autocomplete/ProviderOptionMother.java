@@ -103,7 +103,7 @@ class ProviderOptionMother {
         new MapSqlParameterSource(parameters),
         PreparedStatement::executeUpdate);
 
-    String name = String.format("%s %s", first, last);
+    String name = "%s %s".formatted(first, last);
 
     this.available.available(new Option(String.valueOf(next), name, name, order));
 

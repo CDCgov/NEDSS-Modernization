@@ -25,14 +25,14 @@ class PatientProfileResolver {
     @QueryMapping("findPatientProfile")
     @PreAuthorize("hasAuthority('FIND-PATIENT')")
     Optional<PatientProfile> find(
-        @Argument("patient") final Long patient,
-        @Argument("shortId") final Long shortId
+        @Argument("patient") final String patient,
+        @Argument("shortId") final String shortId
     ) {
 
         if (patient != null) {
-            return this.finder.findById(patient);
+            return this.finder.findById(Long.parseLong(patient));
         } else if (shortId != null) {
-            return findByShortId(shortId);
+            return findByShortId(Long.parseLong(shortId));
         }
 
         return Optional.empty();

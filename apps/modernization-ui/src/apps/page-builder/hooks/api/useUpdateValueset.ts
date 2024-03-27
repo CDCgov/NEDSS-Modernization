@@ -2,7 +2,6 @@ import { useEffect, useReducer } from 'react';
 
 import { ValueSetControllerService, Valueset } from 'apps/page-builder/generated';
 import { UpdateValueSetRequest } from 'apps/page-builder/generated/models/UpdateValueSetRequest';
-import { authorization } from 'authorization';
 
 type State =
     | { status: 'idle' }
@@ -35,13 +34,18 @@ export const useUpdateValueset = () => {
 
     useEffect(() => {
         if (state.status === 'updating') {
-            ValueSetControllerService.updateValueSetUsingPut({
-                authorization: authorization(),
+            ValueSetControllerService.updateValueSet({
                 codeSetNm: state.valueset,
-                request: state.request
+                requestBody: state.request
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', valueset: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', valueset: response });
+                    } else {
+                        dispatch({ type: 'error', error: 'Update failed to return Valueset' });
+                    }
+                });
         }
     }, [state.status]);
 

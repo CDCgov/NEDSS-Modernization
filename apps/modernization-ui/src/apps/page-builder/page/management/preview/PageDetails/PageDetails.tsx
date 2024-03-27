@@ -46,7 +46,6 @@ export const PageDetails = () => {
     useEffect(() => {
         if (pageId) {
             PageInformationService.find({
-                authorization: token,
                 page: Number(pageId)
             }).then((data: PageInformation) => {
                 setPageEvent(data.eventType.value ?? '');
@@ -66,9 +65,8 @@ export const PageDetails = () => {
     };
     const onSubmit = form.handleSubmit((request) => {
         PageInformationService.change({
-            authorization: token,
             page: Number(pageId),
-            request: {
+            requestBody: {
                 ...request,
                 conditions: request.conditions
             }
@@ -98,20 +96,18 @@ export const PageDetails = () => {
                             <Icon.Print size={3} />
                         </LinkButton>
                         <h2 className="page-title">Page Details</h2>
-                        <>
-                            <div className="fields-info">
-                                All fields with <span className="mandatory-indicator">*</span> are required
-                            </div>
-                            <FormProvider {...form}>
-                                <PageDetailsField
-                                    conditions={conditions}
-                                    mmgs={mmgs}
-                                    eventType={pageEvent}
-                                    isEnabled={!isEnabled}
-                                    pageStatus={pageStatus}
-                                />
-                            </FormProvider>
-                        </>
+                        <div className="fields-info">
+                            All fields with <span className="mandatory-indicator">*</span> are required
+                        </div>
+                        <FormProvider {...form}>
+                            <PageDetailsField
+                                conditions={conditions}
+                                mmgs={mmgs}
+                                eventType={pageEvent}
+                                isEnabled={!isEnabled}
+                                pageStatus={pageStatus}
+                            />
+                        </FormProvider>
                     </div>
                 </div>
                 <div className="page-details__buttons">

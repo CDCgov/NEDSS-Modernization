@@ -4,7 +4,7 @@ import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
 public class DuplicateConceptException extends BadRequestException {
     public DuplicateConceptException(String codesetName, String code) {
-        super(String.format("ValueSet %s already contains a concept with code: %s", codesetName, code));
+        super("ValueSet %s already contains a concept with code: %s".formatted(codesetName, code));
     }
 
 }

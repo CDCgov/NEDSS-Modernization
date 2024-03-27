@@ -21,9 +21,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -76,10 +74,10 @@ class PageHistoryFinderTest {
 
     Page<PageHistory> actualPageHistory = pageHistoryFinder.getPageHistory(100l, pageable);
     PageHistory pageHistory = actualPageHistory.stream().toList().get(0);
-    assertEquals("publishVersionNbr", "1.0", pageHistory.publishVersionNbr());
-    assertEquals("lastUpdatedDate", "09/25/2019", pageHistory.lastUpdatedDate());
-    assertEquals("lastUpdatedBy", "User1", pageHistory.lastUpdatedBy());
-    assertEquals("notes", "Notes 1", pageHistory.notes());
+    assertEquals("1.0", pageHistory.publishVersionNbr(), "publishVersionNbr");
+    assertEquals("09/25/2019", pageHistory.lastUpdatedDate(), "lastUpdatedDate");
+    assertEquals("User1", pageHistory.lastUpdatedBy(), "lastUpdatedBy");
+    assertEquals("Notes 1", pageHistory.notes(), "notes");
   }
 
   @Test

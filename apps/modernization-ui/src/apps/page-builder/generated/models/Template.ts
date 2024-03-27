@@ -3,13 +3,13 @@
 /* eslint-disable */
 
 export type Template = {
-    descTxt?: string;
     id: number;
+    templateNm: string;
+    recordStatusCd?: string;
     lastChgTime?: string;
     lastChgUserId?: number;
+    descTxt?: string;
     parentTemplateUid?: number;
-    recordStatusCd?: string;
     sourceNm?: string;
-    templateNm: string;
 };
 

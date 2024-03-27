@@ -7,22 +7,22 @@ import type { MessagingInfo } from './MessagingInfo';
 import type { Question } from './Question';
 
 export type TextQuestion = (Question & {
-    adminComments?: string;
-    codeSet?: string;
-    dataMartInfo?: DataMartInfo;
-    defaultValue?: string;
-    description?: string;
-    displayControl?: number;
-    fieldSize?: string;
     id?: number;
-    label?: string;
     mask?: string;
-    messagingInfo?: MessagingInfo;
-    status?: string;
-    subgroup?: string;
-    tooltip?: string;
-    type?: string;
+    fieldSize?: string;
+    defaultValue?: string;
+    codeSet?: string;
     uniqueId?: string;
     uniqueName?: string;
+    status?: string;
+    subgroup?: string;
+    description?: string;
+    type?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    adminComments?: string;
+    dataMartInfo?: DataMartInfo;
+    messagingInfo?: MessagingInfo;
 });
 

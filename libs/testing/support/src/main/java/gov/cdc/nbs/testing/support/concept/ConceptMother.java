@@ -1,12 +1,12 @@
 package gov.cdc.nbs.testing.support.concept;
 
 import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;

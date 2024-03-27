@@ -2,7 +2,6 @@ package gov.cdc.nbs.questionbank.support;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
@@ -12,6 +11,7 @@ import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.testing.support.Active;
+import jakarta.persistence.EntityManager;
 
 @Component
 @Transactional
@@ -83,28 +83,28 @@ public class QuestionMother {
   }
 
   private WaQuestion createTextQuestion() {
-    WaQuestion q = QuestionEntityMother.textQuestion();
+    TextQuestionEntity q = new TextQuestionEntity(QuestionCommandMother.addTextQuestion());
     q = questionRepository.save(q);
     addManaged(q.getId());
     return q;
   }
 
   private WaQuestion createDateQuestion() {
-    WaQuestion q = QuestionEntityMother.dateQuestion();
+    DateQuestionEntity q = new DateQuestionEntity(QuestionCommandMother.addDateQuestion());
     q = questionRepository.save(q);
     addManaged(q.getId());
     return q;
   }
 
   private WaQuestion createCodeQuestion() {
-    WaQuestion q = QuestionEntityMother.codedQuestion();
+    CodedQuestionEntity q = new CodedQuestionEntity(QuestionCommandMother.addCodedQuestion());
     q = questionRepository.save(q);
     addManaged(q.getId());
     return q;
   }
 
   private WaQuestion createNumericQuestion() {
-    WaQuestion q = QuestionEntityMother.numericQuestion();
+    NumericQuestionEntity q = new NumericQuestionEntity(QuestionCommandMother.addNumericQuestion());
     q = questionRepository.save(q);
     addManaged(q.getId());
     return q;

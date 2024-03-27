@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import gov.cdc.nbs.questionbank.page.classic.ClassicPreviewPagePreparer;
 import gov.cdc.nbs.questionbank.page.classic.ReturningPageCookie;
-import springfox.documentation.annotations.ApiIgnore;
+import io.swagger.v3.oas.annotations.Hidden;
 
-@ApiIgnore
+@Hidden
 @RestController
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
 public class ClassicPagePreviewRedirector {
@@ -26,7 +26,7 @@ public class ClassicPagePreviewRedirector {
   }
 
   @GetMapping("/api/v1/pages/{page}/preview")
-  ResponseEntity<Void> view(@PathVariable("page") final long page) {
+  ResponseEntity<Void> view(@PathVariable final long page) {
     ReturningPageCookie pageCookie = new ReturningPageCookie(String.valueOf(page));
     preparer.prepare();
 

@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Page_PageSummary_ } from '../models/Page_PageSummary_';
+import type { PagePageSummary } from '../models/PagePageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -12,43 +12,39 @@ export class PageSummaryService {
 
     /**
      * Allows paginated searching of Page Summaries with filters.
-     * @returns Page_PageSummary_ OK
-     * @returns any Created
+     * @returns PagePageSummary OK
      * @throws ApiError
      */
     public static search({
-        authorization,
-        request,
+        requestBody,
         page,
-        size,
+        size = 25,
         sort,
     }: {
-        authorization: string,
+        requestBody: PageSummaryRequest,
         /**
-         * request
+         * Zero-based page index (0..N)
          */
-        request: PageSummaryRequest,
         page?: number,
+        /**
+         * The size of the page to be returned
+         */
         size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_PageSummary_ | any> {
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PagePageSummary> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/search',
-            headers: {
-                'Authorization': authorization,
-            },
+            url: '/api/v1/pages/search',
             query: {
                 'page': page,
                 'size': size,
                 'sort': sort,
             },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

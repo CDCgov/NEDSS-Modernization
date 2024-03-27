@@ -62,7 +62,7 @@ public class PatientProfileAddMorbiditySteps {
         .andExpect(method(HttpMethod.GET))
         .andRespond(withSuccess());
 
-    String request = String.format("/nbs/api/profile/%d/report/morbidity", patient);
+    String request = "/nbs/api/profile/%d/report/morbidity".formatted(patient);
 
     activeResponse.active(
         mvc.perform(

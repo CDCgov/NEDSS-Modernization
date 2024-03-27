@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import { PageSummary, PageSummaryService, Filter as APIFilter } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { PageSummary, PageSummaryService, Date, DateRange, MultiValue, SingleValue } from 'apps/page-builder/generated';
 import { Status as PageStatus, usePage } from 'page';
 import { Filter, externalize } from 'filters';
 import { useSorting } from 'sorting';
@@ -12,7 +11,7 @@ type Sorting = {
 };
 
 type Status = 'initialize' | 'idle' | 'searching' | 'found' | 'new-search';
-
+type APIFilter = Date | DateRange | MultiValue | SingleValue;
 type State = { status: Status; keyword?: string; filters: APIFilter[]; sorting?: Sorting; pages: PageSummary[] };
 
 type Action =
@@ -82,14 +81,13 @@ const usePageSummarySearch = () => {
     useEffect(() => {
         if (state.status === 'searching') {
             PageSummaryService.search({
-                authorization: authorization(),
-                page: page.current - 1,
-                size: page.pageSize,
-                sort: sorting,
-                request: {
+                requestBody: {
                     search: state.keyword,
                     filters: state.filters
-                }
+                },
+                page: page.current - 1,
+                size: page.pageSize,
+                sort: sorting ? [sorting] : undefined
             })
                 .then((response) => ({
                     content: response.content ?? [],
@@ -107,7 +105,7 @@ const usePageSummarySearch = () => {
         searching: state.status === 'searching',
         pages: state.pages,
         search: (keyword?: string, filters?: Filter[]) =>
-            dispatch({ type: 'search', keyword, filters: externalize(filters ?? []) }),
+            dispatch({ type: 'search', keyword, filters: externalize(filters ?? []) as APIFilter[] }),
         keyword: state.keyword
     };
 };

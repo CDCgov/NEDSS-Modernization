@@ -5,7 +5,6 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 import { ChangeEvent } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { authorization } from '../../../../../../authorization';
 import { maxLengthRule, validPageNameRule } from '../../../../../../validation/entry';
 import { dataMartNameRule } from '../../../../../../validation/entry/dataMartNameRule';
 
@@ -30,9 +29,8 @@ const eventTypeOptions = [
 export const PageDetailsField = ({ conditions, mmgs, eventType, isEnabled, pageStatus }: AddNewPageFieldProps) => {
     const form = useFormContext<PageInformationChangeRequest>();
     const validatePageName = async (val: string) => {
-        const response = await PageControllerService.validatePageRequestUsingPost({
-            authorization: authorization(),
-            request: { name: val }
+        const response = await PageControllerService.validatePageRequest({
+            requestBody: { name: val }
         });
         if (!response) {
             form.setError('name', { message: 'Name is already in use' });

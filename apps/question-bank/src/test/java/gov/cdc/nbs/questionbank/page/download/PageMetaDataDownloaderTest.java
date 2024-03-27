@@ -22,8 +22,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -68,30 +68,27 @@ class PageMetaDataDownloaderTest {
     pageMetaDataDownloader.printSheet(workbook, sheet, header, dataList);
 
     Row headerRow = sheet.getRow(0);
-    assertNotNull("Header row should not be null", headerRow);
+    assertNotNull(headerRow, "Header row should not be null");
     for (int i = 0; i < header.length; i++) {
       Cell cell = headerRow.getCell(i);
-      assertNotNull("Header cell should not be null", cell);
-      assertEquals("Header value should match", header[i], cell.getStringCellValue());
+      assertNotNull(cell, "Header cell should not be null");
+      assertEquals(header[i], cell.getStringCellValue(), "Header value should match");
     }
 
     int rowIndex = 1;
     for (Object[] data : dataList) {
       Row row = sheet.getRow(rowIndex++);
-      assertNotNull("Data row should not be null", row);
+      assertNotNull(row, "Data row should not be null");
       int cellIndex = 0;
       for (Object cellData : data) {
         Cell cell = row.getCell(cellIndex++);
-        assertNotNull("Cell should not be null", cell);
+        assertNotNull(cell, "Cell should not be null");
         if (cellData instanceof Number) {
-          assertEquals("Numeric data should be aligned to the right",
-              "General", cell.getCellStyle().getDataFormatString());
+          assertEquals("General", cell.getCellStyle().getDataFormatString(), "Numeric data should be aligned to the right");
         }
         if (data[1] instanceof Date) {
-          assertEquals("Date cell should have the specified date format",
-              "yyyy-mm-dd hh:mm:ss.000", cell.getCellStyle().getDataFormatString());
-          assertEquals("Date should be aligned to the right",
-              HorizontalAlignment.RIGHT, cell.getCellStyle().getAlignment());
+          assertEquals("yyyy-mm-dd hh:mm:ss.000", cell.getCellStyle().getDataFormatString(), "Date cell should have the specified date format");
+          assertEquals(HorizontalAlignment.RIGHT, cell.getCellStyle().getAlignment(), "Date should be aligned to the right");
         }
 
       }

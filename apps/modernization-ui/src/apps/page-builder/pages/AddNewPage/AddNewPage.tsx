@@ -72,9 +72,8 @@ export const AddNewPage = () => {
     };
 
     const onSubmit = form.handleSubmit((data) => {
-        PageControllerService.createPageUsingPost({
-            authorization: authorization(),
-            request: data
+        PageControllerService.createPage({
+            requestBody: data
         })
             .then((response) => {
                 if (config.features.pageBuilder.page.management.edit.enabled) {

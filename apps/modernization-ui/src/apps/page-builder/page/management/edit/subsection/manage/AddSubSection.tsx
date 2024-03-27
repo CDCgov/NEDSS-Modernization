@@ -8,7 +8,6 @@ import { Controller, useForm } from 'react-hook-form';
 import styles from './addsubsection.module.scss';
 import { Heading } from 'components/heading';
 import { Button, Form, Icon } from '@trussworks/react-uswds';
-import { authorization } from 'authorization';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
@@ -45,19 +44,17 @@ export const AddSubSection = ({
 
     const onSubmit = form.handleSubmit((data) => {
         if (isEdit) {
-            SubSectionControllerService.updateSubSectionUsingPut({
-                authorization: authorization(),
+            SubSectionControllerService.updateSubSection({
                 page: pageId ?? 0,
                 subSectionId: subsectionEdit?.id ?? 0,
-                request: { name: data.name, visible: data.visible }
+                requestBody: { name: data.name, visible: data.visible }
             }).then(() => {
                 onSubSectionTouched?.('');
             });
         } else {
-            SubSectionControllerService.createSubsectionUsingPost({
-                authorization: authorization(),
+            SubSectionControllerService.createSubsection({
                 page: pageId ?? 0,
-                request: { name: data.name, visible: data.visible, sectionId: sectionId }
+                requestBody: { name: data.name, visible: data.visible, sectionId: sectionId }
             }).then(() => {
                 onSubSectionTouched?.(data.name ?? '');
                 form.reset();
@@ -95,18 +92,16 @@ export const AddSubSection = ({
                             ...maxLengthRule(50)
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <>
-                                <Input
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    defaultValue={value}
-                                    label="Subsection Name"
-                                    type="text"
-                                    error={error?.message}
-                                    required
-                                    className={styles.inputField}
-                                />
-                            </>
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                defaultValue={value}
+                                label="Subsection Name"
+                                type="text"
+                                error={error?.message}
+                                required
+                                className={styles.inputField}
+                            />
                         )}
                     />
 

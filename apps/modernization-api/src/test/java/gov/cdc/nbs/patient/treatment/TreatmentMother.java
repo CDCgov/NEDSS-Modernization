@@ -11,7 +11,7 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class TreatmentMother {

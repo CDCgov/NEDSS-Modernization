@@ -1,7 +1,6 @@
-import { useContext, useEffect, useReducer } from 'react';
-import { Template } from '../../generated/models/Template';
+import { useEffect, useReducer } from 'react';
 import { TemplateControllerService } from '../../generated';
-import { UserContext } from 'user';
+import { Template } from '../../generated/models/Template';
 
 type State =
     | { status: 'idle' }
@@ -33,20 +32,21 @@ const reducer = (_state: State, action: Action): State => {
 };
 
 export const useImportTemplate = () => {
-    const {
-        state: { getToken }
-    } = useContext(UserContext);
-
     const [state, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {
         if (state.status === 'importing') {
             TemplateControllerService.import({
-                authorization: `Bearer ${getToken()}`,
-                file: state.file
+                formData: { file: state.file }
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((template) => dispatch({ type: 'imported', template }));
+                .then((template) => {
+                    if (template) {
+                        dispatch({ type: 'imported', template });
+                    } else {
+                        dispatch({ type: 'error', error: 'No template was returned' });
+                    }
+                });
         }
     }, [state.status]);
 

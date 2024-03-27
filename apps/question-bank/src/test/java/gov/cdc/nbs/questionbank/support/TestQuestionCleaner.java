@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.support;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 

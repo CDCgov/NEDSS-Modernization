@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import java.time.Instant;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;

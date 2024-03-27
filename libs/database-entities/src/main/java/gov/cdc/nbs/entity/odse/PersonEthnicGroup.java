@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -45,13 +45,11 @@ public class PersonEthnicGroup {
     }
 
     public PersonEthnicGroup(
-        final Person person,
-        final PatientCommand.AddDetailedEthnicity added
-    ) {
+            final Person person,
+            final PatientCommand.AddDetailedEthnicity added) {
         this.id = new PersonEthnicGroupId(
-            person.getId(),
-            added.ethnicity()
-        );
+                person.getId(),
+                added.ethnicity());
 
         this.personUid = person;
 
@@ -64,7 +62,7 @@ public class PersonEthnicGroup {
     @Override
     public String toString() {
         return "PersonEthnicGroup{" +
-            "id=" + id +
-            '}';
+                "id=" + id +
+                '}';
     }
 }

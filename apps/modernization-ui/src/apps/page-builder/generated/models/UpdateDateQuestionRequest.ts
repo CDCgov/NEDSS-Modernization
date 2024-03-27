@@ -6,30 +6,30 @@ import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type UpdateDateQuestionRequest = {
-    adminComments?: string;
-    allowFutureDates?: boolean;
-    dataMartInfo?: ReportingInfo;
-    description?: string;
-    displayControl?: number;
-    label?: string;
-    mask?: UpdateDateQuestionRequest.mask;
-    messagingInfo?: MessagingInfo;
-    tooltip?: string;
-    type?: UpdateDateQuestionRequest.type;
     uniqueName?: string;
+    description?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    dataMartInfo?: ReportingInfo;
+    messagingInfo?: MessagingInfo;
+    adminComments?: string;
+    type?: UpdateDateQuestionRequest.type;
+    mask?: UpdateDateQuestionRequest.mask;
+    allowFutureDates?: boolean;
 };
 
 export namespace UpdateDateQuestionRequest {
 
-    export enum mask {
+    export enum type {
+        TEXT = 'TEXT',
+        NUMERIC = 'NUMERIC',
         DATE = 'DATE',
+        CODED = 'CODED',
     }
 
-    export enum type {
-        CODED = 'CODED',
+    export enum mask {
         DATE = 'DATE',
-        NUMERIC = 'NUMERIC',
-        TEXT = 'TEXT',
     }
 
 

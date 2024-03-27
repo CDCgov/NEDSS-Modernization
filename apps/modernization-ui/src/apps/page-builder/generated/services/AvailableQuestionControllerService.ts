@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AvailableQuestionCriteria } from '../models/AvailableQuestionCriteria';
-import type { Page_AvailableQuestion_ } from '../models/Page_AvailableQuestion_';
+import type { PageAvailableQuestion } from '../models/PageAvailableQuestion';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -11,52 +11,44 @@ import { request as __request } from '../core/request';
 export class AvailableQuestionControllerService {
 
     /**
-     * findAvailableQuestions
-     * @returns Page_AvailableQuestion_ OK
-     * @returns any Created
+     * @returns PageAvailableQuestion OK
      * @throws ApiError
      */
-    public static findAvailableQuestionsUsingPost({
-        authorization,
+    public static findAvailableQuestions({
         pageId,
-        request,
+        requestBody,
         page,
-        size,
+        size = 25,
         sort,
     }: {
-        authorization: string,
-        /**
-         * pageId
-         */
         pageId: number,
+        requestBody: AvailableQuestionCriteria,
         /**
-         * request
+         * Zero-based page index (0..N)
          */
-        request: AvailableQuestionCriteria,
         page?: number,
+        /**
+         * The size of the page to be returned
+         */
         size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_AvailableQuestion_ | any> {
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PageAvailableQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/page/{pageId}/search',
+            url: '/api/v1/questions/page/{pageId}/search',
             path: {
                 'pageId': pageId,
-            },
-            headers: {
-                'Authorization': authorization,
             },
             query: {
                 'page': page,
                 'size': size,
                 'sort': sort,
             },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

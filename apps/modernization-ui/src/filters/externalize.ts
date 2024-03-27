@@ -1,4 +1,3 @@
-import type { Filter as APIFilter } from 'apps/page-builder/generated/models/Filter';
 import { externalizeDate } from 'date';
 import {
     DatePeriodFilter,
@@ -12,6 +11,7 @@ import {
     Value
 } from './filter';
 import { DatePeriodOperator, ExactValueOperator, PartialValueOperator } from './operators';
+import { FilterJSON } from 'apps/page-builder/generated';
 
 type Base = {
     property: string;
@@ -34,9 +34,9 @@ type ExternalExactValueFilter = {
 } & Base &
     ExactValue;
 
-const externalize = (displayables: Filter[]): APIFilter[] => displayables.map(asFilter);
+const externalize = (displayables: Filter[]): FilterJSON[] => displayables.map(asFilter);
 
-const asFilter = (displayable: Filter): APIFilter => {
+const asFilter = (displayable: Filter): FilterJSON => {
     if ('value' in displayable) {
         return asPartialValueFilter(displayable);
     } else if ('values' in displayable) {

@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type UpdateReadOnlyComments = {
-    adminComments?: string;
     commentsText?: string;
+    adminComments?: string;
 };
 

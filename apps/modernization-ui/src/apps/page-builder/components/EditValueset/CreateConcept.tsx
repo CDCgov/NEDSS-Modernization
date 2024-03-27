@@ -2,12 +2,11 @@ import { Button } from '@trussworks/react-uswds';
 
 import { useAlert } from 'alert';
 import { ConceptControllerService, CreateConceptRequest } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { externalizeDateTime, internalizeDate } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ConceptForm } from './concept/ConceptForm';
-import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
 import { ButtonBar } from '../ButtonBar/ButtonBar';
+import { CloseableHeader } from '../CloseableHeader/CloseableHeader';
+import { ConceptForm } from './concept/ConceptForm';
 import styles from './edit-valueset.module.scss';
 
 type Props = {
@@ -23,9 +22,8 @@ export const CreateConcept = ({ onCreated, onCancel, onClose, valuesetName }: Pr
         defaultValues: { status: CreateConceptRequest.status.ACTIVE, effectiveFromTime: internalizeDate(new Date()) }
     });
     const handleCreate = () => {
-        ConceptControllerService.createConceptUsingPost({
-            authorization: authorization(),
-            request: {
+        ConceptControllerService.createConcept({
+            requestBody: {
                 ...form.getValues(),
                 effectiveToTime: externalizeDateTime(form.getValues('effectiveToTime')) ?? undefined,
                 effectiveFromTime: externalizeDateTime(form.getValues('effectiveFromTime')) ?? new Date().toISOString()

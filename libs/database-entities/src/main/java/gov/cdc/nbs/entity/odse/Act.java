@@ -3,12 +3,13 @@ package gov.cdc.nbs.entity.odse;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,9 +37,6 @@ public class Act {
   @OneToMany(mappedBy = "id.actUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ActId> actIds;
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<Notification> notifications;
-
   @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Observation> observations;
 
@@ -48,21 +46,14 @@ public class Act {
   @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Treatment> treatments;
 
-  @OneToMany(mappedBy = "nbsEventUid", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
-  private List<EdxEventProcess> edxEventProcesses;
-
   @OneToMany(mappedBy = "targetActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ActRelationship> targetActRelationships;
 
-  @OneToMany(
-      mappedBy = "sourceActUid",
-      fetch = FetchType.LAZY,
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.MERGE,
-          CascadeType.REMOVE
-      }
-  )
+  @OneToMany(mappedBy = "sourceActUid", fetch = FetchType.LAZY, cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  })
   private List<ActRelationship> actRelationships;
 
   public Act() {
@@ -100,8 +91,7 @@ public class Act {
     ActRelationship relationship = new ActRelationship(
         this,
         target,
-        type
-    );
+        type);
     ensureRelationships().add(relationship);
   }
 

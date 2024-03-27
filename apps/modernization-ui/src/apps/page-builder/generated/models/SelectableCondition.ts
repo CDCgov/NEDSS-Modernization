@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type SelectableCondition = {
+    value?: string;
     name?: string;
     published?: boolean;
-    value?: string;
 };
 

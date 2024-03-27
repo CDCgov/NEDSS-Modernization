@@ -4,7 +4,7 @@
 import type { Condition } from '../models/Condition';
 import type { ConditionStatusResponse } from '../models/ConditionStatusResponse';
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
-import type { Page_Condition_ } from '../models/Page_Condition_';
+import type { PageCondition } from '../models/PageCondition';
 import type { ReadConditionRequest } from '../models/ReadConditionRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -14,228 +14,154 @@ import { request as __request } from '../core/request';
 export class ConditionControllerService {
 
     /**
-     * findConditions
-     * @returns Page_Condition_ OK
+     * @returns PageCondition OK
      * @throws ApiError
      */
-    public static findConditionsUsingGet({
-        authorization,
+    public static searchConditions({
+        requestBody,
         page,
-        size,
+        size = 20,
         sort,
     }: {
-        authorization: string,
+        requestBody: ReadConditionRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
         page?: number,
+        /**
+         * The size of the page to be returned
+         */
         size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Condition_> {
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PageCondition> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/conditions/',
-            headers: {
-                'Authorization': authorization,
-            },
+            method: 'POST',
+            url: '/api/v1/conditions/search',
             query: {
                 'page': page,
                 'size': size,
                 'sort': sort,
             },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * createCondition
-     * @returns Condition OK
-     * @returns any Created
+     * @returns PageCondition OK
      * @throws ApiError
      */
-    public static createConditionUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: CreateConditionRequest,
-    }): CancelablePromise<Condition | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/conditions/',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * findAllConditions
-     * @returns Condition OK
-     * @throws ApiError
-     */
-    public static findAllConditionsUsingGet({
-        authorization,
-    }: {
-        authorization: string,
-    }): CancelablePromise<Array<Condition>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/conditions/all',
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * findConditionsNotInUse
-     * @returns Condition OK
-     * @throws ApiError
-     */
-    public static findConditionsNotInUseUsingGet({
-        authorization,
+    public static findConditions({
         page,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-    }): CancelablePromise<Array<Condition>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/conditions/available',
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * searchConditions
-     * @returns Page_Condition_ OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static searchConditionsUsingPost({
-        authorization,
-        search,
-        page,
-        size,
+        size = 20,
         sort,
     }: {
-        authorization: string,
         /**
-         * search
+         * Zero-based page index (0..N)
          */
-        search: ReadConditionRequest,
         page?: number,
+        /**
+         * The size of the page to be returned
+         */
         size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Condition_ | any> {
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PageCondition> {
         return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/conditions/search',
-            headers: {
-                'Authorization': authorization,
-            },
+            method: 'GET',
+            url: '/api/v1/conditions/',
             query: {
                 'page': page,
                 'size': size,
                 'sort': sort,
             },
-            body: search,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
         });
     }
 
     /**
-     * inactivateCondition
+     * @returns Condition OK
+     * @throws ApiError
+     */
+    public static createCondition({
+        requestBody,
+    }: {
+        requestBody: CreateConditionRequest,
+    }): CancelablePromise<Condition> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/conditions/',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
      * @returns ConditionStatusResponse OK
      * @throws ApiError
      */
-    public static inactivateConditionUsingDelete({
-        authorization,
+    public static inactivateCondition({
         id,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: string,
     }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/conditions/{id}',
+            url: '/api/v1/conditions/{id}',
             path: {
                 'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
             },
         });
     }
 
     /**
-     * activateCondition
      * @returns ConditionStatusResponse OK
      * @throws ApiError
      */
-    public static activateConditionUsingPatch({
-        authorization,
+    public static activateCondition({
         id,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: string,
     }): CancelablePromise<ConditionStatusResponse> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/nbs/page-builder/api/v1/conditions/{id}',
+            url: '/api/v1/conditions/{id}',
             path: {
                 'id': id,
             },
-            headers: {
-                'Authorization': authorization,
+        });
+    }
+
+    /**
+     * @returns Condition OK
+     * @throws ApiError
+     */
+    public static findConditionsNotInUse({
+        page,
+    }: {
+        page?: number,
+    }): CancelablePromise<Array<Condition>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/conditions/available',
+            query: {
+                'page': page,
             },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-            },
+        });
+    }
+
+    /**
+     * @returns Condition OK
+     * @throws ApiError
+     */
+    public static findAllConditions(): CancelablePromise<Array<Condition>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/conditions/all',
         });
     }
 

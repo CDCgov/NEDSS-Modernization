@@ -4,7 +4,7 @@ import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PreUpdate;
+import jakarta.persistence.PreUpdate;
 
 @Component
 public class PatientPhoneLocatorHistoryListener {

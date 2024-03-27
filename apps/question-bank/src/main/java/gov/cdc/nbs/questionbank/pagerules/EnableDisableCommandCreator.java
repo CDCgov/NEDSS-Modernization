@@ -162,7 +162,7 @@ public class EnableDisableCommandCreator {
         : sourceValues.stream()
             .map(SourceValue::text)
             .collect(Collectors.joining(" , "));
-    return String.format("%s %s must be ( %s ) %s",
+    return "%s %s must be ( %s ) %s".formatted(
         sourceLabel,
         comparatorValue,
         sourceValue,
@@ -180,7 +180,7 @@ public class EnableDisableCommandCreator {
     String values = anySourceValue ? "" : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
     String comparatorValue = anySourceValue ? "" : comparator;
     String targetIdentifier = String.join(" , ", targetIdentifiers);
-    return String.format("%s ( %s ) %s ^ %s ( %s )",
+    return "%s ( %s ) %s ^ %s ( %s )".formatted(
         sourceIdentifier,
         values,
         comparatorValue,
@@ -204,13 +204,13 @@ public class EnableDisableCommandCreator {
         .collect(Collectors.joining("\n"));
 
     if (anySourceValue) {
-      return String.format(ANY_SOURCE_VALUE,
+      return ANY_SOURCE_VALUE.formatted(
           functionName,
           sourceIdentifier,
           "=".equals(comparator) ? enableCalls : disableCalls,
           "=".equals(comparator) ? disableCalls : enableCalls);
     } else {
-      return String.format(SPECIFIC_SOURCE_VALUES,
+      return SPECIFIC_SOURCE_VALUES.formatted(
           functionName,
           sourceIdentifier,
           createIf(sourceValues),
@@ -230,20 +230,20 @@ public class EnableDisableCommandCreator {
 
   String pgEnabled(String targetIdentifier, TargetType targetType) {
     String method = TargetType.QUESTION.equals(targetType) ? "pgEnableElement" : "pgSubSectionEnabled";
-    return String.format("%s('%s');", method, targetIdentifier);
+    return "%s('%s');".formatted(method, targetIdentifier);
   }
 
   String pgDisabled(String targetIdentifier, TargetType targetType) {
     String method = TargetType.QUESTION.equals(targetType) ? "pgDisableElement" : "pgSubSectionDisabled";
-    return String.format("%s('%s');", method, targetIdentifier);
+    return "%s('%s');".formatted(method, targetIdentifier);
   }
 
   String identifierIfClause(String value) {
-    return String.format("($j.inArray('%s',foo) > -1)", value);
+    return "($j.inArray('%s',foo) > -1)".formatted(value);
   }
 
   String labelIfClause(String label) {
-    return String.format("($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1)", label);
+    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1)".formatted(label);
   }
 
 }

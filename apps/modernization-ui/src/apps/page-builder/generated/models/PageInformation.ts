@@ -7,12 +7,12 @@ import type { SelectableEventType } from './SelectableEventType';
 import type { SelectableMessageMappingGuide } from './SelectableMessageMappingGuide';
 
 export type PageInformation = {
-    conditions: Array<SelectableCondition>;
-    datamart?: string;
-    description?: string;
+    page: number;
     eventType: SelectableEventType;
     messageMappingGuide: SelectableMessageMappingGuide;
     name: string;
-    page: number;
+    datamart?: string;
+    description?: string;
+    conditions: Array<SelectableCondition>;
 };
 

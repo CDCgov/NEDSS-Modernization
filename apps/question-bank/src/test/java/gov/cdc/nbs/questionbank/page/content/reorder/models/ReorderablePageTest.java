@@ -1,8 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.reorder.models;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;

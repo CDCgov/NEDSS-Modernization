@@ -1,6 +1,7 @@
 package gov.cdc.nbs.encryption;
 
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -27,6 +28,7 @@ public class DecryptionRequester {
       return mvc.perform(
           this.authenticated.withUser(
               post("/encryption/decrypt")
+                  .contentType(MediaType.TEXT_PLAIN)
                   .content(encrypted)
           )
       );

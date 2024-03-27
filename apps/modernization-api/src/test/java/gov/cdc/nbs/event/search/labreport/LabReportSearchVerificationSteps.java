@@ -105,7 +105,7 @@ public class LabReportSearchVerificationSteps {
           jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].birthTime", position);
       case "last name" ->
           jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].lastName", position);
-      default -> throw new AssertionError(String.format("Unexpected Lab Report Search Result property %s", field));
+      default -> throw new AssertionError("Unexpected Lab Report Search Result property %s".formatted(field));
     };
   }
 

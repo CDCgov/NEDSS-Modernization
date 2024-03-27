@@ -48,7 +48,7 @@ public class PatientSearchCriteriaSteps {
       case "identification type" -> criteria.getIdentification().setIdentificationType(value);
       case "identification value" -> criteria.getIdentification().setIdentificationNumber(value);
       default -> throw new IllegalStateException(
-          String.format("Unexpected search criteria %s equal %s", field, value));
+          "Unexpected search criteria %s equal %s".formatted(field, value));
     }
     return criteria;
   }

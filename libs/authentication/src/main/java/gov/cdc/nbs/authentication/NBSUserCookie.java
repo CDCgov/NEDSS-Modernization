@@ -1,7 +1,7 @@
 package gov.cdc.nbs.authentication;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 public record NBSUserCookie(String user) {
 

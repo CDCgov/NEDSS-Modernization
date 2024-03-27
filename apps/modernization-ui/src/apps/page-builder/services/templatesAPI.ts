@@ -1,8 +1,7 @@
 import { Template, TemplateControllerService } from '../generated';
 
 export const fetchTemplates = (token: string, type: string): Promise<Template[]> =>
-    TemplateControllerService.findAllTemplatesUsingGet({
-        authorization: token,
+    TemplateControllerService.findAllTemplates({
         type: type
     }).catch((error) => {
         console.log(error.toJSON());

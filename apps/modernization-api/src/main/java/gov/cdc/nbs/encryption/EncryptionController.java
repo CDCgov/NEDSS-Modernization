@@ -1,6 +1,6 @@
 package gov.cdc.nbs.encryption;
 
-import io.swagger.annotations.ApiImplicitParam;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,21 +16,11 @@ class EncryptionController {
   }
 
   @PostMapping("/encrypt")
-  @ApiImplicitParam(
-      name = "Authorization",
-      required = true,
-      paramType = "header",
-      dataTypeClass = String.class)
   EncryptionResponse encrypt(@RequestBody Object object) {
     return new EncryptionResponse(encryptionService.handleEncryption(object));
   }
 
-  @PostMapping("/decrypt")
-  @ApiImplicitParam(
-      name = "Authorization",
-      required = true,
-      paramType = "header",
-      dataTypeClass = String.class)
+  @PostMapping(value = "/decrypt", consumes = MediaType.TEXT_PLAIN_VALUE)
   Object decrypt(@RequestBody String encryptedString) {
     return encryptionService.handleDecryption(encryptedString);
   }

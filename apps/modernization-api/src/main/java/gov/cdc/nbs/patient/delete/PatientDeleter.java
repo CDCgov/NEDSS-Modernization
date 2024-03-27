@@ -11,7 +11,7 @@ import gov.cdc.nbs.patient.event.PatientEventEmitter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 public class PatientDeleter {

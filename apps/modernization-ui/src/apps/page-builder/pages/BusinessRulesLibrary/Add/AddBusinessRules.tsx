@@ -1,14 +1,13 @@
-import { RuleRequest, PageRuleControllerService, Rule } from 'apps/page-builder/generated';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { Breadcrumb } from 'breadcrumb';
-import styles from './AddBusinessRule.module.scss';
 import { Button, Form } from '@trussworks/react-uswds';
-import { BusinessRulesForm } from '../Form/BusinessRulesForm';
-import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { authorization } from 'authorization';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { useAlert } from 'alert';
+import { PageRuleControllerService, Rule, RuleRequest } from 'apps/page-builder/generated';
+import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Breadcrumb } from 'breadcrumb';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { BusinessRulesForm } from '../Form/BusinessRulesForm';
+import styles from './AddBusinessRule.module.scss';
 
 export type SourceValueProp = {
     name: string;
@@ -29,10 +28,9 @@ export const AddBusinessRule = () => {
 
     const onSubmit = form.handleSubmit(async (data) => {
         try {
-            await PageRuleControllerService.createBusinessRuleUsingPost({
-                authorization: authorization(),
+            await PageRuleControllerService.createBusinessRule({
                 id: page?.id ?? 0,
-                request: data
+                requestBody: data
             });
             showAlert({
                 type: 'success',

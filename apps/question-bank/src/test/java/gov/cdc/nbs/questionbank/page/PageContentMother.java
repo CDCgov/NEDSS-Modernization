@@ -32,7 +32,7 @@ class PageContentMother {
   }
 
   public void withTab(final PageIdentifier page) {
-    String name = String.format("%s Tab", page.name());
+    String name = "%s Tab".formatted(page.name());
 
     withTab(page, name);
   }
@@ -47,7 +47,7 @@ class PageContentMother {
               new PageContentCommand.AddTab(
                   name,
                   true,
-                  "TAB_" + next, //  bring in the test uuid generator!
+                  "TAB_" + next, // bring in the test uuid generator!
                   this.settings.createdBy(),
                   Instant.now()));
         });
@@ -162,9 +162,9 @@ class PageContentMother {
     harness.with(page)
         .use(found -> nthOfType(found.getUiMetadata(), subsection,
             PageConstants.SUB_SECTION_COMPONENT)
-                .ifPresent(container -> withStaticElementIn(found,
-                    container,
-                    name, 1012L)));
+            .ifPresent(container -> withStaticElementIn(found,
+                container,
+                name, 1012L)));
   }
 
   private void withStaticElementIn(
@@ -190,8 +190,8 @@ class PageContentMother {
     harness.with(page)
         .use(found -> nthOfType(found.getUiMetadata(), subSection,
             PageConstants.SUB_SECTION_COMPONENT)
-                .ifPresent(container -> withContentIn(found, container,
-                    name, type, identifier, dataType)));
+            .ifPresent(container -> withContentIn(found, container,
+                name, type, identifier, dataType)));
   }
 
   public void withContentIn(
