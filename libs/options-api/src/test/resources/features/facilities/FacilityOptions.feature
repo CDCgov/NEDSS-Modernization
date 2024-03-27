@@ -27,3 +27,8 @@ Feature: Facility Options REST API
   Scenario: I cannot find specific facilities that do not exist
     When I am trying to find facilities that start with "zzzzzzzzz"
     Then there aren't any options available
+
+  Scenario: Electronic facilities are not available for search
+    Given there is a facility for "Cyberdyne Systems" that was added electronically
+    When I am trying to find facilities that start with "cyber"
+    Then there aren't any options available
