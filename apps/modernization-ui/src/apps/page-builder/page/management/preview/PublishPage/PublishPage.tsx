@@ -118,7 +118,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
             </div>
             <div className={styles.conditions}>
                 <h4>Related condition(s)</h4>
-                {conditions?.length ? (
+                {conditions?.length && conditions.filter((c) => c.name).length ? (
                     conditions.map((condition, i) => <p key={i}>{condition.name}</p>)
                 ) : (
                     <ErrorMessage>
@@ -131,7 +131,12 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 <ModalToggleButton type="button" closer outline modalRef={modalRef}>
                     Cancel
                 </ModalToggleButton>
-                <Button type="submit" disabled={!publishForm.formState.isValid || !conditions?.length}>
+                <Button
+                    type="submit"
+                    disabled={
+                        !publishForm.formState.isValid ||
+                        !(conditions?.length && conditions.filter((c) => c.name).length)
+                    }>
                     Publish
                 </Button>
             </div>
