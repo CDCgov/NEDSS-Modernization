@@ -19,6 +19,7 @@ import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { useAlert } from 'alert';
 import { ConfirmationModal } from 'confirmation';
+import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
 
 export const EditBusinessRule = () => {
     const form = useForm<RuleRequest>();
@@ -75,40 +76,6 @@ export const EditBusinessRule = () => {
             });
         });
         return result;
-    };
-
-    const findTargetQuestion = (targets?: string[]): PagesQuestion[] => {
-        const targetQuestions: PagesQuestion[] = [];
-        page?.tabs?.map((tab: PagesTab) => {
-            tab.sections?.map((section: PagesSection) => {
-                section.subSections?.map((subsection: PagesSubSection) => {
-                    subsection.questions?.map((question: PagesQuestion) => {
-                        targets?.map((target) => {
-                            if (target === question.question) {
-                                targetQuestions.push(question);
-                            }
-                        });
-                    });
-                });
-            });
-        });
-        return targetQuestions;
-    };
-
-    const findTargetSubsection = (targets?: string[]): PagesSubSection[] => {
-        const targetQuestions: PagesSubSection[] = [];
-        page?.tabs?.map((tab: PagesTab) => {
-            tab.sections?.map((section: PagesSection) => {
-                section.subSections?.map((subsection: PagesSubSection) => {
-                    targets?.map((target) => {
-                        if (target === subsection.questionIdentifier) {
-                            targetQuestions.push(subsection);
-                        }
-                    });
-                });
-            });
-        });
-        return targetQuestions;
     };
 
     const fetchSourceValues = (valueSet?: string) => {
@@ -234,8 +201,11 @@ export const EditBusinessRule = () => {
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
                                     editSourceQuestion={findSourceQuestion(form.getValues('sourceIdentifier'))}
-                                    editTargetQuestions={findTargetQuestion(form.getValues('targetIdentifiers'))}
-                                    editTargetSubsections={findTargetSubsection(form.getValues('targetIdentifiers'))}
+                                    editTargetQuestions={findTargetQuestion(form.getValues('targetIdentifiers'), page)}
+                                    editTargetSubsections={findTargetSubsection(
+                                        form.getValues('targetIdentifiers'),
+                                        page
+                                    )}
                                 />
                             </FormProvider>
                         </div>
