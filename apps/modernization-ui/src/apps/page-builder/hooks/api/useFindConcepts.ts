@@ -67,11 +67,9 @@ export const useFindConcepts = () => {
 
             ConceptControllerService.searchConcepts({
                 codeSetNm: state.search.codeSetNm,
-                requestBody: {
-                    page: state.search.page,
-                    size: state.search.pageSize,
-                    sort: sortString ? [sortString] : undefined
-                }
+                page: state.search.page,
+                size: state.search.pageSize,
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {

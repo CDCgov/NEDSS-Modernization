@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type { County } from '../models/County';
 import type { CreateValuesetRequest } from '../models/CreateValuesetRequest';
-import type { Pageable } from '../models/Pageable';
 import type { PageValueSetOption } from '../models/PageValueSetOption';
 import type { UpdateValueSetRequest } from '../models/UpdateValueSetRequest';
 import type { Valueset } from '../models/Valueset';
@@ -116,15 +115,32 @@ export class ValueSetControllerService {
      */
     public static searchValueSet({
         requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
-        requestBody: {
-            pageable?: Pageable;
-            request?: ValueSetSearchRequest;
-        },
+        requestBody: ValueSetSearchRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageValueSetOption> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/valueset/options/search',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });

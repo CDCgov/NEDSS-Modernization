@@ -68,17 +68,13 @@ export const useFindAddableQuestions = () => {
                 : undefined;
 
             AvailableQuestionControllerService.findAvailableQuestions({
+                pageId: state.search.pageId,
                 requestBody: {
-                    request: {
-                        query: state.search.searchText ?? ''
-                    },
-                    pageable: {
-                        page: state.search.page,
-                        size: state.search.pageSize,
-                        sort: sortString ? [sortString] : undefined
-                    }
+                    query: state.search.searchText ?? ''
                 },
-                pageId: state.search.pageId
+                page: state.search.page,
+                size: state.search.pageSize,
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {

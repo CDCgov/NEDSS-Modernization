@@ -9,6 +9,7 @@ import gov.cdc.nbs.questionbank.valueset.request.ValueSetSearchRequest;
 import gov.cdc.nbs.questionbank.valueset.response.County;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -90,7 +91,7 @@ class ValueSetController {
 
   @PostMapping("/options/search")
   Page<ValueSetOption> searchValueSet(
-      @PageableDefault(size = 25, sort = "name") Pageable pageable,
+      @ParameterObject @PageableDefault(size = 25, sort = "name") Pageable pageable,
       @RequestBody ValueSetSearchRequest request) {
     return optionFinder.search(request, pageable);
   }

@@ -5,11 +5,11 @@
 import type { SortObject } from './SortObject';
 
 export type PageableObject = {
-    paged?: boolean;
-    unpaged?: boolean;
     pageNumber?: number;
     pageSize?: number;
-    sort?: SortObject;
+    paged?: boolean;
+    unpaged?: boolean;
     offset?: number;
+    sort?: SortObject;
 };
 

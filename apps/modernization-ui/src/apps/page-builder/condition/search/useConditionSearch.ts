@@ -75,13 +75,12 @@ export const useConditionSearch = () => {
 
             ConditionControllerService.searchConditions({
                 requestBody: {
-                    search: { searchText: state.search.searchText ?? '', excludeInUse: true },
-                    pageable: {
-                        page: state.search.page,
-                        size: state.search.pageSize,
-                        sort: sortString ? [sortString] : undefined
-                    }
-                }
+                    searchText: state.search.searchText ?? '',
+                    excludeInUse: true
+                },
+                page: state.search.page,
+                size: state.search.pageSize,
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {

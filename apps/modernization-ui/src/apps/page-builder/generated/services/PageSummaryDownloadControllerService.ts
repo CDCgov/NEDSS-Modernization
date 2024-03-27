@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Pageable } from '../models/Pageable';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -16,15 +15,32 @@ export class PageSummaryDownloadControllerService {
      */
     public static pdf({
         requestBody,
+        page,
+        size = 10,
+        sort,
     }: {
-        requestBody: {
-            request?: PageSummaryRequest;
-            pageable?: Pageable;
-        },
+        requestBody: PageSummaryRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/pdf',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -36,15 +52,32 @@ export class PageSummaryDownloadControllerService {
      */
     public static csv({
         requestBody,
+        page,
+        size = 10,
+        sort,
     }: {
-        requestBody: {
-            request?: PageSummaryRequest;
-            pageable?: Pageable;
-        },
+        requestBody: PageSummaryRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<Blob> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/csv',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });

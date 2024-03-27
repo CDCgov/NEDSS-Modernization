@@ -7,16 +7,16 @@ import type { PageSummary } from './PageSummary';
 import type { SortObject } from './SortObject';
 
 export type PagePageSummary = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     pageable?: PageableObject;
-    numberOfElements?: number;
-    number?: number;
-    first?: boolean;
-    last?: boolean;
-    sort?: SortObject;
     size?: number;
     content?: Array<PageSummary>;
+    numberOfElements?: number;
+    sort?: SortObject;
+    first?: boolean;
+    last?: boolean;
+    number?: number;
     empty?: boolean;
 };
 

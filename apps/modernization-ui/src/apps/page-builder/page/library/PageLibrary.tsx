@@ -56,9 +56,10 @@ const PageLibraryContent = () => {
     const handleDownloadCSV = () => {
         PageSummaryDownloadControllerService.csv({
             requestBody: {
-                request: { search: keyword, filters: externalize(filters) as ApiFilter },
-                pageable: { sort: sorting ? [sorting] : ['id,asc'] }
-            }
+                search: keyword,
+                filters: externalize(filters) as ApiFilter
+            },
+            sort: sorting ? [sorting] : ['id,asc']
         }).then((file) => download({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
     };
 

@@ -8,6 +8,7 @@ import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -98,7 +99,7 @@ class PageRuleController {
   Page<Rule> findPageRule(
       @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
-      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     return pageRuleFinder.searchPageRule(pageId, request, pageable);
   }
 
@@ -106,7 +107,7 @@ class PageRuleController {
   ResponseEntity<byte[]> downloadRulePdf(
       @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
-      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     Page<Rule> rules = pageRuleFinder.searchPageRule(pageId, request, pageable);
     byte[] pdf = pdfCreator.create(rules.toList());
     return ResponseEntity.ok()
@@ -123,7 +124,7 @@ class PageRuleController {
   ResponseEntity<byte[]> downloadRuleCsv(
       @PathVariable("id") Long pageId,
       @RequestBody SearchPageRuleRequest request,
-      @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25, sort = "add_time") Pageable pageable) {
     Page<Rule> rules = pageRuleFinder.searchPageRule(pageId, request, pageable);
 
     byte[] csv = csvCreator.create(rules.toList());

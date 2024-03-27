@@ -10,16 +10,16 @@ import type { SortObject } from './SortObject';
 import type { TextQuestion } from './TextQuestion';
 
 export type PageQuestion = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     pageable?: PageableObject;
-    numberOfElements?: number;
-    number?: number;
-    first?: boolean;
-    last?: boolean;
-    sort?: SortObject;
     size?: number;
     content?: Array<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)>;
+    numberOfElements?: number;
+    sort?: SortObject;
+    first?: boolean;
+    last?: boolean;
+    number?: number;
     empty?: boolean;
 };
 

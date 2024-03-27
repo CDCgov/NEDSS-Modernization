@@ -5,6 +5,7 @@ import gov.cdc.nbs.questionbank.valueset.model.Concept;
 import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
 import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -45,7 +46,7 @@ class ConceptController {
   @PostMapping("/search")
   Page<Concept> searchConcepts(
       @PathVariable String codeSetNm,
-      @PageableDefault(size = 25, sort = "localCode") final Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25, sort = "localCode") final Pageable pageable) {
     return finder.find(codeSetNm, pageable);
   }
 

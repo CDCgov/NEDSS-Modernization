@@ -26,10 +26,8 @@ const PageInformation = () => {
     const fetchPageHistory = async () => {
         PageControllerService.getPageHistory({
             id: Number(pageId),
-            pageable: {
-                page: currentPage - 1,
-                size: pageSize
-            }
+            page: currentPage - 1,
+            size: pageSize
         }).then((rep) => {
             setPageHistory(rep?.content ?? []);
             setTotalResults(rep?.totalElements ?? 0);

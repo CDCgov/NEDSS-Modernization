@@ -3,7 +3,6 @@
 /* eslint-disable */
 import type { Concept } from '../models/Concept';
 import type { CreateConceptRequest } from '../models/CreateConceptRequest';
-import type { Pageable } from '../models/Pageable';
 import type { PageConcept } from '../models/PageConcept';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
 
@@ -84,10 +83,23 @@ export class ConceptControllerService {
      */
     public static searchConcepts({
         codeSetNm,
-        requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
         codeSetNm: string,
-        requestBody?: Pageable,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageConcept> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -95,8 +107,11 @@ export class ConceptControllerService {
             path: {
                 'codeSetNm': codeSetNm,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
         });
     }
 

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.question.available;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,7 +26,7 @@ public class AvailableQuestionController {
   public Page<AvailableQuestion> findAvailableQuestions(
       @RequestBody AvailableQuestionCriteria request,
       @PathVariable Long pageId,
-      @PageableDefault(size = 25) Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25) Pageable pageable) {
     return finder.find(request, pageId, pageable);
   }
 }

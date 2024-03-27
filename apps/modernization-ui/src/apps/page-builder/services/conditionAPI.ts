@@ -14,11 +14,9 @@ export const fetchConditions = async (): Promise<Array<Condition>> => {
 
 export const findConditions = async (page: number, size: number, sort: string) => {
     const response = await ConditionControllerService.findConditions({
-        pageable: {
-            page,
-            size,
-            sort: sort ? [sort] : undefined
-        }
+        page,
+        size,
+        sort: sort ? [sort] : undefined
     });
     return response;
 };
@@ -31,14 +29,10 @@ export const searchConditions = async (
     search: ReadConditionRequest
 ): Promise<PageCondition> => {
     const response = await ConditionControllerService.searchConditions({
-        requestBody: {
-            search,
-            pageable: {
-                page,
-                size,
-                sort: sort ? [sort] : undefined
-            }
-        }
+        requestBody: search,
+        page,
+        size,
+        sort: sort ? [sort] : undefined
     });
     return response;
 };

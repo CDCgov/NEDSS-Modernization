@@ -57,14 +57,10 @@ export const useFindValuesets = () => {
                 : undefined;
 
             ValueSetControllerService.searchValueSet({
-                requestBody: {
-                    request: { query: state.search.query ?? '' },
-                    pageable: {
-                        page: state.search.page,
-                        size: state.search.pageSize,
-                        sort: sortString ? [sortString] : undefined
-                    }
-                }
+                requestBody: { query: state.search.query ?? '' },
+                page: state.search.page,
+                size: state.search.pageSize,
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {

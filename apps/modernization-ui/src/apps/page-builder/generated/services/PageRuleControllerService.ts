@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Pageable } from '../models/Pageable';
 import type { PageRule } from '../models/PageRule';
 import type { PagesResponse } from '../models/PagesResponse';
 import type { Rule } from '../models/Rule';
@@ -150,18 +149,35 @@ export class PageRuleControllerService {
     public static findPageRule({
         id,
         requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
         id: number,
-        requestBody: {
-            request?: SearchPageRuleRequest;
-            pageable?: Pageable;
-        },
+        requestBody: SearchPageRuleRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageRule> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/search',
             path: {
                 'id': id,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -175,18 +191,35 @@ export class PageRuleControllerService {
     public static downloadRulePdf({
         id,
         requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
         id: number,
-        requestBody: {
-            request?: SearchPageRuleRequest;
-            pageable?: Pageable;
-        },
+        requestBody: SearchPageRuleRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/pdf',
             path: {
                 'id': id,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: requestBody,
             mediaType: 'application/json',
@@ -200,18 +233,35 @@ export class PageRuleControllerService {
     public static downloadRuleCsv({
         id,
         requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
         id: number,
-        requestBody: {
-            request?: SearchPageRuleRequest;
-            pageable?: Pageable;
-        },
+        requestBody: SearchPageRuleRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<Array<string>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules/csv',
             path: {
                 'id': id,
+            },
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
             body: requestBody,
             mediaType: 'application/json',

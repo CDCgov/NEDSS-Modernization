@@ -50,7 +50,6 @@ export type { GroupSubSectionRequest } from './models/GroupSubSectionRequest';
 export type { MessagingInfo } from './models/MessagingInfo';
 export { MultiValue } from './models/MultiValue';
 export type { NumericQuestion } from './models/NumericQuestion';
-export type { Pageable } from './models/Pageable';
 export type { PageableObject } from './models/PageableObject';
 export type { PageAvailableQuestion } from './models/PageAvailableQuestion';
 export type { PageBuilderOption } from './models/PageBuilderOption';

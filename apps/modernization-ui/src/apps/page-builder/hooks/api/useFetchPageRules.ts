@@ -66,14 +66,10 @@ export const useFetchPageRules = () => {
 
             PageRuleControllerService.findPageRule({
                 id: Number(pageId),
-                requestBody: {
-                    request,
-                    pageable: {
-                        page: state.search.page,
-                        size: state.search.pageSize,
-                        sort: sortString ? [sortString] : undefined
-                    }
-                }
+                requestBody: request,
+                page: state.search.page,
+                size: state.search.pageSize,
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => {

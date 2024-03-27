@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Pageable } from '../models/Pageable';
 import type { PageCreateRequest } from '../models/PageCreateRequest';
 import type { PageCreateResponse } from '../models/PageCreateResponse';
 import type { PageDeleteResponse } from '../models/PageDeleteResponse';
@@ -73,10 +72,23 @@ export class PageControllerService {
      */
     public static getPageHistory({
         id,
-        pageable,
+        page,
+        size = 25,
+        sort,
     }: {
         id: number,
-        pageable: Pageable,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PagePageHistory> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -85,7 +97,9 @@ export class PageControllerService {
                 'id': id,
             },
             query: {
-                'pageable': pageable,
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
         });
     }

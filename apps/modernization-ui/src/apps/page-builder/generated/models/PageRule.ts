@@ -7,16 +7,16 @@ import type { Rule } from './Rule';
 import type { SortObject } from './SortObject';
 
 export type PageRule = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     pageable?: PageableObject;
-    numberOfElements?: number;
-    number?: number;
-    first?: boolean;
-    last?: boolean;
-    sort?: SortObject;
     size?: number;
     content?: Array<Rule>;
+    numberOfElements?: number;
+    sort?: SortObject;
+    first?: boolean;
+    last?: boolean;
+    number?: number;
     empty?: boolean;
 };
 

@@ -4,7 +4,6 @@
 import type { Condition } from '../models/Condition';
 import type { ConditionStatusResponse } from '../models/ConditionStatusResponse';
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
-import type { Pageable } from '../models/Pageable';
 import type { PageCondition } from '../models/PageCondition';
 import type { ReadConditionRequest } from '../models/ReadConditionRequest';
 
@@ -20,15 +19,32 @@ export class ConditionControllerService {
      */
     public static searchConditions({
         requestBody,
+        page,
+        size = 20,
+        sort,
     }: {
-        requestBody: {
-            search?: ReadConditionRequest;
-            pageable?: Pageable;
-        },
+        requestBody: ReadConditionRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageCondition> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/conditions/search',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -39,15 +55,30 @@ export class ConditionControllerService {
      * @throws ApiError
      */
     public static findConditions({
-        pageable,
+        page,
+        size = 20,
+        sort,
     }: {
-        pageable: Pageable,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageCondition> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/conditions/',
             query: {
-                'pageable': pageable,
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
         });
     }

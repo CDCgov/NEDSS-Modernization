@@ -10,7 +10,6 @@ import type { DateQuestion } from '../models/DateQuestion';
 import type { FindQuestionRequest } from '../models/FindQuestionRequest';
 import type { GetQuestionResponse } from '../models/GetQuestionResponse';
 import type { NumericQuestion } from '../models/NumericQuestion';
-import type { Pageable } from '../models/Pageable';
 import type { PageQuestion } from '../models/PageQuestion';
 import type { QuestionStatusRequest } from '../models/QuestionStatusRequest';
 import type { TextQuestion } from '../models/TextQuestion';
@@ -158,15 +157,32 @@ export class QuestionControllerService {
      */
     public static findQuestions({
         requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
-        requestBody: {
-            request?: FindQuestionRequest;
-            pageable?: Pageable;
-        },
+        requestBody: FindQuestionRequest,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/questions/search',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -228,15 +244,30 @@ export class QuestionControllerService {
      * @throws ApiError
      */
     public static findAllQuestions({
-        pageable,
+        page,
+        size = 25,
+        sort,
     }: {
-        pageable: Pageable,
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
     }): CancelablePromise<PageQuestion> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/questions',
             query: {
-                'pageable': pageable,
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
         });
     }
