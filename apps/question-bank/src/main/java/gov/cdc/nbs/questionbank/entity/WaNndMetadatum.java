@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -156,5 +157,39 @@ public class WaNndMetadatum {
     this.lastChgUserId = user;
     this.lastChgTime = requestedOn;
   }
+
+
+  public static WaNndMetadatum clone(WaNndMetadatum original) {
+    return new WaNndMetadatum(
+        null,
+        null,
+        original.questionIdentifierNnd,
+        original.questionLabelNnd,
+        original.questionRequiredNnd,
+        original.questionDataTypeNnd,
+        original.hl7SegmentField,
+        original.orderGroupId,
+        original.translationTableNm,
+        original.addTime,
+        original.addUserId,
+        original.lastChgTime,
+        original.lastChgUserId,
+        original.recordStatusCd,
+        original.recordStatusTime,
+        original.questionIdentifier,
+        original.xmlPath,
+        original.xmlTag,
+        original.xmlDataType,
+        original.partTypeCd,
+        original.repeatGroupSeqNbr,
+        original.questionOrderNnd,
+        original.localId,
+        original.waUiMetadataUid,
+        original.questionMap,
+        original.indicatorCd
+    );
+  }
+
+
 
 }
