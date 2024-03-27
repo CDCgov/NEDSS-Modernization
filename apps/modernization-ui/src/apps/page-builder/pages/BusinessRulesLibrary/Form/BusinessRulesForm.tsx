@@ -95,7 +95,7 @@ export const BusinessRulesForm = ({
         watch.targetType === Rule.targetType.SUBSECTION
             ? setTargetDescription(editTargetSubsections?.map((qtn) => `${qtn.name} (${qtn.questionIdentifier})`) ?? [])
             : setTargetDescription(editTargetQuestions?.map((qtn) => `${qtn.name} (${qtn.question})`) ?? []);
-    }, [editTargetQuestions]);
+    }, [JSON.stringify(editTargetQuestions)]);
 
     const handleTargetTypeChange = (value: Rule.targetType) => {
         form.reset({
@@ -169,6 +169,8 @@ export const BusinessRulesForm = ({
         ) {
             const descrip = handleRuleDescription();
             form.setValue('description', descrip);
+        } else {
+            form.setValue('description', '');
         }
     }, [
         JSON.stringify(watch.targetIdentifiers),
@@ -322,10 +324,12 @@ export const BusinessRulesForm = ({
                                         <Icon.Close
                                             onClick={() => {
                                                 setSourceQuestion(undefined);
-                                                setTargetQuestion(undefined);
+                                                setTargetQuestion([]);
+                                                setTargetDescription([]);
                                                 form.setValue('targetIdentifiers', []);
                                                 form.setValue('targetValueText', undefined);
                                                 form.setValue('sourceValues', undefined);
+                                                form.setValue('sourceIdentifier', '');
                                             }}
                                         />
                                     </div>
@@ -564,6 +568,7 @@ export const BusinessRulesForm = ({
                     onCancel={handleCloseTargetQuestion}
                     sourceQuestion={sourceQuestion}
                     onSubmit={handleTargetQuestion}
+                    selectedTargetQuestion={targetQuestions}
                     editTargetQuestion={isEdit ? editTargetQuestions : undefined}
                 />
             </Modal>

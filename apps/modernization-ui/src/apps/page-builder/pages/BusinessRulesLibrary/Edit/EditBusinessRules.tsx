@@ -174,8 +174,6 @@ export const EditBusinessRule = () => {
 
     const ifDisabled = () => {
         const sourceValues = watch.sourceValues?.map((val) => val.text);
-        console.log({ sourceValues });
-        console.log({ selectedSourceValues });
         if (watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE) {
             if (
                 checkIsValid() &&
@@ -246,9 +244,9 @@ export const EditBusinessRule = () => {
                                     isEdit
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
-                                    editSourceQuestion={findSourceQuestion(form.getValues('sourceIdentifier'))}
-                                    editTargetQuestions={findTargetQuestion(form.getValues('targetIdentifiers'))}
-                                    editTargetSubsections={findTargetSubsection(form.getValues('targetIdentifiers'))}
+                                    editSourceQuestion={findSourceQuestion(initialSourceIdentifiers)}
+                                    editTargetQuestions={findTargetQuestion(initialTargetIdentifiers)}
+                                    editTargetSubsections={findTargetSubsection(initialTargetIdentifiers)}
                                 />
                             </FormProvider>
                         </div>
