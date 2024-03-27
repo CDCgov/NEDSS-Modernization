@@ -15,6 +15,7 @@ import SubSectionsDropdown from '../SubSectionDropdown';
 import { useParams } from 'react-router-dom';
 import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
 import './ModalWidth.scss';
+import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
 
 type Props = {
     isEdit: boolean;
@@ -106,26 +107,6 @@ export const BusinessRulesForm = ({
         });
     };
 
-    const removeNumericAndSymbols = (text: string | undefined) => {
-        const firstChar = text?.charAt(0);
-        if (firstChar && firstChar <= '9' && firstChar >= '0') {
-            return text?.replace(/\d+/, '').replace('. ', '');
-        }
-        return text;
-    };
-
-    const checkForSemicolon = (text: string | undefined) => {
-        const labelLength = text?.length;
-        if (labelLength) {
-            const lastChar = text.charAt(labelLength - 1);
-            if (lastChar === ':') {
-                return text.replace(':', '');
-            }
-            return text;
-        }
-        return text;
-    };
-
     const handleOpenSourceQuestion = () => {
         sourceQuestionModalRef.current?.toggleModal(undefined, true);
     };
@@ -184,10 +165,10 @@ export const BusinessRulesForm = ({
                 (watch.comparator && watch.sourceValues) ||
                 (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE && watch.comparator)) &&
             watch.sourceIdentifier &&
-            targetDescription
+            targetDescription.length
         ) {
             const descrip = handleRuleDescription();
-            descrip !== form.getValues('description') && form.setValue('description', handleRuleDescription());
+            form.setValue('description', descrip);
         }
     }, [
         JSON.stringify(watch.targetIdentifiers),
@@ -242,7 +223,7 @@ export const BusinessRulesForm = ({
             form.reset({
                 ...form.getValues(),
                 comparator: Rule.comparator.EQUAL_TO,
-                sourceValues: []
+                sourceValues: undefined
             });
         }
     }, [watch.anySourceValue]);
@@ -341,6 +322,9 @@ export const BusinessRulesForm = ({
                                         <Icon.Close
                                             onClick={() => {
                                                 setSourceQuestion(undefined);
+                                                setTargetQuestion(undefined);
+                                                form.setValue('targetIdentifiers', []);
+                                                form.setValue('targetValueText', undefined);
                                                 form.setValue('sourceValues', undefined);
                                             }}
                                         />

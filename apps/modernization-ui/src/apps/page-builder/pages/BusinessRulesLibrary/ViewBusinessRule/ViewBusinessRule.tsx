@@ -5,7 +5,7 @@ import { Rule } from 'apps/page-builder/generated';
 import { authorization } from 'authorization';
 import { Breadcrumb } from 'breadcrumb';
 import styles from './view-business-rule.module.scss';
-import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
+import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
 
 export const ViewBusinessRule = () => {
     const { ruleId } = useParams();
@@ -47,7 +47,8 @@ export const ViewBusinessRule = () => {
                         <tr>
                             <td>Source question</td>
                             <td>
-                                {rule?.sourceQuestion.label} ({rule?.sourceQuestion.questionIdentifier})
+                                {checkForSemicolon(removeNumericAndSymbols(rule?.sourceQuestion.label))} (
+                                {checkForSemicolon(removeNumericAndSymbols(rule?.sourceQuestion.questionIdentifier))})
                             </td>
                         </tr>
                         {rule?.ruleFunction !== 'DATE_COMPARE' ? (
@@ -95,18 +96,12 @@ export const ViewBusinessRule = () => {
                             <td>Rule description</td>
                             <td>{rule?.description}</td>
                         </tr>
-                        <tr>
-                            <td>Error message</td>
-                            <td>
-                                {rule?.targets.map((target, i) => (
-                                    <span key={i} className={styles.full}>
-                                        ${rule?.sourceQuestion.label} (${rule?.sourceQuestion.questionIdentifier})' must
-                                        be ${mapLogicForDateCompare(rule!.comparator)} '${target.label} ($
-                                        {target.targetIdentifier})
-                                    </span>
-                                ))}
-                            </td>
-                        </tr>
+                        {rule?.ruleFunction === Rule.ruleFunction.DATE_COMPARE ? (
+                            <tr>
+                                <td>Error message</td>
+                                <td>{rule?.description}</td>
+                            </tr>
+                        ) : null}
                     </table>
                 </div>
             </div>

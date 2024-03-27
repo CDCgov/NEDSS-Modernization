@@ -255,7 +255,7 @@ class PagesResponseMapperTest {
                                                         null,
                                                         false,
                                                         null,
-                                                        null))))));
+                                                        null, null, null, null))))));
 
     PageDescription description = mock(PageDescription.class);
 

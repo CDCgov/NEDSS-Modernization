@@ -206,7 +206,7 @@ class TreeifyTest {
             null,
             false,
             null,
-            null))
+            null, null, null, null))
         .collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(
@@ -269,7 +269,7 @@ class TreeifyTest {
             null,
             false,
             null,
-            null),
+            null, null, null, null),
         new FlattenedComponent(13L, 1010, "Tab", true, 6, 6)).collect(Treeify.asTree());
 
     assertThat(actual).hasValueSatisfying(

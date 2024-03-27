@@ -2,9 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Page_Rule_ } from '../models/Page_Rule_';
+import type { PagesResponse } from '../models/PagesResponse';
 import type { Rule } from '../models/Rule';
 import type { RuleRequest } from '../models/RuleRequest';
 import type { SearchPageRuleRequest } from '../models/SearchPageRuleRequest';
+import type { SourceQuestionRequest } from '../models/SourceQuestionRequest';
+import type { TargetQuestionRequest } from '../models/TargetQuestionRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -222,6 +225,84 @@ export class PageRuleControllerService {
                 'page': page,
                 'size': size,
                 'sort': sort,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * getSourceQuestions
+     * @returns PagesResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static getSourceQuestionsUsingPost({
+        authorization,
+        id,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: SourceQuestionRequest,
+    }): CancelablePromise<PagesResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{id}/rules/source/questions',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
+            },
+            body: request,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * getTargetQuestions
+     * @returns PagesResponse OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static getTargetQuestionsUsingPost({
+        authorization,
+        id,
+        request,
+    }: {
+        authorization: string,
+        /**
+         * id
+         */
+        id: number,
+        /**
+         * request
+         */
+        request: TargetQuestionRequest,
+    }): CancelablePromise<PagesResponse | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/nbs/page-builder/api/v1/pages/{id}/rules/target/questions',
+            path: {
+                'id': id,
+            },
+            headers: {
+                'Authorization': authorization,
             },
             body: request,
             errors: {
