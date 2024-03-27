@@ -57,7 +57,7 @@ testing {
 
                 implementation.bundle(libs.bundles.testing)
                 implementation libs.spring.test
-                implementation 'org.awaitility:awaitility:4.2.0'
+                implementation libs.awaitility
 
                 implementation.bundle(libs.bundles.testcontainers)
 
@@ -100,7 +100,7 @@ dependencies {
     implementation(project(':libs:classic-interaction'))
     implementation(project(':libs:redirect'))
 
-    implementation libs.snake.yaml
+//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.springBoot.web

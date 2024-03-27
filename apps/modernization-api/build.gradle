@@ -36,7 +36,7 @@ dependencies {
     implementation project(':configuration-api')
     implementation project(':options-api')
 
-    implementation libs.snake.yaml
+//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.mssql.jdbc
