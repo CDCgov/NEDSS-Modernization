@@ -20,13 +20,6 @@ public class Participation {
     @EmbeddedId
     private ParticipationId id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("cd")
-    @JoinColumn(name = "subject_entity_uid", nullable = false)
-    @JoinColumn(name = "role_seq")
-    @JoinColumn(name = "cd")
-    private Role role;
-
     @MapsId("actUid")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "act_uid", nullable = false)
