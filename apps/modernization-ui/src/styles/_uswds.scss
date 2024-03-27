@@ -122,3 +122,21 @@ table.usa-table {
         padding: 0.75rem;
     }
 }
+
+.historyPagination {
+    overflow: scroll;
+    &.usa-pagination {
+        justify-content: left;
+    }
+    & nav {
+        border-bottom: none;
+    }
+    .usa-button {
+        &:has(svg) {
+            padding: 0 !important;
+        }
+        &:not([disabled]):focus {
+            outline: none;
+        }
+    }
+}
