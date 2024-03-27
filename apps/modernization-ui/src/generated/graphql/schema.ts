@@ -227,7 +227,7 @@ export type IdentificationTypeId = {
 
 export type Investigation = {
   __typename?: 'Investigation';
-  addTime?: Maybe<Scalars['DateTime']['output']>;
+  addTime?: Maybe<Scalars['Date']['output']>;
   cdDescTxt?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   investigationStatusCd?: Maybe<Scalars['String']['output']>;
@@ -281,7 +281,7 @@ export type InvestigationFilter = {
 
 export type InvestigationPersonParticipation = {
   __typename?: 'InvestigationPersonParticipation';
-  birthTime?: Maybe<Scalars['DateTime']['output']>;
+  birthTime?: Maybe<Scalars['Date']['output']>;
   currSexCd?: Maybe<Scalars['String']['output']>;
   firstName?: Maybe<Scalars['String']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
@@ -1596,6 +1596,7 @@ export type PersonFilter = {
   dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
+  disableSoundex?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
