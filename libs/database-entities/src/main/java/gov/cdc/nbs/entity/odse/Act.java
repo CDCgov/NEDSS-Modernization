@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,20 +37,14 @@ public class Act {
   @OneToMany(mappedBy = "id.actUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ActId> actIds;
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<Notification> notifications;
-
-  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
+  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Observation> observations;
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
+  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Intervention> interventions;
 
-  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
+  @OneToMany(mappedBy = "id", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
   private List<Treatment> treatments;
-
-  @OneToMany(mappedBy = "nbsEventUid", fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
-  private List<EdxEventProcess> edxEventProcesses;
 
   @OneToMany(mappedBy = "targetActUid", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<ActRelationship> targetActRelationships;
