@@ -101,7 +101,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             pattern: {
                                 value: /^[A-Za-z0-9_+():*-=;,./]+$/,
                                 message:
-                                    ' Condition name is not valid: Valid characters are A-Z, a-z, 0-9, or _+():*-=;,./'
+                                    ' Condition name is not valid: Valid characters are A-Z, a-z, 0-9, _+():*-=;,./'
                             },
                             required: { value: true, message: 'Condition name is required' }
                         }}
