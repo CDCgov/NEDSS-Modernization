@@ -5,7 +5,6 @@ import {
     SectionControllerService,
     UpdateSectionRequest
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
@@ -46,20 +45,18 @@ export const AddSection = ({
     }, [section]);
     const onSubmit = form.handleSubmit((data) => {
         if (isEdit) {
-            SectionControllerService.updateSectionUsingPut({
-                authorization: authorization(),
+            SectionControllerService.updateSection({
                 page: pageId ?? 0,
                 section: section?.id ?? 0,
-                request: { name: data.name, visible: data.visible }
+                requestBody: { name: data.name, visible: data.visible }
             }).then(() => {
                 form.reset();
                 onSectionTouched?.();
             });
         } else {
-            SectionControllerService.createSectionUsingPost({
-                authorization: authorization(),
+            SectionControllerService.createSection({
                 page: pageId ?? 0,
-                request: { name: data.name, visible: data.visible, tabId: tabId }
+                requestBody: { name: data.name, visible: data.visible, tabId: tabId }
             }).then(() => {
                 form.reset();
                 onAddSection?.(data.name ?? '');
@@ -90,18 +87,16 @@ export const AddSection = ({
                             ...notEmptyRule
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <>
-                                <Input
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    defaultValue={value}
-                                    label="Section Name"
-                                    type="text"
-                                    error={error?.message}
-                                    required
-                                    className={styles.inputField}
-                                />
-                            </>
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                defaultValue={value}
+                                label="Section Name"
+                                type="text"
+                                error={error?.message}
+                                required
+                                className={styles.inputField}
+                            />
                         )}
                     />
 

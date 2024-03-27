@@ -5,6 +5,7 @@ import gov.cdc.nbs.questionbank.condition.response.ConditionStatusResponse;
 
 import java.util.List;
 import java.util.Optional;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -49,18 +50,18 @@ public class ConditionController {
   }
 
   @GetMapping("available")
-  public List<Condition> findConditionsNotInUse(@RequestParam("page") final Optional<Long> page) {
+  public List<Condition> findConditionsNotInUse(@RequestParam final Optional<Long> page) {
     return searcher.findAvailable(page.orElse(null));
   }
 
   @GetMapping
-  public Page<Condition> findConditions(@PageableDefault(size = 20) Pageable pageable) {
+  public Page<Condition> findConditions(@ParameterObject @PageableDefault(size = 20) Pageable pageable) {
     return conditionReader.findConditions(pageable);
   }
 
   @PostMapping("/search")
   public Page<Condition> searchConditions(@RequestBody ReadConditionRequest search,
-      @PageableDefault(size = 20) Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
     return searcher.search(search, pageable);
   }
 

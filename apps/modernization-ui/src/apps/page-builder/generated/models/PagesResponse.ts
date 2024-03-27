@@ -2,16 +2,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PageRule } from './PageRule';
+import type { BusinessRule } from './BusinessRule';
 import type { PagesTab } from './PagesTab';
 
 export type PagesResponse = {
-    description?: string;
     id: number;
     name: string;
-    root?: number;
-    rules?: Array<PageRule>;
     status: string;
+    description?: string;
+    root?: number;
     tabs?: Array<PagesTab>;
+    rules?: Array<BusinessRule>;
 };
 

@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type UpdateValueSetRequest = {
-    description?: string;
     name?: string;
+    description?: string;
 };
 

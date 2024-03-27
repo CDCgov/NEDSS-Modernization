@@ -1,12 +1,11 @@
-import { Label, Textarea, Button, Form, ModalRef, ModalToggleButton, ErrorMessage } from '@trussworks/react-uswds';
-import { maxLengthRule } from 'validation/entry';
-import { Controller, useForm } from 'react-hook-form';
-import styles from './publish-page.module.scss';
-import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
-import { usePageManagement } from '../../usePageManagement';
-import { authorization as getAuthorization } from 'authorization';
-import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
+import { Button, ErrorMessage, Form, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
 import { useAlert } from 'alert';
+import { PageInformationService, PagePublishControllerService, SelectableCondition } from 'apps/page-builder/generated';
+import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { maxLengthRule } from 'validation/entry';
+import { usePageManagement } from '../../usePageManagement';
+import styles from './publish-page.module.scss';
 
 type Props = {
     modalRef: RefObject<ModalRef>;
@@ -20,14 +19,12 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
         defaultValues: { notes: undefined }
     });
     const { handleSubmit, control } = publishForm;
-    const authorization = getAuthorization();
     const { showAlert } = useAlert();
     const [conditions, setConditions] = useState<SelectableCondition[] | undefined>([]);
 
     useEffect(() => {
         if (page) {
             PageInformationService.find({
-                authorization,
                 page: page.id
             }).then((response) => {
                 setConditions(response?.conditions);
@@ -61,10 +58,9 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
             }
         };
         try {
-            PagePublishControllerService.publishPageUsingPut({
-                authorization,
+            PagePublishControllerService.publishPage({
                 id: page.id,
-                request: { versionNotes: data.notes }
+                requestBody: { versionNotes: data.notes }
             })
                 .then(() => {
                     if (onPublishing) {

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.template;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import java.time.Instant;

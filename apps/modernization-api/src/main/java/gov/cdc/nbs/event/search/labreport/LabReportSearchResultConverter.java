@@ -1,5 +1,7 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import gov.cdc.nbs.event.search.RelevanceResolver;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -7,7 +9,7 @@ class LabReportSearchResultConverter {
 
   static LabReportSearchResult convert(final SearchableLabReport searchable, final Double score) {
 
-    double relevance = score == null ? 0: score;
+    double relevance = RelevanceResolver.resolve(score);
 
     List<LabReportSearchResult.PersonParticipation> personParticipations = searchable.people()
         .stream().map(LabReportSearchResultConverter::asPerson)

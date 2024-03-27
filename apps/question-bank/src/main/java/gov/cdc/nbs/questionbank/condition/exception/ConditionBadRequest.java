@@ -4,6 +4,6 @@ import gov.cdc.nbs.questionbank.exception.BadRequestException;
 
 public class ConditionBadRequest extends BadRequestException {
     public ConditionBadRequest(String id) {
-        super(String.format("There was a problem in the request for condition with id: %s", id));
+        super("There was a problem in the request for condition with id: %s".formatted(id));
     }
 }

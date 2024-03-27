@@ -15,9 +15,9 @@ class NbsDatabaseContainer extends GenericContainer<NbsDatabaseContainer> {
     public String url() {
         String server = getHost();
         Integer mappedPort = getMappedPort(DEFAULT_PORT);
-        return String.format(
-                "jdbc:sqlserver://%s:%d;database=nbs_odse;encrypt=true;trustServerCertificate=true;",
-                server,
-                mappedPort);
+        return 
+            "jdbc:sqlserver://%s:%d;database=nbs_odse;encrypt=true;trustServerCertificate=true;".formatted(
+            server,
+            mappedPort);
     }
 }

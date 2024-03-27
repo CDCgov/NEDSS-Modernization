@@ -68,8 +68,8 @@ public class PatientProfileViewLabReportSteps {
 
     long lab = reports.active().identifier();
 
-    String request = String.format(
-        "/nbs/api/profile/%d/report/lab/%d",
+    String request = 
+        "/nbs/api/profile/%d/report/lab/%d".formatted(
         patient,
         lab);
 

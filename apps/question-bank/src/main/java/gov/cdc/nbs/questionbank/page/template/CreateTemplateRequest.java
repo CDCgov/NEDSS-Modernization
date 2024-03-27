@@ -1,13 +1,10 @@
 package gov.cdc.nbs.questionbank.page.template;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 record CreateTemplateRequest(
-    @ApiModelProperty(required = true)
-    String name,
-    @ApiModelProperty(required = true)
-    String description
-) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String description) {
 
   CreateTemplateRequest() {
     this(null, null);
@@ -16,14 +13,12 @@ record CreateTemplateRequest(
   CreateTemplateRequest withName(final String name) {
     return new CreateTemplateRequest(
         name,
-        description()
-    );
+        description());
   }
 
   CreateTemplateRequest withDescription(final String description) {
     return new CreateTemplateRequest(
         name(),
-        description
-    );
+        description);
   }
 }

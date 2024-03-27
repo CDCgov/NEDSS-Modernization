@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type Target = {
-    label?: string;
     targetIdentifier?: string;
+    label?: string;
 };
 

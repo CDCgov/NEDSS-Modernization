@@ -131,7 +131,7 @@ public class DateCompareCommandCreator {
       List<String> targetIdentifiers,
       List<String> targetLabels,
       String comparator) {
-    String first = String.format(JAVASCRIPT,
+    String first = JAVASCRIPT.formatted(
         functionName,
         sourceIdentifier,
         sourceIdentifier);
@@ -139,7 +139,7 @@ public class DateCompareCommandCreator {
     for (int i = 0; i < targetIdentifiers.size(); i++) {
       String targetIdentifier = targetIdentifiers.get(i);
       String targetLabel = targetLabels.get(i);
-      sb.append(String.format(JAVASCRIPT_TARGETS,
+      sb.append(JAVASCRIPT_TARGETS.formatted(
           targetIdentifier,
           targetIdentifier,
           comparator,
@@ -160,12 +160,12 @@ public class DateCompareCommandCreator {
 
   String createExpression(String sourceIdentifier, List<String> targetIdentifiers, String comparator) {
     String targetIdentifier = String.join(" , ", targetIdentifiers);
-    return String.format("%s %s  ^ DT ( %s )", sourceIdentifier, comparator, targetIdentifier);
+    return "%s %s  ^ DT ( %s )".formatted(sourceIdentifier, comparator, targetIdentifier);
   }
 
   String createErrorMessage(String sourceLabel, List<String> targetLabels, String comparator) {
     return targetLabels.stream()
-        .map(tl -> String.format("%s  must be %s  %s", sourceLabel, comparator, tl))
+        .map(tl -> "%s  must be %s  %s".formatted(sourceLabel, comparator, tl))
         .collect(Collectors.joining(", "));
   }
 

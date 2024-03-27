@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type Option = {
-    label: string;
-    name: string;
-    order?: number;
     value: string;
+    name: string;
+    label: string;
+    order?: number;
 };
 

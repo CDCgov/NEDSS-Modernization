@@ -5,7 +5,7 @@ import gov.cdc.nbs.web.FindCookie;
 import gov.cdc.nbs.web.RemoveCookie;
 import org.springframework.http.HttpHeaders;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 import java.util.function.Consumer;
 

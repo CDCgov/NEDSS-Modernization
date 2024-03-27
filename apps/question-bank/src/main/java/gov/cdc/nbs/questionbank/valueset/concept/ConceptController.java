@@ -1,6 +1,11 @@
 package gov.cdc.nbs.questionbank.valueset.concept;
 
-import java.util.List;
+import gov.cdc.nbs.authentication.NbsUserDetails;
+import gov.cdc.nbs.questionbank.valueset.model.Concept;
+import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
+import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,21 +18,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.authentication.NbsUserDetails;
-import gov.cdc.nbs.questionbank.valueset.model.Concept;
-import gov.cdc.nbs.questionbank.valueset.request.CreateConceptRequest;
-import gov.cdc.nbs.questionbank.valueset.request.UpdateConceptRequest;
-import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/valueset/{codeSetNm}/concepts")
 @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")
-public class ConceptController {
+class ConceptController {
   private final ConceptCreator creator;
   private final ConceptUpdater updater;
   private final ConceptFinder finder;
 
-  public ConceptController(
+  ConceptController(
       final ConceptCreator creator,
       final ConceptUpdater updater,
       final ConceptFinder finder) {
@@ -37,33 +39,32 @@ public class ConceptController {
   }
 
   @GetMapping()
-  public List<Concept> findConcepts(@PathVariable String codeSetNm) {
+  List<Concept> findConcepts(@PathVariable String codeSetNm) {
     return finder.find(codeSetNm);
   }
 
   @PostMapping("/search")
-  public Page<Concept> searchConcepts(
+  Page<Concept> searchConcepts(
       @PathVariable String codeSetNm,
-      @PageableDefault(size = 25, sort = "localCode") final Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25, sort = "localCode") final Pageable pageable) {
     return finder.find(codeSetNm, pageable);
   }
 
   @PostMapping()
-  public Concept createConcept(
+  Concept createConcept(
       @PathVariable String codeSetNm,
       @RequestBody CreateConceptRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return creator.create(codeSetNm, request, details.getId());
   }
 
   @PutMapping("{localCode}")
-  public Concept updateConcept(
+  Concept updateConcept(
       @PathVariable String codeSetNm,
       @PathVariable String localCode,
       @RequestBody UpdateConceptRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(codeSetNm, localCode, request, details.getId());
   }
-
 
 }

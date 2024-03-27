@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type CreateSubSectionRequest = {
-    name?: string;
     sectionId?: number;
+    name?: string;
     visible?: boolean;
 };
 

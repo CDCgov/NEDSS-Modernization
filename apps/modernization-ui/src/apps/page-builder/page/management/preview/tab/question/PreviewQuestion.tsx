@@ -7,7 +7,6 @@ import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButt
 import { useEffect, useState } from 'react';
 import { Selectable } from 'options';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
-import { authorization } from 'authorization';
 
 type Props = {
     question: PagesQuestion;
@@ -28,8 +27,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
 
     useEffect(() => {
         if (valueSet) {
-            ConceptOptionsService.allUsingGet({
-                authorization: authorization(),
+            ConceptOptionsService.concepts({
                 name: valueSet
             }).then((resp: ConceptOptionsResponse) => {
                 setConceptState(resp.options);

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 record LabReportSearchResult(
-    double relevance,
+    Double relevance,
     String id,
     String jurisdictionCd,
     String localId,

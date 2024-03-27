@@ -36,7 +36,7 @@ class ElasticsearchIndexEnsurer {
     } catch (IOException exception) {
       LOGGER.log(
           System.Logger.Level.ERROR,
-          () -> String.format("An unexpected error occurred when ensuring the existence of the %s index", index),
+          () -> "An unexpected error occurred when ensuring the existence of the %s index".formatted(index),
           exception
       );
     }

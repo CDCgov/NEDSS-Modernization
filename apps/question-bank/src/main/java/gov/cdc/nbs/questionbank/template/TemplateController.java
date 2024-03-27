@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.template;
+
 import gov.cdc.nbs.questionbank.template.response.Template;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
@@ -41,7 +41,6 @@ public class TemplateController {
       summary = "Creates a new Template from an XML File.",
       description = "Creates a new Template by importing an XML file that describes how the template should be created."
   )
-  @ApiOperation(value = "", nickname = "import")
   @PostMapping(path = "import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public Template importTemplate(
       @RequestPart("file")

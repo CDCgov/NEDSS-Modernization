@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
 import java.util.List;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;

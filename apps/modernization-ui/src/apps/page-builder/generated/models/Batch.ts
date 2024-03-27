@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type Batch = {
-    appearsInTable: boolean;
     id: number;
+    appearsInTable: boolean;
     label?: string;
     width?: number;
 };

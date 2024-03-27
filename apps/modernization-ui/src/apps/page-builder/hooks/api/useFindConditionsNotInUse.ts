@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
 import { Condition, ConditionControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 
 type State =
     | { status: 'idle' }
@@ -32,8 +31,7 @@ export const useFindConditionsNotInUse = (page?: number) => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            ConditionControllerService.findConditionsNotInUseUsingGet({
-                authorization: authorization(),
+            ConditionControllerService.findConditionsNotInUse({
                 page: page ?? -1
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))

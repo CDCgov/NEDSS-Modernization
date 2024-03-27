@@ -19,7 +19,7 @@ class ElasticsearchIndexCreator {
   void create(final SimpleIndex index) throws IOException {
     LOGGER.log(
         System.Logger.Level.DEBUG,
-        () -> String.format("Creating the index %s using the descriptor located at %s", index.name(), index.location())
+        () -> "Creating the index %s using the descriptor located at %s".formatted(index.name(), index.location())
     );
     try (InputStream json = getClass().getResourceAsStream(index.location())) {
       this.client.indices().create(

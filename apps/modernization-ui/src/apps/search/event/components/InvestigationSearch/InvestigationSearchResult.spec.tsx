@@ -5,20 +5,14 @@ import { InvestigationSearchResult } from './InvestigationSearchResult';
 
 describe('when an investigation is found', () => {
     const investigation: Investigation = {
+        relevance: 79.7,
         id: '10056296',
-
         cdDescTxt: '2019 Novel Coronavirus',
-
         jurisdictionCodeDescTxt: 'Clayton County',
-
         localId: 'CAS10003001GA99',
-
         addTime: '2023-07-21T15:21:03.770Z',
-
         investigationStatusCd: 'O',
-
         notificationRecordStatusCd: null,
-
         personParticipations: [
             {
                 typeCd: 'SubjOfPHC',

@@ -14,7 +14,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.transaction.annotation.Transactional;
 
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Transactional
 public class UnGroupSubsectionSteps {

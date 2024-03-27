@@ -5,7 +5,6 @@ import {
     SubSectionControllerService,
     UpdateSubSectionRequest
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 
 export type GroupRequest = GroupSubSectionRequest & UpdateSubSectionRequest;
 
@@ -46,18 +45,16 @@ export const useGroupSubsection = () => {
     useEffect(() => {
         if (state.status === 'grouping') {
             // group allows editing the subsection as well as performing the actual grouping
-            SubSectionControllerService.updateSubSectionUsingPut({
-                authorization: authorization(),
+            SubSectionControllerService.updateSubSection({
                 page: state.page,
                 subSectionId: state.subsection,
-                request: state.request
+                requestBody: state.request
             })
                 .then(() => {
-                    SubSectionControllerService.groupSubSectionUsingPost({
-                        authorization: authorization(),
+                    SubSectionControllerService.groupSubSection({
                         page: state.page,
                         subsection: state.subsection,
-                        request: state.request
+                        requestBody: state.request
                     })
                         .then(() => dispatch({ type: 'complete' }))
                         .catch((error) => dispatch({ type: 'error', error: error.message }));

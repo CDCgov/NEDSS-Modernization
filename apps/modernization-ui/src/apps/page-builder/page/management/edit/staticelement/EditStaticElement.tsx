@@ -1,4 +1,5 @@
 import { Button, Form } from '@trussworks/react-uswds';
+import { useAlert } from 'alert/useAlert';
 import {
     PageStaticControllerService,
     PagesQuestion,
@@ -6,16 +7,14 @@ import {
     UpdateHyperlink,
     UpdateReadOnlyComments
 } from 'apps/page-builder/generated';
+import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { Input } from 'components/FormInputs/Input';
-import styles from './staticelement.module.scss';
 import { maxLengthRule } from 'validation/entry';
+import { usePageManagement } from '../../usePageManagement';
 import { CommentsFields } from './CommentsFields';
 import { HyperlinkFields } from './HyperlinkFields';
-import { useAlert } from 'alert/useAlert';
-import { usePageManagement } from '../../usePageManagement';
-import { authorization } from 'authorization';
+import styles from './staticelement.module.scss';
 
 const staticType = [
     { value: 'LIN', name: 'Line separator' },
@@ -65,11 +64,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
     const onSubmit = form.handleSubmit((data) => {
         switch (question.displayComponent) {
             case hyperlinkId:
-                PageStaticControllerService.updateHyperlinkUsingPut({
-                    authorization: authorization(),
+                PageStaticControllerService.updateHyperlink({
                     id: question.id,
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as UpdateHyperlink).label} has been successfully updated.`);
@@ -77,11 +75,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 });
                 break;
             case commentsReadOnlyId:
-                PageStaticControllerService.updateReadOnlyCommentsUsingPut({
-                    authorization: authorization(),
+                PageStaticControllerService.updateReadOnlyComments({
                     id: question.id,
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully updated.`);
@@ -89,11 +86,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 });
                 break;
             case lineSeparatorId:
-                PageStaticControllerService.updateDefaultStaticElementUsingPut({
-                    authorization: authorization(),
+                PageStaticControllerService.updateDefaultStaticElement({
                     id: question.id,
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully updated.`);
@@ -101,11 +97,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 });
                 break;
             case readOnlyPartId:
-                PageStaticControllerService.updateDefaultStaticElementUsingPut({
-                    authorization: authorization(),
+                PageStaticControllerService.updateDefaultStaticElement({
                     id: question.id,
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully updated.`);
@@ -113,11 +108,10 @@ export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) =
                 });
                 break;
             case originalElecDocId:
-                PageStaticControllerService.updateDefaultStaticElementUsingPut({
-                    authorization: authorization(),
+                PageStaticControllerService.updateDefaultStaticElement({
                     id: question.id,
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully updated.`);

@@ -1,5 +1,5 @@
 package gov.cdc.nbs.authentication.user;
-
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@DependsOnDatabaseInitialization
 class GrantedAuthorityFinder {
 
   private static final String QUERY = """

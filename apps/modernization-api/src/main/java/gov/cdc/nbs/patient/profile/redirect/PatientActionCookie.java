@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.profile.redirect;
 
 import gov.cdc.nbs.web.FindCookie;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 
 public record PatientActionCookie(String name, String action) {

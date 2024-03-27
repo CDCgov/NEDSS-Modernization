@@ -1,17 +1,17 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.net.URI;
 
-@ApiIgnore
+@Hidden
 @RestController
 class ViewInvestigationRedirector {
 
@@ -26,8 +26,8 @@ class ViewInvestigationRedirector {
     @PreAuthorize("hasAuthority('VIEW-INVESTIGATION')")
     @GetMapping("/nbs/api/profile/{patient}/investigation/{investigation}")
     ResponseEntity<Void> view(
-        @PathVariable("patient") final long patient,
-        @PathVariable("investigation") final long investigation
+        @PathVariable final long patient,
+        @PathVariable final long investigation
     ) {
 
         URI location = UriComponentsBuilder.fromPath(LOCATION)

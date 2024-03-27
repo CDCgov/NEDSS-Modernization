@@ -1,4 +1,3 @@
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 import {
     CancelablePromise,
@@ -53,27 +52,23 @@ export const useCreateQuestion = () => {
             let request: CancelablePromise<CodedQuestion | TextQuestion | DateQuestion | NumericQuestion>;
             switch (state.request.questionType) {
                 case 'CODED':
-                    request = QuestionControllerService.createCodedQuestionUsingPost({
-                        authorization: authorization(),
-                        request: state.request as CreateCodedQuestionRequest
+                    request = QuestionControllerService.createCodedQuestion({
+                        requestBody: state.request as CreateCodedQuestionRequest
                     });
                     break;
                 case 'TEXT':
-                    request = QuestionControllerService.createTextQuestionUsingPost({
-                        authorization: authorization(),
-                        request: state.request as CreateTextQuestionRequest
+                    request = QuestionControllerService.createTextQuestion({
+                        requestBody: state.request as CreateTextQuestionRequest
                     });
                     break;
                 case 'DATE':
-                    request = QuestionControllerService.createDateQuestionUsingPost({
-                        authorization: authorization(),
-                        request: state.request as CreateDateQuestionRequest
+                    request = QuestionControllerService.createDateQuestion({
+                        requestBody: state.request as CreateDateQuestionRequest
                     });
                     break;
                 case 'NUMERIC':
-                    request = QuestionControllerService.createNumericQuestionUsingPost({
-                        authorization: authorization(),
-                        request: state.request as CreateNumericQuestionRequest
+                    request = QuestionControllerService.createNumericQuestion({
+                        requestBody: state.request as CreateNumericQuestionRequest
                     });
                     break;
                 default:

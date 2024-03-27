@@ -3,7 +3,7 @@ package gov.cdc.nbs.questionbank.page.content.question;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;

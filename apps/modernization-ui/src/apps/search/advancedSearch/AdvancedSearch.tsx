@@ -148,10 +148,11 @@ export const AdvancedSearch = () => {
             return;
         }
 
+        console.log('queryParam', queryParam);
+
         // decrypt the filter parameter
-        EncryptionControllerService.decryptUsingPost({
-            encryptedString: queryParam,
-            authorization: `Bearer ${state.getToken()}`
+        EncryptionControllerService.decrypt({
+            requestBody: queryParam
         }).then(async (filter: any) => {
             if (isEmpty(filter)) {
                 // empty filter, clear content
@@ -268,22 +269,20 @@ export const AdvancedSearch = () => {
     // it simply encrypts the filter object and sets it as the query parameter
 
     const handleSubmit = async (filter: PersonFilter | InvestigationFilter | LabReportFilter, type: SEARCH_TYPE) => {
-        let search = '';
         if (!isEmpty(filter)) {
-            // send filter for encryption
-            const encryptedFilter = await EncryptionControllerService.encryptUsingPost({
-                authorization: `Bearer ${state.getToken()}`,
-                object: filter
-            });
-
-            // URI encode encrypted filter
-            search = `?q=${encodeURIComponent(encryptedFilter.value)}&type=${type}`;
-            navigate({
-                pathname: '/advanced-search',
-                search
-            });
-            setCurrentPage(1);
-            setSubmitted(false);
+            EncryptionControllerService.encrypt({
+                requestBody: filter
+            })
+                .then((response) => response.value ?? '')
+                .then((criteria) => `?q=${encodeURIComponent(criteria)}&type=${type}`)
+                .then((search) => {
+                    navigate({
+                        pathname: '/advanced-search',
+                        search
+                    });
+                    setCurrentPage(1);
+                    setSubmitted(false);
+                });
         } else {
             setSubmitted(true);
         }

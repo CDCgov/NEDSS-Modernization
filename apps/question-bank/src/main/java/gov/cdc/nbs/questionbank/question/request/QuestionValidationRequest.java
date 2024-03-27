@@ -1,10 +1,10 @@
 package gov.cdc.nbs.questionbank.question.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record QuestionValidationRequest(
-    @ApiModelProperty(required = true) Field field,
-    @ApiModelProperty(required = true) String value) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Field field,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value) {
 
   public enum Field {
     UNIQUE_ID,

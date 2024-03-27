@@ -4,7 +4,7 @@ import gov.cdc.nbs.maybe.MaybeLong;
 import gov.cdc.nbs.patient.profile.redirect.PatientActionCookie;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Component

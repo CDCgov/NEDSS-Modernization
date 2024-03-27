@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type SelectableEventType = {
-    name?: string;
     value?: string;
+    name?: string;
 };
 

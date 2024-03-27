@@ -7,7 +7,7 @@ import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,8 +37,10 @@ public class SubSectionValidator {
       if (element.getPublishIndCd() != null && element.getPublishIndCd() == 'T')
         throw new ValidateSubsectionException("Subsection includes a question(s) that has already been published.");
       if (element.getNbsUiComponentUid().equals(ROLLINGNOTE) && subsectionElements.size() > 1)
-        throw new ValidateSubsectionException("Subsection can only have the Repeating Note field " +
-            "and no other fields in the repeating block subsection.");
+        throw new ValidateSubsectionException("""
+            Subsection can only have the Repeating Note field \
+            and no other fields in the repeating block subsection.\
+            """);
     }
   }
 

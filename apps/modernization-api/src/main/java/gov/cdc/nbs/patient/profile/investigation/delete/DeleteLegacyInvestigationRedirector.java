@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.profile.investigation.delete;
 
 import gov.cdc.nbs.patient.profile.redirect.incoming.ModernizedPatientProfileRedirectResolver;
+import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
-@ApiIgnore
+@Hidden
 @RestController
 class DeleteLegacyInvestigationRedirector {
 

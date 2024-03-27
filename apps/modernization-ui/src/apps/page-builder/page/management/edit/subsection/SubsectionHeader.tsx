@@ -3,7 +3,6 @@ import { useAlert } from 'alert';
 import { MoreOptions } from 'apps/page-builder/components/MoreOptions/MoreOptions';
 import { PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
 import { AddStaticElement } from 'apps/page-builder/page/management/edit/staticelement/AddStaticElement';
-import { authorization } from 'authorization';
 import { Icon as IconComponent } from 'components/Icon/Icon';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { ConfirmationModal } from 'confirmation';
@@ -38,8 +37,7 @@ export const SubsectionHeader = ({
 
     const handleUngroup = () => {
         try {
-            SubSectionControllerService.unGroupSubSectionUsingGet({
-                authorization: authorization(),
+            SubSectionControllerService.unGroupSubSection({
                 page: page.id,
                 subSectionId: subsection.id
             }).then(() => {

@@ -3,10 +3,10 @@
 /* eslint-disable */
 
 export type Valueset = {
-    code: string;
-    description?: string;
     id: number;
-    name: string;
     type: string;
+    code: string;
+    name: string;
+    description?: string;
 };
 

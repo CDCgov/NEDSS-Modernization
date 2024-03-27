@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type PageDeleteResponse = {
-    message?: string;
     templateId?: number;
+    message?: string;
 };
 

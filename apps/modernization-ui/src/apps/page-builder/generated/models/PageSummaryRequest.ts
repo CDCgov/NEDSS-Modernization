@@ -2,10 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Filter } from './Filter';
+import type { Date } from './Date';
+import type { DateRange } from './DateRange';
+import type { MultiValue } from './MultiValue';
+import type { SingleValue } from './SingleValue';
 
 export type PageSummaryRequest = {
-    filters?: Array<Filter>;
     search?: string;
+    filters?: Array<(Date | DateRange | MultiValue | SingleValue)>;
 };
 

@@ -66,7 +66,7 @@ public class PagesResponseSteps {
       case "name" -> jsonPath("$.name");
       case "status" -> jsonPath("$.status");
       case "description" -> jsonPath("$.description");
-      default -> throw new AssertionError(String.format("Unexpected Page property %s", property));
+      default -> throw new AssertionError("Unexpected Page property %s".formatted(property));
     };
   }
 
@@ -133,10 +133,10 @@ public class PagesResponseSteps {
       case "section" -> "$.tabs[*].sections[?(@.name=='%s')]";
       case "subsection", "sub section", "sub-section" -> "$.tabs[*].sections[*].subSections[?(@.name=='%s')]";
       case "content", "question" -> "$.tabs[*].sections[*].subSections[*].questions[?(@.name=='%s')]";
-      default -> throw new AssertionError(String.format("Unexpected Page child %s", property));
+      default -> throw new AssertionError("Unexpected Page child %s".formatted(property));
     };
 
-    return jsonPath("%s.%s", String.format(childPath, name), property);
+    return jsonPath("%s.%s", childPath.formatted(name), property);
   }
 
 }

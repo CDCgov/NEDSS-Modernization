@@ -3,12 +3,11 @@ package gov.cdc.nbs.entity.odse;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-
 
 @Getter
 @Setter
@@ -16,9 +15,8 @@ import java.util.Objects;
 public class PersonNameId implements Serializable {
 
     public static PersonNameId from(final long patient, int sequence) {
-        return new PersonNameId(patient, (short)sequence);
+        return new PersonNameId(patient, (short) sequence);
     }
-
 
     @Serial
     private static final long serialVersionUID = -6533992946080388101L;
@@ -44,7 +42,7 @@ public class PersonNameId implements Serializable {
             return false;
         PersonNameId that = (PersonNameId) o;
         return Objects.equals(personUid, that.personUid) && Objects.equals(personNameSeq,
-            that.personNameSeq);
+                that.personNameSeq);
     }
 
     @Override
@@ -55,8 +53,8 @@ public class PersonNameId implements Serializable {
     @Override
     public String toString() {
         return "PersonNameId{" +
-            "personUid=" + personUid +
-            ", personNameSeq=" + personNameSeq +
-            '}';
+                "personUid=" + personUid +
+                ", personNameSeq=" + personNameSeq +
+                '}';
     }
 }

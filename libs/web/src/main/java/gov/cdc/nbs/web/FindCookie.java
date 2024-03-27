@@ -1,6 +1,6 @@
 package gov.cdc.nbs.web;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 
 public class FindCookie {

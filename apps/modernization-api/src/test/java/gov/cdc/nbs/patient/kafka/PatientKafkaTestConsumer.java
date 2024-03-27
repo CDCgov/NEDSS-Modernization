@@ -44,7 +44,7 @@ public class PatientKafkaTestConsumer {
         } catch (IOException exception) {
 
             log.error(
-                String.format("An error occurred when receiving %s", consumerRecord.value()),
+                "An error occurred when receiving %s".formatted(consumerRecord.value()),
                 exception
             );
         }

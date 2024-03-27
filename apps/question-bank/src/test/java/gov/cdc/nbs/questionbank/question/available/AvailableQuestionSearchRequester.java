@@ -33,7 +33,7 @@ class AvailableQuestionSearchRequester {
       final AvailableQuestionCriteria criteria) throws Exception {
 
     MockHttpServletRequestBuilder builder = page.getSort().get()
-        .map(order -> String.format("%s,%s", order.getProperty(), order.getDirection()))
+        .map(order -> "%s,%s".formatted(order.getProperty(), order.getDirection()))
         .reduce(
             createRequest(pageId, page, criteria),
             (existing, order) -> existing.param("sort", order),

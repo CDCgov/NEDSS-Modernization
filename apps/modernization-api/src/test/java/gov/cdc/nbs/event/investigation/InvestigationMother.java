@@ -18,7 +18,7 @@ import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 
 @Component

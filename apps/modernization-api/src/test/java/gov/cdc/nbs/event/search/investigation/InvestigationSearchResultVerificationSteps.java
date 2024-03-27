@@ -88,7 +88,7 @@ public class InvestigationSearchResultVerificationSteps {
           jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime", position);
       case "last name" ->
           jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName", position);
-      default -> throw new AssertionError(String.format("Unexpected Investigation Search Result property %s", field));
+      default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
   }
 }

@@ -5,7 +5,6 @@ plugins {
     alias libs.plugins.springBoot
 }
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
-apply from: "${rootDir}/gradle/spring-dependency-override.gradle"
 
 group = 'gov.cdc.nbs.page.builder'
 version = '0.0.1-SNAPSHOT'
@@ -58,7 +57,7 @@ testing {
 
                 implementation.bundle(libs.bundles.testing)
                 implementation libs.spring.test
-                implementation 'org.awaitility:awaitility:4.2.0'
+                implementation libs.awaitility
 
                 implementation.bundle(libs.bundles.testcontainers)
 
@@ -101,7 +100,7 @@ dependencies {
     implementation(project(':libs:classic-interaction'))
     implementation(project(':libs:redirect'))
 
-    implementation libs.snake.yaml
+//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.springBoot.web
@@ -114,8 +113,8 @@ dependencies {
     implementation libs.bundles.swagger
 
     // querydsl
-    implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
     implementation libs.bundles.jackson
 

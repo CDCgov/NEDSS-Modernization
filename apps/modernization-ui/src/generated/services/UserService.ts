@@ -10,12 +10,12 @@ import { request as __request } from '../core/request';
 export class UserService {
 
     /**
-     * Me
+     * Current User
      * Provides details about the user associated with the request.
      * @returns Me OK
      * @throws ApiError
      */
-    public static meUsingGet({
+    public static me({
         authorization,
     }: {
         authorization: string,
@@ -25,11 +25,6 @@ export class UserService {
             url: '/nbs/api/me',
             headers: {
                 'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }

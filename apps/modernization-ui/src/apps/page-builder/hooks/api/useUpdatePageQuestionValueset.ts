@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import { PageQuestionControllerService, PagesQuestion } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { EditableQuestion, PageQuestionControllerService } from 'apps/page-builder/generated';
 
 type State =
     | { status: 'idle' }
@@ -11,7 +10,7 @@ type State =
           question: number;
           valueset: number;
       }
-    | { status: 'complete'; response: PagesQuestion }
+    | { status: 'complete'; response: EditableQuestion }
     | { status: 'error'; error: string };
 
 type Action =
@@ -21,7 +20,7 @@ type Action =
           question: number;
           valueset: number;
       }
-    | { type: 'complete'; response: PagesQuestion }
+    | { type: 'complete'; response: EditableQuestion }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
@@ -44,14 +43,17 @@ export const useUpdatePageQuestionValueset = () => {
 
     useEffect(() => {
         if (state.status === 'updating') {
-            PageQuestionControllerService.updatePageCodedQuestionValuesetUsingPut({
-                authorization: authorization(),
+            PageQuestionControllerService.updatePageCodedQuestionValueset({
                 questionId: state.question,
                 page: state.page,
-                request: { valueset: state.valueset }
+                requestBody: { valueset: state.valueset }
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', response: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', response: response });
+                    }
+                });
         }
     }, [state.status]);
 

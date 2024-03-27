@@ -10,8 +10,7 @@ import type { DateQuestion } from '../models/DateQuestion';
 import type { FindQuestionRequest } from '../models/FindQuestionRequest';
 import type { GetQuestionResponse } from '../models/GetQuestionResponse';
 import type { NumericQuestion } from '../models/NumericQuestion';
-import type { Page_Question_ } from '../models/Page_Question_';
-import type { Question } from '../models/Question';
+import type { PageQuestion } from '../models/PageQuestion';
 import type { QuestionStatusRequest } from '../models/QuestionStatusRequest';
 import type { TextQuestion } from '../models/TextQuestion';
 import type { UpdateCodedQuestionRequest } from '../models/UpdateCodedQuestionRequest';
@@ -26,425 +25,267 @@ import { request as __request } from '../core/request';
 export class QuestionControllerService {
 
     /**
-     * findAllQuestions
-     * @returns Page_Question_ OK
+     * @returns any OK
      * @throws ApiError
      */
-    public static findAllQuestionsUsingGet({
-        authorization,
-        page,
-        size,
-        sort,
-    }: {
-        authorization: string,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Question_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/questions',
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * createCodedQuestion
-     * @returns CodedQuestion Created
-     * @throws ApiError
-     */
-    public static createCodedQuestionUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: CreateCodedQuestionRequest,
-    }): CancelablePromise<CodedQuestion> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/coded',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updateCodedQuestion
-     * @returns Question OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateCodedQuestionUsingPut({
-        authorization,
+    public static setQuestionStatus({
         id,
-        request,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: number,
-        /**
-         * request
-         */
-        request: UpdateCodedQuestionRequest,
-    }): CancelablePromise<Question | any> {
+        requestBody: QuestionStatusRequest,
+    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/questions/coded/{id}',
+            url: '/api/v1/questions/{id}/status',
             path: {
                 'id': id,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * createDateQuestion
-     * @returns DateQuestion Created
+     * @returns any OK
      * @throws ApiError
      */
-    public static createDateQuestionUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: CreateDateQuestionRequest,
-    }): CancelablePromise<DateQuestion> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/date',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updateDateQuestion
-     * @returns Question OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateDateQuestionUsingPut({
-        authorization,
+    public static updateTextQuestion({
         id,
-        request,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: number,
-        /**
-         * request
-         */
-        request: UpdateDateQuestionRequest,
-    }): CancelablePromise<Question | any> {
+        requestBody: UpdateTextQuestionRequest,
+    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/questions/date/{id}',
+            url: '/api/v1/questions/text/{id}',
             path: {
                 'id': id,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * createNumericQuestion
-     * @returns NumericQuestion Created
+     * @returns any OK
      * @throws ApiError
      */
-    public static createNumericQuestionUsingPost({
-        authorization,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: CreateNumericQuestionRequest,
-    }): CancelablePromise<NumericQuestion> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/numeric',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updateNumericQuestion
-     * @returns Question OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateNumericQuestionUsingPut({
-        authorization,
+    public static updateNumericQuestion({
         id,
-        request,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: number,
-        /**
-         * request
-         */
-        request: UpdateNumericQuestionRequest,
-    }): CancelablePromise<Question | any> {
+        requestBody: UpdateNumericQuestionRequest,
+    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/questions/numeric/{id}',
+            url: '/api/v1/questions/numeric/{id}',
             path: {
                 'id': id,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * findQuestions
-     * @returns Page_Question_ OK
-     * @returns any Created
+     * @returns any OK
      * @throws ApiError
      */
-    public static findQuestionsUsingPost({
-        authorization,
-        request,
-        page,
-        size,
-        sort,
+    public static updateDateQuestion({
+        id,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: FindQuestionRequest,
-        page?: number,
-        size?: number,
-        sort?: string,
-    }): CancelablePromise<Page_Question_ | any> {
+        id: number,
+        requestBody: UpdateDateQuestionRequest,
+    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
         return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/search',
-            headers: {
-                'Authorization': authorization,
+            method: 'PUT',
+            url: '/api/v1/questions/date/{id}',
+            path: {
+                'id': id,
             },
-            query: {
-                'page': page,
-                'size': size,
-                'sort': sort,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * createTextQuestion
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static updateCodedQuestion({
+        id,
+        requestBody,
+    }: {
+        id: number,
+        requestBody: UpdateCodedQuestionRequest,
+    }): CancelablePromise<(CodedQuestion | DateQuestion | NumericQuestion | TextQuestion)> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/questions/coded/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
      * @returns TextQuestion Created
      * @throws ApiError
      */
-    public static createTextQuestionUsingPost({
-        authorization,
-        request,
+    public static createTextQuestion({
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * request
-         */
-        request: CreateTextQuestionRequest,
+        requestBody: CreateTextQuestionRequest,
     }): CancelablePromise<TextQuestion> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/questions/text',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            url: '/api/v1/questions/text',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * updateTextQuestion
-     * @returns Question OK
-     * @returns any Created
+     * @returns PageQuestion OK
      * @throws ApiError
      */
-    public static updateTextQuestionUsingPut({
-        authorization,
-        id,
-        request,
+    public static findQuestions({
+        requestBody,
+        page,
+        size = 25,
+        sort,
     }: {
-        authorization: string,
+        requestBody: FindQuestionRequest,
         /**
-         * id
+         * Zero-based page index (0..N)
          */
-        id: number,
+        page?: number,
         /**
-         * request
+         * The size of the page to be returned
          */
-        request: UpdateTextQuestionRequest,
-    }): CancelablePromise<Question | any> {
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PageQuestion> {
         return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/questions/text/{id}',
-            path: {
-                'id': id,
+            method: 'POST',
+            url: '/api/v1/questions/search',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @returns NumericQuestion Created
+     * @throws ApiError
+     */
+    public static createNumericQuestion({
+        requestBody,
+    }: {
+        requestBody: CreateNumericQuestionRequest,
+    }): CancelablePromise<NumericQuestion> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/questions/numeric',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @returns DateQuestion Created
+     * @throws ApiError
+     */
+    public static createDateQuestion({
+        requestBody,
+    }: {
+        requestBody: CreateDateQuestionRequest,
+    }): CancelablePromise<DateQuestion> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/questions/date',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @returns CodedQuestion Created
+     * @throws ApiError
+     */
+    public static createCodedQuestion({
+        requestBody,
+    }: {
+        requestBody: CreateCodedQuestionRequest,
+    }): CancelablePromise<CodedQuestion> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/questions/coded',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * @returns PageQuestion OK
+     * @throws ApiError
+     */
+    public static findAllQuestions({
+        page,
+        size = 25,
+        sort,
+    }: {
+        /**
+         * Zero-based page index (0..N)
+         */
+        page?: number,
+        /**
+         * The size of the page to be returned
+         */
+        size?: number,
+        /**
+         * Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.
+         */
+        sort?: Array<string>,
+    }): CancelablePromise<PageQuestion> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/questions',
+            query: {
+                'page': page,
+                'size': size,
+                'sort': sort,
             },
         });
     }
 
     /**
-     * getQuestion
      * @returns GetQuestionResponse OK
      * @throws ApiError
      */
-    public static getQuestionUsingGet({
-        authorization,
+    public static getQuestion({
         id,
     }: {
-        authorization: string,
-        /**
-         * id
-         */
         id: number,
     }): CancelablePromise<GetQuestionResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/questions/{id}',
+            url: '/api/v1/questions/{id}',
             path: {
                 'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * setQuestionStatus
-     * @returns Question OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static setQuestionStatusUsingPut({
-        authorization,
-        id,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * id
-         */
-        id: number,
-        /**
-         * request
-         */
-        request: QuestionStatusRequest,
-    }): CancelablePromise<Question | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/questions/{id}/status',
-            path: {
-                'id': id,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }

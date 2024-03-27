@@ -94,7 +94,7 @@ public class ConditionCreator {
           .orElse(0);
     }
     numericPart++;
-    return currentYear + String.format("%03d", numericPart);
+    return currentYear + "%03d".formatted(numericPart);
   }
 
   public ConditionCommand.AddCondition conditionAdd(final CreateConditionRequest request, long userId, long nbsUid) {

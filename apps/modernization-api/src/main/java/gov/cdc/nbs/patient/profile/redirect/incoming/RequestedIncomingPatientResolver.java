@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 import gov.cdc.nbs.maybe.MaybeLong;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Component

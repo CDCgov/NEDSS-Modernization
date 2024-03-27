@@ -8,8 +8,8 @@ import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
+import jakarta.annotation.Nonnull;
 
-import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -48,7 +48,7 @@ public class ISO8601InstantCoercing implements Coercing<Instant, String> {
         throw new CoercingParseValueException("Expected a String");
       }
     } catch (DateTimeParseException e) {
-      throw new CoercingParseValueException(String.format("Not a valid datetime: '%s'.", input), e);
+      throw new CoercingParseValueException("Not a valid datetime: '%s'.".formatted(input), e);
     }
   }
 

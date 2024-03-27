@@ -6,20 +6,20 @@ import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
 
 export type CreateTextQuestionRequest = {
+    uniqueName?: string;
+    description?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    dataMartInfo?: ReportingInfo;
+    messagingInfo?: MessagingInfo;
     adminComments?: string;
     codeSet?: CreateTextQuestionRequest.codeSet;
-    dataMartInfo?: ReportingInfo;
-    defaultValue?: string;
-    description?: string;
-    displayControl?: number;
-    fieldLength?: number;
-    label?: string;
-    mask?: CreateTextQuestionRequest.mask;
-    messagingInfo?: MessagingInfo;
-    subgroup?: string;
-    tooltip?: string;
     uniqueId?: string;
-    uniqueName?: string;
+    subgroup?: string;
+    mask?: CreateTextQuestionRequest.mask;
+    fieldLength?: number;
+    defaultValue?: string;
 };
 
 export namespace CreateTextQuestionRequest {
@@ -30,15 +30,15 @@ export namespace CreateTextQuestionRequest {
     }
 
     export enum mask {
-        CENSUS_TRACT = 'CENSUS_TRACT',
         TXT = 'TXT',
+        CENSUS_TRACT = 'CENSUS_TRACT',
         TXT_EMAIL = 'TXT_EMAIL',
         TXT_ID10 = 'TXT_ID10',
         TXT_ID12 = 'TXT_ID12',
         TXT_ID15 = 'TXT_ID15',
-        TXT_IDTB = 'TXT_IDTB',
         TXT_PHONE = 'TXT_PHONE',
         TXT_SSN = 'TXT_SSN',
+        TXT_IDTB = 'TXT_IDTB',
         TXT_ZIP = 'TXT_ZIP',
     }
 

@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
 import { Concept, ConceptControllerService, UpdateConceptRequest } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 
 type State =
     | { status: 'idle' }
@@ -39,14 +38,19 @@ export const useUpdateConcept = () => {
 
     useEffect(() => {
         if (state.status === 'updating') {
-            ConceptControllerService.updateConceptUsingPut({
-                authorization: authorization(),
+            ConceptControllerService.updateConcept({
                 codeSetNm: state.valueset,
                 localCode: state.localCode,
-                request: state.request
+                requestBody: state.request
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', concept: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', concept: response });
+                    } else {
+                        dispatch({ type: 'error', error: 'Updated failed to return concept' });
+                    }
+                });
         }
     }, [state.status]);
 

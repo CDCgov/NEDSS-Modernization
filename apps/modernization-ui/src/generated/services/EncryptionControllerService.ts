@@ -10,63 +10,36 @@ import { request as __request } from '../core/request';
 export class EncryptionControllerService {
 
     /**
-     * decrypt
-     * @returns any OK
+     * @returns EncryptionResponse OK
      * @throws ApiError
      */
-    public static decryptUsingPost({
-        authorization,
-        encryptedString,
+    public static encrypt({
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * encryptedString
-         */
-        encryptedString: string,
-    }): CancelablePromise<any> {
+        requestBody: any,
+    }): CancelablePromise<EncryptionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/encryption/decrypt',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: encryptedString,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            url: '/encryption/encrypt',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
     /**
-     * encrypt
-     * @returns EncryptionResponse OK
-     * @returns any Created
+     * @returns any OK
      * @throws ApiError
      */
-    public static encryptUsingPost({
-        authorization,
-        object,
+    public static decrypt({
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * object
-         */
-        object: any,
-    }): CancelablePromise<EncryptionResponse | any> {
+        requestBody: string,
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/encryption/encrypt',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: object,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            url: '/encryption/decrypt',
+            body: requestBody,
+            mediaType: 'text/plain',
         });
     }
 

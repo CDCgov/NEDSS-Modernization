@@ -34,8 +34,7 @@ export const useListConcepts = (codesetName?: string) => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            ConceptControllerService.findConceptsUsingGet({
-                authorization: authorization(),
+            ConceptControllerService.findConcepts({
                 codeSetNm: state.codesetName
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))

@@ -17,28 +17,15 @@ export class PageInformationService {
      * @throws ApiError
      */
     public static find({
-        authorization,
         page,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
     }): CancelablePromise<PageInformation> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{page}/information',
+            url: '/api/v1/pages/{page}/information',
             path: {
                 'page': page,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }
@@ -50,35 +37,20 @@ export class PageInformationService {
      * @throws ApiError
      */
     public static change({
-        authorization,
         page,
-        request,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
-        /**
-         * request
-         */
-        request: PageInformationChangeRequest,
+        requestBody: PageInformationChangeRequest,
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/information',
+            url: '/api/v1/pages/{page}/information',
             path: {
                 'page': page,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

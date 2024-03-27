@@ -5,10 +5,9 @@ import {
     CodedQuestion,
     DateQuestion,
     NumericQuestion,
-    Page_AvailableQuestion_ as PageAvailableQuestion,
+    PageAvailableQuestion,
     TextQuestion
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { Direction } from 'sorting';
 
 export type QuestionSearch = {
@@ -68,16 +67,23 @@ export const useFindAddableQuestions = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
 
-            AvailableQuestionControllerService.findAvailableQuestionsUsingPost({
-                authorization: authorization(),
-                request: { query: state.search.searchText ?? '' },
+            AvailableQuestionControllerService.findAvailableQuestions({
                 pageId: state.search.pageId,
+                requestBody: {
+                    query: state.search.searchText ?? ''
+                },
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', questions: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', questions: response });
+                    } else {
+                        dispatch({ type: 'error', error: 'Failed to find available questions' });
+                    }
+                });
         }
     }, [state.status]);
 

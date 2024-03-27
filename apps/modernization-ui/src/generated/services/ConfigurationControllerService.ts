@@ -10,11 +10,10 @@ import { request as __request } from '../core/request';
 export class ConfigurationControllerService {
 
     /**
-     * getConfiguration
      * @returns Configuration OK
      * @throws ApiError
      */
-    public static getConfigurationUsingGet({
+    public static getConfiguration({
         authorization,
     }: {
         authorization: string,
@@ -24,11 +23,6 @@ export class ConfigurationControllerService {
             url: '/nbs/api/configuration',
             headers: {
                 'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
             },
         });
     }

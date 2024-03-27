@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 export type Me = {
-    firstName: string;
     identifier: number;
+    firstName: string;
     lastName: string;
     permissions: Array<string>;
 };

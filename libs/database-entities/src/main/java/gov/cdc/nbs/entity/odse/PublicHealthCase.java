@@ -1,15 +1,15 @@
 package gov.cdc.nbs.entity.odse;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,32 +100,23 @@ public class PublicHealthCase {
   @Column(name = "public_health_case_uid", nullable = false)
   private Long id;
 
-
   @Column(name = "coinfection_id", length = 50)
   private String coinfectionId;
 
   @MapsId
-  @OneToOne(
-      fetch = FetchType.LAZY,
-      optional = false,
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.MERGE,
-          CascadeType.REMOVE
-      },
-      orphanRemoval = true)
+  @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
   @JoinColumn(name = "public_health_case_uid", nullable = false)
   private Act act;
 
-  @OneToMany(
-      mappedBy = "subjectEntityPhcUid",
-      fetch = FetchType.LAZY,
-      cascade = {
-          CascadeType.PERSIST,
-          CascadeType.MERGE,
-          CascadeType.REMOVE
-      },
-      orphanRemoval = true)
+  @OneToMany(mappedBy = "subjectEntityPhcUid", fetch = FetchType.LAZY, cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
   private List<CtContact> subjectContacts;
 
   protected PublicHealthCase() {
@@ -136,8 +127,7 @@ public class PublicHealthCase {
       final long identifier,
       final String local,
       final long createdBy,
-      final Instant createdOn
-  ) {
+      final Instant createdOn) {
     this.id = identifier;
     this.localId = local;
     this.versionCtrlNbr = 1;
@@ -156,8 +146,7 @@ public class PublicHealthCase {
   public void within(
       final String jurisdiction,
       final String programArea,
-      final long oid
-  ) {
+      final long oid) {
     this.jurisdictionCd = jurisdiction;
     this.progAreaCd = programArea;
     this.programJurisdictionOid = oid;

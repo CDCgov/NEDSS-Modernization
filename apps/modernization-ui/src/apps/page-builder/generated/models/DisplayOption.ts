@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type DisplayOption = {
-    name?: string;
     value?: number;
+    name?: string;
 };
 

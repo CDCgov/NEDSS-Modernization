@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type EventType = {
-    name?: string;
     value?: string;
+    name?: string;
 };
 

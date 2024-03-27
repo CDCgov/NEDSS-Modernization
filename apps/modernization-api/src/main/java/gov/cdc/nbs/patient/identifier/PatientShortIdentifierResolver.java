@@ -14,8 +14,8 @@ public class PatientShortIdentifierResolver {
 
     public PatientShortIdentifierResolver(final PatientIdentifierSettings settings) {
         this.settings = settings;
-        String regex = String.format(
-            "(?:%s)(?<id>\\d+)(?:%s)",
+        String regex = 
+            "(?:%s)(?<id>\\d+)(?:%s)".formatted(
             settings.type(),
             settings.suffix()
         );

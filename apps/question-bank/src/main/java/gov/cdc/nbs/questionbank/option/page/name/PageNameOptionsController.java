@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.option.page.name;
 
 import gov.cdc.nbs.questionbank.option.PageBuilderOption;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,6 @@ class PageNameOptionsController {
       description = "Provides Page name options from all Pages available.",
       tags = "Page Builder Options"
   )
-  @ApiOperation(value = "", nickname = "pageNames")
   @GetMapping("/page/names")
   Collection<PageBuilderOption> all() {
     return this.finder.all();
