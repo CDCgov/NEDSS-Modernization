@@ -3,11 +3,11 @@ package gov.cdc.nbs.option;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record Option(
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String value,
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String name,
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String label,
     int order
 ) {
