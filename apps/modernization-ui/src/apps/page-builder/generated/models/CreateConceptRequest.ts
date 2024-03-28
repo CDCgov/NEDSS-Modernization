@@ -1,7 +1,7 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type CreateConceptRequest = {
     localCode: string;
     longName: string;
@@ -15,14 +15,10 @@ export type CreateConceptRequest = {
     preferredConceptName: string;
     codeSystem: string;
 };
-
 export namespace CreateConceptRequest {
-
     export enum status {
         ACTIVE = 'ACTIVE',
         INACTIVE = 'INACTIVE',
     }
-
-
 }
 

@@ -1,7 +1,7 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type Concept = {
     codeSetName: string;
     localCode: string;
@@ -16,14 +16,10 @@ export type Concept = {
     preferredConceptName: string;
     codeSystem: string;
 };
-
 export namespace Concept {
-
     export enum status {
         ACTIVE = 'ACTIVE',
         INACTIVE = 'INACTIVE',
     }
-
-
 }
 

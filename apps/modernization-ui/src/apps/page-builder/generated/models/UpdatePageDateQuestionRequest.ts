@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdatePageDateQuestionRequest = {
     label: string;
     tooltip: string;
@@ -18,13 +17,9 @@ export type UpdatePageDateQuestionRequest = {
     messagingInfo: MessagingInfo;
     adminComments?: string;
 };
-
 export namespace UpdatePageDateQuestionRequest {
-
     export enum mask {
         DATE = 'DATE',
     }
-
-
 }
 

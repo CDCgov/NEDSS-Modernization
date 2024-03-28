@@ -1,16 +1,14 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateSectionRequest } from '../models/CreateSectionRequest';
 import type { Section } from '../models/Section';
 import type { UpdateSectionRequest } from '../models/UpdateSectionRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class SectionControllerService {
-
     /**
      * @returns Section OK
      * @throws ApiError
@@ -35,7 +33,6 @@ export class SectionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns Section OK
      * @throws ApiError
@@ -57,7 +54,6 @@ export class SectionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -78,5 +74,4 @@ export class SectionControllerService {
             },
         });
     }
-
 }

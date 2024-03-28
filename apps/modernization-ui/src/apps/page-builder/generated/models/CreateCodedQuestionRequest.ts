@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type CreateCodedQuestionRequest = {
     uniqueName?: string;
     description?: string;
@@ -20,14 +19,10 @@ export type CreateCodedQuestionRequest = {
     valueSet?: number;
     defaultValue?: string;
 };
-
 export namespace CreateCodedQuestionRequest {
-
     export enum codeSet {
         LOCAL = 'LOCAL',
         PHIN = 'PHIN',
     }
-
-
 }
 

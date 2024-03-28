@@ -1,15 +1,13 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateTemplateRequest } from '../models/CreateTemplateRequest';
 import type { PagesResponse } from '../models/PagesResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PagesService {
-
     /**
      * Creates a Template from the Page that can be used as a starting point for new Pages.
      * @returns any OK
@@ -32,7 +30,6 @@ export class PagesService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * Pages
      * Provides the details of a Page including the components and the rules
@@ -52,5 +49,4 @@ export class PagesService {
             },
         });
     }
-
 }

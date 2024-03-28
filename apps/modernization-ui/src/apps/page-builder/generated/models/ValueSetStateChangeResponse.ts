@@ -1,16 +1,14 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type ValueSetStateChangeResponse = {
     codeSetNm?: string;
     statusCd?: string;
     message?: string;
     status?: ValueSetStateChangeResponse.status;
 };
-
 export namespace ValueSetStateChangeResponse {
-
     export enum status {
         _100_CONTINUE = '100 CONTINUE',
         _101_SWITCHING_PROTOCOLS = '101 SWITCHING_PROTOCOLS',
@@ -82,7 +80,5 @@ export namespace ValueSetStateChangeResponse {
         _510_NOT_EXTENDED = '510 NOT_EXTENDED',
         _511_NETWORK_AUTHENTICATION_REQUIRED = '511 NETWORK_AUTHENTICATION_REQUIRED',
     }
-
-
 }
 

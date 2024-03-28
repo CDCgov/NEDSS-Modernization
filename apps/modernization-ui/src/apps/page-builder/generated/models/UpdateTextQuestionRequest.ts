@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdateTextQuestionRequest = {
     uniqueName?: string;
     description?: string;
@@ -19,16 +18,13 @@ export type UpdateTextQuestionRequest = {
     fieldLength?: number;
     defaultValue?: string;
 };
-
 export namespace UpdateTextQuestionRequest {
-
     export enum type {
         TEXT = 'TEXT',
         NUMERIC = 'NUMERIC',
         DATE = 'DATE',
         CODED = 'CODED',
     }
-
     export enum mask {
         TXT = 'TXT',
         CENSUS_TRACT = 'CENSUS_TRACT',
@@ -41,7 +37,5 @@ export namespace UpdateTextQuestionRequest {
         TXT_IDTB = 'TXT_IDTB',
         TXT_ZIP = 'TXT_ZIP',
     }
-
-
 }
 

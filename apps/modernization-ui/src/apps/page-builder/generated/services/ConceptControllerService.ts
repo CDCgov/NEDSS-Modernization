@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -5,13 +6,10 @@ import type { Concept } from '../models/Concept';
 import type { CreateConceptRequest } from '../models/CreateConceptRequest';
 import type { PageConcept } from '../models/PageConcept';
 import type { UpdateConceptRequest } from '../models/UpdateConceptRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ConceptControllerService {
-
     /**
      * @returns Concept OK
      * @throws ApiError
@@ -36,7 +34,6 @@ export class ConceptControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns Concept OK
      * @throws ApiError
@@ -54,7 +51,6 @@ export class ConceptControllerService {
             },
         });
     }
-
     /**
      * @returns Concept OK
      * @throws ApiError
@@ -76,7 +72,6 @@ export class ConceptControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PageConcept OK
      * @throws ApiError
@@ -114,5 +109,4 @@ export class ConceptControllerService {
             },
         });
     }
-
 }

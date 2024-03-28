@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdatePageCodedQuestionRequest = {
     label: string;
     tooltip: string;

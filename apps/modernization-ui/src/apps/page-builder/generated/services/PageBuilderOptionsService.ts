@@ -1,14 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { PageBuilderOption } from '../models/PageBuilderOption';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageBuilderOptionsService {
-
     /**
      * All Page name options
      * Provides Page name options from all Pages available.
@@ -21,7 +19,6 @@ export class PageBuilderOptionsService {
             url: '/api/v1/options/page/names',
         });
     }
-
     /**
      * Page name options autocomplete
      * Provides Page name options from all Pages available that have a name starting with a term.
@@ -44,5 +41,4 @@ export class PageBuilderOptionsService {
             },
         });
     }
-
 }

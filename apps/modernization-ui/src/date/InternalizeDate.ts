@@ -1,5 +1,5 @@
 /* eslint-disable no-redeclare */
-import parseISO from 'date-fns/parseISO';
+import { parseISO } from 'date-fns';
 
 function internalizeDate(input: string): string;
 function internalizeDate(input: Date): string;
