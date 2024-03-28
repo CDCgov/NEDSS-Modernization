@@ -38,6 +38,14 @@ const Search = (props: SearchProps) => {
             setResetInput(false);
         }
     }, [resetInput]);
+
+    useEffect(() => {
+        if (keyword === '') {
+            setResetInput(true);
+            handleSearch();
+        }
+    }, [keyword]);
+
     return (
         <search className={classNames(styles.search, props.className)}>
             <label className="usa-sr-only" htmlFor={props.id}>
