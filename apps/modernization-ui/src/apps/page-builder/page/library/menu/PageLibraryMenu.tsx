@@ -49,7 +49,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                 id="page-search"
                 name="search"
                 ariaLabel="search page name and  by keyword"
-                placeholder="Search by page or condition name"
+                placeholder="Search by page name, condition name or condition code"
                 onSearch={onSearch}
             />
             <menu>
