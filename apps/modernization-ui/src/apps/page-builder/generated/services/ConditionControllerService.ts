@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -6,13 +7,10 @@ import type { ConditionStatusResponse } from '../models/ConditionStatusResponse'
 import type { CreateConditionRequest } from '../models/CreateConditionRequest';
 import type { PageCondition } from '../models/PageCondition';
 import type { ReadConditionRequest } from '../models/ReadConditionRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ConditionControllerService {
-
     /**
      * @returns PageCondition OK
      * @throws ApiError
@@ -49,7 +47,6 @@ export class ConditionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PageCondition OK
      * @throws ApiError
@@ -82,7 +79,6 @@ export class ConditionControllerService {
             },
         });
     }
-
     /**
      * @returns Condition OK
      * @throws ApiError
@@ -99,7 +95,6 @@ export class ConditionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns ConditionStatusResponse OK
      * @throws ApiError
@@ -117,7 +112,6 @@ export class ConditionControllerService {
             },
         });
     }
-
     /**
      * @returns ConditionStatusResponse OK
      * @throws ApiError
@@ -135,7 +129,6 @@ export class ConditionControllerService {
             },
         });
     }
-
     /**
      * @returns Condition OK
      * @throws ApiError
@@ -153,7 +146,6 @@ export class ConditionControllerService {
             },
         });
     }
-
     /**
      * @returns Condition OK
      * @throws ApiError
@@ -164,5 +156,4 @@ export class ConditionControllerService {
             url: '/api/v1/conditions/all',
         });
     }
-
 }

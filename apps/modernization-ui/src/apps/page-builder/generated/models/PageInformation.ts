@@ -1,11 +1,10 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { SelectableCondition } from './SelectableCondition';
 import type { SelectableEventType } from './SelectableEventType';
 import type { SelectableMessageMappingGuide } from './SelectableMessageMappingGuide';
-
 export type PageInformation = {
     page: number;
     eventType: SelectableEventType;

@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type CreateDateQuestionRequest = {
     uniqueName?: string;
     description?: string;
@@ -20,18 +19,13 @@ export type CreateDateQuestionRequest = {
     mask?: CreateDateQuestionRequest.mask;
     allowFutureDates?: boolean;
 };
-
 export namespace CreateDateQuestionRequest {
-
     export enum codeSet {
         LOCAL = 'LOCAL',
         PHIN = 'PHIN',
     }
-
     export enum mask {
         DATE = 'DATE',
     }
-
-
 }
 

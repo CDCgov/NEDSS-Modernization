@@ -1,15 +1,13 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { PagePageSummary } from '../models/PagePageSummary';
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageSummaryService {
-
     /**
      * Allows paginated searching of Page Summaries with filters.
      * @returns PagePageSummary OK
@@ -47,5 +45,4 @@ export class PageSummaryService {
             mediaType: 'application/json',
         });
     }
-
 }

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -9,13 +10,10 @@ import type { Valueset } from '../models/Valueset';
 import type { ValueSetOption } from '../models/ValueSetOption';
 import type { ValueSetSearchRequest } from '../models/ValueSetSearchRequest';
 import type { ValueSetStateChangeResponse } from '../models/ValueSetStateChangeResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ValueSetControllerService {
-
     /**
      * @returns Valueset OK
      * @throws ApiError
@@ -33,7 +31,6 @@ export class ValueSetControllerService {
             },
         });
     }
-
     /**
      * @returns Valueset OK
      * @throws ApiError
@@ -55,7 +52,6 @@ export class ValueSetControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns ValueSetStateChangeResponse OK
      * @throws ApiError
@@ -73,7 +69,6 @@ export class ValueSetControllerService {
             },
         });
     }
-
     /**
      * @returns ValueSetStateChangeResponse OK
      * @throws ApiError
@@ -91,7 +86,6 @@ export class ValueSetControllerService {
             },
         });
     }
-
     /**
      * @returns Valueset OK
      * @throws ApiError
@@ -108,7 +102,6 @@ export class ValueSetControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PageValueSetOption OK
      * @throws ApiError
@@ -145,7 +138,6 @@ export class ValueSetControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns County OK
      * @throws ApiError
@@ -163,7 +155,6 @@ export class ValueSetControllerService {
             },
         });
     }
-
     /**
      * @returns ValueSetOption OK
      * @throws ApiError
@@ -174,5 +165,4 @@ export class ValueSetControllerService {
             url: '/api/v1/valueset/options',
         });
     }
-
 }

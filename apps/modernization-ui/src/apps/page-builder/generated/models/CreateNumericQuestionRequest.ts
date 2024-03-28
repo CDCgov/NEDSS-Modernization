@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type CreateNumericQuestionRequest = {
     uniqueName?: string;
     description?: string;
@@ -25,14 +24,11 @@ export type CreateNumericQuestionRequest = {
     relatedUnitsLiteral?: string;
     relatedUnitsValueSet?: number;
 };
-
 export namespace CreateNumericQuestionRequest {
-
     export enum codeSet {
         LOCAL = 'LOCAL',
         PHIN = 'PHIN',
     }
-
     export enum mask {
         NUM_DD = 'NUM_DD',
         NUM_MM = 'NUM_MM',
@@ -42,7 +38,5 @@ export namespace CreateNumericQuestionRequest {
         NUM_SN = 'NUM_SN',
         NUM_TEMP = 'NUM_TEMP',
     }
-
-
 }
 

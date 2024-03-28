@@ -1,16 +1,14 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateTabRequest } from '../models/CreateTabRequest';
 import type { Tab } from '../models/Tab';
 import type { UpdateTabRequest } from '../models/UpdateTabRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class TabControllerService {
-
     /**
      * @returns Tab OK
      * @throws ApiError
@@ -35,7 +33,6 @@ export class TabControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -56,7 +53,6 @@ export class TabControllerService {
             },
         });
     }
-
     /**
      * @returns Tab OK
      * @throws ApiError
@@ -78,5 +74,4 @@ export class TabControllerService {
             mediaType: 'application/json',
         });
     }
-
 }

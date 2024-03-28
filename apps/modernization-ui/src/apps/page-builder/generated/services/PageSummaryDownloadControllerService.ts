@@ -1,14 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { PageSummaryRequest } from '../models/PageSummaryRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageSummaryDownloadControllerService {
-
     /**
      * @returns string OK
      * @throws ApiError
@@ -45,7 +43,6 @@ export class PageSummaryDownloadControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns binary OK
      * @throws ApiError
@@ -82,7 +79,6 @@ export class PageSummaryDownloadControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns binary OK
      * @throws ApiError
@@ -100,5 +96,4 @@ export class PageSummaryDownloadControllerService {
             },
         });
     }
-
 }

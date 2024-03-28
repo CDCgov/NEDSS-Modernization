@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdateCodedQuestionRequest = {
     uniqueName?: string;
     description?: string;
@@ -18,16 +17,12 @@ export type UpdateCodedQuestionRequest = {
     valueSet?: number;
     defaultValue?: string;
 };
-
 export namespace UpdateCodedQuestionRequest {
-
     export enum type {
         TEXT = 'TEXT',
         NUMERIC = 'NUMERIC',
         DATE = 'DATE',
         CODED = 'CODED',
     }
-
-
 }
 
