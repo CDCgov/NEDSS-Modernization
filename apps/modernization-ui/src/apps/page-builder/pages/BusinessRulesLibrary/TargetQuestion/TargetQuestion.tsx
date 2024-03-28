@@ -12,9 +12,17 @@ type Props = {
     onSubmit: (questions: PagesQuestion[]) => void;
     onCancel: () => void;
     editTargetQuestion?: PagesQuestion[];
+    selectedTargetQuestion?: PagesQuestion[];
 };
 
-export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmit, editTargetQuestion }: Props) => {
+export const TargetQuestion = ({
+    ruleFunction,
+    sourceQuestion,
+    onCancel,
+    onSubmit,
+    editTargetQuestion,
+    selectedTargetQuestion
+}: Props) => {
     const [activeTab, setActiveTab] = useState(0);
     const [activeSection, setActiveSection] = useState<number>(0);
     const [activeSubsection, setActiveSubsection] = useState<number>(0);
@@ -88,10 +96,10 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
     };
 
     useEffect(() => {
-        if (editTargetQuestion) {
-            setSelectedList(editTargetQuestion);
+        if (selectedTargetQuestion) {
+            setSelectedList(selectedTargetQuestion);
         }
-    }, [JSON.stringify(editTargetQuestion)]);
+    }, [JSON.stringify(selectedTargetQuestion)]);
 
     const handleTargetQuestion = (questions: PagesQuestion[]) => {
         setTargetList(questions);
@@ -102,6 +110,7 @@ export const TargetQuestion = ({ ruleFunction, sourceQuestion, onCancel, onSubmi
         setActiveSection(0);
         setActiveSubsection(0);
         setTargetList([]);
+        setSelectedList([]);
     };
 
     return (
