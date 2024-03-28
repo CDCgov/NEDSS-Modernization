@@ -52,9 +52,9 @@ export const ViewBusinessRule = () => {
                                 {rule?.ruleFunction === 'DATE_COMPARE'
                                     ? 'Date validation'
                                     : rule?.ruleFunction
-                                      ? rule.ruleFunction.charAt(0).toUpperCase() +
-                                        rule.ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase()
-                                      : ''}
+                                    ? rule.ruleFunction.charAt(0).toUpperCase() +
+                                      rule.ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase()
+                                    : ''}
                             </th>
                         </thead>
                         <tr>
@@ -86,7 +86,11 @@ export const ViewBusinessRule = () => {
                         {rule?.ruleFunction !== 'DATE_COMPARE' ? (
                             <tr>
                                 <td>Source value(s)</td>
-                                <td>{rule?.sourceValues?.map((value, key) => <span key={key}>{value}</span>)}</td>
+                                <td>
+                                    {rule?.sourceValues?.map((value, key) => (
+                                        <span key={key}>{value}</span>
+                                    ))}
+                                </td>
                             </tr>
                         ) : null}
                         {rule?.targetType ? (
