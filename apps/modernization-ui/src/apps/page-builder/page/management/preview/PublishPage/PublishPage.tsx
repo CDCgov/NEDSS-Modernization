@@ -115,17 +115,17 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                         </>
                     )}
                 />
-            </div>
-            <div className={styles.conditions}>
-                <h4>Related condition(s)</h4>
-                {conditions?.length && conditions.filter((c) => c.name).length ? (
-                    conditions.map((condition, i) => <p key={i}>{condition.name}</p>)
-                ) : (
-                    <ErrorMessage>
-                        At least one condition must be related to this page before it can be published. Please update
-                        the Page Details by mapping Related Condition(s) to the page.
-                    </ErrorMessage>
-                )}
+                <div className={styles.conditions}>
+                    <h4>Related condition(s)</h4>
+                    {conditions?.length && conditions.filter((c) => c.name).length ? (
+                        conditions.map((condition, i) => <p key={i}>{condition.name}</p>)
+                    ) : (
+                        <ErrorMessage>
+                            At least one condition must be related to this page before it can be published. Please
+                            update the Page Details by mapping Related Condition(s) to the page.
+                        </ErrorMessage>
+                    )}
+                </div>
             </div>
             <div className={styles.footer}>
                 <ModalToggleButton type="button" closer outline modalRef={modalRef}>
