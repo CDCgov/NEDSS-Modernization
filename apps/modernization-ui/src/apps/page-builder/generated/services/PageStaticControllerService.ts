@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -11,13 +12,10 @@ import type { UpdateDefault } from '../models/UpdateDefault';
 import type { UpdateHyperlink } from '../models/UpdateHyperlink';
 import type { UpdateReadOnlyComments } from '../models/UpdateReadOnlyComments';
 import type { UpdateStaticResponse } from '../models/UpdateStaticResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageStaticControllerService {
-
     /**
      * @returns UpdateStaticResponse OK
      * @throws ApiError
@@ -42,7 +40,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns UpdateStaticResponse OK
      * @throws ApiError
@@ -67,7 +64,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns UpdateStaticResponse OK
      * @throws ApiError
@@ -92,7 +88,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns UpdateStaticResponse OK
      * @throws ApiError
@@ -117,7 +112,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns UpdateStaticResponse OK
      * @throws ApiError
@@ -142,7 +136,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns AddStaticResponse OK
      * @throws ApiError
@@ -164,7 +157,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns AddStaticResponse OK
      * @throws ApiError
@@ -186,7 +178,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns AddStaticResponse OK
      * @throws ApiError
@@ -208,7 +199,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns AddStaticResponse OK
      * @throws ApiError
@@ -230,7 +220,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns AddStaticResponse OK
      * @throws ApiError
@@ -252,7 +241,6 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns DeleteStaticResponse OK
      * @throws ApiError
@@ -274,5 +262,4 @@ export class PageStaticControllerService {
             mediaType: 'application/json',
         });
     }
-
 }

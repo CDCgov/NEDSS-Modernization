@@ -1,13 +1,11 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type SourceQuestionRequest = {
     ruleFunction: SourceQuestionRequest.ruleFunction;
 };
-
 export namespace SourceQuestionRequest {
-
     export enum ruleFunction {
         DATE_COMPARE = 'DATE_COMPARE',
         DISABLE = 'DISABLE',
@@ -16,7 +14,5 @@ export namespace SourceQuestionRequest {
         REQUIRE_IF = 'REQUIRE_IF',
         UNHIDE = 'UNHIDE',
     }
-
-
 }
 

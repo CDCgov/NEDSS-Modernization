@@ -1,15 +1,13 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { PageInformation } from '../models/PageInformation';
 import type { PageInformationChangeRequest } from '../models/PageInformationChangeRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageInformationService {
-
     /**
      * Returns the Page Information of a page
      * The Page Information includes the event type, message mapping guide, name, datamart, description, and any related conditions
@@ -29,7 +27,6 @@ export class PageInformationService {
             },
         });
     }
-
     /**
      * Allows changing the Information of a page
      * Allows changing message mapping guide, name, datamart, description, and related conditions of a Page.
@@ -53,5 +50,4 @@ export class PageInformationService {
             mediaType: 'application/json',
         });
     }
-
 }

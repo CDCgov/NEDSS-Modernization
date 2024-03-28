@@ -1,15 +1,13 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { AvailableQuestionCriteria } from '../models/AvailableQuestionCriteria';
 import type { PageAvailableQuestion } from '../models/PageAvailableQuestion';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class AvailableQuestionControllerService {
-
     /**
      * @returns PageAvailableQuestion OK
      * @throws ApiError
@@ -51,5 +49,4 @@ export class AvailableQuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
 }

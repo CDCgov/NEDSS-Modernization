@@ -1,7 +1,5 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
-export type UpdateStaticResponse = {
-};
-
+export type UpdateStaticResponse = Record<string, any>;

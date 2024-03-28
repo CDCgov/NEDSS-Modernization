@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { Column, Identification, IdentificationEntry } from './identification';
 import {

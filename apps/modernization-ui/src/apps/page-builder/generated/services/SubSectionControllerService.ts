@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -5,13 +6,10 @@ import type { CreateSubSectionRequest } from '../models/CreateSubSectionRequest'
 import type { GroupSubSectionRequest } from '../models/GroupSubSectionRequest';
 import type { SubSection } from '../models/SubSection';
 import type { UpdateSubSectionRequest } from '../models/UpdateSubSectionRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class SubSectionControllerService {
-
     /**
      * @returns SubSection OK
      * @throws ApiError
@@ -36,7 +34,6 @@ export class SubSectionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -57,7 +54,6 @@ export class SubSectionControllerService {
             },
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -82,7 +78,6 @@ export class SubSectionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns SubSection OK
      * @throws ApiError
@@ -104,7 +99,6 @@ export class SubSectionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -125,7 +119,6 @@ export class SubSectionControllerService {
             },
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -146,5 +139,4 @@ export class SubSectionControllerService {
             },
         });
     }
-
 }

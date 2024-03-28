@@ -1,10 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdatePageNumericQuestionRequest = {
     label: string;
     tooltip: string;
@@ -23,9 +22,7 @@ export type UpdatePageNumericQuestionRequest = {
     messagingInfo: MessagingInfo;
     adminComments?: string;
 };
-
 export namespace UpdatePageNumericQuestionRequest {
-
     export enum mask {
         NUM_DD = 'NUM_DD',
         NUM_MM = 'NUM_MM',
@@ -35,7 +32,5 @@ export namespace UpdatePageNumericQuestionRequest {
         NUM_SN = 'NUM_SN',
         NUM_TEMP = 'NUM_TEMP',
     }
-
-
 }
 

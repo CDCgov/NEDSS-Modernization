@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -8,13 +9,10 @@ import type { RuleRequest } from '../models/RuleRequest';
 import type { SearchPageRuleRequest } from '../models/SearchPageRuleRequest';
 import type { SourceQuestionRequest } from '../models/SourceQuestionRequest';
 import type { TargetQuestionRequest } from '../models/TargetQuestionRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageRuleControllerService {
-
     /**
      * @returns Rule OK
      * @throws ApiError
@@ -32,7 +30,6 @@ export class PageRuleControllerService {
             },
         });
     }
-
     /**
      * @returns Rule OK
      * @throws ApiError
@@ -54,7 +51,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -75,7 +71,6 @@ export class PageRuleControllerService {
             },
         });
     }
-
     /**
      * @returns Rule Created
      * @throws ApiError
@@ -97,7 +92,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PagesResponse OK
      * @throws ApiError
@@ -119,7 +113,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PagesResponse OK
      * @throws ApiError
@@ -141,7 +134,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PageRule OK
      * @throws ApiError
@@ -183,7 +175,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns string OK
      * @throws ApiError
@@ -225,7 +216,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns string OK
      * @throws ApiError
@@ -267,7 +257,6 @@ export class PageRuleControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns Rule OK
      * @throws ApiError
@@ -285,5 +274,4 @@ export class PageRuleControllerService {
             },
         });
     }
-
 }

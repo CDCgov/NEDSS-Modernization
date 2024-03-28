@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import { FindInvestigationsForPatientQuery, useFindInvestigationsForPatientLazyQuery } from 'generated/graphql/schema';
 
 import { Headers, Investigation } from './PatientInvestigation';

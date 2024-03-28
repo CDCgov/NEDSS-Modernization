@@ -1,14 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { ExistingRaceCategory } from '../models/ExistingRaceCategory';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PatientRaceService {
-
     /**
      * Validates that a patient can accept a race demographic for the given category.
      * @returns ExistingRaceCategory Allowable race category for the patient
@@ -33,5 +31,4 @@ export class PatientRaceService {
             },
         });
     }
-
 }

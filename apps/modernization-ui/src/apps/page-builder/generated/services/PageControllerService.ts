@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -7,13 +8,10 @@ import type { PageDeleteResponse } from '../models/PageDeleteResponse';
 import type { PagePageHistory } from '../models/PagePageHistory';
 import type { PageStateResponse } from '../models/PageStateResponse';
 import type { PageValidationRequest } from '../models/PageValidationRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageControllerService {
-
     /**
      * @returns PageStateResponse OK
      * @throws ApiError
@@ -31,7 +29,6 @@ export class PageControllerService {
             },
         });
     }
-
     /**
      * @returns PageCreateResponse OK
      * @throws ApiError
@@ -48,7 +45,6 @@ export class PageControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns boolean OK
      * @throws ApiError
@@ -65,7 +61,6 @@ export class PageControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PagePageHistory OK
      * @throws ApiError
@@ -103,7 +98,6 @@ export class PageControllerService {
             },
         });
     }
-
     /**
      * @returns PageDeleteResponse OK
      * @throws ApiError
@@ -121,5 +115,4 @@ export class PageControllerService {
             },
         });
     }
-
 }

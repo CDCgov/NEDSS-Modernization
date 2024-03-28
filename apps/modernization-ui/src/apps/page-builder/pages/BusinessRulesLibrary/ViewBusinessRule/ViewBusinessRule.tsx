@@ -1,13 +1,19 @@
-import { PageRuleControllerService, Rule } from 'apps/page-builder/generated';
+import { PageRuleControllerService, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Breadcrumb } from 'breadcrumb';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
 import styles from './view-business-rule.module.scss';
 
 export const ViewBusinessRule = () => {
     const { ruleId } = useParams();
     const [rule, setRule] = useState<Rule | undefined>(undefined);
+    const { page } = useGetPageDetails();
+    const [targetQuestions, setTargetQuestions] = useState<PagesQuestion[]>([]);
+    const [targetSubSections, setTargetSubSections] = useState<PagesSubSection[]>([]);
+    const { QUESTION, SUBSECTION } = Rule.targetType;
 
     useEffect(() => {
         if (ruleId) {
@@ -18,6 +24,20 @@ export const ViewBusinessRule = () => {
             });
         }
     }, [ruleId]);
+
+    useEffect(() => {
+        const targetIdentifiers = rule?.targets.map((target) => target.targetIdentifier || '') || [];
+
+        if (rule?.targetType == QUESTION) {
+            const targetSearch = findTargetQuestion(targetIdentifiers, page);
+            setTargetQuestions(targetSearch);
+        }
+
+        if (rule?.targetType == SUBSECTION) {
+            const targetSearch = findTargetSubsection(targetIdentifiers, page);
+            setTargetSubSections(targetSearch);
+        }
+    }, [rule]);
 
     return (
         <div className={styles.view}>
@@ -32,9 +52,9 @@ export const ViewBusinessRule = () => {
                                 {rule?.ruleFunction === 'DATE_COMPARE'
                                     ? 'Date validation'
                                     : rule?.ruleFunction
-                                    ? rule.ruleFunction.charAt(0).toUpperCase() +
-                                      rule.ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase()
-                                    : ''}
+                                      ? rule.ruleFunction.charAt(0).toUpperCase() +
+                                        rule.ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase()
+                                      : ''}
                             </th>
                         </thead>
                         <tr>
@@ -66,11 +86,7 @@ export const ViewBusinessRule = () => {
                         {rule?.ruleFunction !== 'DATE_COMPARE' ? (
                             <tr>
                                 <td>Source value(s)</td>
-                                <td>
-                                    {rule?.sourceValues?.map((value, key) => (
-                                        <span key={key}>{value}</span>
-                                    ))}
-                                </td>
+                                <td>{rule?.sourceValues?.map((value, key) => <span key={key}>{value}</span>)}</td>
                             </tr>
                         ) : null}
                         {rule?.targetType ? (
@@ -82,11 +98,21 @@ export const ViewBusinessRule = () => {
                         <tr>
                             <td>Target(s)</td>
                             <td>
-                                {rule?.targets.map((target, key) => (
-                                    <span key={key}>
-                                        {target.label} ({target.targetIdentifier})
-                                    </span>
-                                ))}
+                                {rule?.targetType == QUESTION
+                                    ? targetQuestions.map((target, key) => (
+                                          <span key={key}>
+                                              {target.name} ({target.question})
+                                          </span>
+                                      ))
+                                    : null}
+
+                                {rule?.targetType == SUBSECTION
+                                    ? targetSubSections.map((target, key) => (
+                                          <span key={key}>
+                                              {target.name} ({target.questionIdentifier})
+                                          </span>
+                                      ))
+                                    : null}
                             </td>
                         </tr>
                         <tr>

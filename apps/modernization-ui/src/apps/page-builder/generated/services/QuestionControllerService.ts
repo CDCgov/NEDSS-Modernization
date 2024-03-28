@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -17,13 +18,10 @@ import type { UpdateCodedQuestionRequest } from '../models/UpdateCodedQuestionRe
 import type { UpdateDateQuestionRequest } from '../models/UpdateDateQuestionRequest';
 import type { UpdateNumericQuestionRequest } from '../models/UpdateNumericQuestionRequest';
 import type { UpdateTextQuestionRequest } from '../models/UpdateTextQuestionRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class QuestionControllerService {
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -45,7 +43,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -67,7 +64,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -89,7 +85,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -111,7 +106,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -133,7 +127,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns TextQuestion Created
      * @throws ApiError
@@ -150,7 +143,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PageQuestion OK
      * @throws ApiError
@@ -187,7 +179,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns NumericQuestion Created
      * @throws ApiError
@@ -204,7 +195,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns DateQuestion Created
      * @throws ApiError
@@ -221,7 +211,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns CodedQuestion Created
      * @throws ApiError
@@ -238,7 +227,6 @@ export class QuestionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns PageQuestion OK
      * @throws ApiError
@@ -271,7 +259,6 @@ export class QuestionControllerService {
             },
         });
     }
-
     /**
      * @returns GetQuestionResponse OK
      * @throws ApiError
@@ -289,5 +276,4 @@ export class QuestionControllerService {
             },
         });
     }
-
 }

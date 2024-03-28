@@ -1,22 +1,21 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Condition } from './Condition';
 import type { PageableObject } from './PageableObject';
 import type { SortObject } from './SortObject';
-
 export type PageCondition = {
-    totalElements?: number;
     totalPages?: number;
-    pageable?: PageableObject;
-    size?: number;
-    content?: Array<Condition>;
-    numberOfElements?: number;
-    sort?: SortObject;
+    totalElements?: number;
+    number?: number;
     first?: boolean;
     last?: boolean;
-    number?: number;
+    sort?: Array<SortObject>;
+    size?: number;
+    content?: Array<Condition>;
+    pageable?: PageableObject;
+    numberOfElements?: number;
     empty?: boolean;
 };
 
