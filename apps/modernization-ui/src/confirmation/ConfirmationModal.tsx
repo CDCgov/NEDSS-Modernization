@@ -50,7 +50,7 @@ export const ConfirmationModal = ({
                 </div>
             </div>
             <ModalFooter id="confirmation-footer" className="border-top border-base-lighter padding-2 margin-left-auto">
-                <ButtonGroup>
+                <ButtonGroup className="margin-left-auto">
                     <Button type="button" onClick={onCancel} outline>
                         {cancelText}
                     </Button>

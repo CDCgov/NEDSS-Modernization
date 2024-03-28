@@ -33,7 +33,7 @@ import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
-import TabButton from './components/TabButton/TabButton';
+import TabButton from 'components/TabButton/TabButton';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
