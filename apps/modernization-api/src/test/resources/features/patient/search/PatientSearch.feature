@@ -85,6 +85,20 @@ Feature: Patient Search
     And search result 2 has a "first name" of "Jon"
     And search result 2 has a "last name" of "Snow"
 
+  Scenario: I can find the most relevant patient when searching by first name with soundex disabled
+    Given the patient has the "legal" name "Something" "Other"
+    And I have another patient
+    And the patient has the "legal" name "Jon" "Snow"
+    And I have another patient
+    And the patient has the "legal" name "John" "Little"
+    And patients are available for search
+    And I add the patient criteria for a "first name" equal to "John"
+    And I add the patient criteria for a "disable soundex" equal to "true"
+    When I search for patients
+    Then search result 1 has a "first name" of "John"
+    And search result 1 has a "last name" of "Little"
+    And there are 1 patient search results
+
   Scenario: I can find the most relevant patient when searching by last name
     Given the patient has the "legal" name "Something" "Other"
     And I have another patient
@@ -98,6 +112,20 @@ Feature: Patient Search
     And search result 1 has a "last name" of "Smith"
     And search result 2 has a "first name" of "Albert"
     And search result 2 has a "last name" of "Smyth"
+
+  Scenario: I can find the most relevant patient when searching by last name with soundex disabled
+    Given the patient has the "legal" name "Something" "Other"
+    And I have another patient
+    And the patient has the "legal" name "Albert" "Smyth"
+    And I have another patient
+    And the patient has the "legal" name "Fatima" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a "last name" equal to "Smith"
+    And I add the patient criteria for a "disable soundex" equal to "true"
+    When I search for patients
+    Then search result 1 has a "first name" of "Fatima"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
 
   Scenario: I can find the patient when searching for a hyphenated last name using a hyphen
     Given the patient has the "legal" name "Something" "Other-than"
