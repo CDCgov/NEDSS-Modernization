@@ -26,9 +26,9 @@ dependencies {
     implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
     
     implementation project(':authentication')
-    implementation project(':testing:support')
-    implementation project(':testing:identity')
-    implementation project(':testing:auth')
+    implementation project(':testing-support')
+    implementation project(':testing-identity')
+    implementation project(':testing-auth')
 
     implementation libs.cucumber.java
 }

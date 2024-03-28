@@ -1,5 +1,5 @@
 plugins {
-    id("org.gradle.toolchains.foojay-resolver") version "0.7.0"
+    id("org.gradle.toolchains.foojay-resolver") version "0.8.0"
 }
 
 toolchainManagement {
@@ -56,33 +56,33 @@ project(':id-generator').projectDir = new File('libs/id-generator')
 include ':accumulation'
 project(':accumulation').projectDir = new File('libs/accumulation')
 
-include ':libs:web'
-project(':libs:web').projectDir = new File('libs/web')
+include ':web'
+project(':web').projectDir = new File('libs/web')
 
-include ':libs:classic-interaction'
-project(':libs:classic-interaction').projectDir = new File('libs/classic-interaction')
+include ':classic-interaction'
+project(':classic-interaction').projectDir = new File('libs/classic-interaction')
 
-include ':libs:redirect'
-project(':libs:redirect').projectDir = new File('libs/redirect')
+include ':redirect'
+project(':redirect').projectDir = new File('libs/redirect')
 
 //  testing libraries
-include ':testing:support'
-project(':testing:support').projectDir = new File('libs/testing/support')
+include ':testing-support'
+project(':testing-support').projectDir = new File('libs/testing/support')
 
-include ':testing:identity'
-project(':testing:identity').projectDir = new File('libs/testing/identity')
+include ':testing-identity'
+project(':testing-identity').projectDir = new File('libs/testing/identity')
 
-include ':testing:auth'
-project(':testing:auth').projectDir = new File('libs/testing/auth')
+include ':testing-auth'
+project(':testing-auth').projectDir = new File('libs/testing/auth')
 
-include ':testing:auth-cucumber'
-project(':testing:auth-cucumber').projectDir = new File('libs/testing/auth-cucumber')
+include ':testing-auth-cucumber'
+project(':testing-auth-cucumber').projectDir = new File('libs/testing/auth-cucumber')
 
-include ':testing:classic-interaction-cucumber'
-project(':testing:classic-interaction-cucumber').projectDir = new File('libs/testing/classic-interaction-cucumber')
+include ':testing-classic-interaction-cucumber'
+project(':testing-classic-interaction-cucumber').projectDir = new File('libs/testing/classic-interaction-cucumber')
 
-include ':testing:http-interaction'
-project(':testing:http-interaction').projectDir = new File('libs/testing/http-interaction')
+include ':testing-http-interaction'
+project(':testing-http-interaction').projectDir = new File('libs/testing/http-interaction')
 
-include ':testing:database'
-project(':testing:database').projectDir = new File('libs/testing/database')
+include ':testing-database'
+project(':testing-database').projectDir = new File('libs/testing/database')

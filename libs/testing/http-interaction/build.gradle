@@ -24,9 +24,9 @@ dependencies {
     implementation libs.springBoot.web
 
     implementation project(':authentication')
-    implementation project(':testing:support')
-    implementation project(':testing:identity')
-    implementation project(':testing:auth')
+    implementation project(':testing-support')
+    implementation project(':testing-identity')
+    implementation project(':testing-auth')
 
     implementation libs.bundles.jpa
     implementation libs.bundles.security
