@@ -17,8 +17,8 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "jsx": "react-jsx",
-        "types": ["node"],
+        "types": ["node", "cypress"],
         "plugins": [{ "name": "typescript-plugin-css-modules" }]
     },
-    "include": ["src"]
+    "include": ["src", "cypress"]
 }

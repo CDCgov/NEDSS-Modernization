@@ -5,8 +5,7 @@
         "jest": true
     },
     "globals": {
-        "JSX": "readonly",
-        "cy": true
+        "JSX": "readonly"
     },
     "extends": [
         "google",

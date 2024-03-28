@@ -1,6 +1,7 @@
 # cypress
 ui/cypress/screenshots
 ui/cypress/videos
+cypress/screenshots
 
 #storybook
 ui/storybook-static
