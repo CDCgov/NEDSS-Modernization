@@ -1,8 +1,7 @@
 package gov.cdc.nbs.graphql;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Sort.Direction;
 import gov.cdc.nbs.exception.QueryException;

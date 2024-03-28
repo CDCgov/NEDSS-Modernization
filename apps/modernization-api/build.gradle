@@ -3,7 +3,6 @@ plugins {
     alias libs.plugins.springBoot
 }
 apply from: "${rootDir}/gradle/cucumber-logging.gradle"
-apply from: "${rootDir}/gradle/spring-dependency-override.gradle"
 
 group = 'gov.cdc.nbs.modernization'
 version = '1.0.0-SNAPSHOT'
@@ -37,14 +36,14 @@ dependencies {
     implementation project(':configuration-api')
     implementation project(':options-api')
 
-    implementation libs.snake.yaml
+//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.mssql.jdbc
     implementation libs.bundles.jpa
     annotationProcessor libs.springBoot.jpa
-    implementation libs.bundles.queryDSL
-    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier('jpa') })
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    annotationProcessor(variantOf(libs.queryDSL.apt) { classifier("jakarta") })
 
     implementation libs.bundles.jackson
 

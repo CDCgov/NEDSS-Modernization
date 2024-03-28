@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
-import { ValueSetControllerService, Page_ValueSetOption_ as ValuesetSearchResponse } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { ValueSetControllerService, PageValueSetOption } from 'apps/page-builder/generated';
 import { Direction } from 'sorting';
 
 export type ValuesetSearch = {
@@ -25,12 +24,12 @@ export type ValuesetSort = {
 type State =
     | { status: 'idle' }
     | { status: 'searching'; search: ValuesetSearch }
-    | { status: 'complete'; valuesets: ValuesetSearchResponse }
+    | { status: 'complete'; valuesets: PageValueSetOption }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'search'; search: ValuesetSearch }
-    | { type: 'complete'; valuesets: ValuesetSearchResponse }
+    | { type: 'complete'; valuesets: PageValueSetOption }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
@@ -57,15 +56,20 @@ export const useFindValuesets = () => {
                 ? `${state.search.sort.field},${state.search.sort.direction}`
                 : undefined;
 
-            ValueSetControllerService.searchValueSetUsingPost({
-                authorization: authorization(),
-                request: { query: state.search.query ?? '' },
+            ValueSetControllerService.searchValueSet({
+                requestBody: { query: state.search.query ?? '' },
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', valuesets: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', valuesets: response });
+                    } else {
+                        dispatch({ type: 'error', error: 'Failed to find Valuesets' });
+                    }
+                });
         }
     }, [state.status]);
 

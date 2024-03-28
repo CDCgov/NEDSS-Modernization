@@ -1,17 +1,12 @@
 package gov.cdc.nbs.questionbank.option;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record PageBuilderOption(
-    @ApiModelProperty(required = true)
-    String value,
-    @ApiModelProperty(required = true)
-    String name,
-    @ApiModelProperty(required = true)
-    String label,
-    @ApiModelProperty(required = true)
-    int order
-) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String value,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String label,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order) {
 
   public PageBuilderOption(String value, String name, int order) {
     this(value, name, name, order);

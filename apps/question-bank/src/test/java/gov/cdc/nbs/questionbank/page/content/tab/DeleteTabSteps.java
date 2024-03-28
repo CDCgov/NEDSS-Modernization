@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
 
-import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
@@ -10,7 +9,10 @@ import io.cucumber.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
 import gov.cdc.nbs.authentication.UserDetailsProvider;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -18,7 +20,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Transactional
 public class DeleteTabSteps {

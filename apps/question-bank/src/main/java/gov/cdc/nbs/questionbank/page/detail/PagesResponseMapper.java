@@ -52,8 +52,8 @@ class PagesResponseMapper {
     return items.stream().map(fn).toList();
   }
 
-  private PagesResponse.PageRule asRule(final PagesRule rule) {
-    return new PagesResponse.PageRule(
+  private PagesResponse.BusinessRule asRule(final PagesRule rule) {
+    return new PagesResponse.BusinessRule(
         rule.id(),
         rule.page(),
         rule.logic(),
@@ -129,6 +129,10 @@ class PagesResponseMapper {
     boolean appearsInBatch = content.attributes().appearsInBatch();
     String batchLabel = content.attributes().batchLabel();
     Integer batchWidth = content.attributes().batchWidth();
+    String componentBehavior = content.attributes().componentBehavior();
+    String componentName = content.attributes().componentName();
+    String classCode = content.attributes().classCode();
+
     return new PagesResponse.PagesQuestion(
         id,
         isStandardNnd,
@@ -162,7 +166,10 @@ class PagesResponseMapper {
         dataMartRepeatNumber,
         appearsInBatch,
         batchLabel,
-        batchWidth);
+        batchWidth,
+        componentBehavior,
+        componentName,
+        classCode);
   }
 
   boolean isSubsectionGrouable(SubSectionNode subsectionNode) {

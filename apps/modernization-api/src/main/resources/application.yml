@@ -42,12 +42,11 @@ nbs:
         - /v3/api-docs/**
         - /swagger-ui/**
         - /swagger-resources/**
-        - /v2/api-docs/**
         - /login
 
 
 logging:
-  file:
+  file.name:
     path: ./log/
 
 spring:
@@ -59,12 +58,12 @@ spring:
   jpa:
     properties:
       hibernate:
-        ddl-auto: validate
         default_schema: dbo
         format_sql: true
-        jdbc.time_zone: UTC
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
-        hbm2ddl.jdbc_metadata_extraction_strategy: individually
+        jdbc:
+          time_zone: UTC
+        timezone:
+          default_storage: NORMALIZE
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa
@@ -82,6 +81,9 @@ spring:
       group-id: patient-group
       enable-auto-commit: false
       auto-offset-reset: earliest
+
+springdoc:
+  packages-to-scan: "gov.cdc.nbs"
 
 kafka:
   enabled: false

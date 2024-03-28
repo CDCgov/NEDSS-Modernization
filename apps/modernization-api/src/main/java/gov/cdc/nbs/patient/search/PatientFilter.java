@@ -59,6 +59,7 @@ public class PatientFilter {
   private List<RecordStatus> recordStatus;
   private String treatmentId;
   private String vaccinationId;
+  private boolean disableSoundex;
   @JsonIgnore
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)

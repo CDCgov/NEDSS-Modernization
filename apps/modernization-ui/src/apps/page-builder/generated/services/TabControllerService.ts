@@ -1,135 +1,77 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateTabRequest } from '../models/CreateTabRequest';
 import type { Tab } from '../models/Tab';
 import type { UpdateTabRequest } from '../models/UpdateTabRequest';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class TabControllerService {
-
     /**
-     * createTab
      * @returns Tab OK
-     * @returns any Created
      * @throws ApiError
      */
-    public static createTabUsingPost({
-        authorization,
+    public static updateTab({
         page,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * request
-         */
-        request: CreateTabRequest,
-    }): CancelablePromise<Tab | any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/tabs',
-            path: {
-                'page': page,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updateTab
-     * @returns Tab OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updateTabUsingPut({
-        authorization,
-        page,
-        request,
         tabId,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
-        /**
-         * request
-         */
-        request: UpdateTabRequest,
-        /**
-         * tabId
-         */
         tabId: number,
-    }): CancelablePromise<Tab | any> {
+        requestBody: UpdateTabRequest,
+    }): CancelablePromise<Tab> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/{tabId}',
+            url: '/api/v1/pages/{page}/tabs/{tabId}',
             path: {
                 'page': page,
                 'tabId': tabId,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
-
     /**
-     * deleteTab
      * @returns any OK
      * @throws ApiError
      */
-    public static deleteTabUsingDelete({
-        authorization,
+    public static deleteTab({
         page,
         tabId,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
-        /**
-         * tabId
-         */
         tabId: number,
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/pages/{page}/tabs/{tabId}',
+            url: '/api/v1/pages/{page}/tabs/{tabId}',
             path: {
                 'page': page,
                 'tabId': tabId,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-            },
         });
     }
-
+    /**
+     * @returns Tab OK
+     * @throws ApiError
+     */
+    public static createTab({
+        page,
+        requestBody,
+    }: {
+        page: number,
+        requestBody: CreateTabRequest,
+    }): CancelablePromise<Tab> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/pages/{page}/tabs',
+            path: {
+                'page': page,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
 }

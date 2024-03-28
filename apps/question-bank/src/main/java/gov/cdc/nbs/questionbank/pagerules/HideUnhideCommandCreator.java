@@ -162,7 +162,7 @@ public class HideUnhideCommandCreator {
         : sourceValues.stream()
             .map(SourceValue::text)
             .collect(Collectors.joining(" , "));
-    return String.format("%s %s must be ( %s ) %s",
+    return "%s %s must be ( %s ) %s".formatted(
         sourceLabel,
         comparatorValue,
         sourceValue,
@@ -180,7 +180,7 @@ public class HideUnhideCommandCreator {
     String values = anySourceValue ? "" : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
     String comparatorValue = anySourceValue ? "" : comparator;
     String targetIdentifier = String.join(" , ", targetIdentifiers);
-    return String.format("%s ( %s ) %s ^ %s ( %s )",
+    return "%s ( %s ) %s ^ %s ( %s )".formatted(
         sourceIdentifier,
         values,
         comparatorValue,
@@ -232,7 +232,7 @@ public class HideUnhideCommandCreator {
     String hideCalls2 = targetIdentifiers.stream()
         .map(t -> pgHide2(t, targetType))
         .collect(Collectors.joining("\n"));
-    return String.format(SPECIFIC_SOURCE_VALUES,
+    return SPECIFIC_SOURCE_VALUES.formatted(
         functionName,
         sourceIdentifier,
         sourceIdentifier,
@@ -267,7 +267,7 @@ public class HideUnhideCommandCreator {
     String hideCalls2 = targetIdentifiers.stream()
         .map(t -> pgHide2(t, targetType))
         .collect(Collectors.joining("\n"));
-    return String.format(ANY_SOURCE_VALUE,
+    return ANY_SOURCE_VALUE.formatted(
         functionName,
         sourceIdentifier,
         sourceIdentifier,
@@ -291,22 +291,22 @@ public class HideUnhideCommandCreator {
 
   String pgUnhide(String targetIdentifier, TargetType targetType) {
     String method = TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
-    return String.format("%s('%s');", method, targetIdentifier);
+    return "%s('%s');".formatted(method, targetIdentifier);
   }
 
   String pgHide(String targetIdentifier, TargetType targetType) {
     String method = TargetType.QUESTION.equals(targetType) ? "pgHideElement" : "pgSubSectionHidden";
-    return String.format("%s('%s');", method, targetIdentifier);
+    return "%s('%s');".formatted(method, targetIdentifier);
   }
 
   String pgUnhide2(String targetIdentifier, TargetType targetType) {
     String method = TargetType.QUESTION.equals(targetType) ? "pgUnhideElement" : "pgSubSectionShown";
-    return String.format("%s('%s_2');", method, targetIdentifier);
+    return "%s('%s_2');".formatted(method, targetIdentifier);
   }
 
   String pgHide2(String targetIdentifier, TargetType targetType) {
     String method = TargetType.QUESTION.equals(targetType) ? "pgHideElement" : "pgSubSectionHidden";
-    return String.format("%s('%s_2');", method, targetIdentifier);
+    return "%s('%s_2');".formatted(method, targetIdentifier);
   }
 
   String createIf(List<SourceValue> sourceValues) {
@@ -328,20 +328,20 @@ public class HideUnhideCommandCreator {
   }
 
   String identifierIfClause(String value) {
-    return String.format("($j.inArray('%s',foo) > -1)", value);
+    return "($j.inArray('%s',foo) > -1)".formatted(value);
   }
 
   String labelIfClause(String label) {
-    return String.format("($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1 || indexOfArray(foo,'%s')==true)",
+    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo) > -1 || indexOfArray(foo,'%s')==true)".formatted(
         label, label);
   }
 
   String identifierIfClause2(String value) {
-    return String.format("($j.inArray('%s',foo_2) > -1)", value);
+    return "($j.inArray('%s',foo_2) > -1)".formatted(value);
   }
 
   String labelIfClause2(String label) {
-    return String.format("($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'%s')==true)",
+    return "($j.inArray('%s'.replace(/^\s+|\s+$/g,''),foo_2) > -1 || indexOfArray(foo,'%s')==true)".formatted(
         label, label);
   }
 

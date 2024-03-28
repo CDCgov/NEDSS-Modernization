@@ -1,8 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import gov.cdc.nbs.questionbank.question.request.update.*;
 import org.springframework.beans.factory.annotation.Autowired;

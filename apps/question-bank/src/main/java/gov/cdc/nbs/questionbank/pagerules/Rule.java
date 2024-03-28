@@ -1,33 +1,29 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 public record Rule(
-    @ApiModelProperty(required = true) long id,
-    @ApiModelProperty(required = true) long template,
-    @ApiModelProperty(required = true) RuleFunction ruleFunction,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long template,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) RuleFunction ruleFunction,
     String description,
-    @ApiModelProperty(required = true) SourceQuestion sourceQuestion,
-    @ApiModelProperty(required = true) boolean anySourceValue,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) SourceQuestion sourceQuestion,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean anySourceValue,
     List<String> sourceValues,
-    @ApiModelProperty(required = true) Comparator comparator,
-    @ApiModelProperty(required = true) TargetType targetType,
-    @ApiModelProperty(required = true) List<Target> targets) {
-
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Comparator comparator,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) TargetType targetType,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) List<Target> targets) {
 
   public record SourceValue(String id, String text) {
   }
 
-
   public record SourceQuestion(String questionIdentifier, String label, String codeSetName) {
   }
 
-
   public record Target(String targetIdentifier, String label) {
   }
-
 
   public enum RuleFunction {
     DATE_COMPARE("Date Compare"),
@@ -48,7 +44,6 @@ public record Rule(
     }
   }
 
-
   public enum Comparator {
     EQUAL_TO("="),
     NOT_EQUAL_TO("<>"),
@@ -68,13 +63,9 @@ public record Rule(
     }
   }
 
-
   public enum TargetType {
     QUESTION,
     SUBSECTION
   }
 
-
 }
-
-

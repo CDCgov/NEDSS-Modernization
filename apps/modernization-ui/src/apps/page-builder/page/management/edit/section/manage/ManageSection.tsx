@@ -5,7 +5,6 @@ import styles from './managesection.module.scss';
 import { useState } from 'react';
 import { AddSection } from './AddSection';
 import { Heading } from 'components/heading';
-import { authorization } from 'authorization';
 import { AlertInLineProps } from './ManageSectionModal';
 import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
@@ -51,8 +50,7 @@ export const ManageSection = ({
     };
 
     const onDelete = (section: PagesSection) => {
-        SectionControllerService.deleteSectionUsingDelete({
-            authorization: authorization(),
+        SectionControllerService.deleteSection({
             page: pageId,
             sectionId: section.id
         }).then(() => {
@@ -62,10 +60,9 @@ export const ManageSection = ({
     };
 
     const onChangeVisibility = (section: PagesSection, visibility: boolean) => {
-        SectionControllerService.updateSectionUsingPut({
-            authorization: authorization(),
+        SectionControllerService.updateSection({
             page: pageId,
-            request: { name: section.name, visible: visibility },
+            requestBody: { name: section.name, visible: visibility },
             section: section.id
         }).then(() => {
             onContentChange?.();

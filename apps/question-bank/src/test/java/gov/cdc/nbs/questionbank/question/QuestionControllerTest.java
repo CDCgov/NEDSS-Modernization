@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.Assert.*;
-
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -18,7 +17,6 @@ import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 import gov.cdc.nbs.questionbank.question.request.create.CreateTextQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
-
 
 
 @ExtendWith(MockitoExtension.class)

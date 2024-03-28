@@ -1,32 +1,31 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { DataMartInfo } from './DataMartInfo';
 import type { MessagingInfo } from './MessagingInfo';
 import type { Question } from './Question';
-
 export type NumericQuestion = (Question & {
-    adminComments?: string;
-    codeSet?: string;
-    dataMartInfo?: DataMartInfo;
-    defaultValue?: string;
-    description?: string;
-    displayControl?: number;
-    fieldLength?: string;
     id?: number;
-    label?: string;
     mask?: string;
-    maxValue?: number;
-    messagingInfo?: MessagingInfo;
+    fieldLength?: string;
+    defaultValue?: string;
     minValue?: number;
-    status?: string;
-    subgroup?: string;
-    tooltip?: string;
-    type?: string;
-    uniqueId?: string;
-    uniqueName?: string;
+    maxValue?: number;
     unitTypeCd?: string;
     unitValue?: string;
+    codeSet?: string;
+    uniqueId?: string;
+    uniqueName?: string;
+    status?: string;
+    subgroup?: string;
+    description?: string;
+    type?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    adminComments?: string;
+    dataMartInfo?: DataMartInfo;
+    messagingInfo?: MessagingInfo;
 });
 

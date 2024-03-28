@@ -1,6 +1,5 @@
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { QuestionControllerHelperService } from 'apps/page-builder/generated/services/QuestionControllerHelperService';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 type State =
@@ -32,11 +31,10 @@ export const useQuestionValidation = (field: QuestionValidationRequest.field) =>
 
     useEffect(() => {
         if (state.status === 'validating') {
-            QuestionControllerHelperService.validateUsingPost({
-                authorization: authorization(),
-                request: { value: state.value, field: state.field }
+            QuestionControllerHelperService.validate({
+                requestBody: { value: state.value, field: state.field }
             })
-                .then((response) => dispatch({ type: 'complete', isValid: response.isValid }))
+                .then((response) => dispatch({ type: 'complete', isValid: response.isValid ?? false }))
                 .catch(() => console.error(`Failed to validate ${state.field}`));
         }
     }, [state.status]);

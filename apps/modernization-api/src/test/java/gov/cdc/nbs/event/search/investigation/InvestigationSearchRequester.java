@@ -18,6 +18,7 @@ class InvestigationSearchRequester {
       query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortablePage){
           findInvestigationsByFilter(filter: $filter, page: $page){
               content{
+                  relevance
                   id
                   cdDescTxt
                   jurisdictionCodeDescTxt

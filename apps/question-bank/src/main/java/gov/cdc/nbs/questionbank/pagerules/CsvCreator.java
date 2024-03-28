@@ -34,7 +34,7 @@ public class CsvCreator {
       for (Rule r : rules) {
         List<String> row = Arrays.asList(
             r.ruleFunction().getValue(),
-            String.format("%s (%s)", r.sourceQuestion().label(), r.sourceQuestion().questionIdentifier()),
+            "%s (%s)".formatted(r.sourceQuestion().label(), r.sourceQuestion().questionIdentifier()),
             r.comparator().getValue(),
             formatSourceValues(r.anySourceValue(), r.sourceValues()),
             formatTargets(r.targets()),
@@ -59,7 +59,7 @@ public class CsvCreator {
 
   private String formatTargets(List<Target> targets) {
     return targets.stream()
-        .map(t -> String.format("%s (%s)", t.label(), t.targetIdentifier()))
+        .map(t -> "%s (%s)".formatted(t.label(), t.targetIdentifier()))
         .collect(Collectors.joining(","));
   }
 }

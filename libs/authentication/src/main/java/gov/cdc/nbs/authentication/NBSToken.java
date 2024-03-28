@@ -1,8 +1,8 @@
 package gov.cdc.nbs.authentication;
 
 import java.util.Optional;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 public record NBSToken(String value) {
 

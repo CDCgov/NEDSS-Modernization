@@ -1,9 +1,6 @@
 package gov.cdc.nbs.questionbank.condition.create;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import java.time.Clock;
@@ -27,7 +24,6 @@ import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
-
 
 
 class ConditionCreatorTest {

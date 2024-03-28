@@ -1,9 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type SelectableMessageMappingGuide = {
-    name?: string;
     value?: string;
+    name?: string;
 };
 

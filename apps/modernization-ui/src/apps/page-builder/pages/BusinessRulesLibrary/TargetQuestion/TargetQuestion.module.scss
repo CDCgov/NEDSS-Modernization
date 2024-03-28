@@ -87,8 +87,9 @@
                     .sectionToggle {
                         display: flex;
                         flex-direction: row;
-                        .name {
-                            padding-left: 1rem;
+                        gap: 1rem;
+                        .active {
+                            font-weight: bold;
                         }
                     }
                 }
@@ -101,9 +102,9 @@
                         padding-top: 1rem;
                         padding-bottom: 1rem;
                         border-bottom: 1px solid colors.$base-lighter;
-
-                        .name {
-                            padding-left: 1rem;
+                        gap: 1rem;
+                        .active {
+                            font-weight: bold;
                         }
                     }
                 }

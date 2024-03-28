@@ -40,6 +40,7 @@ public class ValueSetOptionFinder {
         .from(metadataTable)
         .leftJoin(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .where(metadataTable.ldfPicklistIndCd.eq('Y')
+            .and(valuesetTable.statusCd.eq("A"))
             .and(metadataTable.id.in(
                 JPAExpressions.select(valuesetTable.codeSetGroup.id)
                     .from(valuesetTable)
@@ -88,6 +89,7 @@ public class ValueSetOptionFinder {
         .from(metadataTable)
         .join(valuesetTable).on(valuesetTable.codeSetGroup.id.eq(metadataTable.id))
         .where(metadataTable.ldfPicklistIndCd.eq('Y')
+            .and(valuesetTable.statusCd.eq("A"))
             .and(metadataTable.id.in(
                 JPAExpressions.select(valuesetTable.codeSetGroup.id)
                     .from(valuesetTable)

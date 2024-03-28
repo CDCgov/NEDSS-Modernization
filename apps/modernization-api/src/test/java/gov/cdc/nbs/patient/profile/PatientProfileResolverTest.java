@@ -29,7 +29,7 @@ class PatientProfileResolverTest {
 
         PatientProfileResolver resolver = new PatientProfileResolver(finder, identifierResolver);
 
-        Optional<PatientProfile> actual = resolver.find(2963L, null);
+        Optional<PatientProfile> actual = resolver.find("2963", null);
 
         assertThat(actual).contains(profile);
 
@@ -51,7 +51,7 @@ class PatientProfileResolverTest {
 
         PatientProfileResolver resolver = new PatientProfileResolver(finder, identifierResolver);
 
-        Optional<PatientProfile> actual = resolver.find(2963L, 3259L);
+        Optional<PatientProfile> actual = resolver.find("2963", "3259");
 
         assertThat(actual).contains(profile);
 
@@ -75,7 +75,7 @@ class PatientProfileResolverTest {
 
         PatientProfileResolver resolver = new PatientProfileResolver(finder, identifierResolver);
 
-        Optional<PatientProfile> actual = resolver.find(null, 4271L);
+        Optional<PatientProfile> actual = resolver.find(null, "4271");
 
         assertThat(actual).contains(profile);
 

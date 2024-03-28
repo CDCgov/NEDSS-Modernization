@@ -15,8 +15,8 @@ import java.util.Optional;
 @Component
 class PageRuleMapper implements RowMapper<Rule> {
   record Column(int ruleId, int template, int ruleFunction, int description, int sourceQuestion, int ruleExpression,
-      int sourceValues, int comparator, int targetType, int targetQuestions, int sourceQuestionLabel,
-      int sourceQuestionCodeSet, int targetQuestionsLabels, int totalCount) {
+                int sourceValues, int comparator, int targetType, int targetQuestions, int sourceQuestionLabel,
+                int sourceQuestionCodeSet, int targetQuestionsLabels, int totalCount) {
 
   }
 
@@ -66,7 +66,7 @@ class PageRuleMapper implements RowMapper<Rule> {
   private List<Rule.Target> getTargets(String identifiers, String labels) {
     List<String> targetQuestions = identifiers != null ? Arrays.stream(identifiers.split(",")).toList() : null;
 
-    List<String> targetQuestionsLabels = labels != null ? Arrays.stream(labels.split(",")).toList() : null;
+    List<String> targetQuestionsLabels = labels != null ? Arrays.stream(labels.split("##")).toList() : null;
 
     List<Rule.Target> targets = new ArrayList<>();
     if (targetQuestions != null) {

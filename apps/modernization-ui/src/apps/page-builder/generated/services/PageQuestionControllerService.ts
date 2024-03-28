@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -11,447 +12,241 @@ import type { UpdatePageNumericQuestionRequest } from '../models/UpdatePageNumer
 import type { UpdatePageQuestionRequiredRequest } from '../models/UpdatePageQuestionRequiredRequest';
 import type { UpdatePageTextQuestionRequest } from '../models/UpdatePageTextQuestionRequest';
 import type { ValidationResponse } from '../models/ValidationResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class PageQuestionControllerService {
-
     /**
-     * updatePageCodedQuestion
-     * @returns EditableQuestion OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updatePageCodedQuestionUsingPut({
-        authorization,
-        page,
-        questionId,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-        /**
-         * request
-         */
-        request: UpdatePageCodedQuestionRequest,
-    }): CancelablePromise<EditableQuestion | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/coded/{questionId}',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updatePageCodedQuestionValueset
-     * @returns EditableQuestion OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updatePageCodedQuestionValuesetUsingPut({
-        authorization,
-        page,
-        questionId,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-        /**
-         * request
-         */
-        request: UpdatePageCodedQuestionValuesetRequest,
-    }): CancelablePromise<EditableQuestion | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/coded/{questionId}/valueset',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updatePageDateQuestion
-     * @returns EditableQuestion OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updatePageDateQuestionUsingPut({
-        authorization,
-        page,
-        questionId,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-        /**
-         * request
-         */
-        request: UpdatePageDateQuestionRequest,
-    }): CancelablePromise<EditableQuestion | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/date/{questionId}',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updatePageNumericQuestion
-     * @returns EditableQuestion OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updatePageNumericQuestionUsingPut({
-        authorization,
-        page,
-        questionId,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-        /**
-         * request
-         */
-        request: UpdatePageNumericQuestionRequest,
-    }): CancelablePromise<EditableQuestion | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/numeric/{questionId}',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * updatePageTextQuestion
-     * @returns EditableQuestion OK
-     * @returns any Created
-     * @throws ApiError
-     */
-    public static updatePageTextQuestionUsingPut({
-        authorization,
-        page,
-        questionId,
-        request,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-        /**
-         * request
-         */
-        request: UpdatePageTextQuestionRequest,
-    }): CancelablePromise<EditableQuestion | any> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/text/{questionId}',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * deleteQuestion
-     * @returns any OK
-     * @throws ApiError
-     */
-    public static deleteQuestionUsingDelete({
-        authorization,
-        page,
-        questionId,
-    }: {
-        authorization: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-    }): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-            },
-        });
-    }
-
-    /**
-     * validateDatamart
-     * @returns ValidationResponse OK
-     * @throws ApiError
-     */
-    public static validateDatamartUsingGet({
-        authorization,
-        datamart,
-        page,
-        questionId,
-    }: {
-        authorization: string,
-        /**
-         * datamart
-         */
-        datamart: string,
-        /**
-         * page
-         */
-        page: number,
-        /**
-         * questionId
-         */
-        questionId: number,
-    }): CancelablePromise<ValidationResponse> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}/datamart/validate',
-            path: {
-                'page': page,
-                'questionId': questionId,
-            },
-            headers: {
-                'Authorization': authorization,
-            },
-            query: {
-                'datamart': datamart,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * getEditableQuestion
      * @returns EditableQuestion OK
      * @throws ApiError
      */
-    public static getEditableQuestionUsingGet({
-        authorization,
+    public static updatePageQuestionRequired({
         page,
         questionId,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
-        /**
-         * questionId
-         */
         questionId: number,
+        requestBody: UpdatePageQuestionRequiredRequest,
     }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}/edit',
+            method: 'PUT',
+            url: '/api/v1/pages/{page}/questions/{questionId}/required',
             path: {
                 'page': page,
                 'questionId': questionId,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
-
     /**
-     * updatePageQuestionRequired
      * @returns EditableQuestion OK
-     * @returns any Created
      * @throws ApiError
      */
-    public static updatePageQuestionRequiredUsingPut({
-        authorization,
+    public static updatePageTextQuestion({
         page,
         questionId,
-        request,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
-        /**
-         * questionId
-         */
         questionId: number,
-        /**
-         * request
-         */
-        request: UpdatePageQuestionRequiredRequest,
-    }): CancelablePromise<EditableQuestion | any> {
+        requestBody: UpdatePageTextQuestionRequest,
+    }): CancelablePromise<EditableQuestion> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/nbs/page-builder/api/v1/pages/{page}/questions/{questionId}/required',
+            url: '/api/v1/pages/{page}/questions/text/{questionId}',
             path: {
                 'page': page,
                 'questionId': questionId,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
-
     /**
-     * addQuestionToPage
-     * @returns AddQuestionResponse OK
-     * @returns any Created
+     * @returns EditableQuestion OK
      * @throws ApiError
      */
-    public static addQuestionToPageUsingPost({
-        authorization,
+    public static updatePageNumericQuestion({
         page,
-        request,
-        subsection,
+        questionId,
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * page
-         */
         page: number,
-        /**
-         * request
-         */
-        request: AddQuestionRequest,
-        /**
-         * subsection
-         */
+        questionId: number,
+        requestBody: UpdatePageNumericQuestionRequest,
+    }): CancelablePromise<EditableQuestion> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/pages/{page}/questions/numeric/{questionId}',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns EditableQuestion OK
+     * @throws ApiError
+     */
+    public static updatePageDateQuestion({
+        page,
+        questionId,
+        requestBody,
+    }: {
+        page: number,
+        questionId: number,
+        requestBody: UpdatePageDateQuestionRequest,
+    }): CancelablePromise<EditableQuestion> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/pages/{page}/questions/date/{questionId}',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns EditableQuestion OK
+     * @throws ApiError
+     */
+    public static updatePageCodedQuestion({
+        page,
+        questionId,
+        requestBody,
+    }: {
+        page: number,
+        questionId: number,
+        requestBody: UpdatePageCodedQuestionRequest,
+    }): CancelablePromise<EditableQuestion> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/pages/{page}/questions/coded/{questionId}',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns EditableQuestion OK
+     * @throws ApiError
+     */
+    public static updatePageCodedQuestionValueset({
+        page,
+        questionId,
+        requestBody,
+    }: {
+        page: number,
+        questionId: number,
+        requestBody: UpdatePageCodedQuestionValuesetRequest,
+    }): CancelablePromise<EditableQuestion> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/pages/{page}/questions/coded/{questionId}/valueset',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns AddQuestionResponse OK
+     * @throws ApiError
+     */
+    public static addQuestionToPage({
+        page,
+        subsection,
+        requestBody,
+    }: {
+        page: number,
         subsection: number,
-    }): CancelablePromise<AddQuestionResponse | any> {
+        requestBody: AddQuestionRequest,
+    }): CancelablePromise<AddQuestionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/nbs/page-builder/api/v1/pages/{page}/subsection/{subsection}/questions',
+            url: '/api/v1/pages/{page}/subsection/{subsection}/questions',
             path: {
                 'page': page,
                 'subsection': subsection,
             },
-            headers: {
-                'Authorization': authorization,
-            },
-            body: request,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns EditableQuestion OK
+     * @throws ApiError
+     */
+    public static getEditableQuestion({
+        page,
+        questionId,
+    }: {
+        page: number,
+        questionId: number,
+    }): CancelablePromise<EditableQuestion> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/pages/{page}/questions/{questionId}/edit',
+            path: {
+                'page': page,
+                'questionId': questionId,
             },
         });
     }
-
+    /**
+     * @returns ValidationResponse OK
+     * @throws ApiError
+     */
+    public static validateDatamart({
+        page,
+        questionId,
+        datamart,
+    }: {
+        page: number,
+        questionId: number,
+        datamart: string,
+    }): CancelablePromise<ValidationResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/pages/{page}/questions/{questionId}/datamart/validate',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+            query: {
+                'datamart': datamart,
+            },
+        });
+    }
+    /**
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static deleteQuestion({
+        page,
+        questionId,
+    }: {
+        page: number,
+        questionId: number,
+    }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/api/v1/pages/{page}/questions/{questionId}',
+            path: {
+                'page': page,
+                'questionId': questionId,
+            },
+        });
+    }
 }

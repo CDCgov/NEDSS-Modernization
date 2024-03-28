@@ -18,7 +18,6 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
 import { PublishPage } from './PublishPage/PublishPage';
 import { PageControllerService } from '../../../generated/services/PageControllerService';
-import { authorization as getAuthorization } from 'authorization';
 import { useAlert } from 'alert';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from '../../../../../components/heading';
@@ -41,15 +40,13 @@ const PreviewPageContent = () => {
     const deleteDraftRef = useRef<ModalRef>(null);
     const publishDraftRef = useRef<ModalRef>(null);
     const publishingLoaderRef = useRef<ModalRef>(null);
-    const authorization = getAuthorization();
     const { showAlert } = useAlert();
     const navigate = useNavigate();
     const [isPublishing, setIsPublishing] = useState(false);
 
     const handleCreateDraft = () => {
         try {
-            PageControllerService.savePageDraftUsingPut({
-                authorization,
+            PageControllerService.savePageDraft({
                 id: page.id
             }).then((response) => {
                 showAlert({
@@ -57,7 +54,7 @@ const PreviewPageContent = () => {
                     header: 'Success',
                     message: `${page.name} is in Draft mode. You can edit the page details, rules, and layout.`
                 });
-                if (response && response.templateId) {
+                if (response?.templateId) {
                     navigate(`/page-builder/pages/${response.templateId}`);
                 }
                 refresh();
@@ -83,8 +80,7 @@ const PreviewPageContent = () => {
 
     const handleDeleteDraft = () => {
         try {
-            PageControllerService.deletePageDraftUsingDelete({
-                authorization,
+            PageControllerService.deletePageDraft({
                 id: page.id
             }).then(() => {
                 deleteDraftRef.current?.toggleModal();

@@ -1,10 +1,12 @@
 package gov.cdc.nbs.questionbank.page.content.tab;
 
-import static org.junit.Assert.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;

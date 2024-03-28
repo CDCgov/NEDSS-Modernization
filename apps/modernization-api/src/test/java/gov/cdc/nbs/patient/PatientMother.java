@@ -18,7 +18,7 @@ import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -72,6 +72,19 @@ public class PatientMother {
   }
 
   public PatientIdentifier create() {
+    PatientIdentifier created = patient();
+    available.available(created);
+    active.active(created);
+    return created;
+  }
+
+  public PatientIdentifier available() {
+    PatientIdentifier created = patient();
+    available.available(created);
+    return created;
+  }
+
+  private PatientIdentifier patient() {
 
     long identifier = idGenerator.next();
     String local = localIdentifierGenerator.generate();
@@ -82,10 +95,7 @@ public class PatientMother {
 
     long shortId = this.resolver.resolve(local).orElse(0L);
 
-    PatientIdentifier patientIdentifier = new PatientIdentifier(patient.getId(), shortId, local);
-    available.available(patientIdentifier);
-    active.active(patientIdentifier);
-    return patientIdentifier;
+    return new PatientIdentifier(patient.getId(), shortId, local);
   }
 
   private Person managed(final PatientIdentifier identifier) {

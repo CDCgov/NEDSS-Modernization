@@ -8,7 +8,15 @@ const checkForExistingCategory = (patient: number, category: string) =>
                 ? `The patient has an existing race demographic for "${error.body?.description}"`
                 : false
         )
-        .then((response) => response ?? true);
+        .then((response) => {
+            if (response === undefined) {
+                return true;
+            } else if (typeof response === 'string' || typeof response === 'boolean') {
+                return response;
+            } else {
+                return false;
+            }
+        });
 
 const validateCategory =
     (patient: number, allowed?: string) =>

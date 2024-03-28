@@ -1,16 +1,5 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.AddQuestionRequest;
@@ -22,7 +11,18 @@ import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestion
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageTextQuestionRequest;
 import gov.cdc.nbs.questionbank.page.content.question.response.AddQuestionResponse;
 import gov.cdc.nbs.questionbank.page.content.question.response.ValidationResponse;
-import springfox.documentation.annotations.ApiIgnore;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/pages/{page}/")
@@ -51,86 +51,86 @@ public class PageQuestionController {
   @PostMapping("subsection/{subsection}/questions")
   public AddQuestionResponse addQuestionToPage(
       @PathVariable("page") Long pageId,
-      @PathVariable("subsection") Long subsection,
+      @PathVariable Long subsection,
       @RequestBody AddQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return adder.addQuestions(pageId, subsection, request, details.getId());
   }
 
   @GetMapping("questions/{questionId}/edit")
   public EditableQuestion getEditableQuestion(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId) {
+      @PathVariable Long page,
+      @PathVariable Long questionId) {
     return finder.find(page, questionId);
   }
 
   @PutMapping("questions/{questionId}/required")
   public EditableQuestion updatePageQuestionRequired(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long page,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageQuestionRequiredRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.setRequired(page, questionId, request, details.getId());
   }
 
   @GetMapping("questions/{questionId}/datamart/validate")
   public ValidationResponse validateDatamart(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId,
-      @RequestParam("datamart") String datamart) {
+      @PathVariable Long page,
+      @PathVariable Long questionId,
+      @RequestParam String datamart) {
     return validator.validateDataMart(page, questionId, datamart);
   }
 
   @DeleteMapping("questions/{questionId}")
   public void deleteQuestion(
-      @PathVariable("page") Long page,
-      @PathVariable("questionId") Long questionId,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @PathVariable Long page,
+      @PathVariable Long questionId,
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     deleter.deleteQuestion(page, questionId, details.getId());
   }
 
   @PutMapping("questions/text/{questionId}")
   public EditableQuestion updatePageTextQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageTextQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
   @PutMapping("questions/numeric/{questionId}")
   public EditableQuestion updatePageNumericQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageNumericQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
   @PutMapping("questions/coded/{questionId}")
   public EditableQuestion updatePageCodedQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageCodedQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
   @PutMapping("questions/date/{questionId}")
   public EditableQuestion updatePageDateQuestion(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageDateQuestionRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 
   @PutMapping("questions/coded/{questionId}/valueset")
   public EditableQuestion updatePageCodedQuestionValueset(
       @PathVariable("page") Long pageId,
-      @PathVariable("questionId") Long questionId,
+      @PathVariable Long questionId,
       @RequestBody UpdatePageCodedQuestionValuesetRequest request,
-      @ApiIgnore @AuthenticationPrincipal final NbsUserDetails details) {
+      @Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
     return updater.update(pageId, questionId, request, details.getId());
   }
 }

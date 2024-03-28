@@ -7,7 +7,7 @@ import gov.cdc.nbs.entity.odse.QIntervention;
 import gov.cdc.nbs.patient.ParticipationCleaner;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 class TestVaccinationCleaner {

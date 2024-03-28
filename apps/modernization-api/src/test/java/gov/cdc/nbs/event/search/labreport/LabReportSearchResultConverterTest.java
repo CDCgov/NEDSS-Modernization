@@ -60,7 +60,7 @@ class LabReportSearchResultConverterTest {
 
     LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, 101d);
 
-    assertThat(converted.relevance()).isEqualTo(101);
+    assertThat(converted.relevance()).isEqualTo(101f);
     assertThat(converted.id()).isEqualTo("1019");
     assertThat(converted.jurisdictionCd()).isEqualTo("jurisdiction-value");
     assertThat(converted.localId()).isEqualTo("local-value");

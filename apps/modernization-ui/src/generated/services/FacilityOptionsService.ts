@@ -1,14 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { Option } from '../models/Option';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class FacilityOptionsService {
-
     /**
      * NBS Facility Option Autocomplete
      * Provides options from Facilities that have a name matching a criteria.
@@ -19,13 +17,7 @@ export class FacilityOptionsService {
         criteria,
         limit = 15,
     }: {
-        /**
-         * criteria
-         */
         criteria: string,
-        /**
-         * limit
-         */
         limit?: number,
     }): CancelablePromise<Array<Option>> {
         return __request(OpenAPI, {
@@ -35,12 +27,6 @@ export class FacilityOptionsService {
                 'criteria': criteria,
                 'limit': limit,
             },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
         });
     }
-
 }

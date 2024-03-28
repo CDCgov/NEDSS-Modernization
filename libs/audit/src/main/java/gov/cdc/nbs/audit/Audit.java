@@ -1,7 +1,7 @@
 package gov.cdc.nbs.audit;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import java.time.Instant;
 
 @Embeddable

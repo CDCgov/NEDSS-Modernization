@@ -4,7 +4,7 @@ import gov.cdc.nbs.authentication.session.SessionAuthenticator;
 import gov.cdc.nbs.authentication.token.NBSTokenValidator;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.Filter;
+import jakarta.servlet.Filter;
 
 @Component
 public class NBSAuthenticationFilterFactory {

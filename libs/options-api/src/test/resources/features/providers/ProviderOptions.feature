@@ -29,3 +29,8 @@ Feature: Provider Options REST API
   Scenario: I cannot find specific providers that do not exist
     When I am trying to find providers that start with "zzzzzzzzz"
     Then there aren't any options available
+
+  Scenario: Electronic providers are not available for search
+    Given there is a provider for "Miles" "Dyson" that was added electronically
+    When I am trying to find providers that start with "mile"
+    Then there aren't any options available

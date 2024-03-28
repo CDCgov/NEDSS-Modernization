@@ -6,7 +6,6 @@ import {
     PageInformationService
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
-import { authorization } from 'authorization';
 import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +15,7 @@ import styles from './page-information.module.scss';
 const PageInformation = () => {
     const [activeTab, setActiveTab] = useState('Details');
     const [totalResults, setTotalResults] = useState(4);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [pageHistory, setPageHistory] = useState<PageHistory[]>([]);
     const [pageInfo, setPageInfo] = useState<InfoType | undefined>();
     const { pageId } = useParams();
@@ -25,10 +24,9 @@ const PageInformation = () => {
     const { page } = usePageManagement();
     const { downloadMetadata } = useDownloadPageMetadata();
     const fetchPageHistory = async () => {
-        PageControllerService?.getPageHistoryUsingGet?.({
-            authorization: authorization(),
+        PageControllerService.getPageHistory({
             id: Number(pageId),
-            page: currentPage,
+            page: currentPage - 1,
             size: pageSize
         }).then((rep) => {
             setPageHistory(rep?.content ?? []);
@@ -38,7 +36,6 @@ const PageInformation = () => {
 
     const fetchPageInfo = () => {
         PageInformationService.find({
-            authorization: authorization(),
             page: Number(pageId)
         })
             .then((data: InfoType) => {
@@ -51,9 +48,12 @@ const PageInformation = () => {
         fetchPageHistory();
     }, [page]);
 
+    useEffect(() => {
+        fetchPageHistory();
+    }, [currentPage]);
+
     const handleNext = (page: number) => {
         setCurrentPage(page);
-        fetchPageHistory();
     };
     const handleDownloadMetadata = async () => {
         downloadMetadata(page.id);
@@ -103,7 +103,7 @@ const PageInformation = () => {
                             {renderBlock('Reporting Mechanism', pageInfo?.messageMappingGuide?.name)}
                         </div>
                         <div className={styles.informationBlock}>
-                            {renderBlock('Page name', pageInfo?.name!)}
+                            {renderBlock('Page name', pageInfo?.name)}
                             {renderBlock('Data mart name', pageInfo?.datamart)}
                         </div>
                         <div className={styles.informationBlock}>
@@ -149,13 +149,13 @@ const PageInformation = () => {
                     </div>
                     {totalResults >= pageSize && (
                         <Pagination
-                            className="margin-01 pagination"
+                            className="historyPagination"
                             totalPages={Math.ceil(totalResults / pageSize)}
                             currentPage={currentPage}
                             pathname={'/'}
-                            onClickNext={() => handleNext?.(currentPage + 1)}
-                            onClickPrevious={() => handleNext?.(currentPage - 1)}
-                            onClickPageNumber={(_, page) => handleNext?.(page)}
+                            onClickNext={() => handleNext(currentPage + 1)}
+                            onClickPrevious={() => handleNext(currentPage - 1)}
+                            onClickPageNumber={(_, page) => handleNext(page)}
                         />
                     )}
                 </div>

@@ -6,6 +6,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -50,5 +52,19 @@ public class PageRuleRequester {
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to execute Page Rule Delete request", exception);
     }
+  }
+
+  public ResultActions sourceQuestionFinder(final long id, SourceQuestionRequest request) throws Exception {
+    return mvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{id}/rules/source/questions", id))
+            .content(mapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON));
+  }
+
+  public ResultActions targetQuestionFinder(final long id, TargetQuestionRequest request) throws Exception {
+    return mvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{id}/rules/target/questions", id))
+            .content(mapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON));
   }
 }

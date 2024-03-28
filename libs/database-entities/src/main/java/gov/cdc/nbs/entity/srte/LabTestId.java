@@ -2,10 +2,11 @@ package gov.cdc.nbs.entity.srte;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Embeddable
@@ -27,4 +28,19 @@ public class LabTestId implements Serializable {
     this.laboratoryId = laboratoryId;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    LabTestId labTestId = (LabTestId) o;
+    return Objects.equals(labTestCd, labTestId.labTestCd) && Objects.equals(laboratoryId,
+        labTestId.laboratoryId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(labTestCd, laboratoryId);
+  }
 }

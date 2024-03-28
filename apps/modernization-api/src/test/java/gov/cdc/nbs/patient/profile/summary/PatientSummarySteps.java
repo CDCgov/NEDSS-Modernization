@@ -87,7 +87,7 @@ public class PatientSummarySteps {
       case "address" -> jsonPath("$.data.findPatientProfile.summary.address[*].address");
       case "city" -> jsonPath("$.data.findPatientProfile.summary.address[*].city");
       case "zipcode", "zip" -> jsonPath("$.data.findPatientProfile.summary.address[*].zipcode");
-      default -> throw new AssertionError(String.format("Unexpected Patient Summary property %s", field));
+      default -> throw new AssertionError("Unexpected Patient Summary property %s".formatted(field));
     };
   }
 

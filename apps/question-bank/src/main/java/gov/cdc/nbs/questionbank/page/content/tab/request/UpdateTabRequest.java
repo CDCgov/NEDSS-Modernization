@@ -1,9 +1,9 @@
 package gov.cdc.nbs.questionbank.page.content.tab.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UpdateTabRequest(
-        @ApiModelProperty(required = true) String name,
-        @ApiModelProperty(required = true) boolean visible) {
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean visible) {
 
 }

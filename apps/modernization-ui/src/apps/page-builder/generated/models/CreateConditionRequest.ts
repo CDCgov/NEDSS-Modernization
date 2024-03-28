@@ -1,17 +1,17 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type CreateConditionRequest = {
     code: string;
     codeSystemDescTxt: string;
-    coinfectionGrpCd?: string;
     conditionShortNm: string;
-    contactTracingEnableInd?: string;
-    familyCd?: string;
-    nndInd?: string;
     progAreaCd: string;
+    nndInd?: string;
     reportableMorbidityInd?: string;
     reportableSummaryInd?: string;
+    contactTracingEnableInd?: string;
+    familyCd?: string;
+    coinfectionGrpCd?: string;
 };
 

@@ -114,7 +114,7 @@ public class PatientSearchVerificationSteps {
           jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].type", position);
       case "identification value" ->
           jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].value", position);
-      default -> throw new AssertionError(String.format("Unexpected property check %s", field));
+      default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }
 

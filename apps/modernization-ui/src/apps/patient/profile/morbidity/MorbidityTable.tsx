@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import {
     PatientMorbidity,
     FindMorbidityReportsForPatientQuery,

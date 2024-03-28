@@ -2,10 +2,10 @@ package gov.cdc.nbs.authentication.entity;
 
 import gov.cdc.nbs.authentication.enums.AuthRecordStatus;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.Instant;
 
 

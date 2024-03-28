@@ -1,10 +1,10 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type CreateSubSectionRequest = {
-    name?: string;
     sectionId?: number;
+    name?: string;
     visible?: boolean;
 };
 

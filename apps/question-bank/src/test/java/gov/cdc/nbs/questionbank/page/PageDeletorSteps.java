@@ -1,13 +1,14 @@
 package gov.cdc.nbs.questionbank.page;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;

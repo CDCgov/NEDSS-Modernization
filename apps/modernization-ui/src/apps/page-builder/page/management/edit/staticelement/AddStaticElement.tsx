@@ -12,7 +12,6 @@ import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry/maxLengthRule';
 import { HyperlinkFields } from './HyperlinkFields';
 import { CommentsFields } from './CommentsFields';
-import { authorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './staticelement.module.scss';
 import { useAlert } from 'alert';
@@ -54,10 +53,9 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
         switch (data.type) {
             case 'HYP': {
                 data.subSectionId = subsectionId;
-                PageStaticControllerService.addStaticHyperLinkUsingPost({
-                    authorization: authorization(),
+                PageStaticControllerService.addStaticHyperLink({
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The element ${(data as AddHyperlink).label} has been successfully added.`);
@@ -67,10 +65,9 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
             }
             case 'COM': {
                 data.subSectionId = subsectionId;
-                PageStaticControllerService.addStaticReadOnlyCommentsUsingPost({
-                    authorization: authorization(),
+                PageStaticControllerService.addStaticReadOnlyComments({
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The comment element has been successfully added.`);
@@ -80,10 +77,9 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
             }
             case 'LIN': {
                 data.subSectionId = subsectionId;
-                PageStaticControllerService.addStaticLineSeparatorUsingPost({
-                    authorization: authorization(),
+                PageStaticControllerService.addStaticLineSeparator({
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The line separator element has been successfully added.`);
@@ -93,10 +89,9 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
             }
             case 'ELE': {
                 data.subSectionId = subsectionId;
-                PageStaticControllerService.addStaticOriginalElectronicDocListUsingPost({
-                    authorization: authorization(),
+                PageStaticControllerService.addStaticOriginalElectronicDocList({
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The electronic document list has been successfully added.`);
@@ -106,10 +101,9 @@ export const AddStaticElement = ({ modalRef, subsectionId }: AddStaticElementMod
             }
             case 'PAR': {
                 data.subSectionId = subsectionId;
-                PageStaticControllerService.addStaticReadOnlyParticipantsListUsingPost({
-                    authorization: authorization(),
+                PageStaticControllerService.addStaticReadOnlyParticipantsList({
                     page: page.id,
-                    request: data
+                    requestBody: data
                 }).then(() => {
                     form.reset();
                     handleAlert(`The participant list has been successfully added.`);

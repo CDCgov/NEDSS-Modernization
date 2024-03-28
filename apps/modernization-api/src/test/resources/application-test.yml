@@ -38,6 +38,9 @@ testing:
 
 logging:
   level:
+    nbs:
+      classic:
+        outgoing: DEBUG
     gov:
       cdc:
         nbs:

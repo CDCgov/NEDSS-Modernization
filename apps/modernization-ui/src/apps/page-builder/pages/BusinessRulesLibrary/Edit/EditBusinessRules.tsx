@@ -1,24 +1,24 @@
+import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
 import {
-    RuleRequest,
     PageRuleControllerService,
     PagesQuestion,
     PagesSection,
     PagesSubSection,
     PagesTab,
-    Rule
+    Rule,
+    RuleRequest
 } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
+import { useGetPageDetails } from 'apps/page-builder/page/management';
+import { Breadcrumb } from 'breadcrumb/Breadcrumb';
+import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from './EditBusinessRule.module.scss';
-import { Breadcrumb } from 'breadcrumb/Breadcrumb';
 import { BusinessRulesForm } from '../Form/BusinessRulesForm';
-import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
-import { Button, Form, Icon, ModalRef } from '@trussworks/react-uswds';
-import { useGetPageDetails } from 'apps/page-builder/page/management';
-import { useAlert } from 'alert';
-import { ConfirmationModal } from 'confirmation';
+import styles from './EditBusinessRule.module.scss';
+import { findTargetQuestion, findTargetSubsection } from '../helpers/findTargetQuestions';
 
 export const EditBusinessRule = () => {
     const form = useForm<RuleRequest>();
@@ -38,15 +38,13 @@ export const EditBusinessRule = () => {
     const [initialTargetIdentifiers, setInitialTargetIdentifiers] = useState<string[]>([]);
 
     useEffect(() => {
-        PageRuleControllerService.viewRuleResponseUsingGet({
-            authorization: authorization(),
+        PageRuleControllerService.viewRuleResponse({
             ruleId: Number(ruleId)
         }).then((response: Rule) => {
             fetchSourceValues(response.sourceQuestion.codeSetName ?? '');
             setSelectedSourceValues(response.sourceValues?.map((s) => s.trim()));
             setInitialSourceIdentifiers(response.sourceQuestion.questionIdentifier ?? '');
             setInitialTargetIdentifiers(response.targets.map((target) => target.targetIdentifier ?? '') ?? []);
-
             form.reset({
                 anySourceValue: response.anySourceValue,
                 comparator: response.comparator,
@@ -77,40 +75,6 @@ export const EditBusinessRule = () => {
         return result;
     };
 
-    const findTargetQuestion = (targets?: string[]): PagesQuestion[] => {
-        const targetQuestions: PagesQuestion[] = [];
-        page?.tabs?.map((tab: PagesTab) => {
-            tab.sections?.map((section: PagesSection) => {
-                section.subSections?.map((subsection: PagesSubSection) => {
-                    subsection.questions?.map((question: PagesQuestion) => {
-                        targets?.map((target) => {
-                            if (target === question.question) {
-                                targetQuestions.push(question);
-                            }
-                        });
-                    });
-                });
-            });
-        });
-        return targetQuestions;
-    };
-
-    const findTargetSubsection = (targets?: string[]): PagesSubSection[] => {
-        const targetQuestions: PagesSubSection[] = [];
-        page?.tabs?.map((tab: PagesTab) => {
-            tab.sections?.map((section: PagesSection) => {
-                section.subSections?.map((subsection: PagesSubSection) => {
-                    targets?.map((target) => {
-                        if (target === subsection.questionIdentifier) {
-                            targetQuestions.push(subsection);
-                        }
-                    });
-                });
-            });
-        });
-        return targetQuestions;
-    };
-
     const fetchSourceValues = (valueSet?: string) => {
         if (valueSet) {
             fetch(valueSet);
@@ -135,10 +99,9 @@ export const EditBusinessRule = () => {
 
     const onSubmit = form.handleSubmit(async (data) => {
         try {
-            await PageRuleControllerService.updatePageRuleUsingPut({
-                authorization: authorization(),
-                ruleId: Number(ruleId) ?? 0,
-                request: data
+            await PageRuleControllerService.updatePageRule({
+                ruleId: Number(ruleId),
+                requestBody: data
             });
             showAlert({
                 type: 'success',
@@ -167,28 +130,43 @@ export const EditBusinessRule = () => {
             (watch.anySourceValue || (watch.comparator && watch.sourceValues))
         ) {
             return true;
+        } else if (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            if (watch.sourceIdentifier && watch.comparator && watch.targetIdentifiers) {
+                return true;
+            }
         } else {
             return false;
         }
     };
 
-    const checkIsDirty = () => {
-        if (form.formState.isDirty) {
+    const ifDisabled = () => {
+        const sourceValues = watch.sourceValues?.map((val) => val.text);
+        if (watch.ruleFunction !== Rule.ruleFunction.DATE_COMPARE) {
             if (
-                JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) &&
-                JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers)
+                checkIsValid() &&
+                (form.formState.isDirty ||
+                    JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
+                    JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers) ||
+                    JSON.stringify(sourceValues) !== JSON.stringify(selectedSourceValues))
+            ) {
+                return true;
+            }
+        } else if (watch.ruleFunction === Rule.ruleFunction.DATE_COMPARE) {
+            if (
+                checkIsValid() &&
+                (form.formState.isDirty ||
+                    JSON.stringify(watch.targetIdentifiers) !== JSON.stringify(initialTargetIdentifiers) ||
+                    JSON.stringify(watch.sourceIdentifier) !== JSON.stringify(initialSourceIdentifiers))
             ) {
                 return true;
             }
         } else {
-            return true;
+            return false;
         }
-        return false;
     };
 
     const onDelete = () => {
-        PageRuleControllerService.deletePageRuleUsingDelete({
-            authorization: authorization(),
+        PageRuleControllerService.deletePageRule({
             id: page?.id ?? 0,
             ruleId: Number(ruleId)
         }).then(() => {
@@ -233,9 +211,9 @@ export const EditBusinessRule = () => {
                                     isEdit
                                     sourceValues={options}
                                     onFetchSourceValues={fetchSourceValues}
-                                    editSourceQuestion={findSourceQuestion(form.getValues('sourceIdentifier'))}
-                                    editTargetQuestions={findTargetQuestion(form.getValues('targetIdentifiers'))}
-                                    editTargetSubsections={findTargetSubsection(form.getValues('targetIdentifiers'))}
+                                    editSourceQuestion={findSourceQuestion(initialSourceIdentifiers)}
+                                    editTargetQuestions={findTargetQuestion(initialTargetIdentifiers, page)}
+                                    editTargetSubsections={findTargetSubsection(initialTargetIdentifiers, page)}
                                 />
                             </FormProvider>
                         </div>
@@ -262,7 +240,7 @@ export const EditBusinessRule = () => {
                             }}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={!checkIsDirty() && !checkIsValid()} onClick={onSubmit}>
+                        <Button type="submit" disabled={!ifDisabled()} onClick={onSubmit}>
                             Update
                         </Button>
                     </div>

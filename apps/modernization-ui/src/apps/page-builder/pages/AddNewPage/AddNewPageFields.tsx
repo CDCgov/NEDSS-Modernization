@@ -1,6 +1,5 @@
 import { ErrorMessage, Icon, Label, ModalRef, ModalToggleButton, Textarea } from '@trussworks/react-uswds';
 import { Condition, PageControllerService, PageCreateRequest, Template } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
@@ -22,9 +21,8 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
     const form = useFormContext<PageCreateRequest>();
 
     const validatePageName = async (val: string) => {
-        const response = await PageControllerService.validatePageRequestUsingPost({
-            authorization: authorization(),
-            request: { name: val }
+        const response = await PageControllerService.validatePageRequest({
+            requestBody: { name: val }
         });
         if (!response) {
             form.setError('name', { message: 'Name is already in use' });

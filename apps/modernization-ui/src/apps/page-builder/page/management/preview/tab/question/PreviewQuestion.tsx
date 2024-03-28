@@ -7,7 +7,6 @@ import { RadioButtons } from 'apps/page-builder/components/RadioButton/RadioButt
 import { useEffect, useState } from 'react';
 import { Selectable } from 'options';
 import { ConceptOptionsResponse, ConceptOptionsService } from 'generated';
-import { authorization } from 'authorization';
 
 type Props = {
     question: PagesQuestion;
@@ -28,8 +27,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
 
     useEffect(() => {
         if (valueSet) {
-            ConceptOptionsService.allUsingGet({
-                authorization: authorization(),
+            ConceptOptionsService.concepts({
                 name: valueSet
             }).then((resp: ConceptOptionsResponse) => {
                 setConceptState(resp.options);
@@ -64,7 +62,10 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     />
                 )}
                 {displayComponent === 1001 && <RadioButtons options={conceptState} />}
-                {(displayComponent === 1008 || displayComponent === 1009 || displayComponent === 1019) && (
+                {(displayComponent === 1008 ||
+                    displayComponent === 1009 ||
+                    displayComponent === 1019 ||
+                    displayComponent === 1026) && (
                     <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
                 )}
                 {displayComponent === 1017 && (

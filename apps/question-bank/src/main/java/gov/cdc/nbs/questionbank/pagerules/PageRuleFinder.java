@@ -31,7 +31,7 @@ class PageRuleFinder {
             [rule].target_question_identifier  as [targetQuestions],
             [question1].question_label          as [sourceQuestionLabel],
             [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
-            STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), ',') WITHIN GROUP
+            STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP 
              (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',')) as [targetQuestionLabels],
                 0                                  as [TotalCount]
           from WA_rule_metadata [rule]
@@ -71,7 +71,7 @@ class PageRuleFinder {
              [rule].target_question_identifier  as [targetQuestions],
              [question1].question_label          as [sourceQuestionLabel],
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
-             STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), ', ') WITHIN GROUP
+             STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
              as [targetQuestionLabels],
              (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
@@ -119,7 +119,7 @@ class PageRuleFinder {
              [rule].target_question_identifier  as [targetQuestions],
              [question1].question_label         as [sourceQuestionLabel],
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
-             STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), ', ') WITHIN GROUP
+             STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP 
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
              as [targetQuestionLabels],
              (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)

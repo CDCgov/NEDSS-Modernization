@@ -1,8 +1,7 @@
 package gov.cdc.nbs.redirect.search;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

@@ -4,11 +4,10 @@ import gov.cdc.nbs.entity.odse.PublicHealthCase;
 import gov.cdc.nbs.event.investigation.InvestigationMother;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.PatientMother;
-import gov.cdc.nbs.patient.TestPatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,26 +18,31 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientNamedAsAContactSteps {
 
-    @Autowired
-    TestPatientIdentifier patients;
+    private final Active<PatientIdentifier> activePatient;
+    private final PatientMother patientMother;
+    private final InvestigationMother investigationMother;
+    private final ContactTracingMother mother;
+    private final PatientNamedByContactResolver resolver;
 
-    @Autowired
-    PatientMother patientMother;
-
-    @Autowired
-    InvestigationMother investigationMother;
-
-    @Autowired
-    ContactTracingMother mother;
-
-    @Autowired
-    PatientNamedByContactResolver resolver;
+    PatientNamedAsAContactSteps(
+        final Active<PatientIdentifier> activePatient,
+        final PatientMother patientMother,
+        final InvestigationMother investigationMother,
+        final ContactTracingMother mother,
+        final PatientNamedByContactResolver resolver
+    ) {
+        this.activePatient = activePatient;
+        this.patientMother = patientMother;
+        this.investigationMother = investigationMother;
+        this.mother = mother;
+        this.resolver = resolver;
+    }
 
     @When("the patient is named as a contact")
     public void the_patient_is_named_as_a_contact() {
-        PatientIdentifier revision = patientMother.revise(patients.one());
+        PatientIdentifier revision = patientMother.revise(activePatient.active());
 
-        PatientIdentifier other = patientMother.create();
+        PatientIdentifier other = patientMother.available();
 
         PublicHealthCase investigation = investigationMother.investigation(other.id());
 
@@ -51,7 +55,7 @@ public class PatientNamedAsAContactSteps {
     @Then("the profile has a contact that named the patient")
     public void the_profile_has_a_contact_that_named_the_patient() {
         Page<PatientContacts.NamedByContact> actual = resolver.find(
-            patients.one().id(),
+            activePatient.active().id(),
             new GraphQLPage(5));
 
         assertThat(actual).isNotEmpty();
@@ -59,7 +63,7 @@ public class PatientNamedAsAContactSteps {
 
     @Then("the profile contacts that named the patient are not returned")
     public void the_profile_contacts_that_named_the_patient_are_not_returned() {
-        long patient = this.patients.one().id();
+        long patient = this.activePatient.active().id();
 
         GraphQLPage page = new GraphQLPage(5);
 
@@ -69,7 +73,7 @@ public class PatientNamedAsAContactSteps {
 
     @Then("the profile has no associated contacts that named the patient")
     public void the_profile_has_no_associated_contacts_that_named_the_patient() {
-        long patient = this.patients.one().id();
+        long patient = this.activePatient.active().id();
 
         Page<PatientContacts.NamedByContact> actual = this.resolver.find(patient, new GraphQLPage(5));
         assertThat(actual).isEmpty();

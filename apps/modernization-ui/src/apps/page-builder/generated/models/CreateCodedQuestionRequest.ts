@@ -1,33 +1,28 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type CreateCodedQuestionRequest = {
+    uniqueName?: string;
+    description?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    dataMartInfo?: ReportingInfo;
+    messagingInfo?: MessagingInfo;
     adminComments?: string;
     codeSet?: CreateCodedQuestionRequest.codeSet;
-    dataMartInfo?: ReportingInfo;
-    defaultValue?: string;
-    description?: string;
-    displayControl?: number;
-    label?: string;
-    messagingInfo?: MessagingInfo;
-    subgroup?: string;
-    tooltip?: string;
     uniqueId?: string;
-    uniqueName?: string;
+    subgroup?: string;
     valueSet?: number;
+    defaultValue?: string;
 };
-
 export namespace CreateCodedQuestionRequest {
-
     export enum codeSet {
         LOCAL = 'LOCAL',
         PHIN = 'PHIN',
     }
-
-
 }
 

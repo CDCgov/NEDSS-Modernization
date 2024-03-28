@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -2,8 +2,7 @@ package gov.cdc.nbs.questionbank.page.detail;
 
 
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,16 +20,10 @@ class PagesController {
     this.resolver = resolver;
   }
 
-  @ApiOperation(
-      value = "Pages",
-      notes = "Provides the details of a Page including the components and the rules",
+  @Operation(
+      summary = "Pages",
+      description = "Provides the details of a Page including the components and the rules",
       tags = "Pages"
-  )
-  @ApiImplicitParam(
-      name = "Authorization",
-      required = true,
-      paramType = "header",
-      dataTypeClass = String.class
   )
   @GetMapping
   @PreAuthorize("hasAuthority('LDFADMINISTRATION-SYSTEM')")

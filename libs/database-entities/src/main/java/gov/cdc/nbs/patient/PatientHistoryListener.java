@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient;
 import gov.cdc.nbs.entity.odse.Person;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PreUpdate;
+import jakarta.persistence.PreUpdate;
 
 @Component
 public class PatientHistoryListener {

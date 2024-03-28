@@ -1,18 +1,18 @@
 package gov.cdc.nbs.questionbank.page.detail;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Collection;
 import java.util.List;
 
 public record PagesResponse(
-    @ApiModelProperty(required = true) long id,
-    @ApiModelProperty(required = true) String name,
-    @ApiModelProperty(required = true) String status,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String status,
     String description,
     long root,
     Collection<PagesTab> tabs,
-    Collection<PageRule> rules) {
+    Collection<BusinessRule> rules) {
 
   PagesResponse(
       long id,
@@ -20,7 +20,7 @@ public record PagesResponse(
       String status,
       String description,
       long root,
-      Collection<PageRule> rules) {
+      Collection<BusinessRule> rules) {
     this(
         id,
         name,
@@ -32,44 +32,44 @@ public record PagesResponse(
   }
 
   public record PagesTab(
-      @ApiModelProperty(required = true) long id,
-      @ApiModelProperty(required = true) String name,
-      @ApiModelProperty(required = true) int order,
-      @ApiModelProperty(required = true) boolean visible,
-      @ApiModelProperty(required = true) Collection<PagesSection> sections) {
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean visible,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesSection> sections) {
   }
 
 
   public record PagesSection(
-      @ApiModelProperty(required = true) long id,
-      @ApiModelProperty(required = true) String name,
-      @ApiModelProperty(required = true) int order,
-      @ApiModelProperty(required = true) boolean visible,
-      @ApiModelProperty(required = true) Collection<PagesSubSection> subSections) {
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean visible,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesSubSection> subSections) {
   }
 
 
   public record PagesSubSection(
-      @ApiModelProperty(required = true) long id,
-      @ApiModelProperty(required = true) String name,
-      @ApiModelProperty(required = true) int order,
-      @ApiModelProperty(required = true) boolean visible,
-      @ApiModelProperty(required = true) boolean isGrouped,
-      @ApiModelProperty(required = true) boolean isGroupable,
-      @ApiModelProperty(required = true) String questionIdentifier,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean visible,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isGrouped,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) boolean isGroupable,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String questionIdentifier,
       String blockName,
-      @ApiModelProperty(required = true) Collection<PagesQuestion> questions) {
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Collection<PagesQuestion> questions) {
   }
 
 
   public record PagesQuestion(
-      @ApiModelProperty(required = true) long id,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) long id,
       boolean isStandardNnd,
       boolean isStandard,
       String standard,
       String question,
-      @ApiModelProperty(required = true) String name,
-      @ApiModelProperty(required = true) int order,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String name,
+      @Schema(requiredMode = Schema.RequiredMode.REQUIRED) int order,
       int questionGroupSeq,
       String subGroup,
       String description,
@@ -95,11 +95,14 @@ public record PagesResponse(
       Integer dataMartRepeatNumber,
       boolean appearsInBatch,
       String batchLabel,
-      Integer batchWidth) {
+      Integer batchWidth,
+      String componentBehavior,
+      String componentName,
+      String classCode) {
   }
 
 
-  public record PageRule(
+  public record BusinessRule(
       long id,
       long page,
       String logic,

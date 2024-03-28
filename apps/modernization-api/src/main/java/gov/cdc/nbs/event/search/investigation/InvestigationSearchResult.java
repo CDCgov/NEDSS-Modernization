@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 record InvestigationSearchResult(
-    double relevance,
+    Double relevance,
     String id,
     String cdDescTxt,
     String jurisdictionCd,

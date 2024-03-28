@@ -1,4 +1,3 @@
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 import { AddQuestionResponse, PageQuestionControllerService } from '../../generated';
 
@@ -33,9 +32,8 @@ export const useAddQuestionsToPage = () => {
 
     useEffect(() => {
         if (state.status === 'adding') {
-            PageQuestionControllerService.addQuestionToPageUsingPost({
-                authorization: authorization(),
-                request: { questionIds: state.request.questions },
+            PageQuestionControllerService.addQuestionToPage({
+                requestBody: { questionIds: state.request.questions },
                 page: state.request.page,
                 subsection: state.request.subsection
             })

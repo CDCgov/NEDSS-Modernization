@@ -2,7 +2,7 @@ package gov.cdc.nbs.questionbank.page.content.staticelement;
 
 import java.time.Instant;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

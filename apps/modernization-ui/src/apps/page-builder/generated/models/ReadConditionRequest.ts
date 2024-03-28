@@ -1,9 +1,9 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type ReadConditionRequest = {
-    excludeInUse?: boolean;
     searchText?: string;
+    excludeInUse?: boolean;
 };
 

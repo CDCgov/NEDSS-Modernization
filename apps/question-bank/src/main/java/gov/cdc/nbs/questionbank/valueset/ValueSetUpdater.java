@@ -1,8 +1,8 @@
 package gov.cdc.nbs.questionbank.valueset;
 
 import java.util.regex.Pattern;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import gov.cdc.nbs.questionbank.entity.Codeset;
 import gov.cdc.nbs.questionbank.entity.CodesetId;

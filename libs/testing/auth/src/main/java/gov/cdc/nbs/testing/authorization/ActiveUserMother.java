@@ -6,7 +6,7 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.UUID;
 
 @Component
@@ -18,14 +18,12 @@ class ActiveUserMother {
   private final ActiveUserCleaner cleaner;
   private final Available<ActiveUser> users;
 
-
   ActiveUserMother(
       final AuthenticationSupportSettings settings,
       final SequentialIdentityGenerator idGenerator,
       final EntityManager entityManager,
       final ActiveUserCleaner cleaner,
-      final Available<ActiveUser> users
-  ) {
+      final Available<ActiveUser> users) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.entityManager = entityManager;
@@ -45,8 +43,7 @@ class ActiveUserMother {
   ActiveUser create(
       final String username,
       final String first,
-      final String last
-  ) {
+      final String last) {
     AuthUser user = new AuthUser();
     user.setUserId(username);
     user.setUserType("internalUser");

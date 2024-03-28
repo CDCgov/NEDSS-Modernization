@@ -1,22 +1,7 @@
-import { PageRuleControllerService, Pageable, Rule, SearchPageRuleRequest, Sort } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
+import { PageRule, PageRuleControllerService, SearchPageRuleRequest } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { Direction } from 'sorting/Sort';
-
-export type PageRules = {
-    content?: Rule[];
-    empty?: boolean;
-    first?: boolean;
-    last?: boolean;
-    number?: number;
-    numberOfElements?: number;
-    pageable?: Pageable;
-    size?: number;
-    sort?: Sort;
-    totalElements?: number;
-    totalPages?: number;
-};
 
 export type FetchBusinessRules = {
     pageId?: number;
@@ -43,12 +28,12 @@ export type BusinessRuleSort = {
 type State =
     | { status: 'idle' }
     | { status: 'searching'; search: FetchBusinessRules }
-    | { status: 'complete'; rules: PageRules | void }
+    | { status: 'complete'; rules: PageRule | void }
     | { status: 'error'; error: string };
 
 type Action =
     | { type: 'search'; search: FetchBusinessRules }
-    | { type: 'complete'; rules: PageRules | void }
+    | { type: 'complete'; rules: PageRule | void }
     | { type: 'error'; error: string };
 
 const initial: State = { status: 'idle' };
@@ -79,16 +64,19 @@ export const useFetchPageRules = () => {
 
             const request: SearchPageRuleRequest = { searchValue: state.search.query };
 
-            PageRuleControllerService.findPageRuleUsingPost({
-                authorization: authorization(),
+            PageRuleControllerService.findPageRule({
                 id: Number(pageId),
+                requestBody: request,
                 page: state.search.page,
                 size: state.search.pageSize,
-                sort: sortString,
-                request: request
+                sort: sortString ? [sortString] : undefined
             })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
-                .then((response) => dispatch({ type: 'complete', rules: response }));
+                .then((response) => {
+                    if (response) {
+                        dispatch({ type: 'complete', rules: response });
+                    }
+                });
         }
     }, [state.status]);
 

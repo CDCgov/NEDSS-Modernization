@@ -51,7 +51,7 @@ class ContentComponentResolverTest {
         null,
         false,
         null,
-        null);
+        null, null, null, null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -117,7 +117,7 @@ class ContentComponentResolverTest {
         null,
         false,
         null,
-        null);
+        null, null, null, null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -181,7 +181,7 @@ class ContentComponentResolverTest {
         null,
         false,
         null,
-        null);
+        null, null, null, null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 
@@ -245,7 +245,7 @@ class ContentComponentResolverTest {
         null,
         false,
         null,
-        null);
+        null, null, null, null);
 
     ContentComponentResolver resolver = new ContentComponentResolver();
 

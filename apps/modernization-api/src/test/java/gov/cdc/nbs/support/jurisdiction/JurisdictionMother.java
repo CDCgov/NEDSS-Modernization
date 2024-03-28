@@ -4,11 +4,11 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.spring.ScenarioScope;
+import jakarta.annotation.PostConstruct;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.util.List;

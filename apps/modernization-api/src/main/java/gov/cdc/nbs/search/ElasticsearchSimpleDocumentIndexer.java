@@ -34,7 +34,7 @@ public class ElasticsearchSimpleDocumentIndexer {
     } catch (IOException exception) {
       LOGGER.log(
           System.Logger.Level.ERROR,
-          () -> String.format("Unable to index %s (%s)", index, document.identifier()),
+          () -> "Unable to index %s (%s)".formatted(index, document.identifier()),
           exception
       );
     }
@@ -59,13 +59,13 @@ public class ElasticsearchSimpleDocumentIndexer {
     } catch (MissingRequiredPropertyException exception) {
       LOGGER.log(
           System.Logger.Level.ERROR,
-          () -> String.format("Indexing %s skipped.", index),
+          () -> "Indexing %s skipped.".formatted(index),
           exception
       );
     } catch (IOException exception) {
       LOGGER.log(
           System.Logger.Level.ERROR,
-          () -> String.format("An unexpected issue occurred when indexing %s", index),
+          () -> "An unexpected issue occurred when indexing %s".formatted(index),
           exception
       );
     }
