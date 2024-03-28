@@ -1,14 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { Option } from '../models/Option';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class ProviderOptionsService {
-
     /**
      * NBS Provider Option Autocomplete
      * Provides options from Providers that have a name matching a criteria.
@@ -31,5 +29,4 @@ export class ProviderOptionsService {
             },
         });
     }
-
 }

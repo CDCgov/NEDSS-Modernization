@@ -1,14 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { EncryptionResponse } from '../models/EncryptionResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class EncryptionControllerService {
-
     /**
      * @returns EncryptionResponse OK
      * @throws ApiError
@@ -16,7 +14,7 @@ export class EncryptionControllerService {
     public static encrypt({
         requestBody,
     }: {
-        requestBody: any,
+        requestBody: Record<string, any>,
     }): CancelablePromise<EncryptionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -25,7 +23,6 @@ export class EncryptionControllerService {
             mediaType: 'application/json',
         });
     }
-
     /**
      * @returns any OK
      * @throws ApiError
@@ -34,7 +31,7 @@ export class EncryptionControllerService {
         requestBody,
     }: {
         requestBody: string,
-    }): CancelablePromise<any> {
+    }): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/encryption/decrypt',
@@ -42,5 +39,4 @@ export class EncryptionControllerService {
             mediaType: 'text/plain',
         });
     }
-
 }

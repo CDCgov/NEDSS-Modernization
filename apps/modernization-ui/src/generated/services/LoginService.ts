@@ -1,15 +1,13 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { LoginRequest } from '../models/LoginRequest';
 import type { LoginResponse } from '../models/LoginResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class LoginService {
-
     /**
      * NBS User Authentication
      * Provides options from Users that have a name matching a criteria.
@@ -28,5 +26,4 @@ export class LoginService {
             mediaType: 'application/json',
         });
     }
-
 }
