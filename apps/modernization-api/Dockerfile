@@ -12,7 +12,7 @@ COPY apps/modernization-ui .
 
 RUN npx react-scripts build
 
-FROM gradle:8-jdk17 AS api-builder
+FROM gradle:8-jdk21 AS api-builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -38,7 +38,7 @@ RUN jar xf apps/modernization-api/build/libs/modernization-api.jar
 
 RUN jdeps --ignore-missing-deps -q  \
     --recursive  \
-    --multi-release 17  \
+    --multi-release 21  \
     --print-module-deps  \
     --class-path 'BOOT-INF/lib/*'  \
     apps/modernization-api/build/libs/modernization-api.jar > deps.info
