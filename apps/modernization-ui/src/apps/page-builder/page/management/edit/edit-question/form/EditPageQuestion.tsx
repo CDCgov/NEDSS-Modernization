@@ -34,7 +34,7 @@ export const EditPageQuestion = ({ page, question }: Props) => {
             {displayControl?.toString() !== '1026' && (
                 <>
                     <HorizontalRule />
-                    {!question?.isStandard && <DataMartFields editing page={page} questionId={question?.id} />}
+                    <DataMartFields editing page={page} questionId={question?.id} />
                     <HorizontalRule />
                     <MessagingFields />
                 </>
