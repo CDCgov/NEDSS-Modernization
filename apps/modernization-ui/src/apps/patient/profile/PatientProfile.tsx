@@ -13,12 +13,12 @@ import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graph
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { MessageModal } from 'messageModal';
 import { usePatientProfilePermissions } from './permission';
-import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
 import styles from './patient-profile.module.scss';
 import TabButton from 'components/TabButton/TabButton';
+import { ConfirmationModal } from 'confirmation';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {

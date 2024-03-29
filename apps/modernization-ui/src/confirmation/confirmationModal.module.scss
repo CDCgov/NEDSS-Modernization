@@ -1,0 +1,33 @@
+@use 'styles/modal.scss';
+
+.content {
+    .message {
+        #confirmation-description,
+        #confirmation-modal-details {
+            margin-bottom: 1rem;
+        }
+        p {
+            margin: 0;
+        }
+    }
+
+    #confirmation-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    .warningIcon {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        font-size: 2.66rem;
+    }
+}
+
+.actionButtonGroup {
+    margin-left: auto;
+
+    .actionButton {
+        padding: 0.75rem;
+    }
+}

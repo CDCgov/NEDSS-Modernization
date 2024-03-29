@@ -1,6 +1,7 @@
-import './_ConfirmationModal.scss';
 import { ReactNode, RefObject } from 'react';
 import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
+import classNames from 'classnames';
+import style from './confirmationModal.module.scss';
 
 type Props = {
     id?: string;
@@ -35,26 +36,22 @@ export const ConfirmationModal = ({
             aria-labelledby="confirmation-heading"
             className="modal"
             aria-describedby={ariaDescribedBy}>
-            <ModalHeading
-                id="confirmation-heading"
-                className="border-bottom border-base-lighter font-sans-lg padding-2">
-                {title}
-            </ModalHeading>
-            <div className="modal-content">
-                <div className="warning">
-                    <Icon.Warning className="font-sans-2xl margin-x-2" />
+            <ModalHeading id="confirmation-heading">{title}</ModalHeading>
+            <div className={classNames(style.content, 'modal-content')}>
+                <div className={classNames('warning')}>
+                    <Icon.Warning className={classNames(style.warningIcon)} />
                 </div>
-                <div className="modal-message">
+                <div className={classNames(style.message, 'modal-message')}>
                     <p id={ariaDescribedBy}>{message}</p>
                     {detail && <p id="confirmation-modal-details">{detail}</p>}
                 </div>
             </div>
-            <ModalFooter id="confirmation-footer" className="border-top border-base-lighter padding-2 margin-left-auto">
-                <ButtonGroup className="margin-left-auto">
+            <ModalFooter id="confirmation-footer">
+                <ButtonGroup className={classNames(style.actionButtonGroup)}>
                     <Button type="button" onClick={onCancel} outline>
                         {cancelText}
                     </Button>
-                    <Button type="button" onClick={onConfirm} className="padding-105 text-center">
+                    <Button type="button" onClick={onConfirm} className={classNames(style.actionButton)}>
                         {confirmText}
                     </Button>
                 </ButtonGroup>
