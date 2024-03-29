@@ -1,18 +1,18 @@
 package gov.cdc.nbs.questionbank.condition.request;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record CreateConditionRequest(
-    @ApiModelProperty(required = true) String code,
-    @ApiModelProperty(required = true) String codeSystemDescTxt,
-    @ApiModelProperty(required = true) String conditionShortNm,
-    @ApiModelProperty(required = true) String progAreaCd,
-    Character nndInd,
-    Character reportableMorbidityInd,
-    Character reportableSummaryInd,
-    Character contactTracingEnableInd,
-    String familyCd,
-    String coinfectionGrpCd
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String code,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String codeSystemDescTxt,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String conditionShortNm,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String progAreaCd,
+                Character nndInd,
+                Character reportableMorbidityInd,
+                Character reportableSummaryInd,
+                Character contactTracingEnableInd,
+                String familyCd,
+                String coinfectionGrpCd
 
 ) {
 }

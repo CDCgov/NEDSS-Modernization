@@ -11,7 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
 import gov.cdc.nbs.questionbank.question.response.QuestionValidationResponse;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ValidateQuestionSteps {

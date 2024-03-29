@@ -23,8 +23,8 @@ dependencies {
     implementation libs.bundles.security
 
     implementation libs.bundles.jpa
-    implementation libs.bundles.queryDSL
-
+    implementation(variantOf(libs.queryDSL.jpa) { classifier("jakarta") })
+    
     implementation project(':authentication')
     implementation project(':testing:support')
     implementation project(':testing:identity')

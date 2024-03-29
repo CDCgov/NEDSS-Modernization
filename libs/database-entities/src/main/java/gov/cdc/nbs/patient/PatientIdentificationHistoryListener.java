@@ -5,7 +5,7 @@ import gov.cdc.nbs.entity.odse.EntityIdId;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PreUpdate;
+import jakarta.persistence.PreUpdate;
 
 @Component
 public class PatientIdentificationHistoryListener {

@@ -2,21 +2,19 @@ package gov.cdc.nbs.questionbank.valueset.request;
 
 import java.time.Instant;
 import gov.cdc.nbs.questionbank.valueset.model.Concept.Status;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record CreateConceptRequest(
-    @ApiModelProperty(required = true) String localCode,
-    @ApiModelProperty(required = true) String longName,
-    @ApiModelProperty(required = true) String display,
-    Instant effectiveFromTime,
-    Instant effectiveToTime,
-    @ApiModelProperty(required = true) Status status,
-    String adminComments,
-    // Messaging
-    @ApiModelProperty(required = true) String conceptCode,
-    @ApiModelProperty(required = true) String conceptName,
-    @ApiModelProperty(required = true) String preferredConceptName,
-    @ApiModelProperty(required = true) String codeSystem) {
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String localCode,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String longName,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String display,
+                Instant effectiveFromTime,
+                Instant effectiveToTime,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) Status status,
+                String adminComments,
+                // Messaging
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String conceptCode,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String conceptName,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String preferredConceptName,
+                @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String codeSystem) {
 }
-
-

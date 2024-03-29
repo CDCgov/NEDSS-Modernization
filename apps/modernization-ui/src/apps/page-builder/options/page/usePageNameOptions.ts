@@ -1,7 +1,6 @@
-import { Selectable } from 'options';
 import { PageBuilderOptionsService } from 'apps/page-builder/generated';
 import { usePageBuilderOptions } from 'apps/page-builder/options/usePageBuilderOptions';
-import { authorization } from 'authorization';
+import { Selectable } from 'options';
 
 type ConceptOptions = {
     options: Selectable[];
@@ -13,10 +12,7 @@ type Settings = {
 };
 
 const usePageNameOptions = ({ lazy = true }: Settings): ConceptOptions => {
-    const resolver = () =>
-        PageBuilderOptionsService.pageNames({
-            authorization: authorization()
-        });
+    const resolver = () => PageBuilderOptionsService.pageNames();
 
     const { options, load } = usePageBuilderOptions({ lazy, resolver });
 

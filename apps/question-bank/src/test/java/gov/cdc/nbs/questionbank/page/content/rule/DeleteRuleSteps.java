@@ -1,5 +1,7 @@
 package gov.cdc.nbs.questionbank.page.content.rule;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
 import gov.cdc.nbs.questionbank.page.content.rule.exceptions.DeleteRuleException;
@@ -10,8 +12,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import static org.junit.Assert.assertNull;
+import jakarta.persistence.EntityManager;
 
 
 public class DeleteRuleSteps {

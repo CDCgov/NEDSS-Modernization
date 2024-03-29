@@ -1,73 +1,42 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { EncryptionResponse } from '../models/EncryptionResponse';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
 export class EncryptionControllerService {
-
     /**
-     * decrypt
-     * @returns any OK
-     * @throws ApiError
-     */
-    public static decryptUsingPost({
-        authorization,
-        encryptedString,
-    }: {
-        authorization: string,
-        /**
-         * encryptedString
-         */
-        encryptedString: string,
-    }): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/encryption/decrypt',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: encryptedString,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
-     * encrypt
      * @returns EncryptionResponse OK
-     * @returns any Created
      * @throws ApiError
      */
-    public static encryptUsingPost({
-        authorization,
-        object,
+    public static encrypt({
+        requestBody,
     }: {
-        authorization: string,
-        /**
-         * object
-         */
-        object: any,
-    }): CancelablePromise<EncryptionResponse | any> {
+        requestBody: Record<string, any>,
+    }): CancelablePromise<EncryptionResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/encryption/encrypt',
-            headers: {
-                'Authorization': authorization,
-            },
-            body: object,
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
-
+    /**
+     * @returns any OK
+     * @throws ApiError
+     */
+    public static decrypt({
+        requestBody,
+    }: {
+        requestBody: string,
+    }): CancelablePromise<Record<string, any>> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/encryption/decrypt',
+            body: requestBody,
+            mediaType: 'text/plain',
+        });
+    }
 }

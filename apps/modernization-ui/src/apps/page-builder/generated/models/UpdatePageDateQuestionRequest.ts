@@ -1,30 +1,25 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdatePageDateQuestionRequest = {
-    adminComments?: string;
-    allowFutureDates?: boolean;
-    dataMartInfo: ReportingInfo;
-    displayControl?: number;
-    enabled: boolean;
     label: string;
-    mask?: UpdatePageDateQuestionRequest.mask;
-    messagingInfo: MessagingInfo;
-    required: boolean;
     tooltip: string;
     visible: boolean;
+    enabled: boolean;
+    required: boolean;
+    displayControl?: number;
+    mask?: UpdatePageDateQuestionRequest.mask;
+    allowFutureDates?: boolean;
+    dataMartInfo: ReportingInfo;
+    messagingInfo: MessagingInfo;
+    adminComments?: string;
 };
-
 export namespace UpdatePageDateQuestionRequest {
-
     export enum mask {
         DATE = 'DATE',
     }
-
-
 }
 

@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.valueset.delete;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import gov.cdc.nbs.questionbank.valueset.repository.ValueSetRepository;
 import gov.cdc.nbs.questionbank.valueset.response.ValueSetStateChangeResponse;
 import gov.cdc.nbs.questionbank.valueset.util.ValueSetConstants;
 
- class ValueSetStateManagerTest {
+class ValueSetStateManagerTest {
 	@Mock
 	ValueSetRepository valueSetRepository;
 

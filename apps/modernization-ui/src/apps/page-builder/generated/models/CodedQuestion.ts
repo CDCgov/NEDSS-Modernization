@@ -1,27 +1,26 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { DataMartInfo } from './DataMartInfo';
 import type { MessagingInfo } from './MessagingInfo';
 import type { Question } from './Question';
-
 export type CodedQuestion = (Question & {
-    adminComments?: string;
-    codeSet?: string;
-    dataMartInfo?: DataMartInfo;
-    defaultValue?: string;
-    description?: string;
-    displayControl?: number;
     id?: number;
-    label?: string;
-    messagingInfo?: MessagingInfo;
-    status?: string;
-    subgroup?: string;
-    tooltip?: string;
-    type?: string;
+    valueSet?: number;
+    defaultValue?: string;
+    codeSet?: string;
     uniqueId?: string;
     uniqueName?: string;
-    valueSet?: number;
+    status?: string;
+    subgroup?: string;
+    description?: string;
+    type?: string;
+    label?: string;
+    tooltip?: string;
+    displayControl?: number;
+    adminComments?: string;
+    dataMartInfo?: DataMartInfo;
+    messagingInfo?: MessagingInfo;
 });
 

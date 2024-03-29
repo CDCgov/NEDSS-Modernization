@@ -1,21 +1,20 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { MessagingInfo } from './MessagingInfo';
 import type { ReportingInfo } from './ReportingInfo';
-
 export type UpdatePageCodedQuestionRequest = {
-    adminComments?: string;
-    dataMartInfo: ReportingInfo;
-    defaultValue?: string;
-    displayControl?: number;
-    enabled: boolean;
     label: string;
-    messagingInfo: MessagingInfo;
-    required: boolean;
     tooltip: string;
-    valueSet?: number;
     visible: boolean;
+    enabled: boolean;
+    required: boolean;
+    displayControl?: number;
+    valueSet?: number;
+    defaultValue?: string;
+    dataMartInfo: ReportingInfo;
+    messagingInfo: MessagingInfo;
+    adminComments?: string;
 };
 

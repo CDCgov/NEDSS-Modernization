@@ -1,13 +1,12 @@
 import { Button, Form, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useForm } from 'react-hook-form';
-import styles from './save-tempate.module.scss';
 import { RefObject } from 'react';
 import { CreateTemplateRequest, PagesService } from 'apps/page-builder/generated';
-import { authorization as getAuthorization } from 'authorization';
 import { usePageManagement } from '../../usePageManagement';
 import { useAlert } from 'alert';
 import { maxLengthRule } from 'validation/entry';
+import styles from './save-tempate.module.scss';
 
 const initSave = {
     name: undefined,
@@ -25,7 +24,6 @@ export const SaveTemplate = ({ modalRef }: Props) => {
         defaultValues: { ...initSave }
     });
     const { handleSubmit, control } = saveForm;
-    const authorization = getAuthorization();
     const { showAlert } = useAlert();
 
     const onSubmit = handleSubmit((data) => {
@@ -36,9 +34,8 @@ export const SaveTemplate = ({ modalRef }: Props) => {
             };
             try {
                 PagesService.createTemplate({
-                    authorization,
                     page: page.id,
-                    request: request
+                    requestBody: request
                 }).then(() => {
                     modalRef.current?.toggleModal();
                     showAlert({

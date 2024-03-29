@@ -1,14 +1,14 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type PageCreateRequest = {
-    conditionIds: Array<string>;
-    dataMartName?: string;
     eventType: string;
-    messageMappingGuide: string;
+    conditionIds: Array<string>;
     name: string;
-    pageDescription?: string;
     templateId: number;
+    messageMappingGuide: string;
+    pageDescription?: string;
+    dataMartName?: string;
 };
 

@@ -1,17 +1,17 @@
 package gov.cdc.nbs.patient.profile.report.morbidity;
 
 import gov.cdc.nbs.patient.profile.redirect.outgoing.ClassicPatientProfileRedirector;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.net.URI;
 
-@ApiIgnore
+@Hidden
 @RestController
 class AddMorbidityReportRedirector {
 
@@ -25,7 +25,7 @@ class AddMorbidityReportRedirector {
 
     @PreAuthorize("hasAuthority('ADD-OBSERVATIONMORBIDITYREPORT')")
     @GetMapping("/nbs/api/profile/{patient}/report/morbidity")
-    ResponseEntity<Void> add(@PathVariable("patient") final long patient) {
+    ResponseEntity<Void> add(@PathVariable final long patient) {
         URI location = UriComponentsBuilder.fromPath(LOCATION)
             .queryParam("ContextAction", "AddMorb")
             .build()

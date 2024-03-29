@@ -35,7 +35,10 @@ record FlattenedComponent(
     Integer dataMartRepeatNumber,
     boolean appearsInBatch,
     String batchLabel,
-    Integer batchWidth) {
+    Integer batchWidth,
+    String componentBehavior,
+    String componentName,
+    String classCode) {
 
   FlattenedComponent(
       long identifier,
@@ -78,6 +81,9 @@ record FlattenedComponent(
         null,
         null,
         false,
+        null,
+        null,
+        null,
         null,
         null);
   }

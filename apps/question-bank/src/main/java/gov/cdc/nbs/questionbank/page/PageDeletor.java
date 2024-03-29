@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.page;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

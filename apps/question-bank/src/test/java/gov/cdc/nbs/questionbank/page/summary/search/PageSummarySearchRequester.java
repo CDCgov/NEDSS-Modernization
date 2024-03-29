@@ -36,7 +36,7 @@ class PageSummarySearchRequester {
   ) throws Exception {
 
     MockHttpServletRequestBuilder builder = page.getSort().get()
-        .map(order -> String.format("%s,%s", order.getProperty(), order.getDirection()))
+        .map(order -> "%s,%s".formatted(order.getProperty(), order.getDirection()))
         .reduce(
             createRequest(page, criteria),
             (existing, order) -> existing.param("sort", order),

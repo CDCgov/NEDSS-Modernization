@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -55,8 +55,7 @@ public class PersonRace {
 
     public PersonRace(
             final Person person,
-            final PatientCommand.AddRaceCategory added
-    ) {
+            final PatientCommand.AddRaceCategory added) {
         this.personUid = person;
         this.asOfDate = added.asOf();
         this.raceCategoryCd = added.category();
@@ -70,9 +69,8 @@ public class PersonRace {
     }
 
     public PersonRace(
-        final Person person,
-        final PatientCommand.AddDetailedRace added
-    ) {
+            final Person person,
+            final PatientCommand.AddDetailedRace added) {
         this.personUid = person;
         this.asOfDate = added.asOf();
         this.raceCategoryCd = added.category();
@@ -95,9 +93,9 @@ public class PersonRace {
     @Override
     public String toString() {
         return "PersonRace{" +
-            "raceCd='" + raceCd + '\'' +
-            ", raceCategoryCd='" + raceCategoryCd + '\'' +
-            ", asOfDate=" + asOfDate +
-            '}';
+                "raceCd='" + raceCd + '\'' +
+                ", raceCategoryCd='" + raceCategoryCd + '\'' +
+                ", asOfDate=" + asOfDate +
+                '}';
     }
 }

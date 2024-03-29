@@ -4,7 +4,7 @@ import gov.cdc.nbs.authentication.AuthorizedUserResolver;
 import gov.cdc.nbs.authentication.SessionCookie;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 class AuthorizedSessionResolver {

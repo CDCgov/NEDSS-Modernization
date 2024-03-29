@@ -3,8 +3,7 @@ package gov.cdc.nbs.option.concept.autocomplete;
 import gov.cdc.nbs.option.concept.ConceptOption;
 import gov.cdc.nbs.option.concept.ConceptOptionsResponse;
 import gov.cdc.nbs.option.concept.ConceptOptionsResponseMapper;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,16 +20,11 @@ class ConceptOptionAutocompleteController {
     this.resolver = finder;
   }
 
-  @ApiOperation(
-      value = "Concept Option Autocomplete",
-      notes = "Provides options from Concepts grouped into a value set that have a name matching a criteria.",
-      tags = {"ConceptOptions"}
-  )
-  @ApiImplicitParam(
-      name = "Authorization",
-      required = true,
-      paramType = "header",
-      dataTypeClass = String.class
+  @Operation(
+      operationId = "concept-search",
+      summary = "Concept Option Autocomplete",
+      description = "Provides options from Concepts grouped into a value set that have a name matching a criteria.",
+      tags = "ConceptOptions"
   )
   @GetMapping("nbs/api/options/concepts/{name}/search")
   ConceptOptionsResponse specific(

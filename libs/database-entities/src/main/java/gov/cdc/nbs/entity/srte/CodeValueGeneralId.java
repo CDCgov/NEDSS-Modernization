@@ -2,10 +2,11 @@ package gov.cdc.nbs.entity.srte;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Embeddable
@@ -26,4 +27,18 @@ public class CodeValueGeneralId implements Serializable {
     this.code = code;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    CodeValueGeneralId that = (CodeValueGeneralId) o;
+    return Objects.equals(codeSetNm, that.codeSetNm) && Objects.equals(code, that.code);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(codeSetNm, code);
+  }
 }

@@ -1,7 +1,6 @@
 import styles from './question-content.module.scss';
 import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
-import { authorization } from 'authorization';
 import { useEffect, useState } from 'react';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Selectable } from 'options/selectable';
@@ -50,8 +49,7 @@ export const QuestionContent = ({
 
     useEffect(() => {
         if (valueSet && !loading) {
-            ConceptOptionsService.allUsingGet({
-                authorization: authorization(),
+            ConceptOptionsService.concepts({
                 name: valueSet
             }).then((resp: ConceptOptionsResponse) => {
                 setConceptState(resp.options);

@@ -66,8 +66,8 @@ public class PatientProfileViewInvestigationSteps {
 
     long investigation = investigations.one();
 
-    String request = String.format(
-        "/nbs/api/profile/%d/investigation/%d",
+    String request = 
+        "/nbs/api/profile/%d/investigation/%d".formatted(
         patient,
         investigation);
 

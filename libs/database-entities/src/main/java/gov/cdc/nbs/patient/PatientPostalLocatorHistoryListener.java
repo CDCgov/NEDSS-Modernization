@@ -4,13 +4,12 @@ import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PreUpdate;
+import jakarta.persistence.PreUpdate;
 
 @Component
 public class PatientPostalLocatorHistoryListener {
     private final PatientPostalLocatorHistoryCreator creator;
     private final JdbcTemplate template;
-
 
     public PatientPostalLocatorHistoryListener(PatientPostalLocatorHistoryCreator creator, JdbcTemplate template) {
         this.creator = creator;

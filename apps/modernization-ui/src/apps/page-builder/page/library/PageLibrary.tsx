@@ -8,7 +8,13 @@ import { usePageSummarySearch } from './usePageSummarySearch';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { TableProvider } from 'components/Table/TableProvider';
 
-import { PageSummaryDownloadControllerService } from 'apps/page-builder/generated';
+import {
+    PageSummaryDownloadControllerService,
+    Date,
+    DateRange,
+    MultiValue,
+    SingleValue
+} from 'apps/page-builder/generated';
 import { PageBuilder } from 'apps/page-builder/pages/PageBuilder/PageBuilder';
 import { CustomFieldAdminBanner } from './CustomFieldAdminBanner';
 import { PageLibraryMenu } from './menu/PageLibraryMenu';
@@ -28,6 +34,8 @@ const PageLibrary = () => {
     );
 };
 
+type ApiFilter = Array<Date | DateRange | MultiValue | SingleValue>;
+
 const PageLibraryContent = () => {
     const { sorting, sortBy } = useSorting();
     const config = useConfiguration();
@@ -46,13 +54,12 @@ const PageLibraryContent = () => {
     };
 
     const handleDownloadCSV = () => {
-        PageSummaryDownloadControllerService.csvUsingPost({
-            authorization: authorization(),
-            sort: sorting ?? 'id,asc',
-            request: {
+        PageSummaryDownloadControllerService.csv({
+            requestBody: {
                 search: keyword,
-                filters: externalize(filters)
-            }
+                filters: externalize(filters) as ApiFilter
+            },
+            sort: sorting ? [sorting] : ['id,asc']
         }).then((file) => download({ data: file, fileName: 'PageLibrary.csv', fileType: 'text/csv' }));
     };
 

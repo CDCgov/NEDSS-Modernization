@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Collection;
 
 public record ConceptOptionsResponse(
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     String valueSet,
-    @Schema(required = true)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     Collection<Option> options
 ) {
 

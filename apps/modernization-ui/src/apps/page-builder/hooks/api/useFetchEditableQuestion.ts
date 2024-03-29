@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from 'react';
 
 import { EditableQuestion, PageQuestionControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 
 type State =
     | { status: 'idle' }
@@ -34,8 +33,7 @@ export const useFetchEditableQuestion = () => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            PageQuestionControllerService.getEditableQuestionUsingGet({
-                authorization: authorization(),
+            PageQuestionControllerService.getEditableQuestion({
                 page: state.page,
                 questionId: state.questionId
             })

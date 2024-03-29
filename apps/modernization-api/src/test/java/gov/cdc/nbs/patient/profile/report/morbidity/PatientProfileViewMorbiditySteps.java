@@ -69,8 +69,8 @@ public class PatientProfileViewMorbiditySteps {
 
     long morbidity = reports.active().identifier();
 
-    String request = String.format(
-        "/nbs/api/profile/%d/report/morbidity/%d",
+    String request = 
+        "/nbs/api/profile/%d/report/morbidity/%d".formatted(
         patient,
         morbidity);
 

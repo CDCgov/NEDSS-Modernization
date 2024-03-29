@@ -20,8 +20,8 @@ public class ReorderController {
     @PutMapping("/after/{after}")
     public void orderComponentAfter(
             @PathVariable("page") Long pageId,
-            @PathVariable("component") Long component,
-            @PathVariable("after") Long after) {
+            @PathVariable Long component,
+            @PathVariable Long after) {
         reorderer.apply(pageId, component, after);
     }
 }

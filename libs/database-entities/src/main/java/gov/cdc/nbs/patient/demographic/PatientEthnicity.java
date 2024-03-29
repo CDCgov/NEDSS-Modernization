@@ -4,11 +4,11 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
 import gov.cdc.nbs.patient.PatientCommand;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,11 @@ public class PatientEthnicity {
     @Column(name = "ethnic_unk_reason_cd", length = 20)
     private String ethnicUnkReasonCd;
 
-    @OneToMany(
-        mappedBy = "personUid", fetch = FetchType.LAZY,
-        cascade = {
+    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.REMOVE
-        },
-        orphanRemoval = true
-    )
+    }, orphanRemoval = true)
     private List<PersonEthnicGroup> ethnicities;
 
     public PatientEthnicity() {
@@ -71,14 +67,12 @@ public class PatientEthnicity {
     }
 
     public PersonEthnicGroup add(
-        final Person patient,
-        final PatientCommand.AddDetailedEthnicity add
-    ) {
+            final Person patient,
+            final PatientCommand.AddDetailedEthnicity add) {
 
         PersonEthnicGroup added = new PersonEthnicGroup(
-            patient,
-            add
-        );
+                patient,
+                add);
 
         ensureEthnicities().add(added);
 

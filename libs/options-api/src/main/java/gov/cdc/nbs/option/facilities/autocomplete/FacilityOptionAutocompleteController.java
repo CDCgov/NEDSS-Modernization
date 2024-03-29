@@ -1,7 +1,6 @@
 package gov.cdc.nbs.option.facilities.autocomplete;
 
 import gov.cdc.nbs.option.Option;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +19,12 @@ class FacilityOptionAutocompleteController {
     this.resolver = finder;
   }
 
-  @Operation(operationId = "facility-autocomplete", summary = "NBS Facility Option Autocomplete",
-      description = "Provides options from Facilities that have a name matching a criteria.", tags = "FacilityOptions")
-  @ApiOperation(value = "NBS Facility Option Autocomplete", nickname = "facility-autocomplete",
-      tags = "FacilityOptions")
+  @Operation(
+      operationId = "facility-autocomplete",
+      summary = "NBS Facility Option Autocomplete",
+      description = "Provides options from Facilities that have a name matching a criteria.",
+      tags = "FacilityOptions"
+  )
   @GetMapping
   Collection<Option> complete(
       @RequestParam final String criteria,

@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Icon } from '@trussworks/react-uswds';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import { FindLabReportsForPatientQuery, useFindLabReportsForPatientLazyQuery } from 'generated/graphql/schema';
 import { internalizeDate } from 'date';
 import { Headers, PatientLabReport, AssociatedWith, TestResult } from './PatientLabReport';

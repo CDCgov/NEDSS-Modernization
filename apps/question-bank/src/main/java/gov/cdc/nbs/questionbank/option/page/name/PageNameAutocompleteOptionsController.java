@@ -1,7 +1,6 @@
 package gov.cdc.nbs.questionbank.option.page.name;
 
 import gov.cdc.nbs.questionbank.option.PageBuilderOption;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +26,6 @@ class PageNameAutocompleteOptionsController {
       description = "Provides Page name options from all Pages available that have a name starting with a term.",
       tags = "Page Builder Options"
   )
-  @ApiOperation(value = "", nickname = "pageNamesAutocomplete")
   @GetMapping("/page/names/search")
   Collection<PageBuilderOption> all(
       @RequestParam

@@ -2,8 +2,8 @@ package gov.cdc.nbs.questionbank.valueset.concept;
 
 import static gov.cdc.nbs.questionbank.util.PageBuilderUtil.requireNotEmpty;
 import java.time.Instant;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneral;
 import gov.cdc.nbs.questionbank.entity.CodeValueGeneralId;

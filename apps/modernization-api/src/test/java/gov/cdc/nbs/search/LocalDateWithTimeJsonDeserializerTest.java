@@ -28,7 +28,7 @@ class LocalDateWithTimeJsonDeserializerTest {
   @MethodSource("dates")
   void should_deserialize_from_various_date_formats(final String in, final String expected) throws IOException {
 
-    String json = String.format("\"%s\"", in);
+    String json = "\"%s\"".formatted(in);
     JsonParser parser = new JsonFactory().createParser(json);
     DeserializationContext context = mapper.getDeserializationContext();
 

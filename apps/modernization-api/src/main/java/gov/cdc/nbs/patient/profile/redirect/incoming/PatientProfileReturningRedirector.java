@@ -1,14 +1,14 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.http.HttpServletRequest;
-
+@Hidden
 @RestController
 class PatientProfileReturningRedirector {
 
@@ -18,7 +18,6 @@ class PatientProfileReturningRedirector {
         this.resolver = resolver;
     }
 
-    @ApiIgnore
     @PostMapping(
         value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
     )
@@ -29,7 +28,6 @@ class PatientProfileReturningRedirector {
         return resolver.fromReturnPatient(request);
     }
 
-    @ApiIgnore
     @GetMapping(
         value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
     )

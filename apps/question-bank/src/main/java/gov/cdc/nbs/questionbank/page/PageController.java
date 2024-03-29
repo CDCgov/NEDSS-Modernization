@@ -1,6 +1,7 @@
 package gov.cdc.nbs.questionbank.page;
 
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -62,7 +63,7 @@ public class PageController {
 
   @GetMapping("{id}/page-history")
   public Page<PageHistory> getPageHistory(@PathVariable("id") Long pageId,
-      @PageableDefault(size = 25) Pageable pageable) {
+      @ParameterObject @PageableDefault(size = 25) Pageable pageable) {
     return pageHistoryFinder.getPageHistory(pageId, pageable);
   }
 

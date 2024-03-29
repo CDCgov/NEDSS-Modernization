@@ -1,11 +1,11 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type ReportingInfo = {
-    dataMartColumnName?: string;
+    reportLabel?: string;
     defaultRdbTableName?: string;
     rdbColumnName?: string;
-    reportLabel?: string;
+    dataMartColumnName?: string;
 };
 

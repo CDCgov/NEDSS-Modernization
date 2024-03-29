@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import { Direction } from 'sorting';
 import { usePage } from 'page';
 import { ClassicLink } from 'classic';

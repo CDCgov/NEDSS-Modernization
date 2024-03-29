@@ -17,7 +17,11 @@ type NavigationEntryProps = EntryProps & {
     path: string;
 };
 const NavigationEntry = ({ children, path }: NavigationEntryProps) => {
-    return <Link to={path}>{children}</Link>;
+    return (
+        <Link to={path} reloadDocument>
+            {children}
+        </Link>
+    );
 };
 
 type Children = ReactElement<LinkEntryProps> | ReactElement<NavigationEntryProps>;

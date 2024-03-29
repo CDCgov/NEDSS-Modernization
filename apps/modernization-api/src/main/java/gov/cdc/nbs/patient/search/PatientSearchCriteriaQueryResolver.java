@@ -98,7 +98,13 @@ class PatientSearchCriteriaQueryResolver {
     String name = criteria.getFirstName();
 
     if (name != null && !name.isBlank()) {
-      String encoded = soundex.encode(name.trim());
+
+      String encoded;
+      if (criteria.isDisableSoundex()) {
+        encoded = "";
+      } else {
+        encoded = soundex.encode(name.trim());
+      }
 
       return Optional.of(
           BoolQuery.of(
@@ -147,7 +153,12 @@ class PatientSearchCriteriaQueryResolver {
     String name = AdjustStrings.withoutHyphens(criteria.getLastName());
 
     if (name != null && !name.isBlank()) {
-      String encoded = soundex.encode(name.trim());
+      String encoded;
+      if (criteria.isDisableSoundex()) {
+        encoded = "";
+      } else {
+        encoded = soundex.encode(name.trim());
+      }
 
       return Optional.of(
           BoolQuery.of(

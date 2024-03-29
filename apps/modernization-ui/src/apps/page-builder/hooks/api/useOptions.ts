@@ -1,4 +1,3 @@
-import { authorization } from 'authorization';
 import { ConceptOptionsService, Option } from 'generated';
 import { useEffect, useReducer } from 'react';
 
@@ -31,7 +30,7 @@ export const useOptions = (name?: string) => {
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            ConceptOptionsService.allUsingGet({ authorization: authorization(), name: state.name })
+            ConceptOptionsService.concepts({ name: state.name })
                 .catch((error) => dispatch({ type: 'error', error: error.message }))
                 .then((response) => dispatch({ type: 'complete', options: response?.options ?? [] }));
         }

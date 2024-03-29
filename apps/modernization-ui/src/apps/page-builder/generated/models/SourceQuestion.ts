@@ -1,10 +1,10 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type SourceQuestion = {
-    codeSetName?: string;
-    label?: string;
     questionIdentifier?: string;
+    label?: string;
+    codeSetName?: string;
 };
 

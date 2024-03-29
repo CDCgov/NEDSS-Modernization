@@ -155,7 +155,7 @@ public class RequireIfCommandCreator {
         : sourceValues.stream()
             .map(SourceValue::text)
             .collect(Collectors.joining(" , "));
-    return String.format("%s %s must be ( %s ) %s",
+    return "%s %s must be ( %s ) %s".formatted(
         sourceLabel,
         comparatorValue,
         sourceValue,
@@ -171,7 +171,7 @@ public class RequireIfCommandCreator {
     String values = anySourceValue ? "" : sourceValues.stream().map(SourceValue::id).collect(Collectors.joining(" , "));
     String comparatorValue = anySourceValue ? "" : comparator;
     String targetIdentifier = String.join(" , ", targetIdentifiers);
-    return String.format("%s ( %s ) %s ^ R ( %s )",
+    return "%s ( %s ) %s ^ R ( %s )".formatted(
         sourceIdentifier,
         values,
         comparatorValue,
@@ -215,7 +215,7 @@ public class RequireIfCommandCreator {
         .map(this::requireNot)
         .collect(Collectors.joining("\n"));
 
-    return String.format(SPECIFIC_SOURCE_VALUE,
+    return SPECIFIC_SOURCE_VALUE.formatted(
         functionName,
         sourceIdentifier,
         createIf(sourceValues),
@@ -235,7 +235,7 @@ public class RequireIfCommandCreator {
         .map(this::requireNot)
         .collect(Collectors.joining("\n"));
 
-    return String.format(ANY_SOURCE_VALUE,
+    return ANY_SOURCE_VALUE.formatted(
         functionName,
         sourceIdentifier,
         "=".equals(comparator) ? requireCalls : requireNotCalls,
@@ -243,11 +243,11 @@ public class RequireIfCommandCreator {
   }
 
   String require(String targetIdentifier) {
-    return String.format("pgRequireElement('%s');", targetIdentifier);
+    return "pgRequireElement('%s');".formatted(targetIdentifier);
   }
 
   String requireNot(String targetIdentifier) {
-    return String.format("pgRequireNotElement('%s');", targetIdentifier);
+    return "pgRequireNotElement('%s');".formatted(targetIdentifier);
   }
 
   String createIf(List<SourceValue> sourceValues) {
@@ -258,6 +258,6 @@ public class RequireIfCommandCreator {
   }
 
   String identifierIfClause(String value) {
-    return String.format("($j.inArray('%s',foo) > -1)", value);
+    return "($j.inArray('%s',foo) > -1)".formatted(value);
   }
 }

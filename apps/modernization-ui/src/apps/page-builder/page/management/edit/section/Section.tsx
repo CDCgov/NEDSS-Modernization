@@ -1,19 +1,18 @@
-import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
-import { SectionHeader } from './SectionHeader';
-import styles from './section.module.scss';
-import { Subsection } from '../subsection/Subsection';
-import React, { useEffect, useRef, useState } from 'react';
 import { Modal, ModalRef } from '@trussworks/react-uswds';
-import { AddSection } from './manage/AddSection';
 import { useAlert } from 'alert';
-import { usePageManagement } from '../../usePageManagement';
-import './manage/ManageSectionModal.scss';
-import { AddSubSection } from '../subsection/manage/AddSubSection';
-import { AlertInLineProps } from './manage/ManageSectionModal';
-import { ManageSubsection } from '../subsection/manage/ManageSubsection';
-import { authorization } from 'authorization';
 import DragDropProvider from 'apps/page-builder/context/DragDropProvider';
+import { PagesQuestion, PagesSection, PagesSubSection, SubSectionControllerService } from 'apps/page-builder/generated';
+import { useEffect, useRef, useState } from 'react';
 import { ConfirmationModal } from '../../../../../../confirmation';
+import { usePageManagement } from '../../usePageManagement';
+import { Subsection } from '../subsection/Subsection';
+import { AddSubSection } from '../subsection/manage/AddSubSection';
+import { ManageSubsection } from '../subsection/manage/ManageSubsection';
+import { SectionHeader } from './SectionHeader';
+import { AddSection } from './manage/AddSection';
+import { AlertInLineProps } from './manage/ManageSectionModal';
+import './manage/ManageSectionModal.scss';
+import styles from './section.module.scss';
 
 type Props = {
     section: PagesSection;
@@ -121,8 +120,7 @@ export const Section = ({
         if (!selectedSubsectionToDelete) {
             return;
         }
-        SubSectionControllerService.deleteSubSectionUsingDelete({
-            authorization: authorization(),
+        SubSectionControllerService.deleteSubSection({
             page: page.id,
             subSectionId: selectedSubsectionToDelete.id
         }).then(() => {

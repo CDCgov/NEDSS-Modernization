@@ -22,6 +22,7 @@ type InvestigationPersonParticipation {
 }
 
 type Investigation {
+    relevance: Float!
     id: ID
     cdDescTxt: String
     jurisdictionCodeDescTxt: String

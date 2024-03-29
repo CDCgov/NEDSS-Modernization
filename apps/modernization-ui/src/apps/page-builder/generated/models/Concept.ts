@@ -1,29 +1,25 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type Concept = {
-    adminComments?: string;
     codeSetName: string;
-    codeSystem: string;
-    conceptCode: string;
-    conceptName: string;
+    localCode: string;
+    longName: string;
     display: string;
     effectiveFromTime: string;
     effectiveToTime?: string;
-    localCode: string;
-    longName: string;
-    preferredConceptName: string;
     status: Concept.status;
+    adminComments?: string;
+    conceptCode: string;
+    conceptName: string;
+    preferredConceptName: string;
+    codeSystem: string;
 };
-
 export namespace Concept {
-
     export enum status {
         ACTIVE = 'ACTIVE',
         INACTIVE = 'INACTIVE',
     }
-
-
 }
 

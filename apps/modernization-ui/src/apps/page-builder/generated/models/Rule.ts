@@ -1,34 +1,22 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { SourceQuestion } from './SourceQuestion';
 import type { Target } from './Target';
-
 export type Rule = {
-    anySourceValue: boolean;
-    comparator: Rule.comparator;
-    description?: string;
     id: number;
+    template: number;
     ruleFunction: Rule.ruleFunction;
+    description?: string;
     sourceQuestion: SourceQuestion;
+    anySourceValue: boolean;
     sourceValues?: Array<string>;
+    comparator: Rule.comparator;
     targetType: Rule.targetType;
     targets: Array<Target>;
-    template: number;
 };
-
 export namespace Rule {
-
-    export enum comparator {
-        EQUAL_TO = 'EQUAL_TO',
-        GREATER_THAN = 'GREATER_THAN',
-        GREATER_THAN_OR_EQUAL_TO = 'GREATER_THAN_OR_EQUAL_TO',
-        LESS_THAN = 'LESS_THAN',
-        LESS_THAN_OR_EQUAL_TO = 'LESS_THAN_OR_EQUAL_TO',
-        NOT_EQUAL_TO = 'NOT_EQUAL_TO',
-    }
-
     export enum ruleFunction {
         DATE_COMPARE = 'DATE_COMPARE',
         DISABLE = 'DISABLE',
@@ -37,12 +25,17 @@ export namespace Rule {
         REQUIRE_IF = 'REQUIRE_IF',
         UNHIDE = 'UNHIDE',
     }
-
+    export enum comparator {
+        EQUAL_TO = 'EQUAL_TO',
+        NOT_EQUAL_TO = 'NOT_EQUAL_TO',
+        GREATER_THAN = 'GREATER_THAN',
+        GREATER_THAN_OR_EQUAL_TO = 'GREATER_THAN_OR_EQUAL_TO',
+        LESS_THAN = 'LESS_THAN',
+        LESS_THAN_OR_EQUAL_TO = 'LESS_THAN_OR_EQUAL_TO',
+    }
     export enum targetType {
         QUESTION = 'QUESTION',
         SUBSECTION = 'SUBSECTION',
     }
-
-
 }
 

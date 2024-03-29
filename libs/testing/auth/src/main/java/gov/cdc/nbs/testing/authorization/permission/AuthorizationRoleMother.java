@@ -8,7 +8,7 @@ import gov.cdc.nbs.testing.authorization.AuthenticationSupportSettings;
 import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 public class AuthorizationRoleMother {
@@ -21,8 +21,7 @@ public class AuthorizationRoleMother {
   AuthorizationRoleMother(
       final AuthenticationSupportSettings settings,
       final EntityManager entityManager,
-      final AuthorizationRoleCleaner cleaner
-  ) {
+      final AuthorizationRoleCleaner cleaner) {
     this.settings = settings;
     this.entityManager = entityManager;
     this.cleaner = cleaner;
@@ -55,8 +54,7 @@ public class AuthorizationRoleMother {
       final long set,
       final char guest,
       final String programArea,
-      final String jurisdiction
-  ) {
+      final String jurisdiction) {
     AuthUser authUser = this.entityManager.find(AuthUser.class, user);
     AuthPermSet authPermSet = this.entityManager.find(AuthPermSet.class, set);
 

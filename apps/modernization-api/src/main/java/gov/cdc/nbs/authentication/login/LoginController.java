@@ -3,14 +3,12 @@ package gov.cdc.nbs.authentication.login;
 import gov.cdc.nbs.authentication.NBSToken;
 import gov.cdc.nbs.authentication.SecurityProperties;
 import gov.cdc.nbs.authentication.TokenCreator;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 class LoginController {
@@ -34,7 +32,6 @@ class LoginController {
       description = "Provides options from Users that have a name matching a criteria.",
       tags = "Login"
   )
-  @ApiOperation(value = "NBS User Authentication", nickname = "login", tags = "Login")
   @PostMapping("/login")
   LoginResponse login(@RequestBody LoginRequest request, HttpServletResponse response) {
     var userDetails = userService.loadUserByUsername(request.username());

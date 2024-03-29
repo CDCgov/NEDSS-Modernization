@@ -4,7 +4,7 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientPhoneLocatorHistoryListener;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue(TeleEntityLocatorParticipation.TELECOM_CLASS_CODE)
@@ -14,29 +14,21 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     static final String TELECOM_CLASS_CODE = "TELE";
 
     @MapsId("locatorUid")
-    @OneToOne(
-        fetch = FetchType.LAZY,
-        cascade = {
+    @OneToOne(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.REMOVE
-        },
-        optional = false)
-    @JoinColumn(
-        referencedColumnName = "tele_locator_uid",
-        name = "locator_uid",
-        updatable = false,
-        insertable = false)
+    }, optional = false)
+    @JoinColumn(referencedColumnName = "tele_locator_uid", name = "locator_uid", updatable = false, insertable = false)
     private TeleLocator locator;
 
     public TeleEntityLocatorParticipation() {
     }
 
     public TeleEntityLocatorParticipation(
-        final NBSEntity nbs,
-        final EntityLocatorParticipationId identifier,
-        final PatientCommand.AddPhoneNumber phoneNumber
-    ) {
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier,
+            final PatientCommand.AddPhoneNumber phoneNumber) {
         super(phoneNumber, nbs, identifier);
 
         this.cd = phoneNumber.type();
@@ -46,10 +38,9 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     }
 
     public TeleEntityLocatorParticipation(
-        final NBSEntity nbs,
-        final EntityLocatorParticipationId identifier,
-        final PatientCommand.AddEmailAddress emailAddress
-    ) {
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier,
+            final PatientCommand.AddEmailAddress emailAddress) {
         super(emailAddress, nbs, identifier);
 
         this.cd = "NET";
@@ -60,10 +51,9 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     }
 
     public TeleEntityLocatorParticipation(
-        final NBSEntity nbs,
-        final EntityLocatorParticipationId identifier,
-        final PatientCommand.AddPhone phone
-    ) {
+            final NBSEntity nbs,
+            final EntityLocatorParticipationId identifier,
+            final PatientCommand.AddPhone phone) {
         super(phone, nbs, identifier);
 
         this.cd = phone.type();
@@ -107,9 +97,9 @@ public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
     @Override
     public String toString() {
         return "TeleEntityLocatorParticipation{" +
-            "locator=" + locator +
-            ", cd='" + cd + '\'' +
-            ", use='" + useCd + '\'' +
-            '}';
+                "locator=" + locator +
+                ", cd='" + cd + '\'' +
+                ", use='" + useCd + '\'' +
+                '}';
     }
 }

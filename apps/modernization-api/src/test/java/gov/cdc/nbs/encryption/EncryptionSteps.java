@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -90,7 +91,7 @@ public class EncryptionSteps {
 
   @Then("I receive the decrypted payload")
   public void I_receive_the_decrypted_payload(final String decrypted) throws Exception {
-    this.response.active().andExpect(content().json(decrypted));
+    this.response.active().andDo(print()).andExpect(content().json(decrypted));
   }
 
 }

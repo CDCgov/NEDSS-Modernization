@@ -15,31 +15,31 @@ import java.io.IOException;
  */
 class ClassicOutgoingLoggingHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-    private static final Logger LOG = LoggerFactory.getLogger("nbs.classic.outgoing");
+  private static final Logger LOG = LoggerFactory.getLogger("nbs.classic.outgoing");
 
-    @Override
-    public ClientHttpResponse intercept(
-        final HttpRequest request,
-        final byte[] body,
-        final ClientHttpRequestExecution execution
-    ) throws IOException {
+  @Override
+  public ClientHttpResponse intercept(
+      final HttpRequest request,
+      final byte[] body,
+      final ClientHttpRequestExecution execution
+  ) throws IOException {
 
-        ClientHttpResponse response = execution.execute(request, body);
+    ClientHttpResponse response = execution.execute(request, body);
 
-        if (LOG.isDebugEnabled()) {
+    if (LOG.isDebugEnabled()) {
 
-            String path = request.getURI().getRawPath();
+      String path = request.getURI().getRawPath();
 
-            LOG.debug(
-                "{} {}\tResponse: {}",
-                request.getMethodValue(),
-                path,
-                response.getStatusCode()
-            );
-        }
-
-        return response;
+      LOG.debug(
+          "{} {}\tResponse: {}",
+          request.getMethod().name(),
+          path,
+          response.getStatusCode()
+      );
     }
+
+    return response;
+  }
 
 
 }

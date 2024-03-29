@@ -9,7 +9,7 @@ import gov.cdc.nbs.testing.support.Available;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Component
 public class PermissionSetMother {
@@ -23,12 +23,11 @@ public class PermissionSetMother {
     private final AuthorizationOperationTypeFinder operationFinder;
 
     PermissionSetMother(
-        final AuthenticationSupportSettings settings,
-        final EntityManager entityManager,
-        final PermissionSetCleaner cleaner,
-        final AuthorizationObjectTypeFinder objectFinder,
-        final AuthorizationOperationTypeFinder operationFinder
-    ) {
+            final AuthenticationSupportSettings settings,
+            final EntityManager entityManager,
+            final PermissionSetCleaner cleaner,
+            final AuthorizationObjectTypeFinder objectFinder,
+            final AuthorizationOperationTypeFinder operationFinder) {
         this.settings = settings;
         this.entityManager = entityManager;
         this.cleaner = cleaner;
@@ -61,9 +60,9 @@ public class PermissionSetMother {
         AuthAudit audit = resolveAudit();
 
         AuthPermSet permissionSet = new AuthPermSet()
-            .name("Test-Permission")
-            .description("Permission set used for integration testing")
-            .audit(audit);
+                .name("Test-Permission")
+                .description("Permission set used for integration testing")
+                .audit(audit);
 
         this.entityManager.persist(permissionSet);
 
@@ -73,10 +72,9 @@ public class PermissionSetMother {
     }
 
     private void createRight(
-        final AuthPermSet set,
-        final String operation,
-        final String object
-    ) {
+            final AuthPermSet set,
+            final String operation,
+            final String object) {
         AuthBusObjType objectType = this.objectFinder.find(object);
         AuthBusOpType operationType = this.operationFinder.find(operation);
         set.addObjectRight(operationType, objectType);

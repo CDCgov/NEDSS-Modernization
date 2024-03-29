@@ -1,4 +1,3 @@
-import { authorization } from 'authorization';
 import {
     AutocompleteOptionsResolver,
     SelectableAutocompletion,
@@ -16,8 +15,7 @@ const useConceptOptionsAutocomplete = (
     settings: Settings = { initialCriteria: '' }
 ): SelectableAutocompletion => {
     const resolver: AutocompleteOptionsResolver = (criteria: string, limit?: number) =>
-        ConceptOptionsService.specificUsingGet({
-            authorization: authorization(),
+        ConceptOptionsService.conceptSearch({
             name: valueSet,
             criteria: criteria,
             limit: limit

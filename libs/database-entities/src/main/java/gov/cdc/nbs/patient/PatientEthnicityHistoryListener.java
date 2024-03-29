@@ -4,7 +4,7 @@ import gov.cdc.nbs.entity.odse.PersonEthnicGroup;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PreRemove;
+import jakarta.persistence.PreRemove;
 
 @Component
 public class PatientEthnicityHistoryListener {
