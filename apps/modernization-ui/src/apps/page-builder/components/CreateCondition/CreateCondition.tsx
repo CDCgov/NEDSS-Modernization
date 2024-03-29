@@ -91,17 +91,15 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                     <p>
                         These fields will be displayed to your users.
                         <br />
-                        <span className="mandatory">*</span> indicates a required field.
+                        All fields with <span className="mandatory">*</span> are required.
                     </p>
-                    <br></br>
                     <Controller
                         control={control}
                         name="conditionShortNm"
                         rules={{
                             pattern: {
                                 value: /^[A-Za-z0-9_+():*-=;,./]+$/,
-                                message:
-                                    ' Condition name is not valid: Valid characters are A-Z, a-z, 0-9, _+():*-=;,./'
+                                message: 'Valid characters are A-Z, a-z, 0-9, or * ( ) _ + - = ; : / . ,'
                             },
                             required: { value: true, message: 'Condition name is required' }
                         }}
@@ -148,7 +146,7 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
                             required: { value: true, message: 'Condition Code required' },
                             pattern: {
                                 value: /^\w*$/,
-                                message: 'Condition code is not valid: Valid characters are A-Z, a-z, 0-9, or _'
+                                message: 'Valid characters are A-Z, a-z, 0-9, or _'
                             }
                         }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (

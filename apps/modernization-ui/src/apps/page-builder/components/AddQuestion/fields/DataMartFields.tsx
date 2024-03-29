@@ -151,8 +151,10 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                             form.setValue('dataMartInfo.dataMartColumnName', e.target.value?.toUpperCase());
                         }}
                         onBlur={() => {
-                            onBlur();
                             handleRdbColumnNameValidation(subgroup, rdbColumnName);
+                            setTimeout(() => {
+                                onBlur();
+                            }, 1300);
                         }}
                         defaultValue={value}
                         type="text"

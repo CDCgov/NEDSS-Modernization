@@ -59,6 +59,7 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                         defaultValue={''}
                         options={conceptState}
                         data-testid="dropdown-input"
+                        disabled={!question.enabled}
                     />
                 )}
                 {displayComponent === 1001 && <RadioButtons options={conceptState} />}
@@ -66,16 +67,38 @@ export const PreviewQuestion = ({ question, isGrouped }: Props) => {
                     displayComponent === 1009 ||
                     displayComponent === 1019 ||
                     displayComponent === 1026) && (
-                    <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
+                    <Input
+                        onChange={() => {}}
+                        defaultValue=""
+                        type="text"
+                        className={styles.questionInput}
+                        disabled={!question.enabled}
+                    />
                 )}
                 {displayComponent === 1017 && (
                     <div className={styles.multiElements}>
-                        <Button type="button" className={styles.searchBtn} outline onClick={() => {}}>
+                        <Button
+                            type="button"
+                            className={styles.searchBtn}
+                            outline
+                            onClick={() => {}}
+                            disabled={!question.enabled}>
                             Search
                         </Button>
                         <span className={styles.dividerText}>Or</span>
-                        <Input onChange={() => {}} defaultValue="" type="text" className={styles.questionInput} />
-                        <Button type="button" className={styles.quickCodeLookupBtn} outline onClick={() => {}}>
+                        <Input
+                            onChange={() => {}}
+                            defaultValue=""
+                            type="text"
+                            className={styles.questionInput}
+                            disabled={!question.enabled}
+                        />
+                        <Button
+                            type="button"
+                            className={styles.quickCodeLookupBtn}
+                            outline
+                            onClick={() => {}}
+                            disabled={!question.enabled}>
                             Quick code lookup
                         </Button>
                     </div>
