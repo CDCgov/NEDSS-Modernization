@@ -148,8 +148,6 @@ export const AdvancedSearch = () => {
             return;
         }
 
-        console.log('queryParam', queryParam);
-
         // decrypt the filter parameter
         EncryptionControllerService.decrypt({
             requestBody: queryParam
