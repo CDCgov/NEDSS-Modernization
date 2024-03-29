@@ -119,7 +119,7 @@ const PreviewPageContent = () => {
                             Business rules
                         </NavLinkButton>
                         <ModalToggleButton modalRef={saveTemplateRef} outline type="button">
-                            Save as Template
+                            Save as template
                         </ModalToggleButton>
                         {page.status !== 'Published' && (
                             <>
