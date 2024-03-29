@@ -13,11 +13,6 @@
         @include borders.rounded();
     }
 }
-.link {
-    border: 2px solid colors.$primary;
-    padding: 0.4rem 0.75rem;
-    border-radius: 0.25rem;
-}
 .loaderContent {
     padding: 4rem;
     .loaderIcon {
@@ -28,3 +23,14 @@
         justify-content: center;
     }
 }
+    .icons {
+        display: flex;
+        gap: 0.5rem;
+        button, a {
+            margin: 0;
+        }
+        .link {
+            padding: 0.4rem 0.75rem;
+            border-radius: 0.25rem;
+        }
+    }
