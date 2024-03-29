@@ -8,6 +8,9 @@ services:
       - NBS_DATASOURCE_SERVER=nbs-mssql
       - NBS_ELASTICSEARCH_SERVER=elasticsearch
       - NBS_WILDFLY_SERVER=wildfly:7001
+      - NBS_SECURITY_OIDC_ENABLED=${OIDC_ENABLED:-false}
+      - ISSUER_URI=${ISSUER_URI:-http://localhost:8100/realms/nbs-development}
+      - JWK_SET_URI=${JWK_SET_URI:-http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs}
       - NBS_UI_FEATURES_ADDRESS_AUTOCOMPLETE=false
       - NBS_UI_FEATURES_ADDRESS_VERIFICATION=false
       - NBS_UI_FEATURES_PAGEBUILDER_ENABLED=${PAGEBUILDER_ENABLED:-true}
@@ -16,8 +19,6 @@ services:
       - NBS_UI_FEATURES_PAGEBUILDER_PAGE_MANAGEMENT_CREATE_ENABLED=${PAGEBUILDER_ENABLED:-true}
       - NBS_UI_FEATURES_PAGEBUILDER_PAGE_MANAGEMENT_EDIT_ENABLED=${PAGEBUILDER_ENABLED:-true}
       - NBS_UI_SETTINGS_ANALYTICS_KEY=${ANALYTICS_KEY}
-      - ISSUER_URI=${ISSUER_URI:-http://localhost:8100/realms/nbs-development}
-      - JWK_SET_URI=${JWK_SET_URI:-http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs}
     networks:
       - nbs
 
@@ -38,6 +39,9 @@ services:
     container_name: nbs-gateway
     environment:
       - NBS_GATEWAY_LOG_LEVEL=${NBS_GATEWAY_LOG_LEVEL:-INFO}
+      - NBS_SECURITY_OIDC_ENABLED=${OIDC_ENABLED:-false}
+      - ISSUER_URI=${ISSUER_URI:-http://localhost:8100/realms/nbs-development}
+      - JWK_SET_URI=${JWK_SET_URI:-http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs}
       - NBS_GATEWAY_CLASSIC=http://wildfly:7001
       - NBS_GATEWAY_PATIENT_SEARCH_SERVICE=${NBS_GATEWAY_PATIENT_SEARCH_SERVICE:-reverse-proxy:8080}
       - NBS_GATEWAY_PATIENT_PROFILE_SERVICE=${NBS_GATEWAY_PATIENT_PROFILE_SERVICE:-reverse-proxy:8080}

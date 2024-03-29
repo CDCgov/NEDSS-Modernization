@@ -3,5 +3,5 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${issuer-uri:http://localhost:8100/realms/nbs-development}
-          jwk-set-uri: ${jwk-set-uri:http://localhost:8100/realms/nbs-development/protocol/openid-connect/certs}
+          issuer-uri: ${issuer-uri:http://localhost:8100/realms/nbs-users}
+          jwk-set-uri: ${jwk-set-uri:http://localhost:8100/realms/nbs-users/protocol/openid-connect/certs}

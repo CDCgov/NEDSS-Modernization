@@ -1,23 +1,30 @@
 {
   "users": [
     {
-      "id": "admin",
-      "username": "admin",
+      "id": "superuser",
+      "username": "superuser",
       "enabled": true,
       "emailVerified": false,
       "credentials": [
         {
           "type": "password",
-          "value": "admin"
+          "value": "superuser"
         }
       ],
-      "realmRoles": [
-        "default-roles-master",
-        "admin",
-        "create-client",
-        "view-identity-providers",
-        "view-realm"
-      ]
+      "realmRoles": []
+    },
+    {
+      "id": "supervisor",
+      "username": "supervisor",
+      "enabled": true,
+      "emailVerified": false,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "superuser"
+        }
+      ],
+      "realmRoles": []
     },
     {
       "id": "msa",
@@ -30,11 +37,61 @@
           "value": "msa"
         }
       ],
-      "realmRoles": ["default-roles-master"]
+      "realmRoles": []
+    }
+  ],
+  "clients": [
+    {
+      "id": "33c05bd2-18d6-47c2-9d55-4f0d3229d77b",
+      "clientId": "nbs-users",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": ["https://oauth.pstmn.io/v1/callback"],
+      "webOrigins": ["https://oauth.pstmn.io"],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
     }
   ],
   "id": "226c50ff-aa61-409d-a229-72e44ba25a69",
-  "realm": "NBS Development",
+  "realm": "nbs-users",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
