@@ -1,5 +1,4 @@
 import { OpenAPI } from 'apps/page-builder/generated/core/OpenAPI';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 type State =
@@ -29,12 +28,11 @@ export const useDownloadPageMetadata = () => {
     useEffect(() => {
         if (state.status === 'downloading') {
             // auto generated methods dont allow direct conversion to blob
-            fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/${state.page}/metadata`, {
+            fetch(`${OpenAPI.BASE}/api/v1/pages/${state.page}/metadata`, {
                 method: 'GET',
                 headers: {
-                    Accept: 'application/pdf',
-                    'Content-Type': 'application/json',
-                    Authorization: authorization()
+                    Accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'Content-Type': 'application/json'
                 }
             })
                 .then((response) => response.blob())
