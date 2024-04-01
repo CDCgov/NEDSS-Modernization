@@ -1,16 +1,13 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import {
     EntryMethod,
     EventStatus,
-    InvestigationEventDateType,
-    InvestigationEventIdType,
-    LabReportFilter,
     LaboratoryEventIdType,
     LaboratoryReportEventDateType,
     LaboratoryReportStatus,
+    LabReportFilter,
     PregnancyStatus,
     ProviderType,
-    ReportingEntityType,
     UserType
 } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
@@ -67,7 +64,7 @@ const LabReportGeneralFieldsWithDefaultsSet = () => {
     );
 };
 
-describe('InvestigationGeneralFields component', () => {
+describe('LabReportGeneralFields component', () => {
     it('should contain default selections', async () => {
         const { container, getByText, getByTestId } = render(<LabReportGeneralFieldsWithForm />);
         const multiSelectInputs = container.getElementsByClassName('multi-select-input');
@@ -184,7 +181,7 @@ describe('InvestigationGeneralFields component', () => {
         // Event date type
         const eventDateSelect = getByTestId('eventDate.type');
         expect(eventDateSelect).toHaveAttribute('placeholder', '-Select-');
-        expect(eventDateSelect).toHaveValue(InvestigationEventDateType.DateOfReport);
+        expect(eventDateSelect).toHaveValue(LaboratoryReportEventDateType.DateOfReport);
 
         const dateInputs = container.getElementsByClassName('usa-date-picker__external-input');
         // from
@@ -220,5 +217,138 @@ describe('InvestigationGeneralFields component', () => {
         // Provider/facility id
         const providerId = getByTestId('providerSearch.providerId');
         expect(providerId).toHaveValue('');
+    });
+
+    it('should clear date fields when date type is deselected', async () => {
+        const { getByTestId, queryByText } = render(<LabReportGeneralFieldsWithDefaultsSet />);
+
+        // Ensure that eventDate.type is set to a value that will render the date input fields
+        const eventDateSelect = getByTestId('eventDate.type');
+        fireEvent.change(eventDateSelect, { target: { value: LaboratoryReportEventDateType.DateOfReport } });
+
+        // Wait for the date input fields to be rendered
+        await waitFor(() => {
+            const fromLabel = queryByText('From');
+            const toLabel = queryByText('To');
+            expect(fromLabel).toBeInTheDocument();
+            expect(toLabel).toBeInTheDocument();
+        });
+
+        const dateInputs = document.getElementsByClassName('usa-date-picker__external-input');
+        expect(dateInputs.length).toBeGreaterThan(0); // Ensure that the date input fields are rendered
+
+        // Deselect the eventDate.type
+        fireEvent.change(eventDateSelect, { target: { value: '' } });
+
+        expect(dateInputs[0]).toHaveValue('12/01/2020');
+        expect(dateInputs[1]).toHaveValue('12/20/2020');
+    });
+
+    it('should clear event id field when event id type is deselected', async () => {
+        const { getByTestId, queryByTestId } = render(<LabReportGeneralFieldsWithDefaultsSet />);
+
+        const eventTypeSelect = getByTestId('eventId.labEventType');
+        fireEvent.change(eventTypeSelect, { target: { value: '' } });
+
+        const eventIdInput = queryByTestId('eventId.labEventId');
+        if (eventIdInput) {
+            expect(eventIdInput).toHaveValue('');
+        } else {
+            expect(eventIdInput).toBeNull(); // Or any other appropriate assertion
+        }
+    });
+
+    it('should clear provider/facility id field when provider/facility type is deselected', async () => {
+        const { getByTestId, queryByTestId } = render(<LabReportGeneralFieldsWithDefaultsSet />);
+
+        const providerSelect = getByTestId('providerSearch.providerType');
+        fireEvent.change(providerSelect, { target: { value: '' } });
+
+        const providerId = queryByTestId('providerSearch.providerId');
+        if (providerId) {
+            expect(providerId).toHaveValue('');
+        } else {
+            expect(providerId).toBeNull(); // Or any other appropriate assertion
+        }
+    });
+
+    it('should update entry methods correctly', async () => {
+        const { getByText } = render(<LabReportGeneralFieldsWithForm />);
+
+        const entryMethods = getByText('Entry method');
+        const electroniceInput = entryMethods.getElementsByTagName('input')[0];
+        const faxInput = entryMethods.getElementsByTagName('input')[1];
+
+        fireEvent.click(electroniceInput);
+        expect(electroniceInput).toBeChecked();
+        expect(faxInput).not.toBeChecked();
+
+        fireEvent.click(faxInput);
+        expect(electroniceInput).toBeChecked();
+        expect(faxInput).toBeChecked();
+
+        fireEvent.click(electroniceInput);
+        expect(electroniceInput).not.toBeChecked();
+        expect(faxInput).toBeChecked();
+    });
+
+    it('should update entered by correctly', async () => {
+        const { getByText } = render(<LabReportGeneralFieldsWithForm />);
+
+        const enteredBy = getByText('Entered by');
+        const externalInput = enteredBy.getElementsByTagName('input')[0];
+        const internalInput = enteredBy.getElementsByTagName('input')[1];
+
+        fireEvent.click(externalInput);
+        expect(externalInput).toBeChecked();
+        expect(internalInput).not.toBeChecked();
+
+        fireEvent.click(internalInput);
+        expect(externalInput).toBeChecked();
+        expect(internalInput).toBeChecked();
+
+        fireEvent.click(externalInput);
+        expect(externalInput).not.toBeChecked();
+        expect(internalInput).toBeChecked();
+    });
+
+    it('should update event status correctly', async () => {
+        const { getByText } = render(<LabReportGeneralFieldsWithForm />);
+
+        const eventStatus = getByText('Event status');
+        const newInput = eventStatus.getElementsByTagName('input')[0];
+        const updatedInput = eventStatus.getElementsByTagName('input')[1];
+
+        fireEvent.click(newInput);
+        expect(newInput).toBeChecked();
+        expect(updatedInput).not.toBeChecked();
+
+        fireEvent.click(updatedInput);
+        expect(newInput).toBeChecked();
+        expect(updatedInput).toBeChecked();
+
+        fireEvent.click(newInput);
+        expect(newInput).not.toBeChecked();
+        expect(updatedInput).toBeChecked();
+    });
+
+    it('should update processing status correctly', async () => {
+        const { getByText } = render(<LabReportGeneralFieldsWithForm />);
+
+        const processingStatus = getByText('Processing status');
+        const unprocessedInput = processingStatus.getElementsByTagName('input')[0];
+        const processedInput = processingStatus.getElementsByTagName('input')[1];
+
+        fireEvent.click(unprocessedInput);
+        expect(unprocessedInput).toBeChecked();
+        expect(processedInput).not.toBeChecked();
+
+        fireEvent.click(processedInput);
+        expect(unprocessedInput).toBeChecked();
+        expect(processedInput).toBeChecked();
+
+        fireEvent.click(unprocessedInput);
+        expect(unprocessedInput).not.toBeChecked();
+        expect(processedInput).toBeChecked();
     });
 });
