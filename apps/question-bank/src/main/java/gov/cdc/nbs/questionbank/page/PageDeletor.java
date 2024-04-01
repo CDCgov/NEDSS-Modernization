@@ -14,11 +14,15 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 @Service
 public class PageDeletor {
 
+
   private final EntityManager entityManager;
+  private final PageUidFinder pageUidFinder;
 
   public PageDeletor(
-      final EntityManager entityManager) {
+      final EntityManager entityManager,
+      final PageUidFinder pageUidFinder) {
     this.entityManager = entityManager;
+    this.pageUidFinder = pageUidFinder;
   }
 
   @Transactional
@@ -30,11 +34,20 @@ public class PageDeletor {
     }
 
     if (page.getTemplateType().equals(PageConstants.DRAFT)) {
+
+      Long publishedWithDraft = pageUidFinder.findTemplateByType(page.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT);
+
+      if (publishedWithDraft != null) {
+        WaTemplate publishedWithDraftPage = entityManager.find(WaTemplate.class, publishedWithDraft);
+        publishedWithDraftPage.setTemplateType(PageConstants.PUBLISHED);
+      }
       entityManager.remove(page);
+
     } else {
       throw new PageUpdateException(PageConstants.DELETE_DRAFT_FAIL);
     }
     return new PageDeleteResponse(page.getId(), PageConstants.DRAFT_DELETE_SUCCESS);
   }
+
 
 }

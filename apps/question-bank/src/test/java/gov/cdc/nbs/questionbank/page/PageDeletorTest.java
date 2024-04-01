@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import jakarta.persistence.EntityManager;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,11 +23,14 @@ class PageDeletorTest {
     @Mock
     private EntityManager entityManager;
 
+    @Mock
+    private PageUidFinder pageUidFinder;
+
     @InjectMocks
     PageDeletor pageDeletor;
 
     @Test
-    void deleteSinglePageDraft() {
+    void deletePageDraft_withPublishedWithDraft() {
         Long requestId = 1l;
 
         WaTemplate page = new WaTemplate();
@@ -41,6 +45,8 @@ class PageDeletorTest {
         publishedWithDraft.setTemplateType("Published With Draft");
 
         when(entityManager.find(WaTemplate.class, requestId)).thenReturn(page);
+        when(pageUidFinder.findTemplateByType(page.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT)).thenReturn(2L);
+        when(entityManager.find(WaTemplate.class, publishedWithDraft.getId())).thenReturn(publishedWithDraft);
 
         PageDeleteResponse response = pageDeletor.deletePageDraft(requestId);
         assertEquals(requestId, response.templateId());
@@ -48,34 +54,40 @@ class PageDeletorTest {
 
     }
 
+    @Test
+    void deletePageDraft_SinglePageDraft() {
+        Long requestId = 1l;
+        WaTemplate page = new WaTemplate();
+        page.setId(requestId);
+        page.setTemplateNm("some name");
+        page.setFormCd("Form_cd");
+        page.setTemplateType("Draft");
+
+        when(entityManager.find(WaTemplate.class, requestId)).thenReturn(page);
+        when(pageUidFinder.findTemplateByType(page.getFormCd(), PageConstants.PUBLISHED_WITH_DRAFT)).thenReturn(null);
+
+        PageDeleteResponse response = pageDeletor.deletePageDraft(requestId);
+        assertEquals(requestId, response.templateId());
+        assertEquals(PageConstants.DRAFT_DELETE_SUCCESS, response.message());
+    }
 
     @Test
-    void deletePageDraftDraftNotFound() {
+    void deletePageDraft_DraftNotFound() {
         Long requestId = 1L;
         WaTemplate page = new WaTemplate();
         page.setId(requestId);
         when(entityManager.find(WaTemplate.class, page.getId())).thenReturn(null);
-        assertThrows(PageNotFoundException.class, () -> pageDeletor.deletePageDraft(requestId));
+        Assert.assertThrows(PageNotFoundException.class, () -> pageDeletor.deletePageDraft(requestId));
     }
 
-
     @Test
-    void deletePageDraftPageNotFound() {
+    void deletePageDraft_PageNotDraft() {
         Long requestId = 1L;
         WaTemplate page = new WaTemplate();
         page.setTemplateType(PageConstants.PUBLISHED);
         page.setId(requestId);
         when(entityManager.find(WaTemplate.class, page.getId())).thenReturn(page);
-        assertThrows(PageUpdateException.class, () -> pageDeletor.deletePageDraft(requestId));
+        Assert.assertThrows(PageUpdateException.class, () -> pageDeletor.deletePageDraft(requestId));
     }
 
-    @Test
-    void deletePageDraftNotFoundFromDraftPage() {
-        Long requestId = 1L;
-        WaTemplate page = new WaTemplate();
-        page.setId(requestId);
-        page.setTemplateType(PageConstants.DRAFT);
-        when(entityManager.find(WaTemplate.class, page.getId())).thenReturn(null);
-        assertThrows(PageNotFoundException.class, () -> pageDeletor.deletePageDraft(requestId));
-    }
 }

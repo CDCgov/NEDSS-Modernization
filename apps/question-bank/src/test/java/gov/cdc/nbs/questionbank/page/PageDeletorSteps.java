@@ -2,6 +2,7 @@ package gov.cdc.nbs.questionbank.page;
 
 import java.util.Optional;
 
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
@@ -35,14 +37,21 @@ public class PageDeletorSteps {
     private final Active<WaTemplate> currPage = new Active<>();
     private final Active<WaTemplate> draftPage = new Active<>();
 
-    @Given("I create a delete page request with draft page")
-    public void i_create_a_delete_page_request_with_draft_page() {
+    @Given("I create a delete page request with published with draft page")
+    public void i_create_a_delete_page_request_with_published_with_draft_page() {
         WaTemplate temp = pageMother.one();
         temp.setTemplateType(PageConstants.DRAFT);
         temp.setFormCd("PG_testing");
         WaTemplate publishWithDraft = pageMother.createPagePublishedWithDraft(temp);
         currPage.active(publishWithDraft);
         this.draftPage.active(temp);
+    }
+
+    @Given("I create a delete page request with single draft page")
+    public void i_create_a_delete_page_request_with_single_draft_page() {
+        WaTemplate temp = pageMother.one();
+        temp.setTemplateType(PageConstants.DRAFT);
+        draftPage.active(temp);
     }
 
     @When("I send a delete page request")
@@ -56,8 +65,16 @@ public class PageDeletorSteps {
     }
 
 
+    @Then("the draft is deleted and the page changed to published")
+    public void the_page_deleted_and_changed_to_published() {
+        Optional<WaTemplate> temp = waTemplateRepository.findById(currPage.active().getId());
+        Assert.assertEquals(PageConstants.PUBLISHED, temp.get().getTemplateType());
+        Assert.assertEquals(Optional.empty(), waTemplateRepository.findById(draftPage.active().getId()));
+    }
+
     @Then("the draft is deleted")
     public void the_page_is_deleted() {
         assertEquals(Optional.empty(), waTemplateRepository.findById(draftPage.active().getId()));
     }
+
 }
