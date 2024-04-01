@@ -1,9 +1,8 @@
-import { KeyboardEvent as ReactKeyboardEvent } from 'react';
-import classNames from 'classnames';
+import { TabGroup } from 'apps/page-builder/components/TabGroup/TabGroup';
 import { PagesTab } from 'apps/page-builder/generated';
-import styles from './page-tabs.module.scss';
-import { usePageManagement } from '../../usePageManagement';
 import { ManageTabs } from '../../edit/tabs/ManageTabs/ManageTabs';
+import { usePageManagement } from '../../usePageManagement';
+import styles from './page-tabs.module.scss';
 
 type Props = {
     pageId: number;
@@ -14,25 +13,21 @@ type Props = {
 export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
     const { selected, select } = usePageManagement();
 
-    const handleKeyPress = (selected: PagesTab) => (event: ReactKeyboardEvent) => {
-        if (event.code === 'Enter') {
-            select(selected);
-        }
-    };
-
     return (
-        <ul className={styles.tabs}>
-            {tabs.map((tab, k) => (
-                <li
-                    className={classNames({ [styles.selected]: selected?.id === tab.id })}
-                    onClick={() => select(tab)}
-                    onKeyDown={handleKeyPress(tab)}
-                    tabIndex={0}
-                    key={k}>
-                    {tab.name}
-                </li>
-            ))}
+        <div className={styles.pageTabs}>
+            <TabGroup
+                tabs={tabs.map((t) => {
+                    return { id: t.id, name: t.name };
+                })}
+                onSelected={(id) => {
+                    const tab = tabs.find((t) => t.id === id);
+                    if (tab) {
+                        select(tab);
+                    }
+                }}
+                initialSelection={selected?.id}
+            />
             {onAddSuccess ? <ManageTabs pageId={pageId} tabs={tabs} onAddSuccess={onAddSuccess} /> : null}
-        </ul>
+        </div>
     );
 };
