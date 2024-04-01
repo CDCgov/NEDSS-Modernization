@@ -6,7 +6,7 @@ Contains REST APIs for managing Question Bank entities.
 
 ### Prerequisites
 
-1. Java 17
+1. Java 21
 2. `nbs-mssql` docker containers. See [CDC Sandbox](../../cdc-sandbox/README.md)
 
 ## Tests
@@ -36,7 +36,6 @@ It assumes that MSSQL Server is running on `localhost`. Preconfigured containers
 the [CDC Sandbox](../../cdc-sandbox/README.md),`cdc-sandbox/db`.
 
 The application will listen on port `8095`.
-
 
 ### Debugging
 
