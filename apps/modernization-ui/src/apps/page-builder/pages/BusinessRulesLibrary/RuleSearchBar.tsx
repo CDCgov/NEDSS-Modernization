@@ -1,6 +1,6 @@
-import { Input } from 'components/FormInputs/Input';
-import { Button, Icon } from '@trussworks/react-uswds';
-import { ChangeEvent, useState } from 'react';
+// import { Input } from 'components/FormInputs/Input';
+import { Button, Icon, TextInput } from '@trussworks/react-uswds';
+import { KeyboardEvent as ReactKeyboardEvent, ChangeEvent, useState, useEffect } from 'react';
 import styles from './rule-search-bar.module.scss';
 
 type Props = {
@@ -23,16 +23,29 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
         onChange(search);
     };
 
+    const handleEnter = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+        if (event.key == 'Enter') {
+            handleSubmit();
+        }
+    };
+
+    useEffect(() => {
+        if (search === '') {
+            handleSubmit();
+        }
+    }, [search]);
+
     return (
         <div className={styles.searchBar}>
             <div className={styles.searchFilter}>
-                <Input
-                    placeholder="Search pages by Source field, target field or ID"
-                    type="text"
-                    htmlFor="searchbar"
+                <TextInput
+                    name="searchbar"
+                    type="search"
+                    placeholder="Search pages by a Source field, target field or ID"
                     onChange={handleSearch}
                     id="business-rules-search"
                     defaultValue={search}
+                    onKeyDown={handleEnter}
                 />
                 <Button type="submit" onClick={handleSubmit} className={styles.searchButton}>
                     <Icon.Search size={5} className={styles.searchIcon} />
