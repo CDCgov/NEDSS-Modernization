@@ -1,0 +1,16 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          nbs-users:
+            provider: nbs-authentication
+            client-id: ${nbs.security.oidc.client.id:nbs-users-development}
+            client-secret: ${nbs.security.oidc.client.secret:KK092EEXikR0hpubkwZGHbdtZKw99AJi}
+            scope:
+              - openid
+        provider:
+          nbs-authentication:
+            user-name-attribute: preferred_username
+            issuer-uri: ${nbs.security.oidc.issuer-uri:http://localhost:8100/realms/nbs-users}
+            jwk-set-uri: ${nbs.security.oidc.jwk-set-uri:http://localhost:8100/realms/nbs-users/protocol/openid-connect/certs}

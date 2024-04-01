@@ -1,7 +1,10 @@
 nbs:
+  security:
+    oidc:
+      enabled: true
   gateway:
     log:
-      level: DEBUG
+      level: INFO
     pagebuilder:
       enabled: true
       page:
