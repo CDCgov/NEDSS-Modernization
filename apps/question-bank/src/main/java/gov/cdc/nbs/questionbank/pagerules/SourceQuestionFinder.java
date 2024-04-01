@@ -31,10 +31,10 @@ public class SourceQuestionFinder {
   }
 
   private void processQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
-    if (question.dataType() != null && question.dataType().equals("CODED") && !question.isStandardNnd()
+    if ("CODED".equals(question.dataType()) && !question.isStandardNnd()
         && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)
-        && (question.question().equals("INV169")
-            || (question.classCode().equalsIgnoreCase("CODE_VALUE_GENERAL")))) {
+        && ("INV169".equals(question.question())
+            || ("CODE_VALUE_GENERAL".equalsIgnoreCase(question.classCode())))) {
       questionsResult.add(question);
     }
   }
@@ -106,8 +106,8 @@ public class SourceQuestionFinder {
   }
 
   private void processDateQuestions(PagesQuestion question, Collection<PagesQuestion> questionsResult) {
-    if (question.dataType() != null && (question.dataType().equals("DATE")
-        || question.dataType().equals("DATETIME")) && !question.isStandardNnd() && question.visible()
+    if (("DATE".equals(question.dataType())
+        || "DATETIME".equals(question.dataType())) && !question.isStandardNnd() && question.visible()
         && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
       questionsResult.add(question);
     }
