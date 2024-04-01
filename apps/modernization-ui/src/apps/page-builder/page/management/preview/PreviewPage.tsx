@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Button, Icon, ModalRef, ModalToggleButton, Tooltip } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import {
     PageHeader,
     PageManagementLayout,
@@ -21,6 +21,7 @@ import { PageControllerService } from '../../../generated/services/PageControlle
 import { useAlert } from 'alert';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from '../../../../../components/heading';
+import { LinkButton } from 'components/button';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -131,44 +132,46 @@ const PreviewPageContent = () => {
                                 </NavLinkButton>
                             </>
                         )}
-                        <Tooltip position="top" label="Preview in NBS Classic">
-                            <a
+                        <div className={styles.icons}>
+                            <LinkButton
                                 href={`/nbs/page-builder/api/v1/pages/${page.id}/preview`}
                                 className={styles.link}
                                 target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer"
+                                data-tooltip-position="top"
+                                aria-label="Preview in NBS Classic">
                                 <Icon.Visibility size={3} />
-                            </a>
-                        </Tooltip>
-                        {page.status !== 'Published' ? (
-                            <Tooltip position="top" label="Page porting">
-                                <a
+                            </LinkButton>
+                            {page.status !== 'Published' ? (
+                                <LinkButton
                                     href={`https://app.int1.nbspreview.com/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true`}
                                     className={styles.link}
                                     target="_blank"
-                                    rel="noopener noreferrer">
+                                    rel="noopener noreferrer"
+                                    data-tooltip-position="top"
+                                    aria-label="Copy page">
                                     <Icon.ContentCopy size={3} />
-                                </a>
-                            </Tooltip>
-                        ) : null}
-                        <Tooltip position="top" label="Print this page">
-                            <a
+                                </LinkButton>
+                            ) : null}
+                            <LinkButton
                                 href={`/nbs/page-builder/api/v1/pages/${page.id}/print`}
                                 className={styles.link}
                                 target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer"
+                                data-tooltip-position="top"
+                                aria-label="Print this page">
                                 <Icon.Print size={3} />
-                            </a>
-                        </Tooltip>
-                        {page.status === 'Published' ? (
-                            <Button type="button" onClick={handleCreateDraft}>
-                                Create new draft
-                            </Button>
-                        ) : (
-                            <ModalToggleButton modalRef={publishDraftRef} type="button">
-                                Publish
-                            </ModalToggleButton>
-                        )}
+                            </LinkButton>
+                            {page.status === 'Published' ? (
+                                <Button type="button" onClick={handleCreateDraft}>
+                                    Create new draft
+                                </Button>
+                            ) : (
+                                <ModalToggleButton modalRef={publishDraftRef} type="button">
+                                    Publish
+                                </ModalToggleButton>
+                            )}
+                        </div>
                     </PageManagementMenu>
                 </PageHeader>
                 <div className={styles.preview}>
