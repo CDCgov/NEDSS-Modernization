@@ -56,10 +56,8 @@ public class PageDeletorSteps {
     }
 
 
-    @Then("the draft is deleted and the page changed to published")
-    public void the_page_deleted_and_changed_to_published() {
-        Optional<WaTemplate> temp = waTemplateRepository.findById(currPage.active().getId());
-        assertEquals(PageConstants.PUBLISHED, temp.get().getTemplateType());
+    @Then("the draft is deleted")
+    public void the_page_is_deleted() {
         assertEquals(Optional.empty(), waTemplateRepository.findById(draftPage.active().getId()));
     }
 }
