@@ -3,10 +3,12 @@ package gov.cdc.nbs.questionbank.pagerules;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.questionbank.page.content.rule.PageRuleDeleter;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
+import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.pagerules.exceptions.RuleException;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.TargetSubsectionRequest;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -28,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -43,12 +45,14 @@ class PageRuleController {
   private final PageRuleFinder pageRuleFinder;
   private final SourceQuestionFinder sourceQuestionFinder;
   private final TargetQuestionFinder targetQuestionFinder;
+  private final TargetSubsectionFinder targetSubsectionFinder;
   private final PdfCreator pdfCreator;
   private final CsvCreator csvCreator;
 
   PageRuleController(
       final TargetQuestionFinder targetQuestionFinder,
       final SourceQuestionFinder sourceQuestionFinder,
+      final TargetSubsectionFinder targetSubsectionFinder,
       final PageRuleDeleter pageRuleDeleter,
       final PageRuleCreator pageRuleCreator,
       final PageRuleUpdater pageRuleUpdater,
@@ -63,6 +67,7 @@ class PageRuleController {
     this.pdfCreator = pdfCreator;
     this.csvCreator = csvCreator;
     this.targetQuestionFinder = targetQuestionFinder;
+    this.targetSubsectionFinder = targetSubsectionFinder;
   }
 
   @PostMapping()
@@ -151,5 +156,11 @@ class PageRuleController {
   @PostMapping("/target/questions")
   public PagesResponse getTargetQuestions(@PathVariable("id") Long pageId, @RequestBody TargetQuestionRequest request) {
     return targetQuestionFinder.filterQuestions(pageId, request);
+  }
+
+  @PostMapping("/target/subsections")
+  public Collection<PagesSubSection> getTargetSubsections(@PathVariable("id") Long pageId,
+      @RequestBody TargetSubsectionRequest request) {
+    return targetSubsectionFinder.filterSubsections(pageId, request);
   }
 }
