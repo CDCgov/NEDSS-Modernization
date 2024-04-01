@@ -52,20 +52,22 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     </Button>
                 </div>
                 <Button
-                    aria-label="download search results as pdf"
+                    aria-label="Print page"
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.downloadButton}
-                    outline>
+                    outline
+                    data-tooltip-position="top">
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
                 <Button
-                    aria-label="download search results as csv"
+                    aria-label="Download as csv"
                     type="button"
                     className={styles.downloadButton}
                     outline
                     onClick={onDownloadCsv}
-                    data-testid="file-download">
+                    data-testid="file-download"
+                    data-tooltip-position="top">
                     <Icon.FileDownload size={3} />
                 </Button>
             </div>
