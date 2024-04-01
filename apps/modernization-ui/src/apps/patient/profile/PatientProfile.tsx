@@ -138,19 +138,17 @@ export const PatientProfile = () => {
 
                     <div role="tablist" className="grid-row flex-align-center margin-y-3">
                         <TabButton
-                            className="margin-left-0 font-sans-md"
+                            className="margin-left-0"
                             title={ACTIVE_TAB.SUMMARY}
                             active={activeTab === ACTIVE_TAB.SUMMARY}
                             onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}
                         />
                         <TabButton
-                            className="font-sans-md"
                             title={ACTIVE_TAB.EVENT}
                             active={activeTab === ACTIVE_TAB.EVENT}
                             onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}
                         />
                         <TabButton
-                            className="font-sans-md"
                             title={ACTIVE_TAB.DEMOGRAPHICS}
                             active={activeTab === ACTIVE_TAB.DEMOGRAPHICS}
                             onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}
