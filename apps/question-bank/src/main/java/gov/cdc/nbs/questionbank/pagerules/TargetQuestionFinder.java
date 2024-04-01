@@ -37,8 +37,8 @@ public class TargetQuestionFinder {
       TargetQuestionRequest request) {
     List<Long> selectedTargetIds = currentTargetQuestions(request);
 
-    if (question.dataType() != null && (question.dataType().equals("DATE")
-        || question.dataType().equals("DATETIME"))
+    if (("DATE".equals(question.dataType())
+        || "DATETIME".equals(question.dataType()))
         && !question.isStandardNnd() && question.visible()
         && question.componentBehavior().contains(COMPONENT_BEHAVIOR_DATA)) {
       if (request.targetQuestion() != null) {
