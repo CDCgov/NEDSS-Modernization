@@ -1,6 +1,8 @@
 package gov.cdc.nbs.questionbank.entity;
 
 import java.time.Instant;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -156,5 +159,39 @@ public class WaNndMetadatum {
     this.lastChgUserId = user;
     this.lastChgTime = requestedOn;
   }
+
+
+  public static WaNndMetadatum clone(WaNndMetadatum original) {
+    return new WaNndMetadatum(
+        null,
+        null,
+        original.questionIdentifierNnd,
+        original.questionLabelNnd,
+        original.questionRequiredNnd,
+        original.questionDataTypeNnd,
+        original.hl7SegmentField,
+        original.orderGroupId,
+        original.translationTableNm,
+        original.addTime,
+        original.addUserId,
+        original.lastChgTime,
+        original.lastChgUserId,
+        original.recordStatusCd,
+        original.recordStatusTime,
+        original.questionIdentifier,
+        original.xmlPath,
+        original.xmlTag,
+        original.xmlDataType,
+        original.partTypeCd,
+        original.repeatGroupSeqNbr,
+        original.questionOrderNnd,
+        original.localId,
+        original.waUiMetadataUid,
+        original.questionMap,
+        original.indicatorCd
+    );
+  }
+
+
 
 }
