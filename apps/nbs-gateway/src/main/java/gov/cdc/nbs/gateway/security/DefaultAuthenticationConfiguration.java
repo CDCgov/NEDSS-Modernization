@@ -17,9 +17,7 @@ class DefaultAuthenticationConfiguration {
   @Bean
   SecurityWebFilterChain defaultAuthentication(final ServerHttpSecurity http) {
     return http
-        .authorizeExchange(
-            authorize -> authorize.anyExchange().permitAll()
-        )
+        .authorizeExchange(authorize -> authorize.anyExchange().permitAll())
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .build();
   }

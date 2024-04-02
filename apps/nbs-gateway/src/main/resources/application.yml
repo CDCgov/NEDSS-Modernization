@@ -30,6 +30,9 @@ nbs:
     defaults:
       protocol: 'http'
     classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
+    home:
+      uri: ${nbs.gateway.classic}
+      base: '/nbs/HomePage.do?method=loadHomePage'
     patient:
       search:
         enabled: true
@@ -51,6 +54,8 @@ nbs:
 
 logging:
   level:
+    reactor:
+      netty: INFO
     org:
       springframework:
         security: ${nbs.gateway.security.log.level:INFO}

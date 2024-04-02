@@ -6,7 +6,7 @@ nbs:
       level: INFO
   gateway:
     log:
-      level: INFO
+      level: DEBUG
     pagebuilder:
       enabled: true
       page:

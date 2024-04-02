@@ -3,7 +3,7 @@ http:
     # Modernization app
     authentication:
       service: nbs-gateway
-      rule: "PathPrefix(`/oauth2/authorization`)"
+      rule: "PathPrefix(`/oauth2/authorization`) || PathPrefix(`/login/oauth2`)"
     login:
       service: modernization-api
       rule: "PathPrefix(`/login`)"
@@ -49,7 +49,3 @@ http:
       loadBalancer:
         servers:
           - url: "http://wildfly:7001/"
-    identity-provider:
-      loadBalancer:
-        servers:
-          - url: "http://keycloak:8080/"

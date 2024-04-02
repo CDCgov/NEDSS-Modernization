@@ -32,7 +32,7 @@ services:
     networks:
       - nbs
   reverse-proxy:
-    image: "traefik:2.10"
+    image: "traefik:2.11"
     container_name: traefik
     command:
       - "--entrypoints.traefik.address=:8081"
