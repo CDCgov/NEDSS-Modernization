@@ -38,7 +38,7 @@ const SubSectionsDropdown = ({ onSelect }: Props) => {
     }, [JSON.stringify(page)]);
 
     useEffect(() => {
-        if (selectedSubsections.length > 9) {
+        if (selectedSubsections.length > 10) {
             setErrorMessage('You can not select more than 10 target fields.');
         } else {
             setErrorMessage('');
