@@ -13,18 +13,20 @@ type Props = {
 export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
     const { selected, select } = usePageManagement();
 
+    const handleSelectionChanged = (id: string | number) => {
+        const tab = tabs.find((t) => t.id === id);
+        if (tab) {
+            select(tab);
+        }
+    };
+
     return (
         <div className={styles.pageTabs}>
             <TabGroup
                 tabs={tabs.map((t) => {
                     return { id: t.id, name: t.name };
                 })}
-                onSelected={(id) => {
-                    const tab = tabs.find((t) => t.id === id);
-                    if (tab) {
-                        select(tab);
-                    }
-                }}
+                onSelected={handleSelectionChanged}
                 initialSelection={selected?.id}
             />
             {onAddSuccess ? <ManageTabs pageId={pageId} tabs={tabs} onAddSuccess={onAddSuccess} /> : null}

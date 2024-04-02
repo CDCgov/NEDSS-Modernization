@@ -10,6 +10,11 @@ type Props = {
 export const TabGroup = ({ initialSelection, tabs, onSelected }: Props) => {
     const [selected, setSelected] = useState<string | number | undefined>(initialSelection);
 
+    const handleSelectionChange = (id: number | string) => {
+        setSelected(id);
+        onSelected(id);
+    };
+
     return (
         <ul className={styles.tabs}>
             {tabs.map((tab) => (
@@ -18,10 +23,7 @@ export const TabGroup = ({ initialSelection, tabs, onSelected }: Props) => {
                     name={tab.name}
                     id={tab.id}
                     selected={tab.id === selected}
-                    onSelected={(id) => {
-                        setSelected(id);
-                        onSelected(id);
-                    }}
+                    onSelected={handleSelectionChange}
                 />
             ))}
         </ul>

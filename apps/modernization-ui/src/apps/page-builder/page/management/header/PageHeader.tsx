@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
 import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
+import { ReactNode } from 'react';
 import { PageTabs } from './tabs/PageTabs';
 
 import styles from './page-header.module.scss';
