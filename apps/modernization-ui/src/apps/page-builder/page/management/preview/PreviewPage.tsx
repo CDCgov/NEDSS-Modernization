@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { useAlert } from 'alert';
 import {
     PageHeader,
     PageManagementLayout,
@@ -8,20 +8,21 @@ import {
     useGetPageDetails,
     usePageManagement
 } from 'apps/page-builder/page/management';
-import { Loading } from 'components/Spinner';
-import { PageInformation } from './information/PageInformation';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import styles from './preview-page.module.scss';
-import { PreviewTab } from './tab';
-import { ConfirmationModal } from 'confirmation';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import { SaveTemplate } from './SaveTemplate/SaveTemplate';
-import { PublishPage } from './PublishPage/PublishPage';
-import { PageControllerService } from '../../../generated/services/PageControllerService';
-import { useAlert } from 'alert';
+import { Loading } from 'components/Spinner';
+import { LinkButton } from 'components/button';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { ConfirmationModal } from 'confirmation';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from '../../../../../components/heading';
-import { LinkButton } from 'components/button';
+import { PageControllerService } from '../../../generated/services/PageControllerService';
+import { PublishPage } from './PublishPage/PublishPage';
+import { SaveTemplate } from './SaveTemplate/SaveTemplate';
+import { PageInformation } from './information/PageInformation';
+import styles from './preview-page.module.scss';
+import { StaticTabContent } from './staticTabContent/StaticTabContent';
+import { PreviewTab } from './tab';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -36,7 +37,7 @@ const PreviewPage = () => {
 };
 
 const PreviewPageContent = () => {
-    const { page, selected, refresh } = usePageManagement();
+    const { page, selected, displayStaticTab, refresh } = usePageManagement();
     const saveTemplateRef = useRef<ModalRef>(null);
     const deleteDraftRef = useRef<ModalRef>(null);
     const publishDraftRef = useRef<ModalRef>(null);
@@ -46,10 +47,10 @@ const PreviewPageContent = () => {
     const [isPublishing, setIsPublishing] = useState(false);
 
     const handleCreateDraft = () => {
-        try {
-            PageControllerService.savePageDraft({
-                id: page.id
-            }).then((response) => {
+        PageControllerService.savePageDraft({
+            id: page.id
+        })
+            .then((response) => {
                 showAlert({
                     type: 'success',
                     header: 'Success',
@@ -59,31 +60,31 @@ const PreviewPageContent = () => {
                     navigate(`/page-builder/pages/${response.templateId}`);
                 }
                 refresh();
+            })
+            .catch((error) => {
+                if (error instanceof Error) {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: error.message
+                    });
+                } else {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: 'An unknown error occurred'
+                    });
+                }
             });
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: error.message
-                });
-            } else {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: 'An unknown error occurred'
-                });
-            }
-        }
     };
 
     const handleDeleteDraft = () => {
-        try {
-            PageControllerService.deletePageDraft({
-                id: page.id
-            }).then(() => {
+        PageControllerService.deletePageDraft({
+            id: page.id
+        })
+            .then(() => {
                 deleteDraftRef.current?.toggleModal();
                 showAlert({
                     type: 'success',
@@ -91,24 +92,24 @@ const PreviewPageContent = () => {
                     message: `${page.name} draft was successfully deleted.`
                 });
                 navigate('/page-builder/pages');
+            })
+            .catch((error) => {
+                if (error instanceof Error) {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: error.message
+                    });
+                } else {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: 'An unknown error occurred'
+                    });
+                }
             });
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: error.message
-                });
-            } else {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: 'An unknown error occurred'
-                });
-            }
-        }
     };
 
     return (
@@ -178,7 +179,10 @@ const PreviewPageContent = () => {
                     <aside>
                         <PageInformation />
                     </aside>
-                    <main>{selected && <PreviewTab tab={selected} />}</main>
+                    <main>
+                        {selected && <PreviewTab tab={selected} />}
+                        {!selected && displayStaticTab && <StaticTabContent tab={displayStaticTab} />}
+                    </main>
                 </div>
             </PageManagementLayout>
             <ModalComponent
