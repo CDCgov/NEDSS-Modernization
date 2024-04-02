@@ -39,7 +39,6 @@ export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
     }, [JSON.stringify(tabs), onAddSuccess]);
 
     const handleSelectionChanged = (id: string | number) => {
-        console.log('tab change', id);
         const tab = tabs.find((t) => t.id === id);
         if (tab) {
             select(tab);

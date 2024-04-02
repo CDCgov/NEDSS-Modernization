@@ -20,9 +20,8 @@ import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
 import { PageInformation } from './information/PageInformation';
 import styles from './preview-page.module.scss';
+import { StaticTabContent } from './staticTabContent/StaticTabContent';
 import { PreviewTab } from './tab';
-import { ContactRecords } from './static/ContactRecords';
-import { SupplementalInfo } from './static/SupplementalInfo';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -179,8 +178,7 @@ const PreviewPageContent = () => {
                     </aside>
                     <main>
                         {selected && <PreviewTab tab={selected} />}
-                        {!selected && displayStaticTab === 'contactRecord' && <ContactRecords />}
-                        {!selected && displayStaticTab === 'supplementalInfo' && <SupplementalInfo />}
+                        {!selected && displayStaticTab && <StaticTabContent tab={displayStaticTab} />}
                     </main>
                 </div>
             </PageManagementLayout>

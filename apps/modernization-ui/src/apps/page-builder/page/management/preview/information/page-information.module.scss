@@ -1,8 +1,13 @@
 @use 'design/system';
 @use 'styles/colors';
+@use 'styles/borders';
 
 .information {
-    font-family: "Public Sans";
+    font-family: 'Public Sans';
+    background-color: colors.$base-white;
+    @include borders.rounded();
+    @extend %thin;
+
     header {
         padding: 1.5rem;
         display: flex;
@@ -13,7 +18,7 @@
     .tabs {
         display: flex;
         @extend %thin-bottom;
-        padding:  1rem 1.5rem 0;
+        padding: 1rem 1.5rem 0;
         margin: 0;
         font-style: normal;
         li {
@@ -27,7 +32,7 @@
             margin-right: 1.5rem;
             &.active {
                 font-weight: 700;
-                border-bottom: 0.25rem solid  colors.$primary;
+                border-bottom: 0.25rem solid colors.$primary;
                 padding-bottom: 0.625rem;
             }
         }
@@ -40,7 +45,6 @@
         }
         .detailsContainer {
             border-bottom: colors.$base-lighter;
-            margin-bottom: 1.5rem;
         }
         .informationBlock {
             display: flex;

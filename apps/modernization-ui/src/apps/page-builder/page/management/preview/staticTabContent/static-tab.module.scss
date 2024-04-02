@@ -1,0 +1,29 @@
+@use 'styles/colors';
+@use 'styles/borders';
+.staticTab {
+    padding-bottom: 7rem;
+    .section {
+        background-color: colors.$base-white;
+        @include borders.bordered();
+        @include borders.rounded();
+
+        .header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            @extend %thin-bottom;
+
+            .collapseIcon {
+                cursor: pointer;
+            }
+        }
+
+        .sectionContent {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+}
