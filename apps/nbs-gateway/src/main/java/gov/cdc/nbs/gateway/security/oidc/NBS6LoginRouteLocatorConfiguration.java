@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 @Configuration
 @ConditionalOnProperty(name = "nbs.security.oidc.enabled", havingValue = "true")
-class NBS6LoginRouteLocator {
+class NBS6LoginRouteLocatorConfiguration {
 
   @Bean
   RouteLocator nbs6LoginRouteLocator(
