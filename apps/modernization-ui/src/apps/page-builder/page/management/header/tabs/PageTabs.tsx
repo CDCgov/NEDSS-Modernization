@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 const contactRecordTab: PagesTab = {
     id: -1,
-    name: 'Contact record',
+    name: 'Contact Records',
     sections: [],
     visible: true,
     order: -1
@@ -15,7 +15,7 @@ const contactRecordTab: PagesTab = {
 
 const supplementalInfoTab: PagesTab = {
     id: -2,
-    name: 'Supplemental info',
+    name: 'Supplemental Info',
     sections: [],
     visible: true,
     order: -1

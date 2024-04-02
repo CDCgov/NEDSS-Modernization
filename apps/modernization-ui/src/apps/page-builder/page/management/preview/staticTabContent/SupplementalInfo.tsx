@@ -27,9 +27,9 @@ export const SupplementalInfo = () => {
                     columns={['Date Received', 'Type', 'Purpose', 'Description', 'Document ID']}
                 />
             </StaticSection>
-            <StaticSection title="Notes and Attachments">
-                <SubsectionTable title="Notes" description="" columns={['Date added', 'Added by', 'Note', 'Private']} />
-                <SubsectionTable title="Attachments" columns={['Date added', 'Added by', 'File Name', 'Description']} />
+            <StaticSection title="Notes And Attachments">
+                <SubsectionTable title="Notes" description="" columns={['Date Added', 'Added By', 'Note', 'Private']} />
+                <SubsectionTable title="Attachments" columns={['Date Added', 'Added By', 'File Name', 'Description']} />
             </StaticSection>
             <StaticSection title="History">
                 <StaticSubsection title="Investigation History">
