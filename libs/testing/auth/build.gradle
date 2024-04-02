@@ -25,6 +25,6 @@ dependencies {
 
 
     implementation project(':authentication')
-    implementation project(':testing:support')
-    implementation project(':testing:identity')
+    implementation project(':testing-support')
+    implementation project(':testing-identity')
 }

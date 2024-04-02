@@ -4,7 +4,7 @@
 
 ### Prerequisites
 
-1. Java 17
+1. Java 21
 2. Node / NPM
 3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
 

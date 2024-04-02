@@ -13,11 +13,12 @@ import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graph
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 import { MessageModal } from 'messageModal';
 import { usePatientProfilePermissions } from './permission';
-import { ConfirmationModal } from 'confirmation';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
 import styles from './patient-profile.module.scss';
+import TabButton from 'components/TabButton/TabButton';
+import { ConfirmationModal } from 'confirmation';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -135,51 +136,23 @@ export const PatientProfile = () => {
                 <div className="main-body">
                     {patient && summary && <PatientProfileSummary summary={summary} patient={patient} />}
 
-                    <div role="tablist" className="grid-row flex-align-center">
-                        <button
-                            className="tab-panel-unstyled-button"
-                            type="button"
-                            tabIndex={0}
+                    <div role="tablist" className="grid-row flex-align-center margin-y-3">
+                        <TabButton
+                            className="margin-left-0"
+                            title={ACTIVE_TAB.SUMMARY}
+                            active={activeTab === ACTIVE_TAB.SUMMARY}
                             onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}
-                            role="tab"
-                            aria-labelledby="summary-tabpanel"
-                            aria-controls="summary-tabpanel"
-                            aria-selected={activeTab === ACTIVE_TAB.SUMMARY && 'true'}>
-                            <p
-                                className={`${
-                                    activeTab === ACTIVE_TAB.SUMMARY && 'active'
-                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
-                                {ACTIVE_TAB.SUMMARY}
-                            </p>
-                        </button>
-                        <button
-                            className="tab-panel-unstyled-button"
-                            type="button"
-                            tabIndex={0}
+                        />
+                        <TabButton
+                            title={ACTIVE_TAB.EVENT}
+                            active={activeTab === ACTIVE_TAB.EVENT}
                             onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}
-                            role="tab"
-                            aria-labelledby="events-tabpanel"
-                            aria-selected={activeTab === ACTIVE_TAB.EVENT && 'true'}
-                            aria-controls="events-tabpanel">
-                            <p
-                                className={`${
-                                    activeTab === ACTIVE_TAB.EVENT && 'active'
-                                } padding-bottom-1 type text-normal margin-y-3 font-sans-md margin-x-3 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
-                                {ACTIVE_TAB.EVENT}
-                            </p>
-                        </button>
-                        <button
-                            className="tab-panel-unstyled-button"
-                            type="button"
-                            tabIndex={0}
-                            onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}>
-                            <p
-                                className={`${
-                                    activeTab === ACTIVE_TAB.DEMOGRAPHICS && 'active'
-                                } text-normal type margin-y-3 font-sans-md padding-bottom-1 cursor-pointer margin-top-2 margin-bottom-0 patient-profile-tab`}>
-                                {ACTIVE_TAB.DEMOGRAPHICS}
-                            </p>
-                        </button>
+                        />
+                        <TabButton
+                            title={ACTIVE_TAB.DEMOGRAPHICS}
+                            active={activeTab === ACTIVE_TAB.DEMOGRAPHICS}
+                            onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}
+                        />
                     </div>
 
                     {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={patient?.id} />}

@@ -18,8 +18,8 @@ testing {
                 implementation.bundle(libs.bundles.testcontainers)
                 implementation.bundle(libs.bundles.cucumber)
 
-                implementation project(':testing:support')
-                implementation project(':testing:database')
+                implementation project(':testing-support')
+                implementation project(':testing-database')
             }
         }
     }

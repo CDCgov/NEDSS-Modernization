@@ -53,11 +53,16 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                 onSearch={onSearch}
             />
             <menu>
-                <LinkButton target="_self" href="/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true">
+                <LinkButton
+                    target="_self"
+                    href="/nbs/ManagePage.do?method=loadManagePagePort&initLoad=true"
+                    data-tooltip-position="top"
+                    aria-label="Page porting">
                     Page porting
                 </LinkButton>
                 <Button
-                    aria-label="download search results as pdf"
+                    data-tooltip-position="top"
+                    aria-label="Print this page"
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.icon}
@@ -65,7 +70,8 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
                 <Button
-                    aria-label="download search results as csv"
+                    data-tooltip-position="top"
+                    aria-label="Download as csv"
                     type="button"
                     className={styles.icon}
                     outline

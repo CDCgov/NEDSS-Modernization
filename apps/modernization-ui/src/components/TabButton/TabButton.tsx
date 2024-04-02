@@ -5,11 +5,12 @@ type TabButtonProps = {
     title: string;
     active: boolean;
     onClick: () => void;
+    className?: string;
 };
 
-const TabButton = ({ active, title, onClick }: TabButtonProps) => {
+const TabButton = ({ active, title, onClick, className }: TabButtonProps) => {
     return (
-        <button role="tab" onClick={onClick} className={classNames(style.tab, { [style.active]: active })}>
+        <button role="tab" onClick={onClick} className={classNames(style.tab, { [style.active]: active }, className)}>
             {title}
         </button>
     );

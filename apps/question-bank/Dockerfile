@@ -1,4 +1,4 @@
-FROM gradle:8-jdk17 AS builder
+FROM gradle:8-jdk21 AS builder
 
 # Copy project configuration
 COPY gradle /usr/src/nbs/gradle
@@ -20,7 +20,7 @@ RUN jar xf apps/question-bank/build/libs/question-bank.jar
 
 RUN jdeps --ignore-missing-deps -q  \
     --recursive  \
-    --multi-release 17  \
+    --multi-release 21  \
     --print-module-deps  \
     --class-path 'BOOT-INF/lib/*'  \
     apps/question-bank/build/libs/question-bank.jar > deps.info
