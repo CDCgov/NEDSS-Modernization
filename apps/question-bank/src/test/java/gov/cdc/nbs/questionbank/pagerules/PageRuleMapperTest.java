@@ -18,9 +18,9 @@ class PageRuleMapperTest {
   @InjectMocks
   private PageRuleMapper pageRuleMapper;
 
-
   @Test
   void testMapRow() throws SQLException {
+
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getLong(1)).thenReturn(100l);
     when(resultSet.getLong(2)).thenReturn(123l);
@@ -35,7 +35,8 @@ class PageRuleMapperTest {
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
     when(resultSet.getString(13)).thenReturn("test456_label##test789_label");
-    when(resultSet.getLong(14)).thenReturn(10l);
+    when(resultSet.getString(14)).thenReturn("1008,1007,1012");
+    when(resultSet.getLong(15)).thenReturn(10l);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
     validate(actualResponse);
     long rowsCount = pageRuleMapper.getTotalRowsCount();
@@ -75,7 +76,8 @@ class PageRuleMapperTest {
     when(resultSet.getString(11)).thenReturn("label123");
     when(resultSet.getString(12)).thenReturn("codeSetName");
     when(resultSet.getString(13)).thenReturn(null);
-    when(resultSet.getLong(14)).thenReturn(10l);
+    when(resultSet.getString(14)).thenReturn(null);
+    when(resultSet.getLong(15)).thenReturn(10l);
     Rule actualResponse = pageRuleMapper.mapRow(resultSet, 1);
 
     assertNull(actualResponse.sourceValues());

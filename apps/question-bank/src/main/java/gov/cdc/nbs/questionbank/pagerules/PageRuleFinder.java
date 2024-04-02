@@ -30,11 +30,12 @@ class PageRuleFinder {
             [rule].logic                       as [comparator],
             [rule].target_type                 as [targetType],
             [rule].target_question_identifier  as [targetQuestions],
-            [question1].question_label          as [sourceQuestionLabel],
+            [question1].question_label         as [sourceQuestionLabel],
             [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
             STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP 
-             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',')) as [targetQuestionLabels],
-                1                                  as [TotalCount]
+             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))as [targetQuestionLabels],
+            STRING_AGG(CONVERT(NVARCHAR(max),[question2].nbs_ui_component_uid), ',') as [targetsNbsComponentIds],
+                1                              as [TotalCount]
           from WA_rule_metadata [rule]
             left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
             left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
@@ -73,11 +74,12 @@ class PageRuleFinder {
              [rule].logic                       as [comparator],
              [rule].target_type                 as [targetType],
              [rule].target_question_identifier  as [targetQuestions],
-             [question1].question_label          as [sourceQuestionLabel],
+             [question1].question_label         as [sourceQuestionLabel],
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
              STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
-             as [targetQuestionLabels],
+                                                as [targetQuestionLabels],
+             STRING_AGG(CONVERT(NVARCHAR(max),[question2].nbs_ui_component_uid), ',') as [targetsNbsComponentIds],
              (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
               from WA_rule_metadata [rule]
                 left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
@@ -129,7 +131,8 @@ class PageRuleFinder {
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
              STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP 
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
-             as [targetQuestionLabels],
+                                                as [targetQuestionLabels],
+               STRING_AGG(CONVERT(NVARCHAR(max),[question2].nbs_ui_component_uid), ',') as [targetsNbsComponentIds],
              (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
               from WA_rule_metadata [rule]
                 left join WA_UI_metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
