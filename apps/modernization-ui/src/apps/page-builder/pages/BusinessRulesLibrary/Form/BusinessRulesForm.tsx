@@ -505,7 +505,10 @@ export const BusinessRulesForm = ({
 
                             {watch.targetType === Rule.targetType.SUBSECTION && (
                                 <div className={styles.subsectionTargets}>
-                                    <SubSectionsDropdown onSelect={handleTargetSubsection} />
+                                    <SubSectionsDropdown
+                                        sourceQuestion={sourceQuestion}
+                                        onSelect={handleTargetSubsection}
+                                    />
                                 </div>
                             )}
                         </div>

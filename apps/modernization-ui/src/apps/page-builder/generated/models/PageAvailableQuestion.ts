@@ -6,8 +6,8 @@ import type { AvailableQuestion } from './AvailableQuestion';
 import type { PageableObject } from './PageableObject';
 import type { SortObject } from './SortObject';
 export type PageAvailableQuestion = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     number?: number;
     first?: boolean;
     last?: boolean;

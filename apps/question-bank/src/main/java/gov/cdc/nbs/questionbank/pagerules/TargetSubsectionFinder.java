@@ -37,20 +37,28 @@ public class TargetSubsectionFinder {
     return targetIdentifiers;
   }
 
+  private void processSubsections(PagesSection section, TargetSubsectionRequest request, Long id,
+      Collection<PagesSubSection> result) {
+    List<String> targetIdentifiers = previousTargetQuestions(id);
+
+    for (PagesSubSection subsection : section.subSections()) {
+      if (!subsection.questions().isEmpty() && request.orderNbr() <= subsection.order()
+          && (!targetIdentifiers.contains(subsection.questionIdentifier())
+              || request.targetSubsections().contains(subsection.questionIdentifier()))) {
+        result.add(subsection);
+      }
+    }
+  }
+
   public Collection<PagesSubSection> filterSubsections(Long id, TargetSubsectionRequest request) {
     Collection<PagesSubSection> result = new ArrayList<>();
     Optional<PagesResponse> page = pageResolver.resolve(id);
-    List<String> targetIdentifiers = previousTargetQuestions(id);
+
 
     if (!page.isEmpty()) {
       for (PagesTab tab : page.get().tabs()) {
         for (PagesSection section : tab.sections()) {
-          for (PagesSubSection subsection : section.subSections()) {
-            if (request.orderNbr() <= subsection.order()
-                && targetIdentifiers.contains(subsection.questionIdentifier())) {
-              result.add(subsection);
-            }
-          }
+          processSubsections(section, request, id, result);
         }
       }
     }

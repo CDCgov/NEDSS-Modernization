@@ -9,8 +9,8 @@ import type { PageableObject } from './PageableObject';
 import type { SortObject } from './SortObject';
 import type { TextQuestion } from './TextQuestion';
 export type PageQuestion = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     number?: number;
     first?: boolean;
     last?: boolean;
