@@ -8,6 +8,7 @@ spring:
     gateway:
       default-filters:
         - RewriteLocationResponseHeader
+        - TokenRelay=nbs-users
       routes:
         - id: classic
           uri: ${nbs.gateway.classic}
@@ -16,7 +17,6 @@ spring:
             - Path=/nbs/**
           filters:
             - RemoveRequestHeader=Referer
-            - TokenRelay=nbs-users
         - id: nbs-logo
           uri: ${nbs.gateway.classic}
           predicates:
@@ -27,8 +27,6 @@ spring:
             - Path=/favicon.ico
 nbs:
   gateway:
-    log:
-      level: DEBUG
     defaults:
       protocol: 'http'
     classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
@@ -43,10 +41,10 @@ nbs:
       enabled: false
       service: 'localhost:8080'
       page:
-        library: 
+        library:
           enabled: false
-        management: 
-          create: 
+        management:
+          create:
             enabled: false
           edit:
             enabled: false
@@ -55,5 +53,5 @@ logging:
   level:
     org:
       springframework:
-        security: DEBUG
-        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level}
+        security: ${nbs.gateway.security.log.level:INFO}
+        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:INFO}

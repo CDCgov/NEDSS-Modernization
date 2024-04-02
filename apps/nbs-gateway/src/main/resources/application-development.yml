@@ -2,16 +2,18 @@ nbs:
   security:
     oidc:
       enabled: true
-  gateway:
     log:
       level: INFO
+  gateway:
+    log:
+      level: DEBUG
     pagebuilder:
       enabled: true
       page:
-        library: 
+        library:
           enabled: true
-        management: 
-          create: 
+        management:
+          create:
             enabled: true
           edit:
             enabled: true
