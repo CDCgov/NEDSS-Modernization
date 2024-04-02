@@ -67,6 +67,7 @@ export const AddBusinessRule = () => {
         if (
             watch.sourceIdentifier &&
             (watch.targetIdentifiers?.length ?? 0 > 0) &&
+            (watch.targetIdentifiers?.length ?? 0) < 11 &&
             watch.targetType &&
             watch.ruleFunction &&
             (watch.anySourceValue || (watch.comparator && watch.sourceValues))

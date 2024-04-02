@@ -52,7 +52,7 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     </Button>
                 </div>
                 <Button
-                    aria-label="Print page"
+                    aria-label="Print this page"
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.downloadButton}
