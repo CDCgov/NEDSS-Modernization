@@ -1,52 +1,35 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
-.subsection {
-    @include borders.bordered();
-    @include borders.rounded();
+.description {
+    padding: 0.88rem 1rem;
+    color: colors.$base-black;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
 
-    .subsectionHeader {
-        padding: 1.5rem;
+.tableColumns {
+    display: flex;
+    width: 100%;
+
+    .column {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: colors.$cool-accent-lighter;
-
-        .collapseIcon {
-            cursor: pointer;
-        }
-    }
-
-    .description {
-        padding: 0.88rem 1rem;
-        color: colors.$base-black;
+        flex-grow: 1;
         font-size: 0.875rem;
         font-style: normal;
-        font-weight: 400;
+        font-weight: 700;
         line-height: normal;
+        padding: 0.88rem 1rem;
+        @extend %thin;
     }
+}
 
-    .tableColumns {
-        display: flex;
-        width: 100%;
-
-        .column {
-            display: flex;
-            flex-grow: 1;
-            font-size: 0.875rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-            padding: 0.88rem 1rem;
-            @extend %thin;
-        }
-    }
-
-    .tableText {
-        font-size: 0.875rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 1.4175rem;
-        padding: 1rem;
-    }
+.tableText {
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.4175rem;
+    padding: 1rem;
 }
