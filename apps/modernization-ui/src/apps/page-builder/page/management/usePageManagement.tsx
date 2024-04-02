@@ -3,6 +3,8 @@ import { PagesResponse, PagesTab } from 'apps/page-builder/generated';
 
 type Selected = PagesTab | undefined;
 
+type StaticTab = 'contactRecord' | 'supplementalInfo' | undefined;
+
 type Interactions = {
     page: PagesResponse;
     selected?: Selected;
@@ -10,6 +12,8 @@ type Interactions = {
     refresh: () => void;
     select: (tab: PagesTab) => void;
     loading: boolean;
+    displayStaticTab: StaticTab;
+    selectStaticTab: (tab: StaticTab) => void;
 };
 
 export const PageManagementContext = createContext<Interactions | undefined>(undefined);
@@ -24,17 +28,29 @@ type PageManagementProviderProps = {
 
 const PageManagementProvider = ({ page, children, fetch, refresh, loading }: PageManagementProviderProps) => {
     const [selected, setSelected] = useState<number>(0);
+    const [displayStaticTab, setDisplayStaticTab] = useState<StaticTab>(undefined);
 
-    const select = (tab: PagesTab) => setSelected(page.tabs?.indexOf(tab) ?? 0);
+    const select = (tab: PagesTab) => {
+        setDisplayStaticTab(undefined);
+        setSelected(page.tabs?.indexOf(tab) ?? 0);
+    };
+
+    const selectStaticTab = (tab: StaticTab) => {
+        setDisplayStaticTab(tab);
+        setSelected(-1);
+    };
+
     const base = useMemo(() => {
         return {
             page,
             selected: page.tabs?.[selected],
             fetch,
             refresh,
-            select
+            select,
+            displayStaticTab,
+            selectStaticTab
         };
-    }, [JSON.stringify(page), selected]);
+    }, [JSON.stringify(page), selected, displayStaticTab]);
 
     const value = useMemo(() => {
         return { ...base, loading: loading };

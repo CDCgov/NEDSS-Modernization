@@ -21,6 +21,8 @@ import { SaveTemplate } from './SaveTemplate/SaveTemplate';
 import { PageInformation } from './information/PageInformation';
 import styles from './preview-page.module.scss';
 import { PreviewTab } from './tab';
+import { ContactRecords } from './static/ContactRecords';
+import { SupplementalInfo } from './static/SupplementalInfo';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -35,7 +37,7 @@ const PreviewPage = () => {
 };
 
 const PreviewPageContent = () => {
-    const { page, selected, refresh } = usePageManagement();
+    const { page, selected, displayStaticTab, refresh } = usePageManagement();
     const saveTemplateRef = useRef<ModalRef>(null);
     const deleteDraftRef = useRef<ModalRef>(null);
     const publishDraftRef = useRef<ModalRef>(null);
@@ -175,7 +177,11 @@ const PreviewPageContent = () => {
                     <aside>
                         <PageInformation />
                     </aside>
-                    <main>{selected && <PreviewTab tab={selected} />}</main>
+                    <main>
+                        {selected && <PreviewTab tab={selected} />}
+                        {!selected && displayStaticTab === 'contactRecord' && <ContactRecords />}
+                        {!selected && displayStaticTab === 'supplementalInfo' && <SupplementalInfo />}
+                    </main>
                 </div>
             </PageManagementLayout>
             <ModalComponent

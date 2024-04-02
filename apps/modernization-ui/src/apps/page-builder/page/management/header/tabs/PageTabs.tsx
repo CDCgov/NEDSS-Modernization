@@ -3,32 +3,62 @@ import { PagesTab } from 'apps/page-builder/generated';
 import { ManageTabs } from '../../edit/tabs/ManageTabs/ManageTabs';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './page-tabs.module.scss';
+import { useEffect, useState } from 'react';
+
+const contactRecordTab: PagesTab = {
+    id: -1,
+    name: 'Contact record',
+    sections: [],
+    visible: true,
+    order: -1
+};
+
+const supplementalInfoTab: PagesTab = {
+    id: -2,
+    name: 'Supplemental info',
+    sections: [],
+    visible: true,
+    order: -1
+};
 
 type Props = {
     pageId: number;
     tabs: PagesTab[];
     onAddSuccess?: () => void;
 };
-
 export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
-    const { selected, select } = usePageManagement();
+    const { selected, select, selectStaticTab } = usePageManagement();
+    const [displayedTabs, setDisplayedTabs] = useState<PagesTab[]>([]);
+
+    useEffect(() => {
+        if (!onAddSuccess) {
+            setDisplayedTabs([...tabs, contactRecordTab, supplementalInfoTab]);
+        } else {
+            setDisplayedTabs(tabs);
+        }
+    }, [JSON.stringify(tabs), onAddSuccess]);
 
     const handleSelectionChanged = (id: string | number) => {
+        console.log('tab change', id);
         const tab = tabs.find((t) => t.id === id);
         if (tab) {
             select(tab);
+        } else {
+            // Display static tab content
+            switch (id) {
+                case -1:
+                    selectStaticTab('contactRecord');
+                    break;
+                case -2:
+                    selectStaticTab('supplementalInfo');
+                    break;
+            }
         }
     };
 
     return (
         <div className={styles.pageTabs}>
-            <TabGroup
-                tabs={tabs.map((t) => {
-                    return { id: t.id, name: t.name };
-                })}
-                onSelected={handleSelectionChanged}
-                initialSelection={selected?.id}
-            />
+            <TabGroup tabs={displayedTabs} onSelected={handleSelectionChanged} initialSelection={selected?.id} />
             {onAddSuccess ? <ManageTabs pageId={pageId} tabs={tabs} onAddSuccess={onAddSuccess} /> : null}
         </div>
     );
