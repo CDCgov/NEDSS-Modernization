@@ -11,6 +11,7 @@ interface Props {
 const SubSectionsDropdown = ({ onSelect }: Props) => {
     const [subSections, setSubSections] = useState<PagesSubSection[]>([]);
     const [selectedSubsections, setSelectedSubsections] = useState<string[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const form = useFormContext<RuleRequest>();
 
@@ -37,6 +38,14 @@ const SubSectionsDropdown = ({ onSelect }: Props) => {
     }, [JSON.stringify(page)]);
 
     useEffect(() => {
+        if (selectedSubsections.length > 10) {
+            setErrorMessage('You can not select more than 10 target fields.');
+        } else {
+            setErrorMessage('');
+        }
+    }, [selectedSubsections]);
+
+    useEffect(() => {
         if (form.watch('targetIdentifiers').length) {
             // use the selectedSubsectionIdentifiers to search the subsections array and find the matching subsections
             const selected: PagesSubSection[] = subSections.filter((section) =>
@@ -49,7 +58,14 @@ const SubSectionsDropdown = ({ onSelect }: Props) => {
 
     const options = subSections.map((subSection) => ({ name: subSection.name, value: subSection.questionIdentifier }));
 
-    return <MultiSelectInput onChange={handleSelectSubsection} value={selectedSubsections} options={options} />;
+    return (
+        <MultiSelectInput
+            onChange={handleSelectSubsection}
+            value={selectedSubsections}
+            options={options}
+            error={errorMessage}
+        />
+    );
 };
 
 export default SubSectionsDropdown;
