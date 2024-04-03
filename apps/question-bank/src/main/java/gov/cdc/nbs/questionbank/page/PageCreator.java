@@ -88,8 +88,7 @@ public class PageCreator {
     List<WaUiMetadata> initialPageMappings = new ArrayList<>();
     List<WaUiMetadata> pages = waUiMetadataRepository.findAllByWaTemplateUid(template);
     for (WaUiMetadata original : pages) {
-      WaUiMetadata clone = WaUiMetadata.clone(original);
-      clone.setWaTemplateUid(newPage);
+      WaUiMetadata clone = WaUiMetadata.clone(original, newPage);
       initialPageMappings.add(clone);
     }
     return initialPageMappings;

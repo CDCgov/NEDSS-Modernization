@@ -143,10 +143,11 @@ public class WaRdbMetadata {
     this.lastChgUserId = user;
   }
 
-  public static WaRdbMetadata clone(WaRdbMetadata original) {
+
+  public static WaRdbMetadata clone(WaRdbMetadata original, WaTemplate template, WaUiMetadata metadata) {
     return new WaRdbMetadata(
         null,
-        null,
+        template,
         original.userDefinedColumnNm,
         original.recordStatusCd,
         original.recordStatusTime,
@@ -155,12 +156,13 @@ public class WaRdbMetadata {
         original.lastChgTime,
         original.lastChgUserId,
         original.localId,
-        null,
+        metadata,
         original.rdbTableNm,
         original.rptAdminColumnNm,
         original.rdbColumnNm,
         original.questionIdentifier,
         original.blockPivotNbr);
   }
+
 
 }
