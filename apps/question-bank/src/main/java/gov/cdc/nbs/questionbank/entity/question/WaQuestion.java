@@ -196,7 +196,7 @@ public abstract class WaQuestion {
     private Long lastChgUserId;
 
     @Column(name = "code_set_group_id")
-    private Long codeSetGroupId;
+    protected Long codeSetGroupId;
 
     public abstract String getDataType();
 
