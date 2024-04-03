@@ -1,4 +1,4 @@
-import { PageRuleControllerService, PagesResponse, PagesSubSection, TargetQuestionRequest, TargetSubsectionRequest } from 'apps/page-builder/generated';
+import { PageRuleControllerService, PagesSubSection, TargetSubsectionRequest } from 'apps/page-builder/generated';
 import { useEffect, useReducer } from 'react';
 
 type State =
