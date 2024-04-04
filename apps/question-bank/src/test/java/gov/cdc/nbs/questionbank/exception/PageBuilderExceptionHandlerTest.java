@@ -5,7 +5,7 @@ import gov.cdc.nbs.questionbank.page.exception.PageNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.security.access.AccessDeniedException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,5 +44,22 @@ class PageBuilderExceptionHandlerTest {
 
     assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
+  }
+
+  @Test
+  void should_set_403() {
+    // given a questionCreateException
+    AccessDeniedException exception = new AccessDeniedException("Failed");
+
+    // when the exception handler returns a response
+    ResponseEntity<ExceptionMessage> responseEntity = handler.handleAccessDenied(exception);
+
+    // then the message should be present
+    assertThat(responseEntity.getBody())
+        .extracting(ExceptionMessage::message)
+        .asString()
+        .isEqualTo("Access denied");
+
+    assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
   }
 }
