@@ -161,10 +161,10 @@ public class WaNndMetadatum {
   }
 
 
-  public static WaNndMetadatum clone(WaNndMetadatum original) {
+  public static WaNndMetadatum clone(WaNndMetadatum original, WaTemplate template) {
     return new WaNndMetadatum(
         null,
-        null,
+        template,
         original.questionIdentifierNnd,
         original.questionLabelNnd,
         original.questionRequiredNnd,
@@ -188,10 +188,7 @@ public class WaNndMetadatum {
         original.localId,
         original.waUiMetadataUid,
         original.questionMap,
-        original.indicatorCd
-    );
+        original.indicatorCd);
   }
-
-
 
 }
