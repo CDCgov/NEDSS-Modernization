@@ -54,7 +54,7 @@ export const EditBusinessRule = () => {
                 sourceText: `${response.sourceQuestion.label} (${response.sourceQuestion.questionIdentifier})`,
                 targetIdentifiers: response.targets.map((target) => target.targetIdentifier),
                 targetValueText: response.targets.map((target) => target.label),
-                targetType: response.targetType
+                targetType: response.targetType ?? Rule.targetType.QUESTION
             });
         });
     }, [ruleId]);
