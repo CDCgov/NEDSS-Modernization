@@ -150,7 +150,7 @@ const PreviewPageContent = () => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     data-tooltip-position="top"
-                                    aria-label="Copy page">
+                                    aria-label="Page porting">
                                     <Icon.ContentCopy size={3} />
                                 </LinkButton>
                             ) : null}
