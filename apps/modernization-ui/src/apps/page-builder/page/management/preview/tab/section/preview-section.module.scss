@@ -2,6 +2,11 @@
 @use 'styles/borders';
 
 .section {
+    background-color: colors.$base-white;
+    @include borders.bordered();
+    @include borders.rounded();
+    margin-bottom: 1.5rem;
+
     .header {
         padding: 1.5rem;
         display: flex;
@@ -56,4 +61,3 @@
         gap: 1rem;
     }
 }
-

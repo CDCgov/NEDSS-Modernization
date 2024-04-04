@@ -1,0 +1,35 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.description {
+    padding: 0.88rem 1rem;
+    color: colors.$base-black;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.tableColumns {
+    display: flex;
+    width: 100%;
+
+    .column {
+        display: flex;
+        flex-grow: 1;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        padding: 0.88rem 1rem;
+        @extend %thin;
+    }
+}
+
+.tableText {
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.4175rem;
+    padding: 1rem;
+}

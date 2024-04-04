@@ -22,7 +22,9 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
 
     const batches = useWatch({ control: control, name: 'batches' });
     const calcTotal = (batches: Batch[]): number => {
-        return batches.reduce((n, { width }) => n + parseInt(String(width ?? 0)), 0);
+        return batches
+            .filter((batch) => batch.appearsInTable)
+            .reduce((n, { width }) => n + parseInt(String(width ?? 0)), 0);
     };
 
     useEffect(() => {
@@ -38,7 +40,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
     const validateWidths = () => {
         const calculated = calcTotal(batches);
         setTotal(isNaN(calculated) ? undefined : calculated);
-        setValid(calcTotal(batches) === 100);
+        setValid(calculated === 100);
     };
 
     return (

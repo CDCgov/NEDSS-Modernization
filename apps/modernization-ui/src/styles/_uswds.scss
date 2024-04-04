@@ -105,23 +105,6 @@ table.usa-table {
     border: 1px solid colors.$primary-dark !important;
 }
 
-// Trussworks tooltip
-.usa-tooltip {
-    // removing the button styling inserted by tooltip
-    .usa-button:has(svg) {
-        &.usa-tooltip__trigger {
-            background-color: unset;
-            color: colors.$primary;
-            padding: 0;
-        }
-    }
-    // styling tooltip body
-    .usa-tooltip__body {
-        font-family: "Public Sans";
-        font-size: 1rem;
-        padding: 0.75rem;
-    }
-}
 
 .historyPagination {
     overflow: scroll;

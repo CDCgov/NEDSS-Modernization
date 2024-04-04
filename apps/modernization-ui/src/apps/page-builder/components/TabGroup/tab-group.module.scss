@@ -1,0 +1,67 @@
+@use 'styles/colors';
+
+.tabs {
+    display: flex;
+    list-style-type: none;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+
+    li {
+        cursor: pointer;
+        border: none;
+        display: block;
+        color: colors.$base-black;
+        font-weight: 400;
+
+        button {
+            background-color: unset;
+            border: none;
+            cursor: pointer;
+            line-height: 1;
+            display: inline-block;
+            font-weight: 400;
+            height: 3rem;
+            padding: 1rem;
+            position: relative;
+            text-decoration: none;
+        }
+
+        &.selected {
+            button {
+                color: black;
+                font-weight: 700;
+                position: relative;
+            }
+
+            button::after {
+                background-color: colors.$primary;
+                border-radius: 0;
+                content: '';
+                display: block;
+                position: absolute;
+                height: 0.4375rem;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+        }
+
+        &:hover {
+            button {
+                color: colors.$primary;
+            }
+            button::after {
+                background-color: colors.$primary;
+                border-radius: 0;
+                content: '';
+                display: block;
+                position: absolute;
+                height: 0.4375rem;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+        }
+    }
+}
