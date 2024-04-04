@@ -654,6 +654,18 @@ class WaUiMetadataTest {
     assertThat(cloned.getWaTemplateUid()).isEqualTo(newPage);
   }
 
+  @Test
+  void should_clone_rdb() {
+    WaTemplate newPage = new WaTemplate();
+    WaUiMetadata metadata = new WaUiMetadata();
+    WaRdbMetadata nnd = new WaRdbMetadata();
+    metadata.setWaRdbMetadatum(nnd);
+
+    WaUiMetadata cloned = WaUiMetadata.clone(metadata, newPage);
+
+    assertThat(cloned.getWaTemplateUid()).isEqualTo(newPage);
+  }
+
   private void validateMessaging(WaUiMetadata question, QuestionUpdate command) {
     assertThat(question.getWaNndMetadatum().getQuestionIdentifierNnd()).isEqualTo(command.messageVariableId());
     assertThat(question.getWaNndMetadatum().getQuestionRequiredNnd())
