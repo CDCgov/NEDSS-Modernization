@@ -41,7 +41,7 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                     <TextInput
                         name="searchbar"
                         type="search"
-                        placeholder="Search pages by a Source field, target field or ID"
+                        placeholder="Search by source question, target(s) or ID"
                         onChange={handleSearch}
                         id="business-rules-search"
                         defaultValue={search}
