@@ -1,12 +1,15 @@
 nbs:
   security:
     oidc:
-      enabled: true
+      host: localhost:8100
+      client:
+        id: nbs-users-development
+        secret: KK092EEXikR0hpubkwZGHbdtZKw99AJi
     log:
       level: INFO
   gateway:
     log:
-      level: DEBUG
+      level: INFO
     pagebuilder:
       enabled: true
       page:

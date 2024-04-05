@@ -2,15 +2,15 @@ package gov.cdc.nbs.gateway.security.oidc;
 
 import gov.cdc.nbs.gateway.classic.NBSClassicService;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
-@ConditionalOnProperty(name = "nbs.security.oidc.enabled", havingValue = "true")
+@Profile("oidc")
 class NBS6LogoutRouteLocatorConfiguration {
 
   @Bean

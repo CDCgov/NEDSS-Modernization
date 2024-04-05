@@ -2,8 +2,6 @@ server:
   port: 8000
 
 spring:
-  profiles:
-    include: oidc
   cloud:
     gateway:
       default-filters:
