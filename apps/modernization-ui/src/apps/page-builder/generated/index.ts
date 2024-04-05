@@ -100,6 +100,7 @@ export type { SubSection } from './models/SubSection';
 export type { Tab } from './models/Tab';
 export type { Target } from './models/Target';
 export { TargetQuestionRequest } from './models/TargetQuestionRequest';
+export type { TargetSubsectionRequest } from './models/TargetSubsectionRequest';
 export type { Template } from './models/Template';
 export type { TextQuestion } from './models/TextQuestion';
 export { UpdateCodedQuestionRequest } from './models/UpdateCodedQuestionRequest';

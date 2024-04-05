@@ -6,8 +6,8 @@ import type { PageableObject } from './PageableObject';
 import type { PageSummary } from './PageSummary';
 import type { SortObject } from './SortObject';
 export type PagePageSummary = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     number?: number;
     first?: boolean;
     last?: boolean;

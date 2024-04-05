@@ -1,19 +1,23 @@
-import { RuleRequest, PagesSubSection } from 'apps/page-builder/generated';
+import { RuleRequest, PagesSubSection, PagesQuestion } from 'apps/page-builder/generated';
+import { useGetTargetSubsections } from 'apps/page-builder/hooks/useGetTargetSubsections';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { MultiSelectInput } from 'components/selection/multi';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface Props {
+    sourceQuestion?: PagesQuestion;
     onSelect: (subSections: PagesSubSection[]) => void;
 }
 
-const SubSectionsDropdown = ({ onSelect }: Props) => {
+const SubSectionsDropdown = ({ onSelect, sourceQuestion }: Props) => {
     const [subSections, setSubSections] = useState<PagesSubSection[]>([]);
     const [selectedSubsections, setSelectedSubsections] = useState<string[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     const form = useFormContext<RuleRequest>();
+
+    const { response, fetch } = useGetTargetSubsections();
 
     const { page } = useGetPageDetails();
 
@@ -27,15 +31,22 @@ const SubSectionsDropdown = ({ onSelect }: Props) => {
 
     useEffect(() => {
         if (page) {
-            const sections = page.tabs?.map((tab) => tab.sections).flat();
-            const subs = sections
-                ?.map((section) => section.subSections)
-                .flat()
-                .filter((sub) => sub.questions.length);
-
-            setSubSections(subs ?? []);
+            if (form.watch('targetIdentifiers')) {
+                fetch(page.id ?? 0, {
+                    orderNbr: sourceQuestion?.order,
+                    targetSubsections: form.watch('targetIdentifiers')
+                });
+            } else {
+                fetch(page.id ?? 0, { orderNbr: sourceQuestion?.order });
+            }
         }
     }, [JSON.stringify(page)]);
+
+    useEffect(() => {
+        if (response) {
+            setSubSections(response);
+        }
+    }, [JSON.stringify(response)]);
 
     useEffect(() => {
         if (selectedSubsections.length > 10) {

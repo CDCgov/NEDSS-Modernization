@@ -6,8 +6,8 @@ import type { PageableObject } from './PageableObject';
 import type { SortObject } from './SortObject';
 import type { ValueSetOption } from './ValueSetOption';
 export type PageValueSetOption = {
-    totalPages?: number;
     totalElements?: number;
+    totalPages?: number;
     number?: number;
     first?: boolean;
     last?: boolean;
