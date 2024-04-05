@@ -70,6 +70,12 @@ export const UpdateGroupedQuestion = ({ page, subsection, onSuccess, onCancel }:
             });
             form.reset();
             onSuccess();
+        } else if (error && !subsection.questions.every((question) => question.isPublished === false)) {
+            showAlert({
+                type: 'error',
+                header: 'error',
+                message: 'Subsection includes a question(s) that has already been published”'
+            });
         } else if (error) {
             showAlert({
                 type: 'error',
