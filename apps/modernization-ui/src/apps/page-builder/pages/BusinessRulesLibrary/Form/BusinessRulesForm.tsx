@@ -474,7 +474,7 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
-                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name))} (${
+                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name ?? question.componentName))} (${
                                                     question.question
                                                 })`}
                                             </div>

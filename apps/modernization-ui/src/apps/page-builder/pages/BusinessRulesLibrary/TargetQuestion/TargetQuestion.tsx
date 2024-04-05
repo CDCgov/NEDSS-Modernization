@@ -142,7 +142,7 @@ export const TargetQuestion = ({
                         {selectedList.map((question, key) => (
                             <div key={key} className={styles.selectedQuestion}>
                                 <Tag className={styles.selectedQuestion}>
-                                    {question.name} ({question.question})
+                                    {question.name ?? question.componentName} ({question.question})
                                 </Tag>
                                 <UswIcon.Close onClick={() => handleRemove(question)} />
                             </div>

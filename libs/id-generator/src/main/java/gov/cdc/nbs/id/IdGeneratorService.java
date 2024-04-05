@@ -62,6 +62,10 @@ public class IdGeneratorService {
     public String toLocalId() {
       return prefix + id.toString() + suffix;
     }
+
+    public GeneratedId(Long id) {
+      this.id = id;
+    }
   }
 
 

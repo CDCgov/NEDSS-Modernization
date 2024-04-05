@@ -1,3 +1,4 @@
+
 package gov.cdc.nbs.questionbank.pagerules;
 
 import org.springframework.data.domain.Page;
@@ -29,33 +30,37 @@ class PageRuleFinder {
             [rule].logic                       as [comparator],
             [rule].target_type                 as [targetType],
             [rule].target_question_identifier  as [targetQuestions],
-            [question1].question_label          as [sourceQuestionLabel],
+            [question1].question_label         as [sourceQuestionLabel],
             [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
             STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP 
-             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',')) as [targetQuestionLabels],
-                0                                  as [TotalCount]
+             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))as [targetQuestionLabels],
+            STRING_AGG(CONVERT(NVARCHAR(max),[question2].nbs_ui_component_uid), ',') as [targetsNbsComponentIds],
+                1                              as [TotalCount]
           from WA_rule_metadata [rule]
-           left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier AND [question1].wa_template_uid = [rule].wa_template_uid
-           left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
-           left join WA_UI_Metadata [question2]
-             on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
-          where [rule].wa_rule_metadata_uid = :ruleId
-
+            left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
+            left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
+            left join WA_UI_Metadata [question2]
+                on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
+                where [rule].wa_template_uid = [question1].wa_template_uid 
+                and  [question1].wa_template_uid = [question2].wa_template_uid 
+                and [rule].wa_rule_metadata_uid = :ruleId
           group by
-            [rule].wa_rule_metadata_uid,
-            [rule].wa_template_uid,
-            [rule].rule_cd,
-            [rule].rule_desc_txt,
-            [rule].source_question_identifier,
-            [rule].rule_expression,
-            [rule].source_values,
-            [rule].logic,
-            [rule].target_type,
-            [rule].target_question_identifier,
-            [question1].question_label,
-            [CodeSet].code_set_nm,
-            [rule].add_time
+             [rule].wa_rule_metadata_uid,
+             [rule].wa_template_uid,
+             [rule].rule_cd,
+             [rule].rule_desc_txt,
+             [rule].source_question_identifier,
+             [rule].rule_expression,
+             [rule].source_values,
+             [rule].logic,
+             [rule].target_type,
+             [rule].target_question_identifier,
+             [question1].question_label,
+             [CodeSet].code_set_nm,
+             [rule].add_time
             """;
+
+
   private String findByPageId =
       """
              select
@@ -69,25 +74,30 @@ class PageRuleFinder {
              [rule].logic                       as [comparator],
              [rule].target_type                 as [targetType],
              [rule].target_question_identifier  as [targetQuestions],
-             [question1].question_label          as [sourceQuestionLabel],
+             [question1].question_label         as [sourceQuestionLabel],
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
              STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
-             as [targetQuestionLabels],
+                                                as [targetQuestionLabels],
+             STRING_AGG(CONVERT(NVARCHAR(max),[question2].nbs_ui_component_uid), ',') as [targetsNbsComponentIds],
              (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
               from WA_rule_metadata [rule]
                 left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
                 left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
                 left join WA_UI_Metadata [question2]
                     on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
-                    where [rule].wa_template_uid =:pageId and [question1].wa_template_uid = :pageId and [question2].wa_template_uid = :pageId
+                    where [rule].wa_template_uid = [question1].wa_template_uid 
+                    and  [question1].wa_template_uid = [question2].wa_template_uid 
+                    and [rule].wa_template_uid=:pageId
              ) as [totalCount]
           from WA_rule_metadata [rule]
             left join WA_UI_Metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
             left join [NBS_SRTE]..Codeset [CodeSet] on  [question1].code_set_group_id = [CodeSet].code_set_group_id
             left join WA_UI_Metadata [question2]
                 on CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ',') > 0
-                where [rule].wa_template_uid =:pageId and [question1].wa_template_uid = :pageId and [question2].wa_template_uid = :pageId
+                where [rule].wa_template_uid = [question1].wa_template_uid 
+                and  [question1].wa_template_uid = [question2].wa_template_uid 
+                and [rule].wa_template_uid=:pageId
           group by
              [rule].wa_rule_metadata_uid,
              [rule].wa_template_uid,
@@ -121,7 +131,8 @@ class PageRuleFinder {
              [CodeSet].code_set_nm              as [sourceQuestionCodeSet],
              STRING_AGG(CONVERT(NVARCHAR(max),[question2].question_label), '##') WITHIN GROUP 
             (ORDER BY CHARINDEX(',' + [question2].question_identifier + ',', ',' + [rule].target_question_identifier + ','))
-             as [targetQuestionLabels],
+                                                as [targetQuestionLabels],
+               STRING_AGG(CONVERT(NVARCHAR(max),[question2].nbs_ui_component_uid), ',') as [targetsNbsComponentIds],
              (SELECT COUNT(DISTINCT [rule].wa_rule_metadata_uid)
               from WA_rule_metadata [rule]
                 left join WA_UI_metadata [question1] on [rule].source_question_identifier = [question1].question_identifier
@@ -183,7 +194,7 @@ class PageRuleFinder {
     this.mapper = mapper;
   }
 
-  Rule findByRuleId(final long ruleId) {
+  Rule findByRuleId( final long ruleId) {
     MapSqlParameterSource parameters = new MapSqlParameterSource("ruleId", ruleId);
     List<Rule> result = this.template.query(FIND_BY_RULE_ID, parameters, mapper);
     return !result.isEmpty() ? result.get(0) : null;

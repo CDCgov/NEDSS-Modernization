@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import java.time.Instant;
 
 @AllArgsConstructor
@@ -69,5 +70,9 @@ public class NbsConfiguration {
 
     @Column(name = "system_usage", length = 2000)
     private String systemUsage;
+
+    public NbsConfiguration(String configValue) {
+        this.configValue = configValue;
+    }
 
 }
