@@ -3,7 +3,7 @@ nbs:
     oidc:
       host: localhost:8100
       client:
-        id: nbs-users-development
+        id: nbs-development
         secret: KK092EEXikR0hpubkwZGHbdtZKw99AJi
     log:
       level: INFO
