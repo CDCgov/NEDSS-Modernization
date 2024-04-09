@@ -43,7 +43,7 @@ Make sure you have the following dependencies installed:
    ```json
     {
     "json": {
-      "enabled": false,
+      "enabled": true,
       "output": "jsonlogs/log.json",
       "formatter": "cucumber-json-formatter.exe"
     },
