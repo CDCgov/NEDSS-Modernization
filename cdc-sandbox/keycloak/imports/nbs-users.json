@@ -66,7 +66,7 @@
   "clients": [
     {
       "id": "33c05bd2-18d6-47c2-9d55-4f0d3229d77b",
-      "clientId": "nbs-users-development",
+      "clientId": "nbs-development",
       "name": "NBS Users",
       "description": "",
       "rootUrl": "http://localhost:8080",
