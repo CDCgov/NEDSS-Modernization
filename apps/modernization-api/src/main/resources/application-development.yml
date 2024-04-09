@@ -34,7 +34,6 @@ nbs:
   security:
     oidc:
       enabled: false
-      host: localhost:8100
   ui:
     features:
       address:

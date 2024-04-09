@@ -1,7 +1,15 @@
+nbs:
+  security:
+    oidc:
+      protocol: http
+      host: localhost:8100
+      base: /realms/nbs-users
+      uri: ${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}
+
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${nbs.security.oidc.issuer-uri:http://localhost:8100/realms/nbs-users}
-          jwk-set-uri: ${nbs.security.oidc.jwk-set-uri:http://localhost:8100/realms/nbs-users/protocol/openid-connect/certs}
+          issuer-uri: ${nbs.security.oidc.uri}
+          jwk-set-uri: ${nbs.security.oidc.uri}/protocol/openid-connect/certs

@@ -2,6 +2,7 @@ nbs:
   security:
     oidc:
       protocol: http
+      host: localhost:8100
       base: /realms/nbs-users
       uri: ${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}
 
