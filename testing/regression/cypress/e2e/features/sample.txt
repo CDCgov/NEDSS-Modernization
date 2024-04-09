@@ -1,0 +1,185 @@
+ Feature: User can view existing and add/edit certain patient demographic data here.  
+
+ Background: 
+ Given User is logged into the system 
+
+ Scenario: User accesses patient profile 
+ Given the user has searched for a patient 
+ When the user clicks on a patient's profile 
+ Then the patient's profile is displayed.
+
+ Scenario: User fails to search for a patient
+ Given the user enters no search criteria
+ When User clicks on the Search button
+ Then a message is displayed
+ When the User clicks the OK button 
+ Then the message is closed 
+ And the User stays on the same screen
+
+ Scenario: User accesses printable patient demographics page 
+ Given the user is in a Patient Profile page 
+ When the user clicks on the Print button 
+ Then the user is directed to the printable patient demographics page.
+
+ Scenario: User deletes patient profile - not working
+ Given the user is in a Patient Profile page 
+ And there are no related events for the patient 
+ When the user clicks on the Delete Patient button 
+ And confirms the deletion of the patient 
+ Then the patient profile is deleted 
+ And the user is directed to the Home screen.
+
+ Scenario: User cancels patient profile deletion 
+ Given the user is in a Patient Profile page 
+ And there are no related events for the patient 
+ When the user clicks on the Delete Patient button 
+ And cancels the deletion of the patient 
+ Then the deletion action is cancelled And the user remains on the same page.
+
+ Scenario: User cannot delete patient profile 
+ Given the user is in a Patient Profile page  
+ And there is at least one related event for the patient 
+ When the user clicks on the Delete Patient button
+ And confirms the deletion of the patient 
+ Then the deletion action is cancelled 
+ And the user remains on the same page.
+
+ Scenario: User navigates to top of page 
+ Given the user is in a Patient Profile page 
+ When the user clicks on the "Back to top" button 
+ Then the user is taken to the top of the page.
+
+ Scenario Outline: Data remains displayed after selecting patient profile summary
+ Given the user is in a Patient Profile page 
+ And User clicks on a patient's profile "Summary" tab. 
+ Then The <data> displayed stays displayed. 
+ And It reflects the latest information entered.
+
+ Examples: 
+ | Data         |
+ | Patient name |
+ | Patient ID   |
+ | Sex          |
+ | Date of birth|
+ | Phone        |
+ | Email        |
+ | Address      |
+ | Race         |
+ | Ethnicity    |
+
+ Scenario Outline: Data remains displayed after selecting patient profile events
+ Given the user is in a Patient Profile page  
+ And User clicks on a patient's profile "Events" tab. 
+ Then The <data> displayed stays displayed. 
+ And It reflects the latest information entered.
+
+ Examples: 
+ | Data         |
+ | Patient name |
+ | Patient ID   |
+ | Sex          |
+ | Date of birth|
+ | Phone        |
+ | Email        |
+ | Address      |
+ | Race         |
+ | Ethnicity    |
+
+ Scenario: Add comment for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected 
+ When User clicks on the "Add comment" button 
+ Then System displays a pop-up window for adding a comment 
+ When User enters comment 
+ And User clicks on the "Save" button 
+ Then System saves the comment 
+ And Comment is displayed on the patient profile page
+
+ Scenario: Add name for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected 
+ When User clicks on the "Add name" button 
+ Then System displays a pop-up window for adding a name 
+ When User enters name information 
+ And User clicks on the "Save" button 
+ Then System saves the name information 
+ And Name information is displayed on the patient profile page
+
+ Scenario: Add address for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected 
+ When User clicks on the "Add address" button 
+ Then System displays a pop-up window for adding an address 
+ When User enters address information 
+ And User clicks on the "Save" button 
+ Then System checks the entered address And Provides a corrected version if necessary 
+ And User chooses to use the entered or corrected address 
+ And Address information is displayed on the patient profile page
+
+ Scenario: Add phone and email for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected 
+ When User clicks on the "Add phone & email" button 
+ Then System displays a pop-up window for adding phone and email information 
+ When User enters phone and email information 
+ And User clicks on the "Save" button 
+ Then System saves the phone and email information 
+ And Phone and email information is displayed on the patient profile page
+
+ Scenario: Add identification for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected
+ When User clicks on the "Add identification" button 
+ Then System displays a pop-up window for adding identification information 
+ When User enters identification information 
+ And User clicks on the "Save" button 
+ Then System saves the identification information 
+ And Identification information is displayed on the patient profile page
+
+ Scenario: Add race for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected
+ When User clicks on the "Add race" button 
+ Then System displays a pop-up window for adding race information 
+ When User enters race information 
+ And User clicks on the "Save" button 
+ Then System saves the race information 
+ And Race information is displayed on the patient profile page
+
+ Scenario: Edit general patient information 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected
+ When User clicks on the "Edit" button under General Patient Information
+ Then the system allows the user to edit general patient information 
+ When User makes changes 
+ And User clicks on the "Save" button 
+ Then System saves the changes 
+ And Updated general patient information is displayed on the patient profile page
+
+ Scenario: Edit ethnicity for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected
+ When User clicks on the "Edit ethnicity" button 
+ Then System allows user to edit ethnicity information 
+ When User makes changes 
+ And User clicks on the "Save" button 
+ Then System saves the changes 
+ And Updated ethnicity information is displayed on the patient profile page
+
+ Scenario: Edit sex and birth for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected
+ When User clicks on the "Edit sex & birth" button 
+ Then the system allows the user to edit sex and birth information 
+ When User makes changes 
+ And User clicks on the "Save" button 
+ Then the system saves the changes 
+ And Updated sex and birth information is displayed on the patient profile page
+
+ Scenario: Edit mortality for patient 
+ Given the user is in a Patient Profile page 
+ And the "Demographics" tab is selected
+ When User clicks on the "Edit mortality" button 
+ Then the system allows the user to edit mortality information 
+ When User makes changes 
+ And User clicks on the "Save" button Then System saves the changes
