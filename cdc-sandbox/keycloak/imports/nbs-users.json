@@ -5,55 +5,83 @@
       "username": "superuser",
       "enabled": true,
       "emailVerified": false,
+      "createdTimestamp": 1712600241000,
       "credentials": [
         {
+          "id": "98e3afa1-7cd6-4bc1-ae3a-2470b1e93eb1",
           "type": "password",
-          "value": "superuser"
+          "userLabel": "My password",
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"uwKXj+4iZGbEX0awJn1um/lGnXcBjaZuWKEYNONenpM1ANOZkIbHDPZdDY3wcAdLMmzl1aOcY1qkKl0aWKBG4g==\",\"salt\":\"nISVzJFfgNjaETffHS9p1g==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
         }
       ],
       "realmRoles": []
     },
     {
-      "id": "supervisor",
+      "id": "dbe8fe30-35d2-4bb6-9b00-e447482d908d",
       "username": "supervisor",
-      "enabled": true,
       "emailVerified": false,
+      "createdTimestamp": 1712600241000,
+      "enabled": true,
+      "totp": false,
       "credentials": [
         {
+          "id": "8d8a39e8-a170-4a88-8ace-f47c3d5af87a",
           "type": "password",
-          "value": "superuser"
+          "userLabel": "My password",
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"HR5K7S2JzOC1f1/ilax1lWms08QGpMgiyAZ3n4YhCeV3XH7YsII8sjm/NVLSrKRsDkR+MmNEUsAIpFjsdV6d/w==\",\"salt\":\"itzfPzTxgjpvRQRbq6S5Pw==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
         }
       ],
-      "realmRoles": []
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["default-roles-nbs development"],
+      "notBefore": 0,
+      "groups": []
     },
     {
       "id": "msa",
       "username": "msa",
-      "enabled": true,
       "emailVerified": false,
+      "enabled": true,
+      "totp": false,
+      "createdTimestamp": 1712600241000,
       "credentials": [
         {
+          "id": "bccbde4c-87a7-40c7-9750-58b74757dde9",
           "type": "password",
-          "value": "msa"
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"AI5md4Njsm2R1R6m+wXHnkqlLByOScvI+y+k2VnUnblTWcCx6yWKZanERUbKtGsoiPtUhDxj2yM86EdemPSCEg==\",\"salt\":\"Z/wAFPCzt4pfvdUlgK01bQ==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
         }
       ],
-      "realmRoles": []
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "notBefore": 0,
+      "groups": []
     }
   ],
   "clients": [
     {
       "id": "33c05bd2-18d6-47c2-9d55-4f0d3229d77b",
-      "clientId": "nbs-users",
-      "name": "",
+      "clientId": "nbs-users-development",
+      "name": "NBS Users",
       "description": "",
-      "rootUrl": "",
+      "rootUrl": "http://localhost:8080",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": ["https://oauth.pstmn.io/v1/callback"],
+      "secret": "KK092EEXikR0hpubkwZGHbdtZKw99AJi",
+      "redirectUris": [
+        "http://localhost:8000/login/oauth2/code/nbs-users",
+        "/login/oauth2/code/nbs-users",
+        "https://oauth.pstmn.io/v1/callback"
+      ],
       "webOrigins": ["https://oauth.pstmn.io"],
       "notBefore": 0,
       "bearerOnly": false,
@@ -62,14 +90,16 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": false,
-      "publicClient": true,
+      "publicClient": false,
       "frontchannelLogout": true,
       "protocol": "openid-connect",
       "attributes": {
         "oidc.ciba.grant.enabled": "false",
+        "client.secret.creation.time": "1711751600",
+        "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "http://localhost:8000/nbs/logged-out##/nbs/logged-out",
         "oauth2.device.authorization.grant.enabled": "false",
         "display.on.consent.screen": "false",
-        "backchannel.logout.session.required": "true",
         "backchannel.logout.revoke.offline.tokens": "false"
       },
       "authenticationFlowBindingOverrides": {},
@@ -92,6 +122,7 @@
   ],
   "id": "226c50ff-aa61-409d-a229-72e44ba25a69",
   "realm": "nbs-users",
+  "displayName": "NBS Development",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
   "revokeRefreshToken": false,
