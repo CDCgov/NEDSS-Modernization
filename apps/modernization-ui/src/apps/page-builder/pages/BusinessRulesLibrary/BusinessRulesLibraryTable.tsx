@@ -34,7 +34,7 @@ const tableColumns = [
 ];
 
 type Props = {
-    summaries: Rule[];
+    rules: Rule[];
     onSortChange: (sort: BusinessRuleSort | undefined) => void;
     onQueryChange: (query: string) => void;
     qtnModalRef: RefObject<ModalRef>;
@@ -44,7 +44,7 @@ type Props = {
 };
 
 export const BusinessRulesLibraryTable = ({
-    summaries,
+    rules,
     qtnModalRef,
     onSortChange,
     onQueryChange,
@@ -67,146 +67,88 @@ export const BusinessRulesLibraryTable = ({
 
     const redirectRuleURL = `/page-builder/pages/${page?.id}/business-rules`;
 
-    const asTableRow = (rule: Rule): TableBody => ({
-        key: rule.id,
-        id: rule.template.toString(),
-        tableDetails: [
-            {
-                id: 1,
-                title: (
-                    <Link to={`/page-builder/pages/${page?.id}/business-rules/edit/${rule.id}`}>
-                        {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
-                    </Link>
-                )
-            },
-            { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
-            {
-                id: 3,
-                title: (
-                    <div>
-                        {!rule.anySourceValue ? (
-                            rule?.sourceValues?.map((value, index) => (
-                                <React.Fragment key={index}>
-                                    <span>{value}</span>
-                                    <br />
-                                </React.Fragment>
-                            ))
-                        ) : (
-                            <div>Any source value</div>
-                        )}
-                    </div>
-                )
-            },
-            {
-                id: 4,
-                title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>
-            },
-            {
-                id: 5,
-                title: (
-                    <div>
-                        {rule.targets?.map((target, index) => {
-                            return (
-                                <React.Fragment key={index}>
-                                    <span>
-                                        {target.label} ({target.targetIdentifier})
-                                    </span>
-                                    <br />
-                                </React.Fragment>
-                            );
-                        })}
-                    </div>
-                )
-            },
-            {
-                id: 6,
-                title: <div>{rule.id}</div>
-            }
-        ]
-    });
-
-    const asTableViewRow = (rule: Rule): TableBody => ({
-        key: rule.id,
-        id: rule.template.toString(),
-        tableDetails: [
-            {
-                id: 1,
-                title: (
-                    <Link to={`/page-builder/pages/${page?.id}/business-rules/${rule.id}`}>
-                        {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
-                    </Link>
-                )
-            },
-            { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
-            {
-                id: 3,
-                title: (
-                    <div>
-                        {!rule.anySourceValue ? (
-                            rule?.sourceValues?.map((value, index) => (
-                                <React.Fragment key={index}>
-                                    <span>{value}</span>
-                                    <br />
-                                </React.Fragment>
-                            ))
-                        ) : (
-                            <div>Any source value</div>
-                        )}
-                    </div>
-                )
-            },
-            {
-                id: 4,
-                title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>
-            },
-            {
-                id: 5,
-                title: (
-                    <div>
-                        {rule.targets?.map((target, index) => {
-                            if (rule.targetType == Rule.targetType.SUBSECTION) {
-                                const subsections = getSubsections();
-                                const subsection = subsections?.find(
-                                    (sub) => sub.id == Number(target?.targetIdentifier)
-                                );
-                                return (
-                                    <React.Fragment key={index}>
-                                        <span>{subsection?.name}</span>
-                                        <br />
-                                    </React.Fragment>
-                                );
-                            } else {
-                                return (
-                                    <React.Fragment key={index}>
-                                        <span>
-                                            {target.label} ({target.targetIdentifier})
-                                        </span>
-                                        <br />
-                                    </React.Fragment>
-                                );
-                            }
-                        })}
-                    </div>
-                )
-            },
-            {
-                id: 6,
-                title: <div>{rule.id}</div>
-            }
-        ]
-    });
-
-    const asTableRows = (rules: Rule[] | undefined): TableBody[] => {
+    const asTableRow = (rule: Rule): TableBody => {
+        let url: string;
         if (page?.status === 'Published') {
-            return rules?.map(asTableViewRow) || [];
+            url = `/page-builder/pages/${page?.id}/business-rules/${rule.id}`;
         } else {
-            return rules?.map(asTableRow) || [];
+            url = `/page-builder/pages/${page?.id}/business-rules/edit/${rule.id}`;
         }
+        return {
+            key: rule.id,
+            id: rule.template.toString(),
+            tableDetails: [
+                {
+                    id: 1,
+                    title: (
+                        <Link to={url}>
+                            {rule.sourceQuestion.label} ({rule.sourceQuestion.questionIdentifier})
+                        </Link>
+                    )
+                },
+                { id: 2, title: <div className="event-text">{mapComparatorToString(rule.comparator)}</div> },
+                {
+                    id: 3,
+                    title: (
+                        <div>
+                            {!rule.anySourceValue ? (
+                                rule?.sourceValues?.map((value, index) => (
+                                    <React.Fragment key={index}>
+                                        <span>{value}</span>
+                                        <br />
+                                    </React.Fragment>
+                                ))
+                            ) : (
+                                <div>Any source value</div>
+                            )}
+                        </div>
+                    )
+                },
+                {
+                    id: 4,
+                    title: <div>{mapRuleFunctionToString(rule.ruleFunction)}</div>
+                },
+                {
+                    id: 5,
+                    title: (
+                        <div>
+                            {rule.targets?.map((target, index) => {
+                                if (rule.targetType == Rule.targetType.SUBSECTION) {
+                                    const subsections = getSubsections();
+                                    const subsection = subsections?.find(
+                                        (sub) => sub.questionIdentifier === target.targetIdentifier
+                                    );
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <span>{subsection?.name}</span>
+                                            <br />
+                                        </React.Fragment>
+                                    );
+                                } else {
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <span>
+                                                {target.label} ({target.targetIdentifier})
+                                            </span>
+                                            <br />
+                                        </React.Fragment>
+                                    );
+                                }
+                            })}
+                        </div>
+                    )
+                },
+                {
+                    id: 6,
+                    title: <div>{rule.id}</div>
+                }
+            ]
+        };
     };
 
     useEffect(() => {
-        setTableRows(asTableRows(summaries));
-    }, [summaries]);
+        setTableRows(rules.map(asTableRow) ?? []);
+    }, [rules]);
 
     const handleSort = (name: string, direction: Direction) => {
         if (direction === Direction.None) {
@@ -313,10 +255,10 @@ export const BusinessRulesLibraryTable = ({
                 currentPage={curPage.current}
                 handleNext={request}
                 sortData={handleSort}
-                rangeSelector={isLoading === true || summaries.length > 0}
+                rangeSelector={isLoading === true || rules.length > 0}
                 isLoading={isLoading}
             />
-            {summaries.length === 0 && !isLoading && dataNotAvailableElement}
+            {rules.length === 0 && !isLoading && dataNotAvailableElement}
             <div className="footer-action display-none">{footerActionBtn}</div>
         </div>
     );
