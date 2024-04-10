@@ -8,10 +8,8 @@
         display: flex;
         padding: 1.5rem;
         justify-content: space-between;
-        align-items: center;
         flex: 1 0 0;
         align-self: stretch;
-
         background: colors.$cool-accent-lighter;
 
         .info {
@@ -19,13 +17,14 @@
             flex-direction: row;
             align-items: center;
             gap: 0.5rem;
+
             .name {
                 color: colors.$base-black;
-                text-align: center;
                 font-size: 1rem;
                 font-weight: 700;
                 margin-bottom: 0.5rem;
             }
+
             .count {
                 color: colors.$base-darkest;
                 font-size: 0.875rem;
@@ -61,6 +60,6 @@
         justify-content: flex-end;
     }
 }
-    #confirmation .usa-modal #confirmation-description {
-        font-weight: 300;
-    }
+#confirmation .usa-modal #confirmation-description {
+    font-weight: 300;
+}

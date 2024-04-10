@@ -86,7 +86,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
                 <div className="business-rules-library__container">
                     <div className="business-rules-library__table">
                         <BusinessRulesLibraryTable
-                            summaries={response?.content ?? []}
+                            rules={response?.content ?? []}
                             qtnModalRef={modalRef}
                             onSortChange={setSort}
                             onQueryChange={setQuery}
