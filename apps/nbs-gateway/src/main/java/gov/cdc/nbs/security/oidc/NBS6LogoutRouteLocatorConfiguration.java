@@ -1,4 +1,4 @@
-package gov.cdc.nbs.gateway.security.oidc;
+package gov.cdc.nbs.security.oidc;
 
 import gov.cdc.nbs.gateway.classic.NBSClassicService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -7,10 +7,8 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("oidc")
 class NBS6LogoutRouteLocatorConfiguration {
 
   @Bean

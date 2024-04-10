@@ -1,4 +1,4 @@
-package gov.cdc.nbs.gateway.security.oidc;
+package gov.cdc.nbs.security.oidc;
 
 import gov.cdc.nbs.gateway.classic.NBSClassicService;
 import gov.cdc.nbs.gateway.home.HomeService;
@@ -9,14 +9,12 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Configuration
-@Profile("oidc")
 class NBS6LoginRouteLocatorConfiguration {
 
   @Bean
@@ -28,7 +26,7 @@ class NBS6LoginRouteLocatorConfiguration {
   ) {
     return builder.routes()
         .route(
-            "nbs6-login",
+            "nbs6-login-bypass",
             route -> route.path("/nbs/login")
                 .filters(
                     filter -> filter.filter(this::login)
@@ -36,7 +34,7 @@ class NBS6LoginRouteLocatorConfiguration {
                 ).uri(classic.uri())
         )
         .route(
-            "nbs6-login-nfc-block",
+            "nbs6-block-nfc-based-login",
             route -> route
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 .path("/nbs/nfc")

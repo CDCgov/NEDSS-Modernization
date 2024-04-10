@@ -57,4 +57,4 @@ logging:
     org:
       springframework:
         security: ${nbs.gateway.security.log.level:INFO}
-        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:INFO}
+        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:DEBUG}

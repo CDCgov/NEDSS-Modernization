@@ -28,6 +28,7 @@ testing {
 
             dependencies {
                 implementation 'org.springframework.boot:spring-boot-starter-test'
+                implementation libs.spring.security.test
                 implementation "org.wiremock:wiremock-standalone:3.4.2"
             }
         }
