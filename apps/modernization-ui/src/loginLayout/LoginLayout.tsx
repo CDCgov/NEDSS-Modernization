@@ -14,7 +14,7 @@ const LoginLayout = () => {
                 <div className="width-full">
                     <AlertBanner type="warning">
                         <small>
-                            Please only enter dummy data into the demo site. Please do not enter real PHI/PIl data as
+                            Please only enter dummy data into the demo site. Please do not enter real PHI/PII data as
                             this is a public site.
                         </small>
                     </AlertBanner>
