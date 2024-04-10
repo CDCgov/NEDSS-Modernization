@@ -27,7 +27,7 @@ describe('BusinessRulesLibraryTable', () => {
                 <BrowserRouter>
                     <PageProvider>
                         <BusinessRulesLibraryTable
-                            summaries={summaries}
+                            rules={summaries}
                             qtnModalRef={modalRef}
                             onSortChange={jest.fn()}
                             onQueryChange={jest.fn()}
@@ -71,7 +71,7 @@ describe('BusinessRulesLibraryTable', () => {
                 <BrowserRouter>
                     <PageProvider>
                         <BusinessRulesLibraryTable
-                            summaries={summaries}
+                            rules={summaries}
                             qtnModalRef={modalRef}
                             onSortChange={jest.fn()}
                             onQueryChange={jest.fn()}
