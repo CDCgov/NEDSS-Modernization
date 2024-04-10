@@ -24,7 +24,9 @@ const WelcomeLayout = () => {
                         <TabNavigationEntry path={'our-vision'}>Our Vision</TabNavigationEntry>
                         <TabNavigationEntry path={'get-involved'}>Get Involved</TabNavigationEntry>
                     </TabNavigation>
-                    <Outlet />
+                    <div className={style.container}>
+                        <Outlet />
+                    </div>
                 </div>
             </main>
             <aside>
