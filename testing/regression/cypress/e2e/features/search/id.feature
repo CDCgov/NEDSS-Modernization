@@ -1,4 +1,3 @@
-
 Feature: Patient Search by Id
 
   Background:

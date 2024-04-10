@@ -1,4 +1,3 @@
-
 Feature: Patient Search by Race / Ethnicity
 
   Background:

@@ -16,9 +16,13 @@ Feature: Patient Search by Basic Info
     When I search by dob as "10/23/1965"
     Then I should see No Results found text
 
-  Scenario: Basic Info - Search by Sex
+  Scenario: Basic Info - Search by Sex Male
     When I search by sex as "Male"
     Then I should see Results with the sex "Male"
+
+  Scenario: Basic Info - Search by Sex Female
+    When I search by sex as "Female"
+    Then I should see Results with the sex "Female"    
 
   Scenario: Basic Info - Search by Patient ID
     When I search by patient id as "95136"
