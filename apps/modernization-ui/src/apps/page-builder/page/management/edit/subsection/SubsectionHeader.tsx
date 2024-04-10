@@ -36,35 +36,35 @@ export const SubsectionHeader = ({
     const [closeOptions, setCloseOptions] = useState(false);
 
     const handleUngroup = () => {
-        try {
-            SubSectionControllerService.unGroupSubSection({
-                page: page.id,
-                subSectionId: subsection.id
-            }).then(() => {
+        SubSectionControllerService.unGroupSubSection({
+            page: page.id,
+            subSectionId: subsection.id
+        })
+            .then(() => {
                 showAlert({
                     type: 'success',
                     header: 'Ungrouped',
                     message: `You've successfully ungrouped ${subsection.name}`
                 });
                 refresh();
+            })
+            .catch((error) => {
+                if (error instanceof Error) {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: error.message
+                    });
+                } else {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: 'An unknown error occurred'
+                    });
+                }
             });
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: error.message
-                });
-            } else {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: 'An unknown error occurred'
-                });
-            }
-        }
     };
 
     const closeThenAct = (action: (subsection: PagesSubSection) => void) => {
