@@ -23,10 +23,6 @@ describe('BusinessRulesLibraryTable', () => {
                 targetValueIdentifier: [{ label: '404400' }]
             };
             const summaries = [rulesSummary];
-            const pages = {
-                totalElements: 1
-            };
-
             render(
                 <BrowserRouter>
                     <PageProvider>
@@ -70,9 +66,6 @@ describe('BusinessRulesLibraryTable', () => {
             };
 
             const summaries = [rulesSummary];
-            const pages = {
-                totalElements: 1
-            };
 
             const { findAllByRole } = render(
                 <BrowserRouter>

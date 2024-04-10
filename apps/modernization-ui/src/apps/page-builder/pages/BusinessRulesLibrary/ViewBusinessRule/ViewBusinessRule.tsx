@@ -26,7 +26,7 @@ export const ViewBusinessRule = () => {
     }, [ruleId]);
 
     useEffect(() => {
-        const targetIdentifiers = rule?.targets.map((target) => target.targetIdentifier || '') || [];
+        const targetIdentifiers = rule?.targets.map((target) => target.targetIdentifier ?? '') ?? [];
 
         if (rule?.targetType == QUESTION) {
             const targetSearch = findTargetQuestion(targetIdentifiers, page);
@@ -37,7 +37,19 @@ export const ViewBusinessRule = () => {
             const targetSearch = findTargetSubsection(targetIdentifiers, page);
             setTargetSubSections(targetSearch);
         }
-    }, [rule]);
+    }, [rule, page?.id]);
+
+    const getRuleFunctionDisplay = () => {
+        const ruleFunction = rule?.ruleFunction;
+        switch (ruleFunction) {
+            case undefined:
+                return '';
+            case Rule.ruleFunction.DATE_COMPARE:
+                return 'Date validation';
+            default:
+                return ruleFunction.charAt(0).toUpperCase() + ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase();
+        }
+    };
 
     return (
         <div className={styles.view}>
@@ -47,84 +59,82 @@ export const ViewBusinessRule = () => {
                 <div className={styles.body}>
                     <table cellSpacing={0}>
                         <thead>
-                            <th>Function</th>
-                            <th>
-                                {rule?.ruleFunction === 'DATE_COMPARE'
-                                    ? 'Date validation'
-                                    : rule?.ruleFunction
-                                      ? rule.ruleFunction.charAt(0).toUpperCase() +
-                                        rule.ruleFunction.slice(1).replaceAll('_', ' ').toLowerCase()
-                                      : ''}
-                            </th>
+                            <tr>
+                                <th>Function</th>
+                                <th>{getRuleFunctionDisplay()}</th>
+                            </tr>
                         </thead>
-                        <tr>
-                            <td>Rule Id</td>
-                            <td>{rule?.id}</td>
-                        </tr>
-                        <tr>
-                            <td>Source question</td>
-                            <td>
-                                {checkForSemicolon(removeNumericAndSymbols(rule?.sourceQuestion.label))} (
-                                {checkForSemicolon(removeNumericAndSymbols(rule?.sourceQuestion.questionIdentifier))})
-                            </td>
-                        </tr>
-                        {rule?.ruleFunction !== 'DATE_COMPARE' ? (
+                        <tbody>
                             <tr>
-                                <td>Any source value</td>
-                                <td>{rule?.anySourceValue ? 'True' : 'False'}</td>
+                                <td>Rule Id</td>
+                                <td>{rule?.id}</td>
                             </tr>
-                        ) : null}
-                        <tr>
-                            <td>Logic</td>
-                            <td>
-                                {rule?.comparator
-                                    ? rule.comparator.charAt(0).toUpperCase() +
-                                      rule.comparator.slice(1).replaceAll('_', ' ').toLowerCase()
-                                    : ''}
-                            </td>
-                        </tr>
-                        {rule?.ruleFunction !== 'DATE_COMPARE' ? (
                             <tr>
-                                <td>Source value(s)</td>
-                                <td>{rule?.sourceValues?.map((value, key) => <span key={key}>{value}</span>)}</td>
+                                <td>Source question</td>
+                                <td>
+                                    {checkForSemicolon(removeNumericAndSymbols(rule?.sourceQuestion.label))} (
+                                    {checkForSemicolon(
+                                        removeNumericAndSymbols(rule?.sourceQuestion.questionIdentifier)
+                                    )}
+                                    )
+                                </td>
                             </tr>
-                        ) : null}
-                        {rule?.targetType ? (
+                            {rule?.ruleFunction !== 'DATE_COMPARE' && (
+                                <tr>
+                                    <td>Any source value</td>
+                                    <td>{rule?.anySourceValue ? 'True' : 'False'}</td>
+                                </tr>
+                            )}
                             <tr>
-                                <td>Target type</td>
-                                <td>{rule?.targetType}</td>
+                                <td>Logic</td>
+                                <td>
+                                    {rule?.comparator
+                                        ? rule.comparator.charAt(0).toUpperCase() +
+                                          rule.comparator.slice(1).replaceAll('_', ' ').toLowerCase()
+                                        : ''}
+                                </td>
                             </tr>
-                        ) : null}
-                        <tr>
-                            <td>Target(s)</td>
-                            <td>
-                                {rule?.targetType == QUESTION
-                                    ? targetQuestions.map((target, key) => (
-                                          <span key={key}>
-                                              {target.name} ({target.question})
-                                          </span>
-                                      ))
-                                    : null}
+                            {rule?.ruleFunction !== 'DATE_COMPARE' && (
+                                <tr>
+                                    <td>Source value(s)</td>
+                                    <td>{rule?.sourceValues?.map((value, key) => <span key={key}>{value}</span>)}</td>
+                                </tr>
+                            )}
+                            {rule?.targetType && (
+                                <tr>
+                                    <td>Target type</td>
+                                    <td>{rule?.targetType}</td>
+                                </tr>
+                            )}
+                            <tr>
+                                <td>Target(s)</td>
+                                <td>
+                                    {rule?.targetType == QUESTION &&
+                                        targetQuestions.map((target, key) => (
+                                            <span key={key}>
+                                                {target.name} ({target.question})
+                                            </span>
+                                        ))}
 
-                                {rule?.targetType == SUBSECTION
-                                    ? targetSubSections.map((target, key) => (
-                                          <span key={key}>
-                                              {target.name} ({target.questionIdentifier})
-                                          </span>
-                                      ))
-                                    : null}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rule description</td>
-                            <td>{rule?.description}</td>
-                        </tr>
-                        {rule?.ruleFunction === Rule.ruleFunction.DATE_COMPARE ? (
+                                    {rule?.targetType == SUBSECTION &&
+                                        targetSubSections.map((target, key) => (
+                                            <span key={key}>
+                                                {target.name} ({target.questionIdentifier})
+                                            </span>
+                                        ))}
+                                </td>
+                            </tr>
                             <tr>
-                                <td>Error message</td>
+                                <td>Rule description</td>
                                 <td>{rule?.description}</td>
                             </tr>
-                        ) : null}
+                            {rule?.ruleFunction === Rule.ruleFunction.DATE_COMPARE && (
+                                <tr>
+                                    <td>Error message</td>
+                                    <td>{rule?.description}</td>
+                                </tr>
+                            )}
+                        </tbody>
                     </table>
                 </div>
             </div>
