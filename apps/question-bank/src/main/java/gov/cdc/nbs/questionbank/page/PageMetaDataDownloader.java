@@ -274,7 +274,7 @@ public class PageMetaDataDownloader {
                        FROM
                             NBS_ODSE.dbo.WA_UI_metadata WITH (nolock)  /* ON Code_value_general.code_desc_txt = NBS_ODSE.dbo.WA_UI_metadata.question_oid */
                        LEFT OUTER JOIN
-                            NBS_ODSE.dbo.WA_template WITH (nolock) ON NBS_ODSE.dbo.WA_UI_metadata.wa_template_uid = NBS_ODSE.dbo.WA_template.wa_template_uid 
+                            NBS_ODSE.dbo.WA_template WITH (nolock) ON NBS_ODSE.dbo.WA_UI_metadata.wa_template_uid = NBS_ODSE.dbo.WA_template.wa_template_uid
                        LEFT OUTER JOIN
                             NBS_ODSE.dbo.WA_RDB_metadata WITH (nolock) ON NBS_ODSE.dbo.WA_UI_metadata.wa_ui_metadata_uid = NBS_ODSE.dbo.WA_RDB_metadata.wa_ui_metadata_uid 
                        LEFT OUTER JOIN
@@ -392,20 +392,18 @@ public class PageMetaDataDownloader {
               codevaluegeneral2.effective_to_time, 
               codevaluegeneral2.add_time, 
               codeset2.code_set_group_id
-              
-               """;
+        """;
 
-  private static final String FIND_PAGE_QUESTION_VOCABULARY_BY_TEMPLATE_SQL = """
-       
-      SELECT distinct 
-              NBS_ODSE.dbo.WA_template.template_nm AS page_nm, 
+  private static final String FIND_PAGE_QUESTION_VOCABULARY_BY_TEMPLATE_SQL = """   
+      SELECT distinct
+              NBS_ODSE.dbo.WA_template.template_nm AS page_nm,
               NBS_ODSE.dbo.WA_UI_metadata.order_nbr,
-              NBS_ODSE.dbo.WA_UI_metadata.question_identifier, 
-              NBS_ODSE.dbo.WA_UI_metadata.question_label, 
-              NBS_ODSE.dbo.WA_UI_metadata.data_type, 
-              NBS_ODSE.dbo.WA_UI_metadata.enable_ind, 
-              NBS_ODSE.dbo.WA_UI_metadata.display_ind, 
-              NBS_ODSE.dbo.WA_UI_metadata.other_value_ind_cd, 
+              NBS_ODSE.dbo.WA_UI_metadata.question_identifier,
+              NBS_ODSE.dbo.WA_UI_metadata.question_label,
+              NBS_ODSE.dbo.WA_UI_metadata.data_type,
+              NBS_ODSE.dbo.WA_UI_metadata.enable_ind,
+              NBS_ODSE.dbo.WA_UI_metadata.display_ind,
+              NBS_ODSE.dbo.WA_UI_metadata.other_value_ind_cd,
               NBS_SRTE.dbo.Codeset.code_set_nm,
               NBS_SRTE.dbo.Codeset.value_set_code,
               NBS_SRTE.dbo.Codeset.value_set_nm,
@@ -413,8 +411,8 @@ public class PageMetaDataDownloader {
               NBS_SRTE.dbo.Code_value_general.code_desc_txt,
               NBS_SRTE.dbo.Code_value_general.code_short_desc_txt,
               NBS_SRTE.dbo.Code_value_general.status_cd,
-              NBS_SRTE.dbo.Code_value_general.effective_from_time, 
-              NBS_SRTE.dbo.Code_value_general.effective_to_time, 
+              NBS_SRTE.dbo.Code_value_general.effective_from_time,
+              NBS_SRTE.dbo.Code_value_general.effective_to_time,
               NBS_SRTE.dbo.Code_value_general.concept_code,
               NBS_SRTE.dbo.Code_value_general.concept_nm,
               NBS_SRTE.dbo.Code_value_general.concept_preferred_nm,
@@ -423,39 +421,39 @@ public class PageMetaDataDownloader {
               NBS_SRTE.dbo.Code_value_general.concept_type_cd,
               NBS_SRTE.dbo.Code_value_general.add_time
 
-              FROM  NBS_ODSE.dbo.WA_UI_metadata WITH (nolock)  LEFT OUTER JOIN NBS_ODSE.dbo.WA_template WITH (nolock) ON 
-              NBS_ODSE.dbo.WA_UI_metadata.wa_template_uid = NBS_ODSE.dbo.WA_template.wa_template_uid 
+              FROM  NBS_ODSE.dbo.WA_UI_metadata WITH (nolock)  LEFT OUTER JOIN NBS_ODSE.dbo.WA_template WITH (nolock) ON
+              NBS_ODSE.dbo.WA_UI_metadata.wa_template_uid = NBS_ODSE.dbo.WA_template.wa_template_uid
 
-              LEFT OUTER JOIN NBS_SRTE.dbo.Codeset WITH (nolock) ON  
-              NBS_ODSE.dbo.WA_UI_metadata.code_set_group_id = Codeset.code_set_group_id 
-              LEFT OUTER JOIN  NBS_SRTE.dbo.code_value_general WITH (nolock) ON NBS_SRTE.dbo.code_value_general.code_set_nm = NBS_SRTE.dbo.Codeset.code_set_nm 
-              WHERE  (NBS_ODSE.dbo.WA_UI_metadata.wa_template_uid = ?) AND NBS_SRTE.dbo.Codeset.code_set_nm is not NULL AND NBS_SRTE.dbo.Codeset.code_set_nm <> 'OUTBREAK_NM' GROUP BY 
-              NBS_SRTE.dbo.Codeset.code_set_nm, 
-              NBS_SRTE.dbo.Codeset.value_set_code, 
-              NBS_SRTE.dbo.Codeset.value_set_nm, 
-              NBS_SRTE.dbo.Code_value_general.code, 
-              NBS_SRTE.dbo.Code_value_general.code_desc_txt, 
-              NBS_SRTE.dbo.Code_value_general.code_short_desc_txt, 
-              NBS_SRTE.dbo.Code_value_general.status_cd, 
-              NBS_SRTE.dbo.Code_value_general.concept_code, 
-              NBS_SRTE.dbo.Code_value_general.concept_nm, 
-              NBS_SRTE.dbo.Code_value_general.concept_preferred_nm, 
-              NBS_ODSE.dbo.WA_UI_metadata.code_set_group_id, 
-              NBS_SRTE.dbo.Code_value_general.code_system_cd, 
-              NBS_SRTE.dbo.Code_value_general.code_system_desc_txt, 
-              NBS_SRTE.dbo.Code_value_general.concept_type_cd, 
-              NBS_SRTE.dbo.Code_value_general.effective_from_time, 
-              NBS_SRTE.dbo.Code_value_general.effective_to_time, 
-              NBS_SRTE.dbo.Code_value_general.add_time, 
-              NBS_ODSE.dbo.WA_UI_metadata.order_nbr, 
-              NBS_ODSE.dbo.WA_template.template_nm, 
-              NBS_ODSE.dbo.WA_UI_metadata.question_identifier, 
-              NBS_ODSE.dbo.WA_UI_metadata.question_label, 
-              NBS_ODSE.dbo.WA_UI_metadata.data_type, 
-              NBS_ODSE.dbo.WA_UI_metadata.enable_ind, 
-              NBS_ODSE.dbo.WA_UI_metadata.display_ind, 
-              NBS_ODSE.dbo.WA_UI_metadata.other_value_ind_cd 
-              """;
+              LEFT OUTER JOIN NBS_SRTE.dbo.Codeset WITH (nolock) ON
+              NBS_ODSE.dbo.WA_UI_metadata.code_set_group_id = Codeset.code_set_group_id
+              LEFT OUTER JOIN  NBS_SRTE.dbo.code_value_general WITH (nolock) ON NBS_SRTE.dbo.code_value_general.code_set_nm = NBS_SRTE.dbo.Codeset.code_set_nm
+              WHERE  (NBS_ODSE.dbo.WA_UI_metadata.wa_template_uid = ?) AND NBS_SRTE.dbo.Codeset.code_set_nm is not NULL AND NBS_SRTE.dbo.Codeset.code_set_nm <> 'OUTBREAK_NM' GROUP BY
+              NBS_SRTE.dbo.Codeset.code_set_nm,
+              NBS_SRTE.dbo.Codeset.value_set_code,
+              NBS_SRTE.dbo.Codeset.value_set_nm,
+              NBS_SRTE.dbo.Code_value_general.code,
+              NBS_SRTE.dbo.Code_value_general.code_desc_txt,
+              NBS_SRTE.dbo.Code_value_general.code_short_desc_txt,
+              NBS_SRTE.dbo.Code_value_general.status_cd,
+              NBS_SRTE.dbo.Code_value_general.concept_code,
+              NBS_SRTE.dbo.Code_value_general.concept_nm,
+              NBS_SRTE.dbo.Code_value_general.concept_preferred_nm,
+              NBS_ODSE.dbo.WA_UI_metadata.code_set_group_id,
+              NBS_SRTE.dbo.Code_value_general.code_system_cd,
+              NBS_SRTE.dbo.Code_value_general.code_system_desc_txt,
+              NBS_SRTE.dbo.Code_value_general.concept_type_cd,
+              NBS_SRTE.dbo.Code_value_general.effective_from_time,
+              NBS_SRTE.dbo.Code_value_general.effective_to_time,
+              NBS_SRTE.dbo.Code_value_general.add_time,
+              NBS_ODSE.dbo.WA_UI_metadata.order_nbr,
+              NBS_ODSE.dbo.WA_template.template_nm,
+              NBS_ODSE.dbo.WA_UI_metadata.question_identifier,
+              NBS_ODSE.dbo.WA_UI_metadata.question_label,
+              NBS_ODSE.dbo.WA_UI_metadata.data_type,
+              NBS_ODSE.dbo.WA_UI_metadata.enable_ind,
+              NBS_ODSE.dbo.WA_UI_metadata.display_ind,
+              NBS_ODSE.dbo.WA_UI_metadata.other_value_ind_cd
+      """;
 
 
   public ByteArrayInputStream downloadPageMetadataByWaTemplateUid(Long waTemplateUid) throws IOException {
@@ -498,16 +496,18 @@ public class PageMetaDataDownloader {
       Row row = sheet.createRow(rowIndex++);
       int cellIndex = 0;
       for (Object cellData : data) {
-        if (cellData instanceof Date date) {
-          cell = row.createCell(cellIndex++);
-          cell.setCellValue(date);
-          cell.setCellStyle(dateCellStyle);
-        } else if (cellData instanceof Number number) {
-          cell = row.createCell(cellIndex++);
-          cell.setCellValue(((number).doubleValue()));
-          cell.setCellStyle(rightAlignedCellStyle);
-        } else {
-          row.createCell(cellIndex++).setCellValue(cellData != null ? cellData.toString() : "");
+        switch (cellData) {
+          case Date date -> {
+            cell = row.createCell(cellIndex++);
+            cell.setCellValue(date);
+            cell.setCellStyle(dateCellStyle);
+          }
+          case Number number -> {
+            cell = row.createCell(cellIndex++);
+            cell.setCellValue(((number).doubleValue()));
+            cell.setCellStyle(rightAlignedCellStyle);
+          }
+          case null, default -> row.createCell(cellIndex++).setCellValue(cellData != null ? cellData.toString() : "");
         }
       }
     }

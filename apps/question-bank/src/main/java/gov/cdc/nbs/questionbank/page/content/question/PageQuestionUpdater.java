@@ -84,17 +84,13 @@ public class PageQuestionUpdater {
       Concept codeSystem,
       Long questionId,
       Long user) {
-    if (request instanceof UpdatePageTextQuestionRequest textRequest) {
-      return asUpdate(textRequest, codeSystem, questionId, user);
-    } else if (request instanceof UpdatePageNumericQuestionRequest numericRequest) {
-      return asUpdate(numericRequest, codeSystem, questionId, user);
-    } else if (request instanceof UpdatePageDateQuestionRequest dateRequest) {
-      return asUpdate(dateRequest, codeSystem, questionId, user);
-    } else if (request instanceof UpdatePageCodedQuestionRequest codedRequest) {
-      return asUpdate(codedRequest, codeSystem, questionId, user);
-    } else {
-      throw new UpdatePageQuestionException("Failed to process update question");
-    }
+    return switch (request) {
+      case UpdatePageTextQuestionRequest textRequest -> asUpdate(textRequest, codeSystem, questionId, user);
+      case UpdatePageNumericQuestionRequest numericRequest -> asUpdate(numericRequest, codeSystem, questionId, user);
+      case UpdatePageDateQuestionRequest dateRequest -> asUpdate(dateRequest, codeSystem, questionId, user);
+      case UpdatePageCodedQuestionRequest codedRequest -> asUpdate(codedRequest, codeSystem, questionId, user);
+      case null, default -> throw new UpdatePageQuestionException("Failed to process update question");
+    };
   }
 
   private void validateRequest(UpdatePageQuestionRequest request) {
@@ -111,7 +107,7 @@ public class PageQuestionUpdater {
     if (request.displayControl() != 1026) { // Readonly User entered text, number, or date
       if (request.dataMartInfo() == null ||
           request.dataMartInfo().reportLabel() == null ||
-          request.dataMartInfo().reportLabel().trim().length() == 0) {
+          request.dataMartInfo().reportLabel().trim().isEmpty()) {
         throw new UpdatePageQuestionException("Default label in report is a required field");
       }
       if (request.messagingInfo() == null) {
