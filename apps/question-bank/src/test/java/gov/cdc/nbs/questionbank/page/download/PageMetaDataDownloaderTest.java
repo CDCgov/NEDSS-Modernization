@@ -104,6 +104,7 @@ class PageMetaDataDownloaderTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void testFindPageMetadataByWaTemplateUid() {
     Long waTemplateUid = 1L;
 
