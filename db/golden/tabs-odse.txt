@@ -1,11 +1,9 @@
-Act_id
-Act_id_hist
 Activity_log
 Auth_user
 case_management
 case_management_hist
 CDF_subform_import_log
-Chart_report_metadata
+CN_transportq_out
 Confirmation_method
 Confirmation_method_hist
 CT_contact
@@ -23,8 +21,6 @@ EDX_activity_log
 EDX_Document
 ELR_activity_log
 ELRWorkerQueue
-Entity_id
-Entity_id_hist
 Export_receiving_facility
 Intervention
 Intervention_hist
@@ -36,6 +32,7 @@ Manufactured_material
 Manufactured_material_hist
 nbs_answer
 nbs_answer_hist
+NBS_attachment
 NBS_case_answer
 NBS_case_answer_hist
 NBS_document
@@ -45,8 +42,8 @@ Notification
 Notification_hist
 Obs_value_coded
 Obs_value_coded_hist
-Obs_value_numeric
-Obs_value_numeric_hist
+Obs_value_date
+Obs_value_date_hist
 Obs_value_txt
 Obs_value_txt_hist
 Observation
@@ -71,5 +68,8 @@ Tele_locator
 Tele_locator_hist
 Treatment
 Treatment_hist
+Treatment_administered
+Treatment_administered_hist
+Treatment_procedure
+Treatment_procedure_hist
 USER_PROFILE
-Jurisdiction_code
