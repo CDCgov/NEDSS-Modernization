@@ -140,7 +140,7 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
-                                    label="Marital Status"
+                                    label="Marital status"
                                     options={coded.maritalStatuses}
                                 />
                             )}
