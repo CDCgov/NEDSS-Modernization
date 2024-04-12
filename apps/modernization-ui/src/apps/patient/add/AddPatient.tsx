@@ -24,6 +24,7 @@ import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patie
 import { isMissingFields } from 'apps/patient/add/isMissingFields';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { DataEntrySideNav } from 'apps/patient/add/DataEntrySideNav/DataEntrySideNav';
+import { SuccessModal } from 'success';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -138,7 +139,10 @@ const AddPatient = () => {
 
     useEffect(() => {
         //  controls the modal visibility
-        const shown = entryState.step === 'verify-missing-fields' || entryState.step === 'verify-address';
+        const shown =
+            entryState.step === 'verify-missing-fields' ||
+            entryState.step === 'verify-address' ||
+            entryState.step === 'created';
         modalRef.current?.toggleModal(undefined, shown);
     }, [entryState.step]);
 
@@ -146,7 +150,7 @@ const AddPatient = () => {
         if (entryState.step === 'create') {
             create(entryState.entry);
         } else if (entryState.step === 'created') {
-            navigate(`/add-patient/patient-added?shortId=${entryState.id}&name=${entryState.name}`);
+            console.log('DONE', entryState);
         }
     }, [entryState.step]);
 
@@ -223,6 +227,20 @@ const AddPatient = () => {
                     input={asVerifiableAddress(locations.states, entryState.entry)}
                     onConfirm={prepareCreate}
                     onCancel={cancelSubmission}
+                />
+            )}
+            {entryState.step === 'created' && (
+                <SuccessModal
+                    modal={modalRef}
+                    title="Success"
+                    message={`You have successfully added ${(entryState.step === 'created' && entryState.name) || 'the patient'}`}
+                    confirmText="View patient"
+                    onConfirm={() => navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)}
+                    cancelText="Add another patient"
+                    onCancel={() => {
+                        navigate(`/add-patient`);
+                        modalRef.current?.toggleModal();
+                    }}
                 />
             )}
             <Grid col={3} className="bg-white border-right border-base-light">

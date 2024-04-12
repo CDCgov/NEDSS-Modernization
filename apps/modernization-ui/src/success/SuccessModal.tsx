@@ -1,11 +1,10 @@
 import { ReactNode, RefObject } from 'react';
 import { Button, ButtonGroup, Icon, Modal, ModalFooter, ModalHeading, ModalRef } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import style from './confirmationModal.module.scss';
+import style from './successModal.module.scss';
 
 type Props = {
     id?: string;
-    type?: string;
     ariaDescribedBy?: string;
     modal: RefObject<ModalRef>;
     title: string;
@@ -17,10 +16,9 @@ type Props = {
     onCancel: () => void;
 };
 
-export const ConfirmationModal = ({
-    id = 'confirmation',
-    type,
-    ariaDescribedBy = 'confirmation-description',
+export const SuccessModal = ({
+    id = 'success',
+    ariaDescribedBy = 'success-description',
     modal,
     title,
     message,
@@ -35,26 +33,20 @@ export const ConfirmationModal = ({
             forceAction
             ref={modal}
             id={id}
-            aria-labelledby="confirmation-heading"
+            aria-labelledby="success-heading"
             className="modal"
             aria-describedby={ariaDescribedBy}>
-            <ModalHeading id="confirmation-heading">{title}</ModalHeading>
+            <ModalHeading id="success-heading">{title}</ModalHeading>
             <div className={classNames(style.content, 'modal-content')}>
-                {type === 'success' ? (
-                    <div className={classNames(style.success)}>
-                        <Icon.CheckCircle className={classNames(style.successIcon)} />
-                    </div>
-                ) : (
-                    <div className={classNames('warning')}>
-                        <Icon.Warning className={classNames(style.warningIcon)} />
-                    </div>
-                )}
+                <div className={classNames(style.success)}>
+                    <Icon.CheckCircle className={classNames(style.successIcon)} />
+                </div>
                 <div className={classNames(style.message, 'modal-message')}>
                     <p id={ariaDescribedBy}>{message}</p>
-                    {detail && <p id="confirmation-modal-details">{detail}</p>}
+                    {detail && <p id="success-modal-details">{detail}</p>}
                 </div>
             </div>
-            <ModalFooter id="confirmation-footer">
+            <ModalFooter id="success-footer">
                 <ButtonGroup className={classNames(style.actionButtonGroup)}>
                     <Button type="button" onClick={onCancel} outline>
                         {cancelText}
