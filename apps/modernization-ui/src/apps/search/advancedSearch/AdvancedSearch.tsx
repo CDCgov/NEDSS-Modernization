@@ -570,14 +570,13 @@ export const AdvancedSearch = () => {
                                 </div>
                             </div>
                         </Grid>
-
                         {submitted && !!resultTotal && (
                             <Grid row className="padding-left-4 padding-right-4 flex-align-center flex-justify">
                                 <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                                     Showing {resultStartCount} - {resultEndCount} of {resultTotal}
                                 </p>
                                 <Pagination
-                                    style={{ justifyContent: 'flex-end', backgroundColor: 'transparent' }}
+                                    style={{ justifyContent: 'flex-end' }}
                                     totalPages={Math.ceil(resultTotal / 25)}
                                     currentPage={currentPage}
                                     pathname={'/advanced-search'}
