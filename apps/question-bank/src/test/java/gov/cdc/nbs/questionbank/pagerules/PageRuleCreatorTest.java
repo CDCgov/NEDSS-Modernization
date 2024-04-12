@@ -284,6 +284,12 @@ class PageRuleCreatorTest {
   }
 
   @Test
+  void should_reject_null_request() {
+    RuleRequest request = null;
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
+  }
+
+  @Test
   void should_reject_null_targets() {
     RuleRequest request = new RuleRequest(
         null,
@@ -326,6 +332,22 @@ class PageRuleCreatorTest {
         null,
         null,
         Arrays.asList("", "test"),
+        null,
+        null);
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
+  }
+
+  @Test
+  void should_reject_null_target_id() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        Arrays.asList(null, "test"),
         null,
         null);
     assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
