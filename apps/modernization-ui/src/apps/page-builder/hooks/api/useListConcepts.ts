@@ -1,5 +1,4 @@
 import { Concept, ConceptControllerService } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 
 type State =
