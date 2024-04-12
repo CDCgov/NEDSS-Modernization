@@ -1,69 +1,31 @@
-import { UserContext } from 'user';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ClassicLink } from './ClassicLink';
-import { render, fireEvent, waitFor } from '@testing-library/react';
 
-describe('when a ClassicLink is clicked', () => {
-    const { location } = window;
+import { useRedirect } from './useRedirect';
+jest.mock('./useRedirect');
 
-    const getHrefSpy = jest.fn(() => 'example.com');
-    const setHrefSpy = jest.fn((href) => href);
+const mockUseRedirect = useRedirect as jest.MockedFunction<typeof useRedirect>;
 
-    beforeAll(() => {
-        const mockLocation = { ...location };
-        Object.defineProperty(mockLocation, 'href', {
-            get: getHrefSpy,
-            set: setHrefSpy
-        });
+describe('A ClassicLink component', () => {
+    it('should redirect when clicked', async () => {
+        const redirect = jest.fn();
 
-        // @ts-expect-error : location is mocked to check that the href is changed by the redirect
-        delete window.location;
-        window.location = mockLocation;
-    });
+        mockUseRedirect.mockImplementation(() => ({
+            redirecting: false,
+            location: 'location-value',
+            redirect,
+            reset: jest.fn()
+        }));
 
-    afterAll(() => {
-        window.location = location;
-    });
+        const { findByText } = render(<ClassicLink url="redirect-url">Link text</ClassicLink>);
 
-    beforeEach(() => {
-        jest.restoreAllMocks();
-    });
+        const link = await findByText('Link text');
 
-    it('should redirect to the url returned by the API', async () => {
-        jest.spyOn(global, 'fetch').mockReturnValue(
-            Promise.resolve({
-                // @ts-expect-error : Only relevant properties are mocked; header Location
-                headers: {
-                    get: jest.fn((v) => (v === 'Location' && 'redirected-url') || null)
-                }
-            })
-        );
-
-        const user = {
-            state: {
-                isLoggedIn: true,
-                isLoginPending: false,
-                getToken: () => 'token'
-            },
-            login: (_username: string) => {},
-            logout: () => {}
-        };
-
-        const { findByText } = render(
-            <UserContext.Provider value={user}>
-                <ClassicLink url="redirect-url">Link text</ClassicLink>
-            </UserContext.Provider>
-        );
-
-        const button = await findByText('Link text');
-
-        fireEvent.click(button);
+        userEvent.click(link);
 
         await waitFor(() => {
-            expect(global.fetch).toHaveBeenLastCalledWith('redirect-url', {
-                headers: { Authorization: 'Bearer token' }
-            });
-
-            expect(setHrefSpy).toHaveBeenCalledWith('redirected-url');
+            expect(redirect).toHaveBeenCalledWith('redirect-url');
         });
     });
 });

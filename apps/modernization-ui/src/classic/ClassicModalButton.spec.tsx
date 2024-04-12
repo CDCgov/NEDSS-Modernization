@@ -1,65 +1,71 @@
-import { UserContext } from 'user';
 import { ClassicModalButton } from './ClassicModalButton';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { ClassicModalProvider } from './ClassicModalContext';
 
-describe('when a ClassicButton is clicked', () => {
-    const open = jest.fn();
+import { useRedirect } from './useRedirect';
+import { Status, useClassicModal } from 'classic';
+import userEvent from '@testing-library/user-event';
 
-    beforeAll(() => {
-        window.open = open;
-    });
+jest.mock('./useRedirect');
 
-    afterAll(() => {
-        jest.resetAllMocks();
-    });
+const mockUseRedirect = useRedirect as jest.MockedFunction<typeof useRedirect>;
 
-    beforeEach(() => {
-        jest.restoreAllMocks();
-    });
+jest.mock('classic');
+const mockUseClassicModal = useClassicModal as jest.MockedFunction<typeof useClassicModal>;
 
-    it('should open a window with the url returned by the API', async () => {
-        jest.spyOn(global, 'fetch').mockReturnValue(
-            Promise.resolve({
-                // @ts-expect-error : Only relevant properties are mocked; header Location
-                headers: {
-                    get: jest.fn((v) => (v === 'Location' && 'redirected-url') || null)
-                }
-            })
-        );
+describe('A ClassicModalButton component', () => {
+    it('should redirect when clicked', async () => {
+        const redirect = jest.fn();
 
-        const user = {
-            state: {
-                isLoggedIn: true,
-                isLoginPending: false,
-                getToken: () => 'token'
-            },
-            login: (_username: string) => {},
-            logout: () => {}
-        };
+        mockUseRedirect.mockImplementation(() => ({
+            redirecting: false,
+            location: 'location-value',
+            redirect,
+            reset: jest.fn()
+        }));
+
+        mockUseClassicModal.mockImplementation(() => ({
+            state: { status: Status.Idle },
+            open: jest.fn(),
+            reset: jest.fn()
+        }));
 
         const { findByText } = render(
-            <UserContext.Provider value={user}>
-                <ClassicModalProvider>
-                    <ClassicModalButton url="redirect-url">Button text</ClassicModalButton>
-                </ClassicModalProvider>
-            </UserContext.Provider>
+            <ClassicModalProvider>
+                <ClassicModalButton url="redirect-url">Button text</ClassicModalButton>
+            </ClassicModalProvider>
         );
 
         const button = await findByText('Button text');
 
-        fireEvent.click(button);
+        userEvent.click(button);
 
         await waitFor(() => {
-            expect(global.fetch).toHaveBeenLastCalledWith('redirect-url', {
-                headers: { Authorization: 'Bearer token' }
-            });
-
-            expect(open).toHaveBeenCalledWith(
-                'redirected-url',
-                'classic',
-                'width=980px, height=900px, status=no, unadorned=yes, scroll=yes, help=no, resizable=no'
-            );
+            expect(redirect).toHaveBeenCalledWith('redirect-url');
         });
+    });
+
+    it('should open a modal when the location is present', () => {
+        mockUseRedirect.mockImplementation(() => ({
+            redirecting: false,
+            location: 'location-value',
+            redirect: jest.fn(),
+            reset: jest.fn()
+        }));
+
+        const open = jest.fn();
+        mockUseClassicModal.mockImplementation(() => ({
+            state: { status: Status.Idle },
+            open: open,
+            reset: jest.fn()
+        }));
+
+        render(
+            <ClassicModalProvider>
+                <ClassicModalButton url="redirect-url">Button text</ClassicModalButton>
+            </ClassicModalProvider>
+        );
+
+        expect(open).toHaveBeenCalledWith('location-value');
     });
 });

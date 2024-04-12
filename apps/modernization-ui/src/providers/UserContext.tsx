@@ -2,8 +2,6 @@ import React, { ReactNode, useEffect, useReducer } from 'react';
 
 import { Config } from 'config';
 import { User } from 'user';
-import { getToken } from 'authorization';
-import { TokenProvider } from 'authorization/authorization';
 
 type InternalState = { status: 'waiting' } | { status: 'ready'; user: User } | { status: 'logout' };
 const waiting: InternalState = {
@@ -24,7 +22,6 @@ const reducer = (_state: InternalState, action: Action): InternalState => {
 type LoginInteraction = {
     user?: User;
     isLoggedIn: boolean;
-    getToken: TokenProvider;
 };
 
 type Interaction = {
@@ -33,7 +30,7 @@ type Interaction = {
 };
 
 const UserContext = React.createContext<Interaction>({
-    state: { isLoggedIn: false, getToken },
+    state: { isLoggedIn: false },
     logout: () => {}
 });
 
@@ -61,7 +58,7 @@ const UserContextProvider = ({ initial, children }: Props) => {
 
     const logout = () => dispatch({ type: 'logout' });
 
-    const value = { state: { ...state, isLoggedIn: state.status === 'ready', getToken }, logout };
+    const value = { state: { ...state, isLoggedIn: state.status === 'ready' }, logout };
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

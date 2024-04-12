@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
-import { useUser } from 'user';
 import { Destination } from './Destination';
+import { authorization } from 'authorization';
 
 type Redirect =
     | { status: 'idle' }
@@ -22,8 +22,8 @@ const reducer = (_state: Redirect, action: Action): Redirect => {
     }
 };
 
-const resolveRedirect = (token: () => string | undefined, url: string) => {
-    return fetch(url, { headers: { Authorization: `Bearer ${token()}` } }).then((response) =>
+const resolveRedirect = (url: string) => {
+    return fetch(url, { headers: { Authorization: authorization() } }).then((response) =>
         response.headers.get('Location')
     );
 };
@@ -33,15 +33,11 @@ type Props = {
 };
 
 const useRedirect = ({ destination = 'current' }: Props) => {
-    const {
-        state: { getToken }
-    } = useUser();
-
     const [state, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {
         if (state.status === 'redirecting') {
-            resolveRedirect(getToken, state.url).then((location) => {
+            resolveRedirect(state.url).then((location) => {
                 if (location) {
                     dispatch({ type: 'redirected', location });
                 }
@@ -62,7 +58,7 @@ const useRedirect = ({ destination = 'current' }: Props) => {
 
 const navigateTo = (location: string) => (window.location.href = location);
 
-const open = (location: string) => {
+const openWindow = (location: string) => {
     window.open(location, '_blank', 'noreferrer');
 };
 
@@ -75,7 +71,7 @@ const navigate = (destination: Destination, location: string) => {
                 navigateTo(location);
                 break;
             case 'window':
-                open(location);
+                openWindow(location);
         }
     }
 };

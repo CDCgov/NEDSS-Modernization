@@ -1,6 +1,6 @@
 import { ReorderControllerService } from '../generated';
 
-export const reorderObjects = (token: string, after: number, component: number, page: number): Promise<any> => {
+export const reorderObjects = (after: number, component: number, page: number): Promise<any> => {
     return ReorderControllerService.orderComponentAfter({
         after: after,
         component: component,
