@@ -15,17 +15,13 @@ class ContentComponentResolver {
   }
 
   ContentNode resolve(final ComponentNode.Type type, final FlattenedComponent flattened) {
-    if (type instanceof InputNode.Type input) {
-      return asInput(input, flattened);
-    } else if (type instanceof EntryNode.Type entry) {
-      return asEntry(entry, flattened);
-    } else if (type instanceof SelectionNode.Type selection) {
-      return asSelection(selection, flattened);
-    } else if (type instanceof StaticNode.Type staticNode) {
-      return asStatic(staticNode, flattened);
-    } else {
-      throw new IllegalStateException("Unresolvable Content Component Type: " + type);
-    }
+    return switch (type) {
+      case InputNode.Type input -> asInput(input, flattened);
+      case EntryNode.Type entry -> asEntry(entry, flattened);
+      case SelectionNode.Type selection -> asSelection(selection, flattened);
+      case StaticNode.Type staticNode -> asStatic(staticNode, flattened);
+      case null, default -> throw new IllegalStateException("Unresolvable Content Component Type: " + type);
+    };
   }
 
   private ComponentNode.Definition asDefinition(final FlattenedComponent component) {

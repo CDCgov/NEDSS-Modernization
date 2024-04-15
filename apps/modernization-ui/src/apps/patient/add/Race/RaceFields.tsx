@@ -11,6 +11,7 @@ type Props = { id: string; title: string; coded: CodedValues };
 
 export default function RaceFields({ id, title, coded }: Props) {
     const { control } = useFormContext();
+    console.log('coded', coded);
 
     const tempArr: any = [];
     return (
@@ -55,7 +56,7 @@ export default function RaceFields({ id, title, coded }: Props) {
                                             value={value?.find((it: any) => it === race.value) || race.value}
                                             id={race.value}
                                             name={'race'}
-                                            label={race.name}
+                                            label={race.name === 'not asked' ? 'Not asked' : race.name}
                                         />
                                     ))}
                                 </>

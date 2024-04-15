@@ -47,6 +47,15 @@ public class PageRuleCreator {
   }
 
   public Rule createPageRule(RuleRequest request, long page, Long userId) {
+    if (request == null) {
+      throw new RuleException("Invalid request");
+    }
+    if (request.targetIdentifiers() == null || request.targetIdentifiers().isEmpty()) {
+      throw new RuleException("At least 1 target identifier is required");
+    }
+    if (!request.targetIdentifiers().stream().allMatch(t -> t != null && t.trim().length() > 0)) {
+      throw new RuleException("A target is missing it's identifier");
+    }
 
     WaTemplate template = entityManager.find(WaTemplate.class, page);
     if (template == null) {

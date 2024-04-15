@@ -1,6 +1,5 @@
 MSG_ANSWER
 MSG_CASE_INVESTIGATION
-MSG_CONTAINER
 MSG_INTERVIEW
 MSG_ORGANIZATION
 MSG_PATIENT
@@ -9,6 +8,7 @@ MSG_PROVIDER
 MSG_TREATMENT
 MsgOut_activity_log
 MsgOut_activity_log_detail
+MsgOut_Message
 MsgOut_Receiving_facility
 MsgOut_Sending_facility
 NBS_interface
@@ -18,3 +18,4 @@ PSF_INDEX
 PSF_PARTNER
 PSF_RISK
 PSF_SESSION
+TransportQ_out

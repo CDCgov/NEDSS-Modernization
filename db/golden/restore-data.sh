@@ -33,12 +33,10 @@ GOLDEN_DB_DATA="$GOLDEN_DB_HOME/data"
 # Read table names from the file and export each to a CSV file
 while read -r table; do
   if [ ! -z "$table" ]; then  # Skip empty lines
-    echo "Exporting $table to CSV..."
+    echo "Restoring $table data to CSV..."
     sqlcmd -S "$SERVER_NAME" -d "$DATABASE_NAME" -U "$USERNAME" -P "$PASSWORD" \
-           -Q "EXEC dbo.pii_${table};" \
-           -o "$GOLDEN_DB_DATA/${table}.txt" -s"|" -W -k2
-    sed -i 's/NULL//ig' "$GOLDEN_DB_DATA/${table}.txt"
+           -Q "EXEC dbo.pii_${table}_Restore '$GOLDEN_DB_DATA/out/${table}.deid.resynthesis.txt';"
   fi
 done < "$TABLE_LIST_FILE"
 
-echo "Export completed."
+echo "Import completed."

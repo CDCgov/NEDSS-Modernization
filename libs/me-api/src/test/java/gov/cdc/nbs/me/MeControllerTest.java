@@ -1,6 +1,7 @@
 package gov.cdc.nbs.me;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -35,7 +36,7 @@ class MeControllerTest {
         .returns("first-name", Me::firstName)
         .returns("last-name", Me::lastName)
         .extracting(Me::permissions)
-        .asList()
+        .asInstanceOf(InstanceOfAssertFactories.LIST) 
         .contains("operation-one-object-one", "operation-two-object-two")
     ;
 

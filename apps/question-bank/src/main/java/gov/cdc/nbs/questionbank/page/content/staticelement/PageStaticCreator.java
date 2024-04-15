@@ -38,8 +38,7 @@ public class PageStaticCreator {
       final WaUiMetadataRepository uiMetadatumRepository,
       final EntityManager entityManager,
       final NbsConfigurationRepository configRepository,
-      final IdGeneratorService idGenerator
-  ) {
+      final IdGeneratorService idGenerator) {
     this.entityManager = entityManager;
     this.uiMetadatumRepository = uiMetadatumRepository;
     this.configRepository = configRepository;
@@ -65,8 +64,11 @@ public class PageStaticCreator {
     uiMetadatumRepository.incrementOrderNbrGreaterThanOrEqualTo(pageId, orderNum);
 
     WaUiMetadata staticElementEntry = new WaUiMetadata(
-        asAddLineSeparator(template, orderNum, user, request.adminComments()));
-
+        asAddLineSeparator(
+            template,
+            orderNum,
+            user,
+            request.adminComments()));
     staticElementEntry.setQuestionIdentifier(getLocalId());
 
     return uiMetadatumRepository.save(staticElementEntry).getId();

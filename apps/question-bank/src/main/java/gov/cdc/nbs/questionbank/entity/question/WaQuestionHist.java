@@ -252,27 +252,31 @@ public class WaQuestionHist {
     }
 
     private void setQuestionTypeFields(WaQuestion entity) {
-        if (entity instanceof TextQuestionEntity tq) {
-            this.mask = tq.getMask();
-            this.fieldSize = tq.getFieldSize();
-            this.defaultValue = tq.getDefaultValue();
-        } else if (entity instanceof NumericQuestionEntity nq) {
-            this.mask = nq.getMask();
-            this.fieldSize = nq.getFieldSize();
-            this.defaultValue = nq.getDefaultValue();
-            this.minValue = nq.getMinValue();
-            this.maxValue = nq.getMaxValue();
-            this.unitTypeCd = nq.getUnitTypeCd();
-            this.unitValue = nq.getUnitValue();
-        } else if (entity instanceof DateQuestionEntity dq) {
-            this.mask = dq.getMask();
-            this.futureDateIndCd = dq.getFutureDateIndCd();
-        } else if (entity instanceof CodedQuestionEntity cq) {
-            this.codeSetGroupId = cq.getCodeSetGroupId();
-            this.defaultValue = cq.getDefaultValue();
-        } else {
-            throw new UpdateQuestionException("Failed to create history entry from entity");
+      switch (entity) {
+        case TextQuestionEntity tq -> {
+          this.mask = tq.getMask();
+          this.fieldSize = tq.getFieldSize();
+          this.defaultValue = tq.getDefaultValue();
         }
+        case NumericQuestionEntity nq -> {
+          this.mask = nq.getMask();
+          this.fieldSize = nq.getFieldSize();
+          this.defaultValue = nq.getDefaultValue();
+          this.minValue = nq.getMinValue();
+          this.maxValue = nq.getMaxValue();
+          this.unitTypeCd = nq.getUnitTypeCd();
+          this.unitValue = nq.getUnitValue();
+        }
+        case DateQuestionEntity dq -> {
+          this.mask = dq.getMask();
+          this.futureDateIndCd = dq.getFutureDateIndCd();
+        }
+        case CodedQuestionEntity cq -> {
+          this.codeSetGroupId = cq.getCodeSetGroupId();
+          this.defaultValue = cq.getDefaultValue();
+        }
+        case null, default -> throw new UpdateQuestionException("Failed to create history entry from entity");
+      }
     }
 
 }

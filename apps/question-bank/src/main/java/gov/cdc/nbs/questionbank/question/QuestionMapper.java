@@ -21,17 +21,13 @@ import gov.cdc.nbs.questionbank.question.model.Question.TextQuestion;
 public class QuestionMapper {
 
   public Question toQuestion(WaQuestion entity) {
-    if (entity instanceof TextQuestionEntity tq) {
-      return toTextQuestion(tq);
-    } else if (entity instanceof DateQuestionEntity dq) {
-      return toDateQuestion(dq);
-    } else if (entity instanceof NumericQuestionEntity nq) {
-      return toNumericQuestion(nq);
-    } else if (entity instanceof CodedQuestionEntity cq) {
-      return toCodedQuestion(cq);
-    } else {
-      throw new UpdateQuestionException("Failed to convert entity to question");
-    }
+    return switch (entity) {
+      case TextQuestionEntity tq -> toTextQuestion(tq);
+      case DateQuestionEntity dq -> toDateQuestion(dq);
+      case NumericQuestionEntity nq -> toNumericQuestion(nq);
+      case CodedQuestionEntity cq -> toCodedQuestion(cq);
+      case null, default -> throw new UpdateQuestionException("Failed to convert entity to question");
+    };
   }
 
   public TextQuestion toTextQuestion(TextQuestionEntity q) {
@@ -103,7 +99,7 @@ public class QuestionMapper {
   public CodedQuestion toCodedQuestion(CodedQuestionEntity q) {
     return new CodedQuestion(
         q.getId(),
-        q.getCodeSetGroupId() != null ? q.getCodeSetGroupId() : 0l,
+        q.getCodeSetGroupId() != null ? q.getCodeSetGroupId() : 0L,
         q.getDefaultValue(),
         q.getQuestionType(),
         q.getQuestionIdentifier(),
@@ -148,17 +144,13 @@ public class QuestionMapper {
   }
 
   public UpdateQuestion toUpdateQuestion(UpdateQuestionRequest updateQuestionRequest) {
-    if (updateQuestionRequest instanceof UpdateTextQuestionRequest tq) {
-      return new UpdateQuestion(tq);
-    } else if (updateQuestionRequest instanceof UpdateDateQuestionRequest dq) {
-      return new UpdateQuestion(dq);
-    } else if (updateQuestionRequest instanceof UpdateNumericQuestionRequest nq) {
-      return new UpdateQuestion(nq);
-    } else if (updateQuestionRequest instanceof UpdateCodedQuestionRequest cq) {
-      return new UpdateQuestion(cq);
-    } else {
-      throw new UpdateQuestionException("Failed to convert entity to question");
-    }
+    return switch (updateQuestionRequest) {
+      case UpdateTextQuestionRequest tq -> new UpdateQuestion(tq);
+      case UpdateDateQuestionRequest dq -> new UpdateQuestion(dq);
+      case UpdateNumericQuestionRequest nq -> new UpdateQuestion(nq);
+      case UpdateCodedQuestionRequest cq -> new UpdateQuestion(cq);
+      case null, default -> throw new UpdateQuestionException("Failed to convert entity to question");
+    };
   }
 
 }
