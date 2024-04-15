@@ -10,15 +10,18 @@
 .tab {
     background-color: colors.$clear;
     border: 0;
-    color: colors.$base-black;
+    color: colors.$base-darkest;
     text-decoration: none !important;
     border-bottom: 0.4375rem solid transparent;
     &.active {
         border-bottom: 0.4375rem solid colors.$primary;
     }
     padding: 0 0.3rem 0.62rem 0.3rem;
-    font-size: 1.0625rem;
-    line-height: 1.15;
+    font-size: 1.rem;
+    line-height: 1.25;
     font-weight: 400 !important;
+    font-family: "Public Sans";
+    font-style: normal;
+    font-weight: 700;
     cursor: pointer;
 }
