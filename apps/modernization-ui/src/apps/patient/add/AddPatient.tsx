@@ -149,8 +149,6 @@ const AddPatient = () => {
     useEffect(() => {
         if (entryState.step === 'create') {
             create(entryState.entry);
-        } else if (entryState.step === 'created') {
-            console.log('DONE', entryState);
         }
     }, [entryState.step]);
 

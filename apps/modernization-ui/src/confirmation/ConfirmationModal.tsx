@@ -5,7 +5,6 @@ import style from './confirmationModal.module.scss';
 
 type Props = {
     id?: string;
-    type?: string;
     ariaDescribedBy?: string;
     modal: RefObject<ModalRef>;
     title: string;
@@ -19,7 +18,6 @@ type Props = {
 
 export const ConfirmationModal = ({
     id = 'confirmation',
-    type,
     ariaDescribedBy = 'confirmation-description',
     modal,
     title,
@@ -40,15 +38,9 @@ export const ConfirmationModal = ({
             aria-describedby={ariaDescribedBy}>
             <ModalHeading id="confirmation-heading">{title}</ModalHeading>
             <div className={classNames(style.content, 'modal-content')}>
-                {type === 'success' ? (
-                    <div className={classNames(style.success)}>
-                        <Icon.CheckCircle className={classNames(style.successIcon)} />
-                    </div>
-                ) : (
-                    <div className={classNames('warning')}>
-                        <Icon.Warning className={classNames(style.warningIcon)} />
-                    </div>
-                )}
+                <div className={classNames('warning')}>
+                    <Icon.Warning className={classNames(style.warningIcon)} />
+                </div>
                 <div className={classNames(style.message, 'modal-message')}>
                     <p id={ariaDescribedBy}>{message}</p>
                     {detail && <p id="confirmation-modal-details">{detail}</p>}
