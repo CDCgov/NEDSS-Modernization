@@ -84,7 +84,7 @@ table.usa-table {
         align-items: center;
         padding: 0.6875rem 1.25rem;
         display: inline-flex;
-        gap: 0.3125rem
+        gap: 0.3125rem;
     }
 
     svg {
@@ -98,6 +98,9 @@ table.usa-table {
     background-color: colors.$disabled !important;
     cursor: default;
 }
+.usa-pagination {
+    background-color: transparent !important;
+}
 
 .usa-pagination__button:active,
 .usa-pagination__button:focus,
@@ -105,9 +108,9 @@ table.usa-table {
     border: 1px solid colors.$primary-dark !important;
 }
 
-
 .historyPagination {
     overflow: scroll;
+
     &.usa-pagination {
         justify-content: left;
     }
