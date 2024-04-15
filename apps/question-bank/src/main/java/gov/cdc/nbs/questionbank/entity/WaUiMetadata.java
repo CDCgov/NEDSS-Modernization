@@ -698,10 +698,6 @@ public class WaUiMetadata {
   }
 
   public static WaUiMetadata clone(WaUiMetadata original, WaTemplate page) {
-    WaNndMetadatum nndMetadata = null;
-    if (original.getWaNndMetadatum() != null) {
-      nndMetadata = WaNndMetadatum.clone(original.getWaNndMetadatum(), page);
-    }
 
     WaUiMetadata cloned = new WaUiMetadata(
         null,
@@ -762,13 +758,17 @@ public class WaUiMetadata {
         original.getCoinfectionIndCd(),
         original.getBlockNm(),
         null,
-        nndMetadata);
+        null);
 
 
-    WaRdbMetadata rdbMetadata = null;
     if (original.getWaRdbMetadatum() != null) {
-      rdbMetadata = WaRdbMetadata.clone(original.getWaRdbMetadatum(), page, cloned);
+      WaRdbMetadata rdbMetadata = WaRdbMetadata.clone(original.getWaRdbMetadatum(), page, cloned);
       cloned.setWaRdbMetadatum(rdbMetadata);
+    }
+
+    if (original.getWaNndMetadatum() != null) {
+      WaNndMetadatum nndMetadata = WaNndMetadatum.clone(original.getWaNndMetadatum(), page, cloned);
+      cloned.setWaNndMetadatum(nndMetadata);
     }
     return cloned;
   }
