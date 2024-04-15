@@ -1,4 +1,3 @@
-import { Login } from 'pages/login';
 import { Outlet } from 'react-router-dom';
 import { WelcomeHeader } from './WelcomeHeader/WelcomeHeader';
 import classNames from 'classnames';
@@ -21,15 +20,15 @@ const WelcomeLayout = () => {
                     <div className="padding-x-5">
                         <h1>NBS Modernization</h1>
                         <TabNavigation>
-                            <TabNavigationEntry path={'/login/about'}>About</TabNavigationEntry>
-                            <TabNavigationEntry path={'/login/our-vision'}>Our Vision</TabNavigationEntry>
-                            <TabNavigationEntry path={'/login/get-involved'}>Get Involved</TabNavigationEntry>
+                            <TabNavigationEntry path={'about'}>About</TabNavigationEntry>
+                            <TabNavigationEntry path={'our-vision'}>Our Vision</TabNavigationEntry>
+                            <TabNavigationEntry path={'get-involved'}>Get Involved</TabNavigationEntry>
                         </TabNavigation>
                         <Outlet />
                     </div>
                 </div>
                 <div className={classNames(style.login)}>
-                    <Login />
+                    <span>Sign in / Sign up placeholder</span>
                 </div>
             </div>
         </>

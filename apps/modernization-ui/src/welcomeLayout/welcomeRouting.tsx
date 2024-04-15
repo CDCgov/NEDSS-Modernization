@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { WelcomeLayout } from './WelcomeLayout';
 
 const routing = {
-    path: '/login',
+    path: '/welcome',
     element: <WelcomeLayout />,
     children: [
         { path: '', element: <Navigate to="about" /> },
