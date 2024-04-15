@@ -1,7 +1,5 @@
 package gov.cdc.nbs.questionbank.filter.querydsl;
 
-import java.util.Collection;
-import java.util.stream.Stream;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.StringExpression;
@@ -13,6 +11,9 @@ import gov.cdc.nbs.questionbank.filter.Filter;
 import gov.cdc.nbs.questionbank.filter.MultiValueFilter;
 import gov.cdc.nbs.questionbank.filter.ValueFilter.Operator;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 public class PageLibraryQueryDSLCriteriaResolver extends DefaultQueryDSLCriteriaResolver {
 
   private static final QWaTemplate pageTable = QWaTemplate.waTemplate;
@@ -23,11 +24,15 @@ public class PageLibraryQueryDSLCriteriaResolver extends DefaultQueryDSLCriteria
   @Override
   public Stream<BooleanExpression> resolve(Filter filter, Expression<?> expression) {
     // If query is conditions not in, add custom handler
-    if (filter instanceof MultiValueFilter multi &&
+    if (filter instanceof MultiValueFilter(
+        String property,
+        Operator operator,
+        Collection<String> values
+    ) &&
         expression instanceof StringExpression &&
-        multi.property().equals("conditions") &&
-        Operator.NOT_EQUAL_TO.equals(multi.operator())) {
-      return Stream.of(conditionNotIn(multi.values()));
+        property.equals("conditions") &&
+        Operator.NOT_EQUAL_TO.equals(operator)) {
+      return Stream.of(conditionNotIn(values));
     }
 
     // else provide default resolution
