@@ -1,28 +1,15 @@
 import { Login } from 'pages/login';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { LoginHeader } from './LoginHeader/LoginHeader';
+import { Outlet } from 'react-router-dom';
+import { WelcomeHeader } from './WelcomeHeader/WelcomeHeader';
 import classNames from 'classnames';
-import style from './loginLayout.module.scss';
+import style from './welcomeLayout.module.scss';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
-import { tabs } from './tabs';
-import { TabNavigation } from 'components/TabNavigation/TabNavigation';
+import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 
-const LoginLayout = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const currentPath = location.pathname;
-
-    const handleTabNavigation = (type: string) => {
-        navigate(`/login/${type}`);
-    };
-
-    const isActive = (path: string) => {
-        return currentPath.includes(path);
-    };
-
+const WelcomeLayout = () => {
     return (
         <>
-            <LoginHeader />
+            <WelcomeHeader />
             <div className="display-flex">
                 <div className="width-full">
                     <AlertBanner type="warning">
@@ -33,7 +20,11 @@ const LoginLayout = () => {
                     </AlertBanner>
                     <div className="padding-x-5">
                         <h1>NBS Modernization</h1>
-                        <TabNavigation tabsList={tabs} handleTabNavigation={handleTabNavigation} isActive={isActive} />
+                        <TabNavigation>
+                            <TabNavigationEntry path={'/login/about'}>About</TabNavigationEntry>
+                            <TabNavigationEntry path={'/login/our-vision'}>Our Vision</TabNavigationEntry>
+                            <TabNavigationEntry path={'/login/get-involved'}>Get Involved</TabNavigationEntry>
+                        </TabNavigation>
                         <Outlet />
                     </div>
                 </div>
@@ -45,4 +36,4 @@ const LoginLayout = () => {
     );
 };
 
-export { LoginLayout };
+export { WelcomeLayout };

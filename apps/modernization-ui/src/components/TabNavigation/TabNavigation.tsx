@@ -1,28 +1,41 @@
-import TabButton from 'components/TabButton/TabButton';
+import { Link, useLocation } from 'react-router-dom';
+import { ReactElement } from 'react';
+import classNames from 'classnames';
+import style from './tabNavigation.module.scss';
 
-export type TabProps = {
-    title: string;
-    type: string;
+type NavigationProps = {
+    path: string;
+    children: string;
 };
 
-type TabNavigationProps = {
-    tabsList: TabProps[];
-    handleTabNavigation: (type: string) => void;
-    isActive: (type: string) => boolean;
-};
+const TabNavigationEntry = ({ children, path }: NavigationProps) => {
+    const { pathname } = useLocation();
 
-export const TabNavigation = ({ tabsList, handleTabNavigation, isActive }: TabNavigationProps) => {
     return (
-        <>
-            {tabsList.map((tab, index) => (
-                <TabButton
-                    key={tab.type}
-                    className={index === 0 ? 'margin-left-0' : ''}
-                    title={tab.title}
-                    onClick={() => handleTabNavigation(tab.type)}
-                    active={isActive(tab.type)}
-                />
-            ))}
-        </>
+        <Link to={path} className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
+            {children}
+        </Link>
     );
 };
+
+type Children = ReactElement<NavigationProps>;
+
+type TabNavigationProps = {
+    className?: string;
+    children?: Children | Children[];
+};
+
+const TabNavigation = ({ children = [], className }: TabNavigationProps) => {
+    return (
+        <div className={classNames(style['tab-navigation'], className)}>
+            {ensureArray(children).map((child, index) => (
+                <div key={index}>{child}</div>
+            ))}
+        </div>
+    );
+};
+
+const ensureArray = (children: Children | Children[]) => (Array.isArray(children) ? children : [children]);
+const isActive = (activePath: string, currentPath: string) => currentPath.includes(activePath);
+
+export { TabNavigationEntry, TabNavigation };

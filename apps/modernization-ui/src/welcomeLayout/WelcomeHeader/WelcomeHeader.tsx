@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import style from './loginHeader.module.scss';
+import style from './welcomeHeader.module.scss';
 
-export const LoginHeader = () => {
+export const WelcomeHeader = () => {
     return (
         <div className={classNames(style.header)}>
             <img src="/nedssLogo.jpeg" height={40} alt="" />

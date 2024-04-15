@@ -10,41 +10,52 @@ import { MorbidityTable } from 'apps/patient/profile/morbidity';
 import { LabReportTable } from 'apps/patient/profile/labReport';
 import { PatientProfileVaccinations } from 'apps/patient/profile/vaccination';
 import { ClassicModalProvider } from 'classic/ClassicModalContext';
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from './usePatientProfile';
 
-type EventTabProp = {
-    patient: string | undefined;
-    addEventsAllowed: boolean;
-};
-
-export const Events = ({ patient, addEventsAllowed = true }: EventTabProp) => {
+export const Events = () => {
+    const { id } = useParams();
+    const { patient } = usePatientProfile(id);
     return (
         <div role="tabpanel" id="events-tabpanel">
             <ClassicModalProvider>
                 <div className="margin-top-6 margin-bottom-2 flex-row common-card">
                     <PatientInvestigationsTable
-                        patient={patient}
+                        patient={patient?.id}
                         pageSize={TOTAL_TABLE_DATA}
-                        allowAdd={addEventsAllowed}
+                        allowAdd={patient?.status === 'ACTIVE'}
                     />
                 </div>
                 <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                    <LabReportTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
+                    <LabReportTable
+                        patient={patient?.id}
+                        pageSize={TOTAL_TABLE_DATA}
+                        allowAdd={patient?.status === 'ACTIVE'}
+                    />
                 </div>
 
                 <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                    <MorbidityTable patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
+                    <MorbidityTable
+                        patient={patient?.id}
+                        pageSize={TOTAL_TABLE_DATA}
+                        allowAdd={patient?.status === 'ACTIVE'}
+                    />
                 </div>
 
-                <PatientProfileVaccinations patient={patient} pageSize={TOTAL_TABLE_DATA} allowAdd={addEventsAllowed} />
+                <PatientProfileVaccinations
+                    patient={patient?.id}
+                    pageSize={TOTAL_TABLE_DATA}
+                    allowAdd={patient?.status === 'ACTIVE'}
+                />
                 <div className="margin-top-6 margin-bottom-2 flex-row common-card">
-                    <PatientTreatmentTable patient={patient} />
+                    <PatientTreatmentTable patient={patient?.id} />
                 </div>
 
-                <PatientProfileDocuments patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientProfileDocuments patient={patient?.id} pageSize={TOTAL_TABLE_DATA} />
 
-                <PatientProfileContactsNamedByPatient patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientProfileContactsNamedByPatient patient={patient?.id} pageSize={TOTAL_TABLE_DATA} />
 
-                <PatientProfilePatientNamedByContact patient={patient} pageSize={TOTAL_TABLE_DATA} />
+                <PatientProfilePatientNamedByContact patient={patient?.id} pageSize={TOTAL_TABLE_DATA} />
             </ClassicModalProvider>
         </div>
     );
