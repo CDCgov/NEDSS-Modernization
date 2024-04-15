@@ -5,7 +5,7 @@ const routing = {
     path: '/welcome',
     element: <WelcomeLayout />,
     children: [
-        { path: '', element: <Navigate to="about" /> },
+        { index: true, element: <Navigate to="about" /> },
         {
             path: 'about',
             // to be added with actual elements/component

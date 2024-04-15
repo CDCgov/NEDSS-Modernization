@@ -408,27 +408,27 @@ export const AdvancedSearch = () => {
                 </Grid>
                 <Grid row className="search-page-height">
                     <Grid col={3} className="bg-white border-right border-base-light">
-                        <div className="left-searchbar">
-                            <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
-                            <TabNavigation className="grid-row flex-align-center tab-border margin-top-1 margin-left-2">
+                        <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
+                        <div className="search-tabs">
+                            <TabNavigation className="margin-top-1 margin-left-2">
                                 <TabNavigationEntry path="/advanced-search/person">Patient search</TabNavigationEntry>
                                 <TabNavigationEntry path="/advanced-search/event">Event search</TabNavigationEntry>
                             </TabNavigation>
-                            {activeTab === ACTIVE_TAB.PERSON ? (
-                                <PatientSearch
-                                    handleSubmission={doSubmit}
-                                    personFilter={personFilter}
-                                    clearAll={handleClearAll}
-                                />
-                            ) : (
-                                <EventSearch
-                                    onSearch={handleSubmit}
-                                    investigationFilter={investigationFilter}
-                                    labReportFilter={labReportFilter}
-                                    clearAll={handleClearAll}
-                                />
-                            )}
                         </div>
+                        {activeTab === ACTIVE_TAB.PERSON ? (
+                            <PatientSearch
+                                handleSubmission={doSubmit}
+                                personFilter={personFilter}
+                                clearAll={handleClearAll}
+                            />
+                        ) : (
+                            <EventSearch
+                                onSearch={handleSubmit}
+                                investigationFilter={investigationFilter}
+                                labReportFilter={labReportFilter}
+                                clearAll={handleClearAll}
+                            />
+                        )}
                     </Grid>
                     <Grid col={9} className="scrollable-results">
                         <Grid

@@ -2,25 +2,28 @@
 
 .tab-navigation {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
-    line-height: 3.2;
+    background-color: colors.$clear;
 }
 
 .tab {
-    background-color: colors.$clear;
     border: 0;
     color: colors.$base-darkest;
     text-decoration: none !important;
     border-bottom: 0.4375rem solid transparent;
-    &.active {
-        border-bottom: 0.4375rem solid colors.$primary;
-    }
-    padding: 0 0.3rem 0.62rem 0.3rem;
-    font-size: 1rem;
+
+    padding-bottom: 0.5rem;
     line-height: 1.25;
-    font-family: "Public Sans";
-    font-style: normal;
-    font-weight: 700 !important;
+
     cursor: pointer;
+
+    &.active {
+        font-weight: 700;
+        border-bottom-color: colors.$primary;
+    }
+
+    &:hover {
+        color: colors.$primary;
+    }
 }
