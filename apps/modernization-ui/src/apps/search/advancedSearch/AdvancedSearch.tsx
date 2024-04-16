@@ -33,7 +33,7 @@ import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
-import TabButton from 'components/TabButton/TabButton';
+import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -111,11 +111,13 @@ export const AdvancedSearch = () => {
         }
     ] = useFindLabReportsByFilterLazyQuery();
 
-    const handleActiveTab = (searchType: string) => {
-        setActiveTab(searchType);
+    useEffect(() => {
+        searchType && setActiveTab(searchType);
+    }, [searchType]);
+
+    useEffect(() => {
         handleClearAll();
-        navigate(`/advanced-search/${searchType}`, { replace: true });
-    };
+    }, [activeTab]);
 
     useEffect(() => {
         function handleClickOutside(event: any) {
@@ -275,7 +277,7 @@ export const AdvancedSearch = () => {
                 .then((criteria) => `?q=${encodeURIComponent(criteria)}&type=${type}`)
                 .then((search) => {
                     navigate({
-                        pathname: '/advanced-search',
+                        pathname: `/advanced-search/${activeTab}`,
                         search
                     });
                     setCurrentPage(1);
@@ -406,37 +408,27 @@ export const AdvancedSearch = () => {
                 </Grid>
                 <Grid row className="search-page-height">
                     <Grid col={3} className="bg-white border-right border-base-light">
-                        <div className="left-searchbar">
-                            <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
-                            <div
-                                className="grid-row flex-align-center"
-                                style={{ borderBottom: '1.5px solid lightgray' }}>
-                                <TabButton
-                                    title="Patient search"
-                                    active={activeTab === ACTIVE_TAB.PERSON}
-                                    onClick={() => handleActiveTab(ACTIVE_TAB.PERSON)}
-                                />
-                                <TabButton
-                                    title="Event search"
-                                    active={activeTab === ACTIVE_TAB.EVENT}
-                                    onClick={() => handleActiveTab(ACTIVE_TAB.EVENT)}
-                                />
-                            </div>
-                            {activeTab === ACTIVE_TAB.PERSON ? (
-                                <PatientSearch
-                                    handleSubmission={doSubmit}
-                                    personFilter={personFilter}
-                                    clearAll={handleClearAll}
-                                />
-                            ) : (
-                                <EventSearch
-                                    onSearch={handleSubmit}
-                                    investigationFilter={investigationFilter}
-                                    labReportFilter={labReportFilter}
-                                    clearAll={handleClearAll}
-                                />
-                            )}
+                        <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
+                        <div className="search-tabs">
+                            <TabNavigation className="margin-top-1 margin-left-2">
+                                <TabNavigationEntry path="/advanced-search/person">Patient search</TabNavigationEntry>
+                                <TabNavigationEntry path="/advanced-search/event">Event search</TabNavigationEntry>
+                            </TabNavigation>
                         </div>
+                        {activeTab === ACTIVE_TAB.PERSON ? (
+                            <PatientSearch
+                                handleSubmission={doSubmit}
+                                personFilter={personFilter}
+                                clearAll={handleClearAll}
+                            />
+                        ) : (
+                            <EventSearch
+                                onSearch={handleSubmit}
+                                investigationFilter={investigationFilter}
+                                labReportFilter={labReportFilter}
+                                clearAll={handleClearAll}
+                            />
+                        )}
                     </Grid>
                     <Grid col={9} className="scrollable-results">
                         <Grid

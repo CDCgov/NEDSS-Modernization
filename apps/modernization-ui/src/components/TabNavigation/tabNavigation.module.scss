@@ -1,0 +1,29 @@
+@use 'styles/colors';
+
+.tab-navigation {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background-color: colors.$clear;
+}
+
+.tab {
+    border: 0;
+    color: colors.$base-darkest;
+    text-decoration: none !important;
+    border-bottom: 0.4375rem solid transparent;
+
+    padding-bottom: 0.5rem;
+    line-height: 1.25;
+
+    cursor: pointer;
+
+    &.active {
+        font-weight: 700;
+        border-bottom-color: colors.$primary;
+    }
+
+    &:hover {
+        color: colors.$primary;
+    }
+}

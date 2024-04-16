@@ -1,15 +1,17 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { initializationLoader, ProtectedLayout } from 'authorization';
 
-import { Login } from 'pages/login';
 import { RedirectHome } from './RedirectHome';
 
 import { routing as searchRouting } from 'apps/search';
 import { routing as patientProfileRouting } from 'apps/patient/profile';
 import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
+import { routing as welcomeRouting } from 'welcomeLayout/welcomeRouting';
+import { Login } from 'pages/login';
 
 const routing = [
+    welcomeRouting,
     { path: '/login', element: <Login /> },
     {
         path: '/',

@@ -1,11 +1,7 @@
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import 'apps/patient/profile/style.scss';
-import { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import { Summary } from 'apps/patient/profile/Summary';
-import { Events } from 'apps/patient/profile/Events';
-import { Demographics } from 'apps/patient/profile/Demographics';
+import { useRef } from 'react';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
@@ -17,8 +13,8 @@ import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
 import styles from './patient-profile.module.scss';
-import TabButton from 'components/TabButton/TabButton';
 import { ConfirmationModal } from 'confirmation';
+import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -41,10 +37,6 @@ export const PatientProfile = () => {
     const { showAlert } = useAlert();
 
     const modalRef = useRef<ModalRef>(null);
-
-    const [activeTab, setActiveTab] = useState<ACTIVE_TAB.DEMOGRAPHICS | ACTIVE_TAB.EVENT | ACTIVE_TAB.SUMMARY>(
-        ACTIVE_TAB.SUMMARY
-    );
 
     const permissions = usePatientProfilePermissions();
 
@@ -136,30 +128,18 @@ export const PatientProfile = () => {
                 <div className="main-body">
                     {patient && summary && <PatientProfileSummary summary={summary} patient={patient} />}
 
-                    <div role="tablist" className="grid-row flex-align-center margin-y-3">
-                        <TabButton
-                            className="margin-left-0"
-                            title={ACTIVE_TAB.SUMMARY}
-                            active={activeTab === ACTIVE_TAB.SUMMARY}
-                            onClick={() => setActiveTab(ACTIVE_TAB.SUMMARY)}
-                        />
-                        <TabButton
-                            title={ACTIVE_TAB.EVENT}
-                            active={activeTab === ACTIVE_TAB.EVENT}
-                            onClick={() => setActiveTab(ACTIVE_TAB.EVENT)}
-                        />
-                        <TabButton
-                            title={ACTIVE_TAB.DEMOGRAPHICS}
-                            active={activeTab === ACTIVE_TAB.DEMOGRAPHICS}
-                            onClick={() => setActiveTab(ACTIVE_TAB.DEMOGRAPHICS)}
-                        />
-                    </div>
-
-                    {activeTab === ACTIVE_TAB.SUMMARY && <Summary patient={patient?.id} />}
-                    {activeTab === ACTIVE_TAB.EVENT && (
-                        <Events patient={patient?.id} addEventsAllowed={patient?.status === 'ACTIVE'} />
-                    )}
-                    {activeTab === ACTIVE_TAB.DEMOGRAPHICS && <Demographics patient={patient} />}
+                    <TabNavigation className="grid-row flex-align-center margin-y-3">
+                        <TabNavigationEntry path={`/patient-profile/${id}/summary`}>
+                            {ACTIVE_TAB.SUMMARY}
+                        </TabNavigationEntry>
+                        <TabNavigationEntry path={`/patient-profile/${id}/events`}>
+                            {ACTIVE_TAB.EVENT}
+                        </TabNavigationEntry>
+                        <TabNavigationEntry path={`/patient-profile/${id}/demographics`}>
+                            {ACTIVE_TAB.DEMOGRAPHICS}
+                        </TabNavigationEntry>
+                    </TabNavigation>
+                    <Outlet />
 
                     <div className="text-center margin-y-5">
                         <Button outline type={'button'} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>

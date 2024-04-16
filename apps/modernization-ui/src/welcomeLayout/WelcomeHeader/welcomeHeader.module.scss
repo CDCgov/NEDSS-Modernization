@@ -1,0 +1,12 @@
+@use 'styles/colors';
+
+.header {
+    background-color: colors.$primary-darker;
+    padding: 1rem 1.5rem;
+    color: colors.$base_white;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    font-size: 2rem;
+}

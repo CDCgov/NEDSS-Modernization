@@ -10,12 +10,8 @@ import { Mortality } from 'apps/patient/profile/mortality';
 import { Ethnicity } from 'apps/patient/profile/ethnicity';
 import { SexBirth } from 'apps/patient/profile/sexBirth';
 import { AlertProvider } from 'alert';
-import { Patient } from 'apps/patient/profile';
-
-type DemographicProps = {
-    handleFormSubmission?: (type: 'error' | 'success' | 'warning' | 'info', message: string, data: any) => void;
-    patient: Patient | undefined;
-};
+import { useParams } from 'react-router-dom';
+import { usePatientProfile } from './usePatientProfile';
 
 export type AlertType = {
     type: 'Updated' | 'Deleted' | 'Added';
@@ -33,7 +29,10 @@ export type AlertType = {
     name?: string;
 } | null;
 
-export const Demographics = ({ patient }: DemographicProps) => {
+export const Demographics = () => {
+    const { id } = useParams();
+    const { patient } = usePatientProfile(id);
+
     return (
         <div role="tabpanel" id="demographics-tabpanel">
             <AlertProvider>

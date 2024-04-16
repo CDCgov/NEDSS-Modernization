@@ -1,0 +1,31 @@
+@use 'styles/colors';
+
+.welcome {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        'header header header'
+        'main main sidebar';
+
+    height: 100%;
+
+    header {
+        grid-area: header;
+    }
+
+    main {
+        grid-area: main;
+        background-color: colors.$base-white;
+
+        .content {
+            margin: 1rem;
+            padding: 1rem;
+            background-color: rgba(colors.$base-white, 0.9);
+        }
+    }
+
+    aside {
+        grid-area: sidebar;
+    }
+}

@@ -6,7 +6,12 @@
 @import 'styles/tooltip';
 
 body {
+    height: 100vh;
     background-color: colors.$background;
+}
+
+#root {
+    height: 100%;
 }
 
 .select-indicator {
