@@ -1,4 +1,4 @@
-import { render, waitFor, fireEvent } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import {
     EntryMethod,
     EventStatus,
@@ -14,6 +14,7 @@ import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { useForm } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
 import { LabReportGeneralFields } from './LabReportGeneralFields';
+import userEvent from '@testing-library/user-event';
 
 const LabReportGeneralFieldsWithForm = () => {
     const labForm = useForm<LabReportFilter>({ defaultValues: {} });
@@ -224,7 +225,7 @@ describe('LabReportGeneralFields component', () => {
 
         // Ensure that eventDate.type is set to a value that will render the date input fields
         const eventDateSelect = getByTestId('eventDate.type');
-        fireEvent.change(eventDateSelect, { target: { value: LaboratoryReportEventDateType.DateOfReport } });
+        userEvent.selectOptions(eventDateSelect, LaboratoryReportEventDateType.DateOfReport);
 
         // Wait for the date input fields to be rendered
         await waitFor(() => {
@@ -238,7 +239,7 @@ describe('LabReportGeneralFields component', () => {
         expect(dateInputs.length).toBeGreaterThan(0); // Ensure that the date input fields are rendered
 
         // Deselect the eventDate.type
-        fireEvent.change(eventDateSelect, { target: { value: '' } });
+        userEvent.selectOptions(eventDateSelect, '');
 
         expect(dateInputs[0]).toHaveValue('12/01/2020');
         expect(dateInputs[1]).toHaveValue('12/20/2020');
@@ -248,7 +249,7 @@ describe('LabReportGeneralFields component', () => {
         const { getByTestId, queryByTestId } = render(<LabReportGeneralFieldsWithDefaultsSet />);
 
         const eventTypeSelect = getByTestId('eventId.labEventType');
-        fireEvent.change(eventTypeSelect, { target: { value: '' } });
+        userEvent.selectOptions(eventTypeSelect, '');
 
         const eventIdInput = queryByTestId('eventId.labEventId');
         if (eventIdInput) {
@@ -262,7 +263,7 @@ describe('LabReportGeneralFields component', () => {
         const { getByTestId, queryByTestId } = render(<LabReportGeneralFieldsWithDefaultsSet />);
 
         const providerSelect = getByTestId('providerSearch.providerType');
-        fireEvent.change(providerSelect, { target: { value: '' } });
+        userEvent.selectOptions(providerSelect, '');
 
         const providerId = queryByTestId('providerSearch.providerId');
         if (providerId) {
@@ -279,15 +280,15 @@ describe('LabReportGeneralFields component', () => {
         const electroniceInput = entryMethods.getElementsByTagName('input')[0];
         const faxInput = entryMethods.getElementsByTagName('input')[1];
 
-        fireEvent.click(electroniceInput);
+        userEvent.click(electroniceInput);
         expect(electroniceInput).toBeChecked();
         expect(faxInput).not.toBeChecked();
 
-        fireEvent.click(faxInput);
+        userEvent.click(faxInput);
         expect(electroniceInput).toBeChecked();
         expect(faxInput).toBeChecked();
 
-        fireEvent.click(electroniceInput);
+        userEvent.click(electroniceInput);
         expect(electroniceInput).not.toBeChecked();
         expect(faxInput).toBeChecked();
     });
@@ -299,15 +300,15 @@ describe('LabReportGeneralFields component', () => {
         const externalInput = enteredBy.getElementsByTagName('input')[0];
         const internalInput = enteredBy.getElementsByTagName('input')[1];
 
-        fireEvent.click(externalInput);
+        userEvent.click(externalInput);
         expect(externalInput).toBeChecked();
         expect(internalInput).not.toBeChecked();
 
-        fireEvent.click(internalInput);
+        userEvent.click(internalInput);
         expect(externalInput).toBeChecked();
         expect(internalInput).toBeChecked();
 
-        fireEvent.click(externalInput);
+        userEvent.click(externalInput);
         expect(externalInput).not.toBeChecked();
         expect(internalInput).toBeChecked();
     });
@@ -319,15 +320,15 @@ describe('LabReportGeneralFields component', () => {
         const newInput = eventStatus.getElementsByTagName('input')[0];
         const updatedInput = eventStatus.getElementsByTagName('input')[1];
 
-        fireEvent.click(newInput);
+        userEvent.click(newInput);
         expect(newInput).toBeChecked();
         expect(updatedInput).not.toBeChecked();
 
-        fireEvent.click(updatedInput);
+        userEvent.click(updatedInput);
         expect(newInput).toBeChecked();
         expect(updatedInput).toBeChecked();
 
-        fireEvent.click(newInput);
+        userEvent.click(newInput);
         expect(newInput).not.toBeChecked();
         expect(updatedInput).toBeChecked();
     });
@@ -339,15 +340,15 @@ describe('LabReportGeneralFields component', () => {
         const unprocessedInput = processingStatus.getElementsByTagName('input')[0];
         const processedInput = processingStatus.getElementsByTagName('input')[1];
 
-        fireEvent.click(unprocessedInput);
+        userEvent.click(unprocessedInput);
         expect(unprocessedInput).toBeChecked();
         expect(processedInput).not.toBeChecked();
 
-        fireEvent.click(processedInput);
+        userEvent.click(processedInput);
         expect(unprocessedInput).toBeChecked();
         expect(processedInput).toBeChecked();
 
-        fireEvent.click(unprocessedInput);
+        userEvent.click(unprocessedInput);
         expect(unprocessedInput).not.toBeChecked();
         expect(processedInput).toBeChecked();
     });

@@ -1,8 +1,9 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { EventTypes } from './EventType';
 import { SEARCH_TYPE } from 'apps/search/advancedSearch/AdvancedSearch';
+import userEvent from '@testing-library/user-event';
 
 describe('EventTypes component tests', () => {
     it('should render event type report based on selection', async () => {
@@ -34,8 +35,7 @@ describe('EventTypes component tests', () => {
                 field._f.onChange?.(mockOnChange);
             }
         });
-
-        fireEvent.change(dropdownEle, { target: { value: SEARCH_TYPE.INVESTIGATION } });
+        userEvent.selectOptions(dropdownEle, SEARCH_TYPE.INVESTIGATION);
         expect(mockOnChangeMethod).toHaveBeenCalledWith(SEARCH_TYPE.INVESTIGATION);
     });
 });

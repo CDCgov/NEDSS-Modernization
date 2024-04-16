@@ -1,7 +1,8 @@
 import { BrowserRouter } from 'react-router-dom';
 import { LabReportResults } from './LabReportResults';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { LabReport } from 'generated/graphql/schema';
+import userEvent from '@testing-library/user-event';
 
 const labReports: [LabReport] = [
     {
@@ -78,7 +79,7 @@ describe('LabReportResults component tests', () => {
         expect(getByText('Next')).toBeInTheDocument();
 
         const nextPageButton = getByText('Next');
-        fireEvent.click(nextPageButton);
+        userEvent.click(nextPageButton);
         expect(mockHandlePagination).toHaveBeenCalledWith(currentPage + 1);
     });
 
@@ -96,7 +97,7 @@ describe('LabReportResults component tests', () => {
         );
 
         const currentPageButton = getByText('1');
-        fireEvent.click(currentPageButton);
+        userEvent.click(currentPageButton);
         expect(mockHandlePagination).toHaveBeenCalledWith(currentPage);
     });
 
@@ -116,7 +117,7 @@ describe('LabReportResults component tests', () => {
         expect(getByText('Previous')).toBeInTheDocument();
 
         const prevPageButton = getByText('Previous');
-        fireEvent.click(prevPageButton);
+        userEvent.click(prevPageButton);
         expect(mockHandlePagination).toHaveBeenCalledWith(currentPage - 1);
     });
 });

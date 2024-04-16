@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { PersonFilter, RecordStatus } from 'generated/graphql/schema';
 import { PatientSearch } from './PatientSearch';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import userEvent from '@testing-library/user-event';
 
 const sampleSearchFunction = jest.fn();
 const sampleClearFunction = jest.fn();
@@ -202,7 +203,7 @@ describe('PatientSearch component tests', () => {
         );
 
         const clearAllButton = container.querySelector('button[aria-label="Clear all search criteria"]');
-        fireEvent.click(clearAllButton as Element);
+        userEvent.click(clearAllButton as Element);
 
         await waitFor(() => {
             expect(sampleClearFunction).toHaveBeenCalled();
