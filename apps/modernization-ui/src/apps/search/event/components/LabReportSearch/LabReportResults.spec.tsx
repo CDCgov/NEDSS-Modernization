@@ -2,6 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { LabReportResults } from './LabReportResults';
 import { render } from '@testing-library/react';
 import { LabReport } from 'generated/graphql/schema';
+import userEvent from '@testing-library/user-event';
 
 const labReports: [LabReport] = [
     {
@@ -39,6 +40,9 @@ const labReports: [LabReport] = [
     }
 ];
 
+const mockHandlePagination = jest.fn();
+const totalResults = 50;
+
 describe('LabReportResults component tests', () => {
     it('should render lab report details', () => {
         const { getByText } = render(
@@ -57,5 +61,63 @@ describe('LabReportResults component tests', () => {
         expect(getByText('07/27/2023')).toBeInTheDocument();
         expect(getByText('Piedmont Hospital')).toBeInTheDocument();
         expect(getByText('Lab Report').closest('a')).toHaveAttribute('href', '#');
+    });
+
+    it('renders lab report results and handles next button pagination', () => {
+        const currentPage = 1;
+        const { getByText } = render(
+            <BrowserRouter>
+                <LabReportResults
+                    data={labReports}
+                    totalResults={totalResults}
+                    handlePagination={mockHandlePagination}
+                    currentPage={currentPage}
+                />
+            </BrowserRouter>
+        );
+
+        expect(getByText('Next')).toBeInTheDocument();
+
+        const nextPageButton = getByText('Next');
+        userEvent.click(nextPageButton);
+        expect(mockHandlePagination).toHaveBeenCalledWith(currentPage + 1);
+    });
+
+    it('renders lab report results and handles pagination', () => {
+        const currentPage = 1;
+        const { getByText } = render(
+            <BrowserRouter>
+                <LabReportResults
+                    data={labReports}
+                    totalResults={totalResults}
+                    handlePagination={mockHandlePagination}
+                    currentPage={currentPage}
+                />
+            </BrowserRouter>
+        );
+
+        const currentPageButton = getByText('1');
+        userEvent.click(currentPageButton);
+        expect(mockHandlePagination).toHaveBeenCalledWith(currentPage);
+    });
+
+    it('renders lab report results and handles next button pagination', () => {
+        const currentPage = 2;
+        const { getByText } = render(
+            <BrowserRouter>
+                <LabReportResults
+                    data={labReports}
+                    totalResults={totalResults}
+                    handlePagination={mockHandlePagination}
+                    currentPage={currentPage}
+                />
+            </BrowserRouter>
+        );
+
+        expect(getByText('Previous')).toBeInTheDocument();
+
+        const prevPageButton = getByText('Previous');
+        userEvent.click(prevPageButton);
+        expect(mockHandlePagination).toHaveBeenCalledWith(currentPage - 1);
     });
 });

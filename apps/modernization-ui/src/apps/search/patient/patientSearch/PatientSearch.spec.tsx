@@ -1,9 +1,13 @@
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { PersonFilter, RecordStatus } from 'generated/graphql/schema';
 import { PatientSearch } from './PatientSearch';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
+import userEvent from '@testing-library/user-event';
+
+const sampleSearchFunction = jest.fn();
+const sampleClearFunction = jest.fn();
 
 describe('PatientSearch component tests', () => {
     it('should render 5 accordions each with a specific form', () => {
@@ -161,6 +165,48 @@ describe('PatientSearch component tests', () => {
         await waitFor(() => {
             errorMessage = container.querySelector('#record-status-error-message') as HTMLSpanElement;
             expect(errorMessage).toBeFalsy();
+        });
+    });
+
+    it('should call handleSubmission with cleaned filter data on form submit', async () => {
+        const sampleSearchFunction = jest.fn(); // Mock function
+        const sampleData: PersonFilter = { recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded] };
+        const { container } = render(
+            <SkipLinkProvider>
+                <PatientSearch
+                    handleSubmission={sampleSearchFunction}
+                    personFilter={sampleData}
+                    clearAll={sampleClearFunction}
+                />
+            </SkipLinkProvider>
+        );
+
+        const form = container.querySelector('form');
+        fireEvent.submit(form as HTMLFormElement);
+
+        await waitFor(() => {
+            expect(sampleSearchFunction).toHaveBeenCalledWith({
+                recordStatus: [RecordStatus.LogDel, RecordStatus.Superceded]
+            });
+        });
+    });
+
+    it('should call clearAll and reset form on Clear All button click', async () => {
+        const { container } = render(
+            <SkipLinkProvider>
+                <PatientSearch
+                    handleSubmission={sampleSearchFunction}
+                    personFilter={undefined}
+                    clearAll={sampleClearFunction}
+                />
+            </SkipLinkProvider>
+        );
+
+        const clearAllButton = container.querySelector('button[aria-label="Clear all search criteria"]');
+        userEvent.click(clearAllButton as Element);
+
+        await waitFor(() => {
+            expect(sampleClearFunction).toHaveBeenCalled();
         });
     });
 });
