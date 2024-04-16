@@ -12,7 +12,7 @@
 
 1. In the ui directory run `npm install`
 2. In the modernization-api directory run `./gradlew build`
-   - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
+    - Alternatively, from the root directory run `./gradlew :modernization-api:buildDependents`
 3. Press `Cmd+Shift+P` and run `Java: Clean Language Server Workspace`
 4. VSCode should now recognize the QueryDSL generated Q classes and be able to launch the debugger
 
@@ -68,30 +68,38 @@ For example, the debug port can be set to `8181` by executing.
 ./gradlew -Pdebug.port=8181 :modernization-api:bootRun
 ```
 
+## Authentication
+
+There are two modes of authentication; one to support the existing NBS 6 authentication and OpenID Connect (OIDC)
+authentication. NBS 6 authentication is enabled by default.
+
+### NBS 6 Authentication
+
+Uses the JSESSIONID created by the NBS 6 instance to validate if the user has been authenticated by searching for an
+entry in the `Security_Log` table. If a valid entry exists a token is generated.
+
+Enabled when `nbs.security.oidc.enabled` is `false` or not present.
+
+### OpenID Connect (OIDC)
+
+The `modernization-api` service can be configured to act as an OIDC Resource Server by
+setting `nbs.security.oidc.enabled` to `true` and providing the `nbs.security.oidc.uri`. The JWT passed in
+the `Authentication` header must have a `perferred_username` value that matches an active user in the NBS `Auth_User`
+table.
+
+| Name                       | Default                                                                              | Description                                                                 |
+|----------------------------|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| nbs.security.oidc.enabled  |                                                                                      | Enables OIDC based authentication.                                          |
+| nbs.security.oidc.protocol | `http`                                                                               | The protocol used to communicate with the OIDC compatible Identity Provider |
+| nbs.security.oidc.host     |                                                                                      | The hostname of the OIDC compatible Identity Provider                       |
+| nbs.security.oidc.base     | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                              |
+| nbs.security.oidc.uri      | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                 |
+
 ## GraphQL
 
 The project utilizes GraphQL through
 the [spring-boot-starter-graphql](https://docs.spring.io/spring-graphql/docs/current/reference/html/) dependency. With
 the api running an interface is available at [/graphiql](http://localhost:8080/graphiql?path=/graphql#) for testing
-
-## QueryDSL
-
-[QueryDSL](https://github.com/querydsl/querydsl) allows the construction of type-safe SQL queries. The `QPatient` class
-is generated from the existing `Patient` JPA entity. When a new `@Entity` is added, run `./gradlew build` and the new Q
-classes will be created under `libs/database-entities/build/generated/sources/annotationProcessor/java/main`
-
-### Example query:
-
-```java
-@PersistenceContext
-private final EntityManager entityManager;
-
-public List<Patient> findPatientsNamedJohn(){
-    JPAQueryFactory queryFactory=new JPAQueryFactory(entityManager);
-    var patient=QPatient.patient;
-    return queryFactory.selectFrom(patient).where(patient.firstNm.like("John")).fetch();
-    }
-```
 
 ## Swagger
 
@@ -106,7 +114,7 @@ and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference
 . The default profile contains the following properties configuration most likely to change.
 
 | Name                          | Default   | Description                                         |
-| ----------------------------- | --------- | --------------------------------------------------- |
+|-------------------------------|-----------|-----------------------------------------------------|
 | nbs.elasticsearch.server      | localhost | The host name of the server running ElasticSearch   |
 | nbs.elasticsearch.port        | 9200      | The port in which ElasticSearch is listening        |
 | nbs.wildfly.server            | localhost | The host name of the server running NBS Classic     |
@@ -114,12 +122,13 @@ and [other useful means](https://docs.spring.io/spring-boot/docs/2.7.5/reference
 | nbs.datasource.server         | localhost | The host name of the server running MS SQL Server   |
 | nbs.identifier.person.initial | 10000000  | The initial seed value for Person local identifiers |
 
-## UI Configuration
+### UI Features
 
-The modernization-api contains a `/nbs/api/configuration` endpoint that returns a set of configurations for the UI. The following configurations are present
+The modernization-api contains a `/nbs/api/configuration` endpoint that returns a set of configurations for the UI. The
+following configurations are present
 
 | Name                                                | Default | Description                                     |
-| --------------------------------------------------- | ------- | ----------------------------------------------- |
+|-----------------------------------------------------|---------|-------------------------------------------------|
 | nbs.ui.features.address.autocomplete                | false   | Enables the address autocomplete feature        |
 | nbs.ui.features.address.verification                | false   | Enables the address verification feature        |
 | nbs.ui.features.pageBuilder.enabled                 | false   | Enables the PageBuilder feature                 |
@@ -136,10 +145,10 @@ by executing.
 ./gradlew :modernization-api:bootRun --args'--nbs-datasource.server=other '
 ```
 
-### Kafka Configuration
+### Kafka
 
 | Name                                        | Default        | Description                                                               |
-| ------------------------------------------- | -------------- | ------------------------------------------------------------------------- |
+|---------------------------------------------|----------------|---------------------------------------------------------------------------|
 | kafka.enabled                               | false          | Weather or not the Modernization API connects to Kafka                    |
 | spring.kafka.bootstrap-servers              | localhost:9092 | URL of one or more Kafka brokers to obtain information about the cluster. |
 | spring.kafka.properties.schema.registry.url | localhost:9091 | URL of the server providing the centralized message schema repository.    |

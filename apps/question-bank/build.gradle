@@ -100,7 +100,6 @@ dependencies {
     implementation(project(':classic-interaction'))
     implementation(project(':redirect'))
 
-//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.springBoot.web

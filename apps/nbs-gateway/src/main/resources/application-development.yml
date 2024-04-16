@@ -1,14 +1,21 @@
 nbs:
+  security:
+    oidc:
+      client:
+        id: nbs-development
+        secret: KK092EEXikR0hpubkwZGHbdtZKw99AJi
+    log:
+      level: INFO
   gateway:
     log:
-      level: DEBUG
+      level: INFO
     pagebuilder:
       enabled: true
       page:
-        library: 
+        library:
           enabled: true
-        management: 
-          create: 
+        management:
+          create:
             enabled: true
           edit:
             enabled: true

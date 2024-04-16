@@ -1,26 +1,28 @@
 http:
   routers:
     # Modernization app
+    authentication:
+      service: nbs-gateway
+      rule: "PathPrefix(`/oauth2/authorization`) || PathPrefix(`/login/oauth2`)"
     login:
       service: modernization-api
       rule: "PathPrefix(`/login`)"
     modernizationForward:
       service: modernization-api
       rule: "Path(`/graphql`) || PathPrefix(`/encryption`)"
-    ui-forward:
-      service: modernization
-      rule: "PathPrefix(`/`)"
     modernization-nbs-api:
       service: modernization-api
       rule: "PathPrefix(`/nbs/api`) || PathPrefix(`/nbs/redirect`)"
     pagebuilder-api:
       service: pagebuilder-api
       rule: "PathPrefix(`/nbs/page-builder/api`) || PathPrefix(`/nbs/page-builder/redirect`)"
+    ui-forward:
+      service: modernization
+      rule: "PathPrefix(`/`)"
     # Base /nbs forward
     nbsForward:
       service: nbs-gateway
       rule: "PathPrefix(`/nbs`)"
-
     # Non '/nbs' NBS routes
     nbsLogo:
       service: classic-nbs

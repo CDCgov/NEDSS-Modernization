@@ -31,6 +31,9 @@ logging:
           search: INFO
 
 nbs:
+  security:
+    oidc:
+      enabled: false
   ui:
     features:
       address:

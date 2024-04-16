@@ -22,6 +22,8 @@ nbs:
         - /swagger-resources/**
 
 spring:
+  profiles:
+    include: oidc
   servlet.multipart.max-file-size: 10MB
   mvc:
     pathmatch:
