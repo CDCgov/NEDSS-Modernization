@@ -161,7 +161,7 @@ public class WaNndMetadatum {
   }
 
 
-  public static WaNndMetadatum clone(WaNndMetadatum original, WaTemplate template) {
+  public static WaNndMetadatum clone(WaNndMetadatum original, WaTemplate template, WaUiMetadata metadata) {
     return new WaNndMetadatum(
         null,
         template,
@@ -186,7 +186,7 @@ public class WaNndMetadatum {
         original.repeatGroupSeqNbr,
         original.questionOrderNnd,
         original.localId,
-        original.waUiMetadataUid,
+        metadata,
         original.questionMap,
         original.indicatorCd);
   }
