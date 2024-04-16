@@ -652,6 +652,7 @@ class WaUiMetadataTest {
     WaUiMetadata cloned = WaUiMetadata.clone(metadata, newPage);
 
     assertThat(cloned.getWaTemplateUid()).isEqualTo(newPage);
+    assertThat(cloned.getWaNndMetadatum().getWaUiMetadataUid()).isEqualTo(cloned);
   }
 
   @Test

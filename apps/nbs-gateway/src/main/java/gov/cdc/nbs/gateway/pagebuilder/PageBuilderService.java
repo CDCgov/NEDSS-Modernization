@@ -1,14 +1,12 @@
 package gov.cdc.nbs.gateway.pagebuilder;
 
-import org.springframework.web.util.UriComponentsBuilder;
+import gov.cdc.nbs.gateway.Service;
 
 import java.net.URI;
 
-public record PageBuilderService(URI uri, String base) {
+public class PageBuilderService extends Service {
 
-  public String path(final String path) {
-    return UriComponentsBuilder.fromPath(base)
-        .path(path)
-        .toUriString();
+  public PageBuilderService(final URI uri, final String base) {
+    super(uri, base);
   }
 }

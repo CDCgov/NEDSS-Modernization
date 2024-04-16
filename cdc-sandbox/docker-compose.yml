@@ -32,7 +32,7 @@ services:
     networks:
       - nbs
   reverse-proxy:
-    image: "traefik:2.10"
+    image: "traefik:2.11"
     container_name: traefik
     command:
       - "--entrypoints.traefik.address=:8081"
@@ -103,13 +103,12 @@ services:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:latest
     ports:
-      - "8100:8100"
+      - "8100:8080"
     volumes:
       - ./keycloak/imports:/opt/keycloak/data/import
     environment:
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: fake.1234
-    command: ["--http-port=8100"]
+      KEYCLOAK_ADMIN_PASSWORD: fake.1234    
     entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"      
     networks:
       - nbs

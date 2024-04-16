@@ -6,6 +6,7 @@ spring:
     gateway:
       default-filters:
         - RewriteLocationResponseHeader
+        - TokenRelay=nbs-users
       routes:
         - id: classic
           uri: ${nbs.gateway.classic}
@@ -24,11 +25,12 @@ spring:
             - Path=/favicon.ico
 nbs:
   gateway:
-    log:
-      level: DEBUG
     defaults:
       protocol: 'http'
     classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
+    home:
+      uri: ${nbs.gateway.classic}
+      base: '/nbs/HomePage.do?method=loadHomePage'
     patient:
       search:
         enabled: true
@@ -40,14 +42,19 @@ nbs:
       enabled: false
       service: 'localhost:8080'
       page:
-        library: 
+        library:
           enabled: false
-        management: 
-          create: 
+        management:
+          create:
             enabled: false
           edit:
             enabled: false
 
 logging:
   level:
-    org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level}
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        security: ${nbs.gateway.security.log.level:INFO}
+        cloud.gateway.handler.RoutePredicateHandlerMapping: ${nbs.gateway.log.level:DEBUG}
