@@ -4,6 +4,8 @@ package gov.cdc.nbs.questionbank.page;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class PageUidFinder {
   private static final String FIND_BY_FORM_CD_AND_TYPE_QUERY = """
@@ -24,12 +26,18 @@ public class PageUidFinder {
   }
 
   public Long findTemplateByType(String formCode, String pageType) {
-    return this.template.query(
+    List<Long> result = this.template.query(
         FIND_BY_FORM_CD_AND_TYPE_QUERY,
         setter -> {
           setter.setString(LOCAL_TEMPLATE_TYPE, pageType);
           setter.setString(LOCAL_FORM_CD, formCode);
         },
-        (rs, row) -> rs.getLong(COLUMN_INDEX)).get(0);
+        (rs, row) -> rs.getLong(COLUMN_INDEX));
+
+    if (!result.isEmpty()) {
+      return result.get(0);
+    } else {
+      return null;
+    }
   }
 }

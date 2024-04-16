@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
@@ -52,18 +53,40 @@ class PageRuleCreatorTest {
 
   @Test
   void should_fail_invalid_page() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        Arrays.asList("test"),
+        null,
+        null);
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(null);
 
-    assertThrows(RuleException.class, () -> creator.createPageRule(null, 1l, 3l));
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 1l, 3l));
   }
 
   @Test
   void should_fail_published_page() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        Arrays.asList("test"),
+        null,
+        null);
     WaTemplate template = Mockito.mock(WaTemplate.class);
     when(template.getTemplateType()).thenReturn("Published");
     when(entityManager.find(WaTemplate.class, 1l)).thenReturn(template);
 
-    assertThrows(RuleException.class, () -> creator.createPageRule(null, 1l, 3l));
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 1l, 3l));
   }
 
   @Test
@@ -258,6 +281,76 @@ class PageRuleCreatorTest {
     when(repository.save(Mockito.any())).thenReturn(rule);
     creator.createPageRule(request, 1l, 2l);
     verify(repository).save(Mockito.any());
+  }
+
+  @Test
+  void should_reject_null_request() {
+    RuleRequest request = null;
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
+  }
+
+  @Test
+  void should_reject_null_targets() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null);
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
+  }
+
+  @Test
+  void should_reject_empty_targets() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        new ArrayList<>(),
+        null,
+        null);
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
+  }
+
+  @Test
+  void should_reject_blank_targets() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        Arrays.asList("", "test"),
+        null,
+        null);
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
+  }
+
+  @Test
+  void should_reject_null_target_id() {
+    RuleRequest request = new RuleRequest(
+        null,
+        null,
+        null,
+        false,
+        null,
+        null,
+        null,
+        Arrays.asList(null, "test"),
+        null,
+        null);
+    assertThrows(RuleException.class, () -> creator.createPageRule(request, 0, null));
   }
 
   private PageContentCommand.AddRuleCommand command(long id) {

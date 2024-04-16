@@ -1,0 +1,17 @@
+.staticTab {
+    padding-bottom: 7rem;
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .subsectionText {
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.4175rem;
+        padding: 1rem;
+    }
+}

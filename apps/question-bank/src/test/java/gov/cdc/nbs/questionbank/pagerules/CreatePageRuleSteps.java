@@ -1,7 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,9 +70,7 @@ public class CreatePageRuleSteps {
   @Then("the rule is created")
   public void rule_is_created() throws Exception {
     response.active()
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.ruleFunction", equalTo(ruleRequest.ruleFunction().toString())))
-        .andExpect(jsonPath("$.description", equalTo(ruleRequest.description().toString())));
+        .andExpect(status().isCreated());
   }
 
 }

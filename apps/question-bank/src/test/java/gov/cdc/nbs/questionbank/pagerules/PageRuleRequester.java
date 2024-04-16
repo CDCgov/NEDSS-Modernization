@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.SourceQuestionRequest;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
+import gov.cdc.nbs.questionbank.pagerules.request.TargetSubsectionRequest;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -64,6 +65,13 @@ public class PageRuleRequester {
   public ResultActions targetQuestionFinder(final long id, TargetQuestionRequest request) throws Exception {
     return mvc.perform(
         this.authenticated.withUser(post("/api/v1/pages/{id}/rules/target/questions", id))
+            .content(mapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON));
+  }
+
+  public ResultActions targetSubsectionFinder(final long id, TargetSubsectionRequest request) throws Exception {
+    return mvc.perform(
+        this.authenticated.withUser(post("/api/v1/pages/{id}/rules/target/subsections", id))
             .content(mapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON));
   }

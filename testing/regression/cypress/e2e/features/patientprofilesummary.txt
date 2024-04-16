@@ -1,0 +1,88 @@
+Feature User access the Patient Profile Summary page.  
+ 
+Background: 
+Given User is logged into the NBS system.
+ 
+done: Scenario: User accesses patient profile 
+Given User has searched for a patient. 
+When User clicks on a patient name 
+Then Patient profile is displayed
+And all patient information is displayed:
+Patient ID, Sex, Phone, Address (home), Race, Social Security (or ID), Date of Birth, Email, Ethnicity
+ 
+Scenario: User accesses printable patient summary page 
+Given the user is in a Patient Profile page 
+When User clicks on the Print button. 
+Then User is directed to the printable patient summary page.
+ 
+done: Scenario: User navigates to top of page 
+Given the user is in a Patient Profile page  
+When User clicks on the "Back to top" button. 
+Then User is taken to the top of the page.
+ 
+done: Scenario: Display only open investigations in the "Open investigations" section 
+Given the user is in a Patient Profile page 
+And the "Summary" tab is selected
+When User scrolls to the "Open Investigations" section
+Then Only investigations with an Open status are displayed in this section 
+And The following data is displayed for each open investigation: 
+| Start date     | Investigation Start Date                                          |
+| Condition      | Condition selected when opening the investigation                 |
+| Case status    | Case status as displayed in the View Investigation screen         |
+| Notification   | Notification status as displayed in the View Investigation screen |
+| Jurisdiction   | Investigation selected in the Investigation Details               |
+| Investigator   | Investigator assigned in the Investigation Details                |
+| Investigation# | A link to the selected open investigation screen                  |
+| Co-infection#  | All co-infections related to this investigation are listed        |
+And user is able to click the Investigation # to View Investigation page
+And user is able to click the “Return to File: Summary” link to return to Patient Profile Summary page.
+ 
+done: Scenario: Display only open documents in the "Documents requiring review" section 
+Given the user is in a Patient Profile page 
+And the "Summary" tab is selected
+When User scrolls to the "Document requiring review" section
+Then Only documents requiring review should be displayed in this section
+And the following data is displayed for each open investigation: 
+| Document type   | Link to the document screen for the selected document requiring review 
+| Date received   | Date and time the document is received                                 
+| Reporting facility/provider | Reporting facility, ordering facility, and ordering provider.          
+| Event date   | For lab report, this is the Specimen collection date/time.             
+| Description | Resulted Test and Coded Result from Lab Report screen.                 
+| Event#  | System generated ID   
+And user clicks on Document type “Laboratory Report”, the View Lab Report page is displayed
+And user clicks on the “Return to File: Events” user is taken to Patient profile summary page
+And user clicks on Document type “Morbidity Report”, the View Morbidity Report page is displayed
+And user clicks the “View File” link, the user is returned to Patient profile summary page.                                                 
+ 
+Scenario Outline: User sorts records by column value 
+Given the user is in a Patient Profile page 
+When the User sorts Open Investigations by <column> <sorted>
+Then Open Investigations are sorted by <column> <sorted>
+ 
+Examples:
+| Column         | Sorted                |
+| Start Date     | In ascending order    |
+| Start Date     | In descending order   |
+| Condition      | In alphabetical order |
+| Case Status    |                       |
+| Notification   |                       |
+| Jurisdiction   | In alphabetical order |
+| Investigator   | In alphabetical order |
+| Investigation# | In ascending order    |
+| Co-infection#  | In ascending order    |
+ 
+Note: This can be cover 1 column, does not need to be all the columns.
+ 
+Scenario Outline: User sorts records by column value 
+Given the user is in a Patient Profile page 
+When the User sorts Document requiring review by <column> <sorted>
+Then Open Documents are sorted by <column> <sorted>
+ 
+| Document type               | In alphabetical order |
+| Date received               | In ascending order    |
+| Reporting facility/provider | In alphabetical order |
+| Event date                  | In ascending order    |
+| Description                 |                       |
+| Event#                      | In ascending order    |
+ 
+Note: This can cover 1 column, does not need to be all the columns.

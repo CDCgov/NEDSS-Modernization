@@ -150,13 +150,16 @@ export const UserInterfaceFields = ({ published = false }: Props) => {
                 control={form.control}
                 name="displayControl"
                 rules={{ required: { value: !published, message: 'Display Type required' } }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SelectInput
                         label="Display Type"
                         data-testid="displayType"
                         required={!published}
                         defaultValue={value}
-                        onChange={onChange}
+                        onChange={(e) => {
+                            onChange(e);
+                            onBlur();
+                        }}
                         error={error?.message}
                         options={getDisplayTypeOptions()}
                         disabled={published}

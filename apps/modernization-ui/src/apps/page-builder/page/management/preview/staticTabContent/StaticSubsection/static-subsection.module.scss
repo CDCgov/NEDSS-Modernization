@@ -1,0 +1,19 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.subsection {
+    @include borders.bordered();
+    @include borders.rounded();
+
+    .subsectionHeader {
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: colors.$cool-accent-lighter;
+
+        .collapseIcon {
+            cursor: pointer;
+        }
+    }
+}

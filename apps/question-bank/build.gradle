@@ -63,12 +63,12 @@ testing {
 
                 implementation.bundle(libs.bundles.cucumber)
 
-                implementation project(':testing:support')
-                implementation project(':testing:identity')
-                implementation project(':testing:auth')
-                implementation project(':testing:auth-cucumber')
-                implementation project(':testing:http-interaction')
-                implementation project(':testing:classic-interaction-cucumber')
+                implementation project(':testing-support')
+                implementation project(':testing-identity')
+                implementation project(':testing-auth')
+                implementation project(':testing-auth-cucumber')
+                implementation project(':testing-http-interaction')
+                implementation project(':testing-classic-interaction-cucumber')
 
             }
 
@@ -96,11 +96,10 @@ dependencies {
     implementation project(':accumulation')
     implementation project(':audit')
     implementation project(':id-generator')
-    implementation(project(':libs:web'))
-    implementation(project(':libs:classic-interaction'))
-    implementation(project(':libs:redirect'))
+    implementation(project(':web'))
+    implementation(project(':classic-interaction'))
+    implementation(project(':redirect'))
 
-//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.springBoot.web

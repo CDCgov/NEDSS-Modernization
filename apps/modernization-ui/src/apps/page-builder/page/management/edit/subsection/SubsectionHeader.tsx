@@ -36,35 +36,35 @@ export const SubsectionHeader = ({
     const [closeOptions, setCloseOptions] = useState(false);
 
     const handleUngroup = () => {
-        try {
-            SubSectionControllerService.unGroupSubSection({
-                page: page.id,
-                subSectionId: subsection.id
-            }).then(() => {
+        SubSectionControllerService.unGroupSubSection({
+            page: page.id,
+            subSectionId: subsection.id
+        })
+            .then(() => {
                 showAlert({
                     type: 'success',
                     header: 'Ungrouped',
                     message: `You've successfully ungrouped ${subsection.name}`
                 });
                 refresh();
+            })
+            .catch((error) => {
+                if (error instanceof Error) {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: error.message
+                    });
+                } else {
+                    console.error(error);
+                    showAlert({
+                        type: 'error',
+                        header: 'error',
+                        message: 'An unknown error occurred'
+                    });
+                }
             });
-        } catch (error) {
-            if (error instanceof Error) {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: error.message
-                });
-            } else {
-                console.error(error);
-                showAlert({
-                    type: 'error',
-                    header: 'error',
-                    message: 'An unknown error occurred'
-                });
-            }
-        }
     };
 
     const closeThenAct = (action: (subsection: PagesSubSection) => void) => {
@@ -93,16 +93,18 @@ export const SubsectionHeader = ({
                     <Button type="button" onClick={() => closeThenAct(onEditSubsection)}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
-                    {subsection.isGrouped ? (
-                        page?.status !== 'Published with Draft' && (
-                            <ModalToggleButton
-                                type="button"
-                                modalRef={ungroupSubsectionModalRef}
-                                onClick={() => setCloseOptions(true)}>
-                                <IconComponent name={'group'} size={'s'} /> Ungroup questions
-                            </ModalToggleButton>
-                        )
-                    ) : (
+                    {subsection.isGrouped
+                        ? page?.status !== 'Published with Draft' && (
+                              <ModalToggleButton
+                                  type="button"
+                                  modalRef={ungroupSubsectionModalRef}
+                                  onClick={() => setCloseOptions(true)}>
+                                  <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                              </ModalToggleButton>
+                          )
+                        : null}
+                    {subsection.isGrouped === false &&
+                    subsection.questions.every((question) => question.isPublished === false) ? (
                         <>
                             {subsection.isGroupable && subsection.questions.length > 0 && (
                                 <Button type="button" onClick={() => closeThenAct(onGroupQuestion)}>
@@ -110,7 +112,7 @@ export const SubsectionHeader = ({
                                 </Button>
                             )}
                         </>
-                    )}
+                    ) : null}
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>

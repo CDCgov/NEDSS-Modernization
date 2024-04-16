@@ -15,14 +15,16 @@ const LinkButton = ({
     className,
     children,
     target = '_blank',
-    rel = 'noreferrer'
+    rel = 'noreferrer',
+    ...defaultProps
 }: Props) => (
     <a
         className={classnames('usa-button', className, { 'usa-button--outline': type === 'outline' })}
         href={href}
         target={target}
         rel={rel}
-        aria-label={label}>
+        aria-label={label}
+        {...defaultProps}>
         {children}
     </a>
 );

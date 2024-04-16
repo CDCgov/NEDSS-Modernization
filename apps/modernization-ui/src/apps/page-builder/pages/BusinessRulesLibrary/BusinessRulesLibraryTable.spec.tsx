@@ -23,15 +23,11 @@ describe('BusinessRulesLibraryTable', () => {
                 targetValueIdentifier: [{ label: '404400' }]
             };
             const summaries = [rulesSummary];
-            const pages = {
-                totalElements: 1
-            };
-
             render(
                 <BrowserRouter>
                     <PageProvider>
                         <BusinessRulesLibraryTable
-                            summaries={summaries}
+                            rules={summaries}
                             qtnModalRef={modalRef}
                             onSortChange={jest.fn()}
                             onQueryChange={jest.fn()}
@@ -70,15 +66,12 @@ describe('BusinessRulesLibraryTable', () => {
             };
 
             const summaries = [rulesSummary];
-            const pages = {
-                totalElements: 1
-            };
 
             const { findAllByRole } = render(
                 <BrowserRouter>
                     <PageProvider>
                         <BusinessRulesLibraryTable
-                            summaries={summaries}
+                            rules={summaries}
                             qtnModalRef={modalRef}
                             onSortChange={jest.fn()}
                             onQueryChange={jest.fn()}

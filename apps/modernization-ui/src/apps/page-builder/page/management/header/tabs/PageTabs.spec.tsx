@@ -47,14 +47,14 @@ describe('When PageTabs renders', () => {
         expect(button[0]).toBeInTheDocument();
     });
     it('should not display the Manage Tabs button when not passed onAddSuccess', () => {
-        const { container } = render(
+        const { queryByText } = render(
             <DragDropProvider pageData={content}>
                 <PageManagementProvider page={content} fetch={jest.fn()} refresh={jest.fn()} loading={false}>
                     <PageTabs pageId={999} tabs={content.tabs!} />
                 </PageManagementProvider>
             </DragDropProvider>
         );
-        const button = container.getElementsByTagName('button');
-        expect(button).toHaveLength(0);
+        const button = queryByText('Manage tabs');
+        expect(button).toBeNull();
     });
 });

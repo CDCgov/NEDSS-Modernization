@@ -642,6 +642,31 @@ class WaUiMetadataTest {
     assertThat(metadata.getBatchTableColumnWidth()).isNull();
   }
 
+  @Test
+  void should_clone_nnd() {
+    WaTemplate newPage = new WaTemplate();
+    WaUiMetadata metadata = new WaUiMetadata();
+    WaNndMetadatum nnd = new WaNndMetadatum();
+    metadata.setWaNndMetadatum(nnd);
+
+    WaUiMetadata cloned = WaUiMetadata.clone(metadata, newPage);
+
+    assertThat(cloned.getWaTemplateUid()).isEqualTo(newPage);
+    assertThat(cloned.getWaNndMetadatum().getWaUiMetadataUid()).isEqualTo(cloned);
+  }
+
+  @Test
+  void should_clone_rdb() {
+    WaTemplate newPage = new WaTemplate();
+    WaUiMetadata metadata = new WaUiMetadata();
+    WaRdbMetadata nnd = new WaRdbMetadata();
+    metadata.setWaRdbMetadatum(nnd);
+
+    WaUiMetadata cloned = WaUiMetadata.clone(metadata, newPage);
+
+    assertThat(cloned.getWaTemplateUid()).isEqualTo(newPage);
+  }
+
   private void validateMessaging(WaUiMetadata question, QuestionUpdate command) {
     assertThat(question.getWaNndMetadatum().getQuestionIdentifierNnd()).isEqualTo(command.messageVariableId());
     assertThat(question.getWaNndMetadatum().getQuestionRequiredNnd())

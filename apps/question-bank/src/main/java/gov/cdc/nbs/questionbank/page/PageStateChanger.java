@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.PageCondMapping;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
@@ -18,6 +19,7 @@ import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.pagerules.repository.WaRuleMetaDataRepository;
 
 @Service
+@Transactional
 public class PageStateChanger {
 
   private final WaTemplateRepository templateRepository;
@@ -46,7 +48,6 @@ public class PageStateChanger {
       }
       WaTemplate draftPage = createDraftCopy(page);
       page.setTemplateType(PageConstants.PUBLISHED_WITH_DRAFT);
-
       page = templateRepository.save(page);
       draftPage = templateRepository.save(draftPage);
       pageConMappingRepository.saveAll(draftPage.getConditionMappings());
@@ -68,7 +69,7 @@ public class PageStateChanger {
     return response;
   }
 
-  List<WaRuleMetadata> copyRules(long publishedPage, long newPage) {
+  public List<WaRuleMetadata> copyRules(long publishedPage, long newPage) {
     List<WaRuleMetadata> initialRuleMappings = new ArrayList<>();
     List<WaRuleMetadata> rules = waRuleMetaDataRepository.findByWaTemplateUid(publishedPage);
     for (WaRuleMetadata original : rules) {
@@ -83,12 +84,10 @@ public class PageStateChanger {
     List<WaUiMetadata> draftMappings = new ArrayList<>();
     List<WaUiMetadata> pages = waUiMetadataRepository.findAllByWaTemplateUid(page);
     for (WaUiMetadata original : pages) {
-      WaUiMetadata clone = WaUiMetadata.clone(original);
-      clone.setWaTemplateUid(clonePage);
+      WaUiMetadata clone = WaUiMetadata.clone(original, clonePage);
       draftMappings.add(clone);
     }
     return draftMappings;
-
   }
 
   public WaTemplate createDraftCopy(WaTemplate oldPage) {

@@ -4,11 +4,13 @@
 /* eslint-disable */
 import type { PageRule } from '../models/PageRule';
 import type { PagesResponse } from '../models/PagesResponse';
+import type { PagesSubSection } from '../models/PagesSubSection';
 import type { Rule } from '../models/Rule';
 import type { RuleRequest } from '../models/RuleRequest';
 import type { SearchPageRuleRequest } from '../models/SearchPageRuleRequest';
 import type { SourceQuestionRequest } from '../models/SourceQuestionRequest';
 import type { TargetQuestionRequest } from '../models/TargetQuestionRequest';
+import type { TargetSubsectionRequest } from '../models/TargetSubsectionRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -85,6 +87,27 @@ export class PageRuleControllerService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/pages/{id}/rules',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @returns PagesSubSection OK
+     * @throws ApiError
+     */
+    public static getTargetSubsections({
+        id,
+        requestBody,
+    }: {
+        id: number,
+        requestBody: TargetSubsectionRequest,
+    }): CancelablePromise<Array<PagesSubSection>> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/pages/{id}/rules/target/subsections',
             path: {
                 'id': id,
             },

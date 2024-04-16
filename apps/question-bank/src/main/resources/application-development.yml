@@ -1,4 +1,8 @@
 nbs:
+  security:
+    oidc:
+      enabled: false
+      host: localhost:8100
   wildfly:
     host: localhost
 

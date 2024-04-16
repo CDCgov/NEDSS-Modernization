@@ -16,22 +16,22 @@
     @include borders.bordered();
     @include borders.rounded();
 
-    & > div {
+    .titleContainer {
         display: flex;
         justify-content: space-between;
-    }
 
-    .title {
-        h2 {
-            font-size: 1.375rem;
-            margin: 0;
-        }
-        p {
-            max-width: 36ch;
-            font-weight: 400;
-            color: colors.$base-darkest;
-            line-height: 1.62rem;
-            word-wrap: break-word;
+        .title {
+            h2 {
+                font-size: 1.375rem;
+                margin: 0;
+            }
+            p {
+                max-width: 36ch;
+                font-weight: 400;
+                color: colors.$base-darkest;
+                line-height: 1.62rem;
+                word-wrap: break-word;
+            }
         }
     }
 }

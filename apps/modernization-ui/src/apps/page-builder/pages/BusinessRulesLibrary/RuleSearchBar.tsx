@@ -1,4 +1,3 @@
-// import { Input } from 'components/FormInputs/Input';
 import { Button, Icon, TextInput } from '@trussworks/react-uswds';
 import { KeyboardEvent as ReactKeyboardEvent, ChangeEvent, useState, useEffect } from 'react';
 import styles from './rule-search-bar.module.scss';
@@ -38,33 +37,37 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
     return (
         <div className={styles.searchBar}>
             <div className={styles.searchFilter}>
-                <TextInput
-                    name="searchbar"
-                    type="search"
-                    placeholder="Search pages by a Source field, target field or ID"
-                    onChange={handleSearch}
-                    id="business-rules-search"
-                    defaultValue={search}
-                    onKeyDown={handleEnter}
-                />
-                <Button type="submit" onClick={handleSubmit} className={styles.searchButton}>
-                    <Icon.Search size={5} className={styles.searchIcon} />
-                </Button>
+                <div className={styles.field}>
+                    <TextInput
+                        name="searchbar"
+                        type="search"
+                        placeholder="Search by source question, target(s) or ID"
+                        onChange={handleSearch}
+                        id="business-rules-search"
+                        defaultValue={search}
+                        onKeyDown={handleEnter}
+                    />
+                    <Button type="submit" onClick={handleSubmit} className={styles.searchButton}>
+                        <Icon.Search size={5} className={styles.searchIcon} />
+                    </Button>
+                </div>
                 <Button
-                    aria-label="download search results as pdf"
+                    aria-label="Print this page"
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.downloadButton}
-                    outline>
+                    outline
+                    data-tooltip-position="top">
                     <Icon.Print size={3} data-testid="print-icon" />
                 </Button>
                 <Button
-                    aria-label="download search results as csv"
+                    aria-label="Download as csv"
                     type="button"
                     className={styles.downloadButton}
                     outline
                     onClick={onDownloadCsv}
-                    data-testid="file-download">
+                    data-testid="file-download"
+                    data-tooltip-position="top">
                     <Icon.FileDownload size={3} />
                 </Button>
             </div>

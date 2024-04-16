@@ -4,14 +4,18 @@ import { BusinessRulesLibraryTable } from './BusinessRulesLibraryTable';
 import { Breadcrumb } from 'breadcrumb';
 import { useGetPageDetails } from 'apps/page-builder/page/management';
 import { Status, usePage } from 'page';
-import { BusinessRuleSort, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
+import { BusinessRuleSort, RuleSortField, useFetchPageRules } from 'apps/page-builder/hooks/api/useFetchPageRules';
 import { useAlert } from 'alert';
 import { useDownloadPageLibrary } from 'apps/page-builder/hooks/api/useDownloadPageLibrary';
+import { Direction } from '../../../../sorting';
 
 export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { search, response, error, isLoading } = useFetchPageRules();
     const { page: curPage, ready, firstPage, reload } = usePage();
-    const [sort, setSort] = useState<BusinessRuleSort | undefined>(undefined);
+    const [sort, setSort] = useState<BusinessRuleSort | undefined>({
+        field: RuleSortField.FUNCTION,
+        direction: Direction.Descending
+    });
     const [query, setQuery] = useState<string>('');
     const { showAlert } = useAlert();
     const { downloadCsv, downloadPdf } = useDownloadPageLibrary();
@@ -19,7 +23,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
     const { page } = useGetPageDetails();
 
     useEffect(() => {
-        search({ sort: undefined, page: 0, pageSize: 10 });
+        search({ sort, page: 0, pageSize: 10 });
     }, [page?.id]);
 
     useEffect(() => {
@@ -82,7 +86,7 @@ export const BusinessRulesLibrary = ({ modalRef }: any) => {
                 <div className="business-rules-library__container">
                     <div className="business-rules-library__table">
                         <BusinessRulesLibraryTable
-                            summaries={response?.content ?? []}
+                            rules={response?.content ?? []}
                             qtnModalRef={modalRef}
                             onSortChange={setSort}
                             onQueryChange={setQuery}

@@ -474,7 +474,7 @@ export const BusinessRulesForm = ({
                                         {targetQuestions?.map((question: PagesQuestion, key: number) => (
                                             <div key={key} className={styles.targetQuestion}>
                                                 <Icon.Check />
-                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name))} (${
+                                                {`${checkForSemicolon(removeNumericAndSymbols(question.name ?? question.componentName))} (${
                                                     question.question
                                                 })`}
                                             </div>
@@ -505,7 +505,10 @@ export const BusinessRulesForm = ({
 
                             {watch.targetType === Rule.targetType.SUBSECTION && (
                                 <div className={styles.subsectionTargets}>
-                                    <SubSectionsDropdown onSelect={handleTargetSubsection} />
+                                    <SubSectionsDropdown
+                                        sourceQuestion={sourceQuestion}
+                                        onSelect={handleTargetSubsection}
+                                    />
                                 </div>
                             )}
                         </div>

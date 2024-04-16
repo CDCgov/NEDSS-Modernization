@@ -697,10 +697,11 @@ public class WaUiMetadata {
     this.lastChgUserId = command.userId();
   }
 
-  public static WaUiMetadata clone(WaUiMetadata original) {
-    return new WaUiMetadata(
+  public static WaUiMetadata clone(WaUiMetadata original, WaTemplate page) {
+
+    WaUiMetadata cloned = new WaUiMetadata(
         null,
-        null,
+        page,
         original.getNbsUiComponentUid(),
         original.getParentUid(),
         original.getQuestionLabel(),
@@ -756,9 +757,20 @@ public class WaUiMetadata {
         original.getBatchTableColumnWidth(),
         original.getCoinfectionIndCd(),
         original.getBlockNm(),
-        original.waRdbMetadatum,
-        original.waNndMetadatum);
+        null,
+        null);
 
+
+    if (original.getWaRdbMetadatum() != null) {
+      WaRdbMetadata rdbMetadata = WaRdbMetadata.clone(original.getWaRdbMetadatum(), page, cloned);
+      cloned.setWaRdbMetadatum(rdbMetadata);
+    }
+
+    if (original.getWaNndMetadatum() != null) {
+      WaNndMetadatum nndMetadata = WaNndMetadatum.clone(original.getWaNndMetadatum(), page, cloned);
+      cloned.setWaNndMetadatum(nndMetadata);
+    }
+    return cloned;
   }
 
   private void setVisible(boolean visible) {

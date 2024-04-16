@@ -5,6 +5,7 @@ import graphql.execution.CoercedVariables;
 import graphql.language.NullValue;
 import graphql.language.StringValue;
 import graphql.schema.CoercingParseLiteralException;
+import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import org.junit.jupiter.api.Test;
 
@@ -87,6 +88,42 @@ class DateCoercingTest {
   }
 
   @Test
+  void should_throw_error_when_parsing_non_LocalDate_formatted_String_value() {
+    DateCoercing coercing = new DateCoercing();
+
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    assertThatThrownBy(
+        () -> coercing.parseValue(
+            "not a date",
+            context,
+            locale
+        )
+    )
+        .isInstanceOf(CoercingParseValueException.class)
+        .hasMessageContaining("Not a valid date: 'not a date'");
+  }
+
+  @Test
+  void should_throw_error_when_parsing_non_String_value() {
+    DateCoercing coercing = new DateCoercing();
+
+    GraphQLContext context = GraphQLContext.getDefault();
+    Locale locale = Locale.getDefault();
+
+    assertThatThrownBy(
+        () -> coercing.parseValue(
+            839,
+            context,
+            locale
+        )
+    )
+        .isInstanceOf(CoercingParseValueException.class)
+        .hasMessageContaining("Expected a String");
+  }
+
+  @Test
   void should_parse_ISO_8601_formatted_StringValue_literal_as_LocalDate() {
 
     DateCoercing coercing = new DateCoercing();
@@ -126,7 +163,7 @@ class DateCoercingTest {
         )
     )
         .isInstanceOf(CoercingParseLiteralException.class)
-        .hasMessage("Expected a StringValue.");
+        .hasMessageContaining("Expected a StringValue.");
 
 
   }

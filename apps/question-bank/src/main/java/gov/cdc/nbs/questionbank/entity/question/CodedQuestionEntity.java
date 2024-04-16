@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 public class CodedQuestionEntity extends WaQuestion {
   static final String CODED_QUESTION_TYPE = "CODED";
 
-  @Column(name = "code_set_group_id")
-  private Long codeSetGroupId;
-
   @Column(name = "default_value", length = 300)
   private String defaultValue;
 

@@ -28,15 +28,14 @@ dependencies {
     implementation(project(':event-schema'))
     implementation(project(':authentication'))
     implementation(project(':id-generator'))
-    implementation(project(':libs:web'))
-    implementation(project(':libs:classic-interaction'))
+    implementation(project(':web'))
+    implementation(project(':classic-interaction'))
 
     //  feature modules
     implementation project(':me-api')
     implementation project(':configuration-api')
     implementation project(':options-api')
 
-//    implementation libs.snake.yaml
     implementation libs.guava
 
     implementation libs.mssql.jdbc
@@ -86,12 +85,12 @@ testing {
             useJUnitJupiter()
 
             dependencies {
-                implementation project(':testing:support')
-                implementation project(':testing:identity')
-                implementation project(':testing:auth')
-                implementation project(':testing:auth-cucumber')
-                implementation project(':testing:http-interaction')
-                implementation project(':testing:classic-interaction-cucumber')
+                implementation project(':testing-support')
+                implementation project(':testing-identity')
+                implementation project(':testing-auth')
+                implementation project(':testing-auth-cucumber')
+                implementation project(':testing-http-interaction')
+                implementation project(':testing-classic-interaction-cucumber')
 
                 implementation.bundle(libs.bundles.cucumber)
 
