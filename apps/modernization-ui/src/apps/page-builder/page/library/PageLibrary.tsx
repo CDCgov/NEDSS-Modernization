@@ -71,7 +71,7 @@ const PageLibraryContent = () => {
         <>
             <CustomFieldAdminBanner />
             <PageBuilder nav>
-                <section className={styles.library}>
+                <section className={styles.library} id="pageLibrary">
                     <header>
                         <h2 aria-label="Page library">Page library</h2>
                         {!config.loading && config.features.pageBuilder.page.management.create.enabled ? (
