@@ -8,5 +8,5 @@ Feature: User can view existing page library data here.
         When User views the Page library
         And User click the up or down arrow in the Page name column
         Then Page names are listed in descending order
-        When User click the page name up or down arrow again
+        And User click the up or down arrow in the Page name column
         Then Page names are listed in ascending order
