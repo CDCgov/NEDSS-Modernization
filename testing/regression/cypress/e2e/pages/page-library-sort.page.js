@@ -18,6 +18,19 @@ class PageLibrarySortPage {
     pageNameListedInAscendingOrder() {
         this.checkOrder("Page name", "ascending")
     }
+
+    eventTypeArrowClick() {
+        cy.get(".usa-button.usa-button--unstyled").eq(1).click()
+    }
+
+    eventTypeListedInDescendingOrder() {
+        this.checkOrder("Event type", "descending")
+    }
+
+    eventTypeListedInAscendingOrder() {
+        this.checkOrder("Event type", "ascending")
+    }
+
     checkOrder(columnName, sortType, dataType) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
