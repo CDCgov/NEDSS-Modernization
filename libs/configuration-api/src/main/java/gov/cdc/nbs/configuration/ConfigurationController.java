@@ -29,12 +29,6 @@ public class ConfigurationController {
     this.finder = finder;
   }
 
-  @Parameter(
-      name = "Authorization",
-      required = true,
-      in = ParameterIn.HEADER,
-      schema = @Schema(type = "string", requiredMode = Schema.RequiredMode.REQUIRED)
-  )
   @GetMapping
   public Configuration getConfiguration() {
     return new Configuration(

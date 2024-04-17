@@ -21,12 +21,6 @@ class MeController {
       description = "Provides details about the user associated with the request.",
       tags = "User"
   )
-  @Parameter(
-      name = "Authorization",
-      required = true,
-      in = ParameterIn.HEADER,
-      schema = @Schema(type = "string", requiredMode = Schema.RequiredMode.REQUIRED)
-  )
   @GetMapping("nbs/api/me")
   Me me(@Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {
 

@@ -1,4 +1,3 @@
-import { authorization } from 'authorization';
 import { Me, UserService } from 'generated';
 import { User } from 'user';
 
@@ -12,7 +11,7 @@ const asUser = ({ identifier, firstName, lastName, permissions }: Me) => ({
     permissions
 });
 
-const currentUser = (): Promise<User> => UserService.me({ authorization: authorization() }).then(asUser);
+const currentUser = (): Promise<User> => UserService.me().then(asUser);
 
 type CurrentUserResponse = Awaited<ReturnType<typeof currentUser>>;
 
