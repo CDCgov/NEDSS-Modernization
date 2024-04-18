@@ -44,3 +44,16 @@ Then("Status is listed in descending order", () => {
 Then("Status is listed in ascending order", () => {
     pageLibrarySortPage.statusListedInAscendingOrder();
 });
+
+// Last updated
+Then("User click the up or down arrow in the Last Updated column", () => {
+    pageLibrarySortPage.lastUpdatedArrowClick();
+});
+
+Then("Last Updated is listed in descending order - latest date", () => {
+    pageLibrarySortPage.lastUpdatedListedInDescendingOrder();
+});
+
+Then("Last Updated is listed in ascending order - earliest date", () => {
+    pageLibrarySortPage.lastUpdatedListedInAscendingOrder();
+});

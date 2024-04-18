@@ -42,6 +42,19 @@ class PageLibrarySortPage {
     statusListedInAscendingOrder() {
         this.checkOrder("Status", "ascending")
     }
+
+    lastUpdatedArrowClick() {
+        cy.get(".usa-button.usa-button--unstyled").eq(3).click()
+    }
+
+    lastUpdatedListedInDescendingOrder() {
+        this.checkOrder("Last updated", "descending", "date")
+    }
+
+    lastUpdatedListedInAscendingOrder() {
+        this.checkOrder("Last updated", "ascending", "date")
+    }
+
     checkOrder(columnName, sortType, dataType) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
