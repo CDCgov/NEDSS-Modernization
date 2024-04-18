@@ -1,9 +1,16 @@
 package gov.cdc.nbs.gateway;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.RewriteLocationResponseHeaderGatewayFilterFactory;
+import org.springframework.cloud.gateway.filter.factory.TokenRelayGatewayFilterFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Routes specified via the Java DSL do not include any default-filters defined with properties.  This configuration
@@ -13,10 +20,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class DSLGlobalGatewayFilterConfiguration {
 
-    @Bean("default")
-    GatewayFilter defaultGatewayFilter() {
-        return new RewriteLocationResponseHeaderGatewayFilterFactory().apply(
-            new RewriteLocationResponseHeaderGatewayFilterFactory.Config());
+  @Bean("default")
+  GatewayFilter defaultGatewayFilter() {
+    return new RewriteLocationResponseHeaderGatewayFilterFactory().apply(
+        new RewriteLocationResponseHeaderGatewayFilterFactory.Config());
+  }
+
+  @Bean("defaults")
+  List<GatewayFilter> defaultGatewayFilters(
+      final Environment environment,
+      final ApplicationContext context
+  ) {
+
+    List<GatewayFilter> defaults = new ArrayList<>();
+
+    defaults.add(
+        new RewriteLocationResponseHeaderGatewayFilterFactory().apply(
+            new RewriteLocationResponseHeaderGatewayFilterFactory.Config())
+    );
+
+    if (environment.matchesProfiles("oidc")) {
+      defaults.add(
+          context.getBean(TokenRelayGatewayFilterFactory.class).apply()
+      );
+
     }
 
+    return defaults;
+  }
 }
