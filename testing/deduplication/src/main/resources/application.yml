@@ -1,0 +1,17 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher # swagger
+  jpa:
+    properties:
+      hibernate:
+        default_schema: dbo
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        timezone:
+          default_storage: NORMALIZE
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+    username: sa
+    password: fake.fake.fake.1234
