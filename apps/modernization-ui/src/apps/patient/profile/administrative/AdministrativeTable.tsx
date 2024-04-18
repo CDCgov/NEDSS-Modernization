@@ -40,7 +40,7 @@ type Props = {
 };
 
 const headers = [
-    { name: Column.AsOf, sortable: true },
+    { name: Column.AsOf, sortable: false },
     { name: Column.Comment, sortable: true },
     { name: Column.Actions, sortable: false }
 ];

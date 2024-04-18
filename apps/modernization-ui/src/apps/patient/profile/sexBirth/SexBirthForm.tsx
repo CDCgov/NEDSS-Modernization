@@ -57,6 +57,8 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
 
     const selectedState = useWatch({ control, name: 'state', defaultValue: entry.birth.state });
 
+    const selectedMultipleBirth = useWatch({ control, name: 'multipleBirth', defaultValue: entry.birth.multipleBirth}); 
+
     const coded = usePatientSexBirthCodedValues();
 
     const byState = useCountyCodedValues(selectedState);
@@ -276,6 +278,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         rules={{ min: { value: 0, message: 'Must be a positive number' } }}
                         render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                             <Input
+                                disabled={selectedMultipleBirth === 'N'}
                                 placeholder="No Data"
                                 onChange={onChange}
                                 onBlur={onBlur}
