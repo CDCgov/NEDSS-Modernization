@@ -57,7 +57,7 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
 
     const selectedState = useWatch({ control, name: 'state', defaultValue: entry.birth.state });
 
-    const selectedMultipleBirth = useWatch({ control, name: 'multipleBirth', defaultValue: entry.birth.multipleBirth}); 
+    const selectedMultipleBirth = useWatch({ control, name: 'multipleBirth', defaultValue: entry.birth.multipleBirth });
 
     const coded = usePatientSexBirthCodedValues();
 
