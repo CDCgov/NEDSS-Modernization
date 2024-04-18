@@ -31,3 +31,16 @@ Then("Event type is listed in descending order", () => {
 Then("Event type is listed in ascending order", () => {
     pageLibrarySortPage.eventTypeListedInAscendingOrder();
 });
+
+// Status
+Then("User click the up or down arrow in the Status column", () => {
+    pageLibrarySortPage.statusArrowClick();
+});
+
+Then("Status is listed in descending order", () => {
+    pageLibrarySortPage.statusListedInDescendingOrder();
+});
+
+Then("Status is listed in ascending order", () => {
+    pageLibrarySortPage.statusListedInAscendingOrder();
+});

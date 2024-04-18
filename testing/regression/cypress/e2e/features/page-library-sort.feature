@@ -15,3 +15,10 @@ Feature: User can view existing page library data here.
         Then Event type is listed in descending order
         And User click the up or down arrow in the Event type column
         Then Event type is listed in ascending order
+
+    Scenario: User list Status in descending and ascending order
+        And User click the up or down arrow in the Status column
+        Then Status is listed in descending order
+        And User click the up or down arrow in the Status column
+        Then Status is listed in ascending order
+
