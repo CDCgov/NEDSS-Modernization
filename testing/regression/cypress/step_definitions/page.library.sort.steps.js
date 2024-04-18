@@ -1,15 +1,7 @@
 import {Then} from "@badeball/cypress-cucumber-preprocessor";
 import {pageLibrarySortPage} from "@pages/page-library-sort.page";
 
-Then("User navigates to Page Library", () => {
-    pageLibrarySortPage.navigateToLibrary();
-});
-
-Then("User views the Page library", () => {
-    pageLibrarySortPage.userViewsPageLibrary();
-});
-
-Then("User already on Page Library", () => {
+Then("User navigates to Page Library and views the Page library", () => {
     pageLibrarySortPage.navigateToLibrary();
     pageLibrarySortPage.userViewsPageLibrary();
 });
