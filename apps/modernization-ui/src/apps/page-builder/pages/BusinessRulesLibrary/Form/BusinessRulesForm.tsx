@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
+import { Button, Checkbox, Icon, Label, Modal, ModalRef, Radio } from '@trussworks/react-uswds';
 import { RuleRequest, PagesQuestion, PagesSubSection, Rule } from 'apps/page-builder/generated';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import styles from './BusinessRulesForm.module.scss';
@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 import { mapLogicForDateCompare } from '../helpers/mapLogicForDateCompare';
 import './ModalWidth.scss';
 import { checkForSemicolon, removeNumericAndSymbols } from '../helpers/errorMessageUtils';
+import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
 
 type Props = {
     isEdit: boolean;
@@ -246,7 +247,7 @@ export const BusinessRulesForm = ({
                 control={form.control}
                 name="ruleFunction"
                 rules={{ required: { value: true, message: 'Rule function is required' } }}
-                render={({ field: { onBlur, onChange, value } }) => (
+                render={({ field: { onChange, onBlur, value } }) => (
                     <div className={styles.ruleFunction}>
                         <div className={styles.title}>
                             <Label htmlFor="ruleFunction" requiredMarker>
@@ -263,34 +264,31 @@ export const BusinessRulesForm = ({
                         )}
                         {!isEdit && (
                             <div className={styles.functionBtns}>
-                                <ButtonGroup type="segmented">
-                                    {fieldTypeTab.map((field, index) => (
-                                        <Button
-                                            key={index}
-                                            type="button"
-                                            outline={watch.ruleFunction !== field.value}
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            value={value}
-                                            onClick={() => {
-                                                form.reset({
-                                                    ruleFunction: field.value,
-                                                    targetType: Rule.targetType.QUESTION,
-                                                    anySourceValue: false,
-                                                    targetIdentifiers: [],
-                                                    targetValueText: [],
-                                                    description: '',
-                                                    sourceIdentifier: '',
-                                                    sourceValues: [],
-                                                    sourceText: ''
-                                                });
-                                                setTargetQuestion(undefined);
-                                                setSourceQuestion(undefined);
-                                            }}>
-                                            {field.display}
-                                        </Button>
-                                    ))}
-                                </ButtonGroup>
+                                <SegmentedButtons
+                                    buttons={fieldTypeTab.map((tab) => ({
+                                        value: tab.value,
+                                        name: tab.display,
+                                        label: tab.display
+                                    }))}
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    onClick={(button: any): void => {
+                                        form.reset({
+                                            ruleFunction: button.value,
+                                            targetType: Rule.targetType.QUESTION,
+                                            anySourceValue: false,
+                                            targetIdentifiers: [],
+                                            targetValueText: [],
+                                            description: '',
+                                            sourceIdentifier: '',
+                                            sourceValues: [],
+                                            sourceText: ''
+                                        });
+                                        setTargetQuestion(undefined);
+                                        setSourceQuestion(undefined);
+                                    }}
+                                    value={value}
+                                />
                             </div>
                         )}
                     </div>

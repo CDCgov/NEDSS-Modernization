@@ -1,0 +1,36 @@
+@use 'styles/colors';
+
+.segmentedButtons {
+    display: flex;
+    button {
+        color: colors.$primary;
+        background-color: colors.$base-white;
+        border-top: 0.19rem solid colors.$primary;
+        border-bottom: 0.19rem solid colors.$primary;
+        box-shadow: none;
+        border-radius: 0;
+        border-left: 0.19rem solid  colors.$primary;
+        margin: 0;
+        padding: 0.65rem 1.25rem;
+        &.active {
+            color: colors.$base-white;
+            background-color: colors.$primary-darker;
+            border-color: colors.$primary-darker;
+        }
+        &:hover {
+            box-shadow: none;
+            border-bottom: 0.19rem solid colors.$primary;
+        }
+        &:not([disabled]):focus{
+            outline: none;
+        }
+        &:first-of-type {
+            border-radius: 0.3rem 0 0 0.3rem;
+            border-left: 0.19rem solid colors.$primary;
+        }
+        &:last-of-type {
+            border-radius: 0 0.3rem 0.3rem 0;
+            border-right: 0.19rem solid colors.$primary;
+        }
+    }
+}

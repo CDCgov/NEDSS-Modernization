@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
+import { ButtonGroup, Button, ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
