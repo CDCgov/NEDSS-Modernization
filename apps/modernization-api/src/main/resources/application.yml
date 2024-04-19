@@ -45,6 +45,7 @@ nbs:
         - /swagger-ui/**
         - /swagger-resources/**
         - /login
+        - /favicon.ico
 
 
 logging:

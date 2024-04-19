@@ -19,10 +19,6 @@ spring:
           uri: ${nbs.gateway.classic}
           predicates:
             - Path=/images/nedssLogo.jpg
-        - id: favicon
-          uri: ${nbs.gateway.classic}
-          predicates:
-            - Path=/favicon.ico
 
 nbs:
   gateway:
