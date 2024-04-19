@@ -22,3 +22,8 @@ Feature: User can view existing page library data here.
         And User click the up or down arrow in the Status column
         Then Status is listed in ascending order
 
+    Scenario: User list Last Updated in descending and ascending order
+        And User click the up or down arrow in the Last Updated column
+        Then Last Updated is listed in descending order - latest date
+        And User click the up or down arrow in the Last Updated column
+        Then Last Updated is listed in ascending order - earliest date
