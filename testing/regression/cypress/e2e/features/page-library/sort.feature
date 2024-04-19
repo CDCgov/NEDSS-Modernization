@@ -27,3 +27,7 @@ Feature: User can view existing page library data here.
         Then Last Updated is listed in descending order - latest date
         And User click the up or down arrow in the Last Updated column
         Then Last Updated is listed in ascending order - earliest date
+
+    Scenario: Verify Last Updated displays in the correct date format
+        When User views the Last Updated column
+        And Application should display the Last Updated date in the correct format

@@ -1,4 +1,4 @@
-class PageLibrarySortPage {
+class SortPage {
     navigateToLibrary () {
         cy.visit('/page-builder/pages')
     }
@@ -42,7 +42,6 @@ class PageLibrarySortPage {
     statusListedInAscendingOrder() {
         this.checkOrder("Status", "ascending")
     }
-
     lastUpdatedArrowClick() {
         cy.get(".usa-button.usa-button--unstyled").eq(3).click()
     }
@@ -53,6 +52,13 @@ class PageLibrarySortPage {
 
     lastUpdatedListedInAscendingOrder() {
         this.checkOrder("Last updated", "ascending", "date")
+    }
+    lastUpdatedView() {
+        cy.get(".usa-button.usa-button--unstyled").eq(3)
+    }
+
+    lastUpdatedDateFormat() {
+        this.checkDateFormat("Last updated")
     }
 
     checkOrder(columnName, sortType, dataType) {
@@ -73,10 +79,12 @@ class PageLibrarySortPage {
     getColumnIndexByName(columnName) {
         if (columnName === "Page name") {
             return 0;
-        } else if (columnName === "Condition") {
+        } else if (columnName === "Event type") {
             return 1;
-        } else if (columnName === "Document type") {
-            return 0;
+        } else if (columnName === "Status") {
+            return 2;
+        } else if (columnName === "Last updated") {
+            return 3;
         }
     }
 
@@ -110,6 +118,25 @@ class PageLibrarySortPage {
             return value <= array[index - 1];
         });
     }
+
+    checkDateFormat(columnName) {
+        const list = [];
+        const index = this.getColumnIndexByName(columnName);
+        this.openInvestigationTable.find("tbody tr").each(($tr) => {
+            list.push($tr.find("td").eq(index).text());
+        });
+        let correctFormat = false;
+        const check = () => {
+            return list.every((value, index, array) => {
+                if (index === 0) {
+                    return true; // Skip the first element
+                }
+                return value.split("/").length === 3;
+            });
+        }
+        correctFormat = check();
+        expect(correctFormat).to.be.true;
+    }
 }
 
-export const pageLibrarySortPage = new PageLibrarySortPage()
+export const pageLibrarySortPage = new SortPage()
