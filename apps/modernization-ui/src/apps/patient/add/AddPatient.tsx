@@ -232,13 +232,8 @@ const AddPatient = () => {
                     modal={modalRef}
                     title="Success"
                     message={`You have successfully added ${(entryState.step === 'created' && entryState.name) || 'the patient'}`}
-                    confirmText="View patient"
-                    onConfirm={() => navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)}
-                    cancelText="Add another patient"
-                    onCancel={() => {
-                        navigate(`/add-patient`);
-                        modalRef.current?.toggleModal();
-                    }}
+                    action="View patient"
+                    onAction={() => navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)}
                 />
             )}
             <Grid col={3} className="bg-white border-right border-base-light">
