@@ -88,31 +88,30 @@ export const SubsectionHeader = ({
                     Add question
                 </Button>
                 <MoreOptions
-                    header={<Icon.MoreVert size={4} onClick={() => setCloseOptions(false)} />}
+                    header={<Icon.MoreVert role="menu" size={4} onClick={() => setCloseOptions(false)} />}
                     close={closeOptions}>
                     <Button type="button" onClick={() => closeThenAct(onEditSubsection)}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
-                    {subsection.isGrouped
-                        ? page?.status !== 'Published with Draft' && (
-                              <ModalToggleButton
-                                  type="button"
-                                  modalRef={ungroupSubsectionModalRef}
-                                  onClick={() => setCloseOptions(true)}>
-                                  <IconComponent name={'group'} size={'s'} /> Ungroup questions
-                              </ModalToggleButton>
-                          )
-                        : null}
-                    {subsection.isGrouped === false &&
-                    subsection.questions.every((question) => question.isPublished === false) ? (
-                        <>
-                            {subsection.isGroupable && subsection.questions.length > 0 && (
-                                <Button type="button" onClick={() => closeThenAct(onGroupQuestion)}>
-                                    <IconComponent name={'group'} size={'s'} /> Group questions
-                                </Button>
-                            )}
-                        </>
-                    ) : null}
+                    {subsection.isGrouped && page.status !== 'Published' && (
+                        <ModalToggleButton
+                            type="button"
+                            modalRef={ungroupSubsectionModalRef}
+                            onClick={() => setCloseOptions(true)}>
+                            <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                        </ModalToggleButton>
+                    )}
+                    {!subsection.isGrouped &&
+                        page.status !== 'Published' &&
+                        subsection.questions.every((question) => question.isPublished === false) && (
+                            <>
+                                {subsection.isGroupable && subsection.questions.length > 0 && (
+                                    <Button type="button" onClick={() => closeThenAct(onGroupQuestion)}>
+                                        <IconComponent name={'group'} size={'s'} /> Group questions
+                                    </Button>
+                                )}
+                            </>
+                        )}
                     <ModalToggleButton type="button" modalRef={addStaticElementModalRef}>
                         <Icon.Add size={3} /> Add static element
                     </ModalToggleButton>
