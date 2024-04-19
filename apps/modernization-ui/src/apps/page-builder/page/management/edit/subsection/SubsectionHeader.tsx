@@ -93,14 +93,16 @@ export const SubsectionHeader = ({
                     <Button type="button" onClick={() => closeThenAct(onEditSubsection)}>
                         <Icon.Edit size={3} /> Edit subsection
                     </Button>
-                    {subsection.isGrouped && page.status !== 'Published' && (
-                        <ModalToggleButton
-                            type="button"
-                            modalRef={ungroupSubsectionModalRef}
-                            onClick={() => setCloseOptions(true)}>
-                            <IconComponent name={'group'} size={'s'} /> Ungroup questions
-                        </ModalToggleButton>
-                    )}
+                    {subsection.isGrouped &&
+                        page.status !== 'Published' &&
+                        subsection.questions.every((question) => question.isPublished === false) && (
+                            <ModalToggleButton
+                                type="button"
+                                modalRef={ungroupSubsectionModalRef}
+                                onClick={() => setCloseOptions(true)}>
+                                <IconComponent name={'group'} size={'s'} /> Ungroup questions
+                            </ModalToggleButton>
+                        )}
                     {!subsection.isGrouped &&
                         page.status !== 'Published' &&
                         subsection.questions.every((question) => question.isPublished === false) && (

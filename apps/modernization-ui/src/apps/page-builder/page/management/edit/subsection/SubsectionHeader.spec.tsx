@@ -110,6 +110,7 @@ describe('Subsection header', () => {
         userEvent.click(getByRole('menu'));
         expect(queryByText('Group questions')).not.toBeInTheDocument();
     });
+
     it('should not display group question option if a question is published', () => {
         const page: PagesResponse = {
             id: 12039120,
@@ -220,5 +221,42 @@ describe('Subsection header', () => {
         );
         userEvent.click(getByRole('menu'));
         expect(queryByText('Ungroup questions')).toBeInTheDocument();
+    });
+
+    it('should not display ungroup question option if a question is published', () => {
+        const page: PagesResponse = {
+            id: 12039120,
+            name: 'Test Page',
+            status: 'Published with Draft'
+        };
+
+        const subsectionWithPublishedQuestion: PagesSubSection = {
+            id: 1,
+            name: 'Test Subsection',
+            order: 23,
+            visible: true,
+            isGrouped: true,
+            isGroupable: true,
+            questionIdentifier: 'TSTSBSCTN',
+            blockName: 'BLOCK_NAME',
+            questions: [{ id: 2, name: 'test Question', order: 24, isPublished: true }]
+        };
+        const { queryByText, getByRole } = render(
+            <AlertProvider>
+                <PageManagementProvider page={page} fetch={jest.fn()} refresh={jest.fn} loading={false}>
+                    <SubsectionHeader
+                        subsection={subsectionWithPublishedQuestion}
+                        onAddQuestion={onAdd}
+                        onExpandedChange={handleExpanded}
+                        isExpanded={true}
+                        onDeleteSubsection={onDelete}
+                        onEditSubsection={onEdit}
+                        onGroupQuestion={onGroup}
+                    />
+                </PageManagementProvider>
+            </AlertProvider>
+        );
+        userEvent.click(getByRole('menu'));
+        expect(queryByText('Ungroup questions')).not.toBeInTheDocument();
     });
 });
