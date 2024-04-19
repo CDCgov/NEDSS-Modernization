@@ -66,3 +66,16 @@ Then("User views the Last Updated column", () => {
 Then("Application should display the Last Updated date in the correct format", () => {
     pageLibrarySortPage.lastUpdatedDateFormat();
 });
+
+// Last updated by
+Then("User click the up or down arrow in the Last Updated by column", () => {
+    pageLibrarySortPage.lastUpdatedByArrowClick();
+});
+
+Then("Last Updated by is listed in descending order", () => {
+    pageLibrarySortPage.lastUpdatedByListedInDescendingOrder();
+});
+
+Then("Last Updated by is listed in ascending order", () => {
+    pageLibrarySortPage.lastUpdatedByListedInAscendingOrder();
+});

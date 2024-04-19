@@ -61,6 +61,18 @@ class SortPage {
         this.checkDateFormat("Last updated")
     }
 
+    lastUpdatedByArrowClick() {
+        cy.get(".usa-button.usa-button--unstyled").eq(4).click()
+    }
+
+    lastUpdatedByListedInDescendingOrder() {
+        this.checkOrder("Last updated by", "descending", "date")
+    }
+
+    lastUpdatedByListedInAscendingOrder() {
+        this.checkOrder("Last updated by", "ascending", "date")
+    }
+
     checkOrder(columnName, sortType, dataType) {
         const list = [];
         const index = this.getColumnIndexByName(columnName);
@@ -85,6 +97,8 @@ class SortPage {
             return 2;
         } else if (columnName === "Last updated") {
             return 3;
+        } else if (columnName === "Last updated by") {
+            return 4;
         }
     }
 
