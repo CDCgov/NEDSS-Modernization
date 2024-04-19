@@ -31,3 +31,9 @@ Feature: User can view existing page library data here.
     Scenario: Verify Last Updated displays in the correct date format
         When User views the Last Updated column
         And Application should display the Last Updated date in the correct format
+
+    Scenario: User list Last Updated by in descending and ascending order
+        And User click the up or down arrow in the Last Updated by column
+        Then Last Updated by is listed in descending order
+        And User click the up or down arrow in the Last Updated by column
+        Then Last Updated by is listed in ascending order
