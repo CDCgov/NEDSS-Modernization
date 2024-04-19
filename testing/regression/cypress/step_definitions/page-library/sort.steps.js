@@ -1,5 +1,5 @@
 import {Then} from "@badeball/cypress-cucumber-preprocessor";
-import {pageLibrarySortPage} from "@pages/page-library-sort.page";
+import {pageLibrarySortPage} from "@pages/page-library/sort.page";
 
 Then("User navigates to Page Library and views the Page library", () => {
     pageLibrarySortPage.navigateToLibrary();
@@ -56,4 +56,13 @@ Then("Last Updated is listed in descending order - latest date", () => {
 
 Then("Last Updated is listed in ascending order - earliest date", () => {
     pageLibrarySortPage.lastUpdatedListedInAscendingOrder();
+});
+
+// Last updated - date format
+Then("User views the Last Updated column", () => {
+    pageLibrarySortPage.lastUpdatedView();
+});
+
+Then("Application should display the Last Updated date in the correct format", () => {
+    pageLibrarySortPage.lastUpdatedDateFormat();
 });
