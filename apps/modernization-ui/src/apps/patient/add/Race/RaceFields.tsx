@@ -11,7 +11,6 @@ type Props = { id: string; title: string; coded: CodedValues };
 
 export default function RaceFields({ id, title, coded }: Props) {
     const { control } = useFormContext();
-    console.log('coded', coded);
 
     const tempArr: any = [];
     return (

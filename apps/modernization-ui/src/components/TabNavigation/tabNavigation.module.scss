@@ -5,6 +5,7 @@
     align-items: flex-start;
     gap: 1rem;
     background-color: colors.$clear;
+    padding-bottom: 1rem;
 }
 
 .tab {
@@ -12,7 +13,6 @@
     color: colors.$base-darkest;
     text-decoration: none !important;
     border-bottom: 0.4375rem solid transparent;
-
     padding-bottom: 0.5rem;
     line-height: 1.25;
 
