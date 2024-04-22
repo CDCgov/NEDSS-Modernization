@@ -33,7 +33,7 @@ Feature: User accesses patient profile and can view existing patient data here.
     Scenario: Display all investigations related to the patient in the "Investigations" section
         Given the user navigate to the patient profile page for "93049"
         Then user clicks on a patient's profile "Events" tab
-        Then I should see the following columns for "investigation" table
+        Then I should see the following columns for "investigations" table
             | Start date      | Investigation Start Date                                               |
             | Condition       | Condition selected when opening the investigation                      |
             | Status          | Investigation status as in the case info/investigation details section |

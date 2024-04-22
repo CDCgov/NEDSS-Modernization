@@ -55,7 +55,7 @@ class PatientProfilePage {
 
   clickOnTab(tabName) {
     cy.intercept("POST", "/graphql").as("graphqlRequest");
-    cy.contains("p", tabName).click();
+    cy.contains("button", tabName).click();
     cy.wait("@graphqlRequest");
   }
 
