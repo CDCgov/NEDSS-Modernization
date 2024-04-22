@@ -154,25 +154,26 @@ public class SimilarMatchService {
                     IF @v_pcount > 1
                       BEGIN
                           SELECT @v_seed = @v_seed + 1;
-
+                          UPDATE person
+                          SET
+                              dedup_match_ind = 'F',
+                              group_nbr = @v_seed,
+                              group_time = @group_time
+                          WHERE  person_uid IN (SELECT person_uid
+                                                FROM   @result);
+                          SET @p_count = @p_count + 1;
                           INSERT INTO @groups
                                       (person_uid,
                                        group_nbr)
                           SELECT person_uid,
                                  @v_seed
                           FROM   @result;
-
-                          UPDATE person
-                          SET    dedup_match_ind = NULL
-                          WHERE  person_uid IN (SELECT person_uid
-                                                FROM   @result);
-
-                          SET @p_count = @p_count + 1;
                       END;
                     ELSE
                       BEGIN
                           UPDATE person
-                          SET    dedup_match_ind = NULL
+                          SET
+                            dedup_match_ind = 'F'
                           WHERE  person_uid IN (SELECT person_uid
                                                 FROM   @result);
                       END;
