@@ -2,8 +2,8 @@ package gov.cdc.nbs.deduplication.response;
 
 import java.util.List;
 
-public record MatchResponse(List<Match> matches, long timeTakenMs) {
+public record MatchResponse(List<MatchGroup> groups, int groupCount, long timeTakenMs) {
 
-  private record Match(String personUid, int percentage) {
+  public record MatchGroup(List<String> personUid) {
   }
 }

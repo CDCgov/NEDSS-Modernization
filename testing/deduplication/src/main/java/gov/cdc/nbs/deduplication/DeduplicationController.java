@@ -22,8 +22,8 @@ public class DeduplicationController {
   }
 
   @PostMapping("/similar")
-  public MatchResponse matchSimilar(@RequestBody MatchRequest request) {
-    return similarMatchService.match(request);
+  public MatchResponse matchSimilar() {
+    return similarMatchService.match();
   }
 
   @PostMapping("/exact")
