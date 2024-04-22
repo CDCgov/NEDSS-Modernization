@@ -183,7 +183,7 @@ export const TableComponent = ({
                             </>
                         ) : (
                             <>
-                                Showing <RangeToggle /> of {totalResults}
+                                Showing <RangeToggle /> of <span id="totalRowCount">{totalResults}</span>
                             </>
                         )}
                     </div>
