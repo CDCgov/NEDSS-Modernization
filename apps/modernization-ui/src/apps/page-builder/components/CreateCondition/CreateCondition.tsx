@@ -7,7 +7,6 @@ import {
     fetchFamilyOptions,
     fetchGroupOptions
 } from 'apps/page-builder/services/valueSetAPI';
-import { authorization } from 'authorization';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { RefObject, useEffect, useState } from 'react';
@@ -25,7 +24,6 @@ type Props = {
 const codingSystemDefault = 'CONDITION_LIST_CDC';
 
 export const CreateCondition = ({ modal, conditionCreated }: Props) => {
-    const token = authorization();
     const { handleSubmit, control, reset, resetField, formState } = useForm<CreateConditionRequest>({
         mode: 'onBlur',
         defaultValues: { codeSystemDescTxt: codingSystemDefault }
@@ -41,10 +39,10 @@ export const CreateCondition = ({ modal, conditionCreated }: Props) => {
     const [systemOptions, setSystemOptions] = useState([] as Concept[]);
 
     useEffect(() => {
-        fetchFamilyOptions(token).then((response) => setFamilyOptions(response));
-        fetchGroupOptions(token).then((response) => setGroupOptions(response));
+        fetchFamilyOptions().then((response) => setFamilyOptions(response));
+        fetchGroupOptions().then((response) => setGroupOptions(response));
         fetchProgramAreaOptions().then((response) => setProgramAreaOptions(response ?? []));
-        fetchCodingSystemOptions(token).then((response) => setSystemOptions(response));
+        fetchCodingSystemOptions().then((response) => setSystemOptions(response));
     }, []);
 
     const onSubmit = handleSubmit(async (data) => {

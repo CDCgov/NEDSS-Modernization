@@ -1,5 +1,3 @@
-import { OpenAPI } from 'apps/page-builder/generated/core/OpenAPI';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 import { BusinessRuleSort } from './useFetchPageRules';
 
@@ -49,12 +47,11 @@ export const useDownloadPageLibrary = () => {
 
     const downloadPdf = (page: number, sort: string | undefined, query: string) => {
         // auto generated methods dont allow direct conversion to blob
-        fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/${page}/rules/pdf`, {
+        fetch(`/nbs/page-builder/api/v1/pages/${page}/rules/pdf`, {
             method: 'POST',
             headers: {
                 Accept: 'application/pdf',
-                'Content-Type': 'application/json',
-                Authorization: authorization()
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 pageId: page,
@@ -78,12 +75,11 @@ export const useDownloadPageLibrary = () => {
 
     const downloadCsv = (page: number, sort: string | undefined, query: string) => {
         // auto generated methods dont allow direct conversion to blob
-        fetch(`${OpenAPI.BASE}/nbs/page-builder/api/v1/pages/${page}/rules/csv`, {
+        fetch(`/nbs/page-builder/api/v1/pages/${page}/rules/csv`, {
             method: 'POST',
             headers: {
                 Accept: 'application/csv',
-                'Content-Type': 'application/json',
-                Authorization: authorization()
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 pageId: page,

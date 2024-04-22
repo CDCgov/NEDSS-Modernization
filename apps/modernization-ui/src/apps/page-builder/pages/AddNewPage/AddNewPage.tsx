@@ -8,7 +8,6 @@ import { Condition, PageControllerService, PageCreateRequest, Template } from 'a
 import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { fetchTemplates } from 'apps/page-builder/services/templatesAPI';
-import { authorization } from 'authorization';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { useConfiguration } from 'configuration';
@@ -58,7 +57,7 @@ export const AddNewPage = () => {
     }, [JSON.stringify(availableConditions)]);
 
     useEffect(() => {
-        fetchTemplates(authorization(), watch.eventType ?? ' ').then((data) => {
+        fetchTemplates(watch.eventType ?? ' ').then((data) => {
             setTemplates(data);
         });
     }, [watch.eventType]);

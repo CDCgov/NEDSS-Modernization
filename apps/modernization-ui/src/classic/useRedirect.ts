@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from 'react';
 import { Destination } from './Destination';
-import { authorization } from 'authorization';
 
 type Redirect =
     | { status: 'idle' }
@@ -23,9 +22,7 @@ const reducer = (_state: Redirect, action: Action): Redirect => {
 };
 
 const resolveRedirect = (url: string) => {
-    return fetch(url, { headers: { Authorization: authorization() } }).then((response) =>
-        response.headers.get('Location')
-    );
+    return fetch(url).then((response) => response.headers.get('Location'));
 };
 
 type Props = {

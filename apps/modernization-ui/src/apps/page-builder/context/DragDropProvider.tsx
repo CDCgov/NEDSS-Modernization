@@ -24,8 +24,6 @@ const DragDropProvider: React.FC<{
     const [dragTarget, setDragTarget] = useState({ droppableId: '', index: 999, source: 999 });
     const [moveId, setMoveId] = useState<number>(0);
     let afterId: number;
-    // const { state } = useContext(UserContext);
-    // const token = `Bearer ${state.getToken()}`;
 
     const moveSectionWithinSameTab: DragDropProps = (source, destination) => {
         if (pageData?.tabs) {
