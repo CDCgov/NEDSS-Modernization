@@ -57,6 +57,8 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
 
     const selectedState = useWatch({ control, name: 'state', defaultValue: entry.birth.state });
 
+    const selectedMultipleBirth = useWatch({ control, name: 'multipleBirth', defaultValue: entry.birth.multipleBirth });
+
     const coded = usePatientSexBirthCodedValues();
 
     const byState = useCountyCodedValues(selectedState);
@@ -264,31 +266,33 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    Birth order:
+            {selectedMultipleBirth === 'Y' && (
+                <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
+                    <Grid col={6} className="margin-top-1 text-bold">
+                        Birth order:
+                    </Grid>
+                    <Grid col={6}>
+                        <Controller
+                            control={control}
+                            defaultValue={entry.birth.birthOrder}
+                            name="birthOrder"
+                            rules={{ min: { value: 0, message: 'Must be a positive number' } }}
+                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                                <Input
+                                    placeholder="No Data"
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    type="number"
+                                    defaultValue={value}
+                                    htmlFor="birthOrder"
+                                    id="birthOrder"
+                                    error={error?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        defaultValue={entry.birth.birthOrder}
-                        name="birthOrder"
-                        rules={{ min: { value: 0, message: 'Must be a positive number' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <Input
-                                placeholder="No Data"
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                type="number"
-                                defaultValue={value}
-                                htmlFor="birthOrder"
-                                id="birthOrder"
-                                error={error?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
+            )}
             <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
                 <Grid col={6} className="margin-top-1 text-bold">
                     Birth city:
