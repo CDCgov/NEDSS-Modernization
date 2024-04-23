@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './tab-group.module.scss';
 
 type Props = {
@@ -14,6 +14,10 @@ export const TabGroup = ({ initialSelection, tabs, onSelected }: Props) => {
         setSelected(id);
         onSelected(id);
     };
+
+    useEffect(() => {
+        setSelected(initialSelection);
+    }, [initialSelection]);
 
     return (
         <ul className={styles.tabs}>
