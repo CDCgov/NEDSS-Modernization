@@ -4,10 +4,11 @@ import styles from './delete-question.module.scss';
 import { ConfirmationModal } from '../../../../confirmation';
 
 type CommonProps = {
+    isStaticElement: boolean;
     onDelete?: () => void;
 };
 
-const DeleteQuestion = ({ onDelete }: CommonProps) => {
+const DeleteQuestion = ({ onDelete, isStaticElement }: CommonProps) => {
     const deleteModalRef = useRef<ModalRef>(null);
     const handleDeleteQuetions = () => {
         onDelete?.();
@@ -20,8 +21,8 @@ const DeleteQuestion = ({ onDelete }: CommonProps) => {
             <ConfirmationModal
                 modal={deleteModalRef}
                 title="Warning"
-                message="Are you sure you want to delete the question?"
-                detail="Deleting this question cannot be undone. Are you sure you want to continue?"
+                message={`Are you sure you want to delete the ${isStaticElement ? 'static element' : 'question'}?`}
+                detail={`Deleting this ${isStaticElement ? 'static element' : 'question'} cannot be undone. Are you sure you want to continue?`}
                 confirmText="Yes, delete"
                 onConfirm={() => {
                     handleDeleteQuetions();
