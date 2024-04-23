@@ -23,7 +23,7 @@ spring:
 nbs:
   gateway:
     defaults:
-      protocol: 'http'
+      protocol: 'https'
     classic: '${nbs.gateway.defaults.protocol}://localhost:7001'
     home:
       uri: ${nbs.gateway.classic}
