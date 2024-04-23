@@ -27,8 +27,9 @@ type Props = {
     onAddSuccess?: () => void;
 };
 export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
-    const { selected, select, selectStaticTab } = usePageManagement();
+    const { selected, select, displayStaticTab, selectStaticTab } = usePageManagement();
     const [displayedTabs, setDisplayedTabs] = useState<PagesTab[]>([]);
+    const [initialSelection, setInitialSelection] = useState<number>(0);
 
     useEffect(() => {
         if (!onAddSuccess) {
@@ -37,6 +38,18 @@ export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
             setDisplayedTabs(tabs);
         }
     }, [JSON.stringify(tabs), onAddSuccess]);
+
+    useEffect(() => {
+        if (selected?.id) {
+            setInitialSelection(selected.id);
+        } else if (displayStaticTab) {
+            if (displayStaticTab === 'contactRecord') {
+                setInitialSelection(-1);
+            } else {
+                setInitialSelection(-2);
+            }
+        }
+    }, [selected?.id, displayStaticTab]);
 
     const handleSelectionChanged = (id: string | number) => {
         const tab = tabs.find((t) => t.id === id);
@@ -57,7 +70,7 @@ export const PageTabs = ({ pageId, tabs, onAddSuccess }: Props) => {
 
     return (
         <div className={styles.pageTabs}>
-            <TabGroup tabs={displayedTabs} onSelected={handleSelectionChanged} initialSelection={selected?.id} />
+            <TabGroup tabs={displayedTabs} onSelected={handleSelectionChanged} initialSelection={initialSelection} />
             {onAddSuccess ? <ManageTabs pageId={pageId} tabs={tabs} onAddSuccess={onAddSuccess} /> : null}
         </div>
     );

@@ -6,11 +6,12 @@ import {
     PagesSubSection
 } from 'apps/page-builder/generated';
 import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
 
 type Props = {
     subsection: PagesSubSection;
@@ -22,14 +23,6 @@ type Props = {
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;
 };
-
-const hyperlinkID = 1003;
-const lineSeparatorID = 1012;
-const readOnlyParticipants = 1030;
-const readOnlyComments = 1014;
-const originalElecDoc = 1036;
-
-const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
 
 export const Subsection = ({
     subsection,
@@ -43,8 +36,8 @@ export const Subsection = ({
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
-    const { showAlert } = useAlert();
-    const { setRequired } = useSetPageQuestionRequired();
+    const { showAlert, showError } = useAlert();
+    const { setRequired, response } = useSetPageQuestionRequired();
 
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
@@ -59,25 +52,34 @@ export const Subsection = ({
             PageStaticControllerService.deleteStaticElement({
                 page: page.id,
                 requestBody: { componentId: id }
-            }).then(() => {
-                handleAlert(`Element deleted successfully`);
-                refresh();
-            });
+            })
+                .then(() => {
+                    handleAlert(`Element deleted successfully`);
+                    refresh();
+                })
+                .catch(() => showError({ message: 'Failed to delete static element' }));
         } else {
             PageQuestionControllerService.deleteQuestion({
                 page: page.id,
                 questionId: Number(id)
-            }).then(() => {
-                refresh();
-                handleAlert(`Question deleted successfully`);
-            });
+            })
+                .then(() => {
+                    refresh();
+                    handleAlert(`Question deleted successfully`);
+                })
+                .catch((error) => {
+                    showError({ message: error.body?.message ?? 'Failed to delete question' });
+                });
         }
     };
 
     const handleRequiredChange = (question: number, required: boolean) => {
         setRequired(page.id, question, required);
-        refresh();
     };
+
+    useEffect(() => {
+        refresh();
+    }, [JSON.stringify(response)]);
 
     return (
         <div className={styles.subsection}>
