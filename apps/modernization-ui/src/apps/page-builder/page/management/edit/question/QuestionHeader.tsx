@@ -25,15 +25,11 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
 
     useEffect(() => {
         if (question.required !== undefined) {
-            setRequired(question.required);
+            if (required !== question.required) {
+                onRequiredChange(required);
+            }
         }
-    }, [question.required]);
-
-    useEffect(() => {
-        if (required !== question.required) {
-            onRequiredChange(required);
-        }
-    }, [required]);
+    }, [required, question.required]);
 
     const getHeadingText = (displayComponent: number | undefined) => {
         switch (displayComponent) {

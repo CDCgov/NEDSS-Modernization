@@ -6,7 +6,7 @@ import {
     PagesSubSection
 } from 'apps/page-builder/generated';
 import { useSetPageQuestionRequired } from 'apps/page-builder/hooks/api/useSetPageQuestionRequired';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
@@ -37,7 +37,7 @@ export const Subsection = ({
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
     const { showAlert, showError } = useAlert();
-    const { setRequired } = useSetPageQuestionRequired();
+    const { setRequired, response } = useSetPageQuestionRequired();
 
     const handleAlert = (message: string) => {
         showAlert({ message: message, type: 'success' });
@@ -75,8 +75,11 @@ export const Subsection = ({
 
     const handleRequiredChange = (question: number, required: boolean) => {
         setRequired(page.id, question, required);
-        refresh();
     };
+
+    useEffect(() => {
+        refresh();
+    }, [JSON.stringify(response)]);
 
     return (
         <div className={styles.subsection}>

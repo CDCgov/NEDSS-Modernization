@@ -6,12 +6,14 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.SetQuestionRequired;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateCodedQuestionValueset;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateDateQuestion;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateNumericQuestion;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.question.exception.UpdatePageQuestionException;
 import gov.cdc.nbs.questionbank.page.content.question.model.EditableQuestion;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionRequest;
@@ -56,12 +58,23 @@ public class PageQuestionUpdater {
   }
 
 
-  public EditableQuestion setRequired(Long pageId, Long questionId, UpdatePageQuestionRequiredRequest request,
+  public EditableQuestion setRequired(
+      Long pageId,
+      Long questionId,
+      UpdatePageQuestionRequiredRequest request,
       long user) {
     WaTemplate page = findPage(pageId);
-    page.updateRequired(asUpdate(request.required(), questionId, user));
+    page.updateRequired(asUpdate(request.required(), questionId, user), question -> findQuestion(question, pageId));
 
     return finder.find(pageId, questionId);
+  }
+
+  private WaUiMetadata findQuestion(long questionId, long pageId) {
+    WaUiMetadata metadata = entityManager.find(WaUiMetadata.class, questionId);
+    if (metadata == null || metadata.getWaTemplateUid().getId() != pageId) {
+      throw new PageContentModificationException("Failed to find question");
+    }
+    return metadata;
   }
 
   public EditableQuestion update(
