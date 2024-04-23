@@ -69,7 +69,7 @@ public class PageQuestionUpdater {
     return finder.find(pageId, questionId);
   }
 
-  private WaUiMetadata findQuestion(long questionId, long pageId) {
+  WaUiMetadata findQuestion(long questionId, long pageId) {
     WaUiMetadata metadata = entityManager.find(WaUiMetadata.class, questionId);
     if (metadata == null || metadata.getWaTemplateUid().getId() != pageId) {
       throw new PageContentModificationException("Failed to find question");
