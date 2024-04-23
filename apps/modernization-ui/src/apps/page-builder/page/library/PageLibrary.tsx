@@ -1,4 +1,3 @@
-import { authorization } from 'authorization';
 import { externalize, Filter } from 'filters';
 import { useState } from 'react';
 import { useSorting } from 'sorting';
@@ -64,7 +63,7 @@ const PageLibraryContent = () => {
     };
 
     const handleDownloadPDF = () => {
-        downloadPageLibraryPdf(authorization(), keyword ?? '', filters, sorting);
+        downloadPageLibraryPdf(keyword ?? '', filters, sorting);
     };
 
     return (

@@ -3,8 +3,6 @@ package gov.cdc.nbs.me;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +18,6 @@ class MeController {
       summary = "Current User",
       description = "Provides details about the user associated with the request.",
       tags = "User"
-  )
-  @Parameter(
-      name = "Authorization",
-      required = true,
-      in = ParameterIn.HEADER,
-      schema = @Schema(type = "string", requiredMode = Schema.RequiredMode.REQUIRED)
   )
   @GetMapping("nbs/api/me")
   Me me(@Parameter(hidden = true) @AuthenticationPrincipal final NbsUserDetails details) {

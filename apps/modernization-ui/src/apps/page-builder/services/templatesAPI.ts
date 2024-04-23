@@ -1,6 +1,6 @@
 import { Template, TemplateControllerService } from '../generated';
 
-export const fetchTemplates = (token: string, type: string): Promise<Template[]> =>
+export const fetchTemplates = (type: string): Promise<Template[]> =>
     TemplateControllerService.findAllTemplates({
         type: type
     }).catch((error) => {

@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { ModalToggleButton, TextInput } from '@trussworks/react-uswds';
-import { UserContext } from '../../../../providers/UserContext';
 import './SavetTemplate.scss';
 
 export const SaveTemplates = ({ modalRef }: any) => {
     const init = { name: '', desc: '' };
     const [details, setDetails] = useState(init);
-    const { state } = useContext(UserContext);
+
     const [validateName, setValidateName] = useState(false);
     const handleTabInput = ({ target }: any) => {
         setDetails({
@@ -18,7 +17,7 @@ export const SaveTemplates = ({ modalRef }: any) => {
         const pattern = /^[a-zA-Z0-9\s?!,-_]*$/;
         setValidateName(!pattern.test(target?.value) || target?.value === '');
     };
-    const authorization = `Bearer ${state.getToken()}`;
+
     const handleSubmit = () => {
         const { name, desc } = details;
         const request = { name, desc };

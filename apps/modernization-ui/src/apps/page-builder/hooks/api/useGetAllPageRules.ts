@@ -1,5 +1,4 @@
 import { PageRuleControllerService, Rule } from 'apps/page-builder/generated';
-import { authorization } from 'authorization';
 import { useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 

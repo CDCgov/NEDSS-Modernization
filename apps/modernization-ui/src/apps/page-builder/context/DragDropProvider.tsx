@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { DragStart, DragUpdate, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 import { PagesResponse } from '../generated';
 import { reorderObjects } from '../services/reorderObjectsAPI';
-import { UserContext } from 'user';
 
 type DragDropProps = (source: DraggableLocation, destination: DraggableLocation) => void;
 
@@ -25,8 +24,6 @@ const DragDropProvider: React.FC<{
     const [dragTarget, setDragTarget] = useState({ droppableId: '', index: 999, source: 999 });
     const [moveId, setMoveId] = useState<number>(0);
     let afterId: number;
-    const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
 
     const moveSectionWithinSameTab: DragDropProps = (source, destination) => {
         if (pageData?.tabs) {
@@ -303,7 +300,7 @@ const DragDropProvider: React.FC<{
             handleQuestionMove(source, destination);
         }
         if (pageData && successCallBack) {
-            reorderObjects(token, afterId, moveId, pageData.id).then(() => {
+            reorderObjects(afterId, moveId, pageData.id).then(() => {
                 successCallBack();
             });
         }

@@ -1,69 +1,31 @@
-import { UserContext } from 'user';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ClassicButton } from './ClassicButton';
-import { render, fireEvent, waitFor } from '@testing-library/react';
 
-describe('when a ClassicButton is clicked', () => {
-    const { location } = window;
+import { useRedirect } from './useRedirect';
+jest.mock('./useRedirect');
 
-    const getHrefSpy = jest.fn(() => 'example.com');
-    const setHrefSpy = jest.fn((href) => href);
+const mockUseRedirect = useRedirect as jest.MockedFunction<typeof useRedirect>;
 
-    beforeAll(() => {
-        const mockLocation = { ...location };
-        Object.defineProperty(mockLocation, 'href', {
-            get: getHrefSpy,
-            set: setHrefSpy
-        });
+describe('A ClassicButton component', () => {
+    it('should redirect when clicked', async () => {
+        const redirect = jest.fn();
 
-        // @ts-expect-error : location is mocked to check that the href is changed by the redirect
-        delete window.location;
-        window.location = mockLocation;
-    });
+        mockUseRedirect.mockImplementation(() => ({
+            redirecting: false,
+            location: 'location-value',
+            redirect,
+            reset: jest.fn()
+        }));
 
-    afterAll(() => {
-        window.location = location;
-    });
-
-    beforeEach(() => {
-        jest.restoreAllMocks();
-    });
-
-    it('should redirect to the url returned by the API', async () => {
-        jest.spyOn(global, 'fetch').mockReturnValue(
-            Promise.resolve({
-                // @ts-expect-error : Only relevant properties are mocked; header Location
-                headers: {
-                    get: jest.fn((v) => (v === 'Location' && 'redirected-url') || null)
-                }
-            })
-        );
-
-        const user = {
-            state: {
-                isLoggedIn: true,
-                isLoginPending: false,
-                getToken: () => 'token'
-            },
-            login: (_username: string) => {},
-            logout: () => {}
-        };
-
-        const { findByText } = render(
-            <UserContext.Provider value={user}>
-                <ClassicButton url="redirect-url">Button text</ClassicButton>
-            </UserContext.Provider>
-        );
+        const { findByText } = render(<ClassicButton url="redirect-url">Button text</ClassicButton>);
 
         const button = await findByText('Button text');
 
-        fireEvent.click(button);
+        userEvent.click(button);
 
         await waitFor(() => {
-            expect(global.fetch).toHaveBeenLastCalledWith('redirect-url', {
-                headers: { Authorization: 'Bearer token' }
-            });
-
-            expect(setHrefSpy).toHaveBeenCalledWith('redirected-url');
+            expect(redirect).toHaveBeenCalledWith('redirect-url');
         });
     });
 });
