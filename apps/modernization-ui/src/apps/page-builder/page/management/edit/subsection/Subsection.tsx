@@ -43,7 +43,7 @@ export const Subsection = ({
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const { page, refresh } = usePageManagement();
-    const { showAlert } = useAlert();
+    const { showAlert, showError } = useAlert();
     const { setRequired } = useSetPageQuestionRequired();
 
     const handleAlert = (message: string) => {
@@ -59,18 +59,24 @@ export const Subsection = ({
             PageStaticControllerService.deleteStaticElement({
                 page: page.id,
                 requestBody: { componentId: id }
-            }).then(() => {
-                handleAlert(`Element deleted successfully`);
-                refresh();
-            });
+            })
+                .then(() => {
+                    handleAlert(`Element deleted successfully`);
+                    refresh();
+                })
+                .catch(() => showError({ message: 'Failed to delete static element' }));
         } else {
             PageQuestionControllerService.deleteQuestion({
                 page: page.id,
                 questionId: Number(id)
-            }).then(() => {
-                refresh();
-                handleAlert(`Question deleted successfully`);
-            });
+            })
+                .then(() => {
+                    refresh();
+                    handleAlert(`Question deleted successfully`);
+                })
+                .catch((error) => {
+                    showError({ message: error.body?.message ?? 'Failed to delete question' });
+                });
         }
     };
 
