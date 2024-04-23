@@ -25,11 +25,11 @@
             outline: none;
         }
         &:first-of-type {
-            border-radius: 0.3rem 0 0 0.3rem;
+            border-radius: 0.3125rem 0 0 0.3125rem;
             border-left: 0.19rem solid colors.$primary;
         }
         &:last-of-type {
-            border-radius: 0 0.3rem 0.3rem 0;
+            border-radius: 0 0.3125rem 0.3125rem 0;
             border-right: 0.19rem solid colors.$primary;
         }
     }
