@@ -29,6 +29,7 @@ class SearchPage {
 
   enterZipCode(zip) {
     cy.get("#zip").type(zip);
+    cy.get("#city").click();
   }
 
   enterStreetAddress(address) {
@@ -121,7 +122,7 @@ class SearchPage {
 
   selectGender() {
     cy.get("#gender");
-    cy.get("#gender").select('Male');
+    cy.get("#gender").select("Male");
     cy.wait(500);
   }
 

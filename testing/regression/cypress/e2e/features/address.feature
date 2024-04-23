@@ -23,3 +23,8 @@ Feature: Patient Search by Address
     Then I navigate the  basic info and address
     When I search for "90 SE Panda Cutten KY 25783" Street address
     Then I should found result patient profile
+
+  Scenario: CNFT1-1281 Address – Search with Invalid Address Data
+    Then I navigate the  basic info and address
+    When I enter "&*(#))#)@)" as zip code
+    Then I should see "Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9)."

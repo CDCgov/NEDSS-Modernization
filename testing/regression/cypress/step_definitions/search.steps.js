@@ -11,6 +11,10 @@ When("I search for {string} city", (string) => {
   searchPage.search();
 });
 
+When("I enter {string} as zip code", (string) => {
+  searchPage.enterZipCode(string);
+});
+
 When("I search for {string} zip code", (string) => {
   searchPage.enterZipCode(string);
   searchPage.search();
@@ -23,6 +27,14 @@ When("I search for {string} Street address", (string) => {
 
 Then("I select {string} state", (string) => {
   searchPage.selectState(string);
+  searchPage.search();
+});
+
+When("I search for Street Address {string} City {string} State {string} Zip code {string}", function (string, string2, string3, string4) {
+  searchPage.enterStreetAddress(string);
+  searchPage.enterCity(string2);
+  searchPage.selectState(string3);
+  searchPage.enterZipCode(string4);
   searchPage.search();
 });
 
