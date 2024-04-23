@@ -98,14 +98,14 @@ table.usa-table {
 }
 
 .usa-button:disabled {
-    color: colors.$base-white !important;
+    color: colors.$disabled-darkest !important;
     background-color: colors.$disabled !important;
     cursor: default;
 }
 
 .usa-button--outline-disabled,
 .usa-button--outline:disabled {
-    background-color: colors.$base-white !important;
+    background-color: transparent !important;
     color: colors.$disabled !important;
     border: 2px solid colors.$disabled !important;
 }
