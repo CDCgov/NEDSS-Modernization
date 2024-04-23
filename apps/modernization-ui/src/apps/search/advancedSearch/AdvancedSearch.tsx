@@ -390,7 +390,6 @@ export const AdvancedSearch = () => {
                                 Add new
                                 <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
                             </Button>
-                            <IconButton icon={<Icon.Delete />} outline />
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                     <li className="usa-nav__submenu-item">
