@@ -5,6 +5,7 @@ import { PreviewSubsectionHeader } from './PreviewSubsectionHeader';
 import { useState } from 'react';
 import { Heading } from '../../../../../../../components/heading';
 import { Button } from '@trussworks/react-uswds';
+import React from 'react';
 
 type Props = {
     subsection: PagesSubSection;
@@ -33,29 +34,28 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                 <div className={styles.grouped}>
                                     <div className={styles.groupedForm}>
                                         {subsection.questions.map((question, k) => (
-                                            <>
+                                            <React.Fragment key={k}>
                                                 {question.appearsInBatch && (
-                                                    <div className={styles.groupedQuestionName} key={k}>
+                                                    <div className={styles.groupedQuestionName}>
                                                         <Heading level={3}>
                                                             {question.batchLabel ?? question.name}
                                                         </Heading>
                                                     </div>
                                                 )}
-                                            </>
+                                            </React.Fragment>
                                         ))}
                                     </div>
                                     <p className={styles.groupedInfo}>No data has been entered.</p>
                                     <div className={styles.groupedQuestionsSection}>
                                         {subsection.questions.map((question, k) => (
-                                            <>
+                                            <React.Fragment key={k}>
                                                 {question.visible && (
                                                     <PreviewQuestion
                                                         question={question}
                                                         isGrouped={subsection.isGrouped}
-                                                        key={k}
                                                     />
                                                 )}
-                                            </>
+                                            </React.Fragment>
                                         ))}
                                     </div>
                                     <div className={styles.footer}>
@@ -67,7 +67,9 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                             ) : (
                                 <>
                                     {subsection.questions.map((question, k) => (
-                                        <>{question?.visible && <PreviewQuestion question={question} key={k} />}</>
+                                        <React.Fragment key={k}>
+                                            {question?.visible && <PreviewQuestion question={question} />}
+                                        </React.Fragment>
                                     ))}
                                 </>
                             )}
