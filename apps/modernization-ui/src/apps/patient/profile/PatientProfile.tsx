@@ -2,7 +2,6 @@ import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-usw
 import 'apps/patient/profile/style.scss';
 import { useRef } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import { Config } from 'config';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
@@ -18,11 +17,7 @@ import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabN
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
-        window.open(
-            `${Config.nbsUrl}/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${patient}`,
-            '_blank',
-            'noreferrer'
-        );
+        window.open(`/nbs/LoadViewFile1.do?method=ViewFile&ContextAction=print&uid=${patient}`, '_blank', 'noreferrer');
     }
 };
 

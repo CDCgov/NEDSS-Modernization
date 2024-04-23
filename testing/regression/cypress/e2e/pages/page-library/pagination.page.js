@@ -45,6 +45,9 @@ class PaginationPage {
                 return parseInt(text, 10)
             });
     }
+    navigateToCreatePage () {
+        cy.visit('/page-builder/pages/add')
+    }
 }
 
 export const pageLibraryPaginationPage = new PaginationPage()

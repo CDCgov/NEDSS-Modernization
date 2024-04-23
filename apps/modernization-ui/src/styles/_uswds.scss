@@ -80,9 +80,14 @@ table.usa-table {
 
 // Default button styling
 .usa-button {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 125%;
     &:has(svg) {
         align-items: center;
-        padding: 0.6875rem 1.25rem;
+        padding: 0.75rem 1.25rem;
         display: inline-flex;
         gap: 0.3125rem;
     }
@@ -91,13 +96,20 @@ table.usa-table {
         vertical-align: bottom;
     }
 }
-.usa-button:disabled,
-.usa-button--outline-disabled,
-.usa-button--outline:disabled {
-    color: colors.$base-white !important;
+
+.usa-button:disabled {
+    color: colors.$disabled-darkest !important;
     background-color: colors.$disabled !important;
     cursor: default;
 }
+
+.usa-button--outline-disabled,
+.usa-button--outline:disabled {
+    background-color: transparent !important;
+    color: colors.$disabled !important;
+    border: 2px solid colors.$disabled !important;
+}
+
 .usa-pagination {
     background-color: transparent !important;
 }
@@ -124,5 +136,12 @@ table.usa-table {
         &:not([disabled]):focus {
             outline: none;
         }
+    }
+}
+
+.usa-button-group--segmented {
+    .usa-button--secondary:not(.usa-button--outline) {
+        background-color: colors.$primary-darker;
+        color: colors.$base-white;
     }
 }

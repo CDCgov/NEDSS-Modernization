@@ -1,8 +1,7 @@
 import { ButtonGroup, Label, ModalFooter, ModalRef, ModalToggleButton, TextInput } from '@trussworks/react-uswds';
 import { SectionControllerService, SubSectionControllerService } from 'apps/page-builder/generated';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
-import React, { RefObject, useContext, useState } from 'react';
-import { UserContext } from 'user';
+import React, { RefObject, useState } from 'react';
 import { ToggleButton } from '../ToggleButton';
 import './AddSectionModal.scss';
 
@@ -26,8 +25,6 @@ const AddSectionModal = ({ modalRef, pageId, tabId, sectionId, isSubSection, onA
     const [sectionName, setSectionName] = useState('');
     const [sectionDescription, setSectionDescription] = useState('');
     const [visible, setVisible] = useState(true);
-    const { state } = useContext(UserContext);
-    const token = `Bearer ${state.getToken()}`;
 
     const handleSectionNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSectionName(e.target.value);

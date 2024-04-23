@@ -1,7 +1,6 @@
 import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Config } from 'config';
 
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import {
@@ -49,7 +48,6 @@ enum ACTIVE_TAB {
 export const AdvancedSearch = () => {
     const { searchType } = useParams();
     // shared variables
-    const NBS_URL = Config.nbsUrl;
     const { state } = useContext(UserContext);
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(searchType === 'event' ? 'event' : 'person');
@@ -310,7 +308,7 @@ export const AdvancedSearch = () => {
 
     function handleAddNewLabReportClick(): void {
         setShowAddNewDropDown(false);
-        window.location.href = `${NBS_URL}/MyTaskList1.do?ContextAction=AddLabDataEntry`;
+        window.location.href = `/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry`;
     }
 
     const handlePagination = (page: number) => {

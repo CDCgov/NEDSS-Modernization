@@ -7,19 +7,17 @@ import {
 } from 'apps/page-builder/generated';
 import { useFindConditionsNotInUse } from 'apps/page-builder/hooks/api/useFindConditionsNotInUse';
 import { fetchMMGOptions } from 'apps/page-builder/services/valueSetAPI';
-import { authorization } from 'authorization';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAlert } from '../../../../../../alert';
-import { LinkButton } from '../../../../../../components/button';
-import { PagesBreadcrumb } from '../../../../components/PagesBreadcrumb/PagesBreadcrumb';
-import { useGetPageDetails } from '../../useGetPageDetails';
+import { useAlert } from 'alert';
+import { LinkButton } from 'components/button';
+import { PagesBreadcrumb } from 'apps/page-builder/components/PagesBreadcrumb/PagesBreadcrumb';
+import { useGetPageDetails } from 'apps/page-builder/page/management/useGetPageDetails';
 import './PageDetails.scss';
 import { PageDetailsField } from './PageDetailsField';
 
 export const PageDetails = () => {
-    const token = authorization();
     const { pageId } = useParams();
     const [pageEvent, setPageEvent] = useState('');
     const [mmgs, setMmgs] = useState<Concept[]>([]);
@@ -35,7 +33,7 @@ export const PageDetails = () => {
         defaultValues: {}
     });
     useEffect(() => {
-        fetchMMGOptions(token)
+        fetchMMGOptions()
             .then((data) => {
                 setMmgs(data);
             })

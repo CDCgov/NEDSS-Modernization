@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 
-import ApolloWrapper from './ApolloContext';
+import { ApolloWrapper } from './ApolloContext';
 
 describe('ApolloWrapper', () => {
     it('renders children with ApolloProvider', async () => {

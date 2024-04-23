@@ -13,17 +13,10 @@ export class UserService {
      * @returns Me OK
      * @throws ApiError
      */
-    public static me({
-        authorization,
-    }: {
-        authorization: string,
-    }): CancelablePromise<Me> {
+    public static me(): CancelablePromise<Me> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/nbs/api/me',
-            headers: {
-                'Authorization': authorization,
-            },
         });
     }
 }

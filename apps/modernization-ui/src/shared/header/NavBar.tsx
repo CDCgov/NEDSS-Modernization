@@ -1,12 +1,10 @@
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Config } from 'config';
 import { UserContext } from 'providers/UserContext';
 import { useNavigationBarPermissions } from 'shared/header/permissions';
 import styles from './NavBar.module.scss';
 
 // eslint-disable-next-line no-undef
-const NBS_URL = Config.nbsUrl;
 
 export default function NavBar() {
     const {
@@ -29,7 +27,7 @@ export default function NavBar() {
                                 <tbody>
                                     <tr>
                                         <td className={styles.navLink}>
-                                            <a href={`${NBS_URL}/HomePage.do?method=loadHomePage`}>Home</a>
+                                            <a href={`/nbs/HomePage.do?method=loadHomePage`}>Home</a>
                                         </td>
                                         <td>
                                             {' '}
@@ -37,16 +35,14 @@ export default function NavBar() {
                                         </td>
 
                                         <td className={styles.navLink}>
-                                            <a href={`${NBS_URL}/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
+                                            <a href={`/nbs/LoadNavbar.do?ContextAction=DataEntry`}>Data Entry</a>
                                         </td>
                                         <td>
                                             <span> | </span>
                                         </td>
 
                                         <td className={styles.navLink}>
-                                            <a href={`${NBS_URL}/LoadNavbar1.do?ContextAction=MergePerson`}>
-                                                Merge Patients
-                                            </a>
+                                            <a href={`/nbs/LoadNavbar1.do?ContextAction=MergePerson`}>Merge Patients</a>
                                         </td>
                                         <td>
                                             <span> | </span>
@@ -54,7 +50,7 @@ export default function NavBar() {
 
                                         <td className={styles.navLink}>
                                             <a
-                                                href={`${NBS_URL}/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
+                                                href={`/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true`}>
                                                 Open Investigations
                                             </a>
                                         </td>
@@ -63,13 +59,13 @@ export default function NavBar() {
                                         </td>
 
                                         <td className={styles.navLink}>
-                                            <a href={`${NBS_URL}/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
+                                            <a href={`/nbs/nfc?ObjectType=7&amp;OperationType=116`}>Reports</a>
                                         </td>
 
                                         {systemManagementAccess && (
                                             <td className={styles.navLink}>
                                                 <span> | </span>
-                                                <a href={`${NBS_URL}/SystemAdmin.do`}>System Management</a>
+                                                <a href={`/nbs/SystemAdmin.do`}>System Management</a>
                                             </td>
                                         )}
                                     </tr>
@@ -81,10 +77,7 @@ export default function NavBar() {
                                 <tbody>
                                     <tr>
                                         <td className={styles.navLink}>
-                                            <a
-                                                href={`${NBS_URL}/UserGuide.do?method=open`}
-                                                target="_blank"
-                                                rel="noreferrer">
+                                            <a href={`/nbs/UserGuide.do?method=open`} target="_blank" rel="noreferrer">
                                                 {' '}
                                                 Help{' '}
                                             </a>
