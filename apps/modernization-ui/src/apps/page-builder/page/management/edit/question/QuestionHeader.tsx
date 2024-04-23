@@ -5,6 +5,7 @@ import { PagesQuestion } from 'apps/page-builder/generated';
 import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import styles from './question-header.module.scss';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
 
 type Props = {
     question: PagesQuestion;
@@ -24,15 +25,11 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
 
     useEffect(() => {
         if (question.required !== undefined) {
-            setRequired(question.required);
+            if (required !== question.required) {
+                onRequiredChange(required);
+            }
         }
-    }, [question.required]);
-
-    useEffect(() => {
-        if (required !== question.required) {
-            onRequiredChange(required);
-        }
-    }, [required]);
+    }, [required, question.required]);
 
     const getHeadingText = (displayComponent: number | undefined) => {
         switch (displayComponent) {
@@ -61,16 +58,25 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
                 <Button unstyled className={styles.editButton} type="button" onClick={onEditQuestion}>
                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
-                {!question.isStandard && !question.isPublished && <DeleteQuestion onDelete={onDeleteQuestion} />}
-                <div className={styles.divider}>|</div>
-                <div className={styles.requiredToggle}>Not required</div>
-                <ToggleButton
-                    checked={required}
-                    onChange={() => {
-                        setRequired(!required);
-                    }}
-                />
-                <div className={styles.requiredToggle}>Required</div>
+                {!question.isStandard && !question.isPublished && (
+                    <DeleteQuestion
+                        onDelete={onDeleteQuestion}
+                        isStaticElement={staticElementTypes.includes(question.displayComponent ?? 0)}
+                    />
+                )}
+                {!staticElementTypes.includes(question.displayComponent ?? 0) && (
+                    <>
+                        <div className={styles.divider}>|</div>
+                        <div className={styles.requiredToggle}>Not required</div>
+                        <ToggleButton
+                            checked={required}
+                            onChange={() => {
+                                setRequired(!required);
+                            }}
+                        />
+                        <div className={styles.requiredToggle}>Required</div>
+                    </>
+                )}
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 package gov.cdc.nbs.questionbank.page.content.question;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import jakarta.persistence.EntityManager;
@@ -7,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
+import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.question.exception.UpdatePageQuestionException;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageCodedQuestionValuesetRequest;
 import gov.cdc.nbs.questionbank.page.content.question.request.UpdatePageQuestionRequest;
@@ -186,6 +190,39 @@ class PageQuestionUpdaterTest {
   void should_validate_valueset_update_null() {
     UpdatePageCodedQuestionValuesetRequest request = null;
     assertThrows(UpdatePageQuestionException.class, () -> updater.update(1l, 2l, request, 3l));
+  }
+
+  @Test
+  void should_find_question() {
+    // given a valid question
+    WaTemplate page = Mockito.mock(WaTemplate.class);
+    when(page.getId()).thenReturn(2l);
+
+    WaUiMetadata question = Mockito.mock(WaUiMetadata.class);
+    when(question.getWaTemplateUid()).thenReturn(page);
+
+    when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(question);
+
+    assertNotNull(updater.findQuestion(1l, 2l));
+  }
+
+  @Test
+  void should_not_find_question_null() {
+    when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(null);
+    assertThrows(PageContentModificationException.class, () -> updater.findQuestion(1l, 2l));
+  }
+
+  @Test
+  void should_not_find_question_bad_page() {
+    // given a question with the wrong page
+    WaTemplate page = Mockito.mock(WaTemplate.class);
+    when(page.getId()).thenReturn(3l);
+
+    WaUiMetadata question = Mockito.mock(WaUiMetadata.class);
+    when(question.getWaTemplateUid()).thenReturn(page);
+
+    when(entityManager.find(WaUiMetadata.class, 1l)).thenReturn(question);
+    assertThrows(PageContentModificationException.class, () -> updater.findQuestion(1l, 2l));
   }
 
 }

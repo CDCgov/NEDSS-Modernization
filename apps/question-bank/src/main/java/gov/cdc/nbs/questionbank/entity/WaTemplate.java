@@ -10,6 +10,18 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.LongFunction;
+import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
+import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
+import gov.cdc.nbs.questionbank.page.PageCommand;
+import gov.cdc.nbs.questionbank.page.PageNameVerifier;
+import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
+import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
+import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
+import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
+import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
+import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
+import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,17 +34,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
-import gov.cdc.nbs.questionbank.entity.pagerule.WaRuleMetadata;
-import gov.cdc.nbs.questionbank.page.DatamartNameVerifier;
-import gov.cdc.nbs.questionbank.page.PageCommand;
-import gov.cdc.nbs.questionbank.page.PageNameVerifier;
-import gov.cdc.nbs.questionbank.page.TemplateNameVerifier;
-import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
-import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
-import gov.cdc.nbs.questionbank.page.exception.PageUpdateException;
-import gov.cdc.nbs.questionbank.page.template.TemplateCreationException;
-import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -218,12 +219,17 @@ public class WaTemplate {
     return components;
   }
 
-  public WaUiMetadata updateRequired(PageContentCommand.SetQuestionRequired command) {
+  public WaUiMetadata updateRequired(
+      PageContentCommand.SetQuestionRequired command,
+      LongFunction<WaUiMetadata> findQuestion) {
     // Can only modify Draft pages
     verifyDraftType();
 
-    // find question within page
-    WaUiMetadata question = findQuestion(command.question());
+    // find question and verify its on the current page
+    WaUiMetadata question = findQuestion.apply(command.question());
+    if (question == null) {
+      throw new PageContentModificationException("Unable to find question");
+    }
 
     question.update(command);
 
@@ -265,18 +271,17 @@ public class WaTemplate {
     return question;
   }
 
-  public WaUiMetadata updateTab(PageContentCommand.UpdateTab command) {
+  public WaUiMetadata updateTab(
+      PageContentCommand.UpdateTab command,
+      LongFunction<WaUiMetadata> findTab) {
     // Can only modify Draft pages
     verifyDraftType();
 
-    WaUiMetadata section = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.tab() && ui.getNbsUiComponentUid() == 1010)
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find tab to update"));
+    WaUiMetadata tab = findTab.apply(command.tab());
 
-    section.update(command);
+    tab.update(command);
     changed(command);
-    return section;
+    return tab;
   }
 
   public void deleteTab(PageContentCommand.DeleteTab command) {
@@ -383,14 +388,13 @@ public class WaTemplate {
     });
   }
 
-  public WaUiMetadata updateSection(PageContentCommand.UpdateSection command) {
+  public WaUiMetadata updateSection(
+      PageContentCommand.UpdateSection command,
+      LongFunction<WaUiMetadata> findSection) {
     // Can only modify Draft pages
     verifyDraftType();
 
-    WaUiMetadata section = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.sectionId() && ui.getNbsUiComponentUid() == SECTION)
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find section to update"));
+    WaUiMetadata section = findSection.apply(command.sectionId());
 
     section.update(command);
     changed(command);
@@ -427,14 +431,13 @@ public class WaTemplate {
     return subsection;
   }
 
-  public WaUiMetadata updateSubSection(PageContentCommand.UpdateSubsection command) {
+  public WaUiMetadata updateSubSection(
+      PageContentCommand.UpdateSubsection command,
+      LongFunction<WaUiMetadata> findSubsection) {
     // Can only modify Draft pages
     verifyDraftType();
 
-    WaUiMetadata subsection = uiMetadata.stream()
-        .filter(ui -> ui.getId() == command.subsection() && ui.getNbsUiComponentUid() == SUB_SECTION)
-        .findFirst()
-        .orElseThrow(() -> new PageContentModificationException("Failed to find subsection to update"));
+    WaUiMetadata subsection = findSubsection.apply(command.subsection());
 
     subsection.update(command);
     changed(command);
