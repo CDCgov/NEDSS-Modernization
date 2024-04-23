@@ -34,6 +34,7 @@ import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
+import { IconButton } from 'components/button/icon/IconButton';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -389,6 +390,7 @@ export const AdvancedSearch = () => {
                                 Add new
                                 <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
                             </Button>
+                            <IconButton icon={<Icon.Delete />} outline />
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                     <li className="usa-nav__submenu-item">
