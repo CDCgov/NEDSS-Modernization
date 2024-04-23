@@ -8,9 +8,12 @@
     @extend %icon-button;
 }
 
-
 .destructive {
+    background-color: colors.$destructive !important;
     &:hover {
-        background-color: colors.$destructive !important;
+        background-color: colors.$secondary-dark !important;
+    }
+    &:active {
+        background-color: colors.$secondary-darker !important;
     }
 }
