@@ -138,3 +138,10 @@ table.usa-table {
         }
     }
 }
+
+.usa-button-group--segmented {
+    .usa-button--secondary:not(.usa-button--outline) {
+        background-color: colors.$primary-darker;
+        color: colors.$base-white;
+    }
+}
