@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
+import java.util.List;
+
 @Configuration
 @ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.management.edit.enabled}")
 public class EditPageRouteConfiguration {
@@ -16,7 +18,7 @@ public class EditPageRouteConfiguration {
   @Bean
   RouteLocator pagebuilderEditPageConfig(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter globalFilter,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
       final PageBuilderService service) {
     return builder.routes()
         .route(
@@ -28,7 +30,7 @@ public class EditPageRouteConfiguration {
                 .query("method", "editPageContentsLoad")
                 .filters(
                     filter -> filter.setPath("/nbs/page-builder/api/v1/pages/return")
-                        .filter(globalFilter))
+                        .filters(defaults))
                 .uri(service.uri()))
         .build();
   }

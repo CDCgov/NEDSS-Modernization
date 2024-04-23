@@ -11,9 +11,11 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
- * Adds the {@code Patient-Action} cookie to the response when the {@code routes.patient.profile.enabled} property is {@code true}
- * and any of the following criteria is satisfied;
+ * Adds the {@code Patient-Action} cookie to the response when the {@code routes.patient.profile.enabled} property is
+ * {@code true} and any of the following criteria is satisfied;
  *
  * <ul>
  *     <li>Path equal to {@code /nbs/MyProgramAreaInvestigations1.do}</li>*
@@ -24,38 +26,38 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
 class ViewInvestigationRouteLocatorConfiguration {
 
-    private static final String IDENTIFIER_PARAMETER = "publicHealthCaseUID";
+  private static final String IDENTIFIER_PARAMETER = "publicHealthCaseUID";
 
-    @Bean
-    RouteLocator viewInvestigationActionCookie(
-            final RouteLocatorBuilder builder,
-            @Qualifier("default") final GatewayFilter defaultFilter,
-            @Qualifier("classic") final GatewayFilter classicFilter,
-            final NBSClassicService service
-    ) {
-        return builder
-                .routes()
-                .route(
-                        "view-investigation-apply-patient-action-cookie",
-                        route -> route.path("/nbs/MyProgramAreaInvestigations1.do")
-                                .and()
-                                .query(IDENTIFIER_PARAMETER)
-                                .filters(
-                                        filter -> filter.filter(
-                                                        new RequestParameterToCookieGatewayFilterFactory()
-                                                                .apply(
-                                                                        new Config(
-                                                                            IDENTIFIER_PARAMETER,
-                                                                                "Patient-Action"
-                                                                        )
-                                                                )
-                                                )
-                                                .filter(defaultFilter)
-                                                .filter(classicFilter)
+  @Bean
+  RouteLocator viewInvestigationActionCookie(
+      final RouteLocatorBuilder builder,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
+      @Qualifier("classic") final GatewayFilter classicFilter,
+      final NBSClassicService service
+  ) {
+    return builder
+        .routes()
+        .route(
+            "view-investigation-apply-patient-action-cookie",
+            route -> route.path("/nbs/MyProgramAreaInvestigations1.do")
+                .and()
+                .query(IDENTIFIER_PARAMETER)
+                .filters(
+                    filter -> filter.filter(
+                            new RequestParameterToCookieGatewayFilterFactory()
+                                .apply(
+                                    new Config(
+                                        IDENTIFIER_PARAMETER,
+                                        "Patient-Action"
+                                    )
                                 )
-                                .uri(service.uri())
+                        )
+                        .filters(defaults)
+                        .filter(classicFilter)
                 )
-                .build();
-    }
+                .uri(service.uri())
+        )
+        .build();
+  }
 
 }

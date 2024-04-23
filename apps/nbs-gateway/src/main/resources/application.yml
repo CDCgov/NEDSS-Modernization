@@ -43,7 +43,7 @@ nbs:
         service: 'localhost:8080'
     pagebuilder:
       enabled: false
-      service: 'localhost:8080'
+      service: 'localhost:8095'
       page:
         library:
           enabled: false

@@ -1,6 +1,5 @@
 package gov.cdc.nbs.gateway;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.RewriteLocationResponseHeaderGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.TokenRelayGatewayFilterFactory;
@@ -19,12 +18,6 @@ import java.util.List;
  */
 @Configuration
 class DSLGlobalGatewayFilterConfiguration {
-
-  @Bean("default")
-  GatewayFilter defaultGatewayFilter() {
-    return new RewriteLocationResponseHeaderGatewayFilterFactory().apply(
-        new RewriteLocationResponseHeaderGatewayFilterFactory.Config());
-  }
 
   @Bean("defaults")
   List<GatewayFilter> defaultGatewayFilters(
