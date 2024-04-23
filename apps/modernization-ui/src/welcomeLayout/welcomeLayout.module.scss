@@ -16,12 +16,32 @@
 
     main {
         grid-area: main;
+        background-image: url('./landing.png');
+        background-position: bottom;
+        background-repeat: no-repeat;
+        background-size: 165%;
         background-color: colors.$base-white;
 
         .content {
             margin: 1rem;
             padding: 1rem;
             background-color: rgba(colors.$base-white, 0.9);
+            .container {
+                column-width: 40ch;
+                column-gap: 2rem;
+                overflow: hidden;
+                padding-top: 1rem;
+                span {
+                    margin-bottom: 1rem;
+                }
+                p {
+                    text-overflow: ellipsis;
+                    line-height: 1.75rem;
+                    &:first-child {
+                        margin-top: 0;
+                    }
+                }
+            }
         }
     }
 

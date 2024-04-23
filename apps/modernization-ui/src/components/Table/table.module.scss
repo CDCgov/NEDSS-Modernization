@@ -22,6 +22,7 @@
                 }
                 button:disabled {
                     cursor: text;
+                    background-color: transparent !important;
                     .usa-icon {
                         color: colors.$disabled-dark;
                     }

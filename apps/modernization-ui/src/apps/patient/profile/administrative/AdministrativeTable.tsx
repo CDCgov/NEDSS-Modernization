@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 import { PatientAdministrative, useUpdatePatientAdministrativeMutation } from 'generated/graphql/schema';
-import { Direction, sortByAlpha, withDirection } from 'sorting/Sort';
 import { AdministrativeEntry, Column } from './AdministrativeEntry';
 import {
     PatientProfileAdministrativeResult,
@@ -40,14 +39,13 @@ type Props = {
 };
 
 const headers = [
-    { name: Column.AsOf, sortable: true },
-    { name: Column.Comment, sortable: true },
+    { name: Column.AsOf, sortable: false },
+    { name: Column.Comment, sortable: false },
     { name: Column.Actions, sortable: false }
 ];
 
 export const AdministrativeTable = ({ patient }: Props) => {
     const { showAlert } = useAlert();
-    const [tableHead, setTableHead] = useState<{ name: string; sortable: boolean; sort?: string }[]>(headers);
 
     const [total, setTotal] = useState<number>(0);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -102,35 +100,6 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     showAlert({ type: 'success', header: 'success', message: 'Updated Comment' });
                 })
                 .then(() => actions.reset());
-    };
-
-    const tableHeadChanges = (name: string, type: string) => {
-        tableHead.map((item) => {
-            if (item.name.toLowerCase() === name.toLowerCase()) {
-                item.sort = type;
-            } else {
-                item.sort = 'all';
-            }
-        });
-        setTableHead(tableHead);
-    };
-
-    const handleSort = (name: string, type: Direction): any => {
-        tableHeadChanges(name, type);
-        switch (name.toLowerCase()) {
-            case 'as of':
-                setAdministratives(
-                    administratives?.slice().sort((a: PatientAdministrative, b: PatientAdministrative) => {
-                        const dateA: any = new Date(a?.asOf);
-                        const dateB: any = new Date(b?.asOf);
-                        return type === 'asc' ? dateB - dateA : dateA - dateB;
-                    })
-                );
-                break;
-            case 'general comment':
-                setAdministratives(administratives.slice().sort(withDirection(sortByAlpha('comment') as any, type)));
-                break;
-        }
     };
 
     const generateTableRow = (administrative: PatientAdministrative, index: number): TableBody => {
@@ -189,12 +158,11 @@ export const AdministrativeTable = ({ patient }: Props) => {
                     )
                 }
                 tableHeader={'Administrative'}
-                tableHead={tableHead}
+                tableHead={headers}
                 tableBody={generateTableBody()}
                 totalResults={total}
                 currentPage={currentPage}
                 handleNext={setCurrentPage}
-                sortData={handleSort}
             />
 
             {selected?.type === 'add' && (

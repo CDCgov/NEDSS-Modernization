@@ -63,7 +63,7 @@ class SearchPage {
 
   enterId(id) {
     if (id.length !== 0) {
-      cy.get('#identification\\.identificationNumber').type(id);
+      cy.get('input[id*=identificationNumber]').type(id);
     }
   }
 

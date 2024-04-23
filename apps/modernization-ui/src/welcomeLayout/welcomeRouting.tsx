@@ -1,5 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { WelcomeLayout } from './WelcomeLayout';
+import { About } from 'apps/landing/About/About';
+import { Vision } from 'apps/landing/Vision/Vision';
+import { Involved } from 'apps/landing/Involved/Involved';
 
 const routing = {
     path: '/welcome',
@@ -8,18 +11,15 @@ const routing = {
         { index: true, element: <Navigate to="about" /> },
         {
             path: 'about',
-            // to be added with actual elements/component
-            element: <h1>About</h1>
+            element: <About />
         },
         {
             path: 'our-vision',
-            // to be added with actual elements/component
-            element: <h1>Our Vision</h1>
+            element: <Vision />
         },
         {
             path: 'get-involved',
-            // to be added with actual elements/component
-            element: <h1>get-involved</h1>
+            element: <Involved />
         }
     ]
 };
