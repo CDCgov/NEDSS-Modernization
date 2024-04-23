@@ -10,10 +10,8 @@ type Props = {
     title: string;
     message: string | ReactNode;
     detail?: string | ReactNode;
-    confirmText?: string;
-    onConfirm: () => void;
-    cancelText?: string;
-    onCancel: () => void;
+    action: string;
+    onAction: () => void;
 };
 
 export const SuccessModal = ({
@@ -23,10 +21,8 @@ export const SuccessModal = ({
     title,
     message,
     detail,
-    confirmText = 'Confirm',
-    onConfirm,
-    cancelText = 'Cancel',
-    onCancel
+    action,
+    onAction
 }: Props) => {
     return (
         <Modal
@@ -48,11 +44,8 @@ export const SuccessModal = ({
             </div>
             <ModalFooter id="success-footer">
                 <ButtonGroup className={classNames(style.actionButtonGroup)}>
-                    <Button type="button" onClick={onCancel} outline>
-                        {cancelText}
-                    </Button>
-                    <Button type="button" onClick={onConfirm} className={classNames(style.actionButton)}>
-                        {confirmText}
+                    <Button type="button" onClick={onAction} className={classNames(style.actionButton)}>
+                        {action}
                     </Button>
                 </ButtonGroup>
             </ModalFooter>
