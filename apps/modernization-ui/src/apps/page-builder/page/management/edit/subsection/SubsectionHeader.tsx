@@ -9,6 +9,7 @@ import { ConfirmationModal } from 'confirmation';
 import { useRef, useState } from 'react';
 import { usePageManagement } from '../../usePageManagement';
 import styles from './subsection.module.scss';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
 
 type Props = {
     subsection: PagesSubSection;
@@ -105,7 +106,11 @@ export const SubsectionHeader = ({
                         )}
                     {!subsection.isGrouped &&
                         page.status !== 'Published' &&
-                        subsection.questions.every((question) => question.isPublished === false) && (
+                        subsection.questions.every(
+                            (question) =>
+                                question.isPublished === false &&
+                                !staticElementTypes.includes(question.displayComponent ?? 0)
+                        ) && (
                             <>
                                 {subsection.isGroupable && subsection.questions.length > 0 && (
                                     <Button type="button" onClick={() => closeThenAct(onGroupQuestion)}>

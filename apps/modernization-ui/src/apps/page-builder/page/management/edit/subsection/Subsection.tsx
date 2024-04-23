@@ -11,6 +11,7 @@ import { usePageManagement } from '../../usePageManagement';
 import { Question } from '../question/Question';
 import { SubsectionHeader } from './SubsectionHeader';
 import styles from './subsection.module.scss';
+import { staticElementTypes } from '../staticelement/EditStaticElement';
 
 type Props = {
     subsection: PagesSubSection;
@@ -22,14 +23,6 @@ type Props = {
     onEditValueset: (valuesetName: string) => void;
     onChangeValueset: (question: PagesQuestion) => void;
 };
-
-const hyperlinkID = 1003;
-const lineSeparatorID = 1012;
-const readOnlyParticipants = 1030;
-const readOnlyComments = 1014;
-const originalElecDoc = 1036;
-
-const staticElementTypes = [hyperlinkID, lineSeparatorID, readOnlyParticipants, readOnlyComments, originalElecDoc];
 
 export const Subsection = ({
     subsection,
