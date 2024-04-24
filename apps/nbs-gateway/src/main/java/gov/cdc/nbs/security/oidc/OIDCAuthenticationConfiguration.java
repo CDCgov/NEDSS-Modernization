@@ -29,12 +29,12 @@ class OIDCAuthenticationConfiguration {
                     "/nbs/*.js",
                     "/nbs/*.css",
                     "/nbs/*.gif",
-                    "/nbs/task_button/**"
+                    "/nbs/task_button/**",
+                    "/images/nedssLogo.jpg",
+                    "/favicon.ico"
                 ).permitAll()
-                .pathMatchers("/nbs/**")
-                .authenticated()
                 .anyExchange()
-                .permitAll()
+                .authenticated()
         )
         .oauth2Client(withDefaults())
         .oauth2Login(withDefaults())

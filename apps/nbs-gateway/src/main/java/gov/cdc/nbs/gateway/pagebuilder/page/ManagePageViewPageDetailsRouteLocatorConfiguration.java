@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import gov.cdc.nbs.gateway.pagebuilder.PageBuilderService;
 
+import java.util.List;
+
 @Configuration
 @ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.management.edit.enabled}")
 public class ManagePageViewPageDetailsRouteLocatorConfiguration {
@@ -17,7 +19,7 @@ public class ManagePageViewPageDetailsRouteLocatorConfiguration {
   @Bean
   RouteLocator pageBuilderManagePageViewPageDetailsRouteLocator(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter globalFilter,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
       final PageBuilderService service) {
     return builder.routes()
         .route(
@@ -31,7 +33,7 @@ public class ManagePageViewPageDetailsRouteLocatorConfiguration {
                 .cookie("Return-Page", "\\d+")
                 .filters(
                     filter -> filter.setPath(service.path("pages/return"))
-                        .filter(globalFilter))
+                        .filters(defaults))
                 .uri(service.uri()))
         .build();
   }

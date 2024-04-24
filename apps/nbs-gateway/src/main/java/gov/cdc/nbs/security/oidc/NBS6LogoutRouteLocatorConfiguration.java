@@ -8,6 +8,8 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 class NBS6LogoutRouteLocatorConfiguration {
 
@@ -18,19 +20,16 @@ class NBS6LogoutRouteLocatorConfiguration {
             route -> route.path("/nbs/logout")
                 .filters(
                     filters -> filters
-                        .redirect(302, "/logout")
-                )
-                .uri("no://op")
-        )
+                        .redirect(302, "/logout"))
+                .uri("no://op"))
         .build();
   }
 
   @Bean
   RouteLocator loggedOut(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter globalFilter,
-      final NBSClassicService service
-  ) {
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
+      final NBSClassicService service) {
     return builder.routes()
         .route(
             "logged-out",
@@ -38,10 +37,8 @@ class NBS6LogoutRouteLocatorConfiguration {
                 .filters(
                     filters -> filters
                         .setPath("/nbs/logout")
-                        .filter(globalFilter)
-                )
-                .uri(service.uri())
-        )
+                        .filters(defaults))
+                .uri(service.uri()))
         .build();
   }
 

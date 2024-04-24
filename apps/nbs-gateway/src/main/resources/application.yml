@@ -6,7 +6,7 @@ spring:
     gateway:
       default-filters:
         - RewriteLocationResponseHeader
-        - TokenRelay=nbs-users
+        - TokenRelay=
       routes:
         - id: classic
           uri: ${nbs.gateway.classic}
@@ -19,10 +19,7 @@ spring:
           uri: ${nbs.gateway.classic}
           predicates:
             - Path=/images/nedssLogo.jpg
-        - id: favicon
-          uri: ${nbs.gateway.classic}
-          predicates:
-            - Path=/favicon.ico
+
 nbs:
   gateway:
     defaults:
@@ -31,6 +28,12 @@ nbs:
     home:
       uri: ${nbs.gateway.classic}
       base: '/nbs/HomePage.do?method=loadHomePage'
+    ui:
+      service: 'localhost:3000'
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'
+    modernization:
+      service: 'localhost:8080'
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
     patient:
       search:
         enabled: true
@@ -40,7 +43,7 @@ nbs:
         service: 'localhost:8080'
     pagebuilder:
       enabled: false
-      service: 'localhost:8080'
+      service: 'localhost:8095'
       page:
         library:
           enabled: false

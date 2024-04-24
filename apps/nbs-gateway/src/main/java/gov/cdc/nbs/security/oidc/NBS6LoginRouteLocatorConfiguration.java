@@ -14,25 +14,25 @@ import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Configuration
 class NBS6LoginRouteLocatorConfiguration {
 
   @Bean
   RouteLocator nbs6LoginRouteLocator(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter globalFilter,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
       final NBSClassicService classic,
-      final HomeService home
-  ) {
+      final HomeService home) {
     return builder.routes()
         .route(
             "nbs6-login-bypass",
             route -> route.path("/nbs/login")
                 .filters(
                     filter -> filter.filter(this::login)
-                        .filter(globalFilter)
-                ).uri(classic.uri())
-        )
+                        .filters(defaults))
+                .uri(classic.uri()))
         .route(
             "nbs6-block-nfc-based-login",
             route -> route
@@ -42,10 +42,9 @@ class NBS6LoginRouteLocatorConfiguration {
                 .query("UserName")
                 .filters(
                     filters -> filters
-                        .redirect(302, home.base())
-                )
-                .uri("no://op")
-        )
+                        .redirect(302, home
+                            .base()))
+                .uri("no://op"))
         .build();
   }
 
@@ -55,11 +54,11 @@ class NBS6LoginRouteLocatorConfiguration {
         .flatMap(
             user -> chain.filter(
                 exchange.mutate().request(
-                    request -> request.path("/nbs/nfc?UserName=" + user)
-                        .build()
-                ).build()
-            )
-        );
+                        request -> request.path(
+                                "/nbs/nfc?UserName="
+                                    + user)
+                            .build())
+                    .build()));
   }
 
 }

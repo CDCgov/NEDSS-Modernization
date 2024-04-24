@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
+import java.util.List;
+
 /**
  * Configures the NBS Home Page to route searches and the advanced search link to the patient-search service.  The
  * routes are only enabled when the {@code routes.patient.search.enabled} property is {@code true} and any of the
@@ -28,37 +30,39 @@ import org.springframework.core.Ordered;
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.search", name = "enabled", havingValue = "true")
 class PatientSearchRouteLocatorConfiguration {
 
-    @Bean
-    RouteLocator searchRouteLocator(
-        final RouteLocatorBuilder builder,
-        @Qualifier("default") final GatewayFilter globalFilter,
-        final PatientSearchService parameters
-    ) {
-        return builder.routes()
-            .route(
-                "advanced-search-link",
-                route -> route
-                    .order(Ordered.HIGHEST_PRECEDENCE)
-                    .path("/nbs/MyTaskList1.do")
-                    .and()
-                    .query("ContextAction", "GlobalPatient")
-                    .filters(
-                        filter -> filter.setPath("/nbs/redirect/advancedSearch")
-                            .filter(globalFilter)
-                    )
-                    .uri(parameters.uri())
-            )
-            .route("home-page-search",
-                route -> route.order(Ordered.HIGHEST_PRECEDENCE)
-                    .path("/nbs/HomePage.do")
-                    .and()
-                    .query("method", "patientSearchSubmit")
-                    .filters(
-                        filter -> filter.setPath("/nbs/redirect/simpleSearch")
-                            .filter(globalFilter)
-                    )
-                    .uri(parameters.uri())
-            )
-            .build();
-    }
+  @Bean
+  RouteLocator searchRouteLocator(
+      final RouteLocatorBuilder builder,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
+      final PatientSearchService parameters
+  ) {
+    return builder.routes()
+        .route(
+            "advanced-search-link",
+            route -> route
+                .order(Ordered.HIGHEST_PRECEDENCE)
+                .path("/nbs/MyTaskList1.do")
+                .and()
+                .query("ContextAction", "GlobalPatient")
+
+                .filters(
+                    filter -> filter.setPath("/nbs/redirect/advancedSearch")
+                        .filters(defaults)
+                )
+
+                .uri(parameters.uri())
+        )
+        .route("home-page-search",
+            route -> route.order(Ordered.HIGHEST_PRECEDENCE)
+                .path("/nbs/HomePage.do")
+                .and()
+                .query("method", "patientSearchSubmit")
+                .filters(
+                    filter -> filter.setPath("/nbs/redirect/simpleSearch")
+                        .filters(defaults)
+                )
+                .uri(parameters.uri())
+        )
+        .build();
+  }
 }

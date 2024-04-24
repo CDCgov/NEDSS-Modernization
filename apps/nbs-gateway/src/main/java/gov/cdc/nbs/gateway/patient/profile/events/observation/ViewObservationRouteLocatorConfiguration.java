@@ -12,6 +12,8 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
  * Adds the {@code Patient-Action} cookie to the response when the {@code routes.patient.profile.enabled} property is
  * {@code true} and any of the following criteria is satisfied;
@@ -30,7 +32,7 @@ class ViewObservationRouteLocatorConfiguration {
   @Bean
   RouteLocator viewObservationActionCookie(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter defaultFilter,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
       @Qualifier("classic") final GatewayFilter classicFilter,
       final NBSClassicService service
   ) {
@@ -53,7 +55,7 @@ class ViewObservationRouteLocatorConfiguration {
                                     )
                                 )
                         )
-                        .filter(defaultFilter)
+                        .filters(defaults)
                         .filter(classicFilter)
                 )
                 .uri(service.uri())

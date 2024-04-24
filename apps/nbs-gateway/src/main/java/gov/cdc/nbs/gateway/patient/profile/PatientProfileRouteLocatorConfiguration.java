@@ -9,6 +9,8 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
  * Configures the Patient Profile routes with a ContextAction of {@code ViewFile} or {@code FileSummary} to the
  * {@code nbs.gateway.patient.profile.service}.  The routes are only enabled when the
@@ -26,7 +28,7 @@ class PatientProfileRouteLocatorConfiguration {
   @Bean
   RouteLocator patientProfileLocator(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter globalFilter,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
       final PatientProfileService parameters
   ) {
     return builder.routes()
@@ -37,7 +39,7 @@ class PatientProfileRouteLocatorConfiguration {
                 .query("ContextAction", "ViewFile|FileSummary")
                 .filters(
                     filter -> filter.setPath("/nbs/redirect/patientProfile")
-                        .filter(globalFilter)
+                        .filters(defaults)
                 )
                 .uri(parameters.uri())
         )

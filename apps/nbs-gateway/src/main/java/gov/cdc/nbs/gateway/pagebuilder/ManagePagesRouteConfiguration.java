@@ -10,13 +10,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 
+import java.util.List;
+
 @Configuration
 @ConditionalOnExpression("${nbs.gateway.pagebuilder.enabled} and ${nbs.gateway.pagebuilder.page.library.enabled}")
 public class ManagePagesRouteConfiguration {
   @Bean
   RouteLocator pagebuilderManagePagesConfig(
       final RouteLocatorBuilder builder,
-      @Qualifier("default") final GatewayFilter globalFilter,
+      @Qualifier("defaults") final List<GatewayFilter> defaults,
       final PageBuilderService service) {
     return builder.routes()
         .route(
@@ -29,7 +31,7 @@ public class ManagePagesRouteConfiguration {
                 .filters(
                     filter -> filter.setPath("/nbs/page-builder/redirect")
                         .setRequestHeader(HttpHeaders.LOCATION, "/page-builder/pages")
-                        .filter(globalFilter))
+                        .filters(defaults))
                 .uri(service.uri()))
         .build();
   }
