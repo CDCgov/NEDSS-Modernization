@@ -408,7 +408,8 @@ class WaTemplateTest {
     page.addSection(section);
 
     // And that section has a subsection
-    page.addSubSection(subsection(page, 4L, 4));
+    WaUiMetadata subsection = subsection(page, 4L, 4);
+    page.addSubSection(subsection);
 
     // When an update subsection command is processed
     Instant now = Instant.now();
@@ -418,7 +419,8 @@ class WaTemplateTest {
         4,
         998L,
         now);
-    WaUiMetadata updated = page.updateSubSection(command);
+    WaUiMetadata updated = page.updateSubSection(
+        command, ss -> subsection);
 
     // Then the subsection is updated
     assertNotNull(updated);
@@ -445,46 +447,7 @@ class WaTemplateTest {
         now);
 
     // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
-  }
-
-  @Test
-  void subsection_update_error_no_subsection() {
-    // Given a template
-    WaTemplate page = new WaTemplate();
-
-    // When an update subsection command is processed
-    Instant now = Instant.now();
-    PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
-        "updated subsection label",
-        false,
-        4,
-        998L,
-        now);
-
-    // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
-  }
-
-  @Test
-  void subsection_update_error_invalid_id() {
-    // Given a template
-    WaTemplate page = new WaTemplate();
-
-    // And it has a tab
-    page.addTab(tab(page, 2L, 2));
-
-    // When an update subsection command is processed
-    Instant now = Instant.now();
-    PageContentCommand.UpdateSubsection command = new PageContentCommand.UpdateSubsection(
-        "updated subsection label",
-        false,
-        2l,
-        998L,
-        now);
-
-    // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command));
+    assertThrows(PageContentModificationException.class, () -> page.updateSubSection(command, null));
   }
 
   @Test
@@ -496,7 +459,8 @@ class WaTemplateTest {
     page.addTab(tab(page, 2L, 2));
 
     // And that tab has a section
-    page.addSection(section(page, 3L, 3));
+    WaUiMetadata section = section(page, 3L, 3);
+    page.addSection(section);
 
     // When an update section command is processed
     Instant now = Instant.now();
@@ -506,7 +470,7 @@ class WaTemplateTest {
         3,
         998L,
         now);
-    WaUiMetadata updated = page.updateSection(command);
+    WaUiMetadata updated = page.updateSection(command, s -> section);
 
     // Then the subsection is updated
     assertNotNull(updated);
@@ -533,26 +497,9 @@ class WaTemplateTest {
         now);
 
     // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
+    assertThrows(PageContentModificationException.class, () -> page.updateSection(command, null));
   }
 
-  @Test
-  void section_update_error_no_section() {
-    // Given a template
-    WaTemplate page = new WaTemplate();
-
-    // When an update section command is processed
-    Instant now = Instant.now();
-    PageContentCommand.UpdateSection command = new PageContentCommand.UpdateSection(
-        "updated subsection label",
-        false,
-        4,
-        998L,
-        now);
-
-    // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
-  }
 
   @Test
   void tab_update() {
@@ -560,7 +507,8 @@ class WaTemplateTest {
     WaTemplate page = new WaTemplate();
 
     // And it has a tab
-    page.addTab(tab(page, 2L, 2));
+    WaUiMetadata tab = tab(page, 2L, 2);
+    page.addTab(tab);
 
     // When an update tab command is processed
     Instant now = Instant.now();
@@ -570,7 +518,7 @@ class WaTemplateTest {
         2,
         998L,
         now);
-    WaUiMetadata updated = page.updateTab(command);
+    WaUiMetadata updated = page.updateTab(command, t -> tab);
 
     // Then the subsection is updated
     assertNotNull(updated);
@@ -597,25 +545,7 @@ class WaTemplateTest {
         now);
 
     // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateSection(command));
-  }
-
-  @Test
-  void tab_update_error_no_section() {
-    // Given a template
-    WaTemplate page = new WaTemplate();
-
-    // When an update tab command is processed
-    Instant now = Instant.now();
-    PageContentCommand.UpdateTab command = new PageContentCommand.UpdateTab(
-        "updated tab label",
-        false,
-        4,
-        998L,
-        now);
-
-    // Then an exception is thrown
-    assertThrows(PageContentModificationException.class, () -> page.updateTab(command));
+    assertThrows(PageContentModificationException.class, () -> page.updateSection(command, null));
   }
 
   @Test

@@ -35,6 +35,8 @@ const lineSeparatorId = 1012;
 const originalElecDocId = 1036;
 const readOnlyPartId = 1030;
 
+export const staticElementTypes = [hyperlinkId, lineSeparatorId, readOnlyPartId, commentsReadOnlyId, originalElecDocId];
+
 type StaticElementFormValues = UpdateReadOnlyComments | UpdateHyperlink | UpdateDefault;
 
 export const EditStaticElement = ({ question, onCloseModal }: EditStaticProps) => {

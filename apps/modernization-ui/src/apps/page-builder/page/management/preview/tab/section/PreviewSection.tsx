@@ -15,11 +15,21 @@ const PreviewSection = ({ section }: PreviewSectionType) => {
         setIsExpanded(expanded);
     };
     return (
-        <section className={styles.section}>
-            <PreviewSectionHeader section={section} isExpanded={isExpanded} onExpandedChange={handleExpandedChange} />
-            {isExpanded &&
-                section?.subSections.map((subsection, k) => <PreviewSubsection subsection={subsection} key={k} />)}
-        </section>
+        <>
+            {section.visible && (
+                <section className={styles.section}>
+                    <PreviewSectionHeader
+                        section={section}
+                        isExpanded={isExpanded}
+                        onExpandedChange={handleExpandedChange}
+                    />
+                    {isExpanded &&
+                        section?.subSections.map((subsection, k) => (
+                            <PreviewSubsection subsection={subsection} key={k} />
+                        ))}
+                </section>
+            )}
+        </>
     );
 };
 

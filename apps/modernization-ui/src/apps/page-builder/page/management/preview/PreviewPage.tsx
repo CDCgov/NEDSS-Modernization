@@ -13,7 +13,7 @@ import { Loading } from 'components/Spinner';
 import { LinkButton } from 'components/button';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { ConfirmationModal } from 'confirmation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heading } from '../../../../../components/heading';
 import { PageControllerService } from '../../../generated/services/PageControllerService';
@@ -23,6 +23,7 @@ import { PageInformation } from './information/PageInformation';
 import styles from './preview-page.module.scss';
 import { StaticTabContent } from './staticTabContent/StaticTabContent';
 import { PreviewTab } from './tab';
+import { PagesTab } from 'apps/page-builder/generated';
 
 const PreviewPage = () => {
     const { page, fetch, refresh } = useGetPageDetails();
@@ -37,7 +38,8 @@ const PreviewPage = () => {
 };
 
 const PreviewPageContent = () => {
-    const { page, selected, displayStaticTab, refresh } = usePageManagement();
+    const { page, selected, displayStaticTab, refresh, select, selectStaticTab } = usePageManagement();
+    const [visibleTabs, setVisibleTabs] = useState<PagesTab[]>([]);
     const saveTemplateRef = useRef<ModalRef>(null);
     const deleteDraftRef = useRef<ModalRef>(null);
     const publishDraftRef = useRef<ModalRef>(null);
@@ -45,6 +47,20 @@ const PreviewPageContent = () => {
     const { showAlert } = useAlert();
     const navigate = useNavigate();
     const [isPublishing, setIsPublishing] = useState(false);
+
+    useEffect(() => {
+        if (page.tabs) {
+            const filteredTabs = page.tabs.filter((t) => t.visible);
+            setVisibleTabs(filteredTabs);
+            if (filteredTabs.length > 0) {
+                select(filteredTabs[0]);
+            } else {
+                selectStaticTab('contactRecord');
+            }
+        } else {
+            setVisibleTabs([]);
+        }
+    }, [page.tabs]);
 
     const handleCreateDraft = () => {
         PageControllerService.savePageDraft({
@@ -115,7 +131,7 @@ const PreviewPageContent = () => {
     return (
         <>
             <PageManagementLayout name={page.name} mode={page.status}>
-                <PageHeader page={page} tabs={page.tabs ?? []}>
+                <PageHeader page={page} tabs={visibleTabs}>
                     <PageManagementMenu>
                         <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
