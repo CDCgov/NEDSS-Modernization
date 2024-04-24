@@ -36,6 +36,7 @@ class PaginationPage {
     }
 
     get openInvestigationTable() {
+        cy.wait(1500);
         return cy.get(this.table).eq(0);
     }
 
@@ -45,6 +46,7 @@ class PaginationPage {
                 return parseInt(text, 10)
             });
     }
+
     navigateToCreatePage () {
         cy.visit('/page-builder/pages/add')
     }
