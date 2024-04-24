@@ -24,3 +24,9 @@ Then("User select 30 left footer of the page to show the list of pages", () => {
 Then("User should see only 30 rows in the library and for each subsequent list where applicable", () => {
     pageLibraryPaginationPage.checkDisplayingNumberOfRowsSubsequently(30);
 });
+Then("User select 50 left footer of the page to show the list of pages", () => {
+    pageLibraryPaginationPage.selectNumberOfRows('50');
+});
+Then("User should see only 50 rows in the library and for each subsequent list where applicable", () => {
+    pageLibraryPaginationPage.checkDisplayingNumberOfRowsSubsequently(50);
+});
