@@ -8,6 +8,8 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
  * Configures the Patient Profile routes to the {@code /nbs/redirect/patientProfile/events/return} path of the
  * {@code nbs.gateway.patient.profile.service} when the {@code routes.patient.profile.enabled} property is {@code true}
@@ -24,7 +26,7 @@ class PatientProfileEventReturnRouteLocatorConfiguration {
     @Bean
     RouteLocator patientProfileEventsReturnLocator(
         final RouteLocatorBuilder builder,
-        @Qualifier("default") final GatewayFilter globalFilter,
+        @Qualifier("defaults") final List<GatewayFilter> defaults,
         final PatientProfileService parameters
     ) {
         return builder.routes()
@@ -33,7 +35,7 @@ class PatientProfileEventReturnRouteLocatorConfiguration {
                 route -> route.query("ContextAction", "ReturnToFileEvents")
                     .filters(
                         filter -> filter.setPath("/nbs/redirect/patientProfile/events/return")
-                            .filter(globalFilter)
+                            .filters(defaults)
                     )
                     .uri(parameters.uri())
             )

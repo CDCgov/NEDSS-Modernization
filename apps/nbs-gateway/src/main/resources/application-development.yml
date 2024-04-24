@@ -7,6 +7,8 @@ nbs:
     log:
       level: INFO
   gateway:
+    defaults:
+      protocol: http
     log:
       level: INFO
     pagebuilder:

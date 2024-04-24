@@ -89,12 +89,13 @@ NBS_GATEWAY_LOG_LEVEL=DEBUG docker compose up -d nbs-gateway
 Authentication is not enabled by default. The `nbs-gateway` has been preconfigured to work as an OIDC Client by
 enabling the `oidc` profile. The profile requires a specific set of configuration values.
 
-| Name                            | Default                                                                              | Description                                                                 |
-|---------------------------------|--------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| nbs.security.oidc.protocol      | `http`                                                                               | The protocol used to communicate with the OIDC compatible Identity Provider |
-| nbs.security.oidc.host          |                                                                                      | The hostname of the OIDC compatible Identity Provider                       |
-| nbs.security.oidc.base          | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                              |
-| nbs.security.oidc.uri           | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                 |
-| nbs.security.oidc.client.id     |                                                                                      | The client id used to initiate Authentication                               |
-| nbs.security.oidc.client.secret |                                                                                      | The client secret used to initiate Authentication                           |
+| Name                            | Default                                                                              | Description                                                                           |
+|---------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| spring.profiles.include         |                                                                                      | The Spring property to include profiles.  Set to `oidc` to enable OIDC authentication |
+| nbs.security.oidc.protocol      | `http`                                                                               | The protocol used to communicate with the OIDC compatible Identity Provider           |
+| nbs.security.oidc.host          |                                                                                      | The hostname of the OIDC compatible Identity Provider                                 |
+| nbs.security.oidc.base          | `/realms/nbs-users`                                                                  | The path to the OIDC endpoints                                                        |
+| nbs.security.oidc.uri           | `${nbs.security.oidc.protocol}://${nbs.security.oidc.host}${nbs.security.oidc.base}` | The URI for the OIDC issuer                                                           |
+| nbs.security.oidc.client.id     |                                                                                      | The client id used to initiate Authentication                                         |
+| nbs.security.oidc.client.secret |                                                                                      | The client secret used to initiate Authentication                                     |
 
