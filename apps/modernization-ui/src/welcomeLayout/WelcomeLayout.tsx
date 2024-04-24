@@ -18,11 +18,9 @@ const WelcomeLayout = () => {
                     </small>
                 </AlertBanner>
                 <div className={style.content}>
-                    <h1>NBS Modernization</h1>
                     <TabNavigation>
                         <TabNavigationEntry path={'about'}>About</TabNavigationEntry>
-                        <TabNavigationEntry path={'our-vision'}>Our Vision</TabNavigationEntry>
-                        <TabNavigationEntry path={'get-involved'}>Get Involved</TabNavigationEntry>
+                        <TabNavigationEntry path={'learn'}>Learn more</TabNavigationEntry>
                     </TabNavigation>
                     <div className={style.container}>
                         <Outlet />
