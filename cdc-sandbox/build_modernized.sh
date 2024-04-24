@@ -5,7 +5,7 @@ BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 # Start ES and the proxy
 echo "Starting elasticsearch reverse-proxy"
-docker-compose -f $BASE/docker-compose.yml up elasticsearch reverse-proxy --build -d
+docker-compose -f $BASE/docker-compose.yml up elasticsearch --build -d
 
 MODERNIZED_PATH=$BASE/../
 
