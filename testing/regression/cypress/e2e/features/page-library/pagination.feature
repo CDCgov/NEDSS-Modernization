@@ -40,3 +40,9 @@ Feature: User can view existing page library data here.
     Scenario: User selects for 100 rows to show in the Page library
         And User select "100" left footer of the page to show the list of pages
         Then User should see only "100" rows in the library and for each subsequent list where applicable
+
+    Scenario: Verify the selection of 100 is displaying 10 rows after redirect back to Page Library
+        And User select "100" left footer of the page to show the list of pages
+        Then User navigates to the Create page
+        And User navigates to Page Library and views the Page library
+        Then User should see only "10" rows in the library and for each subsequent list where applicable
