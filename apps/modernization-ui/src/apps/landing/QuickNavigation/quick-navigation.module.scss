@@ -1,0 +1,12 @@
+@use 'styles/borders.scss';
+
+.navigation {
+    padding: 1rem 0;
+
+    @extend %thin-top;
+    @extend %thin-bottom;
+
+    a {
+        padding-left: 1rem;
+    }
+}

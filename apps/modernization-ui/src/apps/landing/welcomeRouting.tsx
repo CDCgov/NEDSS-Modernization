@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { WelcomeLayout } from './WelcomeLayout';
+import { WelcomeLayout } from './Layout/WelcomeLayout';
 import { About } from 'apps/landing/About/About';
 import { Learn } from 'apps/landing/Learn/Learn';
 

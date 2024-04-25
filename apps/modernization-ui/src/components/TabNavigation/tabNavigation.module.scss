@@ -1,29 +1,33 @@
 @use 'styles/colors';
 
 .tab-navigation {
+    --tab-text-color: #{colors.$base-darkest};
+    --tab-text-active-color: #{colors.$base-darkest};
+    --tab-text-hover-color: #{colors.$primary};
+
     display: flex;
     align-items: flex-start;
     gap: 1rem;
     background-color: colors.$clear;
     padding-bottom: 1rem;
-}
 
-.tab {
-    border: 0;
-    color: colors.$primary;
-    text-decoration: none !important;
-    border-bottom: 0.4375rem solid transparent;
-    padding-bottom: 0.5rem;
-    line-height: 1.25;
-    cursor: pointer;
+    .tab {
+        border: 0;
+        color: var(--tab-text-color);
+        text-decoration: none !important;
+        border-bottom: 0.4375rem solid transparent;
+        padding-bottom: 0.5rem;
+        line-height: 1.25;
+        cursor: pointer;
 
-    &.active {
-        font-weight: 700;
-        color: colors.$base-darkest;
-        border-bottom-color: colors.$primary;
-    }
+        &.active {
+            font-weight: 700;
+            color: var(--tab-text-active-color);
+            border-bottom-color: colors.$primary;
+        }
 
-    &:hover {
-        color: colors.$primary;
+        &:hover {
+            color: var(--tab-text-hover-color);
+        }
     }
 }

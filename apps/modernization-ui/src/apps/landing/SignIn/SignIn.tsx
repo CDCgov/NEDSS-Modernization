@@ -2,7 +2,7 @@ import { Button } from '@trussworks/react-uswds';
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import classNames from 'classnames';
 import styles from './signIn.module.scss';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { LinkButton } from 'components/button';
 
 export type SignInProps = {
     handleWelcomeEvent?: (value: string) => void;
@@ -20,10 +20,9 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
                     </p>
                 </AlertBanner>
             </div>
-            <NavLinkButton to="/nbs/login" className="margin-top-2">
+            <LinkButton href="/nbs/login" type="solid" className="margin-top-2">
                 Login to NBS demo site
-            </NavLinkButton>
-
+            </LinkButton>
             <div className={classNames(styles.signUpDemoText)}>
                 Want to participate?
                 <Button

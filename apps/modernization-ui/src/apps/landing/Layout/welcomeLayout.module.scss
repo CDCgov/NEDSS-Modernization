@@ -1,0 +1,82 @@
+@use 'styles/colors';
+
+.welcome {
+    padding: 1.5rem;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 'information information access';
+
+    gap: 1.5rem;
+
+    main {
+        grid-area: information;
+
+        padding: 2rem;
+        background-color: rgba(colors.$base-white, 0.85);
+
+        h1 {
+            margin: 0;
+        }
+
+        .information {
+            padding-top: 1rem;
+
+            .tabs {
+                font-size: 1.375rem;
+
+                --tab-text-color: #{colors.$primary};
+                --tab-text-active-color: #{colors.$base-darkest};
+            }
+
+            .tab-content {
+                column-width: 40ch;
+                column-gap: 2rem;
+                overflow: hidden;
+                padding-top: 1rem;
+
+                a {
+                    text-decoration: none;
+                    font-weight: 400;
+                    font-size: inherit;
+                }
+
+                h2 {
+                    margin-bottom: 0.25rem;
+                }
+
+                h3 {
+                    margin-bottom: 0.25rem;
+                }
+
+                p {
+                    margin-top: 0;
+                    line-height: 1.75rem;
+                }
+            }
+        }
+    }
+
+    aside {
+        grid-area: access;
+
+        display: flex;
+        flex-direction: column;
+
+        background-color: colors.$base-lightest;
+        padding: 2rem;
+
+        .agency {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+            flex: 1 0 0;
+
+            font-size: 0.875rem;
+            line-height: 1.4175rem;
+        }
+    }
+}
