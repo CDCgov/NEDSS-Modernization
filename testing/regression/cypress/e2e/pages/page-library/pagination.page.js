@@ -50,6 +50,17 @@ class PaginationPage {
     navigateToCreatePage () {
         cy.visit('/page-builder/pages/add')
     }
+    clickByPageNumber(pageNumber) {
+        if (pageNumber) {
+            cy.get('.usa-pagination__button').eq(pageNumber-1).click();
+        } else {
+            cy.get('.usa-pagination__button').each((button, index) => {
+                if (index !== 0) {
+                    cy.wrap(button).click();
+                }
+            });
+        }
+    }
 }
 
 export const pageLibraryPaginationPage = new PaginationPage()
