@@ -33,4 +33,9 @@ Feature: Patient Search by Address
     Then I navigate the  basic info and address
     When I search for "$%(5" Street address
     Then I should see "No results found. Try refining your search, or add a new patient"
+
+  Scenario: CNFT1-1283 Address – Search by Multiple Address Criteria
+    Then I navigate the  basic info and address
+    When I search for Street Address "8554 Derek Crossing" City "Akron" State "Ohio" Zip code "44329"
+    Then I should see "Eulalie Schuchmacher Pudan, II / The Second"
   
