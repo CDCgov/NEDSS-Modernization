@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.heading {
+    font-size: 2.5rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.alert-banner {
+    color: colors.$base-darker;
+    p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+}
+
+.signUpDemoText {
+    color: colors.$base-darker;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 1px solid colors.$base-lighter;
+    border-bottom: 1px solid colors.$base-lighter;
+    margin-top: 1rem;
+
+    .signUpButton {
+        padding: 0;
+        text-decoration: none;
+    }
+}
