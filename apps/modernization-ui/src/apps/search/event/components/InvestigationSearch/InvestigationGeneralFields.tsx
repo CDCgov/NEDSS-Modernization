@@ -39,6 +39,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
+        console.log('eventIdTypeChange', e.target.value);
         // Clear event id field on deselect
         if (e.target.value === '') {
             form.resetField('eventId.id');
@@ -51,7 +52,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
         // Clear event id field on deselect
-        if (e.target.value === '') {
+        if (!e.target.value) {
             form.resetField('providerFacilitySearch.id');
         }
         onChange(e);
