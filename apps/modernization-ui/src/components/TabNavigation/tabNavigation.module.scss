@@ -10,16 +10,16 @@
 
 .tab {
     border: 0;
-    color: colors.$base-darkest;
+    color: colors.$primary;
     text-decoration: none !important;
     border-bottom: 0.4375rem solid transparent;
     padding-bottom: 0.5rem;
     line-height: 1.25;
-
     cursor: pointer;
 
     &.active {
         font-weight: 700;
+        color: colors.$base-darkest;
         border-bottom-color: colors.$primary;
     }
 

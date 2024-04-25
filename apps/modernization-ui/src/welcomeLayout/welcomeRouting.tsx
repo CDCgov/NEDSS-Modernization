@@ -1,8 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { WelcomeLayout } from './WelcomeLayout';
 import { About } from 'apps/landing/About/About';
-import { Vision } from 'apps/landing/Vision/Vision';
-import { Involved } from 'apps/landing/Involved/Involved';
+import { Learn } from 'apps/landing/Learn/Learn';
 
 const routing = {
     path: '/welcome',
@@ -14,12 +13,8 @@ const routing = {
             element: <About />
         },
         {
-            path: 'our-vision',
-            element: <Vision />
-        },
-        {
-            path: 'get-involved',
-            element: <Involved />
+            path: 'learn',
+            element: <Learn />
         }
     ]
 };
