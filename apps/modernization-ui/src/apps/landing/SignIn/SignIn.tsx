@@ -3,9 +3,12 @@ import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanne
 import classNames from 'classnames';
 import styles from './signIn.module.scss';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
-import { WelcomProps } from 'welcomeLayout';
 
-export const SignIn = ({ handleWelcomeEvent }: WelcomProps) => {
+export type SignInProps = {
+    handleWelcomeEvent?: (value: string) => void;
+};
+
+export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
     return (
         <div className="">
             <h2 className={classNames(styles.heading)}>Login</h2>
@@ -17,7 +20,7 @@ export const SignIn = ({ handleWelcomeEvent }: WelcomProps) => {
                     </p>
                 </AlertBanner>
             </div>
-            <NavLinkButton to="/login" className="margin-top-2">
+            <NavLinkButton to="/nbs/login" className="margin-top-2">
                 Login to NBS demo site
             </NavLinkButton>
 

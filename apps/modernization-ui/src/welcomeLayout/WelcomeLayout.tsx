@@ -6,10 +6,6 @@ import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabN
 import { SignIn } from 'apps/landing/SignIn/SignIn';
 import { useState } from 'react';
 
-export type WelcomProps = {
-    handleWelcomeEvent?: (value: string) => void;
-};
-
 const WelcomeLayout = () => {
     const [event, setEvent] = useState('login');
 
