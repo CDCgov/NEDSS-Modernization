@@ -28,6 +28,9 @@
             background-color: rgba(colors.$base-white, 0.9);
             .tabs {
                 font-size: 2rem;
+                a:hover {
+                    color: colors.$primary;
+                }
             }
             .container {
                 column-width: 40ch;
