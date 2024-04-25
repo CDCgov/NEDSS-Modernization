@@ -4,36 +4,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.deduplication.exact.ExactMatchService;
+import gov.cdc.nbs.deduplication.dataingest.DataIngestionMatchService;
 import gov.cdc.nbs.deduplication.request.MatchRequest;
-import gov.cdc.nbs.deduplication.response.MatchResponse;
+import gov.cdc.nbs.deduplication.response.DataIngestionMatchResponse;
 import gov.cdc.nbs.deduplication.response.RowsAffected;
+import gov.cdc.nbs.deduplication.response.SimilarMatchResponse;
 import gov.cdc.nbs.deduplication.similar.SimilarMatchService;
 
 
 @RestController
 public class DeduplicationController {
   private final SimilarMatchService similarMatchService;
-  private final ExactMatchService exactMatchService;
+  private final DataIngestionMatchService dataIngestionMatchService;
   private final DataManager dataManager;
 
   public DeduplicationController(
       final SimilarMatchService similarMatchService,
-      final ExactMatchService exactMatchService,
+      final DataIngestionMatchService dataIngestionMatchService,
       final DataManager dataManager) {
     this.similarMatchService = similarMatchService;
-    this.exactMatchService = exactMatchService;
+    this.dataIngestionMatchService = dataIngestionMatchService;
     this.dataManager = dataManager;
   }
 
   @PostMapping("/similar")
-  public MatchResponse matchSimilar() {
+  public SimilarMatchResponse matchSimilar() {
     return similarMatchService.match();
   }
 
-  @PostMapping("/exact")
-  public MatchResponse matchExact(@RequestBody MatchRequest request) {
-    return exactMatchService.match(request);
+  @PostMapping("/data-ingestion")
+  public DataIngestionMatchResponse matchDataIngestion(@RequestBody MatchRequest request) {
+    return dataIngestionMatchService.match(request);
   }
 
   @PutMapping("/reset")

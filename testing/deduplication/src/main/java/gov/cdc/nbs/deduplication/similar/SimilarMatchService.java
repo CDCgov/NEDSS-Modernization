@@ -8,8 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.deduplication.model.GroupEntry;
-import gov.cdc.nbs.deduplication.response.MatchResponse;
-import gov.cdc.nbs.deduplication.response.MatchResponse.MatchGroup;
+import gov.cdc.nbs.deduplication.response.SimilarMatchResponse;
+import gov.cdc.nbs.deduplication.response.SimilarMatchResponse.MatchGroup;
 
 @Component
 public class SimilarMatchService {
@@ -204,7 +204,7 @@ public class SimilarMatchService {
     this.template = template;
   }
 
-  public MatchResponse match() {
+  public SimilarMatchResponse match() {
     long start = System.currentTimeMillis();
     List<GroupEntry> results = template.query(FETCH_GROUPS, toEntry());
     long end = System.currentTimeMillis();
@@ -218,7 +218,7 @@ public class SimilarMatchService {
                 .map(GroupEntry::personUid)
                 .collect(Collectors.toList())))
         .collect(Collectors.toList());
-    return new MatchResponse(grouped, grouped.size(), end - start);
+    return new SimilarMatchResponse(grouped, grouped.size(), end - start);
   }
 
   private RowMapper<GroupEntry> toEntry() {
