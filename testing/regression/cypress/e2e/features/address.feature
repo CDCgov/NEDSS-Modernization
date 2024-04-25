@@ -28,3 +28,9 @@ Feature: Patient Search by Address
     Then I navigate the  basic info and address
     When I enter "&*(#))#)@)" as zip code
     Then I should see "Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9)."
+
+  Scenario: CNFT1-1282 Address - Search with No Matching Address Records
+    Then I navigate the  basic info and address
+    When I search for "$%(5" Street address
+    Then I should see "No results found. Try refining your search, or add a new patient"
+  

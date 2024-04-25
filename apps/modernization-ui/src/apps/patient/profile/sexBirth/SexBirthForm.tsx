@@ -282,10 +282,12 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                                     placeholder="No Data"
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    type="number"
+                                    type="text"
                                     defaultValue={value}
                                     htmlFor="birthOrder"
                                     id="birthOrder"
+                                    mask="_____"
+                                    pattern="\d{5}"
                                     error={error?.message}
                                 />
                             )}
