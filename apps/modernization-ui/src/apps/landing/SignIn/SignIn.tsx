@@ -27,8 +27,6 @@ export const SignIn = ({ handleWelcomeEvent }: WelcomProps) => {
                     onClick={() => handleWelcomeEvent?.('signUp')}
                     type="button"
                     unstyled
-                    inverse
-                    base
                     className={classNames(styles.signUpButton)}>
                     Sign up for demo access
                 </Button>
