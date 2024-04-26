@@ -1,13 +1,12 @@
 @use 'colors.scss';
 
 %icon-button {
-    padding: 0.56rem 1rem !important;
+    padding: 0.5rem !important;
 }
 
 .icon {
     @extend %icon-button;
 }
-
 
 .destructive {
     &:hover {

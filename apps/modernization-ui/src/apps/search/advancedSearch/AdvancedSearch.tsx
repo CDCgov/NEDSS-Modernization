@@ -34,6 +34,7 @@ import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
+import { NBSButton } from 'components/button';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -380,15 +381,19 @@ export const AdvancedSearch = () => {
                     <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                         <h1 className="advanced-search-title margin-0">Search</h1>
                         <div className="button-group">
-                            <Button
+                            <NBSButton
                                 disabled={!lastSearchType}
                                 className="padding-x-3 add-patient-button"
-                                type={'button'}
+                                type="button"
+                                label="Add new"
+                                icon={
+                                    <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
+                                }
+                                labelPosition="left"
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
-                                outline>
-                                Add new
-                                <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
-                            </Button>
+                                outline
+                            />
+
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                     <li className="usa-nav__submenu-item">

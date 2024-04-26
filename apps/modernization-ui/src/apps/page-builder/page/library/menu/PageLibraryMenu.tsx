@@ -1,7 +1,7 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import { OverlayPanel } from 'overlay';
 import { Filter, FilterPanel, Property } from 'filters';
-import { LinkButton } from 'components/button';
+import { LinkButton, NBSButton } from 'components/button';
 import { Search } from 'components/Search';
 
 import styles from './page-library-menu.module.scss';
@@ -60,15 +60,16 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     aria-label="Page porting">
                     Page porting
                 </LinkButton>
-                <Button
+                <NBSButton
                     data-tooltip-position="top"
                     aria-label="Print this page"
                     type="button"
                     onClick={onDownloadPdf}
                     className={styles.icon}
-                    outline>
-                    <Icon.Print size={3} data-testid="print-icon" />
-                </Button>
+                    icon={<Icon.Print data-testid="print-icon" />}
+                    outline
+                />
+
                 <Button
                     data-tooltip-position="top"
                     aria-label="Download as csv"
