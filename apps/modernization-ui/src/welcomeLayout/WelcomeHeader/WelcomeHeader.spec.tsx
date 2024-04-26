@@ -6,7 +6,7 @@ describe('WelcomeHeader', () => {
     test('renders the text and image correctly', () => {
         const { getByText, getByRole } = render(<WelcomeHeader />);
 
-        const headerText = getByText(/Welcome to the NBS7 demo site/);
+        const headerText = getByText(/Welcome to the NBS 7 demo site/);
         expect(headerText).toBeInTheDocument();
 
         const image = getByRole('img');
