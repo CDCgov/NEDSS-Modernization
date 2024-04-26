@@ -38,4 +38,9 @@ Feature: Patient Search by Address
     Then I navigate the  basic info and address
     When I search for Street Address "8554 Derek Crossing" City "Akron" State "Ohio" Zip code "44329"
     Then I should see "Eulalie Schuchmacher Pudan, II / The Second"
+
+  Scenario: CNFT1-1284 Address – Search with Partial Address
+    Then I navigate the  basic info and address
+    When I search for "4563 Melrose Point" Street address
+    Then I should see "Kamillah Greenshiels Cushe, Junior"
   
