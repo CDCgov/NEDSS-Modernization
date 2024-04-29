@@ -1,4 +1,4 @@
-import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
+import { Alert, Grid, Icon, Pagination } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Config } from 'config';
@@ -34,7 +34,7 @@ import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
-import { NBSButton } from 'components/button';
+import { Button } from 'components/button/Button';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -381,7 +381,7 @@ export const AdvancedSearch = () => {
                     <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                         <h1 className="advanced-search-title margin-0">Search</h1>
                         <div className="button-group">
-                            <NBSButton
+                            <Button
                                 disabled={!lastSearchType}
                                 className="padding-x-3 add-patient-button"
                                 type="button"
@@ -397,14 +397,20 @@ export const AdvancedSearch = () => {
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                     <li className="usa-nav__submenu-item">
-                                        <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
-                                            Add new patient
-                                        </Button>
+                                        <Button
+                                            onClick={handleAddNewPatientClick}
+                                            type={'button'}
+                                            unstyled
+                                            label="Add new patient"
+                                        />
                                     </li>
                                     <li className="usa-nav__submenu-item">
-                                        <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
-                                            Add new lab report
-                                        </Button>
+                                        <Button
+                                            onClick={handleAddNewLabReportClick}
+                                            type={'button'}
+                                            unstyled
+                                            label="Add new lab report"
+                                        />
                                     </li>
                                 </ul>
                             )}
@@ -475,20 +481,23 @@ export const AdvancedSearch = () => {
                                             className="padding-x-3"
                                             type={'button'}
                                             onClick={() => setShowSorting(!showSorting)}
-                                            outline>
-                                            Sort by
-                                            <NBSIcon
-                                                name={
-                                                    (!investigationData?.content ||
-                                                        investigationData?.content?.length === 0) &&
-                                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                                    (!patientData?.content || patientData?.content?.length === 0)
-                                                        ? 'down-arrow-white'
-                                                        : 'down-arrow-blue'
-                                                }
-                                                size="s"
-                                            />
-                                        </Button>
+                                            outline
+                                            label="Sort by"
+                                            labelPosition="left"
+                                            icon={
+                                                <NBSIcon
+                                                    name={
+                                                        (!investigationData?.content ||
+                                                            investigationData?.content?.length === 0) &&
+                                                        (!labReportData?.content ||
+                                                            labReportData?.content?.length === 0) &&
+                                                        (!patientData?.content || patientData?.content?.length === 0)
+                                                            ? 'down-arrow-white'
+                                                            : 'down-arrow-blue'
+                                                    }
+                                                />
+                                            }
+                                        />
                                     )}
                                     {showSorting && (
                                         <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
@@ -501,9 +510,9 @@ export const AdvancedSearch = () => {
                                                         setShowSorting(false);
                                                     }}
                                                     type={'button'}
-                                                    unstyled>
-                                                    Closest match
-                                                </Button>
+                                                    unstyled
+                                                    label="Closest match"
+                                                />
                                             </li>
                                             <li className="usa-nav__submenu-item">
                                                 <Button
@@ -516,9 +525,9 @@ export const AdvancedSearch = () => {
                                                     }}
                                                     type={'button'}
                                                     outline={sort.sortDirection === SortDirection.Asc}
-                                                    unstyled>
-                                                    Patient name (A-Z)
-                                                </Button>
+                                                    unstyled
+                                                    label="Patient name (A-Z)"
+                                                />
                                             </li>
                                             <li className="usa-nav__submenu-item">
                                                 <Button
@@ -530,9 +539,9 @@ export const AdvancedSearch = () => {
                                                         setShowSorting(false);
                                                     }}
                                                     type={'button'}
-                                                    unstyled>
-                                                    Patient name (Z-A)
-                                                </Button>
+                                                    unstyled
+                                                    label="Patient name (Z-A)"
+                                                />
                                             </li>
                                             <li className="usa-nav__submenu-item">
                                                 <Button
@@ -544,9 +553,9 @@ export const AdvancedSearch = () => {
                                                         setShowSorting(false);
                                                     }}
                                                     type={'button'}
-                                                    unstyled>
-                                                    Date of birth (Ascending)
-                                                </Button>
+                                                    unstyled
+                                                    label="Date of birth (Ascending)"
+                                                />
                                             </li>
                                             <li className="usa-nav__submenu-item">
                                                 <Button
@@ -558,9 +567,9 @@ export const AdvancedSearch = () => {
                                                         setShowSorting(false);
                                                     }}
                                                     type={'button'}
-                                                    unstyled>
-                                                    Date of birth (Descending)
-                                                </Button>
+                                                    unstyled
+                                                    label="Date of birth (Descending)"
+                                                />
                                             </li>
                                         </ul>
                                     )}

@@ -1,7 +1,7 @@
-import { Button, Icon } from '@trussworks/react-uswds';
+import { Icon } from '@trussworks/react-uswds';
 import { OverlayPanel } from 'overlay';
 import { Filter, FilterPanel, Property } from 'filters';
-import { LinkButton, NBSButton } from 'components/button';
+import { LinkButton, Button } from 'components/button';
 import { Search } from 'components/Search';
 
 import styles from './page-library-menu.module.scss';
@@ -16,6 +16,7 @@ type Props = {
     onDownloadCsv: () => void;
     onDownloadPdf: () => void;
 };
+
 const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCsv, onDownloadPdf }: Props) => {
     const [overlayVisible, setOverlayVisible] = useState<boolean>(false);
     return (
@@ -29,10 +30,11 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                         type="button"
                         onClick={() => setOverlayVisible(!overlayVisible)}
                         outline
-                        className={styles.filterButton}>
-                        <Icon.FilterAlt />
-                        Filter
-                    </Button>
+                        label="Filter"
+                        icon={<Icon.FilterAlt />}
+                        labelPosition="left"
+                        className={styles.filterButton}
+                    />
                 )}
                 render={() => (
                     <FilterPanel
@@ -60,7 +62,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     aria-label="Page porting">
                     Page porting
                 </LinkButton>
-                <NBSButton
+                <Button
                     data-tooltip-position="top"
                     aria-label="Print this page"
                     type="button"
@@ -77,9 +79,9 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                     className={styles.icon}
                     outline
                     onClick={onDownloadCsv}
-                    data-testid="file-download">
-                    <Icon.FileDownload size={3} />
-                </Button>
+                    data-testid="file-download"
+                    icon={<Icon.FileDownload />}
+                />
             </menu>
         </section>
     );

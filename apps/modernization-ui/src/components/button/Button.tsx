@@ -1,6 +1,7 @@
-import { Button } from '@trussworks/react-uswds';
+import { Button as TrussworksButton } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
-import styles from './NBSButton.module.scss';
+import styles from './Button.module.scss';
+import classNames from 'classnames';
 
 type Props = {
     icon?: ReactNode;
@@ -14,7 +15,7 @@ type Props = {
     onClick?: () => void;
 } & JSX.IntrinsicElements['button'];
 
-const NBSButton = ({
+const Button = ({
     type = 'button',
     icon,
     label,
@@ -25,18 +26,14 @@ const NBSButton = ({
     ...defaultProps
 }: Props) => {
     const isIconOnly = icon && !label;
-    const classesArray = [];
-    if (destructive) {
-        classesArray.push(styles.destructive);
-    }
-
-    if (isIconOnly) {
-        classesArray.push(styles.icon);
-    }
+    const classesAarray = classNames({
+        [styles.destructive]: destructive,
+        [styles.icon]: icon
+    });
 
     return (
-        <Button
-            className={classesArray.join(' ')}
+        <TrussworksButton
+            className={classesAarray}
             {...defaultProps}
             type={type}
             unstyled={unstyled}
@@ -56,8 +53,8 @@ const NBSButton = ({
             ) : null}
             {isIconOnly ? icon : null}
             {label && !icon ? label : null}
-        </Button>
+        </TrussworksButton>
     );
 };
 
-export { NBSButton };
+export { Button };
