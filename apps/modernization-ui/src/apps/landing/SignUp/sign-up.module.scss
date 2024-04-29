@@ -1,0 +1,24 @@
+@use 'styles/borders.scss';
+
+.sign-up {
+    display: flex;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    p {
+        font-size: 0.875rem;
+        line-height: 162%;
+    }
+
+    h1 {
+        margin: 0;
+    }
+
+    .form {
+        & > button {
+            margin-top: 1.5rem;
+        }
+    }
+}
