@@ -8,3 +8,8 @@ Feature: User can search and filter the existing page library data here.
         And User enters keyword "Malaria" in the Search field
         And User click the magnifying glass icon
         Then All pages related to "Malaria" will be returned as a list in the library in "Page name"
+
+    Scenario: Search for page that contains part of the Related conditions keyword
+        And User enters keyword "Mum" in the Search field
+        And User click the magnifying glass icon
+        Then All pages related to "Mumps" will be returned as a list in the library in "Related condition(s)"
