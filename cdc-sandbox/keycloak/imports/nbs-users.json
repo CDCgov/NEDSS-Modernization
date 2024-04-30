@@ -1,55 +1,14 @@
 {
   "users": [
     {
-      "id": "superuser",
-      "username": "superuser",
-      "enabled": true,
-      "emailVerified": false,
-      "createdTimestamp": 1712600241000,
-      "credentials": [
-        {
-          "id": "98e3afa1-7cd6-4bc1-ae3a-2470b1e93eb1",
-          "type": "password",
-          "userLabel": "My password",
-          "createdDate": 1712600241000,
-          "secretData": "{\"value\":\"uwKXj+4iZGbEX0awJn1um/lGnXcBjaZuWKEYNONenpM1ANOZkIbHDPZdDY3wcAdLMmzl1aOcY1qkKl0aWKBG4g==\",\"salt\":\"nISVzJFfgNjaETffHS9p1g==\",\"additionalParameters\":{}}",
-          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
-        }
-      ],
-      "realmRoles": []
-    },
-    {
-      "id": "dbe8fe30-35d2-4bb6-9b00-e447482d908d",
-      "username": "supervisor",
-      "emailVerified": false,
-      "createdTimestamp": 1712600241000,
-      "enabled": true,
-      "totp": false,
-      "credentials": [
-        {
-          "id": "8d8a39e8-a170-4a88-8ace-f47c3d5af87a",
-          "type": "password",
-          "userLabel": "My password",
-          "createdDate": 1712600241000,
-          "secretData": "{\"value\":\"HR5K7S2JzOC1f1/ilax1lWms08QGpMgiyAZ3n4YhCeV3XH7YsII8sjm/NVLSrKRsDkR+MmNEUsAIpFjsdV6d/w==\",\"salt\":\"itzfPzTxgjpvRQRbq6S5Pw==\",\"additionalParameters\":{}}",
-          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
-        }
-      ],
-      "disableableCredentialTypes": [],
-      "requiredActions": [],
-      "realmRoles": [
-        "default-roles-nbs development"
-      ],
-      "notBefore": 0,
-      "groups": []
-    },
-    {
       "id": "msa",
       "username": "msa",
+      "firstName": "Master",
+      "lastName": "Administrator",
       "emailVerified": false,
+      "createdTimestamp": 1712600241000,
       "enabled": true,
       "totp": false,
-      "createdTimestamp": 1712600241000,
       "credentials": [
         {
           "id": "bccbde4c-87a7-40c7-9750-58b74757dde9",
@@ -63,15 +22,108 @@
       "requiredActions": [],
       "notBefore": 0,
       "groups": []
+    },
+    {
+      "id": "51378db9-952e-4b94-8db5-ae53e76ee8cf",
+      "username": "nbs-users-admin",
+      "emailVerified": false,
+      "createdTimestamp": 1712600241000,
+      "enabled": true,
+      "totp": false,
+      "credentials": [
+        {
+          "id": "e742a1f5-a38d-4be8-8fe3-5d90cc60212d",
+          "type": "password",
+          "userLabel": "My password",
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"VbSGc4S33Sxm1lPbb6CZog6hrLGQUn4hXfIu53X8WAY2D8FSTpit6eVlYGYPVKlxYp1gasQAbkYu1m1z/7dSPA==\",\"salt\":\"5GYscT3nUfIAKVVf/ln94w==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["default-roles-nbs development"],
+      "clientRoles": {
+        "realm-management": ["realm-admin"]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "superuser",
+      "username": "superuser",
+      "emailVerified": false,
+      "createdTimestamp": 1712600241000,
+      "enabled": true,
+      "totp": false,
+      "credentials": [
+        {
+          "id": "98e3afa1-7cd6-4bc1-ae3a-2470b1e93eb1",
+          "type": "password",
+          "userLabel": "My password",
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"uwKXj+4iZGbEX0awJn1um/lGnXcBjaZuWKEYNONenpM1ANOZkIbHDPZdDY3wcAdLMmzl1aOcY1qkKl0aWKBG4g==\",\"salt\":\"nISVzJFfgNjaETffHS9p1g==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "notBefore": 0,
+      "groups": []
     }
   ],
   "clients": [
     {
+      "id": "5eaad81d-a0d7-484a-ae79-1d657688b852",
+      "clientId": "nbs-modernization",
+      "name": "NBS Modernization",
+      "description": "The client used by the services that the make up NBS7.",
+      "rootUrl": "${NBS7_BASE_URL}",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": ["/login/oauth2/code/nbs-users"],
+      "webOrigins": ["/*"],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": false,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "client.secret.creation.time": "1714481594",
+        "backchannel.logout.session.required": "true",
+        "post.logout.redirect.uris": "/nbs/logged-out",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": ["offline_access", "microprofile-jwt"]
+    },
+    {
       "id": "33c05bd2-18d6-47c2-9d55-4f0d3229d77b",
       "clientId": "nbs-development",
       "name": "NBS Users",
-      "description": "",
-      "rootUrl": "http://localhost:8080",
+      "description": "A client for NBS Development.",
+      "rootUrl": "${NBS7_BASE_URL}",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
@@ -80,13 +132,10 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "KK092EEXikR0hpubkwZGHbdtZKw99AJi",
       "redirectUris": [
-        "http://localhost:8000/login/oauth2/code/nbs-users",
         "/login/oauth2/code/nbs-users",
         "https://oauth.pstmn.io/v1/callback"
       ],
-      "webOrigins": [
-        "https://oauth.pstmn.io"
-      ],
+      "webOrigins": ["https://oauth.pstmn.io"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -101,7 +150,7 @@
         "oidc.ciba.grant.enabled": "false",
         "client.secret.creation.time": "1711751600",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "http://localhost:8000/nbs/logged-out##/nbs/logged-out",
+        "post.logout.redirect.uris": "/nbs/logged-out",
         "oauth2.device.authorization.grant.enabled": "false",
         "display.on.consent.screen": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
@@ -177,9 +226,7 @@
     "clientRole": false,
     "containerId": "226c50ff-aa61-409d-a229-72e44ba25a69"
   },
-  "requiredCredentials": [
-    "password"
-  ],
+  "requiredCredentials": ["password"],
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
@@ -194,9 +241,7 @@
   ],
   "localizationTexts": {},
   "webAuthnPolicyRpEntityName": "keycloak",
-  "webAuthnPolicySignatureAlgorithms": [
-    "ES256"
-  ],
+  "webAuthnPolicySignatureAlgorithms": ["ES256"],
   "webAuthnPolicyRpId": "",
   "webAuthnPolicyAttestationConveyancePreference": "not specified",
   "webAuthnPolicyAuthenticatorAttachment": "not specified",
@@ -207,9 +252,7 @@
   "webAuthnPolicyAcceptableAaguids": [],
   "webAuthnPolicyExtraOrigins": [],
   "webAuthnPolicyPasswordlessRpEntityName": "keycloak",
-  "webAuthnPolicyPasswordlessSignatureAlgorithms": [
-    "ES256"
-  ],
+  "webAuthnPolicyPasswordlessSignatureAlgorithms": ["ES256"],
   "webAuthnPolicyPasswordlessRpId": "",
   "webAuthnPolicyPasswordlessAttestationConveyancePreference": "not specified",
   "webAuthnPolicyPasswordlessAuthenticatorAttachment": "not specified",
@@ -222,9 +265,7 @@
   "scopeMappings": [
     {
       "clientScope": "offline_access",
-      "roles": [
-        "offline_access"
-      ]
+      "roles": ["offline_access"]
     }
   ],
   "clientScopes": [
@@ -791,9 +832,7 @@
   },
   "smtpServer": {},
   "eventsEnabled": false,
-  "eventsListeners": [
-    "jboss-logging"
-  ],
+  "eventsListeners": ["jboss-logging"],
   "enabledEventTypes": [],
   "adminEventsEnabled": false,
   "adminEventsDetailsEnabled": false,
@@ -808,9 +847,7 @@
         "subType": "authenticated",
         "subComponents": {},
         "config": {
-          "allow-default-scopes": [
-            "true"
-          ]
+          "allow-default-scopes": ["true"]
         }
       },
       {
@@ -828,12 +865,8 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "host-sending-registration-request-must-match": [
-            "true"
-          ],
-          "client-uris-must-match": [
-            "true"
-          ]
+          "host-sending-registration-request-must-match": ["true"],
+          "client-uris-must-match": ["true"]
         }
       },
       {
@@ -843,9 +876,7 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "max-clients": [
-            "200"
-          ]
+          "max-clients": ["200"]
         }
       },
       {
@@ -855,9 +886,7 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "allow-default-scopes": [
-            "true"
-          ]
+          "allow-default-scopes": ["true"]
         }
       },
       {
@@ -914,12 +943,8 @@
         "providerId": "rsa-enc-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ],
-          "algorithm": [
-            "RSA-OAEP"
-          ]
+          "priority": ["100"],
+          "algorithm": ["RSA-OAEP"]
         }
       },
       {
@@ -928,12 +953,8 @@
         "providerId": "hmac-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ],
-          "algorithm": [
-            "HS256"
-          ]
+          "priority": ["100"],
+          "algorithm": ["HS256"]
         }
       },
       {
@@ -942,9 +963,7 @@
         "providerId": "aes-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       },
       {
@@ -953,9 +972,7 @@
         "providerId": "rsa-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       }
     ]
