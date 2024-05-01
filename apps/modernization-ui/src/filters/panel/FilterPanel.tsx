@@ -75,7 +75,7 @@ const FilterPanel = ({ label, properties, filters, onApply, close }: FilterPanel
                     onClick={handleClear}>
                     Clear filters
                 </Button>
-                <Button type="button" onClick={handleApply}>
+                <Button type="button" id="apply-button" onClick={handleApply}>
                     Apply
                 </Button>
             </footer>
@@ -89,7 +89,7 @@ type AddNewFilterProp = {
 
 const AddNewFilter = ({ onAddNew }: AddNewFilterProp) => {
     return (
-        <Button className={styles.addNew} type="button" unstyled onClick={onAddNew}>
+        <Button className={styles.addNew} type="button" unstyled onClick={onAddNew} id="add-filter">
             <Icon.Add />
             Add Filter
         </Button>
