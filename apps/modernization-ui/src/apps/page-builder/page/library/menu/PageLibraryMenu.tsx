@@ -26,6 +26,7 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                 overlayVisible={overlayVisible}
                 toggle={() => (
                     <Button
+                        id="filter-button"
                         type="button"
                         onClick={() => setOverlayVisible(!overlayVisible)}
                         outline

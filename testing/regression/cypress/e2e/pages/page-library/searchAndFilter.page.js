@@ -34,6 +34,56 @@ class SearchAndFilterPage {
         }
     }
 
+    getColumnValueByName(columnName) {
+        if (columnName === "Page name") {
+            return "name";
+        } else if (columnName === "Event type") {
+            return 1;
+        } else if (columnName === "Status") {
+            return 2;
+        } else if (columnName === "Last updated") {
+            return 3;
+        } else if (columnName === "Last updated by") {
+            return 4;
+        }
+    }
+
+    showFilterSection() {
+        cy.get('#filter-button').click();
+        cy.get('#add-filter').click();
+    }
+
+    selectColumn(columnName) {
+        cy.get('#select-column').select(this.getColumnValueByName(columnName));
+    }
+
+    selectOperator(operatorValue) {
+        cy.get('#select-operator').select(operatorValue);
+    }
+
+    enterValue(value) {
+        cy.get('#value').type(value);
+    }
+    clickDone() {
+        cy.get('#done-button').click();
+    }
+
+    clickCancel() {
+        cy.get('#done-button').click();
+    }
+
+    clickApply() {
+        cy.get('#apply-button').click();
+    }
+
+    showingContainedResults(text, columnName) {
+        this.checkMatchedSearchResult(text, columnName)
+    }
+
+    canSeeFilterOverlay() {
+        cy.get('#add-filter').eq(0)
+    }
+
     get table() {
         return "table[data-testid=table]";
     }

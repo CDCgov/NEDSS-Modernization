@@ -57,6 +57,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                         rules={{ required: { value: true, message: 'A field is required.' } }}
                         render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
                             <SelectInput
+                                id="select-column"
                                 name={name}
                                 htmlFor={name}
                                 label="Select a field"
@@ -76,6 +77,7 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                             rules={{ required: { value: true, message: 'An operator is required.' } }}
                             render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
                                 <SelectInput
+                                    id="select-operator"
                                     name={name}
                                     htmlFor={name}
                                     label="Operator"
@@ -94,10 +96,10 @@ const FilterEntryForm = ({ properties, onSave, onCancel }: FilterEditViewProps) 
                 </FormProvider>
             </section>
             <footer>
-                <Button type="button" onClick={onCancel} outline>
+                <Button type="button" id="cancel-button" onClick={onCancel} outline>
                     Cancel
                 </Button>
-                <Button type="submit" disabled={!isValid} onClick={handleSubmit(onSubmit)}>
+                <Button type="submit" id="done-button" disabled={!isValid} onClick={handleSubmit(onSubmit)}>
                     Done
                 </Button>
             </footer>
