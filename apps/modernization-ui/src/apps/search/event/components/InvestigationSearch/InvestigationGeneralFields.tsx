@@ -23,12 +23,13 @@ type InvestigationGeneralAccordionProps = {
 };
 export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordionProps): ReactElement => {
     const watch = useWatch({ control: form.control });
+
     const handleEventDateTypeChange = (
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
         // Clear date fields if date type is deselected
-        if (e.target.value === '') {
+        if (!e.target.value) {
             form.resetField('eventDate.from');
             form.resetField('eventDate.to');
         }
@@ -40,7 +41,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
         // Clear event id field on deselect
-        if (e.target.value === '') {
+        if (!e.target.value) {
             form.resetField('eventId.id');
         }
         onChange(e);
@@ -51,7 +52,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
         // Clear event id field on deselect
-        if (e.target.value === '') {
+        if (!e.target.value) {
             form.resetField('providerFacilitySearch.id');
         }
         onChange(e);
