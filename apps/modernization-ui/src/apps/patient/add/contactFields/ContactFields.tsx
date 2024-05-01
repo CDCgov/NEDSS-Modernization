@@ -1,10 +1,13 @@
-import { Button, Grid } from '@trussworks/react-uswds';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { Button, Grid, Label } from '@trussworks/react-uswds';
+import { Controller, useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { validatePhoneNumber } from 'validation/phone';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { maxLengthRule } from 'validation/entry';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import styles from './contactFields.module.scss';
+import { useEffect } from 'react';
 
 type Props = {
     id: string;
@@ -12,17 +15,40 @@ type Props = {
 };
 
 export default function ContactFields({ id, title }: Props) {
-    const { control } = useFormContext();
+    const { control, setValue } = useFormContext();
 
     const { fields: phoneNumberFields, append: phoneNumberAppend } = useFieldArray({
         control,
         name: 'phoneNumbers'
     });
-
     const { fields: emailFields, append: emailFieldAppend } = useFieldArray({
         control,
         name: 'emailAddresses'
     });
+    type Type = {
+        name: string;
+        value: string;
+        type: string;
+    };
+
+    const types: Type[] = [
+        { name: 'Home phone', value: 'H', type: 'PH' },
+        { name: 'Work phone', value: 'WP', type: 'PH' },
+        { name: 'Cell phone', value: 'MC', type: 'CP' }
+    ];
+    const phoneFields = useWatch({ control: control, name: 'phoneNumbers' });
+
+    useEffect(() => {
+        if (phoneFields) {
+            phoneFields.forEach((number: any, i: number) => {
+                if (number.use === 'MC') {
+                    setValue(`phoneNumbers.${i}.type`, 'CP');
+                } else {
+                    setValue(`phoneNumbers.${i}.type`, 'PH');
+                }
+            });
+        }
+    }, [JSON.stringify(phoneFields)]);
 
     return (
         <FormCard id={id} title={title}>
@@ -102,33 +128,86 @@ export default function ContactFields({ id, title }: Props) {
                         />
                     </Grid>
                 </Grid>
+                <Grid row gap={2}>
+                    <Grid col={6}>
+                        <Controller
+                            control={control}
+                            name="cellPhone"
+                            rules={{
+                                validate: {
+                                    properNumber: validatePhoneNumber
+                                },
+                                ...maxLengthRule(20)
+                            }}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                <PhoneNumberInput
+                                    placeholder="333-444-555"
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    label="Cell phone"
+                                    defaultValue={value}
+                                    id={name}
+                                    error={error?.message}
+                                    mask="___-___-____"
+                                    pattern="\d{3}-\d{3}-\d{4}"
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
                 {phoneNumberFields.map((item: any, index: number) => (
-                    <Grid row key={item.id}>
-                        <Grid col={6}>
-                            <Controller
-                                control={control}
-                                name={`phoneNumbers[${index}].number`}
-                                rules={{
-                                    validate: {
-                                        properNumber: validatePhoneNumber
-                                    },
-                                    ...maxLengthRule(20)
-                                }}
-                                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                    <PhoneNumberInput
-                                        placeholder="333-444-555"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        label="Cell phone"
-                                        defaultValue={value}
-                                        id={name}
-                                        error={error?.message}
-                                        mask="___-___-____"
-                                        pattern="\d{3}-\d{3}-\d{4}"
+                    <Grid row gap={2} key={item.id}>
+                        <div className={styles.phone}>
+                            <Label htmlFor="Phone">Phone</Label>
+                            <div className={styles.fields}>
+                                <Grid col={5}>
+                                    <Controller
+                                        control={control}
+                                        name={`phoneNumbers[${index}].use`}
+                                        rules={{ required: { value: true, message: 'Type is required.' } }}
+                                        render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                            <SelectInput
+                                                defaultValue={value ? value : 'H'}
+                                                // value={value}
+                                                // placeholder={'Home phone'}
+                                                onChange={onChange}
+                                                htmlFor={'use'}
+                                                options={types}
+                                                error={error?.message}
+                                                required
+                                            />
+                                        )}
                                     />
-                                )}
-                            />
-                        </Grid>
+                                </Grid>
+                                <Grid col={7}>
+                                    <Controller
+                                        control={control}
+                                        name={`phoneNumbers[${index}].number`}
+                                        rules={{
+                                            validate: {
+                                                properNumber: validatePhoneNumber
+                                            },
+                                            ...maxLengthRule(20)
+                                        }}
+                                        render={({
+                                            field: { onChange, onBlur, value, name },
+                                            fieldState: { error }
+                                        }) => (
+                                            <PhoneNumberInput
+                                                placeholder="333-444-555"
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                defaultValue={value}
+                                                id={name}
+                                                error={error?.message}
+                                                mask="___-___-____"
+                                                pattern="\d{3}-\d{3}-\d{4}"
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                            </div>
+                        </div>
                     </Grid>
                 ))}
                 <Grid row>
@@ -138,8 +217,8 @@ export default function ContactFields({ id, title }: Props) {
                             onClick={() =>
                                 phoneNumberAppend({
                                     number: null,
-                                    type: 'CP',
-                                    use: 'MC'
+                                    use: 'H',
+                                    type: 'PH'
                                 })
                             }
                             className="text-bold"
