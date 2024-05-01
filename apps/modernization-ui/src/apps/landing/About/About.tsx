@@ -46,9 +46,8 @@ export const About = () => {
                 </a>
             </p>
             <p>
-                If you cannot access the link, please reach out to us at
-                <a href="mailto:nbs@cdc.gov"> nbs@cdc.gov</a>, and we will work with you on an alternate method for
-                feedback.
+                If you cannot access the link, please reach out to us at <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>,
+                and we will work with you on an alternate method for feedback.
             </p>
             <h2>Technical Support</h2>
             <p>
