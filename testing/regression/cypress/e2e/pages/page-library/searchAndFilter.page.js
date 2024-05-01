@@ -73,6 +73,10 @@ class SearchAndFilterPage {
         cy.get('#apply-button').click();
     }
 
+    clickCancel() {
+        cy.get('#cancel-button').click();
+    }
+
     showingContainedResults(text, columnName) {
         this.checkMatchedSearchResult(text, columnName)
     }

@@ -22,3 +22,11 @@ Feature: User can search and filter the existing page library data here.
         And User clicks the Done button
         When User clicks the Apply button
         Then Added filters "lar" and "Page name" are applied and only the records matching the filters are displayed in the Page Library list
+
+    Scenario: Cancel Filter by Page Name using (Starts With)
+        Given Filter section already displayed
+        When User selects "Page name" from the drop-down box
+        And User selects "STARTS_WITH" from the Operator field
+        And User enters "mum" in the Type a value field
+        And User clicks the Cancel button
+        Then The application will cancel adding a filter and return to display the + Add Filter link
