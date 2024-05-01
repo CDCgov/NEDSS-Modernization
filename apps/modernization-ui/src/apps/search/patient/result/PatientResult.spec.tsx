@@ -41,7 +41,7 @@ describe('PatientResult', () => {
         expect(getByText('LEGAL NAME')).toBeInTheDocument();
         expect(getByText('John Doe')).toBeInTheDocument();
         expect(getByText('Date of birth')).toBeInTheDocument();
-        expect(getByText('01/01/1990 (31)')).toBeInTheDocument();
+        expect(getByText('01/01/1990 (31 years old)')).toBeInTheDocument();
         expect(getByText('Sex')).toBeInTheDocument();
         expect(getByText('Male')).toBeInTheDocument();
         expect(getByText('Patient Id')).toBeInTheDocument();

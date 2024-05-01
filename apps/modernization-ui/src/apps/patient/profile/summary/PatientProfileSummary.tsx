@@ -40,7 +40,7 @@ const asText = (value: string) => <p className="patient-summary-item-value">{val
 const allAsText = (items: string[]) => asText(items.join('\n'));
 
 const asBirthday = (summary: PatientSummary) => {
-    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${summary.age} years)`;
+    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${summary.age} years old)`;
     return maybeRender(value, asText);
 };
 

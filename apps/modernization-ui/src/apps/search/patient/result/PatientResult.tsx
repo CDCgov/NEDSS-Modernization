@@ -39,7 +39,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
                     </Grid>
                     <Grid col={12}>
                         <ResultItem label="Date of birth">
-                            {result.birthday && `${internalizeDate(result.birthday)} (${result.age})`}
+                            {result.birthday && `${internalizeDate(result.birthday)} (${result.age} years old)`}
                         </ResultItem>
                         <ResultItem label="Sex">{result.gender}</ResultItem>
                         <ResultItem label="Patient Id">{result.shortId}</ResultItem>
