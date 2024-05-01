@@ -14,7 +14,6 @@ const WelcomeLayout = () => {
         <LoginWrapper>
             <div className={style.welcome}>
                 <main>
-                    <h1>Welcome to the NBS 7 demo site</h1>
                     <div className={style.information}>
                         <TabNavigation className={style.tabs}>
                             <TabNavigationEntry path={'about'}>About</TabNavigationEntry>

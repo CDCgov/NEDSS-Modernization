@@ -1,7 +1,7 @@
 @use 'styles/colors';
 
 .welcome {
-    padding: 1.5rem;
+    padding: 0 1.5rem;
 
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -13,7 +13,7 @@
     main {
         grid-area: information;
 
-        padding: 2rem;
+        padding: 0 2rem;
         background-color: rgba(colors.$base-white, 0.85);
 
         h1 {

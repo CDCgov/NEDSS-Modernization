@@ -34,7 +34,7 @@ export const About = () => {
                     <br />
                     <br />
                     All the data that currently exists is synthetic data. We are working on improving our synthetic
-                    database to be morerepresentative of a production environment.
+                    database to be more representative of a production environment.
                 </p>
             </div>
             <h2>Feedback</h2>
@@ -46,8 +46,8 @@ export const About = () => {
                 </a>
             </p>
             <p>
-                If you cannot access the Qualtrics link, please reach out to us at
-                <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>, and we will work with you on an alternate method for
+                If you cannot access the link, please reach out to us at
+                <a href="mailto:nbs@cdc.gov"> nbs@cdc.gov</a>, and we will work with you on an alternate method for
                 feedback.
             </p>
             <h2>Technical Support</h2>
