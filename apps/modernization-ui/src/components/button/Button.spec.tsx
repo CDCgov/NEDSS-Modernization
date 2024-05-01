@@ -4,7 +4,7 @@ import { Button } from './Button';
 
 describe('Button component tests', () => {
     it('should render the button with the label', () => {
-        render(<Button label="Click me" />);
+        render(<Button>Click me</Button>);
         expect(screen.getByRole('button')).toHaveTextContent('Click me');
     });
 
@@ -14,31 +14,47 @@ describe('Button component tests', () => {
     });
 
     it('should render the button with the label and icon', () => {
-        render(<Button label="Click me" icon={<span>icon</span>} />);
+        render(<Button icon={<span>icon</span>}>Click me</Button>);
         expect(screen.getByRole('button')).toHaveTextContent('Click me');
         expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
     });
 
     it('should render the button with the label on the left', () => {
-        render(<Button label="Click me" icon={<span>icon</span>} labelPosition="left" />);
+        render(
+            <Button icon={<span>icon</span>} labelPosition="left">
+                Click me
+            </Button>
+        );
         expect(screen.getByRole('button')).toHaveTextContent('Click me');
         expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
     });
 
     it('should render the button with the label on the right', () => {
-        render(<Button label="Click me" icon={<span>icon</span>} labelPosition="right" />);
+        render(
+            <Button icon={<span>icon</span>} labelPosition="right">
+                Click me
+            </Button>
+        );
         expect(screen.getByRole('button')).toHaveTextContent('Click me');
         expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
     });
 
     it('should render the button with the label and icon and label on the right', () => {
-        render(<Button label="Click me" icon={<span>icon</span>} labelPosition="right" />);
+        render(
+            <Button icon={<span>icon</span>} labelPosition="right">
+                Click me
+            </Button>
+        );
         expect(screen.getByRole('button')).toHaveTextContent('Click me');
         expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
     });
 
     it('should render the button with the label and icon and label on the left', () => {
-        render(<Button label="Click me" icon={<span>icon</span>} labelPosition="left" />);
+        render(
+            <Button icon={<span>icon</span>} labelPosition="left">
+                Click me
+            </Button>
+        );
         expect(screen.getByRole('button')).toHaveTextContent('Click me');
         expect(screen.getByRole('button')).toContainHTML('<span>icon</span>');
     });

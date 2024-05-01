@@ -30,11 +30,11 @@ const PageLibraryMenu = ({ properties, filters, onSearch, onFilter, onDownloadCs
                         type="button"
                         onClick={() => setOverlayVisible(!overlayVisible)}
                         outline
-                        label="Filter"
                         icon={<Icon.FilterAlt />}
                         labelPosition="left"
-                        className={styles.filterButton}
-                    />
+                        className={styles.filterButton}>
+                        Filter
+                    </Button>
                 )}
                 render={() => (
                     <FilterPanel

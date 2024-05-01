@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 type Props = {
     icon?: ReactNode;
-    label?: string;
+    children?: string;
     outline?: boolean;
     destructive?: boolean;
     disabled?: boolean;
@@ -18,14 +18,14 @@ type Props = {
 const Button = ({
     type = 'button',
     icon,
-    label,
+    children,
     outline = false,
     destructive = false,
     unstyled = false,
     labelPosition = 'left',
     ...defaultProps
 }: Props) => {
-    const isIconOnly = icon && !label;
+    const isIconOnly = icon && !children;
     const classesAarray = classNames({
         [styles.destructive]: destructive,
         [styles.icon]: icon
@@ -37,22 +37,22 @@ const Button = ({
             {...defaultProps}
             type={type}
             unstyled={unstyled}
-            size={icon && !label ? 'big' : undefined}
+            size={icon && !children ? 'big' : undefined}
             outline={outline}>
-            {labelPosition === 'left' && label && icon ? (
+            {labelPosition === 'left' && children && icon ? (
                 <>
-                    {label}
+                    {children}
                     {icon}
                 </>
             ) : null}
-            {labelPosition === 'right' && label && icon ? (
+            {labelPosition === 'right' && children && icon ? (
                 <>
                     {icon}
-                    {label}
+                    {children}
                 </>
             ) : null}
             {isIconOnly ? icon : null}
-            {label && !icon ? label : null}
+            {children && !icon ? children : null}
         </TrussworksButton>
     );
 };
