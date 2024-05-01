@@ -20,7 +20,7 @@ export const Learn = () => {
                         https://cste.us6.list-manage.com/subscribe?u=a74794e707a0d58b86a809758&id=e18a85073c
                     </a>
                     <br />
-                    Use the link above to subscribe, or read the current Case surveillance news here:
+                    Use the link above to subscribe, or read the current Case surveillance news here:{' '}
                     <a href="https://www.cdc.gov/nndss/trc/news/index.html">
                         https://www.cdc.gov/nndss/trc/news/index.html
                     </a>
@@ -34,8 +34,8 @@ export const Learn = () => {
                     </a>
                     <br />
                     The NBS User Group (NUG) and the NBS Subject Matter Expert (SME) Calls meet every week, and include
-                    local/state/territorial users and CDC programs. Please email us at nbs@cdc.gov if you are interested
-                    in joining the groups.
+                    local/state/territorial users and CDC programs. Please email us at{' '}
+                    <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a> if you are interested in joining the groups.
                 </p>
             </div>
             <h3>The NBS User Group (NUG)</h3>
@@ -52,7 +52,7 @@ export const Learn = () => {
             <h2>More ways to get involved</h2>
             <p>
                 If you are interested in becoming a pilot partner, or participating in the co-creation sessions, please
-                send us an email to nbs@cdc.gov.
+                send us an email to <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>.
             </p>
         </>
     );
