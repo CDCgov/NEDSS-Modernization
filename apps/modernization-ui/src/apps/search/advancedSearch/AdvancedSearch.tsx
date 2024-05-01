@@ -1,4 +1,4 @@
-import { Alert, Button, Grid, Icon, Pagination } from '@trussworks/react-uswds';
+import { Alert, Grid, Icon, Pagination } from '@trussworks/react-uswds';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
@@ -33,6 +33,7 @@ import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
+import { Button } from 'components/button/Button';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -381,12 +382,16 @@ export const AdvancedSearch = () => {
                             <Button
                                 disabled={!lastSearchType}
                                 className="padding-x-3 add-patient-button"
-                                type={'button'}
+                                type="button"
+                                icon={
+                                    <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
+                                }
+                                labelPosition="left"
                                 onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
                                 outline>
                                 Add new
-                                <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
                             </Button>
+
                             {showAddNewDropDown && (
                                 <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
                                     <li className="usa-nav__submenu-item">
@@ -468,19 +473,22 @@ export const AdvancedSearch = () => {
                                             className="padding-x-3"
                                             type={'button'}
                                             onClick={() => setShowSorting(!showSorting)}
-                                            outline>
+                                            outline
+                                            labelPosition="left"
+                                            icon={
+                                                <NBSIcon
+                                                    name={
+                                                        (!investigationData?.content ||
+                                                            investigationData?.content?.length === 0) &&
+                                                        (!labReportData?.content ||
+                                                            labReportData?.content?.length === 0) &&
+                                                        (!patientData?.content || patientData?.content?.length === 0)
+                                                            ? 'down-arrow-white'
+                                                            : 'down-arrow-blue'
+                                                    }
+                                                />
+                                            }>
                                             Sort by
-                                            <NBSIcon
-                                                name={
-                                                    (!investigationData?.content ||
-                                                        investigationData?.content?.length === 0) &&
-                                                    (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                                    (!patientData?.content || patientData?.content?.length === 0)
-                                                        ? 'down-arrow-white'
-                                                        : 'down-arrow-blue'
-                                                }
-                                                size="s"
-                                            />
                                         </Button>
                                     )}
                                     {showSorting && (
