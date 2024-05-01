@@ -64,11 +64,8 @@ class SearchAndFilterPage {
     enterValue(value) {
         cy.get('#value').type(value);
     }
-    clickDone() {
-        cy.get('#done-button').click();
-    }
 
-    clickCancel() {
+    clickDone() {
         cy.get('#done-button').click();
     }
 
