@@ -31,9 +31,3 @@ Then("User clicks the Apply button", () => {
 Then("Added filters {string} and {string} are applied and only the records matching the filters are displayed in the Page Library list", (string, string1) => {
     searchAndFilterPage.showingContainedResults(string, string1);
 });
-Then("User clicks the Cancel button", () => {
-    searchAndFilterPage.clickCancel();
-});
-Then("The application will cancel adding a filter and return to display the + Add Filter link", () => {
-    searchAndFilterPage.canSeeFilterOverlay();
-});
