@@ -1,4 +1,4 @@
-import { ButtonGroup, Button, ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
+import { ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
 import { Heading } from 'components/heading';
 
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
@@ -11,6 +11,7 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
 import styles from '../question-form.module.scss';
+import { SegmentedButtons } from 'components/SegmentedButtons/SegmentedButtons';
 
 const questionTypes: { name: string; value: 'CODED' | 'NUMERIC' | 'TEXT' | 'DATE' }[] = [
     { name: 'Value set', value: 'CODED' },
@@ -24,7 +25,7 @@ type Props = {
 };
 export const BasicInformationFields = ({ editing = false }: Props) => {
     const form = useFormContext<CreateQuestionForm>();
-    const [uniqueId, uniqueName, questionType] = useWatch({
+    const [uniqueId, uniqueName] = useWatch({
         control: form.control,
         name: ['uniqueId', 'uniqueName', 'questionType'],
         exact: true
@@ -200,26 +201,22 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 control={form.control}
                 name="questionType"
                 rules={{ required: { value: true, message: 'Field type required' } }}
-                render={({ field: { onChange, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <>
-                        <Label className="required" htmlFor={name}>
-                            Field type
-                        </Label>
                         {error?.message && <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>}
-                        <ButtonGroup className={styles.buttonGroup} type="segmented">
-                            {questionTypes.map((field, k) => (
-                                <Button
-                                    key={k}
-                                    type="button"
-                                    outline={field.value !== questionType}
-                                    disabled={editing && field.value !== questionType}
-                                    onClick={() => {
-                                        onChange(field.value);
-                                    }}>
-                                    {field.name}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
+                        <SegmentedButtons
+                            title="Field type"
+                            buttons={questionTypes.map((field) => ({
+                                value: field.value,
+                                name: field.name,
+                                label: field.name
+                            }))}
+                            onClick={(field): void => {
+                                onChange(field.value);
+                            }}
+                            value={value}
+                            required
+                        />
                     </>
                 )}
             />
