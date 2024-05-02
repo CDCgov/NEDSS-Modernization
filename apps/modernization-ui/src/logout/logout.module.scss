@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.logout {
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+
+    .logoutCard {
+        background: colors.$base-lightest;
+        padding: 1.5rem;
+        max-width: 24rem;
+
+        .logoutText {
+            margin-top: 0;
+            font-size: 2rem;
+            color: colors.$base-darkest;
+        }
+
+        p {
+            color: colors.$base-darkest;
+            font-weight: 400;
+            line-height: 26px;
+        }
+
+        .linkButton {
+            padding: 0;
+            text-decoration: none;
+			background-color: transparent;
+			color: colors.$primary;
+        }
+    }
+}
