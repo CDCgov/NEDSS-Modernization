@@ -48,3 +48,12 @@ Feature: User can search and filter the existing page library data here.
         And User clicks the Done button
         When User clicks the Apply button
         Then Added filters "Investigation" and "Event type" are applied and only the records matching the filters are displayed in the Page Library list
+
+    Scenario: Filter by Related Condition(s) using (Equals to)
+        Given Filter section already displayed
+        When User selects "Related Condition(s)" from the drop-down box
+        And User selects "EQUALS" from the Operator field
+        And User enters "Tuberculosis" in the Type a value field - multi select
+        And User clicks the Done button
+        When User clicks the Apply button
+        Then Added filters "Tuberculosis" and "Related Condition(s)" are applied and only the records matching the filters are displayed in the Page Library list
