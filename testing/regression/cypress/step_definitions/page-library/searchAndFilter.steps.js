@@ -40,3 +40,6 @@ Then("The application will cancel adding a filter and return to display the + Ad
 Then("User enters {string} in the Type a value field - multi select", (string) => {
     searchAndFilterPage.enterTextInMultiInputValue(string);
 });
+Then("Type a value field is hidden", () => {
+    searchAndFilterPage.checkValueFiledIsHidden();
+});

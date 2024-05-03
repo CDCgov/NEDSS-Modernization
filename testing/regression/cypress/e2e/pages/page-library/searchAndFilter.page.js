@@ -93,6 +93,10 @@ class SearchAndFilterPage {
         cy.get('#add-filter').eq(0)
     }
 
+    checkValueFiledIsHidden() {
+        cy.get('#values').should('not.exist');
+    }
+
     get table() {
         return "table[data-testid=table]";
     }
