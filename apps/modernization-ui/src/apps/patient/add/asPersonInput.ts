@@ -31,8 +31,8 @@ export const asPersonInput = (data: NewPatientEntry) => {
         phoneNumbers.push({
             number: data.cellPhone,
             extension: data.extension,
-            type: 'PH',
-            use: 'WP'
+            type: 'CP',
+            use: 'MC'
         });
     }
 

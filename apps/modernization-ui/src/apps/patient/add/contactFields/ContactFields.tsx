@@ -14,6 +14,18 @@ type Props = {
     title: string;
 };
 
+type Type = {
+    name: string;
+    value: string;
+    type: string;
+};
+
+const classification: Type[] = [
+    { name: 'Home phone', value: 'H', type: 'PH' },
+    { name: 'Work phone', value: 'WP', type: 'PH' },
+    { name: 'Cell phone', value: 'MC', type: 'CP' }
+];
+
 export default function ContactFields({ id, title }: Props) {
     const { control, setValue } = useFormContext();
 
@@ -25,17 +37,7 @@ export default function ContactFields({ id, title }: Props) {
         control,
         name: 'emailAddresses'
     });
-    type Type = {
-        name: string;
-        value: string;
-        type: string;
-    };
 
-    const types: Type[] = [
-        { name: 'Home phone', value: 'H', type: 'PH' },
-        { name: 'Work phone', value: 'WP', type: 'PH' },
-        { name: 'Cell phone', value: 'MC', type: 'CP' }
-    ];
     const phoneFields = useWatch({ control: control, name: 'phoneNumbers' });
 
     useEffect(() => {
@@ -168,11 +170,9 @@ export default function ContactFields({ id, title }: Props) {
                                         render={({ field: { onChange, value }, fieldState: { error } }) => (
                                             <SelectInput
                                                 defaultValue={value ? value : 'H'}
-                                                // value={value}
-                                                // placeholder={'Home phone'}
                                                 onChange={onChange}
                                                 htmlFor={'use'}
-                                                options={types}
+                                                options={classification}
                                                 error={error?.message}
                                                 required
                                             />
