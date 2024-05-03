@@ -11,7 +11,7 @@ const WelcomeLayout = () => {
     const [event, setEvent] = useState('login');
 
     return (
-        <LoginWrapper>
+        <LoginWrapper header={<h1>Welcome to the NBS 7 demo site</h1>}>
             <div className={style.welcome}>
                 <main>
                     <div className={style.information}>
