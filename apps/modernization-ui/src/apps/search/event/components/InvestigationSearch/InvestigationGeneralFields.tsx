@@ -40,7 +40,6 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
-        console.log(form.getValues());
         // Clear event id field on deselect
         if (!e.target.value) {
             form.setValue('eventId', { investigationEventType: undefined } as any, {
