@@ -66,3 +66,12 @@ Feature: User can search and filter the existing page library data here.
         And User clicks the Done button
         When User clicks the Apply button
         Then Added filters "Published" and "Status" are applied and only the records matching the filters are displayed in the Page Library list
+
+    Scenario: Filter by Last Updated using (Past 7 days) operator
+        Given Filter section already displayed
+        When User selects "Last updated" from the drop-down box
+        And User selects "LAST_7_DAYS" from the Operator field
+        Then Type a value field is hidden
+        When User clicks the Done button
+        When User clicks the Apply button
+        Then Added filters "LAST_7_DAYS" and "Last updated" are applied and only the records matching the filters are displayed in the Page Library list
