@@ -1,0 +1,26 @@
+:root {
+	--base-black: #000000;
+	--base-white: #ffffff;
+	--base-lightest: #f0f0f0;
+	--primary: #005ea2;
+}
+
+body {
+	background-image: url("../img/landing.png");
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-size: 165%;
+	background-color: var(--base-white);
+
+	height: 100dvh;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	div:only-of-type {
+		background-color: var(--base-lightest);
+
+		padding: 1rem;
+	}
+}
