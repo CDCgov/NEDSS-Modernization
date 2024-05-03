@@ -51,6 +51,22 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         onChange(e);
     };
 
+    const handleChangeWithUndefinedDefaultValue = (
+        name: String,
+        e: ChangeEvent<HTMLSelectElement>,
+        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
+    ): void => {
+        // Clear event id field on deselect
+        if (!e.target.value) {
+            form.setValue(name as any, undefined as any, {
+                shouldDirty: true,
+                shouldValidate: true
+            });
+            return;
+        }
+        onChange(e);
+    };
+
     const handleFacilityTypeChange = (
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
@@ -136,7 +152,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={onChange}
+                        onChange={(e) => handleChangeWithUndefinedDefaultValue(name, e, onChange)}
                         label="Pregnancy test"
                         htmlFor={name}
                         dataTestid={name}
