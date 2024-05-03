@@ -30,8 +30,8 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
     ): void => {
         // Clear date fields if date type is deselected
         if (!e.target.value) {
-            form.resetField('eventDate.from');
-            form.resetField('eventDate.to');
+            form.setValue('eventDate', { type: undefined } as any, { shouldDirty: true, shouldValidate: true });
+            return;
         }
         onChange(e);
     };
@@ -40,9 +40,14 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
         e: ChangeEvent<HTMLSelectElement>,
         onChange: (event: ChangeEvent<HTMLSelectElement>) => void
     ): void => {
+        console.log(form.getValues());
         // Clear event id field on deselect
         if (!e.target.value) {
-            form.resetField('eventId.id');
+            form.setValue('eventId', { investigationEventType: undefined } as any, {
+                shouldDirty: true,
+                shouldValidate: true
+            });
+            return;
         }
         onChange(e);
     };
@@ -53,7 +58,11 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
     ): void => {
         // Clear event id field on deselect
         if (!e.target.value) {
-            form.resetField('providerFacilitySearch.id');
+            form.setValue('providerFacilitySearch', { entityType: undefined } as any, {
+                shouldDirty: true,
+                shouldValidate: true
+            });
+            return;
         }
         onChange(e);
     };
