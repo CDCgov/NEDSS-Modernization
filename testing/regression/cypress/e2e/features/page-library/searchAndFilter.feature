@@ -30,3 +30,21 @@ Feature: User can search and filter the existing page library data here.
         And User enters "mum" in the Type a value field
         And User clicks the Cancel button
         Then The application will cancel adding a filter and return to display the + Add Filter link
+
+    Scenario: Filter by Page Name using (Not equal to)
+        Given Filter section already displayed
+        When User selects "Page name" from the drop-down box
+        And User selects "NOT_EQUAL_TO" from the Operator field
+        And User enters "Cov" in the Type a value field - multi select
+        And User clicks the Done button
+        When User clicks the Apply button
+        Then Added filters "Cov" and "Page name" are applied and only the records matching the filters are displayed in the Page Library list
+
+    Scenario: Filter by Event Type (Investigation) using (Equals to)
+        Given Filter section already displayed
+        When User selects "Event type" from the drop-down box
+        And User selects "EQUALS" from the Operator field
+        And User enters "Investigation" in the Type a value field - multi select
+        And User clicks the Done button
+        When User clicks the Apply button
+        Then Added filters "Investigation" and "Event type" are applied and only the records matching the filters are displayed in the Page Library list
