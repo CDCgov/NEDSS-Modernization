@@ -1,47 +1,106 @@
-import { render } from "@testing-library/react"
-import { asPersonInput } from "./asPersonInput"
+import { asPersonInput } from './asPersonInput';
 
-describe('when asPersonInput renders', () => {
-    const data = {
-        asOf: '',
-        identification: [],
-        phoneNumbers: [
-            {
-                number: '111-111-1111',
-                type: 'CP',
-                use: 'MC'
-            }
-        ],
-        emailAddresses: []
-    };
+describe('when asPersonInput is given a new patient with phone numbers', () => {
+    it('should have the right values for home phone', () => {
+        const data = {
+            asOf: '12/17/2021',
+            identification: [],
+            homePhone: '111-111-1111',
+            phoneNumbers: [],
+            emailAddresses: []
+        };
 
-    it('should have the right values for cell phones', () => {
         const result = asPersonInput(data);
         expect(result).toEqual(
-            {
-                "addresses": [],
-                "asOf": null,
-                "birthGender": undefined,
-                "comments": undefined,
-                "currentGender": undefined,
-                "dateOfBirth": null,
-                "deceased": undefined,
-                "deceasedTime": null,
-                "emailAddresses": [],
-                "ethnicity": undefined,
-                "identifications": [],
-                "maritalStatus": undefined,
-                "names": [],
-                "phoneNumbers": [
+            expect.objectContaining({
+                phoneNumbers: expect.arrayContaining([
                     {
-                        "number": "111-111-1111",
-                        "type": "CP",
-                        "use": "MC"
+                        number: '111-111-1111',
+                        type: 'PH',
+                        use: 'H'
                     }
-                ],
-                "races": undefined,
-                "stateHIVCase": undefined
-            }
-        )
+                ])
+            })
+        );
+    });
+
+    it('should have the right values for work phone', () => {
+        const data = {
+            asOf: '12/17/2021',
+            identification: [],
+            workPhone: '111-111-1111',
+            phoneNumbers: [],
+            emailAddresses: []
+        };
+
+        const result = asPersonInput(data);
+        expect(result).toEqual(
+            expect.objectContaining({
+                phoneNumbers: expect.arrayContaining([
+                    {
+                        number: '111-111-1111',
+                        type: 'PH',
+                        use: 'WP'
+                    }
+                ])
+            })
+        );
+    });
+
+    it('should have the right values for cell phone', () => {
+        const data = {
+            asOf: '12/17/2021',
+            identification: [],
+            cellPhone: '111-111-1111',
+            phoneNumbers: [],
+            emailAddresses: []
+        };
+
+        const result = asPersonInput(data);
+        expect(result).toEqual(
+            expect.objectContaining({
+                phoneNumbers: expect.arrayContaining([
+                    {
+                        number: '111-111-1111',
+                        type: 'CP',
+                        use: 'MC'
+                    }
+                ])
+            })
+        );
+    });
+
+    it('should include additional phone numbers', () => {
+        const data = {
+            asOf: '12/17/2021',
+            identification: [],
+            cellPhone: '111-111-1111',
+            phoneNumbers: [
+                {
+                    number: '222-222-2222',
+                    type: 'CP',
+                    use: 'MC'
+                }
+            ],
+            emailAddresses: []
+        };
+
+        const result = asPersonInput(data);
+        expect(result).toEqual(
+            expect.objectContaining({
+                phoneNumbers: expect.arrayContaining([
+                    {
+                        number: '111-111-1111',
+                        type: 'CP',
+                        use: 'MC'
+                    },
+                    {
+                        number: '222-222-2222',
+                        type: 'CP',
+                        use: 'MC'
+                    }
+                ])
+            })
+        );
     });
 });
