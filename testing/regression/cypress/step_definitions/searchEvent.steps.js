@@ -7,5 +7,9 @@ Then("I navigate the event investigation", () => {
 
 Then("I select a condition for event investigation", () => {
   searchEventPage.selectEventInvestigationCondition();
-  searchEventPage.eventSearch();
+  searchEventPage.search();
+});
+
+Then("I should see Results with the Condition {string}", (string) => {
+  cy.get("a").contains(string).should("be.visible");
 });
