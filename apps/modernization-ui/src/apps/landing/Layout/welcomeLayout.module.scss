@@ -2,15 +2,16 @@
 
 .welcome {
     padding: 0 1.5rem;
-
+    margin: 1.5rem auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto 1fr;
     grid-template-areas: 'information information access';
-
+    max-width: 90rem;
     gap: 1.5rem;
 
     main {
+
         grid-area: information;
 
         padding: 0 2rem;
@@ -31,8 +32,8 @@
             }
 
             .tab-content {
-                column-width: 40ch;
-                column-gap: 2rem;
+                column-width: 22rem;
+                column-gap: 5%;
                 overflow: hidden;
                 padding-top: 1rem;
 

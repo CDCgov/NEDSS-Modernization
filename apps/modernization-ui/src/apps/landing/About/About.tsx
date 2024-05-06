@@ -20,7 +20,7 @@ export const About = () => {
                         https://github.com/CDCgov/NEDSS-Modernization/releases
                     </a>
                 </p>
-                <h3>NBS Central</h3>
+                <h3>NBS Central (Latest release documentation)</h3>
                 <p>
                     <a href="https://cdcnbscentral.com/projects/71release-materials/documents">
                         https://cdcnbscentral.com/projects/71release-materials/documents
