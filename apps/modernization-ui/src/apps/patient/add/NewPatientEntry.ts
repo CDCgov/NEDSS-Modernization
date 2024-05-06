@@ -35,6 +35,7 @@ type ContactEntry = {
     homePhone: Maybe<string>;
     workPhone: Maybe<string>;
     extension: Maybe<string>;
+    cellPhone: Maybe<string>;
 };
 
 type IdentificationEntry = {
@@ -77,7 +78,7 @@ type DefaultNewPatentEntry = RequiredFields & FormRequired;
 const initialEntry = (asOf: Date = new Date()): DefaultNewPatentEntry => ({
     asOf: internalizeDate(asOf) || '',
     identification: [{ type: null, authority: null, value: null }],
-    phoneNumbers: [{ number: null, type: 'CP', use: 'MC' }],
+    phoneNumbers: [],
     emailAddresses: [{ email: null }]
 });
 
