@@ -75,3 +75,12 @@ Feature: User can search and filter the existing page library data here.
         When User clicks the Done button
         When User clicks the Apply button
         Then Added filters "LAST_7_DAYS" and "Last updated" are applied and only the records matching the filters are displayed in the Page Library list
+
+    Scenario: Filter by Last Updated by using (Contains)
+        Given Filter section already displayed
+        When User selects "Last updated by" from the drop-down box
+        And User selects "CONTAINS" from the Operator field
+        And User enters "Doe" in the Type a value field
+        And User clicks the Done button
+        When User clicks the Apply button
+        Then Added filters "Doe" and "Last updated by" are applied and only the records matching the filters are displayed in the Page Library list
