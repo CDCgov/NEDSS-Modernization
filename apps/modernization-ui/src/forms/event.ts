@@ -7,7 +7,6 @@ export const handleChangeToDefaultValue = (
     e: ChangeEvent<HTMLSelectElement>,
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void
 ): void => {
-    // Clear event id field on deselect
     if (!e.target.value) {
         form.setValue(name as any, value, {
             shouldDirty: true,
