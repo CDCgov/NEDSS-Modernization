@@ -8,31 +8,15 @@ import {
     ProcessingStatus
 } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { ChangeEvent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
+import { handleChangeToDefaultValue } from 'forms/event';
 
 type InvestigationCriteriaProps = {
     form: UseFormReturn<InvestigationFilter>;
 };
 export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): ReactElement => {
-    const handleChangeToDefaultValue = (
-        name: String,
-        value: any,
-        e: ChangeEvent<HTMLSelectElement>,
-        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
-    ): void => {
-        // Clear event id field on deselect
-        if (!e.target.value) {
-            form.setValue(name as any, value, {
-                shouldDirty: true,
-                shouldValidate: true
-            });
-            return;
-        }
-        onChange(e);
-    };
-
     return (
         <div id="criteria">
             <Controller
@@ -42,7 +26,7 @@ export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): Rea
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={(e) => handleChangeToDefaultValue(name, undefined, e, onChange)}
+                        onChange={(e) => handleChangeToDefaultValue(form, name, undefined, e, onChange)}
                         label="Investigation status"
                         htmlFor={name}
                         dataTestid={name}

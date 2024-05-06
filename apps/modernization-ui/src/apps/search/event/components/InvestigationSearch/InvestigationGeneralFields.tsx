@@ -11,35 +11,19 @@ import {
     ReportingEntityType
 } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { ChangeEvent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
+import { handleChangeToDefaultValue } from 'forms/event';
 
 type InvestigationGeneralAccordionProps = {
     form: UseFormReturn<InvestigationFilter>;
 };
 export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordionProps): ReactElement => {
     const watch = useWatch({ control: form.control });
-
-    const handleChangeToDefaultValue = (
-        name: String,
-        value: any,
-        e: ChangeEvent<HTMLSelectElement>,
-        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
-    ): void => {
-        // Clear event id field on deselect
-        if (!e.target.value) {
-            form.setValue(name as any, value, {
-                shouldDirty: true,
-                shouldValidate: true
-            });
-            return;
-        }
-        onChange(e);
-    };
 
     return (
         <>
@@ -111,7 +95,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={(e) => handleChangeToDefaultValue(name, undefined, e, onChange)}
+                        onChange={(e) => handleChangeToDefaultValue(form, name, undefined, e, onChange)}
                         label="Pregnancy test"
                         htmlFor={name}
                         dataTestid={name}
@@ -131,7 +115,13 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         name={name}
                         value={value as string | undefined}
                         onChange={(e) =>
-                            handleChangeToDefaultValue('eventId', { investigationEventType: undefined }, e, onChange)
+                            handleChangeToDefaultValue(
+                                form,
+                                'eventId',
+                                { investigationEventType: undefined },
+                                e,
+                                onChange
+                            )
                         }
                         label="Event id type"
                         dataTestid={name}
@@ -178,7 +168,9 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={(e) => handleChangeToDefaultValue('eventDate', { type: undefined }, e, onChange)}
+                        onChange={(e) =>
+                            handleChangeToDefaultValue(form, 'eventDate', { type: undefined }, e, onChange)
+                        }
                         label="Event date type"
                         htmlFor={name}
                         dataTestid={name}
@@ -264,7 +256,13 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         name={name}
                         value={value as string | undefined}
                         onChange={(e) =>
-                            handleChangeToDefaultValue('providerFacilitySearch', { entityType: undefined }, e, onChange)
+                            handleChangeToDefaultValue(
+                                form,
+                                'providerFacilitySearch',
+                                { entityType: undefined },
+                                e,
+                                onChange
+                            )
                         }
                         label="Event provider/facility type"
                         htmlFor={name}
