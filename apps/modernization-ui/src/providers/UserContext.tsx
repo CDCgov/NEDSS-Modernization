@@ -51,7 +51,7 @@ const UserContextProvider = ({ initial, children }: Props) => {
             document.cookie = 'nbs_token=; Max-Age=0; path=/;';
             if (Config.enableLogin) {
                 // loading external page will clear state
-                window.location.href = '/logout';
+                window.location.href = '/nbs/logout';
             }
         }
     }, [dispatch, state.status]);
