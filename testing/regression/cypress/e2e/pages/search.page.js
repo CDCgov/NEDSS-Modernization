@@ -1,6 +1,26 @@
 class SearchPage {
   selectBasicInfo() {
     cy.get('button[data-testid="accordionButton_1"]').click();
+  }  
+
+  clickEventInvestigation() {
+    cy.get('a[href*="advanced-search/event"]').click()
+    cy.wait(500);
+    let elm = cy.get("div[data-testid='accordionItem_event-type-section'] select");
+    elm.select('Investigation');
+    cy.wait(500);
+  }  
+
+  selectEventInvestigationCondition() {    
+    let elm = cy.get("#conditionInput").click();
+    let elm2 = cy.get("#react-select-3-option-1").click();
+    cy.get('.multi-select__control--is-focused ').click();
+  }
+
+  eventSearch() {
+    let elm = cy.get('button[data-testid="search"]').click(({force: true}));
+    cy.wait(500);
+    
   }
 
   enterLastName(lastName) {
@@ -95,7 +115,7 @@ class SearchPage {
   search() {
     cy.get('div.bottom-search button[type="submit"]').click();
     cy.wait(100);
-  }
+  }  
 
   verifySearchPage() {
     cy.get('div.bottom-search button[type="submit"]').should("be.visible");
@@ -113,6 +133,12 @@ class SearchPage {
   //   cy.get(elemt).click();
   //   cy.wait(1000);
   // }
+
+  selectState() {
+    cy.get("div[id='2'] select[placeholder='-Select-']");
+    cy.get("option[value='15']");
+    cy.wait(500);
+  }
 
   selectState() {
     cy.get("div[id='2'] select[placeholder='-Select-']");

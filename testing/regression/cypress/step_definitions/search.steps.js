@@ -6,6 +6,15 @@ Then("I navigate the  basic info and address", () => {
   searchPage.selectAddress(); 
 });
 
+Then("I navigate the event investigation", () => {
+  searchPage.clickEventInvestigation();
+});
+
+Then("I select a condition for event investigation", () => {
+  searchPage.selectEventInvestigationCondition();
+  searchPage.eventSearch();
+});
+
 When("I search for {string} city", (string) => {
   searchPage.enterCity(string);
   searchPage.search();
