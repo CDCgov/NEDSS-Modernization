@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Await, Navigate, redirect, useLoaderData } from 'react-router-dom';
+import { Await, Navigate, useLoaderData, useNavigate } from 'react-router-dom';
 import { User, UserContextProvider } from 'providers/UserContext';
 
 import { Configuration, ConfigurationProvider } from 'configuration';
@@ -11,13 +11,13 @@ import IdleTimer from './IdleTimer';
 
 const ProtectedLayout = () => {
     const data = useLoaderData() as InitializationLoaderResult;
+    const navigate = useNavigate();
 
     const handleIdle = () => {
-        redirect('/nbs/logout/');
+        navigate('/expired');
     };
 
-    // const timeout = 1000 * 60 * 15; // 15 minutes
-    const timeout = 3000;
+    const timeout = 1000 * 60 * 15; // 15 minutes
 
     const WithUser = (user: User) => {
         const data = useLoaderData() as InitializationLoaderResult;

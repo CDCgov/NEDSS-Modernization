@@ -15,7 +15,6 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, onIdle }) => {
         let warningTimer: number;
 
         const resetIdleTimer = () => {
-            console.log('reset');
             clearTimeout(idleTimer);
             idleTimer = window.setTimeout(() => {
                 setIdle(true);
@@ -27,10 +26,13 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, onIdle }) => {
         const startWarningTimer = () => {
             setShowWarningModal(true);
             clearTimeout(warningTimer);
-            warningTimer = window.setTimeout(() => {
-                onIdle();
-                setShowWarningModal(false);
-            }, 120000); // 2 minutes?
+            warningTimer = window.setTimeout(
+                () => {
+                    onIdle();
+                    setShowWarningModal(false);
+                },
+                1000 * 60 * 5
+            ); // 5 minutes?
         };
 
         const removeEventListeners = () => {
