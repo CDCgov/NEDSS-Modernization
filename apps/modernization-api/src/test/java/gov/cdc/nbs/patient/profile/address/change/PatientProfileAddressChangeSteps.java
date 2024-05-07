@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PatientProfileAddressChangeSteps {
 
-    private final Faker faker = new Faker(new Locale("en-us"));
+    private final Faker faker = new Faker(Locale.of("en-us"));
 
     @Autowired
     Available<PatientIdentifier> patients;

@@ -62,7 +62,7 @@ public class PatientMother {
     this.active = active;
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
-    this.faker = new Faker(new Locale("en-us"));
+    this.faker = new Faker(Locale.of("en-us"));
   }
 
   void reset() {

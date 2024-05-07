@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientMortalityChangeSteps {
 
-    private final Faker faker = new Faker(new Locale("en-us"));
+    private final Faker faker = new Faker(Locale.of("en-us"));
 
     @Autowired
     Available<PatientIdentifier> patients;
