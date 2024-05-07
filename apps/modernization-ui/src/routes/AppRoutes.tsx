@@ -9,6 +9,7 @@ import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as welcomeRouting } from 'apps/landing';
 import { Login } from 'pages/login';
+import { Expired } from 'apps/landing/Expired/Expired';
 
 const routing = [
     welcomeRouting,
@@ -25,7 +26,8 @@ const routing = [
             ...pageBuilderRouting
         ]
     },
-    { path: '*', element: <RedirectHome /> }
+    { path: '*', element: <RedirectHome /> },
+    { path: 'expired', element: <Expired /> }
 ];
 
 const router = createBrowserRouter(routing);

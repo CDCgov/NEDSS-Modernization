@@ -1,0 +1,11 @@
+@use 'styles/colors';
+
+.expired {
+    width: 25rem;
+    margin: 3rem auto;
+    background-color: colors.$base-lightest;
+    padding: 0.75rem 2rem 1rem;
+    p {
+        line-height: 1.5rem;
+    }
+}
