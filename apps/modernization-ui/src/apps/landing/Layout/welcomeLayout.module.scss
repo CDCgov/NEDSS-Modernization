@@ -34,7 +34,7 @@
             .tab-content {
                 column-width: 22rem;
                 column-gap: 5%;
-                overflow: hidden;
+                overflow-wrap: break-word;
                 padding-top: 1rem;
 
                 a {
