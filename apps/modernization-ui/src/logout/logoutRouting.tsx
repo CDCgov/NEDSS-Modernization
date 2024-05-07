@@ -1,7 +1,7 @@
 import Logout from './Logout';
 
 const routing = {
-    path: '/logout',
+    path: '/goodbye',
     element: <Logout />
 };
 

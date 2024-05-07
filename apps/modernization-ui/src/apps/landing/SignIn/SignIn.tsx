@@ -15,7 +15,7 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
             <div className={classNames(styles['alert-banner'])}>
                 <AlertBanner type="info" noIcon>
                     <p>
-                        Please be sure to avoid entering any real PHI/PIl data on the demo site. All information entered
+                        Please be sure to avoid entering any real PHI/PII data on the demo site. All information entered
                         will be viewable by other users.
                     </p>
                 </AlertBanner>
