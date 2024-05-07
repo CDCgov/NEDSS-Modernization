@@ -3,13 +3,14 @@ import { ReactNode } from 'react';
 
 type Props = {
     children: ReactNode;
+    header?: ReactNode;
 };
 
-const LoginWrapper = ({ children }: Props) => (
+const LoginWrapper = ({ children, header }: Props) => (
     <div className={styles.layout}>
         <header>
             <img src="/nbs-logo.png" height={40} alt="" />
-            <h1>Welcome to the NBS 7 demo site</h1>
+            {header && header}
         </header>
         {children}
     </div>
