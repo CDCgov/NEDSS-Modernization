@@ -17,13 +17,17 @@ export const About = () => {
                 <h3>GitHub</h3>
                 <p>
                     <a href="https://github.com/CDCgov/NEDSS-Modernization/releases">
-                        https://github.com/CDCgov/NEDSS-Modernization/releases
+                        https://github.com/CDCgov/NEDSS-Modernization
+                        <wbr />
+                        /releases
                     </a>
                 </p>
                 <h3>NBS Central (Latest release documentation)</h3>
                 <p>
                     <a href="https://cdcnbscentral.com/projects/71release-materials/documents">
-                        https://cdcnbscentral.com/projects/71release-materials/documents
+                        https://cdcnbscentral.com/projects/71release-materials
+                        <wbr />
+                        /documents
                     </a>
                 </p>
                 <h3>Demo features guide (How to use the demo)</h3>
@@ -55,7 +59,9 @@ export const About = () => {
                 submit a ticket on NBS Central:
                 <br />
                 <a href="https://cdcnbscentral.com/projects/70collaboration/issues">
-                    https://cdcnbscentral.com/projects/70collaboration/issues
+                    https://cdcnbscentral.com/projects/70collaboration
+                    <wbr />
+                    /issues
                 </a>
             </p>
         </>
