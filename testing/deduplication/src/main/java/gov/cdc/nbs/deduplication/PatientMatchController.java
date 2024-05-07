@@ -1,11 +1,13 @@
 package gov.cdc.nbs.deduplication;
 
+import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.deduplication.dataingest.DataIngestionMatchService;
 import gov.cdc.nbs.deduplication.exact.ExactMatchService;
+import gov.cdc.nbs.deduplication.model.PatientData;
 import gov.cdc.nbs.deduplication.request.MatchRequest;
 import gov.cdc.nbs.deduplication.response.DataIngestionMatchResponse;
 import gov.cdc.nbs.deduplication.response.ExactMatchResponse;
@@ -50,6 +52,11 @@ public class PatientMatchController {
   @PutMapping("/reset")
   public RowsAffected resetData() {
     return new RowsAffected(dataManager.reset());
+  }
+
+  @PostMapping("/load")
+  public List<PatientData> loadData(@RequestBody List<PatientData> data) {
+    return dataManager.load(data);
   }
 
 }
