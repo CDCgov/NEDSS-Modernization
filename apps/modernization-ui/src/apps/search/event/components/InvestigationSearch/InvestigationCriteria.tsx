@@ -11,6 +11,7 @@ import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { ReactElement } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
+import { handleChangeToDefaultValue } from 'forms/event';
 
 type InvestigationCriteriaProps = {
     form: UseFormReturn<InvestigationFilter>;
@@ -25,7 +26,7 @@ export const InvestigationCriteria = ({ form }: InvestigationCriteriaProps): Rea
                     <SelectInput
                         name={name}
                         value={value as string | undefined}
-                        onChange={onChange}
+                        onChange={(e) => handleChangeToDefaultValue(form, name, undefined, e, onChange)}
                         label="Investigation status"
                         htmlFor={name}
                         dataTestid={name}

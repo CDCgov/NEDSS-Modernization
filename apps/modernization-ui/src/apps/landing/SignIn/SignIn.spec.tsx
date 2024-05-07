@@ -16,7 +16,7 @@ describe('SignIn', () => {
 
         expect(
             getByText(
-                'Please be sure to avoid entering any real PHI/PIl data on the demo site. All information entered will be viewable by other users.'
+                'Please be sure to avoid entering any real PHI/PII data on the demo site. All information entered will be viewable by other users.'
             )
         ).toBeInTheDocument();
 

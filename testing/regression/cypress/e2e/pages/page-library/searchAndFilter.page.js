@@ -38,13 +38,15 @@ class SearchAndFilterPage {
         if (columnName === "Page name") {
             return "name";
         } else if (columnName === "Event type") {
-            return 1;
+            return "event-type";
+        } else if (columnName === "Related Condition(s)") {
+            return "conditions";
         } else if (columnName === "Status") {
-            return 2;
+            return "status";
         } else if (columnName === "Last updated") {
-            return 3;
+            return "lastUpdate";
         } else if (columnName === "Last updated by") {
-            return 4;
+            return "lastUpdatedBy";
         }
     }
 
@@ -77,12 +79,22 @@ class SearchAndFilterPage {
         cy.get('#cancel-button').click();
     }
 
+    enterTextInMultiInputValue(value) {
+        cy.get('.multi-select__input').type(value);
+        cy.get('.multi-select__option--is-focused').click();
+        cy.get('#values').click();
+    }
+
     showingContainedResults(text, columnName) {
         this.checkMatchedSearchResult(text, columnName)
     }
 
     canSeeFilterOverlay() {
         cy.get('#add-filter').eq(0)
+    }
+
+    checkValueFiledIsHidden() {
+        cy.get('#values').should('not.exist');
     }
 
     get table() {
