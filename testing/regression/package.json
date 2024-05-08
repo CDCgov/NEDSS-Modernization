@@ -1,7 +1,7 @@
 {
   "name": "cypress-cucumber-framework",
   "version": "1.0.0",
-  "description": "A demo framework with cypress and cucumber with cuucmber html report",
+  "description": "A demo framework with cypress and cucumber with cucumber html report",
   "scripts": {
     "cypress": "cypress open",
     "cy:open": "cypress open",
