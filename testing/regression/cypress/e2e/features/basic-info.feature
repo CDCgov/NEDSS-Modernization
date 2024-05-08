@@ -29,4 +29,7 @@ Feature: Patient Search by Basic Info
     When I search by dob as "04/02/1991"
     Then I should see "Zollie Polack Bittlestone, Esquire"
 
-
+  Scenario: Search for Deleted Patients
+  When I fill last name as "Green Sonum Allen"
+  When I select for Deleted patient
+  Then I should see "Green Sonum Allen"
