@@ -1,4 +1,3 @@
-
 Feature: Patient Search by Basic Info
 
   Background:
@@ -29,3 +28,5 @@ Feature: Patient Search by Basic Info
     When I fill first name as "Zollie"
     When I search by dob as "04/02/1991"
     Then I should see "Zollie Polack Bittlestone, Esquire"
+
+
