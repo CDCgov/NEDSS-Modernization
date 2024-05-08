@@ -23,3 +23,9 @@ Feature: Patient Search by Basic Info
   Scenario: Basic Info - Search by Patient ID
     When I search by patient id as "95136"
     Then I should see Results with the patient id "95136"
+
+  Scenario: Search by Multiple Criteria
+    When I fill last name as "Bittlestone"
+    When I fill first name as "Zollie"
+    When I search by dob as "04/02/1991"
+    Then I should see "Zollie Polack Bittlestone, Esquire"
