@@ -12,3 +12,7 @@ Feature: Investigation Search by general search
   Scenario: Basic Info - Search by Program Area
     When I select a program area for event investigation
     Then I should see Results with the link "Dengue"
+
+  Scenario: Basic Info - Search by Jurisdiction
+    When I select a jurisdiction for event investigation
+    Then I should see Results with the text "Cobb County"
