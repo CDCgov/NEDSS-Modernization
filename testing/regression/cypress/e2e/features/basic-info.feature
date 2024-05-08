@@ -33,3 +33,8 @@ Feature: Patient Search by Basic Info
     When I fill last name as "Green Sonum Allen"
     When I select for Deleted patient
     Then I should see "Green Sonum Allen"
+
+  Scenario: Search for Superseded Patients
+    When I fill last name as "Deeanna Denesik"
+    When I select for Superseded patient
+    Then I should see "Deeanna Denesik"
