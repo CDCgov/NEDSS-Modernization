@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "id": "31419555-f2cc-43c8-b7a4-df035717131e",
+      "username": "clerical",
+      "firstName": "Claire",
+      "lastName": "Icül",
+      "emailVerified": false,
+      "createdTimestamp": 1712600241000,
+      "enabled": true,
+      "totp": false,
+      "credentials": [
+        {
+          "id": "60c2c992-da0a-4e49-aafe-67b6e8a5e08a",
+          "type": "password",
+          "userLabel": "My password",
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"Fg3FxW9siOcK1IqOlmJ5kUP6i3cGA4J1uxz5xtHojK3WvP6maAyWEKXtPg32CHOrjqH+fRyCeTcdCOOo5O1bbQ==\",\"salt\":\"5nK4lrW5XDYWVHTF6qKMpQ==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["default-roles-nbs development"],
+      "notBefore": 0,
+      "groups": []
+    },
+    {
+      "id": "4ceb7069-8cde-4711-a3d6-fce0f707fa26",
+      "username": "coordinator",
+      "firstName": "Kora",
+      "lastName": "D`Nator",
+      "emailVerified": false,
+      "createdTimestamp": 1712600241000,
+      "enabled": true,
+      "totp": false,
+      "credentials": [
+        {
+          "id": "c8519b7e-b54d-4321-ab18-5b08a7272454",
+          "type": "password",
+          "userLabel": "My password",
+          "createdDate": 1712600241000,
+          "secretData": "{\"value\":\"F0K/1IarmYPm7sjE5OJgtuEYTlh5/5zF+SsLsfVafP8PwHFB6jgdsiJk5oDCWUTpYEOm7b0iHFddix+f1Ls97w==\",\"salt\":\"iD37omipNEFu0DtFsnl46A==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["default-roles-nbs development"],
+      "notBefore": 0,
+      "groups": []
+    }
+  ]
+}
