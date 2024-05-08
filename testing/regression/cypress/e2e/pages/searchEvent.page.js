@@ -16,8 +16,19 @@ class SearchEventPage {
 
   selectEventInvestigationProgramArea() {
     let elm = cy.get("#react-select-5-placeholder").click({force: true});
-    let elm2 = cy.get("#react-select-5-option-1").click({force: true});
+    let elm2 = cy.get("#react-select-5-option-0").click({force: true});
     cy.wait(500);
+  }  
+
+  selectEventInvestigationJurisdiction() {
+    let elm = cy.get("#react-select-7-placeholder").click({force: true});
+    let elm2 = cy.get("#react-select-7-option-1").click({force: true});
+    cy.wait(500);
+  }  
+
+  selectPregnancy() {
+    let elm = cy.get('select[name="pregnancyStatus"]').select("YES");
+    cy.wait(500)    
   }
 
   search() {

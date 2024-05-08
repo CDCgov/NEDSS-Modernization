@@ -10,11 +10,25 @@ Then("I select a condition for event investigation", () => {
   searchEventPage.search();
 });
 
-Then("I should see Results with the Condition {string}", (string) => {
+Then("I should see Results with the link {string}", (string) => {
   cy.get("a").contains(string).should("be.visible");
+});
+
+Then("I should see Results with the text {string}", (string) => {
+  cy.get(".text-normal").contains(string).should("be.visible");
 });
 
 Then("I select a program area for event investigation", () => {
   searchEventPage.selectEventInvestigationProgramArea();
+  searchEventPage.search();
+});
+
+Then("I select a jurisdiction for event investigation", () => {
+  searchEventPage.selectEventInvestigationJurisdiction();
+  searchEventPage.search();
+});
+
+Then("I select a pregnancy for event investigation", () => {
+  searchEventPage.selectPregnancy();
   searchEventPage.search();
 });
