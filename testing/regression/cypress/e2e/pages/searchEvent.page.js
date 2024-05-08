@@ -14,6 +14,12 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  selectEventInvestigationProgramArea() {
+    let elm = cy.get("#react-select-5-placeholder").click({force: true});
+    let elm2 = cy.get("#react-select-5-option-0").click({force: true});
+    cy.wait(500);
+  }
+
   search() {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);
