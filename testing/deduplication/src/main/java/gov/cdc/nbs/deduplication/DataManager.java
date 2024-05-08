@@ -41,14 +41,16 @@ public class DataManager {
       INSERT INTO Entity(entity_uid, class_cd) VALUES (?, 'PSN');
         """;
 
-  private static final String INSERT_PERSON = """
-      INSERT INTO Person(person_uid, person_parent_uid, birth_time, version_ctrl_nbr) VALUES (?, ?, ?, 1);
-        """;
+  private static final String INSERT_PERSON =
+      """
+          INSERT INTO Person(person_uid, person_parent_uid, birth_time, version_ctrl_nbr, record_status_cd, cd) VALUES (?, ?, ?, 1, 'ACTIVE', 'PAT');
+            """;
 
-  private static final String INSERT_NAME = """
-        INSERT INTO Person_name (person_uid, person_name_seq, status_cd, status_time, first_nm, last_nm)
-      VALUES(?, 1, 'A', '2024-05-07 15:00:00.000', ?, ?);
-          """;
+  private static final String INSERT_NAME =
+      """
+          INSERT INTO Person_name (person_uid, person_name_seq, status_cd, status_time, first_nm, last_nm, nm_use_cd, record_status_cd)
+          VALUES(?, 1, 'A', '2024-05-07 15:00:00.000', ?, ?, 'L', 'ACTIVE');
+              """;
 
   private static final String INSERT_ADDRESS = """
       INSERT INTO Postal_locator(postal_locator_uid, street_addr1, city_desc_txt, state_cd, zip_cd, cntry_cd)
