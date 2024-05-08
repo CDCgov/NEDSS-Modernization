@@ -636,12 +636,16 @@ export const AdvancedSearch = () => {
                                 }}>
                                 <div className="text-center">
                                     <p>No results found.</p>
-                                    <p>
-                                        Try refining your search, or{' '}
-                                        <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
-                                            add a new patient
-                                        </a>
-                                    </p>
+                                    {searchType === 'event' ? (
+                                        <p>Try refining your search</p>
+                                    ) : (
+                                        <p>
+                                            Try refining your search, or{' '}
+                                            <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
+                                                add a new patient
+                                            </a>
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         )}
