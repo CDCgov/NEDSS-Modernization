@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 
 interface IdleTimerProps {
     timeout: number; // Timeout in milliseconds
+    warningTimeout: number; // Warning Timeout in milliseconds
     onIdle: () => void; // Callback function to execute when idle
 }
 
-const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, onIdle }) => {
+const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, warningTimeout, onIdle }) => {
     const [idle, setIdle] = useState(false);
     const [showWarningModal, setShowWarningModal] = useState(false);
 
@@ -26,13 +27,10 @@ const IdleTimer: React.FC<IdleTimerProps> = ({ timeout, onIdle }) => {
         const startWarningTimer = () => {
             setShowWarningModal(true);
             clearTimeout(warningTimer);
-            warningTimer = window.setTimeout(
-                () => {
-                    onIdle();
-                    setShowWarningModal(false);
-                },
-                1000 * 60 * 5
-            ); // 5 minutes?
+            warningTimer = window.setTimeout(() => {
+                onIdle();
+                setShowWarningModal(false);
+            }, warningTimeout);
         };
 
         const removeEventListeners = () => {

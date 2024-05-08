@@ -18,6 +18,7 @@ const ProtectedLayout = () => {
     };
 
     const timeout = 1000 * 60 * 15; // 15 minutes
+    const warningTimeout = 1000 * 60 * 5; // 5 minutes
 
     const WithUser = (user: User) => {
         const data = useLoaderData() as InitializationLoaderResult;
@@ -40,31 +41,12 @@ const ProtectedLayout = () => {
 
     return (
         <Suspense fallback={<Spinner />}>
-            <IdleTimer onIdle={handleIdle} timeout={timeout} />
+            <IdleTimer onIdle={handleIdle} timeout={timeout} warningTimeout={warningTimeout} />
             <Await resolve={data?.user} errorElement={<Navigate to={'/login'} />}>
                 {WithUser}
             </Await>
         </Suspense>
     );
 };
-
-// const WithUser = (user: User) => {
-//     const data = useLoaderData() as InitializationLoaderResult;
-//     return (
-//         <UserContextProvider initial={user}>
-//             <Await resolve={data?.configuration}>{WithConfiguration}</Await>
-//         </UserContextProvider>
-//     );
-// };
-
-// const WithConfiguration = (configuration: Configuration) => {
-//     return (
-//         <ConfigurationProvider initial={configuration}>
-//             <AnalyticsProvider>
-//                 <Layout />
-//             </AnalyticsProvider>
-//         </ConfigurationProvider>
-//     );
-// };
 
 export { ProtectedLayout };
