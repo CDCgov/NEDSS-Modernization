@@ -1,11 +1,14 @@
 package gov.cdc.nbs.deduplication;
 
 import java.util.List;
+import java.time.Instant;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.deduplication.model.PatientData;
 import gov.cdc.nbs.deduplication.model.PatientData.Bundle;
 import gov.cdc.nbs.deduplication.model.PatientData.Bundle.Entry.Resource.Address;
+import org.apache.commons.codec.language.Soundex;
+
 
 @Component
 public class DataManager {
@@ -43,14 +46,51 @@ public class DataManager {
 
   private static final String INSERT_PERSON =
       """
-          INSERT INTO Person(person_uid, person_parent_uid, birth_time, version_ctrl_nbr, record_status_cd, cd) VALUES (?, ?, ?, 1, 'ACTIVE', 'PAT');
+          INSERT INTO Person(
+            person_uid,
+            person_parent_uid,
+            birth_time,
+            version_ctrl_nbr,
+            record_status_cd,
+            cd,
+            curr_sex_cd)
+          VALUES (
+            ?,
+            ?,
+            ?,
+            1,
+            'ACTIVE',
+            'PAT',
+            '');
             """;
 
   private static final String INSERT_NAME =
       """
-          INSERT INTO Person_name (person_uid, person_name_seq, status_cd, status_time, first_nm, last_nm, nm_use_cd, record_status_cd)
-          VALUES(?, 1, 'A', '2024-05-07 15:00:00.000', ?, ?, 'L', 'ACTIVE');
-              """;
+          INSERT INTO Person_name (
+            person_uid,
+            person_name_seq,
+            status_cd,
+            status_time,
+            first_nm,
+            first_nm_sndx,
+            last_nm,
+            last_nm_sndx,
+            nm_use_cd,
+            record_status_cd,
+            as_of_date)
+          VALUES(
+            ?,
+            1,
+            'A',
+            '2024-05-07 15:00:00.000',
+            ?,
+            ?,
+            ?,
+            ?,
+            'L',
+            'ACTIVE',
+            '2024-05-07 15:00:00.000')
+          """;
 
   private static final String INSERT_ADDRESS = """
       INSERT INTO Postal_locator(postal_locator_uid, street_addr1, city_desc_txt, state_cd, zip_cd, cntry_cd)
@@ -68,9 +108,11 @@ public class DataManager {
         """;
 
   private final JdbcTemplate template;
+  private final Soundex soundex;
 
   public DataManager(final JdbcTemplate template) {
     this.template = template;
+    this.soundex = new Soundex();
   }
 
   public int reset() {
@@ -106,7 +148,13 @@ public class DataManager {
     bundle.entry()
         .stream()
         .flatMap(e -> e.resource().name().stream())
-        .forEach(n -> n.given().forEach(firstName -> template.update(INSERT_NAME, id, n.family(), firstName)));
+        .forEach(n -> n.given().forEach(firstName -> template.update(
+            INSERT_NAME,
+            id,
+            n.family(),
+            soundex.encode(n.family()),
+            firstName,
+            soundex.encode(firstName))));
   }
 
   // Inserts a 'postal_locator' and 'entity_locator_participation' entry for each address provided
