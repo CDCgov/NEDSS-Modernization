@@ -1,7 +1,6 @@
 package gov.cdc.nbs.deduplication;
 
 import java.util.List;
-import java.time.Instant;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import gov.cdc.nbs.deduplication.model.PatientData;

@@ -86,3 +86,7 @@ project(':testing-http-interaction').projectDir = new File('libs/testing/http-in
 
 include ':testing-database'
 project(':testing-database').projectDir = new File('libs/testing/database')
+
+// testing project
+include ':deduplication'
+project(':deduplication').projectDir = new File('testing/deduplication')
