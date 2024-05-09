@@ -20,6 +20,12 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  selectEventInvestigationJurisdiction() {
+    let elm = cy.get("#react-select-7-placeholder").click({force: true});
+    let elm2 = cy.get("#react-select-7-option-1").click({force: true});
+    cy.wait(500);
+  }
+
   search() {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);
