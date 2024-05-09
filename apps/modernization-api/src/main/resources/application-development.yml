@@ -49,3 +49,5 @@ nbs:
               enabled: true
             edit:
               enabled: true
+      welcome:
+        enabled: false

@@ -1,3 +1,4 @@
+import { FeatureGuard } from 'feature';
 import { Navigate } from 'react-router-dom';
 import { WelcomeLayout } from './Layout/WelcomeLayout';
 import { About } from 'apps/landing/About/About';
@@ -7,7 +8,22 @@ const routing = {
     path: '/welcome',
     element: <WelcomeLayout />,
     children: [
-        { index: true, element: <Navigate to="about" /> },
+        {
+            index: true,
+            element: (
+                <FeatureGuard guard={(features) => features.welcome.enabled}>
+                    <Navigate to="about" />
+                </FeatureGuard>
+            )
+        },
+        {
+            index: true,
+            element: (
+                <FeatureGuard guard={(features) => !features.welcome.enabled}>
+                    <Navigate to="/nbs/login" />
+                </FeatureGuard>
+            )
+        },
         {
             path: 'about',
             element: <About />

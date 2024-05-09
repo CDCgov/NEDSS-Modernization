@@ -20,6 +20,9 @@ const defaultFeatures: Features = {
                 }
             }
         }
+    },
+    welcome: {
+        enabled: false
     }
 };
 

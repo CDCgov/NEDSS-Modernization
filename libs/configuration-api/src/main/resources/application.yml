@@ -15,3 +15,6 @@ nbs:
               enabled: false
             edit:
               enabled: false
+      welcome:
+        enabled: false
+

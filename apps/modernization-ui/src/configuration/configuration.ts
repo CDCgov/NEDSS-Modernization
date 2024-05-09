@@ -29,6 +29,9 @@ type Features = {
             };
         };
     };
+    welcome: {
+        enabled: boolean;
+    };
 };
 
 type Properties = {
