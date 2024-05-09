@@ -3,12 +3,20 @@ import classNames from 'classnames';
 import styles from './signIn.module.scss';
 import { LinkButton } from 'components/button';
 import { AlertBanner } from 'alert';
+import { useSkipLink } from 'SkipLink/SkipLinkContext';
+import { useEffect } from 'react';
 
 export type SignInProps = {
     handleWelcomeEvent?: (value: string) => void;
 };
 
 export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
+    const { skipTo } = useSkipLink();
+
+    useEffect(() => {
+        skipTo('login');
+    }, []);
+
     return (
         <div className="">
             <h2 className={classNames(styles.heading)}>Login</h2>
@@ -20,7 +28,7 @@ export const SignIn = ({ handleWelcomeEvent }: SignInProps) => {
                     </p>
                 </AlertBanner>
             </div>
-            <LinkButton href="/nbs/login" type="solid" className="margin-top-2">
+            <LinkButton id="login" href="/nbs/login" type="solid" className="margin-top-2">
                 Login to NBS demo site
             </LinkButton>
             <div className={classNames(styles.signUpDemoText)}>
