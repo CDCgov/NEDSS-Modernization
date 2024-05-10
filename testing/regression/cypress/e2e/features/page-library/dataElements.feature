@@ -1,4 +1,4 @@
-Feature: User can view existing page library data elements here.
+Feature: User can verify existing page library data elements here.
 
     Background:
         Given I am logged in as "superuser" and password ""
@@ -7,6 +7,10 @@ Feature: User can view existing page library data elements here.
     Scenario: Verify the page names appear as links in the Page name column of the library
         When User views the "Page name" column
         Then User will see a list of the "Page name links" populated in the "Page name" column
+
+    Scenario: Verify the required values in the Event type column of the Page library
+        When User views the "Event type" column
+        Then User will see a list of the "event types" populated in the "Event type" column
 
     Scenario: Verify various related conditions appear in the Related condition column (of the library)
         When User views the "Related condition(s)" column
