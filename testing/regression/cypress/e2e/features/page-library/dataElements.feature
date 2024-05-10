@@ -15,3 +15,7 @@ Feature: User can verify existing page library data elements here.
     Scenario: Verify various related conditions appear in the Related condition column (of the library)
         When User views the "Related condition(s)" column
         Then User will see a list of the "related conditions" populated in the "Related condition(s)" column
+
+    Scenario: Verify the required data values is populated in the Status column (of the Page library)
+        When User views the "Status" column
+        Then User will see a list of the "Statuses" populated in the "Status" column
