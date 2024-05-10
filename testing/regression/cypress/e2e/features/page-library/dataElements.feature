@@ -23,3 +23,7 @@ Feature: User can verify existing page library data elements here.
     Scenario: Verify the required date format values is populated in the Last Updated column (of the Page library)
         When User views the "Last Updated" column
         Then User will see a list of the "date values" populated in the "Last Updated" column
+
+    Scenario: Verify the user data (First name, Last name) is populated in the Last Updated by column (of the Page library)
+        When User views the "Last updated by" column
+        Then User will see a list of the "first name and last name" populated in the "Last updated by" column
