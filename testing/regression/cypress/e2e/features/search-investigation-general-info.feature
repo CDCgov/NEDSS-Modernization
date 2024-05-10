@@ -16,3 +16,7 @@ Feature: Investigation Search by general search
   Scenario: Basic Info - Search by Jurisdiction
     When I select a jurisdiction for event investigation
     Then I should see Results with the text "Cobb County"
+
+  Scenario: Basic Info - Search by Pregnancy
+    When I select a pregnancy for event investigation
+    Then I should see No Results found text
