@@ -19,3 +19,7 @@ Feature: User can verify existing page library data elements here.
     Scenario: Verify the required data values is populated in the Status column (of the Page library)
         When User views the "Status" column
         Then User will see a list of the "Statuses" populated in the "Status" column
+
+    Scenario: Verify the required date format values is populated in the Last Updated column (of the Page library)
+        When User views the "Last Updated" column
+        Then User will see a list of the "date values" populated in the "Last Updated" column
