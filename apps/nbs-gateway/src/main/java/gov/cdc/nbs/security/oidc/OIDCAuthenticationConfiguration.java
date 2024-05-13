@@ -17,39 +17,23 @@ class OIDCAuthenticationConfiguration {
   @Bean
   SecurityWebFilterChain oidcAuthentication(
       final ServerHttpSecurity http,
-      final ReactiveClientRegistrationRepository repository
-  ) {
+      final ReactiveClientRegistrationRepository repository) {
     return http
         .authorizeExchange(
-            authorize ->
-                //  the landing page
-                authorize.pathMatchers(
-                        HttpMethod.GET,
-                        "/welcome/**"
-                    ).permitAll()
-                    //  paths associated with authentication
-                    .pathMatchers(
-                        HttpMethod.GET,
-                        "/nbs/logged-out",
-                        "/nbs/timeout",
-                        "/nbs/logOut"
-                    )
-                    .permitAll()
-                    //  assets that do not require authentication
-                    .pathMatchers(
-                        HttpMethod.GET,
-                        "/nbs/*.js",
-                        "/nbs/*.css",
-                        "/nbs/*.gif",
-                        "/nbs/task_button/**",
-                        "/images/nedssLogo.jpg",
-                        "/favicon.ico",
-                        "/static/**"
-                    )
-                    .permitAll()
-                    .anyExchange()
-                    .authenticated()
-        )
+            authorize -> authorize.pathMatchers(
+                HttpMethod.GET,
+                "/nbs/logged-out",
+                "/nbs/timeout",
+                "/nbs/logOut",
+                "/nbs/*.js",
+                "/nbs/*.css",
+                "/nbs/*.gif",
+                "/nbs/task_button/**",
+                "/images/nedssLogo.jpg",
+                "/favicon.ico",
+                "/nbs/api/configuration").permitAll()
+                .anyExchange()
+                .authenticated())
         .oauth2Client(withDefaults())
         .oauth2Login(withDefaults())
         .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler(repository)))
