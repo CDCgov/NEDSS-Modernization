@@ -26,6 +26,11 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  selectPregnancy() {
+    let elm = cy.get('select[name="pregnancyStatus"]').select("YES");
+    cy.wait(500);
+  }
+
   search() {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);

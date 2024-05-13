@@ -27,3 +27,8 @@ Then("I select a jurisdiction for event investigation", () => {
   searchEventPage.selectEventInvestigationJurisdiction();
   searchEventPage.search();
 });
+
+Then("I select a pregnancy for event investigation", () => {
+  searchEventPage.selectPregnancy();
+  searchEventPage.search();
+});
