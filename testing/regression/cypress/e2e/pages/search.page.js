@@ -120,9 +120,9 @@ class SearchPage {
     cy.wait(500);
   }
 
-  selectGender() {
+  selectGender(gender) {
     cy.get("#gender");
-    cy.get("#gender").select("Male");
+    cy.get("#gender").select(gender);
     cy.wait(500);
   }
 
