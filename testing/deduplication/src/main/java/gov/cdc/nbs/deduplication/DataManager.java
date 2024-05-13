@@ -52,7 +52,8 @@ public class DataManager {
             version_ctrl_nbr,
             record_status_cd,
             cd,
-            curr_sex_cd)
+            curr_sex_cd,
+            ethnic_group_ind)
           VALUES (
             ?,
             ?,
@@ -60,6 +61,7 @@ public class DataManager {
             1,
             'ACTIVE',
             'PAT',
+            '',
             '');
             """;
 
@@ -91,19 +93,21 @@ public class DataManager {
             '2024-05-07 15:00:00.000')
           """;
 
-  private static final String INSERT_ADDRESS = """
-      INSERT INTO Postal_locator(postal_locator_uid, street_addr1, city_desc_txt, state_cd, zip_cd, cntry_cd)
-      VALUES (?, ?, ?, ?, ?, '840')
-          """;
+  private static final String INSERT_ADDRESS =
+      """
+          INSERT INTO Postal_locator(postal_locator_uid, street_addr1, city_desc_txt, state_cd, zip_cd, cntry_cd, record_status_cd)
+          VALUES (?, ?, ?, ?, ?, '840', 'ACTIVE')
+              """;
 
-  private static final String INSERT_ENTITY_LOCATOR_PARTICIPATION = """
-        INSERT INTO Entity_locator_participation (entity_uid, locator_uid, version_ctrl_nbr)
-      VALUES (?, ?, 1)
-            """;
+  private static final String INSERT_ENTITY_LOCATOR_PARTICIPATION =
+      """
+            INSERT INTO Entity_locator_participation (entity_uid, locator_uid, version_ctrl_nbr, record_status_cd, use_cd, as_of_date)
+          VALUES (?, ?, 1, 'ACTIVE', 'H', '2024-05-07 15:00:00.000')
+                """;
 
   private static final String INSERT_SSN = """
-      INSERT INTO Entity_id (entity_uid, entity_id_seq, root_extension_txt, type_cd)
-      VALUES (?, 1, ?, 'SS')
+      INSERT INTO Entity_id (entity_uid, entity_id_seq, root_extension_txt, type_cd, record_status_cd)
+      VALUES (?, 1, ?, 'SS','ACTIVE')
         """;
 
   private final JdbcTemplate template;
