@@ -137,7 +137,7 @@ class SearchPage {
   }
 
   clearAll() {
-    cy.contains('button', 'Clear all').clear();
+    cy.contains('button', 'Clear all').click();
   }
 
   selectDelete() {

@@ -49,3 +49,13 @@ Feature: Patient Search by Basic Info
   Scenario: Search with Invalid Data
     When I search by dob as "76/5"
     Then I should see "Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon."
+
+  Scenario: Clear Search Criteria
+    When I fill last name as "Zollie"
+    When I fill first name as "Bittlestone"
+    When I fill dob as "04/02/1991"
+    And click on clear all button
+    Then I last name should be ""
+    When I first name should be ""
+    When I dob should be ""
+  
