@@ -24,3 +24,11 @@ Feature: User can verify existing create new page elements here.
       | Data mart name                                                         | Heading, text fields             |
       | Cancel                                                                 | Buttons                          |
       | Create page                                                            | Buttons                          |
+
+  Scenario: Select a single condition
+    And User clicks in the Condition field
+    Then A drop-down box displays with a list of conditions
+    When User clicks the check box to select a single condition
+    Then A single condition is added in the Conditions field
+    When User clicks the up or down arrow - right-side of the field
+    Then Drop-down list box closes

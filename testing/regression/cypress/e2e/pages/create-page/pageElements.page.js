@@ -17,6 +17,32 @@ class PageElementsPage {
         cy.contains(new RegExp(text, 'i'))
     }
 
+    clickConditionField() {
+        this.selectEventType()
+        cy.get("#conditionIds").click()
+    }
+
+    dropdownConditionsOpen() {
+        cy.get(".multi-select__control--menu-is-open").should('be.visible')
+    }
+
+    selectValueFromConditions() {
+        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
+        cy.get('.multi-select__option--is-focused').click();
+    }
+
+    conditionFieldHasValue() {
+        cy.get('.multi-select__value-container--has-value').should('be.visible')
+    }
+
+    clickOnConditionDropdownArrow() {
+        cy.get('.multi-select__dropdown-indicator').click()
+    }
+
+    dropdownConditionsClose() {
+        cy.get(".multi-select__control--menu-is-open").should('not.exist')
+    }
+
 }
 
 export const pageElementsPage = new PageElementsPage()
