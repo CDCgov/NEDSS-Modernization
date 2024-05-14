@@ -20,3 +20,7 @@ Feature: Investigation Search by general search
   Scenario: Basic Info - Search by Pregnancy
     When I select a pregnancy for event investigation
     Then I should see No Results found text
+
+  Scenario: Basic Info - Search by Event id type
+    When I select a event id type for event investigation
+    Then I should see Results with the link "Hansen disease (Leprosy)"

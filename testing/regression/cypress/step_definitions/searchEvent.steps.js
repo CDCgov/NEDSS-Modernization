@@ -32,3 +32,8 @@ Then("I select a pregnancy for event investigation", () => {
   searchEventPage.selectPregnancy();
   searchEventPage.search();
 });
+
+Then("I select a event id type for event investigation", () => {
+  searchEventPage.selectInvestigationEventType();
+  searchEventPage.search();
+});

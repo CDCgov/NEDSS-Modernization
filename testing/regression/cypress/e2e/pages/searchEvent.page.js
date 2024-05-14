@@ -31,6 +31,13 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  selectInvestigationEventType() {
+    let elm = cy.get('select[name="eventId.investigationEventType"]').select("State Case Id");
+    cy.wait(500);
+    let elm2 = cy.get('input[id="eventId.id"]').type("1");
+    cy.wait(500);
+  }
+
   search() {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);
