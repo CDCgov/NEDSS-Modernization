@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useReducer } from 'react';
 
-import { Config } from 'config';
 import { User } from 'user';
 
 type InternalState = { status: 'waiting' } | { status: 'ready'; user: User } | { status: 'logout' };
@@ -49,10 +48,7 @@ const UserContextProvider = ({ initial, children }: Props) => {
             // delete cookies
             document.cookie = 'nbs_user=; Max-Age=0; path=/;';
             document.cookie = 'nbs_token=; Max-Age=0; path=/;';
-            if (Config.enableLogin) {
-                // loading external page will clear state
-                window.location.href = '/nbs/logout';
-            }
+            window.location.href = '/nbs/logout';
         }
     }, [dispatch, state.status]);
 
