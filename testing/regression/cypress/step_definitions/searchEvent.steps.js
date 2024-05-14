@@ -32,3 +32,33 @@ Then("I select a pregnancy for event investigation", () => {
   searchEventPage.selectPregnancy();
   searchEventPage.search();
 });
+
+Then("I select a event id type for event investigation", () => {
+  searchEventPage.selectInvestigationEventType();
+  searchEventPage.search();
+});
+
+Then("I select a date event range for event investigation", () => {
+  searchEventPage.selectInvestigationEventDate();
+  searchEventPage.search();
+});
+
+Then("I select a date event range for event investigation", () => {
+  searchEventPage.selectInvestigationCreatedBy();
+  searchEventPage.search();
+});
+
+Then("I select a user created by for event investigation", () => {
+  searchEventPage.selectInvestigationCreatedBy();
+  searchEventPage.search();
+});
+
+Then("I select a user edited by for event investigation", () => {
+  searchEventPage.selectInvestigationUpdatedBy();
+  searchEventPage.search();
+});
+
+Then("I select a facility search for event investigation", () => {
+  searchEventPage.selectInvestigationFacilitySearch();
+  searchEventPage.search();
+});
