@@ -35,6 +35,12 @@ class SearchEventPage {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);
   }
+
+  selectInvestigationUpdatedBy() {
+    let elm = cy.get('input[id="updatedBy"]').type("u");
+    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click();
+    cy.wait(500);
+  }
 }
 
 export const searchEventPage = new SearchEventPage();
