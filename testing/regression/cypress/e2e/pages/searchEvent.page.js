@@ -9,20 +9,20 @@ class SearchEventPage {
 
   selectEventInvestigationCondition() {    
     let elm = cy.get("#conditionInput").click();
-    let elm2 = cy.get("#react-select-3-option-50").click();
+    let elm2 = cy.get("#react-select-2-option-1").click();
     cy.get('.multi-select__control--is-focused ').click();
     cy.wait(500);
   }
 
   selectEventInvestigationProgramArea() {
-    let elm = cy.get("#react-select-5-placeholder").click({force: true});
-    let elm2 = cy.get("#react-select-5-option-0").click({force: true});
+    let elm = cy.get("#react-select-3-placeholder").click({force: true});
+    let elm2 = cy.get("#react-select-3-option-0").click({force: true});
     cy.wait(500);
   }
 
   selectEventInvestigationJurisdiction() {
-    let elm = cy.get("#react-select-7-placeholder").click({force: true});
-    let elm2 = cy.get("#react-select-7-option-1").click({force: true});
+    let elm = cy.get("#react-select-4-placeholder").click({force: true});
+    let elm2 = cy.get("#react-select-4-option-1").click({force: true});
     cy.wait(500);
   }
 
@@ -32,8 +32,11 @@ class SearchEventPage {
   }
 
   selectInvestigationCreatedBy() {
-    let elm = cy.get('input[id="createdBy"]').type("u");
-    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click();
+    let elm = cy.get('input[id="createdBy"]').type("super");
+    cy.wait(500);
+    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click({multiple: true});
+    cy.wait(500);
+  }
 
   selectInvestigationEventDate() {
     let elm = cy.get('select[name="eventDate.type"]').select("Last Update Date");
@@ -56,8 +59,9 @@ class SearchEventPage {
   }
 
   selectInvestigationUpdatedBy() {
-    let elm = cy.get('input[id="updatedBy"]').type("u");
-    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click();
+    let elm = cy.get('input[id="lastUpdatedBy"]').type("super");
+    cy.wait(500);
+    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click({multiple: true});
     cy.wait(500);
   }
 }
