@@ -31,6 +31,12 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  selectInvestigationCreatedBy() {
+    let elm = cy.get('input[id="createdBy"]').type("u");
+    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click();
+    cy.wait(500);
+  }
+
   search() {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);
