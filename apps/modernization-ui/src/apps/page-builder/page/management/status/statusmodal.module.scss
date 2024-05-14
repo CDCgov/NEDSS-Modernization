@@ -5,15 +5,21 @@ $max-height: 80svh;
 .modal {
     padding: 0;
 
+    .title {
+        font-weight: bold;
+        h2 {
+            margin: 0;
+        }
+    }
     .content {
         display: flex;
         margin: 1.5rem;
-
         border-left: 0.5rem solid colors.$warning;
-
+        h3 {
+            margin: 0;
+        }
 
         .warning {
-            
             color: colors.$warning;
             margin-left: 1rem;
             margin-right: 1rem;
@@ -28,9 +34,6 @@ $max-height: 80svh;
             display: flex;
             flex-direction: column;
 
-            .title {
-                font-weight: bold;
-            }
         }
     }
 

@@ -3,7 +3,6 @@ import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanne
 import { PagesTab, Tab } from 'apps/page-builder/generated';
 import { AddEditTab } from 'apps/page-builder/page/management/edit/tabs/AddEditTab/AddEditTab';
 import { addTab, updateTab } from 'apps/page-builder/services/tabsAPI';
-import { Heading } from 'components/heading';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import './ManageTabModal.scss';
@@ -140,7 +139,7 @@ export const ManageTabs = ({ pageId, onAddSuccess, tabs }: Props) => {
                 modalRef={modalRef}
                 data-testid="openManageTabs">
                 <Icon.Edit />
-                <Heading level={3}>Manage tabs</Heading>
+                <h2>Manage tabs</h2>
             </ModalToggleButton>
             <Modal id={'manage-tab-modal'} ref={modalRef} className={'manage-tab-modal'} isLarge forceAction>
                 <div className={styles.manageTabModal}>

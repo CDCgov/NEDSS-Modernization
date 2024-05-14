@@ -6,7 +6,6 @@ import {
     PageInformationService
 } from 'apps/page-builder/generated';
 import { useDownloadPageMetadata } from 'apps/page-builder/hooks/api/useDownloadPageMetadata';
-import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePageManagement } from '../../usePageManagement';
@@ -86,7 +85,7 @@ const PageInformation = () => {
     return (
         <section className={styles.information}>
             <header>
-                <Heading level={2}>Page information</Heading>
+                <h3>Page information</h3>
                 <Button type="button" outline onClick={handleDownloadMetadata} className={styles.icon}>
                     <Icon.FileDownload />
                     Metadata

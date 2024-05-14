@@ -32,7 +32,9 @@ export const SectionHeader = ({
     return (
         <div className={classNames(styles.header, { [styles.expanded]: isExpanded })}>
             <div className={styles.info}>
-                <div className={styles.name}>{name}</div>
+                <div className={styles.name}>
+                    <h3>{name}</h3>
+                </div>
                 <div className={styles.subsectionCount}>
                     {subsectionCount} subsection{subsectionCount > 1 ? 's' : ''}
                 </div>

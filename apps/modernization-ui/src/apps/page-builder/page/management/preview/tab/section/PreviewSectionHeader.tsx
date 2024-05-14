@@ -1,7 +1,6 @@
 import styles from './preview-section.module.scss';
 import { Icon } from '@trussworks/react-uswds';
 import { PagesSection } from '../../../../../generated';
-import { Heading } from '../../../../../../../components/heading';
 import classNames from 'classnames';
 
 type Props = {
@@ -14,7 +13,7 @@ export const PreviewSectionHeader = ({ section, isExpanded, onExpandedChange }: 
     return (
         <div className={classNames(styles.header, { [styles.expanded]: isExpanded })}>
             <header>
-                <Heading level={2}>{section.name}</Heading>
+                <h3>{section.name}</h3>
                 <p>{section.subSections.length} sub sections</p>
             </header>
             <div className={styles.buttons}>

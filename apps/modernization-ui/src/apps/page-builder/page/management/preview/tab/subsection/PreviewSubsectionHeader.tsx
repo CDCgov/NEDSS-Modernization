@@ -14,7 +14,9 @@ export const PreviewSubsectionHeader = ({ subsection, isExpanded, onExpandedChan
             <div className={styles.info}>
                 {subsection.isGrouped ? <div className={styles.indicator}>R</div> : null}
                 <div>
-                    <div className={styles.name}>{subsection.name}</div>
+                    <div className={styles.name}>
+                        <h4>{subsection.name}</h4>
+                    </div>
                     <div className={styles.count}>
                         {`${subsection.questions?.length} question${subsection.questions?.length > 1 ? 's' : ''}`}
                     </div>
