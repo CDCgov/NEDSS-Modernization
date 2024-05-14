@@ -21,6 +21,10 @@ Feature: Investigation Search by general search
     When I select a pregnancy for event investigation
     Then I should see No Results found text
 
+  Scenario: Basic Info - Search by Event date range
+    When I select a date event range for event investigation
+    Then I should see Results with the link "Dengue"
+
   Scenario: Basic Info - Search by Event id type
     When I select a event id type for event investigation
     Then I should see Results with the link "Hansen disease (Leprosy)"
