@@ -31,6 +31,15 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  selectInvestigationEventDate() {
+    let elm = cy.get('select[name="eventDate.type"]').select("Last Update Date");
+    cy.wait(500);
+    let elm2 = cy.get('input[id="eventDate.from"]').type("090920022");
+    cy.wait(500);
+    let elm3 = cy.get('input[id="eventDate.to"]').type("05052024");
+    cy.wait(500);
+  }
+
   search() {
     let elm = cy.get('button[data-testid="search"]').click(({force: true}));
     cy.wait(500);
