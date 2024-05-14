@@ -34,6 +34,19 @@ class SearchEventPage {
   selectInvestigationCreatedBy() {
     let elm = cy.get('input[id="createdBy"]').type("u");
     let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click();
+
+  selectInvestigationEventDate() {
+    let elm = cy.get('select[name="eventDate.type"]').select("Last Update Date");
+    cy.wait(500);
+    let elm2 = cy.get('input[id="eventDate.from"]').type("090920022");
+    cy.wait(500);
+    let elm3 = cy.get('input[id="eventDate.to"]').type("05052024");
+  }
+  
+  selectInvestigationEventType() {
+    let elm = cy.get('select[name="eventId.investigationEventType"]').select("State Case Id");
+    cy.wait(500);
+    let elm2 = cy.get('input[id="eventId.id"]').type("1");
     cy.wait(500);
   }
 
