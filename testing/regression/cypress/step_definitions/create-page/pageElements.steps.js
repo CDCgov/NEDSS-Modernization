@@ -33,3 +33,19 @@ Then("User clicks the up or down arrow - right-side of the field", () => {
 Then("Drop-down list box closes", () => {
     pageElementsPage.dropdownConditionsClose();
 });
+
+Then("User clicks in the Page name field", () => {
+    pageElementsPage.clickPageNameField();
+});
+
+Then("Page name field is highlighted with a rectangular blue box", () => {
+    pageElementsPage.pageNameFieldFocused();
+});
+
+Then("User enters a Page name in the text field", () => {
+    pageElementsPage.enterValueInPageNameField();
+});
+
+Then("Page name field allows entry of text successfully", () => {
+    pageElementsPage.pageNameFieldAllows();
+});

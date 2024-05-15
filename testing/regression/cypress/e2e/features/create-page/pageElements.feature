@@ -32,3 +32,9 @@ Feature: User can verify existing create new page elements here.
     Then A single condition is added in the Conditions field
     When User clicks the up or down arrow - right-side of the field
     Then Drop-down list box closes
+
+    Scenario: Verify Page name field allows entry of text characters
+        And User clicks in the Page name field
+        Then Page name field is highlighted with a rectangular blue box
+        When User enters a Page name in the text field
+        Then Page name field allows entry of text successfully
