@@ -60,6 +60,30 @@ class PageElementsPage {
         cy.get('#name').should('have.value', 'Malaria Investigation')
     }
 
+    clickTemplateField() {
+        this.selectEventType()
+        cy.wait(500)
+        cy.get('#templateId').select('')
+    }
+
+    templateFieldFocused() {
+        cy.get('#templateId').should('be.focused')
+    }
+
+    templateFieldHasValueList() {
+        cy.get('#templateId').find('option').should('have.length.gt', 1)
+    }
+
+    selectValueFromTemplateList() {
+        cy.get('#templateId').find('option').eq(1).then((option) => {
+            cy.get('#templateId').select(option.attr('value'))
+        })
+    }
+
+    templateFieldHasValue() {
+        cy.get('#templateId').invoke('val').should('exist')
+    }
+
 }
 
 export const pageElementsPage = new PageElementsPage()

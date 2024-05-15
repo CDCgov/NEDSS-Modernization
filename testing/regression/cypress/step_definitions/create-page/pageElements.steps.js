@@ -49,3 +49,23 @@ Then("User enters a Page name in the text field", () => {
 Then("Page name field allows entry of text successfully", () => {
     pageElementsPage.pageNameFieldAllows();
 });
+
+Then("User clicks the Template field", () => {
+    pageElementsPage.clickTemplateField();
+});
+
+Then("Template field is highlighted with a rectangular blue box", () => {
+    pageElementsPage.templateFieldFocused();
+});
+
+Then("Drop-down box displays with a list of Templates to select", () => {
+    pageElementsPage.templateFieldHasValueList();
+});
+
+Then("User selects a Template", () => {
+    pageElementsPage.selectValueFromTemplateList();
+});
+
+Then("A Template is populated successfully in the Templates field template", () => {
+    pageElementsPage.templateFieldHasValue();
+});
