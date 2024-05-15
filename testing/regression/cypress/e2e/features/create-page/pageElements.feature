@@ -33,8 +33,15 @@ Feature: User can verify existing create new page elements here.
     When User clicks the up or down arrow - right-side of the field
     Then Drop-down list box closes
 
-    Scenario: Verify Page name field allows entry of text characters
-        And User clicks in the Page name field
-        Then Page name field is highlighted with a rectangular blue box
-        When User enters a Page name in the text field
-        Then Page name field allows entry of text successfully
+  Scenario: Verify Page name field allows entry of text characters
+    And User clicks in the Page name field
+    Then Page name field is highlighted with a rectangular blue box
+    When User enters a Page name in the text field
+    Then Page name field allows entry of text successfully
+
+  Scenario: Verify selection of a Template populates the field
+    And User clicks the Template field
+    Then Template field is highlighted with a rectangular blue box
+    And Drop-down box displays with a list of Templates to select
+    When User selects a Template
+    Then A Template is populated successfully in the Templates field template
