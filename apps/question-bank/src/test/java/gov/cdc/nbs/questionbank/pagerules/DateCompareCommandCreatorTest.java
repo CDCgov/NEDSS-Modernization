@@ -15,6 +15,15 @@ class DateCompareCommandCreatorTest {
   DateCompareCommandCreator creator = new DateCompareCommandCreator();
 
   @Test
+  void function_name() {
+    String expected = "ruleDCompINV14411()";
+    String actual = creator.createJavascriptName(
+        "INV144",
+        11);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
   void generates_valid_expression() {
     String expected = "INV132 <  ^ DT ( INV162 , INV110 )";
     String expression = creator.createExpression(
@@ -37,29 +46,29 @@ class DateCompareCommandCreatorTest {
   @Test
   void generates_valid_error_message() {
     String expected =
-        "Admission Date  must be <  Confirmation Date, Admission Date  must be <  Date Assigned to Investigation";
+        "Admission Date  must be >  Confirmation Date, Admission Date  must be >  Date Assigned to Investigation";
     String errorMessage = creator.createErrorMessage(
         "Admission Date",
         Arrays.asList("Confirmation Date", "Date Assigned to Investigation"),
-        "<");
+        ">");
     assertThat(errorMessage).isEqualTo(expected);
   }
 
   @Test
   void generates_valid_error_message_single() {
     String expected =
-        "Admission Date  must be <  Confirmation Date";
+        "Admission Date  must be <=  Confirmation Date";
     String errorMessage = creator.createErrorMessage(
         "Admission Date",
         Arrays.asList("Confirmation Date"),
-        "<");
+        "<=");
     assertThat(errorMessage).isEqualTo(expected);
   }
 
 
   @Test
   void generates_valid_javascript_name() {
-    final String expected = "ruleDCompINV13210";
+    final String expected = "ruleDCompINV13210()";
     String functionName = creator.createJavascriptName(
         "INV132",
         10);

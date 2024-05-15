@@ -16,7 +16,7 @@ class EnableDisableCommandCreatorTest {
 
   @Test
   void function_name() {
-    String expected = "ruleEnDisINV14411";
+    String expected = "ruleEnDisINV14411()";
     String actual = creator.createJavascriptName(
         "INV144",
         11);
@@ -43,13 +43,27 @@ class EnableDisableCommandCreatorTest {
 
   @Test
   void error_message() {
-    String expected = "Age at Onset Units > must be ( Days , Hours ) Comments";
+    String expected = "Age at Onset Units <> must be ( Days, Hours ) Comments";
     String actual = creator.createErrorMessage(
         "Age at Onset Units",
         Arrays.asList(
             new SourceValue("D", "Days"),
             new SourceValue("H", "Hours")),
         false,
+        Arrays.asList("Comments"),
+        "<>");
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void error_message_any_source() {
+    String expected = "Age at Onset Units  must be ( Any Source Value ) Comments";
+    String actual = creator.createErrorMessage(
+        "Age at Onset Units",
+        Arrays.asList(
+            new SourceValue("D", "Days"),
+            new SourceValue("H", "Hours")),
+        true,
         Arrays.asList("Comments"),
         ">");
     assertThat(actual).isEqualTo(expected);

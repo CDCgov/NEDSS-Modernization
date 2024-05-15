@@ -19,7 +19,7 @@ public class EnableDisableCommandCreator {
   // pgEnable with target identifier
   // pgDisable with target identifier
   private static final String ANY_SOURCE_VALUE = """
-      function %s()
+      function %s
       {
        var foo = [];
       $j('#%s :selected').each(function(i, selected){
@@ -40,7 +40,7 @@ public class EnableDisableCommandCreator {
   // pgDisable with target identifier
   private static final String SPECIFIC_SOURCE_VALUES =
       """
-          function %s()
+          function %s
           {
            var foo = [];
           $j('#%s :selected').each(function(i, selected){
@@ -148,7 +148,7 @@ public class EnableDisableCommandCreator {
   }
 
   String createJavascriptName(String sourceIdentifier, long ruleId) {
-    return "ruleEnDis" + sourceIdentifier + ruleId;
+    return "ruleEnDis" + sourceIdentifier + ruleId + "()";
   }
 
   String createErrorMessage(
@@ -161,7 +161,7 @@ public class EnableDisableCommandCreator {
     String sourceValue = anySourceValue ? "Any Source Value"
         : sourceValues.stream()
             .map(SourceValue::text)
-            .collect(Collectors.joining(" , "));
+            .collect(Collectors.joining(", "));
     return "%s %s must be ( %s ) %s".formatted(
         sourceLabel,
         comparatorValue,
