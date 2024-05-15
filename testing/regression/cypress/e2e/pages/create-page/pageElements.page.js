@@ -8,7 +8,7 @@ class PageElementsPage {
     }
 
     selectEventType() {
-        cy.wait(500)
+        cy.wait(1000)
         cy.get("#eventType").select("INV")
     }
 
@@ -41,6 +41,23 @@ class PageElementsPage {
 
     dropdownConditionsClose() {
         cy.get(".multi-select__control--menu-is-open").should('not.exist')
+    }
+
+    clickPageNameField() {
+        this.selectEventType()
+        cy.get('#name').click()
+    }
+
+    pageNameFieldFocused() {
+        cy.get('#name').should('be.focused')
+    }
+
+    enterValueInPageNameField() {
+        cy.get('#name').type('Malaria Investigation')
+    }
+
+    pageNameFieldAllows() {
+        cy.get('#name').should('have.value', 'Malaria Investigation')
     }
 
 }

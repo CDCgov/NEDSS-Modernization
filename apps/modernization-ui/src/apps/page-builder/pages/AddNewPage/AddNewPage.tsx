@@ -188,7 +188,7 @@ export const AddNewPage = () => {
                     </div>
                 </div>
                 <div className="add-new-page__buttons">
-                    <Button type="button" outline onClick={handleCancel}>
+                    <Button type="button" outline onClick={handleCancel} id="cancelBtn">
                         Cancel
                     </Button>
                     <Button
