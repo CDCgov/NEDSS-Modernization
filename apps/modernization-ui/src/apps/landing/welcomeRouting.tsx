@@ -17,14 +17,6 @@ const routing = {
             )
         },
         {
-            index: true,
-            element: (
-                <FeatureGuard guard={(features) => !features.welcome.enabled}>
-                    <Navigate to="/nbs/login" />
-                </FeatureGuard>
-            )
-        },
-        {
             path: 'about',
             element: <About />
         },
