@@ -39,6 +39,21 @@ Feature: User can verify existing create new page elements here.
     When User enters a Page name in the text field
     Then Page name field allows entry of text successfully
 
+  Scenario Outline: Event Type field displays required values in the drop-down box (upon selection) on Add new page
+    And User clicks the Event Type field
+    Then Event Type field is highlighted with a rectangular blue box
+    And Drop-down box displays with the following required values by "<Option text>"
+
+    Examples:
+      | Option text          |
+      | Contact Record       |
+      | Interview            |
+      | Investigation        |
+      | Lab Isolate Tracking |
+      | Lab Report           |
+      | Lab Susceptibility   |
+      | Vaccination          |
+
   Scenario: Verify selection of a Template populates the field
     And User clicks the Template field
     Then Template field is highlighted with a rectangular blue box

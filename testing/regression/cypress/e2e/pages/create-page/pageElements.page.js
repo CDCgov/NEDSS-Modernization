@@ -60,6 +60,18 @@ class PageElementsPage {
         cy.get('#name').should('have.value', 'Malaria Investigation')
     }
 
+    clickEventTypeField() {
+        cy.get('#eventType').select('')
+    }
+
+    eventTypeFieldFocused() {
+        cy.get('#eventType').should('be.focused')
+    }
+
+    eventTypeFieldHasValue(optionText) {
+        cy.get('#eventType').should('contain', optionText)
+    }
+
     clickTemplateField() {
         this.selectEventType()
         cy.wait(500)
