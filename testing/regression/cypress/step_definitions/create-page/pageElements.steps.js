@@ -50,6 +50,18 @@ Then("Page name field allows entry of text successfully", () => {
     pageElementsPage.pageNameFieldAllows();
 });
 
+Then("User clicks the Event Type field", () => {
+    pageElementsPage.clickEventTypeField();
+});
+
+Then("Event Type field is highlighted with a rectangular blue box", () => {
+    pageElementsPage.eventTypeFieldFocused();
+});
+
+Then("Drop-down box displays with the following required values by {string}", (string) => {
+    pageElementsPage.eventTypeFieldHasValue(string);
+});
+
 Then("User clicks the Template field", () => {
     pageElementsPage.clickTemplateField();
 });
