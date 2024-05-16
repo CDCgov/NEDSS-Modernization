@@ -14,7 +14,7 @@ const ProtectedLayout = () => {
     const navigate = useNavigate();
 
     const handleIdle = () => {
-        navigate('/expired');
+        navigate('/logout');
     };
 
     const timeout = 1000 * 60 * 15; // 15 minutes
