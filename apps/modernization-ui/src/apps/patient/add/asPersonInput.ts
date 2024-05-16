@@ -27,6 +27,14 @@ export const asPersonInput = (data: NewPatientEntry) => {
             use: 'WP'
         });
     }
+    if (data.cellPhone) {
+        phoneNumbers.push({
+            number: data.cellPhone,
+            extension: data.extension,
+            type: 'CP',
+            use: 'MC'
+        });
+    }
 
     data.phoneNumbers.filter((item) => item.number).forEach((item) => phoneNumbers.push(item as NewPatientPhoneNumber));
 

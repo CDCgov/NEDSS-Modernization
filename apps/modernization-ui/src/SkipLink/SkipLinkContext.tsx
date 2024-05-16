@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import './SkipLink.scss';
 
 interface SkipLinkContextType {
     skipTo: (id: string) => void;
@@ -38,7 +37,7 @@ export const SkipLinkProvider = ({ children }: SkipLinkProviderProps) => {
     return (
         <SkipLinkContext.Provider value={contextValue}>
             {currentFocusTarget && (
-                <a href={`#${currentFocusTarget}`} className="skip-link">
+                <a href={`#${currentFocusTarget}`} className="usa-skipnav">
                     Skip to main content
                 </a>
             )}

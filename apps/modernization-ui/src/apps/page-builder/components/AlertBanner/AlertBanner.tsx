@@ -8,9 +8,10 @@ export type AlertBannerProps = {
     children?: ReactNode | ReactNode[];
     onClose?: () => void;
     expiration?: number;
+    noIcon?: boolean;
 };
 
-export const AlertBanner = ({ type, children, onClose, expiration }: AlertBannerProps) => {
+export const AlertBanner = ({ type, children, onClose, expiration, noIcon }: AlertBannerProps) => {
     const [hidden, setHidden] = useState(false);
 
     useEffect(() => {
@@ -24,13 +25,15 @@ export const AlertBanner = ({ type, children, onClose, expiration }: AlertBanner
 
     return (
         <div className={classNames('alert-banner', type, hidden ? 'hidden' : '')}>
-            <div className="alert-banner__left">
-                {type === 'success' && <Icon.CheckCircle size={3} />}
-                {type === 'warning' && <Icon.Warning size={3} />}
-                {type === 'prompt' && <Icon.Info size={3} />}
-                {type === 'info' && <Icon.Info size={3} />}
-                {type === 'error' && <Icon.Error size={5} />}
-            </div>
+            {!noIcon && (
+                <div className="alert-banner__left">
+                    {type === 'success' && <Icon.CheckCircle size={3} />}
+                    {type === 'warning' && <Icon.Warning size={3} />}
+                    {type === 'prompt' && <Icon.Info size={3} />}
+                    {type === 'info' && <Icon.Info size={3} />}
+                    {type === 'error' && <Icon.Error size={5} />}
+                </div>
+            )}
             <div className="alert-banner__right">{children}</div>
             {onClose ? (
                 <div className="alert-banner__close" onClick={() => onClose()}>

@@ -15,13 +15,13 @@ describe('when rendered', () => {
 
         const tableHeads = getAllByRole('columnheader');
 
-        expect(tableHeads[0]).toHaveTextContent('Start date');
-        expect(tableHeads[1]).toHaveTextContent('Condition');
-        expect(tableHeads[2]).toHaveTextContent('Case status');
-        expect(tableHeads[3]).toHaveTextContent('Notification');
-        expect(tableHeads[4]).toHaveTextContent('Jurisdiction');
-        expect(tableHeads[5]).toHaveTextContent('Investigator');
-        expect(tableHeads[6]).toHaveTextContent('Investigation #');
+        expect(tableHeads[0]).toHaveTextContent('Investigation #');
+        expect(tableHeads[1]).toHaveTextContent('Start date');
+        expect(tableHeads[2]).toHaveTextContent('Condition');
+        expect(tableHeads[3]).toHaveTextContent('Case status');
+        expect(tableHeads[4]).toHaveTextContent('Notification');
+        expect(tableHeads[5]).toHaveTextContent('Jurisdiction');
+        expect(tableHeads[6]).toHaveTextContent('Investigator');
         expect(tableHeads[7]).toHaveTextContent('Co-infection #');
     });
 });
@@ -109,13 +109,13 @@ describe('when at least one investigation is available for a patient', () => {
 
         const tableData = await findAllByRole('cell');
 
-        expect(tableData[0]).toHaveTextContent('03/27/2023');
-        expect(tableData[1]).toHaveTextContent('condition');
-        expect(tableData[2]).toHaveTextContent('case-status');
-        expect(tableData[3]).toHaveTextContent('notification');
-        expect(tableData[4]).toHaveTextContent('jurisdiction');
-        expect(tableData[5]).toHaveTextContent('investigator');
-        expect(tableData[6]).toContainElement(await findByText('event'));
+        expect(tableData[0]).toContainElement(await findByText('event'));
+        expect(tableData[1]).toHaveTextContent('03/27/2023');
+        expect(tableData[2]).toHaveTextContent('condition');
+        expect(tableData[3]).toHaveTextContent('case-status');
+        expect(tableData[4]).toHaveTextContent('notification');
+        expect(tableData[5]).toHaveTextContent('jurisdiction');
+        expect(tableData[6]).toHaveTextContent('investigator');
         expect(tableData[7]).toHaveTextContent('co-infection');
     });
 });

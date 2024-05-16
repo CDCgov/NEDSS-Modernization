@@ -16,7 +16,7 @@ public class HideUnhideCommandCreator {
 
   private static final String ANY_SOURCE_VALUE =
       """
-          function %s()
+          function %s
           {
            var foo = [];
           $j('#%s :selected').each(function(i, selected){
@@ -41,7 +41,7 @@ public class HideUnhideCommandCreator {
 
   private static final String SPECIFIC_SOURCE_VALUES =
       """
-          function %s()
+          function %s
           {
            var foo = [];
           $j('#%s :selected').each(function(i, selected){
@@ -71,6 +71,7 @@ public class HideUnhideCommandCreator {
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
     String errorMessage = createErrorMessage(
         request.sourceText(),
+        request.sourceIdentifier(),
         request.sourceValues(),
         request.anySourceValue(),
         request.targetValueText(),
@@ -109,6 +110,7 @@ public class HideUnhideCommandCreator {
     String sourceValues = createSourceValues(request.anySourceValue(), request.sourceValues());
     String errorMessage = createErrorMessage(
         request.sourceText(),
+        request.sourceIdentifier(),
         request.sourceValues(),
         request.anySourceValue(),
         request.targetValueText(),
@@ -148,25 +150,32 @@ public class HideUnhideCommandCreator {
   }
 
   String createJavascriptName(String sourceIdentifier, long ruleId) {
-    return "ruleHideUnh" + sourceIdentifier + ruleId;
+    return "ruleHideUnh" + sourceIdentifier + ruleId + "()";
   }
 
   String createErrorMessage(
       String sourceLabel,
+      String sourceIdentifier,
       List<SourceValue> sourceValues,
       boolean anySourceValue,
       List<String> targetLabels,
       String comparator) {
-    String comparatorValue = anySourceValue ? "" : comparator;
-    String sourceValue = anySourceValue ? "Any Source Value"
-        : sourceValues.stream()
-            .map(SourceValue::text)
-            .collect(Collectors.joining(" , "));
-    return "%s %s must be ( %s ) %s".formatted(
-        sourceLabel,
-        comparatorValue,
-        sourceValue,
-        String.join(", ", targetLabels));
+    if (anySourceValue) {
+      return "%s %s must be ( %s ) %s".formatted(
+          sourceLabel,
+          comparator,
+          "Any Source Value",
+          String.join(", ", targetLabels));
+    } else {
+      return "%s (%s) %s must be ( %s ) %s".formatted(
+          sourceLabel,
+          sourceIdentifier,
+          comparator,
+          sourceValues.stream()
+              .map(SourceValue::text)
+              .collect(Collectors.joining(" , ")),
+          String.join(", ", targetLabels));
+    }
   }
 
   String createExpression(

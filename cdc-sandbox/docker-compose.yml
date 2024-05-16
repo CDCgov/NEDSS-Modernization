@@ -94,9 +94,6 @@ services:
       - NIFI_SENSITIVE_PROPS_KEY=12345678901234567890A
       - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=fake.fake.fake.1234;authenticationScheme=nativeAuthentication;
       - ELASTICSEARCH_HTTP_HOSTS=http://elasticsearch:9200
-    # volumes:
-    #   - ./nifi/nifi_drivers:/var/opt/nifi_drivers:ro
-    #   - ./nifi/nifi_conf/conf:/opt/nifi/nifi-current/conf:rw
     networks:
       - nbs
   keycloak:
@@ -110,6 +107,7 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: fake.1234    
+      NBS7_BASE_URL: "http://localhost:8000"
     entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"      
     networks:
       - nbs

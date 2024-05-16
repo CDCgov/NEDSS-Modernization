@@ -32,7 +32,6 @@ export type AlertType = {
 export const Demographics = () => {
     const { id } = useParams();
     const { patient } = usePatientProfile(id);
-
     return (
         <div role="tabpanel" id="demographics-tabpanel">
             <AlertProvider>

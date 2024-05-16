@@ -133,7 +133,7 @@ class AddPatientPage {
   }
 
   viewPatientProfile() {
-    cy.get("button[class=usa-button]").click();
+    cy.get("button[class*=successModal]").click();
   }
 
   addAnotherPatient() {

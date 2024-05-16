@@ -120,9 +120,9 @@ class SearchPage {
     cy.wait(500);
   }
 
-  selectGender() {
+  selectGender(gender) {
     cy.get("#gender");
-    cy.get("#gender").select("Male");
+    cy.get("#gender").select(gender);
     cy.wait(500);
   }
 
@@ -131,8 +131,23 @@ class SearchPage {
   }
 
   enterDob(dateOfBirth) {
+    cy.get("#dateOfBirth").focus().clear();
     const cleanedDateOfBirth = dateOfBirth.replace(/\//g, "");
     cy.get("#dateOfBirth").type(cleanedDateOfBirth);
+  }
+
+  clearAll() {
+    cy.contains('button', 'Clear all').click();
+  }
+
+  selectDelete() {
+    cy.get('#record-status-active').focus().click( { force: true})
+    cy.get('#record-status-deleted').focus().click({ force: true})
+  }
+
+  selectSuperseded() {
+    cy.get('#record-status-active').focus().click( { force: true})
+    cy.get('#record-status-deleted').focus().click({ force: true})
   }
 }
 
