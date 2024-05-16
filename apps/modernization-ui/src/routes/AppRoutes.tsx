@@ -29,7 +29,7 @@ const routing = [
         ]
     },
     { path: '*', element: <RedirectHome /> },
-    { path: 'expired', element: <Expired /> }
+    { path: 'logout', element: <Expired /> }
 ];
 
 const router = createBrowserRouter(routing);
