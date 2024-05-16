@@ -37,9 +37,6 @@ public class SecurityConfigurer {
             exceptions -> exceptions.defaultAuthenticationEntryPointFor(
                 new NBSSessionAuthenticationEntryPoint(),
                 AnyRequestMatcher.INSTANCE
-            ).defaultAccessDeniedHandlerFor(
-                new NBSAccessDeniedHandler(),
-                AnyRequestMatcher.INSTANCE
             )
         );
   }

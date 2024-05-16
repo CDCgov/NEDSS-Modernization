@@ -44,9 +44,12 @@ nbs:
         - /v3/api-docs/**
         - /swagger-ui/**
         - /swagger-resources/**
+        # Required to support the embedded UI
         - /login
+        - /welcome/**
         - /favicon.ico
-
+        - /static/**
+        - /nbs/timeout
 
 logging:
   file.name:
