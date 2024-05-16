@@ -64,6 +64,24 @@ class SearchEventPage {
     let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click({multiple: true});
     cy.wait(500);
   }
+
+  selectInvestigationFacility() {
+    let elm = cy.get('select[name="providerFacilitySearch.entityType"]').select("Facility");
+    cy.wait(500);
+    let elm2 = cy.get('input[name="providerFacilitySearch.id"]').type("a");
+    cy.wait(500);
+    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+    cy.wait(500);
+  }
+
+  selectInvestigationProvider() {
+    let elm = cy.get('select[name="providerFacilitySearch.entityType"]').select("Provider");
+    cy.wait(500);
+    let elm2 = cy.get('input[name="providerFacilitySearch.id"]').type("a");
+    cy.wait(500);
+    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+    cy.wait(500);
+  }
 }
 
 export const searchEventPage = new SearchEventPage();

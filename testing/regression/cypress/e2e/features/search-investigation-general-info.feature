@@ -35,3 +35,11 @@ Feature: Investigation Search by general search
   Scenario: Basic Info - Search by Event id type
     When I select a event id type for event investigation
     Then I should see Results with the link "2019 Novel Coronavirus"
+
+  Scenario: Basic Info - Search by Event Facility
+    When I select a facility for event investigation
+    Then I should see Results with the link "Anthrax"
+
+  Scenario: Basic Info - Search by Event Provider
+    When I select a provider for event investigation
+    Then I should see No Results found text
