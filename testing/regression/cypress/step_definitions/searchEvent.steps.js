@@ -52,3 +52,13 @@ Then("I select a event id type for event investigation", () => {
   searchEventPage.selectInvestigationEventType();
   searchEventPage.search();
 });
+
+Then("I select a facility for event investigation", () => {
+  searchEventPage.selectInvestigationFacility();
+  searchEventPage.search();
+});
+
+Then("I select a provider for event investigation", () => {
+  searchEventPage.selectInvestigationProvider();
+  searchEventPage.search();
+});
