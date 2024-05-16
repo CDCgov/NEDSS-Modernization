@@ -16,21 +16,21 @@ const asTableBody =
         tableDetails: [
             {
                 id: 1,
-                title: investigation?.startedOn && format(investigation.startedOn, 'MM/dd/yyyy')
-            },
-            { id: 2, title: investigation?.condition || null },
-            { id: 3, title: investigation?.caseStatus || null },
-            { id: 4, title: investigation?.notification || null },
-            { id: 5, title: investigation?.jurisdiction || null },
-            { id: 6, title: investigation?.investigator || null },
-            {
-                id: 7,
                 title: investigation?.event && (
                     <ClassicLink url={`/nbs/api/profile/${patient}/investigation/${investigation.investigation}`}>
                         {investigation?.event}
                     </ClassicLink>
                 )
             },
+            {
+                id: 2,
+                title: investigation?.startedOn && format(investigation.startedOn, 'MM/dd/yyyy')
+            },
+            { id: 3, title: investigation?.condition || null },
+            { id: 4, title: investigation?.caseStatus || null },
+            { id: 5, title: investigation?.notification || null },
+            { id: 6, title: investigation?.jurisdiction || null },
+            { id: 7, title: investigation?.investigator || null },
             { id: 8, title: investigation?.coInfection || null }
         ]
     });
@@ -39,13 +39,13 @@ const asTableBodies = (investigations: Investigation[], patient?: string): Table
     investigations?.map(asTableBody(patient)) || [];
 
 const headers = [
+    { name: Headers.Investigation, sortable: true },
     { name: Headers.StartDate, sortable: true },
     { name: Headers.Condition, sortable: true },
     { name: Headers.CaseStatus, sortable: true },
     { name: Headers.Notification, sortable: true },
     { name: Headers.Jurisdiction, sortable: true },
     { name: Headers.Investigator, sortable: true },
-    { name: Headers.Investigation, sortable: true },
     { name: Headers.CoInfection, sortable: true }
 ];
 

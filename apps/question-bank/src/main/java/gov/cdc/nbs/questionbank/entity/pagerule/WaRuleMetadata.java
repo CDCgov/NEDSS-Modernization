@@ -96,7 +96,7 @@ public class WaRuleMetadata {
     this.targetQuestionIdentifier = command.targetIdentifiers();
     this.errormsgText = command.errorMessage();
     this.jsFunction = command.javascript();
-    this.jsFunctionName = command.javascriptName();
+    this.jsFunctionName = command.javascriptName() + "()";
     this.waTemplateUid = command.page();
     this.ruleExpression = command.expression();
     this.userRuleId = "Rule" + command.ruleId();

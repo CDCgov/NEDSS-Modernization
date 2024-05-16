@@ -1,29 +1,34 @@
+import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SignIn } from './SignIn';
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    NavLink: ({ children, ...props }: any) => <a {...props}>{children}</a>
+jest.mock('SkipLink/SkipLinkContext', () => ({
+    useSkipLink: () => ({ skipTo: jest.fn() })
 }));
 
 describe('SignIn', () => {
     it('renders without crashing', () => {
-        const handleWelcomeEventMock = jest.fn();
-        const { getByText, getByRole } = render(<SignIn handleWelcomeEvent={handleWelcomeEventMock} />);
+        const { getByText, getByRole } = render(<SignIn />);
 
         expect(getByText('Login')).toBeInTheDocument();
-
         expect(
             getByText(
                 'Please be sure to avoid entering any real PHI/PII data on the demo site. All information entered will be viewable by other users.'
             )
         ).toBeInTheDocument();
 
-        const signUpButton = getByRole('button', { name: 'Sign up for demo access' });
-        expect(signUpButton).toBeInTheDocument();
+        expect(getByRole('link', { name: 'Login to NBS demo site' })).toBeInTheDocument();
+        expect(getByRole('button', { name: 'Sign up for demo access' })).toBeInTheDocument();
+    });
 
+    it('calls handleWelcomeEvent when Sign up button is clicked', () => {
+        const handleWelcomeEventMock = jest.fn();
+        const { getByRole } = render(<SignIn handleWelcomeEvent={handleWelcomeEventMock} />);
+
+        const signUpButton = getByRole('button', { name: 'Sign up for demo access' });
         userEvent.click(signUpButton);
+
         expect(handleWelcomeEventMock).toHaveBeenCalledWith('signUp');
     });
 });

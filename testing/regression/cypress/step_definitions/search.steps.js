@@ -55,14 +55,26 @@ When("I search by last name as {string}", (string) => {
   searchPage.search();
 });
 
+When("I fill last name as {string}", (string) => {
+  searchPage.enterLastName(string);
+});
+
 When("I search by patient id as {string}", (string) => {
   searchPage.enterPatiendID(string);
   searchPage.search();
 });
 
+When("I fill first name as {string}", (string) => {
+  searchPage.enterFirstName(string);
+});
+
 When("I search by first name as {string}", (string) => {
   searchPage.enterFirstName(string);
   searchPage.search();
+});
+
+When("I fill dob as {string}", (string) => {
+  searchPage.enterDob(string);
 });
 
 When("I search by dob as {string}", (string) => {
@@ -75,6 +87,22 @@ When("I search by sex as {string}", (string) => {
   searchPage.search();
 });
 
+Then("click on clear all button", () => {
+  searchPage.clearAll();
+});
+
+When("I last name should be {string}", (string) => {
+  cy.get("#lastName").should('have.text', string);
+});
+
+When("I first name should be {string}", (string) => {
+  cy.get("#firstName").should('have.text', string);
+});
+
+When("I dob should be {string}", (string) => {
+  cy.get("#dateOfBirth").should('have.text', string);
+});
+
 Then("I should see Results with the last name {string}", (string) => {
   cy.get("a").contains(string).should("be.visible");
 });
@@ -84,7 +112,11 @@ Then("I should see Results with the first name {string}", (string) => {
 });
 
 Then("I should see Results with the sex {string}", (string) => {
+  if (string!=='No Data'){
   cy.get("p").contains(string).should("be.visible");
+  }else{
+    cy.get(".no-data").contains(string).should("be.visible");
+  }
 });
 
 Then("I should see Results with the patient id {string}", (string) => {
@@ -164,3 +196,13 @@ Then(
     searchPage.search();
   }
 );
+
+Then("I select for Deleted patient", ()=>{
+  searchPage.selectDelete()
+  searchPage.search();
+})
+
+Then("I select for Superseded patient", ()=>{
+  searchPage.selectSuperseded()
+  searchPage.search();
+})

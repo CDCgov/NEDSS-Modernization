@@ -1,11 +1,11 @@
 {
   "name": "cypress-cucumber-framework",
   "version": "1.0.0",
-  "description": "A demo framework with cypress and cucumber with cuucmber html report",
+  "description": "A demo framework with cypress and cucumber with cucumber html report",
   "scripts": {
     "cypress": "cypress open",
     "cy:open": "cypress open",
-    "cy:e2e": "cypress run --spec cypress/e2e/**/*.feature",
+    "cy:e2e": "cypress run --spec 'cypress/e2e/**/*.feature'",
     "cy:api": "cypress run --spec cypress/api/**/*.feature",
     "report": "node cucumber-html-report.js"
   },
@@ -20,7 +20,7 @@
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "@faker-js/faker": "^8.0.2",
     "cypress": "^13.6.0",
-    "multiple-cucumber-html-reporter": "^3.4.0"
+    "multiple-cucumber-html-reporter": "^3.6.2"
   },
   "cypress-cucumber-preprocessor": {
     "nonGlobalStepDefinitions": false,

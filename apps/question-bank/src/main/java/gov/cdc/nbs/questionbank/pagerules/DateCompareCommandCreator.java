@@ -13,7 +13,7 @@ public class DateCompareCommandCreator {
   // source Identifier
   // source Identifier
   private static final String JAVASCRIPT = """
-      function %s() {
+      function %s {
         var i = 0;
         var errorElts = new Array();
         var errorMsgs = new Array();
@@ -155,7 +155,7 @@ public class DateCompareCommandCreator {
   }
 
   String createJavascriptName(String sourceIdentifier, long ruleId) {
-    return "ruleDComp" + sourceIdentifier + ruleId;
+    return "ruleDComp" + sourceIdentifier + ruleId + "()";
   }
 
   String createExpression(String sourceIdentifier, List<String> targetIdentifiers, String comparator) {
