@@ -60,3 +60,10 @@ Feature: User can verify existing create new page elements here.
     And Drop-down box displays with a list of Templates to select
     When User selects a Template
     Then A Template is populated successfully in the Templates field template
+
+  Scenario: Select an MMG (Reporting Mechanism) to populate the field
+    And User clicks the MMG field
+    Then MMG field is highlighted with a rectangular blue box
+    And Drop-down box displays with a list of MMGs to select
+    When User selects an MMG
+    Then Message Mapping Guide is populated successfully in the MMG field
