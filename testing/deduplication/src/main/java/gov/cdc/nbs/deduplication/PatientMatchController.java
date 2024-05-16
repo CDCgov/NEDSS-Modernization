@@ -10,6 +10,7 @@ import gov.cdc.nbs.deduplication.exact.ExactMatchService;
 import gov.cdc.nbs.deduplication.model.PatientData;
 import gov.cdc.nbs.deduplication.request.MatchRequest;
 import gov.cdc.nbs.deduplication.response.DataIngestionMatchResponse;
+import gov.cdc.nbs.deduplication.response.DataLoadResponse;
 import gov.cdc.nbs.deduplication.response.ExactMatchResponse;
 import gov.cdc.nbs.deduplication.response.RowsAffected;
 import gov.cdc.nbs.deduplication.response.SimilarMatchResponse;
@@ -55,7 +56,7 @@ public class PatientMatchController {
   }
 
   @PostMapping("/load")
-  public List<PatientData> loadData(@RequestBody List<PatientData> data) {
+  public DataLoadResponse loadData(@RequestBody List<PatientData> data) {
     return dataManager.load(data);
   }
 

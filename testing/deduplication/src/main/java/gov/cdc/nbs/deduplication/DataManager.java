@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import gov.cdc.nbs.deduplication.model.PatientData;
 import gov.cdc.nbs.deduplication.model.PatientData.Bundle;
 import gov.cdc.nbs.deduplication.model.PatientData.Bundle.Entry.Resource.Address;
+import gov.cdc.nbs.deduplication.response.DataLoadResponse;
 import org.apache.commons.codec.language.Soundex;
 
 
@@ -119,16 +120,19 @@ public class DataManager {
   }
 
   public int reset() {
-    template.update(DELETE_IDENTIFIERS);
-    template.update(DELETE_ADDRESSES);
-    template.update(DELETE_PERSON_NAMES);
-    template.update(DELETE_PERSONS);
-    template.update(DELETE_ENTITIES);
-    return template.update(RESET_DEDUP_IND);
+    int count = 0;
+    count += template.update(DELETE_IDENTIFIERS);
+    count += template.update(DELETE_ADDRESSES);
+    count += template.update(DELETE_PERSON_NAMES);
+    count += template.update(DELETE_PERSONS);
+    count += template.update(DELETE_ENTITIES);
+    count += template.update(RESET_DEDUP_IND);
+    return count;
   }
 
   // Inserts provided patient data into the NBS 6 database
-  public List<PatientData> load(List<PatientData> data) {
+  public DataLoadResponse load(List<PatientData> data) {
+    long start = System.currentTimeMillis();
     data.forEach(d -> {
       String id = d.external_person_id();
       insertPersonEntity(id, d.bundle().entry().get(0).resource().birthDate());
@@ -136,8 +140,8 @@ public class DataManager {
       insertAddresses(id, d.bundle());
       insertIdentifiers(id, d.bundle());
     });
-
-    return data;
+    long end = System.currentTimeMillis();
+    return new DataLoadResponse(data.size(), end - start);
   }
 
   // Inserts a new 'Entity' as well as a blank 'Person' record into the database 
