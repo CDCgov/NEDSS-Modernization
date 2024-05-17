@@ -96,6 +96,30 @@ class PageElementsPage {
         cy.get('#templateId').invoke('val').should('exist')
     }
 
+    clickMMGField() {
+        this.selectEventType()
+        cy.wait(500)
+        cy.get('#messageMappingGuide').select('')
+    }
+
+    mmgFieldFocused() {
+        cy.get('#messageMappingGuide').should('be.focused')
+    }
+
+    mmgFieldHasValueList() {
+        cy.get('#messageMappingGuide').find('option').should('have.length.gt', 1)
+    }
+
+    selectValueFromMMGList() {
+        cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
+            cy.get('#messageMappingGuide').select(option.attr('value'))
+        })
+    }
+
+    mmgFieldHasValue() {
+        cy.get('#messageMappingGuide').invoke('val').should('exist')
+    }
+
 }
 
 export const pageElementsPage = new PageElementsPage()

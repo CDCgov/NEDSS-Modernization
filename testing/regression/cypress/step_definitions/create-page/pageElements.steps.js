@@ -81,3 +81,23 @@ Then("User selects a Template", () => {
 Then("A Template is populated successfully in the Templates field template", () => {
     pageElementsPage.templateFieldHasValue();
 });
+
+Then("User clicks the MMG field", () => {
+    pageElementsPage.clickMMGField();
+});
+
+Then("MMG field is highlighted with a rectangular blue box", () => {
+    pageElementsPage.mmgFieldFocused();
+});
+
+Then("Drop-down box displays with a list of MMGs to select", () => {
+    pageElementsPage.mmgFieldHasValueList();
+});
+
+Then("User selects an MMG", () => {
+    pageElementsPage.selectValueFromMMGList();
+});
+
+Then("Message Mapping Guide is populated successfully in the MMG field", () => {
+    pageElementsPage.mmgFieldHasValue();
+});
