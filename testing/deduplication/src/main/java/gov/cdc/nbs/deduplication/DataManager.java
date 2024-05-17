@@ -19,6 +19,16 @@ public class DataManager {
       group_time = null
       """;
 
+  private static final String DELETE_TEST_PATIENT = """
+      DECLARE @PATIENT_UID AS BIGINT = ?;
+      DELETE FROM Entity_id WHERE entity_uid = @PATIENT_UID;
+      DELETE FROM Postal_locator WHERE postal_locator_uid = @PATIENT_UID;
+      DELETE FROM Entity_locator_participation WHERE entity_uid = @PATIENT_UID;
+      DELETE FROM Person_name WHERE person_uid = @PATIENT_UID;
+      DELETE FROM Person WHERE person_uid = @PATIENT_UID;
+      DELETE FROM Entity WHERE entity_uid = @PATIENT_UID;
+        """;
+
   private static final String DELETE_ENTITIES = """
       DELETE FROM Entity WHERE entity_uid < 10000000;
         """;
@@ -35,7 +45,6 @@ public class DataManager {
       DELETE FROM Postal_locator WHERE postal_locator_uid< 10000000;
       DELETE FROM Entity_locator_participation WHERE entity_uid < 10000000;
         """;
-
   private static final String DELETE_IDENTIFIERS = """
       DELETE FROM Entity_id WHERE entity_uid < 10000000
       """;
@@ -128,6 +137,10 @@ public class DataManager {
     count += template.update(DELETE_ENTITIES);
     count += template.update(RESET_DEDUP_IND);
     return count;
+  }
+
+  public void remove(String patientUid) {
+    template.update(DELETE_TEST_PATIENT, patientUid);
   }
 
   // Inserts provided patient data into the NBS 6 database

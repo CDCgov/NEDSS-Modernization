@@ -15,7 +15,7 @@ import gov.cdc.nbs.deduplication.response.SimilarMatchResponse.MatchGroup;
 public class SimilarMatchService {
   private static final String FETCH_GROUPS =
       """
-                  DECLARE @v_person_uid  BIGINT,
+          DECLARE @v_person_uid  BIGINT,
                   @p_count       BIGINT,
                   @v_asofdate    DATETIME,
                   @v1_person_uid BIGINT,
@@ -198,10 +198,18 @@ public class SimilarMatchService {
           RETURN;
                           """;
 
+  private static final String CLEAR_GROUPS = """
+      UPDATE person SET group_nbr = NULL;
+        """;
+
   private final JdbcTemplate template;
 
   public SimilarMatchService(final JdbcTemplate template) {
     this.template = template;
+  }
+
+  public void clearGroups() {
+    template.update(CLEAR_GROUPS);
   }
 
   public SimilarMatchResponse match() {

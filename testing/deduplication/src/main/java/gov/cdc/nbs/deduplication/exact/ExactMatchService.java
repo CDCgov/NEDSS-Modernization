@@ -329,14 +329,16 @@ public class ExactMatchService {
   }
 
   private List<String> queryMatchingIdentification(String personUid, List<String> personIds) {
-    String idList = String.join(",", personIds);
-    return template.query(
-        FIND_MATCHING_IDENTIFICATION,
-        setter -> {
-          setter.setString(1, personUid);
-          setter.setString(2, idList);
-        },
-        rowToString());
+    return personIds.stream()
+        .map(id -> template.query(
+            FIND_MATCHING_IDENTIFICATION,
+            setter -> {
+              setter.setString(1, personUid);
+              setter.setString(2, id);
+            },
+            rowToString()))
+        .flatMap(List::stream)
+        .toList();
   }
 
   private List<ExactMatch> findMatchesOnNameData(List<ExactMatch> exactMatches) {
