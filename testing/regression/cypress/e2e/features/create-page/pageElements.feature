@@ -72,3 +72,7 @@ Feature: User can verify existing create new page elements here.
     And User clicks the Cancel button in the footer
     Then Add new page closes and user is returned to the Page Library
 
+  Scenario: Clicking the Page Library link returns user to the Page Library
+    And User clicks the Page Library link - top left of the page
+    Then Add new page closes and user is returned to the Page Library
+

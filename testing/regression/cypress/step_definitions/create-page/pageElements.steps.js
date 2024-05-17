@@ -109,3 +109,7 @@ Then("User clicks the Cancel button in the footer", () => {
 Then("Add new page closes and user is returned to the Page Library", () => {
     pageElementsPage.checkPageLibraryShowing();
 });
+
+Then("User clicks the Page Library link - top left of the page", () => {
+    pageElementsPage.clickPageLibraryLink();
+});
