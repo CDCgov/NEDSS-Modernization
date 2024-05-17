@@ -120,6 +120,15 @@ class PageElementsPage {
         cy.get('#messageMappingGuide').invoke('val').should('exist')
     }
 
+    clickCancelButton() {
+        cy.get('#cancelBtn').click()
+    }
+
+    checkPageLibraryShowing() {
+        cy.visit('/page-builder/pages')
+        cy.url().should('include', 'page-builder/pages')
+    }
+
 }
 
 export const pageElementsPage = new PageElementsPage()

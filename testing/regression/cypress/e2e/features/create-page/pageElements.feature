@@ -67,3 +67,8 @@ Feature: User can verify existing create new page elements here.
     And Drop-down box displays with a list of MMGs to select
     When User selects an MMG
     Then Message Mapping Guide is populated successfully in the MMG field
+
+  Scenario: Verify clicking the Cancel button closes Add new page
+    And User clicks the Cancel button in the footer
+    Then Add new page closes and user is returned to the Page Library
+
