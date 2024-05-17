@@ -10,20 +10,20 @@ Feature: User can verify existing create new page elements here.
       | Items required                                                         | Type                             |
       | Page Builder                                                           | Title heading                    |
       | Page Library                                                           | Link (to return to page library) |
-#      | Create new page                                                        | Page heading                     |
-#      | Let's fill out some information about your new page before creating it | Text                             |
-#      | Condition(s)                                                           | Heading, drop-down box           |
-#      | Can't find the condition you're looking for?                           | Text                             |
-#      | Create a new condition here                                            | Link                             |
-#      | Page name                                                              | Heading, text field              |
-#      | Event type                                                             | Heading, drop-down box           |
-#      | Template                                                               | Heading, drop-down box           |
-#      | Can't find the template you're looking for?                            | Heading and Link                 |
-#      | Import a new template here                                             | Heading and Link                 |
-#      | Page description                                                       | Heading, text fields             |
-#      | Data mart name                                                         | Heading, text fields             |
-#      | Cancel                                                                 | Buttons                          |
-#      | Create page                                                            | Buttons                          |
+      | Create new page                                                        | Page heading                     |
+      | Let's fill out some information about your new page before creating it | Text                             |
+      | Condition(s)                                                           | Heading, drop-down box           |
+      | Can't find the condition you're looking for?                           | Text                             |
+      | Create a new condition here                                            | Link                             |
+      | Page name                                                              | Heading, text field              |
+      | Event type                                                             | Heading, drop-down box           |
+      | Template                                                               | Heading, drop-down box           |
+      | Can't find the template you're looking for?                            | Heading and Link                 |
+      | Import a new template here                                             | Heading and Link                 |
+      | Page description                                                       | Heading, text fields             |
+      | Data mart name                                                         | Heading, text fields             |
+      | Cancel                                                                 | Buttons                          |
+      | Create page                                                            | Buttons                          |
 
   Scenario: Select a single condition
     And User clicks in the Condition field
@@ -47,12 +47,12 @@ Feature: User can verify existing create new page elements here.
     Examples:
       | Option text          |
       | Contact Record       |
-#      | Interview            |
-#      | Investigation        |
-#      | Lab Isolate Tracking |
-#      | Lab Report           |
-#      | Lab Susceptibility   |
-#      | Vaccination          |
+      | Interview            |
+      | Investigation        |
+      | Lab Isolate Tracking |
+      | Lab Report           |
+      | Lab Susceptibility   |
+      | Vaccination          |
 
   Scenario: Verify selection of a Template populates the field
     And User clicks the Template field
