@@ -101,3 +101,11 @@ Then("User selects an MMG", () => {
 Then("Message Mapping Guide is populated successfully in the MMG field", () => {
     pageElementsPage.mmgFieldHasValue();
 });
+
+Then("User clicks the Cancel button in the footer", () => {
+    pageElementsPage.clickCancelButton();
+});
+
+Then("Add new page closes and user is returned to the Page Library", () => {
+    pageElementsPage.checkPageLibraryShowing();
+});
