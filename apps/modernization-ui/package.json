@@ -98,6 +98,7 @@
         "@testing-library/react": "^12",
         "@testing-library/react-hooks": "^7.0.2",
         "@testing-library/user-event": "^12",
+        "@types/jest-axe": "^3.5.9",
         "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.11.5",
         "@types/jest-axe": "^3.5.9",

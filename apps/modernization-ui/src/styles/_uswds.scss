@@ -87,6 +87,8 @@ table.usa-table {
 
     height: 2.75rem;
     min-width: 2.75rem;
+    margin-right: 0;
+    line-height: 125%;
 
     &:has(svg) {
         align-items: center;
