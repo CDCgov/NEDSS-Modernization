@@ -129,6 +129,10 @@ class PageElementsPage {
         cy.url().should('include', 'page-builder/pages')
     }
 
+    clickPageLibraryLink() {
+        cy.get('#pageLibraryLink').click()
+    }
+
 }
 
 export const pageElementsPage = new PageElementsPage()
