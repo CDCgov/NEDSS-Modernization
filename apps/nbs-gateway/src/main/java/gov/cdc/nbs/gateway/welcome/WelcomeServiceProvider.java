@@ -11,7 +11,7 @@ import gov.cdc.nbs.gateway.ui.UIService;
 @Configuration
 class WelcomeServiceProvider {
   @Bean
-  @ConditionalOnProperty(prefix = "nbs.gateway.welcome", name = "enabled", havingValue = "true")
+  @ConditionalOnProperty(prefix = "nbs.gateway.welcome", name = "enabled", havingValue = "false")
   RouteLocator welcomeRouteLocator(
       final RouteLocatorBuilder builder,
       @Value("${nbs.gateway.landing.uri}") final String host,
