@@ -19,28 +19,29 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
-class CancelledLabAddLocatorConfiguration {
+class DeletedLabReportLocatorConfiguration {
 
   /**
    * Redirects to the Modernized Patient Profile when the following criteria is satisfied;
    *
    * <ul>
-   * <li>Path equal to {@code /nbs/AddObservationLab2.do}</li>
-   * <li>Query Parameter {@code ContextAction} equal to {@code Cancel}</li>
+   * <li>Path equal to {@code /nbs/LoadViewFile1.do}</li>
+   * <li>Query Parameter {@code ContextAction} equal to {@code Delete}</li>
    * </ul>
    */
   @Bean
-  RouteLocator cancelledLabAddPatientProfileReturn(
+  RouteLocator deletedLabReportPatientProfileReturn(
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final PatientProfileService parameters) {
+      final PatientProfileService parameters
+  ) {
     return builder.routes()
         .route(
-            "cancelled-lab-add-patient-profile-return",
+            "deleted-lab-report-patient-profile-return",
             route -> route.order(RouteOrdering.NBS_6.before())
-                .path("/nbs/AddObservationLab2.do")
+                .path("/nbs/LoadViewFile1.do")
                 .and()
-                .query("ContextAction", "Cancel")
+                .query("ContextAction", "Delete")
                 .filters(
                     filter -> filter.setPath(
                             "/nbs/redirect/patientProfile/events/return")

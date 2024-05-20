@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.ok;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(
@@ -20,7 +18,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
         "nbs.gateway.patient.profile.enabled=true"
     }
 )
-class CancelledLabAddLocatorConfigurationTest {
+class DeletedLabReportLocatorConfigurationTest {
 
   @RegisterExtension
   static WireMockExtension service = WireMockExtension.newInstance()
@@ -31,19 +29,20 @@ class CancelledLabAddLocatorConfigurationTest {
   WebTestClient webClient;
 
   @Test
-  void should_route_to_service_when_Add_Lab_is_cancelled() {
+  void should_route_to_service_when_Lab_Report_is_deleted() {
     service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/events/return\\\\?.*")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
-                .path("/nbs/AddObservationLab2.do")
-                .queryParam("ContextAction", "Cancel")
+                .path("/nbs/LoadViewFile1.do")
+                .queryParam("ContextAction", "Delete")
                 .build()
         )
         .exchange()
         .expectStatus()
         .isOk();
+
   }
 
 }
