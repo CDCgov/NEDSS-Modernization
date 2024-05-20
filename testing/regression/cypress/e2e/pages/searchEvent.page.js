@@ -5,7 +5,12 @@ class SearchEventPage {
     let elm = cy.get("div[data-testid='accordionItem_event-type-section'] select");
     elm.select('Investigation');
     cy.wait(500);
-  }  
+  }
+
+  clickEventInvestigationCriteria() {
+    cy.get('button[data-testid="accordionButton_investigation-criteria-section"]').click();
+    cy.wait(500);
+  }
 
   selectEventInvestigationCondition() {    
     let elm = cy.get("#conditionInput").click();
@@ -80,6 +85,11 @@ class SearchEventPage {
     let elm2 = cy.get('input[name="providerFacilitySearch.id"]').type("a");
     cy.wait(500);
     let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+    cy.wait(500);
+  }
+
+  selectInvestigationStatus() {
+    let elm = cy.get('select[name="investigationStatus"]').select("Closed");
     cy.wait(500);
   }
 }

@@ -5,6 +5,10 @@ Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
 });
 
+Then("I click criteria tab", () => {
+  searchEventPage.clickEventInvestigationCriteria();
+});
+
 Then("I select a condition for event investigation", () => {
   searchEventPage.selectEventInvestigationCondition();
   searchEventPage.search();
@@ -60,5 +64,10 @@ Then("I select a facility for event investigation", () => {
 
 Then("I select a provider for event investigation", () => {
   searchEventPage.selectInvestigationProvider();
+  searchEventPage.search();
+});
+
+Then("I select a investigation status for event investigation", () => {
+  searchEventPage.selectInvestigationStatus();
   searchEventPage.search();
 });
