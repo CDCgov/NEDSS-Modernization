@@ -4,7 +4,6 @@ import { Icon as NbsIcon } from 'components/Icon/Icon';
 import styles from './managesection.module.scss';
 import { useState } from 'react';
 import { AddSection } from './AddSection';
-import { Heading } from 'components/heading';
 import { AlertInLineProps } from './ManageSectionModal';
 import { ManageSectionTile } from './ManageSectionTile/ManageSectionTile';
 import { useDragDrop } from 'apps/page-builder/context/DragDropProvider';
@@ -112,7 +111,7 @@ export const ManageSection = ({
                 <div className={styles.managesection}>
                     <div className={styles.header}>
                         <div className={styles.manageSectionHeader} data-testid="header">
-                            <Heading level={4}>Manage sections</Heading>
+                            <h2>Manage sections</h2>
                         </div>
                         <div className={styles.addSectionHeader}>
                             <Button

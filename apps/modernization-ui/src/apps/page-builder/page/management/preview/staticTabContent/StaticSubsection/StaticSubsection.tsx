@@ -1,6 +1,5 @@
 import { ReactNode, useState } from 'react';
 import styles from './static-subsection.module.scss';
-import { Heading } from 'components/heading';
 import { Icon } from '@trussworks/react-uswds';
 
 type Props = {
@@ -13,7 +12,7 @@ export const StaticSubsection = ({ title, children }: Props) => {
     return (
         <div className={styles.subsection}>
             <div className={styles.subsectionHeader}>
-                <Heading level={3}>{title}</Heading>
+                <h4>{title}</h4>
                 <div className={styles.collapseIcon}>
                     {isExpanded ? (
                         <Icon.ExpandLess size={4} onClick={() => setIsExpanded(false)} />

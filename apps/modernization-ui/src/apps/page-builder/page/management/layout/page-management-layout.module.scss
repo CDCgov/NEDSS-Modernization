@@ -24,8 +24,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
         padding: 0 1rem;
+            h2 {
+                display: flex;
+                gap: 0.25rem;
+                align-items: center;
+                font-weight: 400;
+                font-size: 1rem;
+                margin: 0;
+            }
 
         .mode {
             padding: 0.25rem 0.5rem;
@@ -38,6 +45,9 @@
             border-radius: 0.125rem;
             text-transform: uppercase;
             background: colors.$warning;
+            font-size: 1rem;
+            font-weight: 400;
+            margin: 0;
         }
     }
 }
