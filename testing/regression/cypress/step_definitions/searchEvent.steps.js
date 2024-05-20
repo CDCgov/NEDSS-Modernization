@@ -71,3 +71,23 @@ Then("I select a investigation status for event investigation", () => {
   searchEventPage.selectInvestigationStatus();
   searchEventPage.search();
 });
+
+Then("I select outbreak name for event investigation", () => {
+  searchEventPage.selectInvestigationOutbreakName();
+  searchEventPage.search();
+});
+
+Then("I select case study for event investigation", () => {
+  searchEventPage.selectInvestigationCaseStudy();
+  searchEventPage.search();
+});
+
+Then("I select investigation current processing status for event investigation", () => {
+  searchEventPage.selectInvestigationCurrentProcessingStatus();
+  searchEventPage.search();
+});
+
+Then("I select notification status status for event investigation", () => {
+  searchEventPage.selectInvestigationNotificationStatus();
+  searchEventPage.search();
+});
