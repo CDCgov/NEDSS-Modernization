@@ -20,18 +20,29 @@ class OIDCAuthenticationConfiguration {
       final ReactiveClientRegistrationRepository repository) {
     return http
         .authorizeExchange(
-            authorize -> authorize.pathMatchers(
+            authorize ->
+            //  the landing page
+            authorize.pathMatchers(
                 HttpMethod.GET,
-                "/nbs/logged-out",
-                "/nbs/timeout",
-                "/nbs/logOut",
-                "/nbs/*.js",
-                "/nbs/*.css",
-                "/nbs/*.gif",
-                "/nbs/task_button/**",
-                "/images/nedssLogo.jpg",
-                "/favicon.ico",
-                "/nbs/api/configuration").permitAll()
+                "/welcome/**").permitAll()
+                //  paths associated with authentication
+                .pathMatchers(
+                    HttpMethod.GET,
+                    "/nbs/logged-out",
+                    "/nbs/timeout",
+                    "/nbs/logOut")
+                .permitAll()
+                //  assets that do not require authentication
+                .pathMatchers(
+                    HttpMethod.GET,
+                    "/nbs/*.js",
+                    "/nbs/*.css",
+                    "/nbs/*.gif",
+                    "/nbs/task_button/**",
+                    "/images/nedssLogo.jpg",
+                    "/favicon.ico",
+                    "/static/**")
+                .permitAll()
                 .anyExchange()
                 .authenticated())
         .oauth2Client(withDefaults())
