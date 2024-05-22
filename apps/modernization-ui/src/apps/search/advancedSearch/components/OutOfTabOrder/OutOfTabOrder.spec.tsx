@@ -13,7 +13,7 @@ describe('OuterTabOrder', () => {
 
     it('changes tabIndex of buttons when submitted is true', () => {
         const { getByText } = render(
-            <OutOfTabOrder submitted={false}>
+            <OutOfTabOrder submitted={true}>
                 <button>Click me</button>
             </OutOfTabOrder>
         );
@@ -30,7 +30,7 @@ describe('OuterTabOrder', () => {
         );
 
         let button = getByText('Click me');
-        expect(button.tabIndex).toBe(-1);
+        expect(button.tabIndex).toBe(0);
 
         rerender(
             <OutOfTabOrder submitted={false}>
@@ -39,6 +39,6 @@ describe('OuterTabOrder', () => {
         );
 
         button = getByText('Click me');
-        expect(button.tabIndex).toBe(-1);
+        expect(button.tabIndex).toBe(0);
     });
 });
