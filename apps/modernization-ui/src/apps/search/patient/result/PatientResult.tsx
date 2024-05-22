@@ -1,5 +1,5 @@
+import React from 'react';
 import './PatientResult.scss';
-
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Grid } from '@trussworks/react-uswds';
@@ -20,6 +20,13 @@ type PatientResultProps = {
 };
 
 const PatientResult = ({ result, onSelected }: PatientResultProps) => {
+    const handleKeyPress = (event: React.KeyboardEvent) => {
+        event.preventDefault();
+        if (event.key === 'Enter' || event.key === ' ') {
+            onSelected(result);
+        }
+    };
+
     return (
         <Grid row gap={3}>
             <Grid col={4}>
@@ -27,6 +34,7 @@ const PatientResult = ({ result, onSelected }: PatientResultProps) => {
                     <Grid col={12} className="margin-bottom-2">
                         <p className="margin-0 text-normal search-result-item-label text-gray-50">LEGAL NAME</p>
                         <a
+                            onKeyUp={handleKeyPress}
                             onClick={() => onSelected(result)}
                             tabIndex={0}
                             className="margin-0 font-sans-md margin-top-05 text-bold text-primary word-break"

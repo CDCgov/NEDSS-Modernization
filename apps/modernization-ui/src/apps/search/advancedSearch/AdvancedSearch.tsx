@@ -34,6 +34,7 @@ import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 import { Button } from 'components/button/Button';
+import { OutOfTabOrder } from './components/OutOfTabOrder';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -573,15 +574,17 @@ export const AdvancedSearch = () => {
                                 <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                                     Showing {resultStartCount} - {resultEndCount} of {resultTotal}
                                 </p>
-                                <Pagination
-                                    style={{ justifyContent: 'flex-end' }}
-                                    totalPages={Math.ceil(resultTotal / 25)}
-                                    currentPage={currentPage}
-                                    pathname={'/advanced-search'}
-                                    onClickNext={() => handlePagination(currentPage + 1)}
-                                    onClickPrevious={() => handlePagination(currentPage - 1)}
-                                    onClickPageNumber={(_, page) => handlePagination(page)}
-                                />
+                                <OutOfTabOrder submitted={submitted} className="top-pagination">
+                                    <Pagination
+                                        style={{ justifyContent: 'flex-end' }}
+                                        totalPages={Math.ceil(resultTotal / 25)}
+                                        currentPage={currentPage}
+                                        pathname={'/advanced-search'}
+                                        onClickNext={() => handlePagination(currentPage + 1)}
+                                        onClickPrevious={() => handlePagination(currentPage - 1)}
+                                        onClickPageNumber={(_, page) => handlePagination(page)}
+                                    />
+                                </OutOfTabOrder>
                             </Grid>
                         )}
                         {isLoading() && (
