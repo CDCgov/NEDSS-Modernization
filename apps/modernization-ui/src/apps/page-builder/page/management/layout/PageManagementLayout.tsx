@@ -27,10 +27,10 @@ const PageManagementLayout = ({ name, mode, children }: PageBuilderLayoutProps) 
                 <Breadcrumb start="/page-builder/pages" currentPage={name}>
                     Page library
                 </Breadcrumb>
-                <span className={classNames(isEditing ? styles.modeEditing : styles.mode)}>
+                <h2 className={classNames(isEditing ? styles.modeEditing : styles.mode)}>
                     {isEditing ? 'EDITING: ' : 'PREVIEWING: '}
                     {mode}
-                </span>
+                </h2>
             </div>
             <div className={styles.content}>{children}</div>
         </section>

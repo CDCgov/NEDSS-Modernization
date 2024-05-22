@@ -3,7 +3,6 @@ import { RefObject } from 'react';
 import { NoData } from 'components/NoData';
 
 import styles from './details-modal.module.scss';
-import { Heading } from 'components/heading';
 import classNames from 'classnames';
 
 export type Detail = {
@@ -36,8 +35,8 @@ const maybeRender = (value: string | number | null | undefined) => <>{value}</> 
 export const DetailsModal = ({ modal, title, onClose, details, onEdit, onDelete }: Props) => {
     return (
         <Modal id={`${title}-detail`} forceAction ref={modal} className={classNames(styles.modal)}>
-            <header>
-                <Heading level={2}>{title}</Heading>
+            <header className={styles.header}>
+                <h2>{title}</h2>
                 <Icon.Close size={3} onClick={onClose} />
             </header>
             <div className={styles.content}>

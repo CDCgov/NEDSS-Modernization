@@ -31,7 +31,11 @@
         .questionHeader {
             display: flex;
             align-items: flex-start;
-
+            span {
+                font-size: 1.25rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
             .identifier {
                 margin: 0%;
                 margin-top: 0.4rem;

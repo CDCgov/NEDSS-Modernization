@@ -206,3 +206,24 @@ Then("I select for Superseded patient", ()=>{
   searchPage.selectSuperseded()
   searchPage.search();
 })
+
+Then("I sort by {string}", (string) => {
+  cy.get('.button-group>button').eq(1).click();
+  cy.wait(500)
+  cy.get('#basic-nav-section-one>li').eq(1).click();
+  cy.wait(1000)
+})
+
+Then("I verify the sort of patient name", () => {
+  cy.get('.grid-col-12.margin-bottom-2>a')
+  .invoke('text')
+  .then(name => {
+    //Sort the names
+    const nameArray = name.trim().split('\n');
+    //Sort the name alphabetically
+    const sortedNames = [...nameArray].sort();
+
+    //Verify that the names are sorted alphabetically
+    expect(nameArray).to.deep.equal(sortedNames);
+  });
+})

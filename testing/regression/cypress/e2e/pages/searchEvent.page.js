@@ -92,6 +92,30 @@ class SearchEventPage {
     let elm = cy.get('select[name="investigationStatus"]').select("Closed");
     cy.wait(500);
   }
+
+  selectInvestigationOutbreakName() {
+    let elm = cy.get('div[id="react-select-5-placeholder"]').click({force: true});
+    cy.wait(500);
+    let elm2 = cy.get('div[id="react-select-5-option-0"]').click({force: true});
+  }
+
+  selectInvestigationCaseStudy() {
+    let elm = cy.get('div[id="react-select-6-placeholder"]').click({force: true});
+    cy.wait(500);
+    let elm2 = cy.get('div[id="react-select-6-option-0"]').click({force: true});
+  }
+
+  selectInvestigationCurrentProcessingStatus() {
+    let elm = cy.get('div[id="react-select-7-placeholder"]').click({force: true});
+    cy.wait(500);
+    let elm2 = cy.get('div[id="react-select-7-option-2"]').click({force: true});
+  }
+
+  selectInvestigationNotificationStatus() {
+    let elm = cy.get('div[id="react-select-8-placeholder"]').click({force: true});
+    cy.wait(500);
+    let elm2 = cy.get('div[id="react-select-8-option-0"]').click({force: true});
+  }
 }
 
 export const searchEventPage = new SearchEventPage();
