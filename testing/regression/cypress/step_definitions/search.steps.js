@@ -182,7 +182,7 @@ Then(
 );
 
 Then(
-  "I search by ethnicity as {string} and race not select",
+  "I search by ethnicity as {string} and race not selected",
   (string) => {
     searchPage.enterEthnicity(string);
     searchPage.search();
@@ -190,7 +190,7 @@ Then(
 );
 
 Then(
-  "I search by ethnicity not select and race {string}",
+  "I search by ethnicity not selected and race {string}",
   (string) => {
     searchPage.enterRace(string);
     searchPage.search();
