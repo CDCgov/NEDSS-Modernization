@@ -38,3 +38,15 @@ Feature: User can verify create new page here.
         Then Rectangular yellow box appears with the message: "INTERVIEW event type is not supported by the modern page design. Please click \"Create page\" to continue in classic design mode."
         When User clicks Create page button
         Then Application redirects to the classic design of Add page to continue
+
+    Scenario: Selecting Lab Isolate Tracking and clicking Create page button redirects to the classic design of Add page
+        And User selects "Lab Isolate Tracking" from Event Type "ISO"
+        Then Rectangular yellow box appears with the message: "LAB ISOLATE TRACKING event type is not supported by the modern page design. Please click \"Create page\" to continue in classic design mode."
+        When User clicks Create page button
+        Then Application redirects to the classic design of Add page to continue
+
+    Scenario: Selecting Lab Report and clicking Create page button redirects to the classic design of Add page
+        And User selects "Lab Report" from Event Type "LAB"
+        Then Rectangular yellow box appears with the message: "LAB REPORT event type is not supported by the modern page design. Please click \"Create page\" to continue in classic design mode."
+        When User clicks Create page button
+        Then Application redirects to the classic design of Add page to continue
