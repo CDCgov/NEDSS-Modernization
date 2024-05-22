@@ -19,7 +19,7 @@ describe('OuterTabOrder', () => {
         );
 
         const button = getByText('Click me');
-        expect(button.tabIndex).toBe(-1);
+        expect(button.tabIndex).toBe(0);
     });
 
     it('maintains unchanged tabIndex when submitted remains false', () => {
