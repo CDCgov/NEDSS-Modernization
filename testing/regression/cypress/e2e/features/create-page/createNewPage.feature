@@ -26,3 +26,15 @@ Feature: User can verify create new page here.
             | Data mart name                               | Heading, text fields   |
             | Cancel                                       | Buttons                |
             | Create page                                  | Buttons                |
+
+    Scenario: Selecting Contact Record and clicking Create page button redirects to the classic design of Add page
+        And User selects "Contact Record" from Event Type "CON"
+        Then Rectangular yellow box appears with the message: "CONTACT RECORD event type is not supported by the modern page design. Please click \"Create page\" to continue in classic design mode."
+        When User clicks Create page button
+        Then Application redirects to the classic design of Add page to continue
+
+    Scenario: Selecting Interview and clicking Create page button redirects to the classic design of Add page
+        And User selects "Interview" from Event Type "IXS"
+        Then Rectangular yellow box appears with the message: "INTERVIEW event type is not supported by the modern page design. Please click \"Create page\" to continue in classic design mode."
+        When User clicks Create page button
+        Then Application redirects to the classic design of Add page to continue
