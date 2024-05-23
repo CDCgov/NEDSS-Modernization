@@ -23,7 +23,7 @@ describe('AdvancedSearch component tests', () => {
                     </BrowserRouter>
                 </MockedProvider>
             );
-            const btn = container.getElementsByClassName('add-patient-button')[0];
+            const btn = container.getElementsByClassName('action-menu-button')[0];
             expect(btn.hasAttribute('disabled'));
         });
     });
