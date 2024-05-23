@@ -5,12 +5,21 @@ Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
 });
 
+Then("I navigate the event laboratory report", () => {
+  searchEventPage.clickEventLabReport();
+});
+
 Then("I click criteria tab", () => {
   searchEventPage.clickEventInvestigationCriteria();
 });
 
 Then("I select a condition for event investigation", () => {
   searchEventPage.selectEventInvestigationCondition();
+  searchEventPage.search();
+});
+
+Then("I select program area for event laboratory report", () => {
+  searchEventPage.selectEventLabReportProgramArea();
   searchEventPage.search();
 });
 
@@ -29,6 +38,11 @@ Then("I select a program area for event investigation", () => {
 
 Then("I select a jurisdiction for event investigation", () => {
   searchEventPage.selectEventInvestigationJurisdiction();
+  searchEventPage.search();
+});
+
+Then("I select a jurisdiction for event laboratory report", () => {
+  searchEventPage.selectEventLabReportJurisdiction();
   searchEventPage.search();
 });
 
