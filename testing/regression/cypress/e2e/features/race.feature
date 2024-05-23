@@ -28,4 +28,18 @@ Feature: Patient Search by Race / Ethnicity
     When I navigate to race section
     Then I search by ethnicity not selected and race "American Indian or Alaska Native"
 
+  Scenario: Race / Ethnicity - Search by Black or African American
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "Black or African American"
+
+  Scenario: Race / Ethnicity - Search by Native Hawaiian or Pacific Islander Race
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "Native Hawaiian or Other Pacific Islander"
+
+  Scenario: Race / Ethnicity - Search by White Race
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "White"
+
+  
+
   
