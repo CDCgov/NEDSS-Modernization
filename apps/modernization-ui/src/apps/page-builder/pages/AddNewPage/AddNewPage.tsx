@@ -132,7 +132,7 @@ export const AddNewPage = () => {
     };
 
     return (
-        <div className="add-new-page" id="createNewPage">
+        <div className="add-new-page createNewPage" id="createNewPage">
             <div className="breadcrumb-wrap">
                 <PagesBreadcrumb currentPage="Create new page" />
             </div>
