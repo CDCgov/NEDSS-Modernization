@@ -2,30 +2,23 @@ import { ReactNode, useEffect, useRef } from 'react';
 
 export const OutOfTabOrder = ({
     children,
-    submitted,
-    className
+    focusable,
+    selector
 }: {
     children: ReactNode;
-    submitted: boolean;
-    className?: string;
+    focusable: boolean;
+    selector: string;
 }) => {
     const element = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        if (element.current && className) {
-            const selector = document.querySelector(`.${className}`);
-            if (selector) {
-                const querySelectors = element.current.querySelectorAll('button');
-                if (querySelectors) {
-                    querySelectors.forEach((querySelector) => ((querySelector as HTMLElement).tabIndex = -1));
-                }
+        if (element.current && !focusable) {
+            const elements = element.current.querySelectorAll(selector);
+            if (elements) {
+                elements.forEach((element) => ((element as HTMLElement).tabIndex = -1));
             }
         }
-    }, [element.current, submitted]);
+    }, [element.current, focusable]);
 
-    return (
-        <span className={className} ref={element}>
-            {children}
-        </span>
-    );
+    return <span ref={element}>{children}</span>;
 };

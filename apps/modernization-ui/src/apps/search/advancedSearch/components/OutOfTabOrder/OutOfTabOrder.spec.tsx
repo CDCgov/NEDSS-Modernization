@@ -1,39 +1,79 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { OutOfTabOrder } from './OutOfTabOrder';
 
-describe('OuterTabOrder', () => {
+describe('OutOfTabOrder', () => {
     it('renders the component with children', () => {
         const { getByText } = render(
-            <OutOfTabOrder submitted={false}>
+            <OutOfTabOrder focusable={true} selector="button">
                 <button>Click me</button>
             </OutOfTabOrder>
         );
         expect(getByText('Click me')).toBeInTheDocument();
     });
 
-    it('changes tabIndex of buttons when submitted is true', () => {
+    it('sets tabIndex of elements with specified selector to -1 when focusable is false', async () => {
         const { getByText } = render(
-            <OutOfTabOrder submitted={true}>
+            <OutOfTabOrder focusable={false} selector="button">
                 <button>Click me</button>
             </OutOfTabOrder>
         );
 
         const button = getByText('Click me');
-        expect(button.tabIndex).toBe(0);
+        await waitFor(() => {
+            expect(button.tabIndex).toBe(-1);
+        });
     });
 
-    it('maintains unchanged tabIndex when submitted remains false', () => {
+    it('does not change tabIndex of elements with specified selector when focusable is true', async () => {
+        const { getByText } = render(
+            <OutOfTabOrder focusable={true} selector="button">
+                <button>Click me</button>
+            </OutOfTabOrder>
+        );
+
+        const button = getByText('Click me');
+        await waitFor(() => {
+            expect(button.tabIndex).toBe(0);
+        });
+    });
+
+    it('resets tabIndex to 0 when focusable changes from false to true', async () => {
         const { getByText, rerender } = render(
-            <OutOfTabOrder submitted={false}>
+            <OutOfTabOrder focusable={false} selector="button">
+                <button>Click me</button>
+            </OutOfTabOrder>
+        );
+
+        const button = getByText('Click me');
+        await waitFor(() => {
+            expect(button.tabIndex).toBe(-1);
+        });
+
+        rerender(
+            <OutOfTabOrder focusable={true} selector="button">
+                <button>Click me</button>
+            </OutOfTabOrder>
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        expect(button.tabIndex).toBe(-1);
+    });
+
+    it('maintains unchanged tabIndex of elements with specified selector when focusable remains true', async () => {
+        const { getByText, rerender } = render(
+            <OutOfTabOrder focusable={true} selector="button">
                 <button>Click me</button>
             </OutOfTabOrder>
         );
 
         let button = getByText('Click me');
-        expect(button.tabIndex).toBe(0);
+        await waitFor(() => {
+            expect(button.tabIndex).toBe(0);
+        });
 
         rerender(
-            <OutOfTabOrder submitted={false}>
+            <OutOfTabOrder focusable={true} selector="button">
                 <button>Click me</button>
             </OutOfTabOrder>
         );

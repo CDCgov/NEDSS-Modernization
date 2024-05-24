@@ -574,7 +574,7 @@ export const AdvancedSearch = () => {
                                 <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                                     Showing {resultStartCount} - {resultEndCount} of {resultTotal}
                                 </p>
-                                <OutOfTabOrder submitted={submitted} className="top-pagination">
+                                <OutOfTabOrder focusable={!submitted} selector="button">
                                     <Pagination
                                         style={{ justifyContent: 'flex-end' }}
                                         totalPages={Math.ceil(resultTotal / 25)}
