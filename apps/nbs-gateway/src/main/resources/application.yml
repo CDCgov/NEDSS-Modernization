@@ -13,8 +13,6 @@ spring:
           order: 1000
           predicates:
             - Path=/nbs/**
-          filters:
-            - RemoveRequestHeader=Referer
         - id: nbs-logo
           uri: ${nbs.gateway.classic}
           predicates:
