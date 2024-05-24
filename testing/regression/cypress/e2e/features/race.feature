@@ -40,6 +40,26 @@ Feature: Patient Search by Race / Ethnicity
     When I navigate to race section
     Then I search by ethnicity not selected and race "White"
 
+  Scenario: Race / Ethnicity – Search by Not Asked Race
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "not asked"
+
+  Scenario: Race / Ethnicity – Search by Other Race
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "Other Race"
+
+  Scenario: Race / Ethnicity – Search by American Refused to Answer Race
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "Refused to answer"
+
+  Scenario: Race / Ethnicity – Search by Unknown Race
+    When I navigate to race section
+    Then I search by ethnicity not selected and race "Unknown"
+
+  Scenario: Race / Ethnicity – Search by combining Ethnicity Race
+    When I navigate to race section
+    Then I search by ethnicity as "Hispanic or Latino" and race "Black or African American"
+
   
 
   
