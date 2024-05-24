@@ -58,4 +58,11 @@ Feature: Patient Search by Basic Info
     Then I last name should be ""
     When I first name should be ""
     When I dob should be ""
+
+  Scenario: Search result sorting
+    When I search by sex as "Male"
+    Then I should see Results with the sex "Male"
+    Then I sort by "Patient name (A-Z)"
+    Then I verify the sort of patient name
+    
   

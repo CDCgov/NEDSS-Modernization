@@ -3,7 +3,6 @@ import { PagesSubSection } from '../../../../../generated';
 import { PreviewQuestion } from '../question/PreviewQuestion';
 import { PreviewSubsectionHeader } from './PreviewSubsectionHeader';
 import { useState } from 'react';
-import { Heading } from '../../../../../../../components/heading';
 import { Button } from '@trussworks/react-uswds';
 import React from 'react';
 
@@ -37,9 +36,7 @@ export const PreviewSubsection = ({ subsection }: Props) => {
                                             <React.Fragment key={k}>
                                                 {question.appearsInBatch && (
                                                     <div className={styles.groupedQuestionName}>
-                                                        <Heading level={3}>
-                                                            {question.batchLabel ?? question.name}
-                                                        </Heading>
+                                                        <span>{question.batchLabel ?? question.name}</span>
                                                     </div>
                                                 )}
                                             </React.Fragment>

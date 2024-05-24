@@ -640,7 +640,7 @@ export const AdvancedSearch = () => {
                                 <div className="text-center">
                                     <p>No results found.</p>
                                     {searchType === 'event' ? (
-                                        <p>Try refining your search</p>
+                                        <p>Try refining your search.</p>
                                     ) : (
                                         <p>
                                             Try refining your search, or{' '}

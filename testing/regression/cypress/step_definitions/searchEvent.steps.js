@@ -5,12 +5,21 @@ Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
 });
 
+Then("I navigate the event laboratory report", () => {
+  searchEventPage.clickEventLabReport();
+});
+
 Then("I click criteria tab", () => {
   searchEventPage.clickEventInvestigationCriteria();
 });
 
 Then("I select a condition for event investigation", () => {
   searchEventPage.selectEventInvestigationCondition();
+  searchEventPage.search();
+});
+
+Then("I select program area for event laboratory report", () => {
+  searchEventPage.selectEventLabReportProgramArea();
   searchEventPage.search();
 });
 
@@ -29,6 +38,11 @@ Then("I select a program area for event investigation", () => {
 
 Then("I select a jurisdiction for event investigation", () => {
   searchEventPage.selectEventInvestigationJurisdiction();
+  searchEventPage.search();
+});
+
+Then("I select a jurisdiction for event laboratory report", () => {
+  searchEventPage.selectEventLabReportJurisdiction();
   searchEventPage.search();
 });
 
@@ -69,5 +83,25 @@ Then("I select a provider for event investigation", () => {
 
 Then("I select a investigation status for event investigation", () => {
   searchEventPage.selectInvestigationStatus();
+  searchEventPage.search();
+});
+
+Then("I select outbreak name for event investigation", () => {
+  searchEventPage.selectInvestigationOutbreakName();
+  searchEventPage.search();
+});
+
+Then("I select case study for event investigation", () => {
+  searchEventPage.selectInvestigationCaseStudy();
+  searchEventPage.search();
+});
+
+Then("I select investigation current processing status for event investigation", () => {
+  searchEventPage.selectInvestigationCurrentProcessingStatus();
+  searchEventPage.search();
+});
+
+Then("I select notification status status for event investigation", () => {
+  searchEventPage.selectInvestigationNotificationStatus();
   searchEventPage.search();
 });

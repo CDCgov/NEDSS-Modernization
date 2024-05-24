@@ -4,7 +4,7 @@ class PageElementsPage {
     }
 
     userViewsCreatePage() {
-        cy.get("#createNewPage")
+        cy.get(".createNewPage")
     }
 
     selectEventType() {
@@ -61,10 +61,13 @@ class PageElementsPage {
     }
 
     clickEventTypeField() {
-        cy.get('#eventType').select('')
+        cy.wait(1000)
+        cy.get('#eventType').select('', {force: true})
     }
 
     eventTypeFieldFocused() {
+        cy.wait(1000)
+        cy.get('#eventType').select('', {force: true})
         cy.get('#eventType').should('be.focused')
     }
 

@@ -12,18 +12,20 @@
         align-self: stretch;
         background: colors.$cool-accent-lighter;
 
+        .name {
+            h4 {
+                color: colors.$base-black;
+                font-size: 1rem;
+                font-weight: 700;
+                margin: 0 0 0.5rem;
+            }
+        }
         .info {
             display: flex;
             flex-direction: row;
             align-items: center;
             gap: 0.5rem;
 
-            .name {
-                color: colors.$base-black;
-                font-size: 1rem;
-                font-weight: 700;
-                margin-bottom: 0.5rem;
-            }
 
             .count {
                 color: colors.$base-darkest;
