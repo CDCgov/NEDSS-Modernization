@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import { Selectable } from 'options';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox } from './Checkbox';
 import styles from './checkboxGroup.module.scss';
-import classNames from 'classnames';
 
 type Props = {
     label?: string;
@@ -22,12 +22,6 @@ export const CheckboxGroup = ({
 }: Props) => {
     const [selected, setSelected] = useState<string[]>(initialSelection);
 
-    const handleSelectionChange = (value: string) => {
-        setSelected((current) =>
-            current.includes(value) ? [...current.filter((v) => v !== value)] : [...current, value]
-        );
-    };
-
     useEffect(() => {
         onChange?.(selected);
     }, [selected]);
@@ -35,6 +29,14 @@ export const CheckboxGroup = ({
     useEffect(() => {
         setSelected(initialSelection);
     }, [initialSelection]);
+
+    const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked) {
+            setSelected([...selected, event.target.value]);
+        } else {
+            setSelected([...selected.filter((v) => v !== event.target.value)]);
+        }
+    };
 
     return (
         <fieldset className={classNames(styles.checkboxGroup, className)}>
@@ -44,7 +46,7 @@ export const CheckboxGroup = ({
                     <Checkbox
                         key={k}
                         option={o}
-                        onChange={() => handleSelectionChange(o.value)}
+                        onChange={handleSelectionChange}
                         selected={selected.includes(o.value)}
                         disabled={disabled}
                     />

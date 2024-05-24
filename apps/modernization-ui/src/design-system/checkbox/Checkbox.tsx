@@ -1,3 +1,4 @@
+import React from 'react';
 import { Selectable } from 'options';
 import styles from './checkbox.module.scss';
 import classNames from 'classnames';
@@ -5,7 +6,7 @@ import classNames from 'classnames';
 type Props = {
     option: Selectable;
     selected: boolean;
-    onChange: () => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
     className?: string;
 };
