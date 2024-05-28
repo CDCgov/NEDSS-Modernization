@@ -21,14 +21,20 @@ export const CheckboxGroup = ({
     className
 }: Props) => {
     const [selected, setSelected] = useState<string[]>(initialSelection);
+    // Prevents emitting `onChange` when setting initialValue
+    const [initialized, setInitialized] = useState<boolean>(false);
 
     useEffect(() => {
-        onChange?.(selected);
+        if (!initialized) {
+            setInitialized(true);
+        } else {
+            onChange?.(selected);
+        }
     }, [selected]);
 
     useEffect(() => {
         setSelected(initialSelection);
-    }, [initialSelection]);
+    }, [JSON.stringify(initialSelection)]);
 
     const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
