@@ -11,6 +11,7 @@ import { routing as welcomeRouting } from 'apps/landing';
 import { routing as logoutRouting } from 'logout';
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
+import { DesignSystem } from 'design-system/DesignSystem';
 
 const routing = [
     welcomeRouting,
@@ -31,6 +32,10 @@ const routing = [
     { path: '*', element: <RedirectHome /> },
     { path: 'expired', element: <Expired /> }
 ];
+
+if (process.env.NODE_ENV === 'development') {
+    routing.push({ path: '/designSystem', element: <DesignSystem /> });
+}
 
 const router = createBrowserRouter(routing);
 
