@@ -24,7 +24,7 @@ export const Checkbox = ({ option, selected, onChange, disabled = false, classNa
                 disabled={disabled}
             />
             <label
-                className={classNames(styles.label, disabled ? styles.disabled : '')}
+                className={classNames(styles.label, { [styles.disabled]: disabled })}
                 htmlFor={`checkbox-${option.value}`}>
                 {option.label}
             </label>
