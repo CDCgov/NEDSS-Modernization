@@ -21,7 +21,7 @@ public record NBSReportCookie(String report) {
     ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from(NAME, report())
         .httpOnly(true)
         .secure(true)
-        .path("/nbs/nfc")
+        .path("/nbs")
         .sameSite("Strict");
 
     if (report().isEmpty()) {

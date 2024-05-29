@@ -35,12 +35,12 @@ class NBS6ReportCancelRouteLocatorConfigurationTest {
 
   @Test
   void should_should_clear_NBS_Report_cookie_if_present() {
-    classic.stubFor(get(urlEqualTo("/nbs/ManageReport.do")).willReturn(ok()));
+    classic.stubFor(get(urlEqualTo("/nbs/ManageReports.do")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
-                .path("/nbs/ManageReport.do")
+                .path("/nbs/ManageReports.do")
                 .build()
         ).cookie("NBS-Report", "basic")
         .exchange()
@@ -49,7 +49,7 @@ class NBS6ReportCancelRouteLocatorConfigurationTest {
             HttpHeaders.SET_COOKIE,
             allOf(
                 containsString("NBS-Report=;"),
-                containsString("Path=/nbs/nfc"),
+                containsString("Path=/nbs"),
                 containsString("Secure"),
                 containsString("HttpOnly"),
                 containsString("SameSite=Strict"),
@@ -63,12 +63,12 @@ class NBS6ReportCancelRouteLocatorConfigurationTest {
 
   @Test
   void should_should_not_clear_NBS_Report_cookie_when_not_present() {
-    classic.stubFor(get(urlEqualTo("/nbs/ManageReport.do")).willReturn(ok()));
+    classic.stubFor(get(urlEqualTo("/nbs/ManageReports.do")).willReturn(ok()));
 
     webClient
         .get().uri(
             builder -> builder
-                .path("/nbs/ManageReport.do")
+                .path("/nbs/ManageReports.do")
                 .build()
         )
         .exchange()

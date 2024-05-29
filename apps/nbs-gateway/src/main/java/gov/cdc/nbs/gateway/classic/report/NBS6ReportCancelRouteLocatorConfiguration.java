@@ -29,7 +29,7 @@ class NBS6ReportCancelRouteLocatorConfiguration {
         .route(
             "nbs6-report-cookie-clear",
             route -> route.order(RouteOrdering.NBS_6.before())
-                .path("/nbs/ManageReport.do")
+                .path("/nbs/ManageReports.do")
                 .and()
                 .cookie(NBSReportCookie.NAME, ".+")
                 .filters(

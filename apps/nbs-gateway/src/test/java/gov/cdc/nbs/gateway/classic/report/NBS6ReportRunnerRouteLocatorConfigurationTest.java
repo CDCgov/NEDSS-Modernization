@@ -11,8 +11,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -48,19 +46,6 @@ class NBS6ReportRunnerRouteLocatorConfigurationTest {
                 .build()
         ).cookie("NBS-Report", "basic")
         .exchange()
-        .expectHeader()
-        .value(
-            HttpHeaders.SET_COOKIE,
-            allOf(
-                containsString("NBS-Report=;"),
-                containsString("Path=/nbs/nfc"),
-                containsString("Secure"),
-                containsString("HttpOnly"),
-                containsString("SameSite=Strict"),
-                containsString("Max-Age=0"),
-                containsString("Expires=Thu, 01 Jan 1970 00:00:00 GMT")
-            )
-        )
         .expectStatus()
         .isOk();
   }
@@ -76,7 +61,6 @@ class NBS6ReportRunnerRouteLocatorConfigurationTest {
     classic.stubFor(
         post(urlEqualTo("/nbs/nfc"))
             .willReturn(ok())
-            .willReturn(badRequest())
     );
 
     webClient

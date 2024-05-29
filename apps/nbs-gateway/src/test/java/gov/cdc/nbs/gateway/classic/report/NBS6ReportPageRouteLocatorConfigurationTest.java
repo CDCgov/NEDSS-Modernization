@@ -48,7 +48,7 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
         .expectCookie()
         .value("NBS-Report", equalTo(page))
         .expectCookie()
-        .path("NBS-Report", "/nbs/nfc")
+        .path("NBS-Report", "/nbs")
         .expectCookie()
         .httpOnly("NBS-Report", true)
         .expectCookie()

@@ -23,8 +23,7 @@ class NBS6ReportRunnerRouteLocatorConfiguration {
 
   /**
    * Creates a {@link RouteLocator} that uses the value of the {@code NBS-Report} cookie to set the {@code Referer}
-   * header on the upstream request to the NBS6 {@code ReportWebProcessor}.  The response will be modified to clear the
-   * value of the {@code NBS-Report} cookie.
+   * header on the upstream request to the NBS6 {@code ReportWebProcessor}.
    */
   @Bean
   RouteLocator nbs6ReportRunnerRouteLocator(
@@ -50,7 +49,6 @@ class NBS6ReportRunnerRouteLocatorConfiguration {
                                 chain
                             )
                         )
-                        .addResponseHeader(HttpHeaders.SET_COOKIE, NBSReportCookie.empty().toResponseCookie().toString())
                 )
                 .uri(classic.uri())
         )
