@@ -64,4 +64,29 @@ class NBS6ReportRunnerRouteLocatorConfigurationTest {
         .expectStatus()
         .isOk();
   }
+
+  @Test
+  void should_not_apply_report_path_to_referer_without_the_NBS_Report_cookie() {
+    classic.stubFor(
+        post(urlEqualTo("/nbs/nfc"))
+            .withHeader(HttpHeaders.REFERER, equalTo("http://localhost:10000/report/basic"))
+            .willReturn(badRequest())
+    );
+
+    classic.stubFor(
+        post(urlEqualTo("/nbs/nfc"))
+            .willReturn(ok())
+            .willReturn(badRequest())
+    );
+
+    webClient
+        .post().uri(
+            builder -> builder
+                .path("/nbs/nfc")
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
 }
