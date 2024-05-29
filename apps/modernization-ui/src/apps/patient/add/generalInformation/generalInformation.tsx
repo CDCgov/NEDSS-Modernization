@@ -26,6 +26,7 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                             name="asOf"
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
+                                    toggleButtonAriaLabel="Information as of Date toggle calendar"
                                     defaultValue={value}
                                     onChange={onChange}
                                     name={name}

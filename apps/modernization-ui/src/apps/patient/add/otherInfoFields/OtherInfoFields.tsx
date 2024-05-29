@@ -35,6 +35,7 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                             name="dateOfBirth"
                             render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
+                                    toggleButtonAriaLabel="Date of Birth toggle calendar"
                                     defaultValue={value}
                                     onChange={onChange}
                                     name={name}

@@ -4,6 +4,7 @@ import React, { KeyboardEvent, useState } from 'react';
 import classNames from 'classnames';
 import { isFuture } from 'date-fns';
 import { EntryWrapper } from 'components/Entry';
+import { EN_US } from './constant';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
@@ -22,6 +23,7 @@ type DatePickerProps = {
     required?: boolean;
     disabled?: boolean;
     disableFutureDates?: boolean;
+    toggleButtonAriaLabel?: string;
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
@@ -84,8 +86,10 @@ const InternalDatePicker = ({
     className,
     defaultValue,
     disabled = false,
-    disableFutureDates = false
+    disableFutureDates = false,
+    toggleButtonAriaLabel
 }: DatePickerProps) => {
+    const toggleCalendar = toggleButtonAriaLabel || EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
         let currentDate = new Date();
         const offset = currentDate.getTimezoneOffset() * 60 * 1000;
@@ -101,6 +105,7 @@ const InternalDatePicker = ({
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     return (
         <DatePicker
+            i18n={{ ...EN_US, toggleCalendar }}
             id={id}
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
