@@ -34,7 +34,7 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
   NBSClassicService service;
 
   @ParameterizedTest
-  @ValueSource(strings = {"reports", "basic", "advanced", "column", "run", "save", "error", "other"})
+  @ValueSource(strings = {"reports", "basic", "advanced", "column", "run", "save", "error"})
   void should_apply_NBS_report_cookies_with_report_page(final String page) {
     classic.stubFor(get(urlEqualTo("/nbs/report/" + page)).willReturn(ok()));
 
@@ -56,6 +56,21 @@ class NBS6ReportPageRouteLocatorConfigurationTest {
         .expectCookie()
         .sameSite("NBS-Report", "Strict")
     ;
+  }
+
+  @Test
+  void should_not_apply_NBS_report_cookies_proxy_route() {
+    classic.stubFor(get(urlEqualTo("/nbs/report/proxy")).willReturn(ok()));
+
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/report/proxy")
+                .build()
+        )
+        .exchange()
+        .expectCookie()
+        .doesNotExist("NBS-Report");
   }
 
   @Test

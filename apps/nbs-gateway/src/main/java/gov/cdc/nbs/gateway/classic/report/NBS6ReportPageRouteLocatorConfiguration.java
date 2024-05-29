@@ -9,6 +9,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpCookie;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +39,7 @@ class NBS6ReportPageRouteLocatorConfiguration {
     return builder.routes()
         .route(
             "nbs6-report-cookie-applier",
-            route -> route.path("/nbs/report/{page:[a-zA-z]+}")
+            route -> route.path("/nbs/report/{page:reports|basic|advanced|column|run|save|error}")
                 .filters(
                     filter -> filter.filters(defaults)
                         .filter(this::applyReportCookie)
