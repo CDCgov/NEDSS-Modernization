@@ -1,4 +1,4 @@
-Feature: User can verify create new page here.
+Feature: Page Builder - User can verify create new page here.
 
     Background:
         Given I am logged in as "superuser" and password ""

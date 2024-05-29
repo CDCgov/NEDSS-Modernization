@@ -22,7 +22,8 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                 <li
                     onClick={() => {
                         onAddSection();
-                    }}>
+                    }}
+                    className="addSection">
                     <Icon.Add size={3} />
                     Add section
                 </li>

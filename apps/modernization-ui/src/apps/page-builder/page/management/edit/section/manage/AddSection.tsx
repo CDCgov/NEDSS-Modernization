@@ -92,7 +92,7 @@ export const AddSection = ({
                                 type="text"
                                 error={error?.message}
                                 required
-                                className={styles.inputField}
+                                className={`${styles.inputField} sectionName`}
                             />
                         )}
                     />
@@ -127,7 +127,11 @@ export const AddSection = ({
                             Save changes
                         </Button>
                     ) : (
-                        <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                        <Button
+                            className="addSectionBtn"
+                            type="button"
+                            onClick={onSubmit}
+                            disabled={!form.formState.isValid}>
                             Add section
                         </Button>
                     )}

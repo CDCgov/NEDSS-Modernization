@@ -1,4 +1,4 @@
-Feature: User can view existing page library sorting here.
+Feature: Page Builder - User can view existing page library sorting here.
 
     Background:
         Given I am logged in as "superuser" and password ""
