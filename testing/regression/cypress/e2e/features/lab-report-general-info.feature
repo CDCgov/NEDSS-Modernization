@@ -11,3 +11,27 @@ Feature: Laboratory Report Search by general search
   Scenario: Basic Info - Search by Jurisdiction
     When I select a jurisdiction for event laboratory report
     Then I should see Results with the link "Lab Report"
+
+  Scenario: Basic Info - Search by Pregnancy
+    When I select a pregnancy for event laboratory report
+    Then I should see No Results found text
+
+  Scenario: Basic Info - Search by Event id type
+    When I select a event id type for event laboratory report
+    Then I should see Results with the link "Lab Report"
+
+  Scenario: Basic Info - Search by User Created By
+    When I select a user created by for event investigation
+    Then I should see No Results found text
+
+  Scenario: Basic Info - Search by Event updated by user
+    When I select a user edited by for event investigation
+    Then I should see No Results found text
+
+  Scenario: Basic Info - Search by Event Facility
+    When I select a facility for event laboratory report
+    Then I should see No Results found text
+
+  Scenario: Basic Info - Search by Event Provider
+    When I select a provider for event laboratory report
+    Then I should see No Results found text

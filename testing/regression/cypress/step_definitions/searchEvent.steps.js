@@ -1,5 +1,7 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { searchEventPage } from "cypress/e2e/pages/searchEvent.page";
+import  AddLabReport  from "cypress/e2e/pages/events/add-lab-report.page";
+// import patientProfilePage from "cypress/e2e/pages/patientProfile.page";
 
 Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
@@ -51,6 +53,11 @@ Then("I select a pregnancy for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a pregnancy for event laboratory report", () => {
+  searchEventPage.selectPregnancy();
+  searchEventPage.search();
+});
+
 Then("I select a user edited by for event investigation", () => {
   searchEventPage.selectInvestigationUpdatedBy();
   searchEventPage.search();
@@ -71,8 +78,23 @@ Then("I select a event id type for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a event id type for event laboratory report", () => {
+  searchEventPage.selectLabReportEventType();
+  searchEventPage.search();
+});
+
 Then("I select a facility for event investigation", () => {
   searchEventPage.selectInvestigationFacility();
+  searchEventPage.search();
+});
+
+Then("I select a facility for event laboratory report", () => {
+  searchEventPage.selectLabReportFacility();
+  searchEventPage.search();
+});
+
+Then("I select a provider for event laboratory report", () => {
+  searchEventPage.selectLabReportProvider();
   searchEventPage.search();
 });
 
@@ -104,4 +126,11 @@ Then("I select investigation current processing status for event investigation",
 Then("I select notification status status for event investigation", () => {
   searchEventPage.selectInvestigationNotificationStatus();
   searchEventPage.search();
+});
+
+When("user creates lab report and investigation for patient id {string}", (string) => {
+  cy.contains("button", "Add lab report").scrollIntoView().click();
+  // patientProfilePage.clickOnButton("Add lab report");
+  cy.contains("button", "Add lab report").scrollIntoView().click();
+  AddLabReport.addLabReport();
 });
