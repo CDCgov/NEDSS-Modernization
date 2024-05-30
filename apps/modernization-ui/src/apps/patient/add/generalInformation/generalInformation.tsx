@@ -15,9 +15,6 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                         <span className="text-red">*</span> are required
                     </Grid>
                     <Grid col={6}>
-                        <Label className="required" htmlFor="asOf">
-                            <span data-testid="date-lable">Information as of Date</span>{' '}
-                        </Label>
                         <Controller
                             rules={{
                                 required: { value: true, message: 'This field is required' }
@@ -26,8 +23,8 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                             name="asOf"
                             render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
-                                    toggleButtonAriaLabel="Information as of Date toggle calendar"
                                     defaultValue={value}
+                                    label="Information as of Date"
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
