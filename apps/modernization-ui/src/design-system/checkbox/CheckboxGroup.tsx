@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Selectable } from 'options';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Checkbox } from './Checkbox';
 import styles from './checkboxGroup.module.scss';
 
@@ -36,11 +36,11 @@ export const CheckboxGroup = ({
         setSelected(initialSelection);
     }, [JSON.stringify(initialSelection)]);
 
-    const handleSelectionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.checked) {
-            setSelected([...selected, event.target.value]);
+    const handleSelectionChange = (checked: boolean, value: string) => {
+        if (checked) {
+            setSelected((previous) => [...previous, value]);
         } else {
-            setSelected([...selected.filter((v) => v !== event.target.value)]);
+            setSelected((previous) => [...previous.filter((v) => v !== value)]);
         }
     };
 
@@ -52,7 +52,7 @@ export const CheckboxGroup = ({
                     <Checkbox
                         key={k}
                         option={o}
-                        onChange={handleSelectionChange}
+                        onChange={(checked) => handleSelectionChange(checked, o.value)}
                         selected={selected.includes(o.value)}
                         disabled={disabled}
                     />

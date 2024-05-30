@@ -1,12 +1,11 @@
-import React from 'react';
+import classNames from 'classnames';
 import { Selectable } from 'options';
 import styles from './checkbox.module.scss';
-import classNames from 'classnames';
 
 type Props = {
     option: Selectable;
     selected: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (checked: boolean) => void;
     disabled?: boolean;
     className?: string;
 };
@@ -20,7 +19,7 @@ export const Checkbox = ({ option, selected, onChange, disabled = false, classNa
                 name={option.name}
                 value={option.value}
                 checked={selected}
-                onChange={onChange}
+                onChange={(e) => onChange(e.target.checked)}
                 disabled={disabled}
             />
             <label

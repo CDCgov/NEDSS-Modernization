@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { Checkbox } from './Checkbox';
 import userEvent from '@testing-library/user-event';
+import { Checkbox } from './Checkbox';
 
 const onChange = jest.fn();
 const option = { value: 'value', label: 'label', name: 'name' };
@@ -52,8 +52,8 @@ describe('Checkbox testing', () => {
         userEvent.click(checkbox);
         expect(onChange).toHaveBeenCalledTimes(1);
 
-        const event: React.ChangeEvent<HTMLInputElement> = onChange.mock.calls[0][0];
-        expect(event.target.value).toEqual('value');
+        const checked: boolean = onChange.mock.calls[0][0];
+        expect(checked).toEqual(true);
     });
 
     it('should emit onChange event when label clicked', () => {
@@ -66,7 +66,7 @@ describe('Checkbox testing', () => {
         userEvent.click(label);
         expect(onChange).toHaveBeenCalledTimes(1);
 
-        const event: React.ChangeEvent<HTMLInputElement> = onChange.mock.calls[0][0];
-        expect(event.target.value).toEqual('value');
+        const checked: boolean = onChange.mock.calls[0][0];
+        expect(checked).toEqual(true);
     });
 });
