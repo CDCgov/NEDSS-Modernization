@@ -128,7 +128,8 @@ export const SubsectionHeader = ({
                         type="button"
                         onClick={() => {
                             closeThenAct(onDeleteSubsection);
-                        }}>
+                        }}
+                        className="deleteSubsectionBtn">
                         <Icon.Delete size={3} /> Delete subsection
                     </Button>
                 </MoreOptions>
