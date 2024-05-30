@@ -133,6 +133,16 @@ When("I search by phone number as {string}", (string) => {
   searchPage.search();
 });
 
+When("I enter email as {string}", (string) => {
+  searchPage.enterEmail(string);
+  searchPage.search;
+});
+
+When("I enter phone number as {string}", (string) => {
+  searchPage.enterPhone(string);
+  searchPage.search();
+});
+
 When("I search by email as {string}", (string) => {
   searchPage.enterEmail(string);
   searchPage.search();
