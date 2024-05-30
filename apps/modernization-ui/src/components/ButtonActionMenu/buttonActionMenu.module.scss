@@ -1,0 +1,42 @@
+@use 'styles/colors';
+
+.actionMenu {
+    position: relative;
+    button {
+        svg {
+            margin: 0 -0.5rem;
+        }
+    }
+    .menu {
+        position: absolute;
+        top: 3rem;
+        right: 0;
+        display: flex;
+        display: flex;
+        flex-direction: column;
+        z-index: 9999;
+        border: 1px solid colors.$base-lighter;
+        background-color: colors.$base-white;
+        border-radius: 0.25rem;
+        overflow: hidden;
+        button {
+            background-color: unset;
+            border-top: 1px solid colors.$base-lighter;
+            color: colors.$base-darkest;
+            font-weight: 400;
+            font-size: 1rem;
+            text-align: left;
+            width: 100%;
+            border-radius: 0;
+            &:first-of-type {
+                border-top: none;
+            }
+            &:hover {
+                background-color: colors.$primary-lighter;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
