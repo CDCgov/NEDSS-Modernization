@@ -36,7 +36,7 @@
     }
 
     .input:focus + .label::before {
-        outline: 0.25rem solid #2491ff;
+        outline: 0.25rem solid colors.$focused;
         outline-offset: 0.25rem;
     }
 
