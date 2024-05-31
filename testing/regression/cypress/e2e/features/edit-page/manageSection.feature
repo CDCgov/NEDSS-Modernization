@@ -26,3 +26,12 @@ Feature: Page Builder - User can verify manage page here.
     Then Edit section modal closes
     And Inline confirmation message "Your changes have been saved successfully" displays under the Manage sections heading at the top
 
+  Scenario: Delete a section from Manage section without (subsections and questions)
+    And User views the trash icon to the right of the section name
+    When User clicks the trash icon
+    Then Yellow inline message "Are you sure you want to delete this section" displays above the section name with options "Yes, delete" and "Cancel"
+    When User clicks Yes, delete button
+    Then Yellow banner message closes
+    And Green inline confirmation message "You've successfully delete" whatever the section name displays under the Manage sections heading at the top
+    And Deleted section is removed from Manage sections modal and Edit page
+
