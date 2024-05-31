@@ -54,8 +54,8 @@ public class PatientProfileSteps {
     public void a_profile_is_loaded_by_patient_identifier() {
         try {
             this.profile = resolver.find(String.valueOf(this.patient.active().id()), null).orElse(null);
-        } catch (Exception exception) {
-            this.exception = exception;
+        } catch (Exception thrown) {
+            this.exception = thrown;
         }
     }
 
@@ -70,8 +70,8 @@ public class PatientProfileSteps {
 
         try {
             this.profile = resolver.find(null, String.valueOf(shortId)).orElse(null);
-        } catch (Exception exception) {
-            this.exception = exception;
+        } catch (Exception thrown) {
+            this.exception = thrown;
         }
 
     }

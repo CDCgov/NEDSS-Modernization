@@ -23,12 +23,12 @@ public class RandomUtil {
         // on test failure, hard code seed to value in failed test run
         // log. Log located at: api/log/spring.log
         RANDOM.setSeed(randomSeed);
-        LOGGER.info("Random data generated with seed: " + randomSeed);
+        LOGGER.info("Random data generated with seed: {}" , randomSeed);
     }
 
     public static void setSeed(long seed) {
         RANDOM.setSeed(seed);
-        LOGGER.info("Random seed updated to: " + seed);
+        LOGGER.info("Random seed updated to: {}", seed);
     }
 
     public static int getRandomInt(int bound) {
