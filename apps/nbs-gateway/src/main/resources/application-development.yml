@@ -9,7 +9,7 @@ nbs:
   gateway:
     defaults:
       protocol: http
-   landing:
+    landing:
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
       base: '/welcome'
     welcome:
