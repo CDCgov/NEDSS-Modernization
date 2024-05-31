@@ -17,8 +17,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "nbs.gateway.classic=http://localhost:10000"
-    }
-)
+    })
 @Import(NBS6LogoutRouteLocatorConfiguration.class)
 class NBS6LogoutRouteLocatorConfigurationTest {
 
@@ -36,12 +35,10 @@ class NBS6LogoutRouteLocatorConfigurationTest {
         .get().uri(
             builder -> builder
                 .path("/nbs/logout")
-                .build()
-        )
+                .build())
         .exchange()
-        .expectHeader().location("/logout")
-        .expectStatus().is3xxRedirection()
-    ;
+        .expectHeader().location("/goodbye")
+        .expectStatus().is3xxRedirection();
   }
 
   @Test
@@ -52,10 +49,8 @@ class NBS6LogoutRouteLocatorConfigurationTest {
         .get().uri(
             builder -> builder
                 .path("/nbs/logged-out")
-                .build()
-        )
-        .exchange().expectStatus().isOk();
-    ;
+                .build())
+        .exchange().expectStatus().isOk();;
   }
 
 }
