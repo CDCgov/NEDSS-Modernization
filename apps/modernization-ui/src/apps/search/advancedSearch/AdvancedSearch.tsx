@@ -384,7 +384,7 @@ export const AdvancedSearch = () => {
                 </Grid>
                 <Grid row className="search-page-height">
                     <Grid col={3} className="bg-white border-right border-base-light">
-                        <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
+                        <h2 className="padding-2 text-medium margin-0 refine-text">Refine your search</h2>
                         <div className="search-tabs">
                             <TabNavigation className="margin-top-1 margin-left-2">
                                 <TabNavigationEntry path="/advanced-search/person">Patient search</TabNavigationEntry>
