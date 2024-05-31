@@ -39,6 +39,44 @@ class AddPatientPage {
     cy.get(".usa-modal__main button").eq(1).click();
   }
 
+  addPatientWithData() {
+    cy.visit("/add-patient");
+    this.enterPaxName();
+
+    cy.get("select[name=suffix]").select("Esquire");
+    cy.get("input[data-testid=date-picker-external-input]").eq(1).type('10231980');
+    cy.get("select[name=currentGender]").select("Female");
+    cy.get("select[name=birthGender]").select("Female");
+    cy.get("select[name=deceased]").select("No");
+    cy.get("label[for='2135-2']").click();
+    cy.get("label[for='1002-5']").click();
+    cy.get("label[for='2028-9']").click();
+    cy.get("label[for='2106-3']").click();
+
+    const randomFirstStreet = faker.location.streetAddress();
+    const randomLastStreet = faker.location.secondaryAddress();
+    const randomCity = faker.location.city();
+    cy.get("#streetAddress1").type(randomFirstStreet);
+    cy.get("#streetAddress2").type(randomLastStreet);
+    cy.get("#city").type(randomCity);
+    cy.get("select[name=state]").select("California");
+    cy.get("#zip").type("93501");
+    cy.get("select[name=country]").select("United States");
+
+
+    cy.get("section[id='section-Identification'] select").first().select("Medicare number");
+    cy.get(
+      "select[placeholder='-Select-'][name='identification[0].authority']"
+    ).select("CO");
+    cy.get("section[id='section-Identification'] input[type='text").type("413F31");    
+    
+    cy.get(".add-patient-button").click();
+    cy.wait(500)
+    cy.get(".usa-modal__main button").eq(1).click();
+    cy.wait(500)
+    cy.get(".usa-modal__main button").click();
+  }
+
   addPatientBlank() {
     cy.get('button[class="usa-button add-patient-button"]').click();
     cy.get(".warning").should("be.visible");

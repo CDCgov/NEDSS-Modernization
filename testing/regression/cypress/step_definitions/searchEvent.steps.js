@@ -11,7 +11,6 @@ Then("I navigate the event laboratory report", () => {
   searchEventPage.clickEventLabReport();
 });
 
-
 Then("I click criteria tab", () => {
   searchEventPage.clickEventInvestigationCriteria();
 });
@@ -54,6 +53,11 @@ Then("I select a pregnancy for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a pregnancy for event laboratory report", () => {
+  searchEventPage.selectPregnancy();
+  searchEventPage.search();
+});
+
 Then("I select a user edited by for event investigation", () => {
   searchEventPage.selectInvestigationUpdatedBy();
   searchEventPage.search();
@@ -74,8 +78,23 @@ Then("I select a event id type for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a event id type for event laboratory report", () => {
+  searchEventPage.selectLabReportEventType();
+  searchEventPage.search();
+});
+
 Then("I select a facility for event investigation", () => {
   searchEventPage.selectInvestigationFacility();
+  searchEventPage.search();
+});
+
+Then("I select a facility for event laboratory report", () => {
+  searchEventPage.selectLabReportFacility();
+  searchEventPage.search();
+});
+
+Then("I select a provider for event laboratory report", () => {
+  searchEventPage.selectLabReportProvider();
   searchEventPage.search();
 });
 
@@ -109,8 +128,7 @@ Then("I select notification status status for event investigation", () => {
   searchEventPage.search();
 });
 
-When("user creates lab report and investigation for patient id {string}", (string) => {
+When("user creates lab report and investigation for new patient", () => {
   cy.contains("button", "Add lab report").scrollIntoView().click();
-  patientProfilePage.clickOnButton("Add lab report");
   AddLabReport.addLabReport();
 });

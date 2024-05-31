@@ -27,8 +27,19 @@ class SearchEventPage {
   }
 
   selectEventLabReportProgramArea() {
-    let elm = cy.get("#react-select-2-placeholder").click({force: true});
-    let elm2 = cy.get("#react-select-2-option-2").click();
+    // debugger
+    cy.get('label[for=UNPROCESSED]').click();
+    cy.get('label[for=NEW]').click();
+    cy.get('label[for=ELECTRONIC]').click();
+    cy.get('label[for=INTERNAL]').click();
+    cy.get('label[for=EXTERNAL]').click();
+    // let program_area = labReportGlobal[146];
+    
+
+    let elm = cy.get("#react-select-3-placeholder").click({force: true});
+    cy.wait(1000);
+    let elm = cy.get(".multi-select__input").eq(1).type("HIV", force: true);
+    let elm2 = cy.get("#react-select-3-option-0").click();
     cy.get('.multi-select__control--is-focused ').click();
   }
 
@@ -65,6 +76,11 @@ class SearchEventPage {
   selectInvestigationEventType() {
     let elm = cy.get('select[name="eventId.investigationEventType"]').select("State Case Id");
     let elm2 = cy.get('input[id="eventId.id"]').type("1");
+  }  
+
+  selectLabReportEventType() {
+    let elm = cy.get('select[name="eventId.labEventType"]').select("Accession Number");
+    let elm2 = cy.get('input[id="eventId.labEventId"]').type("1");
   }
 
   search() {
@@ -78,13 +94,25 @@ class SearchEventPage {
 
   selectInvestigationFacility() {
     let elm = cy.get('select[name="providerFacilitySearch.entityType"]').select("Facility");
-    let elm2 = cy.get('input[name="providerFacilitySearch.id"]').type("a");
+    let elm2 = cy.get('input[name="providerFacilitySearch.id"]').scrollIntoView().type("a");
     let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
   }
 
   selectInvestigationProvider() {
     let elm = cy.get('select[name="providerFacilitySearch.entityType"]').select("Provider");
     let elm2 = cy.get('input[name="providerFacilitySearch.id"]').type("a");
+    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+  }  
+
+  selectLabReportProvider() {
+    let elm = cy.get('select[name="providerSearch.providerType"]').select("Ordering Provider");
+    let elm2 = cy.get('input[name="providerSearch.providerId"]').type("a");
+    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+  }
+  
+  selectLabReportFacility() {
+    let elm = cy.get('select[name="providerSearch.providerType"]').select("Ordering Facility");
+    let elm2 = cy.get('input[name="providerSearch.providerId"]').type("a");
     let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
   }
 
@@ -110,7 +138,7 @@ class SearchEventPage {
   selectInvestigationNotificationStatus() {
     let elm = cy.get('div[id="react-select-8-placeholder"]').click({force: true});
     let elm2 = cy.get('div[id="react-select-8-option-0"]').click({force: true});
-  }
+  }  
 }
 
 export const searchEventPage = new SearchEventPage();

@@ -64,3 +64,7 @@ Then("I create a new patient to select Add another ID in the Identification", ()
 Then("delete the patient profile", () => {
     addPatientPage.addPatientAndDelete()
 });
+
+Then("I create a new patient for E2E lab report", () => {
+    addPatientPage.addPatientWithData()
+});
