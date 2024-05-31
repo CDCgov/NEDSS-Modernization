@@ -15,7 +15,6 @@ import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { ConfirmationModal } from 'confirmation';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heading } from '../../../../../components/heading';
 import { PageControllerService } from '../../../generated/services/PageControllerService';
 import { PublishPage } from './PublishPage/PublishPage';
 import { SaveTemplate } from './SaveTemplate/SaveTemplate';
@@ -242,10 +241,10 @@ const PreviewPageContent = () => {
                         <div className={styles.loaderContent}>
                             <Loading center className={styles.loaderIcon} />
                             <div className={styles.loaderText}>
-                                <Heading level={2}>Publishing...</Heading>
+                                <h2>Publishing...</h2>
                             </div>
                             <div className={styles.loaderText}>
-                                <Heading level={2}>This may take a moment</Heading>
+                                <h2>This may take a moment</h2>
                             </div>
                         </div>
                     }

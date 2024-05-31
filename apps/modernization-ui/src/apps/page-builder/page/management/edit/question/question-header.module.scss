@@ -8,7 +8,11 @@
     border: 1px solid colors.$base-lightest;
     background: colors.$base-white;
     justify-content: space-between;
-
+    h5 {
+        font-size: 1rem;
+        text-transform: none;
+        margin: 0;
+    }
     .typeDisplay {
         display: flex;
         align-items: center;

@@ -1,4 +1,4 @@
-Feature: User can verify existing create new page elements here.
+Feature: Page Builder - User can verify existing create new page elements here.
 
   Background:
     Given I am logged in as "superuser" and password ""

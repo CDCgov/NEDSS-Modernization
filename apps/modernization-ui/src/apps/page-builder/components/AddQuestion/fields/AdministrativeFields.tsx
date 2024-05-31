@@ -1,5 +1,4 @@
 import { Label, Textarea } from '@trussworks/react-uswds';
-import { Heading } from 'components/heading';
 import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
@@ -9,9 +8,7 @@ export const AdministrativeFields = () => {
     const form = useFormContext<CreateQuestionForm>();
     return (
         <>
-            <Heading className={styles.heading} level={4}>
-                Administrative
-            </Heading>
+            <h4>Administrative</h4>
             <Controller
                 control={form.control}
                 name="adminComments"

@@ -49,7 +49,9 @@ class AddPatientPage {
     //   .first()
     //   .type(this.getCurrentDate());
     cy.get(".add-patient-button").click();
+    cy.wait(500)
     cy.get(".usa-modal__main button").eq(1).click();
+    cy.wait(500)
   }
 
   addPatientSingleDeteNextYear() {
