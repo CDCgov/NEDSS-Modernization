@@ -70,6 +70,7 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                                 name={name}
                                 disableFutureDates
                                 errorMessage={error?.message}
+                                required
                             />
                         )}
                     />
