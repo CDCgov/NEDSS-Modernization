@@ -119,7 +119,7 @@ export const ManageSection = ({
                                 onClick={() => {
                                     handleUpdateState('add');
                                 }}
-                                className={styles.addSectionBtn}
+                                className={`${styles.addSectionBtn} addNewSectionBtn`}
                                 disabled={onAction}>
                                 <Icon.Add size={3} className={styles.addIcon} />
                                 Add new section
@@ -186,7 +186,8 @@ export const ManageSection = ({
                                 setConfirmDelete(undefined);
                             }}
                             type={'button'}
-                            outline>
+                            outline
+                            className="manageSectionsCloseBtn">
                             Close
                         </Button>
                     </div>

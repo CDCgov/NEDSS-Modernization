@@ -123,7 +123,8 @@ export const AddSection = ({
                         <Button
                             type="button"
                             onClick={onSubmit}
-                            disabled={!form.formState.isDirty || !form.formState.isValid}>
+                            disabled={!form.formState.isDirty || !form.formState.isValid}
+                            className="saveChangesBtn">
                             Save changes
                         </Button>
                     ) : (
