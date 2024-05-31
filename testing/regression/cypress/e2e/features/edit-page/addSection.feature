@@ -1,4 +1,4 @@
-Feature: Page Builder - User can verify edit page here.
+Feature: Page Builder - User can verify add section while editing the page here.
 
   Background:
     Given I am logged in as "superuser" and password ""
