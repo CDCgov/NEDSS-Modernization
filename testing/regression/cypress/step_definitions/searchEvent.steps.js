@@ -1,7 +1,5 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { searchEventPage } from "cypress/e2e/pages/searchEvent.page";
-import  AddLabReport  from "cypress/e2e/pages/events/add-lab-report.page";
-// import patientProfilePage from "cypress/e2e/pages/patientProfile.page";
 
 Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
@@ -73,6 +71,11 @@ Then("I select a date event range for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a date event range for laboratory report", () => {
+  searchEventPage.selectLabReportEventDate();
+  searchEventPage.search();
+});
+
 Then("I select a event id type for event investigation", () => {
   searchEventPage.selectInvestigationEventType();
   searchEventPage.search();
@@ -80,6 +83,26 @@ Then("I select a event id type for event investigation", () => {
 
 Then("I select a event id type for event laboratory report", () => {
   searchEventPage.selectLabReportEventType();
+  searchEventPage.search();
+});
+
+Then("I select a entry method event laboratory report", () => {
+  searchEventPage.selectLabReportEntryMethod();
+  searchEventPage.search();
+});
+
+Then("I select a entered by event laboratory report", () => {
+  searchEventPage.selectLabReportEnteredByMethod();
+  searchEventPage.search();
+});
+
+Then("I select a event status event laboratory report", () => {
+  searchEventPage.selectLabReportEventStatus();
+  searchEventPage.search();
+});
+
+Then("I select a process status event laboratory report", () => {
+  searchEventPage.selectLabReportProcessStatus();
   searchEventPage.search();
 });
 
@@ -126,11 +149,4 @@ Then("I select investigation current processing status for event investigation",
 Then("I select notification status status for event investigation", () => {
   searchEventPage.selectInvestigationNotificationStatus();
   searchEventPage.search();
-});
-
-When("user creates lab report and investigation for patient id {string}", (string) => {
-  cy.contains("button", "Add lab report").scrollIntoView().click();
-  // patientProfilePage.clickOnButton("Add lab report");
-  cy.contains("button", "Add lab report").scrollIntoView().click();
-  AddLabReport.addLabReport();
 });

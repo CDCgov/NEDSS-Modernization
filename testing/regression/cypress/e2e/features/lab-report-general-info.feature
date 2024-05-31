@@ -4,6 +4,30 @@ Feature: Laboratory Report Search by general search
     Given I am logged in as "superuser" and password ""
     Given I navigate the event laboratory report
 
+  Scenario: Basic Info - Search by Event date range
+    When I select a date event range for laboratory report
+    Then I should see Results with the link "Lab Report"
+
+  Scenario: Basic Info - Search by Event entry method
+    When I select a entry method event laboratory report
+    Then I should see No Results found text
+
+  Scenario: Basic Info - Search by Event entered by
+    When I select a entered by event laboratory report
+    Then I should see Results with the link "Lab Report" 
+
+  Scenario: Basic Info - Search by Event event status
+    When I select a event status event laboratory report
+    Then I should see Results with the link "Lab Report"
+
+  Scenario: Basic Info - Search by Event event process status
+    When I select a process status event laboratory report
+    Then I should see Results with the link "Lab Report"
+
+  Scenario: Basic Info - Search by Event entry method
+    When I select a date event range for laboratory report
+    Then I should see Results with the link "Lab Report"
+
   Scenario: Basic Info - Search by Program Area
     When I select program area for event laboratory report
     Then I should see Results with the link "Lab Report"
