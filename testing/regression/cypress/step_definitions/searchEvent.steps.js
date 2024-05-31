@@ -51,6 +51,11 @@ Then("I select a pregnancy for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a pregnancy for event laboratory report", () => {
+  searchEventPage.selectPregnancy();
+  searchEventPage.search();
+});
+
 Then("I select a user edited by for event investigation", () => {
   searchEventPage.selectInvestigationUpdatedBy();
   searchEventPage.search();
@@ -66,13 +71,53 @@ Then("I select a date event range for event investigation", () => {
   searchEventPage.search();
 });
 
+Then("I select a date event range for laboratory report", () => {
+  searchEventPage.selectLabReportEventDate();
+  searchEventPage.search();
+});
+
 Then("I select a event id type for event investigation", () => {
   searchEventPage.selectInvestigationEventType();
   searchEventPage.search();
 });
 
+Then("I select a event id type for event laboratory report", () => {
+  searchEventPage.selectLabReportEventType();
+  searchEventPage.search();
+});
+
+Then("I select a entry method event laboratory report", () => {
+  searchEventPage.selectLabReportEntryMethod();
+  searchEventPage.search();
+});
+
+Then("I select a entered by event laboratory report", () => {
+  searchEventPage.selectLabReportEnteredByMethod();
+  searchEventPage.search();
+});
+
+Then("I select a event status event laboratory report", () => {
+  searchEventPage.selectLabReportEventStatus();
+  searchEventPage.search();
+});
+
+Then("I select a process status event laboratory report", () => {
+  searchEventPage.selectLabReportProcessStatus();
+  searchEventPage.search();
+});
+
 Then("I select a facility for event investigation", () => {
   searchEventPage.selectInvestigationFacility();
+  searchEventPage.search();
+});
+
+Then("I select a facility for event laboratory report", () => {
+  searchEventPage.selectLabReportFacility();
+  searchEventPage.search();
+});
+
+Then("I select a provider for event laboratory report", () => {
+  searchEventPage.selectLabReportProvider();
   searchEventPage.search();
 });
 
