@@ -57,16 +57,14 @@ export const EthnicityForm = ({ entry, onChanged = () => {}, onCancel = () => {}
                         name="asOf"
                         rules={{ required: { value: true, message: 'As of date is required.' } }}
                         defaultValue={entry?.asOf ?? internalizeDate(new Date())}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                id="asOf"
                                 data-testid="asOf"
                                 defaultValue={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                name="asOf"
+                                name={name}
                                 disableFutureDates
-                                htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />
                         )}

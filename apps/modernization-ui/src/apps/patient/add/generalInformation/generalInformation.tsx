@@ -27,7 +27,6 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                                     label="Information as of Date"
                                     onChange={onChange}
                                     name={name}
-                                    htmlFor={name}
                                     disableFutureDates
                                     errorMessage={error?.message}
                                 />

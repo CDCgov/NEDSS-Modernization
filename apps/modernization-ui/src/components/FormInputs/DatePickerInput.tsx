@@ -10,10 +10,8 @@ type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
-    id?: string;
     label?: string;
     name?: string;
-    htmlFor?: string;
     onChange?: OnChange;
     onBlur?: OnBlur;
     className?: string;
@@ -65,7 +63,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
             <EntryWrapper
                 orientation={orientation}
                 label={props.label || ''}
-                htmlFor={props.htmlFor || ''}
+                htmlFor={props.name || ''}
                 required={props.required}
                 error={_error}>
                 {props.defaultValue && (
@@ -78,7 +76,6 @@ export const DatePickerInput = (props: DatePickerProps) => {
 };
 
 const InternalDatePicker = ({
-    id = '',
     name = '',
     onChange,
     onBlur,
@@ -105,7 +102,7 @@ const InternalDatePicker = ({
     return (
         <DatePicker
             i18n={{ ...EN_US, toggleCalendar }}
-            id={id}
+            id={name}
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
             onChange={handleOnChange(onChange)}

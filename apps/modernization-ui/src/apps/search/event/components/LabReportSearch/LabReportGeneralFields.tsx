@@ -206,13 +206,13 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         rules={{
                             required: { value: true, message: 'From date is required' }
                         }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 disabled={!watch.eventDate?.type}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                htmlFor={'from'}
+                                name={name}
                                 label="From"
                                 required
                                 errorMessage={error?.message}
@@ -226,13 +226,13 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         rules={{
                             required: { value: true, message: 'To date is required' }
                         }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 disabled={!watch.eventDate?.type}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                htmlFor={'to'}
+                                name={name}
                                 label="To"
                                 required
                                 errorMessage={error?.message}

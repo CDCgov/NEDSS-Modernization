@@ -198,10 +198,9 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 defaultValue={value}
                                 onBlur={onBlur}
                                 onChange={onChange}
-                                htmlFor={'from'}
                                 label="From"
                                 required
-                                id={name}
+                                name={name}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -219,8 +218,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                htmlFor={'to'}
-                                id={name}
+                                name={name}
                                 label="To"
                                 required
                                 errorMessage={error?.message}

@@ -97,13 +97,12 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         name="asOf"
                         defaultValue={entry.asOf}
                         rules={{ required: { value: true, message: 'As of date is required.' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                name="asOf"
-                                htmlFor={'asOf'}
+                                name={name}
                                 disableFutureDates
                                 errorMessage={error?.message}
                             />
@@ -120,14 +119,8 @@ export const SexBirthForm = ({ entry, onChanged, onCancel }: Props) => {
                         control={control}
                         name="bornOn"
                         defaultValue={entry.birth.bornOn}
-                        render={({ field: { onChange, value } }) => (
-                            <DatePickerInput
-                                defaultValue={value}
-                                onChange={onChange}
-                                name="bornOn"
-                                disableFutureDates
-                                htmlFor={'bornOn'}
-                            />
+                        render={({ field: { onChange, value, name } }) => (
+                            <DatePickerInput defaultValue={value} onChange={onChange} name={name} disableFutureDates />
                         )}
                     />
                 </Grid>

@@ -38,7 +38,6 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                                     defaultValue={value}
                                     onChange={onChange}
                                     name={name}
-                                    htmlFor={name}
                                     disableFutureDates
                                     label="Date of birth"
                                 />
@@ -119,7 +118,6 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                                         defaultValue={value}
                                         onChange={onChange}
                                         name={name}
-                                        htmlFor={name}
                                         label="Date of death"
                                         disableFutureDates
                                         disabled={selectedDeceased !== Indicator.Yes}
