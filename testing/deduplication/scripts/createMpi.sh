@@ -20,8 +20,14 @@ then
 fi
 
 
-## Clear out existing database by calling /reset
-if [[ "$2" == "append" ]]
+## Ask if this should be a new MPI or add additional data to existing
+PS3="Do you wish to remove pre-existing data? "
+	select OPTION in "Yes" "No"; do 
+		CLEAN=$OPTION
+    break;
+	done
+
+if [[ "$CLEAN" == "No" ]]
 then
   echo "Adding data to existing MPI"
 else
