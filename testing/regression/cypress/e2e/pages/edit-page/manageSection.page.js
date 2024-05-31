@@ -43,6 +43,7 @@ class ManageSectionPage {
     }
 
     closeDeleteConfirmationDialog() {
+        cy.wait(1000);
         cy.get('.warningModalHeader').should('not.exist');
     }
 
