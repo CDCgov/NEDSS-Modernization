@@ -13,7 +13,7 @@ export const Expired = () => {
                     reconnect to NBS by clicking the link below.
                 </p>
                 <p>
-                    <a href="/login">Return to NBS</a>
+                    <a href="/welcome">Return to NBS</a>
                 </p>
             </div>
         </LoginWrapper>

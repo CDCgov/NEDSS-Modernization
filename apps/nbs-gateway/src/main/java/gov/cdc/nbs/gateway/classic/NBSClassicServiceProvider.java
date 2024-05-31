@@ -26,7 +26,7 @@ class NBSClassicServiceProvider {
     return builder.routes()
         .route(
             "classic-logout-redirect", route -> route.path("/nbs/logOut")
-                .filters(filters -> filters.redirect(302, uiService.path("/logout"))).uri("no://op"))
+                .filters(filters -> filters.redirect(302, uiService.path("/goodbye"))).uri("no://op"))
         .build();
   }
 

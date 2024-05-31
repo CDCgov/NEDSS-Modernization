@@ -32,7 +32,7 @@ nbs:
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
       base: '/welcome'
     welcome:
-      enabled: true
+      enabled: false
     ui:
       service: 'localhost:3000'
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.ui.service}'
