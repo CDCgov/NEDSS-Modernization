@@ -49,33 +49,4 @@ class CancelledLabAddLocatorConfiguration {
         )
         .build();
   }
-
-  /**
-   * Redirects to the Modernized Patient Profile when the following criteria is satisfied;
-   *
-   * <ul>
-   * <li>Path equal to {@code /nbs/SelectCondition4.do}</li>
-   * <li>Query Parameter {@code ContextAction} equal to {@code Cancel}</li>
-   * </ul>
-   */
-  @Bean
-  RouteLocator cancelledLabAddAndCreateInvestigationPatientProfileReturn(
-      final RouteLocatorBuilder builder,
-      @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final PatientProfileService parameters) {
-    return builder.routes()
-        .route(
-            "cancelled-lab-add-and-create-investigation-patient-profile-return",
-            route -> route.order(RouteOrdering.NBS_6.before())
-                .path("/nbs/SelectCondition4.do")
-                .and()
-                .query("ContextAction", "Cancel")
-                .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patientProfile/events/return")
-                        .filters(defaults))
-                .uri(parameters.uri())
-        )
-        .build();
-  }
 }

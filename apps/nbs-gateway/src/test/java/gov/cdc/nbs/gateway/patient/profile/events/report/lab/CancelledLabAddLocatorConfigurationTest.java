@@ -21,50 +21,29 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
     }
 )
 class CancelledLabAddLocatorConfigurationTest {
-    @RegisterExtension
-    static WireMockExtension classic = WireMockExtension.newInstance()
-        .options(wireMockConfig().port(10000))
-        .build();
 
-    @RegisterExtension
-    static WireMockExtension service = WireMockExtension.newInstance()
-        .options(wireMockConfig().port(10001))
-        .build();
+  @RegisterExtension
+  static WireMockExtension service = WireMockExtension.newInstance()
+      .options(wireMockConfig().port(10001))
+      .build();
 
-    @Autowired
-    WebTestClient webClient;
+  @Autowired
+  WebTestClient webClient;
 
-    @Test
-    void should_route_to_service_when_Add_Lab_is_cancelled() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/events/return\\\\?.*")).willReturn(ok()));
+  @Test
+  void should_route_to_service_when_Add_Lab_is_cancelled() {
+    service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/events/return\\\\?.*")).willReturn(ok()));
 
-        webClient
-            .get().uri(
-                builder -> builder
-                    .path("/nbs/AddObservationLab2.do")
-                    .queryParam("ContextAction", "Cancel")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/AddObservationLab2.do")
+                .queryParam("ContextAction", "Cancel")
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
 
-    @Test
-    void should_route_to_service_when_Add_Lab_and_Create_Investigation_is_cancelled() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/events/return\\\\?.*")).willReturn(ok()));
-
-        webClient
-            .get().uri(
-                builder -> builder
-                    .path("/nbs/SelectCondition4.do")
-                    .queryParam("ContextAction", "Cancel")
-                    .queryParam("personUID", "")
-                    .queryParam("tabNumber", "3")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
 }

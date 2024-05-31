@@ -3,12 +3,10 @@ import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
 import { usePageQuestionDataMartValidation } from 'apps/page-builder/hooks/api/usePageQuestionValidation';
 import { useQuestionValidation } from 'apps/page-builder/hooks/api/useQuestionValidation';
 import { Input } from 'components/FormInputs/Input';
-import { Heading } from 'components/heading';
 import { ChangeEvent, useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { CreateQuestionForm } from '../QuestionForm';
-import styles from '../question-form.module.scss';
 
 type Props = {
     editing?: boolean;
@@ -84,9 +82,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
 
     return (
         <>
-            <Heading className={styles.heading} level={4}>
-                Data mart
-            </Heading>
+            <h4>Data mart</h4>
             <Controller
                 control={form.control}
                 name="dataMartInfo.reportLabel"

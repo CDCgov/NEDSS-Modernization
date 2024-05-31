@@ -34,6 +34,8 @@ import { focusedTarget } from 'utils';
 import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 import { Button } from 'components/button/Button';
+import { OutOfTabOrder } from './components/OutOfTabOrder';
+import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -63,7 +65,6 @@ export const AdvancedSearch = () => {
 
     // patient search variables
     const [personFilter, setPersonFilter] = useState<PersonFilter>();
-    const addPatiendRef = useRef<any>(null);
     const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -73,7 +74,6 @@ export const AdvancedSearch = () => {
     const [resultTotal, setResultTotal] = useState<number>(0);
     const { skipTo } = useSkipLink();
 
-    const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [
         findPatients,
         {
@@ -122,10 +122,6 @@ export const AdvancedSearch = () => {
         function handleClickOutside(event: any) {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 setShowSorting(false);
-            }
-
-            if (addPatiendRef.current && !addPatiendRef.current.contains(event.target)) {
-                setShowAddNewDropDown(false);
             }
         }
         // Bind the event listener
@@ -297,7 +293,6 @@ export const AdvancedSearch = () => {
     };
 
     function handleAddNewPatientClick(): void {
-        setShowAddNewDropDown(false);
         const criteria = searchParams.get('q');
 
         if (criteria) {
@@ -308,7 +303,6 @@ export const AdvancedSearch = () => {
     }
 
     function handleAddNewLabReportClick(): void {
-        setShowAddNewDropDown(false);
         window.location.href = `/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry`;
     }
 
@@ -378,35 +372,14 @@ export const AdvancedSearch = () => {
                 <Grid row className="page-title-bar bg-white">
                     <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                         <h1 className="advanced-search-title margin-0">Search</h1>
-                        <div className="button-group">
-                            <Button
-                                disabled={!lastSearchType}
-                                className="padding-x-3 add-patient-button"
-                                type="button"
-                                icon={
-                                    <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
-                                }
-                                labelPosition="left"
-                                onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
-                                outline>
-                                Add new
-                            </Button>
-
-                            {showAddNewDropDown && (
-                                <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
-                                    <li className="usa-nav__submenu-item">
-                                        <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
-                                            Add new patient
-                                        </Button>
-                                    </li>
-                                    <li className="usa-nav__submenu-item">
-                                        <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
-                                            Add new lab report
-                                        </Button>
-                                    </li>
-                                </ul>
-                            )}
-                        </div>
+                        <ButtonActionMenu
+                            label="Add new"
+                            items={[
+                                { label: 'Add new patient', action: handleAddNewPatientClick },
+                                { label: 'Add new lab report', action: handleAddNewLabReportClick }
+                            ]}
+                            disabled={!lastSearchType}
+                        />
                     </div>
                 </Grid>
                 <Grid row className="search-page-height">
@@ -573,15 +546,17 @@ export const AdvancedSearch = () => {
                                 <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                                     Showing {resultStartCount} - {resultEndCount} of {resultTotal}
                                 </p>
-                                <Pagination
-                                    style={{ justifyContent: 'flex-end' }}
-                                    totalPages={Math.ceil(resultTotal / 25)}
-                                    currentPage={currentPage}
-                                    pathname={'/advanced-search'}
-                                    onClickNext={() => handlePagination(currentPage + 1)}
-                                    onClickPrevious={() => handlePagination(currentPage - 1)}
-                                    onClickPageNumber={(_, page) => handlePagination(page)}
-                                />
+                                <OutOfTabOrder focusable={!submitted} selector="button">
+                                    <Pagination
+                                        style={{ justifyContent: 'flex-end' }}
+                                        totalPages={Math.ceil(resultTotal / 25)}
+                                        currentPage={currentPage}
+                                        pathname={'/advanced-search'}
+                                        onClickNext={() => handlePagination(currentPage + 1)}
+                                        onClickPrevious={() => handlePagination(currentPage - 1)}
+                                        onClickPageNumber={(_, page) => handlePagination(page)}
+                                    />
+                                </OutOfTabOrder>
                             </Grid>
                         )}
                         {isLoading() && (
@@ -637,7 +612,7 @@ export const AdvancedSearch = () => {
                                 <div className="text-center">
                                     <p>No results found.</p>
                                     {searchType === 'event' ? (
-                                        <p>Try refining your search</p>
+                                        <p>Try refining your search.</p>
                                     ) : (
                                         <p>
                                             Try refining your search, or{' '}

@@ -1,5 +1,4 @@
 import { ReactNode, useState } from 'react';
-import { Heading } from 'components/heading';
 import { Icon } from '@trussworks/react-uswds';
 import styles from './static-section.module.scss';
 
@@ -13,7 +12,7 @@ export const StaticSection = ({ title, children }: Props) => {
     return (
         <div className={styles.section}>
             <div className={styles.header}>
-                <Heading level={2}>{title}</Heading>
+                <h3>{title}</h3>
                 <div className={styles.collapseIcon}>
                     {isExpanded ? (
                         <Icon.ExpandLess size={4} onClick={() => setIsExpanded(false)} />
