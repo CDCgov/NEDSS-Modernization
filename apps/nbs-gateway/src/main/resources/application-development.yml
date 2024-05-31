@@ -13,7 +13,7 @@ nbs:
       uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
       base: '/welcome'
     welcome:
-      enabled: true      
+      enabled: enabled
     log:
       level: INFO
     pagebuilder:
