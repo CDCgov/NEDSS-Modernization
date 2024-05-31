@@ -5,11 +5,16 @@ import styles from './checkbox.module.scss';
 type Props = {
     option: Selectable;
     selected: boolean;
-    onChange: (checked: boolean) => void;
+    onChange?: (checked: boolean) => void;
+    onSelect?: (checked: boolean, value: string) => void;
     disabled?: boolean;
     className?: string;
 };
-export const Checkbox = ({ option, selected, onChange, disabled = false, className }: Props) => {
+export const Checkbox = ({ option, selected, onChange, onSelect, disabled = false, className }: Props) => {
+    const handleChange = (checked: boolean) => {
+        onChange?.(checked);
+        onSelect?.(checked, option.value);
+    };
     return (
         <div className={classNames(styles.checkbox, className)}>
             <input
@@ -19,7 +24,7 @@ export const Checkbox = ({ option, selected, onChange, disabled = false, classNa
                 name={option.name}
                 value={option.value}
                 checked={selected}
-                onChange={(e) => onChange(e.target.checked)}
+                onChange={(e) => handleChange(e.target.checked)}
                 disabled={disabled}
             />
             <label

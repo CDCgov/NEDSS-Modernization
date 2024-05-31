@@ -52,7 +52,7 @@ export const CheckboxGroup = ({
                     <Checkbox
                         key={k}
                         option={o}
-                        onChange={(checked) => handleSelectionChange(checked, o.value)}
+                        onSelect={handleSelectionChange}
                         selected={selected.includes(o.value)}
                         disabled={disabled}
                     />

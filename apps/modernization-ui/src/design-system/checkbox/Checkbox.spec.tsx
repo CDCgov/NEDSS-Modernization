@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Checkbox } from './Checkbox';
 
 const onChange = jest.fn();
+const onSelect = jest.fn();
 const option = { value: 'value', label: 'label', name: 'name' };
 
 describe('Checkbox testing', () => {
@@ -68,5 +69,20 @@ describe('Checkbox testing', () => {
 
         const checked: boolean = onChange.mock.calls[0][0];
         expect(checked).toEqual(true);
+    });
+
+    it('should emit onSelect event when checkbox clicked', () => {
+        const { getByRole } = render(<Checkbox onSelect={onSelect} option={option} selected={false} />);
+
+        const checkbox = getByRole('checkbox');
+        expect(checkbox.nodeName).toBe('INPUT');
+
+        userEvent.click(checkbox);
+        expect(onSelect).toHaveBeenCalledTimes(1);
+
+        const checked: boolean = onSelect.mock.calls[0][0];
+        const value: boolean = onSelect.mock.calls[0][1];
+        expect(checked).toEqual(true);
+        expect(value).toEqual('value');
     });
 });
