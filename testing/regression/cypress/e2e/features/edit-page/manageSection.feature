@@ -16,3 +16,13 @@ Feature: Page Builder - User can verify manage page here.
       | Trash can       | icon    | for deleting a section           |
       | Cross-eye       | icon    | for not visible / visible        |
       | Close           | button  | to close the pop-up modal window |
+
+  Scenario: Edit / rename an existing section
+    And User views the pencil icon to the right of the section name
+    When User clicks the pencil icon
+    Then Edit section modal window displays
+    When User modifies the section name
+    And clicks the Save button
+    Then Edit section modal closes
+    And Inline confirmation message "Your changes have been saved successfully" displays under the Manage sections heading at the top
+
