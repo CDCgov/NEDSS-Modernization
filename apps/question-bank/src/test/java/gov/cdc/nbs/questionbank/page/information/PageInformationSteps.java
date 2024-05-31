@@ -33,7 +33,7 @@ public class PageInformationSteps {
   }
 
   @When("I retrieve the information of a page")
-  public void i_retrieve_the_information_of_a_page() throws Exception {
+  public void i_retrieve_the_information_of_a_page() {
     this.page.maybeActive()
         .map(PageIdentifier::id)
         .map(requester::request)

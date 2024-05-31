@@ -205,7 +205,6 @@ class WaQuestionTest {
     return messagingData(
         true,
         "message variable id",
-        "label in message",
         "code system",
         false,
         "hl7 type");
@@ -214,7 +213,6 @@ class WaQuestionTest {
   private MessagingData messagingData(
       boolean included,
       String message,
-      String label,
       String codeSystem,
       boolean required,
       String hl7Type) {

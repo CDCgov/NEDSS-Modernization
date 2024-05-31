@@ -16,14 +16,14 @@ public class PageSteps {
   private static final String DEFAULT_MAPPING_GUIDE = "GEN_Case_Map_v2.0";
 
   private final PageMother mother;
-  private final Active<PageIdentifier> page;
+  private final Active<PageIdentifier> activePage;
 
   public PageSteps(
       final PageMother mother,
-      final Active<PageIdentifier> page
+      final Active<PageIdentifier> activePage
   ) {
     this.mother = mother;
-    this.page = page;
+    this.activePage = activePage;
   }
 
   @Before
@@ -60,7 +60,7 @@ public class PageSteps {
   @Given("the page has a(n) {string} of {string}")
   public void the_page_has_a_property_with_the_value(final String property, final String value) {
 
-    PageIdentifier active = page.active();
+    PageIdentifier active = activePage.active();
 
     switch (property.toLowerCase()) {
       case "description" -> mother.withDescription(active, value);
@@ -73,7 +73,7 @@ public class PageSteps {
   @Given("{user} changed the page name to {string}")
   public void the_user_changed_the_page_property(final ActiveUser user, final String value) {
     Instant when = Instant.now();
-    this.page.maybeActive()
+    this.activePage.maybeActive()
         .ifPresent(
             active -> mother.withName(
                 active,
@@ -86,7 +86,7 @@ public class PageSteps {
 
   @Given("{user} changed the page name to {string} {past}")
   public void the_user_changed_the_page_property(final ActiveUser user, final String value, final Instant when) {
-    this.page.maybeActive()
+    this.activePage.maybeActive()
         .ifPresent(
             active -> mother.withName(
                 active,
@@ -115,13 +115,13 @@ public class PageSteps {
       };  //  NOOP
     };
 
-    this.page.maybeActive().ifPresent(consumer);
+    this.activePage.maybeActive().ifPresent(consumer);
   }
 
   @Given("the page is tied to the {condition} condition")
   @Given("the page is associated with the {condition} condition")
   public void the_page_is_tied_to_the_condition(final String condition) {
-    this.page.maybeActive().ifPresent(page -> mother.withCondition(page, condition));
+    this.activePage.maybeActive().ifPresent(page -> mother.withCondition(page, condition));
   }
 
 }

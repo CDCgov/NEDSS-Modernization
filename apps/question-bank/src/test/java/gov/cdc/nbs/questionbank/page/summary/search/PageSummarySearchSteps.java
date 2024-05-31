@@ -219,25 +219,13 @@ public class PageSummarySearchSteps {
   @Then("the {nth} found page summary has a(n) {string} equal to {string}")
   @Then("the {nth} found page summary has the {string} {string}")
   @Then("the {nth} found page summary was {string} {string}")
+  @Then("the {int} page summary has a(n) {string} equal to {string}")
+  @Then("the {int} page summary has the {string} {string}")
   public void the_found_nth_page_summaries_contain_a_page_with_nth_property_having_the_value(
       final int position,
       final String property,
       final String value) throws Exception {
     int index = position - 1;
-    JsonPathResultMatchers pathMatcher = matchingPath(property, String.valueOf(index));
-
-    this.response.active()
-        .andExpect(pathMatcher.value(matchingValue(property, value)));
-  }
-
-  @Then("the {int} page summary has a(n) {string} equal to {string}")
-  @Then("the {int} page summary has the {string} {string}")
-  public void and_page_summaries_x_have_a_page_with_the_property_having_the_value(
-      final int position,
-      final String property,
-      final String value) throws Exception {
-    int index = position - 1;
-
     JsonPathResultMatchers pathMatcher = matchingPath(property, String.valueOf(index));
 
     this.response.active()
