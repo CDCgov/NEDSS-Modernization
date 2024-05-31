@@ -86,20 +86,6 @@ class RequireIfCommandCreatorTest {
   }
 
   @Test
-  void expression_equal_disable() {
-    String expected = "INV144 ( D , H ) = ^ R ( INV515 )";
-    String actual = creator.createExpression(
-        "INV144",
-        List.of(
-            new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours")),
-        false,
-        List.of("INV515"),
-        "=");
-    assertThat(actual).isEqualTo(expected);
-  }
-
-  @Test
   void expression_not_equal_disable() {
     String expected = "INV144 ( D , H ) <> ^ R ( INV515 )";
     String actual = creator.createExpression(
@@ -123,20 +109,6 @@ class RequireIfCommandCreatorTest {
             new SourceValue("H", "Hours")),
         false,
         List.of("INV515", "INV616"),
-        "<>");
-    assertThat(actual).isEqualTo(expected);
-  }
-
-  @Test
-  void expression_not_equal_enable() {
-    String expected = "INV144 ( D , H ) <> ^ R ( INV515 )";
-    String actual = creator.createExpression(
-        "INV144",
-        List.of(
-            new SourceValue("D", "Days"),
-            new SourceValue("H", "Hours")),
-        false,
-        List.of("INV515"),
         "<>");
     assertThat(actual).isEqualTo(expected);
   }

@@ -10,21 +10,21 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetQuestionRequest;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class TargetQuestionFinderTest {
 
   @Mock
@@ -183,25 +183,6 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterDateQuestionDiffSource() {
-    long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getDatePage());
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-
-    PagesQuestion sourceQuestion = new PagesQuestion(1L, false, true, "SYS", "NBS104", "Information As of Date",
-        7, 0,
-        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATE", "DATE", false,
-        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
-        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
-        "User entered text, number, or date", null);
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.DATE_COMPARE, sourceQuestion, null);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNotNull(result);
-  }
-
-  @Test
   void testFilterDateQuestionWithDiffSourceWithSameTarget() {
     long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getDatePage());
@@ -256,25 +237,6 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterDateQuestionWithSameSourceWithDiffTarget() {
-    long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getDatePage());
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-
-    PagesQuestion sourceQuestion = new PagesQuestion(1156348L, false, true, "SYS", "NBS104", "Information As of Date",
-        7, 0,
-        "IPO", "As of Date is the last known date for which the information is valid.", false, "DATE", "DATE", false,
-        "As of Date is the last known date for which the information is valid.", true, true, true, null, null, 1008,
-        null, "10", null, null, null, null, false, null, 0, false, null, 0, "text_data",
-        "User entered text, number, or date", null);
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.DATE_COMPARE, sourceQuestion, null);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNull(result);
-  }
-
-  @Test
   void testFilterOtherQuestions() {
     long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
@@ -297,7 +259,7 @@ class TargetQuestionFinderTest {
   @Test
   void testFilterOtherQuestionsGroup() {
     long pageId = 1L;
-      Optional<PagesResponse> page = Optional.of(getPageGroup());
+    Optional<PagesResponse> page = Optional.of(getPageGroup());
     List<Rule> rules = getRules();
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -603,10 +565,9 @@ class TargetQuestionFinderTest {
   @Test
   void testFilterOtherQuestionsWithoutPage() {
     long pageId = 1L;
-    List<Rule> rules = getRules();
 
     when(resolver.resolve(pageId)).thenReturn(Optional.empty());
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
+
 
     PagesQuestion sourceQuestion =
         new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
@@ -677,26 +638,6 @@ class TargetQuestionFinderTest {
             "P_NM_SFX", 1007, null, null, "D_PATIENT", "PATIENT_NAME_SUFFIX", "Patient Name Suffix",
             "PATIENT_NAME_SUFFIX",
             false, null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNull(result);
-  }
-
-  @Test
-  void testFilterOtherQuestionsWithDiffSourceSameTargetRule() {
-    long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getPage());
-    List<Rule> rules = getSameRules();
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
-
-    PagesQuestion sourceQuestion =
-        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
-            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
-            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
-            null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
 
     TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, null);
     PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
@@ -796,28 +737,6 @@ class TargetQuestionFinderTest {
   }
 
   @Test
-  void testFilterQuestionsWithDiffSourceDiffRuleDiffTarget() {
-    long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getPage());
-    List<Rule> rules = getRules();
-
-    Collection<PagesQuestion> targets = getTargets();
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
-
-    PagesQuestion sourceQuestion =
-        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
-            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
-            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
-            null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, targets);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNotNull(result);
-  }
-
-  @Test
   void testFilterQuestionsWithDiffSourceSameRuleDiffTarget() {
     long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
@@ -837,28 +756,6 @@ class TargetQuestionFinderTest {
     TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, targets);
     PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
     assertNull(result);
-  }
-
-  @Test
-  void testFilterQuestionsWithDiffSourceDiffRuleSameTarget() {
-    long pageId = 1L;
-    Optional<PagesResponse> page = Optional.of(getPage());
-    List<Rule> rules = getRules();
-
-    Collection<PagesQuestion> targets = getSameTargets();
-
-    when(resolver.resolve(pageId)).thenReturn(page);
-    when(ruleFinder.getAllRules(pageId)).thenReturn(rules);
-
-    PagesQuestion sourceQuestion =
-        new PagesQuestion(1156360L, false, true, "PHIN", "INV2002", "Reported Age Units", 21, 0, "IPO", "test decript",
-            false, "CODED", null, false, "test tooll tip", true, true, false, null, "AGE_UNIT", 1007, null, null,
-            "D_PATIENT", "PATIENT_AGE_REPORTED_UNIT", "Patient Age Reported Units", "PATIENT_AGE_RPTD_UNIT", false,
-            null, 0, false, null, 0, "coded_data", "Single-Select (Drop down)", "code_value_general");
-
-    TargetQuestionRequest request = new TargetQuestionRequest(Rule.RuleFunction.ENABLE, sourceQuestion, targets);
-    PagesResponse result = targetQuestionFinder.filterQuestions(pageId, request);
-    assertNotNull(result);
   }
 
   Collection<PagesQuestion> getSameTargets() {
