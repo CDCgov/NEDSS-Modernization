@@ -13,7 +13,7 @@ const Logout = () => {
                         <br /> Thank you for using NBS.
                     </p>
 
-                    <LinkButton href="/nbs/login" className={style.linkButton}>
+                    <LinkButton href="/welcome" className={style.linkButton}>
                         Return to NBS
                     </LinkButton>
                 </div>

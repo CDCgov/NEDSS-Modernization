@@ -9,6 +9,11 @@ nbs:
   gateway:
     defaults:
       protocol: http
+    landing:
+      uri: '${nbs.gateway.defaults.protocol}://${nbs.gateway.modernization.service}'
+      base: '/welcome'
+    welcome:
+      enabled: true
     log:
       level: INFO
     pagebuilder:

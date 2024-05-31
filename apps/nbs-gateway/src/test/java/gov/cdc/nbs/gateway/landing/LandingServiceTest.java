@@ -1,4 +1,4 @@
-package gov.cdc.nbs.security.oidc;
+package gov.cdc.nbs.gateway.landing;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import gov.cdc.nbs.gateway.GatewayApplication;
@@ -8,18 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 @SpringBootTest(
-    classes = {GatewayApplication.class, NBS6LogoutRouteLocatorConfiguration.class},
+    classes = {GatewayApplication.class, LandingServiceProvider.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
-        "nbs.gateway.classic=http://localhost:10000"
+        "nbs.gateway.landing.base=/welcome"
     })
-@Import(NBS6LogoutRouteLocatorConfiguration.class)
-class NBS6LogoutRouteLocatorConfigurationTest {
+@Import(LandingServiceProvider.class)
+class LandingServiceTest {
 
   @RegisterExtension
   static WireMockExtension classic = WireMockExtension.newInstance()
@@ -30,27 +28,15 @@ class NBS6LogoutRouteLocatorConfigurationTest {
   WebTestClient webClient;
 
   @Test
-  void should_redirect_to_spring_security_logout_endpoint() {
+  void should_redirect_to_welcome() {
     webClient
         .get().uri(
             builder -> builder
-                .path("/nbs/logout")
+                .path("/")
                 .build())
         .exchange()
-        .expectHeader().location("/goodbye")
+        .expectHeader().location("/welcome")
         .expectStatus().is3xxRedirection();
-  }
-
-  @Test
-  void should_redirect_to_NBS_logout() {
-    classic.stubFor(get(urlPathMatching("/nbs/logout")).willReturn(ok()));
-
-    webClient
-        .get().uri(
-            builder -> builder
-                .path("/nbs/logged-out")
-                .build())
-        .exchange().expectStatus().isOk();;
   }
 
 }

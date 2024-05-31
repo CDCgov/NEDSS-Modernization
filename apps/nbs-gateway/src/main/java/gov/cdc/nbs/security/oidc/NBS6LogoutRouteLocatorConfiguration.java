@@ -16,12 +16,12 @@ class NBS6LogoutRouteLocatorConfiguration {
   @Bean
   RouteLocator logout(final RouteLocatorBuilder builder) {
     return builder.routes().route(
-            "nbs-logout",
-            route -> route.path("/nbs/logout")
-                .filters(
-                    filters -> filters
-                        .redirect(302, "/logout"))
-                .uri("no://op"))
+        "nbs-logout",
+        route -> route.path("/nbs/logout")
+            .filters(
+                filters -> filters
+                    .redirect(302, "/goodbye"))
+            .uri("no://op"))
         .build();
   }
 
