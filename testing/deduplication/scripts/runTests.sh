@@ -18,6 +18,11 @@ then
   exit 1
 fi
 
+# create results folder
+FOLDER=$(basename  $(readlink -f ${1}))
+RESULT_FOLDER="Results_$FOLDER"
+mkdir $RESULT_FOLDER
+
 for filename in $(readlink -f ${1})/*; do
   if [[ ! -e $filename ]]; then continue; fi
   echo "Current file: $filename"
@@ -31,7 +36,7 @@ for filename in $(readlink -f ${1})/*; do
   # Send file content to API
   curl -s -X POST http://localhost:8082/test -H "Accept:application/json" \
    -H "Content-Type:application/json" \
-   --data "@$filename" | jq > "Results/${ROW}_results.json"
+   --data "@$filename" | jq > "$RESULT_FOLDER/${ROW}_results.json"
 
   ROW=$((ROW + 1))
 done
