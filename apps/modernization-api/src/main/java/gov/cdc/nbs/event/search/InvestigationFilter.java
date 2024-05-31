@@ -23,8 +23,8 @@ public final class InvestigationFilter implements EventFilter {
   private PregnancyStatus pregnancyStatus;
   private InvestigationEventId eventId;
   private EventDate eventDate;
-  private Long createdBy;
-  private Long lastUpdatedBy;
+  private String createdBy;
+  private String lastUpdatedBy;
   private ProviderFacilitySearch providerFacilitySearch;
   private Long investigatorId;
   private InvestigationStatus investigationStatus;

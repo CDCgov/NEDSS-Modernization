@@ -40,7 +40,7 @@ public class InvestigationSearchCriteriaSteps {
   @Given("I want to find investigations created by {user}")
   public void i_want_to_find_investigations_created_by(final ActiveUser user) {
     this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setCreatedBy(user.id())
+        criteria -> criteria.setCreatedBy(String.valueOf(user.id()))
     );
   }
 
@@ -59,7 +59,7 @@ public class InvestigationSearchCriteriaSteps {
   @Given("I want to find investigations updated by {user}")
   public void i_want_to_find_investigations_updated_by(final ActiveUser user) {
     this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setLastUpdatedBy(user.id())
+        criteria -> criteria.setLastUpdatedBy(String.valueOf(user.id()))
     );
   }
 
