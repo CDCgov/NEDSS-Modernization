@@ -20,8 +20,7 @@ class StaticRequest {
 
     StaticRequest(
             final Authenticated authenticated,
-            final MockMvc mvc,
-            final ObjectMapper mapper) {
+            final MockMvc mvc) {
         this.authenticated = authenticated;
         this.mvc = mvc;
     }

@@ -17,32 +17,32 @@ import java.util.Optional;
 public class LabReportSearchCriteriaSteps {
 
   private final Active<PatientIdentifier> patient;
-  private final Active<ProviderIdentifier> provider;
+  private final Active<ProviderIdentifier> activeProvider;
   private final Active<SearchableLabReport> searchableLabReport;
-  private final Active<LabReportFilter> criteria;
+  private final Active<LabReportFilter> activeCriteria;
 
   LabReportSearchCriteriaSteps(
       final Active<PatientIdentifier> patient,
-      final Active<ProviderIdentifier> provider,
+      final Active<ProviderIdentifier> activeProvider,
       final Active<SearchableLabReport> searchableLabReport,
-      final Active<LabReportFilter> criteria
+      final Active<LabReportFilter> activeCriteria
   ) {
     this.patient = patient;
-    this.provider = provider;
+    this.activeProvider = activeProvider;
     this.searchableLabReport = searchableLabReport;
-    this.criteria = criteria;
+    this.activeCriteria = activeCriteria;
   }
 
   @Given("I want to find lab reports created by {user}")
   public void i_want_to_find_lab_reports_created_by(final ActiveUser user) {
-    this.criteria.maybeActive().ifPresent(
+    this.activeCriteria.maybeActive().ifPresent(
         criteria -> criteria.setCreatedBy(user.id())
     );
   }
 
   @Given("I want to find lab reports created on {localDate}")
   public void i_want_to_find_lab_reports_created_on(final LocalDate on) {
-    this.criteria.maybeActive().ifPresent(
+    this.activeCriteria.maybeActive().ifPresent(
         criteria -> criteria.setEventDate(
             eventDateSearch(
                 LabReportFilter.LabReportDateType.LAB_REPORT_CREATE_DATE,
@@ -54,14 +54,14 @@ public class LabReportSearchCriteriaSteps {
 
   @Given("I want to find lab reports updated by {user}")
   public void i_want_to_find_lab_reports_updated_by(final ActiveUser user) {
-    this.criteria.maybeActive().ifPresent(
+    this.activeCriteria.maybeActive().ifPresent(
         criteria -> criteria.setLastUpdatedBy(user.id())
     );
   }
 
   @Given("I want to find lab reports updated on {localDate}")
   public void i_want_to_find_lab_reports_updated_on(final LocalDate on) {
-    this.criteria.maybeActive().ifPresent(
+    this.activeCriteria.maybeActive().ifPresent(
         criteria -> criteria.setEventDate(
             eventDateSearch(
                 LabReportFilter.LabReportDateType.LAST_UPDATE_DATE,
@@ -73,18 +73,18 @@ public class LabReportSearchCriteriaSteps {
 
   @Given("I want to find new lab reports")
   public void i_want_to_find_new_lab_reports() {
-    this.criteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.NEW));
+    this.activeCriteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.NEW));
   }
 
   @Given("I want to find updated lab reports")
   public void i_want_to_find_updated_lab_reports() {
-    this.criteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.UPDATE));
+    this.activeCriteria.active(criteria -> criteria.withEventStatus(LabReportFilter.EventStatus.UPDATE));
   }
 
   @Given("I want to find lab reports ordered by the provider")
   public void i_want_to_find_lab_reports_ordered_by_the_provider() {
-    this.criteria.maybeActive().ifPresent(
-        criteria -> this.provider.maybeActive().ifPresent(
+    this.activeCriteria.maybeActive().ifPresent(
+        criteria -> this.activeProvider.maybeActive().ifPresent(
             provider -> criteria.setProviderSearch(
                 providerSearch(
                     LabReportFilter.ProviderType.ORDERING_PROVIDER,
@@ -97,7 +97,7 @@ public class LabReportSearchCriteriaSteps {
 
   @Given("I add the lab report criteria for {string}")
   public void i_add_the_lab_report_criteria_for(final String field) {
-    this.criteria.active(current -> applyCriteria(current, field));
+    this.activeCriteria.active(current -> applyCriteria(current, field));
   }
 
   private LabReportFilter applyCriteria(
