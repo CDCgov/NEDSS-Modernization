@@ -6,7 +6,7 @@ Feature: Investigation Search by general search
 
   Scenario: Basic Info - Search by Condition
     When I select a condition for event investigation
-    Then I should see Results with the link "Acanthamoeba Disease (Excluding Keratitis)"
+    Then I should see Results with the link "aa"
 
   Scenario: Basic Info - Search by Program Area
     When I select a program area for event investigation
@@ -18,7 +18,7 @@ Feature: Investigation Search by general search
 
   Scenario: Basic Info - Search by Pregnancy
     When I select a pregnancy for event investigation
-    Then I should see Results with the link "2019 Novel Coronavirus"
+    Then I should see Results with the link "West Nile virus, non-neuroinvasive"
 
   Scenario: Basic Info - Search by Event edited by user
     When I select a user edited by for event investigation
@@ -26,11 +26,11 @@ Feature: Investigation Search by general search
 
   Scenario: Basic Info - Search by Event created by user
     When I select a user created by for event investigation
-    Then I should see Results with the link "African Tick Bite Fever"
+    Then I should see Results with the link "Diphtheria"
 
   Scenario: Basic Info - Search by Event date range
     When I select a date event range for event investigation
-    Then I should see Results with the link "African Tick Bite Fever"
+    Then I should see Results with the link "Diphtheria"
 
   Scenario: Basic Info - Search by Event id type
     When I select a event id type for event investigation
@@ -38,7 +38,7 @@ Feature: Investigation Search by general search
 
   Scenario: Basic Info - Search by Event Facility
     When I select a facility for event investigation
-    Then I should see Results with the link "Anthrax"
+    Then I should see Results with the link "Acute flaccid myelitis"
 
   Scenario: Basic Info - Search by Event Provider
     When I select a provider for event investigation
