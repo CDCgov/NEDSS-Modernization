@@ -35,7 +35,11 @@ export const ButtonActionMenu = ({ label, items, disabled }: Props) => {
 
     return (
         <div className={styles.actionMenu} ref={wrapperRef}>
-            <Button type="button" onClick={() => setOpen(!open)} className="action-menu-button" disabled={disabled}>
+            <Button
+                type="button"
+                onClick={() => setOpen(!open)}
+                className={'action-button ' + styles.actionMenuButton}
+                disabled={disabled}>
                 {label} <Icon.ArrowDropDown size={4} />
             </Button>
             {open ? (

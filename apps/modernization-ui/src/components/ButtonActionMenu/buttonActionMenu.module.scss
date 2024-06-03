@@ -2,7 +2,8 @@
 
 .actionMenu {
     position: relative;
-    button {
+    .actionMenuButton {
+        padding: 0.375rem 1.25rem;
         svg {
             margin: 0 -0.5rem;
         }
