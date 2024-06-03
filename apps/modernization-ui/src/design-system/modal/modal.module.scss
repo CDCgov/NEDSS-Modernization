@@ -11,6 +11,10 @@ $max-width: 1100px;
 $header-height: 4.625rem;
 $footer-height: 5.75rem;
 
+.wrapper {
+    z-index: 1000;
+}
+
 .modal {
     left: auto;
     right: auto;

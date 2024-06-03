@@ -46,7 +46,9 @@ const Modal = ({
     };
 
     return (
-        <div className="usa-modal-wrapper" onKeyDown={(!forceAction && handleKeyDown) || undefined}>
+        <div
+            className={classNames('usa-modal-wrapper', styles.wrapper)}
+            onKeyDown={(!forceAction && handleKeyDown) || undefined}>
             <div className="usa-modal-overlay">
                 <dialog
                     ref={element}

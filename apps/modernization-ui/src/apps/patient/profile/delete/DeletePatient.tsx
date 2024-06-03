@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
 import { Patient } from '../Patient';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
@@ -9,7 +9,6 @@ import { ConfirmationModal } from 'confirmation';
 
 import { Warning } from 'design-system/modal';
 import { Note } from 'components/Note';
-import { MessageModal } from 'messageModal';
 import { DeletePatientMutation, PatientSummary, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 
@@ -58,38 +57,41 @@ const DeletePatient = ({ patient, summary }: Props) => {
 
     return (
         <>
-            <ModalToggleButton modalRef={modalRef} opener className={styles.destructive} type={'submit'}>
+            <Button className={styles.destructive} type={'button'} onClick={show}>
                 <Icon.Delete size={3} />
                 Delete patient
-            </ModalToggleButton>
-            {deletability === DeletabilityResult.Deletable && (
-                <ConfirmationModal
-                    modal={modalRef}
-                    title="Permanently delete patient?"
-                    message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
-                    cancelText="No, go back"
-                    onCancel={() => {
-                        modalRef.current?.toggleModal(undefined, false);
-                    }}
-                    confirmText="Yes, delete"
-                    onConfirm={handleDeletePatient}
-                />
-            )}
-            {deletability === DeletabilityResult.Has_Associations && (
-                <Warning summary="The patient can not be deleted" onClose={() => {}}>
-                    <Note>
-                        The file cannot be deleted until all associated event records have been deleted. If you are
-                        unable to see the associated event records due to your user permission settings, please contact
-                        your system administrator.
-                    </Note>
-                </Warning>
-            )}
-            {deletability === DeletabilityResult.Is_Inactive && (
-                <MessageModal
-                    modal={modalRef}
-                    title={`The patient can not be deleted`}
-                    message="This patient file is inactive and cannot be deleted."
-                />
+            </Button>
+
+            {render(
+                <>
+                    {deletability === DeletabilityResult.Deletable && (
+                        <ConfirmationModal
+                            modal={modalRef}
+                            title="Permanently delete patient?"
+                            message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
+                            cancelText="No, go back"
+                            onCancel={() => {
+                                modalRef.current?.toggleModal(undefined, false);
+                            }}
+                            confirmText="Yes, delete"
+                            onConfirm={handleDeletePatient}
+                        />
+                    )}
+                    {deletability === DeletabilityResult.Has_Associations && (
+                        <Warning summary="The patient can not be deleted" onClose={hide}>
+                            <Note>
+                                The file cannot be deleted until all associated event records have been deleted. If you
+                                are unable to see the associated event records due to your user permission settings,
+                                please contact your system administrator.
+                            </Note>
+                        </Warning>
+                    )}
+                    {deletability === DeletabilityResult.Is_Inactive && (
+                        <Warning summary="The patient can not be deleted" onClose={hide}>
+                            <Note>This patient file is inactive and cannot be deleted.</Note>
+                        </Warning>
+                    )}
+                </>
             )}
         </>
     );
