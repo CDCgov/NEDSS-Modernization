@@ -67,6 +67,7 @@ public class PatientMatchController {
 
   @PostMapping("/test")
   public TestResponse test(@RequestBody PatientData data) {
+    dataManager.remove(data.external_person_id());
     try {
       dataManager.load(Arrays.asList(data));
     } catch (RuntimeException e) {

@@ -354,14 +354,16 @@ public class ExactMatchService {
   }
 
   private List<String> queryMatchingNames(String personUid, List<String> personIds) {
-    String idList = String.join(",", personIds);
-    return template.query(
-        FIND_MATCHING_NAME,
-        setter -> {
-          setter.setString(1, personUid);
-          setter.setString(2, idList);
-        },
-        rowToString());
+    return personIds.stream()
+        .map(id -> template.query(
+            FIND_MATCHING_NAME,
+            setter -> {
+              setter.setString(1, personUid);
+              setter.setString(2, id);
+            },
+            rowToString()))
+        .flatMap(List::stream)
+        .toList();
   }
 
   private List<ExactMatch> findMatchesOnLocatorData(List<ExactMatch> exactMatches) {
@@ -377,14 +379,16 @@ public class ExactMatchService {
   }
 
   private List<String> queryMatchingLocator(String personUid, List<String> personIds) {
-    String idList = String.join(",", personIds);
-    return template.query(
-        FIND_MATCHING_LOCATORS,
-        setter -> {
-          setter.setString(1, personUid);
-          setter.setString(2, idList);
-        },
-        rowToString());
+    return personIds.stream()
+        .map(id -> template.query(
+            FIND_MATCHING_LOCATORS,
+            setter -> {
+              setter.setString(1, personUid);
+              setter.setString(2, id);
+            },
+            rowToString()))
+        .flatMap(List::stream)
+        .toList();
   }
 
   // Converts the response from the database to a list of strings

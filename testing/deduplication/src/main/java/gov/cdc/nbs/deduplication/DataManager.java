@@ -30,23 +30,23 @@ public class DataManager {
         """;
 
   private static final String DELETE_ENTITIES = """
-      DELETE FROM Entity WHERE entity_uid < 10000000;
+      DELETE FROM Entity WHERE class_cd = 'PSN';
         """;
 
   private static final String DELETE_PERSONS = """
-      DELETE FROM Person WHERE person_uid < 10000000
+      DELETE FROM Person;
         """;
 
   private static final String DELETE_PERSON_NAMES = """
-      DELETE FROM Person_name WHERE person_uid< 10000000;
+      DELETE FROM Person_name;
         """;
 
   private static final String DELETE_ADDRESSES = """
-      DELETE FROM Postal_locator WHERE postal_locator_uid< 10000000;
-      DELETE FROM Entity_locator_participation WHERE entity_uid < 10000000;
+      DELETE FROM Postal_locator;
+      DELETE FROM Entity_locator_participation;
         """;
   private static final String DELETE_IDENTIFIERS = """
-      DELETE FROM Entity_id WHERE entity_uid < 10000000
+      DELETE FROM Entity_id;
       """;
 
   private static final String INSERT_ENTITY = """
