@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
-import { Modal } from './Modal';
 import userEvent from '@testing-library/user-event';
+
+import { Modal } from './Modal';
 
 describe('when a modal is displayed', () => {
     it('should render with no accessibility violations', async () => {
@@ -64,13 +65,13 @@ describe('when a modal is displayed', () => {
 
     it('should invoke the onClose when icon close called', () => {
         const onClose = jest.fn();
-        const { getByLabelText } = render(
+        const { getByRole } = render(
             <Modal id={'identifier-value'} title="Title Value" onClose={onClose}>
                 Contents
             </Modal>
         );
 
-        const closer = getByLabelText('Close Title Value');
+        const closer = getByRole('button', { name: 'Close Title Value' });
 
         userEvent.click(closer);
 

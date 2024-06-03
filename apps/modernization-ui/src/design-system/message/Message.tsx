@@ -7,11 +7,10 @@ type Type = 'information' | 'success' | 'warning' | 'error';
 
 type MessageProps = {
     type: Type;
-    summary: string;
-    children?: ReactNode;
+    children: ReactNode;
 };
 
-const Message = ({ type, summary, children }: MessageProps) => {
+const Message = ({ type, children }: MessageProps) => {
     const icon = resolveIcon(type);
     return (
         <div className={styles.message}>
@@ -28,10 +27,7 @@ const Message = ({ type, summary, children }: MessageProps) => {
                     </svg>
                 )}
             </div>
-            <div className={styles.content}>
-                <p className={styles.summary}>{summary}</p>
-                {children}
-            </div>
+            <div className={styles.content}>{children}</div>
         </div>
     );
 };

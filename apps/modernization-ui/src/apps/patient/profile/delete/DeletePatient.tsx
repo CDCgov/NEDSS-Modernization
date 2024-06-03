@@ -1,19 +1,17 @@
-import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Icon, ModalRef } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import { Patient } from '../Patient';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 
-import { ConfirmationModal } from 'confirmation';
-
-import { Warning } from 'design-system/modal';
+import { Confirmation, Warning } from 'design-system/modal';
 import { Note } from 'components/Note';
 import { DeletePatientMutation, PatientSummary, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 
 import styles from './delete-patient.module.scss';
 import { useConditionalRender } from 'conditional-render';
+import { displayName } from 'name';
 
 type Props = {
     patient: Patient;
@@ -22,7 +20,6 @@ type Props = {
 
 const DeletePatient = ({ patient, summary }: Props) => {
     const { showSuccess, showError } = useAlert();
-    const modalRef = useRef<ModalRef>(null);
 
     const deletability = resolveDeletability(patient);
 
@@ -61,24 +58,26 @@ const DeletePatient = ({ patient, summary }: Props) => {
                 <Icon.Delete size={3} />
                 Delete patient
             </Button>
-
             {render(
                 <>
                     {deletability === DeletabilityResult.Deletable && (
-                        <ConfirmationModal
-                            modal={modalRef}
+                        <Confirmation
                             title="Permanently delete patient?"
-                            message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
                             cancelText="No, go back"
-                            onCancel={() => {
-                                modalRef.current?.toggleModal(undefined, false);
-                            }}
+                            onCancel={hide}
                             confirmText="Yes, delete"
-                            onConfirm={handleDeletePatient}
-                        />
+                            onConfirm={handleDeletePatient}>
+                            Would you like to permanently delete patient record <strong>{patient?.shortId}</strong>
+                            {summary.legalName && (
+                                <>
+                                    , <strong>{displayName()(summary.legalName)}</strong>
+                                </>
+                            )}
+                            ,
+                        </Confirmation>
                     )}
                     {deletability === DeletabilityResult.Has_Associations && (
-                        <Warning summary="The patient can not be deleted" onClose={hide}>
+                        <Warning title="The patient can not be deleted" onClose={hide}>
                             <Note>
                                 The file cannot be deleted until all associated event records have been deleted. If you
                                 are unable to see the associated event records due to your user permission settings,
@@ -87,7 +86,7 @@ const DeletePatient = ({ patient, summary }: Props) => {
                         </Warning>
                     )}
                     {deletability === DeletabilityResult.Is_Inactive && (
-                        <Warning summary="The patient can not be deleted" onClose={hide}>
+                        <Warning title="The patient can not be deleted" onClose={hide}>
                             <Note>This patient file is inactive and cannot be deleted.</Note>
                         </Warning>
                     )}

@@ -46,10 +46,8 @@ const Modal = ({
     };
 
     return (
-        <div
-            className={classNames('usa-modal-wrapper', styles.wrapper)}
-            onKeyDown={(!forceAction && handleKeyDown) || undefined}>
-            <div className="usa-modal-overlay">
+        <div className="usa-modal-wrapper" onKeyDown={(!forceAction && handleKeyDown) || undefined}>
+            <div className={classNames('usa-modal-overlay', styles.overlay)}>
                 <dialog
                     ref={element}
                     id={id}
@@ -63,7 +61,7 @@ const Modal = ({
                         {!forceAction && (
                             <svg
                                 tabIndex={0}
-                                role="img"
+                                role="button"
                                 width={'2rem'}
                                 height={'2rem'}
                                 aria-label={`Close ${title}`}
