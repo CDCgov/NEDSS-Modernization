@@ -45,7 +45,6 @@ export const NameEntryForm = ({ entry, onChange, onDelete }: EntryProps) => {
                                     onChange={onChange}
                                     name={name}
                                     disableFutureDates
-                                    htmlFor={name}
                                     label="As of"
                                     errorMessage={error?.message}
                                     required

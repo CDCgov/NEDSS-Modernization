@@ -121,10 +121,8 @@ export const PatientSearch = ({ handleSubmission, personFilter, clearAll }: Pati
                                     defaultValue={value}
                                     onChange={onChange}
                                     name={name}
-                                    htmlFor={name}
                                     disableFutureDates
                                     label="Date of birth"
-                                    id={name}
                                 />
                             )}
                         />

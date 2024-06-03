@@ -4,15 +4,14 @@ import React, { KeyboardEvent, useState } from 'react';
 import classNames from 'classnames';
 import { isFuture } from 'date-fns';
 import { EntryWrapper } from 'components/Entry';
+import { EN_US } from './datePickerLocalization';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
-    id?: string;
     label?: string;
     name?: string;
-    htmlFor?: string;
     onChange?: OnChange;
     onBlur?: OnBlur;
     className?: string;
@@ -64,7 +63,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
             <EntryWrapper
                 orientation={orientation}
                 label={props.label || ''}
-                htmlFor={props.htmlFor || ''}
+                htmlFor={props.name || ''}
                 required={props.required}
                 error={_error}>
                 {props.defaultValue && (
@@ -77,15 +76,16 @@ export const DatePickerInput = (props: DatePickerProps) => {
 };
 
 const InternalDatePicker = ({
-    id = '',
     name = '',
     onChange,
     onBlur,
     className,
     defaultValue,
     disabled = false,
-    disableFutureDates = false
+    disableFutureDates = false,
+    label
 }: DatePickerProps) => {
+    const toggleCalendar = label ? `${label} toggle calendar` : EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
         let currentDate = new Date();
         const offset = currentDate.getTimezoneOffset() * 60 * 1000;
@@ -101,7 +101,8 @@ const InternalDatePicker = ({
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     return (
         <DatePicker
-            id={id}
+            i18n={{ ...EN_US, toggleCalendar }}
+            id={name}
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
             onChange={handleOnChange(onChange)}
