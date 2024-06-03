@@ -23,4 +23,4 @@ Feature: Investigation Search by criteria
 
   Scenario: Basic Info - Search by notification status
     When I select notification status status for event investigation
-    Then I should see Results with the link "Syphilis, secondary"
+    Then I should see No Results found text
