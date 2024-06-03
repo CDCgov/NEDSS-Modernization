@@ -35,3 +35,10 @@ Feature: Page Builder - User can verify manage page here.
     And Green inline confirmation message "You've successfully delete" whatever the section name displays under the Manage sections heading at the top
     And Deleted section is removed from Manage sections modal and Edit page
 
+  Scenario: Add a section from Manage section
+    Then verify page header as "Manage sections"
+    And click on 'Add new section' from the pop up window
+    Then enter section name
+    Then click on 'Add section' button
+    Then verify same section is visible in edit page view
+
