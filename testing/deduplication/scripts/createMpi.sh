@@ -7,7 +7,7 @@ if [ -z "$1" ]
 then
 	echo "createMpi is a helper script that ingests FHIR data into NBS 6 for deduplication testing"
 	echo "Usage: "
-	echo "createMpi <mpi_directory> <append?>"
+	echo "createMpi <mpi_directory>"
 	exit 1
 fi
 
