@@ -41,7 +41,7 @@ Feature: User can view existing and add/edit certain patient demographic data he
 
 
     Scenario: Data remains displayed after selecting the patient profile summary
-        Given the user navigate to the patient profile page for "154594"
+        Given the user navigate to the patient profile page for "93819"
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following elements
             | Patient ID    |
@@ -54,7 +54,7 @@ Feature: User can view existing and add/edit certain patient demographic data he
             | RACE          |
 
     Scenario: Data remains displayed after selecting patient profile events
-        Given the user navigate to the patient profile page for "154594"
+        Given the user navigate to the patient profile page for "93819"
         Then user clicks on a patient's profile "Events" tab
         Then I should see the following elements
             | Patient ID    |
