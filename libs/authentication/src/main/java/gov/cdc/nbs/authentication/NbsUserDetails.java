@@ -50,6 +50,7 @@ public class NbsUserDetails implements UserDetails {
     return this.authorities;
   }
 
+  @Override
   public boolean isEnabled() {
     return this.isEnabled;
   }
