@@ -13,6 +13,10 @@ Then("I click criteria tab", () => {
   searchEventPage.clickEventInvestigationCriteria();
 });
 
+Then("I click Lab report criteria tab", () => {
+  searchEventPage.clickEventLabReportCriteria();
+});
+
 Then("I select a condition for event investigation", () => {
   searchEventPage.selectEventInvestigationCondition();
   searchEventPage.search();
@@ -148,5 +152,15 @@ Then("I select investigation current processing status for event investigation",
 
 Then("I select notification status status for event investigation", () => {
   searchEventPage.selectInvestigationNotificationStatus();
+  searchEventPage.search();
+});
+
+Then("I select resulted test for event laboratory report", () => {
+  searchEventPage.selectLabReportResultTest();
+  searchEventPage.search();
+});
+
+Then("I select coded result for event laboratory report", () => {
+  searchEventPage.selectLabReportCodedResult();
   searchEventPage.search();
 });
