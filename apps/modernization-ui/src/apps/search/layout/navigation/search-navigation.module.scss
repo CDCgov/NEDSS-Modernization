@@ -1,0 +1,17 @@
+.navigation {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    h1 {
+        margin: 0;
+    }
+
+    button {
+        margin: 0;
+    }
+
+    .tabs {
+        flex-grow: 1;
+    }
+}
