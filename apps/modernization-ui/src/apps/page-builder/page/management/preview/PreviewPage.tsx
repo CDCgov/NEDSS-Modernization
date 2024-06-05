@@ -143,7 +143,10 @@ const PreviewPageContent = () => {
                                 <ModalToggleButton modalRef={deleteDraftRef} type="button" outline>
                                     Delete draft
                                 </ModalToggleButton>
-                                <NavLinkButton to={`/page-builder/pages/${page.id}/edit`} type="outline">
+                                <NavLinkButton
+                                    className="editDraftBtn"
+                                    to={`/page-builder/pages/${page.id}/edit`}
+                                    type="outline">
                                     Edit draft
                                 </NavLinkButton>
                             </>

@@ -74,7 +74,7 @@ export const SubsectionHeader = ({
     };
 
     return (
-        <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''}`}>
+        <div className={`${styles.header} ${subsection.isGrouped !== false ? styles.grouped : ''} subsectionHeader`}>
             <div className={styles.info}>
                 {subsection.isGrouped !== false ? <div className={styles.indicator}>R</div> : null}
                 <div>
@@ -87,7 +87,7 @@ export const SubsectionHeader = ({
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Button type="button" className="add-btn" outline onClick={onAddQuestion}>
+                <Button type="button" className="add-btn addQuestionBtn" outline onClick={onAddQuestion}>
                     Add question
                 </Button>
                 <MoreOptions
@@ -134,7 +134,7 @@ export const SubsectionHeader = ({
                     </Button>
                 </MoreOptions>
                 {isExpanded ? (
-                    <Icon.ExpandLess size={4} onClick={() => onExpandedChange(false)} />
+                    <Icon.ExpandLess className="iconExpandLess" size={4} onClick={() => onExpandedChange(false)} />
                 ) : (
                     <Icon.ExpandMore size={4} onClick={() => onExpandedChange(true)} />
                 )}

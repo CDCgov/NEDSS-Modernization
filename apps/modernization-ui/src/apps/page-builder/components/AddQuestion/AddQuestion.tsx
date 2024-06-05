@@ -111,7 +111,11 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
                 <Button onClick={onClose} type="button" outline>
                     Cancel
                 </Button>
-                <Button disabled={!form.formState.isValid} onClick={onSubmit} type="button">
+                <Button
+                    disabled={!form.formState.isValid}
+                    onClick={onSubmit}
+                    className="createAndDeployToPageBtn"
+                    type="button">
                     Create and apply to page
                 </Button>
             </ButtonBar>
