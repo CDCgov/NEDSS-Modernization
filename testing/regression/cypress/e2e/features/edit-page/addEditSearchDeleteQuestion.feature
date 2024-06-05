@@ -13,3 +13,10 @@ Feature: Page Builder - User can verify managing question while editing the page
     And User clicks Create and add to page button
     Then A confirmation message displays "Successfully added questions to page"
     And Add new question pop-up window will disappear with the newly added question displayed on Edit page
+
+  Scenario: Edit new question created
+    When User clicks the pencil icon for editing a question
+    Then Edit question pop-up modal displays
+    When User completes the applicable fields that are editable
+    And User clicks the Save button
+    Then Application will close the Edit question pop-window with the changes saved
