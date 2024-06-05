@@ -114,7 +114,11 @@ const EditQuestionContent = ({ onUpdated, onClose, question }: ContentProps) => 
                 <Button type="button" onClick={onClose}>
                     Cancel
                 </Button>
-                <Button disabled={!isDirty || !isValid} type="button" onClick={handleSave}>
+                <Button
+                    className="editQuestionSaveBtn"
+                    disabled={!isDirty || !isValid}
+                    type="button"
+                    onClick={handleSave}>
                     Save changes
                 </Button>
             </ButtonBar>

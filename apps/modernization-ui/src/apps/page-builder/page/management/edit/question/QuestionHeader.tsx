@@ -54,7 +54,11 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
                 <h5>{getHeadingText(question.displayComponent)}</h5>
             </div>
             <div className={`${styles.questionButtons} question-header-button`}>
-                <Button unstyled className={styles.editButton} type="button" onClick={onEditQuestion}>
+                <Button
+                    unstyled
+                    className={`${styles.editButton} questionEditButton`}
+                    type="button"
+                    onClick={onEditQuestion}>
                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
                 {!question.isStandard && !question.isPublished && (

@@ -156,6 +156,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                     <SelectInput
                         label="Subgroup"
+                        className="subgroupSelect"
                         defaultValue={value}
                         onChange={(e) => {
                             onChange(e);
