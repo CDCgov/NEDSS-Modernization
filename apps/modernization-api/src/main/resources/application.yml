@@ -50,6 +50,8 @@ nbs:
         - /favicon.ico
         - /static/**
         - /nbs/timeout
+        - /goodbye
+        - /expired
 
 logging:
   file.name:
