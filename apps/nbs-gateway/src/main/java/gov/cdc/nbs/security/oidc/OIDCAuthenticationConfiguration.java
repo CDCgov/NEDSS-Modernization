@@ -43,7 +43,9 @@ class OIDCAuthenticationConfiguration {
                     "/favicon.ico",
                     "/static/**",
                     "/logout",
-                    "/goodbye")
+                    "/goodbye",
+                    "/expired"
+                )
                 .permitAll()
                 .anyExchange()
                 .authenticated())
