@@ -24,6 +24,7 @@ type DatePickerProps = {
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
+const isNumber = /^[0-9/]$/;
 
 const matches = (value: string) => inputFormat.test(value);
 
@@ -116,10 +117,40 @@ const InternalDatePicker = ({
 };
 
 const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (!isNaN(parseInt(event.key))) {
+    const allowedKeys = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '/',
+        'Backspace',
+        'ArrowLeft',
+        'ArrowRight',
+        'Delete'
+    ];
+    const key = event.key;
+    let inputValue = ``;
+    console.log('key', key);
+    console.log('event.target', (event.target as HTMLInputElement).value);
+    console.log('test??', isNumber.test(event.key));
+    console.log('inputValue', inputValue);
+    if (allowedKeys.indexOf(event.key) === -1) {
+        event.preventDefault();
+    } else {
         // Keydown is triggered even before input's value is updated.
         // Hence the manual addition of the new key is required.
-        let inputValue = `${(event.target as HTMLInputElement).value}${event.key}`;
+
+        // check if key is a number or "/"
+        if (isNumber.test(event.key)) {
+            inputValue = `${(event.target as HTMLInputElement).value}${key}`;
+        }
+
         if (
             inputValue &&
             (inputValue.length === 2 ||
@@ -131,5 +162,4 @@ const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
             event.preventDefault();
         }
     }
-    event.code === 'Enter' && event.preventDefault();
 };
