@@ -1,7 +1,9 @@
 class DeleteSectionPage {
 
     navigateEditPage () {
-        cy.visit('/page-builder/pages/1010436/edit')
+        cy.visit('/page-builder/pages');
+        cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
+        cy.get('.editDraftBtn').eq(0).click();
     }
 
     clickMenuIcon() {

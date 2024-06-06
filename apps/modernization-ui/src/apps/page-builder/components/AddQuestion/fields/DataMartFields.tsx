@@ -93,6 +93,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                 render={({ field: { onChange, name, value, onBlur }, fieldState: { error } }) => (
                     <Input
                         label="Default label in report"
+                        className="defaultLabelInReport"
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -142,6 +143,7 @@ export const DataMartFields = ({ editing = false, page, questionId }: Props) => 
                 render={({ field: { onChange, onBlur, name, value }, fieldState: { error } }) => (
                     <Input
                         label="RDB column name"
+                        className="rdbColumnName"
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             onChange({ ...e, target: { ...e.target, value: e.target.value?.toUpperCase() } });
                             form.setValue('dataMartInfo.dataMartColumnName', e.target.value?.toUpperCase());
