@@ -128,15 +128,16 @@ const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         '7',
         '8',
         '9',
-        '/',
         'Backspace',
         'ArrowLeft',
         'ArrowRight',
-        'Delete'
+        'Delete',
+        'Tab',
+        'Shift'
     ];
 
     const key = event.key;
-    let inputValue = ``;
+    let inputValue = '';
 
     if (allowedKeys.indexOf(key) === -1) {
         event.preventDefault();
@@ -144,20 +145,21 @@ const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         // Keydown is triggered even before input's value is updated.
         // Hence the manual addition of the new key is required.
 
+        inputValue = `${(event.target as HTMLInputElement).value}`;
         // check if key is a number or "/"
         if (isNumber.test(key)) {
+            console.log('isanumber', key);
             inputValue = `${(event.target as HTMLInputElement).value}${key}`;
-        }
-
-        if (
-            inputValue &&
-            (inputValue.length === 2 ||
-                (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
-        ) {
-            inputValue += '/';
-            (event.target as HTMLInputElement).value = inputValue;
-            // This prevent default ensures the manually entered key is not re-entered.
-            event.preventDefault();
+            if (
+                inputValue &&
+                (inputValue.length === 2 ||
+                    (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
+            ) {
+                inputValue += '/';
+                (event.target as HTMLInputElement).value = inputValue;
+                // This prevent default ensures the manually entered key is not re-entered.
+                event.preventDefault();
+            }
         }
     }
 };
