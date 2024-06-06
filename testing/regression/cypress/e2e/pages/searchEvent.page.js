@@ -20,6 +20,10 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  clickEventLabReportCriteria() {
+    cy.get('button[data-testid="accordionButton_lab-criteria-section"]').click();
+  }
+
   selectEventInvestigationCondition() {    
     let elm = cy.get("#conditionInput").click();
     let elm2 = cy.get("#react-select-2-option-1").click();
@@ -150,6 +154,25 @@ class SearchEventPage {
     let elm = cy.get('div[id="react-select-8-placeholder"]').click({force: true});
     let elm2 = cy.get('div[id="react-select-8-option-0"]').click({force: true});
   }
+
+  selectLabReportResultTest() {
+    this.setLabReportNormalSettings();
+    cy.get('input[id="resultedTest"]').type("Lead");
+  }
+
+  setLabReportNormalSettings() {
+    cy.get('label[for=UNPROCESSED]').click();
+    cy.get('label[for=NEW]').click();
+    cy.get('label[for=ELECTRONIC]').click();
+    cy.get('label[for=INTERNAL]').click();
+    cy.get('label[for=EXTERNAL]').click();
+  }
+
+  selectLabReportCodedResult() {
+    this.setLabReportNormalSettings();
+    cy.get('input[id="codedResult"]').type("absent");
+  }
+
 }
 
 export const searchEventPage = new SearchEventPage();
