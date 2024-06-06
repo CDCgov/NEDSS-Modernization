@@ -22,7 +22,6 @@ class SearchEventPage {
 
   clickEventLabReportCriteria() {
     cy.get('button[data-testid="accordionButton_lab-criteria-section"]').click();
-    cy.wait(500);
   }
 
   selectEventInvestigationCondition() {    
