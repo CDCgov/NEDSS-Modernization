@@ -134,20 +134,18 @@ const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         'ArrowRight',
         'Delete'
     ];
+
     const key = event.key;
     let inputValue = ``;
-    console.log('key', key);
-    console.log('event.target', (event.target as HTMLInputElement).value);
-    console.log('test??', isNumber.test(event.key));
-    console.log('inputValue', inputValue);
-    if (allowedKeys.indexOf(event.key) === -1) {
+
+    if (allowedKeys.indexOf(key) === -1) {
         event.preventDefault();
     } else {
         // Keydown is triggered even before input's value is updated.
         // Hence the manual addition of the new key is required.
 
         // check if key is a number or "/"
-        if (isNumber.test(event.key)) {
+        if (isNumber.test(key)) {
             inputValue = `${(event.target as HTMLInputElement).value}${key}`;
         }
 
