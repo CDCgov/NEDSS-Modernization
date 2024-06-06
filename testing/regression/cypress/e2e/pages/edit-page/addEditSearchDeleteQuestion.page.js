@@ -92,6 +92,7 @@ class AddEditSearchDeleteQuestion {
     }
 
     displaysQuestionDeleteSuccessMessage(text) {
+        cy.wait(1000);
         cy.contains(text);
     }
 

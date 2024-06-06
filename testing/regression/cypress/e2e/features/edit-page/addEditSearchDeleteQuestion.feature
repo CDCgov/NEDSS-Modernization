@@ -29,3 +29,10 @@ Feature: Page Builder - User can verify managing question while editing the page
     And User clicks Create and add to page button
     Then An error message should display similar to "Unique ID cannot be duplicated"
 
+  Scenario: Delete a question
+    When User clicks the trash icon for deleting a question
+    Then A confirmation pop-up modal displays "Are you sure you want to delete the question?" and "Deleting this question cannot be undone. Are you sure you want to continue?"
+    When User clicks Yes, delete to delete question
+    Then A success message displays "Question deleted successfully"
+    And Application deletes the selected question and remain on the page
+
