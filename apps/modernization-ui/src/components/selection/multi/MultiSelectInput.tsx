@@ -78,10 +78,6 @@ export const MultiSelectInput = ({
         }
     };
 
-    const filteredOptions = useMemo(() => {
-        return selectableOptions.filter((option) => option.label.toLowerCase().includes(searchText.toLowerCase()));
-    }, [selectableOptions, searchText]);
-
     return (
         <div className={'multi-select-input'}>
             <EntryWrapper
@@ -102,7 +98,7 @@ export const MultiSelectInput = ({
                     closeMenuOnScroll={false}
                     onChange={handleOnChange}
                     onBlur={onBlur}
-                    options={filteredOptions}
+                    options={selectableOptions}
                     components={{ Option: CheckedOption }}
                     inputValue={searchText}
                     onInputChange={handleInputChange}
