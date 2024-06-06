@@ -148,7 +148,6 @@ const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         inputValue = `${(event.target as HTMLInputElement).value}`;
         // check if key is a number or "/"
         if (isNumber.test(key)) {
-            console.log('isanumber', key);
             inputValue = `${(event.target as HTMLInputElement).value}${key}`;
             if (
                 inputValue &&
