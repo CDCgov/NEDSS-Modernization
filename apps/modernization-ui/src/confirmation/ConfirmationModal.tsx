@@ -14,6 +14,7 @@ type Props = {
     onConfirm: () => void;
     cancelText?: string;
     onCancel: () => void;
+    confirmBtnClassName?: string;
 };
 
 export const ConfirmationModal = ({
@@ -26,7 +27,8 @@ export const ConfirmationModal = ({
     confirmText = 'Confirm',
     onConfirm,
     cancelText = 'Cancel',
-    onCancel
+    onCancel,
+    confirmBtnClassName
 }: Props) => {
     return (
         <Modal
@@ -51,7 +53,10 @@ export const ConfirmationModal = ({
                     <Button type="button" onClick={onCancel} outline>
                         {cancelText}
                     </Button>
-                    <Button type="button" onClick={onConfirm} className={classNames(style.actionButton)}>
+                    <Button
+                        type="button"
+                        onClick={onConfirm}
+                        className={`${classNames(style.actionButton)} ${confirmBtnClassName ? confirmBtnClassName : ''}`}>
                         {confirmText}
                     </Button>
                 </ButtonGroup>

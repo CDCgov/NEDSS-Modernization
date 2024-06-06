@@ -5,23 +5,32 @@ class AddEditSearchDeleteQuestion {
         cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
         cy.get('.editDraftBtn').eq(0).click();
     }
+
     checkSubsectionExpanded() {
         cy.get('.iconExpandLess')
     }
+
     clickAddQuestionBtn() {
         cy.get('.subsectionHeader').eq(0)
             .get('.addQuestionBtn').eq(0).click();
     }
+
     addQuestionModalDisplays() {
         cy.contains('Add question')
     }
+
     clickCreateNewQuestionButton() {
         cy.get('.addQuestionCreateNewBtn').eq(0).click();
     }
+
     checkAddQuestionModalVisibility() {
         cy.contains('Add question');
     }
-    fillAllRequiredFields() {
+
+    fillAllRequiredFields(withUniqueID) {
+        if(withUniqueID) {
+            cy.get('#uniqueId').type('NBS104');
+        }
         const newQuestionName = Math.random().toString(36).substring(2, 8);
         cy.get('#uniqueName').type(`new test question ${newQuestionName}`);
         cy.get('#label').type('new question label');
@@ -34,32 +43,66 @@ class AddEditSearchDeleteQuestion {
         cy.get('.defaultLabelInReport').eq(0).type('label report');
         cy.get('.rdbColumnName').eq(0).type(`NEWCOLUMNNAME${newQuestionName}`);
     }
+
     clickCreateAndAddToPageBtn() {
         cy.get('.createAndDeployToPageBtn').eq(0).click();
     }
+
     checkConfirmationMessage(text) {
         cy.wait(4000);
         cy.contains(text);
     }
+
     checkNewlyAddedQuestionDisplayed() {
         cy.contains('new question label');
     }
+
     clickQuestionEditBtn() {
         cy.get('.questionEditButton').eq(0).click();
     }
+
     editQuestionModalDisplayed() {
         cy.contains('Edit question');
     }
+
     updateQuestionDetails() {
         cy.get('#label').clear().type('question label edited');
         cy.get('#tooltip').clear().type('question tooltip edited');
     }
+
     clickEditQuestionSaveBtn() {
         cy.get('.editQuestionSaveBtn').eq(0).click();
     }
+
     closeEditQuestionModal() {
         cy.contains('Edit question').should('not.visible');
     }
+
+    clickQuestionDeleteBtn() {
+        cy.get('.delete-btn').eq(0).click();
+    }
+
+    checkQuestionDeleteModalText(text, text1) {
+        cy.contains(text);
+        cy.contains(text1);
+    }
+
+    clickConfirmBtnToDeleteQuestion() {
+        cy.get('.questionDeleteConfirmBtn').eq(0).click();
+    }
+
+    displaysQuestionDeleteSuccessMessage(text) {
+        cy.contains(text);
+    }
+
+    checkPageStayedOnEdit() {
+        cy.get('.subsectionHeader');
+    }
+
+    errorMessageForDuplicateUniqueID(text) {
+         cy.contains('Error');
+    }
+
 }
 
 export const addEditSearchDeleteQuestion = new AddEditSearchDeleteQuestion()
