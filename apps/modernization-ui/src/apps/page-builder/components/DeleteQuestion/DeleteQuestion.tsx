@@ -20,6 +20,7 @@ const DeleteQuestion = ({ onDelete, isStaticElement }: CommonProps) => {
             </ModalToggleButton>
             <ConfirmationModal
                 modal={deleteModalRef}
+                confirmBtnClassName="questionDeleteConfirmBtn"
                 title="Warning"
                 message={`Are you sure you want to delete the ${isStaticElement ? 'static element' : 'question'}?`}
                 detail={`Deleting this ${isStaticElement ? 'static element' : 'question'} cannot be undone. Are you sure you want to continue?`}

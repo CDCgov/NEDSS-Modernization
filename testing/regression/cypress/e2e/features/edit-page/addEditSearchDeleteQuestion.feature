@@ -3,7 +3,7 @@ Feature: Page Builder - User can verify managing question while editing the page
   Background:
     Given I am logged in as "superuser" and password ""
     When User navigates to Edit page and views Edit page and Subsection already expanded
-
+#
   Scenario: Create a question (Text Only)
     When User clicks the Add question button
     Then Question library pop-up modal displays
@@ -20,3 +20,12 @@ Feature: Page Builder - User can verify managing question while editing the page
     When User completes the applicable fields that are editable
     And User clicks the Save button
     Then Application will close the Edit question pop-window with the changes saved
+
+  Scenario: Create a question using same Unique ID (test only)
+    When User clicks the Add question button
+    Then Question library pop-up modal displays
+    When User clicks Create New button
+    And Enters an existing Unique ID and completes all required and applicable fields, selecting Text only
+    And User clicks Create and add to page button
+    Then An error message should display similar to "Unique ID cannot be duplicated"
+
