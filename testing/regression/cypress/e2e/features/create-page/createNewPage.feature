@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify create new page here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as "superuser" and password "@test"
         When User navigates to Page Library and views the Page library
 
     Scenario: User accesses Add new page (from the Page Library)

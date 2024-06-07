@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify existing page library data elements here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as "superuser" and password "@test"
         When User navigates to Page Library and views the Page library
 
     Scenario: Verify the page names appear as links in the Page name column of the library

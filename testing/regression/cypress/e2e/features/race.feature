@@ -2,7 +2,7 @@
 Feature: Patient Search by Race / Ethnicity
 
   Background:
-    Given I am logged in as "superuser" and password ""
+    Given I am logged in as "superuser" and password "@test"
 
   Scenario: Race / Ethnicity - Search by no data
     When I navigate to race section

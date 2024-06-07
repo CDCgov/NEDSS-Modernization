@@ -1,7 +1,7 @@
 Feature: User can view existing and add/edit certain patient demographic data here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as "superuser" and password "@test"
 
     Scenario: User accesses a patient profile
         Given create a new patient profile
