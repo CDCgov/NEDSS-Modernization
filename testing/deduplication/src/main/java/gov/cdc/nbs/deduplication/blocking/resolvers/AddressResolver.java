@@ -1,7 +1,7 @@
 package gov.cdc.nbs.deduplication.blocking.resolvers;
 
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.deduplication.blocking.request.BlockRequest.BlockTransformer;
+import gov.cdc.nbs.deduplication.blocking.request.BlockTransformer;
 import gov.cdc.nbs.deduplication.blocking.response.BlockResponse;
 
 @Component

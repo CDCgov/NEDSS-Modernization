@@ -3,7 +3,7 @@ package gov.cdc.nbs.deduplication.blocking.resolvers;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import gov.cdc.nbs.deduplication.blocking.request.BlockRequest.BlockTransformer;
+import gov.cdc.nbs.deduplication.blocking.request.BlockTransformer;
 import gov.cdc.nbs.deduplication.blocking.response.BlockResponse;
 import gov.cdc.nbs.deduplication.blocking.response.BlockResponse.BlockMatch;
 

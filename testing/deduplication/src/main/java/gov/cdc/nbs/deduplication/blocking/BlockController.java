@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import gov.cdc.nbs.deduplication.blocking.request.BlockRequest.BlockTransformer;
+import gov.cdc.nbs.deduplication.blocking.request.BlockTransformer;
 import gov.cdc.nbs.deduplication.blocking.resolvers.AddressResolver;
 import gov.cdc.nbs.deduplication.blocking.resolvers.BirthDateResolver;
 import gov.cdc.nbs.deduplication.blocking.resolvers.FirstNameResolver;
