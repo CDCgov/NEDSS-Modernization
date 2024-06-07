@@ -1,7 +1,7 @@
 Feature: Lab Report Search by criteria
 
   Background:
-    Given I am logged in as "superuser" and password ""
+    Given I am logged in as "superuser" and password "@test"
     Given I navigate the event laboratory report 
     Given I click Lab report criteria tab
 

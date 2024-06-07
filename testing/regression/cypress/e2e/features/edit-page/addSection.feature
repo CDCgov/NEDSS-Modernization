@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify add section while editing the page here.
 
   Background:
-    Given I am logged in as "superuser" and password ""
+    Given I am logged in as "superuser" and password "@test"
     When User navigates to Edit page and views Add a section pop-up window
 
   Scenario: Add a section in (Edit Mode)

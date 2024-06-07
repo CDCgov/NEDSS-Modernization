@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify delete section while editing the page here.
 
   Background:
-    Given I am logged in as "superuser" and password ""
+    Given I am logged in as "superuser" and password "@test"
     When User navigates to Edit page and views Edit page
 
   Scenario: Delete Section with subsections via edit page view
