@@ -36,6 +36,7 @@ import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabN
 import { Button } from 'components/button/Button';
 import { OutOfTabOrder } from './components/OutOfTabOrder';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
+import { useAlert } from 'alert';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
