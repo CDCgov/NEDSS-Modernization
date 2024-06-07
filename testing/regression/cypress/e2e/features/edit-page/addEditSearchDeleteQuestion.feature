@@ -62,4 +62,13 @@ Feature: Page Builder - User can verify managing question while editing the page
     Then A confirmation message displays "Successfully added questions to page"
     And Add new question pop-up window will disappear with the newly added question displayed on Edit page
 
+  Scenario: Create a question using Field type (Numeric)
+    When User clicks the Add question button
+    Then Question library pop-up modal displays
+    When User clicks Create New button
+    And Numeric field is selected with Mask as Integer And All other required and applicable fields completed
+    When User clicks Create and add to page button
+    Then A confirmation message displays "Successfully added questions to page"
+    And Add new question pop-up window will disappear with the newly added question displayed on Edit page
+
 
