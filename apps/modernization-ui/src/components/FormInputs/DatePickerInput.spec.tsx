@@ -72,9 +72,9 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '2/15/2023');
+            await userEvent.type(input, '02/15/2023');
 
-            expect(onChange).toHaveBeenCalledWith('2/15/2023');
+            expect(onChange).toHaveBeenCalledWith('02/15/2023');
         });
 
         it('should alert value changes when a date is selected', async () => {
@@ -111,7 +111,7 @@ describe('DatePickerInput component tests', () => {
             );
 
             const input = getByTestId('date-picker-external-input');
-            await userEvent.type(input, '2/1/2022');
+            await userEvent.type(input, '02/01/2022');
             input.blur();
 
             const component = container.firstChild;
