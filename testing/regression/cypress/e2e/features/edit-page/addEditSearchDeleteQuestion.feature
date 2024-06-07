@@ -44,3 +44,12 @@ Feature: Page Builder - User can verify managing question while editing the page
     Then Question already added to a page will not display in the question library
     And Message "Can't find what you're looking for?" and "Create new" button will display to create a new question
 
+  Scenario: Verify inactive question is not searchable
+    When User clicks the Add question button
+    Then Question library pop-up modal displays
+    When User enters an Inactive question in the search field
+    Then User clicks the magnifying glass icon
+    Then Inactive question will not display in the question library
+    And Message "Can't find what you're looking for?" and "Create new" button will display to create a new question
+
+
