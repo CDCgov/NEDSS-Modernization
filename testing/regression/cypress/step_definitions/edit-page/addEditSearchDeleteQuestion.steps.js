@@ -59,7 +59,7 @@ Then("Application will close the Edit question pop-window with the changes saved
 });
 
 Then("Enters an existing Unique ID and completes all required and applicable fields, selecting Text only", () => {
-    addEditSearchDeleteQuestion.fillAllRequiredFields(true);
+    addEditSearchDeleteQuestion.fillAllRequiredFields({ withUniqueID: true });
 });
 
 Then("An error message should display similar to {string}", (text) => {
@@ -84,4 +84,48 @@ Then("A success message displays {string}", (text) => {
 
 Then("Application deletes the selected question and remain on the page", () => {
     addEditSearchDeleteQuestion.checkPageStayedOnEdit();
+});
+
+Then("User enters a question already added to a page in the search field", () => {
+    addEditSearchDeleteQuestion.enterExistingQuestionUniqueID();
+});
+
+Then("User clicks the magnifying glass icon", () => {
+    addEditSearchDeleteQuestion.clickQuestionSearchBtn();
+});
+
+Then("Question already added to a page will not display in the question library", () => {
+    addEditSearchDeleteQuestion.showEmptyQuestionSearchList();
+});
+
+Then("Message {string} and {string} button will display to create a new question", (text, text1) => {
+    addEditSearchDeleteQuestion.showCreateNewSection(text, text1);
+});
+
+Then("User enters an Inactive question in the search field", () => {
+    addEditSearchDeleteQuestion.enterInactiveQuestionInSearchField();
+});
+
+Then("Inactive question will not display in the question library", () => {
+    addEditSearchDeleteQuestion.InactiveQuestionNotDisplayed();
+});
+
+Then("Unique ID field is blank", () => {
+    addEditSearchDeleteQuestion.checkUniqueIDisBlank();
+});
+
+Then("All required and applicable fields completed", () => {
+    addEditSearchDeleteQuestion.fillAllRequiredFields();
+});
+
+Then("Numeric field is selected with Mask as Integer And All other required and applicable fields completed", () => {
+    addEditSearchDeleteQuestion.fillAllRequiredFields({ fieldTypeNumeric: true });
+});
+
+Then("Date picker field is selected with Date format And All other required and applicable fields completed", () => {
+    addEditSearchDeleteQuestion.fillAllRequiredFields({ fieldTypeDatePicker: true });
+});
+
+Then("Value Set field is selected And New value set created And All other required and applicable fields completed", () => {
+    addEditSearchDeleteQuestion.fillAllRequiredFields();
 });

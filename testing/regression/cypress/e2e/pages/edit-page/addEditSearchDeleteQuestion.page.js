@@ -27,7 +27,7 @@ class AddEditSearchDeleteQuestion {
         cy.contains('Add question');
     }
 
-    fillAllRequiredFields(withUniqueID) {
+    fillAllRequiredFields({ withUniqueID, fieldTypeNumeric, fieldTypeDatePicker } = {}) {
         if(withUniqueID) {
             cy.get('#uniqueId').type('NBS104');
         }
@@ -36,8 +36,15 @@ class AddEditSearchDeleteQuestion {
         cy.get('#label').type('new question label');
         cy.get('.subgroupSelect').eq(0).select(1, { force: true });
         cy.get('#description').type('new test description');
-        cy.get('.fieldType-option-0').eq(0).click();
-        cy.get('#valueSet').select(2);
+        if (fieldTypeNumeric) {
+            cy.get('.fieldType-option-1').eq(0).click();
+            cy.get('#fieldLength').type(5);
+        } else if(fieldTypeDatePicker){
+            cy.get('.fieldType-option-3').eq(0).click();
+        } else {
+            cy.get('.fieldType-option-0').eq(0).click();
+            cy.get('#valueSet').select(2);
+        }
         cy.get('#tooltip').type('new question tooltip');
         cy.get('[data-testid="displayType"]').select(1);
         cy.get('.defaultLabelInReport').eq(0).type('label report');
@@ -102,6 +109,35 @@ class AddEditSearchDeleteQuestion {
 
     errorMessageForDuplicateUniqueID(text) {
          cy.contains('Error');
+    }
+
+    enterExistingQuestionUniqueID() {
+        cy.get('#question-search').type('NBS104');
+    }
+
+    clickQuestionSearchBtn() {
+        cy.get('#searchButton').click();
+    }
+
+    showEmptyQuestionSearchList() {
+        cy.contains('Showing 0 of 0');
+    }
+
+    showCreateNewSection(text, text1) {
+        cy.contains(text);
+        cy.contains(text1);
+    }
+
+    enterInactiveQuestionInSearchField() {
+        cy.get('#question-search').type('ARD1157');
+    }
+
+    InactiveQuestionNotDisplayed() {
+        cy.contains('Showing 0 of 0');
+    }
+
+    checkUniqueIDisBlank() {
+        cy.get('#uniqueId').should('not.have.value');
     }
 
 }

@@ -3,7 +3,7 @@ Feature: Page Builder - User can verify managing question while editing the page
   Background:
     Given I am logged in as "superuser" and password ""
     When User navigates to Edit page and views Edit page and Subsection already expanded
-#
+
   Scenario: Create a question (Text Only)
     When User clicks the Add question button
     Then Question library pop-up modal displays
@@ -35,4 +35,12 @@ Feature: Page Builder - User can verify managing question while editing the page
     When User clicks Yes, delete to delete question
     Then A success message displays "Question deleted successfully"
     And Application deletes the selected question and remain on the page
+
+  Scenario: Verify question added to a page is not searchable
+    When User clicks the Add question button
+    Then Question library pop-up modal displays
+    Then User enters a question already added to a page in the search field
+    Then User clicks the magnifying glass icon
+    Then Question already added to a page will not display in the question library
+    And Message "Can't find what you're looking for?" and "Create new" button will display to create a new question
 
