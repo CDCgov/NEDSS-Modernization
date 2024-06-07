@@ -52,4 +52,14 @@ Feature: Page Builder - User can verify managing question while editing the page
     Then Inactive question will not display in the question library
     And Message "Can't find what you're looking for?" and "Create new" button will display to create a new question
 
+  Scenario: Create a question without a Unique ID
+    When User clicks the Add question button
+    Then Question library pop-up modal displays
+    When User clicks Create New button
+    And Unique ID field is blank
+    And All required and applicable fields completed
+    When User clicks Create and add to page button
+    Then A confirmation message displays "Successfully added questions to page"
+    And Add new question pop-up window will disappear with the newly added question displayed on Edit page
+
 
