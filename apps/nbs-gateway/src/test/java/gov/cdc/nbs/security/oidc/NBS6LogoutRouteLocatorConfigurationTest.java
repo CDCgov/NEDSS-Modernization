@@ -35,9 +35,10 @@ class NBS6LogoutRouteLocatorConfigurationTest {
         .get().uri(
             builder -> builder
                 .path("/nbs/logout")
-                .build())
+                .build()
+        )
         .exchange()
-        .expectHeader().location("/goodbye")
+        .expectHeader().location("/logout")
         .expectStatus().is3xxRedirection();
   }
 
@@ -49,7 +50,8 @@ class NBS6LogoutRouteLocatorConfigurationTest {
         .get().uri(
             builder -> builder
                 .path("/nbs/logged-out")
-                .build())
+                .build()
+        )
         .exchange().expectStatus().isOk();;
   }
 
