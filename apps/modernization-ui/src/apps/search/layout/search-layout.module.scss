@@ -2,6 +2,7 @@
 @use 'styles/borders';
 
 $actions-height: 8rem;
+$criteria-width: 320px;
 
 .search {
     padding: 1rem;
@@ -18,7 +19,7 @@ $actions-height: 8rem;
         @include borders.rounded();
 
         .criteria {
-            width: 320px;
+            width: $criteria-width;
 
             @include borders.bordered('border-right');
 
@@ -40,6 +41,11 @@ $actions-height: 8rem;
                     margin: 0;
                 }
             }
+        }
+
+        .results {
+            flex-grow: 1;
+            overflow-y: scroll;
         }
     }
 }
