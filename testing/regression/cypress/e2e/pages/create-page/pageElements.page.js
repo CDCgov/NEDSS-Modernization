@@ -28,7 +28,6 @@ class PageElementsPage {
 
     selectValueFromConditions() {
         cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
-        cy.get('.multi-select__option--is-focused').click();
     }
 
     conditionFieldHasValue() {
