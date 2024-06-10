@@ -2,7 +2,7 @@
 Feature: Patient Search by Address
 
   Background:
-    Given I am logged in as "superuser" and password ""
+    Given I am logged in as "superuser" and password "@test"
 
   Scenario: Address - Search by City
     Then I navigate the  basic info and address

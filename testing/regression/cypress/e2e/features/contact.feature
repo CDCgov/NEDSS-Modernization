@@ -2,7 +2,7 @@
 Feature: Patient Search by contact
 
   Background:
-    Given I am logged in as "superuser" and password ""
+    Given I am logged in as "superuser" and password "@test"
 
   Scenario: Contact - Search by Phone Number
     Then I navigate to contact section

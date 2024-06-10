@@ -24,6 +24,7 @@ type DatePickerProps = {
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
+const isNumber = /^[0-9/]$/;
 
 const matches = (value: string) => inputFormat.test(value);
 
@@ -116,20 +117,48 @@ const InternalDatePicker = ({
 };
 
 const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (!isNaN(parseInt(event.key))) {
+    const allowedKeys = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'Backspace',
+        'ArrowLeft',
+        'ArrowRight',
+        'Delete',
+        'Tab',
+        'Shift'
+    ];
+
+    const key = event.key;
+    let inputValue = '';
+
+    if (allowedKeys.indexOf(key) === -1) {
+        event.preventDefault();
+    } else {
         // Keydown is triggered even before input's value is updated.
         // Hence the manual addition of the new key is required.
-        let inputValue = `${(event.target as HTMLInputElement).value}${event.key}`;
-        if (
-            inputValue &&
-            (inputValue.length === 2 ||
-                (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
-        ) {
-            inputValue += '/';
-            (event.target as HTMLInputElement).value = inputValue;
-            // This prevent default ensures the manually entered key is not re-entered.
-            event.preventDefault();
+
+        inputValue = `${(event.target as HTMLInputElement).value}`;
+        // check if key is a number or "/"
+        if (isNumber.test(key)) {
+            inputValue = `${(event.target as HTMLInputElement).value}${key}`;
+            if (
+                inputValue &&
+                (inputValue.length === 2 ||
+                    (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
+            ) {
+                inputValue += '/';
+                (event.target as HTMLInputElement).value = inputValue;
+                // This prevent default ensures the manually entered key is not re-entered.
+                event.preventDefault();
+            }
         }
     }
-    event.code === 'Enter' && event.preventDefault();
 };

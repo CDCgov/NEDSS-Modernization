@@ -1,7 +1,7 @@
 Feature: User access the Patient Profile Summary page.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as "superuser" and password "@test"
 
     Scenario: User accesses patient profile
         Given the user navigate to the patient profile page for "93049"
