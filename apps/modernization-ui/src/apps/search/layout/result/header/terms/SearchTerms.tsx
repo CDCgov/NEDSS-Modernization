@@ -4,6 +4,7 @@ import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { focusedTarget } from 'utils';
 
 import styles from './search-terms.module.scss';
+import { useEffect } from 'react';
 
 type Props = {
     results: Results;
@@ -12,8 +13,10 @@ type Props = {
 const SearchTerms = ({ results }: Props) => {
     const { skipTo } = useSkipLink();
 
-    skipTo('resultsCount');
-    focusedTarget('resultsCount');
+    useEffect(() => {
+        skipTo('resultsCount');
+        focusedTarget('resultsCount');
+    }, []);
 
     return (
         <div

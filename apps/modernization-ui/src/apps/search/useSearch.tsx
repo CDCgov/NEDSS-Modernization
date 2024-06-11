@@ -41,7 +41,6 @@ const initial: SearchState = { status: 'waiting', view: 'list' };
 const emptyResults = { total: 0, terms: [] };
 
 const reducer = (current: SearchState, action: Action): SearchState => {
-    console.log(action);
     switch (action.type) {
         case 'reset': {
             return initial;
