@@ -1,31 +1,30 @@
 import { ReactNode } from 'react';
 import { Button } from 'components/button';
-import { Results, useSearch } from 'apps/search/useSearch';
+import { useSearch } from 'apps/search/useSearch';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
 
 import styles from './search-layout.module.scss';
 import { Loading } from 'components/Spinner';
+import { SearchNavigation } from './navigation/SearchNavigation';
 
 type Renderer = () => ReactNode;
 
-type NavigationRenderer = (results: Results) => ReactNode;
-
 type Props = {
-    navigation: NavigationRenderer;
+    actions?: Renderer;
     criteria: Renderer;
-    renderAsList: Renderer;
-    renderAsTable: Renderer;
+    resultsAsList: Renderer;
+    resultsAsTable: Renderer;
     onSearch: () => void;
     onClear: () => void;
 };
 
-const SearchLayout = ({ navigation, criteria, renderAsList, renderAsTable, onSearch, onClear }: Props) => {
-    const { view, status, results: searchResults } = useSearch();
+const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSearch, onClear }: Props) => {
+    const { view, status } = useSearch();
 
     return (
         <section className={styles.search}>
-            {navigation(searchResults)}
+            <SearchNavigation actions={actions} />
             <div className={styles.content}>
                 <div className={styles.criteria}>
                     <search>{criteria()}</search>
@@ -43,8 +42,8 @@ const SearchLayout = ({ navigation, criteria, renderAsList, renderAsTable, onSea
                     {status === 'searching' && <Loading className={styles.loading} />}
                     {status === 'completed' && (
                         <SearchResults>
-                            {view == 'list' && renderAsList()}
-                            {view == 'table' && renderAsTable()}
+                            {view == 'list' && resultsAsList()}
+                            {view == 'table' && resultsAsTable()}
                         </SearchResults>
                     )}
                 </div>
