@@ -43,7 +43,11 @@ export const SectionHeader = ({
                 <Button type="button" onClick={onAddSubsection} outline>
                     Add subsection
                 </Button>
-                <Button type="button" onClick={handleManageSubsection} outline className={styles.settingBtn}>
+                <Button
+                    type="button"
+                    onClick={handleManageSubsection}
+                    outline
+                    className={`${styles.settingBtn} manageSubsectionGearIcon-${subsectionCount ? 'yes' : 'no'}`}>
                     <Icon.Settings size={3} />
                 </Button>
                 <MoreOptions

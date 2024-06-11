@@ -86,6 +86,7 @@ export const ManageSubsectionTile = ({
                                         </>
                                     ) : (
                                         <div
+                                            className="subsectionOkLink"
                                             onClick={() => {
                                                 setDeleteWarning(undefined);
                                                 setOnAction?.(false);
@@ -114,12 +115,12 @@ export const ManageSubsectionTile = ({
                                     }}
                                     outline
                                     disabled={action}
-                                    className={styles.iconBtn}>
+                                    className={`${styles.iconBtn} subsectionTileEditIcon`}>
                                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 <Button
                                     type="button"
-                                    className={styles.iconBtn}
+                                    className={`${styles.iconBtn} subsectionTileDeleteIcon`}
                                     outline
                                     disabled={action}
                                     onClick={() => {
@@ -132,7 +133,7 @@ export const ManageSubsectionTile = ({
                                     <Button
                                         type="button"
                                         outline
-                                        className={styles.iconBtn}
+                                        className={`${styles.iconBtn} subsectionTileVisibilityIcon-on`}
                                         disabled={action}
                                         onClick={() => {
                                             onChangeVisibility(subsection, false);
@@ -143,7 +144,7 @@ export const ManageSubsectionTile = ({
                                     <Button
                                         type="button"
                                         outline
-                                        className={`${styles.iconBtn} ${styles.offVisibility}`}
+                                        className={`${styles.iconBtn} ${styles.offVisibility} subsectionTileVisibilityIcon-off`}
                                         disabled={action}
                                         onClick={() => {
                                             onChangeVisibility(subsection, true);
