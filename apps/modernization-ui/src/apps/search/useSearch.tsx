@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useReducer } from 'react';
+import { ReactNode, createContext, useContext, useReducer } from 'react';
 import { PageProvider, PagingSettings } from 'page';
 import { SortingProvider, SortingSettings } from 'sorting';
 
@@ -26,7 +26,7 @@ type SearchState = { view: View } & (Waiting | Searching | Complete);
 type SearchInteraction = {
     status: 'waiting' | 'searching' | 'completed';
     view: View;
-    results: Results | null;
+    results: Results;
     reset: () => void;
     search: () => void;
     complete: (terms: Term[], total: number) => void;
@@ -37,6 +37,8 @@ const SearchContext = createContext<SearchInteraction | undefined>(undefined);
 type Action = { type: 'reset' } | { type: 'search' } | { type: 'complete'; terms: Term[]; total: number };
 
 const initial: SearchState = { status: 'waiting', view: 'list' };
+
+const emptyResults = { total: 0, terms: [] };
 
 const reducer = (current: SearchState, action: Action): SearchState => {
     console.log(action);
@@ -74,14 +76,10 @@ const SearchProvider = ({ sorting, paging, children }: Props) => {
 const InternalSearchProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    useEffect(() => {
-        console.log(state);
-    }, [state]);
-
     const value = {
         status: state.status,
         view: state.view,
-        results: state.status === 'completed' ? state.results : null,
+        results: state.status === 'completed' ? state.results : emptyResults,
         reset: () => dispatch({ type: 'reset' }),
         search: () => dispatch({ type: 'search' }),
         complete: (terms: Term[], total: number) => dispatch({ type: 'complete', terms, total })
@@ -94,12 +92,12 @@ const useSearch = () => {
     const context = useContext(SearchContext);
 
     if (context === undefined) {
-        throw new Error('useSorting must be used within a SearchProvider');
+        throw new Error('useSearch must be used within a SearchProvider');
     }
 
     return context;
 };
 
-export type { Term, Results };
+export type { Term, Results, View };
 
 export { SearchProvider, useSearch };

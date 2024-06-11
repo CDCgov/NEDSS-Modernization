@@ -3,22 +3,22 @@ import { TabNavigation, TabNavigationEntry } from 'components/TabNavigation/TabN
 
 import styles from './search-navigation.module.scss';
 
-type ActionRenderer = () => ReactNode;
+type ActionsRenderer = () => ReactNode;
 
 type Props = {
-    action?: ActionRenderer;
+    actions?: ActionsRenderer;
 };
 
-const SearchNavigation = ({ action }: Props) => {
+const SearchNavigation = ({ actions }: Props) => {
     return (
         <nav className={styles.navigation}>
             <h1>Search for:</h1>
             <TabNavigation className={styles.tabs}>
-                <TabNavigationEntry path="/search/patient">Patient</TabNavigationEntry>
-                <TabNavigationEntry path="/search/investigation">Investigation</TabNavigationEntry>
-                <TabNavigationEntry path="/search/laboratory-search">Laboratory Report</TabNavigationEntry>
+                <TabNavigationEntry path="/search/patients">Patients</TabNavigationEntry>
+                <TabNavigationEntry path="/search/investigations">Investigations</TabNavigationEntry>
+                <TabNavigationEntry path="/search/lab-reports">Lab Reports</TabNavigationEntry>
             </TabNavigation>
-            {action && action()}
+            {actions && actions()}
         </nav>
     );
 };

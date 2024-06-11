@@ -18,15 +18,15 @@ const routing = [
         children: [
             { index: true, element: <Navigate to="patient" /> },
             {
-                path: 'patient',
+                path: 'patients',
                 element: <PatientSearch />
             },
             {
-                path: 'laboratory-search',
+                path: 'lab-reports',
                 element: <LaboratoryReportSearch />
             },
             {
-                path: 'investigation',
+                path: 'investigations',
                 element: <InvestigationSearch />
             }
         ]

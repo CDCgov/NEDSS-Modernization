@@ -46,6 +46,11 @@ $criteria-width: 320px;
         .results {
             flex-grow: 1;
             overflow-y: scroll;
+
+            .loading {
+                height: 100%;
+                margin: auto;
+            }
         }
     }
 }
