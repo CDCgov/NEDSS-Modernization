@@ -19,13 +19,12 @@
             border-top: 1px solid #e6e6e6;
             display: flex;
             align-items: center;
-
-            height: 2.56rem;
+            padding: 0.75rem 1rem;
             cursor: pointer;
 
             a {
                 flex-grow: 1;
-                padding: 0.75rem 1rem 0.69rem 1rem;
+                padding: 0;
                 font-weight: 400;
                 font-size: 1rem;
                 color: #5c5c5c;
@@ -37,11 +36,14 @@
                 &:focus {
                     outline: 0.25rem solid #2491ff;
                 }
-
                 &:hover {
-                    background-color: #f0f0f0;
-                    color: #005ea2;
                     text-decoration: none;
+                }
+            }
+            &:hover {
+                a {
+                    color: #005ea2;
+                    font-weight: 700;
                 }
             }
 
@@ -63,6 +65,7 @@
                     bottom: 0.1rem;
                     top: 0.1rem;
                     width: 0.25rem;
+                    height: 2.4375rem;
                     left: 0;
                 }
             }
