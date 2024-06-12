@@ -56,6 +56,7 @@ export const ConfirmationModal = ({
                     <Button
                         type="button"
                         onClick={onConfirm}
+                        data-testid="confirmation-btn"
                         className={`${classNames(style.actionButton)} ${confirmBtnClassName ? confirmBtnClassName : ''}`}>
                         {confirmText}
                     </Button>
