@@ -162,6 +162,7 @@ export const ManageSubsection = ({ alert, onResetAlert, section, onSetAlert, onC
                                 onCancel?.();
                             }}
                             type={'button'}
+                            data-testid="manageSubsectionCloseBtn"
                             outline>
                             Close
                         </Button>

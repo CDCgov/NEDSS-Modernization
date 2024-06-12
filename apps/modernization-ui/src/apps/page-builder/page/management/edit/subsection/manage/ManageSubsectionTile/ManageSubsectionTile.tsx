@@ -86,7 +86,7 @@ export const ManageSubsectionTile = ({
                                         </>
                                     ) : (
                                         <div
-                                            className="subsectionOkLink"
+                                            data-testid="subsectionOkLink"
                                             onClick={() => {
                                                 setDeleteWarning(undefined);
                                                 setOnAction?.(false);
@@ -99,7 +99,7 @@ export const ManageSubsectionTile = ({
                         </div>
                     ) : (
                         <div className={styles.manageSubsectionTile}>
-                            <div className={styles.handle} {...provided.dragHandleProps}>
+                            <div className={styles.handle} {...provided.dragHandleProps} data-testid="dragAndDropIcon">
                                 <NbsIcon name="drag" size="3" />
                             </div>
                             <div className={styles.label} data-testid={'label'}>
@@ -115,12 +115,14 @@ export const ManageSubsectionTile = ({
                                     }}
                                     outline
                                     disabled={action}
-                                    className={`${styles.iconBtn} subsectionTileEditIcon`}>
+                                    data-testid="subsectionTileEditIcon"
+                                    className={styles.iconBtn}>
                                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} />
                                 </Button>
                                 <Button
                                     type="button"
-                                    className={`${styles.iconBtn} subsectionTileDeleteIcon`}
+                                    data-testid="subsectionTileDeleteIcon"
+                                    className={styles.iconBtn}
                                     outline
                                     disabled={action}
                                     onClick={() => {
@@ -133,7 +135,8 @@ export const ManageSubsectionTile = ({
                                     <Button
                                         type="button"
                                         outline
-                                        className={`${styles.iconBtn} subsectionTileVisibilityIcon-on`}
+                                        data-testid="subsectionTileVisibilityIcon-on"
+                                        className={styles.iconBtn}
                                         disabled={action}
                                         onClick={() => {
                                             onChangeVisibility(subsection, false);
@@ -144,7 +147,8 @@ export const ManageSubsectionTile = ({
                                     <Button
                                         type="button"
                                         outline
-                                        className={`${styles.iconBtn} ${styles.offVisibility} subsectionTileVisibilityIcon-off`}
+                                        data-testid="subsectionTileVisibilityIcon-off"
+                                        className={`${styles.iconBtn} ${styles.offVisibility}`}
                                         disabled={action}
                                         onClick={() => {
                                             onChangeVisibility(subsection, true);

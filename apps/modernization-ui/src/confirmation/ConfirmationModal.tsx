@@ -15,6 +15,7 @@ type Props = {
     cancelText?: string;
     onCancel: () => void;
     confirmBtnClassName?: string;
+    confirmBtnDataTestID?: string;
 };
 
 export const ConfirmationModal = ({
@@ -28,7 +29,8 @@ export const ConfirmationModal = ({
     onConfirm,
     cancelText = 'Cancel',
     onCancel,
-    confirmBtnClassName
+    confirmBtnClassName,
+    confirmBtnDataTestID
 }: Props) => {
     return (
         <Modal
@@ -56,6 +58,7 @@ export const ConfirmationModal = ({
                     <Button
                         type="button"
                         onClick={onConfirm}
+                        data-testid={confirmBtnDataTestID}
                         className={`${classNames(style.actionButton)} ${confirmBtnClassName ? confirmBtnClassName : ''}`}>
                         {confirmText}
                     </Button>

@@ -7,13 +7,13 @@ class ManageSubsectionPage {
     }
 
     openManageSubsectionWindow() {
-        cy.get('.manageSubsectionGearIcon-yes').eq(0).click();
+        cy.get('[data-testid="manageSubsectionGearIcon-yes"]').eq(0).click();
         cy.contains('Manage subsections');
     }
 
     clickEditSubsectionIcon() {
         cy.get('.subsectionHeader').eq(0)
-            .get('.subsectionTileEditIcon').eq(0).click();
+            .get('[data-testid="subsectionTileEditIcon"]').eq(0).click();
     }
 
     verifyEditSubsectionIsVisible() {
@@ -26,12 +26,13 @@ class ManageSubsectionPage {
     }
 
     checkSaveButtonDisabledByDefault() {
-        cy.get('.saveChangesSubsectionBtn').eq(0).should('be.disabled');
+        cy.get('[data-testid="saveChangesSubsectionBtn"]')
+            .filter(':visible').eq(0).should('be.disabled');
     }
 
     updateSubsectionName() {
         const newSubsectionName = Math.random().toString(36).substring(2, 8);
-        cy.get('.subsectionName')
+        cy.get('[data-testid="subsectionName"]')
             .filter(':visible')
             .eq(0)
             .then((btn) => {
@@ -41,11 +42,11 @@ class ManageSubsectionPage {
     }
 
     checkSaveButtonEnabled() {
-        cy.get('.saveChangesSubsectionBtn');
+        cy.get('[data-testid="saveChangesSubsectionBtn"]');
     }
 
     clickSaveBtn() {
-        cy.get('.saveChangesSubsectionBtn')
+        cy.get('[data-testid="saveChangesSubsectionBtn"]')
         .filter(':visible:enabled').eq(0).click();
     }
 
@@ -59,7 +60,7 @@ class ManageSubsectionPage {
 
     clickDeleteSubsectionIcon() {
         cy.get('.subsectionHeader').eq(0)
-            .get('.subsectionTileDeleteIcon').eq(0).click();
+            .get('[data-testid="subsectionTileDeleteIcon"]').eq(0).click();
     }
 
     showWarningMessageOnSubsectionDelete(text) {
@@ -90,19 +91,22 @@ class ManageSubsectionPage {
 
     clickVisibilitySubsectionIcon(visibility) {
         const onOrOff = visibility ? 'on' : 'off'
+        const dataTestId = ``;
         cy.get('.subsectionHeader').eq(0)
-            .get(`.subsectionTileVisibilityIcon-${onOrOff}`).eq(0).click();
+            .get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click();
     }
 
     checkVisibilityIconTurnedOff(visibility) {
         const onOrOff = visibility ? 'on' : 'off'
         cy.get('.subsectionHeader').eq(0)
-            .get('.subsectionTileVisibilityIcon-off').eq(0)
+            .get('[data-testid="subsectionTileVisibilityIcon-off"]').eq(0)
     }
 
     verifyVisibilitySuccessMessage(text) {
+        cy.wait(2000);
         cy.contains(text);
     }
+
 }
 
 export const manageSubsectionPage = new ManageSubsectionPage()
