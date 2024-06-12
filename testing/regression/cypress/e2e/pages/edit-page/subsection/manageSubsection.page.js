@@ -26,7 +26,7 @@ class ManageSubsectionPage {
     }
 
     checkSaveButtonDisabledByDefault() {
-        cy.get('[data-testid="saveChangesSubsectionBtn"]')
+        cy.get('[data-testid="confirmation-btn"]')
             .filter(':visible').eq(0).should('be.disabled');
     }
 
@@ -42,11 +42,11 @@ class ManageSubsectionPage {
     }
 
     checkSaveButtonEnabled() {
-        cy.get('[data-testid="saveChangesSubsectionBtn"]');
+        cy.get('[data-testid="confirmation-btn"]');
     }
 
     clickSaveBtn() {
-        cy.get('[data-testid="saveChangesSubsectionBtn"]')
+        cy.get('[data-testid="confirmation-btn"]')
         .filter(':visible:enabled').eq(0).click();
     }
 

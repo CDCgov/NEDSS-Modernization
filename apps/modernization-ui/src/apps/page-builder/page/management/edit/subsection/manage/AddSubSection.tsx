@@ -134,7 +134,7 @@ export const AddSubSection = ({
                             <Button
                                 type="button"
                                 onClick={onSubmit}
-                                data-testid="saveChangesSubsectionBtn"
+                                data-testid="confirmation-btn"
                                 disabled={!form.formState.isDirty || !form.formState.isValid}>
                                 Save changes
                             </Button>

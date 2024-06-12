@@ -145,7 +145,6 @@ export const SubsectionHeader = ({
                 message="You have indicated that you would like to ungroup the repeating block questions in the Tribal Affiliation Repeating Block questions."
                 detail="Select Ungroup or Cancel to return to Edit Page."
                 confirmText="Ungroup"
-                confirmBtnDataTestID="saveChangesSubsectionBtn"
                 onConfirm={() => {
                     handleUngroup();
                     ungroupSubsectionModalRef.current?.toggleModal();
