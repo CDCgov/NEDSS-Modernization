@@ -12,6 +12,7 @@ const Warning = ({ title = 'Warning', children, onClose }: Props) => {
     return (
         <Modal
             id={`warning-${title}`}
+            size="small"
             title={title}
             onClose={onClose}
             footer={(close) => (

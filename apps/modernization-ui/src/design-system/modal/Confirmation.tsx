@@ -22,6 +22,7 @@ const Confirmation = ({
     return (
         <Modal
             id={`confirmation-${title}`}
+            size="small"
             title={title}
             onClose={onCancel}
             footer={(close) => (

@@ -11,6 +11,7 @@ type FooterRenderer = (close: Close) => ReactNode;
 type ModalProps = {
     id: string;
     title: string;
+    size?: 'small' | 'large' | 'auto';
     forceAction?: boolean;
     className?: string;
     ariaDescribedBy?: string;
@@ -22,6 +23,7 @@ type ModalProps = {
 const Modal = ({
     id,
     title,
+    size = 'auto',
     forceAction = false,
     children,
     className,
@@ -53,7 +55,10 @@ const Modal = ({
                     id={id}
                     aria-labelledby={header}
                     aria-describedby={ariaDescribedBy}
-                    className={classNames('usa-modal', styles.modal, className)}
+                    className={classNames('usa-modal', styles.modal, className, {
+                        [styles.small]: size === 'small',
+                        [styles.large]: size === 'large'
+                    })}
                     data-force-action={forceAction}
                     open>
                     <header id={header} className={'usa-modal__heading'}>
