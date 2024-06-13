@@ -95,6 +95,7 @@ export const AddSubSection = ({
                                 type="text"
                                 error={error?.message}
                                 required
+                                data-testid="subsectionName"
                                 className={styles.inputField}
                             />
                         )}
@@ -133,6 +134,7 @@ export const AddSubSection = ({
                             <Button
                                 type="button"
                                 onClick={onSubmit}
+                                data-testid="confirmation-btn"
                                 disabled={!form.formState.isDirty || !form.formState.isValid}>
                                 Save changes
                             </Button>
@@ -148,7 +150,11 @@ export const AddSubSection = ({
                                 }}>
                                 Cancel
                             </Button>
-                            <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                            <Button
+                                type="button"
+                                onClick={onSubmit}
+                                disabled={!form.formState.isValid}
+                                data-testid="addOrEditSubsectionBtn">
                                 Add subsection
                             </Button>
                         </>

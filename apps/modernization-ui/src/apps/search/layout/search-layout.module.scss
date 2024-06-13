@@ -1,0 +1,56 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+$actions-height: 8rem;
+$criteria-width: 320px;
+
+.search {
+    padding: 1rem;
+    height: calc(100vh - 74px);
+    display: flex;
+    flex-direction: column;
+
+    .content {
+        flex-grow: 1;
+        display: flex;
+        background-color: colors.$base-white;
+
+        @include borders.bordered();
+        @include borders.rounded();
+
+        .criteria {
+            width: $criteria-width;
+
+            @include borders.bordered('border-right');
+
+            search {
+                height: calc(100% - $actions-height);
+                overflow-y: scroll;
+            }
+
+            .actions {
+                @extend %thin-top;
+
+                height: $actions-height;
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                button {
+                    margin: 0;
+                }
+            }
+        }
+
+        .results {
+            flex-grow: 1;
+            overflow-y: scroll;
+
+            .loading {
+                height: 100%;
+                margin: auto;
+            }
+        }
+    }
+}

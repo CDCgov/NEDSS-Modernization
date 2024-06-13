@@ -1,0 +1,1 @@
+export { LaboratoryReportSearch } from './LaboratoryReportSearch';

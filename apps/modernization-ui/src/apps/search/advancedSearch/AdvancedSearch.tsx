@@ -1,5 +1,5 @@
 import { Alert, Grid, Icon, Pagination } from '@trussworks/react-uswds';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
@@ -31,9 +31,7 @@ import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
-import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
-import { Button } from 'components/button/Button';
 import { OutOfTabOrder } from './components/OutOfTabOrder';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { useAlert } from 'alert';
@@ -58,7 +56,6 @@ export const AdvancedSearch = () => {
     const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
-    const wrapperRef = useRef<any>(null);
     const [sort, setSort] = useState<{ sortDirection?: SortDirection; sortField: SortField }>({
         sortField: SortField.Relevance
     });
@@ -66,7 +63,6 @@ export const AdvancedSearch = () => {
 
     // patient search variables
     const [personFilter, setPersonFilter] = useState<PersonFilter>();
-    const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
 
     // pagination variables
@@ -118,20 +114,6 @@ export const AdvancedSearch = () => {
     useEffect(() => {
         handleClearAll();
     }, [activeTab]);
-
-    useEffect(() => {
-        function handleClickOutside(event: any) {
-            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-                setShowSorting(false);
-            }
-        }
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [wrapperRef]);
 
     /**
      * Handles extracting and submitting the query from the q parameter,
@@ -437,107 +419,55 @@ export const AdvancedSearch = () => {
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className="button-group">
                                     {lastSearchType && !isNoResultsFound() && !isError() && !isLoading() && (
-                                        <Button
-                                            disabled={
-                                                (!investigationData?.content ||
-                                                    investigationData?.content?.length === 0) &&
-                                                (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                                (!patientData?.content || patientData?.content?.length === 0)
-                                            }
-                                            className="padding-x-3"
-                                            type={'button'}
-                                            onClick={() => setShowSorting(!showSorting)}
-                                            outline
-                                            labelPosition="left"
-                                            icon={
-                                                <NBSIcon
-                                                    name={
-                                                        (!investigationData?.content ||
-                                                            investigationData?.content?.length === 0) &&
-                                                        (!labReportData?.content ||
-                                                            labReportData?.content?.length === 0) &&
-                                                        (!patientData?.content || patientData?.content?.length === 0)
-                                                            ? 'down-arrow-white'
-                                                            : 'down-arrow-blue'
-                                                    }
-                                                />
-                                            }>
-                                            Sort by
-                                        </Button>
-                                    )}
-                                    {showSorting && (
-                                        <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
-                                            <li className="usa-nav__submenu-item">
-                                                <Button
-                                                    onClick={() => {
+                                        <ButtonActionMenu
+                                            label="Sort by"
+                                            items={[
+                                                {
+                                                    label: 'Closest match',
+                                                    action: () => {
                                                         setSort({
                                                             sortField: SortField.Relevance
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
-                                                    Closest match
-                                                </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
-                                                <Button
-                                                    onClick={() => {
+                                                    }
+                                                },
+                                                {
+                                                    label: 'Patient name (A-Z)',
+                                                    action: () => {
                                                         setSort({
                                                             sortDirection: SortDirection.Asc,
                                                             sortField: SortField.LastNm
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    outline={sort.sortDirection === SortDirection.Asc}
-                                                    unstyled>
-                                                    Patient name (A-Z)
-                                                </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
-                                                <Button
-                                                    onClick={() => {
+                                                    }
+                                                },
+                                                {
+                                                    label: 'Patient name (Z-A)',
+                                                    action: () => {
                                                         setSort({
                                                             sortDirection: SortDirection.Desc,
                                                             sortField: SortField.LastNm
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
-                                                    Patient name (Z-A)
-                                                </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
-                                                <Button
-                                                    onClick={() => {
+                                                    }
+                                                },
+                                                {
+                                                    label: 'Date of birth (Ascending)',
+                                                    action: () => {
                                                         setSort({
                                                             sortDirection: SortDirection.Asc,
                                                             sortField: SortField.BirthTime
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
-                                                    Date of birth (Ascending)
-                                                </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
-                                                <Button
-                                                    onClick={() => {
+                                                    }
+                                                },
+                                                {
+                                                    label: 'Date of birth (Descending)',
+                                                    action: () => {
                                                         setSort({
                                                             sortDirection: SortDirection.Desc,
                                                             sortField: SortField.BirthTime
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
-                                                    Date of birth (Descending)
-                                                </Button>
-                                            </li>
-                                        </ul>
+                                                    }
+                                                }
+                                            ]}
+                                        />
                                     )}
                                 </div>
                             </div>
@@ -571,11 +501,7 @@ export const AdvancedSearch = () => {
                             <>
                                 {submitted && isEmptyFilter() && (
                                     <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-alert">
-                                        <Alert
-                                            type="error"
-                                            // heading="You did not make a search"
-                                            headingLevel="h4"
-                                            className="width-full">
+                                        <Alert type="error" headingLevel="h4" className="width-full">
                                             <span className="display-flex flex-justify flex-align-center">
                                                 You must enter at least one item to search
                                                 <Icon.Close
