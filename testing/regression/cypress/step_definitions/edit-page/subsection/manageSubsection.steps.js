@@ -106,3 +106,19 @@ Then("verify new subsection is successfully added", () => {
     manageSubsectionPage.verifyAddingSubsectionSuccessMessage();
 });
 
+Then("user clicks on 6 point icon", () => {
+    manageSubsectionPage.clickDragAndDropIcon();
+});
+
+Then("verify user can drag and move the sections up or down", () => {
+    manageSubsectionPage.checkDragAndDrop();
+});
+
+Then("click on close on manage subsection", () => {
+    manageSubsectionPage.closeManageSubsectionWindow();
+});
+
+Then("verify user can see the change on edit page view", () => {
+    manageSubsectionPage.checkOnEditPage();
+});
+

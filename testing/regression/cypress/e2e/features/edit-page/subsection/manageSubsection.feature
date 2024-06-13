@@ -45,3 +45,11 @@ Feature: Page Builder - User can verify manage page here.
     And click on Add subsection button
     Then verify new subsection is successfully added
 
+  Scenario: Manage subsection - 6 points icon
+    Then user is at Manage Subsection window
+    And user clicks on 6 point icon
+    Then verify user can drag and move the sections up or down
+    Then click on close on manage subsection
+    And verify user can see the change on edit page view
+
+
