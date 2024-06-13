@@ -19,7 +19,6 @@ $footer-height: 5.75rem;
     left: auto;
     right: auto;
 
-    width: auto !important;
     height: auto !important;
 
     border: none;
@@ -30,6 +29,18 @@ $footer-height: 5.75rem;
     max-height: $max-height !important;
     min-width: $min-width !important;
     max-width: $max-width !important;
+
+    &.small {
+        width: $min-width;
+    }
+
+    &.large {
+        width: 55rem;
+    }
+
+    &.unbounded {
+        width: auto !important;
+    }
 
     header {
         display: flex;
