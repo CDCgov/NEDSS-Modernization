@@ -9,16 +9,15 @@ import { Layout } from '../layout/Layout';
 import { InitializationLoaderResult } from './initializationLoader';
 import IdleTimer from './IdleTimer';
 
+const timeout = 60 * 15; // 15 minutes
+const warningTimeout = 60 * 5; // 5 minutes
+
 const ProtectedLayout = () => {
     const data = useLoaderData() as InitializationLoaderResult;
-    const logoutUrl = `${window.location.protocol}//${window.location.host}/nbs/logout`;
 
     const handleIdle = () => {
-        window.location.href = logoutUrl;
+        window.location.href = '/nbs/logout';
     };
-
-    const timeout = 1000 * 60 * 15; // 15 minutes
-    const warningTimeout = 1000 * 60 * 5; // 5 minutes
 
     const WithUser = (user: User) => {
         const data = useLoaderData() as InitializationLoaderResult;
