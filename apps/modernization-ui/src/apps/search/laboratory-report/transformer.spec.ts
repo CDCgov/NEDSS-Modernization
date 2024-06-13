@@ -3,12 +3,12 @@ import { transformObject } from './transformer';
 describe('transformObject', () => {
     it('should transform an object with Selectable arrays correctly', () => {
         const input = {
-            codedResult: [{ value: 'result1', name: 'Result 1' }],
-            eventStatus: [{ value: 'status1', name: 'Status 1' }]
+            codedResult: [{ value: 'result-values', name: 'result-name', label: 'result-label' }],
+            eventStatus: [{ value: 'status1', name: 'Status 1', label: 'Status label' }]
         };
 
         const expected = {
-            codedResult: ['result1'],
+            codedResult: ['result-values'],
             eventStatus: ['status1']
         };
 
@@ -44,16 +44,17 @@ describe('transformObject', () => {
             }
         };
 
-        const expected = {
-            eventDate: {
-                type: 'type1',
-                from: '2023-05-01',
-                to: '2023-05-31'
-            }
-        };
-
         const result = transformObject(input);
-        expect(result).toEqual(expected);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                eventDate: {
+                    type: 'type1',
+                    from: '2023-05-01',
+                    to: '2023-05-31'
+                }
+            })
+        );
     });
 
     it('should handle an empty object', () => {

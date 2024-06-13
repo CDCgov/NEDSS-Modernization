@@ -1,6 +1,7 @@
 import { Selectable } from 'components/FormInputs/SelectInput';
 import { LabReportFilter } from 'generated/graphql/schema';
 import { FormLabReportFilter } from './labReportFormTypes';
+import { asValues } from 'options/selectable';
 
 export const transformObject = (data: FormLabReportFilter): LabReportFilter => {
     const transformedObj: {
@@ -18,5 +19,9 @@ export const transformObject = (data: FormLabReportFilter): LabReportFilter => {
             transformedObj[key] = value;
         }
     }
-    return transformedObj;
+    return {
+        ...data,
+        ...(data.jurisdictions && { jurisdictions: asValues(data.jurisdictions) }),
+        ...(data.codedResult && { codedResult: asValues(data.codedResult) })
+    };
 };

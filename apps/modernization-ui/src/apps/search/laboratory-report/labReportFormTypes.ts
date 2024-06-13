@@ -1,4 +1,4 @@
-import { Selectable } from 'components/FormInputs/SelectInput';
+import { Selectable } from 'options';
 
 export type FormLabReportFilter = {
     eventDate?: {
