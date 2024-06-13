@@ -182,7 +182,7 @@ const PreviewPageContent = () => {
                                 <Icon.Print size={3} />
                             </LinkButton>
                             {page.status === 'Published' ? (
-                                <Button type="button" onClick={handleCreateDraft}>
+                                <Button id="create-new-draft-button" type="button" onClick={handleCreateDraft}>
                                     Create new draft
                                 </Button>
                             ) : (
