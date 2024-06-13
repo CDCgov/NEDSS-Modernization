@@ -134,6 +134,27 @@ class ManageSubsectionPage {
         cy.contains('You have successfully added subsection');
     }
 
+    clickDragAndDropIcon() {
+        cy.get('.manage-sections').eq(0)
+            .get('[data-testid="dragAndDropIcon"]').eq(0).click();
+    }
+
+    checkDragAndDrop() {
+        cy.get('.manage-sections').eq(0)
+            .get('[data-testid="dragAndDropIcon"]').eq(0)
+            .trigger('mousedown').trigger('mouseup');
+    }
+
+    closeManageSubsectionWindow() {
+        cy.get('.manage-sections').eq(0)
+            .get('[data-testid="manageSubsectionCloseBtn"]').eq(0).click();
+    }
+
+    checkOnEditPage() {
+        cy.contains('Subsection name');
+    }
+
+
 }
 
 export const manageSubsectionPage = new ManageSubsectionPage()
