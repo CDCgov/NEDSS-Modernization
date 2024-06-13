@@ -82,3 +82,27 @@ Then("verify hide or unhide icon is blue active if already invisible state", () 
     manageSubsectionPage.checkVisibilityIconTurnedOff(true);
 });
 
+Then("user clicks on Add new subsection button", () => {
+    manageSubsectionPage.clickAddNewSubsectionBtn();
+});
+
+Then("user is brought to add subsection window", () => {
+    manageSubsectionPage.checkAddSubsectionWindowDisplayed();
+});
+
+Then("user can enter subsection name in field", () => {
+    manageSubsectionPage.enterNewSubsectionName();
+});
+
+Then("user can toggle visible or non-visible", () => {
+    manageSubsectionPage.toggleVisibilityRadioBtn();
+});
+
+Then("click on Add subsection button", () => {
+    manageSubsectionPage.clickAddSubsectionBtn();
+});
+
+Then("verify new subsection is successfully added", () => {
+    manageSubsectionPage.verifyAddingSubsectionSuccessMessage();
+});
+

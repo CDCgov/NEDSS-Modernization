@@ -37,3 +37,11 @@ Feature: Page Builder - User can verify manage page here.
     Then verify hide or unhide icon is blue active if already invisible state
     And verify success message "Subsection unhidden successfully"
 
+  Scenario: Manage subsection - Add new subsection
+    And user clicks on Add new subsection button
+    Then user is brought to add subsection window
+    And user can enter subsection name in field
+    And user can toggle visible or non-visible
+    And click on Add subsection button
+    Then verify new subsection is successfully added
+
