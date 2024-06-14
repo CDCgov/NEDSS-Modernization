@@ -26,7 +26,7 @@ public class SearchRedirectController {
   private final EncryptionService encryptionService;
 
   public SearchRedirectController(
-      @Value("${nbs.advanced-search-path: /advanced-search}") final String advancedSearchPath,
+      @Value("${nbs.search.advanced-search-path}") final String advancedSearchPath,
       final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver,
       final EventFilterResolver eventFilterResolver,
       final EncryptionService encryptionService) {
