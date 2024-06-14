@@ -31,6 +31,8 @@ logging:
           search: INFO
 
 nbs:
+  search:
+    advanced-search-path: /search
   security:
     oidc:
       enabled: false
