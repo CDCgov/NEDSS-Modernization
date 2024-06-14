@@ -8,7 +8,7 @@ type InternalState =
     | { status: 'loading'; configuration: Configuration }
     | { status: 'ready'; configuration: Configuration };
 
-type Action = { type: 'load' } | { type: 'loaded'; configuration: Configuration };
+type Action = { type: 'load' } | { type: 'loaded'; configuration: Partial<Configuration> };
 
 const reducer = (state: InternalState, action: Action): InternalState => {
     switch (action.type) {
