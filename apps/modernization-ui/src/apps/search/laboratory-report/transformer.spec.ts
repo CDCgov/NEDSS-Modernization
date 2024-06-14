@@ -29,7 +29,7 @@ describe('transformObject', () => {
         const expected = {
             eventId: {
                 labEventId: 'type1',
-                labEventType: LaboratoryEventIdType.LabId
+                labEventType: LaboratoryEventIdType.AccessionNumber
             }
         };
 
@@ -51,7 +51,7 @@ describe('transformObject', () => {
         expect(result).toEqual(
             expect.objectContaining({
                 eventDate: {
-                    type: 'type1',
+                    type: LaboratoryReportEventDateType.DateOfReport,
                     from: '2023-05-01',
                     to: '2023-05-31'
                 }
