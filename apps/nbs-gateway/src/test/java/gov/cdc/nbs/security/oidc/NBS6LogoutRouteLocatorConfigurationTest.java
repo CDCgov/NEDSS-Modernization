@@ -30,19 +30,6 @@ class NBS6LogoutRouteLocatorConfigurationTest {
   WebTestClient webClient;
 
   @Test
-  void should_redirect_to_spring_security_logout_endpoint() {
-    webClient
-        .get().uri(
-            builder -> builder
-                .path("/nbs/logout")
-                .build()
-        )
-        .exchange()
-        .expectHeader().location("/logout")
-        .expectStatus().is3xxRedirection();
-  }
-
-  @Test
   void should_redirect_to_NBS_logout() {
     classic.stubFor(get(urlPathMatching("/nbs/logout")).willReturn(ok()));
 

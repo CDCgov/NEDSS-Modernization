@@ -1,4 +1,8 @@
 type Settings = {
+    session: {
+        warning: number;
+        expiration: number;
+    };
     smarty?: {
         key: string;
     };
