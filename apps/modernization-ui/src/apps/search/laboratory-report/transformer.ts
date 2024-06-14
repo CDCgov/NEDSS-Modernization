@@ -1,27 +1,29 @@
-import { Selectable } from 'components/FormInputs/SelectInput';
-import { LabReportFilter } from 'generated/graphql/schema';
+import {
+    EntryMethod,
+    EventStatus,
+    LaboratoryReportStatus,
+    LabReportFilter,
+    PregnancyStatus,
+    UserType
+} from 'generated/graphql/schema';
 import { FormLabReportFilter } from './labReportFormTypes';
-import { asValues } from 'options/selectable';
+import { asValue, asValues } from 'options/selectable';
 
 export const transformObject = (data: FormLabReportFilter): LabReportFilter => {
-    const transformedObj: {
-        [key: string]: any;
-    } = {};
-
-    for (const [key, value] of Object.entries(data)) {
-        if (Array.isArray(value)) {
-            if (typeof value[0] === 'object') {
-                transformedObj[key] = (value as Selectable[]).map((obj) => obj.value);
-            } else {
-                transformedObj[key] = value;
-            }
-        } else {
-            transformedObj[key] = value;
-        }
-    }
     return {
         ...data,
-        ...(data.jurisdictions && { jurisdictions: asValues(data.jurisdictions) }),
-        ...(data.codedResult && { codedResult: asValues(data.codedResult) })
+        codedResult: data.codedResult ? (asValue(data.codedResult) as string) : undefined,
+        createdBy: data.createdBy ? (asValue(data.createdBy) as string) : undefined,
+        jurisdictions: data.jurisdictions ? (asValues(data.jurisdictions) as string[]) : undefined,
+        eventStatus: data.eventStatus ? (asValues(data.eventStatus) as EventStatus[]) : undefined,
+        processingStatus: data.processingStatus
+            ? (asValues(data.processingStatus) as LaboratoryReportStatus[])
+            : undefined,
+        programAreas: data.programAreas ? (asValues(data.programAreas) as string[]) : undefined,
+        resultedTest: data.resultedTest ? (asValue(data.resultedTest) as string) : undefined,
+        entryMethods: data.entryMethods ? (asValues(data.entryMethods) as EntryMethod[]) : undefined,
+        enteredBy: data.enteredBy ? (asValues(data.enteredBy) as UserType[]) : undefined,
+        lastUpdatedBy: data.lastUpdatedBy ? (asValue(data.lastUpdatedBy) as string) : undefined,
+        pregnancyStatus: data.pregnancyStatus ? (asValue(data.pregnancyStatus) as PregnancyStatus) : undefined
     };
 };

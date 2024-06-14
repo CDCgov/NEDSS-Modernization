@@ -10,19 +10,13 @@ type Selectable = {
 
 export type { Selectable };
 
-type HasValue = { value: string | number };
+type HasValue = { value: string | number; name: string };
 
-/* eslint-disable no-redeclare */
-function asValue(selectable: HasValue): string;
-function asValue(selectable: null | undefined): null;
-function asValue(selectable: HasValue | null | undefined) {
+function asValue(selectable: HasValue | null | undefined): string | number | null {
     return selectable?.value || null;
 }
 
-/* eslint-disable no-redeclare */
-function asValues(selectables: undefined): undefined;
-function asValues(selectables: HasValue[]): string[];
-function asValues(selectables: HasValue[] | undefined): string[] | undefined {
+function asValues(selectables: HasValue[] | undefined): (string | number | null)[] | undefined {
     return selectables && selectables.map((m) => asValue(m));
 }
 export { asValue, asValues };

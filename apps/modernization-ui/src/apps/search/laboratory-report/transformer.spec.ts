@@ -1,14 +1,16 @@
+import { LaboratoryEventIdType, LaboratoryReportEventDateType } from 'generated/graphql/schema';
+import { FormLabReportFilter } from './labReportFormTypes';
 import { transformObject } from './transformer';
 
 describe('transformObject', () => {
     it('should transform an object with Selectable arrays correctly', () => {
-        const input = {
-            codedResult: [{ value: 'result-values', name: 'result-name', label: 'result-label' }],
-            eventStatus: [{ value: 'status1', name: 'Status 1', label: 'Status label' }]
+        const input: FormLabReportFilter = {
+            codedResult: { value: 'result-values', name: 'result-name', label: 'result-name' },
+            eventStatus: [{ value: 'status1', name: 'Status 1', label: 'Status 1' }]
         };
 
         const expected = {
-            codedResult: ['result-values'],
+            codedResult: 'result-values',
             eventStatus: ['status1']
         };
 
@@ -19,15 +21,15 @@ describe('transformObject', () => {
     it('should transform an object with string values correctly', () => {
         const input = {
             eventId: {
-                labEventType: 'type1',
-                labEventId: 'id1'
+                labEventId: 'type1',
+                labEventType: LaboratoryEventIdType.AccessionNumber
             }
         };
 
         const expected = {
             eventId: {
-                labEventType: 'type1',
-                labEventId: 'id1'
+                labEventId: 'type1',
+                labEventType: LaboratoryEventIdType.LabId
             }
         };
 
@@ -38,7 +40,7 @@ describe('transformObject', () => {
     it('should transform an object with nested objects correctly', () => {
         const input = {
             eventDate: {
-                type: 'type1',
+                type: LaboratoryReportEventDateType.DateOfReport,
                 from: '2023-05-01',
                 to: '2023-05-31'
             }

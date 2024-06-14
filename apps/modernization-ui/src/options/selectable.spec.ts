@@ -2,7 +2,7 @@ import { asValue, asValues } from './selectable';
 
 describe('when getting the value of a Selectable', () => {
     it('should return the value of the selectable', () => {
-        const actual = asValue({ name: 'name', value: 'value', label: 'label' });
+        const actual = asValue({ name: 'name', value: 'value' });
 
         expect(actual).toEqual('value');
     });
@@ -23,10 +23,10 @@ describe('when getting the value of a Selectable', () => {
 describe('when getting the value of multiple Selectables', () => {
     it('should return the values of each Selectable', () => {
         const actual = asValues([
-            { name: 'name-one', value: 'value-one', label: 'label-one' },
-            { name: 'name-two', value: 'value-two', label: 'label-two' },
-            { name: 'name-three', value: 'value-three', label: 'label-three' },
-            { name: 'name-four', value: 'value-four', label: 'label-four' }
+            { name: 'name-one', value: 'value-one' },
+            { name: 'name-two', value: 'value-two' },
+            { name: 'name-three', value: 'value-three' },
+            { name: 'name-four', value: 'value-four' }
         ]);
 
         expect(actual).toEqual(expect.arrayContaining(['value-one', 'value-two', 'value-three', 'value-four']));

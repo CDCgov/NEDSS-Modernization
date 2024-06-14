@@ -1,29 +1,20 @@
+import { LaboratoryEventDateSearch, LabReportEventId, LabReportProviderSearch } from 'generated/graphql/schema';
 import { Selectable } from 'options';
 
 export type FormLabReportFilter = {
-    eventDate?: {
-        type?: string;
-        from?: string | null | undefined;
-        to?: string | null | undefined;
-    };
-    eventId?: {
-        labEventType?: string;
-        labEventId?: string;
-    };
-    patientId?: number;
-    providerSearch?: {
-        providerType?: string;
-        providerId?: string;
-    };
-    eventStatus?: Selectable[];
-    jurisdictions?: Selectable[];
-    lastUpdatedBy?: Selectable[];
-    pregnancyStatus?: Selectable[];
-    processingStatus?: Selectable[];
-    programAreas?: Selectable[];
-    resultedTest?: Selectable[];
-    codedResult?: Selectable[];
-    createdBy?: Selectable[];
+    codedResult?: Selectable;
+    createdBy?: Selectable;
     enteredBy?: Selectable[];
     entryMethods?: Selectable[];
+    eventDate?: LaboratoryEventDateSearch | null;
+    eventId?: LabReportEventId | null;
+    eventStatus?: Selectable[];
+    jurisdictions?: Selectable[];
+    lastUpdatedBy?: Selectable;
+    patientId?: number | null;
+    providerSearch?: LabReportProviderSearch | null;
+    pregnancyStatus?: Selectable;
+    processingStatus?: Selectable[];
+    programAreas?: Selectable[];
+    resultedTest?: Selectable;
 };
