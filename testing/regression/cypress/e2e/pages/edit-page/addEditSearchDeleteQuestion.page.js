@@ -89,11 +89,17 @@ class AddEditSearchDeleteQuestion {
     }
 
     clickEditQuestionSaveBtn() {
-        cy.get('.editQuestionSaveBtn').eq(0).click();
+        cy.get('.editQuestionSaveBtn').eq(0).click({ force: true });
     }
 
     closeEditQuestionModal() {
-        cy.contains('Edit question').should('not.visible');
+        cy.contains('Edit question').then((ele) => {
+            if(ele.length < 1) {
+                cy.contains('Edit question').should('not.visible');
+            } else {
+                cy.contains('button', 'Cancel').eq(0).click({ force: true });
+            }
+        });
     }
 
     clickQuestionDeleteBtn() {

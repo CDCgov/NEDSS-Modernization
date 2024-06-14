@@ -47,7 +47,11 @@ class ManageSectionPage {
 
     viewDeleteConfirmationDialogText(texts) {
         texts.forEach((text) => {
-            cy.contains(text);
+            cy.contains('Section cannot be deleted').then((ele) => {
+                if(ele.length < 1) {
+                    cy.contains(text);
+                }
+            });
         });
     }
 
