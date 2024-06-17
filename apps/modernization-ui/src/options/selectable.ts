@@ -9,3 +9,14 @@ type Selectable = {
 } & WithDisplay;
 
 export type { Selectable };
+
+type HasValue = { value: string | number; name: string };
+
+function asValue(selectable: HasValue | null | undefined): string | number | null {
+    return selectable?.value || null;
+}
+
+function asValues(selectables: HasValue[] | undefined): (string | number | null)[] | undefined {
+    return selectables && selectables.map((m) => asValue(m));
+}
+export { asValue, asValues };
