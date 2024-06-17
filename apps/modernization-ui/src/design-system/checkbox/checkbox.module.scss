@@ -16,6 +16,7 @@
         padding-left: 2rem;
         position: relative;
         line-height: 1.25rem;
+        user-select: none;
 
         &::before {
             content: ' ';

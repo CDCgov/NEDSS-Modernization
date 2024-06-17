@@ -20,3 +20,10 @@ function asValues(selectables: HasValue[] | undefined): (string | number | null)
     return selectables && selectables.map((m) => asValue(m));
 }
 export { asValue, asValues };
+
+const isEqual =
+    (selectable: Selectable) =>
+    (other: Selectable): boolean =>
+        selectable.value === other.value;
+
+export { isEqual };

@@ -1,88 +1,75 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Checkbox } from './Checkbox';
+import { Selectable } from 'options';
 
 const onChange = jest.fn();
-const onSelect = jest.fn();
-const option = { value: 'value', label: 'label', name: 'name' };
+const option: Selectable = { value: 'value', label: 'label', name: 'name' };
 
 describe('Checkbox testing', () => {
-    it('should render unchecked', () => {
-        const { getByLabelText } = render(<Checkbox onChange={onChange} option={option} selected={false} />);
+    it('should render the selectable label as the checkbox label', () => {
+        const { getByText } = render(<Checkbox selectable={option} selected={false} />);
 
-        const checkbox = getByLabelText('label');
+        const label = getByText('label');
+
+        expect(label).toBeInTheDocument();
+    });
+
+    it('should render unchecked', () => {
+        const { getByRole } = render(<Checkbox onChange={onChange} selectable={option} selected={false} />);
+
+        const checkbox = getByRole('checkbox');
         expect(checkbox).not.toBeChecked();
     });
 
     it('should render checked', () => {
-        const { getByLabelText } = render(<Checkbox onChange={onChange} option={option} selected={true} />);
+        const { getByRole } = render(<Checkbox onChange={onChange} selectable={option} selected={true} />);
 
-        const checkbox = getByLabelText('label');
+        const checkbox = getByRole('checkbox');
         expect(checkbox).toBeChecked();
     });
 
     it('should render enabled', () => {
-        const { getByLabelText } = render(<Checkbox onChange={onChange} option={option} selected={true} />);
+        const { getByRole } = render(<Checkbox onChange={onChange} selectable={option} selected={true} />);
 
-        const checkbox = getByLabelText('label');
+        const checkbox = getByRole('checkbox');
         expect(checkbox).not.toBeDisabled();
     });
 
     it('should render disabled', () => {
-        const { getByLabelText } = render(<Checkbox onChange={onChange} option={option} selected={true} disabled />);
+        const { getByRole } = render(<Checkbox onChange={onChange} selectable={option} selected={true} disabled />);
 
-        const checkbox = getByLabelText('label');
+        const checkbox = getByRole('checkbox');
         expect(checkbox).toBeDisabled();
     });
 
     it('should render with provided className', () => {
-        const { getByLabelText } = render(
-            <Checkbox onChange={onChange} option={option} selected={true} className="testClass" />
+        const { container } = render(
+            <Checkbox onChange={onChange} selectable={option} selected={true} className="testClass" />
         );
 
-        const checkbox = getByLabelText('label');
-        expect(checkbox.parentElement).toHaveClass('testClass');
+        expect(container.firstChild).toHaveClass('testClass');
     });
 
     it('should emit onChange event when checkbox clicked', () => {
-        const { getByRole } = render(<Checkbox onChange={onChange} option={option} selected={false} />);
+        const onChange = jest.fn();
+        const { getByRole } = render(<Checkbox onChange={onChange} selectable={option} selected={false} />);
 
         const checkbox = getByRole('checkbox');
-        expect(checkbox.nodeName).toBe('INPUT');
 
         userEvent.click(checkbox);
-        expect(onChange).toHaveBeenCalledTimes(1);
-
-        const checked: boolean = onChange.mock.calls[0][0];
-        expect(checked).toEqual(true);
+        expect(onChange).toHaveBeenCalledWith(option);
     });
 
     it('should emit onChange event when label clicked', () => {
-        const { getByText } = render(<Checkbox onChange={onChange} option={option} selected={false} />);
+        const onChange = jest.fn();
+
+        const { getByText } = render(<Checkbox onChange={onChange} selectable={option} selected={false} />);
 
         const label = getByText('label');
-        expect(label.nodeName).toBe('LABEL');
-        expect(label).toHaveAttribute('for', 'checkbox-value');
 
         userEvent.click(label);
-        expect(onChange).toHaveBeenCalledTimes(1);
 
-        const checked: boolean = onChange.mock.calls[0][0];
-        expect(checked).toEqual(true);
-    });
-
-    it('should emit onSelect event when checkbox clicked', () => {
-        const { getByRole } = render(<Checkbox onSelect={onSelect} option={option} selected={false} />);
-
-        const checkbox = getByRole('checkbox');
-        expect(checkbox.nodeName).toBe('INPUT');
-
-        userEvent.click(checkbox);
-        expect(onSelect).toHaveBeenCalledTimes(1);
-
-        const checked: boolean = onSelect.mock.calls[0][0];
-        const value: boolean = onSelect.mock.calls[0][1];
-        expect(checked).toEqual(true);
-        expect(value).toEqual('value');
+        expect(onChange).toHaveBeenCalledWith(option);
     });
 });
