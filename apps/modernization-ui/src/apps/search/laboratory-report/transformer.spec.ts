@@ -1,4 +1,12 @@
-import { LaboratoryEventIdType, LaboratoryReportEventDateType } from 'generated/graphql/schema';
+import {
+    EntryMethod,
+    EventStatus,
+    LaboratoryEventIdType,
+    LaboratoryReportEventDateType,
+    LaboratoryReportStatus,
+    PregnancyStatus,
+    UserType
+} from 'generated/graphql/schema';
 import { FormLabReportFilter } from './labReportFormTypes';
 import { transformObject } from './transformer';
 
@@ -55,6 +63,76 @@ describe('transformObject', () => {
                     from: '2023-05-01',
                     to: '2023-05-31'
                 }
+            })
+        );
+    });
+
+    it('should include entered by when present', () => {
+        const criteria = {
+            enteredBy: [{ name: 'Internal', label: 'Intenral', value: 'INTERNAL' }]
+        };
+
+        const result = transformObject(criteria);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                enteredBy: expect.arrayContaining([UserType.Internal])
+            })
+        );
+    });
+
+    it('should include entry method when present', () => {
+        const criteria = {
+            enteredBy: [{ name: 'Manual', label: 'Manual', value: 'ELECTRONIC' }]
+        };
+
+        const result = transformObject(criteria);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                enteredBy: expect.arrayContaining([EntryMethod.Electronic])
+            })
+        );
+    });
+
+    it('should include event status when present', () => {
+        const criteria = {
+            enteredBy: [{ name: 'Update', label: 'Update', value: 'UPDATE' }]
+        };
+
+        const result = transformObject(criteria);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                enteredBy: expect.arrayContaining([EventStatus.Update])
+            })
+        );
+    });
+
+    it('should include pregnancy status when present', () => {
+        const criteria = {
+            enteredBy: [{ name: 'Unknown', label: 'Unknown', value: 'UNKNOWN' }]
+        };
+
+        const result = transformObject(criteria);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                enteredBy: expect.arrayContaining([PregnancyStatus.Unknown])
+            })
+        );
+    });
+
+    it('should include processing status when present', () => {
+        const criteria = {
+            enteredBy: [{ name: 'Unprocessed', label: 'Unprocessed', value: 'UNPROCESSED' }]
+        };
+
+        const result = transformObject(criteria);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                enteredBy: expect.arrayContaining([LaboratoryReportStatus.Unprocessed])
             })
         );
     });
