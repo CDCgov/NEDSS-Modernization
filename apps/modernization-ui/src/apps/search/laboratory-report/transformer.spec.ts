@@ -7,12 +7,12 @@ import {
     PregnancyStatus,
     UserType
 } from 'generated/graphql/schema';
-import { FormLabReportFilter } from './labReportFormTypes';
+import { LabReportFilterEntry } from './labReportFormTypes';
 import { transformObject } from './transformer';
 
 describe('transformObject', () => {
     it('should transform an object with Selectable arrays correctly', () => {
-        const input: FormLabReportFilter = {
+        const input: LabReportFilterEntry = {
             codedResult: { value: 'result-values', name: 'result-name', label: 'result-name' },
             eventStatus: [{ value: 'status1', name: 'Status 1', label: 'Status 1' }]
         };

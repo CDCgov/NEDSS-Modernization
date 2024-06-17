@@ -6,10 +6,10 @@ import {
     PregnancyStatus,
     UserType
 } from 'generated/graphql/schema';
-import { FormLabReportFilter } from './labReportFormTypes';
+import { LabReportFilterEntry } from './labReportFormTypes';
 import { asValue, asValues } from 'options/selectable';
 
-export const transformObject = (data: FormLabReportFilter): LabReportFilter => {
+export const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
     return {
         ...data,
         codedResult: data.codedResult ? (asValue(data.codedResult) as string) : undefined,

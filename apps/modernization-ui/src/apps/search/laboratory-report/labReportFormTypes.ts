@@ -1,7 +1,7 @@
 import { LaboratoryEventDateSearch, LabReportEventId, LabReportProviderSearch } from 'generated/graphql/schema';
 import { Selectable } from 'options';
 
-export type FormLabReportFilter = {
+export type LabReportFilterEntry = {
     codedResult?: Selectable;
     createdBy?: Selectable;
     enteredBy?: Selectable[];
