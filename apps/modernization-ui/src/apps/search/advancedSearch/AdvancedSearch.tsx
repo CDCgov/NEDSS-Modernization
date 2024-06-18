@@ -34,7 +34,6 @@ import { focusedTarget } from 'utils';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 import { OutOfTabOrder } from './components/OutOfTabOrder';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { useAlert } from 'alert';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
