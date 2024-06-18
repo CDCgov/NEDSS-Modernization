@@ -3,7 +3,18 @@ class ManageSubsectionPage {
     navigateEditPage () {
         cy.visit('/page-builder/pages');
         cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
-        cy.get('.editDraftBtn').eq(0).click();
+        cy.get("body").then($body => {
+            if ($body.find("#create-new-draft-button").length > 0) {
+                cy.get("create-new-draft-button").then($button => {
+                    if ($button.is(':visible')){
+                        $button.click()
+                        cy.get('.editDraftBtn').eq(0).click();
+                    }
+                })
+            } else {
+                cy.get('.editDraftBtn').eq(0).click();
+            }
+        });
     }
 
     openManageSubsectionWindow() {
@@ -106,6 +117,54 @@ class ManageSubsectionPage {
         cy.wait(2000);
         cy.contains(text);
     }
+
+    clickAddNewSubsectionBtn() {
+        cy.get('[data-testid="addNewSubsection"]').eq(0).click();
+    }
+
+    checkAddSubsectionWindowDisplayed() {
+        cy.contains('Add subsection');
+    }
+
+    enterNewSubsectionName() {
+        const newSubsectionName = Math.random().toString(36).substring(2, 8);
+        cy.get('[data-testid="subsectionName"]').eq(0).type(`New subsection name ${newSubsectionName}`);
+    }
+
+    toggleVisibilityRadioBtn() {
+        cy.contains('Not visible');
+        cy.contains('Visible');
+    }
+
+    clickAddSubsectionBtn() {
+        cy.get('[data-testid="addOrEditSubsectionBtn"]').eq(0).click();
+    }
+
+    verifyAddingSubsectionSuccessMessage() {
+        cy.wait(2000);
+        cy.contains('You have successfully added subsection');
+    }
+
+    clickDragAndDropIcon() {
+        cy.get('.manage-sections').eq(0)
+            .get('[data-testid="dragAndDropIcon"]').eq(0).click();
+    }
+
+    checkDragAndDrop() {
+        cy.get('.manage-sections').eq(0)
+            .get('[data-testid="dragAndDropIcon"]').eq(0)
+            .trigger('mousedown').trigger('mouseup');
+    }
+
+    closeManageSubsectionWindow() {
+        cy.get('.manage-sections').eq(0)
+            .get('[data-testid="manageSubsectionCloseBtn"]').eq(0).click();
+    }
+
+    checkOnEditPage() {
+        cy.contains('Subsection name');
+    }
+
 
 }
 

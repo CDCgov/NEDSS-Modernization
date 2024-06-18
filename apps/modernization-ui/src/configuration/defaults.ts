@@ -28,7 +28,12 @@ const defaultProperties: Properties = {
     stdProgramAreas: []
 };
 
-const defaultSettings: Settings = {};
+const defaultSettings: Settings = {
+    session: {
+        warning: 1000 * 60 * 15,
+        expiration: 1000 * 60 * 20
+    }
+};
 
 const defaultConfiguration: Configuration = {
     settings: defaultSettings,

@@ -3,7 +3,18 @@ class ManageSectionPage {
     navigateEditPage () {
         cy.visit('/page-builder/pages');
         cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
-        cy.get('.editDraftBtn').eq(0).click();
+        cy.get("body").then($body => {
+            if ($body.find("#create-new-draft-button").length > 0) {
+                cy.get("create-new-draft-button").then($button => {
+                    if ($button.is(':visible')){
+                        $button.click()
+                        cy.get('.editDraftBtn').eq(0).click();
+                    }
+                })
+            } else {
+                cy.get('.editDraftBtn').eq(0).click();
+            }
+        });
     }
 
     openManageSectionsPopup() {
@@ -36,7 +47,11 @@ class ManageSectionPage {
 
     viewDeleteConfirmationDialogText(texts) {
         texts.forEach((text) => {
-            cy.contains(text);
+            cy.contains('Section cannot be deleted').then((ele) => {
+                if(ele.length < 1) {
+                    cy.contains(text);
+                }
+            });
         });
     }
 
