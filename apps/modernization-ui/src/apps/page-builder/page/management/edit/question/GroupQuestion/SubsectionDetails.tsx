@@ -33,6 +33,7 @@ export const SubsectionDetails = () => {
                             <Input
                                 type="text"
                                 name={name}
+                                data-testid="editSubsectionModalSubsectionName"
                                 defaultValue={value}
                                 onChange={onChange}
                                 required
@@ -89,6 +90,7 @@ export const SubsectionDetails = () => {
                             <Input
                                 type="text"
                                 name={name}
+                                data-testid="editSubsectionModalBlockName"
                                 defaultValue={value}
                                 onChange={onChange}
                                 required
@@ -116,6 +118,7 @@ export const SubsectionDetails = () => {
                             <Input
                                 type="number"
                                 name={name}
+                                data-testid="editSubsectionModalDataMart"
                                 defaultValue={value?.toString()}
                                 onChange={onChange}
                                 onBlur={onBlur}
