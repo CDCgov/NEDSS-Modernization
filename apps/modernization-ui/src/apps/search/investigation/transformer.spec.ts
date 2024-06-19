@@ -1,14 +1,4 @@
-import {
-    CaseStatus,
-    EntryMethod,
-    EventStatus,
-    InvestigationEventIdType,
-    InvestigationStatus,
-    LaboratoryReportEventDateType,
-    LaboratoryReportStatus,
-    PregnancyStatus,
-    UserType
-} from 'generated/graphql/schema';
+import { CaseStatus, InvestigationEventIdType, InvestigationStatus, PregnancyStatus } from 'generated/graphql/schema';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { transformObject } from './transformer';
 
@@ -49,10 +39,9 @@ describe('transformObject', () => {
 
     it('should transform an object with nested objects correctly', () => {
         const input = {
-            eventDate: {
-                type: LaboratoryReportEventDateType.DateOfReport,
-                from: '2023-05-01',
-                to: '2023-05-31'
+            eventId: {
+                id: 'test1',
+                investigationEventType: InvestigationEventIdType.CityCountyCaseId
             }
         };
 
@@ -60,10 +49,9 @@ describe('transformObject', () => {
 
         expect(result).toEqual(
             expect.objectContaining({
-                eventDate: {
-                    type: LaboratoryReportEventDateType.DateOfReport,
-                    from: '2023-05-01',
-                    to: '2023-05-31'
+                eventId: {
+                    id: 'test1',
+                    investigationEventType: InvestigationEventIdType.CityCountyCaseId
                 }
             })
         );
