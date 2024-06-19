@@ -68,7 +68,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody data-testid="group-questions-tbody">
                     {fields.map((item: Batch, index: number) => (
                         <tr className={styles.row} key={index}>
                             <td className={styles.number}>
@@ -124,6 +124,7 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                                         <Input
                                             type="number"
                                             name={name}
+                                            data-testid="group-questions-width"
                                             min={0}
                                             max={100}
                                             defaultValue={value?.toString() ?? ''}
@@ -141,7 +142,9 @@ export const RepeatingBlock = ({ questions, valid, setValid }: Props) => {
                     <tr>
                         <td className={`${!valid ? '' : styles.valid}`}>
                             <p>Columns must total 100%:</p>
-                            <div className={styles.currentPercent}>{total}%</div>
+                            <div data-testid="columnMustTotal" className={styles.currentPercent}>
+                                {total}%
+                            </div>
                         </td>
                     </tr>
                 </tfoot>
