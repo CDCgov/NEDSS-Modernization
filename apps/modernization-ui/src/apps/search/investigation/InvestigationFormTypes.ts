@@ -1,10 +1,5 @@
 import { Selectable } from 'components/FormInputs/SelectInput';
-import {
-    EventId,
-    InvestigationEventDateSearch,
-    InvestigationStatus,
-    ProviderFacilitySearch
-} from 'generated/graphql/schema';
+import { EventId, InvestigationStatus, ProviderFacilitySearch } from 'generated/graphql/schema';
 
 export type InvestigationFilterEntry = {
     createdBy?: Selectable;
