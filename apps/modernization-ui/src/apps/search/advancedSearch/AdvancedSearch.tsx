@@ -341,6 +341,12 @@ export const AdvancedSearch = () => {
         handleSubmit(externalize(data), SEARCH_TYPE.PERSON);
     };
 
+    const { showSuccess } = useAlert();
+
+    useEffect(() => {
+        showSuccess({ message: ' good job' });
+    });
+
     return (
         <SearchCriteriaProvider>
             <div
