@@ -1,4 +1,4 @@
-Feature: Page Builder - User can verify manage page here.
+Feature: Page Builder - User can verify grouping and ungrouping questions here.
 
   Background:
     Given I am logged in as "superuser" and password "@test"
