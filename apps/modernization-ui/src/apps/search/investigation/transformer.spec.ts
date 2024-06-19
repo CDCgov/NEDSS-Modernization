@@ -59,14 +59,14 @@ describe('transformObject', () => {
 
     it('should include investigation status when present', () => {
         const criteria = {
-            investigationStatus: ['OPEN' as InvestigationStatus]
+            investigationStatus: 'OPEN' as InvestigationStatus
         };
 
         const result = transformObject(criteria);
 
         expect(result).toEqual(
             expect.objectContaining({
-                investigationStatus: expect.arrayContaining([InvestigationStatus.Open])
+                investigationStatus: InvestigationStatus.Open
             })
         );
     });
