@@ -32,6 +32,12 @@ type Identification = {
     identificationType?: Selectable;
 };
 
-type PatientCriteria = BasicInformation & Address & Contact & RaceEthnicity & Identification;
+type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification;
 
-export type { PatientCriteria };
+export type { PatientCriteriaEntry };
+
+const initial: PatientCriteriaEntry = {
+    status: [{ name: 'Active', label: 'Active', value: 'active' }]
+};
+
+export { initial };

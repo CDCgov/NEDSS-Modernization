@@ -2,19 +2,30 @@ import { useForm } from 'react-hook-form';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { SearchLayout } from 'apps/search/layout';
 import { useSearch } from 'apps/search';
+import { usePatientSearch } from './usePatientSearch';
+import { PatientCriteriaEntry, initial } from './criteria';
+import { useEffect } from 'react';
 
 const PatientSearch = () => {
-    //  this will be typed as the Patient Search Criteria
-    const { handleSubmit, reset: resetForm } = useForm({ mode: 'onBlur' });
+    const { handleSubmit, reset: resetForm } = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
+        defaultValues: initial,
+        mode: 'onBlur'
+    });
 
     const { reset: resetSearch, complete, search, results } = useSearch();
 
-    const handleSearch = () => {
-        //  initiate search
-        search();
+    const patientSearch = usePatientSearch();
 
-        //  simulate a wait time
-        setTimeout(() => complete([], 0), 500);
+    useEffect(() => {
+        if (patientSearch.status === 'loading') {
+            search();
+        } else if (patientSearch.status === 'completed') {
+            complete([], patientSearch.results?.total || 0);
+        }
+    }, [patientSearch.status, patientSearch.results?.total || 0, search, complete]);
+
+    const handleSearch = (criteria: PatientCriteriaEntry) => {
+        patientSearch.search(criteria);
     };
 
     const handleClear = () => {
@@ -38,7 +49,6 @@ const PatientSearch = () => {
             resultsAsList={() => <div>result list</div>}
             resultsAsTable={() => <div>result table</div>}
             onSearch={() => {
-                handleSearch();
                 handleSubmit(handleSearch);
             }}
             onClear={handleClear}

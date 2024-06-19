@@ -1,9 +1,9 @@
 import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/graphql/schema';
 
 import { asValue, asValues } from 'options/selectable';
-import { PatientCriteria } from './criteria';
+import { PatientCriteriaEntry } from './criteria';
 
-const resolveIdentification = (data: PatientCriteria): IdentificationCriteria | undefined =>
+const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>
     data.identification && data.identificationType
         ? {
               identificationNumber: data.identification,
@@ -11,7 +11,7 @@ const resolveIdentification = (data: PatientCriteria): IdentificationCriteria | 
           }
         : undefined;
 
-export const transform = (data: PatientCriteria): PersonFilter => {
+export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     return {
         ...data,
         recordStatus: asValues(data.status) as RecordStatus[],
