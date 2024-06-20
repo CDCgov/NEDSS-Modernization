@@ -24,7 +24,7 @@ type AlertProviderProps = {
     children: ReactNode;
 };
 
-function AlertProvider({ duration = 5000 * 5000, children }: AlertProviderProps) {
+function AlertProvider({ duration = 5000, children }: AlertProviderProps) {
     const [alert, setAlert] = useState<Alert | null>(null);
     const clear = () => setAlert(null);
 
