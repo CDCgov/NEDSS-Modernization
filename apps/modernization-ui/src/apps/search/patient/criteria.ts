@@ -1,0 +1,37 @@
+import { Selectable } from 'options';
+
+type BasicInformation = {
+    lastName?: string;
+    firstName?: string;
+    dateOfBirth?: string;
+    gender?: Selectable;
+    id?: string;
+    status: Selectable[];
+    disableSoundex?: boolean;
+};
+
+type Address = {
+    address?: string;
+    city?: string;
+    state?: Selectable;
+    zip?: number;
+};
+
+type Contact = {
+    phoneNumber?: string;
+    email?: string;
+};
+
+type RaceEthnicity = {
+    race?: Selectable;
+    ethnicity?: Selectable;
+};
+
+type Identification = {
+    identification?: string;
+    identificationType?: Selectable;
+};
+
+type PatientCriteria = BasicInformation & Address & Contact & RaceEthnicity & Identification;
+
+export type { PatientCriteria };
