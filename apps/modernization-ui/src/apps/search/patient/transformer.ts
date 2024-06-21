@@ -12,14 +12,22 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
         : undefined;
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
+    const { disableSoundex, lastName, firstName, id, address, city, phoneNumber, email, ...remaining } = data;
     return {
-        ...data,
-        recordStatus: asValues(data.status) as RecordStatus[],
-        gender: asValue(data.gender),
-        state: asValue(data.state),
-        zip: data.zip ? String(data.zip) : undefined,
-        race: asValue(data.race),
-        ethnicity: asValue(data.ethnicity),
-        identification: resolveIdentification(data)
+        disableSoundex,
+        lastName,
+        firstName,
+        id,
+        address,
+        city,
+        phoneNumber,
+        email,
+        recordStatus: asValues(remaining.status) as RecordStatus[],
+        gender: asValue(remaining.gender),
+        state: asValue(remaining.state),
+        zip: remaining.zip ? String(remaining.zip) : undefined,
+        race: asValue(remaining.race),
+        ethnicity: asValue(remaining.ethnicity),
+        identification: resolveIdentification(remaining)
     };
 };

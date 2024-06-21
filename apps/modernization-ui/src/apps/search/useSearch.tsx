@@ -75,13 +75,18 @@ const SearchProvider = ({ sorting, paging, children }: Props) => {
 const InternalSearchProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initial);
 
+    const complete = (terms: Term[], total: number) => dispatch({ type: 'complete', terms, total });
+
+    const reset = () => dispatch({ type: 'reset' });
+    const search = () => dispatch({ type: 'search' });
+
     const value = {
         status: state.status,
         view: state.view,
         results: state.status === 'completed' ? state.results : emptyResults,
-        reset: () => dispatch({ type: 'reset' }),
-        search: () => dispatch({ type: 'search' }),
-        complete: (terms: Term[], total: number) => dispatch({ type: 'complete', terms, total })
+        reset,
+        search,
+        complete
     };
 
     return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;

@@ -37,7 +37,7 @@ type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity
 export type { PatientCriteriaEntry };
 
 const initial: PatientCriteriaEntry = {
-    status: [{ name: 'Active', label: 'Active', value: 'active' }]
+    status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }]
 };
 
 export { initial };

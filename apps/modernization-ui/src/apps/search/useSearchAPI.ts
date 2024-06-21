@@ -1,8 +1,9 @@
 import { useEffect, useReducer } from 'react';
 import { Page, Status as PageStatus, usePage } from 'page';
 import { Sorting, useSorting } from 'sorting';
+import { useSearch } from './useSearch';
 
-type PagedResult<R> = {
+type Results<R> = {
     total: number;
     page?: number;
     content: R[];
@@ -14,7 +15,7 @@ type Requesting<C> = { status: 'requesting'; criteria: C };
 
 type Searching<A> = { status: 'searching'; parameters: A };
 
-type Completed<A, R> = { status: 'completed'; found: PagedResult<R>; parameters: A };
+type Completed<A, R> = { status: 'completed'; found: Results<R>; parameters: A };
 
 type Failed = { status: 'error'; reason: string };
 
@@ -25,12 +26,10 @@ type Action<C, A, R> =
     | { type: 'refresh' }
     | { type: 'request'; criteria: C }
     | { type: 'search'; parameters: A }
-    | { type: 'complete'; found: PagedResult<R>; parameters: A }
+    | { type: 'complete'; found: Results<R>; parameters: A }
     | { type: 'error'; reason: string };
 
 const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): State<C, A, R> => {
-    console.log('[current]', current, '[action]', action);
-
     if (action.type === 'request') {
         return { status: 'requesting', criteria: action.criteria };
     } else if (action.type === 'search') {
@@ -47,18 +46,18 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
     return current;
 };
 
-type ResultHandler<R> = (result: PagedResult<R>) => void;
+type ResultHandler<R> = (result: Results<R>) => void;
 
 const orElseEmptyResult =
     <R>(handler: ResultHandler<R>) =>
-    (result?: PagedResult<R>) => {
+    (result?: Results<R>) => {
         const ensured = result ?? { total: 0, content: [] };
         handler(ensured);
     };
 
 type Interaction<C, R> = {
     status: 'waiting' | 'loading' | 'completed' | 'error';
-    results?: PagedResult<R>;
+    results?: Results<R>;
     error?: string;
     reset: () => void;
     search: (criteria: C) => void;
@@ -66,17 +65,31 @@ type Interaction<C, R> = {
 
 type Settings<C, A, R> = {
     transformer: (criteria: C) => A;
-    resolver: (parameters: A, page: Page, sorting: Sorting) => Promise<PagedResult<R> | undefined>;
+    resolver: (parameters: A, page: Page, sorting: Sorting) => Promise<Results<R> | undefined>;
 };
 
 const useSearchAPI = <C, A, R>({ transformer, resolver }: Settings<C, A, R>): Interaction<C, R> => {
     const { page, ready } = usePage();
     const { sorting } = useSorting();
 
+    const searchResults = useSearch();
+
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
 
-    const handleComplete = (page: Page, parameters: A) => (result: PagedResult<R>) => {
-        const number = page.current - 1;
+    const isLoading = state.status === 'searching' || state.status === 'requesting';
+
+    useEffect(() => {
+        if (isLoading) {
+            searchResults.search();
+        } else if (state.status === 'completed') {
+            searchResults.complete([], state.found.total);
+        } else if (state.status === 'waiting') {
+            searchResults.reset();
+        }
+    }, [state.status, isLoading]);
+
+    const handleComplete = (page: Page, parameters: A) => (result: Results<R>) => {
+        const number = page.current + 1;
         dispatch({ type: 'complete', found: { ...result, page: number }, parameters });
         ready(result.total, number);
     };
@@ -86,8 +99,6 @@ const useSearchAPI = <C, A, R>({ transformer, resolver }: Settings<C, A, R>): In
     };
 
     useEffect(() => {
-        console.log('change', state);
-
         if (state.status === 'requesting') {
             const parameters = transformer(state.criteria);
             dispatch({ type: 'search', parameters });
@@ -105,8 +116,6 @@ const useSearchAPI = <C, A, R>({ transformer, resolver }: Settings<C, A, R>): In
         }
     }, [page.status, dispatch]);
 
-    const isLoading = state.status === 'searching' || state.status === 'requesting';
-
     const reset = () => dispatch({ type: 'reset' });
     const search = (criteria: C) => dispatch({ type: 'request', criteria });
 
@@ -119,5 +128,5 @@ const useSearchAPI = <C, A, R>({ transformer, resolver }: Settings<C, A, R>): In
     };
 };
 
-export type { Settings, PagedResult, Interaction };
+export type { Settings, Results, Interaction };
 export { useSearchAPI };

@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { PatientSearchResult } from 'generated/graphql/schema';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { SearchLayout } from 'apps/search/layout';
+import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { useSearch } from 'apps/search';
 import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
-import { useEffect } from 'react';
+import { PatientSearchResultListItem } from './result/list';
 
 const PatientSearch = () => {
     const { handleSubmit, reset: resetForm } = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -12,26 +14,17 @@ const PatientSearch = () => {
         mode: 'onBlur'
     });
 
-    const { reset: resetSearch, complete, search, results } = useSearch();
+    const {
+        results: { total }
+    } = useSearch();
 
-    const patientSearch = usePatientSearch();
+    const { status, search, reset, results } = usePatientSearch();
 
     useEffect(() => {
-        if (patientSearch.status === 'loading') {
-            search();
-        } else if (patientSearch.status === 'completed') {
-            complete([], patientSearch.results?.total || 0);
+        if (status === 'waiting') {
+            resetForm();
         }
-    }, [patientSearch.status, patientSearch.results?.total || 0, search, complete]);
-
-    const handleSearch = (criteria: PatientCriteriaEntry) => {
-        patientSearch.search(criteria);
-    };
-
-    const handleClear = () => {
-        resetForm();
-        resetSearch();
-    };
+    }, [resetForm, status]);
 
     return (
         <SearchLayout
@@ -42,16 +35,19 @@ const PatientSearch = () => {
                         { label: 'Add new patient', action: () => {} },
                         { label: 'Add new lab report', action: () => {} }
                     ]}
-                    disabled={results.total === 0}
+                    disabled={total === 0}
                 />
             )}
             criteria={() => <div>criteria</div>}
-            resultsAsList={() => <div>result list</div>}
+            resultsAsList={() => (
+                <SearchResultList<PatientSearchResult>
+                    results={results?.content ?? []}
+                    render={(result) => <PatientSearchResultListItem result={result} />}
+                />
+            )}
             resultsAsTable={() => <div>result table</div>}
-            onSearch={() => {
-                handleSubmit(handleSearch);
-            }}
-            onClear={handleClear}
+            onSearch={handleSubmit(search)}
+            onClear={reset}
         />
     );
 };

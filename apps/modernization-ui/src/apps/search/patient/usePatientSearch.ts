@@ -12,11 +12,16 @@ const usePatientSearch = (): Interaction<PatientCriteriaEntry, PatientSearchResu
             variables: {
                 filter: parameters,
                 page: {
-                    pageNumber: page.current - 1,
+                    pageNumber: page.current,
                     pageSize: page.pageSize
                 }
             }
-        }).then((response) => response.data?.findPatientsByFilter);
+        }).then((response) => {
+            if (response.error) {
+                throw new Error(response.error.message);
+            }
+            return response.data?.findPatientsByFilter;
+        });
 
     const api = useSearchAPI({ transformer: transform, resolver });
 
