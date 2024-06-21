@@ -25,6 +25,7 @@ type DatePickerProps = {
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
 const isNumber = /^[0-9/]$/;
+let removedSlash = false;
 
 const matches = (value: string) => inputFormat.test(value);
 
@@ -148,17 +149,27 @@ const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         inputValue = `${(event.target as HTMLInputElement).value}`;
         // check if key is a number or "/"
         if (isNumber.test(key)) {
-            inputValue = `${(event.target as HTMLInputElement).value}${key}`;
-            if (
-                inputValue &&
-                (inputValue.length === 2 ||
-                    (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
-            ) {
-                inputValue += '/';
+            if (removedSlash) {
+                inputValue += `/${key}`;
                 (event.target as HTMLInputElement).value = inputValue;
-                // This prevent default ensures the manually entered key is not re-entered.
+                removedSlash = false;
                 event.preventDefault();
+            } else {
+                inputValue = `${(event.target as HTMLInputElement).value}${key}`;
+                if (
+                    inputValue &&
+                    (inputValue.length === 2 ||
+                        (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
+                ) {
+                    inputValue += '/';
+                    (event.target as HTMLInputElement).value = inputValue;
+                    // This prevent default ensures the manually entered key is not re-entered.
+                    event.preventDefault();
+                }
             }
+        }
+        if (key === 'Backspace') {
+            removedSlash = inputValue.endsWith('/');
         }
     }
 };
