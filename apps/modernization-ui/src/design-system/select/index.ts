@@ -1,2 +1,2 @@
-export * from './single/SingleSelect'
-export * from './multi/MultiSelect'
+export * from './single/SingleSelect';
+export * from './multi/MultiSelect';
