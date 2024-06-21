@@ -8,8 +8,8 @@ type MultiSelectProps = {
     name: string;
     label: string;
     options: Selectable[];
-    value: Selectable[];
-    onChange: (value: Selectable[]) => void;
+    value?: Selectable[];
+    onChange?: (value: Selectable[]) => void;
     orientation?: Orientation;
     error?: string;
     required?: boolean;
