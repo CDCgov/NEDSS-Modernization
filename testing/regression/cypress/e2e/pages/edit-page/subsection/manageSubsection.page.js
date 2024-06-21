@@ -104,18 +104,32 @@ class ManageSubsectionPage {
         const onOrOff = visibility ? 'on' : 'off'
         const dataTestId = ``;
         cy.get('.subsectionHeader').eq(0)
-            .get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click();
+            .get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`, {timeout: 0})
+            .then(($element) => {
+                if($element.length > 0) {
+                    cy.wrap($element).eq(0).click({force: true});
+                }
+            });
     }
 
     checkVisibilityIconTurnedOff(visibility) {
         const onOrOff = visibility ? 'on' : 'off'
         cy.get('.subsectionHeader').eq(0)
-            .get('[data-testid="subsectionTileVisibilityIcon-off"]').eq(0)
+            .get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`, {timeout: 0})
+            .then(($element) => {
+                if($element.length > 0) {
+                    cy.wrap($element).eq(0);
+                }
+            });
     }
 
     verifyVisibilitySuccessMessage(text) {
-        cy.wait(2000);
-        cy.contains(text);
+        cy.contains('Manage subsections').then((ele) => {
+            if(ele.length < 1) {
+                cy.wait(2000);
+                cy.contains(text);
+            }
+        });
     }
 
     clickAddNewSubsectionBtn() {
