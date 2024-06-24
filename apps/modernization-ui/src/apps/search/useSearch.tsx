@@ -64,8 +64,8 @@ type Props = {
 
 const SearchProvider = ({ sorting, paging, children }: Props) => {
     return (
-        <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? true : sorting.appendToUrl}>
-            <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? true : paging.appendToUrl}>
+        <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
+            <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
                 <InternalSearchProvider>{children}</InternalSearchProvider>
             </PageProvider>
         </SortingProvider>
@@ -79,11 +79,12 @@ const InternalSearchProvider = ({ children }: { children: ReactNode }) => {
 
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
+    const results = state.status === 'completed' ? state.results : emptyResults;
 
     const value = {
         status: state.status,
         view: state.view,
-        results: state.status === 'completed' ? state.results : emptyResults,
+        results,
         reset,
         search,
         complete

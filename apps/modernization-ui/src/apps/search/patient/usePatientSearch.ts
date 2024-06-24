@@ -1,31 +1,31 @@
 import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } from 'generated/graphql/schema';
-import { Page } from 'page';
+import { Interaction, PageRequest, useSearchAPI } from '../useSearchAPI';
 import { transform } from './transformer';
 import { PatientCriteriaEntry } from './criteria';
-import { Interaction, useSearchAPI } from '../useSearchAPI';
+import { patientTermsResolver } from './patientTermsResovler';
 
 const usePatientSearch = (): Interaction<PatientCriteriaEntry, PatientSearchResult> => {
     const [fetch] = useFindPatientsByFilterLazyQuery();
 
-    const resolver = (parameters: PersonFilter, page: Page) =>
+    const resultResolver = (parameters: PersonFilter, page: PageRequest) =>
         fetch({
             variables: {
                 filter: parameters,
                 page: {
-                    pageNumber: page.current,
-                    pageSize: page.pageSize
+                    pageNumber: page.number - 1,
+                    pageSize: page.size
                 }
             }
         }).then((response) => {
             if (response.error) {
                 throw new Error(response.error.message);
             }
-            return response.data?.findPatientsByFilter;
+            return response.data?.findPatientsByFilter
+                ? { ...response.data.findPatientsByFilter, page: page.number }
+                : undefined;
         });
 
-    const api = useSearchAPI({ transformer: transform, resolver });
-
-    return api;
+    return useSearchAPI({ transformer: transform, resultResolver, termResolver: patientTermsResolver });
 };
 
 export { usePatientSearch };

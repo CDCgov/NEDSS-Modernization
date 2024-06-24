@@ -1,21 +1,25 @@
 import { useEffect, useReducer } from 'react';
-import { Page, Status as PageStatus, usePage } from 'page';
+import { usePage, Status as PageStatus } from 'page';
 import { Sorting, useSorting } from 'sorting';
-import { useSearch } from './useSearch';
+import { Term, useSearch } from './useSearch';
 
-type Results<R> = {
+type Resolved<R> = {
     total: number;
-    page?: number;
+    page: number;
     content: R[];
+};
+
+type Results<R> = Resolved<R> & {
+    terms: Term[];
 };
 
 type Waiting = { status: 'waiting' };
 
 type Requesting<C> = { status: 'requesting'; criteria: C };
 
-type Searching<A> = { status: 'searching'; parameters: A };
+type Searching<A> = { status: 'searching'; parameters: A; terms: Term[] };
 
-type Completed<A, R> = { status: 'completed'; found: Results<R>; parameters: A };
+type Completed<A, R> = { status: 'completed'; parameters: A; results: Results<R> };
 
 type Failed = { status: 'error'; reason: string };
 
@@ -25,19 +29,19 @@ type Action<C, A, R> =
     | { type: 'reset' }
     | { type: 'refresh' }
     | { type: 'request'; criteria: C }
-    | { type: 'search'; parameters: A }
-    | { type: 'complete'; found: Results<R>; parameters: A }
+    | { type: 'search'; parameters: A; terms: Term[] }
+    | { type: 'complete'; found: Resolved<R> }
     | { type: 'error'; reason: string };
 
 const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): State<C, A, R> => {
     if (action.type === 'request') {
         return { status: 'requesting', criteria: action.criteria };
     } else if (action.type === 'search') {
-        return { status: 'searching', parameters: action.parameters };
+        return { status: 'searching', parameters: action.parameters, terms: action.terms };
     } else if (action.type === 'complete' && current.status === 'searching') {
-        return { ...current, status: 'completed', found: action.found };
+        return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
     } else if (action.type === 'refresh' && current.status === 'completed') {
-        return { status: 'searching', parameters: current.parameters };
+        return { status: 'searching', parameters: current.parameters, terms: current.results.terms };
     } else if (action.type === 'error') {
         return { status: 'error', reason: action.reason };
     } else if (action.type === 'reset') {
@@ -46,12 +50,12 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
     return current;
 };
 
-type ResultHandler<R> = (result: Results<R>) => void;
+type ResultHandler<R> = (result: Resolved<R>) => void;
 
 const orElseEmptyResult =
     <R>(handler: ResultHandler<R>) =>
-    (result?: Results<R>) => {
-        const ensured = result ?? { total: 0, content: [] };
+    (result?: Resolved<R>) => {
+        const ensured = result ?? { total: 0, content: [], page: 0 };
         handler(ensured);
     };
 
@@ -63,13 +67,20 @@ type Interaction<C, R> = {
     search: (criteria: C) => void;
 };
 
+type Tranformer<C, A> = (criteria: C) => A;
+
+type PageRequest = { number: number; size: number };
+type ResultResolver<A, R> = (parameters: A, page: PageRequest, sorting: Sorting) => Promise<Resolved<R> | undefined>;
+type TermResolver<C> = (criteria: C) => Term[];
+
 type Settings<C, A, R> = {
-    transformer: (criteria: C) => A;
-    resolver: (parameters: A, page: Page, sorting: Sorting) => Promise<Results<R> | undefined>;
+    transformer: Tranformer<C, A>;
+    resultResolver: ResultResolver<A, R>;
+    termResolver: TermResolver<C>;
 };
 
-const useSearchAPI = <C, A, R>({ transformer, resolver }: Settings<C, A, R>): Interaction<C, R> => {
-    const { page, ready } = usePage();
+const useSearchAPI = <C, A, R>({ transformer, resultResolver, termResolver }: Settings<C, A, R>): Interaction<C, R> => {
+    const { page, ready, firstPage } = usePage();
     const { sorting } = useSorting();
 
     const searchResults = useSearch();
@@ -77,56 +88,63 @@ const useSearchAPI = <C, A, R>({ transformer, resolver }: Settings<C, A, R>): In
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
 
     const isLoading = state.status === 'searching' || state.status === 'requesting';
+    const results = state.status === 'completed' ? state.results : undefined;
+    const error = state.status === 'error' ? state.reason : undefined;
 
     useEffect(() => {
         if (isLoading) {
             searchResults.search();
         } else if (state.status === 'completed') {
-            searchResults.complete([], state.found.total);
+            searchResults.complete(state.results.terms, state.results.total);
         } else if (state.status === 'waiting') {
+            firstPage();
             searchResults.reset();
         }
     }, [state.status, isLoading]);
 
-    const handleComplete = (page: Page, parameters: A) => (result: Results<R>) => {
-        const number = page.current + 1;
-        dispatch({ type: 'complete', found: { ...result, page: number }, parameters });
-        ready(result.total, number);
+    const handleComplete = (page: number) => (resolved: Resolved<R>) => {
+        ready(resolved.total, page);
+        dispatch({ type: 'complete', found: { ...resolved, page } });
     };
 
-    const handleError = (error: Error) => {
-        dispatch({ type: 'error', reason: error.message });
-    };
+    const handleError = (error: Error) => dispatch({ type: 'error', reason: error.message });
 
     useEffect(() => {
         if (state.status === 'requesting') {
             const parameters = transformer(state.criteria);
-            dispatch({ type: 'search', parameters });
-        } else if (state.status === 'searching') {
-            resolver(state.parameters, page, sorting).then(
-                orElseEmptyResult(handleComplete(page, state.parameters)),
-                handleError
-            );
+            const terms = termResolver(state.criteria);
+            dispatch({ type: 'search', parameters, terms });
         }
     }, [state.status]);
 
     useEffect(() => {
-        if (page.status == PageStatus.Requested) {
+        if (state.status === 'searching' && page.status === PageStatus.Requested) {
+            // the criteria has changed invoke search
+            resultResolver(
+                state.parameters,
+                {
+                    number: page.current,
+                    size: page.pageSize
+                },
+                sorting
+            ).then(orElseEmptyResult(handleComplete(page.current + 1)), handleError);
+        } else if (state.status === 'completed' && page.status === PageStatus.Requested) {
+            //  the page changing without the criteria changing
             dispatch({ type: 'refresh' });
         }
-    }, [page.status, dispatch]);
+    }, [state.status, page.status, page.pageSize, page.current]);
 
     const reset = () => dispatch({ type: 'reset' });
     const search = (criteria: C) => dispatch({ type: 'request', criteria });
 
     return {
         status: isLoading ? 'loading' : state.status,
-        results: state.status === 'completed' ? state.found : undefined,
-        error: state.status === 'error' ? state.reason : undefined,
+        results,
+        error,
         reset,
         search
     };
 };
 
-export type { Settings, Results, Interaction };
+export type { Settings, PageRequest, Resolved, Interaction };
 export { useSearchAPI };
