@@ -13,8 +13,9 @@ const SearchResults = ({ children }: Props) => {
 
     return (
         <div className={styles.results}>
-            <SearchResultsHeader view={view} results={results} />
-            <main>{children}</main>
+            <SearchResultsHeader className={styles.header} view={view} results={results} />
+            <main className={styles.content}>{children}</main>
+            <div className={styles.pagingation}></div>
         </div>
     );
 };

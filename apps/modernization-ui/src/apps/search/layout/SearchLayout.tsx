@@ -24,7 +24,7 @@ const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSear
 
     return (
         <section className={styles.search}>
-            <SearchNavigation actions={actions} />
+            <SearchNavigation className={styles.navigation} actions={actions} />
             <div className={styles.content}>
                 <div className={styles.criteria}>
                     <search>{criteria()}</search>
