@@ -95,7 +95,7 @@ const useSearchAPI = <C, A, R>({ transformer, resultResolver, termResolver }: Se
         if (isLoading) {
             searchResults.search();
         } else if (state.status === 'completed') {
-            searchResults.complete(state.results.terms, state.results.total);
+            searchResults.complete(state.results.terms);
         } else if (state.status === 'waiting') {
             firstPage();
             searchResults.reset();

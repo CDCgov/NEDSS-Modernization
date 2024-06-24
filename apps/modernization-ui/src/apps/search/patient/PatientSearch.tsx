@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
+import { usePage } from 'page';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { useSearch } from 'apps/search';
 import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
@@ -15,8 +15,8 @@ const PatientSearch = () => {
     });
 
     const {
-        results: { total }
-    } = useSearch();
+        page: { total }
+    } = usePage();
 
     const { status, search, reset, results } = usePatientSearch();
 

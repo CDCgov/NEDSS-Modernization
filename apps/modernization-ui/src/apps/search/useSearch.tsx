@@ -10,37 +10,30 @@ type Term = {
     value: string | number;
 };
 
-type Results = {
-    terms: Term[];
-    total: number;
-};
-
 type Waiting = { status: 'waiting' };
 
 type Searching = { status: 'searching' };
 
-type Complete = { status: 'completed'; results: Results };
+type Complete = { status: 'completed'; terms: Term[] };
 
-type SearchState = { view: View } & (Waiting | Searching | Complete);
+type State = { view: View } & (Waiting | Searching | Complete);
 
-type SearchInteraction = {
+type Interaction = {
     status: 'waiting' | 'searching' | 'completed';
     view: View;
-    results: Results;
+    terms: Term[];
     reset: () => void;
     search: () => void;
-    complete: (terms: Term[], total: number) => void;
+    complete: (terms: Term[]) => void;
 };
 
-const SearchContext = createContext<SearchInteraction | undefined>(undefined);
+const SearchContext = createContext<Interaction | undefined>(undefined);
 
-type Action = { type: 'reset' } | { type: 'search' } | { type: 'complete'; terms: Term[]; total: number };
+type Action = { type: 'reset' } | { type: 'search' } | { type: 'complete'; terms: Term[] };
 
-const initial: SearchState = { status: 'waiting', view: 'list' };
+const initial: State = { status: 'waiting', view: 'list' };
 
-const emptyResults = { total: 0, terms: [] };
-
-const reducer = (current: SearchState, action: Action): SearchState => {
+const reducer = (current: State, action: Action): State => {
     switch (action.type) {
         case 'reset': {
             return initial;
@@ -49,7 +42,7 @@ const reducer = (current: SearchState, action: Action): SearchState => {
             return { ...current, status: 'searching' };
         }
         case 'complete': {
-            return { ...current, status: 'completed', results: { terms: action.terms, total: action.total } };
+            return { ...current, status: 'completed', terms: action.terms };
         }
         default:
             return current;
@@ -66,25 +59,25 @@ const SearchProvider = ({ sorting, paging, children }: Props) => {
     return (
         <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
             <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                <InternalSearchProvider>{children}</InternalSearchProvider>
+                <Wrapper>{children}</Wrapper>
             </PageProvider>
         </SortingProvider>
     );
 };
 
-const InternalSearchProvider = ({ children }: { children: ReactNode }) => {
+const Wrapper = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initial);
 
-    const complete = (terms: Term[], total: number) => dispatch({ type: 'complete', terms, total });
+    const complete = (terms: Term[]) => dispatch({ type: 'complete', terms });
 
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
-    const results = state.status === 'completed' ? state.results : emptyResults;
+    const terms = state.status === 'completed' ? state.terms : [];
 
     const value = {
         status: state.status,
         view: state.view,
-        results,
+        terms,
         reset,
         search,
         complete
@@ -103,6 +96,6 @@ const useSearch = () => {
     return context;
 };
 
-export type { Term, Results, View };
+export type { Term, View };
 
 export { SearchProvider, useSearch };
