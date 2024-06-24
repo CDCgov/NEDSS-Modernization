@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 import { usePage, Status as PageStatus } from 'page';
 import { Sorting, useSorting } from 'sorting';
-import { Term, useSearch } from './useSearch';
+import { Term, useSearchResultDisplay } from './useSearchResultDisplay';
 
 type Resolved<R> = {
     total: number;
@@ -69,8 +69,8 @@ type Interaction<C, R> = {
 
 type Tranformer<C, A> = (criteria: C) => A;
 
-type PageRequest = { number: number; size: number };
-type ResultResolver<A, R> = (parameters: A, page: PageRequest, sorting: Sorting) => Promise<Resolved<R> | undefined>;
+type ResultRequest<A> = { parameters: A; page: { number: number; size: number }; sorting: Sorting };
+type ResultResolver<A, R> = (request: ResultRequest<A>) => Promise<Resolved<R> | undefined>;
 type TermResolver<C> = (criteria: C) => Term[];
 
 type Settings<C, A, R> = {
@@ -79,11 +79,11 @@ type Settings<C, A, R> = {
     termResolver: TermResolver<C>;
 };
 
-const useSearchAPI = <C, A, R>({ transformer, resultResolver, termResolver }: Settings<C, A, R>): Interaction<C, R> => {
+const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Settings<C, A, R>): Interaction<C, R> => {
     const { page, ready, firstPage } = usePage();
     const { sorting } = useSorting();
 
-    const searchResults = useSearch();
+    const searchResults = useSearchResultDisplay();
 
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
 
@@ -120,14 +120,14 @@ const useSearchAPI = <C, A, R>({ transformer, resultResolver, termResolver }: Se
     useEffect(() => {
         if (state.status === 'searching' && page.status === PageStatus.Requested) {
             // the criteria has changed invoke search
-            resultResolver(
-                state.parameters,
-                {
+            resultResolver({
+                parameters: state.parameters,
+                page: {
                     number: page.current,
                     size: page.pageSize
                 },
                 sorting
-            ).then(orElseEmptyResult(handleComplete(page.current + 1)), handleError);
+            }).then(orElseEmptyResult(handleComplete(page.current + 1)), handleError);
         } else if (state.status === 'completed' && page.status === PageStatus.Requested) {
             //  the page changing without the criteria changing
             dispatch({ type: 'refresh' });
@@ -146,5 +146,5 @@ const useSearchAPI = <C, A, R>({ transformer, resultResolver, termResolver }: Se
     };
 };
 
-export type { Settings, PageRequest, Resolved, Interaction };
-export { useSearchAPI };
+export type { Settings, ResultRequest, Resolved, Interaction };
+export { useSearch };

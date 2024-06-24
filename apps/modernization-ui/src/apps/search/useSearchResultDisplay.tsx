@@ -55,7 +55,7 @@ type Props = {
     paging?: PagingSettings;
 };
 
-const SearchProvider = ({ sorting, paging, children }: Props) => {
+const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
     return (
         <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
             <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
@@ -86,11 +86,11 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
 };
 
-const useSearch = () => {
+const useSearchResultDisplay = () => {
     const context = useContext(SearchContext);
 
     if (context === undefined) {
-        throw new Error('useSearch must be used within a SearchProvider');
+        throw new Error('useSearchResultDisplay must be used within a SearchResultDisplayProvider');
     }
 
     return context;
@@ -98,4 +98,4 @@ const useSearch = () => {
 
 export type { Term, View };
 
-export { SearchProvider, useSearch };
+export { SearchResultDisplayProvider, useSearchResultDisplay };

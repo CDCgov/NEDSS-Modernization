@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Button } from 'components/button';
-import { useSearch } from 'apps/search/useSearch';
+import { useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
 
@@ -20,7 +20,7 @@ type Props = {
 };
 
 const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSearch, onClear }: Props) => {
-    const { view, status } = useSearch();
+    const { view, status } = useSearchResultDisplay();
 
     return (
         <section className={styles.search}>

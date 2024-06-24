@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { Settings, useSearchAPI } from './useSearchAPI';
-import { SearchProvider } from './useSearch';
+import { Settings, useSearch } from './useSearch';
+import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 
 type Criteria = { name: string };
 type APIParameters = { search: string };
@@ -10,7 +10,7 @@ type Result = { label: string; value: string };
 
 const wrapper = ({ children }: { children: ReactNode }) => (
     <MemoryRouter>
-        <SearchProvider>{children}</SearchProvider>
+        <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
     </MemoryRouter>
 );
 
@@ -23,15 +23,12 @@ const setup = (props?: Partial<Settings<Criteria, APIParameters, Result>>) => {
     const resultResolver = props?.resultResolver ?? defaultResultResolver;
     const termResolver = props?.termResolver ?? defaultTermResolver;
 
-    return renderHook(
-        () => useSearchAPI<Criteria, APIParameters, Result>({ transformer, resultResolver, termResolver }),
-        {
-            wrapper
-        }
-    );
+    return renderHook(() => useSearch<Criteria, APIParameters, Result>({ transformer, resultResolver, termResolver }), {
+        wrapper
+    });
 };
 
-describe('when searching using useSearchAPI', () => {
+describe('when searching using useSearch', () => {
     it('should default to waiting without any results', () => {
         const { result } = setup();
 
@@ -107,11 +104,7 @@ describe('when searching using useSearchAPI', () => {
 
         expect(termResolver).toHaveBeenCalledWith({ name: 'name-value' });
 
-        expect(resultResolver).toHaveBeenCalledWith(
-            expect.objectContaining({ search: 'name-value' }),
-            expect.anything(),
-            undefined
-        );
+        expect(resultResolver).toHaveBeenCalledWith(expect.objectContaining({ parameters: { search: 'name-value' } }));
 
         expect(result.current.results?.terms).toEqual(
             expect.arrayContaining([{ source: 'mock-source', name: 'Mocked', value: 'mock' }])

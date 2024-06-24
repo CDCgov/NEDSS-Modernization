@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useSearch } from 'apps/search/useSearch';
+import { useSearchResultDisplay } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
 
 import styles from './search-results.module.scss';
@@ -14,7 +14,7 @@ const SearchResults = ({ children }: Props) => {
         page: { total }
     } = usePage();
 
-    const { view, terms } = useSearch();
+    const { view, terms } = useSearchResultDisplay();
 
     return (
         <div className={styles.results}>
