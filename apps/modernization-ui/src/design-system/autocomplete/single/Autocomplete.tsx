@@ -4,28 +4,32 @@ import { Selectable } from 'options/selectable';
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import 'components/FormInputs/Input.scss';
-import { EntryWrapper } from 'components/Entry';
+import { EntryWrapper, Orientation } from 'components/Entry';
 import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
 
-type Props = {
-    id: string;
-    label: string;
-    className?: string;
-    placeholder?: string;
-    value?: Selectable;
-    onChange?: (value?: string) => void;
-    error?: any;
-    required?: any;
-    onBlur?: any;
-    resolver: AutocompleteOptionsResolver;
+const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
+    return <>{suggestion.label}</>;
 };
 
-const Autocomplete: React.FC<Props> = ({
+type AutocompleteSingleProps = {
+    id: string;
+    label: string;
+    value?: Selectable;
+    onChange?: (value?: Selectable) => void;
+    orientation?: Orientation;
+    error?: string;
+    required?: boolean;
+
+    onBlur: any;
+} & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
+
+const Autocomplete: React.FC<AutocompleteSingleProps & { resolver: AutocompleteOptionsResolver }> = ({
     id,
     label,
     placeholder,
     value,
     onChange,
+    orientation = 'vertical',
     error,
     required,
     onBlur,
@@ -33,9 +37,6 @@ const Autocomplete: React.FC<Props> = ({
 }) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
-        return <>{suggestion.label}</>;
-    };
 
     const [entered, setEntered] = useState(value?.name);
 
@@ -67,7 +68,7 @@ const Autocomplete: React.FC<Props> = ({
         reset(option.name);
         setEntered(option.name ?? '');
         if (onChange) {
-            onChange(option.value ?? '');
+            onChange(option);
             onBlur?.();
         }
     };
@@ -79,25 +80,19 @@ const Autocomplete: React.FC<Props> = ({
 
     return (
         <div className={classNames('input', { 'input--error': error })}>
-            <EntryWrapper
-                orientation={'vertical'}
-                label={label ?? ''}
-                htmlFor={id ?? ''}
-                required={required}
-                error={error}>
+            <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
                 <TextInput
                     inputRef={inputRef}
                     className="usa-input"
                     id={id}
-                    data-testid={id}
                     validationStatus={error ? 'error' : undefined}
                     aria-describedby={error ? `${error}-message` : undefined}
                     inputMode="text"
                     placeholder={placeholder}
                     type="text"
                     autoComplete="off"
-                    value={entered ?? ''}
-                    name={id ?? ''}
+                    value={entered}
+                    name={id}
                     onChange={(event) => setEntered(event.target.value)}
                     onBlur={onBlur}
                     onKeyDown={handleKeyDown}
@@ -118,3 +113,5 @@ const Autocomplete: React.FC<Props> = ({
 };
 
 export { Autocomplete };
+
+export type { AutocompleteSingleProps };
