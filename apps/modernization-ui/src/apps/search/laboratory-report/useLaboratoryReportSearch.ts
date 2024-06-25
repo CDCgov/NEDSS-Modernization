@@ -2,7 +2,7 @@ import { LabReport, LabReportFilter, useFindLabReportsByFilterLazyQuery } from '
 import { Interaction, ResultRequest, useSearch } from 'apps/search';
 import { LabReportFilterEntry } from './labReportFormTypes';
 import { transformObject } from './transformer';
-import { labReportTermsResolver } from './labReportTermsResolver';
+import { laboratoryReportTermsResolver } from './laboratoryReportTermsResolver';
 
 const useLaboratoryReportSearch = (): Interaction<LabReportFilterEntry, LabReport> => {
     const [fetch] = useFindLabReportsByFilterLazyQuery();
@@ -26,7 +26,7 @@ const useLaboratoryReportSearch = (): Interaction<LabReportFilterEntry, LabRepor
                 : undefined;
         });
 
-    return useSearch({ transformer: transformObject, resultResolver, termResolver: labReportTermsResolver });
+    return useSearch({ transformer: transformObject, resultResolver, termResolver: laboratoryReportTermsResolver });
 };
 
 export { useLaboratoryReportSearch };

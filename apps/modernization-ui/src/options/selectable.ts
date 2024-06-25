@@ -25,3 +25,9 @@ function asValues(selectables: Selectable[] | undefined): string[] | undefined {
     return selectables && selectables.map((m) => asValue(m));
 }
 export { asValue, asValues };
+
+function asSelectable(value: string, name?: string): Selectable {
+    return { name: name ?? value, label: name ?? value, value };
+}
+
+export { asSelectable };
