@@ -17,31 +17,31 @@ type Waiting = { status: 'waiting' };
 
 type Requesting<C> = { status: 'requesting'; criteria: C };
 
-type Searching<A> = { status: 'searching'; parameters: A; terms: Term[] };
+type Fetching<A> = { status: 'fetching'; parameters: A; terms: Term[] };
 
 type Completed<A, R> = { status: 'completed'; parameters: A; results: Results<R> };
 
 type Failed = { status: 'error'; reason: string };
 
-type State<C, A, R> = Waiting | Requesting<C> | Searching<A> | Completed<A, R> | Failed;
+type State<C, A, R> = Waiting | Requesting<C> | Fetching<A> | Completed<A, R> | Failed;
 
 type Action<C, A, R> =
     | { type: 'reset' }
     | { type: 'refresh' }
     | { type: 'request'; criteria: C }
-    | { type: 'search'; parameters: A; terms: Term[] }
+    | { type: 'fetch'; parameters: A; terms: Term[] }
     | { type: 'complete'; found: Resolved<R> }
     | { type: 'error'; reason: string };
 
 const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): State<C, A, R> => {
     if (action.type === 'request') {
         return { status: 'requesting', criteria: action.criteria };
-    } else if (action.type === 'search') {
-        return { status: 'searching', parameters: action.parameters, terms: action.terms };
-    } else if (action.type === 'complete' && current.status === 'searching') {
+    } else if (action.type === 'fetch') {
+        return { status: 'fetching', parameters: action.parameters, terms: action.terms };
+    } else if (action.type === 'complete' && current.status === 'fetching') {
         return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
     } else if (action.type === 'refresh' && current.status === 'completed') {
-        return { status: 'searching', parameters: current.parameters, terms: current.results.terms };
+        return { status: 'fetching', parameters: current.parameters, terms: current.results.terms };
     } else if (action.type === 'error') {
         return { status: 'error', reason: action.reason };
     } else if (action.type === 'reset') {
@@ -87,7 +87,7 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
 
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
 
-    const isLoading = state.status === 'searching' || state.status === 'requesting';
+    const isLoading = state.status === 'fetching' || state.status === 'requesting';
     const results = state.status === 'completed' ? state.results : undefined;
     const error = state.status === 'error' ? state.reason : undefined;
 
@@ -113,12 +113,12 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
         if (state.status === 'requesting') {
             const parameters = transformer(state.criteria);
             const terms = termResolver(state.criteria);
-            dispatch({ type: 'search', parameters, terms });
+            dispatch({ type: 'fetch', parameters, terms });
         }
     }, [state.status]);
 
     useEffect(() => {
-        if (state.status === 'searching' && page.status === PageStatus.Requested) {
+        if (state.status === 'fetching' && page.status === PageStatus.Requested) {
             // the criteria has changed invoke search
             resultResolver({
                 parameters: state.parameters,
