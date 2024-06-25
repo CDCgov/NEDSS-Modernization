@@ -17,7 +17,6 @@ class RowSelectionPage {
     verifyRowsByDefault() {
         cy.get('#range-toggle').should('have.value', "10");
     }
-    // #1233 - till here
 
     updateRowsSelection(rowsSelection) {
         cy.get('#range-toggle').select(rowsSelection);
@@ -38,7 +37,6 @@ class RowSelectionPage {
     verifyRowsDisplaying() {
         cy.get('tbody tr').its('length').should('be.gte', 50);
     }
-    // #1236 - till here
 }
 
 export const rowSelectionPage = new RowSelectionPage()

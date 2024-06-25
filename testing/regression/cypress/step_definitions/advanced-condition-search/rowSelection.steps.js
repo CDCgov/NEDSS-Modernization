@@ -13,7 +13,6 @@ Then("User views the Search and add conditions modal", () => {
 Then("User should see 10 rows of conditions by default for selection", () => {
     rowSelectionPage.verifyRowsByDefault();
 });
-// #1233 - till here
 
 Then("User clicks in the numeric selection box and selects 50", () => {
     rowSelectionPage.updateRowsSelection("50");
@@ -34,4 +33,4 @@ Then("clicks the Advanced condition search button on Add new page", () => {
 Then("User should see only 50 rows of conditions listed, and for each subsequent list", () => {
     rowSelectionPage.verifyRowsDisplaying(50);
 });
-// #1236 - till here
+

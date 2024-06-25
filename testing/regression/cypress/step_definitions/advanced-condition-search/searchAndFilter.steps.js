@@ -16,8 +16,6 @@ Then("User clicks the magnifying glass button", () => {
 Then("Conditions list will be filtered based on the keywords entered for the Condition column. Only conditions with the matching keywords west nile will be displayed", () => {
     searchAndFilterPage.verifyRowsDisplaying(1);
 });
-// #1227 - till here
-// #1228 - covered above
 
 Then("User click the Cancel button footer", () => {
     searchAndFilterPage.clickCancel();
@@ -26,4 +24,4 @@ Then("User click the Cancel button footer", () => {
 Then("Search and add conditions modal closes and returns the user to Add new page", () => {
     searchAndFilterPage.verifyPageReturned();
 });
-// #1278 - till here
+
