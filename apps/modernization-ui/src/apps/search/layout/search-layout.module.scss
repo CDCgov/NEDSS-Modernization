@@ -1,18 +1,27 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
+$search-height: calc(100vh - 74px);
+$navigation-height: 2.75rem;
 $actions-height: 8rem;
 $criteria-width: 320px;
+$content-height: calc($search-height - $navigation-height - 2rem);
 
 .search {
     padding: 1rem;
-    height: calc(100vh - 74px);
+    height: $search-height;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+
+    .navigation {
+        height: $navigation-height;
+    }
 
     .content {
-        flex-grow: 1;
+        height: $content-height;
         display: flex;
+
         background-color: colors.$base-white;
 
         @include borders.bordered();
@@ -45,10 +54,8 @@ $criteria-width: 320px;
 
         .results {
             flex-grow: 1;
-            overflow-y: scroll;
 
             .loading {
-                height: 100%;
                 margin: auto;
             }
         }

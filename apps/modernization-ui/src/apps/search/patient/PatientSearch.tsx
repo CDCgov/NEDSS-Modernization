@@ -1,26 +1,30 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { PatientSearchResult } from 'generated/graphql/schema';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { SearchLayout } from 'apps/search/layout';
-import { useSearch } from 'apps/search';
+import { usePage } from 'page';
+import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { usePatientSearch } from './usePatientSearch';
+import { PatientCriteriaEntry, initial } from './criteria';
+import { PatientSearchResultListItem } from './result/list';
 
 const PatientSearch = () => {
-    //  this will be typed as the Patient Search Criteria
-    const { handleSubmit, reset: resetForm } = useForm({ mode: 'onBlur' });
+    const { handleSubmit, reset: resetForm } = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
+        defaultValues: initial,
+        mode: 'onBlur'
+    });
 
-    const { reset: resetSearch, complete, search, results } = useSearch();
+    const {
+        page: { total }
+    } = usePage();
 
-    const handleSearch = () => {
-        //  initiate search
-        search();
+    const { status, search, reset, results } = usePatientSearch();
 
-        //  simulate a wait time
-        setTimeout(() => complete([], 0), 500);
-    };
-
-    const handleClear = () => {
-        resetForm();
-        resetSearch();
-    };
+    useEffect(() => {
+        if (status === 'waiting') {
+            resetForm();
+        }
+    }, [resetForm, status]);
 
     return (
         <SearchLayout
@@ -31,17 +35,19 @@ const PatientSearch = () => {
                         { label: 'Add new patient', action: () => {} },
                         { label: 'Add new lab report', action: () => {} }
                     ]}
-                    disabled={results.total === 0}
+                    disabled={total === 0}
                 />
             )}
             criteria={() => <div>criteria</div>}
-            resultsAsList={() => <div>result list</div>}
+            resultsAsList={() => (
+                <SearchResultList<PatientSearchResult>
+                    results={results?.content ?? []}
+                    render={(result) => <PatientSearchResultListItem result={result} />}
+                />
+            )}
             resultsAsTable={() => <div>result table</div>}
-            onSearch={() => {
-                handleSearch();
-                handleSubmit(handleSearch);
-            }}
-            onClear={handleClear}
+            onSearch={handleSubmit(search)}
+            onClear={reset}
         />
     );
 };
