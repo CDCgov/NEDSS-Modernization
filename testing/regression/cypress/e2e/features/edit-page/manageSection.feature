@@ -1,4 +1,4 @@
-Feature: Page Builder - User can verify manage page here.
+Feature: Page Builder - User can verify manage section here.
 
   Background:
     Given I am logged in as "superuser" and password "@test"
