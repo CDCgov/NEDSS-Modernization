@@ -1,0 +1,5 @@
+[
+  {
+    "data": "MSH|^~\\&|dup1^^|LABCORP^34D0655059^CLIA|ALDOH^^|AL^^|202305251105||ORU^R01^ORU_R01|202305221034-A|P^|2.5.1|\nPID|1||28164102670^^^LABCORP Birmingham&01D0301471&CLIA^U^^^^^^~441487312^^^&2.16.840.1.113883.5.1008&NI^PT^^^^^^~234111222^^^SSA&2.16.840.1.113883.4.1&ISO^SS^^^^^^||datateam&&&&^LinkLogic^^^^^^||20230609000000|M||U^^^^^^^^|25 Adams St^^FAIRFIELD^GA^30342^||^^^^^205^2714823^^^^^|||||||||U^^^^^^^^|||||||||||||||||||\nORC|RE||34411541099348||||||||||||||||||Simon-Williamson Cl-Princeton^^^^^^^^^|832 Princeton Ave SW^^Birmingham^GA^30342^|^^^^^205^2068375^^^^^|832 Princeton Ave SW^^Birmingham^GA^30342^||||||||\nOBR|1||34411541099348|^^^test abc^L^^^^|||20230522104500|||||||||1710927256^STEWART&&&&^THULANI^^^^MD^^^^^^NPI^^^^^^^^^^^^|^^^^^205^2068375^^^^^||||||||F||||||||||||||||||||||||||\nOBX|1|CE|13502-0^Lyme disease^LN^^^^^^||10828004^Positive^SNM^||Negative|A^^^^^^^^|||F||||01D0301471^LABCORP Birmingham^CLIA^^^^^^||||20230522104516||||LABCORP Birmingham^^^^^CLIA&&^^^^01D0301471|832 Princeton Ave SW^^^^^|||"
+  }
+]

@@ -1,0 +1,99 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+ext {
+    karateVersion = 'X.X.X'
+}
+
+dependencies {
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation group: 'com.intuit.karate', name: 'karate-junit5', version: '1.4.1'
+    testImplementation group: 'com.intuit.karate', name: 'karate-apache', version: '0.9.6'
+    implementation group: 'com.intuit.karate', name: 'karate-core', version: '1.4.1'
+    testImplementation group: 'com.intuit.karate', name: 'karate-netty', version: '0.9.2'
+    implementation group: 'net.masterthought', name: 'cucumber-reporting', version: '5.7.5'
+    implementation group: 'org.springframework', name: 'spring-jdbc', version: '6.0.6'
+    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '11.2.3.jre17'
+    implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-report-plugin', version: '3.0.0-M5'
+    implementation group: 'org.apache.maven.surefire', name: 'surefire-report-parser', version: '3.0.0-M5'
+    implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '3.0.0-M5'
+    implementation group: 'org.apache.maven.plugins', name: 'maven-compiler-plugin', version: '3.8.1'
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.3.1'
+    implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '3.3.1'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.slf4j:slf4j-simple:1.7.32'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    testImplementation('com.github.javafaker:javafaker:1.0.2') {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+}
+
+
+application {
+    mainClassName = 'com.api.dataingestionautomation.API'
+}
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    systemProperty "connectTimeout", System.properties.getProperty("connectTimeout")
+    systemProperty "readTimeout", System.properties.getProperty("readTimeout")
+    systemProperty "retryCount", System.properties.getProperty("retryCount")
+    systemProperty "retryInterval", System.properties.getProperty("retryInterval")
+    systemProperty "test.apiurl", System.properties.getProperty("test.apiurl")
+    systemProperty "test.wrongapiurl", System.properties.getProperty("test.wrongapiurl")
+    systemProperty "test.checkstatusurl", System.properties.getProperty("test.checkstatusurl")
+    systemProperty "test.checkerrorurl", System.properties.getProperty("test.checkerrorurl")
+    systemProperty "test.registrationapiurl", System.properties.getProperty("test.registrationapiurl")
+    systemProperty "test.tokenurl", System.properties.getProperty("test.tokenurl")
+    systemProperty "test.clientid", System.properties.getProperty("test.clientid")
+    systemProperty "test.clientsecret", System.properties.getProperty("test.clientsecret")
+    systemProperty "test.nbsurl", System.properties.getProperty("test.nbsurl")
+    systemProperty "test.nbsusername", System.properties.getProperty("test.nbsusername")
+    systemProperty "test.nbspwd", System.properties.getProperty("test.nbspwd")
+    systemProperty "dev.apiurl", System.properties.getProperty("dev.apiurl")
+    systemProperty "cucumber.options", System.properties.getProperty("cucumber.options")
+    systemProperty "dev.wrongapiurl", System.properties.getProperty("dev.wrongapiurl")
+    systemProperty "dev.registrationapiurl", System.properties.getProperty("dev.registrationapiurl")
+    systemProperty "dev.tokenurl", System.properties.getProperty("dev.tokenurl")
+    systemProperty "dev.checkstatusurl", System.properties.getProperty("dev.checkstatusurl")
+    systemProperty "dev.checkerrorurl", System.properties.getProperty("dev.checkerrorurl")
+    systemProperty "dev.clientid", System.properties.getProperty("dev.clientid")
+    systemProperty "dev.clientsecret", System.properties.getProperty("dev.clientsecret")
+    systemProperty "dev.nbsurl", System.properties.getProperty("dev.nbsurl")
+    systemProperty "dev.nbsusername", System.properties.getProperty("dev.nbsusername")
+    systemProperty "dev.nbspwd", System.properties.getProperty("dev.nbspwd")
+
+
+    outputs.upToDateWhen { false }
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+repositories {
+    mavenCentral()
+
+}
+
+task karateDebug(type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClassName = 'com.api.dataingestionautomation.API'
+}
