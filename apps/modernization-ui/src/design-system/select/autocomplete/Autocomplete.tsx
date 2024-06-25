@@ -1,11 +1,11 @@
-import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
+import React, { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
 import { Suggestions } from 'suggestion/Suggestions';
 import { Selectable } from 'options/selectable';
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import 'components/FormInputs/Input.scss';
 import { EntryWrapper } from 'components/Entry';
-import { SelectableAutocompletion } from 'options/autocompete';
+import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
 
 type Props = {
     id: string;
@@ -17,10 +17,20 @@ type Props = {
     error?: any;
     required?: any;
     onBlur?: any;
-    useAutocomplete: (params: { initialCriteria?: string }) => SelectableAutocompletion;
+    resolver: AutocompleteOptionsResolver;
 };
 
-const Autocomplete = ({ id, label, placeholder, value, onChange, error, required, onBlur, useAutocomplete }: Props) => {
+const Autocomplete: React.FC<Props> = ({
+    id,
+    label,
+    placeholder,
+    value,
+    onChange,
+    error,
+    required,
+    onBlur,
+    resolver
+}) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
@@ -29,7 +39,7 @@ const Autocomplete = ({ id, label, placeholder, value, onChange, error, required
 
     const [entered, setEntered] = useState(value?.name);
 
-    const { options, suggest, reset } = useAutocomplete({ initialCriteria: entered });
+    const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });
 
     useEffect(() => {
         reset(value?.name);
@@ -58,7 +68,7 @@ const Autocomplete = ({ id, label, placeholder, value, onChange, error, required
         setEntered(option.name ?? '');
         if (onChange) {
             onChange(option.value ?? '');
-            onBlur();
+            onBlur?.();
         }
     };
 
