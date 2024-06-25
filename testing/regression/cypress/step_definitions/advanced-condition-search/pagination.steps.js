@@ -8,7 +8,6 @@ Then("User clicks 2 in the pagination section", () => {
 Then("User should see the subsequent rows listed on the modal for the number of rows selected. Same results when paginating pages 3, 4, and 5", () => {
     paginationPage.verifyPaginationRows([3, 4, 5]);
 });
-// #1238 - till here
 
 Then("User click the Next", () => {
     paginationPage.clickNext();
@@ -33,4 +32,4 @@ Then("User click the Previous link", () => {
 Then("User should see the previous list in sequence in search list", () => {
     paginationPage.verifyRowsDisplaying();
 });
-// #1239 - till here
+
