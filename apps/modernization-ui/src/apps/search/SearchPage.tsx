@@ -1,10 +1,10 @@
-import { SearchProvider } from './useSearch';
 import { Outlet } from 'react-router-dom';
+import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 
 const SearchPage = () => (
-    <SearchProvider>
+    <SearchResultDisplayProvider>
         <Outlet />
-    </SearchProvider>
+    </SearchResultDisplayProvider>
 );
 
 export { SearchPage };

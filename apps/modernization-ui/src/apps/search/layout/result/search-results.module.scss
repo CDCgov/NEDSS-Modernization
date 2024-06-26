@@ -1,3 +1,18 @@
+$header-height: 3.75rem;
+$pagination-height: 4.75rem;
+
 .results {
     height: 100%;
+    .header {
+        height: $header-height;
+    }
+
+    .content {
+        height: calc(100% - #{$header-height} - #{$pagination-height});
+        overflow: scroll;
+    }
+
+    .pagingation {
+        height: $pagination-height;
+    }
 }
