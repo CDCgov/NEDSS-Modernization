@@ -1,5 +1,6 @@
-import { Results, View } from 'apps/search';
+import classNames from 'classnames';
 
+import { Term, View } from 'apps/search';
 import { SearchTerms } from './terms/SearchTerms';
 import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';
 
@@ -7,14 +8,16 @@ import styles from './search-results-header.module.scss';
 
 type Props = {
     view: View;
-    results: Results;
+    className?: string;
+    total: number;
+    terms: Term[];
 };
 
-const SearchResultsHeader = ({ view, results }: Props) => {
+const SearchResultsHeader = ({ className, view, total, terms }: Props) => {
     return (
-        <header className={styles.header}>
-            <SearchTerms results={results} />
-            <SearchResultsOptionsBar view={view} disabled={results.total === 0} />
+        <header className={classNames(styles.header, className)}>
+            <SearchTerms total={total} terms={terms} />
+            <SearchResultsOptionsBar view={view} disabled={total === 0} />
         </header>
     );
 };
