@@ -38,7 +38,7 @@ type General = {
 
 type LabReportFilterEntry = General & ReportCriteria;
 
-export type { LabReportFilterEntry, General, ReportCriteria };
+export type { LabReportFilterEntry, General, ReportCriteria, Identification, EventDate };
 
 const entryMethodTypes: Selectable[] = [asSelectable('ELECTRONIC', 'Electronic'), asSelectable('MANUAL', 'Manual')];
 
