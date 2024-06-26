@@ -1,4 +1,4 @@
-Feature: Page Builder - User can verify manage page here.
+Feature: Page Builder - User can verify manage subsection here.
 
   Background:
     Given I am logged in as "superuser" and password "@test"
@@ -34,8 +34,8 @@ Feature: Page Builder - User can verify manage page here.
     Then verify hide or unhide icon is greyed out if already visible state
     And verify success message "Subsection hidden successfully"
     Then user clicks on hide or unhide icon again
-    Then verify hide or unhide icon is blue active if already invisible state
     And verify success message "Subsection unhidden successfully"
+    Then verify hide or unhide icon is blue active if already invisible state
 
   Scenario: Manage subsection - Add new subsection
     And user clicks on Add new subsection button

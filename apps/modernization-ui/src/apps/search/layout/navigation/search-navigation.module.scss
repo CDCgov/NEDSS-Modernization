@@ -1,9 +1,7 @@
 .navigation {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1rem;
-
-    height: 2.75rem;
+    flex-shrink: 0;
 
     h1 {
         margin: 0;
@@ -11,6 +9,7 @@
 
     button {
         margin: 0;
+        height: 2.75rem;
     }
 
     .tabs {

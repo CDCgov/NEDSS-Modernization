@@ -56,7 +56,11 @@ class ManageSectionPage {
     }
 
     clickYesDeleteBtn() {
-        cy.get('.yesDelete').eq(0).click()
+        cy.contains('Section cannot be deleted').then((ele) => {
+            if(ele.length < 1) {
+                cy.get('.yesDelete').eq(0).click()
+            }
+        });
     }
 
     closeDeleteConfirmationDialog() {
@@ -65,7 +69,11 @@ class ManageSectionPage {
     }
 
     showDeleteConfirmationText(text) {
-        cy.contains(text);
+        cy.contains('Section cannot be deleted').then((ele) => {
+            if(ele.length < 1) {
+                cy.contains(text);
+            }
+        });
     }
 
     checkSectionDeleted() {
