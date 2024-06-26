@@ -40,27 +40,24 @@ type LabReportFilterEntry = General & ReportCriteria;
 
 export type { LabReportFilterEntry, General, ReportCriteria, Identification, EventDate };
 
-const entryMethodTypes: Selectable[] = [asSelectable('ELECTRONIC', 'Electronic'), asSelectable('MANUAL', 'Manual')];
+const ELECTRONIC_ENTRY = asSelectable('ELECTRONIC', 'Electronic');
+
+const entryMethodTypes: Selectable[] = [ELECTRONIC_ENTRY, asSelectable('MANUAL', 'Manual')];
 
 const enteredByTypes: Selectable[] = [asSelectable('EXTERNAL', 'External'), asSelectable('INTERNAL', 'Internal')];
 
-const eventStatusTypes: Selectable[] = [asSelectable('NEW', 'New'), asSelectable('UPDATE', 'Update')];
+const NEW_STATUS = asSelectable('NEW', 'New');
+
+const eventStatusTypes: Selectable[] = [NEW_STATUS, asSelectable('UPDATE', 'Update')];
 
 const identificationTypes: Selectable[] = [
     asSelectable('ACCESSION_NUMBER', 'Assecsion Number'),
     asSelectable('LAB_ID', 'Lab Id')
 ];
 
-//  this should be from the CM_PROCESS_STAGE value set
-const processingStatusTypes: Selectable[] = [
-    asSelectable('AWAITING_INTERVIEW', 'Awaiting Interview'),
-    asSelectable('CLOSED_CASE', 'Closed Case'),
-    asSelectable('FIELD_FOLLOW_UP', 'Field Follow Up'),
-    asSelectable('NO_FOLLOW_UP', 'No Follow Up'),
-    asSelectable('OPEN_CASE', 'Field Follow Up'),
-    asSelectable('SURVEILLANCE_FOLLOW_UP', 'Surveillance Follow Up'),
-    asSelectable('UNASSIGNED', 'Unassigned')
-];
+const UNPROCESSED = asSelectable('UNPROCESSED', 'Unprocessed');
+
+const processingStatusTypes: Selectable[] = [UNPROCESSED, asSelectable('PROCESSED', 'Processed')];
 
 const dateTypes: Selectable[] = [
     asSelectable('DATE_OF_REPORT', 'Date Of Report'),
@@ -76,6 +73,13 @@ const entityTypes: Selectable[] = [
     asSelectable('REPORTING_FACILITY', 'Reporting Facility')
 ];
 
+const initial: LabReportFilterEntry = {
+    enteredBy: enteredByTypes,
+    entryMethods: [ELECTRONIC_ENTRY],
+    eventStatus: [NEW_STATUS],
+    processingStatus: [UNPROCESSED]
+};
+
 export {
     entityTypes,
     identificationTypes,
@@ -83,5 +87,6 @@ export {
     enteredByTypes,
     entryMethodTypes,
     eventStatusTypes,
-    processingStatusTypes
+    processingStatusTypes,
+    initial
 };
