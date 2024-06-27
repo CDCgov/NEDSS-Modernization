@@ -1,49 +1,26 @@
-import { Deceased, Gender, Operator, PersonFilter, Scalars } from 'generated/graphql/schema';
+import { Control } from 'react-hook-form';
+import { PatientCriteriaEntry } from '../criteria';
+import { BasicInformation } from './BasicInformation';
+import { Accordion } from 'components/Accordion/Accordion';
 import { Selectable } from 'options';
-import { useEffect, useState } from 'react';
-import {  } from 'types/patients';
-import { transformObject } from './transformer';
+import styles from './patient-criteria.module.scss';
 
-type Props = {
-    handleSubmission: (data: PersonFilter) => void;
-    personFilter: PersonFilter | undefined;
-    clearAll: () => void;
+type PatientCriteriaFormProps = {
+    control: Control<PatientCriteriaEntry>;
+    handleRecordStatusChange: (
+        value: Selectable[],
+        status: Selectable,
+        isChecked: boolean,
+        onChange: (status: Selectable[]) => void
+    ) => void;
 };
 
-export type PatientCriteriaForm = {
-    address?: string;
-    assigningAuthority?: Selectable;
-    city?: string;
-    country?: Selectable;
-    dateOfBirth?: Date;
-    dateOfBirthOperator?: Operator;
-    deceased?: Selectable;
-    disableSoundex?: boolean;
-    email?: string;
-    ethnicity?: Selectable;
-    firstName?: string;
-    gender?: Selectable;
-    id?: string;
-    identification?: string;
-    identificationType?: Selectable;
-    labTest?: string;
-    lastName?: string;
-    mortalityStatus?: Selectable;
-    phoneNumber?: string;
-    race?: Selectable;
-    recordStatus?: Selectable[] | undefined;
-    state?: Selectable;
-    status?: Selectable;
-    treatmentId?: string;
-    vaccinationId?: string;
-    zip?: number;
-};
-
-export const PatientCriteria = ({ personFilter, handleSubmission, clearAll }: Props) => {
-
-    const onSubmit = (data: PatientCriteriaForm) => {
-        handleSubmission(transformObject(data));
-    };
-    
-    return <h2>PatientCriteria</h2>;
+export const PatientCriteria = ({ control, handleRecordStatusChange }: PatientCriteriaFormProps) => {
+    return (
+        <div className={styles.criteria}>
+            <Accordion title="Basic information" open>
+                <BasicInformation control={control} handleRecordStatusChange={handleRecordStatusChange} />
+            </Accordion>
+        </div>
+    );
 };

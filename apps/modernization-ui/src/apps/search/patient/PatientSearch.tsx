@@ -7,11 +7,18 @@ import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
+import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { Selectable } from 'options';
 
 const PatientSearch = () => {
-    const { handleSubmit, reset: resetForm } = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
+    const {
+        control,
+        trigger,
+        handleSubmit,
+        reset: resetForm
+    } = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues: initial,
-        mode: 'onBlur'
+        mode: 'onChange'
     });
 
     const {
@@ -26,6 +33,27 @@ const PatientSearch = () => {
         }
     }, [resetForm, status]);
 
+    const handleRecordStatusChange = (
+        value: Selectable[],
+        status: Selectable,
+        isChecked: boolean,
+        onChange: (status: Selectable[]) => void
+    ): void => {
+        if (isChecked) {
+            value.push(status);
+            onChange(value);
+        } else {
+            const index = value.findIndex((item) => item.value === status.value);
+            value.splice(index, 1);
+            onChange(value);
+        }
+        validate();
+    };
+
+    const validate = async () => {
+        await trigger('status');
+    };
+
     return (
         <SearchLayout
             actions={() => (
@@ -38,7 +66,7 @@ const PatientSearch = () => {
                     disabled={total === 0}
                 />
             )}
-            criteria={() => <div>criteria</div>}
+            criteria={() => <PatientCriteria control={control} handleRecordStatusChange={handleRecordStatusChange} />}
             resultsAsList={() => (
                 <SearchResultList<PatientSearchResult>
                     results={results?.content ?? []}
