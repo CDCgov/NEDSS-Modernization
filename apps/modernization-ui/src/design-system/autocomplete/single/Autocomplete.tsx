@@ -19,8 +19,7 @@ type AutocompleteSingleProps = {
     orientation?: Orientation;
     error?: string;
     required?: boolean;
-
-    onBlur: any;
+    onBlur?: any;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
 const Autocomplete: React.FC<AutocompleteSingleProps & { resolver: AutocompleteOptionsResolver }> = ({
