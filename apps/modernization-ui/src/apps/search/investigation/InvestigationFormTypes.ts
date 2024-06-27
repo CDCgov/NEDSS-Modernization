@@ -26,7 +26,7 @@ type InvestigationFilterEntry = {
 
     investigationStatus?: Selectable;
     investigator?: Selectable;
-    outbreakNames?: Selectable[];
+    outbreaks?: Selectable[];
     caseStatuses?: Selectable[];
     processingStatuses?: Selectable[];
     notificationStatuses?: Selectable[];

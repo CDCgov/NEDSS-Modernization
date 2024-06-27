@@ -35,7 +35,7 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
         investigationStatus:
             remaining.investigationStatus && (asValue(remaining.investigationStatus) as InvestigationStatus),
         investigatorId: asValue(remaining.investigator),
-        outbreakNames: remaining.outbreakNames && asValues(remaining.outbreakNames),
+        outbreakNames: remaining.outbreaks && asValues(remaining.outbreaks),
         caseStatuses: remaining.caseStatuses && (asValues(remaining.caseStatuses) as CaseStatus[]),
         processingStatuses:
             remaining.processingStatuses && (asValues(remaining.processingStatuses) as ProcessingStatus[]),

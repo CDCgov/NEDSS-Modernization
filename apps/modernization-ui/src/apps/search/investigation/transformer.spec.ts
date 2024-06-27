@@ -187,7 +187,7 @@ describe('transformObject', () => {
 
     it('should tranform with Outbreaks', () => {
         const input: InvestigationFilterEntry = {
-            outbreakNames: [
+            outbreaks: [
                 { name: 'Outbreak One Name', label: 'Outbreak One Label', value: 'outbreak-one' },
                 { name: 'Outbreak Two Name', label: 'Outbreak Two Label', value: 'outbreak-two' }
             ]
