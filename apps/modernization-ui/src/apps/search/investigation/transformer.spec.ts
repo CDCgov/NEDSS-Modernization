@@ -5,8 +5,8 @@ import { transformObject } from './transformer';
 describe('transformObject', () => {
     it('should transform an object with Selectable arrays correctly', () => {
         const input: InvestigationFilterEntry = {
-            createdBy: { value: 'result-values', name: 'result-name' },
-            conditions: [{ value: 'status1', name: 'Status 1' }]
+            createdBy: { value: 'result-values', name: 'result-name', label: 'result-label' },
+            conditions: [{ value: 'status1', name: 'Status 1', label: 'status-label' }]
         };
 
         const expected = {
@@ -87,7 +87,7 @@ describe('transformObject', () => {
 
     it('should include pregnancy status when present', () => {
         const criteria = {
-            pregnancyStatus: { name: 'Unknown', value: 'UNKNOWN' }
+            pregnancyStatus: { name: 'Unknown', label: 'Unknown', value: 'UNKNOWN' }
         };
 
         const result = transformObject(criteria);

@@ -10,13 +10,25 @@ type Selectable = {
 
 export type { Selectable };
 
-type HasValue = { value: string | number; name: string };
-
-function asValue(selectable: HasValue | null | undefined): string | number | null {
-    return selectable?.value || null;
+/* eslint-disable no-redeclare */
+function asValue(selectable: Selectable): string;
+function asValue(selectable: null | undefined): undefined;
+function asValue(selectable: Selectable | null | undefined): undefined;
+function asValue(selectable: Selectable | null | undefined) {
+    return selectable?.value || undefined;
 }
 
-function asValues(selectables: HasValue[] | undefined): (string | number | null)[] | undefined {
+/* eslint-disable no-redeclare */
+function asValues(selectables: undefined): undefined;
+function asValues(selectables: Selectable[]): string[];
+function asValues(selectables: Selectable[] | undefined): string[] | undefined {
     return selectables && selectables.map((m) => asValue(m));
 }
 export { asValue, asValues };
+
+const isEqual =
+    (selectable: Selectable) =>
+    (other: Selectable): boolean =>
+        selectable.value === other.value;
+
+export { isEqual };

@@ -1,0 +1,9 @@
+@use 'styles/colors';
+
+.result {
+    padding: 1rem;
+
+    &:nth-child(even) {
+        background-color: colors.$base-lightest;
+    }
+}

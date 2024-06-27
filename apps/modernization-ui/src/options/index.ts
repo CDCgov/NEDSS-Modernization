@@ -1,1 +1,3 @@
-export type { Selectable } from './selectable';
+export * from './selectable';
+export { findByValue } from './findByValue';
+export * from './useMultiSelection';

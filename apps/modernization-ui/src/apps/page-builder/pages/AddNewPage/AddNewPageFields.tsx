@@ -52,13 +52,13 @@ export const AddNewPageFields = (props: AddNewPageFieldProps) => {
                 )}
             />
             <p>Can't find the condition you're looking for?</p>
-            <ModalToggleButton modalRef={props.conditionLookupModal} outline>
+            <ModalToggleButton modalRef={props.conditionLookupModal} data-testid="advancedConditionSearchBtn" outline>
                 <p>
                     <Icon.Search size={3} />
                     Advanced condition search
                 </p>
             </ModalToggleButton>
-            <ModalToggleButton modalRef={props.createConditionModal} unstyled>
+            <ModalToggleButton modalRef={props.createConditionModal} unstyled data-testid="createNewConditionHereBtn">
                 <p>Create a new condition here</p>
             </ModalToggleButton>
             <Controller
