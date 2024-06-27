@@ -47,10 +47,14 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     asDisplay = (selectable: Selectable) => selectable.name
 }) => {
     const [searchText, setSearchText] = useState('');
+    const [selected, setSelected] = useState<Selectable[]>(value);
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
+        const nextSelection = newValue as Selectable[];
+        setSelected(nextSelection);
+
         if (onChange) {
-            onChange(newValue as Selectable[]);
+            onChange(nextSelection);
         }
     };
 
@@ -68,7 +72,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     id={id}
                     name={name}
                     options={options}
-                    value={value}
+                    value={selected}
                     onChange={handleOnChange}
                     onBlur={onBlur}
                     placeholder={placeholder}
