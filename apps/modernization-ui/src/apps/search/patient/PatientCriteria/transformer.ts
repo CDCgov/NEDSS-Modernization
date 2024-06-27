@@ -5,9 +5,8 @@ import {
     RecordStatus
 } from 'generated/graphql/schema';
 import { PersonFilter } from 'generated/graphql/schema';
-import { PatientCriteriaForm } from './PatientCriteria';
+import { PatientCriteriaForm } from '../patientSearch/PatientCriteria';
 import { asValue, asValues} from 'options/selectable';
-
 export type PatientCriteria = PersonFilter & IdentificationCriteria & PatientMorbidityLabResult;
 
 export const transformObject = (data: PatientCriteriaForm): PatientCriteria => {
