@@ -1,18 +1,75 @@
-import { CaseStatus, InvestigationFilter, PregnancyStatus } from 'generated/graphql/schema';
-import { InvestigationFilterEntry } from './InvestigationFormTypes';
-import { asValue, asValues } from 'options/selectable';
+import {
+    CaseStatus,
+    EventId,
+    InvestigationEventDateSearch,
+    InvestigationEventDateType,
+    InvestigationEventIdType,
+    InvestigationFilter,
+    InvestigationStatus,
+    NotificationStatus,
+    PregnancyStatus,
+    ProcessingStatus,
+    ProviderFacilitySearch,
+    ReportingEntityType
+} from 'generated/graphql/schema';
+import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
+import { Selectable, asValue, asValues } from 'options/selectable';
 
 export const transformObject = (data: InvestigationFilterEntry): InvestigationFilter => {
+    const { reportingFacility, reportingProvider, ...remaining } = data;
+
+    const providerFacilitySearch =
+        resolveReportingProvider(reportingProvider) || resolveReportingFacility(reportingFacility);
+
     return {
-        ...data,
-        createdBy: data.createdBy ? (asValue(data.createdBy) as string) : undefined,
-        jurisdictions: data.jurisdictions ? (asValues(data.jurisdictions) as string[]) : undefined,
-        conditions: data.conditions ? (asValues(data.conditions) as string[]) : undefined,
-        lastUpdatedBy: data.lastUpdatedBy ? (asValue(data.lastUpdatedBy) as string) : undefined,
-        investigatorId: data.investigatorId ? (asValue(data.investigatorId) as string) : undefined,
-        pregnancyStatus: data.pregnancyStatus ? (asValue(data.pregnancyStatus) as PregnancyStatus) : undefined,
-        caseStatuses: data.caseStatuses ? (asValues(data.caseStatuses) as CaseStatus[]) : undefined,
-        outbreakNames: data.outbreakNames ? (asValues(data.outbreakNames) as string[]) : undefined,
-        programAreas: data.programAreas ? (asValues(data.programAreas) as string[]) : undefined
+        conditions: remaining.conditions && asValues(remaining.conditions),
+        programAreas: remaining.programAreas && asValues(remaining.programAreas),
+        jurisdictions: remaining.jurisdictions && asValues(remaining.jurisdictions),
+        pregnancyStatus: remaining.pregnancyStatus && (asValue(remaining.pregnancyStatus) as PregnancyStatus),
+        eventId: resolveEventId(remaining.identification),
+        eventDate: resolveEventDate(remaining.eventDate),
+        createdBy: asValue(remaining.createdBy),
+        lastUpdatedBy: asValue(remaining.updatedBy),
+        providerFacilitySearch,
+
+        investigationStatus:
+            remaining.investigationStatus && (asValue(remaining.investigationStatus) as InvestigationStatus),
+        investigatorId: asValue(remaining.investigator),
+        outbreakNames: remaining.outbreakNames && asValues(remaining.outbreakNames),
+        caseStatuses: remaining.caseStatuses && (asValues(remaining.caseStatuses) as CaseStatus[]),
+        processingStatuses:
+            remaining.processingStatuses && (asValues(remaining.processingStatuses) as ProcessingStatus[]),
+        notificationStatuses:
+            remaining.notificationStatuses && (asValues(remaining.notificationStatuses) as NotificationStatus[])
     };
+};
+
+const resolveProvider =
+    (type: ReportingEntityType) =>
+    (selectable?: Selectable): ProviderFacilitySearch | undefined =>
+        selectable && {
+            id: selectable.value,
+            entityType: type
+        };
+
+const resolveReportingFacility = resolveProvider(ReportingEntityType.Facility);
+const resolveReportingProvider = resolveProvider(ReportingEntityType.Provider);
+
+const resolveEventDate = (date?: EventDate): InvestigationEventDateSearch | undefined => {
+    if (date) {
+        return {
+            type: date.type.value as InvestigationEventDateType,
+            from: date.from,
+            to: date.to
+        };
+    }
+};
+
+const resolveEventId = (identification?: Identification): EventId | undefined => {
+    if (identification) {
+        return {
+            id: identification.value,
+            investigationEventType: identification.type.value as InvestigationEventIdType
+        };
+    }
 };
