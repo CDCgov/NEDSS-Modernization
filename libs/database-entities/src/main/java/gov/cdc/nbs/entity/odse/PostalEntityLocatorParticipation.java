@@ -1,12 +1,16 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.entity.enums.RecordStatus;
-import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
 import gov.cdc.nbs.patient.PatientCommand;
-
-import jakarta.persistence.*;
-
-import java.util.Objects;
+import gov.cdc.nbs.patient.PatientPostalLocatorHistoryListener;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
