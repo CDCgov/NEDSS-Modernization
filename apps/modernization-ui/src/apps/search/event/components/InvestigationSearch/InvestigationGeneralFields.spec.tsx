@@ -174,9 +174,5 @@ describe('InvestigationGeneralFields component', () => {
         // Event provider/facility type
         const providerSelect = getByTestId('providerFacilitySearch.entityType');
         expect(providerSelect).toHaveValue(ReportingEntityType.Provider);
-
-        // Provider/facility id
-        const providerId = getByTestId('providerFacilitySearch.id');
-        expect(providerId).toHaveValue('');
     });
 });

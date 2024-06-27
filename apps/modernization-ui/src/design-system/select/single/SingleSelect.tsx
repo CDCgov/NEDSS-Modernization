@@ -25,7 +25,7 @@ type Props = {
     required?: boolean;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
 
-const SinlgeSelect = ({
+const SingleSelect = ({
     id,
     label,
     options,
@@ -67,4 +67,4 @@ const SinlgeSelect = ({
     );
 };
 
-export { SinlgeSelect };
+export { SingleSelect };
