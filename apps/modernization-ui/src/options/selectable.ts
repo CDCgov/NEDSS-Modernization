@@ -25,3 +25,10 @@ function asValues(selectables: Selectable[] | undefined): string[] | undefined {
     return selectables && selectables.map((m) => asValue(m));
 }
 export { asValue, asValues };
+
+const isEqual =
+    (selectable: Selectable) =>
+    (other: Selectable): boolean =>
+        selectable.value === other.value;
+
+export { isEqual };
