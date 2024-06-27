@@ -1,4 +1,4 @@
-import React, { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
+import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
 import { Suggestions } from 'suggestion/Suggestions';
 import { Selectable } from 'options/selectable';
 import { TextInput } from '@trussworks/react-uswds';
@@ -19,11 +19,10 @@ type AutocompleteSingleProps = {
     orientation?: Orientation;
     error?: string;
     required?: boolean;
-
     onBlur: any;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
-const Autocomplete: React.FC<AutocompleteSingleProps & { resolver: AutocompleteOptionsResolver }> = ({
+const Autocomplete = ({
     id,
     label,
     placeholder,
@@ -34,7 +33,7 @@ const Autocomplete: React.FC<AutocompleteSingleProps & { resolver: AutocompleteO
     required,
     onBlur,
     resolver
-}) => {
+}: AutocompleteSingleProps & { resolver: AutocompleteOptionsResolver }) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
