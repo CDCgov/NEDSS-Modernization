@@ -603,6 +603,8 @@ class PersonTest {
                 .returns("Zip", PostalLocator::getZipCd)
                 .returns("country-code", PostalLocator::getCntryCd)
                 .returns("Census Tract", PostalLocator::getCensusTract)
+                .returns(171L, locator -> locator.audit().changed().changedBy())
+                .returns(Instant.parse("2020-03-04T00:00:00Z"), locator -> locator.audit().changed().changedOn())
         );
 
   }

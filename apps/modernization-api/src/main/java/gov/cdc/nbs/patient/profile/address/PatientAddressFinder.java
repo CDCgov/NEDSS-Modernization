@@ -63,7 +63,7 @@ class PatientAddressFinder {
         )
         .join(this.tables.address()).on(
             this.tables.address().id.eq(this.tables.locators().id.locatorUid),
-            this.tables.address().recordStatusCd.eq(ACTIVE_CODE)
+            this.tables.address().recordStatus.recordStatusCd.eq(ACTIVE_CODE)
         )
         .join(this.tables.type()).on(
             this.tables.type().id.codeSetNm.eq(POSTAL_TYPE_CODE_SET),
