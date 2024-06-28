@@ -83,7 +83,7 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
         <div className={styles.conditionSearch}>
             <div className={styles.header}>
                 <h2>Search and add condition(s)</h2>
-                <Icon.Close size={4} onClick={handleCancel} />
+                <Icon.Close size={4} onClick={handleCancel} data-testid="closeSearchModalBtn" />
             </div>
             <div className={styles.content}>
                 <h3>You can search for existing condition(s) or create a new one.</h3>
@@ -98,7 +98,11 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                             onSearch={(e) => handleSearch(e ?? '')}
                         />
                     )}
-                    <Button aria-label="Create new condition" type="button" onClick={onCreateNew}>
+                    <Button
+                        aria-label="Create new condition"
+                        type="button"
+                        onClick={onCreateNew}
+                        data-testid="createNewConditionBtn">
                         Create new condition
                     </Button>
                 </div>
@@ -112,7 +116,12 @@ const ConditionSearchContent = ({ onConditionSelect, onCancel, onCreateNew }: Pr
                 )}
             </div>
             <div className={styles.footer}>
-                <Button aria-label="Cancel" onClick={handleCancel} type="button" outline>
+                <Button
+                    aria-label="Cancel"
+                    onClick={handleCancel}
+                    type="button"
+                    outline
+                    data-testid="advancedConditionSearchCancelBtn">
                     Cancel
                 </Button>
                 <Button

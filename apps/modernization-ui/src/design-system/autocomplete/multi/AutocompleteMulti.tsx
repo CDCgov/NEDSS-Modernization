@@ -1,15 +1,30 @@
-import React, { FocusEventHandler, useState } from 'react';
-import Select, { MultiValue, components } from 'react-select';
+import { FocusEventHandler, useState } from 'react';
+import { MultiValue, components } from 'react-select';
+import AsyncSelect from 'react-select/async';
 import { EntryWrapper, Orientation } from 'components/Entry';
 import { Selectable, asValue as asSelectableValue } from 'options';
 
-type MultiSelectProps = {
+import { AutocompleteOptionsResolver } from 'options/autocompete';
+
+const CheckedOption = (props: any) => {
+    return (
+        <div>
+            <components.Option {...props}>
+                <input type="checkbox" checked={props.isSelected} readOnly /> <label>{props.label}</label>
+            </components.Option>
+        </div>
+    );
+};
+
+const asSelectableDisplay = (selectable: Selectable) => selectable.name;
+
+type AutocompleteMultiProps = {
     id: string;
     name: string;
     label: string;
     placeholder?: string;
     disabled?: boolean;
-    options: Selectable[];
+    options?: Selectable[];
     value?: Selectable[];
     onBlur?: FocusEventHandler<HTMLInputElement>;
     onChange?: (value: Selectable[]) => void;
@@ -18,34 +33,26 @@ type MultiSelectProps = {
     required?: boolean;
     asValue?: (selectable: Selectable) => string;
     asDisplay?: (selectable: Selectable) => string;
+    resolver: AutocompleteOptionsResolver;
 };
 
-const CheckedOption = (props: any) => {
-    return (
-        <>
-            <components.Option {...props}>
-                <input type="checkbox" checked={props.isSelected} readOnly /> <label>{props.label}</label>
-            </components.Option>
-        </>
-    );
-};
-
-export const MultiSelect: React.FC<MultiSelectProps> = ({
+const AutocompleteMulti = ({
+    label,
     id,
     name,
-    label,
     options,
-    value = [],
     onChange,
     onBlur,
-    orientation = 'vertical',
-    error,
+    value = [],
     required,
+    error,
     placeholder = '- Select -',
+    orientation = 'vertical',
     disabled = false,
     asValue = asSelectableValue,
-    asDisplay = (selectable: Selectable) => selectable.name
-}) => {
+    asDisplay = asSelectableDisplay,
+    resolver
+}: AutocompleteMultiProps) => {
     const [searchText, setSearchText] = useState('');
     const [selected, setSelected] = useState<Selectable[]>(value);
 
@@ -65,16 +72,13 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     };
 
     return (
-        <div>
+        <div className={'multi-select-input'}>
             <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
-                <Select<Selectable, true>
+                <AsyncSelect<Selectable, true>
                     isMulti
                     id={id}
                     name={name}
-                    options={options}
                     value={selected}
-                    onChange={handleOnChange}
-                    onBlur={onBlur}
                     placeholder={placeholder}
                     isDisabled={disabled}
                     classNamePrefix="multi-select"
@@ -83,11 +87,17 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     closeMenuOnScroll={false}
                     inputValue={searchText}
                     onInputChange={handleInputChange}
+                    onChange={handleOnChange}
+                    onBlur={onBlur}
+                    loadOptions={(criteria: string) => resolver(criteria)}
+                    defaultOptions={options}
+                    components={{ Option: CheckedOption }}
                     getOptionValue={asValue}
                     getOptionLabel={asDisplay}
-                    components={{ Option: CheckedOption }}
                 />
             </EntryWrapper>
         </div>
     );
 };
+
+export { AutocompleteMulti };

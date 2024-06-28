@@ -31,3 +31,10 @@ function asSelectable(value: string, name?: string): Selectable {
 }
 
 export { asSelectable };
+
+const isEqual =
+    (selectable: Selectable) =>
+    (other: Selectable): boolean =>
+        selectable.value === other.value;
+
+export { isEqual };
