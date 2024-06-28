@@ -1,25 +1,12 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.Instant;
-import java.util.Collections;
-import java.util.Optional;
-
-import gov.cdc.nbs.questionbank.entity.question.*;
-import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
+import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.TextQuestionEntity;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
+import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.QuestionOid;
@@ -28,8 +15,24 @@ import gov.cdc.nbs.questionbank.question.exception.UpdateQuestionException;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionRepository;
 import gov.cdc.nbs.questionbank.question.request.UpdateQuestion;
+import gov.cdc.nbs.questionbank.question.request.update.UpdateQuestionRequest;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
 import gov.cdc.nbs.questionbank.support.QuestionRequestMother;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionUpdaterTest {
@@ -97,6 +100,8 @@ class QuestionUpdaterTest {
     // when a set status to inactive request is processed
     updater.setStatus(9L, 321L, true);
 
+    verify(histRepository).save(any(WaQuestionHist.class));
+
     // then the question should have inactive status
     WaQuestion question = captor.getValue();
     assertNotNull(question);
@@ -137,7 +142,7 @@ class QuestionUpdaterTest {
         true,
         "PH_ACCEPTAPPLICATION",
         null))
-            .thenReturn(new QuestionOid("oid", "oid system"));
+        .thenReturn(new QuestionOid("oid", "oid system"));
 
 
     // and an existing question
@@ -181,7 +186,7 @@ class QuestionUpdaterTest {
         true,
         "PH_ACCEPTAPPLICATION",
         null))
-            .thenReturn(new QuestionOid("oid", "oid system"));
+        .thenReturn(new QuestionOid("oid", "oid system"));
 
     DateQuestionEntity question = QuestionEntityMother.dateQuestion();
 
@@ -204,7 +209,7 @@ class QuestionUpdaterTest {
         true,
         "PH_ACCEPTAPPLICATION",
         null))
-            .thenReturn(new QuestionOid("oid", "oid system"));
+        .thenReturn(new QuestionOid("oid", "oid system"));
 
     CodedQuestionEntity question = QuestionEntityMother.codedQuestion();
 
@@ -228,7 +233,7 @@ class QuestionUpdaterTest {
         true,
         "PH_ACCEPTAPPLICATION",
         null))
-            .thenReturn(new QuestionOid("oid", "oid system"));
+        .thenReturn(new QuestionOid("oid", "oid system"));
 
     NumericQuestionEntity question = QuestionEntityMother.numericQuestion();
 
@@ -252,8 +257,7 @@ class QuestionUpdaterTest {
 
 
   private WaQuestion emptyQuestion() {
-    TextQuestionEntity q = QuestionEntityMother.textQuestion();
-    return q;
+    return QuestionEntityMother.textQuestion();
   }
 
   private WaQuestion inactiveQuestion() {
@@ -273,7 +277,7 @@ class QuestionUpdaterTest {
     // and a question that is in use
     when(metadatumRepository
         .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
-            .thenReturn(Collections.singletonList(new WaUiMetadata()));
+        .thenReturn(Collections.singletonList(new WaUiMetadata()));
 
     // and the question can be saved
     when(repository.save(Mockito.any())).thenReturn(spy);
@@ -297,7 +301,7 @@ class QuestionUpdaterTest {
     // and a question that is in use
     when(metadatumRepository
         .findAllByQuestionIdentifier(spy.getQuestionIdentifier()))
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
 
     // and the question can be saved
     when(repository.save(Mockito.any())).thenReturn(spy);

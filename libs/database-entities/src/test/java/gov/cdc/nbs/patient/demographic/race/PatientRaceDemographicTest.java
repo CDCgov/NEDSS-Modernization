@@ -46,7 +46,7 @@ class PatientRaceDemographicTest {
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
             )
             .satisfies(
-                race_is_active -> assertThat(race_is_active)
+                race -> assertThat(race)
                     .describedAs("expected race record status state")
                     .returns("ACTIVE", PersonRace::getRecordStatusCd)
                     .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
@@ -99,7 +99,7 @@ class PatientRaceDemographicTest {
                     .returns("race-category-value", PersonRace::getRaceCd)
             )
             .satisfies(
-                race_is_active -> assertThat(race_is_active)
+                race -> assertThat(race)
                     .describedAs("expected race record status state")
                     .returns("ACTIVE", PersonRace::getRecordStatusCd)
                     .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
@@ -128,7 +128,7 @@ class PatientRaceDemographicTest {
                     .returns("race-one", PersonRace::getRaceCd)
             )
             .satisfies(
-                race_is_active -> assertThat(race_is_active)
+                race -> assertThat(race)
                     .describedAs("expected race record status state")
                     .returns("ACTIVE", PersonRace::getRecordStatusCd)
                     .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
@@ -157,7 +157,7 @@ class PatientRaceDemographicTest {
                     .returns("race-two", PersonRace::getRaceCd)
             )
             .satisfies(
-                race_is_active -> assertThat(race_is_active)
+                race -> assertThat(race)
                     .describedAs("expected race record status state")
                     .returns("ACTIVE", PersonRace::getRecordStatusCd)
                     .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
@@ -325,7 +325,7 @@ class PatientRaceDemographicTest {
                     .returns("race-category-value", PersonRace::getRaceCategoryCd)
             )
             .satisfies(
-                race_is_active -> assertThat(race_is_active)
+                race -> assertThat(race)
                     .describedAs("expected race record status state")
                     .returns("ACTIVE", PersonRace::getRecordStatusCd)
                     .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)
@@ -502,7 +502,7 @@ class PatientRaceDemographicTest {
                     .returns("race-one", PersonRace::getRaceCd)
             )
             .satisfies(
-                race_is_active -> assertThat(race_is_active)
+                race -> assertThat(race)
                     .describedAs("expected race record status state")
                     .returns("ACTIVE", PersonRace::getRecordStatusCd)
                     .returns(Instant.parse("2020-03-03T10:15:30.00Z"), PersonRace::getRecordStatusTime)

@@ -172,29 +172,19 @@ public class ConditionSearchSteps {
     String familyCd = "ARBO";
     String coinfectionGrp = null;
 
-    if (field != null) {
-      switch (field) {
-        case "conditionShortNm":
-          name = value;
-          break;
-        case "id":
-          id = value;
-          break;
-        case "progAreaCd":
-          progArea = value;
-          break;
-        case "familyCd":
-          familyCd = value;
-          break;
-        case "coinfection_grp_cd":
-          coinfectionGrp = value;
-          break;
-        case "nndInd":
-          nndInd = value.charAt(0);
-          break;
-      }
+    if (Objects.equals(field, "conditionShortNm")) {
+      name = value;
+    } else if (Objects.equals(field, "id")) {
+      id = value;
+    } else if (Objects.equals(field, "progAreaCd")) {
+      progArea = value;
+    } else if (Objects.equals(field, "familyCd")) {
+      familyCd = value;
+    } else if (Objects.equals(field, "coinfection_grp_cd")) {
+      coinfectionGrp = value;
+    } else if (Objects.equals(field, "nndInd")) {
+      nndInd = value.charAt(0);
     }
-
 
     return new CreateConditionRequest(
         id,

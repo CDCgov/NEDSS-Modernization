@@ -20,8 +20,8 @@ import java.util.Objects;
 @Component
 @Transactional
 public class ValueSetMother {
-  private final String CODESET_NAME = "TestCodeset";
-  private int codesetIds = 9910;
+  private static final String CODE_SET_NAME = "TestCodeset";
+  private static final int CODE_SET_IDS = 9910;
 
   private final ValueSetRepository valueSetRepository;
 
@@ -45,7 +45,7 @@ public class ValueSetMother {
   public void clean() {
     valueSetRepository.deleteAll();
     codeSetGrpMetaRepository.deleteAll();
-    conceptRepository.deleteAllByCodesetName(CODESET_NAME);
+    conceptRepository.deleteAllByCodesetName(CODE_SET_NAME);
     concepts.clear();
     allValueSets.clear();
   }
@@ -102,10 +102,10 @@ public class ValueSetMother {
   private Codeset valueSetWithConcepts() {
     Instant now = Instant.now();
     Codeset codeset = new Codeset();
-    codeset.setId(new CodesetId("code_value_general", CODESET_NAME));
+    codeset.setId(new CodesetId("code_value_general", CODE_SET_NAME));
     codeset.setStatusCd("A");
     codeset.setStatusToTime(now);
-    codeset.setCodeSetDescTxt(CODESET_NAME);
+    codeset.setCodeSetDescTxt(CODE_SET_NAME);
     codeset.setAssigningAuthorityCd("L");
     codeset.setValueSetTypeCd("LOCAL");
     codeset.setAddTime(now);
@@ -114,7 +114,7 @@ public class ValueSetMother {
     codeset = valueSetRepository.save(codeset);
 
     CodeValueGeneral yes = new CodeValueGeneral();
-    yes.setId(new CodeValueGeneralId(CODESET_NAME, "Yes"));
+    yes.setId(new CodeValueGeneralId(CODE_SET_NAME, "Yes"));
     yes.setCodeDescTxt("Yes");
     yes.setCodeShortDescTxt("Yes");
     yes.setCodeSystemCd("2.16.840.1.113883.12.136");
@@ -132,7 +132,7 @@ public class ValueSetMother {
     yes = conceptRepository.save(yes);
 
     CodeValueGeneral no = new CodeValueGeneral();
-    no.setId(new CodeValueGeneralId(CODESET_NAME, "No"));
+    no.setId(new CodeValueGeneralId(CODE_SET_NAME, "No"));
     no.setCodeDescTxt("No");
     no.setCodeShortDescTxt("No");
     no.setCodeSystemCd("2.16.840.1.113883.12.136");
@@ -153,7 +153,7 @@ public class ValueSetMother {
     conceptList.add(yes);
     conceptList.add(no);
 
-    concepts.put(CODESET_NAME, conceptList);
+    concepts.put(CODE_SET_NAME, conceptList);
     allValueSets.add(codeset);
     return codeset;
   }
@@ -172,7 +172,7 @@ public class ValueSetMother {
   }
 
   private long getCodeSetGroupID() {
-    return codesetIds += 10;
+    return CODE_SET_IDS + 10;
   }
 
   public void addConcept(Codeset codeset, String name, String value) {

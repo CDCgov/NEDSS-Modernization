@@ -106,6 +106,8 @@ public class PatientSteps {
           value,
           null,
           null);
+
+      default -> throw new IllegalStateException("Unexpected patient demographic data: " + field + ":" + value);
     }
 
   }
@@ -115,7 +117,7 @@ public class PatientSteps {
       case "american indian or alaska native", "american indian", "alaska native" -> "1002-5";
       case "asian" -> "2028-9";
       case "black or african american", "black", "african american" -> "2054-5";
-      case "native Hawaiian or other pacific Islander", "native Hawaiian", "pacific Islander" -> "2076-8";
+      case "native hawaiian or other pacific islander", "native hawaiian", "pacific islander" -> "2076-8";
       case "white" -> "2106-3";
       case "other race", "other" -> "2131-1";
       case "not asked" -> "NASK";
