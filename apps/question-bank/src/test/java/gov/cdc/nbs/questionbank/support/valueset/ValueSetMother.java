@@ -21,7 +21,7 @@ import java.util.Objects;
 @Transactional
 public class ValueSetMother {
   private static final String CODE_SET_NAME = "TestCodeset";
-  private static final int CODE_SET_IDS = 9910;
+  private int identifier = 9910;
 
   private final ValueSetRepository valueSetRepository;
 
@@ -172,7 +172,7 @@ public class ValueSetMother {
   }
 
   private long getCodeSetGroupID() {
-    return CODE_SET_IDS + 10;
+    return identifier += 10;
   }
 
   public void addConcept(Codeset codeset, String name, String value) {
