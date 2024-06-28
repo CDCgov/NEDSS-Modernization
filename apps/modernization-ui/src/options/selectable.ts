@@ -21,10 +21,16 @@ function asValue(selectable: Selectable | null | undefined) {
 /* eslint-disable no-redeclare */
 function asValues(selectables: undefined): undefined;
 function asValues(selectables: Selectable[]): string[];
-function asValues(selectables: Selectable[] | undefined): string[] | undefined {
+function asValues(selectables: Selectable[] | undefined) {
     return selectables && selectables.map((m) => asValue(m));
 }
 export { asValue, asValues };
+
+function asSelectable(value: string, name?: string): Selectable {
+    return { name: name ?? value, label: name ?? value, value };
+}
+
+export { asSelectable };
 
 const isEqual =
     (selectable: Selectable) =>

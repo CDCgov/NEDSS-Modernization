@@ -87,7 +87,7 @@ describe('when searching using useSearch', () => {
     it('should use the resolvers for searching', async () => {
         const transformer = jest.fn(() => ({ search: 'name-value' }));
 
-        const terms = [{ source: 'mock-source', name: 'Mocked', value: 'mock' }];
+        const terms = [{ source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock' }];
 
         const termResolver = jest.fn(() => terms);
 
@@ -106,8 +106,6 @@ describe('when searching using useSearch', () => {
 
         expect(resultResolver).toHaveBeenCalledWith(expect.objectContaining({ parameters: { search: 'name-value' } }));
 
-        expect(result.current.results?.terms).toEqual(
-            expect.arrayContaining([{ source: 'mock-source', name: 'Mocked', value: 'mock' }])
-        );
+        expect(result.current.results?.terms).toBe(terms);
     });
 });
