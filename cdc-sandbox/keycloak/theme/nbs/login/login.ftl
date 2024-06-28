@@ -1,5 +1,9 @@
 <#include "./banner/banner.html">
 <#import "template.ftl" as layout>
+<header class="header">
+    <span class="login-wrapper_logo">NBS</span>
+    <h1 class="login-header">Welcome to the NBS 7 demo site</h1>
+</header>
 <@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') displayInfo=realm.password && realm.registrationAllowed && !registrationDisabled??; section>
     <#if section = "header">
         ${msg("loginAccountTitle")}

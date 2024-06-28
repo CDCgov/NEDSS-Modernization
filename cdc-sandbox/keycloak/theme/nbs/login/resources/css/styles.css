@@ -93,3 +93,23 @@ a {
 #loom-companion-mv3 {
   display: none !important;
 }
+
+.header {
+  background-color: #162e51;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.login-wrapper_logo {
+  font-weight: 400;
+  font-size: 3.4375rem;
+  letter-spacing: -0.24063rem;
+}
+
+.login-header {
+  font-weight: 700;
+  font-size: 2rem;
+}
