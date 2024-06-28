@@ -6,7 +6,7 @@ describe('transformObject', () => {
     it('should transform an object with Selectable arrays correctly', () => {
         const input: InvestigationFilterEntry = {
             createdBy: { value: 'result-values', name: 'result-name', label: 'result-label' },
-            conditions: [{ value: 'status1', name: 'Status 1', label: 'status-label' }]
+            conditions: [{ value: 'status1', name: 'Status 1', label: 'Status 1' }]
         };
 
         const expected = {

@@ -1,31 +1,14 @@
-import { EventId, InvestigationStatus, ProviderFacilitySearch } from 'generated/graphql/schema';
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { Form } from '@trussworks/react-uswds';
 import GeneralSearchFields from './GeneralSearchFields';
+import { UseFormReturn } from 'react-hook-form';
+import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
-const InvestigationSearchForm = () => {
-    const defaultValues: InvestigationFilterEntry = {
-        createdBy: { name: '', value: '' },
-        lastUpdatedBy: { name: '', value: '' },
-        investigatorId: { name: '', value: '' },
-        pregnancyStatus: { name: '', value: '' },
-        eventId: {} as EventId,
-        investigationStatus: {} as InvestigationStatus,
-        patientId: null,
-        providerFacilitySearch: {} as ProviderFacilitySearch,
-        jurisdictions: [{ name: '', value: '' }],
-        conditions: [{ name: '', value: '' }],
-        caseStatuses: [{ name: '', value: '' }],
-        notificationStatues: [{ name: '', value: '' }],
-        outbreakNames: [{ name: '', value: '' }],
-        processingStatus: { name: '', value: '' },
-        programAreas: [{ name: '', value: '' }]
-    };
+type Props = {
+    form: UseFormReturn<InvestigationFilterEntry>;
+};
 
-    const form = useForm<InvestigationFilterEntry>({ defaultValues });
-
+const InvestigationSearchForm = ({ form }: Props) => {
     return (
         <div>
             <Form onSubmit={() => console.log('test')}>

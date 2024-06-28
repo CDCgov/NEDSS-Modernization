@@ -1,14 +1,19 @@
-import { MultiSelectInput } from 'components/selection/multi';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { UseFormReturn } from 'react-hook-form';
+import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
+import { MultiSelect } from 'design-system/select';
+import { InvestigationEventIdType, PregnancyStatus, ReportingEntityType } from 'generated/graphql/schema';
+import { formatInterfaceString } from 'utils/util';
+import { SelectInput } from 'components/FormInputs/SelectInput';
+import { ErrorMessage } from '@trussworks/react-uswds';
+import { Input } from 'components/FormInputs/Input';
 
 type Props = {
     form: UseFormReturn<InvestigationFilterEntry>;
 };
 
 const GeneralSearchFields = ({ form }: Props) => {
-    // const watch = useWatch({ control: form.control });
+    const watch = useWatch({ control: form.control });
     const { register } = form;
     const handleChange = (e: any) => {
         console.log('e', e);
@@ -23,37 +28,119 @@ const GeneralSearchFields = ({ form }: Props) => {
                     console.log('searchCriteria', searchCriteria);
                     return (
                         <>
-                            <MultiSelectInput
+                            <MultiSelect
+                                id="conditions"
                                 label="Condition"
                                 {...register('conditions')}
                                 onChange={handleChange}
                                 options={searchCriteria.conditions.map((c) => {
                                     return {
+                                        label: 'asdsdfsdf',
                                         name: c.conditionDescTxt ?? '',
                                         value: c.id
                                     };
                                 })}
                             />
 
-                            <MultiSelectInput
+                            <MultiSelect
+                                id="programArea"
                                 label="Program area"
                                 {...register('programAreas')}
                                 onChange={handleChange}
                                 options={searchCriteria.programAreas.map((p) => {
                                     return {
+                                        label: 'asdfasdf',
                                         name: p.id,
                                         value: p.id
                                     };
                                 })}
                             />
-                            <MultiSelectInput
+                            <MultiSelect
+                                id="jurisdiction"
                                 label="Jurisdiction"
                                 {...register('jurisdictions')}
                                 onChange={handleChange}
                                 options={searchCriteria.jurisdictions.map((j) => {
                                     return {
+                                        label: 'asdfasdf',
                                         name: j.codeDescTxt ?? '',
                                         value: j.id
+                                    };
+                                })}
+                            />
+                            <SelectInput
+                                id="pregnancyStatus"
+                                label="Pregnancy test"
+                                {...register('pregnancyStatus')}
+                                onChange={handleChange}
+                                options={[
+                                    { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
+                                    { name: PregnancyStatus.No, value: PregnancyStatus.No },
+                                    { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown }
+                                ]}
+                            />
+                            <SelectInput
+                                id="eventType"
+                                label="Event date type"
+                                {...register('eventDate')}
+                                onChange={handleChange}
+                                options={Object.values(InvestigationEventIdType).map((event) => {
+                                    return {
+                                        label: formatInterfaceString(event),
+                                        name: formatInterfaceString(event),
+                                        value: event
+                                    };
+                                })}
+                            />
+                            {watch.eventId?.investigationEventType ? (
+                                <Controller
+                                    control={form.control}
+                                    name="eventId.id"
+                                    rules={{
+                                        required: { value: true, message: 'Event Id is required' }
+                                    }}
+                                    render={({
+                                        field: { onBlur, onChange, value, name },
+                                        fieldState: { error }
+                                    }: any) => (
+                                        <>
+                                            <Input
+                                                onChange={onChange}
+                                                onBlur={onBlur}
+                                                data-testid={name}
+                                                defaultValue={value}
+                                                type="text"
+                                                id={name}
+                                                required
+                                            />
+                                            {error && (
+                                                <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>
+                                            )}
+                                        </>
+                                    )}
+                                />
+                            ) : null}
+                            <Input
+                                {...register('createdBy')}
+                                label="Event creeated by"
+                                type="text"
+                                id={'createdBy'}
+                                required
+                            />
+                            <Input
+                                {...register('lastUpdatedBy')}
+                                label="Event updated by"
+                                type="text"
+                                id={'lastUpdatedBy'}
+                                required
+                            />
+                            <SelectInput
+                                {...register('providerFacilitySearch')}
+                                label="Event provider/facility type"
+                                options={Object.values(ReportingEntityType).map((type) => {
+                                    return {
+                                        name: formatInterfaceString(type),
+                                        value: type
                                     };
                                 })}
                             />
@@ -61,236 +148,6 @@ const GeneralSearchFields = ({ form }: Props) => {
                     );
                 }}
             </SearchCriteriaContext.Consumer>
-            {/* <Controller
-                control={form.control}
-                name="pregnancyStatus"
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
-                        name={name}
-                        value={value as string | undefined}
-                        onChange={(e) => handleChangeToDefaultValue(form, name, undefined, e, onChange)}
-                        label="Pregnancy test"
-                        htmlFor={name}
-                        dataTestid={name}
-                        options={[
-                            { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
-                            { name: PregnancyStatus.No, value: PregnancyStatus.No },
-                            { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown }
-                        ]}
-                    />
-                )}
-            />
-            <Controller
-                control={form.control}
-                name="eventId.investigationEventType"
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
-                        name={name}
-                        value={value as string | undefined}
-                        onChange={(e) =>
-                            handleChangeToDefaultValue(
-                                form,
-                                'eventId',
-                                { investigationEventType: undefined },
-                                e,
-                                onChange
-                            )
-                        }
-                        label="Event id type"
-                        dataTestid={name}
-                        htmlFor={name}
-                        options={Object.values(InvestigationEventIdType).map((event) => {
-                            return {
-                                name: formatInterfaceString(event),
-                                value: event
-                            };
-                        })}
-                    />
-                )}
-            />
-            {watch.eventId?.investigationEventType ? (
-                <Controller
-                    control={form.control}
-                    name="eventId.id"
-                    rules={{
-                        required: { value: true, message: 'Event Id is required' }
-                    }}
-                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <>
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                data-testid={name}
-                                defaultValue={value}
-                                type="text"
-                                id={name}
-                                required
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
-                    )}
-                />
-            ) : null}
-
-            <Controller
-                control={form.control}
-                name="eventDate.type"
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
-                        name={name}
-                        value={value as string | undefined}
-                        onChange={(e) =>
-                            handleChangeToDefaultValue(form, 'eventDate', { type: undefined }, e, onChange)
-                        }
-                        label="Event date type"
-                        htmlFor={name}
-                        dataTestid={name}
-                        options={Object.values(InvestigationEventDateType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
-                    />
-                )}
-            />
-
-            {watch.eventDate?.type ? (
-                <>
-                    <Controller
-                        control={form.control}
-                        name="eventDate.from"
-                        rules={{
-                            required: { value: true, message: 'From date is required' }
-                        }}
-                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                            <DatePickerInput
-                                disabled={!watch.eventDate?.type}
-                                defaultValue={value}
-                                onBlur={onBlur}
-                                onChange={onChange}
-                                label="From"
-                                required
-                                name={name}
-                                errorMessage={error?.message}
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        control={form.control}
-                        name="eventDate.to"
-                        rules={{
-                            required: { value: true, message: 'To date is required' }
-                        }}
-                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                            <DatePickerInput
-                                disabled={!watch.eventDate?.type}
-                                defaultValue={value}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                name={name}
-                                label="To"
-                                required
-                                errorMessage={error?.message}
-                            />
-                        )}
-                    />
-                </>
-            ) : null}
-
-            <>
-                <Controller
-                    control={form.control}
-                    name="createdBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
-                    )}
-                />
-
-                <Controller
-                    control={form.control}
-                    name="lastUpdatedBy"
-                    render={({ field: { onChange } }) => (
-                        <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
-                    )}
-                />
-            </>
-
-            <Controller
-                control={form.control}
-                name="providerFacilitySearch.entityType"
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
-                        name={name}
-                        value={value as string | undefined}
-                        onChange={(e) =>
-                            handleChangeToDefaultValue(
-                                form,
-                                'providerFacilitySearch',
-                                { entityType: undefined },
-                                e,
-                                onChange
-                            )
-                        }
-                        label="Event provider/facility type"
-                        htmlFor={name}
-                        dataTestid={name}
-                        options={Object.values(ReportingEntityType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
-                    />
-                )}
-            />
-
-            {watch.providerFacilitySearch?.entityType == 'PROVIDER' && (
-                <Controller
-                    control={form.control}
-                    name="providerFacilitySearch.id"
-                    rules={{
-                        required: { value: true, message: `Provider is required` }
-                    }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
-                        <>
-                            <ProviderAutocomplete
-                                id={name}
-                                label="Event provider type"
-                                placeholder=""
-                                onChange={onChange}
-                                required={true}
-                                onBlur={onBlur}
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
-                    )}
-                />
-            )}
-
-            {watch.providerFacilitySearch?.entityType == 'FACILITY' && (
-                <Controller
-                    control={form.control}
-                    name="providerFacilitySearch.id"
-                    rules={{
-                        required: { value: true, message: `Facility is required` }
-                    }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
-                        <>
-                            <FacilityAutocomplete
-                                id={name}
-                                label="Event facility type"
-                                placeholder=""
-                                onChange={onChange}
-                                required={true}
-                                onBlur={onBlur}
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
-                    )}
-                />
-            )} */}
         </>
     );
 };
