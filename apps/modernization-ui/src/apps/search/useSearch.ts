@@ -118,7 +118,7 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
     }, [state.status]);
 
     useEffect(() => {
-        if (state.status === 'fetching' && page.status === PageStatus.Requested) {
+        if (state.status === 'fetching') {
             // the criteria has changed invoke search
             resultResolver({
                 parameters: state.parameters,
