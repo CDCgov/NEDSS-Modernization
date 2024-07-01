@@ -1,11 +1,12 @@
 package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.patient.PatientHistoryCreator;
 import gov.cdc.nbs.patient.PatientNotFoundException;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -14,14 +15,18 @@ import java.util.function.Function;
 public class PatientProfileService {
 
   private final EntityManager entityManager;
+  private final PatientHistoryCreator historyCreator;
 
-  public PatientProfileService(final EntityManager entityManager) {
+  PatientProfileService(
+      final EntityManager entityManager,
+      final PatientHistoryCreator historyCreator
+  ) {
     this.entityManager = entityManager;
+    this.historyCreator = historyCreator;
   }
 
   /**
-   * Runs the {@code consumer} if an entity can be uniquely identified by the
-   * given {@code identifier}.
+   * Runs the {@code consumer} if an entity can be uniquely identified by the given {@code identifier}.
    *
    * @param identifier The unique identifier of the Page
    * @param consumer   A consumer that will run on the found Page
@@ -30,10 +35,23 @@ public class PatientProfileService {
   public void using(final long identifier, final Consumer<Person> consumer) {
     Person patient = this.entityManager.find(Person.class, identifier);
     if (patient != null) {
-      consumer.accept(patient);
+      long before = PatientChangeHash.compute(patient);
+      consumer.andThen(recordHistory(before)).accept(patient);
     } else {
       throw new PatientNotFoundException(identifier);
     }
+  }
+
+  private Consumer<Person> recordHistory(final long before) {
+    return patient -> {
+      long after = PatientChangeHash.compute(patient);
+
+      if (before != after) {
+        int version = patient.getVersionCtrlNbr() - 1;
+        this.historyCreator.create(patient.getId(), version);
+
+      }
+    };
   }
 
   public Person findPatientById(long patient) throws PatientNotFoundException {
@@ -47,4 +65,5 @@ public class PatientProfileService {
         ? Optional.of(fn.apply(patient))
         : Optional.empty();
   }
+
 }
