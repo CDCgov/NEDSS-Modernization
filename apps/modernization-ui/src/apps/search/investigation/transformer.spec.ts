@@ -1,65 +1,243 @@
-import { CaseStatus, InvestigationEventIdType, InvestigationStatus, PregnancyStatus } from 'generated/graphql/schema';
+import {
+    CaseStatus,
+    InvestigationEventDateType,
+    InvestigationStatus,
+    NotificationStatus,
+    PregnancyStatus,
+    ProcessingStatus,
+    ReportingEntityType
+} from 'generated/graphql/schema';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { transformObject } from './transformer';
 
 describe('transformObject', () => {
-    it('should transform an object with Selectable arrays correctly', () => {
+    it('should tranform with Conditions', () => {
         const input: InvestigationFilterEntry = {
-            createdBy: { value: 'result-values', name: 'result-name', label: 'result-label' },
-            conditions: [{ value: 'status1', name: 'Status 1', label: 'status-label' }]
+            conditions: [
+                { name: 'Condition One Name', label: 'Condition One Label', value: 'condition-one' },
+                { name: 'Condition Two Name', label: 'Condition Two Label', value: 'condition-two' }
+            ]
         };
+        const actual = transformObject(input);
 
-        const expected = {
-            createdBy: 'result-values',
-            conditions: ['status1']
-        };
-
-        const result = transformObject(input);
-        expect(result).toEqual(expected);
+        expect(actual).toEqual(
+            expect.objectContaining({
+                conditions: ['condition-one', 'condition-two']
+            })
+        );
     });
 
-    it('should transform an object with string values correctly', () => {
-        const input = {
-            eventId: {
-                id: 'test1',
-                investigationEventType: InvestigationEventIdType.InvestigationId
-            }
+    it('should tranform with Program Areas', () => {
+        const input: InvestigationFilterEntry = {
+            programAreas: [
+                { name: 'Area One Name', label: 'Area One Label', value: 'area-one' },
+                { name: 'Area Two Name', label: 'Area Two Label', value: 'area-two' }
+            ]
         };
+        const actual = transformObject(input);
 
-        const expected = {
-            eventId: {
-                id: 'test1',
-                investigationEventType: InvestigationEventIdType.InvestigationId
-            }
-        };
-
-        const result = transformObject(input);
-        expect(result).toEqual(expected);
+        expect(actual).toEqual(
+            expect.objectContaining({
+                programAreas: ['area-one', 'area-two']
+            })
+        );
     });
 
-    it('should transform an object with nested objects correctly', () => {
-        const input = {
-            eventId: {
-                id: 'test1',
-                investigationEventType: InvestigationEventIdType.CityCountyCaseId
+    it('should tranform with Jurisdictions', () => {
+        const input: InvestigationFilterEntry = {
+            jurisdictions: [
+                { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: 'jurisdiction-one' },
+                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: 'jurisdiction-two' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                jurisdictions: ['jurisdiction-one', 'jurisdiction-two']
+            })
+        );
+    });
+
+    it('should transform with Event Id', () => {
+        const input: InvestigationFilterEntry = {
+            identification: {
+                type: { name: 'ID Type Name', label: 'ID Type Label', value: 'LAST_UPDATE_DATE' },
+                value: 'identification-value'
             }
         };
 
-        const result = transformObject(input);
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                eventId: {
+                    id: 'identification-value',
+                    investigationEventType: InvestigationEventDateType.LastUpdateDate
+                }
+            })
+        );
+    });
+
+    it('should transform with Event date', () => {
+        const input = {
+            eventDate: {
+                type: { name: 'Date Type Name', label: 'Date Type Label', value: 'DATE_OF_REPORT' },
+                from: 'from-date',
+                to: 'to-date'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                eventDate: expect.objectContaining({
+                    type: 'DATE_OF_REPORT',
+                    from: 'from-date',
+                    to: 'to-date'
+                })
+            })
+        );
+    });
+
+    it('should transform with Created by', () => {
+        const input = {
+            createdBy: { name: 'Created Name', label: 'Created Label', value: 'created-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                createdBy: 'created-value'
+            })
+        );
+    });
+
+    it('should transform with Last updated by', () => {
+        const input = {
+            updatedBy: { name: 'Updated Name', label: 'Updated Label', value: 'updated-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                lastUpdatedBy: 'updated-value'
+            })
+        );
+    });
+
+    it('should transform with Investigator', () => {
+        const input = {
+            investigator: { name: 'Investigator Name', label: 'Investigator Label', value: 'investigator-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                investigatorId: 'investigator-value'
+            })
+        );
+    });
+
+    it('should transform with Reporting facility', () => {
+        const input = {
+            reportingFacility: {
+                name: 'Reporting facility Name',
+                label: 'Reporting facility Label',
+                value: 'reporting-facility-value'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                providerFacilitySearch: {
+                    id: 'reporting-facility-value',
+                    entityType: ReportingEntityType.Facility
+                }
+            })
+        );
+    });
+
+    it('should transform with Reporting provider', () => {
+        const input = {
+            reportingProvider: {
+                name: 'Reporting provider Name',
+                label: 'Reporting provider Label',
+                value: 'reporting-provider-value'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                providerFacilitySearch: expect.objectContaining({
+                    id: 'reporting-provider-value',
+                    entityType: ReportingEntityType.Provider
+                })
+            })
+        );
+    });
+
+    it('should tranform with Outbreaks', () => {
+        const input: InvestigationFilterEntry = {
+            outbreaks: [
+                { name: 'Outbreak One Name', label: 'Outbreak One Label', value: 'outbreak-one' },
+                { name: 'Outbreak Two Name', label: 'Outbreak Two Label', value: 'outbreak-two' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                outbreakNames: ['outbreak-one', 'outbreak-two']
+            })
+        );
+    });
+
+    it('should include processing status when present', () => {
+        const criteria = {
+            processingStatuses: [
+                { name: 'Closed Case Name', label: 'Closed Case Label', value: 'CLOSED_CASE' },
+                { name: 'Open Case Name', label: 'Open Case Label', value: 'OPEN_CASE' }
+            ]
+        };
+
+        const result = transformObject(criteria);
 
         expect(result).toEqual(
             expect.objectContaining({
-                eventId: {
-                    id: 'test1',
-                    investigationEventType: InvestigationEventIdType.CityCountyCaseId
-                }
+                processingStatuses: [ProcessingStatus.ClosedCase, ProcessingStatus.OpenCase]
+            })
+        );
+    });
+
+    it('should include notification status when present', () => {
+        const criteria = {
+            notificationStatuses: [
+                { name: 'Rejected Name', label: 'Rejected Label', value: 'REJECTED' },
+                { name: 'Completed Name', label: 'Completed Label', value: 'COMPLETED' }
+            ]
+        };
+
+        const result = transformObject(criteria);
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                notificationStatuses: [NotificationStatus.Rejected, NotificationStatus.Completed]
             })
         );
     });
 
     it('should include investigation status when present', () => {
         const criteria = {
-            investigationStatus: 'OPEN' as InvestigationStatus
+            investigationStatus: { name: 'Open Name', label: 'Open Label', value: 'OPEN' }
         };
 
         const result = transformObject(criteria);
