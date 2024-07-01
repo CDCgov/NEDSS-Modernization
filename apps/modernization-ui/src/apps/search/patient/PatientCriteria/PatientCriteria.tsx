@@ -5,6 +5,7 @@ import { Accordion } from 'components/Accordion/Accordion';
 import { Selectable } from 'options';
 import styles from './patient-criteria.module.scss';
 import { Address } from './Address';
+import { Contact } from './Contact';
 
 type PatientCriteriaFormProps = {
     control: Control<PatientCriteriaEntry>;
@@ -24,6 +25,9 @@ export const PatientCriteria = ({ control, handleRecordStatusChange }: PatientCr
             </Accordion>
             <Accordion title="Address" open>
                 <Address control={control} />
+            </Accordion>
+            <Accordion title="Contact" open>
+                <Contact control={control} />
             </Accordion>
         </div>
     );
