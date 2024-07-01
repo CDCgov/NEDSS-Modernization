@@ -117,6 +117,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
@@ -139,16 +143,8 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(
-                        audit -> assertThat(audit.added())
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        audit -> assertThat(audit.changed())
-                            .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
             )
 
 
@@ -270,6 +266,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2021-04-05T06:07:08Z"), Person::getLastChgTime);
+
     assertThat(patient.getNames()).satisfiesExactly(
         actual -> assertThat(actual)
             .returns(Instant.parse("2023-05-15T10:00:00Z"), PersonName::getAsOfDate)
@@ -292,10 +292,7 @@ class PersonTest {
             .satisfies(
                 added -> assertThat(added.getAudit())
                     .describedAs("expected name audit state")
-                    .satisfies(
-                        audit -> assertThat(audit.changed())
-                            .returns(171L, Changed::changedBy)
-                            .returns(Instant.parse("2021-04-05T06:07:08Z"), Changed::changedOn)
+                    .satisfies(AuditAssertions.changed(171L, "2021-04-05T06:07:08Z")
                     )
             )
     );
@@ -341,6 +338,10 @@ class PersonTest {
             Instant.parse("2021-03-03T10:15:30.00Z")
         )
     );
+
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Person::getLastChgTime);
 
     assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
         actual -> assertThat(actual)

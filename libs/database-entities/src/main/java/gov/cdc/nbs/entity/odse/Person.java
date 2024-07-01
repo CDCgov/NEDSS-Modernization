@@ -322,13 +322,15 @@ public class Person {
     return personName;
   }
 
-  public void update(final PatientCommand.UpdateNameInfo info) {
-    PersonNameId identifier = PersonNameId.from(info.person(), info.sequence());
+  public void update(final PatientCommand.UpdateNameInfo updated) {
+    PersonNameId identifier = PersonNameId.from(updated.person(), updated.sequence());
 
     ensureNames().stream()
         .filter(name -> Objects.equals(name.getId(), identifier))
         .findFirst()
-        .ifPresent(name -> name.update(info));
+        .ifPresent(name -> name.update(updated));
+
+    changed(updated);
   }
 
   public void delete(final PatientCommand.DeleteNameInfo deleted) {
@@ -337,6 +339,8 @@ public class Person {
         .filter(name -> Objects.equals(name.getId(), identifier))
         .findFirst()
         .ifPresent(name -> delete(deleted, name));
+
+    changed(deleted);
   }
 
   private void delete(final PatientCommand.DeleteNameInfo deleted, final PersonName name) {
