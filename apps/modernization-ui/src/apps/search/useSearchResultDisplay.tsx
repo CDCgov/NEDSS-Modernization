@@ -1,14 +1,9 @@
 import { ReactNode, createContext, useContext, useReducer } from 'react';
 import { PageProvider, PagingSettings } from 'page';
 import { SortingProvider, SortingSettings } from 'sorting';
+import { Term } from './terms';
 
 type View = 'list' | 'table';
-
-type Term = {
-    source: string;
-    name: string;
-    value: string | number;
-};
 
 type Waiting = { status: 'waiting' };
 

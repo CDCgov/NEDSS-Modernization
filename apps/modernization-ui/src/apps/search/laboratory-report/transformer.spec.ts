@@ -2,71 +2,14 @@ import {
     EntryMethod,
     EventStatus,
     LaboratoryEventIdType,
-    LaboratoryReportEventDateType,
     LaboratoryReportStatus,
-    PregnancyStatus,
+    ProviderType,
     UserType
 } from 'generated/graphql/schema';
 import { LabReportFilterEntry } from './labReportFormTypes';
 import { transformObject } from './transformer';
 
 describe('transformObject', () => {
-    it('should transform an object with Selectable arrays correctly', () => {
-        const input: LabReportFilterEntry = {
-            codedResult: { value: 'result-values', name: 'result-name', label: 'result-name' },
-            eventStatus: [{ value: 'status1', name: 'Status 1', label: 'Status 1' }]
-        };
-
-        const expected = {
-            codedResult: 'result-values',
-            eventStatus: ['status1']
-        };
-
-        const result = transformObject(input);
-        expect(result).toEqual(expected);
-    });
-
-    it('should transform an object with string values correctly', () => {
-        const input = {
-            eventId: {
-                labEventId: 'type1',
-                labEventType: LaboratoryEventIdType.AccessionNumber
-            }
-        };
-
-        const expected = {
-            eventId: {
-                labEventId: 'type1',
-                labEventType: LaboratoryEventIdType.AccessionNumber
-            }
-        };
-
-        const result = transformObject(input);
-        expect(result).toEqual(expected);
-    });
-
-    it('should transform an object with nested objects correctly', () => {
-        const input = {
-            eventDate: {
-                type: LaboratoryReportEventDateType.DateOfReport,
-                from: '2023-05-01',
-                to: '2023-05-31'
-            }
-        };
-
-        const result = transformObject(input);
-
-        expect(result).toEqual(
-            expect.objectContaining({
-                eventDate: {
-                    type: LaboratoryReportEventDateType.DateOfReport,
-                    from: '2023-05-01',
-                    to: '2023-05-31'
-                }
-            })
-        );
-    });
-
     it('should include entered by when present', () => {
         const criteria = {
             enteredBy: [{ name: 'Internal', label: 'Intenral', value: 'INTERNAL' }]
@@ -81,62 +24,6 @@ describe('transformObject', () => {
         );
     });
 
-    it('should include entry method when present', () => {
-        const criteria = {
-            enteredBy: [{ name: 'Manual', label: 'Manual', value: 'ELECTRONIC' }]
-        };
-
-        const result = transformObject(criteria);
-
-        expect(result).toEqual(
-            expect.objectContaining({
-                enteredBy: expect.arrayContaining([EntryMethod.Electronic])
-            })
-        );
-    });
-
-    it('should include event status when present', () => {
-        const criteria = {
-            enteredBy: [{ name: 'Update', label: 'Update', value: 'UPDATE' }]
-        };
-
-        const result = transformObject(criteria);
-
-        expect(result).toEqual(
-            expect.objectContaining({
-                enteredBy: expect.arrayContaining([EventStatus.Update])
-            })
-        );
-    });
-
-    it('should include pregnancy status when present', () => {
-        const criteria = {
-            enteredBy: [{ name: 'Unknown', label: 'Unknown', value: 'UNKNOWN' }]
-        };
-
-        const result = transformObject(criteria);
-
-        expect(result).toEqual(
-            expect.objectContaining({
-                enteredBy: expect.arrayContaining([PregnancyStatus.Unknown])
-            })
-        );
-    });
-
-    it('should include processing status when present', () => {
-        const criteria = {
-            enteredBy: [{ name: 'Unprocessed', label: 'Unprocessed', value: 'UNPROCESSED' }]
-        };
-
-        const result = transformObject(criteria);
-
-        expect(result).toEqual(
-            expect.objectContaining({
-                enteredBy: expect.arrayContaining([LaboratoryReportStatus.Unprocessed])
-            })
-        );
-    });
-
     it('should handle an empty object', () => {
         const input = {};
 
@@ -144,5 +31,281 @@ describe('transformObject', () => {
 
         const result = transformObject(input);
         expect(result).toEqual(expected);
+    });
+});
+
+describe('when the Laboratory Seach Criteria contains General search criteria', () => {
+    it('should tranform with Program Areas', () => {
+        const input: LabReportFilterEntry = {
+            programAreas: [
+                { name: 'Area One Name', label: 'Area One Label', value: 'area-one' },
+                { name: 'Area Two Name', label: 'Area Two Label', value: 'area-two' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                programAreas: ['area-one', 'area-two']
+            })
+        );
+    });
+
+    it('should tranform with Jurisdictions', () => {
+        const input: LabReportFilterEntry = {
+            jurisdictions: [
+                { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: 'jurisdiction-one' },
+                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: 'jurisdiction-two' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                jurisdictions: ['jurisdiction-one', 'jurisdiction-two']
+            })
+        );
+    });
+
+    it('should transform with Pregnancy status', () => {
+        const input: LabReportFilterEntry = {
+            pregnancyStatus: { name: 'Pregnancy Name', label: 'Pregnancy Label', value: 'pregnancy-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                pregnancyStatus: 'pregnancy-value'
+            })
+        );
+    });
+
+    it('should transform with Event Id', () => {
+        const input: LabReportFilterEntry = {
+            identification: {
+                type: { name: 'ID Type Name', label: 'ID Type Label', value: 'ACCESSION_NUMBER' },
+                value: 'identification-value'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                eventId: {
+                    labEventId: 'identification-value',
+                    labEventType: LaboratoryEventIdType.AccessionNumber
+                }
+            })
+        );
+    });
+
+    it('should transform with Event date', () => {
+        const input: LabReportFilterEntry = {
+            eventDate: {
+                type: { name: 'Date Type Name', label: 'Date Type Label', value: 'DATE_OF_REPORT' },
+                from: 'from-date',
+                to: 'to-date'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                eventDate: expect.objectContaining({
+                    type: 'DATE_OF_REPORT',
+                    from: 'from-date',
+                    to: 'to-date'
+                })
+            })
+        );
+    });
+
+    it('should tranform with Entry Methods', () => {
+        const input: LabReportFilterEntry = {
+            entryMethods: [
+                { name: 'Entry One Name', label: 'Entry One Label', value: 'ELECTRONIC' },
+                { name: 'Entry Two Name', label: 'Entry Two Label', value: 'MANUAL' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                entryMethods: expect.arrayContaining([EntryMethod.Electronic, EntryMethod.Manual])
+            })
+        );
+    });
+
+    it('should tranform with Entered by', () => {
+        const input: LabReportFilterEntry = {
+            enteredBy: [
+                { name: 'Entered One Name', label: 'Entered One Label', value: 'EXTERNAL' },
+                { name: 'Entered Two Name', label: 'Entered Two Label', value: 'INTERNAL' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                enteredBy: expect.arrayContaining([UserType.External, UserType.Internal])
+            })
+        );
+    });
+
+    it('should tranform with Event Status', () => {
+        const input: LabReportFilterEntry = {
+            eventStatus: [
+                { name: 'Event One Name', label: 'Event One Label', value: 'UPDATE' },
+                { name: 'Event Two Name', label: 'Event Two Label', value: 'NEW' }
+            ]
+        };
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                eventStatus: [EventStatus.Update, EventStatus.New]
+            })
+        );
+    });
+
+    it('should tranform with Processing status', () => {
+        const input: LabReportFilterEntry = {
+            processingStatus: [
+                { name: 'Processing One Name', label: 'Processing One Label', value: 'PROCESSED' },
+                { name: 'Processing Two Name', label: 'Processing Two Label', value: 'UNPROCESSED' }
+            ]
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                processingStatus: [LaboratoryReportStatus.Processed, LaboratoryReportStatus.Unprocessed]
+            })
+        );
+    });
+
+    it('should transform with Created by', () => {
+        const input: LabReportFilterEntry = {
+            createdBy: { name: 'Created Name', label: 'Created Label', value: 'created-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                createdBy: 'created-value'
+            })
+        );
+    });
+
+    it('should transform with Last updated by', () => {
+        const input: LabReportFilterEntry = {
+            updatedBy: { name: 'Updated Name', label: 'Updated Label', value: 'updated-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                lastUpdatedBy: 'updated-value'
+            })
+        );
+    });
+
+    it('should transform with Ordering facility', () => {
+        const input: LabReportFilterEntry = {
+            orderingFacility: {
+                name: 'Ordering facility Name',
+                label: 'Ordering facility Label',
+                value: 'ordering-facility-value'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                providerSearch: {
+                    providerId: 'ordering-facility-value',
+                    providerType: ProviderType.OrderingFacility
+                }
+            })
+        );
+    });
+
+    it('should transform with Ordering provider', () => {
+        const input: LabReportFilterEntry = {
+            orderingProvider: {
+                name: 'Ordering provider Name',
+                label: 'Ordering provider Label',
+                value: 'ordering-provider-value'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                providerSearch: {
+                    providerId: 'ordering-provider-value',
+                    providerType: ProviderType.OrderingProvider
+                }
+            })
+        );
+    });
+
+    it('should transform with Reporting facility', () => {
+        const input: LabReportFilterEntry = {
+            reportingFacility: {
+                name: 'Reporting facility Name',
+                label: 'Reporting facility Label',
+                value: 'reporting-facility-value'
+            }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                providerSearch: {
+                    providerId: 'reporting-facility-value',
+                    providerType: ProviderType.ReportingFacility
+                }
+            })
+        );
+    });
+});
+
+describe('when the Laboratory Seach Criteria contains Lab Report Criteria', () => {
+    it('should transform with a coded result', () => {
+        const input: LabReportFilterEntry = {
+            codedResult: { name: 'Coded Name', label: 'Coded Label', value: 'coded-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                codedResult: 'coded-value'
+            })
+        );
+    });
+
+    it('should transform with a resulted test', () => {
+        const input: LabReportFilterEntry = {
+            resultedTest: { name: 'Resulted Name', label: 'Resulted Label', value: 'resulted-value' }
+        };
+
+        const actual = transformObject(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                resultedTest: 'resulted-value'
+            })
+        );
     });
 });

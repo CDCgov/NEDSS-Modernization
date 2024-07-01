@@ -1,28 +1,34 @@
 package gov.cdc.nbs.patient.event;
 
-import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.message.patient.event.PatientEvent;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.kafka.PatientKafkaTestConsumer;
+import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
 public class PatientEventSteps {
 
-  @Autowired
-  Active<ActiveUser> activeUser;
+  private final Active<ActiveUser> activeUser;
 
-  @Autowired
-  Available<PatientIdentifier> patients;
+  private final Available<PatientIdentifier> patients;
 
-  @Autowired
-  PatientKafkaTestConsumer consumer;
+  private final PatientKafkaTestConsumer consumer;
+
+  PatientEventSteps(
+      final Active<ActiveUser> activeUser,
+      final Available<PatientIdentifier> patients,
+      final PatientKafkaTestConsumer consumer
+  ) {
+    this.activeUser = activeUser;
+    this.patients = patients;
+    this.consumer = consumer;
+  }
 
   @Before
   public void reset() {
@@ -41,7 +47,7 @@ public class PatientEventSteps {
 
     consumer.satisfies(
         actual -> assertThat(actual).satisfiesExactly(
-            actual_event -> assertThat(actual_event)
+            event -> assertThat(event)
                 .returns(patient.local(), PatientKafkaTestConsumer.Message::key)
                 .extracting(PatientKafkaTestConsumer.Message::event)
                 .asInstanceOf(type(PatientEvent.Created.class))
@@ -60,7 +66,7 @@ public class PatientEventSteps {
 
     consumer.satisfies(
         actual -> assertThat(actual).satisfiesExactly(
-            actual_event -> assertThat(actual_event)
+            event -> assertThat(event)
                 .returns(patient.local(), PatientKafkaTestConsumer.Message::key)
                 .extracting(PatientKafkaTestConsumer.Message::event)
                 .asInstanceOf(type(PatientEvent.Deleted.class))
@@ -80,7 +86,7 @@ public class PatientEventSteps {
 
     consumer.satisfies(
         actual -> assertThat(actual).satisfiesExactly(
-            actual_event -> assertThat(actual_event)
+            event -> assertThat(event)
                 .returns(patient.local(), PatientKafkaTestConsumer.Message::key)
                 .extracting(PatientKafkaTestConsumer.Message::event)
                 .asInstanceOf(type(PatientEvent.EthnicityChanged.class))

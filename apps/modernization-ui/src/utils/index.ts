@@ -5,3 +5,4 @@ export * from './formattedName';
 export * from './objectOrUndefined';
 export * from './exists';
 export * from './focusedTarget';
+export * from './mapIf';

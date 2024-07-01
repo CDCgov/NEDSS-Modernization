@@ -2,14 +2,14 @@ package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.PatientCommand;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -118,6 +118,8 @@ public class PostalLocator extends Locator {
         this.stateCd = birth.state();
         this.cntyCd = birth.county();
         this.cntryCd = birth.country();
+
+        changed(birth);
     }
 
     public void update(final PatientCommand.UpdateMortality mortality) {
@@ -132,6 +134,8 @@ public class PostalLocator extends Locator {
             this.cntyCd = null;
             this.cntryCd = null;
         }
+
+        changed(mortality);
     }
 
     public void update(final PatientCommand.UpdateAddress update) {
@@ -143,6 +147,8 @@ public class PostalLocator extends Locator {
         this.cntyCd = update.county();
         this.cntryCd = update.country();
         this.censusTract = update.censusTract();
+
+        changed(update);
     }
 
     @Override

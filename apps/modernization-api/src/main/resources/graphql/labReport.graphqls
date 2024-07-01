@@ -80,7 +80,7 @@ input LabReportEventId {
 }
 
 type LabReportResults {
-  content: [LabReport]!
+  content: [LabReport!]!
   total: Int!
 }
 

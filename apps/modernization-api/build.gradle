@@ -23,6 +23,7 @@ bootJar {
 
 dependencies {
 
+    implementation(project(':audit'))
     implementation(project(':accumulation'))
     implementation(project(':database-entities'))
     implementation(project(':event-schema'))

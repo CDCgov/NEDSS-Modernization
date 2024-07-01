@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
+import React, { FocusEventHandler, useState } from 'react';
 import Select, { MultiValue, components } from 'react-select';
 import { EntryWrapper, Orientation } from 'components/Entry';
-import { Selectable } from 'options';
+import { Selectable, asValue as asSelectableValue } from 'options';
 
 type MultiSelectProps = {
     id: string;
     name: string;
     label: string;
+    placeholder?: string;
+    disabled?: boolean;
     options: Selectable[];
     value?: Selectable[];
+    onBlur?: FocusEventHandler<HTMLInputElement>;
     onChange?: (value: Selectable[]) => void;
     orientation?: Orientation;
     error?: string;
     required?: boolean;
-    placeholder?: string;
-    disabled?: boolean;
+    asValue?: (selectable: Selectable) => string;
+    asDisplay?: (selectable: Selectable) => string;
 };
 
 const CheckedOption = (props: any) => {
@@ -34,17 +37,24 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     options,
     value = [],
     onChange,
+    onBlur,
     orientation = 'vertical',
     error,
     required,
     placeholder = '- Select -',
-    disabled = false
+    disabled = false,
+    asValue = asSelectableValue,
+    asDisplay = (selectable: Selectable) => selectable.name
 }) => {
     const [searchText, setSearchText] = useState('');
+    const [selected, setSelected] = useState<Selectable[]>(value);
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
+        const nextSelection = newValue as Selectable[];
+        setSelected(nextSelection);
+
         if (onChange) {
-            onChange(newValue as Selectable[]);
+            onChange(nextSelection);
         }
     };
 
@@ -53,6 +63,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
             setSearchText(searchText);
         }
     };
+
     return (
         <div>
             <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
@@ -61,8 +72,9 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     id={id}
                     name={name}
                     options={options}
-                    value={value}
+                    value={selected}
                     onChange={handleOnChange}
+                    onBlur={onBlur}
                     placeholder={placeholder}
                     isDisabled={disabled}
                     classNamePrefix="multi-select"
@@ -71,8 +83,8 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     closeMenuOnScroll={false}
                     inputValue={searchText}
                     onInputChange={handleInputChange}
-                    getOptionLabel={(option) => option.label}
-                    getOptionValue={(option) => option.value}
+                    getOptionValue={asValue}
+                    getOptionLabel={asDisplay}
                     components={{ Option: CheckedOption }}
                 />
             </EntryWrapper>

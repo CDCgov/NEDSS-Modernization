@@ -35,7 +35,9 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'lastName', name: 'LAST', value: 'last-name-value' }])
+            expect.arrayContaining([
+                { source: 'lastName', title: 'LAST', name: 'last-name-value', value: 'last-name-value' }
+            ])
         );
     });
 
@@ -48,7 +50,9 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'firstName', name: 'FIRST', value: 'first-name-value' }])
+            expect.arrayContaining([
+                { source: 'firstName', title: 'FIRST', name: 'first-name-value', value: 'first-name-value' }
+            ])
         );
     });
 
@@ -60,7 +64,9 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'gender', name: 'SEX', value: 'Female' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'gender', title: 'SEX', name: 'Female', value: 'F' }])
+        );
     });
 
     it('should resolve terms with patient id', () => {
@@ -71,7 +77,9 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'id', name: 'ID', value: 'id-value' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'id', title: 'ID', name: 'id-value', value: 'id-value' }])
+        );
     });
 });
 
@@ -85,7 +93,9 @@ describe('when the PatientCriteria contains Address criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'address', name: 'ADDRESS', value: 'address-value' }])
+            expect.arrayContaining([
+                { source: 'address', title: 'ADDRESS', name: 'address-value', value: 'address-value' }
+            ])
         );
     });
 
@@ -97,7 +107,9 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'city', name: 'CITY', value: 'city-value' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'city', title: 'CITY', name: 'city-value', value: 'city-value' }])
+        );
     });
 
     it('should resolve terms with State', () => {
@@ -108,7 +120,9 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'state', name: 'STATE', value: 'State Name' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'state', title: 'STATE', name: 'State Name', value: 'state-value' }])
+        );
     });
 
     it('should resolve terms with Zip', () => {
@@ -119,7 +133,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'zip', name: 'ZIP', value: '1051' }]));
+        expect(actual).toEqual(expect.arrayContaining([{ source: 'zip', title: 'ZIP', name: '1051', value: '1051' }]));
     });
 });
 
@@ -133,7 +147,9 @@ describe('when the PatientCriteria contains Contact criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'phoneNumber', name: 'PHONE', value: 'phone-number-value' }])
+            expect.arrayContaining([
+                { source: 'phoneNumber', title: 'PHONE', name: 'phone-number-value', value: 'phone-number-value' }
+            ])
         );
     });
 
@@ -145,7 +161,9 @@ describe('when the PatientCriteria contains Contact criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'email', name: 'EMAIL', value: 'email-value' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'email', title: 'EMAIL', name: 'email-value', value: 'email-value' }])
+        );
     });
 });
 
@@ -158,7 +176,9 @@ describe('when the PatientCriteria contains Race / Ethnicity criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'race', name: 'RACE', value: 'Race Name' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'race', title: 'RACE', name: 'Race Name', value: 'race-value' }])
+        );
     });
 
     it('should resolve terms with ethnicity', () => {
@@ -170,7 +190,9 @@ describe('when the PatientCriteria contains Race / Ethnicity criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'ethnicity', name: 'ETHNICITY', value: 'Ethnicity Name' }])
+            expect.arrayContaining([
+                { source: 'ethnicity', title: 'ETHNICITY', name: 'Ethnicity Name', value: 'ethnicity-value' }
+            ])
         );
     });
 });
@@ -191,8 +213,13 @@ describe('when the PatientCriteria contains Identification criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'identificationType', name: 'ID TYPE', value: 'Identification Type Name' },
-                { source: 'identification', name: 'ID', value: 'identification-value' }
+                {
+                    source: 'identificationType',
+                    title: 'ID TYPE',
+                    name: 'Identification Type Name',
+                    value: 'identification-type-value'
+                },
+                { source: 'identification', title: 'ID', name: 'identification-value', value: 'identification-value' }
             ])
         );
     });
