@@ -9,12 +9,14 @@ import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 
 import style from './welcomeLayout.module.scss';
 import logo from './cdc.svg';
+import { TopBanner } from 'components/TopBanner/TopBanner';
 
 const WelcomeLayout = () => {
     const [event, setEvent] = useState('login');
 
     return (
         <SkipLinkProvider>
+            <TopBanner />
             <LoginWrapper header={<h1>Welcome to the NBS 7 demo site</h1>}>
                 <div className={style.welcome}>
                     <main>
