@@ -1,7 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
 import gov.cdc.nbs.audit.Added;
-import gov.cdc.nbs.audit.Audit;
 import gov.cdc.nbs.audit.Changed;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -1139,23 +1138,17 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
                     .extracting(EntityId::getAudit)
-                    .satisfies(
-                        added -> assertThat(added)
-                            .extracting(Audit::added)
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        changed -> assertThat(changed)
-                            .extracting(Audit::changed)
-                            .returns(131L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
             )
             .returns("identification-type", EntityId::getTypeCd)
             .returns(Instant.parse("1999-09-09T11:59:13Z"), EntityId::getAsOfDate)
@@ -1199,23 +1192,17 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-13T13:15:30Z"), Person::getLastChgTime);
+
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)
             .satisfies(
                 identification -> assertThat(identification)
                     .extracting(EntityId::getAudit)
-                    .satisfies(
-                        added -> assertThat(added)
-                            .extracting(Audit::added)
-                            .returns(131L, Added::addedBy)
-                            .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Added::addedOn)
-                    )
-                    .satisfies(
-                        changed -> assertThat(changed)
-                            .extracting(Audit::changed)
-                            .returns(171L, Changed::changedBy)
-                            .returns(Instant.parse("2020-03-13T13:15:30Z"), Changed::changedOn)
-                    )
+                    .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                    .satisfies(AuditAssertions.changed(171L, "2020-03-13T13:15:30Z"))
             )
             .returns("updated-identification-type", EntityId::getTypeCd)
             .returns(Instant.parse("2001-05-19T11:59:00Z"), EntityId::getAsOfDate)
@@ -1261,6 +1248,10 @@ class PersonTest {
             Instant.parse("2020-03-13T13:15:30Z")
         )
     );
+
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-13T13:15:30Z"), Person::getLastChgTime);
 
     assertThat(patient.identifications()).satisfiesExactly(
         actual -> assertThat(actual)

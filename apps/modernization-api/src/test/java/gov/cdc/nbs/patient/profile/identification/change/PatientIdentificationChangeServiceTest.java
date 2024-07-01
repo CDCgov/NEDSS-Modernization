@@ -25,13 +25,10 @@ class PatientIdentificationChangeServiceTest {
     PatientIdentificationChangeService service =
         new PatientIdentificationChangeService(profileService);
 
-    NewPatientIdentificationInput input = new NewPatientIdentificationInput(
-        1021L,
-        Instant.parse("2023-06-01T03:21:00Z"),
-        "identification-type-value",
-        "authority-value",
-        "identification-value"
-    );
+    NewPatientIdentificationInput input = mock(NewPatientIdentificationInput.class);
+
+    when(input.patient()).thenReturn(1021L);
+
     RequestContext context = new RequestContext(523L, Instant.now());
 
     assertThatThrownBy(
