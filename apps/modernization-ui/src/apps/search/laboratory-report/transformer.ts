@@ -1,29 +1,76 @@
 import {
     EntryMethod,
     EventStatus,
+    LaboratoryEventDateSearch,
+    LaboratoryEventIdType,
+    LaboratoryReportEventDateType,
     LaboratoryReportStatus,
+    LabReportEventId,
     LabReportFilter,
+    LabReportProviderSearch,
     PregnancyStatus,
+    ProviderType,
     UserType
 } from 'generated/graphql/schema';
-import { LabReportFilterEntry } from './labReportFormTypes';
-import { asValue, asValues } from 'options/selectable';
+import { EventDate, Identification, LabReportFilterEntry } from './labReportFormTypes';
+import { asValue, asValues, Selectable } from 'options/selectable';
 
-export const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
+const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
+    const { orderingFacility, orderingProvider, reportingFacility, ...remaining } = data;
+
+    const providerSearch =
+        resolveOrderingFacility(orderingFacility) ||
+        resolveOrderingProvider(orderingProvider) ||
+        resolveReportingFacility(reportingFacility);
+
     return {
-        ...data,
-        codedResult: data.codedResult ? (asValue(data.codedResult) as string) : undefined,
-        createdBy: data.createdBy ? (asValue(data.createdBy) as string) : undefined,
-        jurisdictions: data.jurisdictions ? (asValues(data.jurisdictions) as string[]) : undefined,
-        eventStatus: data.eventStatus ? (asValues(data.eventStatus) as EventStatus[]) : undefined,
-        processingStatus: data.processingStatus
-            ? (asValues(data.processingStatus) as LaboratoryReportStatus[])
-            : undefined,
-        programAreas: data.programAreas ? (asValues(data.programAreas) as string[]) : undefined,
-        resultedTest: data.resultedTest ? (asValue(data.resultedTest) as string) : undefined,
-        entryMethods: data.entryMethods ? (asValues(data.entryMethods) as EntryMethod[]) : undefined,
-        enteredBy: data.enteredBy ? (asValues(data.enteredBy) as UserType[]) : undefined,
-        lastUpdatedBy: data.lastUpdatedBy ? (asValue(data.lastUpdatedBy) as string) : undefined,
-        pregnancyStatus: data.pregnancyStatus ? (asValue(data.pregnancyStatus) as PregnancyStatus) : undefined
+        codedResult: asValue(remaining.codedResult),
+        createdBy: asValue(data.createdBy),
+        jurisdictions: remaining.jurisdictions && asValues(remaining.jurisdictions),
+        eventStatus: remaining.eventStatus && (asValues(remaining.eventStatus) as EventStatus[]),
+        processingStatus:
+            remaining.processingStatus && (asValues(remaining.processingStatus) as LaboratoryReportStatus[]),
+        programAreas: remaining.programAreas && asValues(remaining.programAreas),
+        resultedTest: asValue(remaining.resultedTest),
+        entryMethods: remaining.entryMethods && (asValues(remaining.entryMethods) as EntryMethod[]),
+        enteredBy: remaining.enteredBy && (asValues(remaining.enteredBy) as UserType[]),
+        lastUpdatedBy: asValue(remaining.updatedBy),
+        pregnancyStatus: remaining.pregnancyStatus && (asValue(remaining.pregnancyStatus) as PregnancyStatus),
+        eventId: resolveEventId(remaining.identification),
+        eventDate: resolveEventDate(remaining.eventDate),
+        providerSearch
     };
 };
+
+const resolveEventDate = (date?: EventDate): LaboratoryEventDateSearch | undefined => {
+    if (date) {
+        return {
+            type: date.type.value as LaboratoryReportEventDateType,
+            from: date.from,
+            to: date.to
+        };
+    }
+};
+
+const resolveEventId = (identification?: Identification): LabReportEventId | undefined => {
+    if (identification) {
+        return {
+            labEventId: identification.value,
+            labEventType: identification.type.value as LaboratoryEventIdType
+        };
+    }
+};
+
+const resolveProvider =
+    (type: ProviderType) =>
+    (selectable?: Selectable): LabReportProviderSearch | undefined =>
+        selectable && {
+            providerId: selectable.value,
+            providerType: type
+        };
+
+const resolveOrderingFacility = resolveProvider(ProviderType.OrderingFacility);
+const resolveOrderingProvider = resolveProvider(ProviderType.OrderingProvider);
+const resolveReportingFacility = resolveProvider(ProviderType.ReportingFacility);
+
+export { transformObject };

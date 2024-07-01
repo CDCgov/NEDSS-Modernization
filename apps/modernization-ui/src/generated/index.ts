@@ -36,5 +36,6 @@ export { FacilityOptionsService } from './services/FacilityOptionsService';
 export { LoginService } from './services/LoginService';
 export { PatientRaceService } from './services/PatientRaceService';
 export { ProviderOptionsService } from './services/ProviderOptionsService';
+export { ResultedTestOptionsService } from './services/ResultedTestOptionsService';
 export { UserService } from './services/UserService';
 export { UserOptionsService } from './services/UserOptionsService';

@@ -13,8 +13,6 @@ body {
   background-repeat: no-repeat;
   background-size: 100% 60%;
   background-color: var(--base-white);
-  display: flex;
-  justify-content: center;
   font-family: sans-serif !important;
 }
 
@@ -23,7 +21,8 @@ body > div {
   padding: 2rem;
   height: fit-content;
   margin-top: 6rem;
-  min-width: 388px;
+  max-width: 24.25rem;
+  margin: 6rem auto 0 auto;
 }
 
 label {
@@ -75,18 +74,42 @@ a {
 }
 
 #kc-form-login {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #kc-form-login > div:nth-child(3) {
-	order: 2;
+  order: 2;
 }
 
 #kc-form-login > div:nth-child(4) {
-	order: 1;
+  order: 1;
 }
 
 #input-error {
-	color: red;
+  color: red;
+}
+
+#loom-companion-mv3 {
+  display: none !important;
+}
+
+.header {
+  background-color: #162e51;
+  padding: 0.5rem 1.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.login-wrapper_logo {
+  font-weight: 400;
+  font-size: 3.4375rem;
+  letter-spacing: -0.24063rem;
+}
+
+.login-header {
+  font-weight: 700;
+  font-size: 2rem;
 }

@@ -39,7 +39,7 @@ class NBS6LogoutRouteLocatorConfigurationTest {
                 .path("/nbs/logged-out")
                 .build()
         )
-        .exchange().expectStatus().isOk();;
+        .exchange().expectStatus().isOk();
   }
 
 }

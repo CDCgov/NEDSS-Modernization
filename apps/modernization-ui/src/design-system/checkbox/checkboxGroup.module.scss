@@ -1,0 +1,14 @@
+@use 'styles/colors';
+
+.checkboxGroup {
+    border: none;
+
+    legend {
+        color: colors.$base-darkest;
+    }
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

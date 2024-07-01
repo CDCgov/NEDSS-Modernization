@@ -1,21 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.create;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
 import gov.cdc.nbs.questionbank.condition.exception.ConditionCreateException;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
@@ -24,8 +8,28 @@ import gov.cdc.nbs.questionbank.condition.repository.LdfPageSetRepository;
 import gov.cdc.nbs.questionbank.condition.request.CreateConditionRequest;
 import gov.cdc.nbs.questionbank.entity.condition.ConditionCode;
 import gov.cdc.nbs.questionbank.exception.NullObjectException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 
+@ExtendWith(MockitoExtension.class)
 class ConditionCreatorTest {
 
   @Mock
@@ -40,21 +44,16 @@ class ConditionCreatorTest {
   @InjectMocks
   ConditionCreator conditionCreator;
 
-  private static final long userId = 1L;
-
-  public ConditionCreatorTest() {
-
-    MockitoAnnotations.openMocks(this);
-  }
+  private static final long USER_ID = 1L;
 
   @Test
   void createConditionTest() {
     CreateConditionRequest request = getCreateConditionRequest();
-    ConditionCode conditionDb = new ConditionCode(conditionCreator.conditionAdd(request, userId, 123));
+    ConditionCode conditionDb = new ConditionCode(conditionCreator.conditionAdd(request, USER_ID, 123));
     when(conditionCodeRepository.save(Mockito.any(ConditionCode.class))).thenReturn(conditionDb);
     when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn(0L);
     when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(0L);
-    Condition response = conditionCreator.createCondition(request, userId);
+    Condition response = conditionCreator.createCondition(request, USER_ID);
     assertEquals(conditionDb.getId(), response.id());
   }
 
@@ -72,8 +71,7 @@ class ConditionCreatorTest {
             null,
             null,
             null);
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, userId));
+    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
@@ -90,8 +88,8 @@ class ConditionCreatorTest {
             null,
             null,
             null);
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, userId));
+
+    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
@@ -108,8 +106,8 @@ class ConditionCreatorTest {
             null,
             null,
             null);
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, userId));
+
+    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
@@ -126,8 +124,8 @@ class ConditionCreatorTest {
             null,
             null,
             null);
-    when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
-    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, userId));
+
+    assertThrows(NullObjectException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
 
@@ -146,7 +144,7 @@ class ConditionCreatorTest {
             null,
             null);
     when(conditionCodeRepository.checkId(Mockito.anyString())).thenReturn((1L));
-    assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, userId));
+    assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
@@ -163,8 +161,8 @@ class ConditionCreatorTest {
             null,
             null,
             null);
-    when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1l);
-    assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, userId));
+    when(conditionCodeRepository.checkConditionName(Mockito.anyString())).thenReturn(1L);
+    assertThrows(ConditionCreateException.class, () -> conditionCreator.createCondition(request, USER_ID));
   }
 
   @Test
@@ -223,7 +221,7 @@ class ConditionCreatorTest {
   }
 
   private CreateConditionRequest getCreateConditionRequest() {
-    CreateConditionRequest request = new CreateConditionRequest(
+    return new CreateConditionRequest(
         "1",
         "code system",
         "condition name",
@@ -234,7 +232,6 @@ class ConditionCreatorTest {
         'Y',
         "family test",
         "co infection test");
-    return request;
   }
 
 }

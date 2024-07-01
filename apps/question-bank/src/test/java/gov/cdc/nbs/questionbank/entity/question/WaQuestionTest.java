@@ -91,7 +91,9 @@ class WaQuestionTest {
       }
 
       @Override
-      public void update(Update command) {}
+      public void update(Update command) {
+        //  NOOP
+      }
     };
   }
 

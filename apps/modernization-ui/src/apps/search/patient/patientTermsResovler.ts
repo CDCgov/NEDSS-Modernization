@@ -1,60 +1,60 @@
-import { Term } from 'apps/search';
+import { Term, fromSelectable, fromValue } from 'apps/search/terms';
 import { PatientCriteriaEntry } from './criteria';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
     if (entry.lastName) {
-        terms.push({ source: 'lastName', name: 'LAST', value: entry.lastName });
+        terms.push(fromValue('lastName', 'LAST')(entry.lastName));
     }
 
     if (entry.firstName) {
-        terms.push({ source: 'firstName', name: 'FIRST', value: entry.firstName });
+        terms.push(fromValue('firstName', 'FIRST')(entry.firstName));
     }
 
     if (entry.gender) {
-        terms.push({ source: 'gender', name: 'SEX', value: entry.gender.name });
+        terms.push(fromSelectable('gender', 'SEX')(entry.gender));
     }
 
     if (entry.id) {
-        terms.push({ source: 'id', name: 'ID', value: entry.id });
+        terms.push(fromValue('id', 'ID')(entry.id));
     }
 
     if (entry.address) {
-        terms.push({ source: 'address', name: 'ADDRESS', value: entry.address });
+        terms.push(fromValue('address', 'ADDRESS')(entry.address));
     }
 
     if (entry.city) {
-        terms.push({ source: 'city', name: 'CITY', value: entry.city });
+        terms.push(fromValue('city', 'CITY')(entry.city));
     }
 
     if (entry.state) {
-        terms.push({ source: 'state', name: 'STATE', value: entry.state.name });
+        terms.push(fromSelectable('state', 'STATE')(entry.state));
     }
 
     if (entry.zip) {
-        terms.push({ source: 'zip', name: 'ZIP', value: String(entry.zip) });
+        terms.push(fromValue('zip', 'ZIP')(String(entry.zip)));
     }
 
     if (entry.email) {
-        terms.push({ source: 'email', name: 'EMAIL', value: entry.email });
+        terms.push(fromValue('email', 'EMAIL')(entry.email));
     }
 
     if (entry.phoneNumber) {
-        terms.push({ source: 'phoneNumber', name: 'PHONE', value: entry.phoneNumber });
+        terms.push(fromValue('phoneNumber', 'PHONE')(entry.phoneNumber));
     }
 
     if (entry.race) {
-        terms.push({ source: 'race', name: 'RACE', value: entry.race.name });
+        terms.push(fromSelectable('race', 'RACE')(entry.race));
     }
 
     if (entry.ethnicity) {
-        terms.push({ source: 'ethnicity', name: 'ETHNICITY', value: entry.ethnicity.name });
+        terms.push(fromSelectable('ethnicity', 'ETHNICITY')(entry.ethnicity));
     }
 
     if (entry.identification && entry.identificationType) {
-        terms.push({ source: 'identificationType', name: 'ID TYPE', value: entry.identificationType.name });
-        terms.push({ source: 'identification', name: 'ID', value: entry.identification });
+        terms.push(fromSelectable('identificationType', 'ID TYPE')(entry.identificationType));
+        terms.push(fromValue('identification', 'ID')(entry.identification));
     }
 
     return terms;

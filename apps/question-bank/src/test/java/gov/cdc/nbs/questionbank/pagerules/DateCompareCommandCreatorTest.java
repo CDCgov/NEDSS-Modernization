@@ -1,14 +1,17 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Comparator;
 import gov.cdc.nbs.questionbank.pagerules.Rule.RuleFunction;
 import gov.cdc.nbs.questionbank.pagerules.Rule.SourceValue;
 import gov.cdc.nbs.questionbank.pagerules.Rule.TargetType;
 import gov.cdc.nbs.questionbank.pagerules.request.RuleRequest;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class DateCompareCommandCreatorTest {
 
@@ -28,7 +31,7 @@ class DateCompareCommandCreatorTest {
     String expected = "INV132 <  ^ DT ( INV162 , INV110 )";
     String expression = creator.createExpression(
         "INV132",
-        Arrays.asList("INV162 , INV110"),
+        List.of("INV162 , INV110"),
         "<");
     assertThat(expression).isEqualTo(expected);
   }
@@ -38,7 +41,7 @@ class DateCompareCommandCreatorTest {
     String expected = "INV132 <  ^ DT ( INV162 )";
     String expression = creator.createExpression(
         "INV132",
-        Arrays.asList("INV162"),
+        List.of("INV162"),
         "<");
     assertThat(expression).isEqualTo(expected);
   }
@@ -60,7 +63,7 @@ class DateCompareCommandCreatorTest {
         "Admission Date  must be <=  Confirmation Date";
     String errorMessage = creator.createErrorMessage(
         "Admission Date",
-        Arrays.asList("Confirmation Date"),
+        List.of("Confirmation Date"),
         "<=");
     assertThat(errorMessage).isEqualTo(expected);
   }
@@ -120,7 +123,7 @@ class DateCompareCommandCreatorTest {
           }
          return {elements : errorElts, labels : errorMsgs}
         }
-            """;
+        """;
     String functionName = creator.createJavascriptName(
         "INV132",
         10);
@@ -166,7 +169,7 @@ class DateCompareCommandCreatorTest {
           }
          return {elements : errorElts, labels : errorMsgs}
         }
-            """;
+        """;
     String functionName = creator.createJavascriptName(
         "INV132",
         10);
@@ -174,8 +177,8 @@ class DateCompareCommandCreatorTest {
         functionName,
         "INV132",
         "Admission Date",
-        Arrays.asList("INV162"),
-        Arrays.asList("Confirmation Date"),
+        List.of("INV162"),
+        List.of("Confirmation Date"),
         ">=");
 
     assertThat(javascript).isEqualTo(expected);
@@ -197,16 +200,16 @@ class DateCompareCommandCreatorTest {
         Arrays.asList("DEM161", "DEM196"),
         "source text",
         Arrays.asList("target label1", "target label2"));
-    PageContentCommand.AddRuleCommand command = creator.create(1887l, request, 3l, 9l);
+    PageContentCommand.AddRuleCommand command = creator.create(1887L, request, 3L, 9L);
     assertThat(command).isNotNull();
     assertThat(command.targetType()).isNull();
     assertThat(command.ruleFunction()).isEqualTo("Date Compare");
     assertThat(command.description()).isEqualTo("description");
     assertThat(command.comparator()).isEqualTo("=");
     assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
-    assertThat(command.page()).isEqualTo(3l);
-    assertThat(command.userId()).isEqualTo(9l);
-    assertThat(command.ruleId()).isEqualTo(1887l);
+    assertThat(command.page()).isEqualTo(3L);
+    assertThat(command.userId()).isEqualTo(9L);
+    assertThat(command.ruleId()).isEqualTo(1887L);
   }
 
 
@@ -226,13 +229,13 @@ class DateCompareCommandCreatorTest {
         Arrays.asList("DEM161", "DEM196"),
         "source text",
         Arrays.asList("target label1", "target label 2"));
-    PageContentCommand.UpdateRuleCommand command = creator.update(1887l, request, 3l);
+    PageContentCommand.UpdateRuleCommand command = creator.update(1887L, request, 3L);
     assertThat(command).isNotNull();
-    assertThat(command.targetType()).isNull();;
+    assertThat(command.targetType()).isNull();
     assertThat(command.description()).isEqualTo("description");
     assertThat(command.comparator()).isEqualTo("=");
     assertThat(command.sourceIdentifier()).isEqualTo(request.sourceIdentifier());
     assertThat(command.targetIdentifiers()).isEqualTo("DEM161,DEM196");
-    assertThat(command.userId()).isEqualTo(3l);
+    assertThat(command.userId()).isEqualTo(3L);
   }
 }

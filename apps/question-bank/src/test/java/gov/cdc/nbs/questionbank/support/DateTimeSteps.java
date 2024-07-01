@@ -6,20 +6,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class DateTimeSteps {
 
   @ParameterType(name = "past", value = "(a|[0-9]+) (day|week|month|year)(?:s?) ago")
   public Instant past(final String modifier, final String unit) {
 
-    long value = 1;
-
-    try {
-
-      value = Long.parseLong(modifier);
-    } catch (NumberFormatException exception) {
-
-    }
+    long value = Objects.equals(modifier, "a") ? 1 : Long.parseLong(modifier);
 
     ChronoUnit chronoUnit = resolve(unit);
 
