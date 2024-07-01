@@ -340,7 +340,7 @@ class PersonTest {
     );
 
     assertThat(patient)
-        .returns(131L, Person::getLastChgUserId)
+        .returns(171L, Person::getLastChgUserId)
         .returns(Instant.parse("2021-03-03T10:15:30.00Z"), Person::getLastChgTime);
 
     assertThat(patient.getNames()).satisfiesExactlyInAnyOrder(
@@ -511,6 +511,11 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
+
     assertThat(patient.addresses())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -533,6 +538,12 @@ class PersonTest {
                 .returns("Zip", PostalLocator::getZipCd)
                 .returns("country-code", PostalLocator::getCntryCd)
                 .returns("Census Tract", PostalLocator::getCensusTract)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .describedAs("expected name audit state")
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                )
         );
 
   }
@@ -581,6 +592,11 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-04T00:00:00Z"), Person::getLastChgTime);
+
+
     assertThat(patient.addresses())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -603,8 +619,12 @@ class PersonTest {
                 .returns("Zip", PostalLocator::getZipCd)
                 .returns("country-code", PostalLocator::getCntryCd)
                 .returns("Census Tract", PostalLocator::getCensusTract)
-                .returns(171L, locator -> locator.audit().changed().changedBy())
-                .returns(Instant.parse("2020-03-04T00:00:00Z"), locator -> locator.audit().changed().changedOn())
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(171L, "2020-03-04T00:00:00Z"))
+                )
+
         );
 
   }
@@ -658,6 +678,11 @@ class PersonTest {
             Instant.parse("2021-05-24T11:01:17Z")
         )
     );
+
+    assertThat(patient)
+        .returns(191L, Person::getLastChgUserId)
+        .returns(Instant.parse("2021-05-24T11:01:17Z"), Person::getLastChgTime);
+
 
     assertThat(patient.addresses())
         .satisfiesExactly(
