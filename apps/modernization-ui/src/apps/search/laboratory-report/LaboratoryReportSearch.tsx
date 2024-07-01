@@ -3,6 +3,7 @@ import { FormAccordion } from './FormAccordion';
 import { useForm } from 'react-hook-form';
 import { LabReportFilterEntry } from './labReportFormTypes';
 import { initialEntry } from './initiaEntry';
+import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 const LaboratoryReportSearch = () => {
     const labReportForm = useForm<LabReportFilterEntry>({
@@ -11,13 +12,15 @@ const LaboratoryReportSearch = () => {
     });
 
     return (
-        <SearchLayout
-            criteria={() => <FormAccordion form={labReportForm} />}
-            resultsAsList={() => <div>result list</div>}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={() => {}}
-            onClear={() => {}}
-        />
+        <SearchCriteriaProvider>
+            <SearchLayout
+                criteria={() => <FormAccordion form={labReportForm} />}
+                resultsAsList={() => <div>result list</div>}
+                resultsAsTable={() => <div>result table</div>}
+                onSearch={() => {}}
+                onClear={() => {}}
+            />
+        </SearchCriteriaProvider>
     );
 };
 
