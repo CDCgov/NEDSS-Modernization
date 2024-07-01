@@ -8,6 +8,9 @@ export const PatientCriteria = () => {
             <Accordion title="Basic information" open>
                 <BasicInformation />
             </Accordion>
+            <Accordion title="Address" open>
+                <Address />
+            </Accordion>
         </div>
     );
 };
