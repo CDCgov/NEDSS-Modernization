@@ -1,9 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.page.PageMother;
@@ -14,20 +10,29 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 public class TargetQuestionFinderSteps {
-  @Autowired
-  private PageMother mother;
+  private final PageMother mother;
 
-  @Autowired
-  private ObjectMapper mapper;
+  private final ObjectMapper mapper;
 
   private final Active<ResultActions> response;
   private final PageRuleRequester requester;
   private final Active<TargetQuestionRequest> jsonRequestBody = new Active<>();
 
-  public TargetQuestionFinderSteps(final Active<ResultActions> response, final PageRuleRequester requester) {
+  TargetQuestionFinderSteps(
+      final PageMother mother,
+      final ObjectMapper mapper,
+      final Active<ResultActions> response,
+      final PageRuleRequester requester
+  ) {
+    this.mother = mother;
+    this.mapper = mapper;
     this.response = response;
     this.requester = requester;
   }
@@ -58,6 +63,8 @@ public class TargetQuestionFinderSteps {
 
         jsonRequestBody.active(new TargetQuestionRequest(Rule.RuleFunction.REQUIRE_IF, requireQuestion, null));
         break;
+      default:
+        throw new IllegalArgumentException("Unknown target question function: " + function);
     }
 
   }

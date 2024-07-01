@@ -103,7 +103,9 @@ class WaQuestionHistTest {
       }
 
       @Override
-      public void update(Update command) {}
+      public void update(Update command) {
+        // NOOP
+      }
     };
 
     assertThrows(UpdateQuestionException.class, () -> new WaQuestionHist(question));

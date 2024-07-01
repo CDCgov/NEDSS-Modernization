@@ -16,12 +16,12 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CountyMapperTest {
 
-  CountyMapper mapper = new CountyMapper();
-
   private static final int CODE = 1;
-  private static int SHORT_DESCRIPTION = 2;
-  private static int DESCRIPTION = 3;
-  private static int CODE_SET_NAME = 4;
+  private static final int SHORT_DESCRIPTION = 2;
+  private static final int DESCRIPTION = 3;
+  private static final int CODE_SET_NAME = 4;
+
+  CountyMapper mapper = new CountyMapper();
 
   @Test
   void findByStateCodeTest() throws SQLException {
