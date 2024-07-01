@@ -17,6 +17,7 @@ public class AuditAssertions {
 
   public static Consumer<Audit> added(final long by, final Instant when) {
     return audit -> assertThat(audit)
+        .describedAs("Added by %s at %s", by, when)
         .extracting(Audit::added)
         .returns(by, Added::addedBy)
         .returns(when, Added::addedOn);
@@ -28,6 +29,7 @@ public class AuditAssertions {
 
   public static Consumer<Audit> changed(final long by, final Instant when) {
     return audit -> assertThat(audit)
+        .describedAs("Changed by %s at %s", by, when)
         .extracting(Audit::changed)
         .returns(by, Changed::changedBy)
         .returns(when, Changed::changedOn);

@@ -15,23 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@Transactional
-public class PatientEthnicityChangeService {
+ class PatientEthnicityChangeService {
 
     private final PatientEventEmitter emitter;
-    private final PatientProfileService patientProfileService;
+    private final PatientProfileService service;
 
     PatientEthnicityChangeService(
-            final PatientEventEmitter emitter, PatientProfileService patientProfileService
+            final PatientEventEmitter emitter, PatientProfileService service
     ) {
         this.emitter = emitter;
-        this.patientProfileService = patientProfileService;
+        this.service = service;
     }
 
 
-    public void update(final RequestContext context, final EthnicityInput input) {
+    void update(final RequestContext context, final EthnicityInput input) {
 
-        Person patient = patientProfileService.findPatientById(input.getPatient());
+        Person patient = service.findPatientById(input.getPatient());
 
         patient.update(
             new PatientCommand.UpdateEthnicityInfo(

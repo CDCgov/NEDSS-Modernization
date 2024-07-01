@@ -59,10 +59,6 @@ public class NBSEntity {
         this(patient.person(), "PSN");
     }
 
-    public List<EntityLocatorParticipation> getEntityLocatorParticipations() {
-        return entityLocatorParticipations;
-    }
-
     public void update(
             final PatientCommand.UpdateBirth birth,
             final AddressIdentifierGenerator identifierGenerator) {

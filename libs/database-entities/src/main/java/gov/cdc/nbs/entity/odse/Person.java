@@ -426,6 +426,7 @@ public class Person {
   }
 
   public EntityLocatorParticipation add(final PatientCommand.AddPhoneNumber phoneNumber) {
+    changed(phoneNumber);
     return this.nbsEntity.add(phoneNumber);
   }
 
@@ -434,15 +435,18 @@ public class Person {
   }
 
   public EntityLocatorParticipation add(final PatientCommand.AddPhone phone) {
+    changed(phone);
     return this.nbsEntity.add(phone);
   }
 
   public void update(final PatientCommand.UpdatePhone phone) {
     this.nbsEntity.update(phone);
+    changed(phone);
   }
 
   public void delete(final PatientCommand.DeletePhone phone) {
     this.nbsEntity.delete(phone);
+    changed(phone);
   }
 
   public Optional<EntityLocatorParticipation> update(final PatientCommand.UpdateEmailAddress emailAddress) {

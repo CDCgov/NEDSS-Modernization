@@ -743,6 +743,10 @@ class PersonTest {
         )
     );
 
+    assertThat(actual)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(actual.phoneNumbers())
         .satisfiesExactly(
             actual_phone_locator -> assertThat(actual_phone_locator)
@@ -753,7 +757,14 @@ class PersonTest {
                 .extracting(TeleEntityLocatorParticipation::getLocator)
                 .returns(5347L, TeleLocator::getId)
                 .returns("Phone Number", TeleLocator::getPhoneNbrTxt)
-                .returns("Extension", TeleLocator::getExtensionTxt));
+                .returns("Extension", TeleLocator::getExtensionTxt)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                )
+
+        );
 
   }
 
@@ -779,6 +790,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(131L, Person::getLastChgUserId)
+        .returns(Instant.parse("2020-03-03T10:15:30.00Z"), Person::getLastChgTime);
+
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -798,6 +813,11 @@ class PersonTest {
                 .returns("extension", TeleLocator::getExtensionTxt)
                 .returns("email", TeleLocator::getEmailAddress)
                 .returns("url", TeleLocator::getUrlAddress)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(131L, "2020-03-03T10:15:30.00Z"))
+                )
         );
   }
 
@@ -841,6 +861,10 @@ class PersonTest {
         )
     );
 
+    assertThat(patient)
+        .returns(171L, Person::getLastChgUserId)
+        .returns(Instant.parse("2023-07-01T13:17:00Z"), Person::getLastChgTime);
+
     assertThat(patient.phoneNumbers())
         .satisfiesExactly(
             actual -> assertThat(actual)
@@ -862,6 +886,11 @@ class PersonTest {
                 .returns("updated-extension", TeleLocator::getExtensionTxt)
                 .returns("updated-email", TeleLocator::getEmailAddress)
                 .returns("updated-url", TeleLocator::getUrlAddress)
+                .satisfies(
+                    added -> assertThat(added.audit())
+                        .satisfies(AuditAssertions.added(131L, "2020-03-03T10:15:30.00Z"))
+                        .satisfies(AuditAssertions.changed(171L, "2023-07-01T13:17:00Z"))
+                )
         );
   }
 
@@ -913,6 +942,10 @@ class PersonTest {
             Instant.parse("2023-03-03T10:15:30.00Z")
         )
     );
+
+    assertThat(patient)
+        .returns(293L, Person::getLastChgUserId)
+        .returns(Instant.parse("2023-03-03T10:15:30.00Z"), Person::getLastChgTime);
 
     assertThat(patient.phones())
         .satisfiesExactly(
