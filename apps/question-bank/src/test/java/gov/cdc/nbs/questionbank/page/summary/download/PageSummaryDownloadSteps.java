@@ -52,6 +52,8 @@ public class PageSummaryDownloadSteps {
             criteria.active(),
             pageable.maybeActive().orElse(null)));
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported file type specified");
     }
   }
 
@@ -65,6 +67,8 @@ public class PageSummaryDownloadSteps {
       case "pdf":
         validatePdfContainsAll(response);
         break;
+      default:
+        throw new IllegalArgumentException("Unsupported file type specified");
     }
   }
 
