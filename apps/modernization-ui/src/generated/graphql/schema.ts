@@ -356,6 +356,8 @@ export type LabReportFilter = {
   eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['ID']['input']>;
+  orderingLabId?: InputMaybe<Scalars['ID']['input']>;
+  orderingProviderId?: InputMaybe<Scalars['ID']['input']>;
   patientId?: InputMaybe<Scalars['Int']['input']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
@@ -1131,6 +1133,8 @@ export type PatientLabReportFilter = {
   eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
   jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   lastUpdatedBy?: InputMaybe<Scalars['ID']['input']>;
+  orderingLabId?: InputMaybe<Scalars['ID']['input']>;
+  orderingProviderId?: InputMaybe<Scalars['ID']['input']>;
   patientId?: InputMaybe<Scalars['Int']['input']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;

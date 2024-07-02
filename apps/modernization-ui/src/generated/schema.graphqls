@@ -292,7 +292,6 @@ enum LaboratoryReportStatus {
   UNPROCESSED
 }
 
-
 input LabReportFilter {
   patientId: Int
   programAreas: [String]
@@ -309,6 +308,8 @@ input LabReportFilter {
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
+  orderingLabId: ID
+  orderingProviderId: ID
 }
 
 input LabReportEventId {
@@ -583,6 +584,8 @@ input PatientLabReportFilter {
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
+  orderingLabId: ID
+  orderingProviderId: ID
 }
 
 type PatientLabReport {
