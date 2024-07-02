@@ -4,8 +4,7 @@ An entry point for an NBS 6.X Application that allows a Strangler Fig approach t
 
 ## Running
 
-The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It can be started from the
-root directory by executing;
+The NBS Gateway is a Spring Cloud Gateway application that runs on port `8000` by default. It requires the `OIDC_CLIENT_SECRET` environment variable be set. This can be done by running `export OIDC_CLIENT_SECRET=<the value>` or by setting `nbs.security.oidc.client.secret` directly within an `application-local.yml`. The application can be started from the root directory by executing;
 
 ```bash
 ./gradlew nbs-gateway:bootRun
