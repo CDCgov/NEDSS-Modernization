@@ -36,34 +36,41 @@ public class PatientProfileService {
     Person patient = this.entityManager.find(Person.class, identifier);
     if (patient != null) {
       long before = PatientChangeHash.compute(patient);
-      consumer.andThen(recordHistory(before)).accept(patient);
+      consumer.andThen(resolveHistory(before)).accept(patient);
     } else {
       throw new PatientNotFoundException(identifier);
     }
   }
 
-  private Consumer<Person> recordHistory(final long before) {
-    return patient -> {
-      long after = PatientChangeHash.compute(patient);
-
-      if (before != after) {
-        int version = patient.getVersionCtrlNbr() - 1;
-        this.historyCreator.create(patient.getId(), version);
-
-      }
-    };
+  private Consumer<Person> resolveHistory(final long before) {
+    return updated -> maybeRecordHistory(before, updated);
   }
 
-  public Person findPatientById(long patient) throws PatientNotFoundException {
-    return this.entityManager.find(Person.class, patient);
+  private void maybeRecordHistory(final long before, final Person patient) {
+    long after = PatientChangeHash.compute(patient);
+
+    if (before != after) {
+      int version = patient.getVersionCtrlNbr() - 1;
+      this.historyCreator.create(patient.getId(), version);
+
+    }
   }
 
   @Transactional
   public <M> Optional<M> with(final long identifier, final Function<Person, M> fn) {
     Person patient = this.entityManager.find(Person.class, identifier);
     return patient != null
-        ? Optional.of(fn.apply(patient))
+        ? with(patient, fn)
         : Optional.empty();
   }
 
+  private <M> Optional<M> with(final Person patient, final Function<Person, M> fn) {
+    long before = PatientChangeHash.compute(patient);
+
+    M mapped = fn.apply(patient);
+
+    maybeRecordHistory(before, patient);
+
+    return Optional.ofNullable(mapped);
+  }
 }
