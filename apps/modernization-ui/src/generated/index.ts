@@ -33,6 +33,7 @@ export { ConditionOptionsService } from './services/ConditionOptionsService';
 export { ConfigurationControllerService } from './services/ConfigurationControllerService';
 export { EncryptionControllerService } from './services/EncryptionControllerService';
 export { FacilityOptionsService } from './services/FacilityOptionsService';
+export { JurisdictionOptionsService } from './services/JurisdictionOptionsService';
 export { LoginService } from './services/LoginService';
 export { PatientRaceService } from './services/PatientRaceService';
 export { ProviderOptionsService } from './services/ProviderOptionsService';
