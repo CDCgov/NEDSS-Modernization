@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Selectable, useMultiSelection } from 'options';
 import { Checkbox } from './Checkbox';
 import styles from './checkboxGroup.module.scss';
+import { ErrorMessage } from '@trussworks/react-uswds';
 
 type Props = {
     name: string;
@@ -13,8 +14,19 @@ type Props = {
     value?: Selectable[];
     onChange?: (selected: Selectable[]) => void;
     onBlur?: (event: ReactFocusEvent<HTMLElement>) => void;
+    error?: string;
 };
-export const CheckboxGroup = ({ name, label, options, value = [], onChange, disabled = false, className }: Props) => {
+export const CheckboxGroup = ({
+    name,
+    label,
+    options,
+    value = [],
+    onChange,
+    onBlur,
+    disabled = false,
+    className,
+    error
+}: Props) => {
     const { items, selected, select, deselect } = useMultiSelection({ available: options, selected: value });
 
     useEffect(() => {
@@ -34,6 +46,7 @@ export const CheckboxGroup = ({ name, label, options, value = [], onChange, disa
     return (
         <fieldset className={classNames(styles.checkboxGroup, className)}>
             <legend>{label}</legend>
+            {error ? <ErrorMessage>{error}</ErrorMessage> : null}
             <div className={styles.options}>
                 {items.map((item, index) => (
                     <Checkbox
@@ -43,6 +56,7 @@ export const CheckboxGroup = ({ name, label, options, value = [], onChange, disa
                         onChange={handleChange(item.value)}
                         selected={item.selected}
                         disabled={disabled}
+                        onBlur={onBlur}
                     />
                 ))}
             </div>
