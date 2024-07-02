@@ -51,8 +51,7 @@ const mockSearchCriteria = {
 const GeneralFieldsWithForm = () => {
     const form = useForm<LabReportFilterEntry>({
         defaultValues: {
-            eventId: null,
-            providerSearch: null
+            eventId: null
         }
     });
     return (

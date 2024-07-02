@@ -4,22 +4,18 @@ import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import {
     EntryMethod,
     EventStatus,
-    LaboratoryEventIdType,
     LaboratoryReportEventDateType,
     LaboratoryReportStatus,
     PregnancyStatus,
-    ProviderType,
     UserType
 } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { ChangeEvent } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
-import { LabReportFilterEntry } from './labReportFormTypes';
+import { entityTypes, identificationTypes, LabReportFilterEntry } from './labReportFormTypes';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
@@ -42,26 +38,22 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
         onChange(e);
     };
 
-    const handleEventIdTypeChange = (
-        e: ChangeEvent<HTMLSelectElement>,
-        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
-    ): void => {
+    const handleEventIdTypeChange = (e: Selectable | undefined, onChange: (event: Selectable) => void): void => {
         // Clear event id field on deselect
-        if (e.target.value === '') {
-            form.resetField('eventId.labEventId');
+        if (!e || e?.value === '') {
+            form.resetField('eventType');
+        } else {
+            onChange(e);
         }
-        onChange(e);
     };
 
-    const handleFacilityTypeChange = (
-        e: ChangeEvent<HTMLSelectElement>,
-        onChange: (event: ChangeEvent<HTMLSelectElement>) => void
-    ): void => {
+    const handleFacilityTypeChange = (e: Selectable | undefined, onChange: (event: Selectable) => void): void => {
         // Clear event id field on deselect
-        if (e.target.value === '') {
-            form.resetField('providerSearch.providerId');
+        if (!e || e.value === '') {
+            form.resetField('providerType');
+        } else {
+            onChange(e);
         }
-        onChange(e);
     };
 
     return (
@@ -138,29 +130,23 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
 
             <Controller
                 control={form.control}
-                name="eventId.labEventType"
+                name="eventType"
                 render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
+                    <SingleSelect
                         name={name}
-                        value={(value as string) ?? undefined}
+                        value={value}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
                         label="Event id type"
-                        htmlFor={name}
-                        dataTestid={name}
-                        options={Object.values(LaboratoryEventIdType).map((event) => {
-                            return {
-                                name: formatInterfaceString(event),
-                                value: event
-                            };
-                        })}
+                        id={name}
+                        options={identificationTypes}
                     />
                 )}
             />
 
-            {watch.eventId?.labEventType ? (
+            {watch.eventType?.value ? (
                 <Controller
                     control={form.control}
-                    name="eventId.labEventId"
+                    name="eventId"
                     rules={{
                         required: { value: true, message: 'Event Id is required' }
                     }}
@@ -349,36 +335,30 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             />
             <Controller
                 control={form.control}
-                name="lastUpdatedBy"
+                name="updatedBy"
                 render={({ field: { onChange, name } }) => (
                     <UserAutocomplete id={name} onChange={onChange} label="Event updated by user" />
                 )}
             />
             <Controller
                 control={form.control}
-                name="providerSearch.providerType"
+                name="providerType"
                 render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
+                    <SingleSelect
                         name={name}
-                        value={value as string | undefined}
+                        value={value}
                         onChange={(e) => handleFacilityTypeChange(e, onChange)}
                         label="Event provider/facility type"
-                        htmlFor={name}
-                        dataTestid={name}
-                        options={Object.values(ProviderType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        options={entityTypes}
+                        id={name}
                     />
                 )}
             />
 
-            {watch.providerSearch?.providerType == 'ORDERING_FACILITY' && (
+            {watch.providerType?.value == 'ORDERING_FACILITY' && (
                 <Controller
                     control={form.control}
-                    name="providerSearch.providerId"
+                    name="orderingFacility"
                     rules={{
                         required: { value: true, message: `Ordering facility is required` }
                     }}
@@ -397,10 +377,10 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 />
             )}
 
-            {watch.providerSearch?.providerType == 'ORDERING_PROVIDER' && (
+            {watch.providerType?.value == 'ORDERING_PROVIDER' && (
                 <Controller
                     control={form.control}
-                    name="providerSearch.providerId"
+                    name="orderingProvider"
                     rules={{
                         required: { value: true, message: `Ordering provider is required` }
                     }}
@@ -420,10 +400,10 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 />
             )}
 
-            {watch.providerSearch?.providerType == 'REPORTING_FACILITY' && (
+            {watch.providerType?.value == 'REPORTING_FACILITY' && (
                 <Controller
                     control={form.control}
-                    name="providerSearch.providerId"
+                    name="reportingFacility"
                     rules={{
                         required: { value: true, message: `Facility is required` }
                     }}

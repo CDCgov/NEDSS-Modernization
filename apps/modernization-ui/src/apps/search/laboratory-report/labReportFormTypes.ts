@@ -1,4 +1,3 @@
-import { LabReportEventId, LabReportProviderSearch } from 'generated/graphql/schema';
 import { Selectable } from 'options';
 import { asSelectable } from 'options/selectable';
 
@@ -24,11 +23,11 @@ type General = {
     enteredBy?: Selectable[];
     entryMethods?: Selectable[];
     eventDate?: EventDate;
-    eventId?: LabReportEventId | null;
+    eventId?: Identification['value'];
+    eventType?: Identification['type'];
     identification?: Identification;
     eventStatus?: Selectable[];
     jurisdictions?: Selectable[];
-    lastUpdatedBy?: Selectable;
     patientId?: number;
     entityType?: Selectable;
     orderingFacility?: Selectable;
@@ -37,7 +36,7 @@ type General = {
     pregnancyStatus?: Selectable;
     processingStatus?: Selectable[];
     programAreas?: Selectable[];
-    providerSearch?: LabReportProviderSearch | null;
+    providerType?: Selectable;
 } & ReportCriteria;
 
 type LabReportFilterEntry = General & ReportCriteria;

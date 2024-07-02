@@ -10,7 +10,7 @@ import { SearchNavigation } from './navigation/SearchNavigation';
 
 type Renderer = () => ReactNode;
 
-export type Props = {
+type Props = {
     actions?: Renderer;
     criteria: Renderer;
     resultsAsList: Renderer;
