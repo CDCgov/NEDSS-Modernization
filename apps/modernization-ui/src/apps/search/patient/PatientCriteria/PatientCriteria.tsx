@@ -14,7 +14,7 @@ export const PatientCriteria = () => {
                 <Address />
             </Accordion>
             <Accordion title="Contact" open>
-                <Contact control={control} />
+                <Contact />
             </Accordion>
         </div>
     );

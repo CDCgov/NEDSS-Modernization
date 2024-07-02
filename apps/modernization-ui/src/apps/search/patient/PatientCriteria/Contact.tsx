@@ -1,14 +1,10 @@
 import { Input } from 'components/FormInputs/Input';
-import { Control, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { validate as validatePhoneNumber } from 'validation/search';
 import styles from './contact.module.scss';
-import { PatientCriteriaEntry } from '../criteria';
 
-type Props = {
-    control: Control<PatientCriteriaEntry>;
-};
-
-export const Contact = ({ control }: Props) => {
+export const Contact = () => {
+    const { control } = useFormContext();
     return (
         <div className={styles.contact}>
             <Controller
