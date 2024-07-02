@@ -1,4 +1,4 @@
-import { PatientCriteriaForm } from "./PatientCriteria"
+import { PatientCriteriaForm } from "../patientSearch/PatientCriteria";
 import { transformObject } from "./transformer";
 
 describe('when transformObject runs', () => {
