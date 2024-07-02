@@ -36,6 +36,15 @@ The steps outlined in this README should get the system up and running quickly f
 3. Database restore files from a point-in-time backup that was provided. The corresponding upgrade scripts found [here](https://github.com/cdcent/NEDSSDB/tree/master/NBS_DB/db/Disk_Database/WINDOWS/DB%20Setup%20Scripts-Release%20Upgrade/MS%20SQL) have been applied to migrate the database to version `6.0.15`.
 
 ## Build
+Secrets must be provided at build time for the various containers. The following example sets all required variables.
+
+```sh
+export DATABASE_PASSWORD=
+export NIFI_PASSWORD=
+export KEYCLOAK_ADMIN_PASSWORD=
+export PARAMETER_SECRET=
+export TOKEN_SECRET=
+```
 
 A convenience script has been provided to automate the build of the container images.
 (Linux/MacOS)
