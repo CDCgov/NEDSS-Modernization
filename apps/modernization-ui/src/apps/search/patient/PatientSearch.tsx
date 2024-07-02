@@ -12,7 +12,7 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 const PatientSearch = () => {
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues: initial,
-        mode: 'onChange'
+        mode: 'onBlur'
     });
 
     const {

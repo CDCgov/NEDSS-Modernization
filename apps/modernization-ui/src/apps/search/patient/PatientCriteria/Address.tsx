@@ -1,10 +1,12 @@
 import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import styles from './address.module.scss';
+import { PatientCriteriaEntry } from '../criteria';
+import { SinlgeSelect } from 'design-system/select';
 
-export const Address = ({ control }: any) => {
+export const Address = () => {
+    const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
         <SearchCriteriaProvider>
             <div className={styles.address}>
@@ -42,13 +44,18 @@ export const Address = ({ control }: any) => {
                             control={control}
                             name="state"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
-                                    defaultValue={value}
+                                <SinlgeSelect
+                                    // defaultValue={asValue(value)}
+                                    value={value}
                                     onChange={onChange}
                                     label="State"
-                                    htmlFor={name}
+                                    // htmlFor={name}
                                     id={name}
-                                    options={searchCriteria.states}
+                                    options={searchCriteria.states.map((state) => ({
+                                        name: state.name,
+                                        label: state.name,
+                                        value: state.value
+                                    }))}
                                 />
                             )}
                         />
@@ -67,7 +74,7 @@ export const Address = ({ control }: any) => {
                         <Input
                             onBlur={onBlur}
                             onChange={onChange}
-                            defaultValue={value}
+                            defaultValue={value?.toString()}
                             type="text"
                             label="Zip code"
                             htmlFor={name}
