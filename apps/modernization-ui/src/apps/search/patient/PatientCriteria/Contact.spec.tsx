@@ -3,17 +3,7 @@ import { Contact } from './Contact';
 import { PatientCriteriaEntry } from '../criteria';
 import { FormProvider, useForm } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
-
-
-const link = createHttpLink();
-
-const cache = new InMemoryCache();
-
-const client = new ApolloClient({
-    link,
-    cache
-})
+import { MockedProvider } from '@apollo/react-testing';
 
 const { result } = renderHook(() =>
     useForm<PatientCriteriaEntry>({
@@ -24,16 +14,16 @@ const { result } = renderHook(() =>
 
 const setup = () => {
     return render (
-        <ApolloProvider client={client}>
+        <MockedProvider>
             <FormProvider {...result.current}>
                 <Contact />
             </FormProvider>
-        </ApolloProvider>
+        </MockedProvider>
     );
 };
 
 describe('when Address renders', () => {
-    it('should render 3 input fields', () => {
+    it('should render 2 input fields', () => {
         const { container } = setup();
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(2);
