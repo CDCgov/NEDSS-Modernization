@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
 import { Contact } from './Contact';
 import { PatientCriteriaEntry } from '../criteria';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
+import { renderHook } from '@testing-library/react-hooks';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 
 
@@ -13,19 +14,27 @@ const client = new ApolloClient({
     link,
     cache
 })
-const Component = () => {
-    const { control } = useForm<PatientCriteriaEntry>({
-        defaultValues: {
-            status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }]
-        },
-        mode: 'onBlur'
-    });
-    return <ApolloProvider client={client}><Contact control={control} /></ApolloProvider>;
-}
+
+const { result } = renderHook(() =>
+    useForm<PatientCriteriaEntry>({
+        mode: 'onChange',
+        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
+    })
+);
+
+const setup = () => {
+    return render (
+        <ApolloProvider client={client}>
+            <FormProvider {...result.current}>
+                <Contact />
+            </FormProvider>
+        </ApolloProvider>
+    );
+};
 
 describe('when Address renders', () => {
     it('should render 3 input fields', () => {
-        const { container } = render(<Component />);
+        const { container } = setup();
         const inputs = container.getElementsByTagName('input');
         expect(inputs.length).toBe(2);
     });
