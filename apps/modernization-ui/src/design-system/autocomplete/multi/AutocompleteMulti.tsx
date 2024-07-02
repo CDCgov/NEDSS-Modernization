@@ -18,7 +18,7 @@ const CheckedOption = (props: any) => {
 
 const asSelectableDisplay = (selectable: Selectable) => selectable.name;
 
-type AutocompleteMultiProps = {
+export type AutocompleteMultiProps = {
     id: string;
     name: string;
     label: string;
