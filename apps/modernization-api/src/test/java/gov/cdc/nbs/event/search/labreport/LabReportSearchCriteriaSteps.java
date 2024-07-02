@@ -163,6 +163,9 @@ public class LabReportSearchCriteriaSteps {
               provider))
           .ifPresent(filter::setProviderSearch);
 
+      case "ordering facility new api" -> orderingFacility()
+          .ifPresent(filter::setOrderingLabId);
+
       case "reporting facility" -> reportingFacility().map(
           provider -> providerSearch(
               LabReportFilter.ProviderType.REPORTING_FACILITY,
