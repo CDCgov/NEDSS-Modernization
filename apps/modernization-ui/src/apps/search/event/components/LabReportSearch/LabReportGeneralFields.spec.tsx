@@ -214,6 +214,10 @@ describe('LabReportGeneralFields component', () => {
         // Event provider/facility type
         const providerSelect = getByTestId('providerSearch.providerType');
         expect(providerSelect).toHaveValue(ProviderType.OrderingFacility);
+
+        // Provider/facility id
+        const providerId = getByTestId('providerSearch.providerId');
+        expect(providerId).toHaveValue('');
     });
 
     it('should clear date fields when date type is deselected', async () => {

@@ -52,7 +52,6 @@ const GeneralFieldsWithForm = () => {
     const form = useForm<LabReportFilterEntry>({
         defaultValues: {
             eventId: null,
-            eventDate: null,
             providerSearch: null
         }
     });

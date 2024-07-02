@@ -1,4 +1,4 @@
-import { Checkbox, ErrorMessage, Label } from '@trussworks/react-uswds';
+import { ErrorMessage } from '@trussworks/react-uswds';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
@@ -22,16 +22,13 @@ import { formatInterfaceString } from 'utils/util';
 import { LabReportFilterEntry } from './labReportFormTypes';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
+import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 
 type LabReportGeneralFieldProps = {
     form: UseFormReturn<LabReportFilterEntry>;
 };
 export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
     const watch = useWatch({ control: form.control });
-    let entryMethodArr: Selectable[] = [];
-    let enteredByArr: Selectable[] = [];
-    let eventStatusArr: Selectable[] = [];
-    let processingStatusArr: Selectable[] = [];
 
     const handleEventDateTypeChange = (
         e: Selectable | undefined,
@@ -65,11 +62,6 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             form.resetField('providerSearch.providerId');
         }
         onChange(e);
-    };
-
-    const updateCheckboxes = (arr: Selectable[], value: string) => {
-        const updatedArr = entryMethodArr.filter((item) => item.value !== value);
-        return updatedArr;
     };
 
     return (
@@ -256,137 +248,97 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 </>
             ) : null}
 
-            <Label htmlFor={'entryMethod'}>
-                Entry method
-                <Controller
-                    control={form.control}
-                    name="entryMethods"
-                    render={({ field: { onChange, value } }) => {
-                        entryMethodArr = value || [];
-                        return (
-                            <div className="grid-row">
-                                {Object.values(EntryMethod).map((status, index) => (
-                                    <Checkbox
-                                        checked={value?.some((item) => item.name === status)}
-                                        key={index}
-                                        id={status}
-                                        name={status}
-                                        label={formatInterfaceString(status.toLowerCase())}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                entryMethodArr.push({ name: status, value: status, label: status });
-                                                onChange(entryMethodArr);
-                                            } else {
-                                                onChange(updateCheckboxes(entryMethodArr, status));
-                                            }
-                                        }}
-                                        className="checkbox-input"
-                                    />
-                                ))}
-                            </div>
-                        );
-                    }}
-                />
-            </Label>
-
-            <Label htmlFor={'enteredBy'}>
-                Entered by
-                <Controller
-                    control={form.control}
-                    name="enteredBy"
-                    render={({ field: { onChange, value } }) => {
-                        enteredByArr = value || [];
-                        return (
-                            <div className="grid-row">
-                                {Object.values(UserType).map((item, index) => (
-                                    <Checkbox
-                                        checked={value?.some((enteredBy) => enteredBy.name === item)}
-                                        key={index}
-                                        id={item}
-                                        name={item}
-                                        label={formatInterfaceString(item.toLowerCase())}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                enteredByArr.push({ name: item, value: item, label: item });
-                                                onChange(enteredByArr);
-                                            } else {
-                                                onChange(updateCheckboxes(enteredByArr, item));
-                                            }
-                                        }}
-                                        className="checkbox-input"
-                                    />
-                                ))}
-                            </div>
-                        );
-                    }}
-                />
-            </Label>
-
-            <Label htmlFor={'eventStatus'}>
-                Event status
-                <Controller
-                    control={form.control}
-                    name="eventStatus"
-                    render={({ field: { onChange, value } }) => (
-                        <div className="grid-row">
-                            {Object.values(EventStatus).map((item, index) => {
-                                eventStatusArr = value || [];
-                                return (
-                                    <Checkbox
-                                        checked={value?.some((eventStatus) => eventStatus.name === item)}
-                                        key={index}
-                                        id={item}
-                                        name={item}
-                                        label={formatInterfaceString(item.toLowerCase())}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                eventStatusArr.push({ name: item, value: item, label: item });
-                                                onChange(eventStatusArr);
-                                            } else {
-                                                onChange(updateCheckboxes(eventStatusArr, item));
-                                            }
-                                        }}
-                                        className="checkbox-input"
-                                    />
-                                );
+            <Controller
+                control={form.control}
+                name="entryMethods"
+                render={({ field: { onChange, value, name } }) => (
+                    <div className="grid-row">
+                        <CheckboxGroup
+                            name={name}
+                            className="padding-0"
+                            label="Entry method"
+                            options={Object.values(EntryMethod).map((item) => {
+                                return {
+                                    name: item,
+                                    label: item,
+                                    value: item
+                                };
                             })}
-                        </div>
-                    )}
-                />
-            </Label>
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </div>
+                )}
+            />
 
-            <Label htmlFor={'processingStatus'}>
-                Processing status
-                <Controller
-                    control={form.control}
-                    name="processingStatus"
-                    render={({ field: { onChange, value } }) => {
-                        processingStatusArr = value || [];
-                        return (
-                            <div className="grid-row">
-                                {Object.values(LaboratoryReportStatus).map((item, index) => (
-                                    <Checkbox
-                                        checked={value?.some((processingStatus) => processingStatus.name === item)}
-                                        key={index}
-                                        id={item}
-                                        name={item}
-                                        label={formatInterfaceString(item.toLowerCase())}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                processingStatusArr.push({ name: item, value: item, label: item });
-                                                onChange(processingStatusArr);
-                                            } else {
-                                                onChange(updateCheckboxes(processingStatusArr, item));
-                                            }
-                                        }}
-                                        className="checkbox-input"
-                                    />
-                                ))}
-                            </div>
-                        );
-                    }}
-                />
-            </Label>
+            <Controller
+                control={form.control}
+                name="enteredBy"
+                render={({ field: { onChange, value, name } }) => (
+                    <div className="grid-row">
+                        <CheckboxGroup
+                            name={name}
+                            className="padding-0"
+                            label="Entered by"
+                            options={Object.values(UserType).map((item) => {
+                                return {
+                                    name: item,
+                                    label: item,
+                                    value: item
+                                };
+                            })}
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </div>
+                )}
+            />
+
+            <Controller
+                control={form.control}
+                name="eventStatus"
+                render={({ field: { onChange, value, name } }) => (
+                    <div className="grid-row">
+                        <CheckboxGroup
+                            name={name}
+                            className="padding-0"
+                            label="Event status"
+                            options={Object.values(EventStatus).map((item) => {
+                                return {
+                                    name: item,
+                                    label: item,
+                                    value: item
+                                };
+                            })}
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </div>
+                )}
+            />
+
+            <Controller
+                control={form.control}
+                name="processingStatus"
+                render={({ field: { onChange, value, name } }) => (
+                    <div className="grid-row">
+                        <CheckboxGroup
+                            name={name}
+                            className="padding-0"
+                            label="Processing status"
+                            options={Object.values(LaboratoryReportStatus).map((item) => {
+                                return {
+                                    name: item,
+                                    label: item,
+                                    value: item
+                                };
+                            })}
+                            value={value}
+                            onChange={onChange}
+                        />
+                    </div>
+                )}
+            />
 
             <Controller
                 control={form.control}
