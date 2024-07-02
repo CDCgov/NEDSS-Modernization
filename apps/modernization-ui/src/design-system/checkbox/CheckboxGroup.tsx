@@ -22,6 +22,7 @@ export const CheckboxGroup = ({
     options,
     value = [],
     onChange,
+    onBlur,
     disabled = false,
     className,
     error
@@ -55,6 +56,7 @@ export const CheckboxGroup = ({
                         onChange={handleChange(item.value)}
                         selected={item.selected}
                         disabled={disabled}
+                        onBlur={onBlur}
                     />
                 ))}
             </div>

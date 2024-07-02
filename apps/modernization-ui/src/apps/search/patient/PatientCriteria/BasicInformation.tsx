@@ -1,5 +1,4 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { asValue } from 'options';
 import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
@@ -7,9 +6,35 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { RecordStatus } from 'generated/graphql/schema';
 import styles from './basic-information.module.scss';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import { Selectable } from 'options';
 
 export const BasicInformation = () => {
     const { control } = useFormContext();
+
+    const genderOptions: Selectable[] = [
+        { name: 'Male', label: 'Male', value: 'M' },
+        { name: 'Female', label: 'Female', value: 'F' },
+        { name: 'Other', label: 'Other', value: 'U' }
+    ];
+
+    const statusOptions: Selectable[] = [
+        {
+            name: 'Active',
+            label: 'Active',
+            value: RecordStatus.Active
+        },
+        {
+            name: 'Deleted',
+            label: 'Deleted',
+            value: RecordStatus.LogDel
+        },
+        {
+            name: 'Superceded',
+            label: 'Superceded',
+            value: RecordStatus.Superceded
+        }
+    ];
+
     return (
         <div className={styles.basic}>
             <Controller
@@ -66,17 +91,13 @@ export const BasicInformation = () => {
                 name="gender"
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
-                        defaultValue={asValue(value)}
+                        defaultValue={value}
                         onChange={onChange}
                         name={name}
                         htmlFor={name}
                         label="Sex"
                         id={name}
-                        options={[
-                            { name: 'Male', value: 'M' },
-                            { name: 'Female', value: 'F' },
-                            { name: 'Other', value: 'U' }
-                        ]}
+                        options={genderOptions}
                     />
                 )}
             />
@@ -104,30 +125,15 @@ export const BasicInformation = () => {
                         return true; // No error
                     }
                 }}
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <CheckboxGroup
                         name={name}
                         className={styles.statusCheckboxes}
                         label={'Status'}
-                        options={[
-                            {
-                                name: 'Active',
-                                label: 'Active',
-                                value: RecordStatus.Active
-                            },
-                            {
-                                name: 'Deleted',
-                                label: 'Deleted',
-                                value: RecordStatus.LogDel
-                            },
-                            {
-                                name: 'Superceded',
-                                label: 'Superceded',
-                                value: RecordStatus.Superceded
-                            }
-                        ]}
+                        options={statusOptions}
                         value={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                         error={error?.message}
                     />
                 )}
