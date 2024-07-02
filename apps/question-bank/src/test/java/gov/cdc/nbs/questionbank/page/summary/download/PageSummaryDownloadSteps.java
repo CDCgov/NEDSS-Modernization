@@ -1,11 +1,5 @@
 package gov.cdc.nbs.questionbank.page.summary.download;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.io.IOException;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.web.servlet.ResultActions;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import gov.cdc.nbs.questionbank.page.summary.search.PageSummaryRequest;
@@ -15,6 +9,14 @@ import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.io.IOException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PageSummaryDownloadSteps {
 
@@ -75,13 +77,15 @@ public class PageSummaryDownloadSteps {
       case "csv":
         String content = response.active().andReturn().getResponse().getContentAsString();
         dataTable.asList()
-            .forEach(h -> assertThat(content.contains(h)));
+            .forEach(h -> assertThat(content).contains(h));
         break;
       case "pdf":
         String textContent = getPdfTextContent(response);
         dataTable.asList()
-            .forEach(h -> assertThat(textContent.contains(h)));
+            .forEach(h -> assertThat(textContent).contains(h));
         break;
+      default:
+        throw new IllegalArgumentException("Unknown file type: " + type);
     }
   }
 
@@ -97,7 +101,10 @@ public class PageSummaryDownloadSteps {
         String textContent = getPdfTextContent(response);
         assertThat(textContent.split("\n").length - 1).isEqualTo(count); // -1 for header row
         break;
+      default:
+        throw new IllegalArgumentException("Unknown file type: " + type);
     }
+
   }
 
   private String getPdfTextContent(Active<ResultActions> response) throws IOException {

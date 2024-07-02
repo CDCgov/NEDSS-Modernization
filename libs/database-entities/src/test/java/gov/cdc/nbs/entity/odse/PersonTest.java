@@ -1032,7 +1032,7 @@ class PersonTest {
 
     assertThat(patient.getEthnicity().ethnicities())
         .satisfiesExactlyInAnyOrder(
-            actual_detail -> assertThat(actual_detail)
+            detail -> assertThat(detail)
                 .returns("ACTIVE", PersonEthnicGroup::getRecordStatusCd)
                 .extracting(PersonEthnicGroup::getId)
                 .returns(121L, PersonEthnicGroupId::getPersonUid)

@@ -135,7 +135,7 @@ class WaUiMetadataTest {
 
       @Override
       public void update(Update command) {
-
+        // NOOP
       }
     };
 
