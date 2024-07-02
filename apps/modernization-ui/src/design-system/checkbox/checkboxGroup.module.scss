@@ -2,13 +2,15 @@
 
 .checkboxGroup {
     border: none;
-
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
     legend {
         color: colors.$base-darkest;
     }
     .options {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 0.5rem;
     }
 }
