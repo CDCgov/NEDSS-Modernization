@@ -32,8 +32,7 @@ public class ReadOnlyCommentsSteps {
       final StaticRequest request,
       final ObjectMapper mapper,
       final PageMother mother,
-      final ExceptionHolder exceptionHolder
-  ) {
+      final ExceptionHolder exceptionHolder) {
     this.request = request;
     this.mapper = mapper;
     this.mother = mother;
@@ -79,10 +78,11 @@ public class ReadOnlyCommentsSteps {
   @When("I update a read only comments with {string} of {string}")
   public void i_update_a_read_only_comments_of(String key, String value) {
     switch (key) {
-      case ("commentsText") ->
-          this.updateRequest.active(UpdateStaticRequestHelper.withComments(updateRequest.active(), value));
+      case ("commentsText") -> this.updateRequest
+          .active(UpdateStaticRequestHelper.withComments(updateRequest.active(), value));
       case ("adminComments") -> this.updateRequest.active(
           UpdateStaticRequestHelper.withReadOnlyCommentsAdminComments(updateRequest.active(), value));
+      default -> throw new IllegalArgumentException("Unsupported key for step");
     }
   }
 
