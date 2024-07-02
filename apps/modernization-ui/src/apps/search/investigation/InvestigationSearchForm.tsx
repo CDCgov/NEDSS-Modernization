@@ -1,8 +1,9 @@
 import React from 'react';
-import { Form } from '@trussworks/react-uswds';
 import GeneralSearchFields from './GeneralSearchFields';
 import { UseFormReturn } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
+import styles from './InvestigationSearchForm.module.scss';
+import CriteriaSearchFields from './CriteriaSearchFields';
 
 type Props = {
     form: UseFormReturn<InvestigationFilterEntry>;
@@ -10,10 +11,9 @@ type Props = {
 
 const InvestigationSearchForm = ({ form }: Props) => {
     return (
-        <div>
-            <Form onSubmit={() => console.log('test')}>
-                <GeneralSearchFields form={form} />
-            </Form>
+        <div className={styles.investigationSearchContainer}>
+            <GeneralSearchFields form={form} />
+            <CriteriaSearchFields form={form} />
         </div>
     );
 };

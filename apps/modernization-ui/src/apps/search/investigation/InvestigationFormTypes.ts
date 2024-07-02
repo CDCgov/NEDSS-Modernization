@@ -23,7 +23,6 @@ type InvestigationFilterEntry = {
     updatedBy?: Selectable;
     reportingFacility?: Selectable;
     reportingProvider?: Selectable;
-
     investigationStatus?: Selectable;
     investigator?: Selectable;
     outbreaks?: Selectable[];

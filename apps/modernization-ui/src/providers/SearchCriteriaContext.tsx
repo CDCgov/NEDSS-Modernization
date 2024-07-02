@@ -203,7 +203,5 @@ export const SearchCriteriaProvider = (props: any) => {
         setSearchCriteria((previous) => ({ ...previous, states: results.states }));
     }
 
-    console.log('searchcriteria', searchCriteria);
-
     return <SearchCriteriaContext.Provider value={{ searchCriteria }}>{props.children}</SearchCriteriaContext.Provider>;
 };
