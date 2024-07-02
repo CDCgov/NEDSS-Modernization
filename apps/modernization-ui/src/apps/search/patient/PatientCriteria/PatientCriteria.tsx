@@ -1,6 +1,7 @@
 import { BasicInformation } from './BasicInformation';
 import { Accordion } from 'components/Accordion/Accordion';
 import styles from './patient-criteria.module.scss';
+import { Address } from './Address';
 
 export const PatientCriteria = () => {
     return (

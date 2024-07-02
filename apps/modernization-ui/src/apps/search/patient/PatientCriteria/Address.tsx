@@ -1,10 +1,11 @@
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import styles from './address.module.scss';
 
-export const Address = ({ control }: any) => {
+export const Address = () => {
+    const { control } = useFormContext();
     return (
         <SearchCriteriaProvider>
             <div className={styles.address}>
