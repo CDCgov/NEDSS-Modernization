@@ -43,7 +43,7 @@ const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
 };
 
 const resolveEventDate = (date?: EventDate): LaboratoryEventDateSearch | undefined => {
-    if (date) {
+    if (date && date.type?.value) {
         return {
             type: date.type.value as LaboratoryReportEventDateType,
             from: date.from,

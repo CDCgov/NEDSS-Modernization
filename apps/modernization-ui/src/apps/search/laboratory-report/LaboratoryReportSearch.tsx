@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { LabReport } from 'generated/graphql/schema';
-
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
 import { LabReportFilterEntry, initial } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
+import { FormAccordion } from './FormAccordion';
+import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 const LaboratoryReportSearch = () => {
-    const { handleSubmit, reset: resetForm } = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
+    const formMethods = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
         defaultValues: initial,
         mode: 'onBlur'
     });
@@ -17,23 +18,25 @@ const LaboratoryReportSearch = () => {
 
     useEffect(() => {
         if (status === 'waiting') {
-            resetForm();
+            formMethods.reset();
         }
-    }, [resetForm, status]);
+    }, [formMethods.reset, status]);
 
     return (
-        <SearchLayout
-            criteria={() => <div>criteria</div>}
-            resultsAsList={() => (
-                <SearchResultList<LabReport>
-                    results={results?.content ?? []}
-                    render={(result) => <LaboratoryReportSearchResultListItem result={result} />}
-                />
-            )}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit(search)}
-            onClear={reset}
-        />
+        <SearchCriteriaProvider>
+            <SearchLayout
+                criteria={() => <FormAccordion form={formMethods} />}
+                resultsAsList={() => (
+                    <SearchResultList<LabReport>
+                        results={results?.content ?? []}
+                        render={(result) => <LaboratoryReportSearchResultListItem result={result} />}
+                    />
+                )}
+                resultsAsTable={() => <div>result table</div>}
+                onSearch={formMethods.handleSubmit(search)}
+                onClear={reset}
+            />
+        </SearchCriteriaProvider>
     );
 };
 
