@@ -127,7 +127,7 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
                     size: page.pageSize
                 },
                 sorting
-            }).then(orElseEmptyResult(handleComplete(page.current + 1)), handleError);
+            }).then(orElseEmptyResult(handleComplete(page.current)), handleError);
         } else if (state.status === 'completed' && page.status === PageStatus.Requested) {
             //  the page changing without the criteria changing
             dispatch({ type: 'refresh' });

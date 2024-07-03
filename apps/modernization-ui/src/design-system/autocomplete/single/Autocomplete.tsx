@@ -19,7 +19,7 @@ type AutocompleteSingleProps = {
     orientation?: Orientation;
     error?: string;
     required?: boolean;
-    onBlur: any;
+    onBlur?: any;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
 const Autocomplete = ({
@@ -84,6 +84,7 @@ const Autocomplete = ({
                     inputRef={inputRef}
                     className="usa-input"
                     id={id}
+                    data-testid={id}
                     validationStatus={error ? 'error' : undefined}
                     aria-describedby={error ? `${error}-message` : undefined}
                     inputMode="text"
