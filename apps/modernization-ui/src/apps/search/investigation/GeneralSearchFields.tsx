@@ -1,22 +1,25 @@
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { InvestigationFilterEntry, entityOptions, investigationEventTypeOptions } from './InvestigationFormTypes';
-import { InvestigationEventIdType, PregnancyStatus, ReportingEntityType } from 'generated/graphql/schema';
+import { InvestigationEventIdType, PregnancyStatus } from 'generated/graphql/schema';
 import { formatInterfaceString } from 'utils/util';
 import { AutocompleteMulti, Autocomplete } from '../../../design-system/autocomplete';
-import { ConditionOptionsService, JurisdictionOptionsService, UserOptionsService } from 'generated';
-import { MultiSelect, SingleSelect } from 'design-system/select';
-import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaAPI';
-import { ProgramArea } from 'apps/page-builder/generated';
-import { useContext, useEffect, useState } from 'react';
+import {
+    ConditionOptionsService,
+    JurisdictionOptionsService,
+    ProgramAreaOptionsService,
+    UserOptionsService
+} from 'generated';
+import { SingleSelect } from 'design-system/select';
+import { useContext } from 'react';
 import { Selectable } from 'options';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { InvestigationFormContext } from './InvestigationSearch';
 
 const GeneralSearchFields = () => {
-    const form = useContext(InvestigationFormContext);
-
+    const form: UseFormReturn<InvestigationFilterEntry, Partial<InvestigationFilterEntry>, undefined> = useContext(
+        InvestigationFormContext
+    );
     const watch = useWatch({ control: form.control });
-    const [programAreaOptions, setProgramAreaOptions] = useState<ProgramArea[] | void>();
 
     const handleChangeConditions = (e: Selectable[]) => {
         form.setValue('conditions', e);
@@ -24,6 +27,10 @@ const GeneralSearchFields = () => {
 
     const handleChangeJurisdictions = (e: Selectable[]) => {
         form.setValue('jurisdictions', e);
+    };
+
+    const handleChangeProgramAreas = (e: Selectable[]) => {
+        form.setValue('programAreas', e);
     };
 
     const condtionsResolver = (criteria: string, limit?: number) =>
@@ -42,40 +49,40 @@ const GeneralSearchFields = () => {
         return UserOptionsService.userAutocomplete({ criteria, limit }).then((response) => response);
     };
 
-    useEffect(() => {
-        fetchProgramAreaOptions().then((response) => setProgramAreaOptions(response));
-    }, []);
+    const programAreaResolver = (criteria: string, limit?: number) => {
+        return ProgramAreaOptionsService.programAreaAutocomplete({ criteria, limit }).then((response) => response);
+    };
 
     return (
         <>
-            <AutocompleteMulti
-                id="conditions-autocomplete"
+            <Controller
                 name="conditions"
-                label="Conditions"
-                resolver={condtionsResolver}
-                onChange={handleChangeConditions}
+                control={form.control}
+                render={({ field: { name } }) => (
+                    <AutocompleteMulti
+                        id="conditions"
+                        name={name}
+                        label="Conditions"
+                        resolver={condtionsResolver}
+                        onChange={handleChangeConditions}
+                    />
+                )}
             />
-            {programAreaOptions?.length ? (
-                <Controller
-                    control={form.control}
-                    name="programAreas"
-                    render={({ field: { name } }) => (
-                        <MultiSelect
-                            data-testid="programArea"
-                            id="programArea"
-                            label="Program area"
-                            name={name}
-                            options={programAreaOptions?.map((p) => {
-                                return {
-                                    label: p.display ?? '',
-                                    name: p.display ?? '',
-                                    value: p.value ?? ''
-                                };
-                            })}
-                        />
-                    )}
-                />
-            ) : null}
+
+            <Controller
+                control={form.control}
+                name="programAreas"
+                render={({ field: { name } }) => (
+                    <AutocompleteMulti
+                        data-testid={name}
+                        name={name}
+                        label="Program areas"
+                        id={name}
+                        onChange={handleChangeProgramAreas}
+                        resolver={programAreaResolver}
+                    />
+                )}
+            />
             <AutocompleteMulti
                 data-testid="jurisdictions"
                 id="jurisdictions"
@@ -105,7 +112,7 @@ const GeneralSearchFields = () => {
             <Controller
                 control={form.control}
                 name="identification.type"
-                render={({ field: { value, name } }) => (
+                render={({ field: { name } }) => (
                     <SingleSelect
                         name={name}
                         label="Event id type"
@@ -118,7 +125,7 @@ const GeneralSearchFields = () => {
             <Controller
                 control={form.control}
                 name={'eventDate.type'}
-                render={({ field: { value, name } }) => (
+                render={({ field: { name } }) => (
                     <SingleSelect
                         data-testid={name}
                         name={name}

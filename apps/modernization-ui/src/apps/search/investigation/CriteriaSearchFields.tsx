@@ -1,7 +1,5 @@
-import { handleChangeToDefaultValue } from 'forms/event';
-import { UseFormReturn, Controller } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import {
-    InvestigationFilterEntry,
     caseStatusOptions,
     investigationStatusOptions,
     notificationStatusOptions,
@@ -10,7 +8,7 @@ import {
 import { SingleSelect, MultiSelect } from 'design-system/select';
 import { useContext } from 'react';
 import { InvestigationFormContext } from './InvestigationSearch';
-import { JurisdictionOptionsService } from 'generated';
+import { ConceptAutocomplete } from 'options/autocompete/ConceptAutocomplete';
 
 const CriteriaSearchFields = () => {
     const form = useContext(InvestigationFormContext);
@@ -34,21 +32,11 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="outbreaks"
-                render={({ field: { name } }) => (
-                    <SingleSelect
-                        name={name}
-                        label="Outbreak names"
-                        options={[
-                            {
-                                name: 'Coming soon',
-                                value: '',
-                                label: 'coming soon'
-                            }
-                        ]}
-                        id={name}
-                    />
+                render={({ field: { name, onBlur } }) => (
+                    <ConceptAutocomplete valueSet={'OUTBREAK_NM'} id={name} label={name} onBlur={onBlur} />
                 )}
             />
+
             <Controller
                 control={form.control}
                 name="caseStatuses"
