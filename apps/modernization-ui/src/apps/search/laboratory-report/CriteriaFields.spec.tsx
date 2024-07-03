@@ -11,6 +11,7 @@ jest.mock('options/autocompete/ResultedTestsAutocomplete', () => ({
         <input
             data-testid={id}
             placeholder={label}
+            aria-label={label}
             onChange={(e) => onChange?.({ name: e.target.value, value: e.target.value, label: e.target.value })}
         />
     )
@@ -21,6 +22,7 @@ jest.mock('options/autocompete/CodedResultsAutocomplete', () => ({
         <input
             data-testid={id}
             placeholder={label}
+            aria-label={label}
             onChange={(e) => onChange?.({ name: e.target.value, value: e.target.value, label: e.target.value })}
         />
     )
@@ -38,10 +40,10 @@ const CriteriaFieldsWithForm = () => {
 
 describe('LabReportCriteriaFields component', () => {
     it('should render ResultedTestsAutocomplete with correct props', async () => {
-        const { getByTestId, getByPlaceholderText } = render(<LabReportCriteriaFieldsWithForm />);
+        const { getByRole, getByPlaceholderText } = render(<LabReportCriteriaFieldsWithForm />);
 
         await waitFor(() => {
-            const resultedTestInput = getByTestId('resultedTest');
+            const resultedTestInput = getByRole('textbox', { name: 'Resulted Test' });
             expect(resultedTestInput).toBeInTheDocument();
             expect(getByPlaceholderText('Resulted Test')).toBeInTheDocument();
         });
