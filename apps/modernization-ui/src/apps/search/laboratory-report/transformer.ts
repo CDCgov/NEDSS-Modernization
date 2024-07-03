@@ -53,7 +53,7 @@ const resolveEventDate = (date?: EventDate): LaboratoryEventDateSearch | undefin
 };
 
 const resolveEventId = (identification?: Identification): LabReportEventId | undefined => {
-    if (identification) {
+    if (identification && identification?.type) {
         return {
             labEventId: identification.value,
             labEventType: identification.type.value as LaboratoryEventIdType

@@ -40,7 +40,7 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
         terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
     }
 
-    if (entry.identification) {
+    if (entry.identification && entry.identification.type) {
         terms.push(fromSelectable('identification.type', 'INVESTIGATION EVENT TYPE')(entry.identification.type));
         terms.push(fromValue('identification.value', 'EVENT ID')(entry.identification.value));
     }
