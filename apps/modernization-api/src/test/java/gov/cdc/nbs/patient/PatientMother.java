@@ -527,4 +527,26 @@ public class PatientMother {
   public void withEthnicity(final PatientIdentifier identifier) {
     withEthnicity(identifier, RandomUtil.ethnicity());
   }
+
+  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
+    Person patient = managed(identifier);
+
+    patient.update(
+        new PatientCommand.UpdateGeneralInfo(
+            identifier.id(),
+            RandomUtil.getRandomDateInPast(),
+            patient.getMaritalStatusCd(),
+            patient.getMothersMaidenNm(),
+            patient.getAdultsInHouseNbr(),
+            patient.getChildrenInHouseNbr(),
+            patient.getOccupationCd(),
+            patient.getEducationLevelCd(),
+            patient.getPrimLangCd(),
+            patient.getSpeaksEnglishCd(),
+            value,
+            this.settings.createdBy(),
+            this.settings.createdOn()
+        )
+    );
+  }
 }

@@ -75,14 +75,14 @@ public class Person {
   @JoinColumn(name = "person_uid", nullable = false)
   private NBSEntity nbsEntity;
 
-  //  administrative
+  // administrative
   @Column(name = "as_of_date_admin")
   private Instant asOfDateAdmin;
 
   @Column(name = "description", length = 2000)
   private String description;
 
-  //  general information
+  // general information
   @Column(name = "as_of_date_general")
   private Instant asOfDateGeneral;
 
@@ -113,7 +113,7 @@ public class Person {
   @Column(name = "ehars_id", length = 20)
   private String eharsId;
 
-  //  Mortality
+  // Mortality
   @Column(name = "as_of_date_morbidity")
   private Instant asOfDateMorbidity;
 
@@ -125,11 +125,11 @@ public class Person {
   @Column(name = "deceased_time")
   private Instant deceasedTime;
 
-  //  Ethnicity
+  // Ethnicity
   @Embedded
   private PatientEthnicity ethnicity;
 
-  //  Sex & birth
+  // Sex & birth
   @Column(name = "as_of_date_sex")
   private Instant asOfDateSex;
 
@@ -162,10 +162,9 @@ public class Person {
   @Column(name = "birth_order_nbr")
   private Short birthOrderNbr;
 
-
-
-  //  Names
-  //  The name fields on Person are redundant, a patient's name is resolved from PersonName
+  // Names
+  // The name fields on Person are redundant, a patient's name is resolved from
+  // PersonName
   @Column(name = "nm_prefix", length = 20)
   private String nmPrefix;
 
@@ -206,7 +205,6 @@ public class Person {
 
   @Column(name = "last_chg_user_id")
   private Long lastChgUserId;
-
 
   @Enumerated(EnumType.STRING)
   @Column(name = "record_status_cd", length = 20)
@@ -266,10 +264,7 @@ public class Person {
 
     this.maritalStatusCd = patient.maritalStatus();
 
-
-
     this.eharsId = patient.stateHIVCase();
-
 
     this.asOfDateSex = patient.asOf();
     this.asOfDateMorbidity = patient.asOf();

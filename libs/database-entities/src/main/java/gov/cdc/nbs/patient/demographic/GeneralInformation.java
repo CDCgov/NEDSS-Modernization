@@ -1,0 +1,94 @@
+package gov.cdc.nbs.patient.demographic;
+
+import gov.cdc.nbs.patient.PatientCommand;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+import java.time.Instant;
+
+@Embeddable
+public class GeneralInformation {
+
+  @Column(name = "as_of_date_general")
+  private Instant asOf;
+
+  @Column(name = "marital_status_cd", length = 20)
+  private String maritalStatus;
+
+  @Column(name = "mothers_maiden_nm", length = 50)
+  private String mothersMaidenName;
+
+  @Column(name = "adults_in_house_nbr")
+  private Integer adultsInHouse;
+
+  @Column(name = "children_in_house_nbr")
+  private Integer childrenInHouse;
+
+  @Column(name = "occupation_cd", length = 20)
+  private String occupation;
+
+  @Column(name = "education_level_cd", length = 20)
+  private String educationLevel;
+
+  @Column(name = "prim_lang_cd", length = 20)
+  private String primaryLanguage;
+
+  @Column(name = "speaks_english_cd", length = 20)
+  private String speaksEnglish;
+
+  @Column(name = "ehars_id", length = 20)
+  private String stateHIVCase;
+
+  public void update(final PatientCommand.UpdateGeneralInfo info) {
+    this.asOf = info.asOf();
+    this.maritalStatus = info.maritalStatus();
+    this.mothersMaidenName = info.mothersMaidenName();
+    this.adultsInHouse = info.adultsInHouseNumber();
+    this.childrenInHouse = info.childrenInHouseNumber();
+    this.occupation = info.occupationCode();
+    this.educationLevel = info.educationLevelCode();
+    this.primaryLanguage = info.primaryLanguageCode();
+    this.speaksEnglish = info.speaksEnglishCode();
+    this.stateHIVCase = info.eharsId();
+  }
+
+  public Instant asOf() {
+    return asOf;
+  }
+
+  public String maritalStatus() {
+    return maritalStatus;
+  }
+
+  public String mothersMaidenName() {
+    return mothersMaidenName;
+  }
+
+  public Integer adultsInHouse() {
+    return adultsInHouse;
+  }
+
+  public Integer childrenInHouse() {
+    return childrenInHouse;
+  }
+
+  public String occupation() {
+    return occupation;
+  }
+
+  public String educationLevel() {
+    return educationLevel;
+  }
+
+  public String primaryLanguage() {
+    return primaryLanguage;
+  }
+
+  public String speaksEnglish() {
+    return speaksEnglish;
+  }
+
+  public String stateHIVCase() {
+    return stateHIVCase;
+  }
+}

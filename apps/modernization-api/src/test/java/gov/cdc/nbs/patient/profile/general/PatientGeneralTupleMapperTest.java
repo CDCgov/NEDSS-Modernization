@@ -26,8 +26,8 @@ class PatientGeneralTupleMapperTest {
 
         when(tuple.get(tables.patient().mothersMaidenNm)).thenReturn("maternal-maiden-name");
 
-        when(tuple.get(tables.patient().adultsInHouseNbr)).thenReturn((short) 73);
-        when(tuple.get(tables.patient().childrenInHouseNbr)).thenReturn((short) 129);
+        when(tuple.get(tables.patient().adultsInHouseNbr)).thenReturn(73);
+        when(tuple.get(tables.patient().childrenInHouseNbr)).thenReturn(129);
 
         when(tuple.get(tables.patient().eharsId)).thenReturn("state-HIV-case");
 

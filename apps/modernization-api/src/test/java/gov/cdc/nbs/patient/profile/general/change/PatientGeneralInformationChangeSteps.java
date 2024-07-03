@@ -1,86 +1,85 @@
 package gov.cdc.nbs.patient.profile.general.change;
 
-import net.datafaker.Faker;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Then;
+import gov.cdc.nbs.testing.support.Active;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.time.Instant;
 
 @Transactional
 public class PatientGeneralInformationChangeSteps {
 
-    private final Faker faker = new Faker();
+  private final Active<PatientIdentifier> activePatient;
+  private final Active<GeneralInformationPendingChanges> activeChanges;
+  private final PatientGeneralChangeRequester requester;
+  private final Active<ResultActions> response;
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+  PatientGeneralInformationChangeSteps(
+      final Active<PatientIdentifier> activePatient,
+      final Active<GeneralInformationPendingChanges> activeChanges,
+      final PatientGeneralChangeRequester requester,
+      final Active<ResultActions> response
+  ) {
+    this.activePatient = activePatient;
+    this.activeChanges = activeChanges;
+    this.requester = requester;
+    this.response = response;
+  }
 
-    @Autowired
-    PatientGeneralInformationController controller;
+  @Given("I want to change the patient's general information to include the marital status of {maritalStatus}")
+  public void i_want_to_change_the_marital_status(final String value) {
+    this.activeChanges.active(current -> current.maritalStatus(value));
+  }
 
-    @Autowired
-    EntityManager entityManager;
+  @Given("I want to change the patient's general information to include the mother's maiden name of {string}")
+  public void i_want_to_change_the_mothers_maiden_name(final String value) {
+    this.activeChanges.active(current -> current.maternalMaidenName(value));
+  }
 
-    private UpdateGeneralInformation changes;
+  @Given("I want to change the patient's general information to include {int} adults in the house")
+  public void i_want_to_change_the_adults_in_house(final int value) {
+    this.activeChanges.active(current -> current.adultsInHouse(value));
+  }
 
-    @Before("@patient-profile-general-information-change")
-    public void reset() {
-        this.changes = null;
-    }
+  @Given("I want to change the patient's general information to include {int} children in the house")
+  public void i_want_to_change_the_children_in_house(final int value) {
+    this.activeChanges.active(current -> current.childrenInHouse(value));
+  }
 
-    @When("a patient's general information is changed")
-    public void a_patient_general_information_is_changed() {
-        PatientIdentifier patient = this.patients.one();
+  @Given("I want to change the patient's general information to include the occupation of {occupation}")
+  public void i_want_to_change_the_occupation(final String value) {
+    this.activeChanges.active(current -> current.occupation(value));
+  }
 
-        this.changes = new UpdateGeneralInformation(
-                patient.id(),
-                RandomUtil.getRandomDateInPast(),
-                RandomUtil.maybeOneFrom("A", "B", "C", "D", "E", "F"),
-                faker.name().lastName(),
-                RandomUtil.getRandomInt(25),
-                RandomUtil.getRandomInt(25),
-                RandomUtil.maybeOneFrom("11", "21", "22", "23", "24", "42"),
-                RandomUtil.maybeOneFrom("0", "1", "10", "11", "12", "13"),
-                RandomUtil.maybeOneFrom("AAR", "ABK", "ACE", "ACH", "ADA", "ady"),
-                RandomUtil.maybeOneFrom("Y", "N", "UNK"),
-                RandomUtil.getRandomString());
+  @Given("I want to change the patient's general information to include an education level of {educationLevel}")
+  public void i_want_to_change_the_education_level(final String value) {
+    this.activeChanges.active(current -> current.educationLevel(value));
+  }
 
-        controller.update(changes);
-    }
+  @Given("I want to change the patient's general information to include a primary language of {language}")
+  public void i_want_to_change_the_primary_language(final String value) {
+    this.activeChanges.active(current -> current.primaryLanguage(value));
+  }
 
-    @Then("the patient has the changed general information")
-    @Transactional
-    public void the_patient_has_the_changed_general_information() {
-        PatientIdentifier patient = this.patients.one();
+  @Given("I want to change the patient's general information to include that the patient {indicator} speak English")
+  public void i_want_to_change_the_speaks_english(final String value) {
+    this.activeChanges.active(current -> current.speaksEnglish(value));
+  }
 
-        Person actual = this.entityManager.find(Person.class, patient.id());
+  @Given("I want to change the patient's general information to include that the patient is associated with state HIV case {string}")
+  public void i_want_to_change_the_state_HIV_case(final String value) {
+    this.activeChanges.active(current -> current.stateHIVCase(value));
+  }
 
-        assertThat(actual)
-                .returns(changes.asOf(), Person::getAsOfDateGeneral)
-                .returns(changes.maritalStatus(), Person::getMaritalStatusCd)
-                .returns(changes.maternalMaidenName(), Person::getMothersMaidenNm)
-                .returns(changes.adultsInHouse().shortValue(), Person::getAdultsInHouseNbr)
-                .returns(changes.childrenInHouse().shortValue(), Person::getChildrenInHouseNbr)
-                .returns(changes.occupation(), Person::getOccupationCd)
-                .returns(changes.educationLevel(), Person::getEducationLevelCd)
-                .returns(changes.primaryLanguage(), Person::getPrimLangCd)
-                .returns(changes.speaksEnglish(), Person::getSpeaksEnglishCd)
-                .returns(changes.stateHIVCase(), Person::getEharsId);
-    }
+  @When("the patient profile general information changes are submitted as of {date}")
+  public void the_patient_profile_general_information_changes_are_submitted(final Instant asOf) {
+    this.activePatient.maybeActive().flatMap(
+            patient -> this.activeChanges.maybeActive().map(pending -> pending.applied(patient.id(), asOf))
+        ).map(this.requester::change)
+        .ifPresent(this.response::active);
 
-    @Then("I am unable to change a patient's general information")
-    public void i_am_unable_to_change_a_patient_general_information() {
-        assertThatThrownBy(() -> controller.update(changes))
-                .isInstanceOf(AccessDeniedException.class);
-    }
+  }
 }

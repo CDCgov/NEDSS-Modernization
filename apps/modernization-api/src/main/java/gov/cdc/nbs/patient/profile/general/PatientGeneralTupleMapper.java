@@ -61,8 +61,8 @@ class PatientGeneralTupleMapper {
         PatientGeneral.MaritalStatus maritalStatus = resolveMaritalStatus(tuple);
 
         String maternalMaidenName = tuple.get(this.tables.patient().mothersMaidenNm);
-        Short adultsInHouse = tuple.get(this.tables.patient().adultsInHouseNbr);
-        Short childrenInHouse = tuple.get(this.tables.patient().childrenInHouseNbr);
+        Integer adultsInHouse = tuple.get(this.tables.patient().adultsInHouseNbr);
+        Integer childrenInHouse = tuple.get(this.tables.patient().childrenInHouseNbr);
 
         PatientGeneral.Occupation occupation = resolveOccupation(tuple);
 
