@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import styles from './address.module.scss';
 import { PatientCriteriaEntry } from '../criteria';
-import { SinlgeSelect } from 'design-system/select';
+import { SingleSelect } from 'design-system/select';
 
 export const Address = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -44,12 +44,10 @@ export const Address = () => {
                             control={control}
                             name="state"
                             render={({ field: { onChange, value, name } }) => (
-                                <SinlgeSelect
-                                    // defaultValue={asValue(value)}
+                                <SingleSelect
                                     value={value}
                                     onChange={onChange}
                                     label="State"
-                                    // htmlFor={name}
                                     id={name}
                                     options={searchCriteria.states.map((state) => ({
                                         name: state.name,

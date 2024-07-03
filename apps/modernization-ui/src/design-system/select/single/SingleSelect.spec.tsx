@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SinlgeSelect } from './SingleSelect';
+import { SingleSelect } from './SingleSelect';
 
 describe('when selecting a single item from a specific set of items', () => {
     it('should display the SingleSelect without a value checked', () => {
         const { queryByRole } = render(
-            <SinlgeSelect
+            <SingleSelect
                 id="test-id"
                 label="Test Label"
                 options={[
@@ -26,7 +26,7 @@ describe('when selecting a single item from a specific set of items', () => {
 
     it('should display the SingleSelect with the value checked', () => {
         const { getByRole } = render(
-            <SinlgeSelect
+            <SingleSelect
                 id="test-id"
                 label="Test Label"
                 options={[
@@ -49,7 +49,7 @@ describe('when selecting a single item from a specific set of items', () => {
 describe('when one of the options is clicked', () => {
     it('should mark the option as checked', () => {
         const { getByRole } = render(
-            <SinlgeSelect
+            <SingleSelect
                 id="test-id"
                 label="Test Label"
                 options={[

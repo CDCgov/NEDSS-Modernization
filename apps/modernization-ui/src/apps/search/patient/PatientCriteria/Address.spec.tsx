@@ -7,7 +7,7 @@ import { MockedProvider } from '@apollo/react-testing';
 
 const { result } = renderHook(() =>
     useForm<PatientCriteriaEntry>({
-        mode: 'onChange',
+        mode: 'onBlur',
         defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
     })
 );
