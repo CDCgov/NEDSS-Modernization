@@ -23,8 +23,6 @@ type General = {
     enteredBy?: Selectable[];
     entryMethods?: Selectable[];
     eventDate?: EventDate;
-    eventId?: Identification['value'];
-    eventType?: Identification['type'];
     identification?: Identification;
     eventStatus?: Selectable[];
     jurisdictions?: Selectable[];
@@ -37,7 +35,7 @@ type General = {
     processingStatus?: Selectable[];
     programAreas?: Selectable[];
     providerType?: Selectable;
-} & ReportCriteria;
+};
 
 type LabReportFilterEntry = General & ReportCriteria;
 

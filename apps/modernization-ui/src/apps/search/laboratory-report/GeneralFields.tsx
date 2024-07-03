@@ -41,7 +41,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
     const handleEventIdTypeChange = (e: Selectable | undefined, onChange: (event: Selectable) => void): void => {
         // Clear event id field on deselect
         if (!e || e?.value === '') {
-            form.resetField('eventType');
+            form.resetField('identification.type');
         } else {
             onChange(e);
         }
@@ -130,7 +130,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
 
             <Controller
                 control={form.control}
-                name="eventType"
+                name="identification.type"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         name={name}
@@ -143,10 +143,10 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 )}
             />
 
-            {watch.eventType?.value ? (
+            {watch.identification?.value ? (
                 <Controller
                     control={form.control}
-                    name="eventId"
+                    name="identification.value"
                     rules={{
                         required: { value: true, message: 'Event Id is required' }
                     }}
