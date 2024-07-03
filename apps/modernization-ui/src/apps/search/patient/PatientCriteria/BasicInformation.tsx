@@ -2,14 +2,15 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { RecordStatus } from 'generated/graphql/schema';
 import styles from './basic-information.module.scss';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { Selectable } from 'options';
+import { PatientCriteriaEntry } from '../criteria';
+import { SingleSelect } from 'design-system/select';
 
 export const BasicInformation = () => {
-    const { control } = useFormContext();
+    const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     const genderOptions: Selectable[] = [
         { name: 'Male', label: 'Male', value: 'M' },
@@ -90,11 +91,10 @@ export const BasicInformation = () => {
                 control={control}
                 name="gender"
                 render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
-                        defaultValue={value}
+                    <SingleSelect
+                        value={value}
                         onChange={onChange}
                         name={name}
-                        htmlFor={name}
                         label="Sex"
                         id={name}
                         options={genderOptions}
