@@ -10,6 +10,7 @@ import {
 import { SingleSelect, MultiSelect } from 'design-system/select';
 import { useContext } from 'react';
 import { InvestigationFormContext } from './InvestigationSearch';
+import { JurisdictionOptionsService } from 'generated';
 
 const CriteriaSearchFields = () => {
     const form = useContext(InvestigationFormContext);

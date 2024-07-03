@@ -3,7 +3,7 @@ import { InvestigationFilterEntry, entityOptions, investigationEventTypeOptions 
 import { InvestigationEventIdType, PregnancyStatus, ReportingEntityType } from 'generated/graphql/schema';
 import { formatInterfaceString } from 'utils/util';
 import { AutocompleteMulti, Autocomplete } from '../../../design-system/autocomplete';
-import { ConditionOptionsService, UserOptionsService } from 'generated';
+import { ConditionOptionsService, JurisdictionOptionsService, UserOptionsService } from 'generated';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaAPI';
 import { ProgramArea } from 'apps/page-builder/generated';
@@ -22,8 +22,18 @@ const GeneralSearchFields = () => {
         form.setValue('conditions', e);
     };
 
+    const handleChangeJurisdictions = (e: Selectable[]) => {
+        form.setValue('jurisdictions', e);
+    };
+
     const condtionsResolver = (criteria: string, limit?: number) =>
         ConditionOptionsService.complete({
+            criteria: criteria,
+            limit: limit
+        }).then((response) => response);
+
+    const jurisdictionsResolver = (criteria: string, limit?: number) =>
+        JurisdictionOptionsService.jurisdictionAutocomplete({
             criteria: criteria,
             limit: limit
         }).then((response) => response);
@@ -66,19 +76,13 @@ const GeneralSearchFields = () => {
                     )}
                 />
             ) : null}
-            <MultiSelect
+            <AutocompleteMulti
                 data-testid="jurisdictions"
-                id="jurisdiction"
+                id="jurisdictions"
                 label="Jurisdiction"
                 name="jurisdiction"
-                onChange={() => 'void'}
-                options={[
-                    {
-                        label: 'Jurisdiction',
-                        name: 'coming soon',
-                        value: 'comingsoon'
-                    }
-                ]}
+                onChange={handleChangeJurisdictions}
+                resolver={jurisdictionsResolver}
             />
             <Controller
                 control={form.control}
