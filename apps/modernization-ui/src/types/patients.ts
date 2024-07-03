@@ -1,6 +1,6 @@
 export type Page = {
-    pageSize: number,
-    pageNumber: number
+    pageSize: number;
+    pageNumber: number;
 }
 
 export type PatientFilter = {
