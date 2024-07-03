@@ -5,28 +5,28 @@ import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 
 const InvestigationFormWithFields = () => {
-    const defaultSelectable = { name: '', value: '', label: '' };
-    const defaultValues: InvestigationFilterEntry = {
-        createdBy: defaultSelectable,
-        updatedBy: defaultSelectable,
-        investigator: defaultSelectable,
-        pregnancyStatus: defaultSelectable,
-        investigationStatus: defaultSelectable,
-        jurisdictions: [defaultSelectable],
-        conditions: [defaultSelectable],
-        caseStatuses: [defaultSelectable],
-        notificationStatuses: [defaultSelectable],
-        outbreaks: [defaultSelectable],
-        processingStatuses: [defaultSelectable],
-        programAreas: [],
-        reportingFacility: defaultSelectable
-    };
+    // const defaultSelectable = { name: '', value: '', label: '' };
+    // const defaultValues: InvestigationFilterEntry = {
+    //     createdBy: defaultSelectable,
+    //     updatedBy: defaultSelectable,
+    //     investigator: defaultSelectable,
+    //     pregnancyStatus: defaultSelectable,
+    //     investigationStatus: defaultSelectable,
+    //     jurisdictions: [defaultSelectable],
+    //     conditions: [defaultSelectable],
+    //     caseStatuses: [defaultSelectable],
+    //     notificationStatuses: [defaultSelectable],
+    //     outbreaks: [defaultSelectable],
+    //     processingStatuses: [defaultSelectable],
+    //     programAreas: [],
+    //     reportingFacility: defaultSelectable
+    // };
 
-    const investigationForm = useForm<InvestigationFilterEntry>({
-        defaultValues
-    });
+    // const investigationForm = useForm<InvestigationFilterEntry>({
+    //     defaultValues
+    // });
 
-    return <GeneralSearchFields form={investigationForm} />;
+    return <GeneralSearchFields />;
 };
 
 describe('GeneralSearchFields', () => {

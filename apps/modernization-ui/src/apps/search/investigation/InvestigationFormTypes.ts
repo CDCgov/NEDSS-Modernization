@@ -78,8 +78,16 @@ const processingStatusOptions = [
 ];
 
 const entityOptions: Selectable[] = [
-    asSelectable('REPORTING_PROVIDER', 'Reproting Provider'),
+    asSelectable('REPORTING_PROVIDER', 'Reporting Provider'),
     asSelectable('REPORTING_FACILITY', 'Reporting Facility')
+];
+
+const investigationEventTypeOptions: Selectable[] = [
+    asSelectable('ABCS_CASE_ID', 'ABC Case ID'),
+    asSelectable('CITY_COUNTY_CASE_ID', 'City Case ID'),
+    asSelectable('INVESTIGATION_ID', 'Invitation ID'),
+    asSelectable('NOTIFICATION_ID', 'Notification ID'),
+    asSelectable('STATE_CASE_ID', 'State Case ID')
 ];
 
 export {
@@ -88,5 +96,6 @@ export {
     notificationStatusOptions,
     processingStatusOptions,
     caseStatusOptions,
-    dateTypeOptions
+    dateTypeOptions,
+    investigationEventTypeOptions
 };

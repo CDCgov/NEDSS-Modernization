@@ -1,22 +1,20 @@
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { InvestigationFilterEntry } from './InvestigationFormTypes';
+import { InvestigationFilterEntry, entityOptions, investigationEventTypeOptions } from './InvestigationFormTypes';
 import { InvestigationEventIdType, PregnancyStatus, ReportingEntityType } from 'generated/graphql/schema';
 import { formatInterfaceString } from 'utils/util';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { AutocompleteMulti, Autocomplete } from '../../../design-system/autocomplete';
 import { ConditionOptionsService, UserOptionsService } from 'generated';
-import { MultiSelect } from 'design-system/select';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { fetchProgramAreaOptions } from 'apps/page-builder/services/programAreaAPI';
 import { ProgramArea } from 'apps/page-builder/generated';
-import { useEffect, useState } from 'react';
-import { Selectable, asValue } from 'options';
+import { useContext, useEffect, useState } from 'react';
+import { Selectable } from 'options';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { InvestigationFormContext } from './InvestigationSearch';
 
-type Props = {
-    form: UseFormReturn<InvestigationFilterEntry>;
-};
+const GeneralSearchFields = () => {
+    const form = useContext(InvestigationFormContext);
 
-const GeneralSearchFields = ({ form }: Props) => {
     const watch = useWatch({ control: form.control });
     const [programAreaOptions, setProgramAreaOptions] = useState<ProgramArea[] | void>();
 
@@ -86,16 +84,16 @@ const GeneralSearchFields = ({ form }: Props) => {
                 control={form.control}
                 name="pregnancyStatus"
                 render={({ field: { name, value } }) => (
-                    <SelectInput
+                    <SingleSelect
                         data-testid="pregnancyStatus"
                         name={name}
                         id="pregnancyStatus"
                         label="Pregnancy test"
                         onChange={() => form.setValue('pregnancyStatus', value)}
                         options={[
-                            { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes },
-                            { name: PregnancyStatus.No, value: PregnancyStatus.No },
-                            { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown }
+                            { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },
+                            { name: PregnancyStatus.No, value: PregnancyStatus.No, label: 'No' },
+                            { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown, label: 'Unknown' }
                         ]}
                     />
                 )}
@@ -104,18 +102,12 @@ const GeneralSearchFields = ({ form }: Props) => {
                 control={form.control}
                 name="identification.type"
                 render={({ field: { value, name } }) => (
-                    <SelectInput
+                    <SingleSelect
                         name={name}
-                        defaultValue={asValue(value)}
                         label="Event id type"
-                        dataTestid={name}
-                        htmlFor={name}
-                        options={Object.values(InvestigationEventIdType).map((event) => {
-                            return {
-                                name: formatInterfaceString(event),
-                                value: event
-                            };
-                        })}
+                        data-testid={name}
+                        options={investigationEventTypeOptions}
+                        id={''}
                     />
                 )}
             />
@@ -123,10 +115,9 @@ const GeneralSearchFields = ({ form }: Props) => {
                 control={form.control}
                 name={'eventDate.type'}
                 render={({ field: { value, name } }) => (
-                    <SelectInput
+                    <SingleSelect
                         data-testid={name}
                         name={name}
-                        value={asValue(value)}
                         id="eventDateType"
                         label="Event date type"
                         options={Object.values(InvestigationEventIdType).map((event) => {
@@ -143,6 +134,7 @@ const GeneralSearchFields = ({ form }: Props) => {
             {watch.eventDate?.type ? (
                 <>
                     <Controller
+                        shouldUnregister
                         control={form.control}
                         name="eventDate.from"
                         rules={{
@@ -163,6 +155,7 @@ const GeneralSearchFields = ({ form }: Props) => {
                     />
 
                     <Controller
+                        shouldUnregister
                         control={form.control}
                         name="eventDate.to"
                         rules={{
@@ -216,17 +209,12 @@ const GeneralSearchFields = ({ form }: Props) => {
                 control={form.control}
                 name="reportingFacility"
                 render={({ field: { name } }) => (
-                    <SelectInput
+                    <SingleSelect
                         id={name}
                         data-testid={name}
                         name="reportingFacility"
                         label="Event provider/facility type"
-                        options={Object.values(ReportingEntityType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        options={entityOptions}
                     />
                 )}
             />

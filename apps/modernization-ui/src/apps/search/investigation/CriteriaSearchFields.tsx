@@ -1,110 +1,90 @@
-import { SelectInput } from 'components/FormInputs/SelectInput';
 import { handleChangeToDefaultValue } from 'forms/event';
-import { CaseStatus, InvestigationStatus, NotificationStatus, ProcessingStatus } from 'generated/graphql/schema';
 import { UseFormReturn, Controller } from 'react-hook-form';
-import { formatInterfaceString } from 'utils/util';
-import { InvestigationFilterEntry } from './InvestigationFormTypes';
-import { MultiSelectInput } from 'components/selection/multi';
+import {
+    InvestigationFilterEntry,
+    caseStatusOptions,
+    investigationStatusOptions,
+    notificationStatusOptions,
+    processingStatusOptions
+} from './InvestigationFormTypes';
+import { SingleSelect, MultiSelect } from 'design-system/select';
+import { useContext } from 'react';
+import { InvestigationFormContext } from './InvestigationSearch';
 
-type Props = {
-    form: UseFormReturn<InvestigationFilterEntry>;
-};
+const CriteriaSearchFields = () => {
+    const form = useContext(InvestigationFormContext);
 
-const CriteriaSearchFields = ({ form }: Props) => {
     return (
         <>
             <Controller
                 control={form.control}
                 name="investigationStatus"
-                render={({ field: { onChange, value, name } }) => (
-                    <SelectInput
+                render={({ field: { onChange, name } }) => (
+                    <SingleSelect
                         data-testid={name}
                         name={name}
-                        value={value as string | undefined}
-                        onChange={(e) => handleChangeToDefaultValue(form, name, undefined, e, onChange)}
+                        onChange={onChange}
                         label="Investigation status"
-                        htmlFor={name}
-                        dataTestid={name}
-                        options={Object.values(InvestigationStatus).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        options={investigationStatusOptions}
+                        id={name}
                     />
                 )}
             />
             <Controller
                 control={form.control}
                 name="outbreaks"
-                render={({ field: { value, name } }) => (
-                    <SelectInput
+                render={({ field: { name } }) => (
+                    <SingleSelect
                         name={name}
-                        value={value as string | undefined}
                         label="Outbreak names"
-                        htmlFor={name}
-                        dataTestid={name}
                         options={[
                             {
                                 name: 'Coming soon',
-                                value: ''
+                                value: '',
+                                label: 'coming soon'
                             }
                         ]}
+                        id={name}
                     />
                 )}
             />
             <Controller
                 control={form.control}
                 name="caseStatuses"
-                render={({ field: { onChange, name, value } }) => (
-                    <MultiSelectInput
+                render={({ field: { onChange, name } }) => (
+                    <MultiSelect
                         data-testid={'caseStatuses'}
                         label="Case status"
                         onChange={onChange}
-                        value={value as string[] | undefined}
                         name={name}
-                        options={Object.values(CaseStatus).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        options={caseStatusOptions}
+                        id={name}
                     />
                 )}
             />
             <Controller
                 control={form.control}
                 name="processingStatuses"
-                render={({ field: { onChange, name, value } }) => (
-                    <MultiSelectInput
+                render={({ field: { onChange, name } }) => (
+                    <MultiSelect
                         label="Current processing status"
                         onChange={onChange}
-                        value={value as string[] | undefined}
                         name={name}
-                        options={Object.values(ProcessingStatus).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        id={name}
+                        options={processingStatusOptions}
                     />
                 )}
             />
             <Controller
                 control={form.control}
                 name="notificationStatuses"
-                render={({ field: { onChange, name, value } }) => (
-                    <MultiSelectInput
+                render={({ field: { onChange, name } }) => (
+                    <MultiSelect
                         label="Notification status"
                         onChange={onChange}
-                        value={value as string[] | undefined}
                         name={name}
-                        options={Object.values(NotificationStatus).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        id={name}
+                        options={notificationStatusOptions}
                     />
                 )}
             />
