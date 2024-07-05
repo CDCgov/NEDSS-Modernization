@@ -1,7 +1,11 @@
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { InvestigationFilterEntry, entityOptions, investigationEventTypeOptions } from './InvestigationFormTypes';
-import { InvestigationEventIdType, PregnancyStatus } from 'generated/graphql/schema';
-import { formatInterfaceString } from 'utils/util';
+import {
+    InvestigationFilterEntry,
+    dateTypeOptions,
+    entityOptions,
+    investigationEventTypeOptions
+} from './InvestigationFormTypes';
+import { PregnancyStatus } from 'generated/graphql/schema';
 import { AutocompleteMulti, Autocomplete } from '../../../design-system/autocomplete';
 import {
     ConditionOptionsService,
@@ -13,7 +17,7 @@ import { SingleSelect } from 'design-system/select';
 import { useContext } from 'react';
 import { Selectable } from 'options';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { InvestigationFormContext } from './InvestigationSearch';
+import { InvestigationFormContext } from './InvestigationFormContext';
 
 const GeneralSearchFields = () => {
     const form: UseFormReturn<InvestigationFilterEntry, Partial<InvestigationFilterEntry>, undefined> = useContext(
@@ -83,13 +87,19 @@ const GeneralSearchFields = () => {
                     />
                 )}
             />
-            <AutocompleteMulti
-                data-testid="jurisdictions"
-                id="jurisdictions"
-                label="Jurisdiction"
-                name="jurisdiction"
-                onChange={handleChangeJurisdictions}
-                resolver={jurisdictionsResolver}
+            <Controller
+                control={form.control}
+                name="jurisdictions"
+                render={({ field: { name } }) => (
+                    <AutocompleteMulti
+                        data-testid={name}
+                        id={name}
+                        label="Jurisdiction"
+                        name={name}
+                        onChange={handleChangeJurisdictions}
+                        resolver={jurisdictionsResolver}
+                    />
+                )}
             />
             <Controller
                 control={form.control}
@@ -117,8 +127,8 @@ const GeneralSearchFields = () => {
                         name={name}
                         label="Event id type"
                         data-testid={name}
-                        options={investigationEventTypeOptions}
-                        id={''}
+                        options={dateTypeOptions}
+                        id={name}
                     />
                 )}
             />
@@ -131,13 +141,7 @@ const GeneralSearchFields = () => {
                         name={name}
                         id="eventDateType"
                         label="Event date type"
-                        options={Object.values(InvestigationEventIdType).map((event) => {
-                            return {
-                                label: formatInterfaceString(event),
-                                name: formatInterfaceString(event),
-                                value: event
-                            };
-                        })}
+                        options={investigationEventTypeOptions}
                     />
                 )}
             />

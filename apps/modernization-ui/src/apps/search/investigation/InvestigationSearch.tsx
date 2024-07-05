@@ -1,11 +1,12 @@
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import InvestigationSearchForm from './InvestigationSearchForm';
-import { UseFormReturn, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
-import { createContext, useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
+import { InvestigationFormContext } from './InvestigationFormContext';
 
 const defaultSelectable = { name: '', value: '', label: '' };
 const defaultValues: InvestigationFilterEntry = {
@@ -24,16 +25,12 @@ const defaultValues: InvestigationFilterEntry = {
     reportingFacility: defaultSelectable
 };
 
-const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
-    mode: 'all',
-    defaultValues
-});
-
-export const InvestigationFormContext =
-    createContext<UseFormReturn<InvestigationFilterEntry, Partial<InvestigationFilterEntry>, undefined>>(form);
-
 const InvestigationSearch = () => {
     const { status, search, reset, results } = useInvestigationSearch();
+    const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
+        mode: 'all',
+        defaultValues
+    });
 
     useEffect(() => {
         if (status === 'waiting') {

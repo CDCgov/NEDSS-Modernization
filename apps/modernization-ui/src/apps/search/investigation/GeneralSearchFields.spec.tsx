@@ -3,30 +3,35 @@ import GeneralSearchFields from './GeneralSearchFields';
 import { useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
+import { InvestigationFormContext } from './InvestigationFormContext';
 
 const InvestigationFormWithFields = () => {
-    // const defaultSelectable = { name: '', value: '', label: '' };
-    // const defaultValues: InvestigationFilterEntry = {
-    //     createdBy: defaultSelectable,
-    //     updatedBy: defaultSelectable,
-    //     investigator: defaultSelectable,
-    //     pregnancyStatus: defaultSelectable,
-    //     investigationStatus: defaultSelectable,
-    //     jurisdictions: [defaultSelectable],
-    //     conditions: [defaultSelectable],
-    //     caseStatuses: [defaultSelectable],
-    //     notificationStatuses: [defaultSelectable],
-    //     outbreaks: [defaultSelectable],
-    //     processingStatuses: [defaultSelectable],
-    //     programAreas: [],
-    //     reportingFacility: defaultSelectable
-    // };
+    const defaultSelectable = { name: '', value: '', label: '' };
+    const defaultValues: InvestigationFilterEntry = {
+        createdBy: defaultSelectable,
+        updatedBy: defaultSelectable,
+        investigator: defaultSelectable,
+        pregnancyStatus: defaultSelectable,
+        investigationStatus: defaultSelectable,
+        jurisdictions: [defaultSelectable],
+        conditions: [defaultSelectable],
+        caseStatuses: [defaultSelectable],
+        notificationStatuses: [defaultSelectable],
+        outbreaks: [defaultSelectable],
+        processingStatuses: [defaultSelectable],
+        programAreas: [],
+        reportingFacility: defaultSelectable
+    };
 
-    // const investigationForm = useForm<InvestigationFilterEntry>({
-    //     defaultValues
-    // });
+    const investigationForm = useForm<InvestigationFilterEntry>({
+        defaultValues
+    });
 
-    return <GeneralSearchFields />;
+    return (
+        <InvestigationFormContext.Provider value={investigationForm}>
+            <GeneralSearchFields />;
+        </InvestigationFormContext.Provider>
+    );
 };
 
 describe('GeneralSearchFields', () => {
@@ -80,8 +85,8 @@ describe('GeneralSearchFields', () => {
 
             await waitFor(() => {
                 const element = screen.getByTestId('identification.type');
-                userEvent.selectOptions(element, 'Investigation Id');
-                expect(element).toHaveTextContent('Investigation Id');
+                userEvent.selectOptions(element, 'Date of report');
+                expect(element).toHaveTextContent('Date of report');
             });
         });
     });
@@ -102,8 +107,8 @@ describe('GeneralSearchFields', () => {
 
             await waitFor(() => {
                 const element = screen.getByTestId('eventDate.type');
-                userEvent.selectOptions(element, 'Notification Id');
-                expect(element).toHaveTextContent('Notification Id');
+                userEvent.selectOptions(element, 'Notification ID');
+                expect(element).toHaveTextContent('Notification ID');
             });
         });
     });
@@ -124,8 +129,8 @@ describe('GeneralSearchFields', () => {
 
             await waitFor(() => {
                 const element = screen.getByTestId('reportingFacility');
-                userEvent.selectOptions(element, 'Facility');
-                expect(element).toHaveTextContent('Facility');
+                userEvent.selectOptions(element, 'Reporting Facility');
+                expect(element).toHaveTextContent('Reporting Facility');
             });
         });
     });

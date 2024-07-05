@@ -7,7 +7,7 @@ import {
 } from './InvestigationFormTypes';
 import { SingleSelect, MultiSelect } from 'design-system/select';
 import { useContext } from 'react';
-import { InvestigationFormContext } from './InvestigationSearch';
+import { InvestigationFormContext } from './InvestigationFormContext';
 import { ConceptAutocomplete } from 'options/autocompete/ConceptAutocomplete';
 
 const CriteriaSearchFields = () => {

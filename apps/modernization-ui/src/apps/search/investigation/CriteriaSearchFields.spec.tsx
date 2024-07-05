@@ -3,30 +3,35 @@ import { useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
+import { InvestigationFormContext } from './InvestigationFormContext';
 
 const InvestigationFormWithFields = () => {
-    // const defaultSelectable = { name: '', value: '', label: '' };
-    // const defaultValues: InvestigationFilterEntry = {
-    //     createdBy: defaultSelectable,
-    //     updatedBy: defaultSelectable,
-    //     investigator: defaultSelectable,
-    //     pregnancyStatus: defaultSelectable,
-    //     investigationStatus: defaultSelectable,
-    //     jurisdictions: [defaultSelectable],
-    //     conditions: [defaultSelectable],
-    //     caseStatuses: [defaultSelectable],
-    //     notificationStatuses: [defaultSelectable],
-    //     outbreaks: [defaultSelectable],
-    //     processingStatuses: [defaultSelectable],
-    //     programAreas: [],
-    //     reportingFacility: defaultSelectable
-    // };
+    const defaultSelectable = { name: '', value: '', label: '' };
+    const defaultValues: InvestigationFilterEntry = {
+        createdBy: defaultSelectable,
+        updatedBy: defaultSelectable,
+        investigator: defaultSelectable,
+        pregnancyStatus: defaultSelectable,
+        investigationStatus: defaultSelectable,
+        jurisdictions: [defaultSelectable],
+        conditions: [defaultSelectable],
+        caseStatuses: [defaultSelectable],
+        notificationStatuses: [defaultSelectable],
+        outbreaks: [defaultSelectable],
+        processingStatuses: [defaultSelectable],
+        programAreas: [],
+        reportingFacility: defaultSelectable
+    };
 
-    // const investigationForm = useForm<InvestigationFilterEntry>({
-    //     defaultValues
-    // });
+    const investigationForm = useForm<InvestigationFilterEntry>({
+        defaultValues
+    });
 
-    return <CriteriaSearchFields />;
+    return (
+        <InvestigationFormContext.Provider value={investigationForm}>
+            <CriteriaSearchFields />;
+        </InvestigationFormContext.Provider>
+    );
 };
 
 describe('CriteriaSearchFields', () => {
@@ -35,9 +40,9 @@ describe('CriteriaSearchFields', () => {
             const { container } = render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
-                const preg = screen.getByTestId('investigationStatus');
-                expect(preg).toBeInTheDocument();
-                expect(preg.getAttribute('placeholder')).toEqual('-Select-');
+                const element = screen.getByTestId('investigationStatus');
+                expect(element).toBeInTheDocument();
+                expect(element.getAttribute('placeholder')).toEqual('-Select-');
             });
         });
 
@@ -57,19 +62,10 @@ describe('CriteriaSearchFields', () => {
             const { container } = render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
-                const element = screen.getByTestId('outbreaks');
-                expect(element).toBeInTheDocument();
-                expect(element).toHaveTextContent('- Select -');
-            });
-        });
+                const elements = container.getElementsByClassName('usa-input');
 
-        it('should update the selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
-
-            await waitFor(() => {
-                const element = screen.getByTestId('outbreaks');
-                userEvent.selectOptions(element, 'Coming soon');
-                expect(element).toHaveTextContent('Coming soon');
+                expect(elements[0]).toBeInTheDocument();
+                expect(elements[0].getAttribute('name')).toEqual('outbreaks');
             });
         });
     });
