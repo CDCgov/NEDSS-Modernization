@@ -9,7 +9,7 @@ const InvestigationSearchForm = () => {
             <Accordion title="General search">
                 <GeneralSearchFields />
             </Accordion>
-            <Accordion title="Investigation criteria">
+            <Accordion title="Investigation criteria" open={false}>
                 <CriteriaSearchFields />
             </Accordion>
         </div>
