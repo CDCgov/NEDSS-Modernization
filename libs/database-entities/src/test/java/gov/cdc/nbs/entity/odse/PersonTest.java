@@ -11,6 +11,7 @@ import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -75,14 +76,14 @@ class PersonTest {
     assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
     assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
     assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
-    assertThat(actual.getMaritalStatusCd()).isEqualTo("Marital Status");
+    assertThat(actual.getGeneralInformation().maritalStatus()).isEqualTo("Marital Status");
 
-    assertThat(actual.getAsOfDateGeneral()).isEqualTo("2019-03-03T10:15:30.00Z");
+    assertThat(actual.getGeneralInformation().asOf()).isEqualTo("2019-03-03T10:15:30.00Z");
     assertThat(actual.getAsOfDateAdmin()).isEqualTo("2019-03-03T10:15:30.00Z");
     assertThat(actual.getAsOfDateSex()).isEqualTo("2019-03-03T10:15:30.00Z");
     assertThat(actual.getDescription()).isEqualTo("comments");
 
-    assertThat(actual.getEharsId()).isEqualTo("HIV-Case");
+    assertThat(actual.getGeneralInformation().stateHIVCase()).isEqualTo("HIV-Case");
 
     assertThat(actual)
         .extracting(Person::getEthnicity)
@@ -1021,26 +1022,25 @@ class PersonTest {
         "education level",
         "prim language",
         "speaks english",
-        "eharsId",
         12L,
         Instant.parse("2019-03-03T10:15:30.00Z"));
 
     actual.update(command);
 
     assertThat(actual)
-        .returns(Instant.parse("2010-03-03T10:15:30.00Z"), Person::getAsOfDateGeneral)
-        .returns("marital status", Person::getMaritalStatusCd)
-        .returns("mothers maiden name", Person::getMothersMaidenNm)
-        .returns((short) 1, Person::getAdultsInHouseNbr)
-        .returns((short) 2, Person::getChildrenInHouseNbr)
-        .returns("occupation code", Person::getOccupationCd)
-        .returns("education level", Person::getEducationLevelCd)
-        .returns("prim language", Person::getPrimLangCd)
-        .returns("speaks english", Person::getSpeaksEnglishCd)
-        .returns("eharsId", Person::getEharsId)
         .returns(12L, Person::getLastChgUserId)
         .returns(Instant.parse("2019-03-03T10:15:30.00Z"), Person::getLastChgTime)
-    ;
+        .extracting(Person::getGeneralInformation)
+        .returns(Instant.parse("2010-03-03T10:15:30.00Z"), GeneralInformation::asOf)
+        .returns("marital status", GeneralInformation::maritalStatus)
+        .returns("mothers maiden name", GeneralInformation::mothersMaidenName)
+        .returns(1, GeneralInformation::adultsInHouse)
+        .returns(2, GeneralInformation::childrenInHouse)
+        .returns("occupation code", GeneralInformation::occupation)
+        .returns("education level", GeneralInformation::educationLevel)
+        .returns("prim language", GeneralInformation::primaryLanguage)
+        .returns("speaks english", GeneralInformation::speaksEnglish)
+        .returns("eharsId", GeneralInformation::stateHIVCase);
   }
 
   @Test

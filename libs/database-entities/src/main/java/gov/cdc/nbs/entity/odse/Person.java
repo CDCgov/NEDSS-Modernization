@@ -10,6 +10,7 @@ import gov.cdc.nbs.patient.PatientAssociationCountFinder;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientHasAssociatedEventsException;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
 import jakarta.persistence.CascadeType;
@@ -83,35 +84,8 @@ public class Person {
   private String description;
 
   // general information
-  @Column(name = "as_of_date_general")
-  private Instant asOfDateGeneral;
-
-  @Column(name = "marital_status_cd", length = 20)
-  private String maritalStatusCd;
-
-  @Column(name = "mothers_maiden_nm", length = 50)
-  private String mothersMaidenNm;
-
-  @Column(name = "adults_in_house_nbr")
-  private Short adultsInHouseNbr;
-
-  @Column(name = "children_in_house_nbr")
-  private Short childrenInHouseNbr;
-
-  @Column(name = "occupation_cd", length = 20)
-  private String occupationCd;
-
-  @Column(name = "education_level_cd", length = 20)
-  private String educationLevelCd;
-
-  @Column(name = "prim_lang_cd", length = 20)
-  private String primLangCd;
-
-  @Column(name = "speaks_english_cd", length = 20)
-  private String speaksEnglishCd;
-
-  @Column(name = "ehars_id", length = 20)
-  private String eharsId;
+  @Embedded
+  private GeneralInformation generalInformation;
 
   // Mortality
   @Column(name = "as_of_date_morbidity")
@@ -224,8 +198,9 @@ public class Person {
 
   protected Person() {
     this.versionCtrlNbr = 1;
-    this.ethnicity = new PatientEthnicity();
     this.race = new PatientRaceDemographic(this);
+    this.generalInformation = new GeneralInformation();
+    this.ethnicity = new PatientEthnicity();
   }
 
   public Person(final long identifier, final String localId) {
@@ -241,6 +216,7 @@ public class Person {
     this.edxInd = "Y";
     this.statusCd = 'A';
     this.recordStatusCd = RecordStatus.ACTIVE;
+
   }
 
   public Person(final PatientCommand.AddPatient patient) {
@@ -252,7 +228,7 @@ public class Person {
     this.asOfDateAdmin = patient.asOf();
     this.description = patient.comments();
 
-    this.asOfDateGeneral = patient.asOf();
+    this.generalInformation = new GeneralInformation(patient);
 
     resolveDateOfBirth(patient.dateOfBirth());
 
@@ -261,10 +237,6 @@ public class Person {
 
     this.deceasedIndCd = patient.deceased();
     this.deceasedTime = patient.deceasedTime();
-
-    this.maritalStatusCd = patient.maritalStatus();
-
-    this.eharsId = patient.stateHIVCase();
 
     this.asOfDateSex = patient.asOf();
     this.asOfDateMorbidity = patient.asOf();
@@ -453,18 +425,7 @@ public class Person {
   }
 
   public void update(final PatientCommand.UpdateGeneralInfo info) {
-    this.asOfDateGeneral = info.asOf();
-    this.maritalStatusCd = info.maritalStatus();
-    this.mothersMaidenNm = info.mothersMaidenName();
-    this.adultsInHouseNbr = info.adultsInHouseNumber() == null ? null : info.adultsInHouseNumber().shortValue();
-    this.childrenInHouseNbr = info.childrenInHouseNumber() == null ? null
-        : info.childrenInHouseNumber().shortValue();
-    this.occupationCd = info.occupationCode();
-    this.educationLevelCd = info.educationLevelCode();
-    this.primLangCd = info.primaryLanguageCode();
-    this.speaksEnglishCd = info.speaksEnglishCode();
-    this.eharsId = info.eharsId();
-
+    this.generalInformation.update(info);
     changed(info);
   }
 
@@ -534,11 +495,39 @@ public class Person {
     changed(delete);
   }
 
+  public void update(final PatientCommand.UpdateEthnicityInfo info) {
+    this.ethnicity.update(info);
+
+    changed(info);
+  }
+
+  public PersonEthnicGroup add(final PatientCommand.AddDetailedEthnicity add) {
+    PersonEthnicGroup ethnicGroup = this.ethnicity.add(this, add);
+
+    changed(add);
+
+    return ethnicGroup;
+  }
+
+  public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
+    this.ethnicity.remove(remove);
+
+    changed(remove);
+  }
+
   private void changed(final PatientCommand command) {
     this.versionCtrlNbr = (short) (this.versionCtrlNbr + 1);
 
     this.lastChgUserId = command.requester();
     this.lastChgTime = command.requestedOn();
+  }
+
+  public GeneralInformation getGeneralInformation() {
+    if (this.generalInformation == null) {
+      this.generalInformation = new GeneralInformation();
+    }
+
+    return this.generalInformation;
   }
 
   @Override
@@ -561,26 +550,6 @@ public class Person {
     return "Person{" +
         "id=" + id +
         '}';
-  }
-
-  public void update(final PatientCommand.UpdateEthnicityInfo info) {
-    this.ethnicity.update(info);
-
-    changed(info);
-  }
-
-  public PersonEthnicGroup add(final PatientCommand.AddDetailedEthnicity add) {
-    PersonEthnicGroup ethnicGroup = this.ethnicity.add(this, add);
-
-    changed(add);
-
-    return ethnicGroup;
-  }
-
-  public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
-    this.ethnicity.remove(remove);
-
-    changed(remove);
   }
 
 }

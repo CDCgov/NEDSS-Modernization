@@ -5,6 +5,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
+import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -531,18 +533,11 @@ public class PatientMother {
   public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
     Person patient = managed(identifier);
 
-    patient.update(
-        new PatientCommand.UpdateGeneralInfo(
+    GeneralInformation generalInformation = patient.getGeneralInformation();
+
+    generalInformation.associate(
+        new PatientCommand.AssociateStateHIVCase(
             identifier.id(),
-            RandomUtil.getRandomDateInPast(),
-            patient.getMaritalStatusCd(),
-            patient.getMothersMaidenNm(),
-            patient.getAdultsInHouseNbr(),
-            patient.getChildrenInHouseNbr(),
-            patient.getOccupationCd(),
-            patient.getEducationLevelCd(),
-            patient.getPrimLangCd(),
-            patient.getSpeaksEnglishCd(),
             value,
             this.settings.createdBy(),
             this.settings.createdOn()

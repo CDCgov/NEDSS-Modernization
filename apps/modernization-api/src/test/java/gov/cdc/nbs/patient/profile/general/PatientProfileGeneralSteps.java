@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.profile.general;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
@@ -15,6 +16,7 @@ import java.time.Instant;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -58,7 +60,8 @@ public class PatientProfileGeneralSteps {
     PatientInput expected = this.input.active();
 
     assertThat(actual)
-        .returns(expected.getMaritalStatus(), Person::getMaritalStatusCd);
+        .extracting(Person::getGeneralInformation)
+        .returns(expected.getMaritalStatus(), GeneralInformation::maritalStatus);
   }
 
   @When("I view the patient's general information")
@@ -133,13 +136,10 @@ public class PatientProfileGeneralSteps {
         .andExpect(pathMatcher.value(equalTo(value)));
   }
 
-  @Then("the patient's general information does not include a(n) {string}")
-  public void the_patients_general_information_does_not_include(final String field) throws Exception {
-    JsonPathResultMatchers pathMatcher = matchingPath(field);
-
+  @Then("the patient's general information does not include state HIV case due to {string}")
+  public void the_patients_general_information_does_not_include_state_HIV_case(final String reason) throws Exception {
     this.response.active()
-        .andDo(print())
-        .andExpect(pathMatcher.isEmpty());
+        .andExpect(jsonPath("$.data.findPatientProfile.general.stateHIVCase.reason", equalToIgnoringCase(reason)));
   }
 
   private JsonPathResultMatchers matchingPath(final String field) {
@@ -147,7 +147,7 @@ public class PatientProfileGeneralSteps {
       case "mother's maiden name" -> jsonPath("$.data.findPatientProfile.general.maternalMaidenName");
       case "adults in the house" -> jsonPath("$.data.findPatientProfile.general.adultsInHouse");
       case "children in the house" -> jsonPath("$.data.findPatientProfile.general.childrenInHouse");
-      case "state hiv case" -> jsonPath("$.data.findPatientProfile.general.stateHIVCase");
+      case "state hiv case" -> jsonPath("$.data.findPatientProfile.general.stateHIVCase.value");
       default -> throw new AssertionError("Unexpected Patient General Information  property %s".formatted(field));
     };
   }

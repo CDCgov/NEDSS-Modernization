@@ -6,12 +6,11 @@ import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.repository.PersonRepository;
+import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import gov.cdc.nbs.support.util.RandomUtil;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +24,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 public class PatientProfileBirthSteps {
 
-    @Autowired
-    Active<PatientInput> input;
+    private final Active<PatientInput> input;
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+    private final Available<PatientIdentifier> patients;
 
-    @Autowired
-    PersonRepository repository;
+    private final PersonRepository repository;
 
-    @Autowired
-    PatientBirthResolver resolver;
+    private final PatientBirthResolver resolver;
+
+    PatientProfileBirthSteps(
+        final Active<PatientInput> input,
+        final Available<PatientIdentifier> patients,
+        final PersonRepository repository,
+        final PatientBirthResolver resolver
+    ) {
+        this.input = input;
+        this.patients = patients;
+        this.repository = repository;
+        this.resolver = resolver;
+    }
 
     @Given("the new patient's birth is entered")
     public void the_new_patient_birth_is_entered() {
@@ -50,7 +57,7 @@ public class PatientProfileBirthSteps {
         PatientInput expected = this.input.active();
 
         assertThat(actual)
-            .returns(expected.getAsOf(), Person::getAsOfDateGeneral)
+            .returns(expected.getAsOf(), Person::getAsOfDateSex)
             .returns(expected.getBirthGender(), Person::getBirthGenderCd)
         ;
 

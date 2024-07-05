@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Embeddable
 public class GeneralInformation {
@@ -39,6 +40,15 @@ public class GeneralInformation {
   @Column(name = "ehars_id", length = 20)
   private String stateHIVCase;
 
+  public GeneralInformation() {
+  }
+
+  public GeneralInformation(final PatientCommand.AddPatient patient) {
+    this.asOf = patient.asOf();
+    this.maritalStatus = patient.maritalStatus();
+    this.stateHIVCase = patient.stateHIVCase();
+  }
+
   public void update(final PatientCommand.UpdateGeneralInfo info) {
     this.asOf = info.asOf();
     this.maritalStatus = info.maritalStatus();
@@ -49,7 +59,10 @@ public class GeneralInformation {
     this.educationLevel = info.educationLevelCode();
     this.primaryLanguage = info.primaryLanguageCode();
     this.speaksEnglish = info.speaksEnglishCode();
-    this.stateHIVCase = info.eharsId();
+  }
+
+  public void associate(final PatientCommand.AssociateStateHIVCase associate) {
+    this.stateHIVCase = associate.stateHIVCase();
   }
 
   public Instant asOf() {
@@ -90,5 +103,20 @@ public class GeneralInformation {
 
   public String stateHIVCase() {
     return stateHIVCase;
+  }
+
+  public long signature() {
+    return Objects.hash(
+        asOf,
+        maritalStatus,
+        mothersMaidenName,
+        adultsInHouse,
+        childrenInHouse,
+        occupation,
+        educationLevel,
+        primaryLanguage,
+        speaksEnglish,
+        stateHIVCase
+    );
   }
 }

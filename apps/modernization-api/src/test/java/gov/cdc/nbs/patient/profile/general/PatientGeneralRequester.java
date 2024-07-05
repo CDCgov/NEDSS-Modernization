@@ -12,43 +12,51 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 class PatientGeneralRequester {
 
   private static final String QUERY = """
-    query profileGeneralInformation($patient: ID!) {
-      findPatientProfile(patient: $patient) {
-        id
-        local
-        general {
-          patient
+      query profileGeneralInformation($patient: ID!) {
+        findPatientProfile(patient: $patient) {
           id
-          version
-          asOf
-          maritalStatus {
+          local
+          general {
+            patient
             id
-            description
+            version
+            asOf
+            maritalStatus {
+              id
+              description
+            }
+            maternalMaidenName
+            adultsInHouse
+            childrenInHouse
+            occupation {
+              id
+              description
+            }
+            educationLevel {
+              id
+              description
+            }
+            primaryLanguage {
+              id
+              description
+            }
+            speaksEnglish {
+              id
+              description
+            }
+            stateHIVCase {
+              __typename
+              ... on Allowed {
+                value
+              }
+              ... on Restricted {
+                reason
+              }
+            }
           }
-          maternalMaidenName
-          adultsInHouse
-          childrenInHouse
-          occupation {
-            id
-            description
-          }
-          educationLevel {
-            id
-            description
-          }
-          primaryLanguage {
-            id
-            description
-          }
-          speaksEnglish {
-            id
-            description
-          }
-          stateHIVCase
         }
       }
-    }
-    """;
+      """;
 
   private final GraphQLRequest graphql;
 
@@ -63,7 +71,7 @@ class PatientGeneralRequester {
           JsonNodeFactory.instance.objectNode()
               .put("patient", patient.id())
       ).andDo(print());
-    } catch(Exception exception) {
+    } catch (Exception exception) {
       throw new IllegalStateException("Unable to request patient general demographics");
     }
   }

@@ -1,27 +1,25 @@
 package gov.cdc.nbs.patient.profile.general.change;
 
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-
 @Component
 @Transactional
-public class PatientGeneralInformationChangeService {
+class PatientGeneralInformationChangeService {
 
-    private final EntityManager entityManager;
+  private final PatientProfileService service;
 
-    public PatientGeneralInformationChangeService(final EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+  PatientGeneralInformationChangeService(final PatientProfileService service) {
+    this.service = service;
+  }
 
-    public void update(final RequestContext context, final UpdateGeneralInformation input) {
-        Person patient = managed(input.patient());
-
-        patient.update(
+  void update(final RequestContext context, final UpdateGeneralInformation input) {
+    service.using(
+        input.patient(),
+        patient -> patient.update(
             new PatientCommand.UpdateGeneralInfo(
                 input.patient(),
                 input.asOf(),
@@ -33,15 +31,12 @@ public class PatientGeneralInformationChangeService {
                 input.educationLevel(),
                 input.primaryLanguage(),
                 input.speaksEnglish(),
-                input.stateHIVCase(),
                 context.requestedBy(),
                 context.requestedAt()
             )
-        );
-    }
+        )
+    );
+  }
 
-    private Person managed(final long patient) {
-        return this.entityManager.find(Person.class, patient);
-    }
 
 }
