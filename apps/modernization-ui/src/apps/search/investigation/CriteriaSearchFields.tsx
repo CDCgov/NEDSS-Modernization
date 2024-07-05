@@ -1,17 +1,16 @@
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import {
+    InvestigationFilterEntry,
     caseStatusOptions,
     investigationStatusOptions,
     notificationStatusOptions,
     processingStatusOptions
 } from './InvestigationFormTypes';
 import { SingleSelect, MultiSelect } from 'design-system/select';
-import { useContext } from 'react';
-import { InvestigationFormContext } from './InvestigationFormContext';
 import { ConceptAutocomplete } from 'options/autocompete/ConceptAutocomplete';
 
 const CriteriaSearchFields = () => {
-    const form = useContext(InvestigationFormContext);
+    const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
 
     return (
         <>

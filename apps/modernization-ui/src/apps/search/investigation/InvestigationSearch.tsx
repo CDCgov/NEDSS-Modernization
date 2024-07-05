@@ -1,12 +1,11 @@
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import InvestigationSearchForm from './InvestigationSearchForm';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
 import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
-import { InvestigationFormContext } from './InvestigationFormContext';
 
 const defaultSelectable = { name: '', value: '', label: '' };
 const defaultValues: InvestigationFilterEntry = {
@@ -41,9 +40,9 @@ const InvestigationSearch = () => {
     return (
         <SearchLayout
             criteria={() => (
-                <InvestigationFormContext.Provider value={form}>
+                <FormProvider {...form}>
                     <InvestigationSearchForm />
-                </InvestigationFormContext.Provider>
+                </FormProvider>
             )}
             resultsAsList={() => (
                 <SearchResultList<Investigation>

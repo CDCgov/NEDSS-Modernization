@@ -1,4 +1,4 @@
-import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import {
     InvestigationFilterEntry,
     dateTypeOptions,
@@ -14,15 +14,11 @@ import {
     UserOptionsService
 } from 'generated';
 import { SingleSelect } from 'design-system/select';
-import { useContext } from 'react';
 import { Selectable } from 'options';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { InvestigationFormContext } from './InvestigationFormContext';
 
 const GeneralSearchFields = () => {
-    const form: UseFormReturn<InvestigationFilterEntry, Partial<InvestigationFilterEntry>, undefined> = useContext(
-        InvestigationFormContext
-    );
+    const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
     const watch = useWatch({ control: form.control });
 
     const handleChangeConditions = (e: Selectable[]) => {

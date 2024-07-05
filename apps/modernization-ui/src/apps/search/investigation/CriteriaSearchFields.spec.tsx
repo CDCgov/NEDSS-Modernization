@@ -1,9 +1,8 @@
 import { render, waitFor, screen } from '@testing-library/react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
-import { InvestigationFormContext } from './InvestigationFormContext';
 
 const InvestigationFormWithFields = () => {
     const defaultSelectable = { name: '', value: '', label: '' };
@@ -24,13 +23,14 @@ const InvestigationFormWithFields = () => {
     };
 
     const investigationForm = useForm<InvestigationFilterEntry>({
-        defaultValues
+        defaultValues,
+        mode: 'all'
     });
 
     return (
-        <InvestigationFormContext.Provider value={investigationForm}>
+        <FormProvider {...investigationForm}>
             <CriteriaSearchFields />;
-        </InvestigationFormContext.Provider>
+        </FormProvider>
     );
 };
 
