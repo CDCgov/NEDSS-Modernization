@@ -14,6 +14,7 @@ export const sort = (documents: Document[], { name, type }: SortCriteria): Docum
 const resolveComparator = (name?: Headers): Comparator<Document> => {
     switch (name) {
         case Headers.DateReceived:
+            console.log('receon');
             return sortByDate('receivedOn');
         case Headers.Type:
             return sortBy('type');
@@ -28,6 +29,7 @@ const resolveComparator = (name?: Headers): Comparator<Document> => {
         case Headers.EventID:
             return sortByAlphanumeric('event');
         default:
+            console.log('nothing');
             return defaultSort;
     }
 };

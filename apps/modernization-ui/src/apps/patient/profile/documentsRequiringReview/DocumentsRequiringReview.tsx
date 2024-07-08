@@ -1,6 +1,6 @@
 import { DocumentRequiringReviewSortableField, SortDirection } from 'generated/graphql/schema';
 import { PageProvider, usePage } from 'page';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DocumentsRequiringReviewTable } from './DocumentRequiringReviewTable';
 import { useDocumentsRequiringReviewApi } from './useDocumentsRequiringReviewApi';
 
@@ -21,14 +21,13 @@ export const DocumentRequiringReview = ({ patient }: Props) => {
 };
 
 const DocumentsRequiringReviewContainer = ({ patient }: Props) => {
-    const [sort, setSort] = useState<Sort>();
-    const documents = useDocumentsRequiringReviewApi(patient, sort);
+    const documents = useDocumentsRequiringReviewApi(patient);
     const { firstPage } = usePage();
 
     useEffect(() => {
         if (patient) {
             firstPage();
         }
-    }, [patient, sort]);
-    return <DocumentsRequiringReviewTable patient={patient} setSort={setSort} documents={documents} />;
+    }, [patient]);
+    return <DocumentsRequiringReviewTable patient={patient} documents={documents} />;
 };
