@@ -1,7 +1,6 @@
 import { When, Then, attach, Given } from "@badeball/cypress-cucumber-preprocessor";
 import { searchPage } from "cypress/e2e/pages/search.page";
 import { faker } from "@faker-js/faker";
-import 'cypress-wait-until';
 import '@cypress/xpath';
 
 When("I Generate HL7 messages to api and mark as review", () => {
@@ -15,7 +14,6 @@ When("I Generate HL7 messages to api and mark as review", () => {
   const apiurl = Cypress.env()["env"].apiurl;
   const checkstatusurl = Cypress.env()["env"].checkstatusurl;
   const authurl = Cypress.env()["env"].authurl;
-
 
   cy.request({
     method: "POST",
@@ -72,23 +70,22 @@ When("I Generate HL7 messages to api and mark as review", () => {
             const handleFailureOrQueued = NBSresponse === 'Failure' || NBSresponse === 'QUEUED';
             const Success = NBSresponse === 'Success';
             const isNotSuccess = NBSerrorresponse === 'Provided UUID is not present in the database. Either provided an invalid UUID or the injected message failed validation.';
-            const nbsInterfaceId = response.body.nbsInfo.nbsInterfaceStatus;
-            cy.wait(1000);
+            const nbsInterfaceId = response.body.nbsInfo.nbsInterfaceStatus;            
             cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
             
             cy.wait(110000);
             // Navigate to Documents Requiring Review
             cy.contains('Documents Requiring Review').click();            
-            cy.wait(1000);
+            
 
             cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();
          
             cy.get("#SearchText1").type(randomLastName);
             cy.get("#b2SearchText1").click();
             
-            cy.wait(1000);
+            
             cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();            
-            cy.wait(1000);
+            
 
             // Finalize the test
             cy.get("input[name=markReviewd]").first().click();
