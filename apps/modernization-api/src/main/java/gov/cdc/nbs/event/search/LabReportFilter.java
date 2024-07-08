@@ -29,6 +29,7 @@ public final class LabReportFilter implements EventFilter {
   private LabReportProviderSearch providerSearch;
   private Long orderingLabId;
   private Long orderingProviderId;
+  private Long reportingLabId;
   private String resultedTest;
   private String codedResult;
 
@@ -206,6 +207,9 @@ public final class LabReportFilter implements EventFilter {
   }
 
   public Optional<Long> reportingFacility() {
+    if (this.reportingLabId != null) {
+      return Optional.of(this.reportingLabId);
+    }
     return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.REPORTING_FACILITY)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();
