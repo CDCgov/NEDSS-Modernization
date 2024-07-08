@@ -75,14 +75,18 @@ const PatientSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <div id="otherNames">
-                        {names.map((name, index) => (
-                            <div key={index}>
-                                <span className={styles.value}>
-                                    {name.last}, {name.first}
-                                </span>
-                                <br />
-                            </div>
-                        )) ?? noData}
+                        {names.length ? (
+                            names?.map((name, index) => (
+                                <div key={index}>
+                                    <span className={styles.value}>
+                                        {name.last}, {name.first}
+                                    </span>
+                                    <br />
+                                </div>
+                            ))
+                        ) : (
+                            <span className={styles.value}> {noData}</span>
+                        )}
                     </div>
                 </div>
             </div>
@@ -111,7 +115,7 @@ const PatientSearchResultListItem = ({ result }: Props) => {
                             <span>{`${addresses[0].city}, ${addresses[0].state}, ${addresses[0].zipcode}`}</span>
                         </>
                     ) : (
-                        noData
+                        <span className={styles.value}>{noData}</span>
                     )}
                 </div>
             </div>
