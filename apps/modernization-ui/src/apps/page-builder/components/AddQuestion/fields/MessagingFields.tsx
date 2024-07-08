@@ -135,6 +135,7 @@ export const MessagingFields = () => {
                                 className="requiredInMessage"
                                 checked={value === true}
                                 name="includedInMessage"
+                                id="includedInMessage"
                                 disabled={!includedInMessage}
                                 onChange={onChange}
                             />
