@@ -43,7 +43,7 @@ const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
 };
 
 const resolveEventDate = (date?: EventDate): LaboratoryEventDateSearch | undefined => {
-    if (date) {
+    if (date && date.type?.value) {
         return {
             type: date.type.value as LaboratoryReportEventDateType,
             from: date.from,
@@ -53,7 +53,7 @@ const resolveEventDate = (date?: EventDate): LaboratoryEventDateSearch | undefin
 };
 
 const resolveEventId = (identification?: Identification): LabReportEventId | undefined => {
-    if (identification) {
+    if (identification && identification?.type) {
         return {
             labEventId: identification.value,
             labEventType: identification.type.value as LaboratoryEventIdType

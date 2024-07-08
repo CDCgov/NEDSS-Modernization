@@ -311,7 +311,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 id={name}
                                 label="Event facility type"
                                 placeholder=""
-                                onChange={onChange}
+                                onChange={(e) => onChange(e?.value)}
                                 required={true}
                                 onBlur={onBlur}
                             />

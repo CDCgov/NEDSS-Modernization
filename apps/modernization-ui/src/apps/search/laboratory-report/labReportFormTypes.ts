@@ -34,6 +34,7 @@ type General = {
     pregnancyStatus?: Selectable;
     processingStatus?: Selectable[];
     programAreas?: Selectable[];
+    providerType?: Selectable;
 };
 
 type LabReportFilterEntry = General & ReportCriteria;

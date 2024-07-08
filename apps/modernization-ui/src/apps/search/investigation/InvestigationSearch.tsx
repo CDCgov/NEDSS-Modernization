@@ -1,27 +1,49 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Investigation } from 'generated/graphql/schema';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { InvestigationSearchResultListItem } from './result/list';
+import InvestigationSearchForm from './InvestigationSearchForm';
+import { FormProvider, useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
+import { useEffect } from 'react';
+import { Investigation } from 'generated/graphql/schema';
+import { InvestigationSearchResultListItem } from './result/list';
+
+const defaultSelectable = { name: '', value: '', label: '' };
+const defaultValues: InvestigationFilterEntry = {
+    createdBy: defaultSelectable,
+    updatedBy: defaultSelectable,
+    investigator: defaultSelectable,
+    pregnancyStatus: defaultSelectable,
+    investigationStatus: defaultSelectable,
+    jurisdictions: [defaultSelectable],
+    conditions: [defaultSelectable],
+    caseStatuses: [defaultSelectable],
+    notificationStatuses: [defaultSelectable],
+    outbreaks: [defaultSelectable],
+    processingStatuses: [defaultSelectable],
+    programAreas: [],
+    reportingFacility: defaultSelectable
+};
 
 const InvestigationSearch = () => {
-    const { handleSubmit, reset: resetForm } = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
-        mode: 'onBlur'
-    });
-
     const { status, search, reset, results } = useInvestigationSearch();
+    const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
+        mode: 'all',
+        defaultValues
+    });
 
     useEffect(() => {
         if (status === 'waiting') {
-            resetForm();
+            form.reset();
         }
-    }, [resetForm, status]);
+    }, [form.reset, status]);
 
     return (
         <SearchLayout
-            criteria={() => <div>criteria</div>}
+            criteria={() => (
+                <FormProvider {...form}>
+                    <InvestigationSearchForm />
+                </FormProvider>
+            )}
             resultsAsList={() => (
                 <SearchResultList<Investigation>
                     results={results?.content ?? []}
@@ -29,7 +51,7 @@ const InvestigationSearch = () => {
                 />
             )}
             resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit(search)}
+            onSearch={form.handleSubmit(search)}
             onClear={reset}
         />
     );
