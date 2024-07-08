@@ -1,5 +1,10 @@
 name: Build and Push modernization-test-db to ECR
 on:
+  workflow_call:
+  secrets:
+    DATABASE_PASSWORD:
+      description: "Secret named DATABASE_PASSWORD that references the test database container default password"
+      required: true
   push:
     branches:
       - main
