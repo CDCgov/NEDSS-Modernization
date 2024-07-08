@@ -10,13 +10,20 @@ When("I Generate HL7 messages to api and mark as review", () => {
   let hl7Message;
   let authToken;
   let messageID;
+  const clientid = Cypress.env()["env"].clientid;
+  const clientsecret = Cypress.env()["env"].clientsecret;
+  const apiurl = Cypress.env()["env"].apiurl;
+  const checkstatusurl = Cypress.env()["env"].checkstatusurl;
+  const authurl = Cypress.env()["env"].authurl;
+
+
   cy.request({
     method: "POST",
-    url: "https://dataingestion.int1.nbspreview.com/api/auth/token",
+    url: authurl,
     headers: {
       "Content-Type": "text/plain",      
-      "clientid": Cypress.env('clientid'),
-      "clientsecret": Cypress.env('clientsecret')
+      "clientid": clientid,
+      "clientsecret": clientsecret
     }
   }).then((response) => {
     expect(response.status).to.eq(200);
@@ -38,25 +45,25 @@ When("I Generate HL7 messages to api and mark as review", () => {
       console.log(randomFirstName, randomLastName);
       cy.request({
         method: "POST",
-        url: "https://dataingestion.int1.nbspreview.com/api/elrs",
+        url: apiurl,
         headers: {
           "Content-Type": "text/plain",
           Authorization: `Bearer ${authToken}`,
-         "clientid": Cypress.env('clientid'),
-         "clientsecret": Cypress.env('clientsecret'),
+         "clientid": clientid,
+         "clientsecret": clientsecret,
           "msgType": 'HL7'
         },
         body: modifiedData
       }).then((response) => {        
           messageID = response.body;          
-          let checkStatusUrl = "https://dataingestion.int1.nbspreview.com/api/elrs/status-details/" + messageID;                    
+          let checkStatusUrl = checkstatusurl + messageID;
         cy.request({
           method: "GET",
           url: checkStatusUrl,
           headers: {            
             Authorization: `Bearer ${authToken}`,
-            "clientid": Cypress.env('clientid'),
-           "clientsecret": Cypress.env('clientsecret')
+            "clientid": clientid,
+           "clientsecret": clientsecret
           }
         }).then((response) => {
             expect(response.status).to.eq(200);
@@ -69,7 +76,7 @@ When("I Generate HL7 messages to api and mark as review", () => {
             cy.wait(1000);
             cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
             
-            cy.wait(99000);
+            cy.wait(110000);
             // Navigate to Documents Requiring Review
             cy.contains('Documents Requiring Review').click();            
             cy.wait(1000);
