@@ -26,6 +26,7 @@ input PatientLabReportFilter {
   codedResult: String
   orderingLabId: ID
   orderingProviderId: ID
+  reportingLabId: ID
 }
 
 type PatientLabReport {
