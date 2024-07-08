@@ -1,3 +1,4 @@
 downloads/
 screenshots/
 results.json
+cypress.env.json
