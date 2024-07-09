@@ -7,7 +7,6 @@ describe('when rendered', () => {
         const { getByRole, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={[]}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -30,7 +29,6 @@ describe('when no documents are available for a patient', () => {
         const { findByText } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={[]}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -58,7 +56,6 @@ describe('when at least one document is available for a patient', () => {
         const { queryByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -88,7 +85,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -118,7 +114,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByRole, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -148,7 +143,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByRole, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -178,7 +172,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByRole, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -208,7 +201,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -240,7 +232,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -274,7 +265,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -308,7 +298,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -340,7 +329,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -370,7 +358,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -402,7 +389,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
@@ -432,7 +418,6 @@ describe('when at least one document is available for a patient', () => {
         const { getByText, getAllByRole } = render(
             <WithinTableProvider>
                 <DocumentsRequiringReviewTable
-                    setSort={() => {}}
                     patient={'patient'}
                     documents={documents}></DocumentsRequiringReviewTable>
             </WithinTableProvider>
