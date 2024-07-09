@@ -14,11 +14,11 @@ const SearchResults = ({ children }: Props) => {
         page: { total }
     } = usePage();
 
-    const { view, terms, setView } = useSearchResultDisplay();
+    const { view, terms } = useSearchResultDisplay();
 
     return (
         <div className={styles.results}>
-            <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} setView={setView} />
+            <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
             <main className={styles.content}>{children}</main>
             <div className={styles.pagingation}></div>
         </div>

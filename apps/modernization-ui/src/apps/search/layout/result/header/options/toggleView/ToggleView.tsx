@@ -1,17 +1,14 @@
 import { ButtonGroup, Icon } from '@trussworks/react-uswds';
-import { View } from 'apps/search';
-import styles from '../search-results-header.module.scss';
+import styles from '../search-results-options.module.scss';
 import classNames from 'classnames';
 import { Button } from 'components/button';
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 
-type ToggleViewProps = {
-    view: View;
-    setView: (view: View) => void;
-};
+export const ToggleView = () => {
+    const { view, setView } = useSearchResultDisplay();
 
-export const ToggleView = ({ view, setView }: ToggleViewProps) => {
     return (
-        <div className={classNames(styles.flexContainer)}>
+        <div className={classNames(styles.options)}>
             <strong>View as: </strong>
             <ButtonGroup type="segmented">
                 <Button
