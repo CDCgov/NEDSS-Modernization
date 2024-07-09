@@ -363,6 +363,7 @@ export type LabReportFilter = {
   processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerSearch?: InputMaybe<LabReportProviderSearch>;
+  reportingLabId?: InputMaybe<Scalars['ID']['input']>;
   resultedTest?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1140,6 +1141,7 @@ export type PatientLabReportFilter = {
   processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerSearch?: InputMaybe<LabReportProviderSearch>;
+  reportingLabId?: InputMaybe<Scalars['ID']['input']>;
   resultedTest?: InputMaybe<Scalars['String']['input']>;
 };
 

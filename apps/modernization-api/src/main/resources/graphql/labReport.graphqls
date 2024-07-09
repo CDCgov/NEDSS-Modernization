@@ -73,6 +73,7 @@ input LabReportFilter {
   codedResult: String
   orderingLabId: ID
   orderingProviderId: ID
+  reportingLabId: ID
 }
 
 input LabReportEventId {
