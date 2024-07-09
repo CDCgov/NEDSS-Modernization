@@ -1,0 +1,37 @@
+@use 'styles/colors';
+
+.listItem {
+    display: flex;
+    flex-direction: row;
+    padding: 0.75rem 1rem;
+    justify-content: space-between;
+
+    .listItemBox {
+        flex: 1;
+        max-width: 25%;
+
+        .listItemData {
+            &:first-of-type {
+                margin-bottom: 0.25rem;
+            }
+        }
+
+        label {
+            color: colors.$base;
+            /* H5 */
+            font-size: 0.8125rem;
+            font-weight: 600;
+            letter-spacing: 0.02031rem;
+            text-transform: uppercase;
+            margin-right: 0.5rem;
+        }
+        .value {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+        .name {
+            color: colors.$primary;
+        }
+    }
+}
