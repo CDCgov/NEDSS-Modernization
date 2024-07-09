@@ -2,7 +2,6 @@ package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.GraphQLPageableMapper;
 import gov.cdc.nbs.patient.search.SearchGraphQLPageableMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
