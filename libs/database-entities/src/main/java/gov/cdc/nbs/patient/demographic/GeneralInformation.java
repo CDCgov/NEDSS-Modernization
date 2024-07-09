@@ -1,14 +1,21 @@
 package gov.cdc.nbs.patient.demographic;
 
+import gov.cdc.nbs.authorization.permission.Permission;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.patient.PatientCommand;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+
 
 import java.time.Instant;
 import java.util.Objects;
 
 @Embeddable
 public class GeneralInformation {
+
+  private static final Permission HIV_PERMISSION = new Permission("HIVQuestions", "Global");
+
 
   @Column(name = "as_of_date_general")
   private Instant asOf;
@@ -61,8 +68,14 @@ public class GeneralInformation {
     this.speaksEnglish = info.speaksEnglishCode();
   }
 
-  public void associate(final PatientCommand.AssociateStateHIVCase associate) {
-    this.stateHIVCase = associate.stateHIVCase();
+  public void associate(
+      final PermissionScopeResolver resolver,
+      final PatientCommand.AssociateStateHIVCase associate
+  ) {
+    PermissionScope scope = resolver.resolve(HIV_PERMISSION);
+    if (scope.allowed()) {
+      this.stateHIVCase = associate.stateHIVCase();
+    }
   }
 
   public Instant asOf() {

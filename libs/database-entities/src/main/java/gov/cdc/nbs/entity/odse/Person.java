@@ -1,5 +1,6 @@
 package gov.cdc.nbs.entity.odse;
 
+import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.entity.enums.converter.SuffixConverter;
 import gov.cdc.nbs.message.enums.Deceased;
@@ -427,6 +428,13 @@ public class Person {
   public void update(final PatientCommand.UpdateGeneralInfo info) {
     this.generalInformation.update(info);
     changed(info);
+  }
+
+  public void associate(
+      final PermissionScopeResolver resolver,
+      final PatientCommand.AssociateStateHIVCase associate
+  ) {
+    this.generalInformation.associate(resolver, associate);
   }
 
   public void update(final PatientCommand.UpdateAdministrativeInfo info) {

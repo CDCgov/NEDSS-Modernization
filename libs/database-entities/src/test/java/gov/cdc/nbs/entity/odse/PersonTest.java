@@ -1039,8 +1039,7 @@ class PersonTest {
         .returns("occupation code", GeneralInformation::occupation)
         .returns("education level", GeneralInformation::educationLevel)
         .returns("prim language", GeneralInformation::primaryLanguage)
-        .returns("speaks english", GeneralInformation::speaksEnglish)
-        .returns("eharsId", GeneralInformation::stateHIVCase);
+        .returns("speaks english", GeneralInformation::speaksEnglish);
   }
 
   @Test
