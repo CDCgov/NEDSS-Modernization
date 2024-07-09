@@ -1,12 +1,12 @@
 package gov.cdc.nbs.data.sensitive;
 
-public sealed interface Sensitive<V> {
+public sealed interface Sensitive {
 
-  record Allowed<V>(V value) implements Sensitive<V> {
+  record Allowed<V>(V value) implements Sensitive {
   }
 
 
-  record Restricted<V>(String reason) implements Sensitive<V> {
+  record Restricted(String reason) implements Sensitive {
   }
 
 

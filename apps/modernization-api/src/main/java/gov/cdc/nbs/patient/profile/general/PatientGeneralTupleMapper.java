@@ -83,7 +83,7 @@ class PatientGeneralTupleMapper {
 
     Indicator speaksEnglish = IndicatorStringConverter.fromString(tuple.get(this.tables.patient().generalInformation.speaksEnglish));
 
-    Sensitive<String> stateHIVCase = resolveStateHIVCase(tuple);
+    Sensitive stateHIVCase = resolveStateHIVCase(tuple);
 
     return new PatientGeneral(
         patient,
@@ -150,7 +150,7 @@ class PatientGeneralTupleMapper {
     );
   }
 
-  private Sensitive<String> resolveStateHIVCase(final Tuple tuple) {
+  private Sensitive resolveStateHIVCase(final Tuple tuple) {
     return this.resolver.resolve(HIV_PERMISSION, tuple.get(this.tables.patient().generalInformation.stateHIVCase));
   }
 }

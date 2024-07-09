@@ -246,7 +246,7 @@ class PatientGeneralTupleMapperTest {
     when(resolver.resolve(any(), any())).thenReturn(allowed);
 
 
-    Sensitive<String> actual = new PatientGeneralTupleMapper(tables, resolver)
+    Sensitive actual = new PatientGeneralTupleMapper(tables, resolver)
         .map(tuple)
         .stateHIVCase();
 

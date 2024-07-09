@@ -18,7 +18,7 @@ record PatientGeneral(
     EducationLevel educationLevel,
     Language primaryLanguage,
     Indicator speaksEnglish,
-    Sensitive<String> stateHIVCase
+    Sensitive stateHIVCase
 ) {
 
     record MaritalStatus(String id, String description){}
