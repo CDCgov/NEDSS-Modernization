@@ -34,7 +34,15 @@ export const Query = gql`
                     id
                     description
                 }
-                stateHIVCase
+                stateHIVCase {
+                    __typename
+                    ... on Allowed {
+                        value
+                    }
+                    ... on Restricted {
+                        reason
+                    }
+                }
             }
         }
     }

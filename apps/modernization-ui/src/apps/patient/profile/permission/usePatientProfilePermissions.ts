@@ -4,6 +4,7 @@ import { useUser } from 'user';
 type PatientProfilePermission = {
     delete: boolean;
     compareInvestigation: boolean;
+    hivAccess: boolean;
 };
 
 type PermissionKeyMap = {
@@ -12,19 +13,22 @@ type PermissionKeyMap = {
 
 const initial: PatientProfilePermission = {
     delete: false,
-    compareInvestigation: false
+    compareInvestigation: false,
+    hivAccess: false
 };
 
 const permissionKeyMap: PermissionKeyMap = {
     'MERGEINVESTIGATION-INVESTIGATION': 'compareInvestigation',
-    'DELETE-PATIENT': 'delete'
+    'DELETE-PATIENT': 'delete',
+    'HIVQUESTIONS-GLOBAL': 'hivAccess'
 };
 
 const resovlePermissions = (permissions?: string[]) => {
     if (permissions) {
         return permissions.slice(0).reduce((existing, next) => {
-            if (permissionKeyMap[next]) {
-                existing[permissionKeyMap[next]] = true;
+            const key = permissionKeyMap[next];
+            if (key) {
+                return { ...existing, [key]: true };
             }
             return existing;
         }, initial);

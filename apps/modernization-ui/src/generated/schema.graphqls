@@ -971,6 +971,15 @@ type PatientPrimaryLanguage {
     description: String!
 }
 
+type Allowed {
+    value: String
+}
+type Restricted {
+    reason: String!
+}
+
+union Sensitive = Allowed | Restricted
+
 type PatientGeneral {
     patient: Int!
     id: ID!
@@ -984,7 +993,7 @@ type PatientGeneral {
     educationLevel: PatientEducationLevel
     primaryLanguage: PatientPrimaryLanguage
     speaksEnglish: PatientIndicatorCodedValue
-    stateHIVCase: String
+    stateHIVCase: Sensitive
 }
 
 type PatientEthnicGroup {
