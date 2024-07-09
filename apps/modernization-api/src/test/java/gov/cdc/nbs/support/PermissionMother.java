@@ -6,7 +6,7 @@ import gov.cdc.nbs.authentication.entity.AuthPermSet;
 import java.time.Instant;
 
 public class PermissionMother {
-    public static Long SYSTEM_USER_ID = 10191001L;
+    public static final Long SYSTEM_USER_ID = 10191001L;
 
     public static AuthPermSet clericalPermissionSet() {
         var now = Instant.now();
