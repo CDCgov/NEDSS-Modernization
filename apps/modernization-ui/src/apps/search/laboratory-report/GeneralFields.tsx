@@ -143,7 +143,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 )}
             />
 
-            {watch.identification?.value ? (
+            {watch.identification?.type?.value ? (
                 <Controller
                     control={form.control}
                     name="identification.value"
