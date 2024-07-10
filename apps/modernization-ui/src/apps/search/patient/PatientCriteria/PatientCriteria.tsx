@@ -3,6 +3,7 @@ import { Accordion } from 'components/Accordion/Accordion';
 import styles from './patient-criteria.module.scss';
 import { Address } from './Address';
 import { Contact } from './Contact';
+import { RaceEthnicity } from './RaceEthnicity';
 import { Id } from './Id';
 
 export const PatientCriteria = () => {
@@ -19,6 +20,9 @@ export const PatientCriteria = () => {
             </Accordion>
             <Accordion title="ID" open>
                 <Id />
+            </Accordion>
+            <Accordion title="Race/Ethnicity" open>
+                <RaceEthnicity />
             </Accordion>
         </div>
     );
