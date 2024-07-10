@@ -14,8 +14,8 @@ const usePatientSearch = (): Interaction<PatientCriteriaEntry, PatientSearchResu
                 page: {
                     pageNumber: request.page.number - 1,
                     pageSize: request.page.size,
-                    sortField: request.sortField,
-                    sortDirection: request.sortDirection
+                    sortField: request.sort?.property,
+                    sortDirection: request.sort?.direction
                 }
             },
             notifyOnNetworkStatusChange: true

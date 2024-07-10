@@ -1,6 +1,6 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import { usePage, Status as PageStatus } from 'page';
-import { useSorting } from 'sorting';
+import { Direction, useSorting } from 'sorting';
 import { Term, useSearchResultDisplay } from './useSearchResultDisplay';
 import { SortDirection, SortField } from 'generated/graphql/schema';
 
@@ -73,8 +73,10 @@ type Tranformer<C, A> = (criteria: C) => A;
 type ResultRequest<A> = {
     parameters: A;
     page: { number: number; size: number };
-    sortField?: SortField;
-    sortDirection?: SortDirection;
+    sort?: {
+        property: SortField;
+        direction: SortDirection;
+    };
 };
 type ResultResolver<A, R> = (request: ResultRequest<A>) => Promise<Resolved<R> | undefined>;
 type TermResolver<C> = (criteria: C) => Term[];
@@ -87,7 +89,16 @@ type Settings<C, A, R> = {
 
 const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Settings<C, A, R>): Interaction<C, R> => {
     const { page, ready, firstPage } = usePage();
-    const { sorting } = useSorting();
+    const { property, direction } = useSorting();
+
+    const sort = useMemo(() => {
+        if (property && direction) {
+            return {
+                property: asSortField(property),
+                direction: asSortDirection(direction)
+            };
+        }
+    }, [direction]);
 
     const searchResults = useSearchResultDisplay();
 
@@ -125,23 +136,27 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
 
     useEffect(() => {
         if (state.status === 'fetching') {
-            const [sortField, sortDirection] = (sorting || '').split(',');
-            const resolver: ResultRequest<A> = {
+            // the criteria has changed invoke search
+            resultResolver({
                 parameters: state.parameters,
                 page: {
                     number: page.current,
                     size: page.pageSize
-                }
-            };
-            sortField && (resolver.sortField = sortField as SortField);
-            sortDirection && (resolver.sortDirection = sortDirection.toUpperCase() as SortDirection);
-            // the criteria has changed invoke search
-            resultResolver(resolver).then(orElseEmptyResult(handleComplete(page.current)), handleError);
+                },
+                sort
+            }).then(orElseEmptyResult(handleComplete(page.current)), handleError);
         } else if (state.status === 'completed' && page.status === PageStatus.Requested) {
             //  the page changing without the criteria changing
             dispatch({ type: 'refresh' });
         }
     }, [state.status, page.status, page.pageSize, page.current]);
+
+    useEffect(() => {
+        if (sort?.direction) {
+            //  the sorting changing without the criteria changing
+            dispatch({ type: 'refresh' });
+        }
+    }, [sort?.direction, sort?.property]);
 
     const reset = () => dispatch({ type: 'reset' });
     const search = (criteria: C) => dispatch({ type: 'request', criteria });
@@ -153,6 +168,30 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
         reset,
         search
     };
+};
+
+const asSortDirection = (direction: Direction): SortDirection => {
+    switch (direction) {
+        case Direction.Ascending: {
+            return SortDirection.Asc;
+        }
+        default: {
+            return SortDirection.Desc;
+        }
+    }
+};
+
+const asSortField = (property: string): SortField => {
+    switch (property) {
+        case SortField.BirthTime: {
+            return SortField.BirthTime;
+        }
+        case SortField.LastNm: {
+            return SortField.LastNm;
+        }
+        default:
+            return SortField.Relevance;
+    }
 };
 
 export type { Settings, ResultRequest, Resolved, Interaction };

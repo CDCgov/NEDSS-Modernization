@@ -6,14 +6,22 @@ const SORT_ON_PARAMETER = 'sortOn';
 const DIRECTION_PARAMETER = 'direction';
 
 type SortingState = {
-    sorting: Sorting;
+    property?: string;
+    direction?: Direction;
+    sorting?: string;
     reset: () => void;
     sortBy: (property: string, direction: Direction) => void;
 };
 
 const SortingContext = createContext<SortingState | undefined>(undefined);
 
-type Sorting = string | undefined;
+type Sorting =
+    | {
+          property: string;
+          direction: Direction;
+          sorting: string | undefined;
+      }
+    | undefined;
 
 type Action = { type: 'reset' } | { type: 'sort'; property: string; direction: Direction };
 
@@ -22,7 +30,13 @@ const reducer = (current: Sorting, action: Action): Sorting => {
         case 'reset':
             return undefined;
         case 'sort': {
-            return action.direction === Direction.None ? undefined : asSort(action.property, action.direction);
+            return action.direction === Direction.None
+                ? undefined
+                : {
+                      property: action.property,
+                      direction: action.direction,
+                      sorting: asSort(action.property, action.direction)
+                  };
         }
         default:
             return current;
@@ -102,7 +116,9 @@ const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps
     const sortByDispatch = (property: string, direction: Direction) => dispatch({ type: 'sort', property, direction });
 
     const value = {
-        sorting: state,
+        sorting: state?.sorting,
+        property: state?.property,
+        direction: state?.direction,
         reset: () => dispatch({ type: 'reset' }),
         sortBy: appendToUrl ? sortByParameter : sortByDispatch
     };

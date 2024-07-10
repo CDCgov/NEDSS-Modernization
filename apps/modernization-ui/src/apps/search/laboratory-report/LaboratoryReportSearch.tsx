@@ -7,19 +7,14 @@ import { LabReportFilterEntry, initial } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { FormAccordion } from './FormAccordion';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
-import { useSorting } from 'sorting';
 
 const LaboratoryReportSearch = () => {
     const formMethods = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
         defaultValues: initial,
         mode: 'onBlur'
     });
-    const { sorting } = useSorting();
-    const { status, search, reset, results } = useLaboratoryReportSearch();
 
-    useEffect(() => {
-        sorting && search(formMethods.getValues());
-    }, [sorting]);
+    const { status, search, reset, results } = useLaboratoryReportSearch();
 
     useEffect(() => {
         if (status === 'waiting') {

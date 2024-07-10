@@ -6,7 +6,6 @@ import { useInvestigationSearch } from './useInvestigationSearch';
 import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
-import { useSorting } from 'sorting';
 
 const defaultSelectable = { name: '', value: '', label: '' };
 const defaultValues: InvestigationFilterEntry = {
@@ -27,15 +26,11 @@ const defaultValues: InvestigationFilterEntry = {
 
 const InvestigationSearch = () => {
     const { status, search, reset, results } = useInvestigationSearch();
-    const { sorting } = useSorting();
+
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
         mode: 'all',
         defaultValues
     });
-
-    useEffect(() => {
-        sorting && search(form.getValues());
-    }, [sorting]);
 
     useEffect(() => {
         if (status === 'waiting') {

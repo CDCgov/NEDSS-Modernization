@@ -8,24 +8,18 @@ import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
-import { useSorting } from 'sorting';
 
 const PatientSearch = () => {
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues: initial,
         mode: 'onBlur'
     });
-    const { sorting } = useSorting();
 
     const {
         page: { total }
     } = usePage();
 
     const { status, search, reset, results } = usePatientSearch();
-
-    useEffect(() => {
-        sorting && search(methods.getValues());
-    }, [sorting]);
 
     useEffect(() => {
         if (status === 'waiting') {
