@@ -1,4 +1,5 @@
 nbs:
+  max-page-size: 100
   ui:
     features:
       address:
