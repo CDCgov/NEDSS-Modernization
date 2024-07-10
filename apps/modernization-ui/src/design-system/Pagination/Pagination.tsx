@@ -1,15 +1,10 @@
 import { Pagination as PaginationUswds } from '@trussworks/react-uswds';
 import styles from './pagination.module.scss';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
-import { useEffect } from 'react';
 import { usePage } from 'page';
 
 export const Pagination = () => {
-    const { ready, request, page } = usePage();
-
-    useEffect(() => {
-        ready(page.total ?? 0, page.current);
-    }, [page]);
+    const { request, page } = usePage();
 
     return (
         <div className={styles.pagination}>

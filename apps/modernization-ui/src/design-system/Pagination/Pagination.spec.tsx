@@ -16,6 +16,6 @@ describe('When Pagination renders', () => {
         }
         const { container } = render(<Wrapper />);
         const buttons = container.getElementsByTagName('button');
-        expect(buttons).toHaveLength(4);
+        expect(buttons).toHaveLength(7);
     });
 });
