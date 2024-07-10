@@ -1,7 +1,7 @@
 import { When, Then, attach, Given } from "@badeball/cypress-cucumber-preprocessor";
 import { searchPage } from "cypress/e2e/pages/search.page";
 import { faker } from "@faker-js/faker";
-import '@cypress/xpath';
+import 'cypress-xpath';
 
 When("I Generate HL7 messages to api and mark as review", () => {
   let formattedMessages
