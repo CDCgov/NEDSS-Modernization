@@ -8,6 +8,7 @@ import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { PatientSearchResultTable } from './result/table';
 
 const PatientSearch = () => {
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -47,7 +48,7 @@ const PatientSearch = () => {
                         render={(result) => <PatientSearchResultListItem result={result} />}
                     />
                 )}
-                resultsAsTable={() => <div>result table</div>}
+                resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
                 onSearch={methods.handleSubmit(search)}
                 onClear={reset}
             />
