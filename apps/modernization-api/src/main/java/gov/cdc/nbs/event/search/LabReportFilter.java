@@ -217,7 +217,7 @@ public final class LabReportFilter implements EventFilter {
   }
 
   public Optional<Long> reportingProvider() {
-    return Optional.of(this.reportingProviderId);
+    return this.reportingProviderId != null ? Optional.of(this.reportingProviderId) : Optional.empty();
   }
 
   public Optional<String> resultedTest() {
