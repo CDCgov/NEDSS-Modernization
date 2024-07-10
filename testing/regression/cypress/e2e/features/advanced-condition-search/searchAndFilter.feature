@@ -1,4 +1,4 @@
-Feature: Page Builder - User can verify advanced condition search here.
+Feature: Page Builder - User can verify advanced condition search and filter here.
 
     Background:
         Given I am logged in as "superuser" and password "@test"

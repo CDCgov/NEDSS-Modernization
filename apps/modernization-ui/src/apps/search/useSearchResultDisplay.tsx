@@ -20,13 +20,21 @@ type Interaction = {
     reset: () => void;
     search: () => void;
     complete: (terms: Term[]) => void;
+    setView: (view: View) => void;
 };
 
 const SearchContext = createContext<Interaction | undefined>(undefined);
 
-type Action = { type: 'reset' } | { type: 'search' } | { type: 'complete'; terms: Term[] };
+type Action =
+    | { type: 'reset' }
+    | { type: 'search' }
+    | { type: 'complete'; terms: Term[] }
+    | { type: 'setView'; view: View };
 
-const initial: State = { status: 'waiting', view: 'list' };
+const initial: State = {
+    status: 'waiting',
+    view: 'list'
+};
 
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
@@ -38,6 +46,9 @@ const reducer = (current: State, action: Action): State => {
         }
         case 'complete': {
             return { ...current, status: 'completed', terms: action.terms };
+        }
+        case 'setView': {
+            return { ...current, view: action.view };
         }
         default:
             return current;
@@ -68,6 +79,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
+    const setView = (view: View) => dispatch({ type: 'setView', view });
 
     const value = {
         status: state.status,
@@ -75,7 +87,8 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
         terms,
         reset,
         search,
-        complete
+        complete,
+        setView
     };
 
     return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
