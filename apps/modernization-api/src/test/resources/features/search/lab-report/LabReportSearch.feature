@@ -135,6 +135,17 @@ Feature: Lab Report Search
     Then the Lab Report search results contain the lab report
     And there is only one lab report search result    
 
+  Scenario: I can search for Lab Reports reported by a specific provider and the new api
+    Given the patient has a lab report
+    And there is a provider named "Emilio" "Lizardo"
+    And the lab report was ordered by the provider
+    And the lab report is available for search
+    And I am searching for the Lab Report
+    And I want to find lab reports reported by the provider using the new api
+    When I search for lab reports
+    Then the Lab Report search results contain the lab report
+    And there is only one lab report search result 
+
   Scenario Outline: I can search for Lab Reports
     Given I add the lab report criteria for "<field>"
     When I search for lab reports

@@ -30,32 +30,32 @@ class LabReportSearchCriteriaFilterResolver {
 
   Query resolve(final LabReportFilter criteria, final PermissionScope scope) {
     return Stream.of(
-            withPermission(scope),
-            withProgramAreas(criteria),
-            withJurisdictions(criteria),
-            withPregnancyStatus(criteria),
-            withAccessionNumber(criteria),
-            withReportedOn(criteria),
-            withCollectedOn(criteria),
-            withReceivedOn(criteria),
-            withCreatedBy(criteria),
-            withCreatedOn(criteria),
-            withUpdatedBy(criteria),
-            withUpdatedOn(criteria),
-            withEntry(criteria),
-            withStatus(criteria),
-            withEventStatus(criteria),
-            withOrderingFacility(criteria),
-            withReportingFacility(criteria),
-            withOrderingProvider(criteria),
-            withPatient(criteria)
-        ).flatMap(Optional::stream)
+        withPermission(scope),
+        withProgramAreas(criteria),
+        withJurisdictions(criteria),
+        withPregnancyStatus(criteria),
+        withAccessionNumber(criteria),
+        withReportedOn(criteria),
+        withCollectedOn(criteria),
+        withReceivedOn(criteria),
+        withCreatedBy(criteria),
+        withCreatedOn(criteria),
+        withUpdatedBy(criteria),
+        withUpdatedOn(criteria),
+        withEntry(criteria),
+        withStatus(criteria),
+        withEventStatus(criteria),
+        withOrderingFacility(criteria),
+        withReportingFacility(criteria),
+        withReportingProvider(criteria),
+        withOrderingProvider(criteria),
+        withPatient(criteria)).flatMap(Optional::stream)
         .map(QueryVariant::_toQuery)
         .reduce(
             new BoolQuery.Builder(),
             BoolQuery.Builder::filter,
-            (one, two) -> one.filter(two.build().filter())
-        ).build()._toQuery();
+            (one, two) -> one.filter(two.build().filter()))
+        .build()._toQuery();
   }
 
   private Optional<QueryVariant> withPermission(final PermissionScope scope) {
@@ -67,10 +67,7 @@ class LabReportSearchCriteriaFilterResolver {
                 Collectors.toList(),
                 collected -> TermsQuery.of(
                     query -> query.field("program_jurisdiction_oid")
-                        .terms(terms -> terms.value(collected))
-                )
-            )
-        );
+                        .terms(terms -> terms.value(collected)))));
 
     return Optional.of(statuses);
   }
@@ -88,10 +85,7 @@ class LabReportSearchCriteriaFilterResolver {
                   Collectors.toList(),
                   collected -> TermsQuery.of(
                       query -> query.field("program_area_cd")
-                          .terms(terms -> terms.value(collected))
-                  )
-              )
-          );
+                          .terms(terms -> terms.value(collected)))));
       return Optional.of(areas);
     }
     return Optional.empty();
@@ -110,10 +104,7 @@ class LabReportSearchCriteriaFilterResolver {
                   Collectors.toList(),
                   collected -> TermsQuery.of(
                       query -> query.field("jurisdiction_cd")
-                          .terms(terms -> terms.value(collected))
-                  )
-              )
-          );
+                          .terms(terms -> terms.value(collected)))));
       return Optional.of(areas);
     }
     return Optional.empty();
@@ -129,9 +120,7 @@ class LabReportSearchCriteriaFilterResolver {
 
     return Optional.of(
         TermQuery.of(
-            term -> term.field("pregnant_ind_cd").value(status.value())
-        )
-    );
+            term -> term.field("pregnant_ind_cd").value(status.value())));
 
   }
 
@@ -145,46 +134,31 @@ class LabReportSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field("act_ids.type_cd")
-                                    .value("FN")
-                            )
-                        )
-                    )
-                )
-        )
-    );
+                                    .value("FN")))))));
   }
 
   private Optional<QueryVariant> withReportedOn(final LabReportFilter criteria) {
     return criteria.reportedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.field("activity_to_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
-            )
-    );
+        reported -> RangeQuery.of(
+            range -> range.field("activity_to_time")
+                .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                .to(FlexibleInstantConverter.toString(reported.getTo()))));
   }
 
   private Optional<QueryVariant> withCollectedOn(final LabReportFilter criteria) {
     return criteria.collectedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.field("effective_from_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
-            )
-    );
+        reported -> RangeQuery.of(
+            range -> range.field("effective_from_time")
+                .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                .to(FlexibleInstantConverter.toString(reported.getTo()))));
   }
 
   private Optional<QueryVariant> withReceivedOn(final LabReportFilter criteria) {
     return criteria.receivedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.field("rpt_to_state_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
-            )
-    );
+        reported -> RangeQuery.of(
+            range -> range.field("rpt_to_state_time")
+                .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                .to(FlexibleInstantConverter.toString(reported.getTo()))));
   }
 
   private Optional<QueryVariant> withCreatedBy(final LabReportFilter criteria) {
@@ -197,20 +171,15 @@ class LabReportSearchCriteriaFilterResolver {
     return Optional.of(
         TermQuery.of(
             term -> term.field("add_user_id")
-                .value(createdBy)
-        )
-    );
+                .value(createdBy)));
   }
 
   private Optional<QueryVariant> withCreatedOn(final LabReportFilter criteria) {
     return criteria.createdOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.field("add_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
-            )
-    );
+        reported -> RangeQuery.of(
+            range -> range.field("add_time")
+                .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                .to(FlexibleInstantConverter.toString(reported.getTo()))));
   }
 
   private Optional<QueryVariant> withUpdatedBy(final LabReportFilter criteria) {
@@ -223,20 +192,15 @@ class LabReportSearchCriteriaFilterResolver {
     return Optional.of(
         TermQuery.of(
             term -> term.field("last_chg_user_id")
-                .value(updatedBy)
-        )
-    );
+                .value(updatedBy)));
   }
 
   private Optional<QueryVariant> withUpdatedOn(final LabReportFilter criteria) {
     return criteria.updatedOn().map(
-        reported ->
-            RangeQuery.of(
-                range -> range.field("observation_last_chg_time")
-                    .from(FlexibleInstantConverter.toString(reported.getFrom()))
-                    .to(FlexibleInstantConverter.toString(reported.getTo()))
-            )
-    );
+        reported -> RangeQuery.of(
+            range -> range.field("observation_last_chg_time")
+                .from(FlexibleInstantConverter.toString(reported.getFrom()))
+                .to(FlexibleInstantConverter.toString(reported.getTo()))));
   }
 
   private Optional<QueryVariant> withEntry(final LabReportFilter criteria) {
@@ -246,13 +210,12 @@ class LabReportSearchCriteriaFilterResolver {
     }
 
     TermsQuery indicators = Streams.concat(
-            criteria.getEntryMethods()
-                .stream()
-                .map(LabReportFilter.EntryMethod::value),
-            criteria.getEnteredBy()
-                .stream()
-                .map(LabReportFilter.UserType::value)
-        )
+        criteria.getEntryMethods()
+            .stream()
+            .map(LabReportFilter.EntryMethod::value),
+        criteria.getEnteredBy()
+            .stream()
+            .map(LabReportFilter.UserType::value))
         .filter(Objects::nonNull)
         .map(FieldValue::of)
         .collect(
@@ -260,10 +223,7 @@ class LabReportSearchCriteriaFilterResolver {
                 Collectors.toList(),
                 collected -> TermsQuery.of(
                     query -> query.field("electronic_ind")
-                        .terms(terms -> terms.value(collected))
-                )
-            )
-        );
+                        .terms(terms -> terms.value(collected)))));
 
     return Optional.of(indicators);
   }
@@ -283,10 +243,7 @@ class LabReportSearchCriteriaFilterResolver {
                 Collectors.toList(),
                 collected -> TermsQuery.of(
                     query -> query.field("record_status_cd")
-                        .terms(terms -> terms.value(collected))
-                )
-            )
-        );
+                        .terms(terms -> terms.value(collected)))));
 
     return Optional.of(statuses);
 
@@ -303,18 +260,11 @@ class LabReportSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field("organization_participations.type_cd")
-                                    .value("ORD")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field("organization_participations.entity_id")
-                                    .value(facility)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+                                    .value("ORD")))
+                            .must(
+                                must -> must.term(
+                                    term -> term.field("organization_participations.entity_id")
+                                        .value(facility)))))));
   }
 
   private Optional<QueryVariant> withReportingFacility(final LabReportFilter criteria) {
@@ -327,18 +277,32 @@ class LabReportSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field("organization_participations.type_cd")
-                                    .value("AUT")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field("organization_participations.entity_id")
-                                    .value(facility)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+                                    .value("AUT")))
+                            .must(
+                                must -> must.term(
+                                    term -> term.field("organization_participations.entity_id")
+                                        .value(facility)))))));
+  }
+
+  private Optional<QueryVariant> withReportingProvider(final LabReportFilter criteria) {
+    return criteria.reportingProvider().map(
+        facility -> NestedQuery.of(
+            nested -> nested.path("person_participations")
+                .scoreMode(ChildScoreMode.None)
+                .query(
+                    query -> query.bool(
+                        bool -> bool.filter(
+                            filter -> filter.term(
+                                term -> term.field("person_participations.type_cd")
+                                    .value("AUT")))
+                            .filter(
+                                filter -> filter.term(
+                                    term -> term.field("person_participations.subject_class_cd")
+                                        .value("PSN")))
+                            .must(
+                                must -> must.term(
+                                    term -> term.field("person_participations.entity_id")
+                                        .value(facility)))))));
   }
 
   private Optional<QueryVariant> withOrderingProvider(final LabReportFilter criteria) {
@@ -351,23 +315,15 @@ class LabReportSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field("person_participations.type_cd")
-                                    .value("ORD")
-                            )
-                        ).filter(
-                            filter -> filter.term(
-                                term -> term.field("person_participations.subject_class_cd")
-                                    .value("PSN")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field("person_participations.entity_id")
-                                    .value(facility)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+                                    .value("ORD")))
+                            .filter(
+                                filter -> filter.term(
+                                    term -> term.field("person_participations.subject_class_cd")
+                                        .value("PSN")))
+                            .must(
+                                must -> must.term(
+                                    term -> term.field("person_participations.entity_id")
+                                        .value(facility)))))));
   }
 
   private Optional<QueryVariant> withPatient(final LabReportFilter criteria) {
@@ -387,18 +343,11 @@ class LabReportSearchCriteriaFilterResolver {
                         bool -> bool.filter(
                             filter -> filter.term(
                                 term -> term.field("person_participations.type_cd")
-                                    .value("PATSBJ")
-                            )
-                        ).must(
-                            must -> must.term(
-                                term -> term.field("person_participations.person_parent_uid")
-                                    .value(patient)
-                            )
-                        )
-                    )
-                )
-        )
-    );
+                                    .value("PATSBJ")))
+                            .must(
+                                must -> must.term(
+                                    term -> term.field("person_participations.person_parent_uid")
+                                        .value(patient)))))));
   }
 
   private Optional<QueryVariant> withEventStatus(final LabReportFilter criteria) {
@@ -413,23 +362,17 @@ class LabReportSearchCriteriaFilterResolver {
       return Optional.of(
           RangeQuery.of(
               range -> range.field(VERSION)
-                  .gte(JsonData.of(1))
-          )
-      );
+                  .gte(JsonData.of(1))));
     } else if (includeNew) {
       return Optional.of(
           TermQuery.of(
               term -> term.field(VERSION)
-                  .value(1)
-          )
-      );
+                  .value(1)));
     } else {
       return Optional.of(
           RangeQuery.of(
               range -> range.field(VERSION)
-                  .gt(JsonData.of(1))
-          )
-      );
+                  .gt(JsonData.of(1))));
     }
   }
 }
