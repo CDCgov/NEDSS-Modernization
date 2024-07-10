@@ -34,7 +34,6 @@ public class PatientProfileGeneralSteps {
   PatientProfileGeneralSteps(
       final Active<PatientInput> input,
       final Active<Person> patient,
-      //
       final Active<PatientIdentifier> activePatient,
       final Active<ResultActions> response,
       final PatientGeneralRequester requester
