@@ -46,10 +46,10 @@ class PatientVaccinationResolverTest {
 
         verify(finder).find(eq(1861L), captor.capture());
 
-        Pageable actual_pageable = captor.getValue();
+        Pageable actualPageable = captor.getValue();
 
-        assertThat(actual_pageable.getPageNumber()).isEqualTo(2);
-        assertThat(actual_pageable.getPageSize()).isEqualTo(25);
+        assertThat(actualPageable.getPageNumber()).isEqualTo(2);
+        assertThat(actualPageable.getPageSize()).isEqualTo(25);
     }
 
 }

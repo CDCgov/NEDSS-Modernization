@@ -1,5 +1,5 @@
 import {Then} from "@badeball/cypress-cucumber-preprocessor";
-import {questionLibrarySortPage} from "@pages/Question-library/sort.page";
+import {questionLibrarySortPage} from "cypress/e2e/pages/question-library/sort.page";
 
 Then("User navigates to Question Library and views the Question library", () => {
     questionLibrarySortPage.navigateEditPage();

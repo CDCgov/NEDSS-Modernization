@@ -1,5 +1,5 @@
 import {Then} from "@badeball/cypress-cucumber-preprocessor";
-import {createNewQuestionPage} from "@pages/Question-library/createNewQuestion.page";
+import {createNewQuestionPage} from "cypress/e2e/pages/question-library/createNewQuestion.page";
 
 Then("Click on Create New button", () => {
     createNewQuestionPage.clickCreateNewQuestionButton();
