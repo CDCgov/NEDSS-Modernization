@@ -89,13 +89,6 @@ public class LabReportSearchCriteriaSteps {
             provider -> criteria.setOrderingProviderId(provider.identifier())));
   }
 
-  @Given("I want to find lab reports reported by the provider using the new api")
-  public void i_want_to_find_lab_reports_reported_by_the_provider_and_new_api() {
-    this.activeCriteria.maybeActive().ifPresent(
-        criteria -> this.activeProvider.maybeActive().ifPresent(
-            provider -> criteria.setReportingProviderId(provider.identifier())));
-  }
-
   @Given("I add the lab report criteria for {string}")
   public void i_add_the_lab_report_criteria_for(final String field) {
     this.activeCriteria.active(current -> applyCriteria(current, field));
@@ -181,9 +174,6 @@ public class LabReportSearchCriteriaSteps {
 
       case "reporting facility new api" -> reportingFacility()
           .ifPresent(filter::setReportingLabId);
-
-      case "reporting provider new api" -> reportingFacility()
-          .ifPresent(filter::setReportingProviderId);
 
       case "resulted test" -> tests().map(SearchableLabReport.LabTest::name)
           .ifPresent(filter::setResultedTest);

@@ -47,7 +47,6 @@ class LabReportSearchCriteriaFilterResolver {
         withEventStatus(criteria),
         withOrderingFacility(criteria),
         withReportingFacility(criteria),
-        withReportingProvider(criteria),
         withOrderingProvider(criteria),
         withPatient(criteria)).flatMap(Optional::stream)
         .map(QueryVariant::_toQuery)
@@ -281,27 +280,6 @@ class LabReportSearchCriteriaFilterResolver {
                             .must(
                                 must -> must.term(
                                     term -> term.field("organization_participations.entity_id")
-                                        .value(facility)))))));
-  }
-
-  private Optional<QueryVariant> withReportingProvider(final LabReportFilter criteria) {
-    return criteria.reportingProvider().map(
-        facility -> NestedQuery.of(
-            nested -> nested.path("person_participations")
-                .scoreMode(ChildScoreMode.None)
-                .query(
-                    query -> query.bool(
-                        bool -> bool.filter(
-                            filter -> filter.term(
-                                term -> term.field("person_participations.type_cd")
-                                    .value("AUT")))
-                            .filter(
-                                filter -> filter.term(
-                                    term -> term.field("person_participations.subject_class_cd")
-                                        .value("PSN")))
-                            .must(
-                                must -> must.term(
-                                    term -> term.field("person_participations.entity_id")
                                         .value(facility)))))));
   }
 

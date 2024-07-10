@@ -27,7 +27,6 @@ input PatientLabReportFilter {
   orderingLabId: ID
   orderingProviderId: ID
   reportingLabId: ID
-  reportingProviderId: ID
 }
 
 type PatientLabReport {

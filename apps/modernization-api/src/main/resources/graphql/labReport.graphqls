@@ -74,7 +74,6 @@ input LabReportFilter {
   orderingLabId: ID
   orderingProviderId: ID
   reportingLabId: ID
-  reportingProviderId: ID
 }
 
 input LabReportEventId {
