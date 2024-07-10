@@ -371,7 +371,7 @@ class PersonTest {
     );
 
     assertThat(actual.getNames()).satisfiesExactly(
-        actual_primary -> assertThat(actual_primary)
+        actualPrimary -> assertThat(actualPrimary)
             .returns(Instant.parse("2021-05-15T10:00:00Z"), PersonName::getAsOfDate)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
@@ -419,7 +419,7 @@ class PersonTest {
     assertThat(actual.getNmSuffix()).isEqualTo(Suffix.JR);
 
     assertThat(actual.getNames()).satisfiesExactly(
-        actual_primary -> assertThat(actual_primary)
+        actualPrimary -> assertThat(actualPrimary)
             .returns("First", PersonName::getFirstNm)
             .returns("Middle", PersonName::getMiddleNm)
             .returns("Last", PersonName::getLastNm)
@@ -428,7 +428,7 @@ class PersonTest {
             .extracting(PersonName::getId)
             .returns(117L, PersonNameId::getPersonUid)
             .returns((short) 1, PersonNameId::getPersonNameSeq),
-        actual_alias -> assertThat(actual_alias)
+        actualAlias -> assertThat(actualAlias)
             .returns("Other", PersonName::getFirstNm)
             .returns("OtherMiddle", PersonName::getMiddleNm)
             .returns("OtherLast", PersonName::getLastNm)
@@ -466,7 +466,7 @@ class PersonTest {
 
     assertThat(actual.addresses())
         .satisfiesExactly(
-            actual_postal_locator -> assertThat(actual_postal_locator)
+            actualPostalLocator -> assertThat(actualPostalLocator)
                 .returns(4861L, p -> p.getId().getLocatorUid())
                 .returns("H", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
@@ -711,7 +711,7 @@ class PersonTest {
 
     assertThat(actual.emailAddresses())
         .satisfiesExactly(
-            actual_email_locator -> assertThat(actual_email_locator)
+            actualEmailLocator -> assertThat(actualEmailLocator)
                 .returns(5333L, p -> p.getId().getLocatorUid())
                 .returns("NET", EntityLocatorParticipation::getCd)
                 .returns("H", EntityLocatorParticipation::getUseCd)
@@ -749,7 +749,7 @@ class PersonTest {
 
     assertThat(actual.phoneNumbers())
         .satisfiesExactly(
-            actual_phone_locator -> assertThat(actual_phone_locator)
+            actualPhoneLocator -> assertThat(actualPhoneLocator)
                 .returns(5347L, p -> p.getId().getLocatorUid())
                 .returns(Instant.parse("2017-05-16T11:13:19Z"), EntityLocatorParticipation::getAsOfDate)
                 .returns("CP", EntityLocatorParticipation::getCd)

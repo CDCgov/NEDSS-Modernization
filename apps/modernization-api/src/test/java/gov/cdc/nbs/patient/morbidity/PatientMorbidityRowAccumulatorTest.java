@@ -142,8 +142,8 @@ class PatientMorbidityRowAccumulatorTest {
         PatientMorbidityRowAccumulator actual = first.merge(second);
 
         assertThat(actual.accumulated()).satisfiesExactlyInAnyOrder(
-            actual_morbidity -> assertThat(actual_morbidity.morbidity()).isEqualTo(3L),
-            actual_morbidity -> assertThat(actual_morbidity.morbidity()).isEqualTo(463L)
+            actualMorbidity -> assertThat(actualMorbidity.morbidity()).isEqualTo(3L),
+            actualMorbidity -> assertThat(actualMorbidity.morbidity()).isEqualTo(463L)
         );
 
     }
@@ -188,10 +188,10 @@ class PatientMorbidityRowAccumulatorTest {
         List<PatientMorbidity> actual = first.merge(second).accumulated();
 
         assertThat(actual).satisfiesExactlyInAnyOrder(
-            actual_morbidity -> assertAll(
-                () -> assertThat(actual_morbidity.morbidity()).isEqualTo(3L),
-                () -> assertThat(actual_morbidity.treatments()).contains("A", "B"),
-                () -> assertThat(actual_morbidity.labResults()).hasSize(2)
+            actualMorbidity -> assertAll(
+                () -> assertThat(actualMorbidity.morbidity()).isEqualTo(3L),
+                () -> assertThat(actualMorbidity.treatments()).contains("A", "B"),
+                () -> assertThat(actualMorbidity.labResults()).hasSize(2)
             )
         );
 
