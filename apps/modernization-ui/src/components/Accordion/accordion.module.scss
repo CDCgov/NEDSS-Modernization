@@ -21,9 +21,20 @@
             display: flex;
             width: 0.875rem;
             height: 0.125rem;
-            content: "";
-            background-color: colors.$base-darkest;
+            &::before {
+                content: "+";
+                font-size: 1.75rem;
+                font-weight: 400;
+                position: relative;
+                top: -1rem;
+                right: 0.35rem;
+            }
         }
+    }
+    &[open] summary span::before {
+        content: "\2014";
+        font-size: 1.5rem;
+        right: 0.75rem;
     }
     .content {
         background-color: colors.$base-white;
