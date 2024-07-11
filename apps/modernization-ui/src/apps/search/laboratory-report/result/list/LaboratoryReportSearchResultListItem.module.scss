@@ -11,6 +11,8 @@
         max-width: 25%;
 
         .listItemData {
+            word-wrap: break-word;
+
             &:first-of-type {
                 margin-bottom: 0.25rem;
             }
@@ -18,7 +20,6 @@
 
         label {
             color: colors.$base;
-            /* H5 */
             font-size: 0.8125rem;
             font-weight: 600;
             letter-spacing: 0.02031rem;

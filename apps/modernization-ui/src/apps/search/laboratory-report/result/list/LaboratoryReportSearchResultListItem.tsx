@@ -62,25 +62,24 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                         LEGAL NAME
                     </label>
                     <br />
-                    <Link id="legalName" className={`${styles.value}, ${styles.name}`} to={`/patient-profile/`}>
+                    <Link
+                        id="legalName"
+                        className={`${styles.value}, ${styles.name}`}
+                        to={`/patient-profile/${patient?.shortId}/summary`}>
                         {legalName}
                     </Link>
                 </div>
 
                 <div className={styles.listItemData}>
-                    <label htmlFor="dob" className={styles.listItemLabel}>
-                        Date of birth
-                    </label>
-                    <span id="dob" className={styles.listItemValue}>
+                    <label htmlFor="dob">Date of birth</label>
+                    <span id="dob" className={styles.value}>
                         {patient?.birthTime ?? noData}
                     </span>
                 </div>
 
                 <div className={styles.listItemData}>
-                    <label htmlFor="sex" className={styles.listItemLabel}>
-                        SEX
-                    </label>
-                    <span id="sex" className={styles.listItemValue}>
+                    <label htmlFor="sex">SEX</label>
+                    <span id="sex" className={styles.value}>
                         {patient?.currSexCd ?? 'No data'}
                     </span>
                 </div>
@@ -89,7 +88,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="patientId" className={styles.listItemLabel}>
                         Patient ID
                     </label>
-                    <span id="patientId" className={styles.listItemValue}>
+                    <span id="patientId" className={styles.value}>
                         {patient?.shortId ?? noData}
                     </span>
                 </div>
@@ -97,29 +96,26 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
 
             <div className={styles.listItemBox}>
                 <div className={styles.listItemData}>
-                    <label htmlFor="documentType" className={styles.listItemLabel}>
-                        Document Type
-                    </label>
+                    <label htmlFor="documentType">Document Type</label>
                     <br />
-                    <Link id="documentType" className={`${styles.value}, ${styles.name}`} to={`/patient-profile/`}>
+                    <Link
+                        id="documentType"
+                        className={`${styles.value}, ${styles.name}`}
+                        to={`/patient-profile/${patient?.shortId}/summary`}>
                         Lab report
                     </Link>
                 </div>
 
                 <div className={styles.listItemData}>
-                    <label htmlFor="dateReceived" className={styles.listItemLabel}>
-                        Date received
-                    </label>
-                    <span id="dateReceived" className={styles.listItemValue}>
+                    <label htmlFor="dateReceived">Date received</label>
+                    <span id="dateReceived" className={styles.value}>
                         {result.addTime ?? noData}
                     </span>
                 </div>
 
                 <div className={styles.listItemData}>
-                    <label htmlFor="description" className={styles.listItemLabel}>
-                        Description
-                    </label>
-                    <span id="description" className={styles.listItemValue}>
+                    <label htmlFor="description">Description</label>
+                    <span id="description" className={styles.value}>
                         {getDescription(result)}
                     </span>
                 </div>
@@ -138,7 +134,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="orderingProvider" className={styles.listItemLabel}>
                         Ordering provider
                     </label>
-                    <span id="orderingProvider" className={styles.listItemValue}>
+                    <span id="orderingProvider" className={styles.value}>
                         {getOrderingProviderName(result) ?? noData}
                     </span>
                 </div>
@@ -147,7 +143,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="jurisdiction" className={styles.listItemLabel}>
                         Jurisdiction
                     </label>
-                    <span id="jurisdiction" className={styles.listItemValue}>
+                    <span id="jurisdiction" className={styles.value}>
                         {getJurisdiction() ?? noData}
                     </span>
                 </div>
@@ -160,14 +156,14 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     {(!result.associatedInvestigations || result.associatedInvestigations.length == 0) && (
-                        <span id="associatedTo" className={styles.listItemValue}>
+                        <span id="associatedTo" className={styles.value}>
                             {noData}
                         </span>
                     )}
                     {result.associatedInvestigations &&
                         result.associatedInvestigations?.length > 0 &&
                         result.associatedInvestigations?.map((i, index) => (
-                            <div key={index} className={styles.listItemValue} id="associatedTo">
+                            <div key={index} className={styles.value} id="associatedTo">
                                 <span>{i?.localId}</span>
                                 <br />
                                 <span>{i?.cdDescTxt}</span>
@@ -180,7 +176,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                         Local to
                     </label>
                     <br />
-                    <span className={styles.listItemValue} id="localTo">
+                    <span className={styles.value} id="localTo">
                         {result.localId || noData}
                     </span>
                 </div>
