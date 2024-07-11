@@ -48,7 +48,7 @@ const UserContextProvider = ({ initial, children }: Props) => {
             // delete cookies
             document.cookie = 'nbs_user=; Max-Age=0; path=/;';
             document.cookie = 'nbs_token=; Max-Age=0; path=/;';
-            window.location.href = '/nbs/logout';
+            window.location.href = '/goodbye';
         }
     }, [dispatch, state.status]);
 
