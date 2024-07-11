@@ -8,18 +8,11 @@ type Props<T> = {
 };
 
 const SearchResultList = <T,>({ results, render }: Props<T>) => {
-    return results && results.length > 0 ? (
-        results.map((result, index) => (
-            <div className={styles.result} key={index}>
-                {render(result)}
-            </div>
-        ))
-    ) : (
-        <div className="text-center">
-            <p>No results found.</p>
-            <p>Try refining your search.</p>
+    return results.map((result, index) => (
+        <div className={styles.result} key={index}>
+            {render(result)}
         </div>
-    );
+    ));
 };
 
 export { SearchResultList };
