@@ -6,7 +6,7 @@ import { usePage } from 'page';
 export const Pagination = () => {
     const { request, page } = usePage();
 
-    return (
+    return page.total ? (
         <div className={styles.pagination}>
             <div className={styles.range}>
                 Showing <RangeToggle initial={page.pageSize} /> of <span id="totalRowCount">{page.total}</span>
@@ -22,5 +22,7 @@ export const Pagination = () => {
                 />
             </div>
         </div>
+    ) : (
+        <></>
     );
 };

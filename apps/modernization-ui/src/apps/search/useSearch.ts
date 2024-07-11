@@ -98,7 +98,7 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
                 direction: asSortDirection(direction)
             };
         }
-    }, [direction]);
+    }, [property, direction]);
 
     const searchResults = useSearchResultDisplay();
 
