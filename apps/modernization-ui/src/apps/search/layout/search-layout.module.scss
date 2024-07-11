@@ -28,7 +28,7 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         @include borders.rounded();
 
         .criteria {
-            min-width: $criteria-width;
+            width: $criteria-width;
 
             @include borders.bordered('border-right');
 
@@ -54,6 +54,7 @@ $content-height: calc($search-height - $navigation-height - 2rem);
 
         .results {
             flex-grow: 1;
+            width: calc(100% - $criteria-width);
 
             .loading {
                 margin: auto;
