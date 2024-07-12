@@ -283,6 +283,7 @@ export type InvestigationFilter = {
   processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
+  reportingFacilityId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type InvestigationPersonParticipation = {
@@ -1956,6 +1957,7 @@ export type SortablePage = {
   pageSize?: InputMaybe<Scalars['Int']['input']>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
+  sortFieldText?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type StateCodedValue = {
