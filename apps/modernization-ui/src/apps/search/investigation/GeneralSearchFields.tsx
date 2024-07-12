@@ -195,7 +195,7 @@ const GeneralSearchFields = () => {
                     <Autocomplete
                         data-testid="createdBy"
                         name={name}
-                        label="Event creeated by"
+                        label="Event created by"
                         id={'createdBy'}
                         onBlur={onBlur}
                         resolver={usersResolver}
