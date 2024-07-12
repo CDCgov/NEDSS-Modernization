@@ -70,7 +70,10 @@
         ]
     },
     "jest": {
-        "globalSetup": "./global-setup.test.js"
+        "globalSetup": "./global-setup.test.js",
+        "moduleNameMapper": {
+            "^.+\\.svg$": "<rootDir>/module-mock.js"
+        }
     },
     "browserslist": {
         "production": [
