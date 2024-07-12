@@ -25,11 +25,23 @@ class PatientSearchCriteriaSortResolver {
     SortOrder order = asSortOrder(sorting.getDirection());
 
     return switch (sorting.getProperty()) {
-      case "relevance" -> asSortOption("_score", order);
-      case "lastNm" -> asSortOption("name", "name.lastNm.keyword", order);
+      case "address" -> asSortOption("address", "address.streetAddr1", order);
       case "birthTime" -> asSortOption("birth_time", order);
+      case "city" -> asSortOption("address", "address.city", order);
+      case "county" -> asSortOption("address", "address.cntyCd", order);
+      case "country" -> asSortOption("address", "address.cntryCd", order);
+      case "email" -> asSortOption("email", "email.emailAddress", order);
+      case "firstNm" -> asSortOption("name", "name.firstNm.keyword", order);
+      case "id" -> asSortOption("id", order);
+      case "local_id" -> asSortOption("local_id", order);
+      case "identification" -> asSortOption("entity_id", "entity_id.rootExtensionTxt", order);
+      case "lastNm" -> asSortOption("name", "name.lastNm.keyword", order);
+      case "phoneNumber" -> asSortOption("phone", "phone.telephoneNbr", order);
+      case "relevance" -> asSortOption("_score", order);
+      case "sex" -> asSortOption("cur_sex_cd", order);
+      case "state" -> asSortOption("address", "address.state", order);
+      case "zip" -> asSortOption("address", "address.zip", order);
       default -> asSortOption(sorting.getProperty(), order);
     };
   }
-
 }
