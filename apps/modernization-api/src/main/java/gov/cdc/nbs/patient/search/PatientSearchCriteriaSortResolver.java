@@ -26,7 +26,7 @@ class PatientSearchCriteriaSortResolver {
     SortOrder order = asSortOrder(sorting.getDirection());
 
     return switch (sorting.getProperty()) {
-      case "address" -> asSortOption(ADDRESS, "address.streetAddr1", order);
+      case ADDRESS -> asSortOption(ADDRESS, "address.streetAddr1", order);
       case "birthTime" -> asSortOption("birth_time", order);
       case "city" -> asSortOption(ADDRESS, "address.city", order);
       case "county" -> asSortOption(ADDRESS, "address.cntyCd", order);
