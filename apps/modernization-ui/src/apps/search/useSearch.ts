@@ -23,7 +23,9 @@ type Completed<A, R> = { status: 'completed'; parameters: A; results: Results<R>
 
 type Failed = { status: 'error'; reason: string };
 
-type State<C, A, R> = Waiting | Requesting<C> | Fetching<A> | Completed<A, R> | Failed;
+type NoInput<R> = { status: 'noInput'; results: Results<R> };
+
+type State<C, A, R> = Waiting | Requesting<C> | Fetching<A> | Completed<A, R> | Failed | NoInput<R>;
 
 type Action<C, A, R> =
     | { type: 'reset' }
@@ -31,6 +33,7 @@ type Action<C, A, R> =
     | { type: 'request'; criteria: C }
     | { type: 'fetch'; parameters: A; terms: Term[] }
     | { type: 'complete'; found: Resolved<R> }
+    | { type: 'noInput'; parameters: A; page: number }
     | { type: 'error'; reason: string };
 
 const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): State<C, A, R> => {
@@ -46,6 +49,11 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
         return { status: 'error', reason: action.reason };
     } else if (action.type === 'reset') {
         return { status: 'waiting' };
+    } else if (action.type === 'complete' && current.status === 'requesting') {
+        return {
+            status: 'noInput',
+            results: { total: 0, content: [], terms: [], page: action.found.page }
+        };
     }
     return current;
 };
@@ -60,7 +68,7 @@ const orElseEmptyResult =
     };
 
 type Interaction<C, R> = {
-    status: 'waiting' | 'loading' | 'completed' | 'error';
+    status: 'waiting' | 'loading' | 'completed' | 'error' | 'noInput';
     results?: Results<R>;
     error?: string;
     reset: () => void;
@@ -80,7 +88,7 @@ type Settings<C, A, R> = {
 };
 
 const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Settings<C, A, R>): Interaction<C, R> => {
-    const { page, ready, firstPage } = usePage();
+    const { page, ready, reset: pageReset } = usePage();
     const { sorting } = useSorting();
 
     const searchResults = useSearchResultDisplay();
@@ -97,8 +105,10 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
         } else if (state.status === 'completed') {
             searchResults.complete(state.results.terms);
         } else if (state.status === 'waiting') {
-            firstPage();
+            pageReset();
             searchResults.reset();
+        } else if (state.status === 'noInput') {
+            searchResults.noInput();
         }
     }, [state.status, isLoading]);
 
@@ -113,7 +123,10 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
         if (state.status === 'requesting') {
             const parameters = transformer(state.criteria);
             const terms = termResolver(state.criteria);
-            dispatch({ type: 'fetch', parameters, terms });
+
+            terms.length === 0
+                ? dispatch({ type: 'complete', found: { total: 0, page: page.current, content: [] } })
+                : dispatch({ type: 'fetch', parameters, terms });
         }
     }, [state.status]);
 

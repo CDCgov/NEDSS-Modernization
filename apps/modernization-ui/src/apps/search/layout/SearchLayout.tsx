@@ -7,6 +7,7 @@ import { SearchResults } from './result';
 import styles from './search-layout.module.scss';
 import { Loading } from 'components/Spinner';
 import { SearchNavigation } from './navigation/SearchNavigation';
+import { usePage } from 'page';
 
 type Renderer = () => ReactNode;
 
@@ -15,12 +16,27 @@ type Props = {
     criteria: Renderer;
     resultsAsList: Renderer;
     resultsAsTable: Renderer;
+    noInputResults?: Renderer;
+    noResults?: Renderer;
     onSearch: () => void;
     onClear: () => void;
 };
 
-const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSearch, onClear }: Props) => {
+const SearchLayout = ({
+    actions,
+    criteria,
+    resultsAsList,
+    resultsAsTable,
+    onSearch,
+    onClear,
+    noInputResults,
+    noResults
+}: Props) => {
     const { view, status } = useSearchResultDisplay();
+
+    const {
+        page: { total }
+    } = usePage();
 
     return (
         <section className={styles.search}>
@@ -42,10 +58,12 @@ const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSear
                     {status === 'searching' && <Loading className={styles.loading} />}
                     {status === 'completed' && (
                         <SearchResults>
-                            {view == 'list' && resultsAsList()}
-                            {view == 'table' && resultsAsTable()}
+                            {total === 0 && noResults?.()}
+                            {view === 'list' && resultsAsList()}
+                            {view === 'table' && resultsAsTable()}
                         </SearchResults>
                     )}
+                    {status === 'noInput' && <SearchResults>{noInputResults?.()}</SearchResults>}
                 </div>
             </div>
         </section>

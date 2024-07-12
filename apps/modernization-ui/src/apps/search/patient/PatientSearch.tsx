@@ -8,6 +8,8 @@ import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { NoPatientInputBanner } from '../NoPatientInputBanner';
+import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
 
 const PatientSearch = () => {
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -49,6 +51,8 @@ const PatientSearch = () => {
                 )}
                 resultsAsTable={() => <div>result table</div>}
                 onSearch={methods.handleSubmit(search)}
+                noInputResults={() => <NoPatientInputBanner />}
+                noResults={() => <NoPatientResultsBanner />}
                 onClear={reset}
             />
         </FormProvider>
