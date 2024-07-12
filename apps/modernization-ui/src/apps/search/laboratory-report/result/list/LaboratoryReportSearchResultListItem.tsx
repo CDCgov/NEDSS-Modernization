@@ -36,7 +36,6 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
     };
 
     const getDescription = (labReport: LabReport): string | undefined => {
-        // TODO - there could be multiple tests associated with one lab report. How to display them in UI
         const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
 
         return observation && `${observation.cdDescTxt} = ${observation.displayName}`;
