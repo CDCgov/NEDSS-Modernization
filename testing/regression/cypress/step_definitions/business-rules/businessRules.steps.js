@@ -29,7 +29,7 @@ Then("User enters a Unique name in the Search text field for Source field keywor
     businessRulesPage.enterUniqueNameInSearchField();
 });
 
-Then("User clicks the magnifying glass button", () => {
+Then("User clicks the magnifying glass button business rules library search", () => {
     businessRulesPage.clickBusinessRulesSearchBtn();
 });
 
@@ -43,5 +43,17 @@ Then("User enters a Unique ID", () => {
 
 Then("Business Rule list will be filtered based on the Unique ID entered", () => {
     businessRulesPage.checkBusinessRulesListDisplayed();
+});
+
+Then("User should see by default 10 rows of rules listed in the library in Business Rules", () => {
+    businessRulesPage.checkBusinessRulesLibraryDefaultRows();
+});
+
+Then("User select 50 to show the list of business rules", () => {
+    businessRulesPage.selectRowsFromDisplayDropdown("50");
+});
+
+Then("User should see only 50 rows in the library and for each subsequent list where applicable", () => {
+    businessRulesPage.checkBusinessRulesListMatchingRows(50);
 });
 

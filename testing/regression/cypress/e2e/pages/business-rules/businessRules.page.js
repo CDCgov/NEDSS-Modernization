@@ -64,6 +64,20 @@ class BusinessRulesPage {
     enterUniqueIdInSearchField() {
         cy.get('#business-rules-search').type('dem115');
     }
+
+    checkBusinessRulesLibraryDefaultRows() {
+        cy.contains("10");
+    }
+
+    selectRowsFromDisplayDropdown(selection) {
+        cy.get('#range-toggle').select(selection);
+    }
+
+    checkBusinessRulesListMatchingRows(numOfRows) {
+        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr) => {
+            expect($tr.length).to.be.lessThan(numOfRows);
+        });
+    }
 }
 
 export const businessRulesPage = new BusinessRulesPage()
