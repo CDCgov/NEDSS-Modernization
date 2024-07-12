@@ -10,6 +10,7 @@
         "@types/react": "18.2.42",
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "^17",
+        "@uswds/uswds": "3.6.0",
         "classnames": "^2.5.1",
         "date-fns": "^3.6.0",
         "graphql": "^16.8.1",
@@ -69,7 +70,10 @@
         ]
     },
     "jest": {
-        "globalSetup": "./global-setup.test.js"
+        "globalSetup": "./global-setup.test.js",
+        "moduleNameMapper": {
+            "^.+\\.svg$": "<rootDir>/module-mock.js"
+        }
     },
     "browserslist": {
         "production": [
@@ -96,6 +100,7 @@
         "@testing-library/user-event": "^12",
         "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^18.11.5",
+        "@types/jest-axe": "^3.5.9",
         "@typescript-eslint/eslint-plugin": "^7.4.0",
         "@typescript-eslint/parser": "^7.4.0",
         "eslint": "^8.56.0",
@@ -106,6 +111,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "gql-generator": "^2.0.0",
         "http-proxy-middleware": "^2.0.6",
+        "jest-axe": "^8.0.0",
         "openapi-typescript-codegen": "^0.28.0",
         "prettier": "^3.2.5",
         "prop-types": "^15.8.1",
