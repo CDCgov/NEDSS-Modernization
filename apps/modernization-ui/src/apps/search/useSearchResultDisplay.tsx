@@ -33,7 +33,7 @@ type Action =
     | { type: 'search' }
     | { type: 'complete'; terms: Term[] }
     | { type: 'setView'; view: View }
-    | { type: 'noInput' };;
+    | { type: 'noInput' };
 
 const initial: State = {
     status: 'waiting',
