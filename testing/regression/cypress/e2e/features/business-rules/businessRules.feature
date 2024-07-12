@@ -13,10 +13,10 @@ Feature: Page Builder - User can view existing business rules logic here.
 
     Scenario: Search library by keywords and ID
         And User enters a Unique name in the Search text field for Source field keyword
-        And User clicks the magnifying glass button
+        And User clicks the magnifying glass button business rules library search
         Then Business Rule list will be filtered based on the keywords entered
         When User enters a Unique ID
-        And User clicks the magnifying glass button
+        And User clicks the magnifying glass button business rules library search
         Then Business Rule list will be filtered based on the Unique ID entered
 
     Scenario Outline: Verify the data element for Logic if Function column equal to Date validation
@@ -28,3 +28,11 @@ Feature: Page Builder - User can view existing business rules logic here.
             | show Less or equal to or |
             | show Greater than or     |
             | show Greater or equal to |
+
+    Scenario: User checks for 10 rows of rules listed in the library
+        Then User should see by default 10 rows of rules listed in the library in Business Rules
+
+    Scenario: User selects for 50 rows to show in the Business Rules library
+        And User select 50 to show the list of business rules
+        Then User should see only 50 rows in the library and for each subsequent list where applicable
+
