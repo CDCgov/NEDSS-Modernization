@@ -10,6 +10,7 @@ import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { NoPatientInputBanner } from '../NoPatientInputBanner';
 import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
+import { PatientSearchResultTable } from './result/table';
 
 const PatientSearch = () => {
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -49,7 +50,7 @@ const PatientSearch = () => {
                         render={(result) => <PatientSearchResultListItem result={result} />}
                     />
                 )}
-                resultsAsTable={() => <div>result table</div>}
+                resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
                 onSearch={methods.handleSubmit(search)}
                 noInputResults={() => <NoPatientInputBanner />}
                 noResults={() => <NoPatientResultsBanner />}

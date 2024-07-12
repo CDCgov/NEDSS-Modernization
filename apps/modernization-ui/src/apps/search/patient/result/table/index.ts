@@ -1,0 +1,1 @@
+export { PatientSearchResultTable } from './PatientSearchResultTable';
