@@ -13,6 +13,7 @@ import static gov.cdc.nbs.search.SearchSorting.asSortOrder;
 
 @Component
 class PatientSearchCriteriaSortResolver {
+  private static final String ADDRESS = "address";
 
   List<SortOptions> resolve(final Pageable pageable) {
     return pageable.getSort()
@@ -25,11 +26,11 @@ class PatientSearchCriteriaSortResolver {
     SortOrder order = asSortOrder(sorting.getDirection());
 
     return switch (sorting.getProperty()) {
-      case "address" -> asSortOption("address", "address.streetAddr1", order);
+      case "address" -> asSortOption(ADDRESS, "address.streetAddr1", order);
       case "birthTime" -> asSortOption("birth_time", order);
-      case "city" -> asSortOption("address", "address.city", order);
-      case "county" -> asSortOption("address", "address.cntyCd", order);
-      case "country" -> asSortOption("address", "address.cntryCd", order);
+      case "city" -> asSortOption(ADDRESS, "address.city", order);
+      case "county" -> asSortOption(ADDRESS, "address.cntyCd", order);
+      case "country" -> asSortOption(ADDRESS, "address.cntryCd", order);
       case "email" -> asSortOption("email", "email.emailAddress", order);
       case "firstNm" -> asSortOption("name", "name.firstNm.keyword", order);
       case "id" -> asSortOption("id", order);
@@ -39,8 +40,8 @@ class PatientSearchCriteriaSortResolver {
       case "phoneNumber" -> asSortOption("phone", "phone.telephoneNbr", order);
       case "relevance" -> asSortOption("_score", order);
       case "sex" -> asSortOption("cur_sex_cd", order);
-      case "state" -> asSortOption("address", "address.state", order);
-      case "zip" -> asSortOption("address", "address.zip", order);
+      case "state" -> asSortOption(ADDRESS, "address.state", order);
+      case "zip" -> asSortOption(ADDRESS, "address.zip", order);
       default -> asSortOption(sorting.getProperty(), order);
     };
   }
