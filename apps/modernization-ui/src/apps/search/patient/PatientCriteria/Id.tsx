@@ -1,11 +1,13 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { PatientCriteriaEntry } from '../criteria';
 import { SingleSelect } from 'design-system/select';
 import { useConceptOptions } from 'options/concepts';
 import styles from './id.module.scss';
+import { Input } from 'components/FormInputs/Input';
 
 export const Id = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+    const identificationType = useWatch({ control: control, name: 'identificationType' });
 
     return (
         <div className={styles.id}>
@@ -23,6 +25,15 @@ export const Id = () => {
                     />
                 )}
             />
+            {identificationType ? (
+                <Controller
+                    control={control}
+                    name="identification"
+                    render={({ field: { onChange, value, name } }) => (
+                        <Input type="text" value={value} onChange={onChange} name={name} label="Id number" required />
+                    )}
+                />
+            ) : null}
         </div>
     );
 };
