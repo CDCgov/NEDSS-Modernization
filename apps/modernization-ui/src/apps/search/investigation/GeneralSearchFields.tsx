@@ -106,7 +106,7 @@ const GeneralSearchFields = () => {
                         name={name}
                         id="pregnancyStatus"
                         label="Pregnancy test"
-                        onChange={() => form.setValue('pregnancyStatus', value)}
+                        onChange={(e) => form.setValue('pregnancyStatus', e)}
                         options={[
                             { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },
                             { name: PregnancyStatus.No, value: PregnancyStatus.No, label: 'No' },
