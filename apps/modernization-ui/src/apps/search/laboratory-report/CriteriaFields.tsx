@@ -13,7 +13,7 @@ export const LabReportCriteriaFields = ({ form }: LabReportCriteriaFieldsProps) 
                 control={form.control}
                 name={'resultedTest'}
                 render={({ field: { onChange, name } }) => (
-                    <ResultedTestsAutocomplete id={name} label="Resulted Test" onChange={onChange} />
+                    <ResultedTestsAutocomplete id={name} label="Resulted test" onChange={onChange} />
                 )}
             />
 

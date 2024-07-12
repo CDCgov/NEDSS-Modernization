@@ -27,7 +27,7 @@ const PatientSearchResultListItem = ({ result }: Props) => {
                     <Link
                         id="legalName"
                         className={`${styles.value}, ${styles.name}`}
-                        to={`patient-profile/${result.patient}/summary`}>
+                        to={`/patient-profile/${result.shortId}/summary`}>
                         {lastName && firstName ? `${lastName}, ${firstName}` : noData}
                     </Link>
                 </div>

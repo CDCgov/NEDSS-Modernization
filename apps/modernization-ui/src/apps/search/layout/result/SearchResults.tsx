@@ -3,6 +3,7 @@ import { useSearchResultDisplay } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
 import styles from './search-results.module.scss';
 import { usePage } from 'page';
+import { Pagination } from 'design-system/Pagination/Pagination';
 
 type Props = {
     children: ReactNode;
@@ -18,31 +19,11 @@ const SearchResults = ({ children }: Props) => {
     return (
         <div className={styles.results}>
             <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
-            <main className={styles.content}>
-                {children}
-                {/* <>
-                    {total > 0 ? (
-                        children
-                    ) : (
-                        <div className={styles.noResults}>
-                            <AlertBanner type="info" iconSize={4}>
-                                <div className={styles.noResultsContent}>
-                                    <span className={styles.noResultsHeader}> No result found</span>
-                                    <span className={styles.noResultsSubHeading}>
-                                        Try refining your search, or
-                                        <Link className={styles.link} to="/add-patient">
-                                            {' '}
-                                            add a new patient.
-                                        </Link>
-                                    </span>
-                                </div>
-                            </AlertBanner>
-                        </div>
-                    )}
-                </> */}
-            </main>
-
             <div className={styles.pagingation}></div>
+            <main className={styles.content}>{children}</main>
+            <div className={styles.pagingation}>
+                <Pagination />
+            </div>
         </div>
     );
 };

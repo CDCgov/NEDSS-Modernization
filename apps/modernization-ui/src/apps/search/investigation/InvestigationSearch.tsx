@@ -26,6 +26,7 @@ const defaultValues: InvestigationFilterEntry = {
 
 const InvestigationSearch = () => {
     const { status, search, reset, results } = useInvestigationSearch();
+
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
         mode: 'all',
         defaultValues

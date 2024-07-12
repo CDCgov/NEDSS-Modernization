@@ -4,7 +4,11 @@
     padding: 1rem;
     display: flex;
 
-    justify-content: space-between;
-
     @extend %thin-bottom;
+    justify-content: space-between;
+    align-items: center;
+
+    .toggleButton {
+        padding: 0.5rem 1rem !important;
+    }
 }

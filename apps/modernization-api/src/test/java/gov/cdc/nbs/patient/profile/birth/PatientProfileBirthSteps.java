@@ -55,11 +55,11 @@ public class PatientProfileBirthSteps {
         ;
 
         if (expected.getDateOfBirth() != null) {
-            Instant expected_birth_time = expected.getDateOfBirth()
+            Instant expectedBirthTime = expected.getDateOfBirth()
                 .atStartOfDay(ZoneOffset.UTC)
                 .toInstant();
 
-            assertThat(actual.getBirthTime()).isEqualTo(expected_birth_time);
+            assertThat(actual.getBirthTime()).isEqualTo(expectedBirthTime);
         } else {
             assertThat(actual.getBirthTime()).isNull();
         }
