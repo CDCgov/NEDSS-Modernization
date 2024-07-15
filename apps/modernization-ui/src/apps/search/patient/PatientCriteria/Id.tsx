@@ -29,8 +29,16 @@ export const Id = () => {
                 <Controller
                     control={control}
                     name="identification"
-                    render={({ field: { onChange, value, name } }) => (
-                        <Input type="text" value={value} onChange={onChange} name={name} label="Id number" required />
+                    render={({ field: { onBlur, onChange, value, name } }) => (
+                        <Input
+                            type="text"
+                            defaultValue={value}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            name={name}
+                            label="Id number"
+                            required
+                        />
                     )}
                 />
             ) : null}
