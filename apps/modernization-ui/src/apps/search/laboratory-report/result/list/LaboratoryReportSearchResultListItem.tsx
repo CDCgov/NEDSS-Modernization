@@ -13,12 +13,12 @@ type Props = {
 };
 
 const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
-    const [jurisdictions, setJurisdictions] = useState<any[] | null>(null);
+    const [jurisdictions, setJurisdictions] = useState<Jurisdiction[]>([] as Jurisdiction[]);
 
     const noData = 'No data';
     const patient = result.personParticipations.find((p) => p.typeCd === 'PATSBJ');
-    const firstName = `${patient?.firstName}` ?? null;
-    const lastName = `${patient?.lastName}` ?? null;
+    const firstName = patient?.firstName ?? '';
+    const lastName = patient?.lastName ?? '';
     const legalName = firstName && lastName ? `${firstName} ${lastName}` : 'No data';
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery();
 
@@ -49,7 +49,13 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
 
     useEffect(() => {
         getJurisdictions().then((results) => {
-            setJurisdictions(results?.data?.findAllJurisdictions ?? []);
+            if (results?.data?.findAllJurisdictions?.length) {
+                results.data.findAllJurisdictions?.forEach((j) => {
+                    if (j) {
+                        setJurisdictions([...jurisdictions, j]);
+                    }
+                });
+            }
         });
     }, []);
 
@@ -143,7 +149,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                         Jurisdiction
                     </label>
                     <span id="jurisdiction" className={styles.value}>
-                        {getJurisdiction() ?? noData}
+                        {getJurisdiction()?.toString() ?? noData}
                     </span>
                 </div>
             </div>
