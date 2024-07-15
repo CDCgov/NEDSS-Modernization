@@ -39,7 +39,6 @@ const InvestigationSearch = () => {
     }, [form.reset, status]);
 
     const handleSubmit = () => {
-        console.log('data', search);
         form.handleSubmit(search);
     };
 
