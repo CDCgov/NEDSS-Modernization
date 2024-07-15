@@ -25,13 +25,13 @@ Feature: User access the Patient Profile Summary page.
         Given the user navigate to the patient profile page for "93049"
         Then user clicks on a patient's profile "Summary" tab
         Then I should see the following columns for "Open investigations" table
+            | Investigation # | A link to the selected open investigation screen                  |
             | Start date      | Investigation Start Date                                          |
             | Condition       | Condition selected when opening the investigation                 |
             | Case status     | Case status as displayed in the View Investigation screen         |
             | Notification    | Notification status as displayed in the View Investigation screen |
             | Jurisdiction    | Investigation selected in the Investigation Details               |
             | Investigator    | Investigator assigned in the Investigation Details                |
-            | Investigation # | A link to the selected open investigation screen                  |
             | Co-infection #  | All co-infection(s) related to this investigation are listed      |
         And user is able to click the Investigation Number to View Investigation page
         And user is able to click the "Return to File: Summary" link to return to Patient Profile Summary page

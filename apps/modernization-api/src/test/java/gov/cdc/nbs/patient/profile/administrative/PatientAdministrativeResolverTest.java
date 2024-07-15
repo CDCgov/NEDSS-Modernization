@@ -45,10 +45,10 @@ class PatientAdministrativeResolverTest {
 
         verify(finder).find(eq(2963L), captor.capture());
 
-        Pageable actual_pageable = captor.getValue();
+        Pageable actualPageable = captor.getValue();
 
-        assertThat(actual_pageable.getPageNumber()).isEqualTo(2);
-        assertThat(actual_pageable.getPageSize()).isEqualTo(5);
+        assertThat(actualPageable.getPageNumber()).isEqualTo(2);
+        assertThat(actualPageable.getPageSize()).isEqualTo(5);
     }
 
     @Test
@@ -76,9 +76,9 @@ class PatientAdministrativeResolverTest {
 
         verify(finder).find(eq(2963L), captor.capture());
 
-        Pageable actual_pageable = captor.getValue();
+        Pageable actualPageable = captor.getValue();
 
-        assertThat(actual_pageable.getPageNumber()).isZero();
-        assertThat(actual_pageable.getPageSize()).isEqualTo(10);
+        assertThat(actualPageable.getPageNumber()).isZero();
+        assertThat(actualPageable.getPageSize()).isEqualTo(10);
     }
 }

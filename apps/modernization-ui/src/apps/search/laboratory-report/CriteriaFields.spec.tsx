@@ -43,9 +43,9 @@ describe('LabReportCriteriaFields component', () => {
         const { getByRole, getByPlaceholderText } = render(<LabReportCriteriaFieldsWithForm />);
 
         await waitFor(() => {
-            const resultedTestInput = getByRole('textbox', { name: 'Resulted Test' });
+            const resultedTestInput = getByRole('textbox', { name: 'Resulted test' });
             expect(resultedTestInput).toBeInTheDocument();
-            expect(getByPlaceholderText('Resulted Test')).toBeInTheDocument();
+            expect(getByPlaceholderText('Resulted test')).toBeInTheDocument();
         });
     });
 

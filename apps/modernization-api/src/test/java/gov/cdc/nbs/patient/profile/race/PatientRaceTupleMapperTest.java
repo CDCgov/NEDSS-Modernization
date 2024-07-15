@@ -76,7 +76,7 @@ class PatientRaceTupleMapperTest {
         PatientRace actual = mapper.map(tuple);
 
         assertThat(actual.detailed()).satisfiesExactly(
-            actual_race -> assertThat(actual_race)
+            actualRace -> assertThat(actualRace)
                 .returns("race-id", PatientRace.Race::id)
                 .returns("race-description", PatientRace.Race::description)
         );
@@ -100,7 +100,7 @@ class PatientRaceTupleMapperTest {
         PatientRace actual = mapper.map(tuple);
 
         assertThat(actual.detailed()).satisfiesExactly(
-            actual_race -> assertThat(actual_race)
+            actualRace -> assertThat(actualRace)
                 .returns("race-id", PatientRace.Race::id)
                 .returns("race-description", PatientRace.Race::description)
         );

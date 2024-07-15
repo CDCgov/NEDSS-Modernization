@@ -1,6 +1,6 @@
 import { When, Then, attach, Given } from "@badeball/cypress-cucumber-preprocessor";
 import { faker } from "@faker-js/faker";
-import '@cypress/xpath';
+import 'cypress-xpath';
 
 When("I Generate HL7 messages", () => {
   let formattedMessages
