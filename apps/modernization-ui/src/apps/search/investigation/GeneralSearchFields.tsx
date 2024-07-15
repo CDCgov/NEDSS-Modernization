@@ -55,19 +55,21 @@ const GeneralSearchFields = () => {
 
     return (
         <>
-            <Controller
-                name="conditions"
-                control={form.control}
-                render={({ field: { name } }) => (
-                    <AutocompleteMulti
-                        id="conditions"
-                        name={name}
-                        label="Conditions"
-                        resolver={condtionsResolver}
-                        onChange={handleChangeConditions}
-                    />
-                )}
-            />
+            {watch.identification?.type?.value ? (
+                <Controller
+                    name="conditions"
+                    control={form.control}
+                    render={({ field: { name } }) => (
+                        <AutocompleteMulti
+                            id="conditions"
+                            name={name}
+                            label="Conditions"
+                            resolver={condtionsResolver}
+                            onChange={handleChangeConditions}
+                        />
+                    )}
+                />
+            ) : null}
 
             <Controller
                 control={form.control}
@@ -100,13 +102,13 @@ const GeneralSearchFields = () => {
             <Controller
                 control={form.control}
                 name="pregnancyStatus"
-                render={({ field: { name, value } }) => (
+                render={({ field: { name, onChange } }) => (
                     <SingleSelect
                         data-testid="pregnancyStatus"
                         name={name}
                         id="pregnancyStatus"
                         label="Pregnancy test"
-                        onChange={() => form.setValue('pregnancyStatus', value)}
+                        onChange={onChange}
                         options={[
                             { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },
                             { name: PregnancyStatus.No, value: PregnancyStatus.No, label: 'No' },
@@ -115,19 +117,21 @@ const GeneralSearchFields = () => {
                     />
                 )}
             />
-            <Controller
-                control={form.control}
-                name="identification.type"
-                render={({ field: { name } }) => (
-                    <SingleSelect
-                        name={name}
-                        label="Event id type"
-                        data-testid={name}
-                        options={dateTypeOptions}
-                        id={name}
-                    />
-                )}
-            />
+            {watch.identification?.type?.value ? (
+                <Controller
+                    control={form.control}
+                    name="identification.type"
+                    render={({ field: { name } }) => (
+                        <SingleSelect
+                            name={name}
+                            label="Event id type"
+                            data-testid={name}
+                            id={name}
+                            options={investigationEventTypeOptions}
+                        />
+                    )}
+                />
+            ) : null}
             <Controller
                 control={form.control}
                 name={'eventDate.type'}
@@ -137,7 +141,7 @@ const GeneralSearchFields = () => {
                         name={name}
                         id="eventDateType"
                         label="Event date type"
-                        options={investigationEventTypeOptions}
+                        options={dateTypeOptions}
                     />
                 )}
             />

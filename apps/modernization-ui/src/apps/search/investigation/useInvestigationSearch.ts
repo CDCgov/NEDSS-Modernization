@@ -8,8 +8,9 @@ import { investigationTermsResolver } from './investigationTermsResolver';
 const useInvestigationSearch = (): Interaction<InvestigationFilterEntry, Investigation> => {
     const [fetch] = useFindInvestigationsByFilterLazyQuery();
 
-    const resultResolver = (request: ResultRequest<InvestigationFilter>) =>
-        fetch({
+    const resultResolver = (request: ResultRequest<InvestigationFilter>) => {
+        console.log('test', request);
+        return fetch({
             variables: {
                 filter: request.parameters,
                 page: {
@@ -28,6 +29,7 @@ const useInvestigationSearch = (): Interaction<InvestigationFilterEntry, Investi
                 ? { ...response.data.findInvestigationsByFilter, page: request.page.number }
                 : undefined;
         });
+    };
 
     return useSearch({ transformer: transformObject, resultResolver, termResolver: investigationTermsResolver });
 };

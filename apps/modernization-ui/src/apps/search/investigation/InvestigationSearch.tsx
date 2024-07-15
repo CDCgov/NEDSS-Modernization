@@ -25,12 +25,12 @@ const defaultValues: InvestigationFilterEntry = {
 };
 
 const InvestigationSearch = () => {
-    const { status, search, reset, results } = useInvestigationSearch();
-
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
         mode: 'all',
         defaultValues
     });
+
+    const { status, search, reset, results } = useInvestigationSearch();
 
     useEffect(() => {
         if (status === 'waiting') {
@@ -38,27 +38,30 @@ const InvestigationSearch = () => {
         }
     }, [form.reset, status]);
 
-    const handleSubmit = () => {
-        form.handleSubmit(search);
+    const handleSubmit = (data: InvestigationFilterEntry) => {
+        console.log('submit');
+        search(data);
     };
 
+    useEffect(() => {
+        console.log('status', status);
+    }, [status]);
+
     return (
-        <SearchLayout
-            criteria={() => (
-                <FormProvider {...form}>
-                    <InvestigationSearchForm />
-                </FormProvider>
-            )}
-            resultsAsList={() => (
-                <SearchResultList<Investigation>
-                    results={results?.content ?? []}
-                    render={(result) => <InvestigationSearchResultListItem result={result} />}
-                />
-            )}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit}
-            onClear={reset}
-        />
+        <FormProvider {...form}>
+            <SearchLayout
+                criteria={() => <InvestigationSearchForm />}
+                resultsAsList={() => (
+                    <SearchResultList<Investigation>
+                        results={results?.content ?? []}
+                        render={(result) => <InvestigationSearchResultListItem result={result} />}
+                    />
+                )}
+                resultsAsTable={() => <div>result table</div>}
+                onSearch={form.handleSubmit(handleSubmit)}
+                onClear={reset}
+            />
+        </FormProvider>
     );
 };
 
