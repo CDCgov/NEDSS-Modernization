@@ -32,6 +32,7 @@ public final class InvestigationFilter implements EventFilter {
   private List<CaseStatus> caseStatuses = new ArrayList<>();
   private List<NotificationStatus> notificationStatuses = new ArrayList<>();
   private List<ProcessingStatus> processingStatuses = new ArrayList<>();
+  private Long reportingFacilityId;
 
 
   @Data
@@ -196,8 +197,7 @@ public final class InvestigationFilter implements EventFilter {
   public Optional<InvestigationEventId> abcsCase() {
     if (this.eventId != null
         && this.eventId.getId() != null
-        && this.eventId.getInvestigationEventType() == IdType.ABCS_CASE_ID
-    ) {
+        && this.eventId.getInvestigationEventType() == IdType.ABCS_CASE_ID) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -206,8 +206,7 @@ public final class InvestigationFilter implements EventFilter {
   public Optional<InvestigationEventId> stateCase() {
     if (this.eventId != null
         && this.eventId.getId() != null
-        && this.eventId.getInvestigationEventType() == IdType.STATE_CASE_ID
-    ) {
+        && this.eventId.getInvestigationEventType() == IdType.STATE_CASE_ID) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -216,8 +215,7 @@ public final class InvestigationFilter implements EventFilter {
   public Optional<InvestigationEventId> countyCase() {
     if (this.eventId != null
         && this.eventId.getId() != null
-        && this.eventId.getInvestigationEventType() == IdType.CITY_COUNTY_CASE_ID
-    ) {
+        && this.eventId.getInvestigationEventType() == IdType.CITY_COUNTY_CASE_ID) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -226,8 +224,7 @@ public final class InvestigationFilter implements EventFilter {
   public Optional<InvestigationEventId> notification() {
     if (this.eventId != null
         && this.eventId.getId() != null
-        && this.eventId.getInvestigationEventType() == IdType.NOTIFICATION_ID
-    ) {
+        && this.eventId.getInvestigationEventType() == IdType.NOTIFICATION_ID) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -236,8 +233,7 @@ public final class InvestigationFilter implements EventFilter {
   public Optional<InvestigationEventId> caseId() {
     if (this.eventId != null
         && this.eventId.getId() != null
-        && this.eventId.getInvestigationEventType() == IdType.INVESTIGATION_ID
-    ) {
+        && this.eventId.getInvestigationEventType() == IdType.INVESTIGATION_ID) {
       return Optional.of(this.eventId);
     }
     return Optional.empty();
@@ -280,14 +276,19 @@ public final class InvestigationFilter implements EventFilter {
   }
 
   public Optional<Long> reportingFacility() {
-    return (this.providerFacilitySearch != null && this.providerFacilitySearch.getEntityType() == ReportingEntityType.FACILITY)
-        ? Optional.of(this.providerFacilitySearch.getId())
-        : Optional.empty();
+    if (this.reportingFacilityId != null) {
+      return Optional.of(this.reportingFacilityId);
+    }
+    return (this.providerFacilitySearch != null
+        && this.providerFacilitySearch.getEntityType() == ReportingEntityType.FACILITY)
+            ? Optional.of(this.providerFacilitySearch.getId())
+            : Optional.empty();
   }
 
   public Optional<Long> reportingProvider() {
-    return (this.providerFacilitySearch != null && this.providerFacilitySearch.getEntityType() == ReportingEntityType.PROVIDER)
-        ? Optional.of(this.providerFacilitySearch.getId())
-        : Optional.empty();
+    return (this.providerFacilitySearch != null
+        && this.providerFacilitySearch.getEntityType() == ReportingEntityType.PROVIDER)
+            ? Optional.of(this.providerFacilitySearch.getId())
+            : Optional.empty();
   }
 }

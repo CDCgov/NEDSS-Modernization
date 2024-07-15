@@ -47,7 +47,11 @@ export const RuleSearchBar = ({ onChange, onDownloadCsv, onDownloadPdf }: Props)
                         defaultValue={search}
                         onKeyDown={handleEnter}
                     />
-                    <Button type="submit" onClick={handleSubmit} className={styles.searchButton}>
+                    <Button
+                        type="submit"
+                        onClick={handleSubmit}
+                        className={styles.searchButton}
+                        data-testid="businessRulesSearchBtn">
                         <Icon.Search size={5} className={styles.searchIcon} />
                     </Button>
                 </div>
