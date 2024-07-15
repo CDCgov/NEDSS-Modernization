@@ -100,7 +100,7 @@ const GeneralSearchFields = () => {
             <Controller
                 control={form.control}
                 name="pregnancyStatus"
-                render={({ field: { name, value } }) => (
+                render={({ field: { name } }) => (
                     <SingleSelect
                         data-testid="pregnancyStatus"
                         name={name}
