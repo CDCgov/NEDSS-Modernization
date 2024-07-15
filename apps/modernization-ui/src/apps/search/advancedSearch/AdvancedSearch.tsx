@@ -34,7 +34,6 @@ import { focusedTarget } from 'utils';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 import { OutOfTabOrder } from './components/OutOfTabOrder';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { useAlert } from 'alert';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -341,12 +340,6 @@ export const AdvancedSearch = () => {
     const doSubmit = (data: PersonFilter) => {
         handleSubmit(externalize(data), SEARCH_TYPE.PERSON);
     };
-
-    const { showSuccess } = useAlert();
-
-    useEffect(() => {
-        showSuccess({ message: ' good job' });
-    });
 
     return (
         <SearchCriteriaProvider>
