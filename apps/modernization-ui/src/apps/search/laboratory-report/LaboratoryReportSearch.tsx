@@ -28,7 +28,7 @@ const LaboratoryReportSearch = () => {
                 criteria={() => <FormAccordion form={formMethods} />}
                 resultsAsList={() => (
                     <SearchResultList<LabReport>
-                        results={results?.content ?? []}
+                        results={results?.content || []}
                         render={(result) => <LaboratoryReportSearchResultListItem result={result} />}
                     />
                 )}

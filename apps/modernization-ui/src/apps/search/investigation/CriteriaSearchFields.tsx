@@ -33,7 +33,7 @@ const CriteriaSearchFields = () => {
                 control={form.control}
                 name="outbreaks"
                 render={({ field: { name, onBlur } }) => (
-                    <ConceptAutocomplete valueSet={'OUTBREAK_NM'} id={name} label={name} onBlur={onBlur} />
+                    <ConceptAutocomplete valueSet={'OUTBREAK_NM'} id={name} label="Outbreak names" onBlur={onBlur} />
                 )}
             />
 
