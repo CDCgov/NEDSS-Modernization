@@ -1,7 +1,8 @@
-import { Button } from '@trussworks/react-uswds';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ReactNode } from 'react';
 import styles from './buttonActionMenu.module.scss';
 import { Icon } from '@trussworks/react-uswds';
+import { Button } from 'components/button/Button';
+import classNames from 'classnames';
 
 type Action = {
     label: string;
@@ -12,9 +13,12 @@ type Props = {
     label: string;
     items: Action[];
     disabled?: boolean;
+    icon?: ReactNode;
+    outline?: boolean;
+    className?: string;
 };
 
-export const ButtonActionMenu = ({ label, items, disabled }: Props) => {
+export const ButtonActionMenu = ({ label, items, disabled, icon, outline, className }: Props) => {
     const wrapperRef = useRef(null);
     const clickOutside = (ref: any) => {
         useEffect(() => {
@@ -38,9 +42,12 @@ export const ButtonActionMenu = ({ label, items, disabled }: Props) => {
             <Button
                 type="button"
                 onClick={() => setOpen(!open)}
-                className={'action-button ' + styles.actionMenuButton}
-                disabled={disabled}>
-                {label} <Icon.ArrowDropDown size={4} />
+                className={classNames(styles.actionMenuButton, className, 'action-button')}
+                disabled={disabled}
+                outline={outline}
+                labelPosition="right"
+                icon={icon ? icon : <Icon.ArrowDropDown size={4} />}>
+                {label}
             </Button>
             {open ? (
                 <div className={'menu ' + styles.menu}>

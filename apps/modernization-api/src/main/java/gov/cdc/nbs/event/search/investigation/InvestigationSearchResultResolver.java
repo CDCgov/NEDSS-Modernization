@@ -2,7 +2,7 @@ package gov.cdc.nbs.event.search.investigation;
 
 import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.graphql.GraphQLPageableMapper;
+import gov.cdc.nbs.patient.search.SearchGraphQLPageableMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Controller;
 class InvestigationSearchResultResolver {
 
   private final InvestigationSearcher searcher;
-  private final GraphQLPageableMapper mapper;
+  private final SearchGraphQLPageableMapper mapper;
 
   InvestigationSearchResultResolver(
       final InvestigationSearcher searcher,
-      final GraphQLPageableMapper mapper
+      final SearchGraphQLPageableMapper mapper
   ) {
     this.searcher = searcher;
     this.mapper = mapper;

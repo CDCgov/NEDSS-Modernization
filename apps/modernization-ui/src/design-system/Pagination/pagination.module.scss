@@ -1,0 +1,26 @@
+@use 'styles/colors';
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem;
+    color: colors.$base;
+    .range {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        select {
+            margin-top: 0;
+        }
+    }
+    .pages {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        button {
+            border-color: colors.$base-lighter;
+        }
+    }
+}
