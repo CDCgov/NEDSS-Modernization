@@ -9,7 +9,6 @@ const useInvestigationSearch = (): Interaction<InvestigationFilterEntry, Investi
     const [fetch] = useFindInvestigationsByFilterLazyQuery();
 
     const resultResolver = (request: ResultRequest<InvestigationFilter>) => {
-        console.log('test', request);
         return fetch({
             variables: {
                 filter: request.parameters,

@@ -25,7 +25,6 @@ const processingStatus = fromSelectables('processingStatuses', 'PROCESSING STATU
 const notificationStatus = fromSelectables('notificationStatuses', 'NOTIFICATION STATUS');
 
 const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => {
-    console.log('entry', entry);
     if (!entry) {
         return [];
     }

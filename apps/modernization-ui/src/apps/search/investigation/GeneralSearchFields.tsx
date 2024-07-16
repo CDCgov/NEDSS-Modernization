@@ -6,56 +6,18 @@ import {
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
 import { PregnancyStatus } from 'generated/graphql/schema';
-import { Autocomplete } from '../../../design-system/autocomplete';
-import {
-    // ConditionOptionsService,
-    // JurisdictionOptionsService,
-    // ProgramAreaOptionsService,
-    UserOptionsService
-} from 'generated';
+import { UserOptionsService } from 'generated';
 import { MultiSelect, SingleSelect } from 'design-system/select';
-// import { Selectable } from 'options';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { ErrorMessage } from '@trussworks/react-uswds';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
     const watch = useWatch({ control: form.control });
-
-    // const handleChangeConditions = (e: Selectable[]) => {
-    //     form.setValue('conditions', e);
-    // };
-
-    // const handleChangeJurisdictions = (e: Selectable[]) => {
-    //     form.setValue('jurisdictions', e);
-    // };
-
-    // const handleChangeProgramAreas = (e: Selectable[]) => {
-    //     form.setValue('programAreas', e);
-    // };
-
-    // const condtionsResolver = (criteria: string, limit?: number) =>
-    //     ConditionOptionsService.complete({
-    //         criteria: criteria,
-    //         limit: limit
-    //     }).then((response) => response);
-
-    // const jurisdictionsResolver = (criteria: string, limit?: number) =>
-    //     JurisdictionOptionsService.jurisdictionAutocomplete({
-    //         criteria: criteria,
-    //         limit: limit
-    //     }).then((response) => response);
-
-    const usersResolver = (criteria: string, limit?: number) => {
-        return UserOptionsService.userAutocomplete({ criteria, limit }).then((response) => response);
-    };
-
-    // const programAreaResolver = (criteria: string, limit?: number) => {
-    //     return ProgramAreaOptionsService.programAreaAutocomplete({ criteria, limit }).then((response) => response);
-    // };
 
     return (
         <SearchCriteriaContext.Consumer>
@@ -223,28 +185,15 @@ const GeneralSearchFields = () => {
                     <Controller
                         control={form.control}
                         name="createdBy"
-                        render={({ field: { name, onBlur } }) => (
-                            <Autocomplete
-                                data-testid="createdBy"
-                                name={name}
-                                label="Event creeated by"
-                                id={'createdBy'}
-                                onBlur={onBlur}
-                                resolver={usersResolver}
-                            />
+                        render={({ field: { onChange } }) => (
+                            <UserAutocomplete id="createdBy" label="Created by" onChange={onChange} />
                         )}
                     />
                     <Controller
                         control={form.control}
                         name="updatedBy"
-                        render={({ field: { name, onBlur } }) => (
-                            <Autocomplete
-                                name={name}
-                                label="Event updated by"
-                                id={'updatedBy'}
-                                resolver={usersResolver}
-                                onBlur={onBlur}
-                            />
+                        render={({ field: { onChange } }) => (
+                            <UserAutocomplete id="updatedBy" label="Updated by" onChange={onChange} />
                         )}
                     />
 
