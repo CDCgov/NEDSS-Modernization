@@ -21,7 +21,7 @@ const SearchResults = ({ children }: Props) => {
             <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
             <div className={styles.pagingation}></div>
             <main className={styles.content}>{children}</main>
-            <div className={styles.pagingation}>
+            <div className={styles.pagination}>
                 <Pagination />
             </div>
         </div>
