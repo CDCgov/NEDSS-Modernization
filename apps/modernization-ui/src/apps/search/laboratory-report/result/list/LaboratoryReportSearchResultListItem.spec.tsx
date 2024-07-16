@@ -5,7 +5,7 @@ import { LabReport } from 'generated/graphql/schema';
 import { MockedProvider } from '@apollo/client/testing';
 
 const expectedResult: LabReport = {
-    addTime: '09-09-2021',
+    addTime: new Date('09-09-2021').toISOString(),
     associatedInvestigations: [{ cdDescTxt: 'testtext', localId: '111' }],
     id: '100234',
     jurisdictionCd: 567,
@@ -103,7 +103,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     </MockedProvider>
                 </MemoryRouter>
             );
-            expect(getByText(expectedResult.addTime ?? '')).toBeInTheDocument();
+            expect(getByText('09/09/2021')).toBeInTheDocument();
         });
     });
 
