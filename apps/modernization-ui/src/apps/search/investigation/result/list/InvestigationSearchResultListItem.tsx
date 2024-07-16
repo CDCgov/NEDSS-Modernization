@@ -94,6 +94,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
 
                 <div className={styles.listItemData}>
                     <label htmlFor="startDate">Start Date</label>
+                    <br />
                     <span id="startDate" className={styles.value}>
                         {result.addTime ?? noData}
                     </span>
@@ -105,6 +106,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="jurisdiction" className={styles.listItemLabel}>
                         Jurisdiction
                     </label>
+                    <br />
                     <span id="jurisdiction" className={styles.value}>
                         {result.jurisdictionCodeDescTxt ?? noData}
                     </span>
@@ -127,7 +129,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <span
-                        className={`${styles.value} ${result.investigationStatusCd === 'O' ? 'open' : ''}`}
+                        className={`${styles.value} ${result.investigationStatusCd == 'O' ? styles.open : ''}`}
                         id="status">
                         {getInvestigationStatusString(result) ?? noData}
                     </span>

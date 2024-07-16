@@ -6,7 +6,6 @@ import {
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
 import { PregnancyStatus } from 'generated/graphql/schema';
-import { UserOptionsService } from 'generated';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
