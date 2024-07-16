@@ -42,7 +42,7 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
         jurisdictions(entry.jurisdictions ?? []).forEach((item) => terms.push(item));
     }
 
-    if (entry.pregnancyStatus && entry.identification?.type) {
+    if (entry.pregnancyStatus) {
         terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
     }
 
