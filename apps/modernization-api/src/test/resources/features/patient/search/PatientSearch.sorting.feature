@@ -63,3 +63,29 @@ Feature: Patient Search Sorting
     And search result 2 has a "last name" of "Jackson"
     And search result 3 has a "first name" of "Stephanie"
     And search result 3 has a "last name" of "Brown"
+
+  Scenario: I can find the most relevant patient when sorting by first name  ascending
+    Given the patient has the "legal" name "Timothy" "Jackson"
+    And I have another patient
+    And the patient has the "legal" name "Jason" "Todd"
+    And I have another patient
+    And the patient has the "legal" name "Stephanie" "Brown"
+    And patients are available for search
+    And I want patients sorted by "first name" "asc"
+    When I search for patients
+    Then search result 1 has a "first name" of "Jason"
+    And search result 2 has a "first name" of "Stephanie"
+    And search result 3 has a "first name" of "Timothy"
+
+  Scenario: I can find the most relevant patient when sorting by first name descending
+    Given the patient has the "legal" name "Timothy" "Jackson"
+    And I have another patient
+    And the patient has the "legal" name "Jason" "Todd"
+    And I have another patient
+    And the patient has the "legal" name "Stephanie" "Brown"
+    And patients are available for search
+    And I want patients sorted by "first name" "desc"
+    When I search for patients
+    Then search result 1 has a "first name" of "Timothy"
+    And search result 2 has a "first name" of "Stephanie"
+    And search result 3 has a "first name" of "Jason"

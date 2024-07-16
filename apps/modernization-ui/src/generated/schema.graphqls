@@ -1648,9 +1648,21 @@ input SortablePage {
 }
 
 enum SortField {
-  lastNm
+  address
   birthTime
+  city
+  county
+  country
+  firstNm
+  id
+  identification
+  lastNm
+  local_id
+  phoneNumber
   relevance
+  sex
+  state
+  zip
 }
 
 enum RecordStatus {

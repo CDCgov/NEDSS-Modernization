@@ -1947,9 +1947,21 @@ export enum SortDirection {
 }
 
 export enum SortField {
+  Address = 'address',
   BirthTime = 'birthTime',
+  City = 'city',
+  Country = 'country',
+  County = 'county',
+  FirstNm = 'firstNm',
+  Id = 'id',
+  Identification = 'identification',
   LastNm = 'lastNm',
-  Relevance = 'relevance'
+  LocalId = 'local_id',
+  PhoneNumber = 'phoneNumber',
+  Relevance = 'relevance',
+  Sex = 'sex',
+  State = 'state',
+  Zip = 'zip'
 }
 
 export type SortablePage = {
