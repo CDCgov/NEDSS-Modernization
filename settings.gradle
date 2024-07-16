@@ -47,8 +47,13 @@ include ':database-entities'
 project(':database-entities').projectDir = new File('libs/database-entities')
 include ':event-schema'
 project(':event-schema').projectDir = new File('libs/event-schema')
+
 include ':authentication'
 project(':authentication').projectDir = new File('libs/authentication')
+
+include ':authorization'
+project(':authorization').projectDir = new File('libs/authorization')
+
 include ':audit'
 project(':audit').projectDir = new File('libs/audit')
 include ':id-generator'

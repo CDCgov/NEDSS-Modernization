@@ -38,6 +38,10 @@ const InvestigationSearch = () => {
         }
     }, [form.reset, status]);
 
+    const handleSubmit = () => {
+        form.handleSubmit(search);
+    };
+
     return (
         <SearchLayout
             criteria={() => (
@@ -52,7 +56,7 @@ const InvestigationSearch = () => {
                 />
             )}
             resultsAsTable={() => <div>result table</div>}
-            onSearch={form.handleSubmit(search)}
+            onSearch={handleSubmit}
             onClear={reset}
         />
     );

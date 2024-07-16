@@ -35,6 +35,10 @@ Then("I should see Results with the text {string}", (string) => {
   cy.get(".text-normal").contains(string).should("be.visible");
 });
 
+Then("I check the ELR in search", () => {
+  searchEventPage.checkELR();
+});
+
 Then("I select a program area for event investigation", () => {
   searchEventPage.selectEventInvestigationProgramArea();
   searchEventPage.search();

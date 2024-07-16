@@ -45,7 +45,7 @@ class JDBCPermissionScopeFinder implements PermissionScopeFinder {
                                                         then [jurisdiction].code
                                                         else [role].jurisdiction_cd
                                                 end
-        where   [user].nedss_entry_id = ?
+        where   [user].user_id = ?
             and [operation_type].bus_op_nm = ?
             and [object_type].bus_obj_nm  = ?
         """;
@@ -64,7 +64,7 @@ class JDBCPermissionScopeFinder implements PermissionScopeFinder {
     }
 
     @Override
-    public Optional<PermissionScope> find(long user, final Permission permission) {
+    public Optional<PermissionScope> find(final String user, final Permission permission) {
         return this.template.query(
                 QUERY,
                 applyCriteria(user, permission),
@@ -73,9 +73,9 @@ class JDBCPermissionScopeFinder implements PermissionScopeFinder {
             .collect(Accumulator.accumulating(this.merger::merge));
     }
 
-    private PreparedStatementSetter applyCriteria(long user, final Permission permission) {
+    private PreparedStatementSetter applyCriteria(final String user, final Permission permission) {
         return statement -> {
-            statement.setLong(USER_PARAMETER, user);
+            statement.setString(USER_PARAMETER, user);
             statement.setString(OPERATION_PARAMETER, permission.operation());
             statement.setString(OBJECT_PARAMETER, permission.object());
         };
