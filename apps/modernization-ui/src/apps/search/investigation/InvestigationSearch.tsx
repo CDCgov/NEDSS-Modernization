@@ -6,28 +6,11 @@ import { useInvestigationSearch } from './useInvestigationSearch';
 import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
-
-const defaultSelectable = { name: '', value: '', label: '' };
-const defaultValues: InvestigationFilterEntry = {
-    createdBy: defaultSelectable,
-    updatedBy: defaultSelectable,
-    investigator: defaultSelectable,
-    pregnancyStatus: defaultSelectable,
-    investigationStatus: defaultSelectable,
-    jurisdictions: [defaultSelectable],
-    conditions: [defaultSelectable],
-    caseStatuses: [defaultSelectable],
-    notificationStatuses: [defaultSelectable],
-    outbreaks: [defaultSelectable],
-    processingStatuses: [defaultSelectable],
-    programAreas: [],
-    reportingFacility: defaultSelectable
-};
+import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 const InvestigationSearch = () => {
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
-        mode: 'all',
-        defaultValues
+        mode: 'all'
     });
 
     const { status, search, reset, results } = useInvestigationSearch();
@@ -39,29 +22,26 @@ const InvestigationSearch = () => {
     }, [form.reset, status]);
 
     const handleSubmit = (data: InvestigationFilterEntry) => {
-        console.log('submit');
         search(data);
     };
 
-    useEffect(() => {
-        console.log('status', status);
-    }, [status]);
-
     return (
-        <FormProvider {...form}>
-            <SearchLayout
-                criteria={() => <InvestigationSearchForm />}
-                resultsAsList={() => (
-                    <SearchResultList<Investigation>
-                        results={results?.content ?? []}
-                        render={(result) => <InvestigationSearchResultListItem result={result} />}
-                    />
-                )}
-                resultsAsTable={() => <div>result table</div>}
-                onSearch={form.handleSubmit(handleSubmit)}
-                onClear={reset}
-            />
-        </FormProvider>
+        <SearchCriteriaProvider>
+            <FormProvider {...form}>
+                <SearchLayout
+                    criteria={() => <InvestigationSearchForm />}
+                    resultsAsList={() => (
+                        <SearchResultList<Investigation>
+                            results={results?.content ?? []}
+                            render={(result) => <InvestigationSearchResultListItem result={result} />}
+                        />
+                    )}
+                    resultsAsTable={() => <div>result table</div>}
+                    onSearch={form.handleSubmit(handleSubmit)}
+                    onClear={reset}
+                />
+            </FormProvider>
+        </SearchCriteriaProvider>
     );
 };
 

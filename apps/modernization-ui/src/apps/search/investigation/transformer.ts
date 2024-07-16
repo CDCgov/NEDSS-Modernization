@@ -20,7 +20,6 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
         return {};
     }
 
-    console.log('data', data);
     const { reportingFacility, reportingProvider, ...remaining } = data;
 
     const providerFacilitySearch =
