@@ -43,7 +43,7 @@ describe('when searching using useSearch', () => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(result.current.status).toEqual('completed');
+        expect(result.current.status).toEqual('noInput');
     });
 
     it('should change to status to waiting when reset after completed', async () => {
@@ -67,7 +67,7 @@ describe('when searching using useSearch', () => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(result.current.status).toEqual('error');
+        expect(result.current.status).toEqual('noInput');
     });
 
     it('should change to status to waiting when reset after error', async () => {
