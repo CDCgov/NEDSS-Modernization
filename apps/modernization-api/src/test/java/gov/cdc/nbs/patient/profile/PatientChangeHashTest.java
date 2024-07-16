@@ -23,7 +23,7 @@ class PatientChangeHashTest {
 
   @Test
   void should_not_compute_different_hash_when_administrative_does_not_change() {
-    
+
     Person patient = new Person(967L, "local-id-value");
 
     patient.update(
@@ -82,7 +82,7 @@ class PatientChangeHashTest {
       final PatientCommand.UpdateAdministrativeInfo changes
   ) {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -108,7 +108,7 @@ class PatientChangeHashTest {
   @Test
   void should_not_compute_different_hash_when_general_information_does_not_change() {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -124,7 +124,6 @@ class PatientChangeHashTest {
             "education level",
             "prim language",
             "speaks english",
-            "eharsId",
             12L,
             Instant.parse("2019-03-03T10:15:30.00Z"))
     );
@@ -143,7 +142,6 @@ class PatientChangeHashTest {
             "education level",
             "prim language",
             "speaks english",
-            "eharsId",
             12L,
             Instant.parse("2019-03-03T10:15:30.00Z"))
     );
@@ -167,7 +165,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -184,7 +181,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -201,7 +197,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -218,7 +213,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -235,7 +229,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -252,7 +245,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -269,7 +261,6 @@ class PatientChangeHashTest {
                 "changed education level",
                 "prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -286,7 +277,6 @@ class PatientChangeHashTest {
                 "education level",
                 "changed prim language",
                 "speaks english",
-                "eharsId",
                 12L,
                 Instant.now()
             )
@@ -303,24 +293,6 @@ class PatientChangeHashTest {
                 "education level",
                 "prim language",
                 "changed speaks english",
-                "eharsId",
-                12L,
-                Instant.now()
-            )
-        ),
-        arguments(
-            new PatientCommand.UpdateGeneralInfo(
-                967L,
-                Instant.parse("2010-03-03T10:15:30.00Z"),
-                "marital status",
-                "mothers maiden name",
-                1,
-                2,
-                "occupation code",
-                "education level",
-                "prim language",
-                "speaks english",
-                "changed eharsId",
                 12L,
                 Instant.now()
             )
@@ -332,7 +304,7 @@ class PatientChangeHashTest {
   @MethodSource("generalInformationUpdates")
   void should_compute_different_hash_when_general_information_changes(final PatientCommand.UpdateGeneralInfo changes) {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -348,7 +320,6 @@ class PatientChangeHashTest {
             "education level",
             "prim language",
             "speaks english",
-            "eharsId",
             12L,
             Instant.now()
         )
@@ -367,7 +338,7 @@ class PatientChangeHashTest {
   @Test
   void should_not_compute_different_hash_when_mortality_does_not_change() {
 
-    
+
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -463,7 +434,7 @@ class PatientChangeHashTest {
   @MethodSource("mortalityUpdates")
   void should_compute_different_hash_when_mortality_changes(final PatientCommand.UpdateMortality changes) {
 
-    
+
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -497,7 +468,7 @@ class PatientChangeHashTest {
   @Test
   void should_not_compute_different_hash_when_ethnicity_does_not_change() {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -559,7 +530,7 @@ class PatientChangeHashTest {
   @MethodSource("ethnicityUpdates")
   void should_compute_different_hash_when_ethnicity_changes(final PatientCommand.UpdateEthnicityInfo changes) {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -586,7 +557,7 @@ class PatientChangeHashTest {
   @Test
   void should_not_compute_different_hash_when_gender_does_not_change() {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -692,7 +663,7 @@ class PatientChangeHashTest {
   @MethodSource("genderUpdates")
   void should_compute_different_hash_when_gender_changes(final PatientCommand.UpdateGender changes) {
 
-    
+
 
     Person patient = new Person(967L, "local-id-value");
 
@@ -721,7 +692,7 @@ class PatientChangeHashTest {
   @Test
   void should_not_compute_different_hash_when_birth_does_not_change() {
 
-    
+
 
     AddressIdentifierGenerator generator = () -> 1157L;
 
@@ -859,7 +830,7 @@ class PatientChangeHashTest {
   @MethodSource("birthUpdates")
   void should_compute_different_hash_when_birth_changes(final PatientCommand.UpdateBirth changes) {
 
-    
+
 
     AddressIdentifierGenerator generator = () -> 1157L;
 

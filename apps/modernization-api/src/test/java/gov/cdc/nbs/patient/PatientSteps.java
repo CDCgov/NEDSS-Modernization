@@ -182,4 +182,9 @@ public class PatientSteps {
   public void the_patient_has_the_ethnicity_specifically(final String ethnicity, final String detail) {
     patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, ethnicity, detail));
   }
+
+  @Given("the patient is associated with state HIV case {string}")
+  public void the_patient_is_associated_with_state_HIV_case(final String value) {
+    patient.maybeActive().ifPresent(current -> mother.withStateHIVCase(current, value));
+  }
 }

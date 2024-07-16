@@ -12,16 +12,7 @@ class PatientChangeHash {
         patient.getAsOfDateAdmin(),
         patient.getDescription(),
         //  general information
-        patient.getAsOfDateGeneral(),
-        patient.getMaritalStatusCd(),
-        patient.getMothersMaidenNm(),
-        patient.getAdultsInHouseNbr(),
-        patient.getChildrenInHouseNbr(),
-        patient.getOccupationCd(),
-        patient.getEducationLevelCd(),
-        patient.getPrimLangCd(),
-        patient.getSpeaksEnglishCd(),
-        patient.getEharsId(),
+        patient.getGeneralInformation().signature(),
         //  mortality
         patient.getAsOfDateMorbidity(),
         patient.getDeceasedIndCd(),

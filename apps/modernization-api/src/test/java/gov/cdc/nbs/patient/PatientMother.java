@@ -15,10 +15,12 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import net.datafaker.Faker;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +41,7 @@ public class PatientMother {
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
   private final RevisionPatientCreator revisionCreator;
+  private final JdbcClient jdbcClient;
 
   PatientMother(
       final MotherSettings settings,
@@ -50,7 +53,8 @@ public class PatientMother {
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
-      final RevisionPatientCreator revisionCreator
+      final RevisionPatientCreator revisionCreator,
+      final JdbcClient jdbcClient
   ) {
     this.settings = settings;
     this.idGenerator = idGenerator;
@@ -62,6 +66,7 @@ public class PatientMother {
     this.active = active;
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
+    this.jdbcClient = jdbcClient;
     this.faker = new Faker(Locale.of("en-us"));
   }
 
@@ -526,5 +531,12 @@ public class PatientMother {
 
   public void withEthnicity(final PatientIdentifier identifier) {
     withEthnicity(identifier, RandomUtil.ethnicity());
+  }
+
+  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
+    jdbcClient.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
+        .params(value, identifier.id())
+        .update();
+
   }
 }
