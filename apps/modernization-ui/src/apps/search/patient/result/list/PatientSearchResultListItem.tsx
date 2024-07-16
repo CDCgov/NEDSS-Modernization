@@ -74,18 +74,23 @@ const PatientSearchResultListItem = ({ result }: Props) => {
                         OTHER NAMES
                     </label>
                     <br />
-                    <div id="otherNames">
+                    <div id="otherNames" className={styles.value}>
                         {names.length ? (
-                            names?.map((name, index) => (
-                                <div key={index}>
-                                    <span className={styles.value}>
-                                        {name.last}, {name.first}
-                                    </span>
-                                    <br />
-                                </div>
-                            ))
+                            names.map((name, index) => {
+                                if (name.first || name.last) {
+                                    return (
+                                        <div key={index}>
+                                            <span
+                                                className={
+                                                    styles.value
+                                                }>{`${name.first ?? ''} ${name.last ?? ''}`}</span>
+                                            <br />
+                                        </div>
+                                    );
+                                }
+                            })
                         ) : (
-                            <span className={styles.value}> {noData}</span>
+                            <span>{noData}</span>
                         )}
                     </div>
                 </div>
@@ -109,10 +114,10 @@ const PatientSearchResultListItem = ({ result }: Props) => {
                     {addresses.length ? (
                         <>
                             <span id="email" className={styles.value}>
-                                {addresses[0].address}
+                                {addresses[0].address ?? ''}
                             </span>
                             <br />
-                            <span>{`${addresses[0].city}, ${addresses[0].state}, ${addresses[0].zipcode}`}</span>
+                            <span>{`${addresses[0].city ?? ''}, ${addresses[0].state ?? ''}, ${addresses[0].zipcode ?? ''}`}</span>
                         </>
                     ) : (
                         <span className={styles.value}>{noData}</span>

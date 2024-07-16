@@ -160,7 +160,7 @@ describe('PatientSearchResultListItem', () => {
                 </MemoryRouter>
             );
 
-            const name = 'Doe, Jane';
+            const name = 'Jane Doe';
 
             expect(getByText(name)).toBeInTheDocument();
         });
