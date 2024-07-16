@@ -21,8 +21,8 @@ const InvestigationSearch = () => {
         }
     }, [form.reset, status]);
 
-    const handleSubmit = (data: InvestigationFilterEntry) => {
-        search(data);
+    const handleSubmit = () => {
+        form.handleSubmit(search);
     };
 
     return (
@@ -37,7 +37,7 @@ const InvestigationSearch = () => {
                         />
                     )}
                     resultsAsTable={() => <div>result table</div>}
-                    onSearch={form.handleSubmit(handleSubmit)}
+                    onSearch={handleSubmit}
                     onClear={reset}
                 />
             </FormProvider>
