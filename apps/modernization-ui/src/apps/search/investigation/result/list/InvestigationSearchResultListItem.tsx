@@ -1,14 +1,13 @@
 import styles from './InvestigationSearchResultListItem.module.scss';
 import { Link } from 'react-router-dom';
 import { Investigation, InvestigationPersonParticipation } from 'generated/graphql/schema';
+import { NoData } from 'components/NoData';
 
 type Props = {
     result: Investigation;
 };
 
 const InvestigationSearchResultListItem = ({ result }: Props) => {
-    const noData = 'No data';
-
     const getPatient = (investigation: Investigation): InvestigationPersonParticipation | undefined | null => {
         return investigation.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
     };
@@ -57,7 +56,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                 <div className={styles.listItemData}>
                     <label htmlFor="dob">Date of birth</label>
                     <span id="dob" className={styles.value}>
-                        {patient?.birthTime ?? noData}
+                        {patient?.birthTime ?? <NoData />}
                     </span>
                 </div>
 
@@ -73,7 +72,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                         Patient ID
                     </label>
                     <span id="patientId" className={styles.value}>
-                        {patient?.shortId ?? noData}
+                        {patient?.shortId ?? <NoData />}
                     </span>
                 </div>
             </div>
@@ -95,7 +94,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                 <div className={styles.listItemData}>
                     <label htmlFor="startDate">Start Date</label>
                     <span id="startDate" className={styles.value}>
-                        {result.addTime ?? noData}
+                        {result.addTime ?? <NoData />}
                     </span>
                 </div>
             </div>
@@ -106,7 +105,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                         Jurisdiction
                     </label>
                     <span id="jurisdiction" className={styles.value}>
-                        {result.jurisdictionCodeDescTxt ?? noData}
+                        {result.jurisdictionCodeDescTxt ?? <NoData />}
                     </span>
                 </div>
                 <div className={styles.listItemData}>
@@ -115,7 +114,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <span id="investigator" className={styles.value}>
-                        {getInvestigatorName(result) ?? noData}
+                        {getInvestigatorName(result) ?? <NoData />}
                     </span>
                 </div>
             </div>
@@ -129,7 +128,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                     <span
                         className={`${styles.value} ${result.investigationStatusCd === 'O' ? 'open' : ''}`}
                         id="status">
-                        {getInvestigationStatusString(result) ?? noData}
+                        {getInvestigationStatusString(result) ?? <NoData />}
                     </span>
                 </div>
 
@@ -139,7 +138,7 @@ const InvestigationSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <span className={styles.value} id="notification">
-                        {result.notificationRecordStatusCd ?? noData}
+                        {result.notificationRecordStatusCd ?? <NoData />}
                     </span>
                 </div>
             </div>
