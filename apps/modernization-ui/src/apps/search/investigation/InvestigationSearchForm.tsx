@@ -26,7 +26,7 @@ const InvestigationSearchForm = () => {
 
     return (
         <div className={styles.investigationSearchContainer}>
-            <Accordion items={items} multiselectable={true} />;
+            <Accordion items={items} multiselectable={true} />
         </div>
     );
 };

@@ -16,10 +16,6 @@ import { EventDate, Identification, InvestigationFilterEntry } from './Investiga
 import { Selectable, asValue, asValues } from 'options/selectable';
 
 export const transformObject = (data: InvestigationFilterEntry): InvestigationFilter => {
-    if (!data) {
-        return {};
-    }
-
     const { reportingFacility, reportingProvider, ...remaining } = data;
 
     const providerFacilitySearch =

@@ -25,14 +25,9 @@ const processingStatus = fromSelectables('processingStatuses', 'PROCESSING STATU
 const notificationStatus = fromSelectables('notificationStatuses', 'NOTIFICATION STATUS');
 
 const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => {
-    if (!entry) {
-        return [];
-    }
     const terms: Term[] = [];
 
-    if (entry.conditions) {
-        conditions(entry.conditions ?? []).forEach((item) => terms.push(item));
-    }
+    conditions(entry.conditions ?? []).forEach((item) => terms.push(item));
 
     if (entry.programAreas) {
         programAreas(entry.programAreas ?? []).forEach((item) => terms.push(item));
