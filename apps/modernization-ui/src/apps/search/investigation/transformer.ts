@@ -31,7 +31,6 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
         createdBy: asValue(remaining.createdBy),
         lastUpdatedBy: asValue(remaining.updatedBy),
         providerFacilitySearch,
-
         investigationStatus:
             remaining.investigationStatus && (asValue(remaining.investigationStatus) as InvestigationStatus),
         investigatorId: asValue(remaining.investigator),
@@ -47,29 +46,34 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
 const resolveProvider =
     (type: ReportingEntityType) =>
     (selectable?: Selectable): ProviderFacilitySearch | undefined =>
-        selectable && {
-            id: selectable.value,
-            entityType: type
-        };
+        selectable
+            ? {
+                  id: selectable.value,
+                  entityType: type
+              }
+            : undefined;
 
 const resolveReportingFacility = resolveProvider(ReportingEntityType.Facility);
 const resolveReportingProvider = resolveProvider(ReportingEntityType.Provider);
 
 const resolveEventDate = (date?: EventDate): InvestigationEventDateSearch | undefined => {
-    if (date) {
+    if (date && date.type && date.type.value) {
         return {
             type: date.type.value as InvestigationEventDateType,
             from: date.from,
             to: date.to
         };
     }
+
+    return undefined;
 };
 
 const resolveEventId = (identification?: Identification): EventId | undefined => {
-    if (identification) {
+    if (identification && identification.type && identification.type.value) {
         return {
             id: identification.value,
             investigationEventType: identification.type.value as InvestigationEventIdType
         };
     }
+    return undefined;
 };

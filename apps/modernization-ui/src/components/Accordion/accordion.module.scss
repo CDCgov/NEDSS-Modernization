@@ -10,7 +10,7 @@
         padding: 1rem;
         cursor: pointer;
         &::marker {
-            content: "";
+            content: '';
         }
         h3 {
             margin: 0;
@@ -22,7 +22,7 @@
             width: 0.875rem;
             height: 0.125rem;
             &::before {
-                content: "+";
+                content: '+';
                 font-size: 1.75rem;
                 font-weight: 400;
                 position: relative;
@@ -32,7 +32,7 @@
         }
     }
     &[open] summary span::before {
-        content: "\2014";
+        content: '\2014';
         font-size: 1.5rem;
         right: 0.75rem;
     }

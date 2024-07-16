@@ -1,11 +1,12 @@
 import { Button, ButtonGroup, Grid } from '@trussworks/react-uswds';
 import { Controller, FieldValues, useForm } from 'react-hook-form';
-import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo/usePatientGeneralCodedValues';
+import { orNull, maybeNumber } from 'utils';
+import { maxLengthRule } from 'validation/entry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { Input } from 'components/FormInputs/Input';
-import { orNull, maybeNumber } from 'utils';
-import { maxLengthRule } from 'validation/entry';
+import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
+import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo/usePatientGeneralCodedValues';
 
 type Props = {
     entry?: GeneralInformationEntry | null;
@@ -27,6 +28,8 @@ export type GeneralInformationEntry = {
 };
 
 export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onCancel = () => {} }: Props) => {
+    const { hivAccess } = usePatientProfilePermissions();
+
     const {
         handleSubmit,
         control,
@@ -251,31 +254,33 @@ export const GeneralPatientInformationForm = ({ entry, onChanged = () => {}, onC
                     />
                 </Grid>
             </Grid>
-            <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
-                <Grid col={6} className="margin-top-1 text-bold">
-                    State HIV case ID:
+            {hivAccess && (
+                <Grid row className="flex-justify flex-align-center padding-2 border-bottom border-base-lighter">
+                    <Grid col={6} className="margin-top-1 text-bold">
+                        State HIV case ID:
+                    </Grid>
+                    <Grid col={6}>
+                        <Controller
+                            control={control}
+                            name="stateHIVCase"
+                            rules={maxLengthRule(20)}
+                            defaultValue={entry?.stateHIVCase}
+                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                                <Input
+                                    placeholder="No Data"
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    type="text"
+                                    defaultValue={value}
+                                    htmlFor="stateHIVCase"
+                                    id="stateHIVCase"
+                                    error={error?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name="stateHIVCase"
-                        rules={maxLengthRule(20)}
-                        defaultValue={entry?.stateHIVCase}
-                        render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                            <Input
-                                placeholder="No Data"
-                                onBlur={onBlur}
-                                onChange={onChange}
-                                type="text"
-                                defaultValue={value}
-                                htmlFor="stateHIVCase"
-                                id="stateHIVCase"
-                                error={error?.message}
-                            />
-                        )}
-                    />
-                </Grid>
-            </Grid>
+            )}
             <div className="border-top border-base-lighter padding-2 margin-left-auto">
                 <ButtonGroup className="flex-justify-end">
                     <Button type="button" className="margin-top-0" outline onClick={onCancel}>
