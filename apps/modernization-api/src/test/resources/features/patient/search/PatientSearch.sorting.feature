@@ -115,3 +115,29 @@ Feature: Patient Search Sorting
     Then search result 1 has an "identification value" of "888-88-8888"
     And search result 2 has an "identification value" of "456"
     And search result 3 has an "identification value" of "123"
+
+  Scenario: I can find the most relevant patient when sorting by city  ascending
+    Given  the patient has a "city" of "acity"
+    And I have another patient
+    And the patient has a "city" of "bcity"
+    And I have another patient
+    And the patient has a "city" of "ccity"
+    And patients are available for search
+    And I want patients sorted by "city" "asc"
+    When I search for patients
+    And search result 1 has a "city" of "acity"
+    And search result 2 has a "city" of "bcity"
+    And search result 3 has a "city" of "ccity"
+
+  Scenario: I can find the most relevant patient when sorting by city descending
+    Given  the patient has a "city" of "acity"
+    And I have another patient
+    And the patient has a "city" of "bcity"
+    And I have another patient
+    And the patient has a "city" of "ccity"
+    And patients are available for search
+    And I want patients sorted by "city" "desc"
+    When I search for patients
+    And search result 1 has a "city" of "ccity"
+    And search result 2 has a "city" of "bcity"
+    And search result 3 has a "city" of "acity"
