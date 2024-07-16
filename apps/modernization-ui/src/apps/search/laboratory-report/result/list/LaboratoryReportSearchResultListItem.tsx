@@ -19,7 +19,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
     const patient = result.personParticipations.find((p) => p.typeCd === 'PATSBJ');
     const firstName = patient?.firstName ?? '';
     const lastName = patient?.lastName ?? '';
-    const legalName = firstName && lastName ? `${firstName} ${lastName}` : 'No data';
+    const legalName = firstName && lastName ? `${firstName} ${lastName}` : <NoData />;
     const [getJurisdictions] = useFindAllJurisdictionsLazyQuery();
 
     const getOrderingProviderName = (labReport: LabReport): string | undefined => {
@@ -85,7 +85,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                 <div className={styles.listItemData}>
                     <label htmlFor="sex">SEX</label>
                     <span id="sex" className={styles.value}>
-                        {patient?.currSexCd ?? 'No data'}
+                        {patient?.currSexCd ?? <NoData />}
                     </span>
                 </div>
 
