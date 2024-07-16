@@ -185,14 +185,14 @@ const GeneralSearchFields = () => {
                         control={form.control}
                         name="createdBy"
                         render={({ field: { onChange } }) => (
-                            <UserAutocomplete id="createdBy" label="Created by" onChange={onChange} />
+                            <UserAutocomplete id="createdBy" label="Event created by" onChange={onChange} />
                         )}
                     />
                     <Controller
                         control={form.control}
                         name="updatedBy"
                         render={({ field: { onChange } }) => (
-                            <UserAutocomplete id="updatedBy" label="Updated by" onChange={onChange} />
+                            <UserAutocomplete id="updatedBy" label="Event updated by" onChange={onChange} />
                         )}
                     />
 

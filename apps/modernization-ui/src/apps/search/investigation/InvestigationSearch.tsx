@@ -21,10 +21,6 @@ const InvestigationSearch = () => {
         }
     }, [form.reset, status]);
 
-    const handleSubmit = () => {
-        form.handleSubmit(search);
-    };
-
     return (
         <SearchCriteriaProvider>
             <FormProvider {...form}>
@@ -37,7 +33,7 @@ const InvestigationSearch = () => {
                         />
                     )}
                     resultsAsTable={() => <div>result table</div>}
-                    onSearch={handleSubmit}
+                    onSearch={form.handleSubmit(search)}
                     onClear={reset}
                 />
             </FormProvider>
