@@ -106,13 +106,14 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <Link
                         id="documentType"
                         className={`${styles.value}, ${styles.name}`}
-                        to={`/patient-profile/${patient?.shortId}/summary`}>
+                        to={`/nbs/api/profile/${patient?.personParentUid}/report/lab/${result.id}`}>
                         Lab report
                     </Link>
                 </div>
 
                 <div className={styles.listItemData}>
                     <label htmlFor="dateReceived">Date received</label>
+                    <br />
                     <span id="dateReceived" className={styles.value}>
                         {result.addTime ?? noData}
                     </span>
@@ -120,6 +121,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
 
                 <div className={styles.listItemData}>
                     <label htmlFor="description">Description</label>
+                    <br />
                     <span id="description" className={styles.value}>
                         {getDescription(result)}
                     </span>
@@ -139,6 +141,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="orderingProvider" className={styles.listItemLabel}>
                         Ordering provider
                     </label>
+                    <br />
                     <span id="orderingProvider" className={styles.value}>
                         {getOrderingProviderName(result) ?? noData}
                     </span>
@@ -148,6 +151,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="jurisdiction" className={styles.listItemLabel}>
                         Jurisdiction
                     </label>
+                    <br />
                     <span id="jurisdiction" className={styles.value}>
                         {getJurisdiction()?.toString() ?? noData}
                     </span>
@@ -178,7 +182,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
 
                 <div className={styles.listItemData}>
                     <label htmlFor="localTo" className={styles.listItemLabel}>
-                        Local to
+                        Local ID
                     </label>
                     <br />
                     <span className={styles.value} id="localTo">
