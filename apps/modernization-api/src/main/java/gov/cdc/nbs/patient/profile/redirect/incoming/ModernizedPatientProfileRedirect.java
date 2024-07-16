@@ -28,8 +28,7 @@ public sealed interface ModernizedPatientProfileRedirect {
         .location(location)
         .headers(
             ReturningPatientCookie.empty().apply()
-                .andThen(removeCookie(PatientActionCookie.empty().name()))
-        )
+                .andThen(removeCookie(PatientActionCookie.empty().name())))
         .build();
   }
 
@@ -52,7 +51,7 @@ public sealed interface ModernizedPatientProfileRedirect {
     @Override
     public ResponseEntity<Void> redirect() {
       URI uri = UriComponentsBuilder.fromPath("/")
-          .path("advanced-search")
+          .path("search")
           .build()
           .toUri();
       return redirectTo(uri);
