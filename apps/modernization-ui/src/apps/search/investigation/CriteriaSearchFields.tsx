@@ -17,10 +17,11 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="investigationStatus"
-                render={({ field: { onChange, name } }) => (
+                render={({ field: { onChange, name, value } }) => (
                     <SingleSelect
                         data-testid={name}
                         name={name}
+                        value={value}
                         onChange={onChange}
                         label="Investigation status"
                         options={investigationStatusOptions}
@@ -39,12 +40,13 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="caseStatuses"
-                render={({ field: { onChange, name } }) => (
+                render={({ field: { onChange, name, value } }) => (
                     <MultiSelect
                         data-testid={'caseStatuses'}
                         label="Case status"
                         onChange={onChange}
                         name={name}
+                        value={value}
                         options={caseStatusOptions}
                         id={name}
                     />
@@ -53,11 +55,12 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="processingStatuses"
-                render={({ field: { onChange, name } }) => (
+                render={({ field: { onChange, name, value } }) => (
                     <MultiSelect
                         label="Current processing status"
                         onChange={onChange}
                         name={name}
+                        value={value}
                         id={name}
                         options={processingStatusOptions}
                     />
@@ -66,11 +69,12 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="notificationStatuses"
-                render={({ field: { onChange, name } }) => (
+                render={({ field: { onChange, name, value } }) => (
                     <MultiSelect
                         label="Notification status"
                         onChange={onChange}
                         name={name}
+                        value={value}
                         id={name}
                         options={notificationStatusOptions}
                     />

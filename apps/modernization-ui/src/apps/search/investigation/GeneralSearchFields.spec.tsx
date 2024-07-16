@@ -35,18 +35,6 @@ const InvestigationFormWithFields = () => {
 };
 
 describe('GeneralSearchFields', () => {
-    describe('Conditions', () => {
-        it('should contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
-            const multiSelectInputs = container.getElementsByClassName('multi-select-input');
-
-            expect(multiSelectInputs[0].getElementsByClassName('usa-label')[0]).toHaveTextContent('Conditions');
-            expect(multiSelectInputs[0].getElementsByClassName('multi-select__placeholder')[0]).toHaveTextContent(
-                '- Select -'
-            );
-        });
-    });
-
     describe('Pregnancy Status', () => {
         it('should contain default selection', async () => {
             const { container } = render(<InvestigationFormWithFields />);
@@ -85,8 +73,8 @@ describe('GeneralSearchFields', () => {
 
             await waitFor(() => {
                 const element = screen.getByTestId('identification.type');
-                userEvent.selectOptions(element, 'Date of report');
-                expect(element).toHaveTextContent('Date of report');
+                userEvent.selectOptions(element, 'Notification ID');
+                expect(element).toHaveTextContent('Notification ID');
             });
         });
     });
@@ -107,8 +95,8 @@ describe('GeneralSearchFields', () => {
 
             await waitFor(() => {
                 const element = screen.getByTestId('eventDate.type');
-                userEvent.selectOptions(element, 'Notification ID');
-                expect(element).toHaveTextContent('Notification ID');
+                userEvent.selectOptions(element, 'Investigation closed date');
+                expect(element).toHaveTextContent('Investigation closed date');
             });
         });
     });
