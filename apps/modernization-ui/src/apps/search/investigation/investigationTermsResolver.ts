@@ -27,24 +27,35 @@ const notificationStatus = fromSelectables('notificationStatuses', 'NOTIFICATION
 const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => {
     const terms: Term[] = [];
 
-    conditions(entry.conditions).forEach((item) => terms.push(item));
-    programAreas(entry.programAreas).forEach((item) => terms.push(item));
+    conditions(entry.conditions ?? []).forEach((item) => terms.push(item));
 
-    jurisdictions(entry.jurisdictions).forEach((item) => terms.push(item));
+    if (entry.programAreas) {
+        programAreas(entry.programAreas ?? []).forEach((item) => terms.push(item));
+    }
+
+    if (entry.jurisdictions) {
+        jurisdictions(entry.jurisdictions ?? []).forEach((item) => terms.push(item));
+    }
 
     if (entry.pregnancyStatus) {
         terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
     }
 
-    if (entry.identification) {
+    if (entry.identification && entry.identification?.type) {
         terms.push(fromSelectable('identification.type', 'INVESTIGATION EVENT TYPE')(entry.identification.type));
-        terms.push(fromValue('identification.value', 'EVENT ID')(entry.identification.value));
+        if (entry.identification?.value) {
+            terms.push(fromValue('identification.value', 'EVENT ID')(entry.identification?.value));
+        }
     }
 
-    if (entry.eventDate) {
+    if (entry.eventDate && entry.eventDate?.from && entry.eventDate?.to) {
         terms.push(fromSelectable('eventDate.type', 'DATE TYPE')(entry.eventDate.type));
-        terms.push(fromValue('eventDate.from', 'FROM')(entry.eventDate.from));
-        terms.push(fromValue('eventDate.to', 'TO')(entry.eventDate.to));
+        if (entry.eventDate?.from) {
+            terms.push(fromValue('eventDate.from', 'FROM')(entry.eventDate.from));
+        }
+        if (entry.eventDate?.to) {
+            terms.push(fromValue('eventDate.to', 'TO')(entry.eventDate.to));
+        }
     }
 
     if (entry.createdBy) {
@@ -73,10 +84,20 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
         terms.push(fromSelectable('investigator', 'INVESTIGATOR')(entry.investigator));
     }
 
-    outbreaks(entry.outbreaks).forEach((item) => terms.push(item));
-    caseStatus(entry.caseStatuses).forEach((item) => terms.push(item));
-    processingStatus(entry.processingStatuses).forEach((item) => terms.push(item));
-    notificationStatus(entry.notificationStatuses).forEach((item) => terms.push(item));
+    if (entry.outbreaks) {
+        outbreaks(entry.outbreaks).forEach((item) => terms.push(item));
+    }
+    if (entry.caseStatuses) {
+        caseStatus(entry.caseStatuses).forEach((item) => terms.push(item));
+    }
+
+    if (entry.processingStatuses) {
+        processingStatus(entry.processingStatuses).forEach((item) => terms.push(item));
+    }
+
+    if (entry.notificationStatuses) {
+        notificationStatus(entry.notificationStatuses).forEach((item) => terms.push(item));
+    }
 
     return terms;
 };

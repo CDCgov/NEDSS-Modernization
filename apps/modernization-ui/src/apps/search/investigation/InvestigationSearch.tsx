@@ -6,31 +6,14 @@ import { useInvestigationSearch } from './useInvestigationSearch';
 import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
-
-const defaultSelectable = { name: '', value: '', label: '' };
-const defaultValues: InvestigationFilterEntry = {
-    createdBy: defaultSelectable,
-    updatedBy: defaultSelectable,
-    investigator: defaultSelectable,
-    pregnancyStatus: defaultSelectable,
-    investigationStatus: defaultSelectable,
-    jurisdictions: [defaultSelectable],
-    conditions: [defaultSelectable],
-    caseStatuses: [defaultSelectable],
-    notificationStatuses: [defaultSelectable],
-    outbreaks: [defaultSelectable],
-    processingStatuses: [defaultSelectable],
-    programAreas: [],
-    reportingFacility: defaultSelectable
-};
+import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 
 const InvestigationSearch = () => {
-    const { status, search, reset, results } = useInvestigationSearch();
-
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
-        mode: 'all',
-        defaultValues
+        mode: 'all'
     });
+
+    const { status, search, reset, results } = useInvestigationSearch();
 
     useEffect(() => {
         if (status === 'waiting') {
@@ -43,22 +26,22 @@ const InvestigationSearch = () => {
     };
 
     return (
-        <SearchLayout
-            criteria={() => (
-                <FormProvider {...form}>
-                    <InvestigationSearchForm />
-                </FormProvider>
-            )}
-            resultsAsList={() => (
-                <SearchResultList<Investigation>
-                    results={results?.content ?? []}
-                    render={(result) => <InvestigationSearchResultListItem result={result} />}
+        <SearchCriteriaProvider>
+            <FormProvider {...form}>
+                <SearchLayout
+                    criteria={() => <InvestigationSearchForm />}
+                    resultsAsList={() => (
+                        <SearchResultList<Investigation>
+                            results={results?.content ?? []}
+                            render={(result) => <InvestigationSearchResultListItem result={result} />}
+                        />
+                    )}
+                    resultsAsTable={() => <div>result table</div>}
+                    onSearch={handleSubmit}
+                    onClear={reset}
                 />
-            )}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit}
-            onClear={reset}
-        />
+            </FormProvider>
+        </SearchCriteriaProvider>
     );
 };
 
