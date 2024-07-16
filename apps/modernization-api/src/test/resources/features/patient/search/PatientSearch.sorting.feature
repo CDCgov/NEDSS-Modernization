@@ -89,3 +89,29 @@ Feature: Patient Search Sorting
     Then search result 1 has a "first name" of "Timothy"
     And search result 2 has a "first name" of "Stephanie"
     And search result 3 has a "first name" of "Jason"
+
+  Scenario: I can find the most relevant patient when sorting by identification ascending
+    Given the patient can be identified with an "SS" of "888-88-8888"
+    And I have another patient
+    And the patient can be identified with an "DL" of "123"
+    And I have another patient
+    And the patient can be identified with an "Other" of "456"
+    And patients are available for search
+    And I want patients sorted by "identification" "asc"
+    When I search for patients
+    Then search result 1 has an "identification value" of "123"
+    And search result 2 has an "identification value" of "456"
+    And search result 3 has an "identification value" of "888-88-8888"
+
+  Scenario: I can find the most relevant patient when sorting by identification descending
+    Given the patient can be identified with an "SS" of "888-88-8888"
+    And I have another patient
+    And the patient can be identified with an "DL" of "123"
+    And I have another patient
+    And the patient can be identified with an "Other" of "456"
+    And patients are available for search
+    And I want patients sorted by "identification" "desc"
+    When I search for patients
+    Then search result 1 has an "identification value" of "888-88-8888"
+    And search result 2 has an "identification value" of "456"
+    And search result 3 has an "identification value" of "123"
