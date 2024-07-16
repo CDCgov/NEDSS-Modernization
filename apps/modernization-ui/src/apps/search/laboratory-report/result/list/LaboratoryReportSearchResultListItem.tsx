@@ -7,6 +7,8 @@ import {
 import styles from './LaboratoryReportSearchResultListItem.module.scss';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { NoData } from 'components/NoData';
+import { internalizeDate } from 'date';
 
 type Props = {
     result: LabReport;
@@ -14,8 +16,6 @@ type Props = {
 
 const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
     const [jurisdictions, setJurisdictions] = useState<Jurisdiction[]>([] as Jurisdiction[]);
-
-    const noData = 'No data';
     const patient = result.personParticipations.find((p) => p.typeCd === 'PATSBJ');
     const firstName = patient?.firstName ?? '';
     const lastName = patient?.lastName ?? '';
@@ -78,7 +78,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                 <div className={styles.listItemData}>
                     <label htmlFor="dob">Date of birth</label>
                     <span id="dob" className={styles.value}>
-                        {patient?.birthTime ?? noData}
+                        {patient?.birthTime ?? <NoData />}
                     </span>
                 </div>
 
@@ -94,7 +94,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                         Patient ID
                     </label>
                     <span id="patientId" className={styles.value}>
-                        {patient?.shortId ?? noData}
+                        {patient?.shortId ?? <NoData />}
                     </span>
                 </div>
             </div>
@@ -115,7 +115,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <label htmlFor="dateReceived">Date received</label>
                     <br />
                     <span id="dateReceived" className={styles.value}>
-                        {result.addTime ?? noData}
+                        {internalizeDate(result.addTime) ?? <NoData />}
                     </span>
                 </div>
 
@@ -134,7 +134,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                         Reporting Facility
                     </label>
                     <br />
-                    <span>{getReportingFacility(result)?.name ?? noData}</span>
+                    <span>{getReportingFacility(result)?.name ?? <NoData />}</span>
                 </div>
 
                 <div className={styles.listItemData}>
@@ -143,7 +143,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <span id="orderingProvider" className={styles.value}>
-                        {getOrderingProviderName(result) ?? noData}
+                        {getOrderingProviderName(result) ?? <NoData />}
                     </span>
                 </div>
 
@@ -153,7 +153,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <span id="jurisdiction" className={styles.value}>
-                        {getJurisdiction()?.toString() ?? noData}
+                        {getJurisdiction()?.toString() ?? <NoData />}
                     </span>
                 </div>
             </div>
@@ -166,7 +166,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     <br />
                     {(!result.associatedInvestigations || result.associatedInvestigations.length == 0) && (
                         <span id="associatedTo" className={styles.value}>
-                            {noData}
+                            {<NoData />}
                         </span>
                     )}
                     {result.associatedInvestigations &&
@@ -186,7 +186,7 @@ const LaboratoryReportSearchResultListItem = ({ result }: Props) => {
                     </label>
                     <br />
                     <span className={styles.value} id="localTo">
-                        {result.localId || noData}
+                        {result.localId || <NoData />}
                     </span>
                 </div>
             </div>
