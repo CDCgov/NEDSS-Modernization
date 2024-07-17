@@ -34,12 +34,12 @@ const columns: Column<PatientSearchResult>[] = [
     },
     { id: 'birthTime', name: 'Date of birth', sortable: true, render: (result) => internalizeDate(result.birthday) },
     { id: 'sex', name: 'Sex', sortable: true, render: (result) => result.gender },
-    { id: 'id', name: 'Patient ID', render: (row) => row.shortId },
-    { id: 'address', name: 'Address', render: displayAddresses },
-    { id: 'phoneNumber', name: 'Phone', render: displayPhones },
-    { id: 'names', name: 'Other names', render: displayNames },
-    { id: 'identification', name: 'ID', render: displayIdentifications },
-    { id: 'email', name: 'Email', render: displayEmails }
+    { id: 'id', name: 'Patient ID', sortable: true, render: (row) => row.shortId },
+    { id: 'address', name: 'Address', sortable: true, render: displayAddresses },
+    { id: 'phoneNumber', name: 'Phone', sortable: true, render: displayPhones },
+    { id: 'names', name: 'Other names', sortable: true, render: displayNames },
+    { id: 'identification', name: 'ID', sortable: true, render: displayIdentifications },
+    { id: 'email', name: 'Email', sortable: true, render: displayEmails }
 ];
 
 const PatientSearchResultTable = ({ results }: Props) => {
