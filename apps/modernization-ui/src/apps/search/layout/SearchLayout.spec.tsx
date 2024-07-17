@@ -1,10 +1,10 @@
 import { render, waitFor } from '@testing-library/react';
 import { SearchLayout } from './SearchLayout';
-import { NoPatientInputBanner } from '../NoPatientInputBanner';
 import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
 import { MemoryRouter } from 'react-router-dom';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
+import { NoInputBanner } from '../NoInputBanner';
 
 const values = {
     status: 'noInput',
@@ -27,7 +27,7 @@ describe('no input', () => {
                             resultsAsList={jest.fn()}
                             resultsAsTable={jest.fn()}
                             onSearch={jest.fn()}
-                            noInputResults={() => <NoPatientInputBanner />}
+                            noInputResults={() => <NoInputBanner />}
                             noResults={() => <NoPatientResultsBanner />}
                             onClear={jest.fn()}
                         />
