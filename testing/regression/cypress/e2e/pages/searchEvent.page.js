@@ -1,27 +1,12 @@
 class SearchEventPage {
   clickEventInvestigation() {
-    cy.get('a[href*="advanced-search/event"]').click();
-    cy.wait(500);
-    let elm = cy.get("div[data-testid='accordionItem_event-type-section'] select");
-    elm.select('Investigation');
+    cy.get('a[href*="search/investigations"]').click();
     cy.wait(500);
   }
 
   clickEventLabReport() {
-    cy.get('a[href*="advanced-search/event"]').click();
+    cy.get('a[href*="search/lab-reports"]').click();
     cy.wait(500);
-    let elm = cy.get("div[data-testid='accordionItem_event-type-section'] select");
-    elm.select('Laboratory report');
-    cy.wait(500);
-  }
-
-  clickEventInvestigationCriteria() {
-    cy.get('button[data-testid="accordionButton_investigation-criteria-section"]').click();
-    cy.wait(500);
-  }
-
-  clickEventLabReportCriteria() {
-    cy.get('button[data-testid="accordionButton_lab-criteria-section"]').click();
   }
 
   selectEventInvestigationCondition() {    
@@ -99,7 +84,7 @@ class SearchEventPage {
   }
 
   search() {
-    let elm = cy.get('button[data-testid="search"]').click(({force: true}));
+    cy.get('button').contains("Search").click();
   }
 
   selectInvestigationUpdatedBy() {

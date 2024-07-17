@@ -1,11 +1,6 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { searchPage } from "cypress/e2e/pages/search.page";
 
-Then("I navigate the  basic info and address", () => {
-  searchPage.selectBasicInfo();
-  searchPage.selectAddress(); 
-});
-
 When("I search for {string} city", (string) => {
   searchPage.enterCity(string);
   searchPage.search();
@@ -39,15 +34,11 @@ When("I search for Street Address {string} City {string} State {string} Zip code
 });
 
 Then("I should see No Results found text", () => {
-  cy.get("div.advanced-search-message p")
-    .invoke("text")
-    .should("match", /^No results found/);
+  cy.contains("0 results for").should("be.visible");
 });
 
 Then("I should found result patient profile", () => {
-  cy.get("#resultsCount .advanced-search-results-title")
-    .invoke("text")
-    // .should("match", /^No results found/);
+  cy.contains("0 results for").should("be.visible");
 });
 
 When("I search by last name as {string}", (string) => {
@@ -112,20 +103,11 @@ Then("I should see Results with the first name {string}", (string) => {
 });
 
 Then("I should see Results with the sex {string}", (string) => {
-  if (string!=='No Data'){
-  cy.get("p").contains(string).should("be.visible");
-  }else{
-    cy.get(".no-data").contains(string).should("be.visible");
-  }
+  cy.get("span#sex").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the patient id {string}", (string) => {
   cy.get("p").contains(string).should("be.visible");
-});
-
-Then("I navigate to contact section", () => {
-  searchPage.selectBasicInfo();
-  searchPage.selectContact();
 });
 
 When("I search by phone number as {string}", (string) => {
@@ -149,15 +131,14 @@ When("I search by email as {string}", (string) => {
 });
 
 Then("I should see Results with the phone number as {string}", (string) => {
-  cy.get("p").contains(string).should("be.visible");
+  cy.contains(string).should("be.visible");
 });
 
 Then("I should see Results with the email as {string}", (string) => {
-  cy.get("p").contains(string).should("be.visible");
+  cy.contains(string).should("be.visible");
 });
 
-When("I navigate to id section", () => {
-  searchPage.selectBasicInfo();
+When("I navigate to id section", () => {  
   searchPage.selectId();
 });
 
@@ -173,12 +154,11 @@ Then(
 Then(
   "I should see Results with the {string} as {string}",
   (string, string1) => {
-    cy.get("p").contains(string1).should("be.visible");
+    cy.contains(string1).should("be.visible");
   }
 );
 
 When("I navigate to race section", () => {
-  searchPage.selectBasicInfo();
   searchPage.selectRace();
 });
 
