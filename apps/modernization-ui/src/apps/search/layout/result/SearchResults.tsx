@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { useSearchResultDisplay } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
-
 import styles from './search-results.module.scss';
 import { usePage } from 'page';
 import { Pagination } from 'design-system/Pagination/Pagination';
@@ -20,8 +19,9 @@ const SearchResults = ({ children }: Props) => {
     return (
         <div className={styles.results}>
             <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
+            <div className={styles.pagingation}></div>
             <main className={styles.content}>{children}</main>
-            <div className={styles.pagingation}>
+            <div className={styles.pagination}>
                 <Pagination />
             </div>
         </div>

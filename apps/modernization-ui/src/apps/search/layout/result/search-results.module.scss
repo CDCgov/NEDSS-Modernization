@@ -10,8 +10,4 @@ $pagination-height: 4.75rem;
     .content {
         height: calc(100% - #{$header-height} - #{$pagination-height});
     }
-
-    .pagingation {
-        height: $pagination-height;
-    }
 }

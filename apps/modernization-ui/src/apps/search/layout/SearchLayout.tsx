@@ -7,6 +7,7 @@ import { SearchResults } from './result';
 import styles from './search-layout.module.scss';
 import { Loading } from 'components/Spinner';
 import { SearchNavigation } from './navigation/SearchNavigation';
+import { usePage } from 'page';
 
 type Renderer = () => ReactNode;
 
@@ -15,19 +16,34 @@ type Props = {
     criteria: Renderer;
     resultsAsList: Renderer;
     resultsAsTable: Renderer;
+    noInputResults?: Renderer;
+    noResults?: Renderer;
     onSearch: () => void;
     onClear: () => void;
 };
 
-const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSearch, onClear }: Props) => {
+const SearchLayout = ({
+    actions,
+    criteria,
+    resultsAsList,
+    resultsAsTable,
+    onSearch,
+    onClear,
+    noInputResults,
+    noResults
+}: Props) => {
     const { view, status } = useSearchResultDisplay();
+
+    const {
+        page: { total }
+    } = usePage();
 
     return (
         <section className={styles.search}>
             <SearchNavigation className={styles.navigation} actions={actions} />
             <div className={styles.content}>
                 <div className={styles.criteria}>
-                    <search>{criteria()}</search>
+                    <div className={styles.search}>{criteria()}</div>
                     <div className={styles.actions}>
                         <Button type="button" onClick={onSearch}>
                             Search
@@ -42,10 +58,12 @@ const SearchLayout = ({ actions, criteria, resultsAsList, resultsAsTable, onSear
                     {status === 'searching' && <Loading className={styles.loading} />}
                     {status === 'completed' && (
                         <SearchResults>
-                            {view == 'list' && resultsAsList()}
-                            {view == 'table' && resultsAsTable()}
+                            {total === 0 && noResults?.()}
+                            {view === 'list' && resultsAsList()}
+                            {view === 'table' && resultsAsTable()}
                         </SearchResults>
                     )}
+                    {status === 'noInput' && <SearchResults>{noInputResults?.()}</SearchResults>}
                 </div>
             </div>
         </section>
