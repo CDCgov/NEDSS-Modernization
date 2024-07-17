@@ -7,6 +7,8 @@ import { LabReportFilterEntry, initial } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { FormAccordion } from './FormAccordion';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
+import { NoInputBanner } from '../NoInputBanner';
+import { NoResultsBanner } from '../NoResultsBanner';
 
 const LaboratoryReportSearch = () => {
     const formMethods = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
@@ -34,6 +36,8 @@ const LaboratoryReportSearch = () => {
                 )}
                 resultsAsTable={() => <div>result table</div>}
                 onSearch={formMethods.handleSubmit(search)}
+                noInputResults={() => <NoInputBanner />}
+                noResults={() => <NoResultsBanner />}
                 onClear={reset}
             />
         </SearchCriteriaProvider>
