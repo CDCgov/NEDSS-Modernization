@@ -177,7 +177,7 @@ class SearchEventPage {
     }
 
     const formattedSSN = formatSSN(fakeSSN);
-    cy.get("p").contains(formattedSSN).scrollIntoView().should("be.visible");
+    cy.contains(formattedSSN).scrollIntoView().should("be.visible");
     cy.get("a").contains(fakeFullName).click({force: true});
     cy.get("a").contains("Events").click({force: true});
     cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");

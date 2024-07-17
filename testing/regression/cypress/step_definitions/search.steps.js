@@ -107,7 +107,7 @@ Then("I should see Results with the sex {string}", (string) => {
 });
 
 Then("I should see Results with the patient id {string}", (string) => {
-  cy.get("p").contains(string).should("be.visible");
+  cy.contains(string).should("be.visible");
 });
 
 When("I search by phone number as {string}", (string) => {
