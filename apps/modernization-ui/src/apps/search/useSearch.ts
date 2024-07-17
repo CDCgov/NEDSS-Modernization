@@ -126,6 +126,7 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
             pageReset();
             searchResults.reset();
         } else if (state.status === 'noInput') {
+            pageReset();
             searchResults.noInput();
         }
     }, [state.status, isLoading]);
