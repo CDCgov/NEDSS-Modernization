@@ -43,7 +43,7 @@ const SearchLayout = ({
             <SearchNavigation className={styles.navigation} actions={actions} />
             <div className={styles.content}>
                 <div className={styles.criteria}>
-                    <search>{criteria()}</search>
+                    <div className={styles.search}>{criteria()}</div>
                     <div className={styles.actions}>
                         <Button type="button" onClick={onSearch}>
                             Search
