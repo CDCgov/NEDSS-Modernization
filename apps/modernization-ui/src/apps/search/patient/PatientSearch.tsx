@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
@@ -11,6 +12,8 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { PatientSearchResultTable } from './result/table';
 
 const PatientSearch = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues: initial,
         mode: 'onBlur'
@@ -28,6 +31,20 @@ const PatientSearch = () => {
         }
     }, [methods.reset, status]);
 
+    function handleAddNewPatientClick(): void {
+        const criteria = searchParams.get('q');
+
+        if (criteria) {
+            navigate('/add-patient', { state: { criteria } });
+        } else {
+            navigate('/add-patient');
+        }
+    }
+
+    function handleAddNewLabReportClick(): void {
+        window.location.href = `/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry`;
+    }
+
     return (
         <FormProvider {...methods}>
             <SearchLayout
@@ -35,8 +52,8 @@ const PatientSearch = () => {
                     <ButtonActionMenu
                         label="Add new"
                         items={[
-                            { label: 'Add new patient', action: () => {} },
-                            { label: 'Add new lab report', action: () => {} }
+                            { label: 'Add new patient', action: handleAddNewPatientClick },
+                            { label: 'Add new lab report', action: handleAddNewLabReportClick }
                         ]}
                         disabled={total === 0}
                     />
