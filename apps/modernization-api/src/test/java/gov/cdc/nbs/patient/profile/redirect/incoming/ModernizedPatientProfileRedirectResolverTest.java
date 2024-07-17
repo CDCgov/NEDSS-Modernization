@@ -30,7 +30,7 @@ class ModernizedPatientProfileRedirectResolverTest {
     ResponseEntity<Void> response = resolver.fromPatientParameters(request);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
-    assertThat(response.getHeaders().getLocation()).hasPath("/advanced-search");
+    assertThat(response.getHeaders().getLocation()).hasPath("/search");
   }
 
   @Test
@@ -49,6 +49,6 @@ class ModernizedPatientProfileRedirectResolverTest {
     ResponseEntity<Void> response = resolver.fromReturnPatient(request);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.SEE_OTHER);
-    assertThat(response.getHeaders().getLocation()).hasPath("/advanced-search");
+    assertThat(response.getHeaders().getLocation()).hasPath("/search");
   }
 }

@@ -8,8 +8,7 @@ import searchResultsPage from "cypress/e2e/pages/search.results.page";
 
 Then(
   "the user has searched for a patient by {string} as {string}",
-  (string, string2) => {
-    searchPage.selectBasicInfo();
+  (string, string2) => {    
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -20,7 +19,6 @@ Then(
 Then(
   "the user has enters for a patient by {string} as {string}",
   (string, string2) => {
-    searchPage.selectBasicInfo();
     searchPage.selectId();
     searchPage.enterIdType(string);
     searchPage.enterId(string2);
@@ -30,7 +28,6 @@ Then(
 Then(
   "the user has searched for a patient by name {string} as {string}",
   (string, string2) => {
-    // searchPage.selectBasicInfo();
     searchPage.selectName();
     searchPage.enterLastName(string);
     searchPage.enterFirstName(string2);
@@ -59,7 +56,6 @@ When("the User close the error message", () => {
 });
 
 Given("the user is on a Patient Profile page for {string}", (string) => {
-  searchPage.selectBasicInfo();
   searchPage.selectId();
   searchPage.enterIdType("Person number");
   searchPage.enterId(string);

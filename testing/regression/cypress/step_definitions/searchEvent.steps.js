@@ -9,14 +9,6 @@ Then("I navigate the event laboratory report", () => {
   searchEventPage.clickEventLabReport();
 });
 
-Then("I click criteria tab", () => {
-  searchEventPage.clickEventInvestigationCriteria();
-});
-
-Then("I click Lab report criteria tab", () => {
-  searchEventPage.clickEventLabReportCriteria();
-});
-
 Then("I select a condition for event investigation", () => {
   searchEventPage.selectEventInvestigationCondition();
   searchEventPage.search();

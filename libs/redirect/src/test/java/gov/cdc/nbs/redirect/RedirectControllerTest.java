@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 class RedirectControllerTest {
 
-  private DefaultRedirectionPath defaultPath = new DefaultRedirectionPath("/advanced-search");
+  private DefaultRedirectionPath defaultPath = new DefaultRedirectionPath("/search");
   private RedirectController redirectController = new RedirectController(defaultPath);
 
   @Test
@@ -40,6 +40,6 @@ class RedirectControllerTest {
     // Then the redirect is issued to the default location
     assertNotNull(redirect);
     String location = redirect.getHeaders().get("Location").get(0);
-    assertEquals("/advanced-search", location);
+    assertEquals("/search", location);
   }
 }
