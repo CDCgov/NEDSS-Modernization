@@ -9,6 +9,7 @@ import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { PatientSearchResultTable } from './result/table';
+import { useSearchResultDisplay } from '../useSearchResultDisplay';
 
 const PatientSearch = () => {
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -21,6 +22,13 @@ const PatientSearch = () => {
     } = usePage();
 
     const { status, search, reset, results } = usePatientSearch();
+    const { terms, termRemoved } = useSearchResultDisplay();
+
+    useEffect(() => {
+        if (termRemoved && terms.length > 0) {
+            console.log('terms:', terms);
+        }
+    }, [termRemoved, methods]);
 
     useEffect(() => {
         if (status === 'waiting') {

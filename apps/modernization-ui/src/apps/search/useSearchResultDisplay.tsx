@@ -9,18 +9,20 @@ type Waiting = { status: 'waiting' };
 
 type Searching = { status: 'searching' };
 
-type Complete = { status: 'completed'; terms: Term[] };
+type Complete = { status: 'completed'; terms: Term[]; termRemoved: boolean };
 
-type State = { view: View } & (Waiting | Searching | Complete);
+type State = { view: View; termRemoved: boolean } & (Waiting | Searching | Complete);
 
 type Interaction = {
     status: 'waiting' | 'searching' | 'completed';
     view: View;
     terms: Term[];
+    termRemoved: boolean;
     reset: () => void;
     search: () => void;
     complete: (terms: Term[]) => void;
     setView: (view: View) => void;
+    removeTerm: (term: Term) => void;
 };
 
 const SearchContext = createContext<Interaction | undefined>(undefined);
@@ -29,11 +31,13 @@ type Action =
     | { type: 'reset' }
     | { type: 'search' }
     | { type: 'complete'; terms: Term[] }
-    | { type: 'setView'; view: View };
+    | { type: 'setView'; view: View }
+    | { type: 'removeTerm'; term: Term; termRemoved: boolean };
 
 const initial: State = {
     status: 'waiting',
-    view: 'list'
+    view: 'list',
+    termRemoved: false
 };
 
 const reducer = (current: State, action: Action): State => {
@@ -45,10 +49,20 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'searching' };
         }
         case 'complete': {
-            return { ...current, status: 'completed', terms: action.terms };
+            return { ...current, status: 'completed', terms: action.terms, termRemoved: false };
         }
         case 'setView': {
             return { ...current, view: action.view };
+        }
+        case 'removeTerm': {
+            if (current.status === 'completed') {
+                return {
+                    ...current,
+                    terms: current.terms.filter((t) => t.title !== action.term.title),
+                    termRemoved: action.termRemoved
+                };
+            }
+            return current;
         }
         default:
             return current;
@@ -80,15 +94,18 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
     const setView = (view: View) => dispatch({ type: 'setView', view });
+    const removeTerm = (term: Term) => dispatch({ type: 'removeTerm', term, termRemoved: true });
 
     const value = {
         status: state.status,
         view: state.view,
         terms,
+        termRemoved: state.termRemoved,
         reset,
         search,
         complete,
-        setView
+        setView,
+        removeTerm
     };
 
     return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;

@@ -1,4 +1,4 @@
-import { Term } from 'apps/search';
+import { Term, useSearchResultDisplay } from 'apps/search';
 
 import { useSkipLink } from 'SkipLink/SkipLinkContext';
 import { focusedTarget } from 'utils';
@@ -14,6 +14,7 @@ type Props = {
 
 const SearchTerms = ({ total, terms }: Props) => {
     const { skipTo } = useSkipLink();
+    const { removeTerm } = useSearchResultDisplay();
 
     useEffect(() => {
         skipTo('resultsCount');
@@ -25,7 +26,7 @@ const SearchTerms = ({ total, terms }: Props) => {
             <h2>{total} results for:</h2>
             <div className="display-flex grid-gap-2">
                 {terms.map((term, index) => (
-                    <Chip key={index} name={term.title} value={term.value} handleClose={() => {}} />
+                    <Chip key={index} name={term.title} value={term.value} handleClose={() => removeTerm(term)} />
                 ))}
             </div>
         </div>
