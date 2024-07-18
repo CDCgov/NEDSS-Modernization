@@ -36,3 +36,10 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User select 50 to show the list of business rules
         Then User should see only 50 rows in the library and for each subsequent list where applicable
 
+    Scenario: Create Business Rule using (Enable), (Logic =)
+        Given Add new business rules already displayed
+        And Function Enable is selected
+        And User enters all required and applicable fields with logic is equal to
+        And User clicks the Add to library button in new business rules modal
+        Then Application will direct the user to the Business Library with the entries populated in the applicable columns
+
