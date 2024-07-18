@@ -57,3 +57,31 @@ Then("User should see only 50 rows in the library and for each subsequent list w
     businessRulesPage.checkBusinessRulesListMatchingRows(50);
 });
 
+Then("Add new business rules already displayed", () => {
+    businessRulesPage.clickAddBusinessRuleBtn();
+    businessRulesPage.addNewBusinessRulesModalDisplayed();
+});
+
+Then("Function Enable is selected", () => {
+    businessRulesPage.selectEnabled();
+});
+
+Then("User enters all required and applicable fields with logic is equal to", () => {
+    businessRulesPage.completeAllRequiredFields('EQUAL_TO');
+});
+
+Then("User clicks the Add to library button in new business rules modal", () => {
+    businessRulesPage.clickAddToLibraryBtnNewBusinessRulesModel();
+});
+
+Then("Application will direct the user to the Business Library with the entries populated in the applicable columns", () => {
+    businessRulesPage.checkRedirectedToLibraryPage();
+});
+
+Then("Function Disable is selected", () => {
+    businessRulesPage.selectDisabled();
+});
+
+Then("User enters all required and applicable fields with logic is not equal to", () => {
+    businessRulesPage.completeAllRequiredFields('NOT_EQUAL_TO');
+});
