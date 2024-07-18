@@ -5,6 +5,7 @@ import { SearchTerms } from './terms/SearchTerms';
 import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';
 
 import styles from './search-results-header.module.scss';
+import { Columns } from './columns/Columns';
 
 type Props = {
     view: View;
@@ -18,7 +19,10 @@ const SearchResultsHeader = ({ className, view, total, terms, onRemoveTerm }: Pr
     return (
         <header className={classNames(styles.header, className)}>
             <SearchTerms onRemoveTerm={onRemoveTerm} total={total} terms={terms} />
-            <SearchResultsOptionsBar view={view} disabled={total === 0} />
+            <div className={styles.right}>
+                <SearchResultsOptionsBar view={view} disabled={total === 0} />
+                <Columns />
+            </div>
         </header>
     );
 };

@@ -11,6 +11,7 @@ type Props = {
     outline?: boolean;
     className?: string;
     labelPosition?: string;
+    onClose?: () => void;
     menuTitle?: string;
     menuAction?: () => void;
     menuActionTitle?: string;
@@ -24,6 +25,7 @@ export const ButtonActionMenu = ({
     outline,
     className,
     labelPosition,
+    onClose,
     menuTitle,
     menuAction,
     menuActionTitle,
@@ -35,6 +37,7 @@ export const ButtonActionMenu = ({
             function handleClickOutside(e: any) {
                 if (ref.current && !ref.current.contains(e.target)) {
                     setOpen(false);
+                    onClose ? onClose() : null;
                 }
             }
             document.addEventListener('mousedown', handleClickOutside);
@@ -44,6 +47,11 @@ export const ButtonActionMenu = ({
         }, [ref]);
     };
     clickOutside(wrapperRef);
+
+    const close = () => {
+        setOpen(false);
+        if (onClose) onClose();
+    };
 
     const [open, setOpen] = useState(false);
 
@@ -56,14 +64,16 @@ export const ButtonActionMenu = ({
                 disabled={disabled}
                 outline={outline}
                 labelPosition={labelPosition === 'left' ? 'left' : 'right'}
-                icon={icon ? icon : <Icon.ArrowDropDown size={4} />}>
+                icon={icon ? icon : <Icon.ArrowDropDown size={4} />}
+                data-testid="action">
                 {label ? label : ''}
             </Button>
             {open ? (
                 <div className={'menu ' + styles.menu}>
                     {menuTitle ? (
                         <div className={styles.menuHeader}>
-                            <h3>{menuTitle}</h3>
+                            <h2>{menuTitle}</h2>
+                            <Icon.Close size={3} onClick={() => close()} />
                         </div>
                     ) : null}
                     <div className={styles.menuContent}>{children}</div>

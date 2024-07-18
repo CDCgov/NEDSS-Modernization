@@ -8,6 +8,7 @@ import styles from './search-layout.module.scss';
 import { Loading } from 'components/Spinner';
 import { SearchNavigation } from './navigation/SearchNavigation';
 import { usePage } from 'page';
+import ColumnProvider from '../context/ColumnContextProvider';
 
 type Renderer = () => ReactNode;
 
@@ -41,36 +42,38 @@ const SearchLayout = ({
     } = usePage();
 
     return (
-        <section className={styles.search}>
-            <SearchNavigation className={styles.navigation} actions={actions} />
-            <div className={styles.content}>
-                <div className={styles.criteria}>
-                    <div className={styles.search}>{criteria()}</div>
-                    <div className={styles.actions}>
-                        <Button type="button" onClick={onSearch}>
-                            Search
-                        </Button>
-                        <Button type="button" outline onClick={onClear}>
-                            Clear all
-                        </Button>
+        <ColumnProvider successCallback={onSearch}>
+            <section className={styles.search}>
+                <SearchNavigation className={styles.navigation} actions={actions} />
+                <div className={styles.content}>
+                    <div className={styles.criteria}>
+                        <div className={styles.search}>{criteria()}</div>
+                        <div className={styles.actions}>
+                            <Button type="button" onClick={onSearch}>
+                                Search
+                            </Button>
+                            <Button type="button" outline onClick={onClear}>
+                                Clear all
+                            </Button>
+                        </div>
+                    </div>
+                    <div className={styles.results}>
+                        {status === 'waiting' && <SearchLanding />}
+                        {status === 'searching' && <Loading className={styles.loading} />}
+                        {status === 'completed' && (
+                            <SearchResults onRemoveTerm={onRemoveTerm}>
+                                {total === 0 && noResults?.()}
+                                {view === 'list' && resultsAsList()}
+                                {view === 'table' && resultsAsTable()}
+                            </SearchResults>
+                        )}
+                        {status === 'noInput' && (
+                            <SearchResults onRemoveTerm={onRemoveTerm}>{noInputResults?.()}</SearchResults>
+                        )}
                     </div>
                 </div>
-                <div className={styles.results}>
-                    {status === 'waiting' && <SearchLanding />}
-                    {status === 'searching' && <Loading className={styles.loading} />}
-                    {status === 'completed' && (
-                        <SearchResults onRemoveTerm={onRemoveTerm}>
-                            {total === 0 && noResults?.()}
-                            {view === 'list' && resultsAsList()}
-                            {view === 'table' && resultsAsTable()}
-                        </SearchResults>
-                    )}
-                    {status === 'noInput' && (
-                        <SearchResults onRemoveTerm={onRemoveTerm}>{noInputResults?.()}</SearchResults>
-                    )}
-                </div>
-            </div>
-        </section>
+            </section>
+        </ColumnProvider>
     );
 };
 
