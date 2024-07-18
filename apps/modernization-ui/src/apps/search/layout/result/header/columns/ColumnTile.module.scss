@@ -1,0 +1,37 @@
+@use 'styles/colors';
+
+.tile {
+    background-color: colors.$base-white;
+    display: flex;
+    align-items: center;
+    height: 2.75rem;
+    width: 14.3125rem;
+    border-bottom: 1px solid colors.$base-lighter;
+    &.locked {
+        color: colors.$base-lighter;
+        .handle {
+            cursor: not-allowed;
+        }
+    }
+    .handle {
+        cursor: pointer;
+        height: 2.625rem;
+        width: 2.625rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .check {
+        height: 2.625rem;
+        width: 10rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-top: -0.5rem;
+    }
+    .content {
+        display: flex;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+    }
+}

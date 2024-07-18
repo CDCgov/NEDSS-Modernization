@@ -11,4 +11,10 @@
     .toggleButton {
         padding: 0.5rem 1rem !important;
     }
+    .right {
+        width: auto;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
 }
