@@ -245,3 +245,29 @@ Feature: Patient Search Sorting
     Then search result 1 has a "phone number" of "321-456-7890"
     And search result 2 has a "phone number" of "213-456-7890"
     And search result 3 has a "phone number" of "123-456-7890"
+
+  Scenario: I can find the most relevant patient when sorting by gender ascending
+    Given the patient has a "sex" of "F"
+    And I have another patient
+    And the patient has a "sex" of "U"
+    And I have another patient
+    And the patient has a "sex" of "M"
+    And patients are available for search
+    And I want patients sorted by "sex" "asc"
+    When I search for patients
+    Then search result 1 has a "sex" of "Female"
+    And search result 2 has a "sex" of "Male"
+    And search result 3 has a "sex" of "Unknown"
+
+  Scenario: I can find the most relevant patient when sorting by gender descending
+    Given the patient has a "sex" of "F"
+    And I have another patient
+    And the patient has a "sex" of "U"
+    And I have another patient
+    And the patient has a "sex" of "M"
+    And patients are available for search
+    And I want patients sorted by "sex" "desc"
+    When I search for patients
+    Then search result 1 has a "sex" of "Unknown"
+    And search result 2 has a "sex" of "Male"
+    And search result 3 has a "sex" of "Female"

@@ -37,7 +37,7 @@ class PatientSearchCriteriaSortResolver {
       case "lastNm" -> asSortOption("name", "name.lastNm.keyword", order);
       case "phoneNumber" -> asSortOption("phone", "phone.telephoneNbr.keyword", order);
       case "relevance" -> asSortOption("_score", order);
-      case "sex" -> asSortOption("cur_sex_cd", order);
+      case "sex" -> asSortOption("curr_sex_cd", order);
       case "zip" -> asSortOption(ADDRESS, "address.zip.keyword", order);
       default -> asSortOption(sorting.getProperty(), order);
     };
