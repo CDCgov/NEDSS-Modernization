@@ -224,6 +224,7 @@ export const EditBusinessRule = () => {
                         <Button
                             type="button"
                             outline
+                            data-testid="deleteBtnEditBusinessRulesPage"
                             onClick={() => deleteWarningModal.current?.toggleModal(undefined, true)}
                             className={styles.button}>
                             <Icon.Delete size={3} />
@@ -234,13 +235,18 @@ export const EditBusinessRule = () => {
                         <Button
                             type="button"
                             outline
+                            data-testid="cancelEditBusinessRulesModel"
                             onClick={() => {
                                 form.reset();
                                 redirectToLibrary();
                             }}>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={!ifDisabled()} onClick={onSubmit}>
+                        <Button
+                            type="submit"
+                            disabled={!ifDisabled()}
+                            data-testid="updateBtnEditBusinessRulesPage"
+                            onClick={onSubmit}>
                             Update
                         </Button>
                     </div>

@@ -77,8 +77,9 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="dateOfBirth"
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, onBlur, value, name } }) => (
                     <DatePickerInput
+                        onBlur={onBlur}
                         defaultValue={value}
                         onChange={onChange}
                         name={name}

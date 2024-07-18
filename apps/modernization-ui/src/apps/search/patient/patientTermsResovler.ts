@@ -12,6 +12,10 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         terms.push(fromValue('firstName', 'FIRST')(entry.firstName));
     }
 
+    if (entry.dateOfBirth) {
+        terms.push(fromValue('dateOfBirth', 'DATEOFBIRTH')(entry.dateOfBirth));
+    }
+
     if (entry.gender) {
         terms.push(fromSelectable('gender', 'SEX')(entry.gender));
     }
