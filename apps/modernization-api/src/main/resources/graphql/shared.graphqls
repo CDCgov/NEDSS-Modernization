@@ -20,6 +20,7 @@ enum SortField {
   city
   county
   country
+  email
   firstNm
   id
   identification

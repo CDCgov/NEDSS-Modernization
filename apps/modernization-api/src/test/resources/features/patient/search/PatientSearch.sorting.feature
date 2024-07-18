@@ -7,7 +7,7 @@ Feature: Patient Search Sorting
     And I have a patient
 
   Scenario: I can find the patients ordered by birthday ascending
-    Given  the patient has a "birthday" of "1987-01-15"
+    Given the patient has a "birthday" of "1987-01-15"
     And I have another patient
     And the patient has a "birthday" of "1999-11-19"
     And I have another patient
@@ -20,7 +20,7 @@ Feature: Patient Search Sorting
     And search result 3 has a "birthday" of "1999-11-19"
 
   Scenario: I can find the patients ordered by birthday descending
-    Given  the patient has a "birthday" of "1987-01-15"
+    Given the patient has a "birthday" of "1987-01-15"
     And I have another patient
     And the patient has a "birthday" of "1999-11-19"
     And I have another patient
@@ -117,7 +117,7 @@ Feature: Patient Search Sorting
     And search result 3 has an "identification value" of "123"
 
   Scenario: I can find the most relevant patient when sorting by city  ascending
-    Given  the patient has a "city" of "acity"
+    Given the patient has a "city" of "acity"
     And I have another patient
     And the patient has a "city" of "bcity"
     And I have another patient
@@ -125,12 +125,12 @@ Feature: Patient Search Sorting
     And patients are available for search
     And I want patients sorted by "city" "asc"
     When I search for patients
-    And search result 1 has a "city" of "acity"
+    Then search result 1 has a "city" of "acity"
     And search result 2 has a "city" of "bcity"
     And search result 3 has a "city" of "ccity"
 
   Scenario: I can find the most relevant patient when sorting by city descending
-    Given  the patient has a "city" of "acity"
+    Given the patient has a "city" of "acity"
     And I have another patient
     And the patient has a "city" of "bcity"
     And I have another patient
@@ -138,6 +138,110 @@ Feature: Patient Search Sorting
     And patients are available for search
     And I want patients sorted by "city" "desc"
     When I search for patients
-    And search result 1 has a "city" of "ccity"
+    Then search result 1 has a "city" of "ccity"
     And search result 2 has a "city" of "bcity"
     And search result 3 has a "city" of "acity"
+
+  Scenario: I can find the most relevant patient when sorting by email ascending
+    Given the patient has a "email address" of "abc@test.com"
+    And I have another patient
+    And the patient has a "email address" of "cba@test.com"
+    And I have another patient
+    And the patient has a "email address" of "bac@test.com"
+    And patients are available for search
+    And I want patients sorted by "email" "asc"
+    When I search for patients
+    Then search result 1 has a "email address" of "abc@test.com"
+    And search result 2 has a "email address" of "bac@test.com"
+    And search result 3 has a "email address" of "cba@test.com"
+
+  Scenario: I can find the most relevant patient when sorting by email descending
+    Given the patient has a "email address" of "abc@test.com"
+    And I have another patient
+    And the patient has a "email address" of "cba@test.com"
+    And I have another patient
+    And the patient has a "email address" of "bac@test.com"
+    And patients are available for search
+    And I want patients sorted by "email" "desc"
+    When I search for patients
+    Then search result 1 has a "email address" of "cba@test.com"
+    And search result 2 has a "email address" of "bac@test.com"
+    And search result 3 has a "email address" of "abc@test.com"
+
+  Scenario: I can find the most relevant patient when sorting by address ascending
+    Given the patient has a "address" of "123 One St"
+    And I have another patient
+    And the patient has a "address" of "345 One St"
+    And I have another patient
+    And the patient has a "address" of "234 One St"
+    And patients are available for search
+    And I want patients sorted by "address" "asc"
+    When I search for patients
+    Then search result 1 has a "address" of "123 One St"
+    And search result 2 has a "address" of "234 One St"
+    And search result 3 has a "address" of "345 One St"
+
+  Scenario: I can find the most relevant patient when sorting by address descending
+    Given the patient has a "address" of "123 One St"
+    And I have another patient
+    And the patient has a "address" of "345 One St"
+    And I have another patient
+    And the patient has a "address" of "234 One St"
+    And patients are available for search
+    And I want patients sorted by "address" "desc"
+    When I search for patients
+    Then search result 1 has a "address" of "345 One St"
+    And search result 2 has a "address" of "234 One St"
+    And search result 3 has a "address" of "123 One St"
+
+  Scenario: I can find the most relevant patient when sorting by zip ascending
+    Given the patient has a "zip" of "12345"
+    And I have another patient
+    And the patient has a "zip" of "34567"
+    And I have another patient
+    And the patient has a "zip" of "23456"
+    And patients are available for search
+    And I want patients sorted by "zip" "asc"
+    When I search for patients
+    Then search result 1 has a "zip" of "12345"
+    And search result 2 has a "zip" of "23456"
+    And search result 3 has a "zip" of "34567"
+
+  Scenario: I can find the most relevant patient when sorting by zip descending
+    Given the patient has a "zip" of "12345"
+    And I have another patient
+    And the patient has a "zip" of "34567"
+    And I have another patient
+    And the patient has a "zip" of "23456"
+    And patients are available for search
+    And I want patients sorted by "zip" "desc"
+    When I search for patients
+    Then search result 1 has a "zip" of "34567"
+    And search result 2 has a "zip" of "23456"
+    And search result 3 has a "zip" of "12345"
+
+  Scenario: I can find the most relevant patient when sorting by phone ascending
+    Given the patient has a "phone number" of "123-456-7890"
+    And I have another patient
+    And the patient has a "phone number" of "321-456-7890"
+    And I have another patient
+    And the patient has a "phone number" of "213-456-7890"
+    And patients are available for search
+    And I want patients sorted by "phone" "asc"
+    When I search for patients
+    Then search result 1 has a "phone number" of "123-456-7890"
+    And search result 2 has a "phone number" of "213-456-7890"
+    And search result 3 has a "phone number" of "321-456-7890"
+
+  Scenario: I can find the most relevant patient when sorting by phone descending
+    Given the patient has a "phone number" of "123-456-7890"
+    And I have another patient
+    And the patient has a "phone number" of "321-456-7890"
+    And I have another patient
+    And the patient has a "phone number" of "213-456-7890"
+    And patients are available for search
+    And I want patients sorted by "phone" "desc"
+    When I search for patients
+    Then search result 1 has a "phone number" of "321-456-7890"
+    And search result 2 has a "phone number" of "213-456-7890"
+    And search result 3 has a "phone number" of "123-456-7890"

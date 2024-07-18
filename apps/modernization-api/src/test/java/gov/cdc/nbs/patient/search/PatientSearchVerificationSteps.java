@@ -89,7 +89,9 @@ public class PatientSearchVerificationSteps {
     return switch (field.toLowerCase()) {
       case "status" -> jsonPath("$.data.findPatientsByFilter.content[%s].status", position);
       case "birthday" -> jsonPath("$.data.findPatientsByFilter.content[%s].birthday", position);
+      case "address" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].address", position);
       case "city" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].city", position);
+      case "zip" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].zipcode", position);
       case "gender" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
