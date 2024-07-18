@@ -29,8 +29,6 @@ class PatientSearchCriteriaSortResolver {
       case ADDRESS -> asSortOption(ADDRESS, "address.streetAddr1.keyword", order);
       case "birthTime" -> asSortOption("birth_time", order);
       case "city" -> asSortOption(ADDRESS, "address.city.keyword", order);
-      case "county" -> asSortOption(ADDRESS, "address.cntyCd.keyword", order);
-      case "country" -> asSortOption(ADDRESS, "address.cntryCd.keyword", order);
       case "email" -> asSortOption("email", "email.emailAddress.keyword", order);
       case "firstNm" -> asSortOption("name", "name.firstNm.keyword", order);
       case "id" -> asSortOption("id", order);
@@ -40,7 +38,6 @@ class PatientSearchCriteriaSortResolver {
       case "phoneNumber" -> asSortOption("phone", "phone.telephoneNbr.keyword", order);
       case "relevance" -> asSortOption("_score", order);
       case "sex" -> asSortOption("cur_sex_cd", order);
-      case "state" -> asSortOption(ADDRESS, "address.state.keyword", order);
       case "zip" -> asSortOption(ADDRESS, "address.zip.keyword", order);
       default -> asSortOption(sorting.getProperty(), order);
     };

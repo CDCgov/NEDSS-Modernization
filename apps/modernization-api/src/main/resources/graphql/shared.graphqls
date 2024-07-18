@@ -18,8 +18,6 @@ enum SortField {
   address
   birthTime
   city
-  county
-  country
   email
   firstNm
   id
@@ -29,7 +27,6 @@ enum SortField {
   phoneNumber
   relevance
   sex
-  state
   zip
 }
 
