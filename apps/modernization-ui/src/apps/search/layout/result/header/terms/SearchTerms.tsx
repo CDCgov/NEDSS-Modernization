@@ -26,7 +26,7 @@ const SearchTerms = ({ total, terms, onRemoveTerm }: Props) => {
             <h2>{total} results for:</h2>
             <div className="display-flex grid-gap-2">
                 {terms.map((term, index) => (
-                    <Chip key={index} name={term.title} value={term.value} handleClose={() => onRemoveTerm(term)} />
+                    <Chip key={index} name={term.title} value={term.name} handleClose={() => onRemoveTerm(term)} />
                 ))}
             </div>
         </div>
