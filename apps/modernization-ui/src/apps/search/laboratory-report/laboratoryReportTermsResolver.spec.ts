@@ -59,7 +59,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
             expect.arrayContaining([
                 {
                     source: 'pregnancyStatus',
-                    title: 'PREGNANCY STATUS',
+                    title: 'PREGNANCY TEST',
                     name: 'Pregnancy Name',
                     value: 'pregnancy-value'
                 }
@@ -81,7 +81,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
             expect.arrayContaining([
                 {
                     source: 'identification.type',
-                    title: 'INVESTIGATION EVENT TYPE',
+                    title: 'EVENT ID TYPE',
                     name: 'ID Type Name',
                     value: 'id-type-value'
                 },
@@ -108,7 +108,12 @@ describe('when a Laboratory Seach contains General search criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'eventDate.type', title: 'DATE TYPE', name: 'Date Type Name', value: 'date-type-value' },
+                {
+                    source: 'eventDate.type',
+                    title: 'EVENT DATE TYPE',
+                    name: 'Date Type Name',
+                    value: 'date-type-value'
+                },
                 { source: 'eventDate.from', title: 'FROM', name: 'from-date', value: 'from-date' },
                 { source: 'eventDate.to', title: 'TO', name: 'to-date', value: 'to-date' }
             ])

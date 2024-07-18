@@ -36,7 +36,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'lastName', title: 'LAST', name: 'last-name-value', value: 'last-name-value' }
+                { source: 'lastName', title: 'Last name', name: 'last-name-value', value: 'last-name-value' }
             ])
         );
     });
@@ -51,7 +51,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'firstName', title: 'FIRST', name: 'first-name-value', value: 'first-name-value' }
+                { source: 'firstName', title: 'First name', name: 'first-name-value', value: 'first-name-value' }
             ])
         );
     });
@@ -78,7 +78,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'id', title: 'ID', name: 'id-value', value: 'id-value' }])
+            expect.arrayContaining([{ source: 'id', title: 'Patient Id', name: 'id-value', value: 'id-value' }])
         );
     });
 });
@@ -94,7 +94,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'address', title: 'ADDRESS', name: 'address-value', value: 'address-value' }
+                { source: 'address', title: 'STREET ADDRESS', name: 'address-value', value: 'address-value' }
             ])
         );
     });
@@ -133,7 +133,9 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         const actual = patientTermsResolver(input);
 
-        expect(actual).toEqual(expect.arrayContaining([{ source: 'zip', title: 'ZIP', name: '1051', value: '1051' }]));
+        expect(actual).toEqual(
+            expect.arrayContaining([{ source: 'zip', title: 'ZIP code', name: '1051', value: '1051' }])
+        );
     });
 });
 
