@@ -24,8 +24,6 @@ type Props<V> = {
 const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
     const sorting = maybeUseSorting();
 
-    console.log('data:', data);
-
     return (
         <div id={id} className={classNames('usa-table--borderless', styles.table)}>
             <table className={classNames('usa-table', className)}>
