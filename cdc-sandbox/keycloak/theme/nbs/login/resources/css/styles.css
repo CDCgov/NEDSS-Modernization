@@ -113,3 +113,7 @@ a {
   font-weight: 700;
   font-size: 2rem;
 }
+
+.reset-password {
+  display: block;
+}
