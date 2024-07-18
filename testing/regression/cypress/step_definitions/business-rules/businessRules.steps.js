@@ -89,3 +89,7 @@ Then("User enters all required and applicable fields with logic is not equal to"
 Then("Function Hide is selected", () => {
     businessRulesPage.selectHide();
 });
+
+Then("Function Unhide is selected", () => {
+    businessRulesPage.selectUnhide();
+});
