@@ -67,6 +67,9 @@
                             </#if>
                             </div>
                             <div class="${properties.kcFormOptionsWrapperClass!}">
+                            <a class="reset-password" href="mailto:?subject=Reset Password&body=Reset your password">
+                                Reset password
+                            </a>
                                 <#if realm.resetPasswordAllowed>
                                     <span><a tabindex="6" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a></span>
                                 </#if>
