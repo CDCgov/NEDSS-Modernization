@@ -64,3 +64,10 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    Scenario: Create Business Rule using (Require if) (Logic =)
+        Given Add new business rules already displayed
+        And Function Require if is selected
+        And User enters all required and applicable fields with logic is equal to
+        And User clicks the Add to library button in new business rules modal
+        Then Application will direct the user to the Business Library with the entries populated in the applicable columns
+

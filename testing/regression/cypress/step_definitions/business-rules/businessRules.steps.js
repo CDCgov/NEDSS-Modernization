@@ -93,3 +93,7 @@ Then("Function Hide is selected", () => {
 Then("Function Unhide is selected", () => {
     businessRulesPage.selectUnhide();
 });
+
+Then("Function Require if is selected", () => {
+    businessRulesPage.selectRequireIf();
+});
