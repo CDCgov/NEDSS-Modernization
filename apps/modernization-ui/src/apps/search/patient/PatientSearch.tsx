@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
@@ -11,8 +12,11 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
 import { PatientSearchResultTable } from './result/table';
 import { NoInputBanner } from '../NoInputBanner';
+import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
 
 const PatientSearch = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues: initial,
         mode: 'onBlur'
@@ -23,6 +27,7 @@ const PatientSearch = () => {
     } = usePage();
 
     const { status, search, reset, results } = usePatientSearch();
+    const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
         if (status === 'waiting') {
@@ -30,15 +35,44 @@ const PatientSearch = () => {
         }
     }, [methods.reset, status]);
 
+    function handleAddNewPatientClick(): void {
+        const criteria = searchParams.get('q');
+
+        if (criteria) {
+            navigate('/add-patient', { state: { criteria } });
+        } else {
+            navigate('/add-patient');
+        }
+    }
+
+    function handleAddNewLabReportClick(): void {
+        window.location.href = `/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry`;
+    }
+
+    const handleRemoveTerm = (term: Term) => {
+        const formValues = methods.getValues();
+        const fieldNames = Object.keys(formValues);
+
+        const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
+        if (matchingField && terms.length > 1) {
+            methods.resetField(matchingField as keyof PatientCriteriaEntry);
+            search(methods.getValues());
+        } else {
+            methods.reset();
+            reset();
+        }
+    };
+
     return (
         <FormProvider {...methods}>
             <SearchLayout
+                onRemoveTerm={handleRemoveTerm}
                 actions={() => (
                     <ButtonActionMenu
                         label="Add new"
                         items={[
-                            { label: 'Add new patient', action: () => {} },
-                            { label: 'Add new lab report', action: () => {} }
+                            { label: 'Add new patient', action: handleAddNewPatientClick },
+                            { label: 'Add new lab report', action: handleAddNewLabReportClick }
                         ]}
                         disabled={total === 0}
                     />

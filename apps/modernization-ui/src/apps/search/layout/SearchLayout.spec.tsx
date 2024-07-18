@@ -30,6 +30,7 @@ describe('no input', () => {
                             noInputResults={() => <NoInputBanner />}
                             noResults={() => <NoPatientResultsBanner />}
                             onClear={jest.fn()}
+                            onRemoveTerm={jest.fn()}
                         />
                     </SearchResultDisplayProvider>
                 </SkipLinkProvider>
