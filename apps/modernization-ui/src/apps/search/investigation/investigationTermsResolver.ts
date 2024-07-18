@@ -42,9 +42,9 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
     }
 
     if (entry.identification && entry.identification?.type) {
-        terms.push(fromSelectable('identification.type', 'EVENT TYPE')(entry.identification.type));
+        terms.push(fromSelectable('identification.type', 'EVENT ID TYPE')(entry.identification.type));
         if (entry.identification?.value) {
-            terms.push(fromValue('identification.value', 'EVENT ID TYPE')(entry.identification?.value));
+            terms.push(fromValue('identification.value', 'EVENT ID')(entry.identification?.value));
         }
     }
 
