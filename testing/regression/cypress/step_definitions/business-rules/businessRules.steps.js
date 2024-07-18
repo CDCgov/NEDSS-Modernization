@@ -85,3 +85,7 @@ Then("Function Disable is selected", () => {
 Then("User enters all required and applicable fields with logic is not equal to", () => {
     businessRulesPage.completeAllRequiredFields('NOT_EQUAL_TO');
 });
+
+Then("Function Hide is selected", () => {
+    businessRulesPage.selectHide();
+});
