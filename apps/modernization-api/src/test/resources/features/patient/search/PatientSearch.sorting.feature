@@ -271,3 +271,29 @@ Feature: Patient Search Sorting
     Then search result 1 has a "sex" of "Unknown"
     And search result 2 has a "sex" of "Male"
     And search result 3 has a "sex" of "Female"
+
+  Scenario: I can find the most relevant patient when sorting by local id ascending
+    Given the patient has an "local id" of "PSN10000120GA01"
+    And I have another patient
+    And the patient has an "local id" of "PSN10000320GA01"
+    And I have another patient
+    And the patient has an "local id" of "PSN10000220GA01"
+    And patients are available for search
+    And I want patients sorted by "local_id" "asc"
+    When I search for patients
+    Then search result 1 has an "local id" of "120"
+    And search result 2 has an "local id" of "220"
+    And search result 3 has an "local id" of "320"
+
+  Scenario: I can find the most relevant patient when sorting by local id descending
+    Given the patient has an "local id" of "PSN10000120GA01"
+    And I have another patient
+    And the patient has an "local id" of "PSN10000320GA01"
+    And I have another patient
+    And the patient has an "local id" of "PSN10000220GA01"
+    And patients are available for search
+    And I want patients sorted by "local_id" "desc"
+    When I search for patients
+    Then search result 1 has an "local id" of "320"
+    And search result 2 has an "local id" of "220"
+    And search result 3 has an "local id" of "120"

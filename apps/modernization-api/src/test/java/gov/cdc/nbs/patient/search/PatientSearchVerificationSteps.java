@@ -110,6 +110,7 @@ public class PatientSearchVerificationSteps {
       case "identification value" -> jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].value",
           position);
       case "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
+      case "local id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }
@@ -118,6 +119,7 @@ public class PatientSearchVerificationSteps {
     return switch (field.toLowerCase()) {
       case "birthday" -> equalTo(value);
       case "sex" -> equalTo(value);
+      case "local id" -> equalTo(Integer.parseInt(value));
       case "status" -> hasItem(PatientStatusCriteriaResolver.resolve(value).name());
       default -> hasItem(value);
     };
