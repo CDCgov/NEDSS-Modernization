@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Button } from 'components/button';
-import { useSearchResultDisplay } from 'apps/search';
+import { Term, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
 
@@ -20,6 +20,7 @@ type Props = {
     noResults?: Renderer;
     onSearch: () => void;
     onClear: () => void;
+    onRemoveTerm: (term: Term) => void;
 };
 
 const SearchLayout = ({
@@ -30,7 +31,8 @@ const SearchLayout = ({
     onSearch,
     onClear,
     noInputResults,
-    noResults
+    noResults,
+    onRemoveTerm
 }: Props) => {
     const { view, status } = useSearchResultDisplay();
 
@@ -57,13 +59,15 @@ const SearchLayout = ({
                     {status === 'waiting' && <SearchLanding />}
                     {status === 'searching' && <Loading className={styles.loading} />}
                     {status === 'completed' && (
-                        <SearchResults>
+                        <SearchResults onRemoveTerm={onRemoveTerm}>
                             {total === 0 && noResults?.()}
                             {view === 'list' && resultsAsList()}
                             {view === 'table' && resultsAsTable()}
                         </SearchResults>
                     )}
-                    {status === 'noInput' && <SearchResults>{noInputResults?.()}</SearchResults>}
+                    {status === 'noInput' && (
+                        <SearchResults onRemoveTerm={onRemoveTerm}>{noInputResults?.()}</SearchResults>
+                    )}
                 </div>
             </div>
         </section>
