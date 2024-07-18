@@ -1,8 +1,10 @@
-import { PatientSearchResult } from 'generated/graphql/schema';
+import { PatientSearchResult, InvestigationResults, LabReportResults } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { displayName } from 'name';
 import { internalizeDate } from 'date';
 import { displayAddress } from 'address/display';
+import { useEffect } from 'react';
+import { useColumnContext } from 'apps/search/context/ColumnContextProvider';
 
 const displayNames = (result: PatientSearchResult): string => {
     const legalName = result.legalName;
@@ -24,26 +26,43 @@ type Props = {
     results: PatientSearchResult[];
 };
 
-const columns: Column<PatientSearchResult>[] = [
-    {
-        id: 'lastNm',
-        name: 'Legal name',
-        fixed: true,
-        sortable: true,
-        render: (row) => row?.legalName && displayName()(row?.legalName)
-    },
-    { id: 'birthTime', name: 'Date of birth', sortable: true, render: (result) => internalizeDate(result.birthday) },
-    { id: 'sex', name: 'Sex', sortable: true, render: (result) => result.gender },
-    { id: 'id', name: 'Patient ID', sortable: true, render: (row) => row.shortId },
-    { id: 'address', name: 'Address', sortable: true, render: displayAddresses },
-    { id: 'phoneNumber', name: 'Phone', sortable: true, render: displayPhones },
-    { id: 'names', name: 'Other names', sortable: true, render: displayNames },
-    { id: 'identification', name: 'ID', sortable: true, render: displayIdentifications },
-    { id: 'email', name: 'Email', sortable: true, render: displayEmails }
-];
-
 const PatientSearchResultTable = ({ results }: Props) => {
-    return <DataTable<PatientSearchResult> id="patient-search-results" columns={columns} data={results}></DataTable>;
+    const { displayColumns, register } = useColumnContext();
+
+    useEffect(() => {
+        register(columns as Column<PatientSearchResult | InvestigationResults | LabReportResults>[]);
+    }, []);
+
+    const columns: Column<PatientSearchResult>[] = [
+        {
+            id: 'lastNm',
+            name: 'Legal name',
+            fixed: true,
+            sortable: true,
+            render: (row) => row?.legalName && displayName()(row?.legalName)
+        },
+        {
+            id: 'birthTime',
+            name: 'Date of birth',
+            sortable: true,
+            render: (result) => internalizeDate(result.birthday)
+        },
+        { id: 'sex', name: 'Sex', sortable: true, render: (result) => result.gender },
+        { id: 'id', name: 'Patient ID', render: (row) => row.shortId },
+        { id: 'address', name: 'Address', render: displayAddresses },
+        { id: 'phoneNumber', name: 'Phone', render: displayPhones },
+        { id: 'names', name: 'Other names', render: displayNames },
+        { id: 'identification', name: 'ID', render: displayIdentifications },
+        { id: 'email', name: 'Email', render: displayEmails }
+    ];
+
+    const tableColumns: Column<PatientSearchResult>[] = displayColumns
+        .map((orderItem) => columns.find((column) => column.id === orderItem.id))
+        .filter((item): item is Column<PatientSearchResult> => item !== undefined);
+
+    return (
+        <DataTable<PatientSearchResult> id="patient-search-results" columns={tableColumns} data={results}></DataTable>
+    );
 };
 
 export { PatientSearchResultTable };
