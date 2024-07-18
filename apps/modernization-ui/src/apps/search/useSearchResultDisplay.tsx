@@ -37,7 +37,7 @@ type Action =
 
 const initial: State = {
     status: 'waiting',
-    view: 'list'
+    view: 'table'
 };
 
 const reducer = (current: State, action: Action): State => {
