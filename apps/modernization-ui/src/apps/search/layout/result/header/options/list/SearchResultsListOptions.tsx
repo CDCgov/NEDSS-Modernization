@@ -4,6 +4,7 @@ import styles from './search-results-list-options.module.scss';
 import { Direction, useSorting } from 'sorting';
 import { SortField } from 'generated/graphql/schema';
 import { useEffect } from 'react';
+import { Button } from 'components/button';
 
 type Props = {
     disabled?: boolean;
@@ -27,50 +28,50 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
     }, []);
 
     return (
-        <ButtonActionMenu
-            className={styles.option}
-            outline
-            icon={<Icon.SortArrow />}
-            disabled={disabled}
-            items={[
-                {
-                    label: 'Closest match',
-                    action: () => {
+        <ButtonActionMenu className={styles.option} outline icon={<Icon.SortArrow />} disabled={disabled}>
+            <>
+                <Button
+                    type="button"
+                    onClick={() => {
                         sortBy(SortField.Relevance, Direction.Descending);
                         savePreferences(SortField.Relevance, Direction.Descending);
-                    }
-                },
-                {
-                    label: 'Patient name (A-Z)',
-                    action: () => {
+                    }}>
+                    Closest match
+                </Button>
+                <Button
+                    type="button"
+                    onClick={() => {
                         sortBy(SortField.LastNm, Direction.Ascending);
                         savePreferences(SortField.LastNm, Direction.Ascending);
-                    }
-                },
-                {
-                    label: 'Patient name (Z-A)',
-                    action: () => {
+                    }}>
+                    Patient name (A-Z)
+                </Button>
+                <Button
+                    type="button"
+                    onClick={() => {
                         sortBy(SortField.LastNm, Direction.Descending);
                         savePreferences(SortField.LastNm, Direction.Descending);
-                    }
-                },
-                {
-                    label: 'Date of birth (Ascending)',
-                    action: () => {
+                    }}>
+                    Patient name (Z-A)
+                </Button>
+                <Button
+                    type="button"
+                    onClick={() => {
                         sortBy(SortField.BirthTime, Direction.Ascending);
                         savePreferences(SortField.BirthTime, Direction.Ascending);
-                    }
-                },
-                {
-                    label: 'Date of birth (Descending)',
-                    action: () => {
+                    }}>
+                    Date of birth (Ascending)
+                </Button>
+                <Button
+                    type="button"
+                    onClick={() => {
                         sortBy(SortField.BirthTime, Direction.Descending);
                         savePreferences(SortField.BirthTime, Direction.Descending);
-                    }
-                }
-            ]}
-            label={''}
-        />
+                    }}>
+                    Date of birth (Descending)
+                </Button>
+            </>
+        </ButtonActionMenu>
     );
 };
 

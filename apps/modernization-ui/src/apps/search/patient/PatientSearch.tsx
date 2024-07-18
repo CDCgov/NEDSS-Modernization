@@ -13,6 +13,7 @@ import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
 import { PatientSearchResultTable } from './result/table';
 import { NoInputBanner } from '../NoInputBanner';
 import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
+import { Button } from '@trussworks/react-uswds';
 
 const PatientSearch = () => {
     const navigate = useNavigate();
@@ -68,14 +69,16 @@ const PatientSearch = () => {
             <SearchLayout
                 onRemoveTerm={handleRemoveTerm}
                 actions={() => (
-                    <ButtonActionMenu
-                        label="Add new"
-                        items={[
-                            { label: 'Add new patient', action: handleAddNewPatientClick },
-                            { label: 'Add new lab report', action: handleAddNewLabReportClick }
-                        ]}
-                        disabled={total === 0}
-                    />
+                    <ButtonActionMenu label="Add new" disabled={total === 0}>
+                        <>
+                            <Button type="button" onClick={handleAddNewPatientClick}>
+                                Add new patient
+                            </Button>
+                            <Button type="button" onClick={handleAddNewLabReportClick}>
+                                Add new lab report
+                            </Button>
+                        </>
+                    </ButtonActionMenu>
                 )}
                 criteria={() => <PatientCriteria />}
                 resultsAsList={() => (
