@@ -71,3 +71,11 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Add to library button in new business rules modal
         Then Application will direct the user to the Business Library with the entries populated in the applicable columns
 
+    Scenario: Delete a selected Business Rule
+        And User clicks one of the questions in the Source Field
+        Then Edit business rules page displays
+        When User clicks the Delete button in edit business rules page
+        Then Warning message is presented "Are you sure you want to delete this business rule?" and "Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
+        And User clicks the Yes, delete button in edit business rules page
+        Then Application will delete the selected business rule and return to the business rule list screen
+
