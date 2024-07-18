@@ -12,6 +12,7 @@ import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
 import { PatientSearchResultTable } from './result/table';
 import { NoInputBanner } from '../NoInputBanner';
+import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
 
 const PatientSearch = () => {
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const PatientSearch = () => {
     } = usePage();
 
     const { status, search, reset, results } = usePatientSearch();
+    const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
         if (status === 'waiting') {
@@ -47,9 +49,24 @@ const PatientSearch = () => {
         window.location.href = `/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry`;
     }
 
+    const handleRemoveTerm = (term: Term) => {
+        const formValues = methods.getValues();
+        const fieldNames = Object.keys(formValues);
+
+        const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
+        if (matchingField && terms.length > 1) {
+            methods.resetField(matchingField as keyof PatientCriteriaEntry);
+            search(methods.getValues());
+        } else {
+            methods.reset();
+            reset();
+        }
+    };
+
     return (
         <FormProvider {...methods}>
             <SearchLayout
+                onRemoveTerm={handleRemoveTerm}
                 actions={() => (
                     <ButtonActionMenu
                         label="Add new"
