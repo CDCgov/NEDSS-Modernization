@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { maybeUseSorting } from 'sorting';
 
 import styles from './data-table.module.scss';
+import { NoData } from 'components/NoData';
 
 type Column<V> = {
     id: string;
@@ -22,6 +23,8 @@ type Props<V> = {
 
 const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
     const sorting = maybeUseSorting();
+
+    console.log('data:', data);
 
     return (
         <div id={id} className={classNames('usa-table--borderless', styles.table)}>
@@ -48,7 +51,7 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                                             [styles.fixed]: column.fixed,
                                             [styles.sorted]: isSorting
                                         })}>
-                                        {column.render(row)}
+                                        {column.render(row) ? column.render(row) : <NoData />}
                                     </td>
                                 );
                             })}
