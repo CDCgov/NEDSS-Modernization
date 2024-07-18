@@ -142,7 +142,6 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
         if (state.status === 'requesting') {
             const parameters = transformer(state.criteria);
             const terms = termResolver(state.criteria);
-
             terms.length === 0
                 ? dispatch({ type: 'complete', found: { total: 0, page: page.current, content: [] } })
                 : dispatch({ type: 'fetch', parameters, terms });
