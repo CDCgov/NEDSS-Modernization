@@ -43,14 +43,14 @@ const Button = ({
             outline={outline}>
             {labelPosition === 'left' && children && icon ? (
                 <>
-                    {children}
+                    <span>{children}</span>
                     {icon}
                 </>
             ) : null}
             {labelPosition === 'right' && children && icon ? (
                 <>
                     {icon}
-                    {children}
+                    <span>{children}</span>
                 </>
             ) : null}
             {isIconOnly ? icon : null}

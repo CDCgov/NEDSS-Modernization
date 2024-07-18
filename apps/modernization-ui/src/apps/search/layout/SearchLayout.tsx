@@ -11,6 +11,7 @@ import { usePage } from 'page';
 import { Icon } from '@trussworks/react-uswds';
 import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
+import ColumnProvider from '../context/ColumnContextProvider';
 
 type Renderer = () => ReactNode;
 
@@ -46,42 +47,44 @@ const SearchLayout = ({
     } = usePage();
 
     return (
-        <section className={styles.search}>
-            <SearchNavigation className={styles.navigation} actions={actions} />
-            <div className={styles.content}>
-                <div className={collapse ? styles.collapse : styles.criteria}>
-                    <div className={styles.search}>{criteria()}</div>
-                    <div className={styles.actions}>
-                        <Button type="button" onClick={onSearch}>
-                            Search
-                        </Button>
-                        <Button type="button" outline onClick={onClear}>
-                            Clear all
-                        </Button>
+        <ColumnProvider>
+            <section className={styles.search}>
+                <SearchNavigation className={styles.navigation} actions={actions} />
+                <div className={styles.content}>
+                    <div className={collapse ? styles.collapse : styles.criteria}>
+                        <div className={styles.search}>{criteria()}</div>
+                        <div className={styles.actions}>
+                            <Button type="button" onClick={onSearch}>
+                                Search
+                            </Button>
+                            <Button type="button" outline onClick={onClear}>
+                                Clear all
+                            </Button>
+                        </div>
                     </div>
-                </div>
-                <div className={styles.collapseButton}>
+                    <div className={styles.collapseButton}>
                     <div className={collapse ? styles.collapseTrue : styles.content}>
                         {!collapse && <Icon.ExpandLess onClick={() => setCollapse(true)} size={3} />}
                         {collapse && <Icon.ExpandMore onClick={() => setCollapse(false)} size={3} />}
                     </div>
                 </div>
                 <div className={styles.results}>
-                    <div className={styles.resultContent}>
+                        <div className={styles.resultContent}>
                         {status === 'waiting' && <SearchLanding />}
-                        {status === 'searching' && <Loading className={styles.loading} />}
-                        {status === 'completed' && (
-                            <SearchResults onRemoveTerm={onRemoveTerm}>
-                                {total === 0 && noResults()}
-                                {view === 'list' && total > 0 && resultsAsList()}
-                                {view === 'table' && total > 0 && resultsAsTable()}
-                            </SearchResults>
-                        )}
-                        {status === 'noInput' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
-                    </div>
+                            {status === 'searching' && <Loading className={styles.loading} />}
+                            {status === 'completed' && (
+                                <SearchResults onRemoveTerm={onRemoveTerm}>
+                                    {total === 0 && noResults()}
+                                    {view === 'list' && total > 0 && resultsAsList()}
+                                    {view === 'table' && total > 0 && resultsAsTable()}
+                                </SearchResults>
+                            )}
+                            {status === 'noInput' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
+                        </div>
                 </div>
-            </div>
-        </section>
+                </div>
+            </section>
+        </ColumnProvider>
     );
 };
 

@@ -4,6 +4,7 @@ import { SearchResultsListOptions } from './list/SearchResultsListOptions';
 import style from './search-results-options.module.scss';
 import { ToggleView } from './toggleView/ToggleView';
 import { useSearchSettings } from 'apps/search/useSearchSettings';
+import { Columns } from '../columns/Columns';
 
 type Props = {
     view: View;
@@ -17,6 +18,7 @@ const SearchResultsOptionsBar = ({ view, disabled = false }: Props) => {
         <div className={style.options}>
             {settings.allowToggle && <ToggleView />}
             {view === 'list' && <SearchResultsListOptions disabled={disabled} />}
+            {view === 'table' ? <Columns /> : null}
         </div>
     );
 };
