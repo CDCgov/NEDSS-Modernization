@@ -97,3 +97,27 @@ Then("Function Unhide is selected", () => {
 Then("Function Require if is selected", () => {
     businessRulesPage.selectRequireIf();
 });
+
+Then("User clicks one of the questions in the Source Field", () => {
+    businessRulesPage.clickQuestion();
+});
+
+Then("Edit business rules page displays", () => {
+    businessRulesPage.editBusinessRulesPageDisplayed();
+});
+
+Then("User clicks the Delete button in edit business rules page", () => {
+    businessRulesPage.clickDeleteEditBusinessRulesPage();
+});
+
+Then("Warning message is presented {string} and {string}", (text) => {
+    businessRulesPage.checkWarningMessage(text);
+});
+
+Then("User clicks the Yes, delete button in edit business rules page", () => {
+    businessRulesPage.clickYesDeleteBtnEditBusinessRulesPage();
+});
+
+Then("Application will delete the selected business rule and return to the business rule list screen", () => {
+    businessRulesPage.checkRedirectedToLibraryPage();
+});
