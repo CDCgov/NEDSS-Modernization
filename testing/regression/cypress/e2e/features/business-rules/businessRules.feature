@@ -79,3 +79,48 @@ Feature: Page Builder - User can view existing business rules logic here.
         And User clicks the Yes, delete button in edit business rules page
         Then Application will delete the selected business rule and return to the business rule list screen
 
+    Scenario: Cancel deleting a selected Business Rule
+        And User clicks one of the questions in the Source Field
+        Then Edit business rules page displays
+        When User clicks the Delete button in edit business rules page
+        Then Warning message is presented "Are you sure you want to delete this business rule?" and "Once deleted, this business rule will be permanently removed from the system and will no longer be associated with the page."
+        And User clicks the Cancel button in edit business rules page
+        Then Application will not delete the selected business rule but return to the business rule list screen
+
+    Scenario: Access Edit Business Rule screen
+        And User clicks one of the questions in the Source Field
+        Then Application should direct the user to the Edit Business Rule screen
+
+    Scenario: Verify editing a business rule with the function as Enable
+        And User clicks one of the questions in the Source Field
+        Then Edit business rules page displays
+        And User selects a different Logic from the drop-down
+        When User edits a Target question from the Target questions section, and clicks the Continue button
+        Then Updated question appears in the Target questions section, checked
+        When Submit button on Edit business rule screen is clicked
+        Then Application will validate the values added, add the business rule to the selected page and then navigate to the Business Rule library with the changes made. A confirmation success message displays, The business rule is successfully updated. Please click the unique name to edit.
+
+    Scenario Outlined: Access the Filter pop-up window clicking the Filter button from Business Rules Library
+        And User clicks the Filter button in business rules library page
+        Then User view the Filter pop-up window displays to add one or more filters in business rules library page
+        Then Filter pop-window in business rules page displays the initial basic elements "<name>"
+        Examples:
+            | Name               | Element                  |
+            | Filter             | Pop-up window title name |
+            | X                  | Close pop-up window      |
+            | Show the following | Heading                  |
+            | All pages          | Read-only box            |
+            | + Add Filter       | Sub-menu function        |
+            | Clear filters      | Button                   |
+            | Apply              | Button                   |
+
+    Scenario: Filter by Function = Date Validation using (Equals to)
+        Given Filter section already displayed
+        When User selects Function from the drop-down box
+        And User selects Equals to from the Operator field
+        And User enters Date validation in the Value field
+        And User clicks the Done button
+        Then The application will finish adding a filter, display the added filter, and display the “+ Add Filter” link for user to add more filter (if needed)
+        When User clicks the Apply button
+        Then Added filter(s) are applied and only the records matching the filter(s) are displayed in the Business Rules library list
+

@@ -121,3 +121,37 @@ Then("User clicks the Yes, delete button in edit business rules page", () => {
 Then("Application will delete the selected business rule and return to the business rule list screen", () => {
     businessRulesPage.checkRedirectedToLibraryPage();
 });
+
+Then("User clicks the Cancel button in edit business rules page", () => {
+    businessRulesPage.clickCancelBtnEditBusinessRulesPageConfirmationModal();
+    businessRulesPage.clickCancelBtnEditBusinessRulesPage();
+});
+
+Then("Application will not delete the selected business rule but return to the business rule list screen", () => {
+    businessRulesPage.checkRedirectedToLibraryPage();
+});
+
+Then("Application should direct the user to the Edit Business Rule screen", () => {
+    businessRulesPage.editBusinessRulesPageDisplayed();
+});
+
+Then("User selects a different Logic from the drop-down", () => {
+    businessRulesPage.selectLogicFromDropdown();
+});
+
+Then("User edits a Target question from the Target questions section, and clicks the Continue button", () => {
+    businessRulesPage.selectTargetQuestion();
+});
+
+Then("Updated question appears in the Target questions section, checked", () => {
+    businessRulesPage.targetQuestionUpdated();
+});
+
+Then("Submit button on Edit business rule screen is clicked", () => {
+    businessRulesPage.clickUpdateBtnEditBusinessRulePage();
+});
+
+Then("Application will validate the values added, add the business rule to the selected page and then navigate to the Business Rule library with the changes made. A confirmation success message displays, The business rule is successfully updated. Please click the unique name to edit.", () => {
+    businessRulesPage.checkRedirectedToLibraryPage();
+});
+
