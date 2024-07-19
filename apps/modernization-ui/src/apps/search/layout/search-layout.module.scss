@@ -32,9 +32,10 @@ $content-height: calc($search-height - $navigation-height - 2rem);
 
             @include borders.bordered('border-right');
 
-            search {
+            .search {
                 height: calc(100% - $actions-height);
                 overflow-y: scroll;
+                padding: 0rem;
             }
 
             .actions {

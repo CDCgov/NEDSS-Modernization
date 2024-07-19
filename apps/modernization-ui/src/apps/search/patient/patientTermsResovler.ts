@@ -5,11 +5,15 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
     if (entry.lastName) {
-        terms.push(fromValue('lastName', 'LAST')(entry.lastName));
+        terms.push(fromValue('lastName', 'Last name')(entry.lastName));
     }
 
     if (entry.firstName) {
-        terms.push(fromValue('firstName', 'FIRST')(entry.firstName));
+        terms.push(fromValue('firstName', 'First name')(entry.firstName));
+    }
+
+    if (entry.dateOfBirth) {
+        terms.push(fromValue('dateOfBirth', 'DOB')(entry.dateOfBirth));
     }
 
     if (entry.gender) {
@@ -17,11 +21,11 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.id) {
-        terms.push(fromValue('id', 'ID')(entry.id));
+        terms.push(fromValue('id', 'Patient Id')(entry.id));
     }
 
     if (entry.address) {
-        terms.push(fromValue('address', 'ADDRESS')(entry.address));
+        terms.push(fromValue('address', 'STREET ADDRESS')(entry.address));
     }
 
     if (entry.city) {
@@ -33,7 +37,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.zip) {
-        terms.push(fromValue('zip', 'ZIP')(String(entry.zip)));
+        terms.push(fromValue('zip', 'ZIP code')(String(entry.zip)));
     }
 
     if (entry.email) {

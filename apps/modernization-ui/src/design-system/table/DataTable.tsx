@@ -4,6 +4,7 @@ import { Header } from './Header';
 import { maybeUseSorting } from 'sorting';
 
 import styles from './data-table.module.scss';
+import { NoData } from 'components/NoData';
 
 type Column<V> = {
     id: string;
@@ -48,7 +49,7 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                                             [styles.fixed]: column.fixed,
                                             [styles.sorted]: isSorting
                                         })}>
-                                        {column.render(row)}
+                                        {column.render(row) ? column.render(row) : <NoData />}
                                     </td>
                                 );
                             })}

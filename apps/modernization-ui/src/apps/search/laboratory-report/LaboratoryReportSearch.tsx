@@ -7,6 +7,10 @@ import { LabReportFilterEntry, initial } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { FormAccordion } from './FormAccordion';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
+import { NoInputBanner } from '../NoInputBanner';
+import { NoResultsBanner } from '../NoResultsBanner';
+import { Term } from '../terms';
+import { useSearchResultDisplay } from '../useSearchResultDisplay';
 
 const LaboratoryReportSearch = () => {
     const formMethods = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
@@ -15,6 +19,7 @@ const LaboratoryReportSearch = () => {
     });
 
     const { status, search, reset, results } = useLaboratoryReportSearch();
+    const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
         if (status === 'waiting') {
@@ -22,9 +27,30 @@ const LaboratoryReportSearch = () => {
         }
     }, [formMethods.reset, status]);
 
+    const handleRemoveTerm = (term: Term) => {
+        const formValues = formMethods.getValues();
+        const fieldNames = Object.keys(formValues);
+        const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
+        if (matchingField && terms.length > 1) {
+            if (matchingField === 'programAreas' || matchingField === 'jurisdictions') {
+                formMethods.setValue(
+                    matchingField,
+                    formMethods.getValues()?.[matchingField]?.filter((p) => p.value !== term.value) ?? []
+                );
+            } else {
+                formMethods.resetField(matchingField as keyof LabReportFilterEntry);
+            }
+            search(formMethods.getValues());
+        } else {
+            formMethods.reset();
+            reset();
+        }
+    };
+
     return (
         <SearchCriteriaProvider>
             <SearchLayout
+                onRemoveTerm={handleRemoveTerm}
                 criteria={() => <FormAccordion form={formMethods} />}
                 resultsAsList={() => (
                     <SearchResultList<LabReport>
@@ -34,6 +60,8 @@ const LaboratoryReportSearch = () => {
                 )}
                 resultsAsTable={() => <div>result table</div>}
                 onSearch={formMethods.handleSubmit(search)}
+                noInputResults={() => <NoInputBanner />}
+                noResults={() => <NoResultsBanner />}
                 onClear={reset}
             />
         </SearchCriteriaProvider>
