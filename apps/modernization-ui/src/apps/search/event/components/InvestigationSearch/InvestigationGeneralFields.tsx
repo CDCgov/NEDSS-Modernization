@@ -3,13 +3,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
-import {
-    InvestigationEventDateType,
-    InvestigationEventIdType,
-    InvestigationFilter,
-    PregnancyStatus,
-    ReportingEntityType
-} from 'generated/graphql/schema';
+import { InvestigationFilter, PregnancyStatus, ReportingEntityType } from 'generated/graphql/schema';
 import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { ReactElement } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
@@ -18,6 +12,7 @@ import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { handleChangeToDefaultValue } from 'forms/event';
+import { investigationEventTypeOptions } from 'apps/search/investigation/InvestigationFormTypes';
 
 type InvestigationGeneralAccordionProps = {
     form: UseFormReturn<InvestigationFilter>;
@@ -126,17 +121,13 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         label="Event id type"
                         dataTestid={name}
                         htmlFor={name}
-                        options={Object.values(InvestigationEventIdType).map((event) => {
-                            return {
-                                name: formatInterfaceString(event),
-                                value: event
-                            };
-                        })}
+                        options={investigationEventTypeOptions}
                     />
                 )}
             />
             {watch.eventId?.investigationEventType ? (
                 <Controller
+                    shouldUnregister
                     control={form.control}
                     name="eventId.id"
                     rules={{
@@ -174,12 +165,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                         label="Event date type"
                         htmlFor={name}
                         dataTestid={name}
-                        options={Object.values(InvestigationEventDateType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type
-                            };
-                        })}
+                        options={investigationEventTypeOptions}
                     />
                 )}
             />
@@ -187,6 +173,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
             {watch.eventDate?.type ? (
                 <>
                     <Controller
+                        shouldUnregister
                         control={form.control}
                         name="eventDate.from"
                         rules={{
