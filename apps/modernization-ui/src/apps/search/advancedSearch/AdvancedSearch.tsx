@@ -276,10 +276,10 @@ export const AdvancedSearch = () => {
     };
 
     function handleAddNewPatientClick(): void {
-        const criteria = searchParams.get('q');
+        const encrypted = searchParams.get('q');
 
-        if (criteria) {
-            navigate('/add-patient', { state: { criteria } });
+        if (encrypted) {
+            navigate('/add-patient', { state: { encrypted } });
         } else {
             navigate('/add-patient');
         }
