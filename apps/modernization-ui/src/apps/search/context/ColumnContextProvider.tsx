@@ -6,8 +6,10 @@ type ColumnProps = (source: DraggableLocation, destination: DraggableLocation) =
 type ColumnContextProps = {
     handleDragEnd: (result: DropResult) => void;
     displayColumns: DisplayColumn[];
+    tempColumns: DisplayColumn[];
     saveColumns: () => void;
     resetColumns: () => void;
+    toggleHide: (id: string) => void;
 };
 
 export type DisplayColumn = {
@@ -23,7 +25,7 @@ const ColumnProvider: React.FC<{
     children: React.ReactNode;
     successCallback: () => void;
 }> = ({ children, successCallback }) => {
-    const [displayColumns, setDisplayColumns] = useState<DisplayColumn[]>([
+    const defaultColumns = [
         { id: 'lastNm', name: 'Legal name', sortable: false, visible: true },
         { id: 'birthTime', name: 'Date of birth', sortable: false, visible: true },
         { id: 'sex', name: 'Sex', sortable: false, visible: true },
@@ -33,15 +35,26 @@ const ColumnProvider: React.FC<{
         { id: 'names', name: 'Other names', sortable: true, visible: true },
         { id: 'identification', name: 'ID', sortable: true, visible: true },
         { id: 'email', name: 'Email', sortable: true, visible: true }
-    ]);
-    let tempColumns = displayColumns;
+    ];
+    const [displayColumns, setDisplayColumns] = useState(defaultColumns);
+    const [tempColumns, setTempColumns] = useState(displayColumns);
 
     const moveColumn: ColumnProps = (source, destination) => {
         tempColumns.splice(destination.index, 0, tempColumns.splice(source.index, 1)[0]);
     };
 
+    const toggleHide = (id: string) => {
+        const updatedColumns = tempColumns.map((column) => {
+            if (column.id === id) {
+                return { ...column, visible: !column.visible };
+            }
+            return column;
+        });
+        setTempColumns(updatedColumns);
+    };
+
     const resetColumns = () => {
-        tempColumns = displayColumns;
+        setTempColumns(displayColumns);
     };
 
     const saveColumns = () => {
@@ -53,11 +66,11 @@ const ColumnProvider: React.FC<{
         if (!result.destination) return;
         const { source, destination } = result;
         moveColumn(source, destination);
-        console.log(tempColumns);
     };
 
     return (
-        <ColumnContext.Provider value={{ displayColumns, handleDragEnd, saveColumns, resetColumns }}>
+        <ColumnContext.Provider
+            value={{ displayColumns, tempColumns, handleDragEnd, toggleHide, saveColumns, resetColumns }}>
             {children}
         </ColumnContext.Provider>
     );

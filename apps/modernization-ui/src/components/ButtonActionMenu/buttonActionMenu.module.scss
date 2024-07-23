@@ -6,15 +6,15 @@
         margin: 0;
     }
     .menuHeader {
-        padding: 1rem;
+        padding: 1.5rem;
         border-bottom: 1px solid colors.$base-lighter;
         h2 {
             margin: 0;
         }
         svg {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 1.5rem;
+            right: 1.5rem;
             cursor: pointer;
         }
     }
@@ -40,7 +40,7 @@
         }
     }
     .menuFooter {
-        padding: 1rem;
+        padding: 1.5rem;
         border-top: 1px solid colors.$base-lighter;
         display: flex;
         justify-content: center;

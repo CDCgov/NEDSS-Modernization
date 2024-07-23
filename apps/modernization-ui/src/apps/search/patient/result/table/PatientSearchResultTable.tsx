@@ -51,7 +51,7 @@ export const PatientSearchResultTable = ({ results }: Props) => {
     ];
 
     const columns: Column<PatientSearchResult>[] = displayColumns
-        .map((orderItem) => defaultColumns.find((column) => column.id === orderItem.id))
+        .map((orderItem) => defaultColumns.find((column) => column.id === orderItem.id && orderItem.visible === true))
         .filter((item): item is Column<PatientSearchResult> => item !== undefined);
 
     return <DataTable<PatientSearchResult> id="patient-search-results" columns={columns} data={results}></DataTable>;

@@ -7,6 +7,9 @@
     height: 2.75rem;
     width: 14.3125rem;
     border-bottom: 1px solid colors.$base-lighter;
+    &:last-of-type {
+        border: none;
+    }
     &.locked {
         color: colors.$base-lighter;
         .handle {
@@ -27,11 +30,8 @@
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        margin-top: -0.5rem;
-    }
-    .content {
-        display: flex;
-        align-items: center;
-        padding: 0.25rem 0.5rem;
+        label {
+            margin-top: -0.125rem;
+        }
     }
 }
