@@ -12,11 +12,11 @@
         padding-left: 0.5rem;
         gap: 0.5rem;
 
-        .noResultsHeader {
+        .header {
             @include headers.header(2);
         }
 
-        .noResultsSubHeading {
+        .message {
             @include headers.header(3);
             font-weight: 400;
 

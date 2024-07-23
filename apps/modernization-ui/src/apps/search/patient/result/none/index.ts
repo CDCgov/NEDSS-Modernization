@@ -1,1 +1,1 @@
-export { NoPatientResultsBanner } from './NoPatientResultsBanner';
+export { NoPatientResults } from './NoPatientResults';

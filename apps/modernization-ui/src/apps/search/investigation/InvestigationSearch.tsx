@@ -7,8 +7,6 @@ import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
-import { NoInputBanner } from '../NoInputBanner';
-import { NoResultsBanner } from '../NoResultsBanner';
 import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
 
 const InvestigationSearch = () => {
@@ -64,8 +62,6 @@ const InvestigationSearch = () => {
                     )}
                     resultsAsTable={() => <div>result table</div>}
                     onSearch={form.handleSubmit(search)}
-                    noInputResults={() => <NoInputBanner />}
-                    noResults={() => <NoResultsBanner />}
                     onClear={reset}
                 />
             </FormProvider>

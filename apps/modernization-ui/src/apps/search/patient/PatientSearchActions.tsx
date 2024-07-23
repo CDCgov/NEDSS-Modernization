@@ -1,17 +1,14 @@
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { Button } from 'components/button';
-import { usePage } from 'page';
 import { useAddPatientFromSearch } from './add';
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 
 const PatientSearchActions = () => {
-    const {
-        page: { total }
-    } = usePage();
-
+    const { status } = useSearchResultDisplay();
     const { add } = useAddPatientFromSearch();
 
     return (
-        <ButtonActionMenu label="Add new" disabled={total === 0}>
+        <ButtonActionMenu label="Add new" disabled={status != 'completed'}>
             <>
                 <Button type="button" onClick={add}>
                     Add new patient
