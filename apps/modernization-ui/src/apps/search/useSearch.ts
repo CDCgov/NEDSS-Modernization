@@ -189,6 +189,9 @@ const asSortField = (property: string): SortField => {
         case SortField.LastNm: {
             return SortField.LastNm;
         }
+        case SortField.Sex: {
+            return SortField.Sex;
+        }
         default:
             return SortField.Relevance;
     }

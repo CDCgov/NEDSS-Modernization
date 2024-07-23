@@ -41,9 +41,9 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                         <tr key={index}>
                             {columns.map((column, y) => {
                                 const isSorting = sorting?.property === column.id;
-                                console.log('property: ' + sorting?.property);
-                                console.log('id: ' + column.id);
-                                console.log(isSorting);
+                                // console.log('property: ' + sorting?.property);
+                                // console.log('id: ' + column.id);
+                                // console.log(isSorting);
                                 return (
                                     <td
                                         key={y}
