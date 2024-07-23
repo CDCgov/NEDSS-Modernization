@@ -14,9 +14,19 @@ input SortablePage {
 }
 
 enum SortField {
-  lastNm
+  address
   birthTime
+  city
+  email
+  firstNm
+  id
+  identification
+  lastNm
+  local_id
+  phoneNumber
   relevance
+  sex
+  zip
 }
 
 enum RecordStatus {

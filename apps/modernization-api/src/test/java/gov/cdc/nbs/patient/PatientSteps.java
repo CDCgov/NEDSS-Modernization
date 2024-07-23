@@ -18,8 +18,7 @@ public class PatientSteps {
 
   PatientSteps(
       final Active<PatientIdentifier> patient,
-      final PatientMother mother
-  ) {
+      final PatientMother mother) {
     this.patient = patient;
     this.mother = mother;
   }
@@ -73,6 +72,14 @@ public class PatientSteps {
           identifier,
           LocalDate.parse(value));
 
+      case "sex" -> mother.withGender(
+          identifier,
+          value);
+
+      case "id" -> mother.withId(identifier, Long.parseLong(value));
+
+      case "local id" -> mother.withLocalId(identifier, value);
+
       case "phone number" -> mother.withPhone(
           identifier,
           value);
@@ -99,6 +106,13 @@ public class PatientSteps {
           null,
           null,
           null);
+
+      case "zip" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          null,
+          value);
 
       case "city" -> mother.withAddress(
           identifier,
