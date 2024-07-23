@@ -1,10 +1,10 @@
 import { render, waitFor } from '@testing-library/react';
-import { SearchLayout } from './SearchLayout';
-import { NoPatientResultsBanner } from '../NoPatientResultsBanner';
 import { MemoryRouter } from 'react-router-dom';
+import { SearchLayout } from './SearchLayout';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
-import { NoInputBanner } from '../NoInputBanner';
+import { NoPatientResultsBanner } from 'apps/search/patient/result/none';
+import { SearchResultDisplayProvider } from 'apps/search/useSearchResultDisplay';
+import { NoInputBanner } from 'apps/search/NoInputBanner';
 
 const values = {
     status: 'noInput',

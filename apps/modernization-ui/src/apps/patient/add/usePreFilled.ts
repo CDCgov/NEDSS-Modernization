@@ -10,10 +10,12 @@ const usePreFilled = (initial: DefaultNewPatentEntry): NewPatientEntry => {
     const [prefilled, setPrefilled] = useState<NewPatientEntry>(initial);
 
     useEffect(() => {
-        if (location?.state?.encrypted) {
-            decrypt(location.state.encrypted).then(withCriteria(initial)).then(setPrefilled);
+        if (location?.state?.criteria) {
+            decrypt(location.state.criteria).then(withCriteria(initial)).then(setPrefilled);
+        } else if (location?.state?.defaults) {
+            setPrefilled(location?.state?.defaults);
         }
-    }, [location?.state?.criteria]);
+    }, [location?.state?.criteria, location?.state?.defaults]);
 
     return prefilled;
 };
