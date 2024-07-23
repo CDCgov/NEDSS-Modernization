@@ -1950,8 +1950,7 @@ export enum SortField {
   Address = 'address',
   BirthTime = 'birthTime',
   City = 'city',
-  Country = 'country',
-  County = 'county',
+  Email = 'email',
   FirstNm = 'firstNm',
   Id = 'id',
   Identification = 'identification',
@@ -1960,7 +1959,6 @@ export enum SortField {
   PhoneNumber = 'phoneNumber',
   Relevance = 'relevance',
   Sex = 'sex',
-  State = 'state',
   Zip = 'zip'
 }
 
@@ -1969,7 +1967,6 @@ export type SortablePage = {
   pageSize?: InputMaybe<Scalars['Int']['input']>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
-  sortFieldText?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type StateCodedValue = {

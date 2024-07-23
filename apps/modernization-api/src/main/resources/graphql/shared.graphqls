@@ -10,7 +10,6 @@ input SortablePage {
   pageSize: Int
   pageNumber: Int
   sortField: SortField
-  sortFieldText: String
   sortDirection: SortDirection
 }
 
