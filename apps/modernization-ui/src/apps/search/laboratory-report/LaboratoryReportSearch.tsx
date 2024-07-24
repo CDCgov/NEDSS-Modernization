@@ -11,6 +11,7 @@ import { NoInputBanner } from '../NoInputBanner';
 import { NoResultsBanner } from '../NoResultsBanner';
 import { Term } from '../terms';
 import { useSearchResultDisplay } from '../useSearchResultDisplay';
+import { useJurisdictionOptions } from 'options/jurisdictions';
 
 const LaboratoryReportSearch = () => {
     const formMethods = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
@@ -47,6 +48,8 @@ const LaboratoryReportSearch = () => {
         }
     };
 
+    const { resolve: findById } = useJurisdictionOptions();
+
     return (
         <SearchCriteriaProvider>
             <SearchLayout
@@ -55,7 +58,9 @@ const LaboratoryReportSearch = () => {
                 resultsAsList={() => (
                     <SearchResultList<LabReport>
                         results={results?.content || []}
-                        render={(result) => <LaboratoryReportSearchResultListItem result={result} />}
+                        render={(result) => (
+                            <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={findById} />
+                        )}
                     />
                 )}
                 resultsAsTable={() => <div>result table</div>}
