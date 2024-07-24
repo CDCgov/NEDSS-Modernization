@@ -1,7 +1,7 @@
 import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
 import 'apps/patient/profile/style.scss';
 import { useRef } from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
 import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
@@ -11,9 +11,11 @@ import { usePatientProfilePermissions } from './permission';
 import { useAlert } from 'alert';
 import { formattedName } from 'utils';
 import { ProfileProvider } from './ProfileContext';
-import styles from './patient-profile.module.scss';
 import { ConfirmationModal } from 'confirmation';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
+import { useSearchNavigation } from 'apps/search';
+
+import styles from './patient-profile.module.scss';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -39,7 +41,7 @@ export const PatientProfile = () => {
 
     const deletability = resolveDeletability(patient);
 
-    const navigate = useNavigate();
+    const { go } = useSearchNavigation();
 
     const handleComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
@@ -48,7 +50,7 @@ export const PatientProfile = () => {
                 header: 'success',
                 message: `Deleted patient ${formattedName(summary?.legalName?.last, summary?.legalName?.first)}`
             });
-            navigate('/search');
+            go();
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
             showAlert({
                 type: 'error',

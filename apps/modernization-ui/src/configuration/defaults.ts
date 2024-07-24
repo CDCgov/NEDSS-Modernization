@@ -1,6 +1,6 @@
-import { Features, Properties, Configuration, Settings } from './configuration';
+import { Features, Properties, Configuration, Settings, Search } from './configuration';
 
-const search = {
+const search: Search = {
     view: {
         table: {
             enabled: false

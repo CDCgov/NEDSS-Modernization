@@ -6,15 +6,24 @@ import { SearchPage } from './SearchPage';
 import { PatientSearch } from './patient/PatientSearch';
 import { LaboratoryReportSearch } from './laboratory-report';
 import { InvestigationSearch } from './investigation';
+import { FeatureGuard } from 'feature';
 
 const routing = [
     {
         path: '/advanced-search/:searchType?',
-        element: <AdvancedSearch />
+        element: (
+            <FeatureGuard guard={(features) => !features.search.view.enabled}>
+                <AdvancedSearch />
+            </FeatureGuard>
+        )
     },
     {
         path: 'search',
-        element: <SearchPage />,
+        element: (
+            <FeatureGuard guard={(features) => features.search.view.enabled}>
+                <SearchPage />
+            </FeatureGuard>
+        ),
         children: [
             { index: true, element: <Navigate to="patients" /> },
             {
