@@ -139,7 +139,7 @@ public class PatientSteps {
           identifier,
           null,
           null,
-          null,
+          value,
           null);
 
       default -> throw new IllegalStateException("Unexpected patient demographic data: " + field + ":" + value);
