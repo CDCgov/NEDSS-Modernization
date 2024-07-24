@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 class SearchRedirectController {
@@ -46,7 +47,7 @@ class SearchRedirectController {
       @RequestParam final Map<String, String> incomingParams) {
     var redirect = new RedirectView(searchRedirect.base());
     var redirectedUrl = redirect.getUrl();
-    if (redirectedUrl != null && redirectedUrl.equals(searchRedirect.base()) && !incomingParams.isEmpty()) {
+    if (Objects.equals(searchRedirect.base(), redirectedUrl) && !incomingParams.isEmpty()) {
 
       // Event filter takes precedence
       var eventFilter = eventFilterResolver.resolve(incomingParams);
