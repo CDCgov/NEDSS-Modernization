@@ -38,18 +38,18 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
     }
 
     if (entry.pregnancyStatus) {
-        terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
+        terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY TEST')(entry.pregnancyStatus));
     }
 
     if (entry.identification && entry.identification?.type) {
-        terms.push(fromSelectable('identification.type', 'INVESTIGATION EVENT TYPE')(entry.identification.type));
+        terms.push(fromSelectable('identification.type', 'EVENT ID TYPE')(entry.identification.type));
         if (entry.identification?.value) {
             terms.push(fromValue('identification.value', 'EVENT ID')(entry.identification?.value));
         }
     }
 
     if (entry.eventDate && entry.eventDate?.from && entry.eventDate?.to) {
-        terms.push(fromSelectable('eventDate.type', 'DATE TYPE')(entry.eventDate.type));
+        terms.push(fromSelectable('eventDate.type', 'EVENT DATE TYPE')(entry.eventDate.type));
         if (entry.eventDate?.from) {
             terms.push(fromValue('eventDate.from', 'FROM')(entry.eventDate.from));
         }

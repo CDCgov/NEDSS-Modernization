@@ -2,7 +2,7 @@ import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplet
 import { FindDistinctCodedResultsQuery, useFindDistinctCodedResultsLazyQuery } from 'generated/graphql/schema';
 import { Selectable } from 'options/selectable';
 
-const CodedResultsAutocomplete = ({ id, label, onChange, ...rest }: AutocompleteSingleProps) => {
+const CodedResultsAutocomplete = ({ id, label, onChange, value, ...rest }: AutocompleteSingleProps) => {
     const [getCodedResults] = useFindDistinctCodedResultsLazyQuery();
 
     const labTestToComboOption = (test: any): Selectable => ({
@@ -35,7 +35,7 @@ const CodedResultsAutocomplete = ({ id, label, onChange, ...rest }: Autocomplete
         }
     };
 
-    return <Autocomplete resolver={resolver} onChange={onChange} id={id} label={label} {...rest} />;
+    return <Autocomplete resolver={resolver} value={value} onChange={onChange} id={id} label={label} {...rest} />;
 };
 
 export { CodedResultsAutocomplete };

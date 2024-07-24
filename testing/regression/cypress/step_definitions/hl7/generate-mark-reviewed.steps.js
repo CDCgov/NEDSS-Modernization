@@ -3,7 +3,6 @@ import { searchPage } from "cypress/e2e/pages/search.page";
 import { faker } from "@faker-js/faker";
 import 'cypress-xpath';
 
-
 When("I Generate HL7 messages to api and mark as review", () => {
   let currentMessage;
   let formattedMessages;
@@ -11,8 +10,8 @@ When("I Generate HL7 messages to api and mark as review", () => {
   let hl7Message;
   let authToken;
   let messageID;
-  let formattedArray;
-
+  let formattedArray;  
+  let NBSresponse;
   const clientid = Cypress.env()["env"].clientid;
   const clientsecret = Cypress.env()["env"].clientsecret;
   const apiurl = Cypress.env()["env"].apiurl;
@@ -28,7 +27,6 @@ When("I Generate HL7 messages to api and mark as review", () => {
       "clientsecret": clientsecret
     }
   }).then((response) => {
-      
     expect(response.status).to.eq(200);
     attach(`Response: ${JSON.stringify(response.body)}`);
     authToken = response.body;
@@ -36,7 +34,7 @@ When("I Generate HL7 messages to api and mark as review", () => {
     cy.log("Stored Token:", authToken);
     Cypress.env("authToken", authToken);
           
-    cy.readFile('cypress/fixtures/try.json', 'utf8').then(jsonData => {  
+    cy.readFile('cypress/fixtures/try.json', 'utf8').then(jsonData => {
 
       const formatHL7 = function(hl7String) {
           const formattedFields = [];
@@ -107,7 +105,7 @@ When("I Generate HL7 messages to api and mark as review", () => {
       Cypress.env("currentMessage", currentMessage);
       Cypress.env("fakeSSN", fakeSSN);
       Cypress.env("fakeDOB", fakeDOB);
-      Cypress.env("fakeFullName", randomFirstName + " " + randomLastName);
+      Cypress.env("fakeFullName", randomLastName + ", " + randomFirstName);
       
       cy.request({
         method: "POST",
@@ -120,55 +118,80 @@ When("I Generate HL7 messages to api and mark as review", () => {
           "msgType": 'HL7'
         },
         body: modifiedData9
-      }).then((response) => {        
+      }).then((response) => {
           messageID = response.body;          
-          let checkStatusUrl = checkstatusurl + messageID;
-          cy.wait(115000);
-        cy.request({
-          method: "GET",
-          url: checkStatusUrl,
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            "clientid": clientid,
-           "clientsecret": clientsecret
+          let checkStatusUrl = checkstatusurl + messageID;    
+          
+          function checkStatusRequest() {
+
+              cy.request({
+                method: "GET",
+                url: checkStatusUrl,
+                headers: {
+                  Authorization: `Bearer ${authToken}`,
+                  "clientid": clientid,
+                  "clientsecret": clientsecret
+                }
+              }).then((response) => {                  
+                expect(response.status).to.eq(200);                                   
+                if (response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" || response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {                  
+                  NBSresponse = response.body;                  
+                  cy.log(NBSresponse.nbsInfo.nbsInterfaceStatus);
+                  cy.wait(20000);
+                  checkStatusRequest();   
+                } else if(response.body.nbsInfo.nbsInterfaceStatus === "Success" && response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
+                  
+                  cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
+                  
+                  // Navigate to Documents Requiring Review
+                  cy.contains('Documents Requiring Review').click();            
+                  
+                  cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();               
+                  cy.get("#SearchText1").type(randomLastName);
+                  cy.get("#b2SearchText1").first().click();
+                  cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();            
+                  
+                  cy.get("input[name=markReviewd]").first().click();   
+                  cy.get("input[name=TransferOwn]").first().click();       
+                  cy.get("input[name=Submit]").first().click();       
+
+                  cy.contains('Return to Documents Requiring Review').click();
+                  cy.contains('Home').click();    
+
+                  cy.get('#homePageAdvancedSearch').click();
+                  cy.get('#lastName').type(randomLastName);           
+                  cy.get('#firstName').type(randomFirstName);
+                  cy.get('button').contains("Search").click();
+                  cy.get('button').contains("List").click();
+
+                  let fakeSSN = Cypress.env().fakeSSN;
+                  let fakeFullName = Cypress.env().fakeFullName;
+                  function formatSSN(ssn) {
+                    // Ensure the input is a string
+                    const ssnString = ssn.toString();
+
+                    // Extract parts of the SSN
+                    const part1 = ssnString.slice(0, 3);
+                    const part2 = ssnString.slice(3, 5);
+                    const part3 = ssnString.slice(5, 9);
+
+                    // Combine parts with dashes
+                    const formattedSSN = `${part1}-${part2}-${part3}`;
+
+                    return formattedSSN;
+                  }
+
+                  const formattedSSN = formatSSN(fakeSSN);
+                  cy.contains(formattedSSN).scrollIntoView().should("be.visible");
+                  cy.wait(1000)
+                  cy.get("a").contains(fakeFullName).click({force: true});
+                  cy.get("a").contains("Events").click({force: true});
+                  cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");                  
+                  cy.get("td").contains("HEP").scrollIntoView().should("be.visible");                  
+                }
+              })
           }
-        }).then((response) => {
-            expect(response.status).to.eq(200);
-            const NBSresponse = response.body.nbsInfo.nbsInterfaceStatus || 'N/A';
-            const NBSerrorresponse = response.body.error_message || 'N/A';
-            const handleFailureOrQueued = NBSresponse === 'Failure' || NBSresponse === 'QUEUED';
-            const Success = NBSresponse === 'Success';
-            const isNotSuccess = NBSerrorresponse === 'Provided UUID is not present in the database. Either provided an invalid UUID or the injected message failed validation.';
-            const nbsInterfaceId = response.body.nbsInfo.nbsInterfaceStatus;
-            console.log(nbsInterfaceId);            
-            console.log(NBSresponse);               
-            cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
-            
-            // Navigate to Documents Requiring Review
-            cy.contains('Documents Requiring Review').click();            
-            
-            cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();
-         
-            cy.get("#SearchText1").type(randomLastName);
-            cy.get("#b2SearchText1").click();
-            
-            cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();            
-            
-            cy.get("input[name=markReviewd]").first().click();   
-            cy.get("input[name=TransferOwn]").first().click();       
-            cy.get("input[name=Submit]").first().click();       
-
-            cy.contains('Return to Documents Requiring Review').click();
-            cy.contains('Home').click();            
-            // Search and validate final name
-            cy.get('#DEM104').type(randomFirstName);
-            
-            cy.get('#DEM102').type(randomLastName);
-            
-            cy.wait(25000); // Wait for processing
-            cy.get('tr:nth-child(8) input:nth-child(1)').click();
-
-        });
+          checkStatusRequest();                                            
       });
     });
   });

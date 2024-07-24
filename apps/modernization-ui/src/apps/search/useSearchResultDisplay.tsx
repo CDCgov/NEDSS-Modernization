@@ -11,15 +11,18 @@ type Searching = { status: 'searching' };
 
 type Complete = { status: 'completed'; terms: Term[] };
 
-type State = { view: View } & (Waiting | Searching | Complete);
+type NoInput = { status: 'noInput' };
+
+type State = { view: View } & (Waiting | Searching | Complete | NoInput);
 
 type Interaction = {
-    status: 'waiting' | 'searching' | 'completed';
+    status: 'waiting' | 'searching' | 'completed' | 'noInput';
     view: View;
     terms: Term[];
     reset: () => void;
     search: () => void;
     complete: (terms: Term[]) => void;
+    noInput: () => void;
     setView: (view: View) => void;
 };
 
@@ -29,11 +32,12 @@ type Action =
     | { type: 'reset' }
     | { type: 'search' }
     | { type: 'complete'; terms: Term[] }
-    | { type: 'setView'; view: View };
+    | { type: 'setView'; view: View }
+    | { type: 'noInput' };
 
 const initial: State = {
     status: 'waiting',
-    view: 'list'
+    view: 'table'
 };
 
 const reducer = (current: State, action: Action): State => {
@@ -46,6 +50,9 @@ const reducer = (current: State, action: Action): State => {
         }
         case 'complete': {
             return { ...current, status: 'completed', terms: action.terms };
+        }
+        case 'noInput': {
+            return { ...current, status: 'noInput' };
         }
         case 'setView': {
             return { ...current, view: action.view };
@@ -76,6 +83,8 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 
     const complete = (terms: Term[]) => dispatch({ type: 'complete', terms });
 
+    const noInput = () => dispatch({ type: 'noInput' });
+
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
@@ -88,6 +97,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
         reset,
         search,
         complete,
+        noInput,
         setView
     };
 

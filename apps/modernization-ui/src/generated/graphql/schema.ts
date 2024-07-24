@@ -283,6 +283,7 @@ export type InvestigationFilter = {
   processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
+  reportingFacilityId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type InvestigationPersonParticipation = {
@@ -1946,9 +1947,19 @@ export enum SortDirection {
 }
 
 export enum SortField {
+  Address = 'address',
   BirthTime = 'birthTime',
+  City = 'city',
+  Email = 'email',
+  FirstNm = 'firstNm',
+  Id = 'id',
+  Identification = 'identification',
   LastNm = 'lastNm',
-  Relevance = 'relevance'
+  LocalId = 'local_id',
+  PhoneNumber = 'phoneNumber',
+  Relevance = 'relevance',
+  Sex = 'sex',
+  Zip = 'zip'
 }
 
 export type SortablePage = {

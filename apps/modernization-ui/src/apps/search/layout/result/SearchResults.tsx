@@ -1,16 +1,16 @@
 import { ReactNode } from 'react';
-import { useSearchResultDisplay } from 'apps/search';
+import { Term, useSearchResultDisplay } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
-
 import styles from './search-results.module.scss';
 import { usePage } from 'page';
 import { Pagination } from 'design-system/Pagination/Pagination';
 
 type Props = {
     children: ReactNode;
+    onRemoveTerm: (term: Term) => void;
 };
 
-const SearchResults = ({ children }: Props) => {
+const SearchResults = ({ children, onRemoveTerm }: Props) => {
     const {
         page: { total }
     } = usePage();
@@ -19,9 +19,16 @@ const SearchResults = ({ children }: Props) => {
 
     return (
         <div className={styles.results}>
-            <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
+            <SearchResultsHeader
+                onRemoveTerm={onRemoveTerm}
+                className={styles.header}
+                view={view}
+                total={total}
+                terms={terms}
+            />
+            <div className={styles.pagingation}></div>
             <main className={styles.content}>{children}</main>
-            <div className={styles.pagingation}>
+            <div className={styles.pagination}>
                 <Pagination />
             </div>
         </div>

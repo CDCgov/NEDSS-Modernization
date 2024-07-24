@@ -1,27 +1,12 @@
 class SearchEventPage {
   clickEventInvestigation() {
-    cy.get('a[href*="advanced-search/event"]').click();
-    cy.wait(500);
-    let elm = cy.get("div[data-testid='accordionItem_event-type-section'] select");
-    elm.select('Investigation');
+    cy.get('a[href*="search/investigations"]').click();
     cy.wait(500);
   }
 
   clickEventLabReport() {
-    cy.get('a[href*="advanced-search/event"]').click();
+    cy.get('a[href*="search/lab-reports"]').click();
     cy.wait(500);
-    let elm = cy.get("div[data-testid='accordionItem_event-type-section'] select");
-    elm.select('Laboratory report');
-    cy.wait(500);
-  }
-
-  clickEventInvestigationCriteria() {
-    cy.get('button[data-testid="accordionButton_investigation-criteria-section"]').click();
-    cy.wait(500);
-  }
-
-  clickEventLabReportCriteria() {
-    cy.get('button[data-testid="accordionButton_lab-criteria-section"]').click();
   }
 
   selectEventInvestigationCondition() {    
@@ -99,7 +84,7 @@ class SearchEventPage {
   }
 
   search() {
-    let elm = cy.get('button[data-testid="search"]').click(({force: true}));
+    cy.get('button').contains("Search").click();
   }
 
   selectInvestigationUpdatedBy() {
@@ -172,32 +157,6 @@ class SearchEventPage {
     this.setLabReportNormalSettings();
     cy.get('input[id="codedResult"]').type("absent");
   }
-
-  checkELR() {
-    let fakeSSN = Cypress.env().fakeSSN;
-    let fakeFullName = Cypress.env().fakeFullName;
-    function formatSSN(ssn) {
-      // Ensure the input is a string
-      const ssnString = ssn.toString();
-
-      // Extract parts of the SSN
-      const part1 = ssnString.slice(0, 3);
-      const part2 = ssnString.slice(3, 5);
-      const part3 = ssnString.slice(5, 9);
-
-      // Combine parts with dashes
-      const formattedSSN = `${part1}-${part2}-${part3}`;
-
-      return formattedSSN;
-    }
-
-    const formattedSSN = formatSSN(fakeSSN);
-    cy.get("p").contains(formattedSSN).scrollIntoView().should("be.visible");
-    cy.get("a").contains(fakeFullName).click({force: true});
-    cy.get("a").contains("Events").click({force: true});
-    cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");
-  }
-
 }
 
 export const searchEventPage = new SearchEventPage();

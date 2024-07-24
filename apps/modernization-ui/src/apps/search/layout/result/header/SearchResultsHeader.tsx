@@ -11,12 +11,13 @@ type Props = {
     className?: string;
     total: number;
     terms: Term[];
+    onRemoveTerm: (term: Term) => void;
 };
 
-const SearchResultsHeader = ({ className, view, total, terms }: Props) => {
+const SearchResultsHeader = ({ className, view, total, terms, onRemoveTerm }: Props) => {
     return (
         <header className={classNames(styles.header, className)}>
-            <SearchTerms total={total} terms={terms} />
+            <SearchTerms onRemoveTerm={onRemoveTerm} total={total} terms={terms} />
             <SearchResultsOptionsBar view={view} disabled={total === 0} />
         </header>
     );

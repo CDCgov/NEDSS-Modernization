@@ -72,6 +72,10 @@ const Autocomplete = ({
         }
     };
 
+    useEffect(() => {
+        !value && setEntered('');
+    }, [value]);
+
     const handleCancel = () => {
         reset();
         inputRef?.current?.focus();

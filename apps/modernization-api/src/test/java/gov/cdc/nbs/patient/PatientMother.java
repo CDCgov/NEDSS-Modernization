@@ -54,8 +54,7 @@ public class PatientMother {
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
       final RevisionPatientCreator revisionCreator,
-      final JdbcClient jdbcClient
-  ) {
+      final JdbcClient jdbcClient) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
@@ -222,8 +221,7 @@ public class PatientMother {
 
   public void withRace(
       final PatientIdentifier identifier,
-      final String race
-  ) {
+      final String race) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -238,8 +236,7 @@ public class PatientMother {
   public void withRaceIncluding(
       final PatientIdentifier identifier,
       final String race,
-      final String detail
-  ) {
+      final String detail) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -249,9 +246,7 @@ public class PatientMother {
             race,
             List.of(detail),
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
   }
 
   public void withName(final PatientIdentifier identifier) {
@@ -443,6 +438,7 @@ public class PatientMother {
     withGender(identifier, RandomUtil.gender().value());
   }
 
+
   public void withGender(final PatientIdentifier identifier, final String gender) {
     Person patient = managed(identifier);
 
@@ -456,6 +452,17 @@ public class PatientMother {
             null,
             this.settings.createdBy(),
             this.settings.createdOn()));
+  }
+
+  public void withLocalId(final PatientIdentifier identifier, final String localId) {
+    Person patient = managed(identifier);
+    patient.setLocalId(localId);
+  }
+
+  public void withId(final PatientIdentifier identifier, final long id) {
+    Person patient = managed(identifier);
+
+    patient.setId(id);
   }
 
   public void withMortality(final PatientIdentifier identifier) {
@@ -484,8 +491,7 @@ public class PatientMother {
 
   public void withEthnicity(
       final PatientIdentifier identifier,
-      final String ethnicity
-  ) {
+      final String ethnicity) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -495,15 +501,13 @@ public class PatientMother {
             ethnicity,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn())
-    );
+            this.settings.createdOn()));
   }
 
   public void withSpecificEthnicity(
       final PatientIdentifier identifier,
       final String ethnicity,
-      final String detail
-  ) {
+      final String detail) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -513,18 +517,14 @@ public class PatientMother {
             ethnicity,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
     patient.add(
         new PatientCommand.AddDetailedEthnicity(
             identifier.id(),
             detail,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
 
   }

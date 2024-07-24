@@ -329,15 +329,15 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             <Controller
                 control={form.control}
                 name="createdBy"
-                render={({ field: { onChange, name } }) => (
-                    <UserAutocomplete id={name} label="Event created by user" onChange={onChange} />
+                render={({ field: { onChange, name, value } }) => (
+                    <UserAutocomplete id={name} value={value} label="Event created by user" onChange={onChange} />
                 )}
             />
             <Controller
                 control={form.control}
                 name="updatedBy"
-                render={({ field: { onChange, name } }) => (
-                    <UserAutocomplete id={name} onChange={onChange} label="Event updated by user" />
+                render={({ field: { onChange, name, value } }) => (
+                    <UserAutocomplete id={name} value={value} onChange={onChange} label="Event updated by user" />
                 )}
             />
             <Controller
@@ -362,9 +362,10 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     rules={{
                         required: { value: true, message: `Ordering facility is required` }
                     }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                         <>
                             <FacilityAutocomplete
+                                value={value}
                                 id={name}
                                 label="Event ordering facility"
                                 required={true}
@@ -384,13 +385,14 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     rules={{
                         required: { value: true, message: `Ordering provider is required` }
                     }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                         <>
                             <ProviderAutocomplete
                                 id={name}
                                 label="Event ordering provider"
                                 required={true}
                                 placeholder=""
+                                value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
                             />
@@ -407,10 +409,11 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     rules={{
                         required: { value: true, message: `Facility is required` }
                     }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                         <>
                             <FacilityAutocomplete
                                 id={name}
+                                value={value}
                                 label="Event reporting facility"
                                 required={true}
                                 placeholder=""
