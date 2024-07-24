@@ -19,7 +19,7 @@ const conditions = fromSelectables('conditions', 'CONDITION');
 const programAreas = fromSelectables('programAreas', 'PROGRAM AREA');
 const jurisdictions = fromSelectables('jurisdictions', 'JURISDICTION');
 
-const outbreaks = fromSelectables('outbreaks', 'OUTBREAK');
+const outbreaks = fromSelectables('outbreakNames', 'OUTBREAK');
 const caseStatus = fromSelectables('caseStatuses', 'CASE STATUS');
 const processingStatus = fromSelectables('processingStatuses', 'PROCESSING STATUS');
 const notificationStatus = fromSelectables('notificationStatuses', 'NOTIFICATION STATUS');
