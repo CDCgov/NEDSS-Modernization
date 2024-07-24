@@ -121,6 +121,27 @@ public class PatientSteps {
           null,
           null);
 
+      case "county" -> mother.withAddress(
+          identifier,
+          null,
+          value,
+          null,
+          null);
+
+      case "country" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          null,
+          null);
+
+      case "state" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          null,
+          null);
+
       default -> throw new IllegalStateException("Unexpected patient demographic data: " + field + ":" + value);
     }
 

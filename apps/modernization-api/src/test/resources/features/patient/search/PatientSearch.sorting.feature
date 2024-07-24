@@ -297,3 +297,81 @@ Feature: Patient Search Sorting
     Then search result 1 has an "local id" of "320"
     And search result 2 has an "local id" of "220"
     And search result 3 has an "local id" of "120"
+
+  Scenario: I can find the most relevant patient when sorting by county ascending
+    Given the patient has a "county" of "acounty"
+    And I have another patient
+    And the patient has a "county" of "bcounty"
+    And I have another patient
+    And the patient has a "county" of "ccounty"
+    And patients are available for search
+    And I want patients sorted by "county" "asc"
+    When I search for patients
+    Then search result 1 has a "county" of "acounty"
+    And search result 2 has a "county" of "bcounty"
+    And search result 3 has a "county" of "ccounty"
+
+  Scenario: I can find the most relevant patient when sorting by county descending
+    Given the patient has a "county" of "acounty"
+    And I have another patient
+    And the patient has a "county" of "bcounty"
+    And I have another patient
+    And the patient has a "county" of "ccounty"
+    And patients are available for search
+    And I want patients sorted by "county" "desc"
+    When I search for patients
+    Then search result 1 has a "county" of "ccounty"
+    And search result 2 has a "county" of "bcounty"
+    And search result 3 has a "county" of "acounty"
+
+  Scenario: I can find the most relevant patient when sorting by state ascending
+    Given the patient has a "state" of "astate"
+    And I have another patient
+    And the patient has a "state" of "bstate"
+    And I have another patient
+    And the patient has a "state" of "cstate"
+    And patients are available for search
+    And I want patients sorted by "state" "asc"
+    When I search for patients
+    Then search result 1 has a "state" of "astate"
+    And search result 2 has a "state" of "bstate"
+    And search result 3 has a "state" of "cstate"
+
+  Scenario: I can find the most relevant patient when sorting by state descending
+    Given the patient has a "state" of "astate"
+    And I have another patient
+    And the patient has a "state" of "bstate"
+    And I have another patient
+    And the patient has a "state" of "cstate"
+    And patients are available for search
+    And I want patients sorted by "state" "desc"
+    When I search for patients
+    Then search result 1 has a "state" of "cstate"
+    And search result 2 has a "state" of "bstate"
+    And search result 3 has a "state" of "astate"
+
+  Scenario: I can find the most relevant patient when sorting by country ascending
+    Given the patient has a "country" of "acountry"
+    And I have another patient
+    And the patient has a "country" of "bcountry"
+    And I have another patient
+    And the patient has a "country" of "ccountry"
+    And patients are available for search
+    And I want patients sorted by "country" "asc"
+    When I search for patients
+    Then search result 1 has a "country" of "acountry"
+    And search result 2 has a "country" of "bcountry"
+    And search result 3 has a "country" of "ccountry"
+
+  Scenario: I can find the most relevant patient when sorting by country descending
+    Given the patient has a "country" of "acountry"
+    And I have another patient
+    And the patient has a "country" of "bcountry"
+    And I have another patient
+    And the patient has a "country" of "ccountry"
+    And patients are available for search
+    And I want patients sorted by "country" "desc"
+    When I search for patients
+    Then search result 1 has a "country" of "ccountry"
+    And search result 2 has a "country" of "bcountry"
+    And search result 3 has a "country" of "acountry"

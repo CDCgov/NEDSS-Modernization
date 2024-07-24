@@ -1950,6 +1950,8 @@ export enum SortField {
   Address = 'address',
   BirthTime = 'birthTime',
   City = 'city',
+  Country = 'country',
+  County = 'county',
   Email = 'email',
   FirstNm = 'firstNm',
   Id = 'id',
@@ -1959,6 +1961,7 @@ export enum SortField {
   PhoneNumber = 'phoneNumber',
   Relevance = 'relevance',
   Sex = 'sex',
+  State = 'state',
   Zip = 'zip'
 }
 
