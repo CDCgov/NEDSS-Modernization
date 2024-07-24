@@ -56,6 +56,10 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
         }
     };
 
+    const convertToLowerCase = (item: string): string => {
+        return item[0].toUpperCase() + item.slice(1).toLowerCase();
+    };
+
     return (
         <>
             <SearchCriteriaContext.Consumer>
@@ -113,7 +117,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         name={name}
                         value={value}
                         onChange={onChange}
-                        label="Pregnancy test"
+                        label="Pregnancy status"
                         options={[
                             { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: PregnancyStatus.Yes },
                             { name: PregnancyStatus.No, value: PregnancyStatus.No, label: PregnancyStatus.No },
@@ -246,7 +250,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(EntryMethod).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -269,7 +273,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(UserType).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -292,7 +296,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(EventStatus).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -315,7 +319,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(LaboratoryReportStatus).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}

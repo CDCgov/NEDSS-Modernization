@@ -15,8 +15,8 @@ describe('PatientChips component tests', () => {
                 }}
             />
         );
-        const chip = getByTestId('LAST-chip');
-        expect(chip.children[0]).toHaveTextContent('LAST');
+        const chip = getByTestId('Last name-chip');
+        expect(chip.children[0]).toHaveTextContent('Last name');
         expect(chip.children[2]).toHaveTextContent('lastName');
         fireEvent.click(chip.children[3]);
         expect(updatedFilter.lastName).not.toBeDefined();

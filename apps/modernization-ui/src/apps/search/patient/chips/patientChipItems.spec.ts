@@ -31,7 +31,7 @@ describe('patientChipItems', () => {
 
         const expectedChipItems = [
             { name: 'FIRST', value: 'John', source: 'firstName' },
-            { name: 'LAST', value: 'Doe', source: 'lastName' },
+            { name: 'Last name', value: 'Doe', source: 'lastName' },
             { name: 'ETHNICITY', value: 'Ethnicity1', source: 'ethnicity' },
             { name: 'RACE', value: 'Race1', source: 'race' },
             { name: 'STATE', value: 'New York', source: 'state' },
