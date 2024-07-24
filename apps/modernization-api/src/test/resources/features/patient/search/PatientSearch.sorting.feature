@@ -323,3 +323,47 @@ Feature: Patient Search Sorting
     Then search result 1 has a "state" of "AZ"
     And search result 2 has a "state" of "AL"
     And search result 3 has a "state" of "AK"
+
+  Scenario: I can find the most relevant patient when sorting by county ascending
+    Given the patient has a "county" of "01001"
+    And I have another patient
+    And the patient has a "county" of "01005"
+    And I have another patient
+    And the patient has a "county" of "01003"
+    And patients are available for search
+    And I want patients sorted by "county" "asc"
+    When I search for patients
+    Then there are 3 patient search results
+
+  Scenario: I can find the most relevant patient when sorting by county descending
+    Given the patient has a "county" of "01001"
+    And I have another patient
+    And the patient has a "county" of "01005"
+    And I have another patient
+    And the patient has a "county" of "01003"
+    And patients are available for search
+    And I want patients sorted by "county" "desc"
+    When I search for patients
+    Then there are 3 patient search results
+
+  Scenario: I can find the most relevant patient when sorting by country ascending
+    Given the patient has a "country" of "840"
+    And I have another patient
+    And the patient has a "country" of "858"
+    And I have another patient
+    And the patient has a "country" of "850"
+    And patients are available for search
+    And I want patients sorted by "country" "asc"
+    When I search for patients
+    Then there are 3 patient search results
+
+  Scenario: I can find the most relevant patient when sorting by country descending
+    Given the patient has a "country" of "840"
+    And I have another patient
+    And the patient has a "country" of "858"
+    And I have another patient
+    And the patient has a "country" of "850"
+    And patients are available for search
+    And I want patients sorted by "country" "desc"
+    When I search for patients
+    Then there are 3 patient search results

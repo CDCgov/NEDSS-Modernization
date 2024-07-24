@@ -105,10 +105,12 @@ public class PatientSteps {
           value,
           null,
           null,
+          null,
           null);
 
       case "zip" -> mother.withAddress(
           identifier,
+          null,
           null,
           null,
           null,
@@ -119,10 +121,12 @@ public class PatientSteps {
           null,
           value,
           null,
+          null,
           null);
 
       case "county" -> mother.withAddress(
           identifier,
+          null,
           null,
           value,
           null,
@@ -133,10 +137,12 @@ public class PatientSteps {
           null,
           null,
           null,
+          null,
           null);
 
       case "state" -> mother.withAddress(
           identifier,
+          null,
           null,
           null,
           value,
