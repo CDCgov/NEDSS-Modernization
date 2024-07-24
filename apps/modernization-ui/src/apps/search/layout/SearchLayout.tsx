@@ -62,7 +62,7 @@ const SearchLayout = ({
                         <SearchResults onRemoveTerm={onRemoveTerm}>
                             {total === 0 && noResults?.()}
                             {view === 'list' && resultsAsList()}
-                            {view === 'table' && resultsAsTable()}
+                            {view === 'table' && total > 0 && resultsAsTable()}
                         </SearchResults>
                     )}
                     {status === 'noInput' && (

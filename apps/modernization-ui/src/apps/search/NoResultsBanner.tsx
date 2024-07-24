@@ -7,7 +7,7 @@ export const NoResultsBanner = () => {
             <AlertBanner type="info" iconSize={4}>
                 <div className={styles.noResultsContent}>
                     <span className={styles.noResultsHeader}> No result found</span>
-                    <span className={styles.noResultsSubHeading}>Try refining your search</span>
+                    <span className={styles.noResultsSubHeading}>Try refining your search.</span>
                 </div>
             </AlertBanner>
         </div>

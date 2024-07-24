@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { usePage } from 'page';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { usePatientSearch } from './usePatientSearch';
 import { PatientCriteriaEntry, initial } from './criteria';
@@ -22,10 +21,6 @@ const PatientSearch = () => {
         defaultValues: initial,
         mode: 'onBlur'
     });
-
-    const {
-        page: { total }
-    } = usePage();
 
     const { status, search, reset, results } = usePatientSearch();
     const { terms } = useSearchResultDisplay();
@@ -69,7 +64,7 @@ const PatientSearch = () => {
             <SearchLayout
                 onRemoveTerm={handleRemoveTerm}
                 actions={() => (
-                    <ButtonActionMenu label="Add new" disabled={total === 0}>
+                    <ButtonActionMenu label="Add new" disabled={terms.length === 0}>
                         <>
                             <Button type="button" onClick={handleAddNewPatientClick}>
                                 Add new patient

@@ -37,7 +37,7 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
     jurisdictions(entry.jurisdictions).forEach((item) => terms.push(item));
 
     if (entry.pregnancyStatus) {
-        terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY TEST')(entry.pregnancyStatus));
+        terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
     }
 
     if (entry.identification && entry.identification.type) {
