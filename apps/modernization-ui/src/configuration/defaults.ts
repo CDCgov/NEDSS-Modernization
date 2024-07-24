@@ -1,5 +1,14 @@
 import { Features, Properties, Configuration, Settings } from './configuration';
 
+const search = {
+    view: {
+        table: {
+            enabled: false
+        },
+        enabled: false
+    }
+};
+
 const defaultFeatures: Features = {
     address: {
         autocomplete: false,
@@ -20,7 +29,8 @@ const defaultFeatures: Features = {
                 }
             }
         }
-    }
+    },
+    search
 };
 
 const defaultProperties: Properties = {

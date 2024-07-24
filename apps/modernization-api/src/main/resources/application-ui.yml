@@ -14,6 +14,11 @@ nbs:
               enabled: false
             edit:
               enabled: false
+      search:
+        view:
+          enabled: false
+          table:
+            enabled: false
 
     settings:
       analytics:

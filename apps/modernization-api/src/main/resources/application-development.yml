@@ -51,3 +51,8 @@ nbs:
               enabled: true
             edit:
               enabled: true
+      search:
+        view:
+          enabled: true
+          table:
+            enabled: true
