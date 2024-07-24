@@ -8,14 +8,17 @@ type Interaction = {
 };
 
 const useSearchNavigation = (): Interaction => {
-    const { features } = useConfiguration();
+    const {
+        features: { search }
+    } = useConfiguration();
+
     const [path, setPath] = useState('/advanced-search');
 
     useEffect(() => {
-        if (features.search.view.enabled) {
+        if (search.view.enabled) {
             setPath('/search');
         }
-    }, [features.search.view.enabled]);
+    }, [search.view.enabled]);
 
     const navigate = useNavigate();
 

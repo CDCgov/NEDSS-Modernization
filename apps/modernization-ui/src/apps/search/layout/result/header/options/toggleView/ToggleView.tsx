@@ -5,7 +5,7 @@ import { Button } from 'components/button';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 
 export const ToggleView = () => {
-    const { view, setView } = useSearchResultDisplay();
+    const { view, asList, asTable } = useSearchResultDisplay();
 
     return (
         <div className={classNames(styles.options)}>
@@ -15,7 +15,7 @@ export const ToggleView = () => {
                     className={classNames(styles.toggleButton)}
                     labelPosition="right"
                     icon={<Icon.GridView />}
-                    onClick={() => setView('table')}
+                    onClick={asTable}
                     type="button"
                     outline={view !== 'table'}>
                     Table
@@ -24,7 +24,7 @@ export const ToggleView = () => {
                     className={classNames(styles.toggleButton)}
                     labelPosition="right"
                     icon={<Icon.CheckCircle />}
-                    onClick={() => setView('list')}
+                    onClick={asList}
                     outline={view !== 'list'}
                     type="button">
                     List
