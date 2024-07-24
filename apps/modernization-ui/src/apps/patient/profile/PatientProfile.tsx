@@ -48,7 +48,7 @@ export const PatientProfile = () => {
                 header: 'success',
                 message: `Deleted patient ${formattedName(summary?.legalName?.last, summary?.legalName?.first)}`
             });
-            navigate('/advanced-search');
+            navigate('/search');
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
             showAlert({
                 type: 'error',

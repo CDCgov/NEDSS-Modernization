@@ -1,6 +1,12 @@
 import { Selectable } from './selectable';
 
-const findByValue = (selectables: Selectable[]) => (value: string) =>
-    selectables.find((selectable) => selectable.value === value);
+type SelectableResolver = (id: string) => Selectable | undefined;
+
+const findByValue =
+    (selectables: Selectable[]): SelectableResolver =>
+    (value: string) =>
+        selectables.find((selectable) => selectable.value === value);
 
 export { findByValue };
+
+export type { SelectableResolver };
