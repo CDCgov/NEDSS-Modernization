@@ -5,7 +5,6 @@ import gov.cdc.nbs.event.search.InvestigationFilter;
 import gov.cdc.nbs.redirect.search.EventFilterResolver;
 import gov.cdc.nbs.redirect.search.PatientFilterFromRequestParamResolver;
 import io.swagger.v3.oas.annotations.Hidden;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,8 +15,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Map;
 
 @RestController
-public class SearchRedirectController {
-  private final String advancedSearchPath;
+class SearchRedirectController {
+  private final SearchRedirect searchRedirect;
 
   private final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
 
@@ -25,15 +24,15 @@ public class SearchRedirectController {
 
   private final EncryptionService encryptionService;
 
-  public SearchRedirectController(
-      @Value("${nbs.search.advanced-search-path}") final String advancedSearchPath,
+  SearchRedirectController(
+      final SearchRedirect searchRedirect,
       final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver,
       final EventFilterResolver eventFilterResolver,
       final EncryptionService encryptionService) {
     this.patientFilterFromRequestParamResolver = patientFilterFromRequestParamResolver;
     this.eventFilterResolver = eventFilterResolver;
     this.encryptionService = encryptionService;
-    this.advancedSearchPath = advancedSearchPath;
+    this.searchRedirect = searchRedirect;
   }
 
   /**
@@ -42,12 +41,12 @@ public class SearchRedirectController {
    */
   @Hidden
   @PostMapping("/nbs/redirect/simpleSearch")
-  public RedirectView redirectSimpleSearch(
+  RedirectView redirectSimpleSearch(
       final RedirectAttributes attributes,
       @RequestParam final Map<String, String> incomingParams) {
-    var redirect = new RedirectView(advancedSearchPath);
+    var redirect = new RedirectView(searchRedirect.base());
     var redirectedUrl = redirect.getUrl();
-    if (redirectedUrl != null && redirectedUrl.equals(advancedSearchPath) && incomingParams.size() > 0) {
+    if (redirectedUrl != null && redirectedUrl.equals(searchRedirect.base()) && !incomingParams.isEmpty()) {
 
       // Event filter takes precedence
       var eventFilter = eventFilterResolver.resolve(incomingParams);
@@ -69,7 +68,7 @@ public class SearchRedirectController {
    */
   @Hidden
   @GetMapping("/nbs/redirect/advancedSearch")
-  public RedirectView redirectAdvancedSearch() {
-    return new RedirectView(advancedSearchPath);
+  RedirectView redirectAdvancedSearch() {
+    return new RedirectView(searchRedirect.base());
   }
 }
