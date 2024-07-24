@@ -333,7 +333,9 @@ Feature: Patient Search Sorting
     And patients are available for search
     And I want patients sorted by "county" "asc"
     When I search for patients
-    Then there are 3 patient search results
+    Then search result 1 has a "county" of "Autauga County"
+    And search result 2 has a "county" of "Baldwin County"
+    And search result 3 has a "county" of "Barbour County"
 
   Scenario: I can find the most relevant patient when sorting by county descending
     Given the patient has a "county" of "01001"
@@ -344,7 +346,9 @@ Feature: Patient Search Sorting
     And patients are available for search
     And I want patients sorted by "county" "desc"
     When I search for patients
-    Then there are 3 patient search results
+    Then search result 1 has a "county" of "Barbour County"
+    And search result 2 has a "county" of "Baldwin County"
+    And search result 3 has a "county" of "Autauga County"
 
   Scenario: I can find the most relevant patient when sorting by country ascending
     Given the patient has a "country" of "840"
