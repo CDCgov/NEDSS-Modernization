@@ -34,7 +34,6 @@ class PatientSearchCriteriaSortResolver {
       case "email" -> asSortOption("email", "email.emailAddress.keyword", order);
       case "firstNm" -> asSortOption("name", "name.firstNm.keyword", order);
       case "id" -> asSortOption("patient", order);
-      case "local_id" -> asSortOption("local_id", order);
       case "identification" -> asSortOption("entity_id", "entity_id.rootExtensionTxt.keyword", order);
       case "lastNm" -> asSortOption("name", "name.lastNm.keyword", order);
       case "phoneNumber" -> asSortOption("phone", "phone.telephoneNbr.keyword", order);
@@ -42,6 +41,7 @@ class PatientSearchCriteriaSortResolver {
       case "state" -> asSortOption(ADDRESS, "address.stateText.keyword", order);
       case "sex" -> asSortOption("curr_sex_cd", order);
       case "zip" -> asSortOption(ADDRESS, "address.zip.keyword", order);
+      // local_id :
       default -> asSortOption(sorting.getProperty(), order);
     };
   }
