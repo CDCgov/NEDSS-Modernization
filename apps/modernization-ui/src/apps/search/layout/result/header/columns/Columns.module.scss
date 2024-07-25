@@ -1,0 +1,7 @@
+.columns {
+    div.tile {
+        &:last-of-type {
+            border: none;
+        }
+    }
+}

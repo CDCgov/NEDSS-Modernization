@@ -57,7 +57,7 @@ const PatientSearchResultTable = ({ results }: Props) => {
     ];
 
     const tableColumns: Column<PatientSearchResult>[] = displayColumns
-        .map((orderItem) => columns.find((column) => column.id === orderItem.id))
+        .map((orderItem) => columns.find((column) => column.id === orderItem.id && orderItem.visible))
         .filter((item): item is Column<PatientSearchResult> => item !== undefined);
 
     return (

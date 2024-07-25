@@ -1,6 +1,6 @@
 import { Column } from 'design-system/table';
 import { PatientSearchResult, InvestigationResults, LabReportResults } from 'generated/graphql/schema';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DraggableLocation, DropResult } from 'react-beautiful-dnd';
 
 type ColumnProps = (source: DraggableLocation, destination: DraggableLocation) => void;
@@ -9,8 +9,10 @@ type ColumnContextProps = {
     register: (columns: Column<PatientSearchResult | InvestigationResults | LabReportResults>[]) => void;
     handleDragEnd: (result: DropResult) => void;
     displayColumns: DisplayColumn[];
+    tempColumns: DisplayColumn[];
     saveColumns: () => void;
     resetColumns: () => void;
+    toggleHide: (id: string) => void;
 };
 
 export type DisplayColumn = {
@@ -38,14 +40,18 @@ const ColumnProvider: React.FC<{
         );
     };
 
-    let tempColumns = displayColumns;
+    useEffect(() => {
+        setTempColumns(displayColumns);
+    }, [displayColumns]);
+
+    const [tempColumns, setTempColumns] = useState(displayColumns);
 
     const moveColumn: ColumnProps = (source, destination) => {
         tempColumns.splice(destination.index, 0, tempColumns.splice(source.index, 1)[0]);
     };
 
     const resetColumns = () => {
-        tempColumns = displayColumns;
+        setTempColumns(displayColumns);
     };
 
     const saveColumns = () => {
@@ -59,8 +65,27 @@ const ColumnProvider: React.FC<{
         moveColumn(source, destination);
     };
 
+    const toggleHide = (id: string) => {
+        const updatedColumns = tempColumns.map((column) => {
+            if (column.id === id) {
+                return { ...column, visible: !column.visible };
+            }
+            return column;
+        });
+        setTempColumns(updatedColumns);
+    };
+
     return (
-        <ColumnContext.Provider value={{ register, displayColumns, handleDragEnd, saveColumns, resetColumns }}>
+        <ColumnContext.Provider
+            value={{
+                register,
+                tempColumns,
+                displayColumns,
+                handleDragEnd,
+                saveColumns,
+                resetColumns,
+                toggleHide
+            }}>
             {children}
         </ColumnContext.Provider>
     );
