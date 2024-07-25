@@ -27,11 +27,14 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         @include borders.bordered();
         @include borders.rounded();
 
+        .collapse {
+            display: none;
+        }
+
         .criteria {
             width: $criteria-width;
 
-            @include borders.bordered('border-right');
-
+            height: 100%;
             .search {
                 height: calc(100% - $actions-height);
                 overflow-y: scroll;
@@ -52,10 +55,56 @@ $content-height: calc($search-height - $navigation-height - 2rem);
                 }
             }
         }
+        .collapseButton {
+            display: flex;
+            align-items: center;
+            @include borders.bordered('border-left');
+            position: inherit;
+            .content {
+                display: flex;
+                align-items: center;
+                @include borders.rounded();
+                background-color: colors.$base-lighter;
+                width: 1.5rem;
+                height: 3rem;
+                position: absolute;
+                left: $criteria-width;
+                top: calc($search-height / 2);
+
+                svg {
+                    display: flex;
+                    align-items: center;
+                    transform: rotate(-90deg);
+                }
+            }
+
+            .collapseTrue {
+              display: flex;
+              align-items: center;
+              @include borders.rounded();
+              background-color: colors.$base-lighter;
+              width: 1.5rem;
+              height: 3rem;
+              position: absolute;
+              top: calc($search-height / 2);
+
+              svg {
+                  display: flex;
+                  align-items: center;
+                  transform: rotate(-90deg);
+              }
+          }
+        }
 
         .results {
             flex-grow: 1;
             width: calc(100% - $criteria-width);
+            display: flex;
+            flex-direction: row;
+
+            .resultContent {
+                width: 100%;
+            }
 
             .loading {
                 margin: auto;
