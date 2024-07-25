@@ -25,8 +25,11 @@ export type { Option } from './models/Option';
 export type { Page } from './models/Page';
 export type { PageBuilder } from './models/PageBuilder';
 export type { Properties } from './models/Properties';
+export type { Search } from './models/Search';
 export type { Settings } from './models/Settings';
 export type { Smarty } from './models/Smarty';
+export type { Table } from './models/Table';
+export type { View } from './models/View';
 
 export { ConceptOptionsService } from './services/ConceptOptionsService';
 export { ConditionOptionsService } from './services/ConditionOptionsService';
