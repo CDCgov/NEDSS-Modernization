@@ -37,7 +37,7 @@ const Autocomplete = ({
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [entered, setEntered] = useState(value?.name);
+    const [entered, setEntered] = useState(value?.name ?? '');
 
     const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });
 

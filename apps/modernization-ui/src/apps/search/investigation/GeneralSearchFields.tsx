@@ -13,6 +13,7 @@ import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { ErrorMessage } from '@trussworks/react-uswds';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { Input } from 'components/FormInputs/Input';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -109,7 +110,7 @@ const GeneralSearchFields = () => {
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
                                 name={name}
-                                label="Event id type"
+                                label="Event ID type"
                                 data-testid={name}
                                 id={name}
                                 value={value}
@@ -118,6 +119,30 @@ const GeneralSearchFields = () => {
                             />
                         )}
                     />
+
+                    {watch.identification?.type && (
+                        <Controller
+                            control={form.control}
+                            name="identification.value"
+                            rules={{
+                                required: { value: true, message: 'Event Id is required' }
+                            }}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                                <Input
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    type="text"
+                                    label="Event ID"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                    )}
 
                     <Controller
                         control={form.control}
@@ -230,7 +255,9 @@ const GeneralSearchFields = () => {
                                         required={true}
                                         onBlur={onBlur}
                                     />
-                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                                    {error && (
+                                        <ErrorMessage id={`provider-error-message`}>{error?.message}</ErrorMessage>
+                                    )}
                                 </>
                             )}
                         />
@@ -254,7 +281,9 @@ const GeneralSearchFields = () => {
                                         required={true}
                                         onBlur={onBlur}
                                     />
-                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                                    {error && (
+                                        <ErrorMessage id={`facility-error-message`}>{error?.message}</ErrorMessage>
+                                    )}
                                 </>
                             )}
                         />

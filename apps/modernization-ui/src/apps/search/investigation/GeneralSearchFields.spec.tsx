@@ -37,7 +37,7 @@ const InvestigationFormWithFields = () => {
 describe('GeneralSearchFields', () => {
     describe('Pregnancy Status', () => {
         it('should contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const preg = screen.getByTestId('pregnancyStatus');
@@ -47,7 +47,7 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should update the selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('pregnancyStatus');
@@ -59,7 +59,7 @@ describe('GeneralSearchFields', () => {
 
     describe('Event ID Type', () => {
         it('should contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('identification.type');
@@ -69,7 +69,7 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should update the selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('identification.type');
@@ -81,7 +81,7 @@ describe('GeneralSearchFields', () => {
 
     describe('Event Date Type', () => {
         it('should contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('eventDate.type');
@@ -91,7 +91,7 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should update the selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('eventDate.type');
@@ -103,7 +103,7 @@ describe('GeneralSearchFields', () => {
 
     describe('Reporting Facility type', () => {
         it('should contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('reportingFacility');
@@ -113,13 +113,29 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should update the selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+            render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
                 const element = screen.getByTestId('reportingFacility');
                 userEvent.selectOptions(element, 'Reporting Facility');
                 expect(element).toHaveTextContent('Reporting Facility');
             });
+        });
+
+        it('should not display event id', async () => {
+            const { queryByLabelText } = render(<InvestigationFormWithFields />);
+            const eventIdField = queryByLabelText('Event ID');
+            expect(eventIdField).toBeNull();
+        });
+
+        it('should display event id once event id type is selected', async () => {
+            const { getByLabelText } = render(<InvestigationFormWithFields />);
+
+            const eventTypeField = getByLabelText('Event ID type');
+            userEvent.selectOptions(eventTypeField, 'ABCS_CASE_ID');
+
+            const eventIdField = screen.queryByLabelText('Event ID');
+            expect(eventIdField).toBeInTheDocument();
         });
     });
 });
