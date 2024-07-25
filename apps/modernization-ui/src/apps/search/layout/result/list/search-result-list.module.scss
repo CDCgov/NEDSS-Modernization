@@ -7,7 +7,7 @@
     .result {
         padding: 1rem;
 
-        &:nth-child(even) {
+        &:nth-child(odd) {
             background-color: colors.$base-lightest;
         }
     }

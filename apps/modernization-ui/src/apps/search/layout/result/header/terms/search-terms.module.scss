@@ -1,11 +1,17 @@
 .terms {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    .term {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+    }
 
     outline: none !important;
 
     h2 {
+        display: flex;
+        white-space: nowrap;
         margin: 0;
     }
 }
