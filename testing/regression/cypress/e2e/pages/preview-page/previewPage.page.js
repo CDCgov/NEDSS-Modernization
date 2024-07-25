@@ -1,11 +1,6 @@
 class PreviewPagePage {
-    navigateToPreviewPage (toSpecificPage) {
-        if(toSpecificPage) {
-            cy.visit('/page-builder/pages/1010441');
-        } else {
-            cy.visit('/page-builder/pages');
-            cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
-        }
+    navigateToPreviewPage () {
+        this.navigateToPreviewPageWithStatusInitialDraft();
     }
 
     viewsElementsOnPreviewPage(content, type) {
@@ -20,6 +15,50 @@ class PreviewPagePage {
         } else {
             cy.contains(content)
         }
+    }
+
+    navigateToPreviewPageWithStatusInitialDraft() {
+        cy.visit('/page-builder/pages');
+        cy.wait(2000);
+         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+            if($tr.find("td").eq(3).text() === "Initial Draft") {
+                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                return false
+            }
+        });
+    }
+
+    navigateToPreviewPageWithStatusPublished() {
+        cy.visit('/page-builder/pages');
+        cy.wait(2000);
+        let isExist = false;
+        const findOne = () => {
+            cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+                cy.log('xox-$tr.find("td").eq(3).text()' + $tr.find("td").eq(3).text())
+                if($tr.find("td").eq(3).text() === "Published") {
+                    isExist = true;
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false
+                }
+            });
+         }
+        findOne();
+        if(!isExist) {
+            cy.get("th .usa-button.usa-button--unstyled").eq(2).click();
+            cy.wait(2000);
+             cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
+        }
+    }
+
+    navigateToPreviewPageWithStatusPublishedWithDraft() {
+        cy.visit('/page-builder/pages');
+        cy.wait(2000);
+         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+            if($tr.find("td").eq(3).text() === "Published with Draft") {
+                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                return false
+            }
+        });
     }
 }
 
