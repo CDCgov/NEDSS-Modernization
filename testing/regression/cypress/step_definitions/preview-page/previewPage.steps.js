@@ -13,3 +13,7 @@ Then("User navigates to Preview Page and page status is Initial Draft", () => {
     previewPagePage.navigateToPreviewPageWithStatusInitialDraft();
 });
 
+Then("User navigates to Preview Page and page status is Published", () => {
+    previewPagePage.navigateToPreviewPageWithStatusPublished();
+});
+

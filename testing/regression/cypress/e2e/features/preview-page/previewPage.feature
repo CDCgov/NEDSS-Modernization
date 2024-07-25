@@ -42,3 +42,16 @@ Feature: Page Builder - User can view Preview Page here.
       | Print            | Icon   |
       | Create new draft | Button |
 
+  Scenario Outline: Verify the data elements in the preview page header buttons when page status is published with draft
+    When User navigates to Preview Page and page status is Published with Draft
+    Then Below buttons will displays in preview page "<Content>" "<Type>"
+    Examples:
+      | Content          | Type   |
+      | Business rules   | Button |
+      | Save as template | Button |
+      | Edit draft       | Button |
+      | Preview          | Icon   |
+      | Clone            | Icon   |
+      | Print            | Icon   |
+      | Publish          | Button |
+
