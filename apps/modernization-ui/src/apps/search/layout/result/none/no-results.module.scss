@@ -1,3 +1,5 @@
+@use 'styles/headers';
+
 .noResults {
     display: flex;
     padding: 3rem;
@@ -10,20 +12,16 @@
         padding-left: 0.5rem;
         gap: 0.5rem;
 
-        .noResultsHeader {
-            font-size: 1.375rem;
-            font-family: 'Public Sans';
-            font-style: normal;
-            font-weight: 700;
+        .header {
+            @include headers.header(2);
         }
 
-        .noResultsSubHeading {
-            font-family: 'Public Sans';
-            font-size: 1rem;
-            font-style: normal;
+        .message {
+            @include headers.header(3);
             font-weight: 400;
 
-            .link {
+            a {
+                padding-left: 1ch;
                 cursor: pointer;
             }
         }

@@ -92,7 +92,7 @@ const GeneralSearchFields = () => {
                                 name={name}
                                 value={value}
                                 id="pregnancyStatus"
-                                label="Pregnancy test"
+                                label="Pregnancy status"
                                 onChange={onChange}
                                 options={[
                                     { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },

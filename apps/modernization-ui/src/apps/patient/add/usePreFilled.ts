@@ -12,8 +12,10 @@ const usePreFilled = (initial: DefaultNewPatentEntry): NewPatientEntry => {
     useEffect(() => {
         if (location?.state?.criteria) {
             decrypt(location.state.criteria).then(withCriteria(initial)).then(setPrefilled);
+        } else if (location?.state?.defaults) {
+            setPrefilled(location?.state?.defaults);
         }
-    }, [location?.state?.criteria]);
+    }, [location?.state?.criteria, location?.state?.defaults]);
 
     return prefilled;
 };

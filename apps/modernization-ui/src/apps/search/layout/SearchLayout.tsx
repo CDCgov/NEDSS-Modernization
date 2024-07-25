@@ -9,6 +9,8 @@ import { Loading } from 'components/Spinner';
 import { SearchNavigation } from './navigation/SearchNavigation';
 import { usePage } from 'page';
 import { Icon } from '@trussworks/react-uswds';
+import { NoResults } from './result/none';
+import { NoInput } from './result/NoInput';
 
 type Renderer = () => ReactNode;
 
@@ -17,7 +19,7 @@ type Props = {
     criteria: Renderer;
     resultsAsList: Renderer;
     resultsAsTable: Renderer;
-    noInputResults?: Renderer;
+    noInput?: Renderer;
     noResults?: Renderer;
     onSearch: () => void;
     onClear: () => void;
@@ -31,8 +33,8 @@ const SearchLayout = ({
     resultsAsTable,
     onSearch,
     onClear,
-    noInputResults,
-    noResults,
+    noInput = () => <NoInput />,
+    noResults = () => <NoResults />,
     onRemoveTerm
 }: Props) => {
     const { view, status } = useSearchResultDisplay();
@@ -70,14 +72,12 @@ const SearchLayout = ({
                         {status === 'searching' && <Loading className={styles.loading} />}
                         {status === 'completed' && (
                             <SearchResults onRemoveTerm={onRemoveTerm}>
-                                {total === 0 && noResults?.()}
-                                {view === 'list' && resultsAsList()}
-                                {view === 'table' && resultsAsTable()}
+                                {total === 0 && noResults()}
+                                {view === 'list' && total > 0 && resultsAsList()}
+                                {view === 'table' && total > 0 && resultsAsTable()}
                             </SearchResults>
                         )}
-                        {status === 'noInput' && (
-                            <SearchResults onRemoveTerm={onRemoveTerm}>{noInputResults?.()}</SearchResults>
-                        )}
+                        {status === 'noInput' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
                     </div>
                 </div>
             </div>

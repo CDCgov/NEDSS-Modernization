@@ -32,7 +32,7 @@ public class QuestionManagementUtil {
 
     public QuestionOid getQuestionOid(boolean includedInMessage, String codeSystem, CodeSet codeSet) {
         if (includedInMessage) {
-            return codeValueGeneralRepository.findByCode(
+            return codeValueGeneralRepository.findCodeSystemByCode(
                     codeSystem)
                 .stream()
                 .map(cvg -> new QuestionOid(

@@ -1,0 +1,29 @@
+@use 'styles/headers';
+
+.noResults {
+    display: flex;
+    padding: 3rem;
+
+    .noResultsContent {
+        display: flex;
+        flex-direction: column;
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+        padding-left: 0.5rem;
+        gap: 0.5rem;
+
+        .noResultsHeader {
+            @include headers.header(2);
+        }
+
+        .noResultsSubHeading {
+            @include headers.header(3);
+            font-weight: 400;
+
+            a {
+                padding-left: 1ch;
+                cursor: pointer;
+            }
+        }
+    }
+}
