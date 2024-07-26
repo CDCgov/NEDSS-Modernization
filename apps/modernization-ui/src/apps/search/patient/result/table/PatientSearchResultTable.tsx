@@ -37,7 +37,7 @@ const columns: Column<PatientSearchResult>[] = [
     { id: 'id', name: 'Patient ID', sortable: true, render: (row) => row.shortId },
     { id: 'address', name: 'Address', sortable: true, render: displayAddresses },
     { id: 'phoneNumber', name: 'Phone', sortable: true, render: displayPhones },
-    { id: 'names', name: 'Other names', sortable: true, render: displayNames },
+    { id: 'names', name: 'Other names', render: displayNames },
     { id: 'identification', name: 'ID', sortable: true, render: displayIdentifications },
     { id: 'email', name: 'Email', sortable: true, render: displayEmails }
 ];
