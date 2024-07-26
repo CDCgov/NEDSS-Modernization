@@ -20,7 +20,9 @@ class PreviewPagePage {
     navigateToPreviewPageWithStatusInitialDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+        cy.get('#range-toggle').select('100')
+        cy.wait(5000);
+        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
                 return false
@@ -31,35 +33,245 @@ class PreviewPagePage {
     navigateToPreviewPageWithStatusPublished() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
+        cy.get('#range-toggle').select('100')
+        cy.wait(5000);
         let isExist = false;
-        const findOne = () => {
-            cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-                cy.log('xox-$tr.find("td").eq(3).text()' + $tr.find("td").eq(3).text())
-                if($tr.find("td").eq(3).text() === "Published") {
-                    isExist = true;
-                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                    return false
-                }
-            });
-         }
-        findOne();
-        if(!isExist) {
-            cy.get("th .usa-button.usa-button--unstyled").eq(2).click();
-            cy.wait(2000);
-             cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
-        }
+        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+            if($tr.find("td").eq(3).text() === "Published") {
+                isExist = true;
+                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                return false
+            }
+        });
     }
 
     navigateToPreviewPageWithStatusPublishedWithDraft() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+        cy.get('#range-toggle').select('100')
+        cy.wait(5000);
+        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
             if($tr.find("td").eq(3).text() === "Published with Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
                 return false
             }
         });
     }
+
+    clickOnEditPageDetails() {
+        cy.get('[data-testid="EditViewPageDetails"]').click()
+    }
+
+    checkNavigatedToPageDetails() {
+        cy.contains('Page Details')
+    }
+
+    checkConditionsField() {
+        cy.get('.multi-select__input-container').eq(0).click()
+    }
+
+    checkRemoveOrAddConditions() {
+        cy.get('.multi-select__menu').eq(0).click()
+        cy.get('.multi-select__input-container').eq(0).click()
+    }
+
+    checkPageNameField() {
+        cy.get('#name').click()
+    }
+
+    checkPageNameFieldMaxLength() {
+        cy.get('#name')
+            .invoke('text')
+            .then((text) => {
+                if(text) {
+                    expect(text.length).to.be.lessThan(50)
+                }
+            })
+    }
+
+    checkEventTypeField() {
+        cy.get('[data-testid="dropdown"]').should('be.disabled')
+    }
+
+    checkReportingMechanismField() {
+        cy.get('#messageMappingGuide').should('be.exist')
+    }
+
+    selectAnotherOptionFromReportingMechanism() {
+        cy.get('#messageMappingGuide').select(2)
+    }
+
+    checkPageDescriptionField() {
+        cy.get('#description').should('be.exist')
+    }
+
+    checkPageDescriptionFieldMaxLength() {
+        cy.get('#description')
+            .invoke('text')
+            .then((text) => {
+                if(text) {
+                    expect(text.length).to.be.lessThan(2000)
+                }
+            })
+    }
+
+    checkDatamartNameField() {
+        cy.get('#datamart').should('be.exist')
+    }
+
+    checkDatamartNameFieldMaxField() {
+        cy.get('#datamart')
+            .invoke('text')
+            .then((text) => {
+                if(text) {
+                    expect(text.length).to.be.lessThan(2000)
+                }
+            })
+    }
+
+    clickCancelBtnPageDetailsPage() {
+        cy.contains('Cancel').click()
+    }
+
+    checkNavigatedBackToPreviewPage() {
+        cy.contains('Page Details')
+    }
+
+    checkChangesOnPreviewPage() {
+        cy.contains('Page information')
+    }
+
+    clickSaveChangesBtnPageDetailsPage() {
+        this.clickOnEditPageDetails()
+        cy.get('#name').type('test')
+        cy.contains('Save').click()
+    }
+
+    checkSuccessMessage() {
+        cy.wait(2000)
+        cy.contains('successfully')
+    }
+
+    checkChangesOnPreviewPageStatusType() {
+        cy.contains('PREVIEWING:')
+    }
+
+    checkEditDraftPage() {
+        cy.contains('Edit draft')
+    }
+
+    clickOnMetadataBtn() {
+        this.clickCancelBtnPageDetailsPage()
+        cy.contains('Metadata').click()
+    }
+
+    clickOnHistoryTab() {
+        cy.get('[data-testid="historyTab"]').click()
+    }
+
+    checkHistoryInfo(info) {
+         cy.get('[data-testid="historyTabContent"]')
+            .invoke('text')
+            .then((text) => {
+                if (text.includes(info)) {
+                    cy.contains(info);
+                }
+            })
+    }
+
+    userSeeOnlyTenRows() {
+        cy.get('[data-testid="historyTabContent"]')
+            .invoke('text')
+            .then((text) => {
+                if (text.includes(10)) {
+                    cy.contains(10);
+                }
+            })
+    }
+
+    checkRowOptionsAvailable() {
+        cy.get('[data-testid="historyTabContent"]')
+            .invoke('text')
+            .then((text) => {
+                if (text.includes(20)) {
+                    cy.contains(20);
+                }
+            })
+    }
+
+    clickCreateNewPageButton() {
+        cy.visit('/page-builder/pages');
+        cy.get(".createNewPageButton").eq(0).click()
+    }
+    userViewsEventTypeField() {
+        cy.get("#eventType")
+    }
+
+    selectEventType(type) {
+        cy.wait(2000)
+        if(type) {
+            cy.get("#eventType").select(type)
+        } else {
+            cy.get("#eventType").select("INV")
+        }
+    }
+
+    viewTextOnPage(text) {
+        cy.contains(text)
+    }
+
+    selectCondition() {
+        this.selectEventType()
+        cy.get("#conditionIds").click()
+        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
+    }
+
+    selectPageName() {
+        cy.get('#name').click({ force: true })
+        const newPageName = Math.random().toString(36).substring(2, 8);
+        cy.get('#name').type(`New page test ${newPageName}`)
+    }
+
+    selectTemplate() {
+        cy.get('#templateId').find('option').eq(1).then((option) => {
+            cy.get('#templateId').select(option.attr('value'))
+        })
+    }
+
+    selectReportingMechanism() {
+        cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
+            cy.get('#messageMappingGuide').select(option.attr('value'))
+        })
+    }
+    enterPageDescription() {
+        cy.get("#pageDescription").type("This page is for diagnosis")
+    }
+
+    clickCreatePageButton() {
+        cy.get('.createPage').eq(0).click()
+        cy.wait(4000)
+    }
+
+    clickPreviewAfterNewlyCreatedPage() {
+        cy.contains('Preview').click();
+    }
+
+    clickPublishBtn() {
+        cy.get('[data-testid="publishBtn"]').eq(0).click();
+
+    }
+
+    clickPublishBtnOnPublishPage() {
+        cy.wait(2000)
+        cy.get('#notes').type('Version note test', { force: true });
+        cy.get('[data-testid="publishBtnOnPublishPageModal"]').click({ force: true });
+    }
+
+    viewTextOnPageForStatus(text) {
+        cy.wait(2000)
+        cy.contains(text)
+    }
+
 }
 
 export const previewPagePage = new PreviewPagePage()
