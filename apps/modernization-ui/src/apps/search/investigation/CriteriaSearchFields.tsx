@@ -1,33 +1,16 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import {
     InvestigationFilterEntry,
+    caseStatusOptions,
     investigationStatusOptions,
     notificationStatusOptions,
     processingStatusOptions
 } from './InvestigationFormTypes';
 import { SingleSelect, MultiSelect } from 'design-system/select';
-import { ConceptOptionsService } from 'generated';
-import { useEffect, useState } from 'react';
-import { Selectable } from 'options';
 import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
 
-type Props = {
-    outbreakCodeSetNm?: string;
-};
-
-const CriteriaSearchFields = ({ outbreakCodeSetNm = 'OUTBREAK_NM' }: Props) => {
+const CriteriaSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
-
-    const [outbreakNames, setOutbreakNames] = useState<Selectable[]>();
-
-    useEffect(() => {
-        ConceptOptionsService.conceptSearch({
-            name: outbreakCodeSetNm,
-            criteria: ''
-        }).then((response) => {
-            setOutbreakNames(response.options);
-        });
-    }, [outbreakCodeSetNm]);
 
     return (
         <>
@@ -49,15 +32,13 @@ const CriteriaSearchFields = ({ outbreakCodeSetNm = 'OUTBREAK_NM' }: Props) => {
             <Controller
                 control={form.control}
                 name="outbreaks"
-                render={({ field: { name, onBlur, onChange, value } }) => (
-                    <MultiSelect
-                        label="Outbreak names"
+                render={({ field: { name, onChange, value } }) => (
+                    <ConceptMultiSelect
                         onChange={onChange}
-                        onBlur={onBlur}
                         name={name}
                         value={value}
-                        options={outbreakNames ?? []}
-                        id={name}
+                        valueSet="OUTBREAK_NM"
+                        label="Outbreak names"
                     />
                 )}
             />
@@ -66,7 +47,15 @@ const CriteriaSearchFields = ({ outbreakCodeSetNm = 'OUTBREAK_NM' }: Props) => {
                 control={form.control}
                 name="caseStatuses"
                 render={({ field: { onChange, name, value } }) => (
-                    <ConceptMultiSelect onChange={onChange} name={name} value={value} valueSet="OUTBREAK_NM" />
+                    <MultiSelect
+                        data-testid={'caseStatuses'}
+                        label="Case status"
+                        onChange={onChange}
+                        name={name}
+                        value={value}
+                        options={caseStatusOptions}
+                        id={name}
+                    />
                 )}
             />
             <Controller

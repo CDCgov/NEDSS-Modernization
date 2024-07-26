@@ -7,20 +7,11 @@ type Props = {
     onChange: ((value?: Selectable[]) => void) | undefined;
     name: string;
     value: Selectable[] | undefined;
+    label: string;
 };
 
-export const ConceptMultiSelect = ({ valueSet, onChange, name, value }: Props) => {
+export const ConceptMultiSelect = ({ valueSet, onChange, name, value, label }: Props) => {
     const { options } = useConceptOptions(valueSet, { lazy: false });
 
-    return (
-        <MultiSelect
-            data-testid={'caseStatuses'}
-            label="Case status"
-            onChange={onChange}
-            name={name}
-            value={value}
-            options={options}
-            id={name}
-        />
-    );
+    return <MultiSelect label={label} onChange={onChange} name={name} value={value} options={options} id={name} />;
 };
