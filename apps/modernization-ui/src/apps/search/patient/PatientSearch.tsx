@@ -36,7 +36,6 @@ const PatientSearch = () => {
             methods.resetField(matchingField as keyof PatientCriteriaEntry);
             search(methods.getValues());
         } else {
-            methods.reset();
             reset();
         }
     };
@@ -56,9 +55,7 @@ const PatientSearch = () => {
                 resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
                 onSearch={methods.handleSubmit(search)}
                 noResults={() => <NoPatientResults />}
-                onClear={() => {
-                    reset(), methods.reset();
-                }}
+                onClear={reset}
             />
         </FormProvider>
     );
