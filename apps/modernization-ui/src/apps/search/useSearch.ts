@@ -131,8 +131,9 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
             pageReset();
             searchResults.reset();
             dispatch({ type: 'wait' });
-        } else if (state.status === 'noInput') {
+        } else if (state.status === 'waiting') {
             pageReset();
+        } else if (state.status === 'noInput') {
             searchResults.noInput();
         }
     }, [state.status, isLoading]);
