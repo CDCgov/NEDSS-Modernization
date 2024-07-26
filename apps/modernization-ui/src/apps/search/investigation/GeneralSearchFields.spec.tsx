@@ -129,12 +129,12 @@ describe('GeneralSearchFields', () => {
         });
 
         it('should display event id once event id type is selected', () => {
-            const { getByLabelText } = render(<InvestigationFormWithFields />);
+            const { getByLabelText, queryByLabelText } = render(<InvestigationFormWithFields />);
 
             const eventTypeField = getByLabelText('Event ID type');
             userEvent.selectOptions(eventTypeField, 'ABCS_CASE_ID');
 
-            const eventIdField = screen.queryByLabelText('Event ID');
+            const eventIdField = queryByLabelText('Event ID');
             expect(eventIdField).toBeInTheDocument();
         });
     });
