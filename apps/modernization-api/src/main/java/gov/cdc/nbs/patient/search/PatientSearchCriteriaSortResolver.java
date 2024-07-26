@@ -31,7 +31,7 @@ class PatientSearchCriteriaSortResolver {
       case "city" -> asSortOption(ADDRESS, "address.city.keyword", order);
       case "email" -> asSortOption("email", "email.emailAddress.keyword", order);
       case "firstNm" -> asSortOption("name", "name.firstNm.keyword", order);
-      case "id" -> asSortOption("id", order);
+      case "id" -> asSortOption("patient", order);
       case "local_id" -> asSortOption("local_id", order);
       case "identification" -> asSortOption("entity_id", "entity_id.rootExtensionTxt.keyword", order);
       case "lastNm" -> asSortOption("name", "name.lastNm.keyword", order);
