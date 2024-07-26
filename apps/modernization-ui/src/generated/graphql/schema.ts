@@ -283,8 +283,8 @@ export type InvestigationFilter = {
   processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
-  reportingFacilityId?: InputMaybe<Scalars['ID']['input']>;
-  reportingProviderId?: InputMaybe<Scalars['ID']['input']>;
+  reportingFacilityId?: InputMaybe<Scalars['String']['input']>;
+  reportingProviderId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type InvestigationPersonParticipation = {

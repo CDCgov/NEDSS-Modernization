@@ -288,7 +288,7 @@ public class InvestigationSearchCriteriaSteps {
   @Given("I want to find investigations reported by the {organization} facility using the new api")
   public void i_want_to_find_investigations_reported_by_the_organization_using_the_new_api(final long organization) {
     this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setReportingFacilityId(organization));
+        criteria -> criteria.setReportingFacilityId(String.valueOf(organization)));
   }
 
   @Given("I want to find investigations reported by the provider")
@@ -303,7 +303,7 @@ public class InvestigationSearchCriteriaSteps {
   @Given("I want to find investigations reported by the provider using the new api")
   public void i_want_to_find_investigations_reported_by_the_provider_using_the_new_api() {
     this.activeCriteria.maybeActive().ifPresent(
-        criteria -> criteria.setReportingProviderId(this.activeProvider.active().identifier()));
+        criteria -> criteria.setReportingProviderId(String.valueOf(this.activeProvider.active().identifier())));
   }
 
   @Given("I want to find investigations related to the {outbreak} outbreak")
