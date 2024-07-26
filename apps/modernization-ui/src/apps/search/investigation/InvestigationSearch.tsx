@@ -70,7 +70,7 @@ const InvestigationSearch = () => {
                     )}
                     resultsAsTable={() => <div>result table</div>}
                     onSearch={form.handleSubmit(search)}
-                    onClear={reset}
+                    onClear={form.reset}
                 />
             </FormProvider>
         </SearchCriteriaProvider>

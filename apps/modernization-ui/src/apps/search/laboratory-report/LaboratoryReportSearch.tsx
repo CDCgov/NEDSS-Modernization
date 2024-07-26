@@ -63,7 +63,7 @@ const LaboratoryReportSearch = () => {
                 )}
                 resultsAsTable={() => <div>result table</div>}
                 onSearch={formMethods.handleSubmit(search)}
-                onClear={reset}
+                onClear={formMethods.reset}
             />
         </SearchCriteriaProvider>
     );

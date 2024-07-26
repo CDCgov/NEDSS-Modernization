@@ -56,7 +56,7 @@ const PatientSearch = () => {
                 resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
                 onSearch={methods.handleSubmit(search)}
                 noResults={() => <NoPatientResults />}
-                onClear={reset}
+                onClear={methods.reset}
             />
         </FormProvider>
     );
