@@ -37,6 +37,7 @@ const Autocomplete = ({
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    // setting to empty string prevents error: A component is changing an uncontrolled input to be controlled
     const [entered, setEntered] = useState(value?.name ?? '');
 
     const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });

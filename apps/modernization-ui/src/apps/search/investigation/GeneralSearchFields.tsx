@@ -1,3 +1,11 @@
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
+import { MultiSelect, SingleSelect } from 'design-system/select';
+import { PregnancyStatus } from 'generated/graphql/schema';
+import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import {
     InvestigationFilterEntry,
@@ -5,15 +13,6 @@ import {
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
-import { PregnancyStatus } from 'generated/graphql/schema';
-import { MultiSelect, SingleSelect } from 'design-system/select';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
-import { ErrorMessage } from '@trussworks/react-uswds';
-import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
-import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
-import { Input } from 'components/FormInputs/Input';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -254,10 +253,8 @@ const GeneralSearchFields = () => {
                                         onChange={onChange}
                                         required={true}
                                         onBlur={onBlur}
+                                        error={error?.message}
                                     />
-                                    {error && (
-                                        <ErrorMessage id={`provider-error-message`}>{error?.message}</ErrorMessage>
-                                    )}
                                 </>
                             )}
                         />
@@ -280,10 +277,8 @@ const GeneralSearchFields = () => {
                                         onChange={(e) => onChange(e?.value)}
                                         required={true}
                                         onBlur={onBlur}
+                                        error={error?.message}
                                     />
-                                    {error && (
-                                        <ErrorMessage id={`facility-error-message`}>{error?.message}</ErrorMessage>
-                                    )}
                                 </>
                             )}
                         />
