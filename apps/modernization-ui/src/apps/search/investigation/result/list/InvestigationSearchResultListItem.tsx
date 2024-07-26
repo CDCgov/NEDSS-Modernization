@@ -1,151 +1,94 @@
-import styles from './InvestigationSearchResultListItem.module.scss';
 import { Link } from 'react-router-dom';
 import { Investigation, InvestigationPersonParticipation } from 'generated/graphql/schema';
-import { NoData } from 'components/NoData';
+import { internalizeDate } from 'date';
+import { ClassicLink } from 'classic';
+import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
+
+import styles from './InvestigationSearchResultListItem.module.scss';
+import { SelectableResolver } from 'options';
+
+const getPatient = (investigation: Investigation): InvestigationPersonParticipation | undefined | null => {
+    return investigation.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
+};
+
+const getInvestigatorName = (investigation: Investigation): string | undefined => {
+    const provider = investigation.personParticipations?.find((p) => p?.typeCd === 'InvestgrOfPHC');
+    if (provider) {
+        return `${provider.firstName} ${provider.lastName}`;
+    } else {
+        return undefined;
+    }
+};
 
 type Props = {
     result: Investigation;
+    notificationStatusResolver: SelectableResolver;
 };
 
-const InvestigationSearchResultListItem = ({ result }: Props) => {
-    const getPatient = (investigation: Investigation): InvestigationPersonParticipation | undefined | null => {
-        return investigation.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
-    };
-
+const InvestigationSearchResultListItem = ({ result, notificationStatusResolver }: Props) => {
     const patient = getPatient(result);
     const firstName = patient?.firstName ?? '';
     const lastName = patient?.lastName ?? '';
     const legalName = firstName && lastName ? `${firstName} ${lastName}` : 'No data';
 
-    const getInvestigatorName = (investigation: Investigation): string | undefined => {
-        const provider = investigation.personParticipations?.find((p) => p?.typeCd === 'InvestgrOfPHC');
-        if (provider) {
-            return `${provider.firstName} ${provider.lastName}`;
-        } else {
-            return undefined;
-        }
-    };
-
-    const getInvestigationStatusString = (investigation: Investigation): string => {
-        switch (investigation.investigationStatusCd) {
-            case 'O':
-                return 'OPEN';
-            case 'C':
-                return 'CLOSED';
-            default:
-                return investigation.investigationStatusCd ?? 'No Data';
-        }
-    };
+    const getInvestigationStatusString = (investigation: Investigation): string =>
+        investigation.investigationStatusCd === 'C' ? 'CLOSED' : 'OPEN';
 
     return (
-        <div className={styles.listItem}>
-            <div className={styles.listItemBox}>
-                <div className={styles.listItemData}>
-                    <label htmlFor="legalName" className={styles.listItemLabel}>
-                        LEGAL NAME
-                    </label>
-                    <br />
-                    <Link
-                        id="legalName"
-                        className={`${styles.value}, ${styles.name}`}
-                        to={`/patient-profile/${patient?.shortId}/summary`}>
+        <Result>
+            <ResultItemGroup>
+                <ResultItem label="Legal name" orientation="vertical">
+                    <Link id="legalName" to={`/patient-profile/${patient?.shortId}/summary`}>
                         {legalName}
                     </Link>
-                </div>
-
-                <div className={styles.listItemData}>
-                    <label htmlFor="dob">Date of birth</label>
-                    <span id="dob" className={styles.value}>
-                        {patient?.birthTime ?? <NoData />}
-                    </span>
-                </div>
-
-                <div className={styles.listItemData}>
-                    <label htmlFor="sex">SEX</label>
-                    <span id="sex" className={styles.value}>
-                        {patient?.currSexCd ?? 'No data'}
-                    </span>
-                </div>
-
-                <div className={styles.listItemData}>
-                    <label htmlFor="patientId" className={styles.listItemLabel}>
-                        Patient ID
-                    </label>
-                    <span id="patientId" className={styles.value}>
-                        {patient?.shortId ?? <NoData />}
-                    </span>
-                </div>
-            </div>
-
-            <div className={styles.listItemBox}>
-                <div className={styles.listItemData}>
-                    <label htmlFor="condition">Condition</label>
-                    <br />
-                    <Link
+                </ResultItem>
+                <ResultItem label="Date of birth">{internalizeDate(patient?.birthTime)}</ResultItem>
+                <ResultItem label="Sex">{patient?.currSexCd}</ResultItem>
+                <ResultItem label="Patient ID">{patient?.shortId}</ResultItem>
+            </ResultItemGroup>
+            <ResultItemGroup>
+                <ResultItem label="Condition" orientation="vertical">
+                    <ClassicLink
                         id="condition"
-                        className={`${styles.value}, ${styles.name}`}
-                        to={`/nbs/api/profile/${patient?.personParentUid}/investigation/${result.id}`}>
+                        url={`/nbs/api/profile/${patient?.personParentUid}/investigation/${result.id}`}>
                         {result.cdDescTxt}
-                    </Link>
-                    <br />
-                    <span>{result.localId}</span>
-                </div>
-
-                <div className={styles.listItemData}>
-                    <label htmlFor="startDate">Start Date</label>
-                    <br />
-                    <span id="startDate" className={styles.value}>
-                        {result.addTime ?? <NoData />}
-                    </span>
-                </div>
-            </div>
-
-            <div className={styles.listItemBox}>
-                <div className={styles.listItemData}>
-                    <label htmlFor="jurisdiction" className={styles.listItemLabel}>
-                        Jurisdiction
-                    </label>
-                    <br />
-                    <span id="jurisdiction" className={styles.value}>
-                        {result.jurisdictionCodeDescTxt ?? <NoData />}
-                    </span>
-                </div>
-                <div className={styles.listItemData}>
-                    <label htmlFor="investigator" className={styles.listItemLabel}>
-                        Investigator
-                    </label>
-                    <br />
-                    <span id="investigator" className={styles.value}>
-                        {getInvestigatorName(result) ?? <NoData />}
-                    </span>
-                </div>
-            </div>
-
-            <div className={styles.listItemBox}>
-                <div className={styles.listItemData}>
-                    <label htmlFor="status" className={styles.listItemLabel}>
-                        STATUS
-                    </label>
-                    <br />
-                    <span
-                        className={`${styles.value} ${result.investigationStatusCd == 'O' ? styles.open : ''}`}
-                        id="status">
-                        {getInvestigationStatusString(result) ?? <NoData />}
-                    </span>
-                </div>
-
-                <div className={styles.listItemData}>
-                    <label htmlFor="notification" className={styles.listItemLabel}>
-                        NOTIFICATION
-                    </label>
-                    <br />
-                    <span className={styles.value} id="notification">
-                        {result.notificationRecordStatusCd ?? <NoData />}
-                    </span>
-                </div>
-            </div>
-        </div>
+                    </ClassicLink>
+                    {result.localId}
+                </ResultItem>
+                <ResultItem label="Start date" orientation="vertical">
+                    {internalizeDate(result.addTime)}
+                </ResultItem>
+            </ResultItemGroup>
+            <ResultItemGroup>
+                <ResultItem label="Jurisdiction" orientation="vertical">
+                    {result.jurisdictionCodeDescTxt}
+                </ResultItem>
+                <ResultItem label="Investigator" orientation="vertical">
+                    {getInvestigatorName(result)}
+                </ResultItem>
+            </ResultItemGroup>
+            <ResultItemGroup>
+                <ResultItem label="Status" orientation="vertical">
+                    <StatusBadge>{getInvestigationStatusString(result)}</StatusBadge>
+                </ResultItem>
+                <ResultItem label="Notification" orientation="vertical">
+                    {(result.notificationRecordStatusCd &&
+                        notificationStatusResolver(result.notificationRecordStatusCd)?.name) ||
+                        result.notificationRecordStatusCd}
+                </ResultItem>
+            </ResultItemGroup>
+        </Result>
     );
 };
+
+type StatusBadgeProps = {
+    children?: string;
+};
+
+const StatusBadge = ({ children }: StatusBadgeProps) => (
+    <span className={styles.status} id="status">
+        {children}
+    </span>
+);
 
 export { InvestigationSearchResultListItem };
