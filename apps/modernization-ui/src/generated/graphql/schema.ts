@@ -284,6 +284,7 @@ export type InvestigationFilter = {
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
   reportingFacilityId?: InputMaybe<Scalars['ID']['input']>;
+  reportingProviderId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type InvestigationPersonParticipation = {

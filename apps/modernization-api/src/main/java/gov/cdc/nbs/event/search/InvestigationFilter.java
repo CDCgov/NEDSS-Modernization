@@ -33,7 +33,7 @@ public final class InvestigationFilter implements EventFilter {
   private List<NotificationStatus> notificationStatuses = new ArrayList<>();
   private List<ProcessingStatus> processingStatuses = new ArrayList<>();
   private Long reportingFacilityId;
-
+  private Long reportingProviderId;
 
   @Data
   @AllArgsConstructor
@@ -286,6 +286,9 @@ public final class InvestigationFilter implements EventFilter {
   }
 
   public Optional<Long> reportingProvider() {
+    if (this.reportingProviderId != null) {
+      return Optional.of(this.reportingProviderId);
+    }
     return (this.providerFacilitySearch != null
         && this.providerFacilitySearch.getEntityType() == ReportingEntityType.PROVIDER)
             ? Optional.of(this.providerFacilitySearch.getId())

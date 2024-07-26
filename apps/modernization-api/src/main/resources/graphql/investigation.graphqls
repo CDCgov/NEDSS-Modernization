@@ -51,6 +51,7 @@ input InvestigationFilter {
   notificationStatuses: [NotificationStatus]
   processingStatuses: [ProcessingStatus]
   reportingFacilityId: ID
+  reportingProviderId: ID
 }
 
 input EventId {
