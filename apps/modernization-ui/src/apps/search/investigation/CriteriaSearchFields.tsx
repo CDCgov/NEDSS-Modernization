@@ -7,10 +7,27 @@ import {
     processingStatusOptions
 } from './InvestigationFormTypes';
 import { SingleSelect, MultiSelect } from 'design-system/select';
-import { ConceptAutocomplete } from 'options/autocompete/ConceptAutocomplete';
+import { ConceptOptionsService } from 'generated';
+import { useEffect, useState } from 'react';
+import { Selectable } from 'options';
 
-const CriteriaSearchFields = () => {
+type Props = {
+    outbreakCodeSetNm?: string;
+};
+
+const CriteriaSearchFields = ({ outbreakCodeSetNm = 'OUTBREAK_NM' }: Props) => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
+
+    const [outbreakNames, setOutbreakNames] = useState<Selectable[]>();
+
+    useEffect(() => {
+        ConceptOptionsService.conceptSearch({
+            name: outbreakCodeSetNm,
+            criteria: ''
+        }).then((response) => {
+            setOutbreakNames(response.options);
+        });
+    }, [outbreakCodeSetNm]);
 
     return (
         <>
@@ -32,8 +49,16 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="outbreaks"
-                render={({ field: { name, onBlur } }) => (
-                    <ConceptAutocomplete valueSet={'OUTBREAK_NM'} id={name} label="Outbreak name" onBlur={onBlur} />
+                render={({ field: { name, onBlur, onChange, value } }) => (
+                    <MultiSelect
+                        label="Outbreak names"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        name={name}
+                        value={value}
+                        options={outbreakNames ?? []}
+                        id={name}
+                    />
                 )}
             />
 
