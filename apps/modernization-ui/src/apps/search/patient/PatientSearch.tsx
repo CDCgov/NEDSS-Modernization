@@ -22,7 +22,7 @@ const PatientSearch = () => {
     const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
-        if (status === 'waiting') {
+        if (status === 'resetting') {
             methods.reset();
         }
     }, [methods.reset, status]);
