@@ -216,13 +216,10 @@ const asSortField = (property: string): SortField => {
             return SortField.PhoneNumber;
         }
         case SortField.Id: {
-            return SortField.Id;
+            return SortField.LocalId;
         }
         case SortField.Identification: {
             return SortField.Identification;
-        }
-        case SortField.LocalId: {
-            return SortField.LocalId;
         }
         default:
             return SortField.Relevance;
