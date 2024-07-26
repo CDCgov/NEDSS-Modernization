@@ -1,8 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FormAccordion } from './FormAccordion'; // Update this import path
-import { UseFormReturn } from 'react-hook-form';
-import { LabReportFilterEntry } from './labReportFormTypes';
+import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria'; // Update this import path
 
 jest.mock('./GeneralFields', () => ({
     GeneralFields: () => <div data-testid="general-fields">General Fields</div>
@@ -13,43 +11,41 @@ jest.mock('./CriteriaFields', () => ({
 }));
 
 describe('FormAccordion', () => {
-    const mockForm = {} as UseFormReturn<LabReportFilterEntry>;
-
     it('renders the accordion with two sections', () => {
-        const { getByText } = render(<FormAccordion form={mockForm} />);
+        const { getByText } = render(<LaboratoryReportSearchCriteria />);
 
         expect(getByText('General search')).toBeInTheDocument();
         expect(getByText('Lab report criteria')).toBeInTheDocument();
     });
 
     it('renders the GeneralFields component in the first section', () => {
-        const { getByTestId } = render(<FormAccordion form={mockForm} />);
+        const { getByTestId } = render(<LaboratoryReportSearchCriteria />);
 
         expect(getByTestId('general-fields')).toBeInTheDocument();
     });
 
     it('renders the CriteriaFields component in the second section', () => {
-        const { getByTestId } = render(<FormAccordion form={mockForm} />);
+        const { getByTestId } = render(<LaboratoryReportSearchCriteria />);
 
         expect(getByTestId('criteria-fields')).toBeInTheDocument();
     });
 
     it('expands the General search section by default', () => {
-        const { getByText } = render(<FormAccordion form={mockForm} />);
+        const { getByText } = render(<LaboratoryReportSearchCriteria />);
 
         const generalSection = getByText('General search').closest('button');
         expect(generalSection).toHaveAttribute('aria-expanded', 'true');
     });
 
     it('collapses the Lab report criteria section by default', () => {
-        const { getByText } = render(<FormAccordion form={mockForm} />);
+        const { getByText } = render(<LaboratoryReportSearchCriteria />);
 
         const criteriaSection = getByText('Lab report criteria').closest('button');
         expect(criteriaSection).toHaveAttribute('aria-expanded', 'false');
     });
 
     it('allows multiple sections to be expanded', async () => {
-        const { getByText } = render(<FormAccordion form={mockForm} />);
+        const { getByText } = render(<LaboratoryReportSearchCriteria />);
 
         const generalSection = getByText('General search').closest('button');
         const criteriaSection = getByText('Lab report criteria').closest('button');
@@ -64,7 +60,7 @@ describe('FormAccordion', () => {
     });
 
     it('applies the correct CSS classes and headingLevel', () => {
-        const { getAllByRole } = render(<FormAccordion form={mockForm} />);
+        const { getAllByRole } = render(<LaboratoryReportSearchCriteria />);
 
         const accordionItems = getAllByRole('heading', { level: 3 });
         expect(accordionItems).toHaveLength(2);

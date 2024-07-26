@@ -12,7 +12,6 @@ $content-height: calc($search-height - $navigation-height - 2rem);
     height: $search-height;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
 
     .navigation {
         height: $navigation-height;
@@ -81,21 +80,21 @@ $content-height: calc($search-height - $navigation-height - 2rem);
             }
 
             .collapseTrue {
-              display: flex;
-              align-items: center;
-              @include borders.rounded();
-              background-color: colors.$base-lighter;
-              width: 1.5rem;
-              height: 3rem;
-              position: absolute;
-              top: calc($search-height / 2);
+                display: flex;
+                align-items: center;
+                @include borders.rounded();
+                background-color: colors.$base-lighter;
+                width: 1.5rem;
+                height: 3rem;
+                position: absolute;
+                top: calc($search-height / 2);
 
-              svg {
-                  display: flex;
-                  align-items: center;
-                  transform: rotate(-90deg);
-              }
-          }
+                svg {
+                    display: flex;
+                    align-items: center;
+                    transform: rotate(-90deg);
+                }
+            }
         }
 
         .results {

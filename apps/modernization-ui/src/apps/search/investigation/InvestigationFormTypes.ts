@@ -21,6 +21,7 @@ type InvestigationFilterEntry = {
     eventDate?: EventDate;
     createdBy?: Selectable;
     updatedBy?: Selectable;
+    entityOption?: Selectable;
     reportingFacility?: Selectable;
     reportingProvider?: Selectable;
     investigationStatus?: Selectable;

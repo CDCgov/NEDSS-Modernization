@@ -1,0 +1,39 @@
+@use 'styles/colors';
+
+.entry {
+    display: flex;
+    width: 100%;
+
+    &.compact {
+        label {
+            font-size: 0.875rem;
+            line-height: normal !important;
+            margin: 0;
+        }
+
+        input,
+        select {
+            font-size: 0.875rem;
+            line-height: normal !important;
+            padding: 0.5rem !important;
+            margin: 0;
+
+            height: 2rem;
+            width: unset;
+        }
+    }
+
+    &.vertical {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &.error {
+        border-left: 2px solid colors.$secondary-dark;
+        padding-left: 1rem;
+
+        input {
+            outline: none;
+        }
+    }
+}

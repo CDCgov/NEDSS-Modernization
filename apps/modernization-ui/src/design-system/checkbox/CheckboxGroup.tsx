@@ -4,6 +4,7 @@ import { Selectable } from 'options';
 import { SelectableCheckbox } from './SelectableCheckbox';
 import styles from './checkboxGroup.module.scss';
 import { ErrorMessage } from '@trussworks/react-uswds';
+import { Sizing } from 'components/Entry';
 
 type Props = {
     name: string;
@@ -12,9 +13,11 @@ type Props = {
     disabled?: boolean;
     options: Selectable[];
     value?: Selectable[];
+    error?: string;
+    requried?: boolean;
+    sizing?: Sizing;
     onChange?: (selected: Selectable[]) => void;
     onBlur?: (event: ReactFocusEvent<HTMLElement>) => void;
-    error?: string;
 };
 
 export const CheckboxGroup = ({
@@ -26,7 +29,9 @@ export const CheckboxGroup = ({
     onBlur,
     disabled = false,
     className,
-    error
+    error,
+    requried,
+    sizing
 }: Props) => {
     const handleChange = (selectable: Selectable) => (selection?: Selectable) => {
         if (onChange) {
@@ -39,13 +44,18 @@ export const CheckboxGroup = ({
     };
 
     return (
-        <fieldset className={classNames(styles.checkboxGroup, className)}>
+        <fieldset
+            className={classNames(styles.checkboxGroup, className, {
+                [styles.required]: requried,
+                [styles.compact]: sizing === 'compact'
+            })}>
             <legend>{label}</legend>
             {error ? <ErrorMessage>{error}</ErrorMessage> : null}
             <div className={styles.options}>
                 {options.map((option, index) => (
                     <SelectableCheckbox
                         name={name}
+                        sizing={sizing}
                         key={index}
                         selectable={option}
                         onChange={handleChange(option)}

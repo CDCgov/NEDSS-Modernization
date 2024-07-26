@@ -15,43 +15,39 @@
 }
 
 .multi-select__control {
+    margin-top: 0.5rem;
     min-height: 40px;
     height: unset;
     border-radius: 0 !important;
     border-color: rgb(86, 92, 101) !important;
-}
 
-.multi-select__indicator {
-    color: rgb(86, 92, 101) !important;
-}
+    .multi-select__indicator {
+        color: rgb(86, 92, 101) !important;
+    }
 
-.multi-select__indicator-separator {
-    background-color: unset !important;
-}
+    .multi-select__indicator-separator {
+        background-color: unset !important;
+    }
 
-.multi-select__multi-value {
-    color: white !important;
-    background-color: #0096fb !important;
-    border-radius: 8px !important;
-}
+    .multi-select__multi-value {
+        background-color: colors.$primary-lighter !important;
+        border-radius: 0.125rem !important;
+    }
 
-.multi-select__multi-value__label {
-    color: white !important;
-    font-size: 100% !important;
-}
+    .multi-select__multi-value__label {
+        color: colors.$primary-dark !important;
+        font-size: 100% !important;
+    }
 
-.multi-select__multi-value__path {
-    display: none !important;
-}
+    .multi-select__multi-value__remove {
+        color: colors.$primary-dark !important;
+    }
 
-.multi-select__option {
-    background: none;
-}
+    .multi-select__multi-value__path {
+        display: none !important;
+    }
 
-.multi-select__option--is-selected {
-    background: none;
-}
-
-.multi-select__placeholder {
-    color: colors.$base-black !important;
+    .multi-select__placeholder {
+        color: colors.$base-black !important;
+    }
 }

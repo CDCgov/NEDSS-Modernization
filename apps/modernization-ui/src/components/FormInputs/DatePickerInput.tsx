@@ -1,13 +1,13 @@
 import { DatePicker } from '@trussworks/react-uswds';
-import './DatePickerInput.scss';
-import React, { KeyboardEvent, useState } from 'react';
+import { FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent, useState } from 'react';
 import classNames from 'classnames';
 import { isFuture } from 'date-fns';
-import { EntryWrapper } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { EN_US } from './datePickerLocalization';
+import styles from './DatePickerInput.module.scss';
 
 type OnChange = (val?: string) => void;
-type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
+type OnBlur = (event: ReactFocusEvent<HTMLInputElement> | ReactFocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
     label?: string;
@@ -18,6 +18,9 @@ type DatePickerProps = {
     defaultValue?: string | null;
     errorMessage?: string;
     flexBox?: boolean;
+    error?: string;
+    orientation?: Orientation;
+    sizing?: Sizing;
     required?: boolean;
     disabled?: boolean;
     disableFutureDates?: boolean;
@@ -39,7 +42,7 @@ const interalize = (value?: string | null) => {
 };
 
 export const DatePickerInput = (props: DatePickerProps) => {
-    const orientation = props.flexBox ? 'horizontal' : 'vertical';
+    const orientation = props.flexBox ? 'horizontal' : props.orientation;
 
     const emptyDefaultValue = !props.defaultValue || props.defaultValue.length === 0;
     const validDefaultValue = !emptyDefaultValue && props.defaultValue && matches(props.defaultValue);
@@ -47,7 +50,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
 
     const [error, setError] = useState(!(emptyDefaultValue || validDefaultValue) && props.defaultValue !== 'none');
 
-    const checkValidity = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => {
+    const checkValidity = (event: ReactFocusEvent<HTMLInputElement> | ReactFocusEvent<HTMLDivElement>) => {
         const currentVal = (event.target as HTMLInputElement).value;
 
         const valid = isValid(currentVal) && (!props.disableFutureDates || !isFuture(new Date(currentVal)));
@@ -61,19 +64,21 @@ export const DatePickerInput = (props: DatePickerProps) => {
         : props.errorMessage;
 
     return (
-        <div className={classNames('date-picker-input', { error: _error })}>
-            <EntryWrapper
-                orientation={orientation}
-                label={props.label || ''}
-                htmlFor={props.name || ''}
-                required={props.required}
-                error={_error}>
-                {props.defaultValue && (
-                    <InternalDatePicker {...props} onBlur={checkValidity} defaultValue={intialDefault} />
-                )}
-                {!props.defaultValue && <InternalDatePicker {...props} onBlur={checkValidity} />}
-            </EntryWrapper>
-        </div>
+        <EntryWrapper
+            className={classNames(styles.input, {
+                [styles.error]: _error
+            })}
+            orientation={orientation}
+            sizing={props.sizing}
+            label={props.label || ''}
+            htmlFor={props.name || ''}
+            required={props.required}
+            error={_error}>
+            {props.defaultValue && (
+                <InternalDatePicker {...props} onBlur={checkValidity} defaultValue={intialDefault} />
+            )}
+            {!props.defaultValue && <InternalDatePicker {...props} onBlur={checkValidity} />}
+        </EntryWrapper>
     );
 };
 
@@ -117,7 +122,7 @@ const InternalDatePicker = ({
     );
 };
 
-const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+const handleKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     const allowedKeys = [
         '0',
         '1',

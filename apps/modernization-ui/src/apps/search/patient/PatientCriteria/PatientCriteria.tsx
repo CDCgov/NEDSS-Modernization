@@ -8,7 +8,7 @@ import { Id } from './Id';
 
 export const PatientCriteria = () => {
     return (
-        <div>
+        <>
             <Accordion title="Basic information" open>
                 <BasicInformation />
             </Accordion>
@@ -24,6 +24,6 @@ export const PatientCriteria = () => {
             <Accordion title="Race/Ethnicity">
                 <RaceEthnicity />
             </Accordion>
-        </div>
+        </>
     );
 };

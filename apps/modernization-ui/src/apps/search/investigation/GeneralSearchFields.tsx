@@ -1,299 +1,297 @@
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { PregnancyStatus } from 'generated/graphql/schema';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { MultiSelect, SingleSelect } from 'design-system/select';
-import { PregnancyStatus } from 'generated/graphql/schema';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useConditionOptions } from 'options/condition';
+import { useProgramAreaOptions } from 'options/program-areas';
+import { useJurisdictionOptions } from 'options/jurisdictions';
+import { SearchCriteria } from 'apps/search/criteria';
+
 import {
     InvestigationFilterEntry,
     dateTypeOptions,
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
-import styles from './InvestigationSearchForm.module.scss';
-import { ErrorMessage } from '@trussworks/react-uswds';
 
 const GeneralSearchFields = () => {
+    const { all: jurisdictions } = useJurisdictionOptions();
+    const { all: programAreas } = useProgramAreaOptions();
+    const { options: conditions } = useConditionOptions();
+
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
     const watch = useWatch({ control: form.control });
 
+    const selectedIdentificationType = useWatch({ control: form.control, name: 'identification.type' });
+    const selectedEventType = useWatch({ control: form.control, name: 'eventDate.type' });
+
+    const selectedEntityOption = useWatch({ control: form.control, name: 'entityOption.value' });
+
     return (
-        <SearchCriteriaContext.Consumer>
-            {({ searchCriteria }) => (
+        <SearchCriteria>
+            <Controller
+                name="conditions"
+                control={form.control}
+                render={({ field: { name, onChange, value } }) => (
+                    <MultiSelect
+                        id={name}
+                        label="Conditions"
+                        sizing="compact"
+                        value={value}
+                        onChange={onChange}
+                        name={name}
+                        options={conditions}
+                    />
+                )}
+            />
+
+            <Controller
+                control={form.control}
+                name="programAreas"
+                render={({ field: { name, onChange, value } }) => (
+                    <MultiSelect
+                        id={name}
+                        label="Program area"
+                        sizing="compact"
+                        onChange={onChange}
+                        value={value}
+                        name={name}
+                        options={programAreas}
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="jurisdictions"
+                render={({ field: { onChange, name, value } }) => (
+                    <MultiSelect
+                        label="Jurisdiction"
+                        sizing="compact"
+                        onChange={onChange}
+                        value={value}
+                        name={name}
+                        options={jurisdictions}
+                        id={name}
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="pregnancyStatus"
+                render={({ field: { name, onChange, value } }) => (
+                    <SingleSelect
+                        name={name}
+                        value={value}
+                        id="pregnancyStatus"
+                        label="Pregnancy status"
+                        sizing="compact"
+                        onChange={onChange}
+                        options={[
+                            { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },
+                            { name: PregnancyStatus.No, value: PregnancyStatus.No, label: 'No' },
+                            { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown, label: 'Unknown' }
+                        ]}
+                    />
+                )}
+            />
+
+            <Controller
+                control={form.control}
+                name="identification.type"
+                render={({ field: { name, value, onChange } }) => (
+                    <SingleSelect
+                        label="Event ID type"
+                        id={name}
+                        sizing="compact"
+                        value={value}
+                        onChange={onChange}
+                        options={investigationEventTypeOptions}
+                    />
+                )}
+            />
+
+            {selectedIdentificationType && (
+                <Controller
+                    control={form.control}
+                    name="identification.value"
+                    rules={{
+                        required: { value: true, message: 'Event Id is required' }
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <Input
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            defaultValue={value}
+                            type="text"
+                            label="Event ID"
+                            name={name}
+                            htmlFor={name}
+                            id={name}
+                            sizing="compact"
+                            error={error?.message}
+                            required
+                        />
+                    )}
+                />
+            )}
+
+            <Controller
+                control={form.control}
+                name={'eventDate.type'}
+                render={({ field: { name, value, onChange } }) => (
+                    <SingleSelect
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        id={name}
+                        label="Event date type"
+                        sizing="compact"
+                        options={dateTypeOptions}
+                    />
+                )}
+            />
+
+            {selectedEventType && (
                 <>
                     <Controller
-                        name="conditions"
+                        shouldUnregister
                         control={form.control}
-                        render={({ field: { name, onChange, value } }) => (
-                            <MultiSelect
-                                id={name}
-                                label="Conditions"
-                                value={value}
+                        name="eventDate.from"
+                        rules={{
+                            required: { value: true, message: 'From date is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                disabled={!watch.eventDate?.type}
+                                defaultValue={value}
+                                onBlur={onBlur}
                                 onChange={onChange}
+                                label="From"
+                                sizing="compact"
+                                required
                                 name={name}
-                                options={searchCriteria.conditions.map((c) => {
-                                    return {
-                                        name: c.conditionDescTxt ?? '',
-                                        value: c.id,
-                                        label: c.conditionDescTxt ?? ''
-                                    };
-                                })}
+                                errorMessage={error?.message}
                             />
                         )}
                     />
 
                     <Controller
+                        shouldUnregister
                         control={form.control}
-                        name="programAreas"
-                        render={({ field: { name, onChange, value } }) => (
-                            <MultiSelect
-                                label="Program area"
+                        name="eventDate.to"
+                        rules={{
+                            required: { value: true, message: 'To date is required' }
+                        }}
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                            <DatePickerInput
+                                disabled={!watch.eventDate?.type}
+                                defaultValue={value}
                                 onChange={onChange}
-                                value={value}
+                                onBlur={onBlur}
                                 name={name}
-                                options={searchCriteria.programAreas.map((p) => {
-                                    return {
-                                        name: p.id ?? '',
-                                        value: p.id,
-                                        label: p.id
-                                    };
-                                })}
-                                id={name}
+                                label="To"
+                                sizing="compact"
+                                required
+                                errorMessage={error?.message}
                             />
                         )}
                     />
-                    <Controller
-                        control={form.control}
-                        name="jurisdictions"
-                        render={({ field: { onChange, name, value } }) => (
-                            <MultiSelect
-                                label="Jurisdiction"
-                                onChange={onChange}
-                                value={value}
-                                name={name}
-                                options={searchCriteria.jurisdictions.map((p) => {
-                                    return {
-                                        name: p.codeDescTxt ?? '',
-                                        value: p.id,
-                                        label: p.codeDescTxt ?? ''
-                                    };
-                                })}
-                                id={name}
-                            />
-                        )}
-                    />
-                    <Controller
-                        control={form.control}
-                        name="pregnancyStatus"
-                        render={({ field: { name, onChange, value } }) => (
-                            <SingleSelect
-                                className={styles.selectInput}
-                                data-testid="pregnancyStatus"
-                                name={name}
-                                value={value}
-                                id="pregnancyStatus"
-                                label="Pregnancy status"
-                                onChange={onChange}
-                                options={[
-                                    { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },
-                                    { name: PregnancyStatus.No, value: PregnancyStatus.No, label: 'No' },
-                                    { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown, label: 'Unknown' }
-                                ]}
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        control={form.control}
-                        name="identification.type"
-                        render={({ field: { name, value, onChange } }) => (
-                            <SingleSelect
-                                name={name}
-                                className={styles.selectInput}
-                                label="Event ID type"
-                                data-testid={name}
-                                id={name}
-                                value={value}
-                                onChange={onChange}
-                                options={investigationEventTypeOptions}
-                            />
-                        )}
-                    />
-
-                    {watch.identification?.type && (
-                        <Controller
-                            control={form.control}
-                            name="identification.value"
-                            rules={{
-                                required: { value: true, message: 'Event Id is required' }
-                            }}
-                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                                <Input
-                                    onBlur={onBlur}
-                                    onChange={onChange}
-                                    defaultValue={value}
-                                    type="text"
-                                    label="Event ID"
-                                    name={name}
-                                    htmlFor={name}
-                                    id={name}
-                                    error={error?.message}
-                                    required
-                                />
-                            )}
-                        />
-                    )}
-
-                    <Controller
-                        control={form.control}
-                        name={'eventDate.type'}
-                        render={({ field: { name, value, onChange } }) => (
-                            <SingleSelect
-                                className={styles.selectInput}
-                                data-testid={name}
-                                name={name}
-                                value={value}
-                                onChange={onChange}
-                                id={name}
-                                label="Event date type"
-                                options={dateTypeOptions}
-                            />
-                        )}
-                    />
-
-                    {watch.eventDate?.type ? (
-                        <>
-                            <Controller
-                                shouldUnregister
-                                control={form.control}
-                                name="eventDate.from"
-                                rules={{
-                                    required: { value: true, message: 'From date is required' }
-                                }}
-                                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                                    <DatePickerInput
-                                        className={styles.selectInput}
-                                        disabled={!watch.eventDate?.type}
-                                        defaultValue={value}
-                                        onBlur={onBlur}
-                                        onChange={onChange}
-                                        label="From"
-                                        required
-                                        name={name}
-                                        errorMessage={error?.message}
-                                    />
-                                )}
-                            />
-
-                            <Controller
-                                shouldUnregister
-                                control={form.control}
-                                name="eventDate.to"
-                                rules={{
-                                    required: { value: true, message: 'To date is required' }
-                                }}
-                                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                                    <DatePickerInput
-                                        className={styles.selectInput}
-                                        disabled={!watch.eventDate?.type}
-                                        defaultValue={value}
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        name={name}
-                                        label="To"
-                                        required
-                                        errorMessage={error?.message}
-                                    />
-                                )}
-                            />
-                        </>
-                    ) : null}
-
-                    <Controller
-                        control={form.control}
-                        name="createdBy"
-                        render={({ field: { name, value, onChange } }) => (
-                            <UserAutocomplete id={name} label="Event created by" onChange={onChange} value={value} />
-                        )}
-                    />
-                    <Controller
-                        control={form.control}
-                        name="updatedBy"
-                        render={({ field: { name, value, onChange } }) => (
-                            <UserAutocomplete id={name} label="Event updated by" onChange={onChange} value={value} />
-                        )}
-                    />
-
-                    <Controller
-                        control={form.control}
-                        name="reportingFacility"
-                        render={({ field: { name, value, onChange } }) => (
-                            <SingleSelect
-                                id={name}
-                                className={styles.selectInput}
-                                value={value}
-                                onChange={onChange}
-                                data-testid={name}
-                                name="reportingFacility"
-                                label="Event provider/facility type"
-                                options={entityOptions}
-                            />
-                        )}
-                    />
-
-                    {watch.reportingFacility?.value == 'REPORTING_PROVIDER' && (
-                        <Controller
-                            shouldUnregister
-                            control={form.control}
-                            name="reportingProvider"
-                            rules={{
-                                required: { value: true, message: 'Provider is required' }
-                            }}
-                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                                <>
-                                    <ProviderAutocomplete
-                                        id={name}
-                                        label="Event provider type"
-                                        value={value}
-                                        onChange={onChange}
-                                        required={true}
-                                        onBlur={onBlur}
-                                    />
-                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                                </>
-                            )}
-                        />
-                    )}
-
-                    {watch.reportingFacility?.value == 'REPORTING_FACILITY' && (
-                        <Controller
-                            shouldUnregister
-                            control={form.control}
-                            name="reportingProvider"
-                            rules={{
-                                required: { value: true, message: 'Facility is required' }
-                            }}
-                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                                <>
-                                    <FacilityAutocomplete
-                                        id={name}
-                                        label="Event facility type"
-                                        value={value}
-                                        onChange={(e) => onChange(e)}
-                                        required={true}
-                                        onBlur={onBlur}
-                                    />
-                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                                </>
-                            )}
-                        />
-                    )}
                 </>
             )}
-        </SearchCriteriaContext.Consumer>
+
+            <Controller
+                control={form.control}
+                name="createdBy"
+                render={({ field: { name, value, onChange } }) => (
+                    <UserAutocomplete
+                        id={name}
+                        label="Event created by"
+                        sizing="compact"
+                        onChange={onChange}
+                        value={value}
+                    />
+                )}
+            />
+            <Controller
+                control={form.control}
+                name="updatedBy"
+                render={({ field: { name, value, onChange } }) => (
+                    <UserAutocomplete
+                        id={name}
+                        label="Event updated by"
+                        sizing="compact"
+                        onChange={onChange}
+                        value={value}
+                    />
+                )}
+            />
+
+            <Controller
+                control={form.control}
+                name="entityOption"
+                render={({ field: { name, value, onChange } }) => (
+                    <SingleSelect
+                        id={name}
+                        label="Event provider/facility type"
+                        sizing="compact"
+                        name={name}
+                        value={value}
+                        onChange={onChange}
+                        options={entityOptions}
+                    />
+                )}
+            />
+
+            {selectedEntityOption == 'REPORTING_PROVIDER' && (
+                <Controller
+                    shouldUnregister
+                    control={form.control}
+                    name="reportingProvider"
+                    rules={{
+                        required: { value: true, message: 'Provider is required' }
+                    }}
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                        <ProviderAutocomplete
+                            id={name}
+                            label="Event provider type"
+                            sizing="compact"
+                            value={value}
+                            onChange={onChange}
+                            required
+                            onBlur={onBlur}
+                            error={error?.message}
+                        />
+                    )}
+                />
+            )}
+
+            {selectedEntityOption == 'REPORTING_FACILITY' && (
+                <Controller
+                    shouldUnregister
+                    control={form.control}
+                    name="reportingFacility"
+                    rules={{
+                        required: { value: true, message: 'Facility is required' }
+                    }}
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                        <FacilityAutocomplete
+                            id={name}
+                            label="Event facility type"
+                            sizing="compact"
+                            value={value}
+                            onChange={onChange}
+                            required
+                            onBlur={onBlur}
+                            error={error?.message}
+                        />
+                    )}
+                />
+            )}
+        </SearchCriteria>
     );
 };
 

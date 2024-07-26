@@ -1,19 +1,25 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { LabReportFilterEntry } from 'apps/search/laboratory-report/labReportFormTypes';
 import { CodedResultsAutocomplete } from 'options/autocompete/CodedResultsAutocomplete';
 import { ResultedTestsAutocomplete } from 'options/autocompete/ResultedTestsAutocomplete';
-import { Controller, UseFormReturn } from 'react-hook-form';
+import { SearchCriteria } from 'apps/search/criteria';
 
-type LabReportCriteriaFieldsProps = {
-    form: UseFormReturn<LabReportFilterEntry>;
-};
-export const LabReportCriteriaFields = ({ form }: LabReportCriteriaFieldsProps) => {
+export const CriteriaFields = () => {
+    const form = useFormContext<LabReportFilterEntry, Partial<LabReportFilterEntry>>();
+
     return (
-        <>
+        <SearchCriteria>
             <Controller
                 control={form.control}
                 name={'resultedTest'}
                 render={({ field: { onChange, name, value } }) => (
-                    <ResultedTestsAutocomplete value={value} id={name} label="Resulted test" onChange={onChange} />
+                    <ResultedTestsAutocomplete
+                        value={value}
+                        id={name}
+                        label="Resulted test"
+                        sizing="compact"
+                        onChange={onChange}
+                    />
                 )}
             />
 
@@ -25,21 +31,11 @@ export const LabReportCriteriaFields = ({ form }: LabReportCriteriaFieldsProps) 
                         value={value}
                         id={name}
                         label="Coded result/organism"
+                        sizing="compact"
                         onChange={onChange}
                     />
                 )}
             />
-        </>
-    );
-};
-
-type LabReportCriteriaProps = {
-    form: UseFormReturn<LabReportFilterEntry>;
-};
-export const CriteriaFields = ({ form }: LabReportCriteriaProps) => {
-    return (
-        <div id="criteria">
-            <LabReportCriteriaFields form={form} />
-        </div>
+        </SearchCriteria>
     );
 };

@@ -1,6 +1,6 @@
 @use 'styles/colors';
 
-.date-picker-input {
+.input {
     &.error {
         border-left: 2px solid colors.$secondary-dark;
         padding-left: 1em;
