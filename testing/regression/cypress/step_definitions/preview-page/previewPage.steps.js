@@ -163,3 +163,23 @@ Then("verify all page metadata is downloaded in xls format", () => {
     previewPagePage.checkChangesOnPreviewPage();
 });
 
+Then("user is at Preview page - Page info section with page under Draft or Published with Draft or Published status", () => {
+    previewPagePage.navigateToPreviewPageWithStatusPublishedWithDraft();
+});
+
+Then("user clicks on History tab next to Details", () => {
+    previewPagePage.clickOnHistoryTab();
+});
+
+Then("verify user is presented with all history info {string}", (text) => {
+    previewPagePage.checkHistoryInfo(text);
+});
+
+Then("verify user sees only 10 changes at a time", () => {
+    previewPagePage.userSeeOnlyTenRows();
+});
+
+Then("verify when more than 10 changes pagination is available", () => {
+    previewPagePage.checkRowOptionsAvailable();
+});
+

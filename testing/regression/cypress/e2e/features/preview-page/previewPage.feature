@@ -96,3 +96,14 @@ Feature: Page Builder - User can view Preview Page here.
     When clicked on Metadata button
     Then verify all page metadata is downloaded in xls format
 
+  Scenario: Preview Page - Page Info - View Page details and Edit
+    Given user is at Preview page - Page info section with page under Draft or Published with Draft or Published status
+    When user clicks on History tab next to Details
+    Then verify user is presented with all history info "<Version>"
+      | Version              |
+      | Date of changes made  |
+      | Name of user         |
+      | Changes made         |
+    Then verify user sees only 10 changes at a time
+    And verify when more than 10 changes pagination is available
+
