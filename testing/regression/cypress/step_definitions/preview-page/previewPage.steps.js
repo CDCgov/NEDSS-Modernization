@@ -183,3 +183,57 @@ Then("verify when more than 10 changes pagination is available", () => {
     previewPagePage.checkRowOptionsAvailable();
 });
 
+Then("User already on Create new page with Event Type Investigation selected", () => {
+    previewPagePage.clickCreateNewPageButton();
+    previewPagePage.selectEventType();
+});
+
+Then("User selects an existing Condition to create new page", () => {
+    previewPagePage.selectCondition();
+});
+
+Then("User enters a Page name to create new page", () => {
+    previewPagePage.selectPageName();
+});
+
+Then("User selects an existing Template to create new page", () => {
+    previewPagePage.selectTemplate();
+});
+
+Then("User selects an existing Reporting mechanism to create new page", () => {
+    previewPagePage.selectReportingMechanism();
+});
+
+Then("User enters a Page description to create new page", () => {
+    previewPagePage.enterPageDescription();
+});
+
+Then("clicks the Create page button to create new page", () => {
+    previewPagePage.clickCreatePageButton();
+});
+
+Then("New page is saved to the database and the application directs the user to the Page library Edit page to edit the additional page information", () => {
+    previewPagePage.viewTextOnPage('New page test');
+});
+
+Then("User clicks the Preview button", () => {
+    previewPagePage.clickPreviewAfterNewlyCreatedPage();
+});
+
+Then("Application will direct the user to the Preview page to Publish", () => {
+    previewPagePage.viewTextOnPage('Publish');
+});
+
+Then("User clicks the Publish button", () => {
+    previewPagePage.clickPublishBtn();
+});
+
+Then("User receives a confirmation that the page was successfully Published", () => {
+    previewPagePage.clickPublishBtnOnPublishPage();
+    previewPagePage.viewTextOnPage('General Information');
+});
+
+Then("Blue label top, right-side should appear as PREVIEWING:PUBLISHED", () => {
+    previewPagePage.viewTextOnPageForStatus('Patient Information');
+});
+
