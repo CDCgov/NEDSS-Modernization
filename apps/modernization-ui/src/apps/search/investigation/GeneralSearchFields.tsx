@@ -1,3 +1,11 @@
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
+import { MultiSelect, SingleSelect } from 'design-system/select';
+import { PregnancyStatus } from 'generated/graphql/schema';
+import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
+import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
+import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import {
     InvestigationFilterEntry,
@@ -5,14 +13,6 @@ import {
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
-import { PregnancyStatus } from 'generated/graphql/schema';
-import { MultiSelect, SingleSelect } from 'design-system/select';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
-import { ErrorMessage } from '@trussworks/react-uswds';
-import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
-import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -109,7 +109,7 @@ const GeneralSearchFields = () => {
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
                                 name={name}
-                                label="Event id type"
+                                label="Event ID type"
                                 data-testid={name}
                                 id={name}
                                 value={value}
@@ -118,6 +118,30 @@ const GeneralSearchFields = () => {
                             />
                         )}
                     />
+
+                    {watch.identification?.type && (
+                        <Controller
+                            control={form.control}
+                            name="identification.value"
+                            rules={{
+                                required: { value: true, message: 'Event Id is required' }
+                            }}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                                <Input
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                    defaultValue={value}
+                                    type="text"
+                                    label="Event ID"
+                                    name={name}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
+                                    required
+                                />
+                            )}
+                        />
+                    )}
 
                     <Controller
                         control={form.control}
@@ -229,8 +253,8 @@ const GeneralSearchFields = () => {
                                         onChange={onChange}
                                         required={true}
                                         onBlur={onBlur}
+                                        error={error?.message}
                                     />
-                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                                 </>
                             )}
                         />
@@ -253,8 +277,8 @@ const GeneralSearchFields = () => {
                                         onChange={(e) => onChange(e?.value)}
                                         required={true}
                                         onBlur={onBlur}
+                                        error={error?.message}
                                     />
-                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                                 </>
                             )}
                         />
