@@ -14,7 +14,7 @@ export const ToggleView = () => {
                 <Button
                     className={classNames(styles.toggleButton)}
                     labelPosition="right"
-                    icon={<Icon.GridView />}
+                    icon={view === 'table' ? <Icon.CheckCircle /> : <Icon.GridView />}
                     onClick={asTable}
                     type="button"
                     outline={view !== 'table'}>
@@ -23,7 +23,7 @@ export const ToggleView = () => {
                 <Button
                     className={classNames(styles.toggleButton)}
                     labelPosition="right"
-                    icon={<Icon.CheckCircle />}
+                    icon={view === 'list' ? <Icon.CheckCircle /> : <Icon.List />}
                     onClick={asList}
                     outline={view !== 'list'}
                     type="button">
