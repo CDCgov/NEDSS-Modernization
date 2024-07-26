@@ -128,7 +128,11 @@ const AddPatient = () => {
 
         handleSavePatient({
             variables: {
-                patient: payload
+                patient: {
+                    ...payload,
+                    // prevent value of '' being passed for deceased
+                    deceased: payload.deceased ? payload.deceased : undefined
+                }
             }
         }).then((result) => {
             if (result.data?.createPatient) {
