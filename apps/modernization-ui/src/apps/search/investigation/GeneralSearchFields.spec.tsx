@@ -122,13 +122,13 @@ describe('GeneralSearchFields', () => {
             });
         });
 
-        it('should not display event id', async () => {
+        it('should not display event id', () => {
             const { queryByLabelText } = render(<InvestigationFormWithFields />);
             const eventIdField = queryByLabelText('Event ID');
             expect(eventIdField).toBeNull();
         });
 
-        it('should display event id once event id type is selected', async () => {
+        it('should display event id once event id type is selected', () => {
             const { getByLabelText } = render(<InvestigationFormWithFields />);
 
             const eventTypeField = getByLabelText('Event ID type');
