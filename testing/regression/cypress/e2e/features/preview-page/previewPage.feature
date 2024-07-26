@@ -76,3 +76,23 @@ Feature: Page Builder - User can view Preview Page here.
     When click on Save changes in  page details page
     Then verify user navigates to pre-preview page with success message You have successfully saved you changes
 
+  Scenario: Preview Page - Page info - all details
+    Given user has created a page with all the required details
+    When user clicks on Preview button
+    Then preview page info is displayed
+    And verify Event type Existing Event type is displayed and not editable
+    And verify selected Reporting Mechanism displays
+    And verify user can edit when page in draft or published with draft status
+    And maximum characters allowed are 50 Reporting mechanism
+    And verify Page name is displayed
+    And verify user can edit when page in draft or published with draft status
+    And maximum characters allowed are 50 in page name
+    And verify Data mart name is displayed
+    And verify user can edit when page in draft or published with draft status
+    And maximum characters allowed are 2000
+    Then verify Edit page details button is ONLY available for Draft or Publish with draft status
+    When clicked on Edit page details
+    Then verify all field are editable except Event Type
+    When clicked on Metadata button
+    Then verify all page metadata is downloaded in xls format
+

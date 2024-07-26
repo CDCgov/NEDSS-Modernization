@@ -97,3 +97,69 @@ Then("click on Close button in page details page", () => {
     previewPagePage.clickCloseBtnPageDetailsPage();
 });
 
+Then("user has created a page with all the required details", () => {
+    previewPagePage.navigateToPreviewPageWithStatusInitialDraft();
+});
+
+Then("user clicks on Preview button", () => {
+    previewPagePage.checkNavigatedBackToPreviewPage();
+});
+
+Then("preview page info is displayed", () => {
+    previewPagePage.clickOnEditPageDetails();
+    previewPagePage.checkNavigatedBackToPreviewPage();
+});
+
+Then("verify Event type Existing Event type is displayed and not editable", () => {
+    previewPagePage.checkEventTypeField();
+});
+
+Then("verify selected Reporting Mechanism displays", () => {
+    previewPagePage.checkReportingMechanismField();
+});
+
+Then("verify user can edit when page in draft or published with draft status", () => {
+    previewPagePage.checkNavigatedToPageDetails();
+});
+
+Then("maximum characters allowed are 50 Reporting mechanism", () => {
+    previewPagePage.selectAnotherOptionFromReportingMechanism();
+});
+
+Then("verify Page name is displayed", () => {
+    previewPagePage.checkPageNameField();
+});
+
+Then("maximum characters allowed are 50 in page name", () => {
+    previewPagePage.checkPageNameFieldMaxLength();
+});
+
+Then("verify Data mart name is displayed", () => {
+    previewPagePage.checkDatamartNameField();
+});
+
+Then("maximum characters allowed are 2000", () => {
+    previewPagePage.checkDatamartNameFieldMaxField();
+});
+
+Then("verify Edit page details button is ONLY available for Draft or Publish with draft status", () => {
+    previewPagePage.checkNavigatedToPageDetails();
+});
+
+Then("clicked on Edit page details", () => {
+    previewPagePage.clickCancelBtnPageDetailsPage()
+    previewPagePage.clickOnEditPageDetails();
+});
+
+Then("verify all field are editable except Event Type", () => {
+    previewPagePage.checkEventTypeField();
+});
+
+Then("clicked on Metadata button", () => {
+    previewPagePage.clickOnMetadataBtn();
+});
+
+Then("verify all page metadata is downloaded in xls format", () => {
+    previewPagePage.checkChangesOnPreviewPage();
+});
+
