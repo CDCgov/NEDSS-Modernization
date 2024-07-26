@@ -107,3 +107,18 @@ Feature: Page Builder - User can view Preview Page here.
     Then verify user sees only 10 changes at a time
     And verify when more than 10 changes pagination is available
 
+  Scenario: Create a new page with Event Type (Investigation) and Publish the page
+    Given User already on Create new page with Event Type Investigation selected
+    When User selects an existing Condition to create new page
+    And User enters a Page name to create new page
+    And User selects an existing Template to create new page
+    And User selects an existing Reporting mechanism to create new page
+    And User enters a Page description to create new page
+    And clicks the Create page button to create new page
+    Then New page is saved to the database and the application directs the user to the Page library Edit page to edit the additional page information
+    When User clicks the Preview button
+    Then Application will direct the user to the Preview page to Publish
+    When User clicks the Publish button
+    Then User receives a confirmation that the page was successfully Published
+    And Blue label top, right-side should appear as PREVIEWING:PUBLISHED
+
