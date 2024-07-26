@@ -17,7 +17,7 @@ const expectedResult: LabReport = {
         {
             shortId: 123,
             personCd: '123',
-            birthTime: '05-05-1995',
+            birthTime: '1995-05-07',
             currSexCd: 'Male',
             firstName: 'Jon',
             lastName: 'Doe',
@@ -48,7 +48,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
-            expect(getByText(expectedResult.personParticipations[0].birthTime)).toBeInTheDocument();
+            expect(getByText('05/07/1995')).toBeInTheDocument();
         });
     });
 
