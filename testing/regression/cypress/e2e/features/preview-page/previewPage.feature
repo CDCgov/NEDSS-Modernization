@@ -43,7 +43,7 @@ Feature: Page Builder - User can view Preview Page here.
       | Create new draft | Button |
 
   Scenario Outline: Verify the data elements in the preview page header buttons when page status is published with draft
-    When User navigates to Preview Page and page status is Published with Draft
+    When user is at Preview page - Page info section with page under Draft or Published with Draft status
     Then Below buttons will displays in preview page "<Content>" "<Type>"
     Examples:
       | Content          | Type   |
@@ -54,4 +54,25 @@ Feature: Page Builder - User can view Preview Page here.
       | Clone            | Icon   |
       | Print            | Icon   |
       | Publish          | Button |
+
+  Scenario: Preview Page - Page Info - View Page details and Edit
+    Given user is at Preview page - Page info section with page under Draft or Published with Draft status
+    When clicks on Edit Page details in preview page
+    Then verify user is navigated to Page details page with prepopulated data
+    Then verify Conditions is required and editable field
+    Then verify user can remove add the conditions
+    And verify Page name is required field and already prefilled
+    And verify user can update Page name with max characters 50
+    Then verify Event Type is required and uneditable field
+    And verify Reporting Mechanism is required and editable field
+    Then verify user can select another option from reporting mechanism dropdown
+    And verify Page description is optional field
+    And verify maximum allowed characters are 2000 in Page description
+    Then verify Data mart name is optional field and may display exiting data mart name
+    And verify maximum allowed characters are 50 for datamart name
+    When click on Cancel in page details page
+    Then verify user is brought back to Preview page with correct status on top right
+    And verify no changes are made to page
+    When click on Save changes in  page details page
+    Then verify user navigates to pre-preview page with success message You have successfully saved you changes
 
