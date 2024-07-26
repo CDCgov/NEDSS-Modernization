@@ -1,7 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import {
     InvestigationFilterEntry,
-    caseStatusOptions,
     investigationStatusOptions,
     notificationStatusOptions,
     processingStatusOptions
@@ -10,6 +9,7 @@ import { SingleSelect, MultiSelect } from 'design-system/select';
 import { ConceptOptionsService } from 'generated';
 import { useEffect, useState } from 'react';
 import { Selectable } from 'options';
+import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
 
 type Props = {
     outbreakCodeSetNm?: string;
@@ -66,15 +66,7 @@ const CriteriaSearchFields = ({ outbreakCodeSetNm = 'OUTBREAK_NM' }: Props) => {
                 control={form.control}
                 name="caseStatuses"
                 render={({ field: { onChange, name, value } }) => (
-                    <MultiSelect
-                        data-testid={'caseStatuses'}
-                        label="Case status"
-                        onChange={onChange}
-                        name={name}
-                        value={value}
-                        options={caseStatusOptions}
-                        id={name}
-                    />
+                    <ConceptMultiSelect onChange={onChange} name={name} value={value} valueSet="OUTBREAK_NM" />
                 )}
             />
             <Controller
