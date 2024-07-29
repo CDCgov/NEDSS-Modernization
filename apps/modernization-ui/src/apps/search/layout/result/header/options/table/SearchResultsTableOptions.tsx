@@ -5,7 +5,6 @@ import { useColumnPreferences, ColumnPreference } from 'design-system/table/pref
 import { Checkbox } from 'design-system/checkbox';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { Icon } from 'components/Icon/Icon';
-import { asSelectable } from 'options';
 
 import styles from './search-results-table-options.module.scss';
 
@@ -30,15 +29,15 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
         setPending(preferences);
     }, [preferences]);
 
-    const handleVisibilityChange = (id: string, visible: boolean) => {
-        console.log(id, visible);
+    const handleVisibilityChange = (preference: ColumnPreference) => (visible: boolean) => {
         setPending((current) => {
-            const preference = current.find((p) => p.id === id);
-            if (preference) {
-                preference.hidden = !visible;
+            const copy = current.slice();
+            const index = copy.indexOf(preference);
+
+            if (index >= 0) {
+                copy[index].hidden = !visible;
             }
-            console.log(current);
-            return current;
+            return copy;
         });
     };
 
@@ -83,11 +82,12 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
                                             </span>
                                             <Checkbox
                                                 id={`${preference.id}_visible`}
-                                                name={preference.name}
+                                                name={preference.id}
+                                                label={preference.name}
                                                 className={styles.check}
                                                 disabled={!preference.toggleable}
                                                 selected={!preference.hidden}
-                                                selectable={asSelectable(preference.name)}
+                                                onChange={handleVisibilityChange(preference)}
                                             />
                                         </div>
                                     )}
