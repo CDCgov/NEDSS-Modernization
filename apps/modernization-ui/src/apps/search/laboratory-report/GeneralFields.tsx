@@ -140,7 +140,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         name={name}
                         value={value}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
-                        label="Event id type"
+                        label="Event ID type"
                         id={name}
                         options={identificationTypes}
                     />
