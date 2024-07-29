@@ -136,7 +136,8 @@ input InvestigationFilter {
   caseStatuses: [CaseStatus!]
   notificationStatuses: [NotificationStatus]
   processingStatuses: [ProcessingStatus]
-  reportingFacilityId: ID
+  reportingFacilityId: String
+  reportingProviderId: String
 }
 
 input EventId {
