@@ -1,8 +1,8 @@
 @use 'styles/colors';
 
 .accordian {
-    background-color: colors.$base-lightest;
     summary {
+        background-color: colors.$base-lightest;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -36,8 +36,8 @@
         font-size: 1.5rem;
         right: 0.75rem;
     }
+
     .content {
-        background-color: colors.$base-white;
         padding: 0 1rem;
         label {
             margin-top: 0;

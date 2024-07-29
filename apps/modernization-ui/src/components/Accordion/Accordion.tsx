@@ -7,9 +7,9 @@ type Props = {
     open?: boolean;
 };
 
-export const Accordion = ({ title, children, open }: Props) => {
+export const Accordion = ({ title, children, open = false }: Props) => {
     return (
-        <details className={styles.accordian} {...(open && { open: true })}>
+        <details className={styles.accordian} open={open}>
             <summary>
                 <h3>{title}</h3> <span></span>
             </summary>
