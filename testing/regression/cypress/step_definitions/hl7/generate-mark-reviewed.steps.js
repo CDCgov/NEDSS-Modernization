@@ -60,11 +60,27 @@ When("I Generate HL7 messages to api and mark as review", () => {
       };
 
 
+      function capitalizeFirstLetter(string) {
+          return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
       formattedMessages = jsonData;
       hl7Messages = jsonData;
-      const randomFirstName = faker.person.firstName();
-      const randomLastName = faker.person.lastName();
-      // Modify the HL7 message      
+      let randomWord1 = faker.random.word().toLowerCase();
+      let randomWord2 = faker.random.word().toLowerCase();
+      let randomWord3 = faker.random.word().toLowerCase();
+      let randomWord4 = faker.random.word().toLowerCase();
+      let randomWord5 = faker.random.word().toLowerCase();
+
+      let randomFirstName = faker.person.firstName();
+      let randomLastName =  faker.person.lastName().toLowerCase() + randomWord4[0] + randomWord1[0] + randomWord2[0] + randomWord3[0] + randomWord5[1];
+      randomLastName = capitalizeFirstLetter(randomLastName);
+      randomLastName = randomLastName.replace(/[^0-9a-z]/gi, '');
+      
+      // Modify the HL7 message
+      cy.log(randomLastName);
+      expect(randomLastName).to.eq(randomLastName);
+      
       let ssn1 = faker.number.int(9).toString();
       let ssn2 = faker.number.int(9).toString();
       let ssn3 = faker.number.int(9).toString();
@@ -90,9 +106,9 @@ When("I Generate HL7 messages to api and mark as review", () => {
       const minutes = String(now.getMinutes()).padStart(2, '0');      
       const faketimestamp = `${year}${month}${day}${hours}${minutes}`;
 
-      let modifiedmsg = hl7Messages[0].data.replaceAll('Lisa', randomFirstName);
-      let modifiedData = modifiedmsg.replaceAll('Guerra', randomLastName);
-      let modifiedData2 = modifiedData.replaceAll('LisaGuerra46@hotmail.com', fakeEmail);
+      let modifiedmsg = hl7Messages[0].data.replaceAll('PawnlandFirstName', randomFirstName);
+      let modifiedData = modifiedmsg.replaceAll('PawnlandLastName', randomLastName);
+      let modifiedData2 = modifiedData.replaceAll('patient.email@example.com', fakeEmail);
       let modifiedData3 = modifiedData2.replaceAll('900000011', fakeSSN);
       let modifiedData4 = modifiedData3.replaceAll('1965', fakeDOB);
       let modifiedData5 = modifiedData4.replaceAll('Joneshaven', fakeCity);      
@@ -101,9 +117,32 @@ When("I Generate HL7 messages to api and mark as review", () => {
       let modifiedData8 = modifiedData7.replaceAll('NY', fakeState);
       let modifiedData9 = modifiedData8.replaceAll('202407111207', faketimestamp);
 
+      function formatSSN(ssnwwe) {
+        // Ensure the input is a string
+        const ssnString = ssnwwe.toString();
+
+        // Extract parts of the SSN
+        const part1 = ssnString.slice(0, 3);
+        const part2 = ssnString.slice(3, 5);
+        const part3 = ssnString.slice(5, 9);
+
+        // Combine parts with dashes
+        const formattedSSN = `${part1}-${part2}-${part3}`;
+
+        return formattedSSN;
+      }
+
+      const formattedSSN = formatSSN(fakeSSN);
+      expect("SSN:" + formattedSSN).to.eq("SSN:" + formattedSSN);
+      expect("Street Address:" + fakeStreetAddress).to.eq("Street Address:" +  fakeStreetAddress);
+      cy.log("SSN:" + formattedSSN);
+      cy.log("EMAIL:" + fakeEmail);
+      cy.log("DOB:" + fakeDOB);
+      cy.log(randomLastName + ", " + randomFirstName);
+
       currentMessage = formatHL7(modifiedData9);
       Cypress.env("currentMessage", currentMessage);
-      Cypress.env("fakeSSN", fakeSSN);
+      Cypress.env("fakeSSN", formattedSSN);
       Cypress.env("fakeDOB", fakeDOB);
       Cypress.env("fakeFullName", randomLastName + ", " + randomFirstName);
       
@@ -123,7 +162,6 @@ When("I Generate HL7 messages to api and mark as review", () => {
           let checkStatusUrl = checkstatusurl + messageID;    
           
           function checkStatusRequest() {
-
               cy.request({
                 method: "GET",
                 url: checkStatusUrl,
@@ -133,65 +171,61 @@ When("I Generate HL7 messages to api and mark as review", () => {
                   "clientsecret": clientsecret
                 }
               }).then((response) => {                  
-                expect(response.status).to.eq(200);                                   
+                expect(response.status).to.eq(200);                              
                 if (response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" || response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {                  
                   NBSresponse = response.body;                  
                   cy.log(NBSresponse.nbsInfo.nbsInterfaceStatus);
                   cy.wait(20000);
                   checkStatusRequest();   
                 } else if(response.body.nbsInfo.nbsInterfaceStatus === "Success" && response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
-                  
-                  cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
+                  let fakeSSN = Cypress.env().fakeSSN;
+                  let fakeFullName = Cypress.env().fakeFullName;
+                  cy.wait(1000);
+                  cy.log(response.body.nbsIngestionInfo[0].logComment);
+                  cy.log(response.body.nbsIngestionInfo[1].logComment);
+                  cy.log(response.body.nbsIngestionInfo[2].logComment);
+                  cy.log(response.body.nbsIngestionInfo[3].logComment);
+                  cy.log(response.body.nbsIngestionInfo[4].logComment);
+                  cy.get("a").contains("Home").click();
+                  cy.wait(500);
+                  // cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
                   
                   // Navigate to Documents Requiring Review
-                  cy.contains('Documents Requiring Review').click();            
+                  cy.contains('Documents Requiring Review').click();
                   
-                  cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();               
+                  cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();
                   cy.get("#SearchText1").type(randomLastName);
                   cy.get("#b2SearchText1").first().click();
-                  cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();            
-                  
-                  cy.get("input[name=markReviewd]").first().click();   
-                  cy.get("input[name=TransferOwn]").first().click();       
-                  cy.get("input[name=Submit]").first().click();       
+                  cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();
 
+                  cy.get("input[name=markReviewd]").first().click();
+                  cy.get("input[name=TransferOwn]").first().click();
+                  cy.get("input[name=Submit]").first().click();
+                  cy.wait(1000);
                   cy.contains('Return to Documents Requiring Review').click();
-                  cy.contains('Home').click();    
-
+                  cy.wait(1000);
+                  cy.contains('Home').click();
+                  cy.wait(1000);
                   cy.get('#homePageAdvancedSearch').click();
-                  cy.get('#lastName').type(randomLastName);           
+                  cy.get('#lastName').type(randomLastName);
                   cy.get('#firstName').type(randomFirstName);
+
+                  cy.get("#identificationType").select('Social Security');
+                  cy.get("input[name='identification']").type(formattedSSN);
                   cy.get('button').contains("Search").click();
                   cy.get('button').contains("List").click();
 
-                  let fakeSSN = Cypress.env().fakeSSN;
-                  let fakeFullName = Cypress.env().fakeFullName;
-                  function formatSSN(ssn) {
-                    // Ensure the input is a string
-                    const ssnString = ssn.toString();
-
-                    // Extract parts of the SSN
-                    const part1 = ssnString.slice(0, 3);
-                    const part2 = ssnString.slice(3, 5);
-                    const part3 = ssnString.slice(5, 9);
-
-                    // Combine parts with dashes
-                    const formattedSSN = `${part1}-${part2}-${part3}`;
-
-                    return formattedSSN;
-                  }
-
-                  const formattedSSN = formatSSN(fakeSSN);
-                  cy.contains(formattedSSN).scrollIntoView().should("be.visible");
-                  cy.wait(1000)
-                  cy.get("a").contains(fakeFullName).click({force: true});
+                  cy.contains(fakeSSN).scrollIntoView().should("be.visible");
+                  cy.wait(1000);
+                  cy.get("a").contains(fakeFullName).scrollIntoView().click({force: true});
                   cy.get("a").contains("Events").click({force: true});
-                  cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");                  
-                  cy.get("td").contains("HEP").scrollIntoView().should("be.visible");                  
+                  cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");
+                  cy.get("td").contains("HEP").scrollIntoView().should("be.visible");
+                  cy.get("#classic a").first().click();                  
                 }
               })
           }
-          checkStatusRequest();                                            
+          checkStatusRequest();
       });
     });
   });
