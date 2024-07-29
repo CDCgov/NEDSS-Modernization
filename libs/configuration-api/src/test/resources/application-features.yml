@@ -1,0 +1,8 @@
+nbs:
+  ui:
+    features:
+      search:
+        view:
+          enabled: true
+          table:
+            enabled: false

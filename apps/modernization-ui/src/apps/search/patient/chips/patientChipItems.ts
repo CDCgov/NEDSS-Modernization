@@ -33,7 +33,7 @@ export const patientChipItems = (filter: PersonFilter, searchCriteria: SearchCri
                     }
                 } else {
                     const nameMap: { [key: string]: string } = {
-                        lastName: 'LAST',
+                        lastName: 'Last name',
                         firstName: 'FIRST',
                         dateOfBirth: 'DOB',
                         gender: 'SEX'

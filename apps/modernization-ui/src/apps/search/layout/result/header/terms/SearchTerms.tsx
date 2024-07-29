@@ -24,7 +24,7 @@ const SearchTerms = ({ total, terms, onRemoveTerm }: Props) => {
     return (
         <div className={styles.terms} tabIndex={0} id="resultsCount" aria-label={total + ' Results have been found'}>
             <h2>{total} results for:</h2>
-            <div className="display-flex grid-gap-2">
+            <div className={styles.term}>
                 {terms.map((term, index) => (
                     <Chip key={index} name={term.title} value={term.name} handleClose={() => onRemoveTerm(term)} />
                 ))}

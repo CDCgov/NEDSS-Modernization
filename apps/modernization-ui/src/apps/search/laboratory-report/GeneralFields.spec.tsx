@@ -75,7 +75,7 @@ describe('GeneralFields component', () => {
 
     it('renders pregnancy status select', async () => {
         const { getByText } = render(<GeneralFieldsWithForm />);
-        expect(getByText('Pregnancy test')).toBeInTheDocument();
+        expect(getByText('Pregnancy status')).toBeInTheDocument();
     });
 
     it('renders event id type select', async () => {

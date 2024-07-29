@@ -83,4 +83,4 @@ const initialEntry = (asOf: Date = new Date()): DefaultNewPatentEntry => ({
 });
 
 export { initialEntry };
-export type { NewPatientEntry, DefaultNewPatentEntry };
+export type { NewPatientEntry, DefaultNewPatentEntry, IdentificationEntry, EmailEntry };

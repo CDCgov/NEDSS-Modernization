@@ -7,9 +7,9 @@ import java.sql.SQLException;
 
 public class AddressRowMapper implements RowMapper<Address> {
 
-  public record Columns(int use, int address, int address2, int city, int state, int zipcode, int country) {
+  public record Columns(int use, int address, int address2, int city, int state, int zipcode, int country, int county) {
     public Columns() {
-      this(1, 2, 3, 4, 5, 6, 7);
+      this(1, 2, 3, 4, 5, 6, 7, 8);
     }
   }
 
@@ -30,6 +30,7 @@ public class AddressRowMapper implements RowMapper<Address> {
     String state = resultSet.getString(columns.state());
     String zipcode = resultSet.getString(columns.zipcode());
     String country = resultSet.getString(columns.country());
+    String county = resultSet.getString(columns.county());
 
     return new Address(
         use,
@@ -38,7 +39,7 @@ public class AddressRowMapper implements RowMapper<Address> {
         city,
         state,
         zipcode,
-        country
-    );
+        country,
+        county);
   }
 }

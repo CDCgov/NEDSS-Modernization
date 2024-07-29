@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
 import { Grid } from '@trussworks/react-uswds';
-import { calculateAge } from 'date';
-import { CodedValue, Indicator } from 'coded';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { CodedValue } from 'coded';
 import FormCard from 'components/FormCard/FormCard';
-import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
+import { calculateAge } from 'date';
+import { Deceased } from 'generated/graphql/schema';
+import { useMemo } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+import { NewPatientEntry } from '../NewPatientEntry';
 
 type CodedValues = {
     deceased: CodedValue[];
@@ -17,8 +19,8 @@ type CodedValues = {
 
 type Props = { id: string; title: string; coded: CodedValues };
 
-export default function OtherInfoFields({ id, title, coded }: Props) {
-    const { control } = useFormContext();
+export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
+    const { control } = useFormContext<NewPatientEntry>();
 
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
@@ -107,7 +109,7 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                         />
                     </Grid>
                 </Grid>
-                {selectedDeceased === Indicator.Yes && (
+                {selectedDeceased === Deceased.Y && (
                     <Grid row>
                         <Grid col={6}>
                             <Controller
@@ -120,7 +122,7 @@ export default function OtherInfoFields({ id, title, coded }: Props) {
                                         name={name}
                                         label="Date of death"
                                         disableFutureDates
-                                        disabled={selectedDeceased !== Indicator.Yes}
+                                        disabled={selectedDeceased !== Deceased.Y}
                                     />
                                 )}
                             />

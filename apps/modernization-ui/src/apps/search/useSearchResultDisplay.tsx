@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useContext, useReducer } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useReducer } from 'react';
 import { PageProvider, PagingSettings } from 'page';
 import { SortingProvider, SortingSettings } from 'sorting';
 import { Term } from './terms';
+import { SearchSettings, useSearchSettings } from './useSearchSettings';
 
 type View = 'list' | 'table';
 
@@ -23,7 +24,8 @@ type Interaction = {
     search: () => void;
     complete: (terms: Term[]) => void;
     noInput: () => void;
-    setView: (view: View) => void;
+    asTable: () => void;
+    asList: () => void;
 };
 
 const SearchContext = createContext<Interaction | undefined>(undefined);
@@ -35,15 +37,12 @@ type Action =
     | { type: 'setView'; view: View }
     | { type: 'noInput' };
 
-const initial: State = {
-    status: 'waiting',
-    view: 'table'
-};
+const initialize = (settings: SearchSettings): State => ({ status: 'waiting', view: settings.defaultView });
 
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
         case 'reset': {
-            return initial;
+            return { view: current.view, status: 'waiting' };
         }
         case 'search': {
             return { ...current, status: 'searching' };
@@ -69,17 +68,33 @@ type Props = {
 };
 
 const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
+    const settings = useSearchSettings();
+
     return (
         <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
             <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                <Wrapper>{children}</Wrapper>
+                <Wrapper settings={settings}>{children}</Wrapper>
             </PageProvider>
         </SortingProvider>
     );
 };
 
-const Wrapper = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useReducer(reducer, initial);
+type WrapperProps = {
+    children: ReactNode;
+    settings: SearchSettings;
+};
+
+const Wrapper = ({ children, settings }: WrapperProps) => {
+    const [state, dispatch] = useReducer(reducer, settings, initialize);
+
+    useEffect(() => {
+        //  udpates the current view if the default changes
+        if (settings.defaultView === 'list') {
+            dispatch({ type: 'setView', view: 'list' });
+        } else if (settings.defaultView === 'table') {
+            dispatch({ type: 'setView', view: 'table' });
+        }
+    }, [settings.defaultView]);
 
     const complete = (terms: Term[]) => dispatch({ type: 'complete', terms });
 
@@ -88,7 +103,8 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
-    const setView = (view: View) => dispatch({ type: 'setView', view });
+    const asTable = () => dispatch({ type: 'setView', view: 'table' });
+    const asList = () => dispatch({ type: 'setView', view: 'list' });
 
     const value = {
         status: state.status,
@@ -98,7 +114,8 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
         search,
         complete,
         noInput,
-        setView
+        asTable,
+        asList
     };
 
     return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;

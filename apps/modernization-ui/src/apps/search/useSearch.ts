@@ -203,6 +203,24 @@ const asSortField = (property: string): SortField => {
         case SortField.LastNm: {
             return SortField.LastNm;
         }
+        case SortField.Sex: {
+            return SortField.Sex;
+        }
+        case SortField.Address: {
+            return SortField.Address;
+        }
+        case SortField.Email: {
+            return SortField.Email;
+        }
+        case SortField.PhoneNumber: {
+            return SortField.PhoneNumber;
+        }
+        case SortField.Id: {
+            return SortField.LocalId;
+        }
+        case SortField.Identification: {
+            return SortField.Identification;
+        }
         default:
             return SortField.Relevance;
     }

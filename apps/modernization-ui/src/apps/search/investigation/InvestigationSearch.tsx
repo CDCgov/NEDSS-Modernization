@@ -7,9 +7,9 @@ import { useEffect } from 'react';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
-import { NoInputBanner } from '../NoInputBanner';
-import { NoResultsBanner } from '../NoResultsBanner';
 import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
+import { useConceptOptions } from 'options/concepts';
+import { findByValue } from 'options';
 
 const InvestigationSearch = () => {
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
@@ -45,10 +45,11 @@ const InvestigationSearch = () => {
             }
             search(form.getValues());
         } else {
-            form.reset();
             reset();
         }
     };
+
+    const { options: notificationStatus } = useConceptOptions('REC_STAT', { lazy: false });
 
     return (
         <SearchCriteriaProvider>
@@ -59,13 +60,16 @@ const InvestigationSearch = () => {
                     resultsAsList={() => (
                         <SearchResultList<Investigation>
                             results={results?.content ?? []}
-                            render={(result) => <InvestigationSearchResultListItem result={result} />}
+                            render={(result) => (
+                                <InvestigationSearchResultListItem
+                                    result={result}
+                                    notificationStatusResolver={findByValue(notificationStatus)}
+                                />
+                            )}
                         />
                     )}
                     resultsAsTable={() => <div>result table</div>}
                     onSearch={form.handleSubmit(search)}
-                    noInputResults={() => <NoInputBanner />}
-                    noResults={() => <NoResultsBanner />}
                     onClear={reset}
                 />
             </FormProvider>
