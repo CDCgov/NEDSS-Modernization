@@ -33,6 +33,7 @@ class CreateNewConditionPage {
     }
 
     clickCreateAndAddToPageBtn() {
+        cy.wait(5000)
         cy.contains('Create and add to page').click();
     }
 
@@ -56,6 +57,7 @@ class CreateNewConditionPage {
     }
 
     navigateToClassicDesign () {
+        cy.wait(5000)
         cy.contains('New Test Page');
     }
 }
