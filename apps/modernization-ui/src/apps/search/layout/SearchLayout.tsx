@@ -63,14 +63,14 @@ const SearchLayout = ({
                         </div>
                     </div>
                     <div className={styles.collapseButton}>
-                    <div className={collapse ? styles.collapseTrue : styles.content}>
-                        {!collapse && <Icon.ExpandLess onClick={() => setCollapse(true)} size={3} />}
-                        {collapse && <Icon.ExpandMore onClick={() => setCollapse(false)} size={3} />}
+                        <div className={collapse ? styles.collapseTrue : styles.content}>
+                            {!collapse && <Icon.ExpandLess onClick={() => setCollapse(true)} size={3} />}
+                            {collapse && <Icon.ExpandMore onClick={() => setCollapse(false)} size={3} />}
+                        </div>
                     </div>
-                </div>
-                <div className={styles.results}>
+                    <div className={styles.results}>
                         <div className={styles.resultContent}>
-                        {status === 'waiting' && <SearchLanding />}
+                            {status === 'waiting' && <SearchLanding />}
                             {status === 'searching' && <Loading className={styles.loading} />}
                             {status === 'completed' && (
                                 <SearchResults onRemoveTerm={onRemoveTerm}>
@@ -79,9 +79,11 @@ const SearchLayout = ({
                                     {view === 'table' && total > 0 && resultsAsTable()}
                                 </SearchResults>
                             )}
-                            {status === 'noInput' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
+                            {status === 'noInput' && (
+                                <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>
+                            )}
                         </div>
-                </div>
+                    </div>
                 </div>
             </section>
         </ColumnProvider>
