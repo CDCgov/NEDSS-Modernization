@@ -1,29 +1,12 @@
 @use 'styles/colors';
 
-.preferences {
-    width: 14.3125rem;
+.overlay {
+    --modal-min-width: 14.3125rem;
+}
 
-    .preference {
-        display: flex;
-        flex: 1 0 0;
-        align-items: center;
-        padding-left: 0.5rem;
+.gear {
+    fill: colors.$primary;
 
-        height: 2.75rem;
-        border-bottom: 1px solid colors.$base-lighter;
-
-        .handle {
-            cursor: pointer;
-            display: flex;
-            width: 2.625rem;
-            height: 2.625rem;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .check {
-            margin: 0;
-        }
-    }
+    width: 1.75rem;
+    height: 1.75rem;
 }
