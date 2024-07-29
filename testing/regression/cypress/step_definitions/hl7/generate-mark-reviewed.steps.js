@@ -180,12 +180,7 @@ When("I Generate HL7 messages to api and mark as review", () => {
                 } else if(response.body.nbsInfo.nbsInterfaceStatus === "Success" && response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
                   let fakeSSN = Cypress.env().fakeSSN;
                   let fakeFullName = Cypress.env().fakeFullName;
-                  cy.wait(1000);
-                  cy.log(response.body.nbsIngestionInfo[0].logComment);
-                  cy.log(response.body.nbsIngestionInfo[1].logComment);
-                  cy.log(response.body.nbsIngestionInfo[2].logComment);
-                  cy.log(response.body.nbsIngestionInfo[3].logComment);
-                  cy.log(response.body.nbsIngestionInfo[4].logComment);
+                  cy.wait(1000);    
                   cy.get("a").contains("Home").click();
                   cy.wait(500);
                   // cy.visit("https://app.int1.nbspreview.com/nbs/HomePage.do?method=loadHomePage");
