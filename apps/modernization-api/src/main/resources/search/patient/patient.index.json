@@ -48,6 +48,15 @@
               }
             }
           },
+          "cntryText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
           "cntyCd": {
             "type": "text",
             "fields": {
@@ -57,7 +66,25 @@
               }
             }
           },
+          "cntyText": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
           "state": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "stateText": {
             "type": "text",
             "fields": {
               "keyword": {
