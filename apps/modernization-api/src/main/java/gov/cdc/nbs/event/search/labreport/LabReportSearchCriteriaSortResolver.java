@@ -15,6 +15,7 @@ import static gov.cdc.nbs.search.SearchSorting.*;
 
 @Component
 class LabReportSearchCriteriaSortResolver {
+  private static final String PERSON_PARTICIPATIONS = "person_participations";
 
   List<SortOptions> resolve(final Pageable pageable) {
     return pageable.getSort()
@@ -28,22 +29,22 @@ class LabReportSearchCriteriaSortResolver {
 
     return switch (sorting.getProperty()) {
       case "lastNm" -> asFilteredSortOption(
-          "person_participations",
+          PERSON_PARTICIPATIONS,
           "person_participations.last_name.keyword",
           order,
           onlyPatients());
       case "firstNm" -> asFilteredSortOption(
-          "person_participations",
+          PERSON_PARTICIPATIONS,
           "person_participations.first_name.keyword",
           order,
           onlyPatients());
       case "birthTime" -> asFilteredSortOption(
-          "person_participations",
+          PERSON_PARTICIPATIONS,
           "person_participations.birth_time",
           order,
           onlyPatients());
       case "sex" -> asFilteredSortOption(
-          "person_participations",
+          PERSON_PARTICIPATIONS,
           "person_participations.curr_sex_cd",
           order,
           onlyPatients());
