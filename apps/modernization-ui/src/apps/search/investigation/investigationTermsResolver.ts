@@ -1,20 +1,6 @@
 import { Term, fromSelectable, fromSelectables, fromValue } from 'apps/search/terms';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
-const REPORTING_PROVIDER_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Reporting provider',
-    value: 'PROVIDER'
-};
-
-const REPORTING_FACILITY_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Reporting facility',
-    value: 'FACILITY'
-};
-
 const conditions = fromSelectables('conditions', 'CONDITION');
 const programAreas = fromSelectables('programAreas', 'PROGRAM AREA');
 const jurisdictions = fromSelectables('jurisdictions', 'JURISDICTION');
@@ -67,12 +53,10 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
     }
 
     if (entry.reportingFacility) {
-        terms.push(REPORTING_FACILITY_TERM);
-        terms.push(fromSelectable('reportingFacility', 'ENTITY ID')(entry.reportingFacility));
+        terms.push(fromSelectable('reportingFacility', 'ENTITY TYPE')(entry.reportingFacility));
     }
 
     if (entry.reportingProvider) {
-        terms.push(REPORTING_PROVIDER_TERM);
         terms.push(fromSelectable('reportingProvider', 'ENTITY ID')(entry.reportingProvider));
     }
 
