@@ -1,0 +1,14 @@
+.toggle {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    strong {
+        width: 7ch;
+    }
+
+    button {
+        margin: 0;
+    }
+}
