@@ -8,8 +8,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import org.hamcrest.Matcher;
+import static org.hamcrest.Matchers.*;
 
 public class InvestigationSearchResultVerificationSteps {
 
@@ -20,8 +21,7 @@ public class InvestigationSearchResultVerificationSteps {
   InvestigationSearchResultVerificationSteps(
       final Active<InvestigationIdentifier> investigation,
       final Active<PatientIdentifier> patient,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.investigation = investigation;
     this.patient = patient;
     this.response = response;
@@ -33,10 +33,8 @@ public class InvestigationSearchResultVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findInvestigationsByFilter.content[*].personParticipations[?(@.shortId=='%s')]",
-                String.valueOf(this.patient.active().shortId())
-            )
-                .exists()
-        );
+                String.valueOf(this.patient.active().shortId()))
+                    .exists());
   }
 
   @Then("the Investigation search results contain the Investigation")
@@ -45,10 +43,8 @@ public class InvestigationSearchResultVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findInvestigationsByFilter.content[?(@.id=='%s')]",
-                String.valueOf(this.investigation.active().identifier())
-            )
-                .exists()
-        );
+                String.valueOf(this.investigation.active().identifier()))
+                    .exists());
   }
 
   @Then("there is only one investigation search result")
@@ -72,22 +68,34 @@ public class InvestigationSearchResultVerificationSteps {
   public void the_nth_search_result_has_a_x_of_y(
       final int position,
       final String field,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     int index = position - 1;
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
     this.response.active()
-        .andExpect(pathMatcher.value(hasItem(value)));
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
+  }
+
+  private Matcher<?> matchingValue(final String field, final String value) {
+    return switch (field.toLowerCase()) {
+      case "local id" -> hasItem(Integer.parseInt(value));
+      default -> hasItem(value);
+    };
   }
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
     return switch (field.toLowerCase()) {
-      case "birthday" ->
-          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime", position);
-      case "last name" ->
-          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName", position);
+      case "birthday" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime",
+          position);
+      case "last name" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName",
+          position);
+      case "first name" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].firstName",
+          position);
+      case "sex" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].currSexCd",
+          position);
+      case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
+          position);
       default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
   }
