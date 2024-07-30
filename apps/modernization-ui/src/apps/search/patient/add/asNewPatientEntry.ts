@@ -18,7 +18,7 @@ const resolveIdentification = (entry: Identification): IdentificationEntry[] =>
 
 const resolveRace = (entry: RaceEthnicity): string[] => (entry.race ? [asValue(entry.race)] : []);
 
-const resolveEmail = (entry: Contact): EmailEntry[] => (entry.email ? [{ email: entry.email }] : []);
+const resolveEmail = (entry: Contact): EmailEntry[] => [{ email: entry.email || '' }];
 
 const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientEntry => {
     return {

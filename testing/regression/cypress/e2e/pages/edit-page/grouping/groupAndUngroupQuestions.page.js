@@ -1,8 +1,7 @@
 class GroupAndUngroupQuestions {
 
     navigateEditPage () {
-        cy.visit('/page-builder/pages');
-        cy.get('table.pageLibraryTable tbody tr td a').eq(2).click();
+        this.navigateToPreviewPageWithStatusInitialDraft()
         cy.get("body").then($body => {
             if ($body.find("#create-new-draft-button").length > 0) {
                 cy.get("create-new-draft-button").then($button => {
@@ -152,6 +151,19 @@ class GroupAndUngroupQuestions {
                         .type(rowIndex === length-1 ? distribution[1]: distribution[0]);
                 });
             });
+    }
+
+    navigateToPreviewPageWithStatusInitialDraft() {
+        cy.visit('/page-builder/pages');
+        cy.wait(2000);
+        cy.get('#range-toggle').select('100')
+        cy.wait(5000);
+        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+            if($tr.find("td").eq(3).text() === "Initial Draft") {
+                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                return false
+            }
+        });
     }
 
 }

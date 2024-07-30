@@ -13,6 +13,7 @@ import {
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
+import { ErrorMessage } from '@trussworks/react-uswds';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -27,9 +28,10 @@ const GeneralSearchFields = () => {
                         control={form.control}
                         render={({ field: { name, onChange, value } }) => (
                             <MultiSelect
+                                id={name}
                                 label="Conditions"
-                                onChange={onChange}
                                 value={value}
+                                onChange={onChange}
                                 name={name}
                                 options={searchCriteria.conditions.map((c) => {
                                     return {
@@ -38,7 +40,6 @@ const GeneralSearchFields = () => {
                                         label: c.conditionDescTxt ?? ''
                                     };
                                 })}
-                                id={name}
                             />
                         )}
                     />
@@ -152,7 +153,7 @@ const GeneralSearchFields = () => {
                                 name={name}
                                 value={value}
                                 onChange={onChange}
-                                id="eventDateType"
+                                id={name}
                                 label="Event date type"
                                 options={dateTypeOptions}
                             />
@@ -208,15 +209,15 @@ const GeneralSearchFields = () => {
                     <Controller
                         control={form.control}
                         name="createdBy"
-                        render={({ field: { onChange } }) => (
-                            <UserAutocomplete id="createdBy" label="Event created by" onChange={onChange} />
+                        render={({ field: { name, value, onChange } }) => (
+                            <UserAutocomplete id={name} label="Event created by" onChange={onChange} value={value} />
                         )}
                     />
                     <Controller
                         control={form.control}
                         name="updatedBy"
-                        render={({ field: { onChange } }) => (
-                            <UserAutocomplete id="updatedBy" label="Event updated by" onChange={onChange} />
+                        render={({ field: { name, value, onChange } }) => (
+                            <UserAutocomplete id={name} label="Event updated by" onChange={onChange} value={value} />
                         )}
                     />
 
@@ -242,19 +243,19 @@ const GeneralSearchFields = () => {
                             control={form.control}
                             name="reportingProvider"
                             rules={{
-                                required: { value: true, message: `Provider is required` }
+                                required: { value: true, message: 'Provider is required' }
                             }}
-                            render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                                 <>
                                     <ProviderAutocomplete
                                         id={name}
                                         label="Event provider type"
-                                        placeholder=""
+                                        value={value}
                                         onChange={onChange}
                                         required={true}
                                         onBlur={onBlur}
-                                        error={error?.message}
                                     />
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                                 </>
                             )}
                         />
@@ -266,19 +267,19 @@ const GeneralSearchFields = () => {
                             control={form.control}
                             name="reportingProvider"
                             rules={{
-                                required: { value: true, message: `Facility is required` }
+                                required: { value: true, message: 'Facility is required' }
                             }}
-                            render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                                 <>
                                     <FacilityAutocomplete
                                         id={name}
                                         label="Event facility type"
-                                        placeholder=""
-                                        onChange={(e) => onChange(e?.value)}
+                                        value={value}
+                                        onChange={(e) => onChange(e)}
                                         required={true}
                                         onBlur={onBlur}
-                                        error={error?.message}
                                     />
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                                 </>
                             )}
                         />

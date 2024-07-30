@@ -45,6 +45,7 @@ class PatientSearchRequester {
                 address
                 address2
                 city
+                county
                 state
                 zipcode
             }
@@ -59,8 +60,7 @@ class PatientSearchRequester {
 
   public PatientSearchRequester(
       final ObjectMapper mapper,
-      final GraphQLRequest graphql
-  ) {
+      final GraphQLRequest graphql) {
     this.mapper = mapper;
     this.graphql = graphql;
   }
@@ -72,17 +72,15 @@ class PatientSearchRequester {
           mapper.createObjectNode()
               .<ObjectNode>set(
                   "filter",
-                  mapper.convertValue(filter, JsonNode.class)
-              )
+                  mapper.convertValue(filter, JsonNode.class))
               .set(
                   "page",
                   mapper.createObjectNode()
                       .put("pageNumber", 0)
                       .put("pageSize", 15)
                       .put("sortDirection", sorting.direction().name())
-                      .put("sortField", sorting.field())
-              )
-      ).andDo(print());
+                      .put("sortField", sorting.field())))
+          .andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");
     }

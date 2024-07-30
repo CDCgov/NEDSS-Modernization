@@ -69,6 +69,7 @@ type PatientSearchResultAddress {
   address: String
   address2: String
   city: String
+  county: String
   state: String
   zipcode: String
 }

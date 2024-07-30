@@ -7,7 +7,7 @@ import {
     processingStatusOptions
 } from './InvestigationFormTypes';
 import { SingleSelect, MultiSelect } from 'design-system/select';
-import { ConceptAutocomplete } from 'options/autocompete/ConceptAutocomplete';
+import { ConceptMultiSelect } from 'options/concepts/ConceptMultiSelect';
 
 const CriteriaSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -32,8 +32,14 @@ const CriteriaSearchFields = () => {
             <Controller
                 control={form.control}
                 name="outbreaks"
-                render={({ field: { name, onBlur } }) => (
-                    <ConceptAutocomplete valueSet={'OUTBREAK_NM'} id={name} label="Outbreak name" onBlur={onBlur} />
+                render={({ field: { name, onChange, value } }) => (
+                    <ConceptMultiSelect
+                        onChange={onChange}
+                        name={name}
+                        value={value}
+                        valueSet="OUTBREAK_NM"
+                        label="Outbreak name"
+                    />
                 )}
             />
 

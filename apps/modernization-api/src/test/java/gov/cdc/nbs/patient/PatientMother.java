@@ -131,6 +131,7 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String address,
       final String city,
+      final String county,
       final String state,
       final String zip) {
     withAddress(
@@ -138,6 +139,7 @@ public class PatientMother {
         "H",
         address,
         city,
+        county,
         state,
         zip);
   }
@@ -147,6 +149,7 @@ public class PatientMother {
       final String use,
       final String address,
       final String city,
+      final String county,
       final String state,
       final String zip) {
     Person patient = managed(identifier);
@@ -163,7 +166,7 @@ public class PatientMother {
             city,
             state,
             zip,
-            null,
+            county,
             "840",
             null,
             null,

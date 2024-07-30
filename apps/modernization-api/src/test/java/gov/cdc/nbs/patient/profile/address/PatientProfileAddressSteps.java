@@ -52,8 +52,7 @@ public class PatientProfileAddressSteps {
       final Active<PatientInput> activeInput,
       final TestPatient testPatient,
       final Active<NewPatientAddressInput> newRequest,
-      final Active<UpdatePatientAddressInput> updateRequest
-  ) {
+      final Active<UpdatePatientAddressInput> updateRequest) {
     this.mother = mother;
     this.activePatient = activePatient;
     this.resolver = resolver;
@@ -84,6 +83,7 @@ public class PatientProfileAddressSteps {
         resolvedUse,
         address,
         city,
+        null,
         null,
         zip);
 
@@ -221,6 +221,6 @@ public class PatientProfileAddressSteps {
 
     assertThatThrownBy(
         () -> this.resolver.resolve(profile, page))
-        .isInstanceOf(AccessDeniedException.class);
+            .isInstanceOf(AccessDeniedException.class);
   }
 }

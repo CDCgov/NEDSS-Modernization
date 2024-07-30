@@ -123,7 +123,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 onChange
                             )
                         }
-                        label="Event id type"
+                        label="Event ID type"
                         dataTestid={name}
                         htmlFor={name}
                         options={Object.values(InvestigationEventIdType).map((event) => {

@@ -1,7 +1,7 @@
 import { useEffect, FocusEvent as ReactFocusEvent } from 'react';
 import classNames from 'classnames';
 import { Selectable, useMultiSelection } from 'options';
-import { Checkbox } from './Checkbox';
+import { SelectableCheckbox } from './SelectableCheckbox';
 import styles from './checkboxGroup.module.scss';
 import { ErrorMessage } from '@trussworks/react-uswds';
 
@@ -49,7 +49,7 @@ export const CheckboxGroup = ({
             {error ? <ErrorMessage>{error}</ErrorMessage> : null}
             <div className={styles.options}>
                 {items.map((item, index) => (
-                    <Checkbox
+                    <SelectableCheckbox
                         name={name}
                         key={index}
                         selectable={item.value}
