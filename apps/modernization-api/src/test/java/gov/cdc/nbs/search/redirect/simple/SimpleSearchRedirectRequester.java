@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search.redirect;
+package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.http.MediaType;
@@ -10,7 +10,7 @@ import org.springframework.util.MultiValueMap;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @Component
-public class SimpleSearchRedirectRequester {
+class SimpleSearchRedirectRequester {
 
   private final Authenticated authenticated;
   private final MockMvc mvc;

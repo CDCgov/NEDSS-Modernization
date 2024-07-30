@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search.redirect;
+package gov.cdc.nbs.patient.search.home.redirect;
 
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
@@ -15,15 +15,12 @@ public class AdvancedSearchRedirectSteps {
   private final Active<ResultActions> response;
 
   private final AdvancedSearchRedirectRequester requester;
-  private final SearchRedirect advancedSearchPath;
 
   AdvancedSearchRedirectSteps(
-      final SearchRedirect searchRedirect,
       final Active<ActiveUser> activeUser,
       final AdvancedSearchRedirectRequester requester,
       final Active<ResultActions> response
   ) {
-    this.advancedSearchPath = searchRedirect;
     this.activeUser = activeUser;
     this.requester = requester;
     this.response = response;
@@ -38,14 +35,7 @@ public class AdvancedSearchRedirectSteps {
   public void i_am_redirected_to_advanced_search() throws Exception {
     this.response.active()
         .andExpect(status().isFound())
-        .andExpect(header().string("Location", startsWith(advancedSearchPath.base())));
-  }
-
-  @Then("I am redirected to the timeout page")
-  public void i_am_redirected_to_the_timeout_page() throws Exception {
-    this.response.active()
-        .andExpect(status().isFound())
-        .andExpect(header().string("Location", "/nbs/timeout"));
+        .andExpect(header().string("Location", startsWith("/search")));
   }
 
   @Then("the user Id is present in the redirect")

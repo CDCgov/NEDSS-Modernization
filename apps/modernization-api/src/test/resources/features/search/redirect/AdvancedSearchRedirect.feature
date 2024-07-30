@@ -11,6 +11,6 @@ Feature: Navigating to Advanced Search from the NBS home page
     And the token is present in the redirect
 
   Scenario: I do not have a session id
-    Given a session does not exist
+    Given I am not logged in
     And I click Advanced Search on the NBS Home page
-    Then I am redirected to the timeout page
+    Then I am not allowed due to insufficient permissions

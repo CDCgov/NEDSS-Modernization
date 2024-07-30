@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search.redirect;
+package gov.cdc.nbs.patient.search.home.redirect;
 
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-@simple-search-redirect @web-interaction
+@simple-search-redirect
 Feature: Searching from the NBS home page
 
   Background:
@@ -17,6 +17,7 @@ Feature: Searching from the NBS home page
     And the search parameters include a "Last Name" of "Lastly"
     And the search parameters include a "Gender" of "F"
     And the search parameters include a "Patient ID" of "100056"
+    And the search type is patients
     And the user Id is present in the redirect
     And the token is present in the redirect
 
@@ -28,17 +29,16 @@ Feature: Searching from the NBS home page
     And the search type is <search-type>
 
     Examples:
-      | event-type          | search-type   |
-      | ABCS Case ID        | investigation |
-      | City/County Case ID | investigation |
-      | Investigation ID    | investigation |
-      | Notification ID     | investigation |
-      | State Case ID       | investigation |
-      | Accession Number ID | lab report    |
-      | Lab ID              | lab report    |
+      | event-type          | search-type    |
+      | ABCS Case ID        | investigations |
+      | City/County Case ID | investigations |
+      | Investigation ID    | investigations |
+      | Notification ID     | investigations |
+      | State Case ID       | investigations |
+      | Accession Number ID | lab-reports    |
+      | Lab ID              | lab-reports    |
 
   Scenario: I do not have a session id
-    Given a session does not exist
+    Given I am not logged in
     And I perform a search from the NBS Home screen
-    Then I am redirected to the timeout page
-
+    Then I am not allowed due to insufficient permissions

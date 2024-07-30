@@ -7,6 +7,7 @@ import { PatientSearch } from './patient/PatientSearch';
 import { LaboratoryReportSearch } from './laboratory-report';
 import { InvestigationSearch } from './investigation';
 import { FeatureGuard } from 'feature';
+import { SimpleSearch } from './simple';
 
 const routing = [
     {
@@ -37,6 +38,10 @@ const routing = [
             {
                 path: 'investigations',
                 element: <InvestigationSearch />
+            },
+            {
+                path: 'simple/:type',
+                element: <SimpleSearch />
             }
         ]
     }
