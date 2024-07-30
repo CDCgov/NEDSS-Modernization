@@ -31,14 +31,23 @@ class InvestigationSearchCriteriaSortResolver {
           "person_participations",
           "person_participations.last_name.keyword",
           order,
-          onlyPatients()
-      );
+          onlyPatients());
+      case "firstNm" -> asFilteredSortOption(
+          "person_participations",
+          "person_participations.first_name.keyword",
+          order,
+          onlyPatients());
       case "birthTime" -> asFilteredSortOption(
           "person_participations",
           "person_participations.birth_time",
           order,
-          onlyPatients()
-      );
+          onlyPatients());
+      case "sex" -> asFilteredSortOption(
+          "person_participations",
+          "person_participations.curr_sex_cd",
+          order,
+          onlyPatients());
+      case "local_id" -> asSortOption("local_id", order);
       default -> asSortOption("_score", order);
     };
   }
@@ -46,8 +55,7 @@ class InvestigationSearchCriteriaSortResolver {
   private static Function<Query.Builder, ObjectBuilder<Query>> onlyPatients() {
     return filter -> filter.term(
         term -> term.field("person_participations.person_cd")
-            .value("PAT")
-    );
+            .value("PAT"));
   }
 
 }

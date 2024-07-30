@@ -20,8 +20,7 @@ public class InvestigationSearchResultVerificationSteps {
   InvestigationSearchResultVerificationSteps(
       final Active<InvestigationIdentifier> investigation,
       final Active<PatientIdentifier> patient,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.investigation = investigation;
     this.patient = patient;
     this.response = response;
@@ -33,10 +32,8 @@ public class InvestigationSearchResultVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findInvestigationsByFilter.content[*].personParticipations[?(@.shortId=='%s')]",
-                String.valueOf(this.patient.active().shortId())
-            )
-                .exists()
-        );
+                String.valueOf(this.patient.active().shortId()))
+                    .exists());
   }
 
   @Then("the Investigation search results contain the Investigation")
@@ -45,10 +42,8 @@ public class InvestigationSearchResultVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findInvestigationsByFilter.content[?(@.id=='%s')]",
-                String.valueOf(this.investigation.active().identifier())
-            )
-                .exists()
-        );
+                String.valueOf(this.investigation.active().identifier()))
+                    .exists());
   }
 
   @Then("there is only one investigation search result")
@@ -72,8 +67,7 @@ public class InvestigationSearchResultVerificationSteps {
   public void the_nth_search_result_has_a_x_of_y(
       final int position,
       final String field,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     int index = position - 1;
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
@@ -84,10 +78,16 @@ public class InvestigationSearchResultVerificationSteps {
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
     return switch (field.toLowerCase()) {
-      case "birthday" ->
-          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime", position);
-      case "last name" ->
-          jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName", position);
+      case "birthday" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].birthTime",
+          position);
+      case "last name" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].lastName",
+          position);
+      case "first name" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].firstName",
+          position);
+      case "sex" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].currSexCd",
+          position);
+      case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].localId",
+          position);
       default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
   }

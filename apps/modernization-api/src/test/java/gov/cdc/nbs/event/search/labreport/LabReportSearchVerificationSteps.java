@@ -19,8 +19,7 @@ public class LabReportSearchVerificationSteps {
   LabReportSearchVerificationSteps(
       final Active<PatientIdentifier> patient,
       final Active<SearchableLabReport> labReport,
-      final Active<ResultActions> response
-  ) {
+      final Active<ResultActions> response) {
     this.patient = patient;
     this.labReport = labReport;
     this.response = response;
@@ -32,10 +31,8 @@ public class LabReportSearchVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findLabReportsByFilter.content[?(@.id=='%s')]",
-                String.valueOf(this.labReport.active().identifier())
-            )
-                .exists()
-        );
+                String.valueOf(this.labReport.active().identifier()))
+                    .exists());
   }
 
   @Then("the Lab Report search results do not contain the lab report")
@@ -44,10 +41,8 @@ public class LabReportSearchVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findLabReportsByFilter.content[?(@.id=='%s')]",
-                String.valueOf(this.labReport.active().identifier())
-            )
-                .doesNotExist()
-        );
+                String.valueOf(this.labReport.active().identifier()))
+                    .doesNotExist());
   }
 
   @Then("the Lab Report search results contain the patient short id")
@@ -56,10 +51,8 @@ public class LabReportSearchVerificationSteps {
         .andExpect(
             jsonPath(
                 "$.data.findLabReportsByFilter.content[*].personParticipations[?(@.shortId=='%s')]",
-                String.valueOf(this.patient.active().shortId())
-            )
-                .exists()
-        );
+                String.valueOf(this.patient.active().shortId()))
+                    .exists());
   }
 
   @Then("there are no lab report search results available")
@@ -89,8 +82,7 @@ public class LabReportSearchVerificationSteps {
   public void the_nth_search_result_has_a_x_of_y(
       final int position,
       final String field,
-      final String value
-  ) throws Exception {
+      final String value) throws Exception {
     int index = position - 1;
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
@@ -101,10 +93,16 @@ public class LabReportSearchVerificationSteps {
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
     return switch (field.toLowerCase()) {
-      case "birthday" ->
-          jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].birthTime", position);
-      case "last name" ->
-          jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].lastName", position);
+      case "birthday" -> jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].birthTime",
+          position);
+      case "last name" -> jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].lastName",
+          position);
+      case "first name" -> jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].firstName",
+          position);
+      case "sex" -> jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].currSexCd",
+          position);
+      case "local id" -> jsonPath("$.data.findLabReportsByFilter.content[%s].localId",
+          position);
       default -> throw new AssertionError("Unexpected Lab Report Search Result property %s".formatted(field));
     };
   }
