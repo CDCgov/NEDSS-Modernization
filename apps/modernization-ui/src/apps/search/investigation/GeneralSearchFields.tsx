@@ -13,6 +13,7 @@ import {
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
+import { ErrorMessage } from '@trussworks/react-uswds';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -244,17 +245,18 @@ const GeneralSearchFields = () => {
                             rules={{
                                 required: { value: true, message: 'Provider is required' }
                             }}
-                            render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
-                                <ProviderAutocomplete
-                                    id={name}
-                                    label="Event provider type"
-                                    placeholder=""
-                                    value={value}
-                                    onChange={onChange}
-                                    required={true}
-                                    onBlur={onBlur}
-                                    error={error?.message}
-                                />
+                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                                <>
+                                    <ProviderAutocomplete
+                                        id={name}
+                                        label="Event provider type"
+                                        value={value}
+                                        onChange={onChange}
+                                        required={true}
+                                        onBlur={onBlur}
+                                    />
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                                </>
                             )}
                         />
                     )}
@@ -268,16 +270,17 @@ const GeneralSearchFields = () => {
                                 required: { value: true, message: 'Facility is required' }
                             }}
                             render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                                <FacilityAutocomplete
-                                    id={name}
-                                    label="Event facility type"
-                                    placeholder=""
-                                    value={value}
-                                    onChange={(e) => onChange(e?.value)}
-                                    required={true}
-                                    onBlur={onBlur}
-                                    error={error?.message}
-                                />
+                                <>
+                                    <FacilityAutocomplete
+                                        id={name}
+                                        label="Event facility type"
+                                        value={value}
+                                        onChange={(e) => onChange(e)}
+                                        required={true}
+                                        onBlur={onBlur}
+                                    />
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                                </>
                             )}
                         />
                     )}

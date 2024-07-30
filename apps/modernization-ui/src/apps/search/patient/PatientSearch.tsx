@@ -53,6 +53,7 @@ const PatientSearch = () => {
                     />
                 )}
                 resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
+                searchEnabled={methods.formState.isValid}
                 onSearch={methods.handleSubmit(search)}
                 noResults={() => <NoPatientResults />}
                 onClear={reset}
