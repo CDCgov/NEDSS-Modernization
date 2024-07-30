@@ -20,7 +20,7 @@ const InvestigationSearch = () => {
     const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
-        if (status === 'waiting') {
+        if (status === 'resetting') {
             form.reset();
         }
     }, [form.reset, status]);

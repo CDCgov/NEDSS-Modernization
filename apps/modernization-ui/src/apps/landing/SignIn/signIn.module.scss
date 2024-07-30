@@ -14,7 +14,12 @@
     }
 }
 
-.signUpDemoText {
+.sign-in {
+    margin-top: 1rem;
+    line-height: 1.25rem;
+}
+
+.participation {
     display: flex;
     gap: 0.5rem;
     justify-content: flex-start;
@@ -24,7 +29,7 @@
     border-bottom: 1px solid colors.$base-lighter;
     margin-top: 1rem;
 
-    .signUpButton {
+    button {
         font-size: 14px;
         padding: 0;
         text-decoration: none;
