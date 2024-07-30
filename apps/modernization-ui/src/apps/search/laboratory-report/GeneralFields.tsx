@@ -139,7 +139,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         name={name}
                         value={value}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
-                        label="Event id type"
+                        label="Event ID type"
                         id={name}
                         options={identificationTypes}
                     />
@@ -380,7 +380,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             {watch.providerType?.value == 'ORDERING_PROVIDER' && (
                 <Controller
                     control={form.control}
-                    name="orderingProvider"
+                    name="orderingFacility"
                     rules={{
                         required: { value: true, message: `Ordering provider is required` }
                     }}
@@ -402,7 +402,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             {watch.providerType?.value == 'REPORTING_FACILITY' && (
                 <Controller
                     control={form.control}
-                    name="reportingFacility"
+                    name="orderingFacility"
                     rules={{
                         required: { value: true, message: `Facility is required` }
                     }}
