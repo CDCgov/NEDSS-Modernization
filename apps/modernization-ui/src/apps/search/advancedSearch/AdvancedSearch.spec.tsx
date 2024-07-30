@@ -14,7 +14,7 @@ describe('AdvancedSearch component tests', () => {
     it('should render filter to do advance search', () => {});
     describe('When page loads', () => {
         it('Add New button is disabled', () => {
-            const { getByText, debug } = render(
+            const { getByText } = render(
                 <MockedProvider>
                     <BrowserRouter>
                         <SkipLinkProvider>
@@ -23,8 +23,6 @@ describe('AdvancedSearch component tests', () => {
                     </BrowserRouter>
                 </MockedProvider>
             );
-
-            debug();
 
             const btn = getByText('Add new');
             expect(btn.hasAttribute('disabled'));
