@@ -294,7 +294,16 @@ Feature: Investigation search
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result
 
-    Scenario: I can search for Investigations related to an outbreak
+  Scenario: I can search for Investigations reported by a specific provider using the new api
+    Given there is a provider named "Robin" "Buckley"
+    And the investigation was reported by the provider
+    And the investigation is available for search
+    And I want to find investigations reported by the provider using the new api
+    When I search for investigations
+    Then the Investigation search results contain the Investigation
+    And there is only one investigation search result
+
+  Scenario: I can search for Investigations related to an outbreak
       Given "Peanuts at Fratelli's Restaurant" caused an outbreak
       And the investigation is related to the Peanuts at Fratelli's Restaurant outbreak
       And the investigation is available for search

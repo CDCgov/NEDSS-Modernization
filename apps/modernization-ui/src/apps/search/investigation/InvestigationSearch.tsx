@@ -8,6 +8,8 @@ import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
+import { useConceptOptions } from 'options/concepts';
+import { findByValue } from 'options';
 
 const InvestigationSearch = () => {
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
@@ -18,7 +20,7 @@ const InvestigationSearch = () => {
     const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
-        if (status === 'waiting') {
+        if (status === 'resetting') {
             form.reset();
         }
     }, [form.reset, status]);
@@ -43,10 +45,11 @@ const InvestigationSearch = () => {
             }
             search(form.getValues());
         } else {
-            form.reset();
             reset();
         }
     };
+
+    const { options: notificationStatus } = useConceptOptions('REC_STAT', { lazy: false });
 
     return (
         <SearchCriteriaProvider>
@@ -57,7 +60,12 @@ const InvestigationSearch = () => {
                     resultsAsList={() => (
                         <SearchResultList<Investigation>
                             results={results?.content ?? []}
-                            render={(result) => <InvestigationSearchResultListItem result={result} />}
+                            render={(result) => (
+                                <InvestigationSearchResultListItem
+                                    result={result}
+                                    notificationStatusResolver={findByValue(notificationStatus)}
+                                />
+                            )}
                         />
                     )}
                     resultsAsTable={() => <div>result table</div>}

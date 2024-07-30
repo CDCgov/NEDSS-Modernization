@@ -23,7 +23,6 @@ nbs:
     server: localhost
     port: 1433
   search:
-    advanced-search-path: /search
     max-page-size: 100
     patient:
       index:

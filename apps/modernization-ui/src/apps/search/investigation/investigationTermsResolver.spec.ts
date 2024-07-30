@@ -76,7 +76,7 @@ describe('when an Investigation Seach contains General search criteria', () => {
             expect.arrayContaining([
                 {
                     source: 'pregnancyStatus',
-                    title: 'PREGNANCY TEST',
+                    title: 'PREGNANCY STATUS',
                     name: 'Pregnancy Name',
                     value: 'pregnancy-value'
                 }

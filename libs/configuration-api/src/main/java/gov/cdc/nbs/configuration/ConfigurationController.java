@@ -1,5 +1,6 @@
 package gov.cdc.nbs.configuration;
 
+import gov.cdc.nbs.configuration.features.Features;
 import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
 import gov.cdc.nbs.configuration.settings.Settings;
 import org.springframework.web.bind.annotation.GetMapping;
