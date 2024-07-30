@@ -10,6 +10,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItems;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -43,7 +44,13 @@ class ViewObservationRouteLocatorConfigurationTest {
                 )
                 .exchange()
                 .expectHeader()
-                .value("Set-Cookie", containsString("Patient-Action=7841"));
+            .values(
+                "Set-Cookie",
+                hasItems(
+                    containsString("Patient-Action=7841;"),
+                    containsString("Return-Patient=;")
+                )
+            );
 
     }
 
@@ -62,7 +69,13 @@ class ViewObservationRouteLocatorConfigurationTest {
             )
             .exchange()
             .expectHeader()
-            .value("Set-Cookie", containsString("Patient-Action=7841"));
+            .values(
+                "Set-Cookie",
+                hasItems(
+                    containsString("Patient-Action=7841;"),
+                    containsString("Return-Patient=;")
+                )
+            );
 
     }
 }

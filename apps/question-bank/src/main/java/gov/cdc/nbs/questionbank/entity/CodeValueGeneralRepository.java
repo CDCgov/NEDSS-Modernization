@@ -10,14 +10,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface CodeValueGeneralRepository extends JpaRepository<CodeValueGeneral, CodeValueGeneralId> {
 
-    @Query("SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.code=:code")
-    Optional<CodeValueGeneral> findByCode(@Param("code") String code);
+  @Query("SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.code=:code AND cvg.id.codeSetNm = 'CODE_SYSTEM'")
+  Optional<CodeValueGeneral> findCodeSystemByCode(@Param("code") String code);
 
-    Optional<CodeValueGeneral> findByIdCodeSetNmAndIdCode(String codesetName, String code);
+  Optional<CodeValueGeneral> findByIdCodeSetNmAndIdCode(String codesetName, String code);
 
-    List<CodeValueGeneral> findByIdCodeSetNm(String codeSetNm, Sort sort);
+  List<CodeValueGeneral> findByIdCodeSetNm(String codeSetNm, Sort sort);
 
-    @Modifying
-    @Query("DELETE from CodeValueGeneral c WHERE c.id.codeSetNm =:codesetNm")
-    void deleteAllByCodesetName(@Param("codesetNm") String codesetNm);
+  @Modifying
+  @Query("DELETE from CodeValueGeneral c WHERE c.id.codeSetNm =:codesetNm")
+  void deleteAllByCodesetName(@Param("codesetNm") String codesetNm);
 }

@@ -157,32 +157,6 @@ class SearchEventPage {
     this.setLabReportNormalSettings();
     cy.get('input[id="codedResult"]').type("absent");
   }
-
-  checkELR() {
-    let fakeSSN = Cypress.env().fakeSSN;
-    let fakeFullName = Cypress.env().fakeFullName;
-    function formatSSN(ssn) {
-      // Ensure the input is a string
-      const ssnString = ssn.toString();
-
-      // Extract parts of the SSN
-      const part1 = ssnString.slice(0, 3);
-      const part2 = ssnString.slice(3, 5);
-      const part3 = ssnString.slice(5, 9);
-
-      // Combine parts with dashes
-      const formattedSSN = `${part1}-${part2}-${part3}`;
-
-      return formattedSSN;
-    }
-
-    const formattedSSN = formatSSN(fakeSSN);
-    cy.contains(formattedSSN).scrollIntoView().should("be.visible");
-    cy.get("a").contains(fakeFullName).click({force: true});
-    cy.get("a").contains("Events").click({force: true});
-    cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");
-  }
-
 }
 
 export const searchEventPage = new SearchEventPage();

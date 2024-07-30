@@ -58,14 +58,14 @@ describe('CriteriaSearchFields', () => {
     });
 
     describe('Outbreaks', () => {
-        it('should contain default selection', async () => {
+        it('should not contain default selection', async () => {
             const { container } = render(<InvestigationFormWithFields />);
 
             await waitFor(() => {
-                const elements = container.getElementsByClassName('usa-input');
+                const elements = container.getElementsByClassName('usa-label');
 
                 expect(elements[0]).toBeInTheDocument();
-                expect(elements[0].getAttribute('name')).toEqual('outbreaks');
+                expect(elements[0].getAttribute('name')).toEqual(null);
             });
         });
     });

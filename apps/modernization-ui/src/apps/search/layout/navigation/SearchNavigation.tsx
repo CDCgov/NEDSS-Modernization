@@ -18,7 +18,7 @@ const SearchNavigation = ({ className, actions }: Props) => {
             <TabNavigation className={styles.tabs}>
                 <TabNavigationEntry path="/search/patients">Patients</TabNavigationEntry>
                 <TabNavigationEntry path="/search/investigations">Investigations</TabNavigationEntry>
-                <TabNavigationEntry path="/search/lab-reports">Lab Reports</TabNavigationEntry>
+                <TabNavigationEntry path="/search/lab-reports">Lab reports</TabNavigationEntry>
             </TabNavigation>
             {actions && actions()}
         </nav>

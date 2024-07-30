@@ -38,7 +38,7 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
     }
 
     if (entry.pregnancyStatus) {
-        terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY TEST')(entry.pregnancyStatus));
+        terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
     }
 
     if (entry.identification && entry.identification?.type) {

@@ -16,6 +16,8 @@ type Results<R> = Resolved<R> & {
 
 type Waiting = { status: 'waiting' };
 
+type Resetting = { status: 'resetting' };
+
 type Requesting<C> = { status: 'requesting'; criteria: C };
 
 type Fetching<A> = { status: 'fetching'; parameters: A; terms: Term[] };
@@ -26,9 +28,10 @@ type Failed = { status: 'error'; reason: string };
 
 type NoInput<R> = { status: 'noInput'; results: Results<R> };
 
-type State<C, A, R> = Waiting | Requesting<C> | Fetching<A> | Completed<A, R> | Failed | NoInput<R>;
+type State<C, A, R> = Waiting | Resetting | Requesting<C> | Fetching<A> | Completed<A, R> | Failed | NoInput<R>;
 
 type Action<C, A, R> =
+    | { type: 'wait' }
     | { type: 'reset' }
     | { type: 'refresh' }
     | { type: 'request'; criteria: C }
@@ -49,6 +52,8 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
     } else if (action.type === 'error') {
         return { status: 'error', reason: action.reason };
     } else if (action.type === 'reset') {
+        return { status: 'resetting' };
+    } else if (action.type === 'wait') {
         return { status: 'waiting' };
     } else if (action.type === 'complete' && current.status === 'requesting') {
         return {
@@ -69,7 +74,7 @@ const orElseEmptyResult =
     };
 
 type Interaction<C, R> = {
-    status: 'waiting' | 'loading' | 'completed' | 'error' | 'noInput';
+    status: 'waiting' | 'resetting' | 'loading' | 'completed' | 'error' | 'noInput';
     results?: Results<R>;
     error?: string;
     reset: () => void;
@@ -122,11 +127,13 @@ const useSearch = <C, A, R>({ transformer, resultResolver, termResolver }: Setti
             searchResults.search();
         } else if (state.status === 'completed') {
             searchResults.complete(state.results.terms);
-        } else if (state.status === 'waiting') {
+        } else if (state.status === 'resetting') {
             pageReset();
             searchResults.reset();
-        } else if (state.status === 'noInput') {
+            dispatch({ type: 'wait' });
+        } else if (state.status === 'waiting') {
             pageReset();
+        } else if (state.status === 'noInput') {
             searchResults.noInput();
         }
     }, [state.status, isLoading]);
@@ -202,6 +209,24 @@ const asSortField = (property: string): SortField => {
         }
         case SortField.LastNm: {
             return SortField.LastNm;
+        }
+        case SortField.Sex: {
+            return SortField.Sex;
+        }
+        case SortField.Address: {
+            return SortField.Address;
+        }
+        case SortField.Email: {
+            return SortField.Email;
+        }
+        case SortField.PhoneNumber: {
+            return SortField.PhoneNumber;
+        }
+        case SortField.Id: {
+            return SortField.LocalId;
+        }
+        case SortField.Identification: {
+            return SortField.Identification;
         }
         default:
             return SortField.Relevance;

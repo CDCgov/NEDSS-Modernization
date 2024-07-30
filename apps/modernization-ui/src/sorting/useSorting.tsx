@@ -37,6 +37,7 @@ const reducer = (current: Sorting, action: Action): Sorting => {
             return asSorting(action.property, action.direction);
         }
         case 'toggle': {
+            console.log(current?.property);
             if (action.property === current?.property) {
                 return asSorting(current.property, nextDirection(current.direction));
             } else {
@@ -81,7 +82,6 @@ const toDirection = (value: string) => {
 };
 
 const nextDirection = (direction: Direction) => {
-    console.log('next from ', direction);
     switch (direction) {
         case Direction.None:
             return Direction.Descending;
@@ -127,6 +127,7 @@ const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps
             setSearchParams((current) => {
                 current.set(SORT_ON_PARAMETER, property);
                 current.set(DIRECTION_PARAMETER, direction);
+                console.log({ current });
                 return current;
             });
         }

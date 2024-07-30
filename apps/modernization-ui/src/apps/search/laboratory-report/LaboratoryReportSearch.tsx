@@ -7,10 +7,9 @@ import { LabReportFilterEntry, initial } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { FormAccordion } from './FormAccordion';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
-import { NoInputBanner } from '../NoInputBanner';
-import { NoResultsBanner } from '../NoResultsBanner';
 import { Term } from '../terms';
 import { useSearchResultDisplay } from '../useSearchResultDisplay';
+import { useJurisdictionOptions } from 'options/jurisdictions';
 
 const LaboratoryReportSearch = () => {
     const formMethods = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
@@ -22,7 +21,7 @@ const LaboratoryReportSearch = () => {
     const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
-        if (status === 'waiting') {
+        if (status === 'resetting') {
             formMethods.reset();
         }
     }, [formMethods.reset, status]);
@@ -42,10 +41,11 @@ const LaboratoryReportSearch = () => {
             }
             search(formMethods.getValues());
         } else {
-            formMethods.reset();
             reset();
         }
     };
+
+    const { resolve: findById } = useJurisdictionOptions();
 
     return (
         <SearchCriteriaProvider>
@@ -55,13 +55,13 @@ const LaboratoryReportSearch = () => {
                 resultsAsList={() => (
                     <SearchResultList<LabReport>
                         results={results?.content || []}
-                        render={(result) => <LaboratoryReportSearchResultListItem result={result} />}
+                        render={(result) => (
+                            <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={findById} />
+                        )}
                     />
                 )}
                 resultsAsTable={() => <div>result table</div>}
                 onSearch={formMethods.handleSubmit(search)}
-                noInputResults={() => <NoInputBanner />}
-                noResults={() => <NoResultsBanner />}
                 onClear={reset}
             />
         </SearchCriteriaProvider>

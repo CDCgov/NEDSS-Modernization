@@ -46,6 +46,16 @@ describe('when searching using useSearch', () => {
         expect(result.current.status).toEqual('noInput');
     });
 
+    it('should change to status to waiting when reset before searching', async () => {
+        const { result } = setup();
+
+        act(() => {
+            result.current.reset();
+        });
+
+        expect(result.current.status).toEqual('waiting');
+    });
+
     it('should change to status to waiting when reset after completed', async () => {
         const { result } = setup();
 

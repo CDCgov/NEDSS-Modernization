@@ -2,11 +2,12 @@ import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { LaboratoryReportSearchResultListItem } from './LaboratoryReportSearchResultListItem';
 import { LabReport } from 'generated/graphql/schema';
-import { MockedProvider } from '@apollo/client/testing';
 
 const expectedResult: LabReport = {
     addTime: new Date('09-09-2021').toISOString(),
-    associatedInvestigations: [{ cdDescTxt: 'testtext', localId: '111' }],
+    associatedInvestigations: [
+        { cdDescTxt: 'associated-investigation-description', localId: 'associated-investigation-local' }
+    ],
     id: '100234',
     jurisdictionCd: 567,
     localId: '999',
@@ -16,7 +17,7 @@ const expectedResult: LabReport = {
         {
             shortId: 123,
             personCd: '123',
-            birthTime: '05-05-1995',
+            birthTime: '1995-05-07',
             currSexCd: 'Male',
             firstName: 'Jon',
             lastName: 'Doe',
@@ -31,9 +32,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the legal name', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
             const legalName = 'Jon Doe';
@@ -46,12 +45,10 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the date of birth', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
-            expect(getByText(expectedResult.personParticipations[0].birthTime)).toBeInTheDocument();
+            expect(getByText('05/07/1995')).toBeInTheDocument();
         });
     });
 
@@ -59,9 +56,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the sex', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
             expect(getByText(expectedResult.personParticipations[0].currSexCd ?? '')).toBeInTheDocument();
@@ -72,9 +67,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the patient ID', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
             expect(getByText(expectedResult.personParticipations[0].shortId?.toString() ?? '')).toBeInTheDocument();
@@ -85,9 +78,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the document type', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
             expect(getByText('Lab report')).toBeInTheDocument();
@@ -98,9 +89,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the date received', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
             expect(getByText('09/09/2021')).toBeInTheDocument();
@@ -111,9 +100,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the description', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
             expect(getByText('test description = test display')).toBeInTheDocument();
@@ -122,27 +109,15 @@ describe('LaboratoryReportSearchResultListItem', () => {
 
     describe('Jurisdiction', () => {
         it('should render the jurisdiction', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
-                </MemoryRouter>
-            );
-            expect(getByText('testtext')).toBeInTheDocument();
-        });
-    });
+            const resolver = jest.fn();
 
-    describe('Local ID', () => {
-        it('should render the local ID', () => {
-            const { getByText } = render(
+            render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={resolver} />
                 </MemoryRouter>
             );
-            expect(getByText('111')).toBeInTheDocument();
+
+            expect(resolver).toHaveBeenCalledWith('567');
         });
     });
 
@@ -150,25 +125,14 @@ describe('LaboratoryReportSearchResultListItem', () => {
         it('should render the associated to', () => {
             const { getByText } = render(
                 <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
+                    <LaboratoryReportSearchResultListItem result={expectedResult} jurisdictionResolver={jest.fn()} />
                 </MemoryRouter>
             );
-            expect(getByText('123')).toBeInTheDocument();
-        });
-    });
+            expect(getByText('Associated to')).toBeInTheDocument();
 
-    describe('Local to', () => {
-        it('should render the local to', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <MockedProvider>
-                        <LaboratoryReportSearchResultListItem result={expectedResult} />
-                    </MockedProvider>
-                </MemoryRouter>
-            );
-            expect(getByText('999')).toBeInTheDocument();
+            const value = getByText(/associated-investigation-local/);
+
+            expect(value).toHaveTextContent(/associated-investigation-description/);
         });
     });
 });
