@@ -7,8 +7,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import org.hamcrest.Matcher;
+import static org.hamcrest.Matchers.*;
 
 public class LabReportSearchVerificationSteps {
 
@@ -88,7 +89,14 @@ public class LabReportSearchVerificationSteps {
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
     this.response.active()
-        .andExpect(pathMatcher.value(hasItem(value)));
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
+  }
+
+  private Matcher<?> matchingValue(final String field, final String value) {
+    return switch (field.toLowerCase()) {
+      case "local id" -> hasItem(Integer.parseInt(value));
+      default -> hasItem(value);
+    };
   }
 
   private JsonPathResultMatchers matchingPath(final String field, final String position) {
@@ -101,7 +109,7 @@ public class LabReportSearchVerificationSteps {
           position);
       case "sex" -> jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].currSexCd",
           position);
-      case "local id" -> jsonPath("$.data.findLabReportsByFilter.content[%s].localId",
+      case "local id" -> jsonPath("$.data.findLabReportsByFilter.content[%s].personParticipations[*].shortId",
           position);
       default -> throw new AssertionError("Unexpected Lab Report Search Result property %s".formatted(field));
     };

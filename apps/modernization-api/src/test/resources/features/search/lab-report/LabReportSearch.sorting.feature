@@ -142,3 +142,37 @@ Feature: Lab Report Search Sorting
     Then the 1st lab report search result has a "sex" of "U"
     And the 2nd lab report search result has a "sex" of "M"
     And the 3rd lab report search result has a "sex" of "F"
+
+  Scenario: I can find Lab Reports ordered by the patient's local id ascending
+    Given I have a patient
+    And the patient has a "local id" of "PSN10000120GA01"
+    And the patient has a lab report
+    And I have another patient
+    And the patient has a "local id" of "PSN10000320GA01"
+    And the patient has a lab report
+    And I have another patient
+    And the patient has a "local id" of "PSN10000220GA01"
+    And the patient has a lab report
+    And lab reports are available for search
+    And I want search results sorted by "local_id" "asc"
+    When I search for lab reports
+    Then the 1st lab report search result has a "local id" of "120"
+    And the 2nd lab report search result has a "local id" of "220"
+    And the 3rd lab report search result has a "local id" of "320"
+
+  Scenario: I can find Lab Reports ordered by the patient's local id descending
+    Given I have a patient
+    And the patient has a "local id" of "PSN10000120GA01"
+    And the patient has a lab report
+    And I have another patient
+    And the patient has a "local id" of "PSN10000320GA01"
+    And the patient has a lab report
+    And I have another patient
+    And the patient has a "local id" of "PSN10000220GA01"
+    And the patient has a lab report
+    And lab reports are available for search
+    And I want search results sorted by "local_id" "desc"
+    When I search for lab reports
+    Then the 1st lab report search result has a "local id" of "320"
+    And the 2nd lab report search result has a "local id" of "220"
+    And the 3rd lab report search result has a "local id" of "120"

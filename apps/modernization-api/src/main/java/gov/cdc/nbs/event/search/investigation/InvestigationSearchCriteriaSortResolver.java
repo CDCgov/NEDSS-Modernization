@@ -48,7 +48,11 @@ class InvestigationSearchCriteriaSortResolver {
           "person_participations.curr_sex_cd",
           order,
           onlyPatients());
-      case "local_id" -> asSortOption("local_id", order);
+      case "local_id" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "person_participations.local_id",
+          order,
+          onlyPatients());
       default -> asSortOption("_score", order);
     };
   }

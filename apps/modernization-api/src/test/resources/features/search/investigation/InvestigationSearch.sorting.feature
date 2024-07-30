@@ -141,3 +141,37 @@ Feature: Investigation Search Sorting
     When I search for investigations
     Then the 1st investigation search result has a "sex" of "U"
     And the 2nd investigation search result has a "sex" of "M"
+
+  Scenario: I can find Investigations ordered by the patient's local_id ascending
+    Given I have a patient
+    And the patient has a "local id" of "PSN10000120GA01"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "local id" of "PSN10000320GA01"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "local id" of "PSN10000220GA01"
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "local_id" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "local id" of "120"
+    And the 2nd investigation search result has a "local id" of "220"
+    And the 3rd investigation search result has a "local id" of "320"
+
+  Scenario: I can find Investigations ordered by the patient's local_id descending
+    Given I have a patient
+    And the patient has a "local id" of "PSN10000120GA01"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "local id" of "PSN10000320GA01"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "local id" of "PSN10000220GA01"
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "local_id" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "local id" of "320"
+    And the 2nd investigation search result has a "local id" of "220"
+    And the 3rd investigation search result has a "local id" of "120"
