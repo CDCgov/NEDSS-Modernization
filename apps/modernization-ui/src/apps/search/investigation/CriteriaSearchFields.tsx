@@ -38,7 +38,7 @@ const CriteriaSearchFields = () => {
                         name={name}
                         value={value}
                         valueSet="OUTBREAK_NM"
-                        label="Outbreak names"
+                        label="Outbreak name"
                     />
                 )}
             />
