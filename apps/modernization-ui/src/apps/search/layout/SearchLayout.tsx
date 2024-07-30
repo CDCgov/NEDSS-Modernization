@@ -21,6 +21,7 @@ type Props = {
     resultsAsTable: Renderer;
     noInput?: Renderer;
     noResults?: Renderer;
+    searchEnabled?: boolean;
     onSearch: () => void;
     onClear: () => void;
     onRemoveTerm: (term: Term) => void;
@@ -32,6 +33,7 @@ const SearchLayout = ({
     resultsAsList,
     resultsAsTable,
     onSearch,
+    searchEnabled = true,
     onClear,
     noInput = () => <NoInput />,
     noResults = () => <NoResults />,
@@ -65,7 +67,7 @@ const SearchLayout = ({
                 <div className={collapse ? styles.collapse : styles.criteria}>
                     <div className={styles.search}>{criteria()}</div>
                     <div className={styles.actions}>
-                        <Button type="button" onClick={onSearch}>
+                        <Button type="button" onClick={onSearch} disabled={!searchEnabled}>
                             Search
                         </Button>
                         <Button type="button" outline onClick={onClear}>
