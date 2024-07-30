@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Button } from 'components/button';
 import { Term, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
@@ -44,6 +44,19 @@ const SearchLayout = ({
     const {
         page: { total }
     } = usePage();
+
+    const handleKeyPress = (event: { key: string }) => {
+        if (event.key === 'Enter') {
+            onSearch();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('keypress', handleKeyPress);
+        return () => {
+            document.removeEventListener('keypress', handleKeyPress);
+        };
+    }, [onSearch]);
 
     return (
         <section className={styles.search}>
