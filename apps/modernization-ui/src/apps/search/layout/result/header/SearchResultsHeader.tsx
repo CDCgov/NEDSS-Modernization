@@ -17,9 +17,7 @@ const SearchResultsHeader = ({ className, view, total, terms, onRemoveTerm }: Pr
     return (
         <header className={classNames(styles.header, className)}>
             <SearchTerms onRemoveTerm={onRemoveTerm} total={total} terms={terms} />
-            <div className={styles.right}>
-                <SearchResultsOptionsBar view={view} disabled={total === 0} />
-            </div>
+            <SearchResultsOptionsBar view={view} disabled={total === 0} />
         </header>
     );
 };
