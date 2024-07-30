@@ -21,7 +21,7 @@ const LaboratoryReportSearch = () => {
     const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
-        if (status === 'waiting') {
+        if (status === 'resetting') {
             formMethods.reset();
         }
     }, [formMethods.reset, status]);
@@ -41,7 +41,6 @@ const LaboratoryReportSearch = () => {
             }
             search(formMethods.getValues());
         } else {
-            formMethods.reset();
             reset();
         }
     };
