@@ -21,9 +21,16 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save } = useColumnPreferences();
+    const { preferences, save, register } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
+
+    useEffect(() => {
+        const storedPreferences = localStorage.getItem('columnPreferences');
+        if (storedPreferences) {
+            register(JSON.parse(storedPreferences));
+        }
+    }, []);
 
     useEffect(() => {
         setPending(preferences);
@@ -53,6 +60,8 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     const handleSave = () => {
         save(pending);
         close();
+        // save pending to local storage
+        localStorage.setItem('columnPreferences', JSON.stringify(pending));
     };
 
     return (
