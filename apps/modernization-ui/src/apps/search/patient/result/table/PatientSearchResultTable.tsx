@@ -3,6 +3,7 @@ import { Column, DataTable } from 'design-system/table';
 import { displayName } from 'name';
 import { internalizeDate } from 'date';
 import { displayAddress } from 'address/display';
+import { ExpandableAddresses } from 'components/Search/ExpandableAddresses';
 
 const displayNames = (result: PatientSearchResult): string => {
     const legalName = result.legalName;
@@ -13,6 +14,8 @@ const displayNames = (result: PatientSearchResult): string => {
 };
 
 const displayAddresses = (result: PatientSearchResult): string => result.addresses.map(displayAddress).join('\n');
+
+// const displayAddresses1 = (result: PatientSearchResult) => <ExpandableAddresses results={result.addresses} />;
 
 const displayIdentifications = (result: PatientSearchResult): string =>
     result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');

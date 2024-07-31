@@ -1,9 +1,9 @@
-import { PatientSearchResultAddress } from "generated/graphql/schema"
+import { PatientSearchResultAddress } from 'generated/graphql/schema';
 
 type Props = {
-  results: PatientSearchResultAddress[];
-}
+    results: PatientSearchResultAddress[];
+};
 
-export const ExpandableAddresses = ({results}: Props) => {
-  
-}
+export const ExpandableAddresses = ({ results }: Props) => {
+    return <></>;
+};
