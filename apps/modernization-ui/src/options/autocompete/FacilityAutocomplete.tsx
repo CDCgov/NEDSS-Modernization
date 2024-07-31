@@ -7,7 +7,7 @@ const resolver = (criteria: string, limit?: number) =>
         limit: limit
     }).then((response) => response);
 
-const FacilityAutocomplete = ({ id, label, onChange, required, onBlur, ...rest }: AutocompleteSingleProps) => (
+const FacilityAutocomplete = ({ id, label, onChange, value, required, onBlur, ...rest }: AutocompleteSingleProps) => (
     <Autocomplete
         resolver={resolver}
         onChange={onChange}
@@ -15,6 +15,7 @@ const FacilityAutocomplete = ({ id, label, onChange, required, onBlur, ...rest }
         onBlur={onBlur}
         id={id}
         label={label}
+        value={value}
         {...rest}
     />
 );

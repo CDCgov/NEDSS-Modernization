@@ -11,20 +11,6 @@ export const RaceEthnicity = () => {
         <div className={styles.race}>
             <Controller
                 control={control}
-                name="race"
-                render={({ field: { onChange, value, name } }) => (
-                    <SingleSelect
-                        value={value}
-                        onChange={onChange}
-                        name={name}
-                        label="Race"
-                        id={name}
-                        options={useConceptOptions('RACE_CALCULATED', { lazy: false }).options}
-                    />
-                )}
-            />
-            <Controller
-                control={control}
                 name="ethnicity"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
@@ -34,6 +20,20 @@ export const RaceEthnicity = () => {
                         label="Ethnicity"
                         id={name}
                         options={useConceptOptions('PHVS_ETHNICITYGROUP_CDC_UNK', { lazy: false }).options}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="race"
+                render={({ field: { onChange, value, name } }) => (
+                    <SingleSelect
+                        value={value}
+                        onChange={onChange}
+                        name={name}
+                        label="Race"
+                        id={name}
+                        options={useConceptOptions('P_RACE_CAT', { lazy: false }).options}
                     />
                 )}
             />

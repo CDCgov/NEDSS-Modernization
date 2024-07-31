@@ -10,10 +10,7 @@ type Props = {
     icon?: ReactNode;
     outline?: boolean;
     className?: string;
-    labelPosition?: string;
-    menuTitle?: string;
-    menuAction?: () => void;
-    menuActionTitle?: string;
+    labelPosition?: 'left' | 'right';
     children: ReactNode;
 };
 
@@ -23,10 +20,7 @@ export const ButtonActionMenu = ({
     icon,
     outline,
     className,
-    labelPosition,
-    menuTitle,
-    menuAction,
-    menuActionTitle,
+    labelPosition = 'right',
     children
 }: Props) => {
     const wrapperRef = useRef(null);
@@ -52,30 +46,18 @@ export const ButtonActionMenu = ({
             <Button
                 type="button"
                 onClick={() => setOpen(!open)}
-                className={classNames(styles.actionMenuButton, className, 'action-button')}
+                className={classNames(styles.actionMenuButton, className)}
                 disabled={disabled}
                 outline={outline}
-                labelPosition={labelPosition === 'left' ? 'left' : 'right'}
+                labelPosition={labelPosition}
                 icon={icon ? icon : <Icon.ArrowDropDown size={4} />}>
-                {label ? label : ''}
+                {label}
             </Button>
-            {open ? (
-                <div className={'menu ' + styles.menu}>
-                    {menuTitle ? (
-                        <div className={styles.menuHeader}>
-                            <h3>{menuTitle}</h3>
-                        </div>
-                    ) : null}
+            {open && (
+                <div className={styles.menu}>
                     <div className={styles.menuContent}>{children}</div>
-                    {menuAction ? (
-                        <div className={styles.menuFooter}>
-                            <Button type="button" onClick={menuAction}>
-                                {menuActionTitle}
-                            </Button>
-                        </div>
-                    ) : null}
                 </div>
-            ) : null}
+            )}
         </div>
     );
 };

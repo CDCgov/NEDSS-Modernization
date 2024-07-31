@@ -13,11 +13,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        @extend %thin;
+        @include borders.rounded('top');
+
         h2 {
             margin: 0;
         }
-        @extend %thin;
-        @include borders.rounded('top');
 
         svg {
             cursor: pointer;

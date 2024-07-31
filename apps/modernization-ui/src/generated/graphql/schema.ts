@@ -283,6 +283,8 @@ export type InvestigationFilter = {
   processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
   programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
+  reportingFacilityId?: InputMaybe<Scalars['String']['input']>;
+  reportingProviderId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type InvestigationPersonParticipation = {
@@ -1471,6 +1473,7 @@ export type PatientSearchResultAddress = {
   address?: Maybe<Scalars['String']['output']>;
   address2?: Maybe<Scalars['String']['output']>;
   city?: Maybe<Scalars['String']['output']>;
+  county?: Maybe<Scalars['String']['output']>;
   state?: Maybe<Scalars['String']['output']>;
   use: Scalars['String']['output'];
   zipcode?: Maybe<Scalars['String']['output']>;
@@ -1946,9 +1949,22 @@ export enum SortDirection {
 }
 
 export enum SortField {
+  Address = 'address',
   BirthTime = 'birthTime',
+  City = 'city',
+  Country = 'country',
+  County = 'county',
+  Email = 'email',
+  FirstNm = 'firstNm',
+  Id = 'id',
+  Identification = 'identification',
   LastNm = 'lastNm',
-  Relevance = 'relevance'
+  LocalId = 'local_id',
+  PhoneNumber = 'phoneNumber',
+  Relevance = 'relevance',
+  Sex = 'sex',
+  State = 'state',
+  Zip = 'zip'
 }
 
 export type SortablePage = {
@@ -2466,7 +2482,7 @@ export type FindPatientsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, state?: string | null, zipcode?: string | null }> }> } };
+export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }> }> } };
 
 export type FindTreatmentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -5206,6 +5222,7 @@ export const FindPatientsByFilterDocument = gql`
         address
         address2
         city
+        county
         state
         zipcode
       }

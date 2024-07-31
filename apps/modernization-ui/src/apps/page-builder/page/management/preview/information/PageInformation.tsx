@@ -67,7 +67,10 @@ const PageInformation = () => {
             <li className={activeTab == 'Details' ? styles.active : ''} onClick={() => setActiveTab('Details')}>
                 Details
             </li>
-            <li className={activeTab == 'History' ? styles.active : ''} onClick={() => setActiveTab('History')}>
+            <li
+                className={activeTab == 'History' ? styles.active : ''}
+                data-testid="historyTab"
+                onClick={() => setActiveTab('History')}>
                 History
             </li>
         </ul>
@@ -125,7 +128,12 @@ const PageInformation = () => {
                     </div>
                     <div className={styles.detailsContainer}>
                         <footer>
-                            <Button type="button" outline onClick={handleViewPage} className={styles.icon}>
+                            <Button
+                                type="button"
+                                outline
+                                onClick={handleViewPage}
+                                className={styles.icon}
+                                data-testid="EditViewPageDetails">
                                 {isEditable ? <Icon.Edit /> : <Icon.Visibility />}
                                 {isEditable ? 'Edit page details' : 'View page details'}
                             </Button>
@@ -133,7 +141,7 @@ const PageInformation = () => {
                     </div>
                 </div>
             ) : (
-                <div className={styles.content}>
+                <div className={styles.content} data-testid="historyTabContent">
                     <div className={styles.historyContent}>
                         {pageHistory?.map((pageData, index) => (
                             <div className={styles.versionBlock} key={index}>

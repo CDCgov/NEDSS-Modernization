@@ -1,4 +1,3 @@
-import { ErrorMessage } from '@trussworks/react-uswds';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
@@ -54,6 +53,10 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
         } else {
             onChange(e);
         }
+    };
+
+    const convertToLowerCase = (item: string): string => {
+        return item[0].toUpperCase() + item.slice(1).toLowerCase();
     };
 
     return (
@@ -113,7 +116,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         name={name}
                         value={value}
                         onChange={onChange}
-                        label="Pregnancy test"
+                        label="Pregnancy status"
                         options={[
                             { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: PregnancyStatus.Yes },
                             { name: PregnancyStatus.No, value: PregnancyStatus.No, label: PregnancyStatus.No },
@@ -136,7 +139,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         name={name}
                         value={value}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
-                        label="Event id type"
+                        label="Event ID type"
                         id={name}
                         options={identificationTypes}
                     />
@@ -151,20 +154,18 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         required: { value: true, message: 'Event Id is required' }
                     }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                        <>
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                label="Event id"
-                                defaultValue={value}
-                                type="text"
-                                htmlFor={name}
-                                id={name}
-                                data-testid={name}
-                                required
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
+                        <Input
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            label="Event id"
+                            defaultValue={value}
+                            type="text"
+                            htmlFor={name}
+                            id={name}
+                            data-testid={name}
+                            required
+                            error={error?.message}
+                        />
                     )}
                 />
             ) : null}
@@ -246,7 +247,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(EntryMethod).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -269,7 +270,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(UserType).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -292,7 +293,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(EventStatus).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -315,7 +316,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             options={Object.values(LaboratoryReportStatus).map((item) => {
                                 return {
                                     name: item,
-                                    label: item,
+                                    label: convertToLowerCase(item),
                                     value: item
                                 };
                             })}
@@ -329,15 +330,15 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             <Controller
                 control={form.control}
                 name="createdBy"
-                render={({ field: { onChange, name } }) => (
-                    <UserAutocomplete id={name} label="Event created by user" onChange={onChange} />
+                render={({ field: { onChange, name, value } }) => (
+                    <UserAutocomplete id={name} value={value} label="Event created by user" onChange={onChange} />
                 )}
             />
             <Controller
                 control={form.control}
                 name="updatedBy"
-                render={({ field: { onChange, name } }) => (
-                    <UserAutocomplete id={name} onChange={onChange} label="Event updated by user" />
+                render={({ field: { onChange, name, value } }) => (
+                    <UserAutocomplete id={name} value={value} onChange={onChange} label="Event updated by user" />
                 )}
             />
             <Controller
@@ -362,17 +363,16 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     rules={{
                         required: { value: true, message: `Ordering facility is required` }
                     }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
-                        <>
-                            <FacilityAutocomplete
-                                id={name}
-                                label="Event ordering facility"
-                                required={true}
-                                onChange={onChange}
-                                onBlur={onBlur}
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                        <FacilityAutocomplete
+                            value={value}
+                            id={name}
+                            label="Event ordering facility"
+                            required={true}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                        />
                     )}
                 />
             )}
@@ -380,22 +380,21 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             {watch.providerType?.value == 'ORDERING_PROVIDER' && (
                 <Controller
                     control={form.control}
-                    name="orderingProvider"
+                    name="orderingFacility"
                     rules={{
                         required: { value: true, message: `Ordering provider is required` }
                     }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
-                        <>
-                            <ProviderAutocomplete
-                                id={name}
-                                label="Event ordering provider"
-                                required={true}
-                                placeholder=""
-                                onChange={onChange}
-                                onBlur={onBlur}
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                        <ProviderAutocomplete
+                            id={name}
+                            label="Event ordering provider"
+                            required={true}
+                            placeholder=""
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                        />
                     )}
                 />
             )}
@@ -403,22 +402,21 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             {watch.providerType?.value == 'REPORTING_FACILITY' && (
                 <Controller
                     control={form.control}
-                    name="reportingFacility"
+                    name="orderingFacility"
                     rules={{
                         required: { value: true, message: `Facility is required` }
                     }}
-                    render={({ field: { onBlur, onChange, name }, fieldState: { error } }) => (
-                        <>
-                            <FacilityAutocomplete
-                                id={name}
-                                label="Event reporting facility"
-                                required={true}
-                                placeholder=""
-                                onChange={onChange}
-                                onBlur={onBlur}
-                            />
-                            {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
-                        </>
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                        <FacilityAutocomplete
+                            id={name}
+                            value={value}
+                            label="Event reporting facility"
+                            required={true}
+                            placeholder=""
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                        />
                     )}
                 />
             )}

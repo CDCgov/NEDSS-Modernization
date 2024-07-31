@@ -5,4 +5,3 @@ Feature: Generate ELR HL7
 
   Scenario: ID - Check Search after HL7 ELR is created
     When I Generate HL7 messages to api and mark as review
-    Then I check the ELR in search

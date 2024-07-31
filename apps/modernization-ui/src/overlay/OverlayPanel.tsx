@@ -11,20 +11,21 @@ type ToggleRenderer = (props: ButtonRendererProps) => JSX.Element;
 type PanelRenderer = (close: Close) => JSX.Element;
 
 type OverlayPanelProps = {
+    className?: string;
     position?: 'right' | 'left';
     toggle: ToggleRenderer;
     render: PanelRenderer;
     overlayVisible?: boolean;
 };
 
-const OverlayPanel = ({ toggle, render, position, overlayVisible }: OverlayPanelProps) => {
+const OverlayPanel = ({ className, toggle, render, position, overlayVisible }: OverlayPanelProps) => {
     const [visible, setVisible] = useState(false);
 
     const handleToggle = () => setVisible((existing) => !existing);
     const handleClose = () => setVisible(false);
 
     return (
-        <div className={styles.overlay}>
+        <div className={classNames(styles.overlay, className)}>
             {((overlayVisible !== undefined && overlayVisible) || visible) && (
                 <Dialog position={position} onClose={handleClose}>
                     {render(handleClose)}

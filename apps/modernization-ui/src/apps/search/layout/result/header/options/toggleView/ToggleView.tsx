@@ -1,30 +1,29 @@
 import { ButtonGroup, Icon } from '@trussworks/react-uswds';
-import styles from '../search-results-options.module.scss';
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import classNames from 'classnames';
 import { Button } from 'components/button';
-import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
+
+import styles from './toggle-view.module.scss';
 
 export const ToggleView = () => {
-    const { view, setView } = useSearchResultDisplay();
+    const { view, asList, asTable } = useSearchResultDisplay();
 
     return (
-        <div className={classNames(styles.options)}>
+        <div className={classNames(styles.toggle)}>
             <strong>View as: </strong>
             <ButtonGroup type="segmented">
                 <Button
-                    className={classNames(styles.toggleButton)}
                     labelPosition="right"
-                    icon={<Icon.GridView />}
-                    onClick={() => setView('table')}
+                    icon={view === 'table' ? <Icon.CheckCircle /> : <Icon.GridView />}
+                    onClick={asTable}
                     type="button"
                     outline={view !== 'table'}>
                     Table
                 </Button>
                 <Button
-                    className={classNames(styles.toggleButton)}
                     labelPosition="right"
-                    icon={<Icon.CheckCircle />}
-                    onClick={() => setView('list')}
+                    icon={view === 'list' ? <Icon.CheckCircle /> : <Icon.List />}
+                    onClick={asList}
                     outline={view !== 'list'}
                     type="button">
                     List

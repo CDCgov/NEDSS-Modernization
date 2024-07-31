@@ -76,7 +76,7 @@ describe('when an Investigation Seach contains General search criteria', () => {
             expect.arrayContaining([
                 {
                     source: 'pregnancyStatus',
-                    title: 'PREGNANCY TEST',
+                    title: 'PREGNANCY STATUS',
                     name: 'Pregnancy Name',
                     value: 'pregnancy-value'
                 }
@@ -179,15 +179,9 @@ describe('when an Investigation Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'entityType',
-                    title: 'ENTITY TYPE',
-                    name: 'Reporting facility',
-                    value: 'FACILITY'
-                },
-                {
-                    source: 'reportingFacility',
-                    title: 'ENTITY ID',
                     name: 'Reporting facility Name',
+                    source: 'reportingFacility',
+                    title: 'ENTITY TYPE',
                     value: 'reporting-facility-value'
                 }
             ])
@@ -208,15 +202,9 @@ describe('when an Investigation Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'entityType',
-                    title: 'ENTITY TYPE',
-                    name: 'Reporting provider',
-                    value: 'PROVIDER'
-                },
-                {
+                    name: 'Reporting provider Name',
                     source: 'reportingProvider',
                     title: 'ENTITY ID',
-                    name: 'Reporting provider Name',
                     value: 'reporting-provider-value'
                 }
             ])
