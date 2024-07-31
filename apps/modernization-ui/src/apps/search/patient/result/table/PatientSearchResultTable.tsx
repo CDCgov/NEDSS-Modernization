@@ -1,29 +1,35 @@
 import { useEffect } from 'react';
-import { PatientSearchResult } from 'generated/graphql/schema';
+import { PatientSearchResult, PatientSearchResultIdentification } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
 import { displayName } from 'name';
 import { internalizeDate } from 'date';
+import { ExpandableResults } from 'components/Search/ExpandableResults';
 import { displayAddress } from 'address/display';
-import { ExpandableAddresses } from 'components/Search/ExpandableAddresses';
 
-const displayNames = (result: PatientSearchResult): string => {
+const displayNames = (result: PatientSearchResult) => {
     const legalName = result.legalName;
-    return result.names
-        .filter((name) => name?.first != legalName?.first || name?.last != legalName?.last)
-        .map(displayName())
-        .join('\n');
+    const filteredNames = result.names.filter(
+        (name) => name?.first != legalName?.first || name?.last != legalName?.last
+    );
+
+    return <ExpandableResults results={filteredNames} renderResult={displayName()} />;
 };
 
-const displayAddresses = (result: PatientSearchResult): string => result.addresses.map(displayAddress).join('\n');
+const displayAddresses = (result: PatientSearchResult) => (
+    <ExpandableResults results={result.addresses} renderResult={displayAddress} />
+);
 
-// const displayAddresses1 = (result: PatientSearchResult) => <ExpandableAddresses results={result.addresses} />;
+const displayIdentifications = (result: PatientSearchResult) => (
+    <ExpandableResults results={result.identification} renderResult={displayIdentification} />
+);
 
-const displayIdentifications = (result: PatientSearchResult): string =>
-    result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
+const displayIdentification = (identification: PatientSearchResultIdentification): string =>
+    identification.type + '\n' + identification.value;
 
-const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
-const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
+const displayPhones = (result: PatientSearchResult) => <ExpandableResults results={result.phones} />;
+
+const displayEmails = (result: PatientSearchResult) => <ExpandableResults results={result.emails} />;
 
 const LEGAL_NAME = {
     id: 'lastNm',
