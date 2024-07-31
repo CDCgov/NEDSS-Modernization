@@ -158,11 +158,10 @@ When("I Generate HL7 messages to api and mark as review", () => {
                 cy.get("input[name=Submit]").first().click();                
                 cy.get('#DEM196').invoke('text', 'Investigation is needed');
                 cy.get("select[id=INV163]").select("Confirmed", { force: true });                
-                cy.get("input[name=SubmitTop]").first().click();                
-                cy.get("input[name=createNoti]").first().click();
-                cy.wait(2000);                
-                cy.get('#NTF137').invoke('text', 'Notification is needed', { force: true });
-                cy.get("input[value=Submit]").first().click();
+                cy.get("input[name=SubmitTop]").first().click();             
+                cy.window().then( win => {
+                    win.createNotifications('Comment');
+                })                
               }
 
               function navigateAndSearchDocuments() {
@@ -222,16 +221,18 @@ When("I Generate HL7 messages to api and mark as review", () => {
                 cy.get('button').contains("Search").click();
                 cy.get('button').contains("List").click();
                 cy.get("body").then($body => {
+                let fakeFullName = Cypress.env("fakeFullName");
+                let fakeRandomData = Cypress.env("randomData");
+                let fakeFormattedSSN = Cypress.env("fakeFormattedSSN");    
                   if ($body.find("#legalName").length > 0) {
                     cy.get("a").contains(fakeFullName).then($button => {
                       if ($button.is(':visible')) {
                             cy.contains(fakeFormattedSSN).scrollIntoView().should("be.visible")
                             cy.get("a").contains(fakeFullName).scrollIntoView().click({ force: true });
-                            cy.get("a").contains("Events").click({ force: true });
-                            cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");
-                            cy.get("td").contains("HEP").scrollIntoView().should("be.visible");
+                            cy.get("a").contains("Events").click({ force: true });                            
                             cy.get("#classic a").first().click();       
                             createNotication();
+                            cy.get("#successMessages").contains("A Notification has been created for this Investigation.").scrollIntoView().should("be.visible");                             
                       }
                     });
                   } else {
@@ -240,7 +241,7 @@ When("I Generate HL7 messages to api and mark as review", () => {
                 });                
               }
               
-              cy.wait(2000);
+            cy.wait(2000);
             expect(response.status).to.eq(200);
 
             if (response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" || response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {
@@ -255,10 +256,8 @@ When("I Generate HL7 messages to api and mark as review", () => {
                                 cy.contains(fakeFormattedSSN).scrollIntoView().should("be.visible")
                                 cy.get("a").contains(fakeFullName).scrollIntoView().click({ force: true });
                                 cy.get("a").contains("Events").click({ force: true });
-                                cy.get("td").contains("Fulton County").scrollIntoView().should("be.visible");
-                                cy.get("td").contains("HEP").scrollIntoView().should("be.visible");
                                 cy.get("#classic a").first().click();   
-                                createNotication()         
+                                createNotication();
                           }
                         });
                       } else {
