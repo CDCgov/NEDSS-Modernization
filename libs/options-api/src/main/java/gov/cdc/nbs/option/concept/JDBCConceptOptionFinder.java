@@ -17,7 +17,8 @@ class JDBCConceptOptionFinder implements ConceptOptionFinder {
       from NBS_SRTE..Code_value_general
       where code_set_nm = ?
       order by
-          indent_level_nbr
+          indent_level_nbr,
+          code_short_desc_txt
       """;
 
   private static final String FIND_RACE_CONCEPT_QUERY = """
@@ -28,7 +29,8 @@ class JDBCConceptOptionFinder implements ConceptOptionFinder {
       from NBS_SRTE..Race_code
       where code_set_nm = ?
       order by
-          indent_level_nbr
+          indent_level_nbr,
+          code_short_desc_txt
       """;
 
   private final JdbcTemplate template;
