@@ -9,6 +9,7 @@ import { InvestigationSearchResultListItem } from './result/list';
 import { InvestigationSearchForm } from './InvestigationSearchForm';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
+import { InvestigationSearchResultsTable } from './result/list/table/InvestigationSearchResultsTable';
 
 const InvestigationSearch = () => {
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
@@ -66,7 +67,7 @@ const InvestigationSearch = () => {
                         )}
                     />
                 )}
-                resultsAsTable={() => <div>result table</div>}
+                resultsAsTable={() => <InvestigationSearchResultsTable results={results?.content ?? []} />}
                 searchEnabled={form.formState.isValid}
                 onSearch={form.handleSubmit(search)}
                 onClear={reset}
