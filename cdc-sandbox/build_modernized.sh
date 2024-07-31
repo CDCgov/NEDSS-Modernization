@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+if [ -z "$DATABASE_PASSWORD" ] || [ -z "$NIFI_PASSWORD" ] || [ -z "$KEYCLOAK_ADMIN_PASSWORD" ] || [ -z "$TOKEN_SECRET" ] || [ -z "$PARAMETER_SECRET" ] 
+then
+    echo "DATABASE_PASSWORD, NIFI_PASSWORD, KEYCLOAK_ADMIN_PASSWORD, TOKEN_SECRET are required"
+    exit 1
+fi
+
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 # Start ES and the proxy

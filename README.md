@@ -19,6 +19,15 @@
 - [Code Formatting](documentation/Code-Formatting.md)
 - [Pull requests](documentation/Pull-Requests.md)
 
+## Configuring local development secrets
+Some containers within the `cdc-sandbox` directory require sensitive values be set prior to building. 
+
+|Container |Required environment variable|
+|---|---|
+|nbs-mssql|DATABASE_PASSWORD|
+|nifi|NIFI_PASSWORD, DATABASE_PASSWORD|
+|keycloak|KEYCLOAK_ADMIN_PASSWORD|
+
 ## Running everything inside docker
 
 1. Gain access to the [NBS source code repository](https://github.com/cdcent/NEDSSDev) _this is required to build the wildfly container_

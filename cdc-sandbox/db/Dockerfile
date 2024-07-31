@@ -12,9 +12,10 @@ USER mssql
 ADD ./restore /var/opt/db-restore/
 
 # docker-compose environment variables are only visible at runtime
+ARG DB_PW
 ENV ACCEPT_EULA=1
-ENV SQLCMDPASSWORD=fake.fake.fake.1234
-ENV SA_PASSWORD=fake.fake.fake.1234
+ENV SQLCMDPASSWORD=${DB_PW}
+ENV SA_PASSWORD=${DB_PW}
 
 # Start the database and execute restore scripts
 RUN /opt/mssql/bin/sqlservr & /var/opt/db-restore/restore.sh
