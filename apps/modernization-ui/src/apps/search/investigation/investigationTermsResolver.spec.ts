@@ -273,13 +273,13 @@ describe('when an Investigation Seach contains Investigation criteria', () => {
             expect.arrayContaining([
                 {
                     source: 'outbreaks',
-                    title: 'OUTBREAK',
+                    title: 'OUTBREAK NAME',
                     name: 'Outbreak One Name',
                     value: 'outbreak-one'
                 },
                 {
                     source: 'outbreaks',
-                    title: 'OUTBREAK',
+                    title: 'OUTBREAK NAME',
                     name: 'Outbreak Two Name',
                     value: 'outbreak-two'
                 }
