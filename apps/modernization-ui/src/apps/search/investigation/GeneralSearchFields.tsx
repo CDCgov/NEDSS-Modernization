@@ -13,6 +13,8 @@ import {
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
+import styles from './InvestigationSearchForm.module.scss';
+import { ErrorMessage } from '@trussworks/react-uswds';
 
 const GeneralSearchFields = () => {
     const form = useFormContext<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>();
@@ -88,6 +90,7 @@ const GeneralSearchFields = () => {
                         name="pregnancyStatus"
                         render={({ field: { name, onChange, value } }) => (
                             <SingleSelect
+                                className={styles.selectInput}
                                 data-testid="pregnancyStatus"
                                 name={name}
                                 value={value}
@@ -109,6 +112,7 @@ const GeneralSearchFields = () => {
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
                                 name={name}
+                                className={styles.selectInput}
                                 label="Event ID type"
                                 data-testid={name}
                                 id={name}
@@ -148,6 +152,7 @@ const GeneralSearchFields = () => {
                         name={'eventDate.type'}
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
+                                className={styles.selectInput}
                                 data-testid={name}
                                 name={name}
                                 value={value}
@@ -170,6 +175,7 @@ const GeneralSearchFields = () => {
                                 }}
                                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                     <DatePickerInput
+                                        className={styles.selectInput}
                                         disabled={!watch.eventDate?.type}
                                         defaultValue={value}
                                         onBlur={onBlur}
@@ -191,6 +197,7 @@ const GeneralSearchFields = () => {
                                 }}
                                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                     <DatePickerInput
+                                        className={styles.selectInput}
                                         disabled={!watch.eventDate?.type}
                                         defaultValue={value}
                                         onChange={onChange}
@@ -226,6 +233,7 @@ const GeneralSearchFields = () => {
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
                                 id={name}
+                                className={styles.selectInput}
                                 value={value}
                                 onChange={onChange}
                                 data-testid={name}
@@ -244,17 +252,18 @@ const GeneralSearchFields = () => {
                             rules={{
                                 required: { value: true, message: 'Provider is required' }
                             }}
-                            render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
-                                <ProviderAutocomplete
-                                    id={name}
-                                    label="Event provider type"
-                                    placeholder=""
-                                    value={value}
-                                    onChange={onChange}
-                                    required={true}
-                                    onBlur={onBlur}
-                                    error={error?.message}
-                                />
+                            render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                                <>
+                                    <ProviderAutocomplete
+                                        id={name}
+                                        label="Event provider type"
+                                        value={value}
+                                        onChange={onChange}
+                                        required={true}
+                                        onBlur={onBlur}
+                                    />
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                                </>
                             )}
                         />
                     )}
@@ -268,16 +277,17 @@ const GeneralSearchFields = () => {
                                 required: { value: true, message: 'Facility is required' }
                             }}
                             render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                                <FacilityAutocomplete
-                                    id={name}
-                                    label="Event facility type"
-                                    placeholder=""
-                                    value={value}
-                                    onChange={(e) => onChange(e?.value)}
-                                    required={true}
-                                    onBlur={onBlur}
-                                    error={error?.message}
-                                />
+                                <>
+                                    <FacilityAutocomplete
+                                        id={name}
+                                        label="Event facility type"
+                                        value={value}
+                                        onChange={(e) => onChange(e)}
+                                        required={true}
+                                        onBlur={onBlur}
+                                    />
+                                    {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
+                                </>
                             )}
                         />
                     )}

@@ -80,7 +80,7 @@ describe('GeneralFields component', () => {
 
     it('renders event id type select', async () => {
         const { getByText } = render(<GeneralFieldsWithForm />);
-        expect(getByText('Event id type')).toBeInTheDocument();
+        expect(getByText('Event ID type')).toBeInTheDocument();
     });
 
     it('renders event date type select', async () => {

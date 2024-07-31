@@ -89,7 +89,7 @@ describe('LabReportGeneralFields component', () => {
         expect(pregnancySelect).toHaveValue('');
 
         // Event id type
-        getByText('Event id type');
+        getByText('Event ID type');
         const eventTypeSelect = getByTestId('eventId.labEventType');
         expect(eventTypeSelect).toHaveAttribute('placeholder', '-Select-');
         expect(eventTypeSelect).toHaveValue('');

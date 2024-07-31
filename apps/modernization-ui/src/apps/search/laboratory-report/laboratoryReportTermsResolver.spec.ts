@@ -244,15 +244,9 @@ describe('when a Laboratory Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'entityType',
-                    title: 'ENTITY TYPE',
-                    name: 'Ordering facility',
-                    value: 'ORDERING_FACILITY'
-                },
-                {
+                    name: 'Ordering facility Name',
                     source: 'orderingFacility',
                     title: 'ENTITY ID',
-                    name: 'Ordering facility Name',
                     value: 'ordering-facility-value'
                 }
             ])
@@ -261,7 +255,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
 
     it('should resolve terms with Ordering provider', () => {
         const input: LabReportFilterEntry = {
-            orderingProvider: {
+            providerType: {
                 name: 'Ordering provider Name',
                 label: 'Ordering provider Label',
                 value: 'ordering-provider-value'
@@ -273,15 +267,9 @@ describe('when a Laboratory Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'entityType',
-                    title: 'ENTITY TYPE',
-                    name: 'Ordering provider',
-                    value: 'ORDERING_PROVIDER'
-                },
-                {
-                    source: 'orderingProvider',
-                    title: 'ENTITY ID',
                     name: 'Ordering provider Name',
+                    source: 'providerType',
+                    title: 'ENTITY TYPE',
                     value: 'ordering-provider-value'
                 }
             ])
@@ -290,7 +278,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
 
     it('should resolve terms with Reporting facility', () => {
         const input: LabReportFilterEntry = {
-            reportingFacility: {
+            providerType: {
                 name: 'Reporting facility Name',
                 label: 'Reporting facility Label',
                 value: 'reporting-facility-value'
@@ -302,15 +290,9 @@ describe('when a Laboratory Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'entityType',
-                    title: 'ENTITY TYPE',
-                    name: 'Reporting facility',
-                    value: 'REPORTING_FACILITY'
-                },
-                {
-                    source: 'reportingFacility',
-                    title: 'ENTITY ID',
                     name: 'Reporting facility Name',
+                    source: 'providerType',
+                    title: 'ENTITY TYPE',
                     value: 'reporting-facility-value'
                 }
             ])

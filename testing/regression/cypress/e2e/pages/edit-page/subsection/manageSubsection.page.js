@@ -113,12 +113,11 @@ class ManageSubsectionPage {
     checkVisibilityIconTurnedOff(visibility) {
         const onOrOff = visibility ? 'on' : 'off'
         cy.get('.subsectionHeader').eq(0)
-            .get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`, {timeout: 0})
-            .then(($element) => {
-                if($element.length > 0) {
-                    cy.wrap($element).eq(0);
+            .then((ele) => {
+                if(ele.find(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).length > 0) {
+                    cy.get(`[data-testid="subsectionTileVisibilityIcon-${onOrOff}"]`).eq(0).click({force: true});
                 }
-            });
+            })
     }
 
     verifyVisibilitySuccessMessage(text) {

@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Term, View } from 'apps/search';
 import { SearchTerms } from './terms/SearchTerms';
 import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';
-
 import styles from './search-results-header.module.scss';
 
 type Props = {

@@ -1,27 +1,6 @@
 import { Term, fromSelectable, fromSelectables, fromValue } from 'apps/search/terms';
 import { LabReportFilterEntry } from './labReportFormTypes';
 
-const ORDERING_FACILITY_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Ordering facility',
-    value: 'ORDERING_FACILITY'
-};
-
-const ORDERING_PROVIDER_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Ordering provider',
-    value: 'ORDERING_PROVIDER'
-};
-
-const REPORTING_FACILITY_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Reporting facility',
-    value: 'REPORTING_FACILITY'
-};
-
 const programAreas = fromSelectables('programAreas', 'PROGRAM AREA');
 const jurisdictions = fromSelectables('jurisdictions', 'JURISDICTION');
 const entryMethods = fromSelectables('entryMethods', 'ENTRY METHOD');
@@ -64,19 +43,12 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
         terms.push(fromSelectable('updatedBy', 'LAST UPDATED BY')(entry.updatedBy));
     }
 
+    if (entry.providerType) {
+        terms.push(fromSelectable('providerType', 'ENTITY TYPE')(entry.providerType));
+    }
+
     if (entry.orderingFacility) {
-        terms.push(ORDERING_FACILITY_TERM);
         terms.push(fromSelectable('orderingFacility', 'ENTITY ID')(entry.orderingFacility));
-    }
-
-    if (entry.orderingProvider) {
-        terms.push(ORDERING_PROVIDER_TERM);
-        terms.push(fromSelectable('orderingProvider', 'ENTITY ID')(entry.orderingProvider));
-    }
-
-    if (entry.reportingFacility) {
-        terms.push(REPORTING_FACILITY_TERM);
-        terms.push(fromSelectable('reportingFacility', 'ENTITY ID')(entry.reportingFacility));
     }
 
     if (entry.codedResult) {

@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
+import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
 import { displayName } from 'name';
 import { internalizeDate } from 'date';
 import { displayAddress } from 'address/display';
@@ -23,30 +25,72 @@ const displayIdentifications = (result: PatientSearchResult): string =>
 const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 
-type Props = {
-    results: PatientSearchResult[];
+const LEGAL_NAME = {
+    id: 'lastNm',
+    name: 'Legal name'
 };
+
+const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };
+
+const SEX = { id: 'sex', name: 'Sex' };
+
+const PATIENT_ID = { id: 'id', name: 'Patient ID' };
+
+const ADDRESS = { id: 'address', name: 'Address' };
+
+const PHONE = { id: 'phoneNumber', name: 'Phone' };
+
+const NAMES = { id: 'names', name: 'Other names' };
+
+const IDENTIFICATIONS = { id: 'identification', name: 'ID' };
+
+const EMAIL = { id: 'email', name: 'Email' };
 
 const columns: Column<PatientSearchResult>[] = [
     {
-        id: 'lastNm',
-        name: 'Legal name',
+        ...LEGAL_NAME,
         fixed: true,
         sortable: true,
         render: (row) => row?.legalName && displayName()(row?.legalName)
     },
-    { id: 'birthTime', name: 'Date of birth', sortable: true, render: (result) => internalizeDate(result.birthday) },
-    { id: 'sex', name: 'Sex', sortable: true, render: (result) => result.gender },
-    { id: 'id', name: 'Patient ID', sortable: true, render: (row) => row.shortId },
-    { id: 'address', name: 'Address', sortable: true, render: displayAddresses },
-    { id: 'phoneNumber', name: 'Phone', sortable: true, render: displayPhones },
-    { id: 'names', name: 'Other names', render: displayNames },
-    { id: 'identification', name: 'ID', sortable: true, render: displayIdentifications },
-    { id: 'email', name: 'Email', sortable: true, render: displayEmails }
+    {
+        ...DATE_OF_BIRTH,
+        sortable: true,
+        render: (result) => internalizeDate(result.birthday)
+    },
+    { ...SEX, sortable: true, render: (result) => result.gender },
+    { ...PATIENT_ID, sortable: true, render: (row) => row.shortId },
+    { ...ADDRESS, render: displayAddresses },
+    { ...PHONE, render: displayPhones },
+    { ...NAMES, render: displayNames },
+    { ...IDENTIFICATIONS, render: displayIdentifications },
+    { ...EMAIL, render: displayEmails }
 ];
 
+const preferences: ColumnPreference[] = [
+    { ...LEGAL_NAME },
+    { ...DATE_OF_BIRTH },
+    { ...SEX },
+    { ...PATIENT_ID },
+    { ...ADDRESS, moveable: true, toggleable: true },
+    { ...PHONE, moveable: true, toggleable: true },
+    { ...NAMES, moveable: true, toggleable: true },
+    { ...IDENTIFICATIONS, moveable: true, toggleable: true },
+    { ...EMAIL, moveable: true, toggleable: true }
+];
+
+type Props = {
+    results: PatientSearchResult[];
+};
+
 const PatientSearchResultTable = ({ results }: Props) => {
-    return <DataTable<PatientSearchResult> id="patient-search-results" columns={columns} data={results}></DataTable>;
+    const { apply, register } = useColumnPreferences();
+
+    useEffect(() => {
+        register(preferences);
+    }, []);
+
+    return <DataTable<PatientSearchResult> id="patient-search-results" columns={apply(columns)} data={results} />;
 };
 
 export { PatientSearchResultTable };
