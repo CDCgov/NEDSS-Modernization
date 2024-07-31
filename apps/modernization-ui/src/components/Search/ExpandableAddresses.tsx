@@ -4,6 +4,6 @@ type Props = {
   results: PatientSearchResultAddress[];
 }
 
-export const ExpandableAddresses = () => {
+export const ExpandableAddresses = ({results}: Props) => {
   
 }
