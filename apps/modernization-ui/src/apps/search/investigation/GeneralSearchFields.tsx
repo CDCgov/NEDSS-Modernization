@@ -13,6 +13,7 @@ import {
     entityOptions,
     investigationEventTypeOptions
 } from './InvestigationFormTypes';
+import styles from './InvestigationSearchForm.module.scss';
 import { ErrorMessage } from '@trussworks/react-uswds';
 
 const GeneralSearchFields = () => {
@@ -89,6 +90,7 @@ const GeneralSearchFields = () => {
                         name="pregnancyStatus"
                         render={({ field: { name, onChange, value } }) => (
                             <SingleSelect
+                                className={styles.selectInput}
                                 data-testid="pregnancyStatus"
                                 name={name}
                                 value={value}
@@ -110,6 +112,7 @@ const GeneralSearchFields = () => {
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
                                 name={name}
+                                className={styles.selectInput}
                                 label="Event ID type"
                                 data-testid={name}
                                 id={name}
@@ -149,6 +152,7 @@ const GeneralSearchFields = () => {
                         name={'eventDate.type'}
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
+                                className={styles.selectInput}
                                 data-testid={name}
                                 name={name}
                                 value={value}
@@ -171,6 +175,7 @@ const GeneralSearchFields = () => {
                                 }}
                                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                     <DatePickerInput
+                                        className={styles.selectInput}
                                         disabled={!watch.eventDate?.type}
                                         defaultValue={value}
                                         onBlur={onBlur}
@@ -192,6 +197,7 @@ const GeneralSearchFields = () => {
                                 }}
                                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                     <DatePickerInput
+                                        className={styles.selectInput}
                                         disabled={!watch.eventDate?.type}
                                         defaultValue={value}
                                         onChange={onChange}
@@ -227,6 +233,7 @@ const GeneralSearchFields = () => {
                         render={({ field: { name, value, onChange } }) => (
                             <SingleSelect
                                 id={name}
+                                className={styles.selectInput}
                                 value={value}
                                 onChange={onChange}
                                 data-testid={name}

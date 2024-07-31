@@ -72,24 +72,20 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="preferences">
-                    {(dropable) => (
-                        <div {...dropable.droppableProps} ref={dropable.innerRef} className={styles.preferences}>
+                    {(droppable) => (
+                        <div {...droppable.droppableProps} ref={droppable.innerRef} className={styles.preferences}>
                             {pending.map((preference, index) => (
                                 <Draggable
                                     key={preference.id}
-                                    draggableId={preference.id}
+                                    draggableId={preference.id + 1}
                                     index={index}
                                     isDragDisabled={!preference.moveable}>
-                                    {(drabbable: DraggableProvided) => (
+                                    {(draggable: DraggableProvided) => (
                                         <div
-                                            ref={drabbable.innerRef}
-                                            {...drabbable.draggableProps}
+                                            ref={draggable.innerRef}
+                                            {...draggable.draggableProps}
                                             className={styles.preference}>
-                                            <span
-                                                className={styles.handle}
-                                                ref={drabbable.innerRef}
-                                                {...drabbable.draggableProps}
-                                                {...drabbable.dragHandleProps}>
+                                            <span className={styles.handle} {...draggable.dragHandleProps}>
                                                 <Icon name="drag" />
                                             </span>
                                             <Checkbox
@@ -105,7 +101,7 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                     )}
                                 </Draggable>
                             ))}
-                            {dropable.placeholder}
+                            {droppable.placeholder}
                         </div>
                     )}
                 </Droppable>
