@@ -84,7 +84,12 @@ const PatientSearchResultTable = ({ results }: Props) => {
     const { apply, register } = useColumnPreferences();
 
     useEffect(() => {
-        register(preferences);
+        const storedPreferences = localStorage.getItem('columnPreferences');
+        if (storedPreferences) {
+            register(JSON.parse(storedPreferences));
+        } else {
+            register(preferences);
+        }
     }, []);
 
     return <DataTable<PatientSearchResult> id="patient-search-results" columns={apply(columns)} data={results} />;

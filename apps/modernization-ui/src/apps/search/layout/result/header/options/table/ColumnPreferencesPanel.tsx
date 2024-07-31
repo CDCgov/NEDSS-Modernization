@@ -5,7 +5,6 @@ import { useColumnPreferences, ColumnPreference } from 'design-system/table/pref
 import { Checkbox } from 'design-system/checkbox';
 import { Button } from 'components/button';
 import { Icon } from 'components/Icon/Icon';
-
 import styles from './column-preference-panel.module.scss';
 
 const swap =
@@ -21,16 +20,9 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save, register } = useColumnPreferences();
+    const { preferences, save } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
-
-    useEffect(() => {
-        const storedPreferences = localStorage.getItem('columnPreferences');
-        if (storedPreferences) {
-            register(JSON.parse(storedPreferences));
-        }
-    }, []);
 
     useEffect(() => {
         setPending(preferences);
