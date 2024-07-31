@@ -37,12 +37,12 @@
 
 .preferences {
     width: 14.3125rem;
-
     .preference {
         display: flex;
         flex: 1 0 0;
         align-items: center;
         padding-left: 0.5rem;
+        background-color: colors.$base-white;
 
         height: 2.75rem;
         border-bottom: 1px solid colors.$base-lighter;
@@ -59,6 +59,9 @@
 
         .check {
             margin: 0;
+        }
+        &:last-of-type {
+            border: none;
         }
     }
 }
