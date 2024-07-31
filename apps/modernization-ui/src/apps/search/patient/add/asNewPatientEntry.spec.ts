@@ -137,4 +137,22 @@ describe('when addind a new patient from a patient search', () => {
             })
         );
     });
+
+    it('should default the identification when it was not searched for', () => {
+        const critiera = {};
+
+        const actual = asNewPatientEntry(critiera);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                identification: expect.arrayContaining([
+                    expect.objectContaining({
+                        type: null,
+                        value: null,
+                        authority: null
+                    })
+                ])
+            })
+        );
+    });
 });
