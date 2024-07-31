@@ -3,7 +3,6 @@ import { useAlert } from 'alert';
 import { CreateCodedQuestionRequest } from 'apps/page-builder/generated';
 import { CreateQuestionRequest, useCreateQuestion } from 'apps/page-builder/hooks/api/useCreateQuestion';
 import classNames from 'classnames';
-import { Heading } from 'components/heading';
 import { PageProvider } from 'page';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
@@ -99,7 +98,7 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
             />
             <div className={styles.scrollableContent}>
                 <div className={styles.heading}>
-                    <Heading level={3}>Let's create a new question</Heading>
+                    <h3>Let's create a new question</h3>
                     <div className={styles.fieldInfo}>
                         All fields with <span className={styles.mandatory}>*</span> are required
                     </div>
@@ -112,7 +111,11 @@ const AddQuestionContent = ({ onBack, onClose, onSubmit, onFindValueSet }: AddQu
                 <Button onClick={onClose} type="button" outline>
                     Cancel
                 </Button>
-                <Button disabled={!form.formState.isValid} onClick={onSubmit} type="button">
+                <Button
+                    disabled={!form.formState.isValid}
+                    onClick={onSubmit}
+                    className="createAndDeployToPageBtn"
+                    type="button">
                     Create and apply to page
                 </Button>
             </ButtonBar>

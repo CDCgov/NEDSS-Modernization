@@ -1,12 +1,5 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.time.Instant;
-import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -25,6 +18,13 @@ import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
 import gov.cdc.nbs.questionbank.question.command.QuestionCommand.Update;
 import gov.cdc.nbs.questionbank.question.request.QuestionRequest.ReportingInfo;
 import gov.cdc.nbs.questionbank.support.QuestionEntityMother;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class WaUiMetadataTest {
 
@@ -135,7 +135,7 @@ class WaUiMetadataTest {
 
       @Override
       public void update(Update command) {
-
+        // NOOP
       }
     };
 
@@ -163,7 +163,7 @@ class WaUiMetadataTest {
   }
 
   private void assertGeneralValues(WaUiMetadata metadata, PageContentCommand.AddQuestion command,
-      Integer orderNumber) {
+      int orderNumber) {
     var question = command.question();
     assertEquals(command.page(), metadata.getWaTemplateUid().getId());
     assertEquals(question.getNbsUiComponentUid(), metadata.getNbsUiComponentUid());
@@ -196,8 +196,8 @@ class WaUiMetadataTest {
   @Test
   void should_create_tab() {
     WaTemplate page = new WaTemplate();
-    page.setId(123l);
-    PageContentCommand.AddTab command = addTab(page);
+    page.setId(123L);
+    PageContentCommand.AddTab command = addTab();
     WaUiMetadata tabMetadata = new WaUiMetadata(page, command, 2);
 
     assertEquals(1010L, tabMetadata.getNbsUiComponentUid().longValue());
@@ -210,7 +210,7 @@ class WaUiMetadataTest {
     assertEquals("F", tabMetadata.getRequiredInd());
     assertEquals(1, tabMetadata.getVersionCtrlNbr().intValue());
     assertEquals('F', tabMetadata.getStandardNndIndCd().charValue());
-    assertEquals(null, tabMetadata.getPublishIndCd());
+    assertNull(tabMetadata.getPublishIndCd());
     assertEquals("T", tabMetadata.getEnableInd());
 
     assertEquals(command.requestedOn(), tabMetadata.getAddTime());
@@ -224,8 +224,8 @@ class WaUiMetadataTest {
   @Test
   void should_update_tab() {
     WaTemplate page = new WaTemplate();
-    page.setId(123l);
-    PageContentCommand.AddTab command = addTab(page);
+    page.setId(123L);
+    PageContentCommand.AddTab command = addTab();
     WaUiMetadata tabMetadata = new WaUiMetadata(page, command, 2);
 
     PageContentCommand.UpdateTab updateCommand = updateTab();
@@ -240,8 +240,8 @@ class WaUiMetadataTest {
   @Test
   void should_update_subsection() {
     WaTemplate page = new WaTemplate();
-    page.setId(123l);
-    PageContentCommand.AddSubsection command = addSubsection(page);
+    page.setId(123L);
+    PageContentCommand.AddSubsection command = addSubsection();
     WaUiMetadata subsectionMetadata = new WaUiMetadata(page, command, 3);
 
     PageContentCommand.UpdateSubsection updateCommand = updateSubsection();
@@ -383,7 +383,7 @@ class WaUiMetadataTest {
 
     // And a valid update command
     UpdateNumericQuestion command = new PageContentCommand.UpdateNumericQuestion(
-        36l,
+        36L,
         "new label",
         "new tooltip",
         false,
@@ -392,11 +392,11 @@ class WaUiMetadataTest {
         1007,
         "NUM",
         3,
-        0l,
-        0l,
-        999l,
+        0L,
+        0L,
+        999L,
         null,
-        123l,
+        123L,
         new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
         true,
         "messageVariable",
@@ -406,7 +406,7 @@ class WaUiMetadataTest {
         true,
         "hl7DataType",
         "admin comments",
-        1l,
+        1L,
         now);
 
     // When the question is updated
@@ -575,7 +575,7 @@ class WaUiMetadataTest {
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
 
     // And a valid update command
-    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1l, 2l, 3l, Instant.now());
+    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1L, 2L, 3L, Instant.now());
 
     // When the question is updated, an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
@@ -596,7 +596,7 @@ class WaUiMetadataTest {
     WaUiMetadata dateQuestion = new WaUiMetadata(page, create, 5);
     dateQuestion.setPublishIndCd('T');
     // And a valid update command
-    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1l, 2l, 3l, Instant.now());
+    UpdateCodedQuestionValueset command = new UpdateCodedQuestionValueset(1L, 2L, 3L, Instant.now());
 
     // When the question is updated, an exception is thrown
     assertThrows(PageContentModificationException.class, () -> dateQuestion.update(command));
@@ -605,13 +605,13 @@ class WaUiMetadataTest {
   @Test
   void should_group() {
     WaUiMetadata metadata = new WaUiMetadata();
-    metadata.setId(99l);
+    metadata.setId(99L);
     PageContentCommand.GroupSubsection groupCommand = new PageContentCommand.GroupSubsection(
         0,
         "BLOCK_NAME",
-        Arrays.asList(new GroupSubSectionRequest.Batch(99l, true, "question label", 100)),
+        List.of(new GroupSubSectionRequest.Batch(99L, true, "question label", 100)),
         2,
-        3l,
+        3L,
         Instant.now());
     metadata.updateQuestionBatch(groupCommand, 1);
 
@@ -625,13 +625,13 @@ class WaUiMetadataTest {
   @Test
   void should_clear_group() {
     WaUiMetadata metadata = new WaUiMetadata();
-    metadata.setId(99l);
+    metadata.setId(99L);
     PageContentCommand.GroupSubsection groupCommand = new PageContentCommand.GroupSubsection(
         0,
         "BLOCK_NAME",
-        Arrays.asList(new GroupSubSectionRequest.Batch(99l, false, "question label", 100)),
+        List.of(new GroupSubSectionRequest.Batch(99L, false, "question label", 100)),
         2,
-        3l,
+        3L,
         Instant.now());
     metadata.updateQuestionBatch(groupCommand, 1);
 
@@ -692,7 +692,7 @@ class WaUiMetadataTest {
 
   private PageContentCommand.UpdateTextQuestion updateTextQuestion(Instant requestedOn) {
     return new PageContentCommand.UpdateTextQuestion(
-        36l,
+        36L,
         "new label",
         "new tooltip",
         false,
@@ -710,13 +710,13 @@ class WaUiMetadataTest {
         true,
         "hl7DataType",
         "admin comments",
-        1l,
+        1L,
         requestedOn);
   }
 
   private PageContentCommand.UpdateNumericQuestion updateNumericQuestion(Instant requestedOn) {
     return new PageContentCommand.UpdateNumericQuestion(
-        36l,
+        36L,
         "new label",
         "new tooltip",
         true,
@@ -725,9 +725,9 @@ class WaUiMetadataTest {
         1007,
         "NUM",
         3,
-        0l,
-        0l,
-        999l,
+        0L,
+        0L,
+        999L,
         "literal related",
         null,
         new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
@@ -739,13 +739,13 @@ class WaUiMetadataTest {
         true,
         "hl7DataType",
         "admin comments",
-        1l,
+        1L,
         requestedOn);
   }
 
   private PageContentCommand.UpdateDateQuestion updateDateQuestion(Instant requestedOn) {
     return new PageContentCommand.UpdateDateQuestion(
-        36l,
+        36L,
         "new label",
         "new tooltip",
         false,
@@ -763,21 +763,21 @@ class WaUiMetadataTest {
         true,
         "hl7DataType",
         "admin comments",
-        1l,
+        1L,
         requestedOn);
   }
 
   private PageContentCommand.UpdateCodedQuestion updateCodedQuestion(Instant requestedOn) {
     return new PageContentCommand.UpdateCodedQuestion(
-        36l,
+        36L,
         "new label",
         "new tooltip",
         false,
         false,
         false,
-        1026l, // readonly user entered
+        1026L, // readonly user entered
         "DATE",
-        999l,
+        999L,
         new ReportingInfo("report Label", "DFT_RDB_TABLE", "RDB_COL", "DMART_COLUMN"),
         true,
         "messageVariable",
@@ -787,7 +787,7 @@ class WaUiMetadataTest {
         true,
         "hl7DataType",
         "admin comments",
-        1l,
+        1L,
         requestedOn);
   }
 
@@ -795,7 +795,7 @@ class WaUiMetadataTest {
     return new PageContentCommand.UpdateTab(
         "updated label",
         true,
-        3l,
+        3L,
         444,
         Instant.now());
   }
@@ -804,12 +804,12 @@ class WaUiMetadataTest {
     return new PageContentCommand.UpdateSubsection(
         "updated label",
         false,
-        3l,
+        3L,
         444,
         Instant.now());
   }
 
-  private PageContentCommand.AddTab addTab(WaTemplate page) {
+  private PageContentCommand.AddTab addTab() {
     return new PageContentCommand.AddTab(
         "test label",
         false,
@@ -818,7 +818,7 @@ class WaUiMetadataTest {
         Instant.now());
   }
 
-  private PageContentCommand.AddSubsection addSubsection(WaTemplate page) {
+  private PageContentCommand.AddSubsection addSubsection() {
     return new PageContentCommand.AddSubsection(
         "test label",
         false,

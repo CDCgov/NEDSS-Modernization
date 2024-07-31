@@ -1,7 +1,7 @@
 Feature: User accesses patient profile and can view existing patient data here.
 
     Background:
-        Given I am logged in as "superuser" and password ""
+        Given I am logged in as "superuser" and password "@test"
 
     Scenario: User compares investigations
         Given the user navigate to the patient profile page for "93049"

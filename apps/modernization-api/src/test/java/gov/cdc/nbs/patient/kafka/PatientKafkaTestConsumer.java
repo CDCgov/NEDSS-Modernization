@@ -63,9 +63,9 @@ public class PatientKafkaTestConsumer {
         Awaitility.await()
             .atMost(Duration.ofSeconds(5))
             .pollDelay(Duration.ofSeconds(1))
-            .until(this::received, received -> {
+            .until(this::received, current -> {
                 //  run the consumer that should apply assertions
-                consumer.accept(received);
+                consumer.accept(current);
 
                 //  if we've gotten here return true.
                 return true;

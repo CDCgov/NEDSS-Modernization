@@ -57,8 +57,8 @@ public class SimpleSearchRedirectSteps {
 
   @Given("I want a simple search for a(n) {string} of {string}")
   public void i_perform_a_simple_search_with_property_of(final String property, final String value) {
-    String criteria = resolveCriteria(property);
-    this.criteria.add(criteria, value);
+    String resolved = resolveCriteria(property);
+    this.criteria.add(resolved, value);
   }
 
   @Given("I want a simple search for a(n) {eventTypeId} with the ID {string}")

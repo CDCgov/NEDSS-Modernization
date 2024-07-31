@@ -5,13 +5,10 @@ import gov.cdc.nbs.option.jdbc.OptionRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import java.util.Collection;
 import java.util.Map;
 
 public class SQLBasedOptionResolver {
-
-
   private static final String CRITERIA_PARAMETER = "criteria";
   private static final String PREFIX_CRITERIA_PARAMETER = "prefixCriteria";
   private static final String LIMIT_PARAMETER = "limit";

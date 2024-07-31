@@ -21,6 +21,7 @@ testing {
 dependencies {
 
     implementation project(':accumulation')
+    implementation project(':authorization')
 
     // core
     implementation libs.bundles.jpa

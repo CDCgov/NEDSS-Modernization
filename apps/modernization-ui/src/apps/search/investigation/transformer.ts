@@ -1,0 +1,79 @@
+import {
+    CaseStatus,
+    EventId,
+    InvestigationEventDateSearch,
+    InvestigationEventDateType,
+    InvestigationEventIdType,
+    InvestigationFilter,
+    InvestigationStatus,
+    NotificationStatus,
+    PregnancyStatus,
+    ProcessingStatus,
+    ProviderFacilitySearch,
+    ReportingEntityType
+} from 'generated/graphql/schema';
+import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
+import { Selectable, asValue, asValues } from 'options/selectable';
+
+export const transformObject = (data: InvestigationFilterEntry): InvestigationFilter => {
+    const { reportingFacility, reportingProvider, ...remaining } = data;
+
+    const providerFacilitySearch =
+        resolveReportingProvider(reportingProvider) || resolveReportingFacility(reportingFacility);
+
+    return {
+        conditions: remaining.conditions && asValues(remaining.conditions),
+        programAreas: remaining.programAreas && asValues(remaining.programAreas),
+        jurisdictions: remaining.jurisdictions && asValues(remaining.jurisdictions),
+        pregnancyStatus: remaining.pregnancyStatus && (asValue(remaining.pregnancyStatus) as PregnancyStatus),
+        eventId: resolveEventId(remaining.identification),
+        eventDate: resolveEventDate(remaining.eventDate),
+        createdBy: asValue(remaining.createdBy),
+        lastUpdatedBy: asValue(remaining.updatedBy),
+        providerFacilitySearch,
+        investigationStatus:
+            remaining.investigationStatus && (asValue(remaining.investigationStatus) as InvestigationStatus),
+        investigatorId: asValue(remaining.investigator),
+        outbreakNames: remaining.outbreaks && asValues(remaining.outbreaks),
+        caseStatuses: remaining.caseStatuses && (asValues(remaining.caseStatuses) as CaseStatus[]),
+        processingStatuses:
+            remaining.processingStatuses && (asValues(remaining.processingStatuses) as ProcessingStatus[]),
+        notificationStatuses:
+            remaining.notificationStatuses && (asValues(remaining.notificationStatuses) as NotificationStatus[])
+    };
+};
+
+const resolveProvider =
+    (type: ReportingEntityType) =>
+    (selectable?: Selectable): ProviderFacilitySearch | undefined =>
+        selectable
+            ? {
+                  id: selectable.value,
+                  entityType: type
+              }
+            : undefined;
+
+const resolveReportingFacility = resolveProvider(ReportingEntityType.Facility);
+const resolveReportingProvider = resolveProvider(ReportingEntityType.Provider);
+
+const resolveEventDate = (date?: EventDate): InvestigationEventDateSearch | undefined => {
+    if (date && date.type && date.type.value) {
+        return {
+            type: date.type.value as InvestigationEventDateType,
+            from: date.from,
+            to: date.to
+        };
+    }
+
+    return undefined;
+};
+
+const resolveEventId = (identification?: Identification): EventId | undefined => {
+    if (identification && identification.type && identification.type.value) {
+        return {
+            id: identification.value,
+            investigationEventType: identification.type.value as InvestigationEventIdType
+        };
+    }
+    return undefined;
+};

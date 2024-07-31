@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { initializationLoader, ProtectedLayout } from 'authorization';
 
 import { RedirectHome } from './RedirectHome';
@@ -28,7 +28,7 @@ const routing = [
             ...pageBuilderRouting
         ]
     },
-    { path: '*', element: <RedirectHome /> },
+    { path: '*', element: <Navigate to={'/'} /> },
     { path: 'expired', element: <Expired /> }
 ];
 

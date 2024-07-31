@@ -8,7 +8,6 @@ import {
 import { Controller, useForm } from 'react-hook-form';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import styles from './addsection.module.scss';
-import { Heading } from 'components/heading';
 import { useEffect } from 'react';
 import { maxLengthRule, validPageNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
@@ -72,9 +71,7 @@ export const AddSection = ({
 
     return (
         <div className={styles.addSection}>
-            <div className={styles.header}>
-                {isEdit ? <Heading level={4}>Edit section</Heading> : <Heading level={4}>Add a section</Heading>}
-            </div>
+            <div className={styles.header}>{isEdit ? <h2>Edit section</h2> : <h2>Add a section</h2>}</div>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.content}>
                     <Controller
@@ -95,7 +92,7 @@ export const AddSection = ({
                                 type="text"
                                 error={error?.message}
                                 required
-                                className={styles.inputField}
+                                className={`${styles.inputField} sectionName`}
                             />
                         )}
                     />
@@ -126,11 +123,16 @@ export const AddSection = ({
                         <Button
                             type="button"
                             onClick={onSubmit}
-                            disabled={!form.formState.isDirty || !form.formState.isValid}>
+                            disabled={!form.formState.isDirty || !form.formState.isValid}
+                            className="saveChangesBtn">
                             Save changes
                         </Button>
                     ) : (
-                        <Button type="button" onClick={onSubmit} disabled={!form.formState.isValid}>
+                        <Button
+                            className="addSectionBtn"
+                            type="button"
+                            onClick={onSubmit}
+                            disabled={!form.formState.isValid}>
                             Add section
                         </Button>
                     )}

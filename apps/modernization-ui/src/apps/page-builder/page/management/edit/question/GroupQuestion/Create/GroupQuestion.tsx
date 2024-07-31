@@ -107,6 +107,7 @@ export const GroupQuestion = ({ page, subsection, onSuccess, onCancel }: Props) 
                 <Button
                     onClick={handleSubmit}
                     type="button"
+                    data-testid="group-questions-submit-btn"
                     disabled={batches.length > 20 || !valid || !form.formState.isValid}>
                     Submit
                 </Button>

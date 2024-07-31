@@ -4,13 +4,11 @@ import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
 import gov.cdc.nbs.questionbank.page.command.PageContentCommand;
-import gov.cdc.nbs.questionbank.page.component.tree.ComponentTreeResolver;
 import gov.cdc.nbs.questionbank.page.util.PageConstants;
 import gov.cdc.nbs.questionbank.support.PageIdentifier;
 import gov.cdc.nbs.questionbank.support.TestDataSettings;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,29 +24,37 @@ public class PageMother {
   private static final String ASEPTIC_MENINGITIS_ID = "10010";
   private static final String BRUCELLOSIS_ID = "10020";
 
-  @Autowired
-  private WaUiMetadataRepository waUiMetadatumRepository;
+  private final WaUiMetadataRepository waUiMetadatumRepository;
 
-  @Autowired
-  EntityManager entityManager;
+  private final EntityManager entityManager;
 
-  @Autowired
-  TestDataSettings settings;
+  private final TestDataSettings settings;
 
-  @Autowired
-  TestPageCleaner cleaner;
+  private final TestPageCleaner cleaner;
 
-  @Autowired
-  PageEntityHarness harness;
+  private final PageEntityHarness harness;
 
-  @Autowired
-  Available<PageIdentifier> available;
+  private final Available<PageIdentifier> available;
 
-  @Autowired
-  Active<PageIdentifier> active;
+  private final Active<PageIdentifier> active;
 
-  @Autowired
-  ComponentTreeResolver componentTreeResolver;
+  PageMother(
+      final WaUiMetadataRepository waUiMetadatumRepository,
+      final EntityManager entityManager,
+      final TestDataSettings settings,
+      final TestPageCleaner cleaner,
+      final PageEntityHarness harness,
+      final Available<PageIdentifier> available,
+      final Active<PageIdentifier> active
+  ) {
+    this.waUiMetadatumRepository = waUiMetadatumRepository;
+    this.entityManager = entityManager;
+    this.settings = settings;
+    this.cleaner = cleaner;
+    this.harness = harness;
+    this.available = available;
+    this.active = active;
+  }
 
   public void clean() {
     this.available.all().forEach(cleaner::clean);
@@ -62,9 +68,7 @@ public class PageMother {
   }
 
   public List<WaUiMetadata> pageContent() {
-    List<WaUiMetadata> metadata = new ArrayList<>();
-    metadata.addAll(one().getUiMetadata());
-    return metadata;
+    return new ArrayList<>(one().getUiMetadata());
   }
 
   private WaTemplate managed(final PageIdentifier identifier) {
@@ -81,8 +85,8 @@ public class PageMother {
         .orElseGet(this::createBrucellosisPage);
   }
 
-  public WaTemplate asepticMeningitis() {
-    return available.all()
+  public void asepticMeningitis() {
+    available.all()
         .map(this::managed)
         .filter(t -> t.getConditionMappings()
             .stream()
@@ -235,7 +239,7 @@ public class PageMother {
     return page;
   }
 
-  public WaTemplate createPageDraft(WaTemplate pageIn) {
+  public void createPageDraft(WaTemplate pageIn) {
 
     Instant now = Instant.now().plusSeconds(15);
     WaTemplate page = new WaTemplate();
@@ -277,7 +281,6 @@ public class PageMother {
     waUiMetadatumRepository.save(subSection);
     waUiMetadatumRepository.save(question);
 
-    return page;
   }
 
   public WaTemplate createPagePublishedWithDraft(WaTemplate pageIn) {
@@ -303,12 +306,12 @@ public class PageMother {
   }
 
   private WaUiMetadata getwaUiMetaDtum(WaTemplate aPage, Long nbsUiComponentUid, Integer orderNumber) {
-    WaUiMetadata record = new WaUiMetadata();
-    record.setWaTemplateUid(aPage);
-    record.setNbsUiComponentUid(nbsUiComponentUid);
-    record.setOrderNbr(orderNumber);
-    record.setVersionCtrlNbr(0);
-    return record;
+    WaUiMetadata metadata = new WaUiMetadata();
+    metadata.setWaTemplateUid(aPage);
+    metadata.setNbsUiComponentUid(nbsUiComponentUid);
+    metadata.setOrderNbr(orderNumber);
+    metadata.setVersionCtrlNbr(0);
+    return metadata;
   }
 
   public void create(

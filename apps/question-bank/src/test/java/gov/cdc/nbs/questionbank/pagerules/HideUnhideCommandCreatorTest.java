@@ -15,6 +15,43 @@ class HideUnhideCommandCreatorTest {
   private final HideUnhideCommandCreator creator = new HideUnhideCommandCreator();
 
   @Test
+  void function_name() {
+    String expected = "ruleHideUnhINV14411()";
+    String actual = creator.createJavascriptName(
+        "INV144",
+        11);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void error_message() {
+    String expected =
+        "Preceding COVID-like illness (NBS707) = must be ( Yes ) Date of COVID-like illness symptom onset";
+    String actual = creator.createErrorMessage(
+        "Preceding COVID-like illness",
+        "NBS707",
+        Arrays.asList(new SourceValue("1", "Yes")),
+        false,
+        Arrays.asList("Date of COVID-like illness symptom onset"),
+        "=");
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
+  void error_message_any_source() {
+    String expected =
+        "Preceding COVID-like illness = must be ( Any Source Value ) Date of COVID-like illness symptom onset";
+    String actual = creator.createErrorMessage(
+        "Preceding COVID-like illness",
+        "NBS707",
+        Arrays.asList(new SourceValue("1", "Yes")),
+        true,
+        Arrays.asList("Date of COVID-like illness symptom onset"),
+        "=");
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  @Test
   void source_values() {
     String expected = "text1, text2";
     String actual = creator.createSourceValues(

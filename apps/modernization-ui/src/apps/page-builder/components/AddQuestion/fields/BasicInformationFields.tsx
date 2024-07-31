@@ -1,5 +1,4 @@
 import { ErrorMessage, Label, Radio, Textarea } from '@trussworks/react-uswds';
-import { Heading } from 'components/heading';
 
 import { QuestionValidationRequest } from 'apps/page-builder/generated/models/QuestionValidationRequest';
 import { useOptions } from 'apps/page-builder/hooks/api/useOptions';
@@ -70,7 +69,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
 
     return (
         <>
-            <Heading level={4}>Basic information</Heading>
+            <h4>Basic information</h4>
             <Controller
                 control={form.control}
                 name="codeSet"
@@ -157,6 +156,7 @@ export const BasicInformationFields = ({ editing = false }: Props) => {
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
                     <SelectInput
                         label="Subgroup"
+                        className="subgroupSelect"
                         defaultValue={value}
                         onChange={(e) => {
                             onChange(e);

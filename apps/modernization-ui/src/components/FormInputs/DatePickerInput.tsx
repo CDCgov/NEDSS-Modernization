@@ -4,15 +4,14 @@ import React, { KeyboardEvent, useState } from 'react';
 import classNames from 'classnames';
 import { isFuture } from 'date-fns';
 import { EntryWrapper } from 'components/Entry';
+import { EN_US } from './datePickerLocalization';
 
 type OnChange = (val?: string) => void;
 type OnBlur = (event: React.FocusEvent<HTMLInputElement> | React.FocusEvent<HTMLDivElement>) => void;
 
 type DatePickerProps = {
-    id?: string;
     label?: string;
     name?: string;
-    htmlFor?: string;
     onChange?: OnChange;
     onBlur?: OnBlur;
     className?: string;
@@ -25,6 +24,8 @@ type DatePickerProps = {
 };
 
 const inputFormat = /^[0-3]?[0-9]\/[0-3]?[0-9]\/(19|20)[0-9]{2}$/;
+const isNumber = /^[0-9/]$/;
+let removedSlash = false;
 
 const matches = (value: string) => inputFormat.test(value);
 
@@ -64,7 +65,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
             <EntryWrapper
                 orientation={orientation}
                 label={props.label || ''}
-                htmlFor={props.htmlFor || ''}
+                htmlFor={props.name || ''}
                 required={props.required}
                 error={_error}>
                 {props.defaultValue && (
@@ -77,15 +78,16 @@ export const DatePickerInput = (props: DatePickerProps) => {
 };
 
 const InternalDatePicker = ({
-    id = '',
     name = '',
     onChange,
     onBlur,
     className,
     defaultValue,
     disabled = false,
-    disableFutureDates = false
+    disableFutureDates = false,
+    label
 }: DatePickerProps) => {
+    const toggleCalendar = label ? `${label} toggle calendar` : EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
         let currentDate = new Date();
         const offset = currentDate.getTimezoneOffset() * 60 * 1000;
@@ -101,7 +103,8 @@ const InternalDatePicker = ({
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     return (
         <DatePicker
-            id={id}
+            i18n={{ ...EN_US, toggleCalendar }}
+            id={name}
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
             onChange={handleOnChange(onChange)}
@@ -115,20 +118,58 @@ const InternalDatePicker = ({
 };
 
 const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (!isNaN(parseInt(event.key))) {
+    const allowedKeys = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'Backspace',
+        'ArrowLeft',
+        'ArrowRight',
+        'Delete',
+        'Tab',
+        'Shift'
+    ];
+
+    const key = event.key;
+    let inputValue = '';
+
+    if (allowedKeys.indexOf(key) === -1) {
+        event.preventDefault();
+    } else {
         // Keydown is triggered even before input's value is updated.
         // Hence the manual addition of the new key is required.
-        let inputValue = `${(event.target as HTMLInputElement).value}${event.key}`;
-        if (
-            inputValue &&
-            (inputValue.length === 2 ||
-                (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
-        ) {
-            inputValue += '/';
-            (event.target as HTMLInputElement).value = inputValue;
-            // This prevent default ensures the manually entered key is not re-entered.
-            event.preventDefault();
+
+        inputValue = `${(event.target as HTMLInputElement).value}`;
+        // check if key is a number or "/"
+        if (isNumber.test(key)) {
+            if (removedSlash) {
+                inputValue += `/${key}`;
+                (event.target as HTMLInputElement).value = inputValue;
+                removedSlash = false;
+                event.preventDefault();
+            } else {
+                inputValue = `${(event.target as HTMLInputElement).value}${key}`;
+                if (
+                    inputValue &&
+                    (inputValue.length === 2 ||
+                        (inputValue.length === 5 && (inputValue.match(new RegExp('/', 'g')) || '').length < 2))
+                ) {
+                    inputValue += '/';
+                    (event.target as HTMLInputElement).value = inputValue;
+                    // This prevent default ensures the manually entered key is not re-entered.
+                    event.preventDefault();
+                }
+            }
+        }
+        if (key === 'Backspace') {
+            removedSlash = inputValue.endsWith('/');
         }
     }
-    event.code === 'Enter' && event.preventDefault();
 };

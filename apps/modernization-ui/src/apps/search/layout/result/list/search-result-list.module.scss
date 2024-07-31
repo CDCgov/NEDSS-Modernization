@@ -1,0 +1,14 @@
+@use 'styles/colors';
+
+.results {
+    overflow-x: scroll;
+    height: 100%;
+
+    .result {
+        padding: 1rem;
+
+        &:nth-child(odd) {
+            background-color: colors.$base-lightest;
+        }
+    }
+}

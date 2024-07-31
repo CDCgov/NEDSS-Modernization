@@ -38,22 +38,24 @@ export const Learn = () => {
                     <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a> if you are interested in joining the groups.
                 </p>
             </div>
-            <h3>The NBS User Group (NUG)</h3>
-            <p>
-                NUG calls provide a forum for participants to discuss the latest NBS software development, current
-                topics, and best practices. The user group also provides a platform for jurisdictions to collaborate,
-                discuss common issues, and share lessons learned.
-            </p>
-            <h3>The NBS Subject Matter Expert (SME) calls</h3>
-            <p>
-                They allow participants to discuss detailed NBS software release requirements and collaborate on NBS
-                software development and best practices.
-            </p>
-            <h2>More ways to get involved</h2>
-            <p>
-                If you are interested in becoming a pilot partner, or participating in the co-creation sessions, please
-                send us an email to <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>.
-            </p>
+            <div>
+                <strong>The NBS User Group (NUG)</strong>
+                <p>
+                    NUG calls provide a forum for participants to discuss the latest NBS software development, current
+                    topics, and best practices. The user group also provides a platform for jurisdictions to
+                    collaborate, discuss common issues, and share lessons learned.
+                </p>
+                <strong>The NBS Subject Matter Expert (SME) calls</strong>
+                <p>
+                    They allow participants to discuss detailed NBS software release requirements and collaborate on NBS
+                    software development and best practices.
+                </p>
+                <h2>More ways to get involved</h2>
+                <p>
+                    If you are interested in becoming a pilot partner, or participating in the co-creation sessions,
+                    please send us an email to <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>.
+                </p>
+            </div>
         </>
     );
 };

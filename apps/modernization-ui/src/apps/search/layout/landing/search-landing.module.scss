@@ -1,0 +1,16 @@
+.landing {
+    padding: 3rem;
+
+    header {
+        display: flex;
+        padding: 2rem 0rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        align-self: stretch;
+
+        h2 {
+            margin-bottom: 0;
+        }
+    }
+}

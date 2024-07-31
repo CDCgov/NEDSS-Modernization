@@ -80,12 +80,12 @@ class FacilityOptionMother {
         .max(Comparator.naturalOrder())
         .orElse(1);
 
-    long identifier = nextIdentifier();
+    long next = nextIdentifier();
 
     String electronic = isElectronic ? "Y" : "N";
 
     Map<String, ? extends Serializable> parameters = Map.of(
-        "identifier", identifier,
+        "identifier", next,
         "name", name,
         "electronic", electronic
     );
@@ -95,6 +95,6 @@ class FacilityOptionMother {
         new MapSqlParameterSource(parameters),
         PreparedStatement::executeUpdate);
 
-    this.available.available(new Option(String.valueOf(identifier), name, name, order));
+    this.available.available(new Option(String.valueOf(next), name, name, order));
   }
 }

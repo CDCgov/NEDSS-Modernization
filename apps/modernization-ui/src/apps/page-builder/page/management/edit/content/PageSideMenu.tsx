@@ -15,14 +15,16 @@ export const PageSideMenu = ({ onAddSection, onManageSection, onReorderModal }: 
                 <li
                     onClick={() => {
                         onManageSection();
-                    }}>
+                    }}
+                    className="manageSections">
                     <Icon.Edit size={3} />
                     Manage sections
                 </li>
                 <li
                     onClick={() => {
                         onAddSection();
-                    }}>
+                    }}
+                    className="addSection">
                     <Icon.Add size={3} />
                     Add section
                 </li>

@@ -86,7 +86,7 @@ describe('InvestigationGeneralFields component', () => {
         expect(pregnancySelect).toHaveValue('');
 
         // Event id type
-        getByText('Event id type');
+        getByText('Event ID type');
         const eventTypeSelect = getByTestId('eventId.investigationEventType');
         expect(eventTypeSelect).toHaveAttribute('placeholder', '-Select-');
         expect(eventTypeSelect).toHaveValue('');
@@ -128,8 +128,10 @@ describe('InvestigationGeneralFields component', () => {
         expect(providerSelect).toHaveValue('');
     });
 
-    it('should show form values', () => {
-        const { container, getByText, getByTestId } = render(<InvestigationGeneralFieldsWithDefaultsSet />);
+    it('should show form values', async () => {
+        const { container, getByText, getByTestId, findByTestId } = render(
+            <InvestigationGeneralFieldsWithDefaultsSet />
+        );
 
         const multiSelectInputs = container.getElementsByClassName('multi-select-input');
         // Condition
@@ -176,7 +178,7 @@ describe('InvestigationGeneralFields component', () => {
         expect(providerSelect).toHaveValue(ReportingEntityType.Provider);
 
         // Provider/facility id
-        const providerId = getByTestId('providerFacilitySearch.id');
+        const providerId = await findByTestId('providerFacilitySearch.id');
         expect(providerId).toHaveValue('');
     });
 });

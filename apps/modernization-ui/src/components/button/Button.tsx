@@ -4,6 +4,7 @@ import styles from './Button.module.scss';
 import classNames from 'classnames';
 
 type Props = {
+    className?: string;
     icon?: ReactNode;
     children?: string;
     outline?: boolean;
@@ -16,6 +17,7 @@ type Props = {
 } & JSX.IntrinsicElements['button'];
 
 const Button = ({
+    className,
     type = 'button',
     icon,
     children,
@@ -26,7 +28,7 @@ const Button = ({
     ...defaultProps
 }: Props) => {
     const isIconOnly = icon && !children;
-    const classesAarray = classNames({
+    const classesAarray = classNames(className, {
         [styles.destructive]: destructive,
         [styles.icon]: icon
     });
@@ -41,14 +43,14 @@ const Button = ({
             outline={outline}>
             {labelPosition === 'left' && children && icon ? (
                 <>
-                    {children}
+                    <span>{children}</span>
                     {icon}
                 </>
             ) : null}
             {labelPosition === 'right' && children && icon ? (
                 <>
                     {icon}
-                    {children}
+                    <span>{children}</span>
                 </>
             ) : null}
             {isIconOnly ? icon : null}

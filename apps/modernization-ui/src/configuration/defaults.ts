@@ -1,4 +1,13 @@
-import { Features, Properties, Configuration, Settings } from './configuration';
+import { Features, Properties, Configuration, Settings, Search } from './configuration';
+
+const search: Search = {
+    view: {
+        table: {
+            enabled: false
+        },
+        enabled: false
+    }
+};
 
 const defaultFeatures: Features = {
     address: {
@@ -20,7 +29,8 @@ const defaultFeatures: Features = {
                 }
             }
         }
-    }
+    },
+    search
 };
 
 const defaultProperties: Properties = {
@@ -28,7 +38,12 @@ const defaultProperties: Properties = {
     stdProgramAreas: []
 };
 
-const defaultSettings: Settings = {};
+const defaultSettings: Settings = {
+    session: {
+        warning: 1000 * 60 * 15,
+        expiration: 1000 * 60 * 20
+    }
+};
 
 const defaultConfiguration: Configuration = {
     settings: defaultSettings,

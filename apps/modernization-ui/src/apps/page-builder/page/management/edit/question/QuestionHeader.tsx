@@ -2,7 +2,6 @@ import { Button, Icon } from '@trussworks/react-uswds';
 import DeleteQuestion from 'apps/page-builder/components/DeleteQuestion/DeleteQuestion';
 import { ToggleButton } from 'apps/page-builder/components/ToggleButton';
 import { PagesQuestion } from 'apps/page-builder/generated';
-import { Heading } from 'components/heading';
 import { useEffect, useState } from 'react';
 import styles from './question-header.module.scss';
 import { staticElementTypes } from '../staticelement/EditStaticElement';
@@ -52,10 +51,14 @@ export const QuestionHeader = ({ question, onEditQuestion, onRequiredChange, onD
             <div className={styles.typeDisplay}>
                 {question.isStandard && <div className={styles.standardIndicator}>S</div>}
                 {!question.isStandard && question.isPublished && <div className={styles.publishedIndicator}>P</div>}
-                <Heading level={3}>{getHeadingText(question.displayComponent)}</Heading>
+                <h5>{getHeadingText(question.displayComponent)}</h5>
             </div>
             <div className={`${styles.questionButtons} question-header-button`}>
-                <Button unstyled className={styles.editButton} type="button" onClick={onEditQuestion}>
+                <Button
+                    unstyled
+                    className={`${styles.editButton} questionEditButton`}
+                    type="button"
+                    onClick={onEditQuestion}>
                     <Icon.Edit style={{ cursor: 'pointer' }} size={3} className="primary-color" />
                 </Button>
                 {!question.isStandard && !question.isPublished && (

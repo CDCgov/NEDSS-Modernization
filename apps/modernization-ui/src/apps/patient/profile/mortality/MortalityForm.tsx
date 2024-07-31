@@ -62,14 +62,13 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                         name="asOf"
                         defaultValue={entry.asOf}
                         rules={{ required: { value: true, message: 'As of date is requried.' } }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                name="asOf"
+                                name={name}
                                 disableFutureDates
-                                htmlFor={'asOf'}
                                 errorMessage={error?.message}
                             />
                         )}
@@ -107,13 +106,12 @@ export const MortalityForm = ({ entry, onChanged, onCancel }: Props) => {
                                 control={control}
                                 name="deceasedOn"
                                 defaultValue={entry?.deceasedOn}
-                                render={({ field: { onChange, value } }) => (
+                                render={({ field: { onChange, value, name } }) => (
                                     <DatePickerInput
                                         defaultValue={value}
                                         onChange={onChange}
-                                        name="deceasedOn"
+                                        name={name}
                                         disableFutureDates
-                                        htmlFor={'deceasedOn'}
                                     />
                                 )}
                             />

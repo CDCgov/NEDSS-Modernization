@@ -59,7 +59,7 @@ class PatientPhoneFinder {
         )
         .join(this.tables.phoneNumber()).on(
             this.tables.phoneNumber().id.eq(this.tables.locators().id.locatorUid),
-            this.tables.phoneNumber().recordStatusCd.eq(ACTIVE_CODE)
+            this.tables.phoneNumber().recordStatus.recordStatusCd.eq(ACTIVE_CODE)
         )
         .join(this.tables.type()).on(
             this.tables.type().id.codeSetNm.eq(PHONE_TYPE_CODE_SET),

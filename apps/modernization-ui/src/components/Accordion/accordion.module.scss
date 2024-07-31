@@ -1,0 +1,57 @@
+@use 'styles/colors';
+
+.accordian {
+    background-color: colors.$base-lightest;
+    summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: colors.$base-darkest;
+        padding: 1rem;
+        cursor: pointer;
+        &::marker {
+            content: '';
+        }
+        h3 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        span {
+            background-size: 8px 24px;
+            display: flex;
+            width: 0.875rem;
+            height: 0.125rem;
+            &::before {
+                content: '+';
+                font-size: 1.75rem;
+                font-weight: 400;
+                position: relative;
+                top: -1rem;
+                right: 0.35rem;
+            }
+        }
+    }
+    &[open] summary span::before {
+        content: '\2014';
+        font-size: 1.5rem;
+        right: 0.75rem;
+    }
+    .content {
+        background-color: colors.$base-white;
+        padding: 0 1rem;
+        label {
+            margin-top: 0;
+            padding-top: 1rem;
+        }
+        input {
+            width: calc(100% - 1rem);
+            height: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        select {
+            width: calc(100% - 2.5rem);
+            height: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+}

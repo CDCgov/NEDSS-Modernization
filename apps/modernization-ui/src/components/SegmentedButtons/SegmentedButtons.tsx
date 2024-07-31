@@ -29,7 +29,7 @@ export const SegmentedButtons = ({ title, buttons, value, onBlur, onChange, onCl
                         onClick={onClick ? () => onClick(button) : undefined}
                         onChange={onChange}
                         outline={button.value !== value}
-                        className={button.value === value ? styles.active : ''}>
+                        className={`${button.value === value ? styles.active : ''} fieldType-option-${key}`}>
                         {value === button.value && <Icon.Check />}
                         {button.name}
                     </Button>

@@ -305,6 +305,8 @@ class PatientSearchCriteriaQueryResolver {
     String address = criteria.getAddress();
     if (address != null && !address.isEmpty()) {
 
+      String result = address.replace("(", "").replace(")", "");
+
       return Optional.of(
           NestedQuery.of(
               nested -> nested.path(ADDRESSES)
@@ -313,7 +315,7 @@ class PatientSearchCriteriaQueryResolver {
                       query -> query.queryString(
                           queryString -> queryString.defaultField("address.streetAddr1")
                               .defaultOperator(Operator.And)
-                              .query(WildCards.startsWith(address))))));
+                              .query(WildCards.startsWith(result))))));
     }
 
     return Optional.empty();

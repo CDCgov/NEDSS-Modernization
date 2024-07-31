@@ -1,5 +1,5 @@
 import { Alert, Grid, Icon, Pagination } from '@trussworks/react-uswds';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
@@ -31,9 +31,10 @@ import { externalize, internalize } from 'apps/search/patient';
 import { PatientSearch } from 'apps/search/patient/patientSearch/PatientSearch';
 import { PatientResults } from 'apps/search/patient/PatientResults';
 import { focusedTarget } from 'utils';
-import { Icon as NBSIcon } from 'components/Icon/Icon';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
-import { Button } from 'components/button/Button';
+import { OutOfTabOrder } from './components/OutOfTabOrder';
+import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
+import { Button } from 'components/button';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -55,7 +56,6 @@ export const AdvancedSearch = () => {
     const [lastSearchType, setLastSearchType] = useState<SEARCH_TYPE | undefined>();
     const [searchParams] = useSearchParams();
     const [submitted, setSubmitted] = useState(false);
-    const wrapperRef = useRef<any>(null);
     const [sort, setSort] = useState<{ sortDirection?: SortDirection; sortField: SortField }>({
         sortField: SortField.Relevance
     });
@@ -63,8 +63,6 @@ export const AdvancedSearch = () => {
 
     // patient search variables
     const [personFilter, setPersonFilter] = useState<PersonFilter>();
-    const addPatiendRef = useRef<any>(null);
-    const [showSorting, setShowSorting] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState(1);
 
     // pagination variables
@@ -73,7 +71,6 @@ export const AdvancedSearch = () => {
     const [resultTotal, setResultTotal] = useState<number>(0);
     const { skipTo } = useSkipLink();
 
-    const [showAddNewDropDown, setShowAddNewDropDown] = useState<boolean>(false);
     const [
         findPatients,
         {
@@ -117,24 +114,6 @@ export const AdvancedSearch = () => {
     useEffect(() => {
         handleClearAll();
     }, [activeTab]);
-
-    useEffect(() => {
-        function handleClickOutside(event: any) {
-            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-                setShowSorting(false);
-            }
-
-            if (addPatiendRef.current && !addPatiendRef.current.contains(event.target)) {
-                setShowAddNewDropDown(false);
-            }
-        }
-        // Bind the event listener
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [wrapperRef]);
 
     /**
      * Handles extracting and submitting the query from the q parameter,
@@ -297,7 +276,6 @@ export const AdvancedSearch = () => {
     };
 
     function handleAddNewPatientClick(): void {
-        setShowAddNewDropDown(false);
         const criteria = searchParams.get('q');
 
         if (criteria) {
@@ -308,7 +286,6 @@ export const AdvancedSearch = () => {
     }
 
     function handleAddNewLabReportClick(): void {
-        setShowAddNewDropDown(false);
         window.location.href = `/nbs/MyTaskList1.do?ContextAction=AddLabDataEntry`;
     }
 
@@ -378,40 +355,19 @@ export const AdvancedSearch = () => {
                 <Grid row className="page-title-bar bg-white">
                     <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                         <h1 className="advanced-search-title margin-0">Search</h1>
-                        <div className="button-group">
-                            <Button
-                                disabled={!lastSearchType}
-                                className="padding-x-3 add-patient-button"
-                                type="button"
-                                icon={
-                                    <NBSIcon name={lastSearchType ? 'down-arrow-blue' : 'down-arrow-white'} size="s" />
-                                }
-                                labelPosition="left"
-                                onClick={() => setShowAddNewDropDown(!showAddNewDropDown)}
-                                outline>
-                                Add new
+                        <ButtonActionMenu label="Add new" disabled={!lastSearchType}>
+                            <Button type="button" onClick={handleAddNewPatientClick}>
+                                Add new patient
                             </Button>
-
-                            {showAddNewDropDown && (
-                                <ul ref={addPatiendRef} id="basic-nav-section-one" className="usa-nav__submenu">
-                                    <li className="usa-nav__submenu-item">
-                                        <Button onClick={handleAddNewPatientClick} type={'button'} unstyled>
-                                            Add new patient
-                                        </Button>
-                                    </li>
-                                    <li className="usa-nav__submenu-item">
-                                        <Button onClick={handleAddNewLabReportClick} type={'button'} unstyled>
-                                            Add new lab report
-                                        </Button>
-                                    </li>
-                                </ul>
-                            )}
-                        </div>
+                            <Button type="button" onClick={handleAddNewLabReportClick}>
+                                Add new lab report
+                            </Button>
+                        </ButtonActionMenu>
                     </div>
                 </Grid>
                 <Grid row className="search-page-height">
                     <Grid col={3} className="bg-white border-right border-base-light">
-                        <h2 className="padding-x-2 text-medium margin-0 refine-text">Refine your search</h2>
+                        <h2 className="padding-2 text-medium margin-0 refine-text">Refine your search</h2>
                         <div className="search-tabs">
                             <TabNavigation className="margin-top-1 margin-left-2">
                                 <TabNavigationEntry path="/advanced-search/person">Patient search</TabNavigationEntry>
@@ -463,107 +419,59 @@ export const AdvancedSearch = () => {
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className="button-group">
                                     {lastSearchType && !isNoResultsFound() && !isError() && !isLoading() && (
-                                        <Button
-                                            disabled={
-                                                (!investigationData?.content ||
-                                                    investigationData?.content?.length === 0) &&
-                                                (!labReportData?.content || labReportData?.content?.length === 0) &&
-                                                (!patientData?.content || patientData?.content?.length === 0)
-                                            }
-                                            className="padding-x-3"
-                                            type={'button'}
-                                            onClick={() => setShowSorting(!showSorting)}
-                                            outline
-                                            labelPosition="left"
-                                            icon={
-                                                <NBSIcon
-                                                    name={
-                                                        (!investigationData?.content ||
-                                                            investigationData?.content?.length === 0) &&
-                                                        (!labReportData?.content ||
-                                                            labReportData?.content?.length === 0) &&
-                                                        (!patientData?.content || patientData?.content?.length === 0)
-                                                            ? 'down-arrow-white'
-                                                            : 'down-arrow-blue'
-                                                    }
-                                                />
-                                            }>
-                                            Sort by
-                                        </Button>
-                                    )}
-                                    {showSorting && (
-                                        <ul ref={wrapperRef} id="basic-nav-section-one" className="usa-nav__submenu">
-                                            <li className="usa-nav__submenu-item">
+                                        <ButtonActionMenu label="Sort by">
+                                            <>
                                                 <Button
+                                                    type="button"
                                                     onClick={() => {
                                                         setSort({
                                                             sortField: SortField.Relevance
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
+                                                    }}>
                                                     Closest match
                                                 </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
                                                 <Button
+                                                    type="button"
                                                     onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Asc,
                                                             sortField: SortField.LastNm
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    outline={sort.sortDirection === SortDirection.Asc}
-                                                    unstyled>
+                                                    }}>
                                                     Patient name (A-Z)
                                                 </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
                                                 <Button
+                                                    type="button"
                                                     onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Desc,
                                                             sortField: SortField.LastNm
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
+                                                    }}>
                                                     Patient name (Z-A)
                                                 </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
                                                 <Button
+                                                    type="button"
                                                     onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Asc,
                                                             sortField: SortField.BirthTime
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
+                                                    }}>
                                                     Date of birth (Ascending)
                                                 </Button>
-                                            </li>
-                                            <li className="usa-nav__submenu-item">
                                                 <Button
+                                                    type="button"
                                                     onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Desc,
                                                             sortField: SortField.BirthTime
                                                         });
-                                                        setShowSorting(false);
-                                                    }}
-                                                    type={'button'}
-                                                    unstyled>
+                                                    }}>
                                                     Date of birth (Descending)
                                                 </Button>
-                                            </li>
-                                        </ul>
+                                            </>
+                                        </ButtonActionMenu>
                                     )}
                                 </div>
                             </div>
@@ -573,15 +481,17 @@ export const AdvancedSearch = () => {
                                 <p className="margin-0 font-sans-3xs margin-top-05 text-normal text-base">
                                     Showing {resultStartCount} - {resultEndCount} of {resultTotal}
                                 </p>
-                                <Pagination
-                                    style={{ justifyContent: 'flex-end' }}
-                                    totalPages={Math.ceil(resultTotal / 25)}
-                                    currentPage={currentPage}
-                                    pathname={'/advanced-search'}
-                                    onClickNext={() => handlePagination(currentPage + 1)}
-                                    onClickPrevious={() => handlePagination(currentPage - 1)}
-                                    onClickPageNumber={(_, page) => handlePagination(page)}
-                                />
+                                <OutOfTabOrder focusable={!submitted} selector="button">
+                                    <Pagination
+                                        style={{ justifyContent: 'flex-end' }}
+                                        totalPages={Math.ceil(resultTotal / 25)}
+                                        currentPage={currentPage}
+                                        pathname={'/advanced-search'}
+                                        onClickNext={() => handlePagination(currentPage + 1)}
+                                        onClickPrevious={() => handlePagination(currentPage - 1)}
+                                        onClickPageNumber={(_, page) => handlePagination(page)}
+                                    />
+                                </OutOfTabOrder>
                             </Grid>
                         )}
                         {isLoading() && (
@@ -595,11 +505,7 @@ export const AdvancedSearch = () => {
                             <>
                                 {submitted && isEmptyFilter() && (
                                     <div className="margin-x-4 margin-y-2 flex-row grid-row flex-align-center flex-justify-center advanced-search-alert">
-                                        <Alert
-                                            type="error"
-                                            // heading="You did not make a search"
-                                            headingLevel="h4"
-                                            className="width-full">
+                                        <Alert type="error" headingLevel="h4" className="width-full">
                                             <span className="display-flex flex-justify flex-align-center">
                                                 You must enter at least one item to search
                                                 <Icon.Close
@@ -636,12 +542,16 @@ export const AdvancedSearch = () => {
                                 }}>
                                 <div className="text-center">
                                     <p>No results found.</p>
-                                    <p>
-                                        Try refining your search, or{' '}
-                                        <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
-                                            add a new patient
-                                        </a>
-                                    </p>
+                                    {searchType === 'event' ? (
+                                        <p>Try refining your search.</p>
+                                    ) : (
+                                        <p>
+                                            Try refining your search, or{' '}
+                                            <a onClick={handleAddNewPatientClick} style={{ color: '#005EA2' }}>
+                                                add a new patient
+                                            </a>
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         )}

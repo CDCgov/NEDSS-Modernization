@@ -1,7 +1,4 @@
 class SearchPage {
-  selectBasicInfo() {
-    cy.get('button[data-testid="accordionButton_1"]').click();
-  }
 
   enterLastName(lastName) {
     cy.get("#lastName").type(lastName);
@@ -13,10 +10,6 @@ class SearchPage {
 
   enterPatiendID(id) {
     cy.get("#id").type(id);
-  }
-
-  selectAddress() {
-    cy.get('button[data-testid="accordionButton_2"]').click();
   }
 
   enterStreetAdreess(address) {
@@ -36,12 +29,8 @@ class SearchPage {
     cy.get("#address").type(address);
   }
 
-  selectContact() {
-    cy.get("button[data-testid=accordionButton_3]").click();
-  }
-
   enterPhone(phone) {
-    cy.get("#phoneNumber").type(phone);
+    cy.get("#homePhone").type(phone);
   }
 
   enterEmail(email) {
@@ -93,7 +82,8 @@ class SearchPage {
   }
 
   search() {
-    cy.get('div.bottom-search button[type="submit"]').click();
+    cy.get('button').contains("Search").click();
+    // cy.get('div.bottom-search button[type="submit"]').click();
     cy.wait(100);
   }
 
@@ -120,9 +110,9 @@ class SearchPage {
     cy.wait(500);
   }
 
-  selectGender() {
+  selectGender(gender) {
     cy.get("#gender");
-    cy.get("#gender").select("Male");
+    cy.get("#gender").select(gender);
     cy.wait(500);
   }
 
@@ -137,7 +127,7 @@ class SearchPage {
   }
 
   clearAll() {
-    cy.contains('button', 'Clear all').clear();
+    cy.contains('button', 'Clear all').click();
   }
 
   selectDelete() {

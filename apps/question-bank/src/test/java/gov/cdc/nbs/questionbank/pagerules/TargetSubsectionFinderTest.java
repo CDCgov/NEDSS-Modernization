@@ -1,15 +1,5 @@
 package gov.cdc.nbs.questionbank.pagerules;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import gov.cdc.nbs.questionbank.page.detail.PagesResolver;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesQuestion;
@@ -18,7 +8,21 @@ import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesSubSection;
 import gov.cdc.nbs.questionbank.page.detail.PagesResponse.PagesTab;
 import gov.cdc.nbs.questionbank.pagerules.Rule.Target;
 import gov.cdc.nbs.questionbank.pagerules.request.TargetSubsectionRequest;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 class TargetSubsectionFinderTest {
   @Mock
   PagesResolver resolver;
@@ -29,13 +33,9 @@ class TargetSubsectionFinderTest {
   @InjectMocks
   TargetSubsectionFinder targetSubsectionFinder;
 
-  public TargetSubsectionFinderTest() {
-    MockitoAnnotations.openMocks(this);
-  }
-
   @Test
   void testFilterSubsections() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -47,7 +47,7 @@ class TargetSubsectionFinderTest {
 
   @Test
   void testFilterSubsectionsGreaterOrderNumber() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -59,7 +59,7 @@ class TargetSubsectionFinderTest {
 
   @Test
   void testFilterSubsectionsEmptySubsections() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPageWithoutQuestions());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -71,7 +71,7 @@ class TargetSubsectionFinderTest {
 
   @Test
   void testFilterSubsectionsWithTargetSubsections() {
-    Long pageId = 1L;
+    long pageId = 1L;
     Optional<PagesResponse> page = Optional.of(getPage());
 
     when(resolver.resolve(pageId)).thenReturn(page);
@@ -96,7 +96,7 @@ class TargetSubsectionFinderTest {
     List<Rule> rules = new ArrayList<>();
 
     Rule rule = new Rule(100,
-        200l,
+        200L,
         Rule.RuleFunction.ENABLE,
         "testDescription",
         null,
@@ -122,8 +122,7 @@ class TargetSubsectionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 
 
@@ -144,7 +143,6 @@ class TargetSubsectionFinderTest {
     PagesTab tab = new PagesTab(2L, "testtab", 1, false, sections);
     Collection<PagesTab> tabs = new ArrayList<>();
     tabs.add(tab);
-    PagesResponse page = new PagesResponse(1L, "test", null, null, 0, tabs, null);
-    return page;
+    return new PagesResponse(1L, "test", null, null, 0, tabs, null);
   }
 }

@@ -28,6 +28,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                 address
                 address2
                 city
+                county
                 state
                 zipcode
             }

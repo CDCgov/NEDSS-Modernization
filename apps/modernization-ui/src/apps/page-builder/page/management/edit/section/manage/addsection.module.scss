@@ -18,8 +18,10 @@
         align-items: center;
         font-size: 1.375rem;
         padding: 1.5rem;
-
         border-bottom: 1px solid colors.$base-lightest;
+        h2 {
+            margin: 0;
+        }
     }
 
     .form {

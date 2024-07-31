@@ -37,15 +37,14 @@ export const RaceEntryForm = ({ patient, entry, onChange, onDelete }: EntryProps
                             name="asOf"
                             defaultValue={entry.asOf}
                             rules={{ required: { value: true, message: 'As of date is required.' } }}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     onBlur={onBlur}
                                     flexBox
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="asOf"
+                                    name={name}
                                     disableFutureDates
-                                    htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}
                                     required

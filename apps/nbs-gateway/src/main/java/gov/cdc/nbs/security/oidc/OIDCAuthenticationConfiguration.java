@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcCli
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -17,28 +18,44 @@ class OIDCAuthenticationConfiguration {
   @Bean
   SecurityWebFilterChain oidcAuthentication(
       final ServerHttpSecurity http,
-      final ReactiveClientRegistrationRepository repository
-  ) {
+      final ReactiveClientRegistrationRepository repository) {
     return http
         .authorizeExchange(
-            authorize -> authorize.pathMatchers(
-                    HttpMethod.GET,
-                    "/nbs/logged-out",
-                    "/nbs/timeout",
-                    "/nbs/logOut",
-                    "/nbs/*.js",
-                    "/nbs/*.css",
-                    "/nbs/*.gif",
-                    "/nbs/task_button/**",
-                    "/images/nedssLogo.jpg",
-                    "/favicon.ico"
-                ).permitAll()
-                .anyExchange()
-                .authenticated()
-        )
+            authorize ->
+                //  the landing page
+                authorize.pathMatchers(
+                        HttpMethod.GET,
+                        "/welcome/**").permitAll()
+                    //  paths associated with authentication
+                    .pathMatchers(
+                        HttpMethod.GET,
+                        "/nbs/logged-out",
+                        "/nbs/timeout",
+                        "/nbs/logOut")
+                    .permitAll()
+                    //  assets that do not require authentication
+                    .pathMatchers(
+                        HttpMethod.GET,
+                        "/",
+                        "/nbs/*.js",
+                        "/nbs/*.css",
+                        "/nbs/*.gif",
+                        "/nbs/task_button/**",
+                        "/images/nedssLogo.jpg",
+                        "/favicon.ico",
+                        "/static/**",
+                        "/logout",
+                        "/goodbye",
+                        "/expired"
+                    )
+                    .permitAll()
+                    .anyExchange()
+                    .authenticated())
         .oauth2Client(withDefaults())
         .oauth2Login(withDefaults())
-        .logout(logout -> logout.logoutSuccessHandler(oidcLogoutSuccessHandler(repository)))
+        .logout(logout -> logout
+            .requiresLogout(ServerWebExchangeMatchers.pathMatchers("/nbs/logout"))
+            .logoutSuccessHandler(oidcLogoutSuccessHandler(repository)))
         .csrf(ServerHttpSecurity.CsrfSpec::disable)
         .build();
   }

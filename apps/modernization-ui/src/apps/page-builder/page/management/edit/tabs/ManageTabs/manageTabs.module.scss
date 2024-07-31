@@ -1,11 +1,16 @@
 @use 'styles/colors';
 @use 'styles/borders';
 
+
 .manageButton {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
+    h2 {
+        font-size: 1rem;
+        margin: 0;
+    }
 }
 
 .manageTabModal {

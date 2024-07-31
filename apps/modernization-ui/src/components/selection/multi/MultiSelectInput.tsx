@@ -57,6 +57,7 @@ export const MultiSelectInput = ({
     );
 
     const [selectedOptions, setSelectedOptions] = useState<Selectable[]>([]);
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         const selected = mapNonNull(asSelectable(selectableOptions), value);
@@ -70,7 +71,12 @@ export const MultiSelectInput = ({
             onChange(values);
         }
     };
-    const Input = (props: any) => <components.Input {...props} maxLength={50} />;
+
+    const handleInputChange = (searchText: string, action: { action: string }) => {
+        if (action.action !== 'input-blur' && action.action !== 'set-value') {
+            setSearchText(searchText);
+        }
+    };
 
     return (
         <div className={'multi-select-input'}>
@@ -93,7 +99,9 @@ export const MultiSelectInput = ({
                     onChange={handleOnChange}
                     onBlur={onBlur}
                     options={selectableOptions}
-                    components={{ Input, Option: CheckedOption }}
+                    components={{ Option: CheckedOption }}
+                    inputValue={searchText}
+                    onInputChange={handleInputChange}
                     isDisabled={disabled}
                 />
             </EntryWrapper>

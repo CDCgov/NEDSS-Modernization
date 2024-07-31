@@ -67,7 +67,9 @@ const EditPageContent = ({ handleManageSection, handleAddSection }: EditPageCont
                         <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
                             Business rules
                         </NavLinkButton>
-                        <NavLinkButton to={'..'}>Preview</NavLinkButton>
+                        <NavLinkButton data-testid="previewBtn" to={'..'}>
+                            Preview
+                        </NavLinkButton>
                     </PageManagementMenu>
                 </PageHeader>
                 {selected && (

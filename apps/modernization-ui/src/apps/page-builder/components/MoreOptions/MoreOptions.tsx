@@ -2,7 +2,7 @@ import './MoreOptions.scss';
 import useComponentVisible from './useComponentVisible';
 import { useEffect } from 'react';
 
-export const MoreOptions = ({ children, header, close }: any) => {
+export const MoreOptions = ({ children, header, close, className }: any) => {
     const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
     useEffect(() => {
         if (close === true) {
@@ -12,7 +12,7 @@ export const MoreOptions = ({ children, header, close }: any) => {
     return (
         <div className="more-options">
             <div
-                className={`more-options__header ${isComponentVisible ? 'active' : ''}`}
+                className={`more-options__header ${className} ${isComponentVisible ? 'active' : ''}`}
                 onClick={(e) => {
                     if (isComponentVisible) {
                         setIsComponentVisible(false);

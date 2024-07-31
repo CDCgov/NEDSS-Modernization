@@ -138,7 +138,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         name={name}
                         value={(value as string) ?? undefined}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
-                        label="Event id type"
+                        label="Event ID type"
                         htmlFor={name}
                         dataTestid={name}
                         options={Object.values(LaboratoryEventIdType).map((event) => {
@@ -206,13 +206,13 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         rules={{
                             required: { value: true, message: 'From date is required' }
                         }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 disabled={!watch.eventDate?.type}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                htmlFor={'from'}
+                                name={name}
                                 label="From"
                                 required
                                 errorMessage={error?.message}
@@ -226,13 +226,13 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         rules={{
                             required: { value: true, message: 'To date is required' }
                         }}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                        render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 disabled={!watch.eventDate?.type}
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                htmlFor={'to'}
+                                name={name}
                                 label="To"
                                 required
                                 errorMessage={error?.message}
@@ -438,7 +438,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 label="Event ordering facility"
                                 required={true}
                                 placeholder=""
-                                onChange={onChange}
+                                onChange={(e) => onChange(e?.value)}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
@@ -484,7 +484,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 label="Event reporting facility"
                                 required={true}
                                 placeholder=""
-                                onChange={onChange}
+                                onChange={(e) => onChange(e?.value)}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}

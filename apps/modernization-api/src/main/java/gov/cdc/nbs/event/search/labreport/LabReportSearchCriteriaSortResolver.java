@@ -15,6 +15,7 @@ import static gov.cdc.nbs.search.SearchSorting.*;
 
 @Component
 class LabReportSearchCriteriaSortResolver {
+  private static final String PERSON_PARTICIPATIONS = "person_participations";
 
   List<SortOptions> resolve(final Pageable pageable) {
     return pageable.getSort()
@@ -28,17 +29,30 @@ class LabReportSearchCriteriaSortResolver {
 
     return switch (sorting.getProperty()) {
       case "lastNm" -> asFilteredSortOption(
-          "person_participations",
+          PERSON_PARTICIPATIONS,
           "person_participations.last_name.keyword",
           order,
-          onlyPatients()
-      );
+          onlyPatients());
+      case "firstNm" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "person_participations.first_name.keyword",
+          order,
+          onlyPatients());
       case "birthTime" -> asFilteredSortOption(
-          "person_participations",
+          PERSON_PARTICIPATIONS,
           "person_participations.birth_time",
           order,
-          onlyPatients()
-      );
+          onlyPatients());
+      case "sex" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "person_participations.curr_sex_cd",
+          order,
+          onlyPatients());
+      case "local_id" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "person_participations.local_id",
+          order,
+          onlyPatients());
       default -> asSortOption("_score", order);
     };
   }
@@ -46,8 +60,7 @@ class LabReportSearchCriteriaSortResolver {
   private static Function<Query.Builder, ObjectBuilder<Query>> onlyPatients() {
     return filter -> filter.term(
         term -> term.field("person_participations.person_cd")
-            .value("PAT")
-    );
+            .value("PAT"));
   }
 
 }

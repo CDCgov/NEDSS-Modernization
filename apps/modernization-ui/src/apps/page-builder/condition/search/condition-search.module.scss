@@ -17,6 +17,10 @@
         @extend %thin;
         @include borders.rounded('top');
 
+        h2 {
+            margin: 0;
+        }
+
         svg {
             cursor: pointer;
         }
@@ -29,7 +33,9 @@
         flex-grow: 1;
         flex-direction: column;
         overflow-y: auto;
-
+        h3 {
+            margin: 0;
+        }
         .controls {
             display: flex;
             justify-content: flex-end;

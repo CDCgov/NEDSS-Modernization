@@ -20,6 +20,7 @@ testing {
 dependencies {
 
     implementation project(':audit')
+    implementation project(':authorization')
     implementation project(':event-schema')
 
     // Spring

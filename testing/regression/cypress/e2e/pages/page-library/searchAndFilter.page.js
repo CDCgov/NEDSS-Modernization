@@ -56,7 +56,7 @@ class SearchAndFilterPage {
     }
 
     selectColumn(columnName) {
-        cy.get('#select-column').select(this.getColumnValueByName(columnName));
+        cy.get('#select-column').select(this.getColumnValueByName(columnName), { force: true });
     }
 
     selectOperator(operatorValue) {

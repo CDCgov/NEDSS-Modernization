@@ -1,0 +1,11 @@
+@use 'styles/colors';
+
+.status {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.125rem;
+
+    background-color: colors.$open;
+    color: colors.$base-white;
+
+    width: fit-content;
+}

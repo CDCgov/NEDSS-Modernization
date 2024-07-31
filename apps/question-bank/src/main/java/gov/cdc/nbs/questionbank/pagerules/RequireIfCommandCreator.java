@@ -17,7 +17,7 @@ public class RequireIfCommandCreator {
   // pgRequireElement
   // pgRequireNotElement
   private static final String SPECIFIC_SOURCE_VALUE = """
-      function %s()
+      function %s
       {
        var foo = [];
       $j('#%s :selected').each(function(i, selected){
@@ -38,7 +38,7 @@ public class RequireIfCommandCreator {
   // pgRequireElement
   // pgRequireNotElement
   private static final String ANY_SOURCE_VALUE = """
-      function %s()
+      function %s
       {
        var foo = [];
       $j('#%s :selected').each(function(i, selected){
@@ -141,7 +141,7 @@ public class RequireIfCommandCreator {
   }
 
   String createJavascriptName(String sourceIdentifier, long ruleId) {
-    return "ruleRequireIf" + sourceIdentifier + ruleId;
+    return "ruleRequireIf" + sourceIdentifier + ruleId + "()";
   }
 
   String createErrorMessage(
@@ -150,14 +150,13 @@ public class RequireIfCommandCreator {
       boolean anySourceValue,
       List<String> targetLabels,
       String comparator) {
-    String comparatorValue = anySourceValue ? "" : comparator;
     String sourceValue = anySourceValue ? "Any Source Value"
         : sourceValues.stream()
             .map(SourceValue::text)
-            .collect(Collectors.joining(" , "));
+            .collect(Collectors.joining(", "));
     return "%s %s must be ( %s ) %s".formatted(
         sourceLabel,
-        comparatorValue,
+        comparator,
         sourceValue,
         String.join(", ", targetLabels));
   }

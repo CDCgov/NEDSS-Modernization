@@ -42,15 +42,14 @@ export const IdentificationEntryForm = ({ entry, onChange, onDelete }: Props) =>
                             name="asOf"
                             defaultValue={entry?.asOf}
                             rules={{ required: { value: true, message: 'As of date is required.' } }}
-                            render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     flexBox
                                     onBlur={onBlur}
                                     defaultValue={value}
                                     onChange={onChange}
-                                    name="asOf"
+                                    name={name}
                                     disableFutureDates
-                                    htmlFor={'asOf'}
                                     label="As of"
                                     errorMessage={error?.message}
                                     required

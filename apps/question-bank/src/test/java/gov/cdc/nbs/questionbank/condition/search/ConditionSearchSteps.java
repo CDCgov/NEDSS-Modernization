@@ -1,20 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.search;
 
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import java.io.UnsupportedEncodingException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.test.web.servlet.ResultActions;
 import com.google.common.collect.Comparators;
 import com.jayway.jsonpath.JsonPath;
 import gov.cdc.nbs.questionbank.condition.ConditionCreator;
@@ -28,10 +13,26 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ConditionSearchSteps {
 
-  private Active<Condition> activeCondition = new Active<>();
+  private final Active<Condition> activeCondition = new Active<>();
   private final Active<ResultActions> response;
 
   private final ConditionCreator creator;
@@ -52,7 +53,7 @@ public class ConditionSearchSteps {
 
   @Given("a condition exists")
   public void a_condition_exists() {
-    Condition created = creator.createCondition(createConditionRequest(null, null), 999l);
+    Condition created = creator.createCondition(createConditionRequest(null, null), 999L);
     activeCondition.active(created);
   }
 
@@ -101,7 +102,7 @@ public class ConditionSearchSteps {
 
   @Given("a condition exists with {string} set to {string}")
   public void a_condition_exists_with_value(String field, String value) {
-    Condition created = creator.createCondition(createConditionRequest(field, value), 999l);
+    Condition created = creator.createCondition(createConditionRequest(field, value), 999L);
     activeCondition.active(created);
   }
 
@@ -134,7 +135,7 @@ public class ConditionSearchSteps {
   }
 
   @Then("the conditions are returned sorted by {string} {string}")
-  public void conditions_are_sorted(String field, String direction) throws UnsupportedEncodingException, Exception {
+  public void conditions_are_sorted(String field, String direction) throws Exception {
     String content = response.active()
         .andExpect(status().isOk())
         .andReturn()
@@ -164,36 +165,26 @@ public class ConditionSearchSteps {
     String id = name;
     String codeSystem = "Notifiable Event Code List";
     String progArea = "GCD";
-    Character nndInd = 'N';
+    char nndInd = 'N';
     Character morbidityInd = 'N';
     Character summaryInd = 'N';
     Character contactTracing = 'N';
     String familyCd = "ARBO";
     String coinfectionGrp = null;
 
-    if (field != null) {
-      switch (field) {
-        case "conditionShortNm":
-          name = value;
-          break;
-        case "id":
-          id = value;
-          break;
-        case "progAreaCd":
-          progArea = value;
-          break;
-        case "familyCd":
-          familyCd = value;
-          break;
-        case "coinfection_grp_cd":
-          coinfectionGrp = value;
-          break;
-        case "nndInd":
-          nndInd = value.charAt(0);
-          break;
-      }
+    if (Objects.equals(field, "conditionShortNm")) {
+      name = value;
+    } else if (Objects.equals(field, "id")) {
+      id = value;
+    } else if (Objects.equals(field, "progAreaCd")) {
+      progArea = value;
+    } else if (Objects.equals(field, "familyCd")) {
+      familyCd = value;
+    } else if (Objects.equals(field, "coinfection_grp_cd")) {
+      coinfectionGrp = value;
+    } else if (Objects.equals(field, "nndInd")) {
+      nndInd = value.charAt(0);
     }
-
 
     return new CreateConditionRequest(
         id,

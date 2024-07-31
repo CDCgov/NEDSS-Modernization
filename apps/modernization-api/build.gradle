@@ -23,10 +23,12 @@ bootJar {
 
 dependencies {
 
+    implementation(project(':audit'))
     implementation(project(':accumulation'))
     implementation(project(':database-entities'))
     implementation(project(':event-schema'))
     implementation(project(':authentication'))
+    implementation(project(':authorization'))
     implementation(project(':id-generator'))
     implementation(project(':web'))
     implementation(project(':classic-interaction'))

@@ -13,10 +13,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
-public class SearchRedirectController {
-  private static final String ADVANCED_SEARCH = "/advanced-search";
+class SearchRedirectController {
+  private final SearchRedirect searchRedirect;
 
   private final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver;
 
@@ -24,16 +25,16 @@ public class SearchRedirectController {
 
   private final EncryptionService encryptionService;
 
-  public SearchRedirectController(
+  SearchRedirectController(
+      final SearchRedirect searchRedirect,
       final PatientFilterFromRequestParamResolver patientFilterFromRequestParamResolver,
       final EventFilterResolver eventFilterResolver,
       final EncryptionService encryptionService) {
     this.patientFilterFromRequestParamResolver = patientFilterFromRequestParamResolver;
     this.eventFilterResolver = eventFilterResolver;
     this.encryptionService = encryptionService;
+    this.searchRedirect = searchRedirect;
   }
-
-
 
   /**
    * Intercepts legacy home page search requests, pulls out the current user from the JSESSIONID, the search criteria
@@ -41,12 +42,12 @@ public class SearchRedirectController {
    */
   @Hidden
   @PostMapping("/nbs/redirect/simpleSearch")
-  public RedirectView redirectSimpleSearch(
+  RedirectView redirectSimpleSearch(
       final RedirectAttributes attributes,
       @RequestParam final Map<String, String> incomingParams) {
-    var redirect = new RedirectView(ADVANCED_SEARCH);
+    var redirect = new RedirectView(searchRedirect.base());
     var redirectedUrl = redirect.getUrl();
-    if (redirectedUrl != null && redirectedUrl.equals(ADVANCED_SEARCH) && incomingParams.size() > 0) {
+    if (Objects.equals(searchRedirect.base(), redirectedUrl) && !incomingParams.isEmpty()) {
 
       // Event filter takes precedence
       var eventFilter = eventFilterResolver.resolve(incomingParams);
@@ -68,7 +69,7 @@ public class SearchRedirectController {
    */
   @Hidden
   @GetMapping("/nbs/redirect/advancedSearch")
-  public RedirectView redirectAdvancedSearch() {
-    return new RedirectView(ADVANCED_SEARCH);
+  RedirectView redirectAdvancedSearch() {
+    return new RedirectView(searchRedirect.base());
   }
 }

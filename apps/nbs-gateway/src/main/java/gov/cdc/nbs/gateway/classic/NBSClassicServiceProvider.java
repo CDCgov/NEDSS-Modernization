@@ -10,12 +10,11 @@ import java.net.URISyntaxException;
 @Configuration
 class NBSClassicServiceProvider {
 
-    @Bean
-    NBSClassicService nbsClassicService(
-            @Value("${nbs.gateway.classic}") final String classic
-    ) throws URISyntaxException {
-        URI uri = new URI(classic);
-        return new NBSClassicService(uri);
-    }
+  @Bean
+  NBSClassicService nbsClassicService(
+      @Value("${nbs.gateway.classic}") final String classic) throws URISyntaxException {
+    URI uri = new URI(classic);
+    return new NBSClassicService(uri);
+  }
 
 }

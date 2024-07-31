@@ -8,8 +8,8 @@ class SearchResultsPage {
   }
 
   naviageToAddNewPatient() {
-    cy.get('button.add-patient-button').click();
-    cy.get('#basic-nav-section-one button').first().click();
+    cy.visit('/add-patient');
+    cy.wait(500);
   }
 }
 

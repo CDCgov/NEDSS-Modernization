@@ -103,6 +103,7 @@ services:
       - "8100:8080"
     volumes:
       - ./keycloak/imports:/opt/keycloak/data/import
+      - ./keycloak/theme/nbs:/opt/keycloak/themes/nbs
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: fake.1234    
