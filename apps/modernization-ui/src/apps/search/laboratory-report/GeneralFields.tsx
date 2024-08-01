@@ -18,10 +18,12 @@ import { entityTypes, identificationTypes, LabReportFilterEntry } from './labRep
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import styles from './LaboratoryReportSearch.module.scss';
 
 type LabReportGeneralFieldProps = {
     form: UseFormReturn<LabReportFilterEntry>;
 };
+
 export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
     const watch = useWatch({ control: form.control });
 
@@ -113,6 +115,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 name="pregnancyStatus"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
+                        className={styles.selectInput}
                         name={name}
                         value={value}
                         onChange={onChange}
@@ -136,6 +139,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 name="identification.type"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
+                        className={styles.selectInput}
                         name={name}
                         value={value}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
@@ -175,6 +179,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 name="eventDate.type"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
+                        className={styles.selectInput}
                         id={name}
                         name={name}
                         value={value}
@@ -346,6 +351,7 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 name="providerType"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
+                        className={styles.selectInput}
                         name={name}
                         value={value}
                         onChange={(e) => handleFacilityTypeChange(e, onChange)}
