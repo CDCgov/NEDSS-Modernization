@@ -17,7 +17,50 @@ class GroupAndUngroupQuestions {
     }
 
     checkForGroupedQuestions() {
-        cy.get('[data-testid="questionGroupIndicator"]').eq(0);
+        cy.get('body').then((ele) => {
+            if(ele.find('[data-testid="questionGroupIndicator"]').length > 0) {
+                cy.get('[data-testid="questionGroupIndicator"]').eq(0);
+            } else {
+                // section
+                cy.get('.manageSections').eq(0).click();
+                cy.get('.addNewSectionBtn').eq(0).click({ force: true });
+                cy.get('.sectionName').eq(0).type("test new section");
+                cy.get('.addSectionBtn').eq(0).click();
+                cy.get('.manageSectionsCloseBtn').eq(0).click();
+                cy.wait(5000)
+
+                // subsection
+                cy.get('[data-testid="addNewSubsection"]').eq(0).click();
+                const newSubsectionName = Math.random().toString(36).substring(2, 8);
+                cy.get('[data-testid="subsectionName"]').eq(0).type(`New subsection name ${newSubsectionName}`);
+                cy.get('[data-testid="addOrEditSubsectionBtn"]').eq(0).click();
+                cy.wait(5000)
+
+                // questions
+                cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
+                cy.wait(1000)
+                cy.get('label[for="selection-0"]').click({ force: true });
+                cy.contains('Apply to page').click();
+                cy.wait(5000)
+
+                cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
+                cy.wait(1000)
+                cy.get('label[for="selection-0"]').click({ force: true });
+                cy.contains('Apply to page').click();
+                cy.wait(5000)
+
+                // grouping
+                cy.get(".subsectionOptionsWithGrouped-ungrouped").eq(0).click();
+                cy.get('.subsectionOptionsWithGrouped-ungrouped').eq(0)
+                    .get('[data-testid="groupQuestionsOption"]').eq(0).click();
+                this.renameBlockName()
+                this.fillTableColumnWidths()
+                cy.get('[data-testid="group-questions-submit-btn"]')
+                            .filter(':visible').eq(0).click();
+                cy.wait(5000)
+                cy.get('[data-testid="questionGroupIndicator"]').eq(0);
+            }
+        })
     }
 
     clickMenuIcon(toGroup) {

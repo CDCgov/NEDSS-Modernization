@@ -4,6 +4,7 @@ import { SearchResultsHeader } from './header/SearchResultsHeader';
 import styles from './search-results.module.scss';
 import { usePage } from 'page';
 import { Pagination } from 'design-system/Pagination/Pagination';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 type Props = {
     children: ReactNode;
@@ -18,20 +19,21 @@ const SearchResults = ({ children, onRemoveTerm }: Props) => {
     const { view, terms } = useSearchResultDisplay();
 
     return (
-        <div className={styles.results}>
-            <SearchResultsHeader
-                onRemoveTerm={onRemoveTerm}
-                className={styles.header}
-                view={view}
-                total={total}
-                terms={terms}
-            />
-            <div className={styles.pagingation}></div>
-            <main className={styles.content}>{children}</main>
-            <div className={styles.pagination}>
-                <Pagination />
+        <ColumnPreferenceProvider>
+            <div className={styles.results}>
+                <SearchResultsHeader
+                    onRemoveTerm={onRemoveTerm}
+                    className={styles.header}
+                    view={view}
+                    total={total}
+                    terms={terms}
+                />
+                <main className={styles.content}>{children}</main>
+                <div className={styles.pagination}>
+                    <Pagination />
+                </div>
             </div>
-        </div>
+        </ColumnPreferenceProvider>
     );
 };
 

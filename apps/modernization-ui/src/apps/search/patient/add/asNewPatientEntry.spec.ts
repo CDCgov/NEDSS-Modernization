@@ -73,7 +73,7 @@ describe('when addind a new patient from a patient search', () => {
         expect(actual).toEqual(expect.objectContaining({ homePhone: 'phone-number-value' }));
     });
 
-    it('should populate the email address that was searched for as the home phone', () => {
+    it('should populate the email address that was searched for', () => {
         const critiera = { email: 'email-value' };
 
         const actual = asNewPatientEntry(critiera);
@@ -81,6 +81,18 @@ describe('when addind a new patient from a patient search', () => {
         expect(actual).toEqual(
             expect.objectContaining({
                 emailAddresses: expect.arrayContaining([expect.objectContaining({ email: 'email-value' })])
+            })
+        );
+    });
+
+    it('should default the email address when it was not searched for', () => {
+        const critiera = {};
+
+        const actual = asNewPatientEntry(critiera);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                emailAddresses: expect.arrayContaining([expect.objectContaining({ email: '' })])
             })
         );
     });
@@ -119,6 +131,24 @@ describe('when addind a new patient from a patient search', () => {
                     expect.objectContaining({
                         type: 'identification-type-value',
                         value: 'identifcation-value',
+                        authority: null
+                    })
+                ])
+            })
+        );
+    });
+
+    it('should default the identification when it was not searched for', () => {
+        const critiera = {};
+
+        const actual = asNewPatientEntry(critiera);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                identification: expect.arrayContaining([
+                    expect.objectContaining({
+                        type: null,
+                        value: null,
                         authority: null
                     })
                 ])

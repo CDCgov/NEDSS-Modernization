@@ -77,6 +77,8 @@ export const Address = () => {
                             label="Zip code"
                             htmlFor={name}
                             id={name}
+                            mask="_____-____"
+                            pattern="^\d{1,5}(?:[-\s]\d{1,4})?$"
                             error={error?.message}
                         />
                     )}

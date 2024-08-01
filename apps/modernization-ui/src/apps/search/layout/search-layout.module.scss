@@ -33,6 +33,7 @@ $content-height: calc($search-height - $navigation-height - 2rem);
 
         .criteria {
             width: $criteria-width;
+            z-index: 0;
 
             height: 100%;
             .search {
@@ -60,6 +61,7 @@ $content-height: calc($search-height - $navigation-height - 2rem);
             align-items: center;
             @include borders.bordered('border-left');
             position: inherit;
+            z-index: 1;
             .content {
                 display: flex;
                 align-items: center;
@@ -101,6 +103,7 @@ $content-height: calc($search-height - $navigation-height - 2rem);
             width: calc(100% - $criteria-width);
             display: flex;
             flex-direction: row;
+            z-index: 0;
 
             .resultContent {
                 width: 100%;

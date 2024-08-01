@@ -33,7 +33,7 @@ export const RaceEthnicity = () => {
                         name={name}
                         label="Race"
                         id={name}
-                        options={useConceptOptions('RACE_CALCULATED', { lazy: false }).options}
+                        options={useConceptOptions('P_RACE_CAT', { lazy: false }).options}
                     />
                 )}
             />

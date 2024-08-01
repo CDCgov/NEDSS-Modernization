@@ -22,7 +22,7 @@ const PatientSearch = () => {
     const { terms } = useSearchResultDisplay();
 
     useEffect(() => {
-        if (status === 'waiting') {
+        if (status === 'resetting') {
             methods.reset();
         }
     }, [methods.reset, status]);
@@ -36,7 +36,6 @@ const PatientSearch = () => {
             methods.resetField(matchingField as keyof PatientCriteriaEntry);
             search(methods.getValues());
         } else {
-            methods.reset();
             reset();
         }
     };
@@ -54,6 +53,7 @@ const PatientSearch = () => {
                     />
                 )}
                 resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
+                searchEnabled={methods.formState.isValid}
                 onSearch={methods.handleSubmit(search)}
                 noResults={() => <NoPatientResults />}
                 onClear={reset}
