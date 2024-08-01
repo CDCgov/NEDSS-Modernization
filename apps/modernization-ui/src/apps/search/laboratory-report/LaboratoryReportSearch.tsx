@@ -62,6 +62,7 @@ const LaboratoryReportSearch = () => {
                         />
                     )}
                     resultsAsTable={() => <div>result table</div>}
+                    searchEnabled={form.formState.isValid}
                     onSearch={form.handleSubmit(search)}
                     onClear={reset}
                 />

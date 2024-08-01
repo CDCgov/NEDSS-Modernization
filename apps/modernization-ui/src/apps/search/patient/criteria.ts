@@ -11,7 +11,7 @@ const ACTIVE = asSelectable('ACTIVE', 'Active');
 const statusOptions: Selectable[] = [
     ACTIVE,
     asSelectable('LOG_DEL', 'Deleted'),
-    asSelectable('SUPERCEDED', 'Superceded')
+    asSelectable('SUPERCEDED', 'Superseded')
 ];
 
 export { genderOptions, statusOptions };

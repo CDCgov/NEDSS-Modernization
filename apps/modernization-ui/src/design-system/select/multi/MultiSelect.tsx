@@ -1,10 +1,11 @@
 import { FocusEventHandler, useState } from 'react';
-import Select, { MultiValue, OptionProps, components } from 'react-select';
+import Select, { MultiValue } from 'react-select';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, asValue as asSelectableValue } from 'options';
 import classNames from 'classnames';
-import { Checkbox } from 'design-system/checkbox';
+
 import { theme } from 'design-system/select/multi/theme';
+import { CheckboxOption } from './CheckboxOption';
 
 type MultiSelectProps = {
     id: string;
@@ -23,12 +24,6 @@ type MultiSelectProps = {
     asValue?: (selectable: Selectable) => string;
     asDisplay?: (selectable: Selectable) => string;
 };
-
-const CheckedOption = (props: OptionProps<Selectable, true>) => (
-    <components.Option {...props}>
-        <Checkbox label={props.label} selected={props.isSelected} />
-    </components.Option>
-);
 
 export const MultiSelect = ({
     id,
@@ -89,7 +84,7 @@ export const MultiSelect = ({
                 onInputChange={handleInputChange}
                 getOptionValue={asValue}
                 getOptionLabel={asDisplay}
-                components={{ Option: CheckedOption }}
+                components={{ Option: CheckboxOption }}
             />
         </EntryWrapper>
     );

@@ -19,7 +19,7 @@ export const Id = () => {
                         value={value}
                         onChange={onChange}
                         name={name}
-                        label="ID"
+                        label="ID type"
                         id={name}
                         sizing="compact"
                         options={useConceptOptions('EI_TYPE_PAT', { lazy: false }).options}
@@ -31,9 +31,9 @@ export const Id = () => {
                     control={control}
                     name="identification"
                     rules={{
-                        required: { value: true, message: 'Id number is required' }
+                        required: { value: true, message: 'ID number is required' }
                     }}
-                    render={({ field: { onBlur, onChange, value, name } }) => (
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
                             sizing="compact"
                             type="text"
@@ -41,8 +41,9 @@ export const Id = () => {
                             onBlur={onBlur}
                             onChange={onChange}
                             name={name}
-                            label="Id number"
+                            label="ID number"
                             required
+                            error={error?.message}
                         />
                     )}
                 />

@@ -17,7 +17,7 @@ export const Contact = () => {
                         placeholder="333-444-555"
                         onChange={onChange}
                         onBlur={onBlur}
-                        label="Home phone"
+                        label="Phone number"
                         value={value}
                         id="homePhone"
                         error={error?.message}

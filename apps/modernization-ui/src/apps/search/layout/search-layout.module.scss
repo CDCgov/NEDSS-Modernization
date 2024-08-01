@@ -12,6 +12,7 @@ $content-height: calc($search-height - $navigation-height - 2rem);
     height: $search-height;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
 
     .navigation {
         height: $navigation-height;
@@ -26,16 +27,14 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         @include borders.bordered();
         @include borders.rounded();
 
-        .collapse {
-            display: none;
-        }
-
         .criteria {
+            flex-shrink: 0;
             width: $criteria-width;
             z-index: 0;
 
             height: 100%;
-            .search {
+
+            .inputs {
                 height: calc(100% - $actions-height);
                 overflow-y: scroll;
                 padding: 0rem;
@@ -61,7 +60,8 @@ $content-height: calc($search-height - $navigation-height - 2rem);
             @include borders.bordered('border-left');
             position: inherit;
             z-index: 1;
-            .content {
+
+            .control {
                 display: flex;
                 align-items: center;
                 @include borders.rounded();
@@ -69,25 +69,16 @@ $content-height: calc($search-height - $navigation-height - 2rem);
                 width: 1.5rem;
                 height: 3rem;
                 position: absolute;
-                left: $criteria-width;
+
                 top: calc($search-height / 2);
 
-                svg {
-                    display: flex;
-                    align-items: center;
-                    transform: rotate(-90deg);
+                &.less {
+                    left: $criteria-width;
                 }
-            }
 
-            .collapseTrue {
-                display: flex;
-                align-items: center;
-                @include borders.rounded();
-                background-color: colors.$base-lighter;
-                width: 1.5rem;
-                height: 3rem;
-                position: absolute;
-                top: calc($search-height / 2);
+                &.more {
+                    left: unset;
+                }
 
                 svg {
                     display: flex;
@@ -100,17 +91,16 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         .results {
             flex-grow: 1;
             width: calc(100% - $criteria-width);
-            display: flex;
-            flex-direction: row;
-            z-index: 0;
 
-            .resultContent {
-                width: 100%;
-            }
+            z-index: 0;
 
             .loading {
                 margin: auto;
             }
         }
     }
+}
+
+.collapsed {
+    display: none;
 }

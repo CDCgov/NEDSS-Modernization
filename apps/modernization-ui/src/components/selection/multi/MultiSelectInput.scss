@@ -1,12 +1,5 @@
 @use 'styles/colors';
 
-.multi-select-input {
-    label {
-        margin-top: 1.8rem;
-        margin-bottom: 0.5rem;
-    }
-}
-
 .multi-select-selection__indicator {
     height: 1.25rem;
     width: 1.25rem;
@@ -15,9 +8,8 @@
 }
 
 .multi-select__control {
-    margin-top: 0.5rem;
-    min-height: 40px;
     height: unset;
+    min-height: unset;
     border-radius: 0 !important;
     border-color: rgb(86, 92, 101) !important;
 
@@ -48,6 +40,25 @@
     }
 
     .multi-select__placeholder {
-        color: colors.$base-black !important;
+        color: colors.$base-darkest !important;
+    }
+
+    .multi-select__input {
+        padding: 0;
+    }
+}
+
+.multi-select__compact {
+    .multi-select__control {
+        line-height: normal;
+
+        .mutli-select__value-container {
+            padding: 0 !important;
+        }
+
+        .multi-select__placeholder {
+            font-size: 0.875rem;
+            line-height: normal;
+        }
     }
 }

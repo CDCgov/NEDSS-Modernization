@@ -4,6 +4,11 @@
     display: flex;
     width: 100%;
 
+    input,
+    select {
+        box-sizing: border-box;
+    }
+
     &.compact {
         label {
             font-size: 0.875rem;
@@ -15,10 +20,8 @@
         select {
             font-size: 0.875rem;
             line-height: normal !important;
-            padding: 0.5rem !important;
             margin: 0;
 
-            height: 2rem;
             width: unset;
         }
     }
