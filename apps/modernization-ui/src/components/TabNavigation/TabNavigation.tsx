@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ReactElement } from 'react';
 import classNames from 'classnames';
 import style from './tabNavigation.module.scss';
+import { useSearchResultDisplay } from 'apps/search';
 
 type NavigationProps = {
     path: string;
@@ -11,8 +12,13 @@ type NavigationProps = {
 const TabNavigationEntry = ({ children, path }: NavigationProps) => {
     const { pathname } = useLocation();
 
+    const { reset } = useSearchResultDisplay();
+
     return (
-        <Link to={path} className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}>
+        <Link
+            to={path}
+            className={classNames(style.tab, { [style.active]: isActive(path, pathname) })}
+            onClick={() => reset()}>
             {children}
         </Link>
     );
