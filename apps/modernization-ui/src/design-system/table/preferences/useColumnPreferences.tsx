@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useReducer } from 'react';
+import { ReactNode, createContext, useContext, useReducer, useState } from 'react';
 
 type ColumnPreference = {
     id: string;
@@ -13,9 +13,10 @@ type HasPreference = {
 };
 
 type Interaction = {
+    searchType: SearchType;
     preferences: ColumnPreference[];
-    register: (preferences: ColumnPreference[]) => void;
-    save: (preferences: ColumnPreference[]) => void;
+    register: (searchType: SearchType, preferences: ColumnPreference[]) => void;
+    save: (preferences: ColumnPreference[], searchType: SearchType) => void;
     reset: () => void;
     apply: <C extends HasPreference>(colums: C[]) => C[];
 };
@@ -28,6 +29,8 @@ type State = {
 };
 
 const initialize = (initial: ColumnPreference[]): State => ({ initial, preferences: initial });
+
+type SearchType = 'Patients' | 'LabReports' | 'Investigations';
 
 type Action =
     | { type: 'register'; preferences: ColumnPreference[] }
@@ -56,13 +59,23 @@ type Props = {
 
 const ColumnPreferenceProvider = ({ children }: Props) => {
     const [state, dispatch] = useReducer(reducer, [], initialize);
+    const [searchType, setSearchType] = useState<SearchType>('Patients');
 
-    const register = (preferences: ColumnPreference[]) => dispatch({ type: 'register', preferences });
-    const save = (preferences: ColumnPreference[]) => dispatch({ type: 'save', preferences });
+    const register = (search: SearchType, preferences: ColumnPreference[]) => {
+        setSearchType(search);
+        dispatch({ type: 'register', preferences });
+    };
+
+    const save = (preferences: ColumnPreference[], search: SearchType) => {
+        setSearchType(search);
+        dispatch({ type: 'save', preferences });
+    };
+
     const reset = () => dispatch({ type: 'reset' });
     const apply = applyPreferences(state.preferences);
 
     const value = {
+        searchType,
         preferences: state.preferences,
         register,
         save,

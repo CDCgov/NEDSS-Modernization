@@ -20,7 +20,7 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save } = useColumnPreferences();
+    const { preferences, save, searchType } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
 
@@ -50,10 +50,10 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     };
 
     const handleSave = () => {
-        save(pending);
+        save(pending, searchType);
         close();
         // save pending to local storage
-        localStorage.setItem('columnPreferences', JSON.stringify(pending));
+        localStorage.setItem(`${searchType}ColumnPreferences`, JSON.stringify(pending));
     };
 
     return (
