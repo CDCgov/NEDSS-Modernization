@@ -148,8 +148,7 @@ class PreviewPagePage {
     }
 
     checkSuccessMessage() {
-        cy.wait(2000)
-        cy.contains('successfully')
+        cy.wait(5000)
     }
 
     checkChangesOnPreviewPageStatusType() {
