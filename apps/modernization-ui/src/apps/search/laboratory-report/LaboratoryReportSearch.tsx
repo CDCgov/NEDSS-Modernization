@@ -10,6 +10,7 @@ import { LaboratoryReportSearchResultListItem } from './result/list';
 import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
 import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
 import { useJurisdictionOptions } from 'options/jurisdictions';
+import { LaboratoryReportSearchResultsTable } from './result/table/LaboratoryReportSearchResultsTable';
 
 const LaboratoryReportSearch = () => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
@@ -61,7 +62,7 @@ const LaboratoryReportSearch = () => {
                             )}
                         />
                     )}
-                    resultsAsTable={() => <div>result table</div>}
+                    resultsAsTable={() => <LaboratoryReportSearchResultsTable results={results?.content ?? []} />}
                     searchEnabled={form.formState.isValid}
                     onSearch={form.handleSubmit(search)}
                     onClear={reset}
