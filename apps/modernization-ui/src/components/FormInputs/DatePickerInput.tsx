@@ -65,7 +65,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
 
     return (
         <EntryWrapper
-            className={classNames(styles.input, {
+            className={classNames(styles.wrapper, {
                 [styles.error]: _error
             })}
             orientation={orientation}
@@ -113,7 +113,7 @@ const InternalDatePicker = ({
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
             onChange={handleOnChange(onChange)}
-            className={className}
+            className={classNames(styles.input, className)}
             name={name}
             disabled={disabled}
             defaultValue={defaultValue || undefined}
