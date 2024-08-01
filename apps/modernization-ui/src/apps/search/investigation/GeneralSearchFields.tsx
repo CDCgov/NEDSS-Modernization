@@ -1,5 +1,4 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { PregnancyStatus } from 'generated/graphql/schema';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { MultiSelect, SingleSelect } from 'design-system/select';
@@ -15,7 +14,8 @@ import {
     InvestigationFilterEntry,
     dateTypeOptions,
     entityOptions,
-    investigationEventTypeOptions
+    investigationEventTypeOptions,
+    pregnancyStatusOptions
 } from './InvestigationFormTypes';
 
 const GeneralSearchFields = () => {
@@ -90,11 +90,7 @@ const GeneralSearchFields = () => {
                         label="Pregnancy status"
                         sizing="compact"
                         onChange={onChange}
-                        options={[
-                            { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: 'Yes' },
-                            { name: PregnancyStatus.No, value: PregnancyStatus.No, label: 'No' },
-                            { name: PregnancyStatus.Unknown, value: PregnancyStatus.Unknown, label: 'Unknown' }
-                        ]}
+                        options={pregnancyStatusOptions}
                     />
                 )}
             />
