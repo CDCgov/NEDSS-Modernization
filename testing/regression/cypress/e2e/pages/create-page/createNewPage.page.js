@@ -43,7 +43,8 @@ class CreateNewPagePage {
     selectPageName() {
         this.selectEventType()
         cy.get('#name').click()
-        cy.get('#name').type('Malaria Investigation')
+        const newPageName = Math.random().toString(36).substring(2, 8);
+        cy.get('#name').type(`Malaria Investigation ${newPageName}`)
     }
     selectTemplate() {
         this.selectEventType()
