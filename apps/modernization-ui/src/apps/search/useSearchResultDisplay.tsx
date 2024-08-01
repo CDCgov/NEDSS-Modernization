@@ -54,6 +54,7 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'noInput' };
         }
         case 'setView': {
+            localStorage.setItem('defaultSearchView', action.view);
             return { ...current, view: action.view };
         }
         default:

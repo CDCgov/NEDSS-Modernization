@@ -14,6 +14,7 @@ const defaults: SearchSettings = {
 
 const useSearchSettings = (): SearchSettings => {
     const [settings, setSettings] = useState<SearchSettings>(defaults);
+    const defaultView = localStorage.getItem('defaultSearchView') as View;
 
     const {
         features: { search }
@@ -21,7 +22,7 @@ const useSearchSettings = (): SearchSettings => {
 
     useEffect(() => {
         if (search.view.table.enabled) {
-            setSettings((current) => ({ ...current, defaultView: 'table', allowToggle: true }));
+            setSettings((current) => ({ ...current, defaultView: defaultView || 'table', allowToggle: true }));
         }
     }, [search.view.table.enabled]);
     return settings;
