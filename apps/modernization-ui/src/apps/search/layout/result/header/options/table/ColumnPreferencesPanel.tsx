@@ -5,7 +5,6 @@ import { useColumnPreferences, ColumnPreference } from 'design-system/table/pref
 import { Checkbox } from 'design-system/checkbox';
 import { Button } from 'components/button';
 import { Icon } from 'components/Icon/Icon';
-
 import styles from './column-preference-panel.module.scss';
 
 const swap =
@@ -21,7 +20,7 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save } = useColumnPreferences();
+    const { preferences, save, searchType } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
 
@@ -51,8 +50,10 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     };
 
     const handleSave = () => {
-        save(pending);
+        save(pending, searchType);
         close();
+        // save pending to local storage
+        localStorage.setItem(`${searchType}ColumnPreferences`, JSON.stringify(pending));
     };
 
     return (
