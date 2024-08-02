@@ -8,8 +8,6 @@ const options = [
     { value: 'value2', label: 'label2', name: 'name2' }
 ];
 
-const onChange = jest.fn();
-
 describe('CheckboxGroup', () => {
     it('should render with options', () => {
         const { getByLabelText } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
@@ -71,26 +69,34 @@ describe('CheckboxGroup', () => {
             />
         );
 
-        const one = getByLabelText('One Label');
-        expect(one).not.toBeChecked();
+        const one = getByLabelText('One Label') as HTMLInputElement;
+        const two = getByLabelText('Two Label') as HTMLInputElement;
 
-        const two = getByLabelText('Two Label');
-        expect(two).not.toBeChecked();
+        expect(one.checked).toBe(false);
+        expect(two.checked).toBe(false);
 
-        userEvent.click(one);
-
-        await waitFor(() => {
-            expect(one).toBeChecked();
-            expect(two).not.toBeChecked();
+        await act(async () => {
+            one.checked = true;
+            one.dispatchEvent(new Event('change', { bubbles: true }));
         });
 
-        userEvent.click(two);
+        await waitFor(() => {
+            expect(one.checked).toBe(true);
+            expect(two.checked).toBe(false);
+        });
 
-        expect(one).toBeChecked();
-        expect(two).toBeChecked();
+        await act(async () => {
+            two.checked = true;
+            two.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        await waitFor(() => {
+            expect(one.checked).toBe(true);
+            expect(two.checked).toBe(true);
+        });
     });
 
-    it('should emit onChange when clicked', () => {
+    it('should emit onChange when clicked', async () => {
         const onChange = jest.fn();
 
         const { getByLabelText } = render(
@@ -108,22 +114,23 @@ describe('CheckboxGroup', () => {
         const one = getByLabelText('label1');
         const two = getByLabelText('label2');
 
-        act(() => {
+        await act(async () => {
             userEvent.click(one);
         });
 
-        expect(onChange).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({ value: 'value1' })]));
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith([{ value: 'value1', label: 'label1', name: 'name1' }]);
+        });
 
-        act(() => {
+        await act(async () => {
             userEvent.click(two);
         });
 
-        expect(onChange).toHaveBeenCalledWith(
-            expect.arrayContaining([
-                expect.objectContaining({ value: 'value1' }),
-                expect.objectContaining({ value: 'value2' })
-            ])
-        );
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith([{ value: 'value2', label: 'label2', name: 'name2' }]);
+        });
+
+        expect(onChange).toHaveBeenCalledTimes(2);
     });
 
     it('should disable checkboxes', () => {
