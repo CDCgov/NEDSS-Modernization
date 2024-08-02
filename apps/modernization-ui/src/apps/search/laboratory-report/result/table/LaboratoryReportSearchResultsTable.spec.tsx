@@ -4,8 +4,7 @@ import { SearchResultDisplayProvider } from 'apps/search/useSearchResultDisplay'
 import { MemoryRouter } from 'react-router-dom';
 import { ColumnPreferenceProvider } from "design-system/table/preferences";
 import { LaboratoryReportSearchResultsTable } from "./LaboratoryReportSearchResultsTable";
-import { MockedProvider } from "@apollo/react-testing";
-import { findByValue } from "options";
+import { MockedProvider, MockedResponse } from "@apollo/react-testing";
 import { gql } from "@apollo/client";
 
 describe('When InvestigationSearchResultsTable renders', () => {
@@ -23,7 +22,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
                 "__typename": "LabReportPersonParticipation",
                 "birthTime": "1990-01-01",
                 "currSexCd": "M",
-                "typeCd": "SubjOfPHC",
+                "typeCd": "PATSBJ",
                 "firstName": "Surma",
                 "lastName": "Singh",
                 "personCd": "PAT",
@@ -34,34 +33,54 @@ describe('When InvestigationSearchResultsTable renders', () => {
         "relevance": 1
     }];
 
-    const FIND_BY_VALUE_QUERY = gql`
-        query findByValue($jurisdictions: Selectable) {
-            findAllJurisdictions(page: $page) {
-            // specify the fields you expect in the response
-            }
-        }
-    `;
-
-    const mocks = [
+    const FIND_ALL_JURISDICTIONS = gql`
+    query findAllJurisdictions($page: Page) {
+      findAllJurisdictions(page: $page) {
+        id
+        typeCd
+        assigningAuthorityCd
+        assigningAuthorityDescTxt
+        codeDescTxt
+        codeShortDescTxt
+        effectiveFromTime
+        effectiveToTime
+        indentLevelNbr
+        isModifiableInd
+        parentIsCd
+        stateDomainCd
+        statusCd
+        statusTime
+        codeSetNm
+        codeSeqNum
+        nbsUid
+        sourceConceptId
+        codeSystemCd
+        codeSystemDescTxt
+        exportInd
+      }
+    }
+  `;
+  
+    const mocks: MockedResponse[] = [
         {
-          request: {
-            query: FIND_BY_VALUE_QUERY,
-            variables: {
-              page: {
-                current: 1,
-                pageSize: 10,
-              },
+            request: {
+                query: FIND_ALL_JURISDICTIONS,
+                variables: { id: '567' }
             },
-          },
-          result: {
-            data: {
-              findAllJurisdictions: [
-                { name: 'asdf', value: 'asdf', label: 'asdf' }
-              ],
+            result: {
+                data: {
+                    findAllJurisdictions: [
+                        {
+                            id: '1',
+                            typeCd: 'TestType',
+                            assigningAuthorityCd: 'TestAuthority',
+                            assigningAuthorityDescTxt: 'TestDescription',
+                        }
+                    ],
+                },
             },
-          },
         },
-      ];
+    ];
 
     const Wrapper = () => {
         return (
@@ -78,9 +97,20 @@ describe('When InvestigationSearchResultsTable renders', () => {
     }
     
     it('should display 9 columns', () => {
-        const { container } = render(<Wrapper />)
+        const { container } = render(<Wrapper />);
         const columns = container.getElementsByTagName('th');
         expect(columns).toHaveLength(13);
-        expect(columns[0]).toHaveTextContent('Legal name');
     });
+
+    it('should display column headers', () => {
+        const { container } = render(<Wrapper />);
+        const columns = container.getElementsByTagName('th');
+        expect(columns[0]).toHaveTextContent('Legal name');
+    })
+
+    it('should display cell content', () => {
+        const { container } = render(<Wrapper />);
+        const cells = container.getElementsByTagName('td');
+        expect(cells[0]).toHaveTextContent('Surma Singh');
+    })
 });

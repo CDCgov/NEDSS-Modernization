@@ -7,7 +7,7 @@ import { ClassicLink } from 'classic';
 import { useJurisdictionOptions } from 'options/jurisdictions';
 
 const getPatient = (labReport: LabReport): LabReportPersonParticipation | undefined | null => {
-    return labReport.personParticipations?.find((p) => p?.typeCd === 'SubjOfPHC');
+    return labReport.personParticipations?.find((p) => p?.typeCd === 'PATSBJ');
 };
 
 const getOrderingProviderName = (labReport: LabReport): string | undefined => {
@@ -65,7 +65,6 @@ type Props = {
 const LaboratoryReportSearchResultsTable = ({ results }: Props) => {
     const { apply, register } = useColumnPreferences();
     const { resolve: findById } = useJurisdictionOptions();
-
     const columns: Column<LabReport>[] = [
         {
             ...LEGAL_NAME,
@@ -81,6 +80,7 @@ const LaboratoryReportSearchResultsTable = ({ results }: Props) => {
             sortable: true,
             render: (row) => {
                 const patient = getPatient(row);
+                console.log('PATIENT', patient);
                 return internalizeDate(patient?.birthTime);
             }
         },
