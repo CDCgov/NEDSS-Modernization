@@ -1,6 +1,6 @@
-import React, { FocusEvent as ReactFocusEvent } from 'react';
+import React, { FocusEvent as ReactFocusEvent, useEffect } from 'react';
 import classNames from 'classnames';
-import { Selectable } from 'options';
+import { Selectable, useMultiSelection } from 'options';
 import { SelectableCheckbox } from './SelectableCheckbox';
 import styles from './checkboxGroup.module.scss';
 import { ErrorMessage } from '@trussworks/react-uswds';
@@ -33,13 +33,23 @@ export const CheckboxGroup = ({
     requried,
     sizing
 }: Props) => {
-    const handleChange = (selectable: Selectable) => (selection?: Selectable) => {
+    const { items, selected, select, deselect, reset } = useMultiSelection({ available: options });
+
+    useEffect(() => {
         if (onChange) {
-            if (selection) {
-                onChange([...value, selectable]);
-            } else {
-                onChange(value.filter((item) => item.value !== selectable.value));
-            }
+            onChange(selected);
+        }
+    }, [selected]);
+
+    useEffect(() => {
+        reset(value);
+    }, [JSON.stringify(value)]);
+
+    const handleChange = (selectable: Selectable) => (selection?: Selectable) => {
+        if (selection) {
+            select(selectable);
+        } else {
+            deselect(selectable);
         }
     };
 
@@ -52,14 +62,14 @@ export const CheckboxGroup = ({
             <legend>{label}</legend>
             {error ? <ErrorMessage>{error}</ErrorMessage> : null}
             <div className={styles.options}>
-                {options.map((option, index) => (
+                {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}
                         sizing={sizing}
                         key={index}
-                        selectable={option}
-                        onChange={handleChange(option)}
-                        selected={value.some((item) => item.value === option.value)}
+                        selectable={item.value}
+                        onChange={handleChange(item.value)}
+                        selected={item.selected}
                         disabled={disabled}
                         onBlur={onBlur}
                     />
