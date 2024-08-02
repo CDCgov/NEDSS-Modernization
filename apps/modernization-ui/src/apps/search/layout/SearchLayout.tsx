@@ -11,6 +11,7 @@ import { usePage } from 'page';
 import { Icon } from '@trussworks/react-uswds';
 import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
+import { useLocation } from 'react-router-dom';
 
 type Renderer = () => ReactNode;
 
@@ -39,7 +40,13 @@ const SearchLayout = ({
     noResults = () => <NoResults />,
     onRemoveTerm
 }: Props) => {
-    const { view, status } = useSearchResultDisplay();
+    const { view, status, reset } = useSearchResultDisplay();
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        reset();
+    }, [pathname]);
 
     const [collapse, setCollapse] = useState<boolean>();
 
