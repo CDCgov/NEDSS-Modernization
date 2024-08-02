@@ -4,23 +4,27 @@
     display: flex;
     width: 100%;
 
+    label {
+        margin: 0;
+    }
+
     input,
     select {
         box-sizing: border-box;
+        margin: 0;
     }
 
     &.compact {
+        font-size: 0.875rem;
         label {
             font-size: 0.875rem;
             line-height: normal !important;
-            margin: 0;
         }
 
         input,
         select {
             font-size: 0.875rem;
             line-height: normal !important;
-            margin: 0;
 
             width: unset;
         }

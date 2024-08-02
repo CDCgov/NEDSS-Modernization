@@ -19,7 +19,7 @@ const HorizontalEntryWrapper = ({ className, htmlFor, label, required, error, ch
                     {label}
                 </Label>
             )}
-            {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
+            {error && <ErrorMessage id={`${htmlFor}-error`}>{error}</ErrorMessage>}
         </Grid>
         <Grid col={6}>{children}</Grid>
     </Grid>
