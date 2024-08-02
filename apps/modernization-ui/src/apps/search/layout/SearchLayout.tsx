@@ -45,7 +45,7 @@ const SearchLayout = ({
     const { pathname } = useLocation();
 
     useEffect(() => {
-        reset();
+        reset?.();
     }, [pathname]);
 
     const [collapse, setCollapse] = useState<boolean>();
