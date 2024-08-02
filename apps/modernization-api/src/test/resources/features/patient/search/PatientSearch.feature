@@ -305,3 +305,37 @@ Feature: Patient Search
     When I search for patients
     Then the search results have a patient with a "first name" equal to "Liam"
 
+  Scenario: I can find a patient by last name using special characters without an error 
+    Given the patient has the "legal" name "Sam" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a "last name" equal to "Sm~th"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can find a patient by first name using special characters without an error 
+    Given the patient has the "legal" name "Sam" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a "first name" equal to "S~m"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can find a patient by address using special characters without an error 
+    Given the patient has an "address" of "123 Way"
+    And patients are available for search
+    And I add the patient criteria for a "address" equal to "123 W~y"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can find a patient by email using special characters without an error 
+    Given the patient has an "email address" of "email@test.com"
+    And patients are available for search
+    And I add the patient criteria for a "email address" equal to "email~test.com"
+    When I search for patients
+    Then there are 1 patient search results
+
+  Scenario: I can find a patient by city using special characters without an error 
+    Given the patient has an "city" of "acity"
+    And patients are available for search
+    And I add the patient criteria for a "city" equal to "a~ity"
+    When I search for patients
+    Then there are 0 patient search results
