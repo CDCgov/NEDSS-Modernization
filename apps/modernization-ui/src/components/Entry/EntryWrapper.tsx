@@ -1,11 +1,17 @@
 import { ReactNode } from 'react';
+import classNames from 'classnames';
 import { HorizontalEntryWrapper } from './HorizontalEntryWrapper';
 import { VerticalEntryWrapper } from './VerticalEntryWrapper';
 
+import styles from './entry-wrapper.module.scss';
+
 type Orientation = 'horizontal' | 'vertical';
+type Sizing = 'compact' | 'standard';
 
 type Props = {
-    orientation: Orientation;
+    className?: string;
+    orientation?: Orientation;
+    sizing?: Sizing;
     htmlFor: string;
     label: string;
     error?: string;
@@ -13,21 +19,25 @@ type Props = {
     children: ReactNode;
 };
 
-const EntryWrapper = ({ orientation = 'vertical', htmlFor, label, required, error, children }: Props) => {
+const EntryWrapper = ({ sizing = 'standard', orientation = 'vertical', className, children, ...remaining }: Props) => {
     if (orientation === 'horizontal') {
         return (
-            <HorizontalEntryWrapper htmlFor={htmlFor} label={label} required={required} error={error}>
+            <HorizontalEntryWrapper
+                className={classNames(styles.entry, className, { [styles.compact]: sizing === 'compact' })}
+                {...remaining}>
                 {children}
             </HorizontalEntryWrapper>
         );
     }
 
     return (
-        <VerticalEntryWrapper htmlFor={htmlFor} label={label} required={required} error={error}>
+        <VerticalEntryWrapper
+            className={classNames(styles.entry, className, styles.vertical, { [styles.compact]: sizing === 'compact' })}
+            {...remaining}>
             {children}
         </VerticalEntryWrapper>
     );
 };
 
 export { EntryWrapper };
-export type { Orientation };
+export type { Orientation, Sizing };

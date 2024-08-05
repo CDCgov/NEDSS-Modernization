@@ -1,15 +1,15 @@
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
+import { Input } from 'components/FormInputs/Input';
 import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
-import styles from './address.module.scss';
-import { PatientCriteriaEntry } from '../criteria';
 import { SingleSelect } from 'design-system/select';
+import { SearchCriteria } from 'apps/search/criteria';
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 
 export const Address = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
         <SearchCriteriaProvider>
-            <div className={styles.address}>
+            <SearchCriteria>
                 <Controller
                     control={control}
                     name="address"
@@ -21,6 +21,7 @@ export const Address = () => {
                             defaultValue={value}
                             htmlFor={name}
                             id={name}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -35,6 +36,7 @@ export const Address = () => {
                             label="City"
                             htmlFor={name}
                             id={name}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -49,6 +51,7 @@ export const Address = () => {
                                     onChange={onChange}
                                     label="State"
                                     id={name}
+                                    sizing="compact"
                                     options={searchCriteria.states.map((state) => ({
                                         name: state.name,
                                         label: state.name,
@@ -70,6 +73,7 @@ export const Address = () => {
                     }}
                     render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                         <Input
+                            sizing="compact"
                             onBlur={onBlur}
                             onChange={onChange}
                             defaultValue={value?.toString()}
@@ -83,7 +87,7 @@ export const Address = () => {
                         />
                     )}
                 />
-            </div>
+            </SearchCriteria>
         </SearchCriteriaProvider>
     );
 };

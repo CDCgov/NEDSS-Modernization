@@ -1,32 +1,23 @@
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
-import { validate as validatePhoneNumber } from 'validation/search';
-import styles from './contact.module.scss';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { PatientCriteriaEntry } from '../criteria';
+import { SearchCriteria } from 'apps/search/criteria';
 
 export const Contact = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
     return (
-        <div className={styles.contact}>
+        <SearchCriteria>
             <Controller
                 control={control}
                 name="phoneNumber"
-                rules={{
-                    validate: {
-                        properNumber: (value) => {
-                            if (value) {
-                                return validatePhoneNumber(value);
-                            }
-                        }
-                    }
-                }}
                 render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
                     <PhoneNumberInput
+                        sizing="compact"
                         placeholder="333-444-555"
                         onChange={onChange}
                         onBlur={onBlur}
-                        label="Home phone"
+                        label="Phone number"
                         value={value}
                         id="homePhone"
                         error={error?.message}
@@ -53,10 +44,11 @@ export const Contact = () => {
                         label="Email"
                         htmlFor={name}
                         id={name}
+                        sizing="compact"
                         error={error?.message}
                     />
                 )}
             />
-        </div>
+        </SearchCriteria>
     );
 };

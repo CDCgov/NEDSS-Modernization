@@ -1,81 +1,48 @@
 import { render } from '@testing-library/react';
+import { FacilityOptionsService, ProviderOptionsService, UserOptionsService } from 'generated';
 import { GeneralFields } from './GeneralFields';
-import { useForm } from 'react-hook-form';
-import { LabReportFilterEntry } from './labReportFormTypes';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { EntryMethod, EventStatus, UserType } from 'generated/graphql/schema';
-import { AutocompleteSingleProps } from 'design-system/autocomplete';
+import { LabratorySearchCriteriaFormWrapper } from './LabratorySearchCriteriaFormWrapper';
 
-jest.mock('options/autocompete/UserAutocomplete', () => ({
-    UserAutocomplete: ({ id, label, onChange }: AutocompleteSingleProps) => (
-        <input
-            data-testid={id}
-            placeholder={label}
-            onChange={(e) => onChange?.({ name: e.target.value, value: e.target.value, label: e.target.value })}
-        />
-    )
+jest.mock('options/jurisdictions', () => ({
+    useJurisdictionOptions: () => ({ all: [], resolve: () => {} })
 }));
 
-jest.mock('options/autocompete/ProviderAutocomplete', () => ({
-    ProviderAutocomplete: ({ id, label, onChange }: AutocompleteSingleProps) => (
-        <input
-            data-testid={id}
-            placeholder={label}
-            onChange={(e) => onChange?.({ name: e.target.value, value: e.target.value, label: e.target.value })}
-        />
-    )
+jest.mock('options/program-areas', () => ({
+    useProgramAreaOptions: () => ({ all: [], resolve: () => {} })
 }));
-
-jest.mock('options/autocompete/FacilityAutocomplete', () => ({
-    FacilityAutocomplete: ({ id, label, onChange }: AutocompleteSingleProps) => (
-        <input
-            data-testid={id}
-            placeholder={label}
-            onChange={(e) => onChange?.({ name: e.target.value, value: e.target.value, label: e.target.value })}
-        />
-    )
-}));
-
-const mockSearchCriteria = {
-    programAreas: [{ id: 'STD', progAreaDescTxt: 'STD' }],
-    conditions: [{ id: 'COND1', conditionDescTxt: 'Condition 1' }],
-    jurisdictions: [{ id: '1', codeDescTxt: 'Jurisdiction 1', typeCd: 'jur1' }],
-    userResults: [{ nedssEntryId: 'user1', userId: 'userId1', userFirstNm: 'John', userLastNm: 'Doe' }],
-    outbreaks: [{ id: { code: 'OB1', codeSetNm: 'Outbreak 1' }, codeShortDescTxt: 'OB1' }],
-    ethnicities: [{ id: { code: 'ETH1' }, codeDescTxt: 'Ethnicity 1' }],
-    races: [{ id: { code: 'RACE1' }, codeDescTxt: 'Race 1' }],
-    identificationTypes: [{ id: { code: 'ID1' }, codeDescTxt: 'ID Type 1' }],
-    states: [{ value: 'ST1', name: 'State 1', abbreviation: 'S1' }]
-};
 
 const GeneralFieldsWithForm = () => {
-    const form = useForm<LabReportFilterEntry>({
-        defaultValues: {}
-    });
     return (
-        <SearchCriteriaContext.Provider value={{ searchCriteria: mockSearchCriteria }}>
-            <GeneralFields form={form} />
-        </SearchCriteriaContext.Provider>
+        <LabratorySearchCriteriaFormWrapper>
+            <GeneralFields />
+        </LabratorySearchCriteriaFormWrapper>
     );
 };
 
-describe('GeneralFields component', () => {
+describe('GeneralFields component ', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        const options = jest.fn();
+
+        options.mockImplementation(() => Promise.resolve([]));
+
+        FacilityOptionsService.facilityAutocomplete = options;
+        ProviderOptionsService.providerAutocomplete = options;
+        UserOptionsService.userAutocomplete = options;
     });
-    it('renders program area multi-select', async () => {
+
+    it('renders program area multi-select', () => {
         const { getByText } = render(<GeneralFieldsWithForm />);
         expect(getByText('Program area')).toBeInTheDocument();
     });
 
-    it('renders jurisdiction multi-select', async () => {
+    it('renders jurisdiction multi-select', () => {
         const { getByText } = render(<GeneralFieldsWithForm />);
         expect(getByText('Jurisdiction')).toBeInTheDocument();
     });
 
-    it('renders pregnancy status select', async () => {
-        const { getByText } = render(<GeneralFieldsWithForm />);
-        expect(getByText('Pregnancy status')).toBeInTheDocument();
+    it('renders pregnancy status select', () => {
+        const { getByLabelText } = render(<GeneralFieldsWithForm />);
+        expect(getByLabelText('Pregnancy status')).toBeInTheDocument();
     });
 
     it('renders event id type select', async () => {
@@ -83,43 +50,51 @@ describe('GeneralFields component', () => {
         expect(getByText('Event ID type')).toBeInTheDocument();
     });
 
-    it('renders event date type select', async () => {
-        const { getByText } = render(<GeneralFieldsWithForm />);
-        expect(getByText('Event date type')).toBeInTheDocument();
+    it('renders event date type select', () => {
+        const { getByLabelText } = render(<GeneralFieldsWithForm />);
+        expect(getByLabelText('Event date type')).toBeInTheDocument();
     });
 
-    it('renders entry method checkboxes', async () => {
+    it('renders entry method checkboxes', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
         expect(getByText('Entry method')).toBeInTheDocument();
-        Object.values(EntryMethod).forEach((method) => {
-            expect(getByRole('checkbox', { name: new RegExp(method, 'i') })).toBeInTheDocument();
-        });
+
+        expect(getByRole('checkbox', { name: 'Manual' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Electronic' })).toBeInTheDocument();
     });
 
-    it('renders entered by checkboxes', async () => {
+    it('renders entered by checkboxes', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
         expect(getByText('Entered by')).toBeInTheDocument();
-        Object.values(UserType).forEach((type) => {
-            expect(getByRole('checkbox', { name: new RegExp(type, 'i') })).toBeInTheDocument();
-        });
+
+        expect(getByRole('checkbox', { name: 'External' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Internal' })).toBeInTheDocument();
     });
 
-    it('renders event status checkboxes', async () => {
+    it('renders event status checkboxes', () => {
         const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
         expect(getByText('Event status')).toBeInTheDocument();
-        Object.values(EventStatus).forEach((status) => {
-            expect(getByRole('checkbox', { name: new RegExp(status, 'i') })).toBeInTheDocument();
-        });
+
+        expect(getByRole('checkbox', { name: 'New' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Update' })).toBeInTheDocument();
     });
 
-    it('renders user autocomplete fields', async () => {
-        const { getByPlaceholderText } = render(<GeneralFieldsWithForm />);
-        expect(getByPlaceholderText('Event created by user')).toBeInTheDocument();
-        expect(getByPlaceholderText('Event updated by user')).toBeInTheDocument();
+    it('renders processing status checkboxes', () => {
+        const { getByText, getByRole } = render(<GeneralFieldsWithForm />);
+        expect(getByText('Event status')).toBeInTheDocument();
+
+        expect(getByRole('checkbox', { name: 'Unprocessed' })).toBeInTheDocument();
+        expect(getByRole('checkbox', { name: 'Processed' })).toBeInTheDocument();
     });
 
-    it('renders provider/facility type select', async () => {
-        const { getByText } = render(<GeneralFieldsWithForm />);
-        expect(getByText('Event provider/facility type')).toBeInTheDocument();
+    it('renders user autocomplete fields', () => {
+        const { getByLabelText } = render(<GeneralFieldsWithForm />);
+        expect(getByLabelText('Event created by user')).toBeInTheDocument();
+        expect(getByLabelText('Event updated by user')).toBeInTheDocument();
+    });
+
+    it('renders provider/facility type select', () => {
+        const { getByLabelText } = render(<GeneralFieldsWithForm />);
+        expect(getByLabelText('Event provider/facility type')).toBeInTheDocument();
     });
 });
