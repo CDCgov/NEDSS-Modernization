@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
+until /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -Q "select 1" &> /dev/null; do
+    sleep 1s
+done;
 
-restore_file_directory=/var/opt/db-restore/restore.d
+echo "*************************************************************************"
+echo "Initializing NBS databases"
+echo "*************************************************************************"
 
-for restore_file in $(find "$restore_file_directory" -iname "*.sql" |sort) ; do
-  echo "Restoring: $restore_file"
-  for i in {1..50};
-  do
-      /usr/bin/sqlcmd -S localhost -U sa -i "$restore_file"
-      if [ $? -eq 0 ]
-      then
-          echo "restore $restore_file completed"
-          break
-      else
-          echo "database not ready yet..."
-          sleep 1
-      fi
-  done
+for restore_file in $(find "$INITIALIZE_SCRIPTS/restore.d" -iname "*.sql" | sort) ; 
+do
+    echo "Executing: $restore_file"  
+    /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -i "$restore_file"
+
+    echo "Completed: $restore_file"
 done

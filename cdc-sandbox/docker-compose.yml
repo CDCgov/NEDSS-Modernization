@@ -21,7 +21,7 @@ services:
       - nbs
   wildfly:
     build: ./nbs-classic
-    image: nbs-classic:6.0.15
+    image: nbs-classic:6.0.16
     container_name: wildfly
     depends_on:
       - nbs-mssql
@@ -106,9 +106,9 @@ services:
       - ./keycloak/theme/nbs:/opt/keycloak/themes/nbs
     environment:
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: fake.1234    
+      KEYCLOAK_ADMIN_PASSWORD: fake.1234
       NBS7_BASE_URL: "http://localhost:8000"
-    entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"      
+    entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"
     networks:
       - nbs
 volumes:
