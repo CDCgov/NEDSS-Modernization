@@ -8,6 +8,7 @@ import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { Selectable } from 'options';
 import { PatientCriteriaEntry } from '../criteria';
 import { SingleSelect } from 'design-system/select';
+import { Toggle } from 'design-system/toggle/Toggle';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -71,6 +72,18 @@ export const BasicInformation = () => {
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="includeSimilar"
+                render={({ field: { onChange, value, name } }) => (
+                    <Toggle
+                        value={value}
+                        label={'Include results that sound similar'}
+                        name={name}
+                        onChange={onChange}
                     />
                 )}
             />

@@ -7,7 +7,7 @@ type BasicInformation = {
     gender?: Selectable;
     id?: string;
     status: Selectable[];
-    disableSoundex?: boolean;
+    includeSimilar?: boolean;
 };
 
 type Address = {
