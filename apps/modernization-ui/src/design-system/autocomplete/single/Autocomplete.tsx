@@ -1,11 +1,10 @@
 import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
-import { Suggestions } from 'suggestion/Suggestions';
-import { Selectable } from 'options/selectable';
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import 'components/FormInputs/Input.scss';
-import { EntryWrapper, Orientation } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { Selectable } from 'options/selectable';
 import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
+import { Suggestions } from 'suggestion/Suggestions';
 
 const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
     return <>{suggestion.label}</>;
@@ -17,6 +16,7 @@ type AutocompleteSingleProps = {
     value?: Selectable;
     onChange?: (value?: Selectable) => void;
     orientation?: Orientation;
+    sizing?: Sizing;
     error?: string;
     required?: boolean;
     onBlur?: any;
@@ -28,7 +28,8 @@ const Autocomplete = ({
     placeholder,
     value,
     onChange,
-    orientation = 'vertical',
+    orientation,
+    sizing,
     error,
     required,
     onBlur,
@@ -84,7 +85,13 @@ const Autocomplete = ({
 
     return (
         <div className={classNames('input', { 'input--error': error })}>
-            <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
+            <EntryWrapper
+                orientation={orientation}
+                sizing={sizing}
+                label={label}
+                htmlFor={id}
+                required={required}
+                error={error}>
                 <TextInput
                     inputRef={inputRef}
                     className="usa-input"

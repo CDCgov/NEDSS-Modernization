@@ -1,6 +1,8 @@
 @use 'styles/colors';
 
-.date-picker-input {
+.wrapper {
+    width: auto;
+
     &.error {
         border-left: 2px solid colors.$secondary-dark;
         padding-left: 1em;
@@ -15,7 +17,4 @@
             }
         }
     }
-}
-.usa-date-picker__calendar {
-    min-width: 300px !important;
 }

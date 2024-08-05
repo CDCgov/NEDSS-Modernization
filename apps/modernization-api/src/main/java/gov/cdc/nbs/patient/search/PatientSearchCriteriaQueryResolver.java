@@ -130,7 +130,7 @@ class PatientSearchCriteriaQueryResolver {
                                                   nested -> nested.path(NAMES)
                                                       .scoreMode(ChildScoreMode.Avg)
                                                       .query(
-                                                          nonPrimary -> nonPrimary.queryString(
+                                                          nonPrimary -> nonPrimary.simpleQueryString(
                                                               queryString -> queryString
                                                                   .fields("name.firstNm")
                                                                   .query(WildCards.startsWith(name))
@@ -183,7 +183,7 @@ class PatientSearchCriteriaQueryResolver {
                           nested -> nested.path(NAMES)
                               .scoreMode(ChildScoreMode.Avg)
                               .query(
-                                  query -> query.queryString(
+                                  query -> query.simpleQueryString(
                                       nonPrimary -> nonPrimary
                                           .fields("name.lastNm")
                                           .query(WildCards.startsWith(name))
@@ -233,8 +233,8 @@ class PatientSearchCriteriaQueryResolver {
               nested -> nested.path(EMAILS)
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
-                      query -> query.queryString(
-                          queryString -> queryString.defaultField("email.emailAddress")
+                      query -> query.simpleQueryString(
+                          queryString -> queryString.fields("email.emailAddress")
                               .defaultOperator(Operator.And)
                               .query(email)))));
     }
@@ -312,8 +312,8 @@ class PatientSearchCriteriaQueryResolver {
               nested -> nested.path(ADDRESSES)
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
-                      query -> query.queryString(
-                          queryString -> queryString.defaultField("address.streetAddr1")
+                      query -> query.simpleQueryString(
+                          queryString -> queryString.fields("address.streetAddr1")
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(result))))));
     }
@@ -331,8 +331,8 @@ class PatientSearchCriteriaQueryResolver {
               nested -> nested.path(ADDRESSES)
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
-                      query -> query.queryString(
-                          queryString -> queryString.defaultField("address.city")
+                      query -> query.simpleQueryString(
+                          queryString -> queryString.fields("address.city")
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(city))))));
     }

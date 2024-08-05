@@ -1,23 +1,24 @@
 import classNames from 'classnames';
 import { Selectable } from 'options';
 import styles from './checkbox.module.scss';
+import { Sizing } from 'components/Entry';
 
 type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> & {
+    sizing?: Sizing;
     selectable: Selectable;
     selected?: boolean;
     onChange?: (value?: Selectable) => void;
 };
 
-const SelectableCheckbox = ({ className, selectable, selected = false, onChange, ...inputProps }: Props) => {
+const SelectableCheckbox = ({ className, selectable, selected = false, sizing, onChange, ...inputProps }: Props) => {
     const id = `${inputProps.name ? inputProps.name + '__' : ''}checkbox__${selectable.value}`;
 
     const handleChange = (checked: boolean) => {
         onChange?.(checked ? selectable : undefined);
     };
     return (
-        <div className={classNames(styles.checkbox, className)}>
+        <div className={classNames(styles.checkbox, className, { [styles.compact]: sizing === 'compact' })}>
             <input
-                className={styles.input}
                 id={id}
                 type="checkbox"
                 value={selectable.value}
@@ -25,7 +26,7 @@ const SelectableCheckbox = ({ className, selectable, selected = false, onChange,
                 onChange={(e) => handleChange(e.target.checked)}
                 {...inputProps}
             />
-            <label className={classNames(styles.label, { [styles.disabled]: inputProps.disabled })} htmlFor={id}>
+            <label className={classNames({ [styles.disabled]: inputProps.disabled })} htmlFor={id}>
                 {selectable.label}
             </label>
         </div>

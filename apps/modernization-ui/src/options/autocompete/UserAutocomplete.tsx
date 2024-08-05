@@ -7,8 +7,8 @@ const resolver = (criteria: string, limit?: number) =>
         limit: limit
     }).then((response) => response);
 
-const UserAutocomplete = ({ id, label, onChange, ...rest }: AutocompleteSingleProps) => (
-    <Autocomplete resolver={resolver} onChange={onChange} id={id} label={label} {...rest} />
+const UserAutocomplete = (props: Omit<AutocompleteSingleProps, 'resolver'>) => (
+    <Autocomplete resolver={resolver} {...props} />
 );
 
 export { UserAutocomplete };

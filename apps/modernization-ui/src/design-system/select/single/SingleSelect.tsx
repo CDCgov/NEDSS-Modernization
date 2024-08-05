@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { Select as TrussworksSelect } from '@trussworks/react-uswds';
-import { EntryWrapper, Orientation } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, findByValue } from 'options';
 
 const renderOptions = (placeholder: string, options: Selectable[]) => (
@@ -16,11 +16,12 @@ const renderOptions = (placeholder: string, options: Selectable[]) => (
 
 type Props = {
     id: string;
-    orientation?: Orientation;
     label: string;
     options: Selectable[];
     value?: Selectable | null;
     onChange?: (value?: Selectable) => void;
+    orientation?: Orientation;
+    sizing?: Sizing;
     error?: string;
     required?: boolean;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'value'>;
@@ -31,7 +32,8 @@ const SingleSelect = ({
     options,
     value,
     onChange,
-    orientation = 'vertical',
+    orientation,
+    sizing,
     error,
     required,
     placeholder = '- Select -',
@@ -60,7 +62,13 @@ const SingleSelect = ({
     );
 
     return (
-        <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
+        <EntryWrapper
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={id}
+            required={required}
+            error={error}>
             {value && <Wrapped />}
             {!value && <Wrapped />}
         </EntryWrapper>

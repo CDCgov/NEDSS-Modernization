@@ -13,6 +13,14 @@ describe('when using the useMultiSelection hook', () => {
         const { result } = renderHook(() => useMultiSelection({ available }));
 
         expect(result.current.selected).toHaveLength(0);
+
+        expect(result.current.items).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+            ])
+        );
     });
 
     it('should initialize with selected values', () => {
@@ -29,12 +37,18 @@ describe('when using the useMultiSelection hook', () => {
 
         const { result } = renderHook(() => useMultiSelection({ available, selected }));
 
-        expect(result.current.selected).toHaveLength(2);
-
         expect(result.current.selected).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({ value: 'THREE' }),
                 expect.objectContaining({ value: 'ONE' })
+            ])
+        );
+
+        expect(result.current.items).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'ONE' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'THREE' }) })
             ])
         );
     });
@@ -53,6 +67,13 @@ describe('when using the useMultiSelection hook', () => {
         });
 
         expect(result.current.selected).toEqual([expect.objectContaining({ value: 'THREE' })]);
+        expect(result.current.items).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'THREE' }) })
+            ])
+        );
     });
 
     it('should not return item as selected when the item has been deselected', () => {
@@ -74,6 +95,14 @@ describe('when using the useMultiSelection hook', () => {
         });
 
         expect(result.current.selected).toEqual([expect.objectContaining({ value: 'ONE' })]);
+
+        expect(result.current.items).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'ONE' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+            ])
+        );
     });
 
     it('should not return any items as selected when reset', () => {
@@ -95,6 +124,14 @@ describe('when using the useMultiSelection hook', () => {
         });
 
         expect(result.current.selected).toHaveLength(0);
+
+        expect(result.current.items).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'TWO' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+            ])
+        );
     });
 
     it('should default items as selected when reset with specific items', () => {
@@ -116,5 +153,13 @@ describe('when using the useMultiSelection hook', () => {
         });
 
         expect(result.current.selected).toEqual([expect.objectContaining({ value: 'TWO' })]);
+
+        expect(result.current.items).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'ONE' }) }),
+                expect.objectContaining({ selected: true, value: expect.objectContaining({ value: 'TWO' }) }),
+                expect.objectContaining({ selected: false, value: expect.objectContaining({ value: 'THREE' }) })
+            ])
+        );
     });
 });
