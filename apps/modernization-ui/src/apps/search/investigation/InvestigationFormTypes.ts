@@ -30,6 +30,8 @@ type InvestigationFilterEntry = {
     caseStatuses?: Selectable[];
     processingStatuses?: Selectable[];
     notificationStatuses?: Selectable[];
+    reportingProviderId?: Selectable;
+    reportingFacilityId?: Selectable;
 };
 
 export type { InvestigationFilterEntry, EventDate, Identification };

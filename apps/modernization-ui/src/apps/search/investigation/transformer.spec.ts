@@ -145,42 +145,28 @@ describe('transformObject', () => {
 
     it('should transform with Reporting facility', () => {
         const input = {
-            reportingFacility: {
-                name: 'Reporting facility Name',
-                label: 'Reporting facility Label',
-                value: 'reporting-facility-value'
-            }
+            reportingFacilityId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
         };
 
         const actual = transformObject(input);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                providerFacilitySearch: {
-                    id: 'reporting-facility-value',
-                    entityType: ReportingEntityType.Facility
-                }
+                reportingFacilityId: '2341234'
             })
         );
     });
 
     it('should transform with Reporting provider', () => {
         const input = {
-            reportingProvider: {
-                name: 'Reporting provider Name',
-                label: 'Reporting provider Label',
-                value: 'reporting-provider-value'
-            }
+            reportingProviderId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
         };
 
         const actual = transformObject(input);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                providerFacilitySearch: expect.objectContaining({
-                    id: 'reporting-provider-value',
-                    entityType: ReportingEntityType.Provider
-                })
+                reportingProviderId: '2341234'
             })
         );
     });

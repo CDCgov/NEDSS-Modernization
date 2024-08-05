@@ -13,7 +13,6 @@ import { SearchCriteria } from 'apps/search/criteria';
 import {
     InvestigationFilterEntry,
     dateTypeOptions,
-    entityOptions,
     investigationEventTypeOptions,
     pregnancyStatusOptions
 } from './InvestigationFormTypes';
@@ -28,8 +27,6 @@ const GeneralSearchFields = () => {
 
     const selectedIdentificationType = useWatch({ control: form.control, name: 'identification.type' });
     const selectedEventType = useWatch({ control: form.control, name: 'eventDate.type' });
-
-    const selectedEntityOption = useWatch({ control: form.control, name: 'entityOption.value' });
 
     return (
         <SearchCriteria>
@@ -227,66 +224,40 @@ const GeneralSearchFields = () => {
             />
 
             <Controller
+                shouldUnregister
                 control={form.control}
-                name="entityOption"
-                render={({ field: { name, value, onChange } }) => (
-                    <SingleSelect
-                        id={name}
-                        label="Event provider/facility type"
-                        sizing="compact"
-                        name={name}
-                        value={value}
-                        onChange={onChange}
-                        options={entityOptions}
-                    />
+                name="reportingProviderId"
+                render={({ field: { onBlur, onChange, name, value } }) => (
+                    <>
+                        <ProviderAutocomplete
+                            id={name}
+                            label="Reporting provider"
+                            sizing="compact"
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    </>
                 )}
             />
 
-            {selectedEntityOption == 'REPORTING_PROVIDER' && (
-                <Controller
-                    shouldUnregister
-                    control={form.control}
-                    name="reportingProvider"
-                    rules={{
-                        required: { value: true, message: 'Provider is required' }
-                    }}
-                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                        <ProviderAutocomplete
-                            id={name}
-                            label="Event provider type"
-                            sizing="compact"
-                            value={value}
-                            onChange={onChange}
-                            required
-                            onBlur={onBlur}
-                            error={error?.message}
-                        />
-                    )}
-                />
-            )}
-
-            {selectedEntityOption == 'REPORTING_FACILITY' && (
-                <Controller
-                    shouldUnregister
-                    control={form.control}
-                    name="reportingFacility"
-                    rules={{
-                        required: { value: true, message: 'Facility is required' }
-                    }}
-                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+            <Controller
+                shouldUnregister
+                control={form.control}
+                name="reportingFacilityId"
+                render={({ field: { onBlur, onChange, name, value } }) => (
+                    <>
                         <FacilityAutocomplete
                             id={name}
-                            label="Event facility type"
+                            label="Reporting Facility"
                             sizing="compact"
                             value={value}
-                            onChange={onChange}
-                            required
+                            onChange={(e) => onChange(e)}
                             onBlur={onBlur}
-                            error={error?.message}
                         />
-                    )}
-                />
-            )}
+                    </>
+                )}
+            />
         </SearchCriteria>
     );
 };
