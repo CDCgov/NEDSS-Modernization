@@ -31,7 +31,6 @@ type InputProps = {
 export const Input = ({
     name,
     className,
-    htmlFor = '',
     label,
     id = '',
     type,
@@ -56,7 +55,7 @@ export const Input = ({
     return (
         <EntryWrapper
             label={label ?? ''}
-            htmlFor={htmlFor ?? ''}
+            htmlFor={id ?? ''}
             orientation={flexBox ? 'horizontal' : orientation}
             sizing={sizing}
             required={required}
