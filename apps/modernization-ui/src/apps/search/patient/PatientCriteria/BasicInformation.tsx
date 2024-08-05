@@ -84,6 +84,7 @@ export const BasicInformation = () => {
                         label={'Include results that sound similar'}
                         name={name}
                         onChange={onChange}
+                        sizing='compact'
                     />
                 )}
             />
