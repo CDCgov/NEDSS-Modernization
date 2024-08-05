@@ -54,7 +54,6 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'noInput' };
         }
         case 'setView': {
-            localStorage.setItem('defaultSearchView', action.view);
             return { ...current, view: action.view };
         }
         default:
@@ -104,8 +103,14 @@ const Wrapper = ({ children, settings }: WrapperProps) => {
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
-    const asTable = () => dispatch({ type: 'setView', view: 'table' });
-    const asList = () => dispatch({ type: 'setView', view: 'list' });
+    const asTable = () => {
+        localStorage.setItem('defaultSearchView', 'table');
+        dispatch({ type: 'setView', view: 'table' });
+    };
+    const asList = () => {
+        localStorage.setItem('defaultSearchView', 'list');
+        dispatch({ type: 'setView', view: 'list' });
+    };
 
     const value = {
         status: state.status,
