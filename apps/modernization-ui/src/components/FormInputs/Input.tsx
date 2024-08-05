@@ -1,8 +1,7 @@
+import { RefObject } from 'react';
 import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import './Input.scss';
-import { EntryWrapper } from 'components/Entry';
-import { RefObject } from 'react';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 type InputProps = {
     name?: string;
@@ -10,9 +9,11 @@ type InputProps = {
     htmlFor?: string;
     label?: string;
     id?: string;
-    required?: boolean;
     type: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
-    error?: any;
+    required?: boolean;
+    error?: string;
+    orientation?: Orientation;
+    sizing?: Sizing;
     onChange?: any;
     defaultValue?: string | null;
     placeholder?: string;
@@ -33,9 +34,11 @@ export const Input = ({
     htmlFor = '',
     label,
     id = '',
-    required,
     type,
     error,
+    required,
+    orientation,
+    sizing,
     onChange,
     defaultValue,
     placeholder,
@@ -50,71 +53,68 @@ export const Input = ({
     ariaLabel,
     ...props
 }: InputProps) => {
-    const orientation = flexBox ? 'horizontal' : 'vertical';
-
     return (
-        <div className={classNames('input', { 'input--error': error })}>
-            <EntryWrapper
-                orientation={orientation}
-                label={label ?? ''}
-                htmlFor={htmlFor ?? ''}
-                required={required}
-                error={error}>
-                {!multiline ? (
-                    mask ? (
-                        <TextInputMask
-                            autoComplete="off"
-                            inputMode={inputMode}
-                            placeholder={placeholder}
-                            {...props}
-                            id={id}
-                            onChange={onChange}
-                            value={defaultValue ?? ''}
-                            name={name ?? ''}
-                            inputRef={textInputRef}
-                            validationStatus={error ? 'error' : undefined}
-                            aria-describedby={error ? `${error}-message` : undefined}
-                            className={`${classNames(className)} masked-input`}
-                            type={type}
-                            mask={mask}
-                            pattern={pattern}
-                            aria-label={ariaLabel}
-                        />
-                    ) : (
-                        <TextInput
-                            autoComplete="off"
-                            inputMode={inputMode}
-                            placeholder={placeholder}
-                            {...props}
-                            id={id}
-                            onChange={onChange}
-                            value={defaultValue ?? ''}
-                            name={name ?? ''}
-                            inputRef={textInputRef}
-                            validationStatus={error ? 'error' : undefined}
-                            aria-describedby={error ? `${error}-message` : undefined}
-                            className={classNames(className)}
-                            type={type}
-                            aria-label={ariaLabel}
-                        />
-                    )
-                ) : (
-                    <Textarea
+        <EntryWrapper
+            label={label ?? ''}
+            htmlFor={htmlFor ?? ''}
+            orientation={flexBox ? 'horizontal' : orientation}
+            sizing={sizing}
+            required={required}
+            error={error}>
+            {!multiline ? (
+                mask ? (
+                    <TextInputMask
                         autoComplete="off"
+                        inputMode={inputMode}
                         placeholder={placeholder}
+                        {...props}
                         id={id}
                         onChange={onChange}
-                        rows={rows}
                         value={defaultValue ?? ''}
                         name={name ?? ''}
-                        inputRef={textAreaRef}
+                        inputRef={textInputRef}
+                        validationStatus={error ? 'error' : undefined}
                         aria-describedby={error ? `${error}-message` : undefined}
                         className={classNames(className)}
+                        type={type}
+                        mask={mask}
+                        pattern={pattern}
                         aria-label={ariaLabel}
-                        disabled={props?.disabled}
                     />
-                )}
-            </EntryWrapper>
-        </div>
+                ) : (
+                    <TextInput
+                        autoComplete="off"
+                        inputMode={inputMode}
+                        placeholder={placeholder}
+                        {...props}
+                        id={id}
+                        onChange={onChange}
+                        value={defaultValue ?? ''}
+                        name={name ?? ''}
+                        inputRef={textInputRef}
+                        validationStatus={error ? 'error' : undefined}
+                        aria-describedby={error ? `${error}-message` : undefined}
+                        className={classNames(className)}
+                        type={type}
+                        aria-label={ariaLabel}
+                    />
+                )
+            ) : (
+                <Textarea
+                    autoComplete="off"
+                    placeholder={placeholder}
+                    id={id}
+                    onChange={onChange}
+                    rows={rows}
+                    value={defaultValue ?? ''}
+                    name={name ?? ''}
+                    inputRef={textAreaRef}
+                    aria-describedby={error ? `${error}-message` : undefined}
+                    className={classNames(className)}
+                    aria-label={ariaLabel}
+                    disabled={props?.disabled}
+                />
+            )}
+        </EntryWrapper>
     );
 };

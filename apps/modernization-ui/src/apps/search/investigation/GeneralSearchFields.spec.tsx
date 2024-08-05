@@ -1,30 +1,21 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import GeneralSearchFields from './GeneralSearchFields';
 import { FormProvider, useForm } from 'react-hook-form';
-import { InvestigationFilterEntry } from './InvestigationFormTypes';
+import { FacilityOptionsService, ProviderOptionsService, UserOptionsService } from 'generated';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import GeneralSearchFields from './GeneralSearchFields';
+import { InvestigationFilterEntry } from './InvestigationFormTypes';
+
+jest.mock('options/jurisdictions', () => ({
+    useJurisdictionOptions: () => ({ all: [], resolve: () => {} })
+}));
+
+jest.mock('options/program-areas', () => ({
+    useProgramAreaOptions: () => ({ all: [], resolve: () => {} })
+}));
 
 const InvestigationFormWithFields = () => {
-    const defaultSelectable = { name: '', value: '', label: '' };
-    const defaultValues: InvestigationFilterEntry = {
-        createdBy: defaultSelectable,
-        updatedBy: defaultSelectable,
-        investigator: defaultSelectable,
-        pregnancyStatus: defaultSelectable,
-        investigationStatus: defaultSelectable,
-        jurisdictions: [defaultSelectable],
-        conditions: [defaultSelectable],
-        caseStatuses: [defaultSelectable],
-        notificationStatuses: [defaultSelectable],
-        outbreaks: [defaultSelectable],
-        processingStatuses: [defaultSelectable],
-        programAreas: [],
-        reportingFacility: defaultSelectable
-    };
-
     const form = useForm<InvestigationFilterEntry>({
-        defaultValues,
-        mode: 'all'
+        mode: 'onBlur'
     });
 
     return (
@@ -35,107 +26,89 @@ const InvestigationFormWithFields = () => {
 };
 
 describe('GeneralSearchFields', () => {
-    describe('Pregnancy Status', () => {
-        it('should contain default selection', async () => {
-            render(<InvestigationFormWithFields />);
+    beforeEach(() => {
+        const options = jest.fn();
 
-            await waitFor(() => {
-                const preg = screen.getByTestId('pregnancyStatus');
-                expect(preg).toBeInTheDocument();
-                expect(preg.getAttribute('placeholder')).toEqual('-Select-');
-            });
+        options.mockImplementation(() => Promise.resolve([]));
+
+        FacilityOptionsService.facilityAutocomplete = options;
+        ProviderOptionsService.providerAutocomplete = options;
+        UserOptionsService.userAutocomplete = options;
+    });
+
+    describe('Pregnancy Status', () => {
+        it('should exist', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
+
+            const select = getByRole('combobox', { name: 'Pregnancy status' });
+            expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should update the selection', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('pregnancyStatus');
-                userEvent.selectOptions(element, 'NO');
-                expect(element).toHaveTextContent('NO');
-            });
+            const select = getByRole('combobox', { name: 'Pregnancy status' });
+
+            userEvent.selectOptions(select, 'No');
+
+            expect(getByRole('option', { name: 'No', selected: true })).toBeInTheDocument();
         });
     });
 
     describe('Event ID Type', () => {
-        it('should contain default selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should exist', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('identification.type');
-                expect(element).toBeInTheDocument();
-                expect(element).toHaveTextContent('- Select -');
-            });
+            const select = getByRole('combobox', { name: 'Event ID type' });
+            expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should display the Event ID input when an Event ID type is selected', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('identification.type');
-                userEvent.selectOptions(element, 'Notification ID');
-                expect(element).toHaveTextContent('Notification ID');
-            });
+            const select = getByRole('combobox', { name: 'Event ID type' });
+
+            userEvent.selectOptions(select, 'Investigation ID');
+
+            expect(getByRole('textbox', { name: 'Event ID' })).toBeInTheDocument();
         });
     });
 
     describe('Event Date Type', () => {
-        it('should contain default selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should exist', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('eventDate.type');
-                expect(element).toBeInTheDocument();
-                expect(element).toHaveTextContent('- Select -');
-            });
+            const select = getByRole('combobox', { name: 'Event date type' });
+            expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should update the selection', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('eventDate.type');
-                userEvent.selectOptions(element, 'Investigation closed date');
-                expect(element).toHaveTextContent('Investigation closed date');
-            });
+            const select = getByRole('combobox', { name: 'Event date type' });
+
+            userEvent.selectOptions(select, 'Date of report');
+
+            expect(getByRole('option', { name: 'Date of report', selected: true })).toBeInTheDocument();
         });
     });
 
     describe('Reporting Facility type', () => {
-        it('should contain default selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should exist', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('reportingFacility');
-                expect(element).toBeInTheDocument();
-                expect(element).toHaveTextContent('- Select -');
-            });
+            const select = getByRole('combobox', { name: 'Event provider/facility type' });
+            expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', async () => {
-            render(<InvestigationFormWithFields />);
+        it('should update the selection', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('reportingFacility');
-                userEvent.selectOptions(element, 'Reporting Facility');
-                expect(element).toHaveTextContent('Reporting Facility');
-            });
-        });
+            const select = getByRole('combobox', { name: 'Event provider/facility type' });
 
-        it('should not display event id', () => {
-            const { queryByLabelText } = render(<InvestigationFormWithFields />);
-            const eventIdField = queryByLabelText('Event ID');
-            expect(eventIdField).toBeNull();
-        });
+            userEvent.selectOptions(select, 'Reporting Provider');
 
-        it('should display event id once event id type is selected', () => {
-            const { getByLabelText, queryByLabelText } = render(<InvestigationFormWithFields />);
-
-            const eventTypeField = getByLabelText('Event ID type');
-            userEvent.selectOptions(eventTypeField, 'ABCS_CASE_ID');
-
-            const eventIdField = queryByLabelText('Event ID');
-            expect(eventIdField).toBeInTheDocument();
+            expect(getByRole('option', { name: 'Reporting Provider', selected: true })).toBeInTheDocument();
         });
     });
 });

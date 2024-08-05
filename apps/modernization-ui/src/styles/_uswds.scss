@@ -154,3 +154,31 @@ table.usa-table {
         font-weight: 700;
     }
 }
+
+input.usa-input--error:focus {
+    outline: none;
+}
+.usa-input-mask {
+    display: flex;
+
+    input {
+        flex-grow: 1;
+    }
+
+    .usa-input-mask--content {
+        display: none;
+    }
+}
+
+.usa-date-picker__calendar {
+    min-width: 300px !important;
+}
+
+.usa-date-picker__wrapper {
+    .usa-date-picker__external-input {
+        flex-grow: 1;
+    }
+    .usa-date-picker__button {
+        margin: 0;
+    }
+}
