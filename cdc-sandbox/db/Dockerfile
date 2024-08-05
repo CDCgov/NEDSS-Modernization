@@ -1,23 +1,20 @@
-FROM mcr.microsoft.com/azure-sql-edge:latest
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+ARG DB_PW
+
+ENV ACCEPT_EULA=1 \
+    SQLCMDPASSWORD=${DB_PW} \
+    SA_PASSWORD=${DB_PW} \
+    INITIALIZE_SCRIPTS=/var/opt/database/restore
+
 USER root
 
-# Install sqlcmd, see https://docs.microsoft.com/en-us/sql/tools/go-sqlcmd-utility?view=sql-server-ver16
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/20.04/prod.list)"
-RUN apt-get install -y sqlcmd
+RUN apt-get update \
+    && ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev -y 
 
 USER mssql
 
-ADD ./restore /var/opt/db-restore/
+COPY entrypoint.sh /var/opt/database/entrypoint.sh
+COPY ./restore /var/opt/database/restore/
 
-# docker-compose environment variables are only visible at runtime
-ARG DB_PW
-ENV ACCEPT_EULA=1
-ENV SQLCMDPASSWORD=${DB_PW}
-ENV SA_PASSWORD=${DB_PW}
-
-# Start the database and execute restore scripts
-RUN /opt/mssql/bin/sqlservr & /var/opt/db-restore/restore.sh
-
-ENTRYPOINT [ "/opt/mssql/bin/sqlservr" ]
+ENTRYPOINT ["/bin/bash", "/var/opt/database/entrypoint.sh"]

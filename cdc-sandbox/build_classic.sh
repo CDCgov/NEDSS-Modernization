@@ -9,25 +9,42 @@ if [ -z "$DATABASE_PASSWORD" ]
 then
     echo "DATABASE_PASSWORD is required"
     exit 1
-else
-    echo "Building NBS classic with:"
-    echo "DATABASE_PASSWORD=$DATABASE_PASSWORD"
 fi
 
 
 CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
 CLASSIC_VERSION=NBS_6.0.16
 
-# Clone NEDSSDev
-rm -rf $CLASSIC_PATH
-git clone -b $CLASSIC_VERSION git@github.com:cdcent/NEDSSDev.git $CLASSIC_PATH
+clean=false
 
-# Build and deploy database and wildfly containers
-echo "Building SQL Server database and WildFly"
-docker compose -f $BASE/docker-compose.yml up nbs-mssql wildfly --build -d
+while getopts ":c" opt; do
+  case $opt in
+    c)
+      clean=true
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
 
-# Cleanup 
-rm -rf $CLASSIC_PATH
+if $clean; then
+  echo "Removing SQL Server and NBS6 containers"
+  docker compose down --volumes wildfly nbs-mssql
+fi
+
+echo "Building SQL Server"
+
+DOCKER_DEFAULT_PLATFORM=linux/amd64 docker compose -f $BASE/docker-compose.yml up nbs-mssql --build -d
+
+
+echo "Building NBS6 Application"
+
+rm -rf $CLASSIC_PATH && \
+  git clone -b $CLASSIC_VERSION git@github.com:cdcent/NEDSSDev.git $CLASSIC_PATH && \
+  docker compose -f $BASE/docker-compose.yml up wildfly --build -d && \
+  rm -rf $CLASSIC_PATH
+
 
 echo "**** Classic build complete ****"
 echo "http://localhost:7001/nbs/login"

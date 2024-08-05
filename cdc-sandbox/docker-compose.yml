@@ -1,10 +1,3 @@
-#
-# Prequisite for Elasticsearch requires setting vm.max_map_count=262144 see link below for OS specific commands
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
-#
-# If persistent volumes are required simply uncomment the volumes in this file as needed
-#
-
 services:
   nbs-mssql:
     build: 
@@ -24,7 +17,7 @@ services:
       - nbs
   wildfly:
     build: ./nbs-classic
-    image: nbs-classic:6.0.15
+    image: nbs-classic:6.0.16
     container_name: wildfly
     depends_on:
       - nbs-mssql
@@ -111,7 +104,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       NBS7_BASE_URL: "http://localhost:8000"
-    entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"      
+    entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"
     networks:
       - nbs
 volumes:
