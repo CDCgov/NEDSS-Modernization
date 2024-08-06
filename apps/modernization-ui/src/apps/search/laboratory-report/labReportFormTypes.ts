@@ -74,6 +74,8 @@ const entityTypes: Selectable[] = [
     asSelectable('REPORTING_FACILITY', 'Reporting Facility')
 ];
 
+const pregnancyStatus: Selectable[] = [asSelectable('Yes'), asSelectable('No'), asSelectable('Unknonw')];
+
 const initial: LabReportFilterEntry = {
     enteredBy: enteredByTypes,
     entryMethods: [ELECTRONIC_ENTRY],
@@ -89,5 +91,6 @@ export {
     entryMethodTypes,
     eventStatusTypes,
     processingStatusTypes,
+    pregnancyStatus,
     initial
 };

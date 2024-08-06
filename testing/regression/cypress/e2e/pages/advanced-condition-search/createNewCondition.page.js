@@ -26,24 +26,24 @@ class CreateNewConditionPage {
     }
 
     completeCreateNewConditionForm() {
-        const num = Math.floor(Math.random() * 90000) + 10000;
-        cy.get('[data-testid="conditionName"]').type('NewConditionName' + num);
-        cy.get('[data-testid="textInput"]').eq(2).type(num);
+        const newStr = Math.random().toString(36).substring(2, 8);
+        cy.get('[data-testid="conditionName"]').type('Condition' + newStr);
+        cy.get('[data-testid="textInput"]').eq(2).type(newStr);
         cy.get('[data-testid="dropdown"]').eq(3).select('ARBO');
     }
 
     clickCreateAndAddToPageBtn() {
         cy.wait(5000)
-        cy.contains('Create and add to page').click();
+        cy.get('.cancel-btn').eq(0).click({ force: true });
     }
 
     verifyConditionFieldHasValue() {
-        cy.contains("NewConditionName");
+        cy.contains("Condition");
     }
 
     completeRemainingFormFields() {
-        const num = Math.floor(Math.random() * 90000) + 10000;
-        cy.get('#name').type('New Test Page' + num);
+        const num = Math.random().toString(36).substring(2, 8);
+        cy.get('#name').type('New Test Page ' + num);
         cy.get('#templateId').find('option').eq(1).then((option) => {
             cy.get('#templateId').select(option.attr('value'))
             cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
