@@ -1,6 +1,6 @@
 import { useConfiguration } from 'configuration';
-import { useEffect, useState, useCallback } from 'react';
 import { View } from './useSearchResultDisplay';
+import { useEffect, useState } from 'react';
 
 type SearchSettings = {
     defaultView: View;
@@ -12,14 +12,9 @@ const defaults: SearchSettings = {
     allowToggle: false
 };
 
-const useSearchSettings = () => {
-    const [settings, setSettings] = useState<SearchSettings>(() => {
-        const storedView = localStorage.getItem('defaultSearchView') as View | null;
-        return {
-            ...defaults,
-            defaultView: storedView || defaults.defaultView
-        };
-    });
+const useSearchSettings = (): SearchSettings => {
+    const [settings, setSettings] = useState<SearchSettings>(defaults);
+    const defaultView = localStorage.getItem('defaultSearchView') as View;
 
     const {
         features: { search }
@@ -27,20 +22,12 @@ const useSearchSettings = () => {
 
     useEffect(() => {
         if (search.view.table.enabled) {
-            setSettings((current) => ({ ...current, allowToggle: true }));
+            setSettings((current) => ({ ...current, defaultView: defaultView || 'table', allowToggle: true }));
         }
     }, [search.view.table.enabled]);
-
-    const updateDefaultView = useCallback((newView: View) => {
-        localStorage.setItem('defaultSearchView', newView);
-        setSettings((current) => ({ ...current, defaultView: newView }));
-    }, []);
-
-    return {
-        settings,
-        updateDefaultView
-    };
+    return settings;
 };
 
 export { useSearchSettings };
+
 export type { SearchSettings };

@@ -54,6 +54,7 @@ const reducer = (current: State, action: Action): State => {
             return { ...current, status: 'noInput' };
         }
         case 'setView': {
+            localStorage.setItem('defaultSearchView', action.view);
             return { ...current, view: action.view };
         }
         default:
@@ -68,14 +69,12 @@ type Props = {
 };
 
 const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
-    const { settings, updateDefaultView } = useSearchSettings();
+    const settings = useSearchSettings();
 
     return (
         <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
             <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                <Wrapper settings={settings} updateDefaultView={updateDefaultView}>
-                    {children}
-                </Wrapper>
+                <Wrapper settings={settings}>{children}</Wrapper>
             </PageProvider>
         </SortingProvider>
     );
@@ -84,10 +83,9 @@ const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
 type WrapperProps = {
     children: ReactNode;
     settings: SearchSettings;
-    updateDefaultView: (newView: View) => void;
 };
 
-const Wrapper = ({ children, settings, updateDefaultView }: WrapperProps) => {
+const Wrapper = ({ children, settings }: WrapperProps) => {
     const [state, dispatch] = useReducer(reducer, settings, initialize);
 
     useEffect(() => {
@@ -106,14 +104,8 @@ const Wrapper = ({ children, settings, updateDefaultView }: WrapperProps) => {
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
-    const asTable = () => {
-        updateDefaultView('table');
-        dispatch({ type: 'setView', view: 'table' });
-    };
-    const asList = () => {
-        updateDefaultView('list');
-        dispatch({ type: 'setView', view: 'list' });
-    };
+    const asTable = () => dispatch({ type: 'setView', view: 'table' });
+    const asList = () => dispatch({ type: 'setView', view: 'list' });
 
     const value = {
         status: state.status,
