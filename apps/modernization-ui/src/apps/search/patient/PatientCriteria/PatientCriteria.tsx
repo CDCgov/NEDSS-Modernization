@@ -1,6 +1,6 @@
 import { BasicInformation } from './BasicInformation';
-import { Accordion } from 'components/Accordion/Accordion';
-import styles from './patient-criteria.module.scss';
+import { Accordion } from 'components/Accordion';
+
 import { Address } from './Address';
 import { Contact } from './Contact';
 import { RaceEthnicity } from './RaceEthnicity';
@@ -8,22 +8,22 @@ import { Id } from './Id';
 
 export const PatientCriteria = () => {
     return (
-        <div className={styles.criteria}>
+        <>
             <Accordion title="Basic information" open>
                 <BasicInformation />
             </Accordion>
-            <Accordion title="Address" open>
+            <Accordion title="Address">
                 <Address />
             </Accordion>
-            <Accordion title="Contact" open>
+            <Accordion title="Contact">
                 <Contact />
             </Accordion>
-            <Accordion title="ID" open>
+            <Accordion title="ID">
                 <Id />
             </Accordion>
-            <Accordion title="Race/Ethnicity" open>
+            <Accordion title="Race/Ethnicity">
                 <RaceEthnicity />
             </Accordion>
-        </div>
+        </>
     );
 };

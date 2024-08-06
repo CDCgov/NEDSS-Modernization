@@ -1,10 +1,12 @@
 import { FocusEventHandler, useState } from 'react';
 import { MultiValue, components } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { EntryWrapper, Orientation } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, asValue as asSelectableValue } from 'options';
 
 import { AutocompleteOptionsResolver } from 'options/autocompete';
+
+import { theme } from 'design-system/select/multi/theme';
 
 const CheckedOption = (props: any) => {
     return (
@@ -29,6 +31,7 @@ export type AutocompleteMultiProps = {
     onBlur?: FocusEventHandler<HTMLInputElement>;
     onChange?: (value: Selectable[]) => void;
     orientation?: Orientation;
+    sizing?: Sizing;
     error?: string;
     required?: boolean;
     asValue?: (selectable: Selectable) => string;
@@ -47,7 +50,8 @@ const AutocompleteMulti = ({
     required,
     error,
     placeholder = '- Select -',
-    orientation = 'vertical',
+    orientation,
+    sizing,
     disabled = false,
     asValue = asSelectableValue,
     asDisplay = asSelectableDisplay,
@@ -72,31 +76,36 @@ const AutocompleteMulti = ({
     };
 
     return (
-        <div className={'multi-select-input'}>
-            <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
-                <AsyncSelect<Selectable, true>
-                    isMulti
-                    id={id}
-                    name={name}
-                    value={selected}
-                    placeholder={placeholder}
-                    isDisabled={disabled}
-                    classNamePrefix="multi-select"
-                    hideSelectedOptions={false}
-                    closeMenuOnSelect={false}
-                    closeMenuOnScroll={false}
-                    inputValue={searchText}
-                    onInputChange={handleInputChange}
-                    onChange={handleOnChange}
-                    onBlur={onBlur}
-                    loadOptions={(criteria: string) => resolver(criteria)}
-                    defaultOptions={options}
-                    components={{ Option: CheckedOption }}
-                    getOptionValue={asValue}
-                    getOptionLabel={asDisplay}
-                />
-            </EntryWrapper>
-        </div>
+        <EntryWrapper
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={id}
+            required={required}
+            error={error}>
+            <AsyncSelect<Selectable, true>
+                theme={theme}
+                isMulti
+                id={id}
+                name={name}
+                value={selected}
+                placeholder={placeholder}
+                isDisabled={disabled}
+                classNamePrefix="multi-select"
+                hideSelectedOptions={false}
+                closeMenuOnSelect={false}
+                closeMenuOnScroll={false}
+                inputValue={searchText}
+                onInputChange={handleInputChange}
+                onChange={handleOnChange}
+                onBlur={onBlur}
+                loadOptions={(criteria: string) => resolver(criteria)}
+                defaultOptions={options}
+                components={{ Option: CheckedOption }}
+                getOptionValue={asValue}
+                getOptionLabel={asDisplay}
+            />
+        </EntryWrapper>
     );
 };
 

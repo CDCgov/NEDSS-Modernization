@@ -1,4 +1,6 @@
 import { ReactNode } from 'react';
+
+import sprite from '@uswds/uswds/img/sprite.svg';
 import styles from './accordion.module.scss';
 
 type Props = {
@@ -7,13 +9,19 @@ type Props = {
     open?: boolean;
 };
 
-export const Accordion = ({ title, children, open }: Props) => {
+export const Accordion = ({ title, children, open = false }: Props) => {
     return (
-        <details className={styles.accordian} {...(open && { open: true })}>
+        <details className={styles.accordian} open={open}>
             <summary>
-                <h3>{title}</h3> <span></span>
+                <h3>{title}</h3>
+                <svg role="img" aria-label={`Expand ${title}`} className={styles.closed}>
+                    <use xlinkHref={`${sprite}#add`} />
+                </svg>
+                <svg role="img" aria-label={`Collapse ${title}`} className={styles.opened}>
+                    <use xlinkHref={`${sprite}#remove`} />
+                </svg>
             </summary>
-            <div className={styles.content}>{children}</div>
+            {children}
         </details>
     );
 };

@@ -13,7 +13,7 @@ const { result } = renderHook(() =>
 );
 
 const setup = () => {
-    return render (
+    return render(
         <MockedProvider>
             <FormProvider {...result.current}>
                 <Contact />
