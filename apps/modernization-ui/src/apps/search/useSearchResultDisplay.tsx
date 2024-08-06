@@ -68,12 +68,14 @@ type Props = {
 };
 
 const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
-    const settings = useSearchSettings();
+    const { settings, updateDefaultView } = useSearchSettings();
 
     return (
         <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
             <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                <Wrapper settings={settings}>{children}</Wrapper>
+                <Wrapper settings={settings} updateDefaultView={updateDefaultView}>
+                    {children}
+                </Wrapper>
             </PageProvider>
         </SortingProvider>
     );
@@ -82,9 +84,10 @@ const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
 type WrapperProps = {
     children: ReactNode;
     settings: SearchSettings;
+    updateDefaultView: (newView: View) => void;
 };
 
-const Wrapper = ({ children, settings }: WrapperProps) => {
+const Wrapper = ({ children, settings, updateDefaultView }: WrapperProps) => {
     const [state, dispatch] = useReducer(reducer, settings, initialize);
 
     useEffect(() => {
@@ -104,11 +107,11 @@ const Wrapper = ({ children, settings }: WrapperProps) => {
     const search = () => dispatch({ type: 'search' });
     const terms = state.status === 'completed' ? state.terms : [];
     const asTable = () => {
-        localStorage.setItem('defaultSearchView', 'table');
+        updateDefaultView('table');
         dispatch({ type: 'setView', view: 'table' });
     };
     const asList = () => {
-        localStorage.setItem('defaultSearchView', 'list');
+        updateDefaultView('list');
         dispatch({ type: 'setView', view: 'list' });
     };
 
