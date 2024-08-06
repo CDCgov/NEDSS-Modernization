@@ -114,7 +114,7 @@ const columns: Column<Investigation>[] = [
         ...INVESTIGATION_ID,
         sortable: true,
         render: (row) => {
-            return row.id;
+            return row.localId;
         }
     },
     {
