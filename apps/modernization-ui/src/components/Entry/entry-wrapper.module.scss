@@ -32,6 +32,23 @@
         flex-direction: column;
         gap: 0.5rem;
     }
+    &.horizontal {
+        .hLabel {
+            display: flex;
+            align-content: center;
+            flex-wrap: wrap;
+            min-width: 15rem;
+            max-width: 15rem;
+            label {
+                font-weight: 600;
+            }
+        }
+        .hContent {
+            input, select {
+                width: 100%;
+            }
+        }
+    }
 
     &.error {
         border-left: 2px solid colors.$secondary-dark;
