@@ -1,0 +1,73 @@
+@use 'styles/colors.scss';
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: stretch;
+    font-size: 1rem;
+
+    &.compact {
+      font-size: 0.875rem;
+      line-height: normal;
+    }
+
+
+    .switch {
+        position: relative;
+        flex-shrink: 1;
+        width: 2.25rem;
+        height: 1.25rem;
+
+        input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            &:checked {
+                & + .slider {
+                    background-color: colors.$primary-light;
+                    &::before {
+                        -webkit-transform: translateX(1rem);
+                        -ms-transform: translateX(1rem);
+                        transform: translateX(1rem);
+                        background-color: colors.$primary-vivid;
+                    }
+                }
+            }
+            &:focus {
+                & + .slider {
+                    box-shadow: 0 0 1px colors.$primary-light;
+                }
+            }
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 2.25rem;
+            height: 1.25rem;
+            background-color: colors.$base-light;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+            border-radius: 34px;
+
+            &::before {
+                position: absolute;
+                content: '';
+                height: 1rem;
+                width: 1rem;
+                left: 2px;
+                top: 2px;
+                background-color: colors.$base-white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+
+                border-radius: 34px;
+            }
+        }
+    }
+}
