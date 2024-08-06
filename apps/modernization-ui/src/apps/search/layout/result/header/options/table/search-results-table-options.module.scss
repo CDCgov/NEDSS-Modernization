@@ -10,13 +10,3 @@
     width: 1.75rem;
     height: 1.75rem;
 }
-
-.tooltip {
-    &[data-tooltip-position][aria-label] {
-        position: relative;
-        &::before {
-            content: attr(aria-label) !important;
-            font-size: 14px !important;
-        }
-    }
-}
