@@ -3,7 +3,6 @@ import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { SearchResultDisplayProvider } from '../useSearchResultDisplay';
 
 const mockedUsedNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -19,9 +18,7 @@ describe('AdvancedSearch component tests', () => {
                 <MockedProvider>
                     <BrowserRouter>
                         <SkipLinkProvider>
-                            <SearchResultDisplayProvider>
-                                <AdvancedSearch />
-                            </SearchResultDisplayProvider>
+                            <AdvancedSearch />
                         </SkipLinkProvider>
                     </BrowserRouter>
                 </MockedProvider>
