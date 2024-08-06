@@ -189,7 +189,12 @@ const PreviewPageContent = () => {
                                     Create new draft
                                 </Button>
                             ) : (
-                                <ModalToggleButton modalRef={publishDraftRef} type="button" data-testid="publishBtn" className="publishBtn">
+                                <ModalToggleButton
+                                    modalRef={publishDraftRef}
+                                    type="button"
+                                    data-testid="publishBtn"
+                                    className="publishBtn"
+                                >
                                     Publish
                                 </ModalToggleButton>
                             )}
