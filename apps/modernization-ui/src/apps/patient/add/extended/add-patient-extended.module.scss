@@ -1,0 +1,53 @@
+.addPatientExtended {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    form {
+        max-width: 100%;
+    }
+    .leftNav {
+        width: 23%;
+    }
+    .content {
+        width: 54%;
+    }
+    .rightNav {
+        width: 23%;
+    }
+}
+
+.contentContainer {
+    margin-left: 15px;
+    position: sticky;
+    top: 80px;
+    .contentSidebar {
+        a {
+            display: block;
+            padding: 0.25rem 15px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #005ea2 !important;
+            font-weight: normal !important;
+            border-left: 4px solid transparent !important;
+            font-size: 0.85rem;
+
+            &:focus {
+                outline: none !important;
+                background-color: transparent !important;
+            }
+
+            &.visible {
+                color: #1b1b1b !important;
+                font-weight: bold !important;
+                border-left: 4px solid #1b1b1b !important;
+                transition: 0.2s ease-in;
+            }
+
+            &.visible ~ a {
+                color: #005ea2 !important;
+                font-weight: normal !important;
+                border-left: 4px solid transparent !important;
+            }
+        }
+    }
+}

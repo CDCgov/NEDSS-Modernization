@@ -23,7 +23,9 @@ const EntryWrapper = ({ sizing = 'standard', orientation = 'vertical', className
     if (orientation === 'horizontal') {
         return (
             <HorizontalEntryWrapper
-                className={classNames(styles.entry, className, { [styles.compact]: sizing === 'compact' })}
+                className={classNames(styles.entry, className, styles.horizontal, {
+                    [styles.compact]: sizing === 'compact'
+                })}
                 {...remaining}>
                 {children}
             </HorizontalEntryWrapper>

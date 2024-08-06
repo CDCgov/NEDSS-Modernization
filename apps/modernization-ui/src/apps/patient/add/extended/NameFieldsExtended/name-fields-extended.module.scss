@@ -1,0 +1,36 @@
+@use 'styles/colors';
+
+.name {
+    display: flex;
+    flex-direction: column;
+    .names {
+        width: 100%;
+    }
+}
+.row {
+    padding: 1rem 0 1rem 1rem;
+    border-bottom: 1px solid colors.$base-lighter;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    span {
+        max-width: 20rem;
+        display: flex;
+    }
+    &.footer {
+        button {
+            margin: 0;
+        }
+    }
+    div {
+        // width: 100%;
+    }
+}
+
+.table {
+    padding: 0;
+    table {
+        display: inline-table;
+    }
+}
