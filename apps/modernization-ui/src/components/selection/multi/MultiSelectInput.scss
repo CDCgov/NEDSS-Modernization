@@ -1,4 +1,5 @@
 @use 'styles/colors';
+@use 'styles/components';
 
 .multi-select-selection__indicator {
     height: 1.25rem;
@@ -9,16 +10,21 @@
 
 .multi-select__control {
     height: unset;
-    min-height: unset;
+    min-height: unset !important;
+    max-height: 2.5rem;
     border-radius: 0 !important;
-    border-color: rgb(86, 92, 101) !important;
+    border-color: colors.$base-dark !important;
 
     .multi-select__indicator {
-        color: rgb(86, 92, 101) !important;
+        color: colors.$base-darker !important;
+
+        height: 2rem;
+        width: 2rem;
+        padding: 0.5rem;
     }
 
     .multi-select__indicator-separator {
-        background-color: unset !important;
+        background-color: colors.$base-lighter !important;
     }
 
     .multi-select__multi-value {
@@ -41,24 +47,33 @@
 
     .multi-select__placeholder {
         color: colors.$base-darkest !important;
+        margin: 0;
+        padding-left: 0.25rem;
     }
 
     .multi-select__input {
-        padding: 0;
+        margin: 0;
+        padding-left: 0.25rem;
     }
 }
 
 .multi-select__compact {
+    @extend %compact-input;
+
     .multi-select__control {
-        line-height: normal;
+        max-height: 2rem;
 
-        .mutli-select__value-container {
+        .multi-select__value-container {
             padding: 0 !important;
-        }
 
-        .multi-select__placeholder {
-            font-size: 0.875rem;
-            line-height: normal;
+            .multi-select__input-container {
+                padding: 0;
+                margin: 0;
+
+                input {
+                    height: unset;
+                }
+            }
         }
     }
 }
