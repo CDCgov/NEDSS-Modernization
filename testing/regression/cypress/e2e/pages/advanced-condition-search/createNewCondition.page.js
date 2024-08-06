@@ -34,7 +34,7 @@ class CreateNewConditionPage {
 
     clickCreateAndAddToPageBtn() {
         cy.wait(5000)
-        cy.contains('Create and add to page').click();
+        cy.get('.cancel-btn').eq(0).click({ force: true });
     }
 
     verifyConditionFieldHasValue() {
@@ -43,7 +43,7 @@ class CreateNewConditionPage {
 
     completeRemainingFormFields() {
         const num = Math.random().toString(36).substring(2, 8);
-        cy.get('#name').type('New Test Page' + num);
+        cy.get('#name').type('New Test Page ' + num);
         cy.get('#templateId').find('option').eq(1).then((option) => {
             cy.get('#templateId').select(option.attr('value'))
             cy.get('#messageMappingGuide').find('option').eq(1).then((option) => {
