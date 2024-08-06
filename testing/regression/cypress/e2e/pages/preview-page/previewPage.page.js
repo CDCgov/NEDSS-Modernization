@@ -51,7 +51,7 @@ class PreviewPagePage {
         cy.get('#range-toggle').select('100')
         cy.wait(5000);
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Initial Draft") {
+            if($tr.find("td").eq(3).text() === "Published with Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
                 return false
             }
@@ -59,7 +59,9 @@ class PreviewPagePage {
     }
 
     clickOnEditPageDetails() {
-        cy.get('[data-testid="EditViewPageDetails"]').click()
+        cy.get('footer').then((footer) => {
+            footer.find('button[data-testid="button"]').eq(0).click()
+        })
     }
 
     checkNavigatedToPageDetails() {
@@ -165,11 +167,11 @@ class PreviewPagePage {
     }
 
     clickOnHistoryTab() {
-        cy.get('[data-testid="historyTab"]').click()
+        cy.get('nav div ul li').eq(1).click()
     }
 
     checkHistoryInfo(info) {
-         cy.get('[data-testid="historyTabContent"]')
+         cy.get('aside section div').eq(0)
             .invoke('text')
             .then((text) => {
                 if (text.includes(info)) {
@@ -179,7 +181,7 @@ class PreviewPagePage {
     }
 
     userSeeOnlyTenRows() {
-        cy.get('[data-testid="historyTabContent"]')
+         cy.get('aside section div').eq(0)
             .invoke('text')
             .then((text) => {
                 if (text.includes(10)) {
@@ -189,7 +191,7 @@ class PreviewPagePage {
     }
 
     checkRowOptionsAvailable() {
-        cy.get('[data-testid="historyTabContent"]')
+        cy.get('aside section div').eq(0)
             .invoke('text')
             .then((text) => {
                 if (text.includes(20)) {
@@ -256,14 +258,14 @@ class PreviewPagePage {
     }
 
     clickPublishBtn() {
-        cy.get('[data-testid="publishBtn"]').eq(0).click();
+        cy.get('menu div button').eq(0).click();
 
     }
 
     clickPublishBtnOnPublishPage() {
         cy.wait(2000)
         cy.get('#notes').type('Version note test', { force: true });
-        cy.get('[data-testid="publishBtnOnPublishPageModal"]').click({ force: true });
+        cy.get('form button[type="submit"]').eq(0).click({ force: true });
     }
 
     viewTextOnPageForStatus(text) {
