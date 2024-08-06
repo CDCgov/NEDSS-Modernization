@@ -51,7 +51,7 @@ class PreviewPagePage {
         cy.get('#range-toggle').select('100')
         cy.wait(5000);
         cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Published with Draft") {
+            if($tr.find("td").eq(3).text() === "Initial Draft") {
                 cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
                 return false
             }
@@ -222,7 +222,7 @@ class PreviewPagePage {
     selectCondition() {
         this.selectEventType()
         cy.get("#conditionIds").click()
-        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
+        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click({ force: true })
     }
 
     selectPageName() {
