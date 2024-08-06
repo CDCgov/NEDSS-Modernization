@@ -17,6 +17,8 @@ const SearchResultsTableOptions = ({ disabled = false }: Props) => {
             position="right"
             toggle={({ toggle }) => (
                 <Button
+                    aria-label="Columns Setting"
+                    data-tooltip-position="top"
                     outline
                     disabled={disabled}
                     icon={
