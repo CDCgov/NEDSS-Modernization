@@ -79,7 +79,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
         expect(columns[5]).toHaveTextContent('09/22/2015');
         expect(columns[6]).toHaveTextContent('Clayton County');
         expect(columns[7]).toHaveTextContent('No Data');
-        expect(columns[8]).toHaveTextContent('10000013');
+        expect(columns[8]).toHaveTextContent('CAS10000000GA01');
         expect(columns[9]).toHaveTextContent('OPEN');
         expect(columns[10]).toHaveTextContent('UNASSIGNED');
     });
