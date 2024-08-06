@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { SingleSelect } from 'design-system/select';
+import { Toggle } from 'design-system/toggle/Toggle';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, genderOptions, statusOptions } from 'apps/search/patient/criteria';
 import { validNameRule } from 'validation/entry';
@@ -47,6 +48,19 @@ export const BasicInformation = () => {
                         id={name}
                         sizing="compact"
                         error={error?.message}
+                    />
+                )}
+            />
+            <Controller
+                control={control}
+                name="includeSimilar"
+                render={({ field: { onChange, value, name } }) => (
+                    <Toggle
+                        value={value}
+                        label={'Include results that sound similar'}
+                        name={name}
+                        onChange={onChange}
+                        sizing="compact"
                     />
                 )}
             />
