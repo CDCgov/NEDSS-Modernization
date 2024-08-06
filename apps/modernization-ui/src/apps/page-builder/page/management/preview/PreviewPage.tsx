@@ -193,8 +193,7 @@ const PreviewPageContent = () => {
                                     modalRef={publishDraftRef}
                                     type="button"
                                     data-testid="publishBtn"
-                                    className="publishBtn"
-                                >
+                                    className="publishBtn">
                                     Publish
                                 </ModalToggleButton>
                             )}
