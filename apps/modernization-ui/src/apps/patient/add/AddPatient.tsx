@@ -235,10 +235,44 @@ const AddPatient = () => {
                 <SuccessModal
                     modal={modalRef}
                     title="Success"
-                    message={`You have successfully added ${(entryState.step === 'created' && entryState.name) || 'the patient'}`}
-                    action="View patient"
-                    onAction={() => navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)}
-                />
+                    actions={
+                        <>
+                            <Button
+                                type="button"
+                                outline
+                                onClick={() =>
+                                    navigate(
+                                        `/patient-profile/${entryState.step === 'created' && entryState.id}/report/lab`
+                                    )
+                                }>
+                                Add lab report
+                            </Button>
+                            <Button
+                                type="button"
+                                outline
+                                onClick={() =>
+                                    navigate(
+                                        `/patient-profile/${entryState.step === 'created' && entryState.id}/investigation`
+                                    )
+                                }>
+                                Add investigation
+                            </Button>
+                            <Button
+                                type="button"
+                                onClick={() =>
+                                    navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)
+                                }>
+                                View patient
+                            </Button>
+                        </>
+                    }>
+                    <h3>You have successfully added a new patient</h3>
+                    <p>
+                        A patient file for {(entryState.step === 'created' && entryState.name) || 'the patient'}&nbsp;
+                        (Patient ID: {entryState.id}) has been added. You can now either view the patient, add a lab
+                        report for this patient or add an investigation for this patient using the buttons below.
+                    </p>
+                </SuccessModal>
             )}
             <Grid col={3} className="bg-white border-right border-base-light">
                 <DataEntrySideNav />
