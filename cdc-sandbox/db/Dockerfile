@@ -12,9 +12,9 @@ USER root
 RUN apt-get update \
     && ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev -y 
 
-USER mssql
-
 COPY entrypoint.sh /var/opt/database/entrypoint.sh
-COPY ./restore /var/opt/database/restore/
+COPY --chown=mssql ./restore /var/opt/database/restore/
+
+USER mssql
 
 ENTRYPOINT ["/bin/bash", "/var/opt/database/entrypoint.sh"]

@@ -9,6 +9,7 @@ services:
       - 1433:1433
     volumes:
       - nbs-mssql-data:/var/opt/mssql
+      - nbs-mssql-working:/var/opt/database
     environment:
       - ACCEPT_EULA=1
       - SQLCMDPASSWORD=${DATABASE_PASSWORD}
@@ -74,8 +75,7 @@ services:
       - elasticsearch
     ports:
       - 5601:5601
-    # volumes:
-    #   - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml]
+
   nifi:
     container_name: nifi
     build: ./nifi
@@ -109,6 +109,7 @@ services:
       - nbs
 volumes:
   nbs-mssql-data:
+  nbs-mssql-working:
 networks:
   nbs:
     name: nbs
