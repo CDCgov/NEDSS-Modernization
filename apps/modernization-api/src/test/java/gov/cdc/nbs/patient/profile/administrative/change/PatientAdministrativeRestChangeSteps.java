@@ -39,7 +39,7 @@ public class PatientAdministrativeRestChangeSteps {
     this.faker = new Faker();
   }
 
-  @Before("@patient-profile-administrative-change")
+  @Before("@patient-profile-administrative-rest-change")
   public void reset() {
     this.activeChange.reset();
   }
