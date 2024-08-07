@@ -1,9 +1,9 @@
 @use 'styles/colors';
+@use 'styles/components';
 
 .checkboxGroup {
-    padding: 0.25rem 0;
+    padding: 0;
     border: none;
-    font-size: 1rem;
 
     legend {
         padding-top: 0;
@@ -26,8 +26,6 @@
     }
 
     &.compact {
-        legend {
-            font-size: 0.875rem;
-        }
+        @extend %compact;
     }
 }
