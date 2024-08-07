@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { FacilityOptionsService, ProviderOptionsService, UserOptionsService } from 'generated';
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import GeneralSearchFields from './GeneralSearchFields';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
@@ -90,25 +90,6 @@ describe('GeneralSearchFields', () => {
             userEvent.selectOptions(select, 'Date of report');
 
             expect(getByRole('option', { name: 'Date of report', selected: true })).toBeInTheDocument();
-        });
-    });
-
-    describe('Reporting Facility type', () => {
-        it('should exist', () => {
-            const { getByRole } = render(<InvestigationFormWithFields />);
-
-            const select = getByRole('combobox', { name: 'Event provider/facility type' });
-            expect(select).toBeInTheDocument();
-        });
-
-        it('should update the selection', () => {
-            const { getByRole } = render(<InvestigationFormWithFields />);
-
-            const select = getByRole('combobox', { name: 'Event provider/facility type' });
-
-            userEvent.selectOptions(select, 'Reporting Provider');
-
-            expect(getByRole('option', { name: 'Reporting Provider', selected: true })).toBeInTheDocument();
         });
     });
 });

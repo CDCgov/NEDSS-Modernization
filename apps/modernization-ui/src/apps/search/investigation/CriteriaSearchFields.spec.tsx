@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';

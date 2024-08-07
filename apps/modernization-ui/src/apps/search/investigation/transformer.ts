@@ -8,18 +8,13 @@ import {
     InvestigationStatus,
     NotificationStatus,
     PregnancyStatus,
-    ProcessingStatus,
-    ProviderFacilitySearch,
-    ReportingEntityType
+    ProcessingStatus
 } from 'generated/graphql/schema';
 import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
-import { Selectable, asValue, asValues } from 'options/selectable';
+import { asValue, asValues } from 'options/selectable';
 
 export const transformObject = (data: InvestigationFilterEntry): InvestigationFilter => {
-    const { reportingFacility, reportingProvider, ...remaining } = data;
-
-    const providerFacilitySearch =
-        resolveReportingProvider(reportingProvider) || resolveReportingFacility(reportingFacility);
+    const { ...remaining } = data;
 
     return {
         conditions: remaining.conditions && asValues(remaining.conditions),
@@ -30,7 +25,8 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
         eventDate: resolveEventDate(remaining.eventDate),
         createdBy: asValue(remaining.createdBy),
         lastUpdatedBy: asValue(remaining.updatedBy),
-        providerFacilitySearch,
+        reportingProviderId: asValue(remaining.reportingProviderId),
+        reportingFacilityId: asValue(remaining.reportingFacilityId),
         investigationStatus:
             remaining.investigationStatus && (asValue(remaining.investigationStatus) as InvestigationStatus),
         investigatorId: asValue(remaining.investigator),
@@ -42,19 +38,6 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
             remaining.notificationStatuses && (asValues(remaining.notificationStatuses) as NotificationStatus[])
     };
 };
-
-const resolveProvider =
-    (type: ReportingEntityType) =>
-    (selectable?: Selectable): ProviderFacilitySearch | undefined =>
-        selectable
-            ? {
-                  id: selectable.value,
-                  entityType: type
-              }
-            : undefined;
-
-const resolveReportingFacility = resolveProvider(ReportingEntityType.Facility);
-const resolveReportingProvider = resolveProvider(ReportingEntityType.Provider);
 
 const resolveEventDate = (date?: EventDate): InvestigationEventDateSearch | undefined => {
     if (date && date.type && date.type.value) {

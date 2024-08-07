@@ -21,15 +21,14 @@ type InvestigationFilterEntry = {
     eventDate?: EventDate;
     createdBy?: Selectable;
     updatedBy?: Selectable;
-    entityOption?: Selectable;
-    reportingFacility?: Selectable;
-    reportingProvider?: Selectable;
     investigationStatus?: Selectable;
     investigator?: Selectable;
     outbreaks?: Selectable[];
     caseStatuses?: Selectable[];
     processingStatuses?: Selectable[];
     notificationStatuses?: Selectable[];
+    reportingProviderId?: Selectable;
+    reportingFacilityId?: Selectable;
 };
 
 export type { InvestigationFilterEntry, EventDate, Identification };
