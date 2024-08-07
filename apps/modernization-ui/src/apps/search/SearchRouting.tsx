@@ -40,7 +40,7 @@ const routing = [
                 element: <InvestigationSearch />
             },
             {
-                path: 'simple/:type',
+                path: 'simple/:type/:criteria',
                 element: <SimpleSearch />
             }
         ]

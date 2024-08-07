@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { LabReport } from 'generated/graphql/schema';
+import { useLocation } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
+import { LabReport } from 'generated/graphql/schema';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { Term } from 'apps/search/terms';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
@@ -18,13 +19,21 @@ const LaboratoryReportSearch = () => {
     });
 
     const { status, search, reset, results } = useLaboratoryReportSearch();
-    const { terms } = useSearchResultDisplay();
+
+    const { state } = useLocation();
+
+    useEffect(() => {
+        form.reset(state, { keepDefaultValues: true });
+        search(state as LabReportFilterEntry);
+    }, [state, form.reset]);
 
     useEffect(() => {
         if (status === 'resetting') {
             form.reset();
         }
     }, [form.reset, status]);
+
+    const { terms } = useSearchResultDisplay();
 
     const handleRemoveTerm = (term: Term) => {
         const formValues = form.getValues();
