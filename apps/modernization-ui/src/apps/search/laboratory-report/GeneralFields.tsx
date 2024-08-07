@@ -27,7 +27,6 @@ export const GeneralFields = () => {
     const { all: jurisdictions } = useJurisdictionOptions();
     const { all: programAreas } = useProgramAreaOptions();
 
-    const selectedProviderType = useWatch({ control: form.control, name: 'providerType.value' });
     const selectedIdentificationType = useWatch({ control: form.control, name: 'identification.type' });
     const selectedDateType = useWatch({ control: form.control, name: 'eventDate.type' });
 
@@ -273,88 +272,54 @@ export const GeneralFields = () => {
             />
             <Controller
                 control={form.control}
-                name="providerType"
-                render={({ field: { onChange, value, name } }) => (
-                    <SingleSelect
-                        name={name}
+                name="orderingFacility"
+                shouldUnregister
+                render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                    <FacilityAutocomplete
                         value={value}
-                        onChange={onChange}
-                        label="Event provider/facility type"
-                        options={entityTypes}
                         id={name}
+                        label="Event ordering facility"
                         sizing="compact"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        error={error?.message}
                     />
                 )}
             />
 
-            {selectedProviderType == 'ORDERING_FACILITY' && (
-                <Controller
-                    control={form.control}
-                    name="orderingFacility"
-                    shouldUnregister
-                    rules={{
-                        required: { value: true, message: `Ordering facility is required` }
-                    }}
-                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                        <FacilityAutocomplete
-                            value={value}
-                            id={name}
-                            label="Event ordering facility"
-                            sizing="compact"
-                            required
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            error={error?.message}
-                        />
-                    )}
-                />
-            )}
+            <Controller
+                control={form.control}
+                name="orderingProvider"
+                shouldUnregister
+                render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                    <ProviderAutocomplete
+                        id={name}
+                        label="Event ordering provider"
+                        sizing="compact"
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        error={error?.message}
+                    />
+                )}
+            />
 
-            {selectedProviderType == 'ORDERING_PROVIDER' && (
-                <Controller
-                    control={form.control}
-                    name="orderingProvider"
-                    shouldUnregister
-                    rules={{
-                        required: { value: true, message: `Ordering provider is required` }
-                    }}
-                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                        <ProviderAutocomplete
-                            id={name}
-                            label="Event ordering provider"
-                            sizing="compact"
-                            required={true}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            error={error?.message}
-                        />
-                    )}
-                />
-            )}
-
-            {selectedProviderType == 'REPORTING_FACILITY' && (
-                <Controller
-                    control={form.control}
-                    name="reportingFacility"
-                    shouldUnregister
-                    rules={{
-                        required: { value: true, message: `Facility is required` }
-                    }}
-                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                        <FacilityAutocomplete
-                            id={name}
-                            value={value}
-                            label="Event reporting facility"
-                            sizing="compact"
-                            required
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            error={error?.message}
-                        />
-                    )}
-                />
-            )}
+            <Controller
+                control={form.control}
+                name="reportingFacility"
+                shouldUnregister
+                render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                    <FacilityAutocomplete
+                        id={name}
+                        value={value}
+                        label="Event reporting facility"
+                        sizing="compact"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        error={error?.message}
+                    />
+                )}
+            />
         </SearchCriteria>
     );
 };
