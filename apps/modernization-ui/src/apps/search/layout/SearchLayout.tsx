@@ -10,6 +10,7 @@ import { SearchNavigation } from './navigation/SearchNavigation';
 import { usePage } from 'page';
 import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
+import { useLocation } from 'react-router-dom';
 import styles from './search-layout.module.scss';
 import classNames from 'classnames';
 
@@ -40,7 +41,13 @@ const SearchLayout = ({
     noResults = () => <NoResults />,
     onRemoveTerm
 }: Props) => {
-    const { view, status } = useSearchResultDisplay();
+    const { view, status, reset } = useSearchResultDisplay();
+
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        reset?.();
+    }, [pathname]);
 
     const [collapsed, setCollapsed] = useState<boolean>();
 
