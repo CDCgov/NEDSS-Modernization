@@ -12,7 +12,6 @@ import { SearchCriteria } from 'apps/search/criteria';
 import {
     dateTypes,
     enteredByTypes,
-    entityTypes,
     entryMethodTypes,
     eventStatusTypes,
     identificationTypes,
