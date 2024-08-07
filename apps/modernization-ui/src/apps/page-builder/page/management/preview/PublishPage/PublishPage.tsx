@@ -133,6 +133,7 @@ export const PublishPage = ({ modalRef, onPublishing }: Props) => {
                 </ModalToggleButton>
                 <Button
                     type="submit"
+                    className="publishBtnOnPublishPageModal"
                     data-testid="publishBtnOnPublishPageModal"
                     disabled={
                         !publishForm.formState.isValid ||
