@@ -17,7 +17,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should resolve terms', () => {
         const input: PatientCriteriaEntry = {
-            disableSoundex: true,
+            includeSimilar: true,
             status: []
         };
 

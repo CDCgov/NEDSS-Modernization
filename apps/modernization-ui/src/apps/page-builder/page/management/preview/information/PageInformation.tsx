@@ -68,7 +68,7 @@ const PageInformation = () => {
                 Details
             </li>
             <li
-                className={activeTab == 'History' ? styles.active : ''}
+                className={`${activeTab == 'History' ? styles.active : ''} historyTab`}
                 data-testid="historyTab"
                 onClick={() => setActiveTab('History')}>
                 History
@@ -132,7 +132,7 @@ const PageInformation = () => {
                                 type="button"
                                 outline
                                 onClick={handleViewPage}
-                                className={styles.icon}
+                                className={`${styles.icon} EditViewPageDetails`}
                                 data-testid="EditViewPageDetails">
                                 {isEditable ? <Icon.Edit /> : <Icon.Visibility />}
                                 {isEditable ? 'Edit page details' : 'View page details'}
@@ -141,7 +141,7 @@ const PageInformation = () => {
                     </div>
                 </div>
             ) : (
-                <div className={styles.content} data-testid="historyTabContent">
+                <div className={`${styles.content} historyTabContent`} data-testid="historyTabContent">
                     <div className={styles.historyContent}>
                         {pageHistory?.map((pageData, index) => (
                             <div className={styles.versionBlock} key={index}>
