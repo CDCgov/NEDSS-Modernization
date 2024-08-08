@@ -30,7 +30,14 @@ const defaultFeatures: Features = {
             }
         }
     },
-    search
+    search,
+    patient: {
+        add: {
+            extended: {
+                enabled: false
+            }
+        }
+    }
 };
 
 const defaultProperties: Properties = {
