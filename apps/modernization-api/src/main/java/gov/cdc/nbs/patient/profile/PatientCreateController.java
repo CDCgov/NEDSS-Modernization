@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.create.PatientCreator;
@@ -17,6 +18,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
+import gov.cdc.nbs.patient.profile.administrative.PatientAdministrative;;
 
 
 @Slf4j
@@ -31,9 +33,12 @@ public class PatientCreateController {
 
   @PostMapping("created")
   @ResponseStatus(HttpStatus.CREATED)
-  public PatientIdentifier create(@RequestBody PatientInput input) {
+  public PatientIdentifier create(@RequestBody PatientAdministrative adminInput) {
     var user = SecurityUtil.getUserDetails();
     RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
+    PatientInput input = new PatientInput();
+    input.setComments(adminInput.comment());
+    input.setAsOf(adminInput.asOf());
     PatientIdentifier created = creator.create(context, input);
     this.indexer.index(created.id());
     return created;
