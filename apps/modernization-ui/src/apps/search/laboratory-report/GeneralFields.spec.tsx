@@ -93,8 +93,10 @@ describe('GeneralFields component ', () => {
         expect(getByLabelText('Event updated by user')).toBeInTheDocument();
     });
 
-    it('renders provider/facility type select', () => {
+    it('renders provider/facility fields', () => {
         const { getByLabelText } = render(<GeneralFieldsWithForm />);
-        expect(getByLabelText('Event provider/facility type')).toBeInTheDocument();
+        expect(getByLabelText('Event ordering facility')).toBeInTheDocument();
+        expect(getByLabelText('Event reporting facility')).toBeInTheDocument();
+        expect(getByLabelText('Event ordering provider')).toBeInTheDocument();
     });
 });
