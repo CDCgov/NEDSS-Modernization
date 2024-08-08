@@ -5,6 +5,7 @@ import { ColumnPreference, useColumnPreferences } from 'design-system/table/pref
 import { displayName } from 'name';
 import { internalizeDate } from 'date';
 import { displayAddress } from 'address/display';
+import { Link } from 'react-router-dom';
 
 const displayNames = (result: PatientSearchResult): string => {
     const legalName = result.legalName;
@@ -48,7 +49,8 @@ const columns: Column<PatientSearchResult>[] = [
         ...LEGAL_NAME,
         fixed: true,
         sortable: true,
-        render: (row) => row?.legalName && displayName()(row?.legalName)
+        render: (row) =>
+            row?.legalName && <Link to={`/patient-profile/${row.shortId}`}>{displayName()(row?.legalName)}</Link>
     },
     {
         ...DATE_OF_BIRTH,
@@ -84,12 +86,9 @@ const PatientSearchResultTable = ({ results }: Props) => {
     const { apply, register } = useColumnPreferences();
 
     useEffect(() => {
-        const storedPreferences = localStorage.getItem(`PatientsColumnPreferences`);
-        if (storedPreferences) {
-            register('Patients', JSON.parse(storedPreferences));
-        } else {
-            register('Patients', preferences);
-        }
+        // const storedPreferences = localStorage.getItem(`PatientsColumnPreferences`);
+
+        register('Patients', preferences);
     }, []);
 
     return <DataTable<PatientSearchResult> id="patient-search-results" columns={apply(columns)} data={results} />;
