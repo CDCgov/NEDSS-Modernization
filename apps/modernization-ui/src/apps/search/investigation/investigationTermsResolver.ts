@@ -52,12 +52,12 @@ const investigationTermsResolver = (entry: InvestigationFilterEntry): Term[] => 
         terms.push(fromSelectable('updatedBy', 'LAST UPDATED BY')(entry.updatedBy));
     }
 
-    if (entry.reportingFacility) {
-        terms.push(fromSelectable('reportingFacility', 'ENTITY TYPE')(entry.reportingFacility));
+    if (entry.reportingProviderId) {
+        terms.push(fromSelectable('reportingProviderId', 'REPORTING PROVIDER')(entry.reportingProviderId));
     }
 
-    if (entry.reportingProvider) {
-        terms.push(fromSelectable('reportingProvider', 'ENTITY ID')(entry.reportingProvider));
+    if (entry.reportingFacilityId) {
+        terms.push(fromSelectable('reportingFacilityId', 'REPORTING FACILITY')(entry.reportingFacilityId));
     }
 
     if (entry.investigationStatus) {

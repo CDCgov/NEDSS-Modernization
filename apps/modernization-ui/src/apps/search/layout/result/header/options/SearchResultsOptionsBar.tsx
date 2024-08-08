@@ -12,7 +12,7 @@ type Props = {
 };
 
 const SearchResultsOptionsBar = ({ view, disabled = false }: Props) => {
-    const settings = useSearchSettings();
+    const { settings } = useSearchSettings();
 
     return (
         <div className={style.options}>

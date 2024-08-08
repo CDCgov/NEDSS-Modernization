@@ -1,30 +1,12 @@
-import { render, waitFor, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import userEvent from '@testing-library/user-event';
 import CriteriaSearchFields from './CriteriaSearchFields';
 
 const InvestigationFormWithFields = () => {
-    const defaultSelectable = { name: '', value: '', label: '' };
-    const defaultValues: InvestigationFilterEntry = {
-        createdBy: defaultSelectable,
-        updatedBy: defaultSelectable,
-        investigator: defaultSelectable,
-        pregnancyStatus: defaultSelectable,
-        investigationStatus: defaultSelectable,
-        jurisdictions: [defaultSelectable],
-        conditions: [defaultSelectable],
-        caseStatuses: [defaultSelectable],
-        notificationStatuses: [defaultSelectable],
-        outbreaks: [defaultSelectable],
-        processingStatuses: [defaultSelectable],
-        programAreas: [],
-        reportingFacility: defaultSelectable
-    };
-
-    const investigationForm = useForm<InvestigationFilterEntry>({
-        defaultValues,
-        mode: 'all'
+    const investigationForm = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
+        mode: 'onBlur'
     });
 
     return (
@@ -36,37 +18,33 @@ const InvestigationFormWithFields = () => {
 
 describe('CriteriaSearchFields', () => {
     describe('Investigation Status', () => {
-        it('should contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+        it('should exist', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('investigationStatus');
-                expect(element).toBeInTheDocument();
-                expect(element.getAttribute('placeholder')).toEqual('-Select-');
-            });
+            const select = getByRole('combobox', { name: 'Investigation status' });
+            expect(select).toBeInTheDocument();
         });
 
-        it('should update the selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+        it('should update the selection', () => {
+            const { getByRole } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const element = screen.getByTestId('investigationStatus');
-                userEvent.selectOptions(element, 'Open');
-                expect(element).toHaveTextContent('Open');
-            });
+            const select = getByRole('combobox', { name: 'Investigation status' });
+
+            userEvent.selectOptions(select, 'Open');
+
+            expect(getByRole('option', { name: 'Open', selected: true })).toBeInTheDocument();
         });
     });
 
-    describe('Outbreaks', () => {
-        it('should not contain default selection', async () => {
-            const { container } = render(<InvestigationFormWithFields />);
+    it('should contain Outbeak name', () => {
+        const { getByText } = render(<InvestigationFormWithFields />);
 
-            await waitFor(() => {
-                const elements = container.getElementsByClassName('usa-label');
+        expect(getByText('Outbreak name')).toBeInTheDocument();
+    });
 
-                expect(elements[0]).toBeInTheDocument();
-                expect(elements[0].getAttribute('name')).toEqual(null);
-            });
-        });
+    it('should contain Case status', () => {
+        const { getByText } = render(<InvestigationFormWithFields />);
+
+        expect(getByText('Case status')).toBeInTheDocument();
     });
 });

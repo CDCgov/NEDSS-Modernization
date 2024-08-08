@@ -1,113 +1,70 @@
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import {
-    EntryMethod,
-    EventStatus,
-    LaboratoryReportEventDateType,
-    LaboratoryReportStatus,
-    PregnancyStatus,
-    UserType
-} from 'generated/graphql/schema';
-import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
-import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
-import { formatInterfaceString } from 'utils/util';
-import { entityTypes, identificationTypes, LabReportFilterEntry } from './labReportFormTypes';
-import { MultiSelect, SingleSelect } from 'design-system/select';
-import { Selectable } from 'options';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
+import { useJurisdictionOptions } from 'options/jurisdictions';
+import { useProgramAreaOptions } from 'options/program-areas';
+import { SearchCriteria } from 'apps/search/criteria';
+import {
+    dateTypes,
+    enteredByTypes,
+    entityTypes,
+    entryMethodTypes,
+    eventStatusTypes,
+    identificationTypes,
+    LabReportFilterEntry,
+    pregnancyStatus,
+    processingStatusTypes
+} from './labReportFormTypes';
 
-type LabReportGeneralFieldProps = {
-    form: UseFormReturn<LabReportFilterEntry>;
-};
-export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
-    const watch = useWatch({ control: form.control });
+export const GeneralFields = () => {
+    const form = useFormContext<LabReportFilterEntry, Partial<LabReportFilterEntry>>();
 
-    const handleEventDateTypeChange = (
-        e: Selectable | undefined,
-        onChange: (event: Selectable | undefined) => void
-    ): void => {
-        // Clear date fields if date type is deselected
-        if (e?.value === '') {
-            form.resetField('eventDate.from');
-            form.resetField('eventDate.to');
-        }
-        onChange(e);
-    };
+    const { all: jurisdictions } = useJurisdictionOptions();
+    const { all: programAreas } = useProgramAreaOptions();
 
-    const handleEventIdTypeChange = (e: Selectable | undefined, onChange: (event: Selectable) => void): void => {
-        // Clear event id field on deselect
-        if (!e || e?.value === '') {
-            form.resetField('identification.type');
-        } else {
-            onChange(e);
-        }
-    };
-
-    const handleFacilityTypeChange = (e: Selectable | undefined, onChange: (event: Selectable) => void): void => {
-        // Clear event id field on deselect
-        if (!e || e.value === '') {
-            form.resetField('providerType');
-        } else {
-            onChange(e);
-        }
-    };
-
-    const convertToLowerCase = (item: string): string => {
-        return item[0].toUpperCase() + item.slice(1).toLowerCase();
-    };
+    const selectedProviderType = useWatch({ control: form.control, name: 'providerType.value' });
+    const selectedIdentificationType = useWatch({ control: form.control, name: 'identification.type' });
+    const selectedDateType = useWatch({ control: form.control, name: 'eventDate.type' });
 
     return (
-        <>
-            <SearchCriteriaContext.Consumer>
-                {({ searchCriteria }) => (
-                    <>
-                        <Controller
-                            control={form.control}
-                            name="programAreas"
-                            render={({ field: { onChange, name, value } }) => (
-                                <MultiSelect
-                                    label="Program area"
-                                    onChange={onChange}
-                                    value={value}
-                                    name={name}
-                                    options={searchCriteria.programAreas.map((p) => {
-                                        return {
-                                            name: p.id ?? '',
-                                            value: p.id,
-                                            label: p.id
-                                        };
-                                    })}
-                                    id={name}
-                                />
-                            )}
-                        />
-
-                        <Controller
-                            control={form.control}
-                            name="jurisdictions"
-                            render={({ field: { onChange, name, value } }) => (
-                                <MultiSelect
-                                    label="Jurisdiction"
-                                    onChange={onChange}
-                                    value={value}
-                                    name={name}
-                                    options={searchCriteria.jurisdictions.map((p) => {
-                                        return {
-                                            name: p.codeDescTxt ?? '',
-                                            value: p.id,
-                                            label: p.codeDescTxt ?? ''
-                                        };
-                                    })}
-                                    id={name}
-                                />
-                            )}
-                        />
-                    </>
+        <SearchCriteria>
+            <Controller
+                control={form.control}
+                name="programAreas"
+                render={({ field: { onChange, name, value } }) => (
+                    <MultiSelect
+                        label="Program area"
+                        sizing="compact"
+                        onChange={onChange}
+                        value={value}
+                        name={name}
+                        options={programAreas}
+                        id={name}
+                    />
                 )}
-            </SearchCriteriaContext.Consumer>
+            />
+
+            <Controller
+                control={form.control}
+                name="jurisdictions"
+                render={({ field: { onChange, name, value } }) => (
+                    <MultiSelect
+                        label="Jurisdiction"
+                        sizing="compact"
+                        onChange={onChange}
+                        value={value}
+                        name={name}
+                        options={jurisdictions}
+                        id={name}
+                    />
+                )}
+            />
+
             <Controller
                 control={form.control}
                 name="pregnancyStatus"
@@ -117,16 +74,9 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         value={value}
                         onChange={onChange}
                         label="Pregnancy status"
-                        options={[
-                            { name: PregnancyStatus.Yes, value: PregnancyStatus.Yes, label: PregnancyStatus.Yes },
-                            { name: PregnancyStatus.No, value: PregnancyStatus.No, label: PregnancyStatus.No },
-                            {
-                                name: PregnancyStatus.Unknown,
-                                value: PregnancyStatus.Unknown,
-                                label: PregnancyStatus.Unknown
-                            }
-                        ]}
+                        options={pregnancyStatus}
                         id={name}
+                        sizing="compact"
                     />
                 )}
             />
@@ -134,19 +84,21 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
             <Controller
                 control={form.control}
                 name="identification.type"
+                shouldUnregister
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         name={name}
                         value={value}
-                        onChange={(e) => handleEventIdTypeChange(e, onChange)}
+                        onChange={onChange}
                         label="Event ID type"
                         id={name}
+                        sizing="compact"
                         options={identificationTypes}
                     />
                 )}
             />
 
-            {watch.identification?.type?.value ? (
+            {selectedIdentificationType && (
                 <Controller
                     control={form.control}
                     name="identification.value"
@@ -162,46 +114,43 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             type="text"
                             htmlFor={name}
                             id={name}
-                            data-testid={name}
+                            sizing="compact"
                             required
                             error={error?.message}
                         />
                     )}
                 />
-            ) : null}
+            )}
 
             <Controller
                 control={form.control}
                 name="eventDate.type"
+                shouldUnregister
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         id={name}
+                        sizing="compact"
                         name={name}
                         value={value}
-                        onChange={(e) => handleEventDateTypeChange(e, onChange)}
+                        onChange={onChange}
                         label="Event date type"
-                        options={Object.values(LaboratoryReportEventDateType).map((type) => {
-                            return {
-                                name: formatInterfaceString(type),
-                                value: type,
-                                label: formatInterfaceString(type)
-                            };
-                        })}
+                        options={dateTypes}
                     />
                 )}
             />
 
-            {watch.eventDate?.type ? (
+            {selectedDateType && (
                 <>
                     <Controller
                         control={form.control}
                         name="eventDate.from"
+                        shouldUnregister
                         rules={{
                             required: { value: true, message: 'From date is required' }
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                disabled={!watch.eventDate?.type}
+                                sizing="compact"
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -216,12 +165,13 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     <Controller
                         control={form.control}
                         name="eventDate.to"
+                        shouldUnregister
                         rules={{
                             required: { value: true, message: 'To date is required' }
                         }}
                         render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
-                                disabled={!watch.eventDate?.type}
+                                sizing="compact"
                                 defaultValue={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -233,28 +183,20 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         )}
                     />
                 </>
-            ) : null}
+            )}
 
             <Controller
                 control={form.control}
                 name="entryMethods"
                 render={({ field: { onChange, value, name } }) => (
-                    <div className="grid-row">
-                        <CheckboxGroup
-                            name={name}
-                            className="padding-0"
-                            label="Entry method"
-                            options={Object.values(EntryMethod).map((item) => {
-                                return {
-                                    name: item,
-                                    label: convertToLowerCase(item),
-                                    value: item
-                                };
-                            })}
-                            value={value}
-                            onChange={onChange}
-                        />
-                    </div>
+                    <CheckboxGroup
+                        name={name}
+                        label="Entry method"
+                        sizing="compact"
+                        options={entryMethodTypes}
+                        value={value}
+                        onChange={onChange}
+                    />
                 )}
             />
 
@@ -262,22 +204,14 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 control={form.control}
                 name="enteredBy"
                 render={({ field: { onChange, value, name } }) => (
-                    <div className="grid-row">
-                        <CheckboxGroup
-                            name={name}
-                            className="padding-0"
-                            label="Entered by"
-                            options={Object.values(UserType).map((item) => {
-                                return {
-                                    name: item,
-                                    label: convertToLowerCase(item),
-                                    value: item
-                                };
-                            })}
-                            value={value}
-                            onChange={onChange}
-                        />
-                    </div>
+                    <CheckboxGroup
+                        name={name}
+                        label="Entered by"
+                        sizing="compact"
+                        options={enteredByTypes}
+                        value={value}
+                        onChange={onChange}
+                    />
                 )}
             />
 
@@ -285,22 +219,14 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 control={form.control}
                 name="eventStatus"
                 render={({ field: { onChange, value, name } }) => (
-                    <div className="grid-row">
-                        <CheckboxGroup
-                            name={name}
-                            className="padding-0"
-                            label="Event status"
-                            options={Object.values(EventStatus).map((item) => {
-                                return {
-                                    name: item,
-                                    label: convertToLowerCase(item),
-                                    value: item
-                                };
-                            })}
-                            value={value}
-                            onChange={onChange}
-                        />
-                    </div>
+                    <CheckboxGroup
+                        name={name}
+                        label="Event status"
+                        sizing="compact"
+                        options={eventStatusTypes}
+                        value={value}
+                        onChange={onChange}
+                    />
                 )}
             />
 
@@ -308,22 +234,14 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 control={form.control}
                 name="processingStatus"
                 render={({ field: { onChange, value, name } }) => (
-                    <div className="grid-row">
-                        <CheckboxGroup
-                            name={name}
-                            className="padding-0"
-                            label="Processing status"
-                            options={Object.values(LaboratoryReportStatus).map((item) => {
-                                return {
-                                    name: item,
-                                    label: convertToLowerCase(item),
-                                    value: item
-                                };
-                            })}
-                            value={value}
-                            onChange={onChange}
-                        />
-                    </div>
+                    <CheckboxGroup
+                        name={name}
+                        label="Processing status"
+                        sizing="compact"
+                        options={processingStatusTypes}
+                        value={value}
+                        onChange={onChange}
+                    />
                 )}
             />
 
@@ -331,14 +249,26 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 control={form.control}
                 name="createdBy"
                 render={({ field: { onChange, name, value } }) => (
-                    <UserAutocomplete id={name} value={value} label="Event created by user" onChange={onChange} />
+                    <UserAutocomplete
+                        id={name}
+                        value={value}
+                        label="Event created by user"
+                        sizing="compact"
+                        onChange={onChange}
+                    />
                 )}
             />
             <Controller
                 control={form.control}
                 name="updatedBy"
                 render={({ field: { onChange, name, value } }) => (
-                    <UserAutocomplete id={name} value={value} onChange={onChange} label="Event updated by user" />
+                    <UserAutocomplete
+                        id={name}
+                        value={value}
+                        sizing="compact"
+                        onChange={onChange}
+                        label="Event updated by user"
+                    />
                 )}
             />
             <Controller
@@ -348,18 +278,20 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     <SingleSelect
                         name={name}
                         value={value}
-                        onChange={(e) => handleFacilityTypeChange(e, onChange)}
+                        onChange={onChange}
                         label="Event provider/facility type"
                         options={entityTypes}
                         id={name}
+                        sizing="compact"
                     />
                 )}
             />
 
-            {watch.providerType?.value == 'ORDERING_FACILITY' && (
+            {selectedProviderType == 'ORDERING_FACILITY' && (
                 <Controller
                     control={form.control}
                     name="orderingFacility"
+                    shouldUnregister
                     rules={{
                         required: { value: true, message: `Ordering facility is required` }
                     }}
@@ -368,7 +300,8 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             value={value}
                             id={name}
                             label="Event ordering facility"
-                            required={true}
+                            sizing="compact"
+                            required
                             onChange={onChange}
                             onBlur={onBlur}
                             error={error?.message}
@@ -377,10 +310,11 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 />
             )}
 
-            {watch.providerType?.value == 'ORDERING_PROVIDER' && (
+            {selectedProviderType == 'ORDERING_PROVIDER' && (
                 <Controller
                     control={form.control}
-                    name="orderingFacility"
+                    name="orderingProvider"
+                    shouldUnregister
                     rules={{
                         required: { value: true, message: `Ordering provider is required` }
                     }}
@@ -388,8 +322,8 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                         <ProviderAutocomplete
                             id={name}
                             label="Event ordering provider"
+                            sizing="compact"
                             required={true}
-                            placeholder=""
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
@@ -399,10 +333,11 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                 />
             )}
 
-            {watch.providerType?.value == 'REPORTING_FACILITY' && (
+            {selectedProviderType == 'REPORTING_FACILITY' && (
                 <Controller
                     control={form.control}
-                    name="orderingFacility"
+                    name="reportingFacility"
+                    shouldUnregister
                     rules={{
                         required: { value: true, message: `Facility is required` }
                     }}
@@ -411,8 +346,8 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                             id={name}
                             value={value}
                             label="Event reporting facility"
-                            required={true}
-                            placeholder=""
+                            sizing="compact"
+                            required
                             onChange={onChange}
                             onBlur={onBlur}
                             error={error?.message}
@@ -420,6 +355,6 @@ export const GeneralFields = ({ form }: LabReportGeneralFieldProps) => {
                     )}
                 />
             )}
-        </>
+        </SearchCriteria>
     );
 };

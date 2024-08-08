@@ -1,14 +1,14 @@
-import { useConceptOptions } from 'options/concepts';
 import { Controller, useFormContext } from 'react-hook-form';
-import { PatientCriteriaEntry } from '../criteria';
 import { SingleSelect } from 'design-system/select';
-import styles from './race-ethnicity.module.scss';
+import { useConceptOptions } from 'options/concepts';
+import { SearchCriteria } from 'apps/search/criteria';
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
 
 export const RaceEthnicity = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
-        <div className={styles.race}>
+        <SearchCriteria>
             <Controller
                 control={control}
                 name="ethnicity"
@@ -19,6 +19,7 @@ export const RaceEthnicity = () => {
                         name={name}
                         label="Ethnicity"
                         id={name}
+                        sizing="compact"
                         options={useConceptOptions('PHVS_ETHNICITYGROUP_CDC_UNK', { lazy: false }).options}
                     />
                 )}
@@ -33,10 +34,11 @@ export const RaceEthnicity = () => {
                         name={name}
                         label="Race"
                         id={name}
+                        sizing="compact"
                         options={useConceptOptions('P_RACE_CAT', { lazy: false }).options}
                     />
                 )}
             />
-        </div>
+        </SearchCriteria>
     );
 };

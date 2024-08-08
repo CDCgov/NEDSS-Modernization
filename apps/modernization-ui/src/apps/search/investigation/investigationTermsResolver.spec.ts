@@ -167,11 +167,7 @@ describe('when an Investigation Seach contains General search criteria', () => {
 
     it('should resolve terms with Reporting facility', () => {
         const input = {
-            reportingFacility: {
-                name: 'Reporting facility Name',
-                label: 'Reporting facility Label',
-                value: 'reporting-facility-value'
-            }
+            reportingFacilityId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
         };
 
         const actual = investigationTermsResolver(input);
@@ -179,10 +175,10 @@ describe('when an Investigation Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    name: 'Reporting facility Name',
-                    source: 'reportingFacility',
-                    title: 'ENTITY TYPE',
-                    value: 'reporting-facility-value'
+                    source: 'reportingFacilityId',
+                    title: 'REPORTING FACILITY',
+                    name: 'st. joseph hospital',
+                    value: '2341234'
                 }
             ])
         );
@@ -190,11 +186,7 @@ describe('when an Investigation Seach contains General search criteria', () => {
 
     it('should resolve terms with Reporting provider', () => {
         const input = {
-            reportingProvider: {
-                name: 'Reporting provider Name',
-                label: 'Reporting provider Label',
-                value: 'reporting-provider-value'
-            }
+            reportingProviderId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
         };
 
         const actual = investigationTermsResolver(input);
@@ -202,10 +194,10 @@ describe('when an Investigation Seach contains General search criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    name: 'Reporting provider Name',
-                    source: 'reportingProvider',
-                    title: 'ENTITY ID',
-                    value: 'reporting-provider-value'
+                    source: 'reportingProviderId',
+                    title: 'REPORTING PROVIDER',
+                    name: 'st. joseph hospital',
+                    value: '2341234'
                 }
             ])
         );

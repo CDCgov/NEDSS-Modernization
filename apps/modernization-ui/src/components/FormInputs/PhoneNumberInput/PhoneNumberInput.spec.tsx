@@ -4,17 +4,13 @@ import { PhoneNumberInput } from './PhoneNumberInput';
 describe('PhoneNumberInput component tests', () => {
     describe('When phone number is valid and formatted', () => {
         it('should return true', () => {
-            const { queryByTestId } = render(
-                <PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" onChange={onchange} />
-            );
+            const { queryByTestId } = render(<PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" />);
             expect(queryByTestId('errorMessage')).toBeNull();
         });
     });
     describe('When phone number is partially valid', () => {
         it('should return true', () => {
-            const { queryByTestId } = render(
-                <PhoneNumberInput label="test-phone-partial" defaultValue="555" onChange={onchange} />
-            );
+            const { queryByTestId } = render(<PhoneNumberInput label="test-phone-partial" defaultValue="555" />);
             expect(queryByTestId('errorMessage')).toBeNull();
         });
     });
@@ -24,7 +20,6 @@ describe('PhoneNumberInput component tests', () => {
                 <PhoneNumberInput
                     label="test-phone-input-false"
                     defaultValue="&X}5"
-                    onChange={onchange}
                     error="Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9)."
                 />
             );
