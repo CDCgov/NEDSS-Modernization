@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.search.redirect;
+package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.encryption.DecryptionRequester;
 import gov.cdc.nbs.testing.support.Active;
@@ -12,21 +12,19 @@ import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 public class SimpleSearchRedirectSteps {
 
-  private static final Pattern ENCRYPTED_LOCATION = Pattern.compile("^/.+\\?q=(?<encrypted>[^&]+)(?:&.+)?$");
+  private static final Pattern ENCRYPTED_LOCATION = Pattern.compile(".*/(.+)");
 
   private final SimpleSearchRedirectRequester requester;
   private final Active<ResultActions> response;
@@ -36,7 +34,7 @@ public class SimpleSearchRedirectSteps {
 
   private MultiValueMap<String, String> criteria;
 
-  public SimpleSearchRedirectSteps(
+  SimpleSearchRedirectSteps(
       final SimpleSearchRedirectRequester requester,
       final Active<ResultActions> response,
       final DecryptionRequester decryptionRequester
@@ -50,7 +48,6 @@ public class SimpleSearchRedirectSteps {
   @Before("@simple-search-redirect")
   public void clean() {
     this.criteria = new LinkedMultiValueMap<>();
-    this.response.reset();
     this.decrypted.reset();
   }
 
@@ -91,9 +88,7 @@ public class SimpleSearchRedirectSteps {
       if (matcher.find()) {
         String encrypted = matcher.group(1);
 
-        String decoded = URLDecoder.decode(encrypted, Charset.defaultCharset());
-
-        this.decrypted.active(this.decryptionRequester.request(decoded));
+        this.decrypted.active(this.decryptionRequester.request(encrypted));
       }
     }
   }
@@ -103,7 +98,7 @@ public class SimpleSearchRedirectSteps {
       throws Exception {
     JsonPathResultMatchers path = matchingPath(property);
 
-    this.decrypted.active().andExpect(path.value(equalToIgnoringCase(value)));
+    this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
   }
 
   @Then("the search parameters include a(n) {eventTypeId} with the ID {string}")
@@ -112,39 +107,31 @@ public class SimpleSearchRedirectSteps {
       final String identifier
   ) throws Exception {
 
-    String investigationEventType = switch (eventType) {
+    String type = switch (eventType) {
       case "P10000" -> "ABCS_CASE_ID";
       case "P10008" -> "CITY_COUNTY_CASE_ID";
       case "P10001" -> "INVESTIGATION_ID";
       case "P10013" -> "NOTIFICATION_ID";
       case "P10004" -> "STATE_CASE_ID";
+      case "P10009" -> "ACCESSION_NUMBER";
+      case "P10002" -> "LAB_ID";
       default -> null;
 
     };
 
-    if (investigationEventType != null) {
+    if (type != null) {
 
       this.decrypted.active()
-          .andExpect(jsonPath("$.eventId.investigationEventType").value(equalToIgnoringCase(investigationEventType)))
-          .andExpect(jsonPath("$.eventId.id").value(equalToIgnoringCase(identifier)));
-      return;
+          .andDo(print())
+          .andExpect(jsonPath("$.identification.type.value").value(equalToIgnoringCase(type)))
+          .andExpect(jsonPath("$.identification.value").value(equalToIgnoringCase(identifier)));
     }
-
-    String labEventType = switch (eventType) {
-      case "P10009" -> "ACCESSION_NUMBER";
-      case "P10002" -> "LAB_ID";
-      default -> throw new IllegalArgumentException("Unexpected Simple Search Event Type " + eventType);
-    };
-
-    this.decrypted.active()
-        .andExpect(jsonPath("$.eventId.labEventType").value(equalToIgnoringCase(labEventType)))
-        .andExpect(jsonPath("$.eventId.labEventId").value(equalToIgnoringCase(identifier)));
   }
 
   @Then("the search type is {searchType}")
   public void the_search_type_is(final String searchType) throws Exception {
     this.response.active()
-        .andExpect(header().string("Location", containsString("&type=" + searchType)));
+        .andExpect(header().string("Location", containsString("/search/simple/" + searchType)));
   }
 
   private JsonPathResultMatchers matchingPath(final String field) {
@@ -152,15 +139,15 @@ public class SimpleSearchRedirectSteps {
       case "date of birth" -> jsonPath("$.dateOfBirth");
       case "first name" -> jsonPath("$.firstName");
       case "last name" -> jsonPath("$.lastName");
-      case "gender" -> jsonPath("$.gender");
+      case "gender" -> jsonPath("$.gender.value");
       case "patient id" -> jsonPath("$.id");
       default -> throw new IllegalStateException("Unexpected Page Summary value: " + field.toLowerCase());
     };
   }
 
-  @ParameterType(name = "searchType", value = "(?i)(investigation|lab report)")
+  @ParameterType(name = "searchType", value = "(?i)(patients|investigations|lab-reports)")
   public String searchType(final String value) {
-    return Objects.equals(value.toLowerCase(), "lab report") ? "labReport" : value;
+    return value;
   }
 
   @ParameterType(name = "eventTypeId", value = ".*")
@@ -168,7 +155,7 @@ public class SimpleSearchRedirectSteps {
     return switch (value.toLowerCase()) {
       case "abcs case id" -> "P10000";
       case "accession number id" -> "P10009";
-      case "city/county case id","city county" -> "P10008";
+      case "city/county case id", "city county" -> "P10008";
       case "document id" -> "P10010";
       case "investigation id" -> "P10001";
       case "lab id" -> "P10002";

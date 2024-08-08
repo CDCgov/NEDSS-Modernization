@@ -61,7 +61,7 @@ public class EncryptionService {
                     .array();
 
             // base64 encode
-            return Base64.getEncoder().encodeToString(saltAndEncryptedBytes);
+            return Base64.getUrlEncoder().encodeToString(saltAndEncryptedBytes);
         } catch (Exception e) {
             throw new EncryptionException("Failed to perform encryption");
         }
@@ -70,7 +70,7 @@ public class EncryptionService {
     public Object handleDecryption(String encryptedString) {
         try {
             // decode Base64 to bytes
-            byte[] decoded = Base64.getDecoder().decode(encryptedString);
+            byte[] decoded = Base64.getUrlDecoder().decode(encryptedString);
 
             // extract salt from first 16 bytes
             var salt = Arrays.copyOfRange(decoded, 0, SALT_LENGTH);

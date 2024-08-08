@@ -50,7 +50,7 @@ type Identification = {
 
 type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification;
 
-export type { PatientCriteriaEntry, Identification, RaceEthnicity, Contact };
+export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
 
 const initial: PatientCriteriaEntry = {
     status: [ACTIVE]

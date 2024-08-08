@@ -92,7 +92,7 @@ const SearchLayout = ({
                 </div>
                 <div className={styles.results}>
                     {status === 'waiting' && <SearchLanding />}
-                    {status === 'searching' && <Loading className={styles.loading} />}
+                    {status === 'searching' && <Loading center />}
                     {status === 'completed' && (
                         <SearchResults onRemoveTerm={onRemoveTerm}>
                             {total === 0 && noResults()}
