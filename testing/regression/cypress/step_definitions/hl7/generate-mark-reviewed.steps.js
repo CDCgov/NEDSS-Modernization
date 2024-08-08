@@ -3,55 +3,22 @@ import 'cypress-xpath';
 import UtilityFunctions from "@pages/utilityFunctions.page";
 import { faker } from "@faker-js/faker";
 
-When("I Generate HL7 messages with {string} to api and mark as review", (string) => {
+When("I Generate HL7 messages to api and mark as review", (string) => {
   let messageCondition = string;
   let fakeFullName;  
-  let currentMessage;
-  let authToken;
+  let currentMessage;  
   let messageID;
   let NBSresponse;
+  let fakeFormattedSSN;
+  let fakeRandomData;
+  const authToken = Cypress.env().authTokenAPI;
   const clientid = Cypress.env()["env"].clientid;
   const clientsecret = Cypress.env()["env"].clientsecret;
   const apiurl = Cypress.env()["env"].apiurl;
   const checkstatusurl = Cypress.env()["env"].checkstatusurl;
   const authurl = Cypress.env()["env"].authurl;
 
-  cy.request({
-    method: "POST",
-    url: authurl,
-    headers: {
-      "Content-Type": "text/plain",
-      "clientid": clientid,
-      "clientsecret": clientsecret
-    }
-  }).then((response) => {
-    expect(response.status).to.eq(200);
-    attach(`Response: ${JSON.stringify(response.body)}`);
-    authToken = response.body;
-    cy.wrap(authToken).as("authToken");
-    Cypress.env("authToken", authToken);
-
     cy.readFile('cypress/fixtures/try.json', 'utf8').then(jsonData => {
-      const formatHL7 = (hl7String) => {
-        const formattedFields = [];
-        const segments = hl7String.split(/\r\n|\r|\n/);
-
-        segments.forEach(segment => {
-          const fields = segment.split('|');
-          for (let i = 1; i < fields.length; i++) {
-            const components = fields[i].split('^');
-            if (components.length > 1) {
-              components.forEach((component, j) => {
-                formattedFields.push(`${fields[0]}.${i}.${j + 1} - ${component}`);
-              });
-            } else {
-              formattedFields.push(`${fields[0]}.${i} - ${fields[i]}`);
-            }
-          }
-        });
-
-        return formattedFields;
-      };
 
       const randomData = {
         randomFirstName: faker.person.firstName(),
@@ -84,11 +51,11 @@ When("I Generate HL7 messages with {string} to api and mark as review", (string)
       const formattedSSN = UtilityFunctions.formatSSN(randomData.fakeSSN);
 
       cy.log(`${randomData.randomLastName}, ${randomData.randomFirstName} ${formattedSSN}`);
-      currentMessage = formatHL7(modifiedData);
+      currentMessage = UtilityFunctions.formatHL7(modifiedData);
       fakeFullName = `${randomData.randomLastName}, ${randomData.randomFirstName}`;
-      Cypress.env("currentMessage", currentMessage);
-      Cypress.env("fakeFormattedSSN", formattedSSN);
-      Cypress.env("fakeDOB", randomData.fakeDOB);
+      fakeRandomData = randomData;
+      fakeFormattedSSN = formattedSSN;
+      Cypress.env("currentMessage", currentMessage);      
       Cypress.env("fakeFullName", `${randomData.randomLastName}, ${randomData.randomFirstName}`);
       Cypress.env("randomData", randomData);
       cy.request({
@@ -117,85 +84,15 @@ When("I Generate HL7 messages with {string} to api and mark as review", (string)
             }
           }).then((response) => {
 
-            function createNotication() {
-              cy.get("input[name=createInvestigation]").first().click();
-              cy.get("select[name=ccd]").select(messageCondition, { force: true });
-              cy.get("input[name=Submit]").first().click();
-              cy.get('#DEM196').invoke('text', 'Investigation is needed');
-              cy.get("select[id=INV163]").select("Confirmed", { force: true });
-              cy.get("input[name=SubmitTop]").first().click();
-              cy.window().then(win => {
-                win.createNotifications('Comment');
-              });
-            }
-
-            function navigateAndSearchDocuments() {
-              let fakeRandomData = Cypress.env("randomData");
-              let fakeFormattedSSN = Cypress.env("fakeFormattedSSN");
-
-              // Navigate to home
-              cy.get("a").contains("Home").click();
-              // Navigate to 'Documents Requiring Review'
-              cy.contains('Documents Requiring Review').click();
-              // Click the table header to sort
-              cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();
-              // Search for the random last name
+            function markAsReviewed() {                                      
+              cy.get("a").contains("Home").click();              
+              cy.contains('Documents Requiring Review').click();              
+              cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/thead/tr/th[5]/img").click();              
               cy.get("#SearchText1").type(fakeRandomData.randomLastName);
-              cy.get("#b2SearchText1").first().click();
-              // Click the first result
-              cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();
-              // Mark as reviewed and transfer ownership
-              cy.get("input[name=markReviewd]").first().click();
-              cy.get("input[name=TransferOwn]").first().click();
+              cy.get("#b2SearchText1").first().click();              
+              cy.xpath("/html/body/div[2]/form/div/table[2]/tbody/tr/td/table/tbody/tr/td[2]/a").click();              
+              cy.get("input[name=markReviewd]").first().click();              
               cy.get("input[name=Submit]").first().click();
-              // Return to 'Documents Requiring Review'
-              cy.contains('Return to Documents Requiring Review').click();
-              // Navigate back to home
-              cy.contains('Home').click();
-              // Advanced search
-              cy.get('#homePageAdvancedSearch').click();
-              cy.get('#lastName').type(fakeRandomData.randomLastName);
-              cy.get('#firstName').type(fakeRandomData.randomFirstName);
-              cy.get('h3').contains("ID").click();
-              cy.get("#identificationType").select('Social Security');
-              cy.get("input[name='identification']").type(fakeFormattedSSN);
-              cy.get('button').contains("Search").click();
-              cy.get('button').contains("List").click();
-            }
-
-            function ClickAdvancedSearch() {
-              let fakeRandomData = Cypress.env("randomData");
-              let fakeFormattedSSN = Cypress.env("fakeFormattedSSN");
-              cy.contains('Home').click();
-
-              // Advanced search
-              cy.get('#homePageAdvancedSearch').click();
-              cy.get('#lastName').type(fakeRandomData.randomLastName);
-              cy.get('#firstName').type(fakeRandomData.randomFirstName);
-              cy.get('h3').contains("ID").click();
-              cy.get("#identificationType").select('Social Security');
-              cy.get("input[name='identification']").type(fakeFormattedSSN);
-              cy.get('button').contains("Search").click();
-              cy.get('button').contains("List").click();
-              cy.get("body").then($body => {
-                let fakeRandomData = Cypress.env("randomData");
-                let fakeFormattedSSN = Cypress.env("fakeFormattedSSN");
-                if ($body.find("#legalName").length > 0) {
-                  cy.get("a").contains(fakeFullName).then($button => {
-                    if ($button.is(':visible')) {
-                      cy.contains(fakeFormattedSSN).scrollIntoView().should("be.visible")
-                      cy.get("a").contains(fakeFullName).scrollIntoView().click({ force: true });
-                      cy.get("a").contains("Events").click({ force: true });
-                      cy.get("#classic a").first().click();
-                      createNotication();
-                      cy.get("#successMessages").contains("A Notification has been created for this Investigation.").scrollIntoView().should("be.visible");
-                      // cy.get("#patientSummaryJSP_view_notificationStatus").contains("COMPLETED.").scrollIntoView().should("be.visible");
-                    }
-                  });
-                } else {
-                  cy.wait(20000).then(ClickAdvancedSearch);
-                }
-              });
             }
 
             cy.wait(2000);
@@ -204,28 +101,11 @@ When("I Generate HL7 messages with {string} to api and mark as review", (string)
             if (response.body.nbsInfo.nbsInterfaceStatus === "QUEUED" || response.body.nbsInfo.nbsInterfacePipeLineStatus === "IN PROGRESS") {
               cy.wait(20000).then(checkStatusRequest);
             } else if (response.body.nbsInfo.nbsInterfaceStatus === "Success" && response.body.nbsInfo.nbsInterfacePipeLineStatus === "COMPLETED") {
-              navigateAndSearchDocuments();
-              cy.wait(2000);
-              cy.get("body").then($body => {
-                if ($body.find("#legalName").length > 0) {
-                  cy.get("a").contains(fakeFullName).then($button => {
-                    if ($button.is(':visible')) {
-                      cy.contains(fakeFormattedSSN).scrollIntoView().should("be.visible")
-                      cy.get("a").contains(fakeFullName).scrollIntoView().click({ force: true });
-                      cy.get("a").contains("Events").click({ force: true });
-                      cy.get("#classic a").first().click();
-                      createNotication();
-                    }
-                  });
-                } else {
-                  cy.wait(20000).then(ClickAdvancedSearch);
-                }
-              });
+              markAsReviewed();
             }
           });
         };
         checkStatusRequest();
       });
-    });
-  });
+    });  
 });

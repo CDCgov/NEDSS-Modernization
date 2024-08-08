@@ -41,6 +41,53 @@ class UtilityFunctions {
       return modifiedMessage.replaceAll(placeholder, replacement);
     }, message);
   }
+
+  formatHL7 = (hl7String) => {
+    const formattedFields = [];
+    const segments = hl7String.split(/\r\n|\r|\n/);
+
+    segments.forEach(segment => {
+      const fields = segment.split('|');
+      for (let i = 1; i < fields.length; i++) {
+        const components = fields[i].split('^');
+        if (components.length > 1) {
+          components.forEach((component, j) => {
+            formattedFields.push(`${fields[0]}.${i}.${j + 1} - ${component}`);
+          });
+        } else {
+          formattedFields.push(`${fields[0]}.${i} - ${fields[i]}`);
+        }
+      }
+    });
+
+    return formattedFields;
+  };
+
+  checkELRActivityLog(fakeRandomData) {
+    cy.get("a").contains("Home").click();              
+    cy.contains('System Management').click();
+    cy.xpath("/html/body/div/div/div[2]/div/table[5]/thead/tr/th/a/img").click();              
+    cy.contains('Manage ELR Activity Log').click();
+    cy.get("#searchButton").click()
+    cy.xpath("/html/body/div[2]/div[1]/form/div[4]/div/fieldset/table/tbody/tr/td/table/thead/tr/th[7]/img").click();
+    cy.get("#SearchText4").type(fakeRandomData.randomLastName);
+    cy.get("#b2SearchText4").first().click();
+    cy.contains(fakeRandomData.randomLastName).should("be.visible");
+    cy.contains("Successfully Create Notification").should("be.visible");
+  }
+
+  createNotication(string) {
+    cy.get("input[name=createInvestigation]").first().click();
+    cy.get("select[name=ccd]").select(string, { force: true });
+    cy.get("input[name=Submit]").first().click();
+    cy.get('#DEM196').invoke('text', 'Investigation is needed');
+    cy.get("select[id=INV163]").select("Confirmed", { force: true });
+    cy.get("input[name=SubmitTop]").first().click();
+    cy.window().then(win => {
+      win.createNotifications('Comment');
+      return cy.get("#successMessages").contains("A Notification has been created for this Investigation.").scrollIntoView().should("be.visible");
+    });
+  }
 }
 
 export default new UtilityFunctions();
