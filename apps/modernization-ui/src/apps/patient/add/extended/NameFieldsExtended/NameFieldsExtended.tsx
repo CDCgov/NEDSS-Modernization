@@ -249,4 +249,3 @@ export const NameFieldsExtended = ({ coded }: Props) => {
         </div>
     );
 };
-
