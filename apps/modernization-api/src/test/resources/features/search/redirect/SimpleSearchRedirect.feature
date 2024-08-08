@@ -4,7 +4,7 @@ Feature: Searching from the NBS home page
   Background:
     Given I am logged in
 
-  Scenario: Patient simple search parameters are forwarded
+  Scenario: NBS home page search redirects to Patient search
     Given I want a simple search for a "Date Of Birth" of "2000-01-01"
     And I want a simple search for a "First name" of "Firstly"
     And I want a simple search for a "Last name" of "Lastly"
@@ -21,7 +21,7 @@ Feature: Searching from the NBS home page
     And the user Id is present in the redirect
     And the token is present in the redirect
 
-  Scenario Outline: Event simple search parameters are forwarded
+  Scenario Outline: NBS home page search redirects to Investigation and Laboratory search
     Given I want a simple search for a <event-type> with the ID "2783"
     When I perform a search from the NBS Home screen
     Then I am redirected to Advanced Search
@@ -38,7 +38,7 @@ Feature: Searching from the NBS home page
       | Accession Number ID | lab-reports    |
       | Lab ID              | lab-reports    |
 
-  Scenario: I do not have a session id
+  Scenario: NBS home page search is not redirected a user is not logged in
     Given I am not logged in
     And I perform a search from the NBS Home screen
     Then I am not allowed due to insufficient permissions
