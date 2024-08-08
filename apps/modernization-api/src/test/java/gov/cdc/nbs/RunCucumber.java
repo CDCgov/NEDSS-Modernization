@@ -12,7 +12,6 @@ import org.junit.platform.suite.api.Suite;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -35,10 +34,6 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @AutoConfigureMockMvc
 @Testcontainers
 @EmbeddedNbsDatabase
-@EmbeddedKafka(
-    partitions = 1,
-    topics = {"patient"}
-)
 @EnableClassicMockRestServer
 public class RunCucumber {
 
