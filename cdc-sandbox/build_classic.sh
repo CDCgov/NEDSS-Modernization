@@ -15,28 +15,7 @@ fi
 CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
 CLASSIC_VERSION=NBS_6.0.16
 
-clean=false
-
-while getopts ":c" opt; do
-  case $opt in
-    c)
-      clean=true
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      ;;
-  esac
-done
-
-if $clean; then
-  echo "Removing SQL Server and NBS6 containers"
-  docker compose down --volumes wildfly nbs-mssql
-fi
-
-echo "Building SQL Server"
-
-DOCKER_DEFAULT_PLATFORM=linux/amd64 docker compose -f $BASE/docker-compose.yml up nbs-mssql --build -d
-
+./db/build.sh "$@"
 
 echo "Building NBS6 Application"
 

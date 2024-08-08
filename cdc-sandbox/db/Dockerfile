@@ -4,17 +4,18 @@ ARG DB_PW
 
 ENV ACCEPT_EULA=1 \
     SQLCMDPASSWORD=${DB_PW} \
-    SA_PASSWORD=${DB_PW} \
-    INITIALIZE_SCRIPTS=/var/opt/database/restore
-
+    SA_PASSWORD=${DB_PW} 
 USER root
 
 RUN apt-get update \
     && ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev -y 
 
-COPY entrypoint.sh /var/opt/database/entrypoint.sh
 COPY --chown=mssql ./restore /var/opt/database/restore/
 
 USER mssql
 
-ENTRYPOINT ["/bin/bash", "/var/opt/database/entrypoint.sh"]
+# Start the database and execute restore scripts
+RUN /opt/mssql/bin/sqlservr & /var/opt/database/restore/restore.sh
+
+
+ENTRYPOINT [ "/opt/mssql/bin/sqlservr" ]

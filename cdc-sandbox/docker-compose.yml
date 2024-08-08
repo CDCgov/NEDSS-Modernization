@@ -9,7 +9,6 @@ services:
       - 1433:1433
     volumes:
       - nbs-mssql-data:/var/opt/mssql
-      - nbs-mssql-working:/var/opt/database
     environment:
       - ACCEPT_EULA=1
       - SQLCMDPASSWORD=${DATABASE_PASSWORD}
