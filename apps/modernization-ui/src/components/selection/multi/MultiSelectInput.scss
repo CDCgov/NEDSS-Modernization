@@ -1,6 +1,12 @@
 @use 'styles/colors';
 @use 'styles/components';
 
+.multi-select {
+    border-width: 1px;
+    border-style: solid;
+    border-color: colors.$base-dark;
+}
+
 .multi-select-selection__indicator {
     height: 1.25rem;
     width: 1.25rem;
@@ -9,11 +15,8 @@
 }
 
 .multi-select__control {
-    height: unset;
-    min-height: unset !important;
-    max-height: 2.5rem;
-    border-radius: 0 !important;
-    border-color: colors.$base-dark !important;
+    // height: unset;
+    // min-height: unset !important;
 
     .multi-select__indicator {
         color: colors.$base-darker !important;
@@ -58,11 +61,9 @@
 }
 
 .multi-select__compact {
-    @extend %compact-input;
+    @extend %compact;
 
     .multi-select__control {
-        max-height: 2rem;
-
         .multi-select__value-container {
             padding: 0 !important;
 
