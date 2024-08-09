@@ -25,8 +25,10 @@ const PatientSearch = () => {
     const { state } = useLocation();
 
     useEffect(() => {
-        form.reset(state, { keepDefaultValues: true });
-        search({ ...initial, ...state });
+        if (state) {
+            form.reset(state, { keepDefaultValues: true });
+            search({ ...initial, ...state });
+        }
     }, [state, form.reset]);
 
     useEffect(() => {

@@ -23,8 +23,10 @@ const LaboratoryReportSearch = () => {
     const { state } = useLocation();
 
     useEffect(() => {
-        form.reset(state, { keepDefaultValues: true });
-        search(state as LabReportFilterEntry);
+        if (state) {
+            form.reset(state, { keepDefaultValues: true });
+            search(state as LabReportFilterEntry);
+        }
     }, [state, form.reset]);
 
     useEffect(() => {

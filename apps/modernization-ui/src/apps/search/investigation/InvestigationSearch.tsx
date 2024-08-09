@@ -22,8 +22,10 @@ const InvestigationSearch = () => {
     const { state } = useLocation();
 
     useEffect(() => {
-        form.reset(state, { keepDefaultValues: true });
-        search(state as InvestigationFilterEntry);
+        if (state) {
+            form.reset(state, { keepDefaultValues: true });
+            search(state as InvestigationFilterEntry);
+        }
     }, [state, form.reset]);
 
     useEffect(() => {
