@@ -43,7 +43,6 @@ const reducer = (current: State, action: Action): State => {
             return { initial: action.preferences, preferences: action.preferences };
         }
         case 'save': {
-            console.log('saving', current);
             return { ...current, preferences: action.preferences };
         }
         case 'reset': {
