@@ -1,6 +1,6 @@
 import { exists } from 'utils';
 
-type DisplayableAddress = {
+export type DisplayableAddress = {
     address?: string | null;
     address2?: string | null;
     city?: string | null;
