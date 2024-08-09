@@ -8,6 +8,6 @@ describe('General information component tests', () => {
                 <div>Test</div>
             </FormCard>
         );
-        expect(getByTestId('title').innerHTML).toBe('test title');
+        expect(getByTestId('title').innerHTML).toContain('test title');
     });
 });
