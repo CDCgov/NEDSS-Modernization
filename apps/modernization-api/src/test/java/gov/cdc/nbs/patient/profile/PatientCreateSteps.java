@@ -39,13 +39,13 @@ public class PatientCreateSteps {
   @Autowired
   Available<PatientIdentifier> patients;
 
-  @Before("@patient_create")
+  @Before("@patient_profile_create")
   public void reset() {
     this.input.reset();
     this.patients.reset();
   }
 
-  @After("@patient_create")
+  @After("@patient_profile_create")
   public void clean() {
     this.patient.maybeActive().ifPresent(repository::delete);
   }
