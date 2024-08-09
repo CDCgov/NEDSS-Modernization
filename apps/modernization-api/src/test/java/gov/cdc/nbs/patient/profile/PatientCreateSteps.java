@@ -45,6 +45,7 @@ public class PatientCreateSteps {
   public void reset() {
     this.input.reset();
     this.patients.reset();
+    accessDeniedException = null;
   }
 
   @After("@patient_profile_create")
@@ -88,5 +89,7 @@ public class PatientCreateSteps {
   public void i_am_unable_to_create_a_patient() {
     assertThatThrownBy(() -> controller.create(null))
         .isInstanceOf(AccessDeniedException.class);
+    assertThat(accessDeniedException)
+        .hasMessageContaining("Access Denied");
   }
 }
