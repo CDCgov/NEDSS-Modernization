@@ -1,17 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-import { Button, Icon } from '@trussworks/react-uswds';
-import { Patient } from '../Patient';
+import { Icon } from '@trussworks/react-uswds';
+import { DeletePatientMutation, PatientSummary, useDeletePatientMutation } from 'generated/graphql/schema';
 import { useAlert } from 'alert';
-import { formattedName } from 'utils';
+import { displayName } from 'name';
+import { Patient } from 'apps/patient/profile/Patient';
 
 import { Confirmation, Warning } from 'design-system/modal';
+import { Shown, useConditionalRender } from 'conditional-render';
 import { Note } from 'components/Note';
-import { DeletePatientMutation, PatientSummary, useDeletePatientMutation } from 'generated/graphql/schema';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 
-import styles from './delete-patient.module.scss';
-import { useConditionalRender } from 'conditional-render';
-import { displayName } from 'name';
+import { useSearchNavigation } from 'apps/search';
+import { Button } from 'components/button';
 
 type Props = {
     patient: Patient;
@@ -21,16 +20,16 @@ type Props = {
 const DeletePatient = ({ patient, summary }: Props) => {
     const { showSuccess, showError } = useAlert();
 
-    const deletability = resolveDeletability(patient);
+    const { go } = useSearchNavigation();
 
-    const navigate = useNavigate();
+    const deletability = resolveDeletability(patient);
 
     const handleDeleteComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
             showSuccess({
-                message: `Deleted patient ${formattedName(summary?.legalName?.last, summary?.legalName?.first)}`
+                message: `Deleted patient ${(summary.legalName && displayName('short')(summary.legalName)) || patient.shortId}`
             });
-            navigate('/advanced-search');
+            go();
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
             showError({
                 message: 'Delete failed. Please try again later.'
@@ -41,26 +40,23 @@ const DeletePatient = ({ patient, summary }: Props) => {
     const [deletePatient] = useDeletePatientMutation({ onCompleted: handleDeleteComplete });
 
     const handleDeletePatient = () => {
-        if (patient) {
-            deletePatient({
-                variables: {
-                    patient: patient.id
-                }
-            });
-        }
+        deletePatient({
+            variables: {
+                patient: patient.id
+            }
+        });
     };
 
     const { show, hide, render } = useConditionalRender();
 
     return (
         <>
-            <Button className={styles.destructive} type={'button'} onClick={show}>
-                <Icon.Delete size={3} />
+            <Button destructive icon={<Icon.Delete size={3} />} onClick={show}>
                 Delete patient
             </Button>
             {render(
                 <>
-                    {deletability === DeletabilityResult.Deletable && (
+                    <Shown when={deletability === DeletabilityResult.Deletable}>
                         <Confirmation
                             title="Permanently delete patient?"
                             cancelText="No, go back"
@@ -75,8 +71,8 @@ const DeletePatient = ({ patient, summary }: Props) => {
                             )}
                             ,
                         </Confirmation>
-                    )}
-                    {deletability === DeletabilityResult.Has_Associations && (
+                    </Shown>
+                    <Shown when={deletability === DeletabilityResult.Has_Associations}>
                         <Warning title="The patient can not be deleted" onClose={hide}>
                             <Note>
                                 The file cannot be deleted until all associated event records have been deleted. If you
@@ -84,12 +80,12 @@ const DeletePatient = ({ patient, summary }: Props) => {
                                 please contact your system administrator.
                             </Note>
                         </Warning>
-                    )}
-                    {deletability === DeletabilityResult.Is_Inactive && (
+                    </Shown>
+                    <Shown when={deletability === DeletabilityResult.Is_Inactive}>
                         <Warning title="The patient can not be deleted" onClose={hide}>
                             <Note>This patient file is inactive and cannot be deleted.</Note>
                         </Warning>
-                    )}
+                    </Shown>
                 </>
             )}
         </>
