@@ -1,0 +1,1 @@
+export { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResultsTable';

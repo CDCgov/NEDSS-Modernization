@@ -1,33 +1,18 @@
 import { useEffect } from 'react';
-import { LabReport, LabReportPersonParticipation, LabReportOrganizationParticipation } from 'generated/graphql/schema';
+import { LabReport } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
 import { internalizeDate } from 'date';
 import { ClassicLink } from 'classic';
-import { useJurisdictionOptions } from 'options/jurisdictions';
-
-const getPatient = (labReport: LabReport): LabReportPersonParticipation | undefined | null => {
-    return labReport.personParticipations?.find((p) => p?.typeCd === 'PATSBJ');
-};
-
-const getOrderingProviderName = (labReport: LabReport): string | undefined => {
-    const provider = labReport.personParticipations.find((p) => p.typeCd === 'ORD' && p.personCd === 'PRV');
-    if (provider) {
-        return `${provider.firstName} ${provider.lastName}`;
-    } else {
-        return undefined;
-    }
-};
-
-const getReportingFacility = (labReport: LabReport): LabReportOrganizationParticipation | undefined => {
-    return labReport.organizationParticipations.find((o) => o?.typeCd === 'AUT');
-};
-
-const getDescription = (labReport: LabReport): string | undefined => {
-    const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
-
-    return observation && `${observation.cdDescTxt} = ${observation.displayName}`;
-};
+import { Selectable } from 'options';
+import {
+    getPatient,
+    getOrderingProviderName,
+    getReportingFacility,
+    getDescription,
+    getAssociatedInvestigations,
+    getPatientName
+} from 'apps/search/laboratory-report/result';
 
 const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
 const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };
@@ -60,21 +45,17 @@ const preferences: ColumnPreference[] = [
 
 type Props = {
     results: LabReport[];
+    jurisdictionResolver: (value: string) => Selectable | undefined;
 };
 
-const LaboratoryReportSearchResultsTable = ({ results }: Props) => {
-    console.log(results);
+const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: Props) => {
     const { apply, register } = useColumnPreferences();
-    const { resolve: findById } = useJurisdictionOptions();
     const columns: Column<LabReport>[] = [
         {
             ...LEGAL_NAME,
             fixed: true,
             sortable: true,
-            render: (row) => {
-                const patient = getPatient(row);
-                return patient ? `${patient.firstName ?? ''} ${patient.lastName ?? ''}`.trim() || 'N/A' : 'N/A';
-            }
+            render: getPatientName
         },
         {
             ...DATE_OF_BIRTH,
@@ -107,7 +88,7 @@ const LaboratoryReportSearchResultsTable = ({ results }: Props) => {
                 return (
                     <ClassicLink
                         id="condition"
-                        url={`/nbs/api/profile/${patient?.personParentUid}/investigation/${row.id}`}>
+                        url={`/nbs/api/profile/${patient?.personParentUid}/report/lab/${row.id}`}>
                         Lab report
                     </ClassicLink>
                 );
@@ -127,29 +108,19 @@ const LaboratoryReportSearchResultsTable = ({ results }: Props) => {
         },
         {
             ...REPORTING_FACILITY,
-            render: (row) => {
-                return getReportingFacility(row)?.name;
-            }
+            render: getReportingFacility
         },
         {
             ...ORDERING_PROVIDER,
-            render: (row) => {
-                return getOrderingProviderName(row);
-            }
+            render: getOrderingProviderName
         },
         {
             ...JURSIDICTION,
-            render: (row) => {
-                return findById(String(row.jurisdictionCd))?.name;
-            }
+            render: (row) => jurisdictionResolver(String(row.jurisdictionCd))?.name
         },
         {
             ...ASSOCIATED_WITH,
-            render: (row) => {
-                return row.associatedInvestigations
-                    ?.map((investigation) => `${investigation?.localId}\n${investigation?.cdDescTxt}\n`)
-                    .join('\n');
-            }
+            render: getAssociatedInvestigations
         },
         {
             ...LOCAL_ID,

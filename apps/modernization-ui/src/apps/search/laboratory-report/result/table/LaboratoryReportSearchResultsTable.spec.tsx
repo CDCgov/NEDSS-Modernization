@@ -1,139 +1,42 @@
-import { render } from "@testing-library/react";
-import { FindAllJurisdictionsDocument, LabReport } from "generated/graphql/schema";
-import { SearchResultDisplayProvider } from 'apps/search/useSearchResultDisplay';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { ColumnPreferenceProvider } from "design-system/table/preferences";
-import { LaboratoryReportSearchResultsTable } from "./LaboratoryReportSearchResultsTable";
-import { MockedProvider } from "@apollo/react-testing";
+import { LabReport } from 'generated/graphql/schema';
+import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResultsTable';
+import { Selectable } from 'options';
+import { Column } from 'design-system/table';
 
-describe('When InvestigationSearchResultsTable renders', () => {
-    const testResults: LabReport[] = [{
-        "__typename": "LabReport",
-        "addTime": "2015-09-22",
-        "associatedInvestigations": [
-            {
-                "__typename": "AssociatedInvestigation",
-                "cdDescTxt": "Bacterial Vaginosis",
-                "localId": "CAS10001001GA01"
-            },
-            {
-                "__typename": "AssociatedInvestigation",
-                "cdDescTxt": "Bacterial Vaginosis",
-                "localId": "CAS10001001GA01"
-            }
-        ],
-        "id": "10000013",
-        "jurisdictionCd": 130006,
-        "localId": "CAS10000000GA01",
-        "observations": [
-            {
-                "__typename": "Observation",
-                "cdDescTxt": "No Information Given",
-                "statusCd": null,
-                "altCd": null,
-                "displayName": null
-            },
-            {
-                "__typename": "Observation",
-                "cdDescTxt": "11-Desoxycortisol",
-                "statusCd": null,
-                "altCd": "1657-6",
-                "displayName": "abnormal"
-            }
-        ],
-        "organizationParticipations": [
-            {
-                "__typename": "LabReportOrganizationParticipation",
-                "typeCd": "AUT",
-                "name": "Emory University Hospital"
-            }
-        ],
-        "personParticipations": [
-            {
-                "__typename": "LabReportPersonParticipation",
-                "birthTime": "1990-01-01",
-                "currSexCd": "M",
-                "typeCd": "PATSBJ",
-                "firstName": "Surma",
-                "lastName": "Singh",
-                "personCd": "PAT",
-                "personParentUid": 10000001,
-                "shortId": 63000
-            },
-            {
-                "__typename": "LabReportPersonParticipation",
-                "birthTime": "1990-01-01",
-                "currSexCd": "M",
-                "typeCd": "ORD",
-                "firstName": "John",
-                "lastName": "Henry",
-                "personCd": "PRV",
-                "personParentUid": 10000001,
-                "shortId": 63000
-            }
-        ],
-        "relevance": 1
-    }];
-  
-    const response = {
-        request: {
-            query: FindAllJurisdictionsDocument,
-            variables: {}
-        },
-        result: {
-            data: {
-                findAllJurisdictions: [
-                    {
-                        __typename: "Jurisdiction",
-                        id: 130006,
-                        typeCd: "ALL",
-                        assigningAuthorityCd: "GA",
-                        assigningAuthorityDescTxt: "GA State",
-                        codeDescTxt: "Gwinnett County",
-                        codeShortDescTxt: "Gwinnett County",
-                        effectiveFromTime: null,
-                        effectiveToTime: null,
-                        indentLevelNbr: 1,
-                        isModifiableInd: "y",
-                        parentIsCd: null,
-                        stateDomainCd: "13",
-                        statusCd: null,
-                        statusTime: null,
-                        codeSetNm: "S_JURDIC_C",
-                        codeSeqNum: 1,
-                        nbsUid: "13003",
-                        sourceConceptId: null,
-                        codeSystemCd: null,
-                        codeSystemDescTxt: null,
-                        exportInd: null
-                    },
-                ],
-            },
-        },
-    };
-    const Wrapper = () => {
-        return (
-            <MockedProvider mocks={[response]} addTypename={false}>
-                <MemoryRouter>
-                    <SearchResultDisplayProvider>
-                        <ColumnPreferenceProvider>
-                            <LaboratoryReportSearchResultsTable results={testResults} />
-                        </ColumnPreferenceProvider>
-                    </SearchResultDisplayProvider>
-                </MemoryRouter>
-            </MockedProvider>
-        )
-    }
-    
-    it('should display 13 columns, one for colspan', () => {
-        const { container } = render(<Wrapper />);
-        const columns = container.getElementsByTagName('th');
-        expect(columns).toHaveLength(13);
+const mockRegister = jest.fn();
+
+jest.mock('design-system/table/preferences', () => ({
+    useColumnPreferences: () => ({ register: mockRegister, apply: (columns: Column<LabReport>[]) => columns })
+}));
+
+const Wrapper = ({
+    results,
+    jurisdictionResolver = jest.fn()
+}: {
+    results: LabReport[];
+    jurisdictionResolver?: (value: string) => Selectable | undefined;
+}) => {
+    return (
+        <MemoryRouter>
+            <LaboratoryReportSearchResultsTable results={results} jurisdictionResolver={jurisdictionResolver} />
+        </MemoryRouter>
+    );
+};
+
+describe('When a Laboratory Report search result is viewed in a table', () => {
+    it('should register default columns', () => {
+        render(<Wrapper results={[]} />);
+
+        expect(mockRegister).toBeCalled();
     });
 
     it('should display column headers', () => {
-        const { container } = render(<Wrapper />);
-        const columns = container.getElementsByTagName('th');
+        const { getAllByRole } = render(<Wrapper results={[]} />);
+
+        const columns = getAllByRole('columnheader');
+
         expect(columns[0]).toHaveTextContent('Legal name');
         expect(columns[1]).toHaveTextContent('Date of birth');
         expect(columns[2]).toHaveTextContent('Sex');
@@ -147,9 +50,83 @@ describe('When InvestigationSearchResultsTable renders', () => {
         expect(columns[10]).toHaveTextContent('Associated with');
         expect(columns[11]).toHaveTextContent('Local ID');
     });
-    
+
     it('should display column content', () => {
-        const { container } = render(<Wrapper />);
+        const result: LabReport[] = [
+            {
+                __typename: 'LabReport',
+                addTime: '2015-09-22',
+                associatedInvestigations: [
+                    {
+                        __typename: 'AssociatedInvestigation',
+                        cdDescTxt: 'Bacterial Vaginosis',
+                        localId: 'CAS10001001GA01'
+                    },
+                    {
+                        __typename: 'AssociatedInvestigation',
+                        cdDescTxt: 'Bacterial Vaginosis',
+                        localId: 'CAS10001001GA01'
+                    }
+                ],
+                id: '10000013',
+                jurisdictionCd: 130006,
+                localId: 'CAS10000000GA01',
+                observations: [
+                    {
+                        __typename: 'Observation',
+                        cdDescTxt: 'No Information Given',
+                        statusCd: null,
+                        altCd: null,
+                        displayName: null
+                    },
+                    {
+                        __typename: 'Observation',
+                        cdDescTxt: '11-Desoxycortisol',
+                        statusCd: null,
+                        altCd: '1657-6',
+                        displayName: 'abnormal'
+                    }
+                ],
+                organizationParticipations: [
+                    {
+                        __typename: 'LabReportOrganizationParticipation',
+                        typeCd: 'AUT',
+                        name: 'Emory University Hospital'
+                    }
+                ],
+                personParticipations: [
+                    {
+                        __typename: 'LabReportPersonParticipation',
+                        birthTime: '1990-01-01',
+                        currSexCd: 'M',
+                        typeCd: 'PATSBJ',
+                        firstName: 'Surma',
+                        lastName: 'Singh',
+                        personCd: 'PAT',
+                        personParentUid: 10000001,
+                        shortId: 63000
+                    },
+                    {
+                        __typename: 'LabReportPersonParticipation',
+                        birthTime: '1990-01-01',
+                        currSexCd: 'M',
+                        typeCd: 'ORD',
+                        firstName: 'John',
+                        lastName: 'Henry',
+                        personCd: 'PRV',
+                        personParentUid: 10000001,
+                        shortId: 63000
+                    }
+                ],
+                relevance: 1
+            }
+        ];
+
+        const jurisdictionResolver = jest.fn();
+
+        jurisdictionResolver.mockReturnValue({ name: 'Gwinnett County' });
+
+        const { container } = render(<Wrapper results={result} jurisdictionResolver={jurisdictionResolver} />);
         const columns = container.getElementsByTagName('td');
         expect(columns[0]).toHaveTextContent('Surma Singh');
         expect(columns[1]).toHaveTextContent('01/01/1990');
@@ -163,5 +140,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
         expect(columns[9]).toHaveTextContent('Gwinnett County');
         expect(columns[10]).toHaveTextContent('Bacterial Vaginosis');
         expect(columns[11]).toHaveTextContent('CAS10000000GA01');
+
+        expect(jurisdictionResolver).toHaveBeenCalledWith('130006');
     });
 });

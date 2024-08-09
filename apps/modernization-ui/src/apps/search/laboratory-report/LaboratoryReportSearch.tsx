@@ -62,7 +62,12 @@ const LaboratoryReportSearch = () => {
                             )}
                         />
                     )}
-                    resultsAsTable={() => <LaboratoryReportSearchResultsTable results={results?.content ?? []} />}
+                    resultsAsTable={() => (
+                        <LaboratoryReportSearchResultsTable
+                            results={results?.content ?? []}
+                            jurisdictionResolver={findById}
+                        />
+                    )}
                     searchEnabled={form.formState.isValid}
                     onSearch={form.handleSubmit(search)}
                     onClear={reset}
