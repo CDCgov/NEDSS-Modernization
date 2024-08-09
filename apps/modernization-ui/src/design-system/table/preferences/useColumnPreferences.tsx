@@ -37,19 +37,24 @@ type Action =
     | { type: 'save'; preferences: ColumnPreference[] }
     | { type: 'reset' };
 
-const reducer = (current: State, action: Action): State => {
+const reducer = (state: State, action: Action): State => {
+    console.log('state', { state, action: action.type });
     switch (action.type) {
-        case 'register': {
-            return { initial: action.preferences, preferences: action.preferences };
-        }
-        case 'save': {
-            return { ...current, preferences: action.preferences };
-        }
-        case 'reset': {
-            return { ...current, preferences: current.initial };
-        }
+        case 'register':
+            // return a new object with the properties initial and preferences each with a value with a copy of action.preferences
+            return {
+                initial: [...action.preferences],
+                preferences: [...action.preferences]
+            };
+
+        case 'save':
+            return { ...state, preferences: action.preferences };
+
+        case 'reset':
+            return { initial: state.initial, preferences: state.initial };
+
         default:
-            return current;
+            return state;
     }
 };
 
@@ -68,6 +73,7 @@ const ColumnPreferenceProvider = ({ children }: Props) => {
 
     const save = (preferences: ColumnPreference[], search: SearchType) => {
         setSearchType(search);
+        console.log('saving...', state);
         dispatch({ type: 'save', preferences });
     };
 

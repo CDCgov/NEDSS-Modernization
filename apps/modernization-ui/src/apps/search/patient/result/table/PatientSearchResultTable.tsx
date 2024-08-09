@@ -81,14 +81,14 @@ type Props = {
 };
 
 const PatientSearchResultTable = ({ results }: Props) => {
-    const { apply, register } = useColumnPreferences();
+    const { apply, register, save } = useColumnPreferences();
 
     useEffect(() => {
+        register('Patients', preferences);
         const storedPreferences = localStorage.getItem(`PatientsColumnPreferences`);
+
         if (storedPreferences) {
-            register('Patients', JSON.parse(storedPreferences));
-        } else {
-            register('Patients', preferences);
+            save(JSON.parse(storedPreferences), 'Patients');
         }
     }, []);
 

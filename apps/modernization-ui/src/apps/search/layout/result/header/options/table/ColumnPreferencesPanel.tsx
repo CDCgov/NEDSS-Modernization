@@ -20,13 +20,13 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save, searchType } = useColumnPreferences();
+    const { preferences, save, searchType, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
 
     useEffect(() => {
-        setPending(preferences);
-    }, [preferences]);
+        setPending(preferences.map((x) => ({ ...x })));
+    }, [JSON.stringify(preferences)]);
 
     const handleVisibilityChange = (preference: ColumnPreference) => (visible: boolean) => {
         setPending((current) => {
@@ -54,6 +54,12 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
         close();
         // save pending to local storage
         localStorage.setItem(`${searchType}ColumnPreferences`, JSON.stringify(pending));
+    };
+
+    const handleReset = () => {
+        reset();
+        close();
+        localStorage.removeItem(`${searchType}ColumnPreferences`);
     };
 
     return (
@@ -99,6 +105,9 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                 </Droppable>
             </DragDropContext>
             <footer>
+                <Button unstyled onClick={handleReset} className={styles.resetButton}>
+                    Reset
+                </Button>
                 <Button type="button" id="save-column-preferences" outline onClick={handleSave}>
                     Save columns
                 </Button>

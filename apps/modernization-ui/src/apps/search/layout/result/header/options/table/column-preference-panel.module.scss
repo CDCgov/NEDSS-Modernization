@@ -2,8 +2,6 @@
 @use 'styles/borders';
 
 .panel {
-    width: 14.3125rem;
-
     display: flex;
     flex-direction: column;
 
@@ -33,8 +31,9 @@
         display: flex;
         justify-content: center;
         padding: 1.5rem;
-        button {
-            margin: 0;
+        .resetButton {
+            margin-right: 1rem;
+            text-decoration: none !important;
         }
     }
 }

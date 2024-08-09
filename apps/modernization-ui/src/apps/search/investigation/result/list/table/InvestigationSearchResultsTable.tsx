@@ -166,7 +166,7 @@ const InvestigationSearchResultsTable = ({ results }: Props) => {
     const { apply, register } = useColumnPreferences();
 
     useEffect(() => {
-        register('Patients', preferences);
+        register('Investigations', preferences);
     }, []);
 
     return <DataTable<Investigation> id="patient-search-results" columns={apply(columns)} data={results} />;
