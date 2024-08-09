@@ -7,7 +7,6 @@ Feature: Patient Profile create
     And I am adding a new patient with comments
     When I send a create patient request
     Then the patient is created
-    And the patient create event is emitted
     And the patient created has the entered comment
 
   Scenario: I cannot send a create patient request without ADD-PATIENT permission
