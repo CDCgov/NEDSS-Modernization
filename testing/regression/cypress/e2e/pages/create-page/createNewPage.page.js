@@ -36,9 +36,7 @@ class CreateNewPagePage {
 
     selectCondition() {
         this.selectEventType()
-        cy.get("#conditionIds").click()
-        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
-        cy.get('.multi-select__option--is-focused').click();
+        cy.get("#conditionIds").click({ force: true })
     }
     selectPageName() {
         this.selectEventType()
@@ -49,7 +47,7 @@ class CreateNewPagePage {
     selectTemplate() {
         this.selectEventType()
         cy.wait(500)
-        cy.get('#templateId').find('option').eq(1).then((option) => {
+        cy.get('#templateId').find('option').eq(2).then((option) => {
             cy.get('#templateId').select(option.attr('value'))
         })
     }
