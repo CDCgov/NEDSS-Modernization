@@ -29,7 +29,7 @@ public class PatientCreateController {
   private final PatientCreator creator;
   private final PatientIndexer indexer;
 
-  @PostMapping("created")
+  @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
   public PatientIdentifier create(@RequestBody NewPatientAdministrative adminInput) {
     var user = SecurityUtil.getUserDetails();
@@ -41,5 +41,4 @@ public class PatientCreateController {
     this.indexer.index(created.id());
     return created;
   }
-
 }
