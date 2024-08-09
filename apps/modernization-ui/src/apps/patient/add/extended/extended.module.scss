@@ -1,0 +1,23 @@
+@use 'styles/colors';
+
+.sidebar {
+    background: colors.$base-white;
+    border-right: 1px solid colors.$base-lightest;
+}
+
+.page-title-bar {
+    background: colors.$base-white;
+    min-height: 78px;
+    font-family: sans-serif;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid colors.$base-lightest;
+}
+
+.flexBox {
+    display: flex;
+    align-items: center;
+
+    label {
+        font-weight: 600;
+    }
+}
