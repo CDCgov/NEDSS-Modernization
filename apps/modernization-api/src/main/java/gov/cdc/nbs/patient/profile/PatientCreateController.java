@@ -17,7 +17,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
-import gov.cdc.nbs.patient.profile.administrative.PatientAdministrative;;
+import gov.cdc.nbs.patient.profile.administrative.PatientAdministrative;
 
 
 @Slf4j

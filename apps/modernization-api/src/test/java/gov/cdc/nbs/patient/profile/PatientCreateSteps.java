@@ -39,6 +39,8 @@ public class PatientCreateSteps {
   @Autowired
   Available<PatientIdentifier> patients;
 
+  private AccessDeniedException accessDeniedException;
+
   @Before("@patient_profile_create")
   public void reset() {
     this.input.reset();
@@ -66,6 +68,7 @@ public class PatientCreateSteps {
       repository.findById(created.id()).ifPresent(patient::active);
 
     } catch (AccessDeniedException e) {
+      accessDeniedException = e;
     }
   }
 
