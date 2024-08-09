@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.config.security.SecurityUtil;
-import gov.cdc.nbs.message.patient.input.AdministrativeInput;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.create.PatientCreator;
