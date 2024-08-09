@@ -1,7 +1,7 @@
 package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patient.profile.administrative.PatientAdministrative;
+import gov.cdc.nbs.patient.profile.administrative.NewPatientAdministrative;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -34,7 +34,7 @@ public class PatientCreateSteps {
   Active<Person> patient;
 
   @Autowired
-  Active<PatientAdministrative> input;
+  Active<NewPatientAdministrative> input;
 
   @Autowired
   Available<PatientIdentifier> patients;
@@ -55,8 +55,8 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with comments")
   public void i_am_adding_a_new_patient() {
-    PatientAdministrative newPatient =
-        new PatientAdministrative(1L, 2L, (short) 3, RandomUtil.getRandomDateInPast(), "abc");
+    NewPatientAdministrative newPatient =
+        new NewPatientAdministrative(RandomUtil.getRandomDateInPast(), "abc");
     this.input.active(newPatient);
   }
 
@@ -76,7 +76,7 @@ public class PatientCreateSteps {
   @Then("the patient created has the entered comment")
   public void the_patient_created_has_the_entered_comment() {
     Person actual = patient.active();
-    PatientAdministrative expected = this.input.active();
+    NewPatientAdministrative expected = this.input.active();
 
     assertThat(actual)
         .returns(expected.asOf(), Person::getAsOfDateAdmin)

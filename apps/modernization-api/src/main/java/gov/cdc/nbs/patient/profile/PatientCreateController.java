@@ -17,8 +17,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
 import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
-import gov.cdc.nbs.patient.profile.administrative.PatientAdministrative;
-
+import gov.cdc.nbs.patient.profile.administrative.NewPatientAdministrative;
 
 @Slf4j
 @RestController
@@ -32,7 +31,7 @@ public class PatientCreateController {
 
   @PostMapping("created")
   @ResponseStatus(HttpStatus.CREATED)
-  public PatientIdentifier create(@RequestBody PatientAdministrative adminInput) {
+  public PatientIdentifier create(@RequestBody NewPatientAdministrative adminInput) {
     var user = SecurityUtil.getUserDetails();
     RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
     PatientInput input = new PatientInput();
