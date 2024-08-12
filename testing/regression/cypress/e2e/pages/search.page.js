@@ -17,24 +17,24 @@ class SearchPage {
   }
 
   enterCity(city) {
-    cy.get("#city").type(city);
+    cy.get("#city").type(city,{force: true});
   }
 
   enterZipCode(zip) {
-    cy.get("#zip").type(zip);
-    cy.get("#city").click();
+    cy.get("#zip").type(zip,{force: true});
+    cy.get("#city").click({force: true});
   }
 
   enterStreetAddress(address) {
-    cy.get("#address").type(address);
+    cy.get("#address").type(address,{force: true});
   }
 
   enterPhone(phone) {
-    cy.get("#homePhone").type(phone);
+    cy.get("#homePhone").type(phone,{force: true});
   }
 
   enterEmail(email) {
-    cy.get("#email").type(email);
+    cy.get("#email").type(email, {force: true});
   }
 
   selectId() {
