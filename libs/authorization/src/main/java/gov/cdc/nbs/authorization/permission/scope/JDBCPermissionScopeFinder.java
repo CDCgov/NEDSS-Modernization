@@ -16,7 +16,7 @@ class JDBCPermissionScopeFinder implements PermissionScopeFinder {
     private static final String QUERY = """
         select
                 [role].role_guest_ind                                           as [shared_only],
-                (100000 * [jurisdiction].[nbs_uid]) + [program_area].[nbs_uid]  as [oid]
+                (CAST(100000 as bigint) * [jurisdiction].[nbs_uid]) + [program_area].[nbs_uid]  as [oid]
         from     auth_user [user]
                 join auth_user_role [role] on
                         [role].auth_user_uid=[user].auth_user_uid
