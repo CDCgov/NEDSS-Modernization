@@ -31,13 +31,17 @@ public sealed interface ModernizedPatientProfileRedirect {
         .build();
   }
 
-  record ForPatient(long identifier) implements ModernizedPatientProfileRedirect {
+  record ForPatient(long identifier, String tab) implements ModernizedPatientProfileRedirect {
+
+    ForPatient(long identifier) {
+      this(identifier, "demographics");
+    }
 
     @Override
     public ResponseEntity<Void> redirect() {
       URI uri = UriComponentsBuilder.fromPath("/")
-          .path("patient-profile/{identifier}")
-          .buildAndExpand(identifier())
+          .path("patient-profile/{identifier}/{tab}")
+          .buildAndExpand(identifier(), tab())
           .toUri();
 
       return redirectTo(uri);

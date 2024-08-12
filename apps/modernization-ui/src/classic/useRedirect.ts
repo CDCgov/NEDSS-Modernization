@@ -21,9 +21,7 @@ const reducer = (_state: Redirect, action: Action): Redirect => {
     }
 };
 
-const resolveRedirect = (url: string) => {
-    return fetch(url).then((response) => response.headers.get('Location'));
-};
+const resolveRedirect = (url: string) => fetch(url).then((response) => response.headers.get('Location'));
 
 type Props = {
     destination?: Destination;
@@ -53,13 +51,13 @@ const useRedirect = ({ destination = 'current' }: Props) => {
     };
 };
 
+export { useRedirect };
+
 const navigateTo = (location: string) => (window.location.href = location);
 
 const openWindow = (location: string) => {
     window.open(location, '_blank', 'noreferrer');
 };
-
-export { useRedirect };
 
 const navigate = (destination: Destination, location: string) => {
     if (location) {
