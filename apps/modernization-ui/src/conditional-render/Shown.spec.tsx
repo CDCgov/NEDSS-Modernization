@@ -9,14 +9,31 @@ describe('Shown', () => {
     });
 
     it('should render children', () => {
-        const { queryByText } = render(<Shown when={true}>Content</Shown>);
+        const { queryByText } = render(
+            <Shown when={true}>
+                <p>Content</p>
+            </Shown>
+        );
 
-        expect(queryByText('Content')).toBeInTheDocument();
+        const content = queryByText('Content');
+
+        expect(content).toBeInTheDocument();
     });
 
     it('should not render children', () => {
         const { queryByText } = render(<Shown when={false}>Content</Shown>);
 
         expect(queryByText('Content')).not.toBeInTheDocument();
+    });
+
+    it('should render the fallback when children not shown', () => {
+        const { queryByText } = render(
+            <Shown when={false} fallback="Fallback">
+                Content
+            </Shown>
+        );
+
+        expect(queryByText('Content')).not.toBeInTheDocument();
+        expect(queryByText('Fallback')).toBeInTheDocument();
     });
 });
