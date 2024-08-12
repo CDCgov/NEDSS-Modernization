@@ -95,7 +95,7 @@ public class PatientSearchVerificationSteps {
       case "county" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].county", position);
       case "country" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].country", position);
       case "zip" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].zipcode", position);
-      case "gender" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
+      case "gender", "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
       case "legal first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.first", position);
@@ -104,15 +104,20 @@ public class PatientSearchVerificationSteps {
       case "legal name suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.suffix", position);
       case "phone number" -> jsonPath(
           "$.data.findPatientsByFilter.content[%s].phones[*]",
-          position);
+          position
+      );
       case "email", "email address" -> jsonPath(
           "$.data.findPatientsByFilter.content[%s].emails[*]",
-          position);
-      case "identification type" -> jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].type",
-          position);
-      case "identification value" -> jsonPath("$.data.findPatientsByFilter.content[%s].identification[*].value",
-          position);
-      case "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
+          position
+      );
+      case "identification type" -> jsonPath(
+          "$.data.findPatientsByFilter.content[%s].identification[*].type",
+          position
+      );
+      case "identification value" -> jsonPath(
+          "$.data.findPatientsByFilter.content[%s].identification[*].value",
+          position
+      );
       case "local id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
@@ -120,8 +125,7 @@ public class PatientSearchVerificationSteps {
 
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
-      case "birthday" -> equalTo(value);
-      case "sex" -> equalTo(value);
+      case "birthday", "sex" -> equalTo(value);
       case "local id" -> equalTo(Integer.parseInt(value));
       case "status" -> hasItem(PatientStatusCriteriaResolver.resolve(value).name());
       default -> hasItem(value);
@@ -135,7 +139,7 @@ public class PatientSearchVerificationSteps {
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
                 String.valueOf(this.patient.active().id()))
-                    .exists());
+                .exists());
   }
 
   @Then("the patient is not in the search result(s)")
@@ -145,7 +149,7 @@ public class PatientSearchVerificationSteps {
             jsonPath(
                 "$.data.findPatientsByFilter.content[?(@.patient=='%s')]",
                 String.valueOf(this.patient.active().id()))
-                    .doesNotExist());
+                .doesNotExist());
   }
 
   @Then("there is only one patient search result")

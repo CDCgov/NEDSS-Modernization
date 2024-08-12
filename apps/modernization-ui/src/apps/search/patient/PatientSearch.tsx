@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
@@ -8,12 +9,12 @@ import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { NoPatientResults } from './result/none';
 import { PatientSearchResultTable } from './result/table';
-import { Term, useSearchResultDisplay } from '../useSearchResultDisplay';
+import { Term, useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 
 import { PatientSearchActions } from './PatientSearchActions';
 
 const PatientSearch = () => {
-    const methods = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
+    const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues: initial,
         mode: 'onBlur'
     });
@@ -21,27 +22,36 @@ const PatientSearch = () => {
     const { status, search, reset, results } = usePatientSearch();
     const { terms } = useSearchResultDisplay();
 
+    const { state } = useLocation();
+
+    useEffect(() => {
+        if (state) {
+            form.reset(state, { keepDefaultValues: true });
+            search({ ...initial, ...state });
+        }
+    }, [state, form.reset]);
+
     useEffect(() => {
         if (status === 'resetting') {
-            methods.reset();
+            form.reset();
         }
-    }, [methods.reset, status]);
+    }, [form.reset, status]);
 
     const handleRemoveTerm = (term: Term) => {
-        const formValues = methods.getValues();
+        const formValues = form.getValues();
         const fieldNames = Object.keys(formValues);
 
         const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
         if (matchingField && terms.length > 1) {
-            methods.resetField(matchingField as keyof PatientCriteriaEntry);
-            search(methods.getValues());
+            form.resetField(matchingField as keyof PatientCriteriaEntry);
+            search(form.getValues());
         } else {
             reset();
         }
     };
 
     return (
-        <FormProvider {...methods}>
+        <FormProvider {...form}>
             <SearchLayout
                 onRemoveTerm={handleRemoveTerm}
                 actions={() => <PatientSearchActions />}
@@ -53,8 +63,8 @@ const PatientSearch = () => {
                     />
                 )}
                 resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
-                searchEnabled={methods.formState.isValid}
-                onSearch={methods.handleSubmit(search)}
+                searchEnabled={form.formState.isValid}
+                onSearch={form.handleSubmit(search)}
                 noResults={() => <NoPatientResults />}
                 onClear={reset}
             />

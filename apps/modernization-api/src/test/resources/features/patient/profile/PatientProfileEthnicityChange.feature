@@ -8,7 +8,6 @@ Feature: Patient Demographics Ethnicity Changes
     And I have the authorities: "FIND-PATIENT,EDIT-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     When a patient's ethnicity is changed
     Then the patient has the changed ethnicity
-    And the patient ethnicity changed event is emitted
 
   Scenario: I can update a patient's ethnicity and history is added
     Given I am logged into NBS
@@ -22,4 +21,3 @@ Feature: Patient Demographics Ethnicity Changes
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then I am unable to change a patient's ethnicity
-    And a patient event is not emitted

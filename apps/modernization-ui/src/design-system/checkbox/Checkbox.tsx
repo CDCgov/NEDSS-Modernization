@@ -14,7 +14,6 @@ const Checkbox = ({ id, label, className, selected = false, onChange, ...inputPr
     return (
         <div className={classNames(styles.checkbox, className)} aria-checked={selected}>
             <input
-                className={styles.input}
                 id={id}
                 type="checkbox"
                 checked={selected}

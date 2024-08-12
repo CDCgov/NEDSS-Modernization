@@ -83,9 +83,6 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                             ref={draggable.innerRef}
                                             {...draggable.draggableProps}
                                             className={styles.preference}>
-                                            <span className={styles.handle} {...draggable.dragHandleProps}>
-                                                <Icon name="drag" />
-                                            </span>
                                             <Checkbox
                                                 id={`${preference.id}_visible`}
                                                 name={preference.id}
@@ -95,6 +92,9 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                                 selected={!preference.hidden}
                                                 onChange={handleVisibilityChange(preference)}
                                             />
+                                            <span className={styles.handle} {...draggable.dragHandleProps}>
+                                                <Icon name="drag" />
+                                            </span>
                                         </div>
                                     )}
                                 </Draggable>

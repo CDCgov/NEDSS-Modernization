@@ -63,8 +63,24 @@ public final class LabReportFilter implements EventFilter {
 
 
   public enum LaboratoryEventIdType {
-    ACCESSION_NUMBER,
-    LAB_ID;
+    ACCESSION_NUMBER("ACCESSION_NUMBER", "Accession Number"),
+    LAB_ID("LAB_ID", "Lab Id");
+
+    private final String value;
+    private final String display;
+
+    LaboratoryEventIdType(final String value, final String display) {
+      this.value = value;
+      this.display = display;
+    }
+
+    public String value() {
+      return value;
+    }
+
+    public String display() {
+      return display;
+    }
   }
 
 

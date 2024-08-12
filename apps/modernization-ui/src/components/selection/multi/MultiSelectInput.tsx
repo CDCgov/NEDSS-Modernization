@@ -3,9 +3,8 @@ import ReactSelect, { MultiValue } from 'react-select';
 import { mapNonNull } from 'utils';
 import { Selectable, asSelectable, asValue as asSelectableValue } from 'options';
 import { EntryWrapper } from 'components/Entry';
-import { CheckboxOption } from 'design-system/select/multi';
 
-import { theme } from 'design-system/select/multi/theme';
+import { theme, styles, CheckboxOption } from 'design-system/select/multi';
 
 import './MultiSelectInput.scss';
 
@@ -79,11 +78,13 @@ export const MultiSelectInput = ({
             error={error}>
             <ReactSelect<Selectable, true>
                 theme={theme}
+                styles={styles}
                 isMulti
                 id={id}
                 name={name}
                 value={selectedOptions}
                 placeholder={placeholder}
+                className={'multi-select'}
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}

@@ -43,12 +43,16 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
         terms.push(fromSelectable('updatedBy', 'LAST UPDATED BY')(entry.updatedBy));
     }
 
-    if (entry.providerType) {
-        terms.push(fromSelectable('providerType', 'ENTITY TYPE')(entry.providerType));
+    if (entry.orderingFacility) {
+        terms.push(fromSelectable('orderingFacility', 'ORDERING FACILITY')(entry.orderingFacility));
     }
 
-    if (entry.orderingFacility) {
-        terms.push(fromSelectable('orderingFacility', 'ENTITY ID')(entry.orderingFacility));
+    if (entry.orderingProvider) {
+        terms.push(fromSelectable('orderingProvider', 'ORDERING PROVIDER')(entry.orderingProvider));
+    }
+
+    if (entry.reportingFacility) {
+        terms.push(fromSelectable('reportingFacility', 'REPORTING FACILITY')(entry.reportingFacility));
     }
 
     if (entry.codedResult) {

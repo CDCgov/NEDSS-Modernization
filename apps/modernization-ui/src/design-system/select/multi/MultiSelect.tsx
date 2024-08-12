@@ -4,7 +4,7 @@ import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, asValue as asSelectableValue } from 'options';
 import classNames from 'classnames';
 
-import { theme } from 'design-system/select/multi/theme';
+import { styles, theme } from 'design-system/select/multi';
 import { CheckboxOption } from './CheckboxOption';
 
 type MultiSelectProps = {
@@ -66,6 +66,7 @@ export const MultiSelect = ({
             error={error}>
             <Select<Selectable, true>
                 theme={theme}
+                styles={styles}
                 isMulti
                 id={id}
                 name={name}
@@ -75,7 +76,7 @@ export const MultiSelect = ({
                 onBlur={onBlur}
                 placeholder={placeholder}
                 isDisabled={disabled}
-                className={classNames({ 'multi-select__compact': sizing === 'compact' })}
+                className={classNames('multi-select', { 'multi-select__compact': sizing === 'compact' })}
                 classNamePrefix="multi-select"
                 hideSelectedOptions={false}
                 closeMenuOnSelect={false}

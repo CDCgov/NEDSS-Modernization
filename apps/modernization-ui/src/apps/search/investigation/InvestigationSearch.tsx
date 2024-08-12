@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 import { Investigation } from 'generated/graphql/schema';
 import { useConceptOptions } from 'options/concepts';
 import { findByValue } from 'options';
@@ -17,13 +18,23 @@ const InvestigationSearch = () => {
     });
 
     const { status, search, reset, results } = useInvestigationSearch();
-    const { terms } = useSearchResultDisplay();
+
+    const { state } = useLocation();
+
+    useEffect(() => {
+        if (state) {
+            form.reset(state, { keepDefaultValues: true });
+            search(state as InvestigationFilterEntry);
+        }
+    }, [state, form.reset]);
 
     useEffect(() => {
         if (status === 'resetting') {
             form.reset();
         }
     }, [form.reset, status]);
+
+    const { terms } = useSearchResultDisplay();
 
     const handleRemoveTerm = (term: Term) => {
         const formValues = form.getValues();
