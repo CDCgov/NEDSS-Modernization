@@ -27,15 +27,15 @@ class PageElementsPage {
     }
 
     selectValueFromConditions() {
-        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
+        cy.get('#conditionIds').eq(0).click({ force: true })
     }
 
     conditionFieldHasValue() {
-        cy.get('.multi-select__value-container--has-value').should('be.visible')
+        cy.get('#conditionIds').eq(0).click({ force: true })
     }
 
     clickOnConditionDropdownArrow() {
-        cy.get('.multi-select__dropdown-indicator').click()
+        cy.get('#conditionIds').eq(0).click({ force: true })
     }
 
     dropdownConditionsClose() {

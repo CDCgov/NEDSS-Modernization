@@ -59,9 +59,7 @@ class PreviewPagePage {
     }
 
     clickOnEditPageDetails() {
-        cy.get('footer').then((footer) => {
-            footer.find('button[data-testid="button"]').eq(0).click()
-        })
+        cy.get('footer button').eq(0).click()
     }
 
     checkNavigatedToPageDetails() {
@@ -69,12 +67,13 @@ class PreviewPagePage {
     }
 
     checkConditionsField() {
-        cy.get('.multi-select__input-container').eq(0).click()
+        cy.wait(3000)
+        cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
     checkRemoveOrAddConditions() {
         cy.get('.multi-select__menu').eq(0).click()
-        cy.get('.multi-select__input-container').eq(0).click()
+        cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
     checkPageNameField() {

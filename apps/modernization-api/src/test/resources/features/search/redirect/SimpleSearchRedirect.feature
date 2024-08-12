@@ -38,7 +38,8 @@ Feature: Searching from the NBS home page
       | Accession Number ID | lab-reports    |
       | Lab ID              | lab-reports    |
 
-  Scenario: NBS home page search is not redirected a user is not logged in
+  Scenario: NBS home page search is not redirected when a user is not logged in
     Given I am not logged in
+    And I want a simple search for a "First name" of "Firstly"
     And I perform a search from the NBS Home screen
     Then I am not allowed due to insufficient permissions

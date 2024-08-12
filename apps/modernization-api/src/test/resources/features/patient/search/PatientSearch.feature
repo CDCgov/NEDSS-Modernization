@@ -21,6 +21,12 @@ Feature: Patient Search
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: Patient search does not fail when the Patient ID is blank (BUG CNFT1-2861)
+    Given patients are available for search
+    And I add the patient criteria for a "Patient ID" equal to ""
+    When I search for patients
+    Then the patient is in the search results
+
   Scenario: I can find patients with active record status
     Given I have another patient
     And the patient is inactive
