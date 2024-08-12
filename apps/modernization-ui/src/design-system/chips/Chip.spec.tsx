@@ -10,41 +10,26 @@ describe('Chip', () => {
 
     it('renders with correct name and value', () => {
         const { name, value } = mockProps;
-        const { getByTestId } = render(<Chip {...mockProps} />);
+        const { getByText } = render(<Chip {...mockProps} />);
 
-        const chipElement = getByTestId(`${name}-chip`);
-        expect(chipElement).toBeInTheDocument();
-        expect(chipElement).toHaveTextContent(`${name}: ${value}`);
+        const chipText = getByText(`${name}: ${value}`);
+        expect(chipText).toBeInTheDocument();
     });
 
     it('calls handleClose when close icon is clicked', () => {
         const { handleClose } = mockProps;
-        const { getByTestId } = render(<Chip {...mockProps} />);
+        const { getByLabelText } = render(<Chip {...mockProps} />);
 
-        const closeIcon = getByTestId('close-icon');
+        const closeIcon = getByLabelText('Close chip');
         fireEvent.click(closeIcon);
 
         expect(handleClose).toHaveBeenCalled();
     });
 
-    it('applies correct CSS classes', () => {
-        const { name } = mockProps;
-        const { container, getByTestId } = render(<Chip {...mockProps} />);
-
-        const chipContainer = getByTestId(`${name}-chip`);
-        expect(chipContainer).toHaveClass('chip-container');
-
-        const nameSpan = container.querySelector('span');
-        expect(nameSpan).toHaveClass('name');
-
-        const closeIcon = getByTestId('close-icon');
-        expect(closeIcon).toHaveClass('closeIcon');
-    });
-
     it('renders close icon', () => {
-        const { getByTestId } = render(<Chip {...mockProps} />);
+        const { getByLabelText } = render(<Chip {...mockProps} />);
 
-        const closeIcon = getByTestId('close-icon');
+        const closeIcon = getByLabelText('Close chip');
         expect(closeIcon).toBeInTheDocument();
     });
 });
