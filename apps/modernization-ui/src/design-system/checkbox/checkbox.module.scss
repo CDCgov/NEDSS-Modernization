@@ -17,6 +17,9 @@
         line-height: 1.25rem;
         user-select: none;
 
+        width: auto;
+        display: inline-block;
+
         &::before {
             content: ' ';
             display: block;
