@@ -16,6 +16,10 @@ public sealed interface ModernizedPatientProfileRedirect {
     return new ForPatient(incoming.identifier());
   }
 
+  static ModernizedPatientProfileRedirect forPatient(final IncomingPatient incoming, final String tab) {
+    return new ForPatient(incoming.identifier(), tab);
+  }
+
   static ModernizedPatientProfileRedirect fallback() {
     return new Fallback();
   }
@@ -34,7 +38,7 @@ public sealed interface ModernizedPatientProfileRedirect {
   record ForPatient(long identifier, String tab) implements ModernizedPatientProfileRedirect {
 
     ForPatient(long identifier) {
-      this(identifier, "demographics");
+      this(identifier, "summary");
     }
 
     @Override

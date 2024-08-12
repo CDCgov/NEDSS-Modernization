@@ -1,11 +1,8 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
-import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.Optional;
 
 @Component
 public class ModernizedPatientProfileRedirectResolver {
@@ -15,7 +12,8 @@ public class ModernizedPatientProfileRedirectResolver {
 
   ModernizedPatientProfileRedirectResolver(
       final IncomingPatientResolver incoming,
-      final RequestedIncomingPatientResolver requested) {
+      final RequestedIncomingPatientResolver requested
+  ) {
     this.incoming = incoming;
     this.requested = requested;
   }
@@ -27,18 +25,24 @@ public class ModernizedPatientProfileRedirectResolver {
    * @return A {@link ResponseEntity} that redirects to the Modernized Patient Profile
    */
   public ResponseEntity<Void> fromReturnPatient(final HttpServletRequest request) {
-    return resolve(incoming.from(request)).redirect();
+    return incoming.from(request)
+        .map(ModernizedPatientProfileRedirect::forPatient)
+        .orElse(ModernizedPatientProfileRedirect.fallback())
+        .redirect();
   }
 
   /**
    * Resolves a redirect to the Modernized Patient Profile using the identifier from the {@code Return-Patient} cookie.
    *
    * @param request The incoming Patient Profile Request
-   * @param tab     The tab within the patient profile to redirect to.
+   * @param tab     The tab within the Patient Profile to show
    * @return A {@link ResponseEntity} that redirects to the Modernized Patient Profile
    */
   public ResponseEntity<Void> fromReturnPatient(final HttpServletRequest request, final String tab) {
-    return resolve(incoming.from(request)).redirect();
+    return incoming.from(request)
+        .map(resolved -> ModernizedPatientProfileRedirect.forPatient(resolved, tab))
+        .orElse(ModernizedPatientProfileRedirect.fallback())
+        .redirect();
   }
 
   /**
@@ -49,14 +53,10 @@ public class ModernizedPatientProfileRedirectResolver {
    * @return A {@link ResponseEntity} that redirects to the Modernized Patient Profile
    */
   ResponseEntity<Void> fromPatientParameters(final HttpServletRequest request) {
-    return resolve(requested.from(request)).redirect();
-  }
-
-  private ModernizedPatientProfileRedirect resolve(final Optional<IncomingPatient> incoming) {
-    return incoming
+    return requested.from(request)
         .map(ModernizedPatientProfileRedirect::forPatient)
-        .orElse(ModernizedPatientProfileRedirect.fallback());
-
+        .orElse(ModernizedPatientProfileRedirect.fallback())
+        .redirect();
   }
 
 }

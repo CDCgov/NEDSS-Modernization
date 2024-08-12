@@ -12,30 +12,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class PatientProfileReturningRedirector {
 
-    private final ModernizedPatientProfileRedirectResolver resolver;
+  private final ModernizedPatientProfileRedirectResolver resolver;
 
-    PatientProfileReturningRedirector(final ModernizedPatientProfileRedirectResolver resolver) {
-        this.resolver = resolver;
-    }
+  PatientProfileReturningRedirector(final ModernizedPatientProfileRedirectResolver resolver) {
+    this.resolver = resolver;
+  }
 
-    @PostMapping(
-        value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
-    )
-    ResponseEntity<Void> redirectPatientProfileReturnPOST(
-        final HttpServletRequest request,
-        @PathVariable(required = false) final String tab
-    ) {
-        return resolver.fromReturnPatient(request);
-    }
+  @PostMapping(
+      value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
+  )
+  ResponseEntity<Void> redirectPatientProfileReturnPOST(
+      final HttpServletRequest request,
+      @PathVariable(required = false) final String tab
+  ) {
+    return resolver.fromReturnPatient(request, tab);
+  }
 
-    @GetMapping(
-        value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
-    )
-    ResponseEntity<Void> redirectPatientProfileReturnGet(
-        final HttpServletRequest request,
-        @PathVariable(required = false) final String tab
-    ) {
-        return resolver.fromReturnPatient(request);
-    }
+  @GetMapping(
+      value = {"/nbs/redirect/patientProfile/return", "/nbs/redirect/patientProfile/{tab}/return"}
+  )
+  ResponseEntity<Void> redirectPatientProfileReturnGet(
+      final HttpServletRequest request,
+      @PathVariable(required = false) final String tab
+  ) {
+    return resolver.fromReturnPatient(request, tab);
+  }
 
 }
