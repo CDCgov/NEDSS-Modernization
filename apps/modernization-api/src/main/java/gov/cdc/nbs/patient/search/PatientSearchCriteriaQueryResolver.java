@@ -67,10 +67,14 @@ class PatientSearchCriteriaQueryResolver {
     if (criteria.getId() != null) {
       String shortOrLongIdStripped = criteria.getId().strip();
 
+      if (shortOrLongIdStripped.isEmpty()) {
+        return Optional.empty();
+      }
+
       if (Character.isDigit(shortOrLongIdStripped.charAt(0))) {
-        //  This may be a short id, resolve the local id and then search for it
+        // This may be a short id, resolve the local id and then search for it
         try {
-          long shortId = Long.parseLong(criteria.getId());
+          long shortId = Long.parseLong(shortOrLongIdStripped);
 
           String localId = resolver.resolve(shortId);
 
@@ -80,7 +84,7 @@ class PatientSearchCriteriaQueryResolver {
           // skip these criteria. it's not a short id or long id
         }
       } else {
-        return applyLocalId(criteria.getId());
+        return applyLocalId(shortOrLongIdStripped);
       }
     }
 
@@ -216,7 +220,6 @@ class PatientSearchCriteriaQueryResolver {
                       query -> query.wildcard(
                           wildcard -> wildcard.field("phone.telephoneNbr")
                               .value(WildCards.contains(number))))));
-
 
     }
 
