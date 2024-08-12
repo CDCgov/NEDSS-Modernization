@@ -10,11 +10,11 @@ type ChipProps = {
 
 const Chip = ({ name, value, handleClose }: ChipProps) => {
     return (
-        <div className={classNames(styles['chip-container'])} data-testid={`${name}-chip`}>
+        <div className={classNames(styles['chip-container'])}>
             <span className={styles.name}>
                 {name}: {value}
             </span>
-            <Icon.Close data-testid="close-icon" onClick={() => handleClose()} className={styles.closeIcon} />
+            <Icon.Close aria-label="Close chip" onClick={() => handleClose()} className={styles.closeIcon} />
         </div>
     );
 };
