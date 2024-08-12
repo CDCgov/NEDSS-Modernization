@@ -16,15 +16,15 @@ Feature: NBS Classic Patient Profile returns to modernized Patient Profile
   Scenario: A user in NBS Classic is returning to the Patient Profile Summary tab
     Given I am logged into NBS and a security log entry exists
     And I have a patient
-    When Returning to a Patient Profile "Summary" tab
-    Then I am redirected to the Modernized Patient Profile
+    When Returning to a Patient Profile Summary tab
+    Then I am redirected to the Modernized Patient Profile summary tab
     And the user Id is present in the redirect
 
   Scenario: A user in NBS Classic is returning to the Patient Profile Events tab
     Given I am logged into NBS and a security log entry exists
     And I have a patient
-    When Returning to a Patient Profile "Events" tab
-    Then I am redirected to the Modernized Patient Profile
+    When Returning to a Patient Profile Events tab
+    Then I am redirected to the Modernized Patient Profile events tab
     And the user Id is present in the redirect
 
   Scenario: A user in NBS Classic is viewing a Patient File from an Investigation
