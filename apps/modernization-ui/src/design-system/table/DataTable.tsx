@@ -11,7 +11,7 @@ type Column<V> = {
     name: string;
     fixed?: boolean;
     sortable?: boolean;
-    render: (value: V) => ReactNode | undefined;
+    render: (value: V, index: number) => ReactNode | undefined;
 };
 
 type Props<V> = {
@@ -49,7 +49,7 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                                             [styles.fixed]: column.fixed,
                                             [styles.sorted]: isSorting
                                         })}>
-                                        {column.render(row) ? column.render(row) : <NoData />}
+                                        {column.render(row, index) ?? <NoData />}
                                     </td>
                                 );
                             })}
