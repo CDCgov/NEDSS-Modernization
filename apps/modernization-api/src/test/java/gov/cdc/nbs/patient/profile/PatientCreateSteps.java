@@ -58,6 +58,18 @@ public class PatientCreateSteps {
     this.input.active(newPatient);
   }
 
+  @Given("I am adding a new patient with names")
+  public void i_am_adding_a_new_patient_with_names() {
+    NewPatient newPatient = new NewPatient(null, null, null, null);
+    this.input.active(newPatient);
+  }
+
+  @Given("I am adding a new patient with addresses")
+  public void i_am_adding_a_new_patient_with_addresses() {
+    NewPatient newPatient = new NewPatient(null, null, null, null);
+    this.input.active(newPatient);
+  }
+
   @When("I send a create patient request")
   public void i_submit_the_patient() {
     try {
@@ -79,8 +91,26 @@ public class PatientCreateSteps {
     assertThat(actual)
         .returns(expected.asOf(), Person::getAsOfDateAdmin)
         .returns(expected.comment(), Person::getDescription);
+  }
 
+  @Then("the patient created has the entered names")
+  public void the_patient_created_has_the_entered_names() {
+    Person actual = patient.active();
+    NewPatient expected = this.input.active();
 
+    assertThat(actual)
+        .returns(expected.asOf(), Person::getAsOfDateAdmin)
+        .returns(expected.comment(), Person::getDescription);
+  }
+
+  @Then("the patient created has the entered addresses")
+  public void the_patient_created_has_the_entered_addresses() {
+    Person actual = patient.active();
+    NewPatient expected = this.input.active();
+
+    assertThat(actual)
+        .returns(expected.asOf(), Person::getAsOfDateAdmin)
+        .returns(expected.comment(), Person::getDescription);
   }
 
   @Then("I am unable to create a patient")
