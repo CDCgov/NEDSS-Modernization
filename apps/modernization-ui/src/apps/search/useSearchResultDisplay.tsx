@@ -101,10 +101,7 @@ const Wrapper = ({ children, settings, updateDefaultView }: WrapperProps) => {
 
     const complete = (terms: Term[]) => dispatch({ type: 'complete', terms });
 
-    const noInput = () => {
-        dispatch({ type: 'noInput' });
-        reset();
-    };
+    const noInput = () => dispatch({ type: 'noInput' });
 
     const reset = () => dispatch({ type: 'reset' });
     const search = () => dispatch({ type: 'search' });
