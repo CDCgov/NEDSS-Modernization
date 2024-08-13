@@ -20,12 +20,12 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save, searchType, reset } = useColumnPreferences();
+    const { preferences, save, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
 
     useEffect(() => {
-        setPending(preferences.map((x) => ({ ...x })));
+        setPending(structuredClone(preferences));
     }, [JSON.stringify(preferences)]);
 
     const handleVisibilityChange = (preference: ColumnPreference) => (visible: boolean) => {
@@ -50,16 +50,13 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     };
 
     const handleSave = () => {
-        save(pending, searchType);
+        save(pending);
         close();
-        // save pending to local storage
-        localStorage.setItem(`${searchType}ColumnPreferences`, JSON.stringify(pending));
     };
 
     const handleReset = () => {
         reset();
         close();
-        localStorage.removeItem(`${searchType}ColumnPreferences`);
     };
 
     return (

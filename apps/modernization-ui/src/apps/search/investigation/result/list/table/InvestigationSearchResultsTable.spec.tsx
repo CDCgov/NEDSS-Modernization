@@ -1,51 +1,49 @@
-import { render } from "@testing-library/react";
-import { InvestigationSearchResultsTable } from "./InvestigationSearchResultsTable";
-import { Investigation } from "generated/graphql/schema";
-import { SearchResultDisplayProvider } from 'apps/search/useSearchResultDisplay';
+import { render } from '@testing-library/react';
+import { Investigation } from 'generated/graphql/schema';
 import { MemoryRouter } from 'react-router-dom';
-import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { ColumnPreferenceProvider } from "design-system/table/preferences";
+import { Column } from 'design-system/table';
+import { InvestigationSearchResultsTable } from './InvestigationSearchResultsTable';
+
+jest.mock('design-system/table/preferences', () => ({
+    useColumnPreferences: () => ({ apply: (columns: Column<Investigation>[]) => columns })
+}));
 
 describe('When InvestigationSearchResultsTable renders', () => {
-    const testResults: Investigation[] = [{
-        "__typename": "Investigation",
-        "relevance": 1,
-        "id": "10000013",
-        "cdDescTxt": "Pertussis",
-        "jurisdictionCodeDescTxt": "Clayton County",
-        "localId": "CAS10000000GA01",
-        "addTime": "2015-09-22",
-        "investigationStatusCd": "O",
-        "notificationRecordStatusCd": "UNASSIGNED",
-        "personParticipations": [
-            {
-                "__typename": "InvestigationPersonParticipation",
-                "birthTime": "1990-01-01",
-                "currSexCd": "M",
-                "typeCd": "SubjOfPHC",
-                "firstName": "Surma",
-                "lastName": "Singh",
-                "personCd": "PAT",
-                "personParentUid": 10000001,
-                "shortId": 63000
-            }
-        ]
-    }];
+    const testResults: Investigation[] = [
+        {
+            __typename: 'Investigation',
+            relevance: 1,
+            id: '10000013',
+            cdDescTxt: 'Pertussis',
+            jurisdictionCodeDescTxt: 'Clayton County',
+            localId: 'CAS10000000GA01',
+            addTime: '2015-09-22',
+            investigationStatusCd: 'O',
+            notificationRecordStatusCd: 'UNASSIGNED',
+            personParticipations: [
+                {
+                    __typename: 'InvestigationPersonParticipation',
+                    birthTime: '1990-01-01',
+                    currSexCd: 'M',
+                    typeCd: 'SubjOfPHC',
+                    firstName: 'Surma',
+                    lastName: 'Singh',
+                    personCd: 'PAT',
+                    personParentUid: 10000001,
+                    shortId: 63000
+                }
+            ]
+        }
+    ];
 
     const Wrapper = () => {
         return (
             <MemoryRouter>
-                <SkipLinkProvider>
-                    <SearchResultDisplayProvider>
-                        <ColumnPreferenceProvider>
-                            <InvestigationSearchResultsTable results={testResults} />
-                        </ColumnPreferenceProvider>
-                    </SearchResultDisplayProvider>
-                </SkipLinkProvider>
+                <InvestigationSearchResultsTable results={testResults} />
             </MemoryRouter>
-        )
-    }
-    
+        );
+    };
+
     it('should display 12 headers, one for colspan', () => {
         const { container } = render(<Wrapper />);
         const columns = container.getElementsByTagName('th');
@@ -67,7 +65,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
         expect(columns[9]).toHaveTextContent('Status');
         expect(columns[10]).toHaveTextContent('Notification');
     });
-    
+
     it('should display column content', () => {
         const { container } = render(<Wrapper />);
         const columns = container.getElementsByTagName('td');

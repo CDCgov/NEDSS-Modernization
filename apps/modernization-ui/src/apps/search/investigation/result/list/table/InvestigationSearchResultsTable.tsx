@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Investigation, InvestigationPersonParticipation } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
@@ -163,18 +162,9 @@ const StatusBadge = ({ children, investigation }: StatusBadgeProps) => (
 );
 
 const InvestigationSearchResultsTable = ({ results }: Props) => {
-    const { apply, register, save } = useColumnPreferences();
-
-    useEffect(() => {
-        register('Investigations', preferences);
-        const storedPreferences = localStorage.getItem(`InvestigationsColumnPreferences`);
-
-        if (storedPreferences) {
-            save(JSON.parse(storedPreferences), 'Patients');
-        }
-    }, []);
+    const { apply } = useColumnPreferences();
 
     return <DataTable<Investigation> id="patient-search-results" columns={apply(columns)} data={results} />;
 };
 
-export { InvestigationSearchResultsTable };
+export { InvestigationSearchResultsTable, preferences };

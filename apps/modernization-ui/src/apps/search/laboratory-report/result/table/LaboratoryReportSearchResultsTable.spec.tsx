@@ -5,10 +5,8 @@ import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResu
 import { Selectable } from 'options';
 import { Column } from 'design-system/table';
 
-const mockRegister = jest.fn();
-
 jest.mock('design-system/table/preferences', () => ({
-    useColumnPreferences: () => ({ register: mockRegister, apply: (columns: Column<LabReport>[]) => columns })
+    useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns })
 }));
 
 const Wrapper = ({
@@ -26,12 +24,6 @@ const Wrapper = ({
 };
 
 describe('When a Laboratory Report search result is viewed in a table', () => {
-    it('should register default columns', () => {
-        render(<Wrapper results={[]} />);
-
-        expect(mockRegister).toBeCalled();
-    });
-
     it('should display column headers', () => {
         const { getAllByRole } = render(<Wrapper results={[]} />);
 

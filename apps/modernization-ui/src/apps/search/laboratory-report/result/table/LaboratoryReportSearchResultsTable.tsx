@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { LabReport } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
@@ -49,7 +48,7 @@ type Props = {
 };
 
 const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: Props) => {
-    const { apply, register } = useColumnPreferences();
+    const { apply } = useColumnPreferences();
     const columns: Column<LabReport>[] = [
         {
             ...LEGAL_NAME,
@@ -130,11 +129,7 @@ const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: P
         }
     ];
 
-    useEffect(() => {
-        register('LabReports', preferences);
-    }, []);
-
     return <DataTable<LabReport> id="laboratory-report-search-results" columns={apply(columns)} data={results} />;
 };
 
-export { LaboratoryReportSearchResultsTable };
+export { LaboratoryReportSearchResultsTable, preferences };

@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useContext, useReducer, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { useLocalStorage } from 'storage';
 
 type ColumnPreference = {
     id: string;
@@ -13,10 +14,8 @@ type HasPreference = {
 };
 
 type Interaction = {
-    searchType: SearchType;
     preferences: ColumnPreference[];
-    register: (searchType: SearchType, preferences: ColumnPreference[]) => void;
-    save: (preferences: ColumnPreference[], searchType: SearchType) => void;
+    save: (preferences: ColumnPreference[]) => void;
     reset: () => void;
     apply: <C extends HasPreference>(colums: C[]) => C[];
 };
@@ -24,33 +23,34 @@ type Interaction = {
 const ColumnPreferenceContext = createContext<Interaction | undefined>(undefined);
 
 type State = {
+    changed?: Date;
     initial: ColumnPreference[];
     preferences: ColumnPreference[];
 };
 
-const initialize = (initial: ColumnPreference[]): State => ({ initial, preferences: initial });
+const initialize = (initial: ColumnPreference[]): State => step(initial, initial);
 
-type SearchType = 'Patients' | 'LabReports' | 'Investigations';
+const step = (initial: ColumnPreference[], next: ColumnPreference[]): State => ({
+    initial: structuredClone(initial),
+    preferences: structuredClone(next)
+});
 
 type Action =
-    | { type: 'register'; preferences: ColumnPreference[] }
     | { type: 'save'; preferences: ColumnPreference[] }
-    | { type: 'reset' };
+    | { type: 'reset' }
+    | { type: 'load'; preferences: ColumnPreference[] };
 
 const reducer = (state: State, action: Action): State => {
     switch (action.type) {
-        case 'register':
-            // return a new object with the properties initial and preferences each with a value with a copy of action.preferences
-            return {
-                initial: [...action.preferences],
-                preferences: [...action.preferences]
-            };
-
         case 'save':
-            return { ...state, preferences: action.preferences };
+            return { changed: new Date(), ...step(state.initial, action.preferences) };
 
         case 'reset':
-            return { initial: state.initial, preferences: state.initial };
+            return { changed: new Date(), ...initialize(state.initial) };
+
+        case 'load': {
+            return { ...state, ...step(state.initial, action.preferences) };
+        }
 
         default:
             return state;
@@ -58,36 +58,39 @@ const reducer = (state: State, action: Action): State => {
 };
 
 type Props = {
+    id: string;
     children: ReactNode;
+    defaults?: ColumnPreference[];
 };
 
-const ColumnPreferenceProvider = ({ children }: Props) => {
-    const [state, dispatch] = useReducer(reducer, [], initialize);
-    const [searchType, setSearchType] = useState<SearchType>('Patients');
+const ColumnPreferenceProvider = ({ id, children, defaults = [] }: Props) => {
+    const [state, dispatch] = useReducer(reducer, defaults, initialize);
 
-    const register = (search: SearchType, preferences: ColumnPreference[]) => {
-        setSearchType(search);
-        dispatch({ type: 'register', preferences });
-    };
+    const { value, save } = useLocalStorage({ key: id, initial: defaults });
 
-    const save = (preferences: ColumnPreference[], search: SearchType) => {
-        setSearchType(search);
-        dispatch({ type: 'save', preferences });
-    };
+    useEffect(() => {
+        if (value) {
+            dispatch({ type: 'load', preferences: value });
+        }
+    }, [value]);
 
-    const reset = () => dispatch({ type: 'reset' });
-    const apply = applyPreferences(state.preferences);
+    useEffect(() => {
+        if (state.changed) {
+            save(state.preferences);
+        }
+    }, [state.changed]);
 
-    const value = {
-        searchType,
-        preferences: state.preferences,
-        register,
-        save,
-        reset,
-        apply
-    };
+    const interaction = useMemo(
+        () => ({
+            preferences: state.preferences,
+            save: (preferences: ColumnPreference[]) => dispatch({ type: 'save', preferences }),
+            reset: () => dispatch({ type: 'reset' }),
+            apply: applyPreferences(state.preferences)
+        }),
+        [dispatch, state.preferences]
+    );
 
-    return <ColumnPreferenceContext.Provider value={value}>{children}</ColumnPreferenceContext.Provider>;
+    return <ColumnPreferenceContext.Provider value={interaction}>{children}</ColumnPreferenceContext.Provider>;
 };
 
 const useColumnPreferences = () => {
