@@ -16,7 +16,7 @@ in
 the `cdc-sandbox` directory.
 
 ```sh
-docker-compose build nbs-mssql
+docker compose build nbs-mssql
 ```
 
 To run all tests:
