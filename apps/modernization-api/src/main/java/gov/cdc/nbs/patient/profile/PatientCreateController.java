@@ -1,8 +1,6 @@
 package gov.cdc.nbs.patient.profile;
 
-import lombok.RequiredArgsConstructor;
 import java.time.Clock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
