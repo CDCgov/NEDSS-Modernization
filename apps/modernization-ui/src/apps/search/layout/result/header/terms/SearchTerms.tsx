@@ -5,7 +5,7 @@ import { focusedTarget } from 'utils';
 
 import styles from './search-terms.module.scss';
 import { useEffect } from 'react';
-import Chip from 'apps/search/advancedSearch/components/chips/Chip';
+import Chip from 'design-system/chips/Chip';
 
 type Props = {
     total: number;
