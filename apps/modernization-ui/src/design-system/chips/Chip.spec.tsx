@@ -1,5 +1,6 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Chip from './Chip';
+import userEvent from '@testing-library/user-event';
 
 describe('Chip', () => {
     const mockProps = {
@@ -21,7 +22,7 @@ describe('Chip', () => {
         const { getByLabelText } = render(<Chip {...mockProps} />);
 
         const closeIcon = getByLabelText('Close chip');
-        fireEvent.click(closeIcon);
+        userEvent.click(closeIcon);
 
         expect(handleClose).toHaveBeenCalled();
     });
