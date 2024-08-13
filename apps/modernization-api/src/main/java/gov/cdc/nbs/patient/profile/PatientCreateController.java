@@ -29,13 +29,24 @@ import gov.cdc.nbs.patient.profile.names.change.PatientNameChangeService;
 @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('ADD-PATIENT')")
 @RequiredArgsConstructor
 public class PatientCreateController {
+  PatientCreateController(
+      final Clock clock,
+      final PatientCreator creator,
+      final PatientNameChangeService nameService,
+      final PatientAddressChangeService addressService,
+      final PatientIndexer indexer) {
+    this.clock = clock;
+    this.creator = creator;
+    this.nameService = nameService;
+    this.addressService = addressService;
+    this.indexer = indexer;
+  }
+
   private final Clock clock;
   private final PatientCreator creator;
   private final PatientIndexer indexer;
-  @Autowired
-  private PatientNameChangeService nameService;
-  @Autowired
-  private PatientAddressChangeService addressService;
+  private final PatientNameChangeService nameService;
+  private final PatientAddressChangeService addressService;
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
