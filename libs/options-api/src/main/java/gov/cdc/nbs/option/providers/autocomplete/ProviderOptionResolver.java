@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProviderOptionResolver extends SQLBasedOptionResolver {
+class ProviderOptionResolver extends SQLBasedOptionResolver {
 
   private static final String QUERY = """
       with [user]([value], [name], [quickCode]) AS (
@@ -23,7 +23,7 @@ public class ProviderOptionResolver extends SQLBasedOptionResolver {
                 [quick_code].entity_uid = [provider].person_uid
             and [quick_code].type_cd='QEC'
           where   [provider].cd='PRV'
-              and [provider].electronic_ind is null or [provider].electronic_ind <> 'Y'
+              and ([provider].electronic_ind is null or [provider].electronic_ind <> 'Y')
       )
       select
           [value],
@@ -38,7 +38,7 @@ public class ProviderOptionResolver extends SQLBasedOptionResolver {
       fetch next :limit rows only
       """;
 
-  public ProviderOptionResolver(final NamedParameterJdbcTemplate template) {
+  ProviderOptionResolver(final NamedParameterJdbcTemplate template) {
     super(QUERY, template);
   }
 }
