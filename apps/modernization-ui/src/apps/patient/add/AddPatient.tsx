@@ -5,7 +5,6 @@ import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema'
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
 
 import { StateCodedValues, useLocationCodedValues } from 'location';
-import { ConfirmationModal } from 'confirmation';
 import { useAddPatientCodedValues } from 'apps/patient/add/useAddPatientCodedValues';
 import { asPersonInput } from 'apps/patient/add/asPersonInput';
 
@@ -21,7 +20,6 @@ import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
-import { isMissingFields } from 'apps/patient/add/isMissingFields';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { DataEntrySideNav } from 'apps/patient/add/DataEntrySideNav/DataEntrySideNav';
 import { SuccessModal } from 'success';
@@ -112,11 +110,7 @@ const AddPatient = () => {
     };
 
     const evaluateMissingFields = (entry: NewPatientEntry) => {
-        setEntryState({ step: isMissingFields(entry) ? 'verify-missing-fields' : 'verify-address', entry });
-    };
-
-    const evaluateAddress = () => {
-        setEntryState((existing) => ('entry' in existing ? { ...existing, step: 'verify-address' } : existing));
+        setEntryState({ step: 'verify-address', entry });
     };
 
     const prepareCreate = (address: VerifiableAdddress) => {
@@ -213,18 +207,6 @@ const AddPatient = () => {
                 height: 'calc(100vh - 82px)',
                 overflow: 'hidden'
             }}>
-            {entryState.step === 'verify-missing-fields' && (
-                <ConfirmationModal
-                    modal={modalRef}
-                    title="Missing data"
-                    message="Are you sure?"
-                    detail="You are about to add a new patient with missing data."
-                    confirmText="Continue anyways"
-                    onConfirm={evaluateAddress}
-                    cancelText="Go back"
-                    onCancel={cancelSubmission}
-                />
-            )}
             {entryState.step === 'verify-address' && (
                 <AddressVerificationModal
                     modal={modalRef}
