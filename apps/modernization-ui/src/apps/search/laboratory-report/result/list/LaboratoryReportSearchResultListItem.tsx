@@ -1,29 +1,16 @@
-import { Link } from 'react-router-dom';
-import { LabReport, LabReportOrganizationParticipation } from 'generated/graphql/schema';
-import { NoData } from 'components/NoData';
+import { LabReport } from 'generated/graphql/schema';
 import { internalizeDate } from 'date';
 import { Selectable } from 'options';
 import { ClassicLink } from 'classic';
+import {
+    getPatient,
+    getOrderingProviderName,
+    getReportingFacility,
+    getDescription,
+    getAssociatedInvestigations,
+    getPatientName
+} from 'apps/search/laboratory-report/result';
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
-
-const getOrderingProviderName = (labReport: LabReport): string | undefined => {
-    const provider = labReport.personParticipations.find((p) => p.typeCd === 'ORD' && p.personCd === 'PRV');
-    if (provider) {
-        return `${provider.firstName} ${provider.lastName}`;
-    } else {
-        return undefined;
-    }
-};
-
-const getReportingFacility = (labReport: LabReport): LabReportOrganizationParticipation | undefined => {
-    return labReport.organizationParticipations.find((o) => o?.typeCd === 'AUT');
-};
-
-const getDescription = (labReport: LabReport): string | undefined => {
-    const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
-
-    return observation && `${observation.cdDescTxt} = ${observation.displayName}`;
-};
 
 type Props = {
     result: LabReport;
@@ -31,18 +18,13 @@ type Props = {
 };
 
 const LaboratoryReportSearchResultListItem = ({ result, jurisdictionResolver }: Props) => {
-    const patient = result.personParticipations.find((p) => p.typeCd === 'PATSBJ');
-    const firstName = patient?.firstName ?? '';
-    const lastName = patient?.lastName ?? '';
-    const legalName = firstName && lastName ? `${firstName} ${lastName}` : <NoData />;
+    const patient = getPatient(result);
 
     return (
         <Result>
             <ResultItemGroup>
                 <ResultItem label="Legal name" orientation="vertical">
-                    <Link id="legalName" to={`/patient-profile/${patient?.shortId}/summary`}>
-                        {legalName}
-                    </Link>
+                    {getPatientName(result)}
                 </ResultItem>
                 <ResultItem label="Date of birth">{internalizeDate(patient?.birthTime)}</ResultItem>
                 <ResultItem label="Sex">{patient?.currSexCd}</ResultItem>
@@ -67,7 +49,7 @@ const LaboratoryReportSearchResultListItem = ({ result, jurisdictionResolver }: 
 
             <ResultItemGroup>
                 <ResultItem label="Reporting Facility" orientation="vertical">
-                    {getReportingFacility(result)?.name}
+                    {getReportingFacility(result)}
                 </ResultItem>
                 <ResultItem label="Ordering Provider" orientation="vertical">
                     {getOrderingProviderName(result)}
@@ -79,11 +61,7 @@ const LaboratoryReportSearchResultListItem = ({ result, jurisdictionResolver }: 
 
             <ResultItemGroup>
                 <ResultItem label="Associated to" orientation="vertical">
-                    {result.associatedInvestigations &&
-                        result.associatedInvestigations?.length > 0 &&
-                        result.associatedInvestigations
-                            ?.map((investigation) => `${investigation?.localId}\n${investigation?.cdDescTxt}\n`)
-                            .join('\n')}
+                    {getAssociatedInvestigations(result)}
                 </ResultItem>
                 <ResultItem label="Local ID" orientation="vertical">
                     {result.localId}
