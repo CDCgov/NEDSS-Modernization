@@ -47,7 +47,7 @@ public class PatientCreateController {
     input.setAsOf(newPatient.asOf());
     PatientIdentifier created = creator.create(context, input);
     if (newPatient.names() != null) {
-      newPatient.names().forEach((name) -> {
+      newPatient.names().forEach(name -> {
         NewPatientNameInput newPatientNameInput = new NewPatientNameInput(
             created.id(),
             name.asOf(),
@@ -64,7 +64,7 @@ public class PatientCreateController {
       });
     }
     if (newPatient.addresses() != null) {
-      newPatient.addresses().forEach((address) -> {
+      newPatient.addresses().forEach(address -> {
         NewPatientAddressInput newPatientAddressInput = new NewPatientAddressInput(
             created.id(),
             address.asOf(),

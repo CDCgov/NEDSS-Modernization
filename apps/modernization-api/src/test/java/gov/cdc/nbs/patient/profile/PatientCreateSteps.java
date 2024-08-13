@@ -127,8 +127,7 @@ public class PatientCreateSteps {
     NewPatient expected = this.input.active();
 
     assertThat(actual)
-        .returns(expected.asOf(), Person::getAsOfDateAdmin)
-        .returns(expected.comment(), Person::getDescription);
+        .returns(expected.asOf(), Person::getAsOfDateAdmin);
   }
 
   @Then("the patient created has the entered addresses")
@@ -137,8 +136,8 @@ public class PatientCreateSteps {
     NewPatient expected = this.input.active();
 
     assertThat(actual)
-        .returns(expected.asOf(), Person::getAsOfDateAdmin)
-        .returns(expected.comment(), Person::getDescription);
+        .returns(expected.comment(), Person::getDescription)
+        .returns(expected.asOf(), Person::getAsOfDateAdmin);
   }
 
   @Then("I am unable to create a patient")
