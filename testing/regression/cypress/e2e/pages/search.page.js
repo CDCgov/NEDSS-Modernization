@@ -62,18 +62,20 @@ class SearchPage {
   }
 
   selectRace() {
-    cy.get('button[data-testid="accordionButton_5"]').click();
+    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
+    cy.get('svg[aria-label="Expand Race/Ethnicity"]').first().click()
+    cy.wait(500);
     cy.wait(1000);
   }
 
   enterEthnicity(type) {
-    cy.get('div[data-testid="accordionItem_5"] label[for="ethnicity"]+select')
+    cy.get('#ethnicity')
       .scrollIntoView()
       .select(type);
   }
 
   enterRace(type) {
-    cy.get('div[data-testid="accordionItem_5"] label[for="race"]+select')
+    cy.get('#race')
       .scrollIntoView()
       .select(type);
   }
