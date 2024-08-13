@@ -33,10 +33,10 @@ class PatientProfileSummaryReturnRouteLocatorConfiguration {
             "patient-profile-summary-return",
             route -> route.query("ContextAction", "ReturnToFileSummary")
                 .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patientProfile/summary/return")
+                    filter -> filter.setPath(parameters.summary())
                         .filters(defaults))
-                .uri(parameters.uri()))
+                .uri(parameters.uri())
+        )
         .build();
   }
 }

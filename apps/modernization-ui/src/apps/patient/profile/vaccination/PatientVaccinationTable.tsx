@@ -58,6 +58,7 @@ export const PatientVaccinationTable = ({ patient, vaccinations, allowAdd = fals
                 title: vaccination && (
                     <ClassicModalLink
                         url={`/nbs/api/profile/${patient}/vaccination/${vaccination.vaccination}`}
+                        destination="none"
                         onClose={handleModalClose}>
                         {format(vaccination.createdOn, 'MM/dd/yyyy')} <br /> {format(vaccination.createdOn, 'hh:mm a')}
                     </ClassicModalLink>
