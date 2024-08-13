@@ -27,7 +27,6 @@ import gov.cdc.nbs.patient.profile.names.change.PatientNameChangeService;
 @RestController
 @RequestMapping("/nbs/api/profile")
 @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('ADD-PATIENT')")
-@RequiredArgsConstructor
 public class PatientCreateController {
   PatientCreateController(
       final Clock clock,
