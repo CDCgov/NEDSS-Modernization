@@ -38,22 +38,19 @@ class SearchPage {
   }
 
   selectId() {
+    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
+    cy.get('svg[aria-label="Expand ID"]').first().click()
     cy.wait(500);
-    let elem = "button[data-testid=accordionButton_5]";
-    cy.get(elem).scrollIntoView();
-    elem = "button[data-testid=accordionButton_4]";
-    cy.get(elem).click();
-    cy.wait(1000);
   }
 
   enterIdType(type) {
-    const elem = "div[data-testid=accordionItem_4] select";
+    const elem = "#identificationType";
     cy.get(elem).scrollIntoView().select(type);
   }
 
   enterId(id) {
     if (id.length !== 0) {
-      cy.get('input[id*=identificationNumber]').type(id);
+      cy.get('input[name*=identification]').type(id);
     }
   }
 
