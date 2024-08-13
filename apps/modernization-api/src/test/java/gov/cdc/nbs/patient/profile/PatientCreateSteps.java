@@ -17,6 +17,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import net.datafaker.Faker;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Locale;
 
 @Transactional
 public class PatientCreateSteps {
@@ -39,6 +43,7 @@ public class PatientCreateSteps {
   Available<PatientIdentifier> patients;
 
   private AccessDeniedException accessDeniedException;
+  private final Faker faker = new Faker(Locale.of("en-us"));
 
   @Before("@patient_profile_create")
   public void reset() {
@@ -60,14 +65,37 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with names")
   public void i_am_adding_a_new_patient_with_names() {
-    NewPatient newPatient = new NewPatient(null, null, null, null);
+    NewPatient newPatient = new NewPatient(null, null, Arrays.asList(new Name(
+        Instant.parse("2023-05-15T10:00:00Z"),
+        "L",
+        "MR",
+        faker.name().firstName(),
+        faker.name().firstName(),
+        faker.name().lastName(),
+        faker.name().lastName(),
+        faker.name().lastName(),
+        "JR",
+        "BS")), null);
     this.input.active(newPatient);
   }
 
   @Given("I am adding a new patient with addresses")
   public void i_am_adding_a_new_patient_with_addresses() {
-    NewPatient newPatient = new NewPatient(null, null, null, null);
+    NewPatient newPatient = new NewPatient(null, null, null, Arrays.asList(new Address(
+        RandomUtil.getRandomDateInPast(),
+        "H",
+        "H",
+        faker.address().streetAddress(),
+        RandomUtil.getRandomString(),
+        faker.address().city(),
+        RandomUtil.getRandomStateCode(),
+        RandomUtil.getRandomNumericString(15),
+        RandomUtil.getRandomString(),
+        RandomUtil.getRandomString(10),
+        RandomUtil.country(),
+        RandomUtil.getRandomString())));
     this.input.active(newPatient);
+
   }
 
   @When("I send a create patient request")
