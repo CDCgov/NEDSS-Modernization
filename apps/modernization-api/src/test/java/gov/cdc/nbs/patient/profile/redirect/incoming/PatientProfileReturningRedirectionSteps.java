@@ -1,34 +1,36 @@
 package gov.cdc.nbs.patient.profile.redirect.incoming;
 
-import gov.cdc.nbs.authentication.SessionCookie;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.Cookie;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import jakarta.servlet.http.Cookie;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 public class PatientProfileReturningRedirectionSteps {
 
-  @Autowired
-  Authenticated authenticated;
+  private final Authenticated authenticated;
 
-  @Autowired
-  Active<PatientIdentifier> activePatient;
+  private final Active<PatientIdentifier> activePatient;
 
-  @Autowired
-  MockMvc mvc;
+  private final MockMvc mvc;
 
-  @Autowired
-  Active<SessionCookie> activeSession;
+  private final Active<ResultActions> activeResponse;
 
-  @Autowired
-  Active<ResultActions> activeResponse;
+  PatientProfileReturningRedirectionSteps(
+      final Authenticated authenticated,
+      final Active<PatientIdentifier> activePatient,
+      final MockMvc mvc,
+      final Active<ResultActions> activeResponse
+  ) {
+    this.authenticated = authenticated;
+    this.activePatient = activePatient;
+    this.mvc = mvc;
+    this.activeResponse = activeResponse;
+  }
 
   @When("Returning to a Patient Profile")
   public void returning_to_a_patient_profile() throws Exception {
@@ -42,7 +44,7 @@ public class PatientProfileReturningRedirectionSteps {
     );
   }
 
-  @When("Returning to a Patient Profile {string} tab")
+  @When("Returning to a Patient Profile {patientProfileTab} tab")
   public void returning_to_a_patient_profile_tab(final String tab) throws Exception {
 
     long patient = activePatient.active().id();

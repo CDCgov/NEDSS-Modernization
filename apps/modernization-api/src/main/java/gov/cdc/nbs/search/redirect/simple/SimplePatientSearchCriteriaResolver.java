@@ -50,7 +50,7 @@ class SimplePatientSearchCriteriaResolver {
             maybe(criteria, NBS_SEX).map(SimplePatientSearchCriteriaResolver::fromGender),
             maybe(criteria, NBS_ID).map(SimplePatientSearchCriteriaResolver::fromId)
         ).flatMap(Optional::stream)
-        .collect(accumulating(SimplePatientSearchCriteriaResolver::merge));
+        .collect(accumulating(SimplePatientSearchCriteriaMerger::merge));
   }
 
   private Optional<String> maybe(final Map<String, String> map, final String key) {
@@ -61,21 +61,5 @@ class SimplePatientSearchCriteriaResolver {
         : Optional.empty();
   }
 
-  private static SimplePatientSearchCriteria merge(final SimplePatientSearchCriteria left,
-      final SimplePatientSearchCriteria right) {
 
-    String first = left.firstName() == null ? right.firstName() : left.firstName();
-    String last = left.lastName() == null ? right.lastName() : left.lastName();
-    String id = left.id() == null ? right.id() : left.id();
-    Option gender = left.gender() == null ? right.gender() : left.gender();
-    LocalDate dateOfBirth = left.dateOfBirth() == null ? right.dateOfBirth() : left.dateOfBirth();
-
-    return new SimplePatientSearchCriteria(
-        first,
-        last,
-        dateOfBirth,
-        gender,
-        id
-    );
-  }
 }

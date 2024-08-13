@@ -20,9 +20,9 @@ Feature: Patient Search by Address
     When I search for "90 SE Panda Cutten KY 25783" Street address
     Then I should found result patient profile
 
-  Scenario: CNFT1-1281 Address – Search with Invalid Address Data
-    When I enter "&*(#))#)@)" as zip code
-    Then I should see "Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9)."
+  **Scenario: CNFT1-1281 Address – Search with Invalid Address Data // scenario no longer valid, user is not able to enter special character into the zip code field
+    **When I enter "&*(#))#)@)" as zip code
+    **Then I should see "Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9)."
 
   Scenario: CNFT1-1282 Address - Search with No Matching Address Records
     When I search for "$%(5" Street address

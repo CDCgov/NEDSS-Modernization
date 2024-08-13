@@ -16,4 +16,8 @@ public record Option(
     this(value, name, name, 1);
   }
 
+  public Option(String value) {
+    this(value, value);
+  }
+
 }

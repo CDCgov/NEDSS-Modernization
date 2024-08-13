@@ -17,43 +17,40 @@ class SearchPage {
   }
 
   enterCity(city) {
-    cy.get("#city").type(city);
+    cy.get("#city").type(city,{force: true});
   }
 
   enterZipCode(zip) {
-    cy.get("#zip").type(zip);
-    cy.get("#city").click();
+    cy.get("#zip").type(zip,{force: true});
+    cy.get("#city").click({force: true});
   }
 
   enterStreetAddress(address) {
-    cy.get("#address").type(address);
+    cy.get("#address").type(address,{force: true});
   }
 
   enterPhone(phone) {
-    cy.get("#homePhone").type(phone);
+    cy.get("#homePhone").type(phone,{force: true});
   }
 
   enterEmail(email) {
-    cy.get("#email").type(email);
+    cy.get("#email").type(email, {force: true});
   }
 
   selectId() {
+    cy.get('svg[aria-label="Collapse Basic information"]').first().click()
+    cy.get('svg[aria-label="Expand ID"]').first().click()
     cy.wait(500);
-    let elem = "button[data-testid=accordionButton_5]";
-    cy.get(elem).scrollIntoView();
-    elem = "button[data-testid=accordionButton_4]";
-    cy.get(elem).click();
-    cy.wait(1000);
   }
 
   enterIdType(type) {
-    const elem = "div[data-testid=accordionItem_4] select";
+    const elem = "#identificationType";
     cy.get(elem).scrollIntoView().select(type);
   }
 
   enterId(id) {
     if (id.length !== 0) {
-      cy.get('input[id*=identificationNumber]').type(id);
+      cy.get('input[name*=identification]').type(id);
     }
   }
 
