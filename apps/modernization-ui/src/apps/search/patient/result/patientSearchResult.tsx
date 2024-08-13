@@ -17,7 +17,7 @@ const displayNames = (result: PatientSearchResult): string => {
         .join('\n');
 };
 
-const displayAddresses = (result: PatientSearchResult): string => result.addresses.map(displayAddress).join('\n');
+const displayAddresses = (result: PatientSearchResult): string => result.addresses.map(displayAddress).join('\n\n');
 
 const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
