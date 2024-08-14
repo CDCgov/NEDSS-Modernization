@@ -1,0 +1,14 @@
+.constrained {
+    max-height: 84px;
+    overflow: hidden;
+}
+.expander {
+    max-height: unset;
+}
+.button {
+  padding: 0 !important;
+  margin-left: auto !important;
+  width: 9ch !important;
+  float: right;
+  text-decoration: unset !important;
+}
