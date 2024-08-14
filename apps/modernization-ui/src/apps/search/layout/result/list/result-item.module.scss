@@ -4,8 +4,6 @@
     display: flex;
     gap: 0.5rem;
 
-    font-size: 0.8125rem;
-
     &.vertical {
         flex-direction: column;
         padding-bottom: 1rem;
@@ -13,6 +11,7 @@
     }
 
     .label {
+        font-size: 0.8125rem;
         font-weight: 600;
         letter-spacing: 0.02031rem;
         text-transform: uppercase;
