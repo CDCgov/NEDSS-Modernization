@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify manage subsection here.
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
     When User navigates to Edit page and views Edit page
 
   Scenario: Manage subsection - Edit subsection

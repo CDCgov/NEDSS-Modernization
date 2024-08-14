@@ -1,7 +1,7 @@
 Feature: Page Builder - User can view existing question library sorting here.
 
     Background:
-        Given I am logged in as "superuser" and password "@test"
+        Given I am logged in as secure user
         When User navigates to Question Library and views the Question library
 
     Scenario: User list Type in descending and ascending order
