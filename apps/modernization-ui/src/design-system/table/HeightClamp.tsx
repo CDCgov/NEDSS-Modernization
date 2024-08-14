@@ -5,17 +5,19 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 
 type Props = {
     children: ReactNode;
+    rowHeightState: ClampState;
+    onClamp: (value: ClampState) => void;
 };
 
-type ClampState = 'constrained' | 'expanded' | 'simple';
+export type ClampState = 'constrained' | 'expanded' | 'simple';
 
-export const HeightClamp = ({ children }: Props) => {
+export const HeightClamp = ({ children, onClamp, rowHeightState }: Props) => {
     const measureRef = useRef<HTMLTableRowElement | null>(null);
-    const [heightState, setState] = useState<ClampState>('simple');
+    const [cellHeightState, setState] = useState<ClampState>('simple');
 
     useEffect(() => {
-        console.log(measureRef.current?.clientHeight);
-        if ((measureRef.current?.offsetHeight ?? 0) > 84 && heightState !== 'expanded') {
+        if ((measureRef.current?.offsetHeight ?? 0) > 42 && rowHeightState !== 'expanded') {
+            onClamp('constrained');
             setState('constrained');
         }
     }, [measureRef.current?.offsetHeight]);
@@ -24,23 +26,23 @@ export const HeightClamp = ({ children }: Props) => {
         <>
             <div
                 className={classNames({
-                    [styles.expander]: heightState === 'expanded',
-                    [styles.constrained]: heightState === 'constrained'
+                    [styles.expander]: rowHeightState === 'expanded' && cellHeightState === 'expanded',
+                    [styles.constrained]: rowHeightState === 'constrained' && cellHeightState === 'constrained'
                 })}
                 ref={measureRef}>
                 {children}
             </div>
-            {heightState === 'constrained' && (
-                <Button aria-label="view more" unstyled className={styles.button} onClick={() => setState('expanded')}>
+            {rowHeightState === 'constrained' && cellHeightState === 'constrained' && (
+                <Button aria-label="view more" unstyled className={styles.button} onClick={() => onClamp('expanded')}>
                     View more
                 </Button>
             )}
-            {heightState === 'expanded' && (
+            {rowHeightState === 'expanded' && cellHeightState === 'constrained' && (
                 <Button
                     aria-label="view less"
                     unstyled
                     className={styles.button}
-                    onClick={() => setState('constrained')}>
+                    onClick={() => onClamp('constrained')}>
                     View less
                 </Button>
             )}

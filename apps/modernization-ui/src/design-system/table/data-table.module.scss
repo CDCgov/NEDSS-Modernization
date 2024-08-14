@@ -21,6 +21,10 @@
                 white-space: nowrap;
                 border-style: none;
                 background-color: colors.$base-white;
+                svg {
+                    width: 1.0625rem;
+                    margin-left: 0.25rem;
+                }
             }
             tr {
                 &.border {

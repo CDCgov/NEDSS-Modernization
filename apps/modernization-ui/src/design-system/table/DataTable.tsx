@@ -35,38 +35,6 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                 </thead>
                 <tbody>
                     {data.map((row, index) => (
-                        // <tr key={index} ref={measureRef}>
-                        //     {columns.map((column, y) => {
-                        //         const isSorting = sorting?.property === column.id;
-                        //         return (
-                        //             <td
-                        //                 key={y}
-                        //                 className={classNames({
-                        //                     [styles.fixed]: column.fixed,
-                        //                     [styles.sorted]: isSorting,
-                        //                     [styles.expander]: isExpanded,
-                        //                     [styles.constrained]: !isExpanded
-                        //                 })}>
-                        //                 {/* <ExpandableResults results={data} renderResult={() => column.render(row)} /> */}
-                        //                 {column.render(row) ? column.render(row) : <NoData />}
-                        //                 <Button
-                        //                     aria-label="view more"
-                        //                     unstyled
-                        //                     className={styles.more}
-                        //                     onClick={() => setExpanded(true)}>
-                        //                     View more
-                        //                 </Button>
-                        //                 <Button
-                        //                     aria-label="view less"
-                        //                     unstyled
-                        //                     className={styles.less}
-                        //                     onClick={() => setExpanded(false)}>
-                        //                     View less
-                        //                 </Button>
-                        //             </td>
-                        //         );
-                        //     })}
-                        // </tr>
                         <DataTableRow index={index} row={row} columns={columns} key={index} />
                     ))}
                 </tbody>

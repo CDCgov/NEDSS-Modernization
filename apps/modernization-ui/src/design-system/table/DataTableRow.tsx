@@ -3,7 +3,8 @@ import { Column } from './DataTable';
 import styles from './data-table.module.scss';
 import classNames from 'classnames';
 import { NoData } from 'components/NoData';
-import { HeightClamp } from './HeightClamp';
+import { ClampState, HeightClamp } from './HeightClamp';
+import { useState } from 'react';
 
 type Props<V> = {
     columns: Column<V>[];
@@ -13,6 +14,7 @@ type Props<V> = {
 
 export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
     const sorting = maybeUseSorting();
+    const [heightState, setState] = useState<ClampState>('simple');
 
     return (
         <tr key={index}>
@@ -25,7 +27,13 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
                             [styles.fixed]: column.fixed,
                             [styles.sorted]: isSorting
                         })}>
-                        {column.render(row) ? <HeightClamp> {column.render(row)} </HeightClamp> : <NoData />}
+                        {column.render(row) ? (
+                            <HeightClamp rowHeightState={heightState} onClamp={setState}>
+                                {column.render(row)}
+                            </HeightClamp>
+                        ) : (
+                            <NoData />
+                        )}
                     </td>
                 );
             })}
