@@ -73,7 +73,7 @@ const entityTypes: Selectable[] = [
     asSelectable('REPORTING_FACILITY', 'Reporting Facility')
 ];
 
-const pregnancyStatus: Selectable[] = [asSelectable('Yes'), asSelectable('No'), asSelectable('Unknonw')];
+const pregnancyStatus: Selectable[] = [asSelectable('YES'), asSelectable('NO'), asSelectable('UNKNOWN')];
 
 const initial: LabReportFilterEntry = {
     enteredBy: enteredByTypes,
