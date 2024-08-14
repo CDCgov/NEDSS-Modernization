@@ -1,7 +1,7 @@
 Feature: Page Builder - User can view existing business rules logic here.
 
     Background:
-        Given I am logged in as "superuser" and password "@test"
+        Given I am logged in as secure user
         When User navigates to Business Rules and views the Business Rules
 
     Scenario: Verify in (Edit Mode) Business Rules landing page is accessible

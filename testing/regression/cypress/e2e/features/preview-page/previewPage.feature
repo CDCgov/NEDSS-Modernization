@@ -1,7 +1,7 @@
 Feature: Page Builder - User can view Preview Page here.
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
 
   Scenario Outline: Verify the data elements in the preview page header buttons linked with functionalities
     When User navigates to Preview Page and views the Preview Page

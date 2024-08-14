@@ -1,9 +1,13 @@
+const user = Cypress.env()["env"].loginusername;
+const pass = Cypress.env()["env"].loginpassword;  
+
 class LoginPage {
+
     navigateToHomepage() {
         cy.visit('/nbs/login')
     }
 
-    login(user, pass) {
+    login() {      
         cy.get('body').then((body) => {
             if (body.find("input[id='id_UserName']").length > 0) {
                 cy.intercept("POST", "/graphql").as("loginRequest");

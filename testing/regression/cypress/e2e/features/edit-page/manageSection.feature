@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify manage section here.
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
     When User navigates to Edit page and views Manage section pop-up window
 
   Scenario Outline: Manage sections modal to display key elements
