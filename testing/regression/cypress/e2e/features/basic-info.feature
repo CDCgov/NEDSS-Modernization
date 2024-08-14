@@ -1,7 +1,7 @@
 Feature: Patient Search by Basic Info
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
 
   Scenario: Basic Info - Search by Last Name
     When I search by last name as "Althorp"

@@ -1,7 +1,7 @@
 Feature: Investigation Search by general search
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
     Given I navigate the event investigation
 
   Scenario: Basic Info - Search by Condition

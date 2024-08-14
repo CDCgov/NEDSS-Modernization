@@ -2,26 +2,17 @@ import { useEffect } from 'react';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
-import { displayName } from 'name';
 import { internalizeDate } from 'date';
-import { displayAddress } from 'address/display';
-import { Link } from 'react-router-dom';
-
-const displayNames = (result: PatientSearchResult): string => {
-    const legalName = result.legalName;
-    return result.names
-        .filter((name) => name?.first != legalName?.first || name?.last != legalName?.last)
-        .map(displayName())
-        .join('\n');
-};
-
-const displayAddresses = (result: PatientSearchResult): string => result.addresses.map(displayAddress).join('\n');
+import {
+    displayPhones,
+    displayProfileLink,
+    displayNames,
+    displayEmails,
+    displayAddresses
+} from 'apps/search/patient/result';
 
 const displayIdentifications = (result: PatientSearchResult): string =>
     result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
-
-const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
-const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 
 const LEGAL_NAME = {
     id: 'lastNm',
@@ -49,8 +40,7 @@ const columns: Column<PatientSearchResult>[] = [
         ...LEGAL_NAME,
         fixed: true,
         sortable: true,
-        render: (row) =>
-            row?.legalName && <Link to={`/patient-profile/${row.shortId}`}>{displayName()(row?.legalName)}</Link>
+        render: displayProfileLink
     },
     {
         ...DATE_OF_BIRTH,

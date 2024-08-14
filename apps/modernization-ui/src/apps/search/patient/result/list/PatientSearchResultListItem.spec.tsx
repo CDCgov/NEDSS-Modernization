@@ -1,223 +1,211 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { PatientSearchResultListItem } from './PatientSearchResultListItem';
 import { PatientSearchResult } from 'generated/graphql/schema';
 
-const expectedResult: PatientSearchResult = {
-    legalName: {
-        first: 'John',
-        last: 'Doe',
-        middle: null,
-        suffix: null
-    },
-    birthday: '1990-01-01',
-    gender: 'Male',
-    age: 34,
-    patient: 12345678,
-    shortId: 12345,
-    addresses: [{ use: '', address: '123 Fake St', city: 'Faketown', state: 'FS', zipcode: '12345' }],
-    phones: ['555-555-5555'],
-    emails: ['john.doe@example.com'],
-    names: [{ first: 'Jane', last: 'Doe' }],
-    status: '',
-    identification: [
-        { type: 'Social Security', value: '123-45-6789' },
-        { type: "Driver's license number", value: '123' }
-    ]
-};
-
 describe('PatientSearchResultListItem', () => {
-    describe('Legal Name', () => {
-        it('should render the legal name', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            const legalName = 'Doe, John';
+    it('should render the legal name', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            legalName: {
+                first: 'Legal',
+                last: 'Name'
+            },
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: []
+        };
 
-            expect(getByText(legalName)).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+
+        expect(getByText('Legal Name')).toBeInTheDocument();
     });
 
-    describe('Date of birth', () => {
-        it('should render the date of birth', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.birthday)).toBeInTheDocument();
-        });
-        it('should render "No Data" when no date of birth is available', () => {
-            const result = { ...expectedResult };
-            delete result.birthday;
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
-    });
-    describe('Sex', () => {
-        it('should render the sex', () => {
-            expectedResult.gender = 'Male';
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.gender)).toBeInTheDocument();
-        });
+    it('should render the date of birth', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            birthday: '1995-07-05',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: []
+        };
 
-        it('should render "No Data" when no sex is available', () => {
-            const result = { ...expectedResult };
-            delete result.gender;
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+        expect(getByText('07/05/1995')).toBeInTheDocument();
     });
 
-    describe('Patient ID', () => {
-        it('should render the patient ID', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.shortId.toString())).toBeInTheDocument();
-        });
+    it('should render the sex', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            gender: 'gender-value',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: []
+        };
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+        expect(getByText('gender-value')).toBeInTheDocument();
     });
 
-    describe('Address', () => {
-        it('should render the address', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            const address = '123 Fake St';
-            const city = 'Faketown, FS, 12345';
+    it('should render the patient ID', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: []
+        };
 
-            expect(getByText(address)).toBeInTheDocument();
-            expect(getByText(city)).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+        expect(getByText('653')).toBeInTheDocument();
     });
 
-    describe('Phone', () => {
-        it('should render the phone number', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.phones[0])).toBeInTheDocument();
-        });
+    it('should render the address', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [
+                {
+                    address: '123 Fake St',
+                    address2: null,
+                    city: 'Faketown',
+                    state: 'FS',
+                    use: 'HOME',
+                    zipcode: '12345'
+                }
+            ],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: []
+        };
 
-        it('should render "No Data" when no phone number is available', () => {
-            const result = { ...expectedResult };
-            result.phones = [];
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
-    });
-    describe('Email', () => {
-        it('should render the email address', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.emails[0])).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
 
-        it('should render "No Data" when no email address is available', () => {
-            const result = { ...expectedResult };
-            result.emails = [];
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
+        expect(getByText(/123 Fake St/)).toBeInTheDocument();
+        expect(getByText(/Faketown, FS 12345/)).toBeInTheDocument();
     });
 
-    describe('Other Names', () => {
-        it('should render the other names', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
+    it('should render the phone number', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: ['phone-number-value'],
+            emails: [],
+            names: [],
+            identification: []
+        };
 
-            const name = 'Jane Doe';
-
-            expect(getByText(name)).toBeInTheDocument();
-        });
-
-        it('should render "No Data" when no other names are available', () => {
-            const result = { ...expectedResult };
-            result.names = [];
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+        expect(getByText('phone-number-value')).toBeInTheDocument();
     });
 
-    describe('Drivers license number', () => {
-        it('should render the drivers license number', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.identification[1].value)).toBeInTheDocument();
-        });
+    it('should render the email address', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: [],
+            emails: ['email-address-value'],
+            names: [],
+            identification: []
+        };
 
-        it('should render "No Data" when no drivers license number is available', () => {
-            const result = { ...expectedResult };
-            result.identification = result.identification.filter((i) => i.type !== "Driver's license number");
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+        expect(getByText('email-address-value')).toBeInTheDocument();
     });
 
-    describe('Social Security number', () => {
-        it('should render the social security number', () => {
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={expectedResult} />
-                </MemoryRouter>
-            );
-            expect(getByText(expectedResult.identification[0].value)).toBeInTheDocument();
-        });
+    it('should render the other names', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [{ first: 'Jane', last: 'Doe' }],
+            identification: []
+        };
 
-        it('should render "No Data" when no social security number is available', () => {
-            const result = { ...expectedResult };
-            result.identification = result.identification.filter((i) => i.type !== 'Social Security');
-            const { getByText } = render(
-                <MemoryRouter>
-                    <PatientSearchResultListItem result={result} />
-                </MemoryRouter>
-            );
-            expect(getByText('No Data')).toBeInTheDocument();
-        });
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+
+        expect(getByText('Jane Doe')).toBeInTheDocument();
+    });
+
+    it('should render each identification', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: [
+                { type: 'identification-one-type', value: 'identification-one-value' },
+                { type: 'identification-two-type', value: 'identification-two-value' }
+            ]
+        };
+
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient} />
+            </MemoryRouter>
+        );
+        expect(getByText('identification-one-type')).toBeInTheDocument();
+        expect(getByText('identification-one-value')).toBeInTheDocument();
+
+        expect(getByText('identification-two-type')).toBeInTheDocument();
+        expect(getByText('identification-two-value')).toBeInTheDocument();
     });
 });

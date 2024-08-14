@@ -2,7 +2,7 @@
 Feature: Patient Search by contact
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
 
   Scenario: Contact - Search by Phone Number
     When I search by phone number as "202-555-5509"

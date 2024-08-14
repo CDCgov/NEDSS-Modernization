@@ -1,7 +1,7 @@
 Feature: Generate ELR HL7
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
     Given I login for HL7 API generate token
 
   Scenario: ID - Create ELR auto Notification
