@@ -22,15 +22,6 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
-    secrets:
-      CYPRESS_INT_LOGIN_USERNAME: ${{ secrets.CYPRESS_INT_LOGIN_USERNAME }}
-      CYPRESS_INT_LOGIN_PASSWORD: ${{ secrets.CYPRESS_INT_LOGIN_PASSWORD }}
-      CYPRESS_INT_DI_CLIENT: ${{ secrets.CYPRESS_INT_DI_CLIENT }}
-      CYPRESS_INT_DI_SECRET: ${{ secrets.CYPRESS_INT_DI_SECRET }}
-      CYPRESS_TEST_LOGIN_USERNAME: ${{ secrets.CYPRESS_TEST_LOGIN_USERNAME }}
-      CYPRESS_TEST_LOGIN_PASSWORD: ${{ secrets.CYPRESS_TEST_LOGIN_PASSWORD }}
-      CYPRESS_TEST_DI_CLIENT: ${{ secrets.CYPRESS_TEST_DI_CLIENT }}
-      CYPRESS_TEST_DI_SECRET: ${{ secrets.CYPRESS_TEST_DI_SECRET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
