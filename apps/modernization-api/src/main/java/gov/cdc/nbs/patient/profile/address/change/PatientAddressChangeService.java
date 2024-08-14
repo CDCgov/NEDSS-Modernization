@@ -8,43 +8,40 @@ import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 
 @Component
-class PatientAddressChangeService {
+public class PatientAddressChangeService {
 
   private final IdGeneratorService generator;
   private final PatientProfileService service;
 
   PatientAddressChangeService(
       final IdGeneratorService generator,
-      final PatientProfileService service
-  ) {
+      final PatientProfileService service) {
     this.generator = generator;
     this.service = service;
   }
 
-  PatientAddressAdded add(final RequestContext context, final NewPatientAddressInput input) {
+  public PatientAddressAdded add(final RequestContext context, final NewPatientAddressInput input) {
     return service.with(
-            input.patient(),
-            found -> found.add(
-                new PatientCommand.AddAddress(
-                    input.patient(),
-                    generateNbsId(),
-                    input.asOf(),
-                    input.type(),
-                    input.use(),
-                    input.address1(),
-                    input.address2(),
-                    input.city(),
-                    input.state(),
-                    input.zipcode(),
-                    input.county(),
-                    input.country(),
-                    input.censusTract(),
-                    input.comment(),
-                    context.requestedBy(),
-                    context.requestedAt()
-                )
-            )
-        ).map(added -> new PatientAddressAdded(input.patient(), added.getId().getLocatorUid()))
+        input.patient(),
+        found -> found.add(
+            new PatientCommand.AddAddress(
+                input.patient(),
+                generateNbsId(),
+                input.asOf(),
+                input.type(),
+                input.use(),
+                input.address1(),
+                input.address2(),
+                input.city(),
+                input.state(),
+                input.zipcode(),
+                input.county(),
+                input.country(),
+                input.censusTract(),
+                input.comment(),
+                context.requestedBy(),
+                context.requestedAt())))
+        .map(added -> new PatientAddressAdded(input.patient(), added.getId().getLocatorUid()))
         .orElseThrow(() -> new PatientNotFoundException(input.patient()));
   }
 
@@ -72,9 +69,7 @@ class PatientAddressChangeService {
             input.censusTract(),
             input.comment(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    ));
+            context.requestedAt())));
 
   }
 
@@ -85,8 +80,6 @@ class PatientAddressChangeService {
             input.patient(),
             input.id(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    ));
+            context.requestedAt())));
   }
 }

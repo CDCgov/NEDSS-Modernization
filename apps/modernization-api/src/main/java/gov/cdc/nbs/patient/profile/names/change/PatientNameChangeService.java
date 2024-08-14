@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-class PatientNameChangeService {
+public class PatientNameChangeService {
 
   private final PatientProfileService service;
 
@@ -16,27 +16,25 @@ class PatientNameChangeService {
     this.service = service;
   }
 
-  PatientNameAdded add(final RequestContext context, final NewPatientNameInput request) {
+  public PatientNameAdded add(final RequestContext context, final NewPatientNameInput request) {
     return service.with(
-            request.patient(),
-            found -> found.add(
-                new PatientCommand.AddName(
-                    request.patient(),
-                    request.asOf(),
-                    request.prefix(),
-                    request.first(),
-                    request.middle(),
-                    request.secondMiddle(),
-                    request.last(),
-                    request.secondLast(),
-                    request.suffix(),
-                    request.degree(),
-                    request.type(),
-                    context.requestedBy(),
-                    context.requestedAt()
-                )
-            )
-        ).map(added -> new PatientNameAdded(added.getId().getPersonUid(), added.getId().getPersonNameSeq()))
+        request.patient(),
+        found -> found.add(
+            new PatientCommand.AddName(
+                request.patient(),
+                request.asOf(),
+                request.prefix(),
+                request.first(),
+                request.middle(),
+                request.secondMiddle(),
+                request.last(),
+                request.secondLast(),
+                request.suffix(),
+                request.degree(),
+                request.type(),
+                context.requestedBy(),
+                context.requestedAt())))
+        .map(added -> new PatientNameAdded(added.getId().getPersonUid(), added.getId().getPersonNameSeq()))
         .orElseThrow(() -> new PatientNotFoundException(request.patient()));
   }
 
@@ -56,9 +54,7 @@ class PatientNameChangeService {
             input.degree(),
             input.type(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    ));
+            context.requestedAt())));
   }
 
   void delete(final RequestContext context, final DeletePatientNameInput input) {
@@ -67,8 +63,6 @@ class PatientNameChangeService {
             input.patient(),
             input.sequence(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    ));
+            context.requestedAt())));
   }
 }
