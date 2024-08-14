@@ -62,7 +62,7 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     return (
         <div className={styles.panel}>
             <header>
-                <label>Columns</label>
+                <h2>Columns</h2>
                 <TrussworksIcon.Close size={3} onClick={close} />
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -84,7 +84,6 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                                 id={`${preference.id}_visible`}
                                                 name={preference.id}
                                                 label={preference.name}
-                                                className={styles.check}
                                                 disabled={!preference.toggleable}
                                                 selected={!preference.hidden}
                                                 onChange={handleVisibilityChange(preference)}
@@ -102,7 +101,7 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                 </Droppable>
             </DragDropContext>
             <footer>
-                <Button unstyled onClick={handleReset} className={styles.resetButton}>
+                <Button unstyled onClick={handleReset}>
                     Reset
                 </Button>
                 <Button type="button" id="save-column-preferences" outline onClick={handleSave}>

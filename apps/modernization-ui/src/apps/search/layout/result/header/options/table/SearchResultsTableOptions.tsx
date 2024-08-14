@@ -1,5 +1,5 @@
 import { OverlayPanel } from 'overlay';
-import { ColumnPreferencesPanel } from './ColumnPreferencesPanel';
+import { ColumnPreferencesPanel } from 'design-system/table/preferences';
 import { Button } from 'components/button';
 
 import styles from './search-results-table-options.module.scss';
