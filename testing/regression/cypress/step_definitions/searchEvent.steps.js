@@ -19,12 +19,12 @@ Then("I select program area for event laboratory report", () => {
   searchEventPage.search();
 });
 
-Then("I should see Results with the link {string}", (string) => {
-  cy.get("a").contains(string).should("be.visible");
+Then("I should see Condition Results with the link {string}", (string) => {
+  cy.get("a#condition").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the text {string}", (string) => {
-  cy.get(".text-normal").contains(string).should("be.visible");
+  cy.get("div[class^=result-item_item]").contains(string).should("be.visible");
 });
 
 Then("I check the ELR in search", () => {
