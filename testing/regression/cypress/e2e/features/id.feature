@@ -60,7 +60,7 @@ Feature: Patient Search by Id
 
   Scenario: ID - Partner Services (Legacy) Patient Number
     When I navigate to id section
-    Then I search by id type as "Partner Services (Legacy) Patient Number" and id as "10"
+    Then I search by id type as "Partner Services Patient Number" and id as "10"
     Then I should see Results with the "PATIENT EXTERNAL IDENTIFIER" as "10"
 
   Scenario: ID - Patient External Identifier

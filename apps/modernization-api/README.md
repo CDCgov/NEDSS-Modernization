@@ -22,7 +22,7 @@ Prior to running tests the `cdc-sandbox/test-db/` image must be built. To build 
 the `cdc-sandbox` directory.
 
 ```sh
-docker-compose up test-db -d
+docker compose up test-db -d
 ```
 
 To run all tests:
