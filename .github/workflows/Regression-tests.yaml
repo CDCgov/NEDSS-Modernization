@@ -22,6 +22,15 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
+    secrets:
+      CYPRESS_INT_LOGIN_USERNAME: ${{ secrets.CYPRESS_INT_LOGIN_USERNAME }}
+      CYPRESS_INT_LOGIN_PASSWORD: ${{ secrets.CYPRESS_INT_LOGIN_PASSWORD }}
+      CYPRESS_INT_DI_CLIENT: ${{ secrets.CYPRESS_INT_DI_CLIENT }}
+      CYPRESS_INT_DI_SECRET: ${{ secrets.CYPRESS_INT_DI_SECRET }}
+      CYPRESS_TEST_LOGIN_USERNAME: ${{ secrets.CYPRESS_TEST_LOGIN_USERNAME }}
+      CYPRESS_TEST_LOGIN_PASSWORD: ${{ secrets.CYPRESS_TEST_LOGIN_PASSWORD }}
+      CYPRESS_TEST_DI_CLIENT: ${{ secrets.CYPRESS_TEST_DI_CLIENT }}
+      CYPRESS_TEST_DI_SECRET: ${{ secrets.CYPRESS_TEST_DI_SECRET }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,6 +43,10 @@ jobs:
           spec: ${{ inputs.spec }}
         env:
           CYPRESS_BASE_URL: ${{ inputs.environment == 'test' && 'https://app.test.nbspreview.com/' || 'https://app.int1.nbspreview.com/' }}
+          CYPRESS_LOGIN_USERNAME: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_LOGIN_USERNAME || secrets.CYPRESS_INT_LOGIN_USERNAME }}
+          CYPRESS_LOGIN_PASSWORD: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_LOGIN_PASSWORD || secrets.CYPRESS_INT_LOGIN_PASSWORD }}
+          CYPRESS_DI_CLIENT_ID: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_DI_CLIENT || secrets.CYPRESS_INT_DI_CLIENT }}
+          CYPRESS_DI_SECRET: ${{ inputs.environment == 'test' && secrets.CYPRESS_TEST_DI_SECRET || secrets.CYPRESS_INT_DI_SECRET }}
       # Create cypress html report
       - name: Build report
         working-directory: testing/regression/
