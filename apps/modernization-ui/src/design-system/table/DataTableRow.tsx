@@ -3,7 +3,7 @@ import { Column } from './DataTable';
 import styles from './data-table.module.scss';
 import classNames from 'classnames';
 import { NoData } from 'components/NoData';
-import { ClampState, HeightClamp } from './HeightClamp';
+import { Constraint, HeightConstrained } from './HeightConstrained';
 import { useState } from 'react';
 
 type Props<V> = {
@@ -14,7 +14,7 @@ type Props<V> = {
 
 export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
     const sorting = maybeUseSorting();
-    const [heightState, setState] = useState<ClampState>('simple');
+    const [constraint, setConstraint] = useState<Constraint>('acceptable');
 
     return (
         <tr key={index}>
@@ -28,9 +28,9 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
                             [styles.sorted]: isSorting
                         })}>
                         {column.render(row) ? (
-                            <HeightClamp rowHeightState={heightState} onClamp={setState}>
+                            <HeightConstrained rowConstraint={constraint} onChange={setConstraint}>
                                 {column.render(row)}
-                            </HeightClamp>
+                            </HeightConstrained>
                         ) : (
                             <NoData />
                         )}
