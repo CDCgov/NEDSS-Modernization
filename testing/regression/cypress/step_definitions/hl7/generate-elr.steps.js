@@ -4,9 +4,9 @@ import UtilityFunctions from "@pages/utilityFunctions.page";
 import { faker } from "@faker-js/faker";
 
 Given("I login for HL7 API generate token", () => {
-  const clientid = Cypress.env()["env"].clientid;
-  const clientsecret = Cypress.env()["env"].clientsecret;  
-  const authurl = Cypress.env()["env"].authurl;
+  const clientid = Cypress.env("clientid");
+  const clientsecret = Cypress.env("clientsecret");
+  const authurl = Cypress.env("authurl");
 
   cy.request({
     method: "POST",
@@ -33,12 +33,12 @@ When("I Generate HL7 {string} messages to api", (string) => {
   let NBSresponse;
   let fakeFormattedSSN;
   let fakeRandomData;
-  const authToken = Cypress.env().authTokenAPI;
-  const clientid = Cypress.env()["env"].clientid;
-  const clientsecret = Cypress.env()["env"].clientsecret;
-  const apiurl = Cypress.env()["env"].apiurl;
-  const checkstatusurl = Cypress.env()["env"].checkstatusurl;
-  const authurl = Cypress.env()["env"].authurl;
+  const authToken = Cypress.env("authTokenAPI");
+  const clientid = Cypress.env("clientid");
+  const clientsecret = Cypress.env("clientsecret");
+  const apiurl = Cypress.env("apiurl");
+  const checkstatusurl = Cypress.env("checkstatusurl");
+  const authurl = Cypress.env("authurl");
 
     cy.readFile('cypress/fixtures/hepb.json', 'utf8').then(jsonData => {
 

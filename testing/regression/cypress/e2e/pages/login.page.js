@@ -1,5 +1,5 @@
-const user = Cypress.env()["env"].loginusername;
-const pass = Cypress.env()["env"].loginpassword;  
+const user = Cypress.env("login_username");
+const pass = Cypress.env("login_password");
 
 class LoginPage {
 
