@@ -10,7 +10,7 @@ class SearchEventPage {
   }
 
   selectEventInvestigationCondition() {    
-    let elm = cy.get("#conditionInput").click();
+    let elm = cy.get("#conditions").click();
     let elm2 = cy.get("#react-select-2-option-1").click();
     cy.get('.multi-select__control--is-focused ').click();
   }
@@ -22,13 +22,13 @@ class SearchEventPage {
   }
 
   selectEventInvestigationProgramArea() {
-    let elm = cy.get("#react-select-3-placeholder").click({force: true});
-    let elm2 = cy.get("#react-select-3-option-0").click({force: true});
+    let elm = cy.get("#react-select-3-placeholder").click({ force: true });
+    let elm2 = cy.get("#react-select-3-option-2").click({ force: true });
   }
 
   selectEventInvestigationJurisdiction() {
     let elm = cy.get("#react-select-4-placeholder").click({force: true});
-    let elm2 = cy.get("#react-select-4-option-1").click({force: true});
+    let elm2 = cy.get("#react-select-4-option-2").click({force: true});
   }
 
   selectEventLabReportJurisdiction() {
@@ -37,18 +37,19 @@ class SearchEventPage {
   }
 
   selectPregnancy() {
-    let elm = cy.get('select[name="pregnancyStatus"]').select("YES");
+    let elm = cy.get('select[name="pregnancyStatus"]').select("No");
   }
 
   selectInvestigationCreatedBy() {
     let elm = cy.get('input[id="createdBy"]').type("super");
-    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click({multiple: true});
+    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').first().click({ multiple: true });
   }
 
   selectInvestigationEventDate() {
-    let elm = cy.get('select[name="eventDate.type"]').select("Last Update Date");
+    let elm = cy.get('select[name="eventDate.type"]').select("Last update date");
+    cy.wait(500)
     let elm2 = cy.get('input[id="eventDate.from"]').type("090920022");
-    let elm3 = cy.get('input[id="eventDate.to"]').type("05052024");
+    let elm3 = cy.get('input[id="eventDate.to"]').type("08142024");
   }
   
   selectLabReportEventDate() {
@@ -88,8 +89,8 @@ class SearchEventPage {
   }
 
   selectInvestigationUpdatedBy() {
-    let elm = cy.get('input[id="lastUpdatedBy"]').type("super");
-    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').click({multiple: true});
+    let elm = cy.get('input[id="updatedBy"]').type("super");
+    let elm2 = cy.get('li[class="usa-combo-box__list-option"]').first().click({ multiple: true });
   }
 
   selectInvestigationFacility() {
