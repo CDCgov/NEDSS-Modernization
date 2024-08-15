@@ -2,6 +2,10 @@
 
 .overlay {
     --modal-min-width: 14.3125rem;
+
+    button {
+        margin: 0;
+    }
 }
 
 .gear {
