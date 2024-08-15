@@ -5,7 +5,6 @@ import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema'
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
 
 import { StateCodedValues, useLocationCodedValues } from 'location';
-import { ConfirmationModal } from 'confirmation';
 import { useAddPatientCodedValues } from 'apps/patient/add/useAddPatientCodedValues';
 import { asPersonInput } from 'apps/patient/add/asPersonInput';
 
@@ -21,10 +20,11 @@ import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
-import { isMissingFields } from 'apps/patient/add/isMissingFields';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { DataEntrySideNav } from 'apps/patient/add/DataEntrySideNav/DataEntrySideNav';
 import { SuccessModal } from 'success';
+import { NavLinkButton } from 'components/button/nav/NavLinkButton';
+import { useConfiguration } from 'configuration';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -82,6 +82,7 @@ const AddPatient = () => {
 
     const [handleSavePatient] = useCreatePatientMutation();
     const modalRef = useRef<ModalRef>(null);
+    const { features } = useConfiguration();
 
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
@@ -109,11 +110,7 @@ const AddPatient = () => {
     };
 
     const evaluateMissingFields = (entry: NewPatientEntry) => {
-        setEntryState({ step: isMissingFields(entry) ? 'verify-missing-fields' : 'verify-address', entry });
-    };
-
-    const evaluateAddress = () => {
-        setEntryState((existing) => ('entry' in existing ? { ...existing, step: 'verify-address' } : existing));
+        setEntryState({ step: 'verify-address', entry });
     };
 
     const prepareCreate = (address: VerifiableAdddress) => {
@@ -210,18 +207,6 @@ const AddPatient = () => {
                 height: 'calc(100vh - 82px)',
                 overflow: 'hidden'
             }}>
-            {entryState.step === 'verify-missing-fields' && (
-                <ConfirmationModal
-                    modal={modalRef}
-                    title="Missing data"
-                    message="Are you sure?"
-                    detail="You are about to add a new patient with missing data."
-                    confirmText="Continue anyways"
-                    onConfirm={evaluateAddress}
-                    cancelText="Go back"
-                    onCancel={cancelSubmission}
-                />
-            )}
             {entryState.step === 'verify-address' && (
                 <AddressVerificationModal
                     modal={modalRef}
@@ -235,10 +220,44 @@ const AddPatient = () => {
                 <SuccessModal
                     modal={modalRef}
                     title="Success"
-                    message={`You have successfully added ${(entryState.step === 'created' && entryState.name) || 'the patient'}`}
-                    action="View patient"
-                    onAction={() => navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)}
-                />
+                    actions={
+                        <>
+                            <Button
+                                type="button"
+                                outline
+                                onClick={() =>
+                                    navigate(
+                                        `/patient-profile/${entryState.step === 'created' && entryState.id}/report/lab`
+                                    )
+                                }>
+                                Add lab report
+                            </Button>
+                            <Button
+                                type="button"
+                                outline
+                                onClick={() =>
+                                    navigate(
+                                        `/patient-profile/${entryState.step === 'created' && entryState.id}/investigation`
+                                    )
+                                }>
+                                Add investigation
+                            </Button>
+                            <Button
+                                type="button"
+                                onClick={() =>
+                                    navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)
+                                }>
+                                View patient
+                            </Button>
+                        </>
+                    }>
+                    <h3>You have successfully added a new patient</h3>
+                    <p>
+                        A patient file for {(entryState.step === 'created' && entryState.name) || 'the patient'}&nbsp;
+                        (Patient ID: {entryState.id}) has been added. You can now either view the patient, add a lab
+                        report for this patient or add an investigation for this patient using the buttons below.
+                    </p>
+                </SuccessModal>
             )}
             <Grid col={3} className="bg-white border-right border-base-light">
                 <DataEntrySideNav />
@@ -259,9 +278,19 @@ const AddPatient = () => {
                             }}>
                             <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                                 <h1 className="new-patient-title margin-0">New patient</h1>
-                                <Button className="add-patient-button" type={'submit'}>
-                                    Save changes
-                                </Button>
+                                <div className="nav-buttons">
+                                    {features.patient?.add?.extended?.enabled && (
+                                        <NavLinkButton
+                                            type="outline"
+                                            className="add-patient-button"
+                                            to={'/patient/add/extended'}>
+                                            Add extended data
+                                        </NavLinkButton>
+                                    )}
+                                    <Button className="add-patient-button" type={'submit'}>
+                                        Save changes
+                                    </Button>
+                                </div>
                             </div>
                         </Grid>
                         <div className="content">

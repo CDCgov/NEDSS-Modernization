@@ -246,7 +246,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
                 {
                     name: 'Ordering facility Name',
                     source: 'orderingFacility',
-                    title: 'ENTITY ID',
+                    title: 'ORDERING FACILITY',
                     value: 'ordering-facility-value'
                 }
             ])
@@ -255,7 +255,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
 
     it('should resolve terms with Ordering provider', () => {
         const input: LabReportFilterEntry = {
-            providerType: {
+            orderingProvider: {
                 name: 'Ordering provider Name',
                 label: 'Ordering provider Label',
                 value: 'ordering-provider-value'
@@ -268,8 +268,8 @@ describe('when a Laboratory Seach contains General search criteria', () => {
             expect.arrayContaining([
                 {
                     name: 'Ordering provider Name',
-                    source: 'providerType',
-                    title: 'ENTITY TYPE',
+                    source: 'orderingProvider',
+                    title: 'ORDERING PROVIDER',
                     value: 'ordering-provider-value'
                 }
             ])
@@ -278,7 +278,7 @@ describe('when a Laboratory Seach contains General search criteria', () => {
 
     it('should resolve terms with Reporting facility', () => {
         const input: LabReportFilterEntry = {
-            providerType: {
+            reportingFacility: {
                 name: 'Reporting facility Name',
                 label: 'Reporting facility Label',
                 value: 'reporting-facility-value'
@@ -291,8 +291,8 @@ describe('when a Laboratory Seach contains General search criteria', () => {
             expect.arrayContaining([
                 {
                     name: 'Reporting facility Name',
-                    source: 'providerType',
-                    title: 'ENTITY TYPE',
+                    source: 'reportingFacility',
+                    title: 'REPORTING FACILITY',
                     value: 'reporting-facility-value'
                 }
             ])

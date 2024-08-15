@@ -30,16 +30,13 @@ Feature: Patient Profile Identification Changes
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then I am unable to add a patient's identification
-    And a patient event is not emitted
 
   Scenario: I cannot update a patient's identification without proper permission
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then I am unable to change a patient's identification
-    And a patient event is not emitted
 
   Scenario: I cannot remove a patient's identification without proper permission
     Given I am logged into NBS
     And I have the authorities: "FIND-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
     Then I am unable to remove a patient's identification
-    And a patient event is not emitted

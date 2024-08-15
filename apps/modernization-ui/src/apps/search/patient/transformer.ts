@@ -13,10 +13,10 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
         : undefined;
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
-    const { disableSoundex, lastName, firstName, id, address, city, phoneNumber, email, dateOfBirth, ...remaining } =
+    const { includeSimilar, lastName, firstName, id, address, city, phoneNumber, email, dateOfBirth, ...remaining } =
         data;
     return {
-        disableSoundex,
+        disableSoundex: !includeSimilar,
         lastName,
         firstName,
         id,

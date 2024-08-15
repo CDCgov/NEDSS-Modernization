@@ -1,7 +1,7 @@
 Feature: User can add a patient profilenp
 
     Background:
-        Given I am logged in as "superuser" and password "@test"
+        Given I am logged in as secure user
 
     Scenario: User add a patient
         Then the user has searched for a patient by "Person number" as "63506872864"

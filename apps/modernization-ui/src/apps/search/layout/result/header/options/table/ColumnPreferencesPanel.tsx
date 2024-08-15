@@ -5,7 +5,6 @@ import { useColumnPreferences, ColumnPreference } from 'design-system/table/pref
 import { Checkbox } from 'design-system/checkbox';
 import { Button } from 'components/button';
 import { Icon } from 'components/Icon/Icon';
-
 import styles from './column-preference-panel.module.scss';
 
 const swap =
@@ -21,13 +20,13 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save } = useColumnPreferences();
+    const { preferences, save, searchType, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
 
     useEffect(() => {
-        setPending(preferences);
-    }, [preferences]);
+        setPending(preferences.map((x) => ({ ...x })));
+    }, [JSON.stringify(preferences)]);
 
     const handleVisibilityChange = (preference: ColumnPreference) => (visible: boolean) => {
         setPending((current) => {
@@ -51,8 +50,16 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     };
 
     const handleSave = () => {
-        save(pending);
+        save(pending, searchType);
         close();
+        // save pending to local storage
+        localStorage.setItem(`${searchType}ColumnPreferences`, JSON.stringify(pending));
+    };
+
+    const handleReset = () => {
+        reset();
+        close();
+        localStorage.removeItem(`${searchType}ColumnPreferences`);
     };
 
     return (
@@ -63,26 +70,19 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="preferences">
-                    {(dropable) => (
-                        <div {...dropable.droppableProps} ref={dropable.innerRef} className={styles.preferences}>
+                    {(droppable) => (
+                        <div {...droppable.droppableProps} ref={droppable.innerRef} className={styles.preferences}>
                             {pending.map((preference, index) => (
                                 <Draggable
                                     key={preference.id}
-                                    draggableId={preference.id}
+                                    draggableId={preference.id + 1}
                                     index={index}
                                     isDragDisabled={!preference.moveable}>
-                                    {(drabbable: DraggableProvided) => (
+                                    {(draggable: DraggableProvided) => (
                                         <div
-                                            ref={drabbable.innerRef}
-                                            {...drabbable.draggableProps}
+                                            ref={draggable.innerRef}
+                                            {...draggable.draggableProps}
                                             className={styles.preference}>
-                                            <span
-                                                className={styles.handle}
-                                                ref={drabbable.innerRef}
-                                                {...drabbable.draggableProps}
-                                                {...drabbable.dragHandleProps}>
-                                                <Icon name="drag" />
-                                            </span>
                                             <Checkbox
                                                 id={`${preference.id}_visible`}
                                                 name={preference.id}
@@ -92,16 +92,22 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                                 selected={!preference.hidden}
                                                 onChange={handleVisibilityChange(preference)}
                                             />
+                                            <span className={styles.handle} {...draggable.dragHandleProps}>
+                                                <Icon name="drag" />
+                                            </span>
                                         </div>
                                     )}
                                 </Draggable>
                             ))}
-                            {dropable.placeholder}
+                            {droppable.placeholder}
                         </div>
                     )}
                 </Droppable>
             </DragDropContext>
             <footer>
+                <Button unstyled onClick={handleReset} className={styles.resetButton}>
+                    Reset
+                </Button>
                 <Button type="button" id="save-column-preferences" outline onClick={handleSave}>
                     Save columns
                 </Button>

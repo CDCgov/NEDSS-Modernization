@@ -64,11 +64,28 @@ public final class InvestigationFilter implements EventFilter {
 
 
   public enum IdType {
-    ABCS_CASE_ID,
-    CITY_COUNTY_CASE_ID,
-    INVESTIGATION_ID,
-    NOTIFICATION_ID,
-    STATE_CASE_ID
+    ABCS_CASE_ID("ABCS_CASE_ID","ABC Case ID"),
+    CITY_COUNTY_CASE_ID("CITY_COUNTY_CASE_ID","City Case ID"),
+    INVESTIGATION_ID("INVESTIGATION_ID","Investigation ID"),
+    NOTIFICATION_ID("NOTIFICATION_ID","Notification ID"),
+    STATE_CASE_ID("STATE_CASE_ID","State Case ID")
+    ;
+
+    private final String value;
+    private final String display;
+
+    IdType(final String value, final String display) {
+      this.value = value;
+      this.display = display;
+    }
+
+    public String value() {
+      return value;
+    }
+
+    public String display() {
+      return display;
+    }
   }
 
 

@@ -58,7 +58,7 @@ To learn more about the build process view the cdc-sandbox [README](cdc-sandbox/
 2. Start the database and Elasticsearch containers
 
     ```sh
-    docker-compose up -d nbs-mssql elasticsearch
+    docker compose up -d nbs-mssql elasticsearch
     ```
 3. Navigate to the root directory
 

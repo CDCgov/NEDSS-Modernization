@@ -44,6 +44,13 @@ type Features = {
         };
     };
     search: Search;
+    patient: {
+        add: {
+            extended: {
+                enabled: boolean;
+            };
+        };
+    };
 };
 
 type Properties = {

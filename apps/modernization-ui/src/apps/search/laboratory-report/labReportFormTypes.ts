@@ -34,7 +34,6 @@ type General = {
     pregnancyStatus?: Selectable;
     processingStatus?: Selectable[];
     programAreas?: Selectable[];
-    providerType?: Selectable;
 };
 
 type LabReportFilterEntry = General & ReportCriteria;
@@ -74,6 +73,8 @@ const entityTypes: Selectable[] = [
     asSelectable('REPORTING_FACILITY', 'Reporting Facility')
 ];
 
+const pregnancyStatus: Selectable[] = [asSelectable('Yes'), asSelectable('No'), asSelectable('Unknonw')];
+
 const initial: LabReportFilterEntry = {
     enteredBy: enteredByTypes,
     entryMethods: [ELECTRONIC_ENTRY],
@@ -89,5 +90,6 @@ export {
     entryMethodTypes,
     eventStatusTypes,
     processingStatusTypes,
+    pregnancyStatus,
     initial
 };

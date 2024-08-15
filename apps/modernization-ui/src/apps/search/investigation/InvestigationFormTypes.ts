@@ -21,14 +21,14 @@ type InvestigationFilterEntry = {
     eventDate?: EventDate;
     createdBy?: Selectable;
     updatedBy?: Selectable;
-    reportingFacility?: Selectable;
-    reportingProvider?: Selectable;
     investigationStatus?: Selectable;
     investigator?: Selectable;
     outbreaks?: Selectable[];
     caseStatuses?: Selectable[];
     processingStatuses?: Selectable[];
     notificationStatuses?: Selectable[];
+    reportingProviderId?: Selectable;
+    reportingFacilityId?: Selectable;
 };
 
 export type { InvestigationFilterEntry, EventDate, Identification };
@@ -85,9 +85,15 @@ const entityOptions: Selectable[] = [
 const investigationEventTypeOptions: Selectable[] = [
     asSelectable('ABCS_CASE_ID', 'ABC Case ID'),
     asSelectable('CITY_COUNTY_CASE_ID', 'City Case ID'),
-    asSelectable('INVESTIGATION_ID', 'Invitation ID'),
+    asSelectable('INVESTIGATION_ID', 'Investigation ID'),
     asSelectable('NOTIFICATION_ID', 'Notification ID'),
     asSelectable('STATE_CASE_ID', 'State Case ID')
+];
+
+const pregnancyStatusOptions: Selectable[] = [
+    asSelectable('YES', 'Yes'),
+    asSelectable('NO', 'No'),
+    asSelectable('UNKNOWN', 'Unknown')
 ];
 
 export {
@@ -97,5 +103,6 @@ export {
     processingStatusOptions,
     caseStatusOptions,
     dateTypeOptions,
-    investigationEventTypeOptions
+    investigationEventTypeOptions,
+    pregnancyStatusOptions
 };

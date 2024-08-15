@@ -26,6 +26,7 @@ class GroupAndUngroupQuestions {
                 cy.get('.addNewSectionBtn').eq(0).click({ force: true });
                 cy.get('.sectionName').eq(0).type("test new section");
                 cy.get('.addSectionBtn').eq(0).click();
+                cy.wait(2000)
                 cy.get('.manageSectionsCloseBtn').eq(0).click();
                 cy.wait(5000)
 
@@ -38,20 +39,22 @@ class GroupAndUngroupQuestions {
 
                 // questions
                 cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
-                cy.wait(1000)
+                cy.wait(2000)
                 cy.get('label[for="selection-0"]').click({ force: true });
+                cy.wait(1000)
                 cy.contains('Apply to page').click();
                 cy.wait(5000)
 
                 cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
-                cy.wait(1000)
+                cy.wait(2000)
                 cy.get('label[for="selection-0"]').click({ force: true });
+                cy.wait(1000)
                 cy.contains('Apply to page').click();
                 cy.wait(5000)
 
                 // grouping
-                cy.get(".subsectionOptionsWithGrouped-ungrouped").eq(0).click();
-                cy.get('.subsectionOptionsWithGrouped-ungrouped').eq(0)
+                cy.get(".subsectionOptionsWithGrouped-").eq(0).click();
+                cy.get('.subsectionOptionsWithGrouped-').eq(0)
                     .get('[data-testid="groupQuestionsOption"]').eq(0).click();
                 this.renameBlockName()
                 this.fillTableColumnWidths()
@@ -65,7 +68,7 @@ class GroupAndUngroupQuestions {
 
     clickMenuIcon(toGroup) {
         if(toGroup) {
-            cy.get(".subsectionOptionsWithGrouped-ungrouped").eq(0).click();
+            cy.get(".subsectionOptionsWithGrouped-").eq(0).click();
         } else {
             cy.get(".subsectionOptionsWithGrouped-grouped").eq(0).click();
         }
@@ -156,7 +159,8 @@ class GroupAndUngroupQuestions {
     }
 
     clickGroupQuestionOption() {
-        cy.get('.subsectionOptionsWithGrouped-ungrouped').eq(0)
+        cy.wait(2000)
+        cy.get('.subsectionOptionsWithGrouped-ungrouped').eq(1)
         .get('[data-testid="groupQuestionsOption"]').eq(0).click();
     }
 

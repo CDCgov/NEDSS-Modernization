@@ -2,8 +2,6 @@
 @use 'styles/borders';
 
 .panel {
-    width: 14.3125rem;
-
     display: flex;
     flex-direction: column;
 
@@ -24,25 +22,31 @@
             text-align: center;
             font-size: 1.375rem; // h5
             font-weight: 700;
+            margin: 0;
         }
     }
 
     footer {
         border-top: 1px solid var(--base-lighter, #dcdee0);
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
         padding: 1.5rem;
+        .resetButton {
+            margin-right: 1rem;
+            text-decoration: none !important;
+        }
     }
 }
 
 .preferences {
     width: 14.3125rem;
-
     .preference {
         display: flex;
         flex: 1 0 0;
         align-items: center;
+        justify-content: space-between;
         padding-left: 0.5rem;
+        background-color: colors.$base-white;
 
         height: 2.75rem;
         border-bottom: 1px solid colors.$base-lighter;
@@ -57,8 +61,11 @@
             flex-shrink: 0;
         }
 
-        .check {
+        .checkbox {
             margin: 0;
+        }
+        &:last-of-type {
+            border: none;
         }
     }
 }

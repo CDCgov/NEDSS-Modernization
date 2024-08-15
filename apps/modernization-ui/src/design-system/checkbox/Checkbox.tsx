@@ -12,12 +12,12 @@ const Checkbox = ({ id, label, className, selected = false, onChange, ...inputPr
         onChange?.(checked);
     };
     return (
-        <div className={classNames(styles.checkbox, className)}>
+        <div className={classNames(styles.checkbox, className)} aria-checked={selected}>
             <input
-                className={styles.input}
                 id={id}
                 type="checkbox"
                 checked={selected}
+                aria-hidden
                 onChange={(e) => handleChange(e.target.checked)}
                 {...inputProps}
             />

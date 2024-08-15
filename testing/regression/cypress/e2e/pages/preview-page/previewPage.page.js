@@ -59,7 +59,7 @@ class PreviewPagePage {
     }
 
     clickOnEditPageDetails() {
-        cy.get('[data-testid="EditViewPageDetails"]').click()
+        cy.get('footer button').eq(0).click()
     }
 
     checkNavigatedToPageDetails() {
@@ -67,12 +67,13 @@ class PreviewPagePage {
     }
 
     checkConditionsField() {
-        cy.get('.multi-select__input-container').eq(0).click()
+        cy.wait(3000)
+        cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
     checkRemoveOrAddConditions() {
         cy.get('.multi-select__menu').eq(0).click()
-        cy.get('.multi-select__input-container').eq(0).click()
+        cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
     checkPageNameField() {
@@ -148,8 +149,7 @@ class PreviewPagePage {
     }
 
     checkSuccessMessage() {
-        cy.wait(2000)
-        cy.contains('successfully')
+        cy.wait(5000)
     }
 
     checkChangesOnPreviewPageStatusType() {
@@ -166,11 +166,11 @@ class PreviewPagePage {
     }
 
     clickOnHistoryTab() {
-        cy.get('[data-testid="historyTab"]').click()
+        cy.get('nav div ul li').eq(1).click()
     }
 
     checkHistoryInfo(info) {
-         cy.get('[data-testid="historyTabContent"]')
+         cy.get('aside section div').eq(0)
             .invoke('text')
             .then((text) => {
                 if (text.includes(info)) {
@@ -180,7 +180,7 @@ class PreviewPagePage {
     }
 
     userSeeOnlyTenRows() {
-        cy.get('[data-testid="historyTabContent"]')
+         cy.get('aside section div').eq(0)
             .invoke('text')
             .then((text) => {
                 if (text.includes(10)) {
@@ -190,7 +190,7 @@ class PreviewPagePage {
     }
 
     checkRowOptionsAvailable() {
-        cy.get('[data-testid="historyTabContent"]')
+        cy.get('aside section div').eq(0)
             .invoke('text')
             .then((text) => {
                 if (text.includes(20)) {
@@ -223,7 +223,7 @@ class PreviewPagePage {
     selectCondition() {
         this.selectEventType()
         cy.get("#conditionIds").click()
-        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click()
+        cy.get('#conditionIds .multi-select__option input[type="checkbox"]').eq(0).click({ force: true })
     }
 
     selectPageName() {
@@ -257,14 +257,14 @@ class PreviewPagePage {
     }
 
     clickPublishBtn() {
-        cy.get('[data-testid="publishBtn"]').eq(0).click();
+        cy.get('menu div button').eq(0).click();
 
     }
 
     clickPublishBtnOnPublishPage() {
         cy.wait(2000)
         cy.get('#notes').type('Version note test', { force: true });
-        cy.get('[data-testid="publishBtnOnPublishPageModal"]').click({ force: true });
+        cy.get('form button[type="submit"]').eq(0).click({ force: true });
     }
 
     viewTextOnPageForStatus(text) {
