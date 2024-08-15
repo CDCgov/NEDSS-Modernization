@@ -23,6 +23,10 @@ Then("I should see Condition Results with the link {string}", (string) => {
   cy.get("a#condition").contains(string).should("be.visible");
 });
 
+Then("I should see Results with the link {string}", (string) => {
+  cy.get("a#documentType").contains(string).should("be.visible");
+});
+
 Then("I should see Results with the text {string}", (string) => {
   cy.get("div[class^=result-item_item]").contains(string).should("be.visible");
 });
@@ -154,6 +158,10 @@ Then("I select notification status status for event investigation", () => {
 Then("I select resulted test for event laboratory report", () => {
   searchEventPage.selectLabReportResultTest();
   searchEventPage.search();
+});
+
+Then("I unselect all the lab Entry method", () => {
+  searchEventPage.selectLabReportCodedResult();
 });
 
 Then("I select coded result for event laboratory report", () => {
