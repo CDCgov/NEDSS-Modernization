@@ -25,6 +25,7 @@ import { DataEntrySideNav } from 'apps/patient/add/DataEntrySideNav/DataEntrySid
 import { SuccessModal } from 'success';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { useConfiguration } from 'configuration';
+import { ClassicButton } from 'classic';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -222,26 +223,12 @@ const AddPatient = () => {
                     title="Success"
                     actions={
                         <>
-                            <Button
-                                type="button"
-                                outline
-                                onClick={() =>
-                                    navigate(
-                                        `/patient-profile/${entryState.step === 'created' && entryState.id}/report/lab`
-                                    )
-                                }>
+                            <ClassicButton outline url={`/nbs/api/profile/${entryState.id}/report/lab`}>
                                 Add lab report
-                            </Button>
-                            <Button
-                                type="button"
-                                outline
-                                onClick={() =>
-                                    navigate(
-                                        `/patient-profile/${entryState.step === 'created' && entryState.id}/investigation`
-                                    )
-                                }>
+                            </ClassicButton>
+                            <ClassicButton outline url={`/nbs/api/profile/${entryState.id}/investigation`}>
                                 Add investigation
-                            </Button>
+                            </ClassicButton>
                             <Button
                                 type="button"
                                 onClick={() =>
