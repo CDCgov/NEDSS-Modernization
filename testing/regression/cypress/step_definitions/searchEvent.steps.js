@@ -157,6 +157,9 @@ Then("I select notification status status for event investigation", () => {
 
 Then("I select resulted test for event laboratory report", () => {
   searchEventPage.selectLabReportResultTest();
+  searchEventPage.expandLabReportCriteria();
+  cy.get('input[id="resultedTest"]').type("LEAD");
+  cy.get('.usa-combo-box__list-option').eq(1).click();
   searchEventPage.search();
 });
 
@@ -166,5 +169,8 @@ Then("I unselect all the lab Entry method", () => {
 
 Then("I select coded result for event laboratory report", () => {
   searchEventPage.selectLabReportCodedResult();
+  searchEventPage.expandLabReportCriteria();
+  cy.get('input[id="codedResult"]').type("abnormal");
+  cy.get('.usa-combo-box__list-option').eq(0).click();
   searchEventPage.search();
 });
