@@ -1,20 +1,10 @@
-import { LabReport, LabReportPersonParticipation } from 'generated/graphql/schema';
+import { LabReport } from 'generated/graphql/schema';
+import { BasicPatient } from 'apps/search/basic';
+import { Maybe } from 'utils';
 import { displayName } from 'name';
-import { Link } from 'react-router-dom';
 
-const getPatient = (labReport: LabReport): LabReportPersonParticipation | undefined | null => {
-    return labReport.personParticipations?.find((p) => p?.typeCd === 'PATSBJ');
-};
-
-const getPatientName = (labReport: LabReport) => {
-    const patient = getPatient(labReport);
-
-    return (
-        <Link to={`/patient-profile/${patient?.shortId}`}>
-            {(patient && displayName('short')({ first: patient.firstName, last: patient.lastName })) || 'No Data'}
-        </Link>
-    );
-};
+const getPatient = (labReport: LabReport): Maybe<BasicPatient> =>
+    labReport.personParticipations?.find((p) => p?.typeCd === 'PATSBJ');
 
 const getOrderingProviderName = (labReport: LabReport): string | undefined => {
     const provider = labReport.personParticipations.find((p) => p.typeCd === 'ORD' && p.personCd === 'PRV');
@@ -37,11 +27,4 @@ const getAssociatedInvestigations = (labReport: LabReport) =>
         ?.map((investigation) => `${investigation?.localId}\n${investigation?.cdDescTxt}\n`)
         .join('\n');
 
-export {
-    getPatient,
-    getPatientName,
-    getOrderingProviderName,
-    getReportingFacility,
-    getDescription,
-    getAssociatedInvestigations
-};
+export { getPatient, getOrderingProviderName, getReportingFacility, getDescription, getAssociatedInvestigations };
