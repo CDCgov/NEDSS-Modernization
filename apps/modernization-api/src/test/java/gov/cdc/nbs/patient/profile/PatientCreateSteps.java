@@ -1,7 +1,6 @@
 package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.odse.Person;
-import gov.cdc.nbs.patient.profile.administrative.NewPatientAdministrative;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -18,6 +17,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import net.datafaker.Faker;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Locale;
 
 @Transactional
 public class PatientCreateSteps {
@@ -34,12 +37,13 @@ public class PatientCreateSteps {
   Active<Person> patient;
 
   @Autowired
-  Active<NewPatientAdministrative> input;
+  Active<NewPatient> input;
 
   @Autowired
   Available<PatientIdentifier> patients;
 
   private AccessDeniedException accessDeniedException;
+  private final Faker faker = new Faker(Locale.of("en-us"));
 
   @Before("@patient_profile_create")
   public void reset() {
@@ -55,9 +59,43 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with comments")
   public void i_am_adding_a_new_patient() {
-    NewPatientAdministrative newPatient =
-        new NewPatientAdministrative(RandomUtil.getRandomDateInPast(), "abc");
+    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null);
     this.input.active(newPatient);
+  }
+
+  @Given("I am adding a new patient with names")
+  public void i_am_adding_a_new_patient_with_names() {
+    NewPatient newPatient = new NewPatient(null, null, Arrays.asList(new Name(
+        Instant.parse("2023-05-15T10:00:00Z"),
+        "L",
+        "MR",
+        faker.name().firstName(),
+        faker.name().firstName(),
+        faker.name().lastName(),
+        faker.name().lastName(),
+        faker.name().lastName(),
+        "JR",
+        "BS")), null);
+    this.input.active(newPatient);
+  }
+
+  @Given("I am adding a new patient with addresses")
+  public void i_am_adding_a_new_patient_with_addresses() {
+    NewPatient newPatient = new NewPatient(null, null, null, Arrays.asList(new Address(
+        RandomUtil.getRandomDateInPast(),
+        "H",
+        "H",
+        faker.address().streetAddress(),
+        RandomUtil.getRandomString(),
+        faker.address().city(),
+        RandomUtil.getRandomStateCode(),
+        RandomUtil.getRandomNumericString(15),
+        RandomUtil.getRandomString(),
+        RandomUtil.getRandomString(10),
+        RandomUtil.country(),
+        RandomUtil.getRandomString())));
+    this.input.active(newPatient);
+
   }
 
   @When("I send a create patient request")
@@ -76,13 +114,30 @@ public class PatientCreateSteps {
   @Then("the patient created has the entered comment")
   public void the_patient_created_has_the_entered_comment() {
     Person actual = patient.active();
-    NewPatientAdministrative expected = this.input.active();
+    NewPatient expected = this.input.active();
 
     assertThat(actual)
         .returns(expected.asOf(), Person::getAsOfDateAdmin)
         .returns(expected.comment(), Person::getDescription);
+  }
 
+  @Then("the patient created has the entered names")
+  public void the_patient_created_has_the_entered_names() {
+    Person actual = patient.active();
+    NewPatient expected = this.input.active();
 
+    assertThat(actual)
+        .returns(expected.asOf(), Person::getAsOfDateAdmin);
+  }
+
+  @Then("the patient created has the entered addresses")
+  public void the_patient_created_has_the_entered_addresses() {
+    Person actual = patient.active();
+    NewPatient expected = this.input.active();
+
+    assertThat(actual)
+        .returns(expected.comment(), Person::getDescription)
+        .returns(expected.asOf(), Person::getAsOfDateAdmin);
   }
 
   @Then("I am unable to create a patient")
