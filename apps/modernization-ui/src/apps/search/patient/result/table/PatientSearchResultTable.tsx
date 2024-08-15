@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
@@ -73,18 +72,9 @@ type Props = {
 };
 
 const PatientSearchResultTable = ({ results }: Props) => {
-    const { apply, register, save } = useColumnPreferences();
-
-    useEffect(() => {
-        register('Patients', preferences);
-        const storedPreferences = localStorage.getItem(`PatientsColumnPreferences`);
-
-        if (storedPreferences) {
-            save(JSON.parse(storedPreferences), 'Patients');
-        }
-    }, [results]);
+    const { apply } = useColumnPreferences();
 
     return <DataTable<PatientSearchResult> id="patient-search-results" columns={apply(columns)} data={results} />;
 };
 
-export { PatientSearchResultTable };
+export { PatientSearchResultTable, preferences };
