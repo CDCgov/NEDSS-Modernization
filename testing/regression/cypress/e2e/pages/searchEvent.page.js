@@ -3,7 +3,12 @@ class SearchEventPage {
     cy.get('a[href*="search/investigations"]').click();
     cy.wait(500);
   }
-
+  expandLabReportCriteria() {
+    cy.get('svg[aria-label="Collapse General search"]').first().click()
+    cy.get('svg[aria-label="Expand Lab report criteria"]').first().click()
+    cy.wait(500);
+  }
+   
   clickEventLabReport() {
     cy.get('a[href*="search/lab-reports"]').click();
     cy.wait(500);
@@ -146,7 +151,6 @@ class SearchEventPage {
 
   selectLabReportResultTest() {
     this.setLabReportNormalSettings();
-    cy.get('input[id="resultedTest"]').type("Lead");
   }
 
   setLabReportNormalSettings() {

@@ -10,4 +10,4 @@ Feature: Lab Report Search by criteria
 
   Scenario: Basic Info - Search by Coded result/organism
     When I select coded result for event laboratory report
-    Then I should see Results with the link "Lab Report" 
+    Then I should see Results with the link "Lab report" 
