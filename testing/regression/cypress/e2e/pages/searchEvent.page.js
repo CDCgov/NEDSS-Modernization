@@ -3,12 +3,19 @@ class SearchEventPage {
     cy.get('a[href*="search/investigations"]').click();
     cy.wait(500);
   }
+
+  expandInvestigationCriteria() {
+    cy.get('svg[aria-label="Collapse General search"]').first().click()
+    cy.get('svg[aria-label="Expand Investigation criteria"]').first().click()
+    cy.wait(500);
+  }
+
   expandLabReportCriteria() {
     cy.get('svg[aria-label="Collapse General search"]').first().click()
     cy.get('svg[aria-label="Expand Lab report criteria"]').first().click()
     cy.wait(500);
   }
-   
+
   clickEventLabReport() {
     cy.get('a[href*="search/lab-reports"]').click();
     cy.wait(500);
@@ -141,12 +148,12 @@ class SearchEventPage {
 
   selectInvestigationCurrentProcessingStatus() {
     let elm = cy.get('div[id="react-select-7-placeholder"]').click({force: true});
-    let elm2 = cy.get('div[id="react-select-7-option-2"]').click({force: true});
+    let elm2 = cy.get('div[id="react-select-7-option-6"]').click({force: true});
   }
 
   selectInvestigationNotificationStatus() {
     let elm = cy.get('div[id="react-select-8-placeholder"]').click({force: true});
-    let elm2 = cy.get('div[id="react-select-8-option-0"]').click({force: true});
+    let elm2 = cy.get('div[id="react-select-8-option-4"]').click({force: true});
   }
 
   selectLabReportResultTest() {
