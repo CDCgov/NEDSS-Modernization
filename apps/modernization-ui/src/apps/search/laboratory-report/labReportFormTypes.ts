@@ -1,4 +1,4 @@
-import { Selectable } from 'options';
+import { Selectable, pregnancyStatusOptions } from 'options';
 import { asSelectable } from 'options/selectable';
 
 type EventDate = {
@@ -73,8 +73,6 @@ const entityTypes: Selectable[] = [
     asSelectable('REPORTING_FACILITY', 'Reporting Facility')
 ];
 
-const pregnancyStatus: Selectable[] = [asSelectable('Yes'), asSelectable('No'), asSelectable('Unknonw')];
-
 const initial: LabReportFilterEntry = {
     enteredBy: enteredByTypes,
     entryMethods: [ELECTRONIC_ENTRY],
@@ -90,6 +88,6 @@ export {
     entryMethodTypes,
     eventStatusTypes,
     processingStatusTypes,
-    pregnancyStatus,
+    pregnancyStatusOptions as pregnancyStatus,
     initial
 };
