@@ -163,10 +163,15 @@ const StatusBadge = ({ children, investigation }: StatusBadgeProps) => (
 );
 
 const InvestigationSearchResultsTable = ({ results }: Props) => {
-    const { apply, register } = useColumnPreferences();
+    const { apply, register, save } = useColumnPreferences();
 
     useEffect(() => {
-        register('Patients', preferences);
+        register('Investigations', preferences);
+        const storedPreferences = localStorage.getItem(`InvestigationsColumnPreferences`);
+
+        if (storedPreferences) {
+            save(JSON.parse(storedPreferences), 'Patients');
+        }
     }, []);
 
     return <DataTable<Investigation> id="patient-search-results" columns={apply(columns)} data={results} />;
