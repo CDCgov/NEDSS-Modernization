@@ -5,6 +5,10 @@ Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
 });
 
+Then("I click criteria tab", () => {
+  searchEventPage.expandInvestigationCriteria();
+}); 
+
 Then("I navigate the event laboratory report", () => {
   searchEventPage.clickEventLabReport();
 });
@@ -130,7 +134,7 @@ Then("I select a provider for event investigation", () => {
   searchEventPage.search();
 });
 
-Then("I select a investigation status for event investigation", () => {
+Then("I select an investigation status for event investigation", () => {
   searchEventPage.selectInvestigationStatus();
   searchEventPage.search();
 });
@@ -150,7 +154,7 @@ Then("I select investigation current processing status for event investigation",
   searchEventPage.search();
 });
 
-Then("I select notification status status for event investigation", () => {
+Then("I select notification status for event investigation", () => {
   searchEventPage.selectInvestigationNotificationStatus();
   searchEventPage.search();
 });
