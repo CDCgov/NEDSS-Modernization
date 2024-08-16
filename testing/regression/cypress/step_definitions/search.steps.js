@@ -131,7 +131,8 @@ When("I search by email as {string}", (string) => {
 });
 
 Then("I should see Results with the phone number as {string}", (string) => {
-  cy.contains(string).should("be.visible");
+  cy.get('p').contains(string).should("be.visible");
+
 });
 
 Then("I should see Results with the email as {string}", (string) => {
