@@ -67,7 +67,7 @@ type EntryState =
           step: 'verify-missing-fields' | 'verify-address' | 'create';
           entry: NewPatientEntry;
       }
-    | { step: 'created'; id: number; name: string };
+    | { step: 'created'; shortId: number; id: number; name: string };
 
 const resolveName = (input: PersonInput): string => {
     const name = input?.names && input?.names[0];
@@ -134,7 +134,12 @@ const AddPatient = () => {
             }
         }).then((result) => {
             if (result.data?.createPatient) {
-                setEntryState({ step: 'created', id: result?.data?.createPatient.shortId, name: name });
+                setEntryState({
+                    step: 'created',
+                    shortId: result?.data?.createPatient.shortId,
+                    id: result?.data?.createPatient.id,
+                    name: name
+                });
             }
         });
     };
@@ -232,7 +237,7 @@ const AddPatient = () => {
                             <Button
                                 type="button"
                                 onClick={() =>
-                                    navigate(`/patient-profile/${entryState.step === 'created' && entryState.id}`)
+                                    navigate(`/patient-profile/${entryState.step === 'created' && entryState.shortId}`)
                                 }>
                                 View patient
                             </Button>
@@ -241,7 +246,7 @@ const AddPatient = () => {
                     <h3>You have successfully added a new patient</h3>
                     <p>
                         A patient file for {(entryState.step === 'created' && entryState.name) || 'the patient'}&nbsp;
-                        (Patient ID: {entryState.id}) has been added. You can now either view the patient, add a lab
+                        (Patient ID: {entryState.shortId}) has been added. You can now either view the patient, add a
                         report for this patient or add an investigation for this patient using the buttons below.
                     </p>
                 </SuccessModal>
