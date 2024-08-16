@@ -153,7 +153,7 @@ class BulkPatientImport
   def marital_status_code(name)
     {
       'annulled' => 'A',
-      'common Law' => 'C',
+      'common law' => 'C',
       'divorced' => 'D',
       'domestic partner' => 'T',
       'interlocutory' => 'I',
