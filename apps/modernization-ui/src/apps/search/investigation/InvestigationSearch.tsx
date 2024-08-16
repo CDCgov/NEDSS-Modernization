@@ -10,7 +10,7 @@ import { InvestigationSearchResultListItem } from './result/list';
 import { InvestigationSearchForm } from './InvestigationSearchForm';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
-import { InvestigationSearchResultsTable, preferences } from './result/list/table';
+import { InvestigationSearchResultsTable, preferences } from './result/table';
 import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const InvestigationSearch = () => {
@@ -62,6 +62,7 @@ const InvestigationSearch = () => {
     };
 
     const { options: notificationStatus } = useConceptOptions('REC_STAT', { lazy: false });
+    const notificationStatusResolver = findByValue(notificationStatus);
 
     return (
         <ColumnPreferenceProvider id="search.investigations.preferences.columns" defaults={preferences}>
@@ -75,12 +76,17 @@ const InvestigationSearch = () => {
                             render={(result) => (
                                 <InvestigationSearchResultListItem
                                     result={result}
-                                    notificationStatusResolver={findByValue(notificationStatus)}
+                                    notificationStatusResolver={notificationStatusResolver}
                                 />
                             )}
                         />
                     )}
-                    resultsAsTable={() => <InvestigationSearchResultsTable results={results?.content ?? []} />}
+                    resultsAsTable={() => (
+                        <InvestigationSearchResultsTable
+                            results={results?.content ?? []}
+                            notificationStatusResolver={notificationStatusResolver}
+                        />
+                    )}
                     searchEnabled={form.formState.isValid}
                     onSearch={form.handleSubmit(search)}
                     onClear={reset}

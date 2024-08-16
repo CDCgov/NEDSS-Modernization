@@ -4,13 +4,13 @@ import { ColumnPreference, useColumnPreferences } from 'design-system/table/pref
 import { internalizeDate } from 'date';
 import { ClassicLink } from 'classic';
 import { Selectable } from 'options';
+import { withPatient, displayProfileLink, displayGender } from 'apps/search/basic';
 import {
     getPatient,
     getOrderingProviderName,
     getReportingFacility,
     getDescription,
-    getAssociatedInvestigations,
-    getPatientName
+    getAssociatedInvestigations
 } from 'apps/search/laboratory-report/result';
 
 const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
@@ -54,56 +54,40 @@ const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: P
             ...LEGAL_NAME,
             fixed: true,
             sortable: true,
-            render: getPatientName
+            render: withPatient(getPatient, displayProfileLink)
         },
         {
             ...DATE_OF_BIRTH,
             sortable: true,
-            render: (row) => {
-                const patient = getPatient(row);
-                return internalizeDate(patient?.birthTime);
-            }
+            render: (row) => internalizeDate(getPatient(row)?.birthTime)
         },
         {
             ...SEX,
             sortable: true,
-            render: (row) => {
-                const patient = getPatient(row);
-                return patient?.currSexCd;
-            }
+            render: withPatient(getPatient, displayGender)
         },
         {
             ...PATIENT_ID,
             sortable: true,
-            render: (row) => {
-                const patient = getPatient(row);
-                return patient?.shortId;
-            }
+            render: (row) => getPatient(row)?.shortId
         },
         {
             ...DOCUMENT_TYPE,
-            render: (row) => {
-                const patient = getPatient(row);
-                return (
-                    <ClassicLink
-                        id="condition"
-                        url={`/nbs/api/profile/${patient?.personParentUid}/report/lab/${row.id}`}>
-                        Lab report
-                    </ClassicLink>
-                );
-            }
+            render: (row) => (
+                <ClassicLink
+                    id="condition"
+                    url={`/nbs/api/profile/${getPatient(row)?.personParentUid}/report/lab/${row.id}`}>
+                    Lab report
+                </ClassicLink>
+            )
         },
         {
             ...DATE_RECEIVED,
-            render: (row) => {
-                return internalizeDate(row.addTime);
-            }
+            render: (row) => internalizeDate(row.addTime)
         },
         {
             ...DESCRIPTION,
-            render: (row) => {
-                return getDescription(row);
-            }
+            render: getDescription
         },
         {
             ...REPORTING_FACILITY,
@@ -123,9 +107,7 @@ const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: P
         },
         {
             ...LOCAL_ID,
-            render: (row) => {
-                return row.localId;
-            }
+            render: (row) => row.localId
         }
     ];
 

@@ -1,11 +1,5 @@
 import { Selectable, asSelectable } from 'options';
 
-const genderOptions: Selectable[] = [
-    asSelectable('F', 'Female'),
-    asSelectable('M', 'Male'),
-    asSelectable('U', 'Other')
-];
-
 const ACTIVE = asSelectable('ACTIVE', 'Active');
 
 const statusOptions: Selectable[] = [
@@ -14,7 +8,7 @@ const statusOptions: Selectable[] = [
     asSelectable('SUPERCEDED', 'Superseded')
 ];
 
-export { genderOptions, statusOptions };
+export { statusOptions };
 
 type BasicInformation = {
     lastName?: string;

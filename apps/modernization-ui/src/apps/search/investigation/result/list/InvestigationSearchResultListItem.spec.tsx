@@ -18,9 +18,7 @@ describe('when showing an investigation search results', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <InvestigationSearchResultListItem
-                    result={result}
-                    notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
+                <InvestigationSearchResultListItem result={result} notificationStatusResolver={jest.fn()} />
             </MemoryRouter>
         );
 
@@ -98,7 +96,7 @@ describe('when showing an investigation search results', () => {
         );
 
         expect(getByText('Sex')).toBeInTheDocument();
-        expect(getByText('F')).toBeInTheDocument();
+        expect(getByText('Female')).toBeInTheDocument();
     });
 
     it('should display the condition under investigation', () => {
@@ -110,15 +108,13 @@ describe('when showing an investigation search results', () => {
             personParticipations: []
         };
 
-        const { getByText, debug } = render(
+        const { getByText } = render(
             <MemoryRouter>
                 <InvestigationSearchResultListItem
                     result={result}
                     notificationStatusResolver={jest.fn()}></InvestigationSearchResultListItem>
             </MemoryRouter>
         );
-
-        debug();
 
         expect(getByText('Condition')).toBeInTheDocument();
         expect(getByText('investigated-condition')).toBeInTheDocument();
@@ -204,7 +200,7 @@ describe('when showing an investigation search results', () => {
         );
 
         expect(getByText('Status')).toBeInTheDocument();
-        expect(getByText('OPEN')).toBeInTheDocument();
+        expect(getByText('open')).toBeInTheDocument();
     });
 
     it('should display the closed investigation status', () => {
@@ -223,7 +219,7 @@ describe('when showing an investigation search results', () => {
         );
 
         expect(getByText('Status')).toBeInTheDocument();
-        expect(getByText('CLOSED')).toBeInTheDocument();
+        expect(getByText('closed')).toBeInTheDocument();
     });
 
     it('should display the notification status when present', () => {
