@@ -31,19 +31,19 @@ class SimpleSearchResolver {
 
   private Optional<SimpleSearch> maybePatient(final Map<String, String> criteria) {
     return patientSearchCriteriaResolver.resolve(criteria)
-        .map(encryptionService::handleEncryption)
+        .map(encryptionService::encrypt)
         .map(encrypted -> new SimpleSearch("patients", encrypted));
   }
 
   private Optional<SimpleSearch> maybeLaboratoryReport(final Map<String, String> criteria) {
     return laboratoryReportSearchCriteriaResolver.resolve(criteria)
-        .map(encryptionService::handleEncryption)
+        .map(encryptionService::encrypt)
         .map(encrypted -> new SimpleSearch("lab-reports", encrypted));
   }
 
   private Optional<SimpleSearch> maybeInvestigation(final Map<String, String> criteria) {
     return investigationSearchCriteriaResolver.resolve(criteria)
-        .map(encryptionService::handleEncryption)
+        .map(encryptionService::encrypt)
         .map(encrypted -> new SimpleSearch("investigations", encrypted));
   }
 }

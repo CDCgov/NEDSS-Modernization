@@ -9,8 +9,9 @@ import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScope;
 import gov.cdc.nbs.authorization.permission.scope.PermissionScopeResolver;
 import gov.cdc.nbs.event.search.InvestigationFilter;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import gov.cdc.nbs.search.SearchResolver;
+import gov.cdc.nbs.search.SearchResult;
+import gov.cdc.nbs.search.SearchResultResolver;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -18,29 +19,33 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-class InvestigationSearcher {
+class ElasticsearchInvestigationSearchResolver implements SearchResolver<InvestigationFilter, InvestigationSearchResult> {
+
   private static final Permission PERMISSION = new Permission("view", "investigation");
   private final PermissionScopeResolver resolver;
   private final InvestigationSearchCriteriaFilterResolver filterResolver;
   private final InvestigationSearchCriteriaQueryResolver queryResolver;
   private final InvestigationSearchCriteriaSortResolver sortResolver;
   private final ElasticsearchClient client;
+  private final SearchResultResolver resultResolver;
 
-  InvestigationSearcher(
+  ElasticsearchInvestigationSearchResolver(
       final PermissionScopeResolver resolver,
       final InvestigationSearchCriteriaFilterResolver filterResolver,
       final InvestigationSearchCriteriaQueryResolver queryResolver,
       final InvestigationSearchCriteriaSortResolver sortResolver,
-      final ElasticsearchClient client
+      final ElasticsearchClient client, SearchResultResolver resultResolver
   ) {
     this.resolver = resolver;
     this.filterResolver = filterResolver;
     this.queryResolver = queryResolver;
     this.sortResolver = sortResolver;
     this.client = client;
+    this.resultResolver = resultResolver;
   }
 
-  Page<InvestigationSearchResult> find(
+  @Override
+  public SearchResult<InvestigationSearchResult> search(
       final InvestigationFilter criteria,
       final Pageable pageable
   ) {
@@ -68,7 +73,7 @@ class InvestigationSearcher {
 
       return total > 0
           ? paged(hits, pageable)
-          : Page.empty(pageable);
+          : resultResolver.empty(pageable);
 
     } catch (RuntimeException | IOException exception) {
       throw new IllegalStateException("An unexpected error occurred when searching for lab reports.", exception);
@@ -76,7 +81,7 @@ class InvestigationSearcher {
 
   }
 
-  private Page<InvestigationSearchResult> paged(
+  private SearchResult<InvestigationSearchResult> paged(
       final HitsMetadata<SearchableInvestigation> hits,
       final Pageable pageable
   ) {
@@ -86,7 +91,7 @@ class InvestigationSearcher {
         .map(hit -> InvestigationSearchResultConverter.convert(hit.source(), hit.score()))
         .toList();
 
-    return new PageImpl<>(
+    return resultResolver.resolve(
         results,
         pageable,
         hits.total().value()
