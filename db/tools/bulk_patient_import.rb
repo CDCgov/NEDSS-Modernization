@@ -165,10 +165,10 @@ class BulkPatientImport
       'refused to answer' => 'R',
       'separated' => 'E',
       'single, never married' => 'S',
-      'Unknown' => 'U',
-      'Unmarried' => 'B',
-      'Unreported' => 'F',
-      'Widowed' => 'W'
+      'unknown' => 'U',
+      'unmarried' => 'B',
+      'unreported' => 'F',
+      'widowed' => 'W'
     }[name.to_s.downcase]
   end
 
