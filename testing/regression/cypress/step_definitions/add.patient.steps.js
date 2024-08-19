@@ -5,6 +5,10 @@ Then("I create a new patient", () => {
     addPatientPage.addPatient()
 });
 
+Then ("I clear the Information as of Date field", () => {
+    addPatientPage.clearInformationAsOfDate()
+});
+
 Then("I create a new patient without enter field and get error message", () => {
     addPatientPage.addPatientBlank()
 });

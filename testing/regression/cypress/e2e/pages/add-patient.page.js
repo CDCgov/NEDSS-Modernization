@@ -36,12 +36,16 @@ class AddPatientPage {
 
     cy.get(".add-patient-button").click();
 
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
+  }
+
+  clearInformationAsOfDate() {
+    cy.get('#asOf').clear();
   }
 
   addPatientBlank() {
     cy.get('button[class="usa-button add-patient-button"]').click();
-    cy.get(".warning").should("be.visible");
+    cy.get('#form-error').should('exist').and('have.text', 'You have some invalid inputs. Please correct the invalid inputs before moving forward.');
   }
 
   addPatientSingleDetail() {
@@ -50,7 +54,7 @@ class AddPatientPage {
     //   .type(this.getCurrentDate());
     cy.get(".add-patient-button").click();
     cy.wait(500)
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
     cy.wait(500)
   }
 
@@ -135,7 +139,11 @@ class AddPatientPage {
   }
 
   viewPatientProfile() {
-    cy.get("button[class*=successModal]").click();
+    //cy.get("button[class*=successModal]").click();
+    cy.get('h1.font-sans-xl.text-medium')
+    .should('be.visible')
+    .and('contain.text', 'Patient profile');
+
   }
 
   addAnotherPatient() {
