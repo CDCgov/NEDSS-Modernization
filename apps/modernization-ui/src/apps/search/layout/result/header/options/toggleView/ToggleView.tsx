@@ -1,5 +1,6 @@
 import { ButtonGroup, Icon } from '@trussworks/react-uswds';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
+import { Icon as IconComponent } from 'components/Icon/Icon';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 
@@ -14,7 +15,8 @@ export const ToggleView = () => {
             <ButtonGroup type="segmented">
                 <Button
                     labelPosition="right"
-                    icon={view === 'table' ? <Icon.CheckCircle /> : <Icon.GridView />}
+                    className={view === 'table' ? styles.active : ''}
+                    icon={view === 'table' ? <Icon.Check /> : <IconComponent name="table" />}
                     onClick={asTable}
                     type="button"
                     outline={view !== 'table'}>
@@ -22,7 +24,8 @@ export const ToggleView = () => {
                 </Button>
                 <Button
                     labelPosition="right"
-                    icon={view === 'list' ? <Icon.CheckCircle /> : <Icon.List />}
+                    className={view === 'list' ? styles.active : ''}
+                    icon={view === 'list' ? <Icon.Check /> : <Icon.List />}
                     onClick={asList}
                     outline={view !== 'list'}
                     type="button">

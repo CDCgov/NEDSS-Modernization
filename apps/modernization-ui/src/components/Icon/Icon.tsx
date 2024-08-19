@@ -27,7 +27,8 @@ const IconList = [
     'subsection',
     'textarea',
     'textbox',
-    'ungroup'
+    'ungroup',
+    'table'
 ];
 
 export const Icon = ({ name, size, color, alt = '' }: IconProps) => {
