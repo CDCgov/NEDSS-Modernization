@@ -16,6 +16,10 @@ Then(
   }
 );
 
+Then("I set patient id profile ENV", () => {
+  patientProfilePage.setPatientProfileENVID();
+});
+
 Then(
   "the user has enters for a patient by {string} as {string}",
   (string, string2) => {
@@ -44,7 +48,7 @@ Then("the patient's profile is displayed", () => {
 });
 
 Then("I should see search button disabled", () => {
-  cy.get('div.bottom-search button[type="submit"]').should('be.disabled')
+  cy.get('button').contains("Search").should('be.disabled')
 });
 
 Then("I should see {string}", (string) => {
@@ -81,7 +85,7 @@ Then("confirms the deletion of the patient", () => {
 });
 
 Then("the user is directed to the Home screen", () => {
-  cy.url().should("include", "/advanced-search");
+  cy.url().should("include", "/search/patients");
 });
 
 Then("cancels the deletion of the patient", () => {
@@ -217,7 +221,8 @@ Then(
 Given(
   "the user navigate to the patient profile page for {string}",
   (string) => {
-    cy.visit(`/patient-profile/${string}`);
+    const clientid = Cypress.env("patientId");
+    cy.visit(`/patient-profile/${clientid}`);
   }
 );
 
