@@ -20,11 +20,9 @@ export const About = () => {
                         https://github.com/CDCgov/NEDSS-Modernization/releases
                     </a>
                 </p>
-                <strong>NBS Central (Latest release documentation)</strong>
+                <strong>NBS Central</strong>
                 <p>
-                    <a href="https://cdcnbscentral.com/projects/71release-materials/documents">
-                        https://cdcnbscentral.com/projects/71release-materials/documents
-                    </a>
+                    <a href="https://cdcnbscentral.com/projects/nbs7x">https://cdcnbscentral.com/projects/nbs7x</a>
                 </p>
                 <strong>Demo features guide (How to use the demo)</strong>
                 <p>
@@ -40,21 +38,19 @@ export const About = () => {
             <div>
                 <h2>Feedback</h2>
                 <p>
-                    Please provide feedback here:
-                    <br />
-                    <a href="https://cdcprime.gov1.qualtrics.com/jfe/form/SV_3NNZwwdTOlnIIxU">
-                        https://cdcprime.gov1.qualtrics.com/jfe/form/SV_3NNZwwdTOlnIIxU
-                    </a>
+                    Please provide feedback by reaching out to us with your suggestions and experiences using the NBS 7
+                    demo site at <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>.
                 </p>
                 <p>
-                    If you cannot access the link, please reach out to us at{' '}
-                    <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>, and we will work with you on an alternate method for
-                    feedback.
+                    In the future we will be adding an on-page feedback tool to collect your input on the development of
+                    the modernized NBS application. Please look for that feature in coming updates.
                 </p>
                 <h2>Technical Support</h2>
                 <p>
-                    Our technical support can be reached at <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>. You can also
-                    submit a ticket on NBS Central:
+                    Our technical support can be reached at <a href="mailto:nbs@cdc.gov">nbs@cdc.gov</a>.
+                </p>
+                <p>
+                    You can also submit a ticket on NBS Central:
                     <br />
                     <a href="https://cdcnbscentral.com/projects/70collaboration/issues">
                         https://cdcnbscentral.com/projects/70collaboration/issues
