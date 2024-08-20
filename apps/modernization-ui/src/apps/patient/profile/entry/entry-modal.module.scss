@@ -1,4 +1,9 @@
 @forward 'apps/patient/profile/profile-modal';
+@use 'styles/borders';
+
+.modalHeader {
+    @extend %thin-bottom;
+}
 
 .overflow {
     .content {
