@@ -4,14 +4,15 @@ import { SearchLayout } from './SearchLayout';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
 import { SearchResultDisplayProvider } from 'apps/search/useSearchResultDisplay';
 
-const values = {
-    status: 'noInput',
-    view: 'list',
-    terms: []
-};
+const mockReset = jest.fn();
 
 jest.mock('apps/search', () => ({
-    useSearchResultDisplay: () => values
+    useSearchResultDisplay: () => ({
+        status: 'no-input',
+        view: 'list',
+        terms: [],
+        reset: mockReset
+    })
 }));
 
 describe('no input', () => {

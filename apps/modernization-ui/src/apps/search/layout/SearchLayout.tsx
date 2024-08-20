@@ -46,7 +46,7 @@ const SearchLayout = ({
     const { pathname } = useLocation();
 
     useEffect(() => {
-        reset?.();
+        reset();
     }, [pathname]);
 
     const [collapsed, setCollapsed] = useState<boolean>();
@@ -100,7 +100,7 @@ const SearchLayout = ({
                             {view === 'table' && total > 0 && resultsAsTable()}
                         </SearchResults>
                     )}
-                    {status === 'noInput' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
+                    {status === 'no-input' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
                 </div>
             </div>
         </section>

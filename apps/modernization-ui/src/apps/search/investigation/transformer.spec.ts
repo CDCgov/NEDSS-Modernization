@@ -4,8 +4,7 @@ import {
     InvestigationStatus,
     NotificationStatus,
     PregnancyStatus,
-    ProcessingStatus,
-    ReportingEntityType
+    ProcessingStatus
 } from 'generated/graphql/schema';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { transformObject } from './transformer';
@@ -46,15 +45,15 @@ describe('transformObject', () => {
     it('should tranform with Jurisdictions', () => {
         const input: InvestigationFilterEntry = {
             jurisdictions: [
-                { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: 'jurisdiction-one' },
-                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: 'jurisdiction-two' }
+                { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: '181' },
+                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: '239' }
             ]
         };
         const actual = transformObject(input);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                jurisdictions: ['jurisdiction-one', 'jurisdiction-two']
+                jurisdictions: [181, 239]
             })
         );
     });

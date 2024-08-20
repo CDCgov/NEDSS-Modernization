@@ -1,42 +1,26 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { PatientSearchResult } from 'generated/graphql/schema';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { Term, useSearchResultDisplay } from 'apps/search';
+import { PatientSearchResult } from 'generated/graphql/schema';
 import { usePatientSearch } from './usePatientSearch';
-import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
-import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { NoPatientResults } from './result/none';
 import { PatientSearchResultTable, preferences } from './result/table';
-import { Term, useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
+import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 
 import { PatientSearchActions } from './PatientSearchActions';
-import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
-        defaultValues: initial,
+        defaultValues,
         mode: 'onBlur'
     });
 
-    const { status, search, reset, results } = usePatientSearch();
+    const { enabled, results, search, clear } = usePatientSearch({ form });
+
     const { terms } = useSearchResultDisplay();
-
-    const { state } = useLocation();
-
-    useEffect(() => {
-        if (state) {
-            form.reset(state, { keepDefaultValues: true });
-            search({ ...initial, ...state });
-        }
-    }, [state, form.reset]);
-
-    useEffect(() => {
-        if (status === 'resetting') {
-            form.reset();
-        }
-    }, [form.reset, status]);
 
     const handleRemoveTerm = (term: Term) => {
         const formValues = form.getValues();
@@ -45,9 +29,9 @@ const PatientSearch = () => {
         const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
         if (matchingField && terms.length > 1) {
             form.resetField(matchingField as keyof PatientCriteriaEntry);
-            search(form.getValues());
+            search();
         } else {
-            reset();
+            clear();
         }
     };
 
@@ -60,15 +44,15 @@ const PatientSearch = () => {
                     criteria={() => <PatientCriteria />}
                     resultsAsList={() => (
                         <SearchResultList<PatientSearchResult>
-                            results={results?.content ?? []}
+                            results={results}
                             render={(result) => <PatientSearchResultListItem result={result} />}
                         />
                     )}
-                    resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
-                    searchEnabled={form.formState.isValid}
-                    onSearch={form.handleSubmit(search)}
+                    resultsAsTable={() => <PatientSearchResultTable results={results} />}
+                    searchEnabled={enabled}
+                    onSearch={search}
                     noResults={() => <NoPatientResults />}
-                    onClear={reset}
+                    onClear={clear}
                 />
             </FormProvider>
         </ColumnPreferenceProvider>

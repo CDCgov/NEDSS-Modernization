@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useReducer } from 'react';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
 import { PageProvider, PagingSettings } from 'page';
 import { SortingProvider, SortingSettings } from 'sorting';
 import { Term } from './terms';
@@ -12,12 +12,12 @@ type Searching = { status: 'searching' };
 
 type Complete = { status: 'completed'; terms: Term[] };
 
-type NoInput = { status: 'noInput' };
+type NoInput = { status: 'no-input' };
 
 type State = { view: View } & (Waiting | Searching | Complete | NoInput);
 
 type Interaction = {
-    status: 'waiting' | 'searching' | 'completed' | 'noInput';
+    status: 'waiting' | 'searching' | 'completed' | 'no-input';
     view: View;
     terms: Term[];
     reset: () => void;
@@ -35,7 +35,7 @@ type Action =
     | { type: 'search' }
     | { type: 'complete'; terms: Term[] }
     | { type: 'setView'; view: View }
-    | { type: 'noInput' };
+    | { type: 'no-input' };
 
 const initialize = (settings: SearchSettings): State => ({ status: 'waiting', view: settings.defaultView });
 
@@ -50,8 +50,8 @@ const reducer = (current: State, action: Action): State => {
         case 'complete': {
             return { ...current, status: 'completed', terms: action.terms };
         }
-        case 'noInput': {
-            return { ...current, status: 'noInput' };
+        case 'no-input': {
+            return { ...current, status: 'no-input' };
         }
         case 'setView': {
             return { ...current, view: action.view };
@@ -99,13 +99,13 @@ const Wrapper = ({ children, settings, updateDefaultView }: WrapperProps) => {
         }
     }, [settings.defaultView]);
 
-    const complete = (terms: Term[]) => dispatch({ type: 'complete', terms });
+    const terms = useMemo(() => (state.status === 'completed' ? state.terms : []), [state.status]);
 
-    const noInput = () => dispatch({ type: 'noInput' });
+    const complete = useCallback((terms: Term[]) => dispatch({ type: 'complete', terms }), [dispatch]);
+    const noInput = useCallback(() => dispatch({ type: 'no-input' }), [dispatch]);
+    const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
+    const search = useCallback(() => dispatch({ type: 'search' }), [dispatch]);
 
-    const reset = () => dispatch({ type: 'reset' });
-    const search = () => dispatch({ type: 'search' });
-    const terms = state.status === 'completed' ? state.terms : [];
     const asTable = () => {
         updateDefaultView('table');
         dispatch({ type: 'setView', view: 'table' });

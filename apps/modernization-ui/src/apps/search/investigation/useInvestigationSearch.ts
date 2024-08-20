@@ -1,11 +1,16 @@
+import { UseFormReturn } from 'react-hook-form';
+import { ResultRequest, SearchInteraction, useSearch } from 'apps/search';
 import { Investigation, InvestigationFilter, useFindInvestigationsByFilterLazyQuery } from 'generated/graphql/schema';
-import { Interaction, ResultRequest, useSearch } from 'apps/search';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
-import { transformObject } from './transformer';
-import { investigationTermsResolver } from './investigationTermsResolver';
+import { transformObject as transformer } from './transformer';
+import { investigationTermsResolver as termResolver } from './investigationTermsResolver';
 
-const useInvestigationSearch = (): Interaction<InvestigationFilterEntry, Investigation> => {
+type Settings = {
+    form: UseFormReturn<InvestigationFilterEntry>;
+};
+
+const useInvestigationSearch = ({ form }: Settings): SearchInteraction<Investigation> => {
     const [fetch] = useFindInvestigationsByFilterLazyQuery();
 
     const resultResolver = (request: ResultRequest<InvestigationFilter>) => {
@@ -24,13 +29,11 @@ const useInvestigationSearch = (): Interaction<InvestigationFilterEntry, Investi
             if (response.error) {
                 throw new Error(response.error.message);
             }
-            return response.data?.findInvestigationsByFilter
-                ? { ...response.data.findInvestigationsByFilter, page: request.page.number }
-                : undefined;
+            return response.data?.findInvestigationsByFilter;
         });
     };
 
-    return useSearch({ transformer: transformObject, resultResolver, termResolver: investigationTermsResolver });
+    return useSearch({ form, transformer, resultResolver, termResolver });
 };
 
 export { useInvestigationSearch };
