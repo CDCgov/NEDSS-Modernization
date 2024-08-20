@@ -146,6 +146,10 @@ class AddPatientPage {
 
   }
 
+  clickViewPatientProfile() {
+    cy.get("button").contains("View patient").click();
+  }
+
   addAnotherPatient() {
     cy.get(".usa-button.usa-button--outline").click();
   }
