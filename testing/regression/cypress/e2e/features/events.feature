@@ -3,6 +3,10 @@ Feature: User accesses patient profile and can view existing patient data here.
     Background:
         Given I am logged in as secure user
 
+    Scenario: Create Seed Profile Data
+        Given create a new patient profile
+        Then I set patient id profile ENV
+
     Scenario: User compares investigations
         Given the user navigate to the patient profile page for "75837"
         Then user clicks on a patient's profile "Events" tab
