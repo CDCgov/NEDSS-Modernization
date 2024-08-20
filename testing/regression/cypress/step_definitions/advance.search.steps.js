@@ -219,10 +219,16 @@ Then(
 );
 
 Given(
-  "the user navigate to the patient profile page for {string}",
-  (string) => {
+  "the user navigate to a new patient profile page", () => {
     const clientid = Cypress.env("patientId");
     cy.visit(`/patient-profile/${clientid}`);
+  }
+);
+
+Given(
+  "the user navigate to the patient profile page for {string}",
+  (string) => {    
+    cy.visit(`/patient-profile/${string}`);
   }
 );
 
