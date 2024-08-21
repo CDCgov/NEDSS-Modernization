@@ -60,6 +60,8 @@ export const CheckboxGroup = ({
                 [styles.compact]: sizing === 'compact'
             })}>
             <legend>{label}</legend>
+            {error && <ErrorMessage className="margin-top-1">{error}</ErrorMessage>}
+            <br />
             <div className={styles.options}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
@@ -74,7 +76,6 @@ export const CheckboxGroup = ({
                     />
                 ))}
             </div>
-            {error && <ErrorMessage className="margin-top-1">{error}</ErrorMessage>}
         </fieldset>
     );
 };
