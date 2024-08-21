@@ -12,6 +12,7 @@ type Props = {
     className?: string;
     labelPosition?: 'left' | 'right';
     children: ReactNode;
+    header?: string;
 };
 
 export const ButtonActionMenu = ({
@@ -21,6 +22,7 @@ export const ButtonActionMenu = ({
     outline,
     className,
     labelPosition = 'right',
+    header = '',
     children
 }: Props) => {
     const wrapperRef = useRef(null);
@@ -44,6 +46,8 @@ export const ButtonActionMenu = ({
     return (
         <div className={styles.actionMenu} ref={wrapperRef}>
             <Button
+                aria-label={header}
+                data-tooltip-position="top"
                 type="button"
                 onClick={() => setOpen(!open)}
                 className={classNames(styles.actionMenuButton, className)}
@@ -55,6 +59,12 @@ export const ButtonActionMenu = ({
             </Button>
             {open && (
                 <div className={styles.menu}>
+                    {header && (
+                        <div className={styles['menu-header']}>
+                            {header}
+                            <Button unstyled onClick={() => setOpen(false)} icon={<Icon.Close fontSize={32} />} />
+                        </div>
+                    )}
                     <div className={styles.menuContent}>{children}</div>
                 </div>
             )}
