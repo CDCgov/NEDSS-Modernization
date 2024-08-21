@@ -12,7 +12,6 @@ type Props = {
     className?: string;
     labelPosition?: 'left' | 'right';
     children: ReactNode;
-
 };
 
 export const ButtonActionMenu = ({
@@ -22,7 +21,7 @@ export const ButtonActionMenu = ({
     outline,
     className,
     labelPosition = 'right',
-  
+
     children
 }: Props) => {
     const wrapperRef = useRef(null);
