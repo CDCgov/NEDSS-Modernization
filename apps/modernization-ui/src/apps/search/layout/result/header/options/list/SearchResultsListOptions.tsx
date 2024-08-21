@@ -28,12 +28,7 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
     }, []);
 
     return (
-        <ButtonActionMenu
-            header="Sort list by"
-            className={styles.option}
-            outline
-            icon={<Icon.SortArrow />}
-            disabled={disabled}>
+        <ButtonActionMenu className={styles.option} outline icon={<Icon.SortArrow />} disabled={disabled}>
             <>
                 <Button
                     type="button"
