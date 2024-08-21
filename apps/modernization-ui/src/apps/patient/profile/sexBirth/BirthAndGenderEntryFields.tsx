@@ -44,6 +44,7 @@ export const BirthAndGenderEntryFields = () => {
                         name={name}
                         disableFutureDates
                         errorMessage={error?.message}
+                        required
                     />
                 )}
             />
