@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { decrypt } from './decryption';
+import { decrypt } from 'decryption';
 import { Loading } from 'components/Spinner';
 import { internalizeDate } from 'date';
 import { BasicInformation } from 'apps/search/patient/criteria';

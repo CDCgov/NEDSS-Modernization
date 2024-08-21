@@ -5,14 +5,14 @@ Feature: Searching from the NBS home page
     Given I am logged in
 
   Scenario: NBS home page search redirects to Patient search
-    Given I want a simple search for a "Date Of Birth" of "2000-01-01"
+    Given I want a simple search for a "Date Of Birth" of "2000-01-07"
     And I want a simple search for a "First name" of "Firstly"
     And I want a simple search for a "Last name" of "Lastly"
     And I want a simple search for a "Gender" of "F"
     And I want a simple search for a "Patient ID" of "100056"
     When I perform a search from the NBS Home screen
     Then I am redirected to Advanced Search
-    And the search parameters include a "Date of Birth" of "2000-01-01"
+    And the search parameters include a "Date of Birth" of "01/07/2000"
     And the search parameters include a "First Name" of "Firstly"
     And the search parameters include a "Last Name" of "Lastly"
     And the search parameters include a "Gender" of "F"

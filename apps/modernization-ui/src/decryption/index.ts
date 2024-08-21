@@ -1,0 +1,1 @@
+export { decrypt } from './decryption';
