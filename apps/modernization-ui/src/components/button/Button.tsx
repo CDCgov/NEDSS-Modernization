@@ -6,7 +6,7 @@ import classNames from 'classnames';
 type Props = {
     className?: string;
     icon?: ReactNode;
-    children?: string | ReactNode;
+    children?: ReactNode;
     outline?: boolean;
     destructive?: boolean;
     disabled?: boolean;

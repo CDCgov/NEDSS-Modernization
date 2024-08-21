@@ -41,26 +41,18 @@ export const MultiValueEntry = <V extends FieldValues>({
         isDirty(form.formState.isDirty);
     }, [form.formState.isDirty]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (value: V) => {
         // Submit button performs various actions based on the current state
         if (state === 'new') {
-            const value = form.getValues();
             setData((current) => [...current, value]);
-            form.reset();
-        } else if (state === 'view') {
-            setState('new');
-            form.reset();
         } else if (state === 'edit' && activeIndex !== undefined) {
-            const value = form.getValues();
             setData((current) => {
                 const newValue = [...current];
                 newValue[activeIndex] = value;
                 return newValue;
             });
-            setState('new');
-            form.reset();
         }
-        setActiveIndex(undefined);
+        handleReset();
     };
 
     const handleView = (entry: V, index: number) => {
@@ -76,12 +68,21 @@ export const MultiValueEntry = <V extends FieldValues>({
     };
 
     const handleDelete = (index: number) => {
-        setData((current) => current.splice(index, 1));
+        setData((current) => {
+            const updated = [...current];
+            updated.splice(index, 1);
+            return updated;
+        });
         // If currently editing the entry to be deleted, reset
         if (state !== 'new' && activeIndex === index) {
-            form.reset();
-            setState('new');
+            handleReset();
         }
+    };
+
+    const handleReset = () => {
+        form.reset();
+        setActiveIndex(undefined);
+        setState('new');
     };
 
     const iconColumn: Column<V> = {
@@ -141,10 +142,18 @@ export const MultiValueEntry = <V extends FieldValues>({
                 )}
             </FormProvider>
             <footer>
-                <Button outline disabled={!form.formState.isValid} onClick={handleSubmit}>
-                    <Icon.Add />
-                    {`${state === 'edit' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
-                </Button>
+                {(state === 'edit' || state === 'new') && (
+                    <Button outline disabled={!form.formState.isValid} onClick={form.handleSubmit(handleSubmit)}>
+                        <Icon.Add />
+                        {`${state === 'edit' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
+                    </Button>
+                )}
+                {state === 'view' && (
+                    <Button outline disabled={!form.formState.isValid} onClick={handleReset}>
+                        <Icon.Add />
+                        {`Add ${title.toLowerCase()}`}
+                    </Button>
+                )}
             </footer>
         </section>
     );
