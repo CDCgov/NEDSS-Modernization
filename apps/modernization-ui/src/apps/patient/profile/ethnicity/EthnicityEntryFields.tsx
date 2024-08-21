@@ -30,6 +30,7 @@ export const EthnicityEntryFields = () => {
                         name={name}
                         disableFutureDates
                         errorMessage={error?.message}
+                        required
                     />
                 )}
             />
