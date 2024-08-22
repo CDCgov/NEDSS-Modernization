@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Column, DataTable } from 'design-system/table';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import styles from './MultiValueEntry.module.scss';
+import { useMultiValueEntryState } from './useMultiValueEntryState';
 
 type Props<V extends FieldValues> = {
     title: string;
@@ -29,13 +30,11 @@ export const MultiValueEntry = <V extends FieldValues>({
     viewRenderer
 }: Props<V>) => {
     const form = useForm<V>({ mode: 'onBlur', defaultValues });
-    const [data, setData] = useState<V[]>([]);
-    const [state, setState] = useState<'view' | 'edit' | 'new'>('new');
-    const [activeIndex, setActiveIndex] = useState<number | undefined>();
+    const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
 
     useEffect(() => {
-        onChange(data);
-    }, [data]);
+        onChange(state.data);
+    }, [JSON.stringify(state.data)]);
 
     useEffect(() => {
         isDirty(form.formState.isDirty);
@@ -43,46 +42,30 @@ export const MultiValueEntry = <V extends FieldValues>({
 
     const handleSubmit = (value: V) => {
         // Submit button performs various actions based on the current state
-        if (state === 'new') {
-            setData((current) => [...current, value]);
-        } else if (state === 'edit' && activeIndex !== undefined) {
-            setData((current) => {
-                const newValue = [...current];
-                newValue[activeIndex] = value;
-                return newValue;
-            });
-        }
-        handleReset();
-    };
-
-    const handleView = (entry: V, index: number) => {
-        form.reset(entry, { keepDefaultValues: true });
-        setActiveIndex(index);
-        setState('view');
-    };
-
-    const handleEdit = (entry: V, index: number) => {
-        form.reset(entry, { keepDefaultValues: true });
-        setActiveIndex(index);
-        setState('edit');
-    };
-
-    const handleDelete = (index: number) => {
-        setData((current) => {
-            const updated = [...current];
-            updated.splice(index, 1);
-            return updated;
-        });
-        // If currently editing the entry to be deleted, reset
-        if (state !== 'new' && activeIndex === index) {
-            handleReset();
+        if (state.status === 'adding') {
+            add(value);
+            form.reset();
+        } else if (state.status === 'editing') {
+            update(state.index, value);
+            form.reset();
         }
     };
 
-    const handleReset = () => {
+    const handleEditClick = (entry: V, index: number) => {
+        edit(index);
+        form.reset(entry, { keepDefaultValues: true });
+    };
+
+    const handleResetClick = () => {
+        reset();
         form.reset();
-        setActiveIndex(undefined);
-        setState('new');
+    };
+
+    const handleRemoveClick = (index: number) => {
+        remove(index);
+        if ((state.status === 'viewing' || state.status === 'editing') && state.index === index) {
+            form.reset();
+        }
     };
 
     const iconColumn: Column<V> = {
@@ -91,13 +74,13 @@ export const MultiValueEntry = <V extends FieldValues>({
         render: (entry: V, index: number) => (
             <div className={styles.iconContainer}>
                 <div data-tooltip-position="top" aria-label="View">
-                    <Icon.Visibility onClick={() => handleView(entry, index)} />
+                    <Icon.Visibility onClick={() => view(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Edit">
-                    <Icon.Edit onClick={() => handleEdit(entry, index)} />
+                    <Icon.Edit onClick={() => handleEditClick(entry, index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Delete">
-                    <Icon.Delete onClick={() => handleDelete(index)} />
+                    <Icon.Delete onClick={() => handleRemoveClick(index)} />
                 </div>
             </div>
         )
@@ -130,11 +113,11 @@ export const MultiValueEntry = <V extends FieldValues>({
                 className={styles.dataTable}
                 id={`${title}-data-table`}
                 columns={[...columns, iconColumn]}
-                data={data}
+                data={state.data}
             />
             <FormProvider {...form}>
-                {state === 'view' && activeIndex !== undefined ? (
-                    viewRenderer(data[activeIndex])
+                {state.status === 'viewing' ? (
+                    viewRenderer(state.data[state.index])
                 ) : (
                     <div className={classNames(styles.form, form.formState.isDirty ? styles.changed : '')}>
                         {formRenderer(form.control)}
@@ -142,14 +125,14 @@ export const MultiValueEntry = <V extends FieldValues>({
                 )}
             </FormProvider>
             <footer>
-                {(state === 'edit' || state === 'new') && (
+                {(state.status === 'editing' || state.status === 'adding') && (
                     <Button outline disabled={!form.formState.isValid} onClick={form.handleSubmit(handleSubmit)}>
                         <Icon.Add />
-                        {`${state === 'edit' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
+                        {`${state.status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
                     </Button>
                 )}
-                {state === 'view' && (
-                    <Button outline disabled={!form.formState.isValid} onClick={handleReset}>
+                {state.status === 'viewing' && (
+                    <Button outline disabled={!form.formState.isValid} onClick={handleResetClick}>
                         <Icon.Add />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
