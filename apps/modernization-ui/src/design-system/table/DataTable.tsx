@@ -1,10 +1,8 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Header } from './Header';
-import { maybeUseSorting } from 'sorting';
-
 import styles from './data-table.module.scss';
-import { NoData } from 'components/NoData';
+import { DataTableRow } from './DataTableRow';
 
 type Column<V> = {
     id: string;
@@ -22,8 +20,6 @@ type Props<V> = {
 };
 
 const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
-    const sorting = maybeUseSorting();
-
     return (
         <div id={id} className={classNames('usa-table--borderless', styles.table)}>
             <table className={classNames('usa-table', className)}>
@@ -39,21 +35,7 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                 </thead>
                 <tbody>
                     {data.map((row, index) => (
-                        <tr key={index}>
-                            {columns.map((column, y) => {
-                                const isSorting = sorting?.property === column.id;
-                                return (
-                                    <td
-                                        key={y}
-                                        className={classNames({
-                                            [styles.fixed]: column.fixed,
-                                            [styles.sorted]: isSorting
-                                        })}>
-                                        {column.render(row, index) ?? <NoData />}
-                                    </td>
-                                );
-                            })}
-                        </tr>
+                        <DataTableRow index={index} row={row} columns={columns} key={index} />
                     ))}
                 </tbody>
             </table>
