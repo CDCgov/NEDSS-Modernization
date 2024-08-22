@@ -120,7 +120,7 @@ export const BasicInformation = () => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <CheckboxGroup
                         name={name}
-                        label={'Status'}
+                        label={'Include records that are'}
                         sizing="compact"
                         requried
                         options={statusOptions}
