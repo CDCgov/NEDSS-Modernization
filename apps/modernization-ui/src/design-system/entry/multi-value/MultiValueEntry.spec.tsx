@@ -216,7 +216,7 @@ describe('MultiValueEntry', () => {
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
 
-        const iconContainer = getAllByRole('cell')[2].children[0];
+        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
         expect(iconContainer.children).toHaveLength(3);
 
         // View icon
@@ -246,7 +246,7 @@ describe('MultiValueEntry', () => {
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
 
-        const iconContainer = getAllByRole('cell')[2].children[0];
+        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
         expect(iconContainer.children).toHaveLength(3);
 
         // View icon
@@ -270,7 +270,7 @@ describe('MultiValueEntry', () => {
             expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'first value', secondInput: 'second value' }]);
         });
 
-        const iconContainer = getAllByRole('cell')[2].children[0];
+        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
 
         await waitFor(() => {
             userEvent.click(iconContainer.children[2].children[0]);
@@ -305,7 +305,7 @@ describe('MultiValueEntry', () => {
             expect(getByLabelText('Second Input')).toHaveValue('second value');
         });
 
-        const iconContainer = getAllByRole('cell')[2].children[0];
+        const iconContainer = getAllByRole('cell')[2].children[0].children[0];
 
         await waitFor(() => {
             // view clicked, input values set to entry value

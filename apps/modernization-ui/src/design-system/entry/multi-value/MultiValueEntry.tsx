@@ -5,9 +5,9 @@ import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Column, DataTable } from 'design-system/table';
 import { ReactNode, useEffect } from 'react';
-import { Control, DefaultValues, FieldValues, FormProvider } from 'react-hook-form';
-import styles from './MultiValueEntry.module.scss';
+import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
+import styles from './MultiValueEntry.module.scss';
 
 type Props<V extends FieldValues> = {
     title: string;
@@ -29,7 +29,8 @@ export const MultiValueEntry = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const { add, edit, update, remove, view, reset, state, form } = useMultiValueEntryState<V>(defaultValues);
+    const form = useForm<V>({ mode: 'onBlur', defaultValues });
+    const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
 
     useEffect(() => {
         onChange(state.data);
@@ -50,6 +51,18 @@ export const MultiValueEntry = <V extends FieldValues>({
         }
     };
 
+    const handleRemove = (index: number) => {
+        if ((state.status === 'editing' || state.status === 'viewing') && state.index === index) {
+            form.reset();
+        }
+        remove(index);
+    };
+
+    const handleEdit = (index: number) => {
+        edit(index);
+        form.reset(state.data[index], { keepDefaultValues: true });
+    };
+
     const iconColumn: Column<V> = {
         id: '',
         name: '',
@@ -59,10 +72,10 @@ export const MultiValueEntry = <V extends FieldValues>({
                     <Icon.Visibility onClick={() => view(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Edit">
-                    <Icon.Edit onClick={() => edit(index)} />
+                    <Icon.Edit onClick={() => handleEdit(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Delete">
-                    <Icon.Delete onClick={() => remove(index)} />
+                    <Icon.Delete onClick={() => handleRemove(index)} />
                 </div>
             </div>
         )
