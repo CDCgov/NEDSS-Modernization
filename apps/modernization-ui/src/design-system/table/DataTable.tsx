@@ -9,7 +9,7 @@ type Column<V> = {
     name: string;
     fixed?: boolean;
     sortable?: boolean;
-    render: (value: V) => ReactNode | undefined;
+    render: (value: V, index: number) => ReactNode | undefined;
 };
 
 type Props<V> = {

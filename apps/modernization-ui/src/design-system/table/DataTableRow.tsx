@@ -27,9 +27,9 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
                             [styles.fixed]: column.fixed,
                             [styles.sorted]: isSorting
                         })}>
-                        {column.render(row) ? (
+                        {column.render(row, index) ? (
                             <HeightConstrained rowConstraint={constraint} onChange={setConstraint}>
-                                {column.render(row)}
+                                {column.render(row, index)}
                             </HeightConstrained>
                         ) : (
                             <NoData />
