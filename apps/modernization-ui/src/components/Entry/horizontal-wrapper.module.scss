@@ -5,12 +5,11 @@
     display: flex;
     padding: 0.5rem 1.5rem;
     align-items: center;
+    gap: 2rem;
     @extend %thin-bottom;
 
     label {
-        margin-right: 2rem;
         width: 13rem;
-
         color: colors.$base-darkest;
         font-size: 0.875rem;
         font-weight: 700;
