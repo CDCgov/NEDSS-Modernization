@@ -7,8 +7,13 @@
 
     legend {
         padding-top: 0;
-        padding-bottom: 0.5rem;
         color: colors.$base-darkest;
+        margin-bottom: 0.5rem;
+    }
+
+    .error {
+        margin-bottom: 0.5rem;
+        padding-top: 0;
     }
 
     .options {

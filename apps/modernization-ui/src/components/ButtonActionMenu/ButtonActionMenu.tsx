@@ -21,6 +21,7 @@ export const ButtonActionMenu = ({
     outline,
     className,
     labelPosition = 'right',
+
     children
 }: Props) => {
     const wrapperRef = useRef(null);
@@ -44,6 +45,8 @@ export const ButtonActionMenu = ({
     return (
         <div className={styles.actionMenu} ref={wrapperRef}>
             <Button
+                aria-label="Sort by list"
+                data-tooltip-position="top"
                 type="button"
                 onClick={() => setOpen(!open)}
                 className={classNames(styles.actionMenuButton, className)}
