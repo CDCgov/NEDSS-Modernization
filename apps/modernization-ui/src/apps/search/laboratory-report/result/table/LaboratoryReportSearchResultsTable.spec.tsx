@@ -5,10 +5,8 @@ import { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResu
 import { Selectable } from 'options';
 import { Column } from 'design-system/table';
 
-const mockRegister = jest.fn();
-
 jest.mock('design-system/table/preferences', () => ({
-    useColumnPreferences: () => ({ register: mockRegister, apply: (columns: Column<LabReport>[]) => columns })
+    useColumnPreferences: () => ({ apply: (columns: Column<LabReport>[]) => columns })
 }));
 
 const Wrapper = ({
@@ -26,29 +24,23 @@ const Wrapper = ({
 };
 
 describe('When a Laboratory Report search result is viewed in a table', () => {
-    it('should register default columns', () => {
-        render(<Wrapper results={[]} />);
-
-        expect(mockRegister).toBeCalled();
-    });
-
     it('should display column headers', () => {
         const { getAllByRole } = render(<Wrapper results={[]} />);
 
-        const columns = getAllByRole('columnheader');
+        const headers = getAllByRole('columnheader');
 
-        expect(columns[0]).toHaveTextContent('Legal name');
-        expect(columns[1]).toHaveTextContent('Date of birth');
-        expect(columns[2]).toHaveTextContent('Sex');
-        expect(columns[3]).toHaveTextContent('Patient ID');
-        expect(columns[4]).toHaveTextContent('Document type');
-        expect(columns[5]).toHaveTextContent('Date received');
-        expect(columns[6]).toHaveTextContent('Description');
-        expect(columns[7]).toHaveTextContent('Reporting facility');
-        expect(columns[8]).toHaveTextContent('Ordering provider');
-        expect(columns[9]).toHaveTextContent('Jurisdiction');
-        expect(columns[10]).toHaveTextContent('Associated with');
-        expect(columns[11]).toHaveTextContent('Local ID');
+        expect(headers[0]).toHaveTextContent('Legal name');
+        expect(headers[1]).toHaveTextContent('Date of birth');
+        expect(headers[2]).toHaveTextContent('Sex');
+        expect(headers[3]).toHaveTextContent('Patient ID');
+        expect(headers[4]).toHaveTextContent('Document type');
+        expect(headers[5]).toHaveTextContent('Date received');
+        expect(headers[6]).toHaveTextContent('Description');
+        expect(headers[7]).toHaveTextContent('Reporting facility');
+        expect(headers[8]).toHaveTextContent('Ordering provider');
+        expect(headers[9]).toHaveTextContent('Jurisdiction');
+        expect(headers[10]).toHaveTextContent('Associated with');
+        expect(headers[11]).toHaveTextContent('Local ID');
     });
 
     it('should display column content', () => {
@@ -126,11 +118,11 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
 
         jurisdictionResolver.mockReturnValue({ name: 'Gwinnett County' });
 
-        const { container } = render(<Wrapper results={result} jurisdictionResolver={jurisdictionResolver} />);
-        const columns = container.getElementsByTagName('td');
+        const { getAllByRole } = render(<Wrapper results={result} jurisdictionResolver={jurisdictionResolver} />);
+        const columns = getAllByRole('cell');
         expect(columns[0]).toHaveTextContent('Surma Singh');
         expect(columns[1]).toHaveTextContent('01/01/1990');
-        expect(columns[2]).toHaveTextContent('M');
+        expect(columns[2]).toHaveTextContent('Male');
         expect(columns[3]).toHaveTextContent('63000');
         expect(columns[4]).toHaveTextContent('Lab report');
         expect(columns[5]).toHaveTextContent('09/22/2015');

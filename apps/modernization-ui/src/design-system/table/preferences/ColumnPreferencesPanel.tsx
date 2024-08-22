@@ -20,12 +20,12 @@ type Props = {
 };
 
 const ColumnPreferencesPanel = ({ close }: Props) => {
-    const { preferences, save, searchType, reset } = useColumnPreferences();
+    const { preferences, save, reset } = useColumnPreferences();
 
     const [pending, setPending] = useState<ColumnPreference[]>([]);
 
     useEffect(() => {
-        setPending(preferences.map((x) => ({ ...x })));
+        setPending(structuredClone(preferences));
     }, [JSON.stringify(preferences)]);
 
     const handleVisibilityChange = (preference: ColumnPreference) => (visible: boolean) => {
@@ -50,22 +50,19 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
     };
 
     const handleSave = () => {
-        save(pending, searchType);
+        save(pending);
         close();
-        // save pending to local storage
-        localStorage.setItem(`${searchType}ColumnPreferences`, JSON.stringify(pending));
     };
 
     const handleReset = () => {
         reset();
         close();
-        localStorage.removeItem(`${searchType}ColumnPreferences`);
     };
 
     return (
         <div className={styles.panel}>
             <header>
-                <label>Columns</label>
+                <h2>Columns</h2>
                 <TrussworksIcon.Close size={3} onClick={close} />
             </header>
             <DragDropContext onDragEnd={handleDragEnd}>
@@ -87,7 +84,6 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                                 id={`${preference.id}_visible`}
                                                 name={preference.id}
                                                 label={preference.name}
-                                                className={styles.check}
                                                 disabled={!preference.toggleable}
                                                 selected={!preference.hidden}
                                                 onChange={handleVisibilityChange(preference)}
@@ -105,7 +101,7 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                 </Droppable>
             </DragDropContext>
             <footer>
-                <Button unstyled onClick={handleReset} className={styles.resetButton}>
+                <Button unstyled onClick={handleReset}>
                     Reset
                 </Button>
                 <Button type="button" id="save-column-preferences" outline onClick={handleSave}>

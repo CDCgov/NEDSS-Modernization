@@ -6,7 +6,7 @@ import gov.cdc.nbs.geo.state.SimpleState;
 
 import java.time.Instant;
 
-record PatientAddress(
+public record PatientAddress(
     long patient,
     long id,
     short version,
@@ -21,20 +21,17 @@ record PatientAddress(
     String zipcode,
     SimpleCountry country,
     String censusTract,
-    String comment
-) {
+    String comment) {
 
-    record Type(
-        String id,
-        String description
-    ) {
-    }
+  record Type(
+      String id,
+      String description) {
+  }
 
 
-    record Use(
-        String id,
-        String description
-    ) {
-    }
+  record Use(
+      String id,
+      String description) {
+  }
 
 }

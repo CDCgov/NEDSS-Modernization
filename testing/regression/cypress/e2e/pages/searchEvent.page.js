@@ -4,6 +4,18 @@ class SearchEventPage {
     cy.wait(500);
   }
 
+  expandInvestigationCriteria() {
+    cy.get('svg[aria-label="Collapse General search"]').first().click()
+    cy.get('svg[aria-label="Expand Investigation criteria"]').first().click()
+    cy.wait(500);
+  }
+
+  expandLabReportCriteria() {
+    cy.get('svg[aria-label="Collapse General search"]').first().click()
+    cy.get('svg[aria-label="Expand Lab report criteria"]').first().click()
+    cy.wait(500);
+  }
+
   clickEventLabReport() {
     cy.get('a[href*="search/lab-reports"]').click();
     cy.wait(500);
@@ -54,8 +66,9 @@ class SearchEventPage {
   
   selectLabReportEventDate() {
     let elm = cy.get('select[name="eventDate.type"]').select("Last Update Date");
+    cy.wait(500)
     let elm2 = cy.get('input[data-testid="date-picker-external-input"]').first().type("090920022");
-    let elm3 = cy.get('input[data-testid="date-picker-external-input"]').last().type("05052024");
+    let elm3 = cy.get('input[data-testid="date-picker-external-input"]').last().type("08142024");
   }
 
   selectInvestigationEventType() {
@@ -64,24 +77,26 @@ class SearchEventPage {
   }  
 
   selectLabReportEventType() {
-    let elm = cy.get('select[name="eventId.labEventType"]').select("Accession Number");
-    let elm2 = cy.get('input[id="eventId.labEventId"]').type("1");
+    let elm = cy.get('select[name="identification.type"]').select("Accession Number");
+    let elm2 = cy.get('input[id="identification.value"]').type("1");
+    let elm3 = cy.get('label[for="eventStatus__checkbox__NEW"]').click();
+
   }
 
   selectLabReportEntryMethod() {
-    let elm = cy.get('label[for="ELECTRONIC"]').click();
+    let elm = cy.get('label[for="entryMethods__checkbox__ELECTRONIC"]').click();
   }
 
   selectLabReportEnteredByMethod() {
-    let elm = cy.get('label[for="EXTERNAL"]').click();
+    let elm = cy.get('label[for="enteredBy__checkbox__EXTERNAL"]').click();
   }
 
   selectLabReportEventStatus() {
-    let elm = cy.get('label[for="NEW"]').click();
+    let elm = cy.get('label[for="eventStatus__checkbox__NEW"]').click();
   }
 
   selectLabReportProcessStatus() {
-    let elm = cy.get('label[for="UNPROCESSED"]').click();
+    let elm = cy.get('label[for="processingStatus__checkbox__UNPROCESSED"]').click();
   }
 
   search() {
@@ -106,15 +121,15 @@ class SearchEventPage {
   }
 
   selectLabReportProvider() {
-    let elm = cy.get('select[name="providerSearch.providerType"]').select("Ordering Provider");
-    let elm2 = cy.get('input[name="providerSearch.providerId"]').type("a");
-    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+    //let elm = cy.get('select[name="providerType"]').select("Ordering Provider");
+    let elm2 = cy.get('input[name="orderingProvider"]').type("Alex");
+    //let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({ multiple: true });
   }
   
   selectLabReportFacility() {
-    let elm = cy.get('select[name="providerSearch.providerType"]').select("Ordering Facility");
-    let elm2 = cy.get('input[name="providerSearch.providerId"]').type("a");
-    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
+    //let elm = cy.get('select[name="providerType"]').select("Ordering Facility");
+    let elm2 = cy.get('input[name="orderingFacility"]').type("c");
+    let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({ multiple: true });
   }
 
   selectInvestigationStatus() {
@@ -133,30 +148,28 @@ class SearchEventPage {
 
   selectInvestigationCurrentProcessingStatus() {
     let elm = cy.get('div[id="react-select-7-placeholder"]').click({force: true});
-    let elm2 = cy.get('div[id="react-select-7-option-2"]').click({force: true});
+    let elm2 = cy.get('div[id="react-select-7-option-6"]').click({force: true});
   }
 
   selectInvestigationNotificationStatus() {
     let elm = cy.get('div[id="react-select-8-placeholder"]').click({force: true});
-    let elm2 = cy.get('div[id="react-select-8-option-0"]').click({force: true});
+    let elm2 = cy.get('div[id="react-select-8-option-4"]').click({force: true});
   }
 
   selectLabReportResultTest() {
     this.setLabReportNormalSettings();
-    cy.get('input[id="resultedTest"]').type("Lead");
   }
 
   setLabReportNormalSettings() {
-    cy.get('label[for=UNPROCESSED]').click();
-    cy.get('label[for=NEW]').click();
-    cy.get('label[for=ELECTRONIC]').click();
-    cy.get('label[for=INTERNAL]').click();
-    cy.get('label[for=EXTERNAL]').click();
+    cy.get('label[for=processingStatus__checkbox__UNPROCESSED]').click();
+    cy.get('label[for=eventStatus__checkbox__NEW]').click();
+    cy.get('label[for=entryMethods__checkbox__ELECTRONIC]').click();
+    cy.get('label[for=enteredBy__checkbox__INTERNAL]').click();
+    cy.get('label[for=enteredBy__checkbox__EXTERNAL]').click();
   }
 
   selectLabReportCodedResult() {
     this.setLabReportNormalSettings();
-    cy.get('input[id="codedResult"]').type("absent");
   }
 }
 

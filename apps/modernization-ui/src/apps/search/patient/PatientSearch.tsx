@@ -8,10 +8,11 @@ import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
 import { PatientCriteria } from './PatientCriteria/PatientCriteria';
 import { NoPatientResults } from './result/none';
-import { PatientSearchResultTable } from './result/table';
+import { PatientSearchResultTable, preferences } from './result/table';
 import { Term, useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 
 import { PatientSearchActions } from './PatientSearchActions';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -51,24 +52,26 @@ const PatientSearch = () => {
     };
 
     return (
-        <FormProvider {...form}>
-            <SearchLayout
-                onRemoveTerm={handleRemoveTerm}
-                actions={() => <PatientSearchActions />}
-                criteria={() => <PatientCriteria />}
-                resultsAsList={() => (
-                    <SearchResultList<PatientSearchResult>
-                        results={results?.content ?? []}
-                        render={(result) => <PatientSearchResultListItem result={result} />}
-                    />
-                )}
-                resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
-                searchEnabled={form.formState.isValid}
-                onSearch={form.handleSubmit(search)}
-                noResults={() => <NoPatientResults />}
-                onClear={reset}
-            />
-        </FormProvider>
+        <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
+            <FormProvider {...form}>
+                <SearchLayout
+                    onRemoveTerm={handleRemoveTerm}
+                    actions={() => <PatientSearchActions />}
+                    criteria={() => <PatientCriteria />}
+                    resultsAsList={() => (
+                        <SearchResultList<PatientSearchResult>
+                            results={results?.content ?? []}
+                            render={(result) => <PatientSearchResultListItem result={result} />}
+                        />
+                    )}
+                    resultsAsTable={() => <PatientSearchResultTable results={results?.content ?? []} />}
+                    searchEnabled={form.formState.isValid}
+                    onSearch={form.handleSubmit(search)}
+                    noResults={() => <NoPatientResults />}
+                    onClear={reset}
+                />
+            </FormProvider>
+        </ColumnPreferenceProvider>
     );
 };
 

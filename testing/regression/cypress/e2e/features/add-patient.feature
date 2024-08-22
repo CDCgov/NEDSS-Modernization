@@ -7,18 +7,20 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
+
 
     Scenario: User add a patient without enter field 
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
+        Then I clear the Information as of Date field
         Then I create a new patient without enter field and get error message
 
     Scenario: User add a patient to enter 'information as of Date' field only 
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient to enter information as of Date field only
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
 
     # Scenario: User add a patient to enter 1 year later date in 'information as of Date' field  
     #     Then the user has searched for a patient by "Person number" as "63506872864"
@@ -31,7 +33,6 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient
-        Then I should see "You have successfully added"
         Then I should see profile of new patient
         # Then delete the patient profile
         # Then I should see "Perform a search to see results"
@@ -70,7 +71,6 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient
-        Then I should see "You have successfully added"
         Then I should see profile of new patient
         Then I should see "Patient ID: "
 
@@ -78,7 +78,6 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient 
-        Then I should see "You have successfully added"
         Then I should see profile of new patient
         Then I should see "Patient ID: "
         # Then I should see "SEX"

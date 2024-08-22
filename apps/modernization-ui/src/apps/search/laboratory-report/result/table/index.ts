@@ -1,1 +1,1 @@
-export { LaboratoryReportSearchResultsTable } from './LaboratoryReportSearchResultsTable';
+export { LaboratoryReportSearchResultsTable, preferences } from './LaboratoryReportSearchResultsTable';

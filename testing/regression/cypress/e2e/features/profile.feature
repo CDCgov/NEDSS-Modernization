@@ -13,9 +13,10 @@ Feature: User can view existing and add/edit certain patient demographic data he
 
     Scenario: User accesses printable patient demographics page
         Given create a new patient profile
+        Then I set patient id profile ENV
         When the user clicks on the Print button
         Then the user is directed to the printable patient demographics page
-
+        
     Scenario: User deletes patient profile
         Given create a new patient profile
         When the user clicks on the Delete Patient button

@@ -9,9 +9,10 @@ import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
 import { LabReportFilterEntry, initial } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
-import { SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
+
 import { useJurisdictionOptions } from 'options/jurisdictions';
-import { LaboratoryReportSearchResultsTable } from './result/table/LaboratoryReportSearchResultsTable';
+import { LaboratoryReportSearchResultsTable, preferences } from './result/table';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const LaboratoryReportSearch = () => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
@@ -60,7 +61,7 @@ const LaboratoryReportSearch = () => {
     const { resolve: findById } = useJurisdictionOptions();
 
     return (
-        <SearchCriteriaProvider>
+        <ColumnPreferenceProvider id="search.laboratory-reports.preferences.columns" defaults={preferences}>
             <FormProvider {...form}>
                 <SearchLayout
                     onRemoveTerm={handleRemoveTerm}
@@ -84,7 +85,7 @@ const LaboratoryReportSearch = () => {
                     onClear={reset}
                 />
             </FormProvider>
-        </SearchCriteriaProvider>
+        </ColumnPreferenceProvider>
     );
 };
 

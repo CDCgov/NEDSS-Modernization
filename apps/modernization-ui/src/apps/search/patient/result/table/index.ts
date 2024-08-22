@@ -1,1 +1,1 @@
-export { PatientSearchResultTable } from './PatientSearchResultTable';
+export { PatientSearchResultTable, preferences } from './PatientSearchResultTable';

@@ -1,4 +1,4 @@
-import { Selectable } from 'options';
+import { Selectable, pregnancyStatusOptions } from 'options';
 import { asSelectable } from 'options/selectable';
 
 type EventDate = {
@@ -88,12 +88,6 @@ const investigationEventTypeOptions: Selectable[] = [
     asSelectable('INVESTIGATION_ID', 'Investigation ID'),
     asSelectable('NOTIFICATION_ID', 'Notification ID'),
     asSelectable('STATE_CASE_ID', 'State Case ID')
-];
-
-const pregnancyStatusOptions: Selectable[] = [
-    asSelectable('YES', 'Yes'),
-    asSelectable('NO', 'No'),
-    asSelectable('UNKNOWN', 'Unknown')
 ];
 
 export {

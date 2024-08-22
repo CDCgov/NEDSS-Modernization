@@ -6,21 +6,22 @@ Feature: Investigation Search by criteria
     Given I click criteria tab
 
   Scenario: Basic Info - Search by Condition
-    When I select a investigation status for event investigation
+    When I select an investigation status for event investigation
     Then I should see Results with the text "CLOSED"
+    Then I should see "CLOSED"
 
   Scenario: Basic Info - Search by Outbreak name
     When I select outbreak name for event investigation
-    Then I should see Results with the link "Acute flaccid myelitis"
+    Then I should see Condition Results with the link "Hepatitis C, acute"
 
   Scenario: Basic Info - Search by case study name
     When I select case study for event investigation
-    Then I should see Results with the link "2019 Novel Coronavirus"
+    Then I should see Condition Results with the link "Acute flaccid myelitis"
 
   Scenario: Basic Info - Search by current processing status
     When I select investigation current processing status for event investigation
-    Then I should see Results with the link "AIDS"
+    Then I should see Condition Results with the link "Acute flaccid myelitis"
 
   Scenario: Basic Info - Search by notification status
-    When I select notification status status for event investigation
+    When I select notification status for event investigation
     Then I should see No Results found text

@@ -19,6 +19,16 @@ class PatientProfilePage {
     cy.wait(1000);
   }
 
+  setPatientProfileENVID() {
+    cy.url().then((url) => {      
+      const urlParts = url.split('/');
+      const patientId = urlParts[urlParts.length - 2];
+      Cypress.env('patientId', patientId);
+      cy.log(patientId);
+    });
+  }
+
+
   isDemographicPageDisplayed() {
     cy.wait(1000);
 

@@ -5,6 +5,10 @@ Then("I navigate the event investigation", () => {
   searchEventPage.clickEventInvestigation();
 });
 
+Then("I click criteria tab", () => {
+  searchEventPage.expandInvestigationCriteria();
+}); 
+
 Then("I navigate the event laboratory report", () => {
   searchEventPage.clickEventLabReport();
 });
@@ -21,6 +25,10 @@ Then("I select program area for event laboratory report", () => {
 
 Then("I should see Condition Results with the link {string}", (string) => {
   cy.get("a#condition").contains(string).should("be.visible");
+});
+
+Then("I should see Results with the link {string}", (string) => {
+  cy.get("a#documentType").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the text {string}", (string) => {
@@ -126,7 +134,7 @@ Then("I select a provider for event investigation", () => {
   searchEventPage.search();
 });
 
-Then("I select a investigation status for event investigation", () => {
+Then("I select an investigation status for event investigation", () => {
   searchEventPage.selectInvestigationStatus();
   searchEventPage.search();
 });
@@ -146,17 +154,27 @@ Then("I select investigation current processing status for event investigation",
   searchEventPage.search();
 });
 
-Then("I select notification status status for event investigation", () => {
+Then("I select notification status for event investigation", () => {
   searchEventPage.selectInvestigationNotificationStatus();
   searchEventPage.search();
 });
 
 Then("I select resulted test for event laboratory report", () => {
   searchEventPage.selectLabReportResultTest();
+  searchEventPage.expandLabReportCriteria();
+  cy.get('input[id="resultedTest"]').type("LEAD");
+  cy.get('.usa-combo-box__list-option').eq(1).click();
   searchEventPage.search();
+});
+
+Then("I unselect all the lab Entry method", () => {
+  searchEventPage.selectLabReportCodedResult();
 });
 
 Then("I select coded result for event laboratory report", () => {
   searchEventPage.selectLabReportCodedResult();
+  searchEventPage.expandLabReportCriteria();
+  cy.get('input[id="codedResult"]').type("abnormal");
+  cy.get('.usa-combo-box__list-option').eq(0).click();
   searchEventPage.search();
 });

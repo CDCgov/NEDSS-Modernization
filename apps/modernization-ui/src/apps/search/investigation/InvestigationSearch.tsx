@@ -10,7 +10,8 @@ import { InvestigationSearchResultListItem } from './result/list';
 import { InvestigationSearchForm } from './InvestigationSearchForm';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
-import { InvestigationSearchResultsTable } from './result/list/table/InvestigationSearchResultsTable';
+import { InvestigationSearchResultsTable, preferences } from './result/table';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const InvestigationSearch = () => {
     const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
@@ -61,29 +62,37 @@ const InvestigationSearch = () => {
     };
 
     const { options: notificationStatus } = useConceptOptions('REC_STAT', { lazy: false });
+    const notificationStatusResolver = findByValue(notificationStatus);
 
     return (
-        <FormProvider {...form}>
-            <SearchLayout
-                onRemoveTerm={handleRemoveTerm}
-                criteria={() => <InvestigationSearchForm />}
-                resultsAsList={() => (
-                    <SearchResultList<Investigation>
-                        results={results?.content ?? []}
-                        render={(result) => (
-                            <InvestigationSearchResultListItem
-                                result={result}
-                                notificationStatusResolver={findByValue(notificationStatus)}
-                            />
-                        )}
-                    />
-                )}
-                resultsAsTable={() => <InvestigationSearchResultsTable results={results?.content ?? []} />}
-                searchEnabled={form.formState.isValid}
-                onSearch={form.handleSubmit(search)}
-                onClear={reset}
-            />
-        </FormProvider>
+        <ColumnPreferenceProvider id="search.investigations.preferences.columns" defaults={preferences}>
+            <FormProvider {...form}>
+                <SearchLayout
+                    onRemoveTerm={handleRemoveTerm}
+                    criteria={() => <InvestigationSearchForm />}
+                    resultsAsList={() => (
+                        <SearchResultList<Investigation>
+                            results={results?.content ?? []}
+                            render={(result) => (
+                                <InvestigationSearchResultListItem
+                                    result={result}
+                                    notificationStatusResolver={notificationStatusResolver}
+                                />
+                            )}
+                        />
+                    )}
+                    resultsAsTable={() => (
+                        <InvestigationSearchResultsTable
+                            results={results?.content ?? []}
+                            notificationStatusResolver={notificationStatusResolver}
+                        />
+                    )}
+                    searchEnabled={form.formState.isValid}
+                    onSearch={form.handleSubmit(search)}
+                    onClear={reset}
+                />
+            </FormProvider>
+        </ColumnPreferenceProvider>
     );
 };
 

@@ -3,9 +3,9 @@ import { Selectable } from './selectable';
 type SelectableResolver = (id: string) => Selectable | undefined;
 
 const findByValue =
-    (selectables: Selectable[]): SelectableResolver =>
+    (selectables: Selectable[], defaultValue?: Selectable): SelectableResolver =>
     (value: string) =>
-        selectables.find((selectable) => selectable.value === value);
+        selectables.find((selectable) => selectable.value === value) ?? defaultValue;
 
 export { findByValue };
 

@@ -35,7 +35,7 @@ const Button = ({
 
     return (
         <TrussworksButton
-            className={classesAarray}
+            className={classNames(classesAarray, styles['button-component'])}
             {...defaultProps}
             type={type}
             unstyled={unstyled}

@@ -2,13 +2,13 @@ import { LabReport } from 'generated/graphql/schema';
 import { internalizeDate } from 'date';
 import { Selectable } from 'options';
 import { ClassicLink } from 'classic';
+import { displayProfileLink, displayGender } from 'apps/search/basic';
 import {
     getPatient,
     getOrderingProviderName,
     getReportingFacility,
     getDescription,
-    getAssociatedInvestigations,
-    getPatientName
+    getAssociatedInvestigations
 } from 'apps/search/laboratory-report/result';
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 
@@ -24,10 +24,10 @@ const LaboratoryReportSearchResultListItem = ({ result, jurisdictionResolver }: 
         <Result>
             <ResultItemGroup>
                 <ResultItem label="Legal name" orientation="vertical">
-                    {getPatientName(result)}
+                    {displayProfileLink(patient)}
                 </ResultItem>
                 <ResultItem label="Date of birth">{internalizeDate(patient?.birthTime)}</ResultItem>
-                <ResultItem label="Sex">{patient?.currSexCd}</ResultItem>
+                <ResultItem label="Sex">{displayGender(patient)}</ResultItem>
                 <ResultItem label="Patient ID">{patient?.shortId}</ResultItem>
             </ResultItemGroup>
 
