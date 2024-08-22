@@ -18,7 +18,7 @@ export const Contact = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         label="Phone number"
-                        value={value}
+                        defaultValue={value}
                         id="homePhone"
                         error={error?.message}
                         mask="___-___-____"
