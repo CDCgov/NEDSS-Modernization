@@ -5,7 +5,7 @@ import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Column, DataTable } from 'design-system/table';
 import { ReactNode, useEffect } from 'react';
-import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { Control, DefaultValues, FieldValues, FormProvider } from 'react-hook-form';
 import styles from './MultiValueEntry.module.scss';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
 
@@ -29,8 +29,7 @@ export const MultiValueEntry = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const form = useForm<V>({ mode: 'onBlur', defaultValues });
-    const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
+    const { add, edit, update, remove, view, reset, state, form } = useMultiValueEntryState<V>(defaultValues);
 
     useEffect(() => {
         onChange(state.data);
@@ -51,23 +50,6 @@ export const MultiValueEntry = <V extends FieldValues>({
         }
     };
 
-    const handleEditClick = (entry: V, index: number) => {
-        edit(index);
-        form.reset(entry, { keepDefaultValues: true });
-    };
-
-    const handleResetClick = () => {
-        reset();
-        form.reset();
-    };
-
-    const handleRemoveClick = (index: number) => {
-        remove(index);
-        if ((state.status === 'viewing' || state.status === 'editing') && state.index === index) {
-            form.reset();
-        }
-    };
-
     const iconColumn: Column<V> = {
         id: '',
         name: '',
@@ -77,10 +59,10 @@ export const MultiValueEntry = <V extends FieldValues>({
                     <Icon.Visibility onClick={() => view(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Edit">
-                    <Icon.Edit onClick={() => handleEditClick(entry, index)} />
+                    <Icon.Edit onClick={() => edit(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Delete">
-                    <Icon.Delete onClick={() => handleRemoveClick(index)} />
+                    <Icon.Delete onClick={() => remove(index)} />
                 </div>
             </div>
         )
@@ -132,7 +114,7 @@ export const MultiValueEntry = <V extends FieldValues>({
                     </Button>
                 )}
                 {state.status === 'viewing' && (
-                    <Button outline disabled={!form.formState.isValid} onClick={handleResetClick}>
+                    <Button outline disabled={!form.formState.isValid} onClick={reset}>
                         <Icon.Add />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
