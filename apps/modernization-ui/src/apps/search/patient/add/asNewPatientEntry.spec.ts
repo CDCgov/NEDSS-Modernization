@@ -18,7 +18,7 @@ describe('when addind a new patient from a patient search', () => {
     });
 
     it('should populate the date of birth that was searched for', () => {
-        const critiera = { dateOfBirth: '06/05/2025Z' };
+        const critiera = { dateOfBirth: '06/05/2025' };
 
         const actual = asNewPatientEntry(critiera);
 
