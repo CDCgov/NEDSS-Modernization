@@ -29,3 +29,14 @@ Feature: User can view data in classic NBS Home
       | Messages Queue                           |
       | Supervisor Review Queue                  |
 
+  Scenario: Display selected home page merge patients
+    Then Create two users with same firstname and last name
+    And Click on Marge Patients tab on upper left side
+    Then Click on Manual Search tab
+    And Verify user navigated to Find Patient page
+    Then Search user to manual merge
+    And Select users and merge
+    Then Click on Marge Patients tab on upper left side
+    And Click on System Identified tab
+    And Verify Merge Candidate List is displayed to user
+
