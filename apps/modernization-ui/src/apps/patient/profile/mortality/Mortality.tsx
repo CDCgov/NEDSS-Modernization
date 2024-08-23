@@ -4,7 +4,8 @@ import { FindPatientProfileQuery, PatientMortality, useUpdatePatientMortalityMut
 import { useFindPatientProfileMortality } from './useFindPatientProfileMortality';
 import { Data, EditableCard } from 'components/EditableCard';
 import { externalizeDate, externalizeDateTime, internalizeDate } from 'date';
-import { MortalityEntry, MortalityForm } from './MortalityForm';
+import { MortalityForm } from './MortalityForm';
+import { MortalityEntry } from './MortalityEntry';
 import { maybeDescription, maybeId } from '../coded';
 import { orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';

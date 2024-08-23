@@ -5,7 +5,8 @@ import { PatientProfileBirthAndGenderResult, useFindPatientProfileBirth } from '
 import { internalizeDate } from 'date';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeId } from '../coded';
-import { BirthAndGenderEntry, SexBirthForm } from './SexBirthForm';
+import { SexBirthForm } from './SexBirthForm';
+import { BirthAndGenderEntry } from './BirthAndGenderEntry';
 import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
 import { useProfileContext } from '../ProfileContext';

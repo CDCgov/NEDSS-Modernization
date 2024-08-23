@@ -3,6 +3,7 @@ import { Suggestions } from 'suggestion/Suggestions';
 import { AddressSuggestion, useAddressAutocomplete } from './useAddressAutocomplete';
 import { ReactElement, KeyboardEvent, ChangeEvent, useRef, useState, useEffect } from 'react';
 import { LocationCodedValues } from 'location';
+import { Orientation } from 'components/Entry';
 
 const renderSuggestion = (suggestion: AddressSuggestion) => (
     <>
@@ -27,6 +28,7 @@ type Props = {
     placeholder?: string;
     defaultValue?: string;
     flexBox?: boolean;
+    orientation?: Orientation;
     error?: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -34,6 +36,7 @@ type Props = {
 };
 
 const AddressSuggestionInput = (props: Props): ReactElement => {
+    const orientation = props.flexBox ? 'horizontal' : props.orientation;
     const suggestionRef = useRef<HTMLUListElement>(null);
 
     const { suggestions, suggest, reset } = useAddressAutocomplete({ locations: props.locations });
@@ -95,7 +98,7 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
                 defaultValue={props.defaultValue}
                 placeholder={props.placeholder}
                 autoComplete="off"
-                flexBox={props.flexBox}
+                orientation={orientation}
                 error={props.error}
                 onChange={handleOnChange}
                 onBlur={props.onBlur}

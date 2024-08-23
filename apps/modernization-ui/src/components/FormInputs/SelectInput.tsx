@@ -1,7 +1,6 @@
 import { Dropdown } from '@trussworks/react-uswds';
 
-import { EntryWrapper } from 'components/Entry';
-import { useMemo } from 'react';
+import { EntryWrapper, Orientation } from 'components/Entry';
 
 export type Selectable = { name: string; value: string };
 
@@ -11,6 +10,7 @@ type SelectProps = {
     options: Selectable[];
     dataTestid?: string;
     flexBox?: boolean;
+    orientation?: Orientation;
     error?: string;
     required?: boolean;
     defaultValue?: string | number | undefined | null;
@@ -42,7 +42,7 @@ export const SelectInput = ({
     onBlur,
     ...props
 }: SelectProps) => {
-    const orientation = useMemo(() => (flexBox ? 'horizontal' : 'vertical'), [flexBox]);
+    const orientation = flexBox ? 'horizontal' : props.orientation;
 
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     const Wrapped = () => (

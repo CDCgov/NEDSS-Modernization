@@ -25,7 +25,7 @@ export const EntryModal = ({ modal, id, title, children, overflow = false, class
             forceAction
             ref={modal}
             className={classNames(styles.modal, className, { [styles.overflow]: overflow })}>
-            <header>
+            <header className={styles.modalHeader}>
                 <h2>{title}</h2>
                 <Icon.Close size={3} onClick={onClose} />
             </header>
