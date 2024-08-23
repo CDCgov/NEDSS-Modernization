@@ -3,15 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Loading } from 'components/Spinner';
 
 const SimpleSearch = () => {
-    const { type } = useParams();
+    const { type, criteria } = useParams();
 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (type) {
-            navigate({ pathname: `/search/${type}` }, { replace: true });
+            const search = criteria ? `?q=${criteria}` : undefined;
+
+            navigate({ pathname: `/search/${type}`, search }, { replace: true });
         }
-    }, [type]);
+    }, [type, criteria]);
 
     return <Loading center />;
 };
