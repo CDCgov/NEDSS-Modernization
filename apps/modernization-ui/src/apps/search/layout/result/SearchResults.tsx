@@ -36,10 +36,6 @@ const SearchResults = ({ children, onRemoveTerm }: Props) => {
         return () => window.removeEventListener('resize', updateContentHeight);
     }, []);
 
-    useEffect(() => {
-        updateContentHeight();
-    }, [terms]);
-
     return (
         <div className={styles.results}>
             <div ref={headerRef}>
