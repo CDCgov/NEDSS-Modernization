@@ -88,7 +88,6 @@ const useSearchCritiera = <C extends object>({ defaultValues }: Options<C>): Int
             encrypt(state.criteria)
                 .then((encrypted) => encrypted.value)
                 .then((encrypted) => {
-                    console.log('deciding', encrypted);
                     if (encrypted) {
                         //  the criteria was encrypted, navigate to it
                         dispatch({ type: 'navigate', encrypted });

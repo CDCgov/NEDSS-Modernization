@@ -22,10 +22,7 @@ const useSearchFormAdapter = <C extends FieldValues, R>({ form, interaction }: O
     }, [form.reset, interaction.status, interaction.criteria]);
 
     const search = useCallback(form.handleSubmit(interaction.search), [form.handleSubmit, interaction.search]);
-    const clear = useCallback(() => {
-        console.log('clearing from the form adapter');
-        interaction.reset();
-    }, [interaction.reset]);
+    const clear = useCallback(interaction.reset, [interaction.reset]);
 
     return { search, clear };
 };
