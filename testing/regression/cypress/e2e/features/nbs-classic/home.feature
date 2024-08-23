@@ -40,3 +40,7 @@ Feature: User can view data in classic NBS Home
     And Click on System Identified tab
     And Verify Merge Candidate List is displayed to user
 
+  Scenario: Display selected home page reports
+    Then Click on Reports tab on upper left side
+    And Verify user navigated to Reports page
+

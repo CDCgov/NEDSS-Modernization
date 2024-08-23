@@ -65,3 +65,10 @@ Then("Verify Merge Candidate List is displayed to user", () => {
     classicHomePage.verifyMergeCandidateListDisplayed()
 });
 
+Then("Click on Reports tab on upper left side", () => {
+    classicHomePage.clickReportsTab()
+});
+
+Then("Verify user navigated to Reports page", () => {
+    classicHomePage.verifyReportsPageDisplayed()
+});
