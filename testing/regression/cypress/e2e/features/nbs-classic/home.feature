@@ -16,3 +16,16 @@ Feature: User can view data in classic NBS Home
     Then Click on Add new lab report in patient Search pane
     And Verify Add Lab Report page displayed
 
+  Scenario Outline: Display selected home page queue
+    Then Click each of the following "<Default Queues>"
+    Examples:
+      | Default Queues                           |
+      | Open Investigations                      |
+      | Approval Queue for Initial Notifications |
+      | Updated Notifications Queue              |
+      | Rejected Notifications Queue             |
+      | Documents Requiring Security Assignment  |
+      | Documents Requiring Review               |
+      | Messages Queue                           |
+      | Supervisor Review Queue                  |
+

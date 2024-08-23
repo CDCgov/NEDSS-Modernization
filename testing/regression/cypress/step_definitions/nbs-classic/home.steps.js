@@ -28,3 +28,7 @@ Then("Click on Add new lab report in patient Search pane", () => {
 Then("Verify Add Lab Report page displayed", () => {
     classicHomePage.verifyAddLabReport()
 });
+
+Then("Click each of the following {string}", (queueName) => {
+    classicHomePage.clickDefaultQueue(queueName)
+});
