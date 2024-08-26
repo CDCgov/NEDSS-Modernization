@@ -355,36 +355,32 @@ Feature: Investigation Search Sorting
   Scenario: I can find Investigations ordered by the investigation status ascending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation has a processing status of CCC
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a processing status of AAA
+    And the investigation was closed on 09/17/2018
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a processing status of BBB
     And investigations are available for search
     And I want search results sorted by "status" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "status" of "AAA"
-    And the 2nd investigation search result has a "status" of "BBB"
-    And the 3rd investigation search result has a "status" of "CCC"
+    Then the 1st investigation search result has a "status" of "C"
+    And the 2nd investigation search result has a "status" of "O"
+    And the 3rd investigation search result has a "status" of "O"
 
   Scenario: I can find Investigations ordered by the investigation status descending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation has a processing status of CCC
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a processing status of AAA
+    And the investigation was closed on 09/17/2018
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a processing status of BBB
     And investigations are available for search
     And I want search results sorted by "status" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "status" of "CCC"
-    And the 2nd investigation search result has a "status" of "BBB"
-    And the 3rd investigation search result has a "status" of "AAA"
+    Then the 1st investigation search result has a "status" of "O"
+    And the 2nd investigation search result has a "status" of "O"
+    And the 3rd investigation search result has a "status" of "C"
 
   Scenario: I can find Investigations ordered by the notification status ascending
     Given I have a patient
