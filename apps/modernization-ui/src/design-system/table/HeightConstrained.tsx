@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import styles from './height-constrained.module.scss';
-import { Button } from 'components/button';
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 type Props = {
@@ -39,14 +38,15 @@ export const HeightConstrained = ({ children, onChange, rowConstraint }: Props) 
                 {children}
             </div>
             {constraint === 'bounded' && matchesRow && (
-                <Button aria-label="view more" unstyled className={styles.button} onClick={() => onChange('unbounded')}>
+                <a aria-label="view more" className={styles.button} onClick={() => onChange('unbounded')}>
                     View more
-                </Button>
+                </a>
             )}
+
             {constraint === 'bounded' && rowConstraint === 'unbounded' && (
-                <Button aria-label="view less" unstyled className={styles.button} onClick={() => onChange('bounded')}>
+                <a aria-label="view less" className={styles.button} onClick={() => onChange('bounded')}>
                     View less
-                </Button>
+                </a>
             )}
         </>
     );
