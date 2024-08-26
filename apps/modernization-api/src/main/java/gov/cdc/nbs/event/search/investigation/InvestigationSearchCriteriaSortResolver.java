@@ -53,41 +53,13 @@ class InvestigationSearchCriteriaSortResolver {
           "person_participations.local_id",
           order,
           onlyPatients());
-      case "startDate" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "activity_from_time",
-          order,
-          onlyPatients());
-      case "condition" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "condition",
-          order,
-          onlyPatients());
-      case "jurisdiction" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "jurisdiction_code_desc_txt",
-          order,
-          onlyPatients());
-      case "investigator" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "investigator_last_nm",
-          order,
-          onlyPatients());
-      case "investigationId" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "local_id",
-          order,
-          onlyPatients());
-      case "status" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "investigation_status_cd",
-          order,
-          onlyPatients());
-      case "notification" -> asFilteredSortOption(
-          PERSON_PARTICIPATIONS,
-          "notification_record_status_cd",
-          order,
-          onlyPatients());
+      case "startDate" -> asSortOption("activity_from_time", order);
+      case "condition" -> asSortOption("cd_desc_txt", order);
+      case "jurisdiction" -> asSortOption("jurisdiction_code_desc_txt", order);
+      case "investigator" -> asSortOption("investigator_last_nm", order);
+      case "investigationId" -> asSortOption("local_id", order);
+      case "status" -> asSortOption("investigation_status_cd", order);
+      case "notification" -> asSortOption("notification_record_status_cd", order);
       default -> asSortOption("_score", order);
     };
   }
