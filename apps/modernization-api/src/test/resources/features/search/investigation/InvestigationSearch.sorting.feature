@@ -247,36 +247,36 @@ Feature: Investigation Search Sorting
   Scenario: I can find Investigations ordered by the patient's condition ascending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation is for the CCC condition
+    And the investigation is for the Pertussis condition
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation is for the AAA condition
+    And the investigation is for the Brucellosis condition
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation is for the BBB condition
+    And the investigation is for the Mumps condition
     And investigations are available for search
     And I want search results sorted by "condition" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "condition" of "AAA"
-    And the 2nd investigation search result has a "condition" of "BBB"
-    And the 3rd investigation search result has a "condition" of "CCC"
+    Then the 1st investigation search result has a "condition" of "Brucellosis"
+    And the 2nd investigation search result has a "condition" of "Mumps"
+    And the 3rd investigation search result has a "condition" of "Pertussis"
 
   Scenario: I can find Investigations ordered by the patient's condition descending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation is for the CCC condition
+    And the investigation is for the Pertussis condition
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation is for the AAA condition
+    And the investigation is for the Brucellosis condition
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation is for the BBB condition
+    And the investigation is for the Mumps condition
     And investigations are available for search
     And I want search results sorted by "condition" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "condition" of "CCC"
-    And the 2nd investigation search result has a "condition" of "BBB"
-    And the 3rd investigation search result has a "condition" of "AAA"
+    Then the 1st investigation search result has a "condition" of "Pertussis"
+    And the 2nd investigation search result has a "condition" of "Mumps"
+    And the 3rd investigation search result has a "condition" of "Brucellosis"
 
   Scenario: I can find Investigations ordered by the investigator ascending
     Given I have a patient

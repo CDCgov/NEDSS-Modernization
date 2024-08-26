@@ -120,7 +120,7 @@ public class InvestigationSearchResultVerificationSteps {
           position);
       case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
           position);
-      case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].condition", position);
+      case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].cdDescTxt", position);
       case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].localId", position);
       case "investigator" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigatorLastName", position);
       case "jurisdiction" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].jurisdictionName",
