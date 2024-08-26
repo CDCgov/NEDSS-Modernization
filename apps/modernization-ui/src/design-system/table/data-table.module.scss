@@ -55,13 +55,17 @@
             }
 
             &.sorted {
-                background-color: colors.$cool-accent-lighter !important;
+                background-color: colors.$cool-accent-lightest;
             }
         }
 
         tr:nth-child(odd) {
             td {
                 background-color: colors.$base-lightest;
+
+                &.sorted {
+                    background-color: colors.$cool-accent-lighter;
+                }
             }
         }
 
