@@ -22,6 +22,8 @@ public class SortCriteriaSteps {
       case "first name" -> "firstNm";
       case "last name" -> "lastNm";
       case "phone" -> "phoneNumber";
+      case "startdate" -> "startDate";
+      case "investigationid" -> "investigationId";
       default -> sortBy.toLowerCase();
     };
 

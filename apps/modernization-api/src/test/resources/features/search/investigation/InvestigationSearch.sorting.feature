@@ -363,11 +363,11 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation has a processing status of BBB
     And investigations are available for search
-    And I want search results sorted by "notification" "asc"
+    And I want search results sorted by "status" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "notification" of "AAA"
-    And the 2nd investigation search result has a "notification" of "BBB"
-    And the 3rd investigation search result has a "notification" of "CCC"
+    Then the 1st investigation search result has a "status" of "AAA"
+    And the 2nd investigation search result has a "status" of "BBB"
+    And the 3rd investigation search result has a "status" of "CCC"
 
   Scenario: I can find Investigations ordered by the investigation status descending
     Given I have a patient
@@ -380,11 +380,11 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation has a processing status of BBB
     And investigations are available for search
-    And I want search results sorted by "notification" "desc"
+    And I want search results sorted by "status" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "notification" of "CCC"
-    And the 2nd investigation search result has a "notification" of "BBB"
-    And the 3rd investigation search result has a "notification" of "AAA"
+    Then the 1st investigation search result has a "status" of "CCC"
+    And the 2nd investigation search result has a "status" of "BBB"
+    And the 3rd investigation search result has a "status" of "AAA"
 
   Scenario: I can find Investigations ordered by the notification status ascending
     Given I have a patient
