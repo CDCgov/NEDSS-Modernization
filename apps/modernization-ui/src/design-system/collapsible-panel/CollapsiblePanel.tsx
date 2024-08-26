@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react';
-import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 
 import styles from './collapsible-panel.module.scss';
+import { Icon } from 'design-system/icon';
 
 type Props = {
     id?: string;
@@ -26,8 +26,7 @@ const CollapsiblePanel = ({ children, id, className, ariaLabel }: Props) => {
                 className={classNames(styles.control)}
                 aria-label={collapsed ? `Show ${ariaLabel}` : `Hide ${ariaLabel}`}
                 onClick={() => setCollapsed((current) => !current)}>
-                {!collapsed && <Icon.ExpandLess size={3} aria-hidden />}
-                {collapsed && <Icon.ExpandMore size={3} aria-hidden />}
+                <Icon name={collapsed ? 'expand_more' : 'expand_less'} />
             </button>
         </div>
     );
