@@ -27,7 +27,14 @@ const LaboratoryReportSearch = () => {
         const fieldNames = Object.keys(formValues);
         const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
         if (matchingField && terms.length > 1) {
-            if (matchingField === 'programAreas' || matchingField === 'jurisdictions') {
+            if (
+                matchingField === 'programAreas' ||
+                matchingField === 'jurisdictions' ||
+                matchingField === 'enteredBy' ||
+                matchingField === 'entryMethods' ||
+                matchingField === 'eventStatus' ||
+                matchingField === 'processingStatus'
+            ) {
                 form.setValue(
                     matchingField,
                     form.getValues()?.[matchingField]?.filter((p) => p.value !== term.value) ?? []

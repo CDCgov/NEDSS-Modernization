@@ -29,7 +29,11 @@ const InvestigationSearch = () => {
             if (
                 matchingField === 'programAreas' ||
                 matchingField === 'jurisdictions' ||
-                matchingField === 'conditions'
+                matchingField === 'conditions' ||
+                matchingField === 'notificationStatuses' ||
+                matchingField === 'outbreaks' ||
+                matchingField === 'caseStatuses' ||
+                matchingField === 'processingStatuses'
             ) {
                 form.setValue(
                     matchingField,
