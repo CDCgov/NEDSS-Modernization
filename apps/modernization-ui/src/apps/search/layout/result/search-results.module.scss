@@ -4,11 +4,7 @@ $pagination-height: 4.75rem;
 .results {
     height: 100%;
     .header {
-        height: #{$header-height};
-    }
-
-    .content {
-        height: calc(100% - #{$header-height} - #{$pagination-height});
+        min-height: #{$header-height};
     }
 
     .pagination {
