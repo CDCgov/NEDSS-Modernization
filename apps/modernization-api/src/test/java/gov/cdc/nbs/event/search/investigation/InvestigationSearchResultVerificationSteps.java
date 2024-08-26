@@ -45,8 +45,8 @@ public class InvestigationSearchResultVerificationSteps {
       final ProgramAreaIdentifier programArea,
       final JurisdictionIdentifier jurisdiction) {
     investigation.maybeActive().ifPresent(
-        investigation -> mother.within(
-            investigation,
+        anInvestigation -> mother.within(
+            anInvestigation,
             programArea,
             jurisdiction));
   }
