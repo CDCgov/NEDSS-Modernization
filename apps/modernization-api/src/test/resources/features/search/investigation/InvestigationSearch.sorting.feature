@@ -272,7 +272,7 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation is for the Mumps condition
     And investigations are available for search
-    And I want search results sorted by "condition" "asc"
+    And I want search results sorted by "condition" "desc"
     When I search for investigations
     Then the 1st investigation search result has a "condition" of "Pertussis"
     And the 2nd investigation search result has a "condition" of "Mumps"
