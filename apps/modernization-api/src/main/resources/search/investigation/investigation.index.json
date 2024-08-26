@@ -68,6 +68,9 @@
       "curr_process_state_cd": {
         "type": "keyword"
       },
+      "investigator_last_nm": {
+        "type": "keyword"
+      },
       "investigation_status_cd": {
         "type": "keyword"
       },

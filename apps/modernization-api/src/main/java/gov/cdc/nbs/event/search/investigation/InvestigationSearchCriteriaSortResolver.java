@@ -53,6 +53,41 @@ class InvestigationSearchCriteriaSortResolver {
           "person_participations.local_id",
           order,
           onlyPatients());
+      case "startDate" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "activity_from_time",
+          order,
+          onlyPatients());
+      case "condition" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "condition",
+          order,
+          onlyPatients());
+      case "jurisdiction" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "jurisdiction_code_desc_txt",
+          order,
+          onlyPatients());
+      case "investigator" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "investigator_last_nm",
+          order,
+          onlyPatients());
+      case "investigationId" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "local_id",
+          order,
+          onlyPatients());
+      case "status" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "investigation_status_cd",
+          order,
+          onlyPatients());
+      case "notification" -> asFilteredSortOption(
+          PERSON_PARTICIPATIONS,
+          "notification_record_status_cd",
+          order,
+          onlyPatients());
       default -> asSortOption("_score", order);
     };
   }

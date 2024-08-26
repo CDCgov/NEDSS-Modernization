@@ -96,6 +96,16 @@ public class InvestigationSearchResultVerificationSteps {
           position);
       case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
           position);
+      case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].condition", position);
+      case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].local_id", position);
+      case "investigator" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigator_last_nm", position);
+      case "jurisdiction" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].jurisdiction_code_desc_txt",
+          position);
+      case "notification" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].notification_record_status_cd",
+          position);
+      case "start date" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].activity_from_time", position);
+      case "status" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].record_status_cd",
+          position);
       default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
   }
