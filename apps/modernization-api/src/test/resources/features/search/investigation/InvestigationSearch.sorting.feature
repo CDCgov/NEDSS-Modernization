@@ -176,35 +176,35 @@ Feature: Investigation Search Sorting
     And the 2nd investigation search result has a "local id" of "220"
     And the 3rd investigation search result has a "local id" of "120"
 
-  Scenario: I can find Investigations ordered by the patient's investigation id ascending
+  Scenario: I can find Investigations ordered by the investigation id ascending
     Given I have a patient
-    And the patient has a "investigation id" of "CAS10000000GA03"
     And the patient is a subject of an investigation
+    And the investigation has a investigation id of CAS10000000GA03
     And I have another patient
-    And the patient has a "investigation id" of "CAS10000000GA01"
     And the patient is a subject of an investigation
+    And the investigation has a investigation id of CAS10000000GA01
     And I have another patient
-    And the patient has a "investigation id" of "CAS10000000GA02"
     And the patient is a subject of an investigation
+    And the investigation has a investigation id of CAS10000000GA02
     And investigations are available for search
-    And I want search results sorted by "investigation_id" "asc"
+    And I want search results sorted by "investigation id" "asc"
     When I search for investigations
     Then the 1st investigation search result has a "investigation id" of "CAS10000000GA01"
     And the 2nd investigation search result has a "investigation id" of "CAS10000000GA02"
     And the 3rd investigation search result has a "investigation id" of "CAS10000000GA03"
 
-  Scenario: I can find Investigations ordered by the patient's investigation id descending
+  Scenario: I can find Investigations ordered by the investigation id descending
     Given I have a patient
-    And the patient has a "investigation id" of "CAS10000000GA03"
     And the patient is a subject of an investigation
+    And the investigation has a investigation id of CAS10000000GA03
     And I have another patient
-    And the patient has a "investigation id" of "CAS10000000GA01"
     And the patient is a subject of an investigation
+    And the investigation has a investigation id of CAS10000000GA01
     And I have another patient
-    And the patient has a "investigation id" of "CAS10000000GA02"
     And the patient is a subject of an investigation
+    And the investigation has a investigation id of CAS10000000GA02
     And investigations are available for search
-    And I want search results sorted by "investigation_id" "desc"
+    And I want search results sorted by "investigation id" "asc"
     When I search for investigations
     Then the 1st investigation search result has a "investigation id" of "CAS10000000GA03"
     And the 2nd investigation search result has a "investigation id" of "CAS10000000GA02"
@@ -212,14 +212,14 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the investigation's start date ascending
     Given I have a patient
-    And the patient has a "start date" of "1980-09-29"
     And the patient is a subject of an investigation
+    And the investigation was started on 1980-09-29
     And I have another patient
-    And the patient has a "start date" of "2013-09-24"
     And the patient is a subject of an investigation
+    And the investigation was started on 2013-09-24
     And I have another patient
-    And the patient has a "start date" of "1974-04-05"
     And the patient is a subject of an investigation
+    And the investigation was started on 1974-04-05
     And investigations are available for search
     And I want search results sorted by "start date" "asc"
     When I search for investigations
@@ -229,14 +229,14 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's start date descending
     Given I have a patient
-    And the patient has a "start date" of "1980-09-29"
     And the patient is a subject of an investigation
+    And the investigation was started on 1980-09-29
     And I have another patient
-    And the patient has a "start date" of "2013-09-24"
     And the patient is a subject of an investigation
+    And the investigation was started on 2013-09-24
     And I have another patient
-    And the patient has a "start date" of "1974-04-05"
     And the patient is a subject of an investigation
+    And the investigation was started on 1974-04-05
     And investigations are available for search
     And I want search results sorted by "start date" "desc"
     When I search for investigations
@@ -244,172 +244,172 @@ Feature: Investigation Search Sorting
     And the 2nd investigation search result has a "start date" of "1980-09-29"
     And the 3rd investigation search result has a "start date" of "1974-04-05"
 
-Scenario: I can find Investigations ordered by the patient's condition ascending
+  Scenario: I can find Investigations ordered by the patient's condition ascending
     Given I have a patient
-    And the patient has a "condition" of "c"
     And the patient is a subject of an investigation
+    And the investigation is for the CCC condition
     And I have another patient
-    And the patient has a "condition" of "a"
     And the patient is a subject of an investigation
+    And the investigation is for the AAA condition
     And I have another patient
-    And the patient has a "condition" of "b"
     And the patient is a subject of an investigation
+    And the investigation is for the BBB condition
     And investigations are available for search
     And I want search results sorted by "condition" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "condition" of "a"
-    And the 2nd investigation search result has a "condition" of "b"
-    And the 3rd investigation search result has a "condition" of "c"
+    Then the 1st investigation search result has a "condition" of "AAA"
+    And the 2nd investigation search result has a "condition" of "BBB"
+    And the 3rd investigation search result has a "condition" of "CCC"
 
   Scenario: I can find Investigations ordered by the patient's condition descending
     Given I have a patient
-    And the patient has a "condition" of "c"
     And the patient is a subject of an investigation
+    And the investigation is for the CCC condition
     And I have another patient
-    And the patient has a "condition" of "a"
     And the patient is a subject of an investigation
+    And the investigation is for the AAA condition
     And I have another patient
-    And the patient has a "condition" of "b"
     And the patient is a subject of an investigation
+    And the investigation is for the BBB condition
     And investigations are available for search
-    And I want search results sorted by "condition" "desc"
+    And I want search results sorted by "condition" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "condition" of "c"
-    And the 2nd investigation search result has a "condition" of "b"
-    And the 3rd investigation search result has a "condition" of "a"
+    Then the 1st investigation search result has a "condition" of "CCC"
+    And the 2nd investigation search result has a "condition" of "BBB"
+    And the 3rd investigation search result has a "condition" of "AAA"
 
-Scenario: I can find Investigations ordered by the patient's investigator ascending
+  Scenario: I can find Investigations ordered by the investigator ascending
     Given I have a patient
-    And the patient has a "investigator" of "ccc"
     And the patient is a subject of an investigation
+    And the investigation has a investigator of CCC
     And I have another patient
-    And the patient has a "investigator" of "aaa"
     And the patient is a subject of an investigation
+    And the investigation has a investigator of AAA
     And I have another patient
-    And the patient has a "investigator" of "bbb"
     And the patient is a subject of an investigation
+    And the investigation has a investigator of BBB
     And investigations are available for search
     And I want search results sorted by "investigator" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "investigator" of "aaa"
-    And the 2nd investigation search result has a "investigator" of "bbb"
-    And the 3rd investigation search result has a "investigator" of "ccc"
+    Then the 1st investigation search result has a "investigator" of "AAA"
+    And the 2nd investigation search result has a "investigator" of "BBB"
+    And the 3rd investigation search result has a "investigator" of "CCC"
 
-  Scenario: I can find Investigations ordered by the patient's investigator descending
+  Scenario: I can find Investigations ordered by the investigator descending
     Given I have a patient
-    And the patient has a "investigator" of "ccc"
     And the patient is a subject of an investigation
+    And the investigation has a investigator of CCC
     And I have another patient
-    And the patient has a "investigator" of "aaa"
     And the patient is a subject of an investigation
+    And the investigation has a investigator of AAA
     And I have another patient
-    And the patient has a "investigator" of "bbb"
     And the patient is a subject of an investigation
+    And the investigation has a investigator of BBB
     And investigations are available for search
     And I want search results sorted by "investigator" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "investigator" of "ccc"
-    And the 2nd investigation search result has a "investigator" of "bbb"
-    And the 3rd investigation search result has a "investigator" of "aaa"
+    Then the 1st investigation search result has a "investigator" of "CCC"
+    And the 2nd investigation search result has a "investigator" of "BBB"
+    And the 3rd investigation search result has a "investigator" of "AAA"
 
-Scenario: I can find Investigations ordered by the patient's jurisdiction ascending
+  Scenario: I can find Investigations ordered by the jurisdiction ascending
     Given I have a patient
-    And the patient has a "jurisdiction" of "ccc"
     And the patient is a subject of an investigation
+    And the investigation has a jurisdiction of CCC
     And I have another patient
-    And the patient has a "jurisdiction" of "aaa"
     And the patient is a subject of an investigation
+    And the investigation has a jurisdiction of AAA
     And I have another patient
-    And the patient has a "jurisdiction" of "bbb"
     And the patient is a subject of an investigation
+    And the investigation has a jurisdiction of BBB
     And investigations are available for search
     And I want search results sorted by "jurisdiction" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "jurisdiction" of "aaa"
-    And the 2nd investigation search result has a "jurisdiction" of "bbb"
-    And the 3rd investigation search result has a "jurisdiction" of "ccc"
+    Then the 1st investigation search result has a "jurisdiction" of "AAA"
+    And the 2nd investigation search result has a "jurisdiction" of "BBB"
+    And the 3rd investigation search result has a "jurisdiction" of "CCC"
 
-  Scenario: I can find Investigations ordered by the patient's jurisdiction descending
+  Scenario: I can find Investigations ordered by the jurisdiction descending
     Given I have a patient
-    And the patient has a "jurisdiction" of "ccc"
     And the patient is a subject of an investigation
+    And the investigation has a jurisdiction of CCC
     And I have another patient
-    And the patient has a "jurisdiction" of "aaa"
     And the patient is a subject of an investigation
+    And the investigation has a jurisdiction of AAA
     And I have another patient
-    And the patient has a "jurisdiction" of "bbb"
     And the patient is a subject of an investigation
+    And the investigation has a jurisdiction of BBB
     And investigations are available for search
     And I want search results sorted by "jurisdiction" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "jurisdiction" of "ccc"
-    And the 2nd investigation search result has a "jurisdiction" of "bbb"
-    And the 3rd investigation search result has a "jurisdiction" of "aaa"
+    Then the 1st investigation search result has a "jurisdiction" of "CCC"
+    And the 2nd investigation search result has a "jurisdiction" of "BBB"
+    And the 3rd investigation search result has a "jurisdiction" of "AAA"
 
-Scenario: I can find Investigations ordered by the patient's status ascending
+  Scenario: I can find Investigations ordered by the investigation status ascending
     Given I have a patient
-    And the patient has a "status" of "ccc"
     And the patient is a subject of an investigation
+    And the investigation has a processing status of CCC
     And I have another patient
-    And the patient has a "status" of "aaa"
     And the patient is a subject of an investigation
+    And the investigation has a processing status of AAA
     And I have another patient
-    And the patient has a "status" of "bbb"
     And the patient is a subject of an investigation
-    And investigations are available for search
-    And I want search results sorted by "status" "asc"
-    When I search for investigations
-    Then the 1st investigation search result has a "status" of "aaa"
-    And the 2nd investigation search result has a "status" of "bbb"
-    And the 3rd investigation search result has a "status" of "ccc"
-
-  Scenario: I can find Investigations ordered by the patient's status descending
-    Given I have a patient
-    And the patient has a "status" of "ccc"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "status" of "aaa"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "status" of "bbb"
-    And the patient is a subject of an investigation
-    And investigations are available for search
-    And I want search results sorted by "status" "desc"
-    When I search for investigations
-    Then the 1st investigation search result has a "status" of "ccc"
-    And the 2nd investigation search result has a "status" of "bbb"
-    And the 3rd investigation search result has a "status" of "aaa"
-
-Scenario: I can find Investigations ordered by the patient's notification ascending
-    Given I have a patient
-    And the patient has a "notification" of "ccc"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "notification" of "aaa"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "notification" of "bbb"
-    And the patient is a subject of an investigation
+    And the investigation has a processing status of BBB
     And investigations are available for search
     And I want search results sorted by "notification" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "notification" of "aaa"
-    And the 2nd investigation search result has a "notification" of "bbb"
-    And the 3rd investigation search result has a "notification" of "ccc"
+    Then the 1st investigation search result has a "notification" of "AAA"
+    And the 2nd investigation search result has a "notification" of "BBB"
+    And the 3rd investigation search result has a "notification" of "CCC"
 
-  Scenario: I can find Investigations ordered by the patient's notification descending
+  Scenario: I can find Investigations ordered by the investigation status descending
     Given I have a patient
-    And the patient has a "notification" of "ccc"
     And the patient is a subject of an investigation
+    And the investigation has a processing status of CCC
     And I have another patient
-    And the patient has a "notification" of "aaa"
     And the patient is a subject of an investigation
+    And the investigation has a processing status of AAA
     And I have another patient
-    And the patient has a "notification" of "bbb"
     And the patient is a subject of an investigation
+    And the investigation has a processing status of BBB
     And investigations are available for search
     And I want search results sorted by "notification" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "notification" of "ccc"
-    And the 2nd investigation search result has a "notification" of "bbb"
-    And the 3rd investigation search result has a "notification" of "aaa"
+    Then the 1st investigation search result has a "notification" of "CCC"
+    And the 2nd investigation search result has a "notification" of "BBB"
+    And the 3rd investigation search result has a "notification" of "AAA"
+
+  Scenario: I can find Investigations ordered by the notification status ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of CCC
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of AAA
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of BBB
+    And investigations are available for search
+    And I want search results sorted by "notification" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "notification" of "AAA"
+    And the 2nd investigation search result has a "notification" of "BBB"
+    And the 3rd investigation search result has a "notification" of "CCC"
+
+  Scenario: I can find Investigations ordered by the notification status descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of CCC
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of AAA
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of BBB
+    And investigations are available for search
+    And I want search results sorted by "notification" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "notification" of "CCC"
+    And the 2nd investigation search result has a "notification" of "BBB"
+    And the 3rd investigation search result has a "notification" of "AAA"
