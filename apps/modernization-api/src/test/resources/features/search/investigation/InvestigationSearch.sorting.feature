@@ -213,36 +213,36 @@ Feature: Investigation Search Sorting
   Scenario: I can find Investigations ordered by the investigation's start date ascending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation was started on 1980-09-29
+    And the investigation start date was 09/29/1980
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation was started on 2013-09-24
+    And the investigation start date was 09/24/2013
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation was started on 1974-04-05
+    And the investigation start date was 04/05/1974
     And investigations are available for search
     And I want search results sorted by "start date" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "start date" of "1974-04-05"
-    And the 2nd investigation search result has a "start date" of "1980-09-29"
-    And the 3rd investigation search result has a "start date" of "2013-09-24"
+    Then the 1st investigation search result has a "start date" of "04/05/1974"
+    And the 2nd investigation search result has a "start date" of "09/29/1980"
+    And the 3rd investigation search result has a "start date" of "09/24/2013"
 
   Scenario: I can find Investigations ordered by the patient's start date descending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation was started on 1980-09-29
+    And the investigation start date was 09/29/1980
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation was started on 2013-09-24
+    And the investigation start date was 09/24/2013
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation was started on 1974-04-05
+    And the investigation start date was 04/05/1974
     And investigations are available for search
     And I want search results sorted by "start date" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "start date" of "2013-09-24"
-    And the 2nd investigation search result has a "start date" of "1980-09-29"
-    And the 3rd investigation search result has a "start date" of "1974-04-05"
+    Then the 1st investigation search result has a "start date" of "09/24/2013"
+    And the 2nd investigation search result has a "start date" of "09/29/1980"
+    And the 3rd investigation search result has a "start date" of "04/05/1974"
 
   Scenario: I can find Investigations ordered by the patient's condition ascending
     Given I have a patient
@@ -315,36 +315,36 @@ Feature: Investigation Search Sorting
   Scenario: I can find Investigations ordered by the jurisdiction ascending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation has a jurisdiction of CCC
+    And the investigation is for ARBO in jurisdiction CCC County
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a jurisdiction of AAA
+    And the investigation is for ARBO in jurisdiction AAA County
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a jurisdiction of BBB
+    And the investigation is for ARBO in jurisdiction BBB County
     And investigations are available for search
     And I want search results sorted by "jurisdiction" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "jurisdiction" of "AAA"
-    And the 2nd investigation search result has a "jurisdiction" of "BBB"
-    And the 3rd investigation search result has a "jurisdiction" of "CCC"
+    Then the 1st investigation search result has a "jurisdiction" of "AAA County"
+    And the 2nd investigation search result has a "jurisdiction" of "BBB County"
+    And the 3rd investigation search result has a "jurisdiction" of "CCC County"
 
   Scenario: I can find Investigations ordered by the jurisdiction descending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation has a jurisdiction of CCC
+    And the investigation is for ARBO in jurisdiction CCC County
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a jurisdiction of AAA
+    And the investigation is for ARBO in jurisdiction AAA County
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a jurisdiction of BBB
+    And the investigation is for ARBO in jurisdiction BBB County
     And investigations are available for search
     And I want search results sorted by "jurisdiction" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "jurisdiction" of "CCC"
-    And the 2nd investigation search result has a "jurisdiction" of "BBB"
-    And the 3rd investigation search result has a "jurisdiction" of "AAA"
+    Then the 1st investigation search result has a "jurisdiction" of "CCC County"
+    And the 2nd investigation search result has a "jurisdiction" of "BBB County"
+    And the 3rd investigation search result has a "jurisdiction" of "AAA County"
 
   Scenario: I can find Investigations ordered by the investigation status ascending
     Given I have a patient

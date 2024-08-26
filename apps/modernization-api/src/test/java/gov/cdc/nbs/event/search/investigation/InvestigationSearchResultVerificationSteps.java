@@ -1,30 +1,54 @@
 package gov.cdc.nbs.event.search.investigation;
 
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
+import gov.cdc.nbs.event.investigation.InvestigationMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
-
+import io.cucumber.java.en.Given;
+import java.time.Instant;
+import gov.cdc.nbs.support.jurisdiction.JurisdictionIdentifier;
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.hamcrest.Matcher;
 import static org.hamcrest.Matchers.*;
+import gov.cdc.nbs.support.programarea.ProgramAreaIdentifier;
 
 public class InvestigationSearchResultVerificationSteps {
 
   private final Active<InvestigationIdentifier> investigation;
   private final Active<PatientIdentifier> patient;
   private final Active<ResultActions> response;
+  private final InvestigationMother mother;
 
   InvestigationSearchResultVerificationSteps(
       final Active<InvestigationIdentifier> investigation,
       final Active<PatientIdentifier> patient,
+      final InvestigationMother mother,
       final Active<ResultActions> response) {
     this.investigation = investigation;
     this.patient = patient;
+    this.mother = mother;
     this.response = response;
+  }
+
+  @Given("the investigation start date was {date}")
+  public void the_investigation_start_date_was(final Instant on) {
+    this.investigation.maybeActive()
+        .ifPresent(active -> mother.started(active, on));
+  }
+
+  @Given("the investigation is for {programArea} in jurisdiction {jurisdiction}")
+  public void the_investigation_is_for_jurisdiction(
+      final ProgramAreaIdentifier programArea,
+      final JurisdictionIdentifier jurisdiction) {
+    investigation.maybeActive().ifPresent(
+        investigation -> mother.within(
+            investigation,
+            programArea,
+            jurisdiction));
   }
 
   @Then("the Investigation search results contain the patient short id")
@@ -97,14 +121,14 @@ public class InvestigationSearchResultVerificationSteps {
       case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
           position);
       case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].condition", position);
-      case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].local_id", position);
-      case "investigator" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigator_last_nm", position);
-      case "jurisdiction" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].jurisdiction_code_desc_txt",
+      case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].localId", position);
+      case "investigator" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigatorLastName", position);
+      case "jurisdiction" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].jurisdictionName",
           position);
-      case "notification" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].notification_record_status_cd",
+      case "notification" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].notificationRecordStatusCd",
           position);
-      case "start date" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].activity_from_time", position);
-      case "status" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].record_status_cd",
+      case "start date" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].startedOn", position);
+      case "status" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigationStatusCd",
           position);
       default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
