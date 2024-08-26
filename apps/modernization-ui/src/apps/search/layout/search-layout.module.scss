@@ -34,6 +34,8 @@ $content-height: calc($search-height - $navigation-height - 2rem);
 
             height: 100%;
 
+            @include borders.bordered('border-right');
+
             .inputs {
                 height: calc(100% - $actions-height);
                 overflow-y: scroll;
@@ -54,39 +56,6 @@ $content-height: calc($search-height - $navigation-height - 2rem);
                 }
             }
         }
-        .collapseButton {
-            display: flex;
-            align-items: center;
-            @include borders.bordered('border-left');
-            position: inherit;
-            z-index: 1;
-
-            .control {
-                display: flex;
-                align-items: center;
-                @include borders.rounded();
-                background-color: colors.$base-lighter;
-                width: 1.5rem;
-                height: 3rem;
-                position: absolute;
-
-                top: calc($search-height / 2);
-
-                &.less {
-                    left: $criteria-width;
-                }
-
-                &.more {
-                    left: unset;
-                }
-
-                svg {
-                    display: flex;
-                    align-items: center;
-                    transform: rotate(-90deg);
-                }
-            }
-        }
 
         .results {
             flex-grow: 1;
@@ -95,8 +64,4 @@ $content-height: calc($search-height - $navigation-height - 2rem);
             z-index: 0;
         }
     }
-}
-
-.collapsed {
-    display: none;
 }

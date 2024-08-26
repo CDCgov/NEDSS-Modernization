@@ -1,5 +1,4 @@
-import { ReactNode, useState, useEffect } from 'react';
-import { Icon } from '@trussworks/react-uswds';
+import { ReactNode, useEffect } from 'react';
 import { Button } from 'components/button';
 import { Term, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
@@ -12,7 +11,7 @@ import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
 import { useLocation } from 'react-router-dom';
 import styles from './search-layout.module.scss';
-import classNames from 'classnames';
+import { CollapsiblePanel } from './CollapsiblePanel';
 
 type Renderer = () => ReactNode;
 
@@ -49,8 +48,6 @@ const SearchLayout = ({
         reset();
     }, [pathname]);
 
-    const [collapsed, setCollapsed] = useState<boolean>();
-
     const {
         page: { total }
     } = usePage();
@@ -72,7 +69,7 @@ const SearchLayout = ({
         <section className={styles.search}>
             <SearchNavigation className={styles.navigation} actions={actions} />
             <div className={styles.content}>
-                <div className={collapsed ? styles.collapsed : styles.criteria}>
+                <CollapsiblePanel className={styles.criteria} ariaLabel="Search criteria">
                     <div className={styles.inputs}>{criteria()}</div>
                     <div className={styles.actions}>
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled}>
@@ -82,14 +79,8 @@ const SearchLayout = ({
                             Clear all
                         </Button>
                     </div>
-                </div>
-                <div className={styles.collapseButton}>
-                    <div
-                        className={classNames(styles.control, { [styles.more]: collapsed, [styles.less]: !collapsed })}>
-                        {!collapsed && <Icon.ExpandLess onClick={() => setCollapsed(true)} size={3} />}
-                        {collapsed && <Icon.ExpandMore onClick={() => setCollapsed(false)} size={3} />}
-                    </div>
-                </div>
+                </CollapsiblePanel>
+
                 <div className={styles.results}>
                     {status === 'waiting' && <SearchLanding />}
                     {status === 'searching' && <Loading center />}
