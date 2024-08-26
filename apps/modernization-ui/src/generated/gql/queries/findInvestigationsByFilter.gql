@@ -7,6 +7,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             jurisdictionCodeDescTxt
             localId
             addTime
+            startedOn
             investigationStatusCd
             notificationRecordStatusCd
             personParticipations{

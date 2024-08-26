@@ -116,6 +116,7 @@ type Investigation {
   jurisdictionCodeDescTxt: String
   localId: String
   addTime: Date
+  startedOn: Date
   investigationStatusCd: String
   notificationRecordStatusCd: String
   personParticipations: [InvestigationPersonParticipation!]!
