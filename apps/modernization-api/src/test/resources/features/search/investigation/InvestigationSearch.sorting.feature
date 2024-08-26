@@ -187,7 +187,7 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation has a investigation id of CAS10000000GA02
     And investigations are available for search
-    And I want search results sorted by "investigation id" "asc"
+    And I want search results sorted by "investigationId" "asc"
     When I search for investigations
     Then the 1st investigation search result has a "investigation id" of "CAS10000000GA01"
     And the 2nd investigation search result has a "investigation id" of "CAS10000000GA02"
@@ -204,7 +204,7 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation has a investigation id of CAS10000000GA02
     And investigations are available for search
-    And I want search results sorted by "investigation id" "asc"
+    And I want search results sorted by "investigationId" "asc"
     When I search for investigations
     Then the 1st investigation search result has a "investigation id" of "CAS10000000GA03"
     And the 2nd investigation search result has a "investigation id" of "CAS10000000GA02"
@@ -221,7 +221,7 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation start date was 04/05/1974
     And investigations are available for search
-    And I want search results sorted by "start date" "asc"
+    And I want search results sorted by "startDate" "asc"
     When I search for investigations
     Then the 1st investigation search result has a "start date" of "04/05/1974"
     And the 2nd investigation search result has a "start date" of "09/29/1980"
@@ -238,7 +238,7 @@ Feature: Investigation Search Sorting
     And the patient is a subject of an investigation
     And the investigation start date was 04/05/1974
     And investigations are available for search
-    And I want search results sorted by "start date" "desc"
+    And I want search results sorted by "startDate" "desc"
     When I search for investigations
     Then the 1st investigation search result has a "start date" of "09/24/2013"
     And the 2nd investigation search result has a "start date" of "09/29/1980"
