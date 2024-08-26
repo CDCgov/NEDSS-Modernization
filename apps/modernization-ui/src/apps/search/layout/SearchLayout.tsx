@@ -1,17 +1,18 @@
 import { ReactNode, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Button } from 'components/button';
 import { Term, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
 
 import { Loading } from 'components/Spinner';
+import { CollapsiblePanel } from 'design-system/collapsible-panel';
 import { SearchNavigation } from './navigation/SearchNavigation';
 import { usePage } from 'page';
 import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
-import { useLocation } from 'react-router-dom';
+
 import styles from './search-layout.module.scss';
-import { CollapsiblePanel } from './CollapsiblePanel';
 
 type Renderer = () => ReactNode;
 
