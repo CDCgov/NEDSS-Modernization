@@ -104,7 +104,8 @@ public class InvestigationSearchResultVerificationSteps {
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
       case "local id" -> hasItem(Integer.parseInt(value));
-      case "condition" -> equalTo(value);
+      case "condition", "notification", "investigator", "status", "start date", "jurisdiction", "investigation id" -> equalTo(
+          value);
       default -> hasItem(value);
     };
   }

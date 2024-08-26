@@ -389,33 +389,33 @@ Feature: Investigation Search Sorting
   Scenario: I can find Investigations ordered by the notification status ascending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation has a notification status of CCC
+    And the investigation has a notification status of UNASSIGNED
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a notification status of AAA
+    And the investigation has a notification status of APPROVED
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a notification status of BBB
+    And the investigation has a notification status of COMPLETED
     And investigations are available for search
     And I want search results sorted by "notification" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "notification" of "AAA"
-    And the 2nd investigation search result has a "notification" of "BBB"
-    And the 3rd investigation search result has a "notification" of "CCC"
+    Then the 1st investigation search result has a "notification" of "APPROVED"
+    And the 2nd investigation search result has a "notification" of "COMPLETED"
+    And the 3rd investigation search result has a "notification" of "UNASSIGNED"
 
   Scenario: I can find Investigations ordered by the notification status descending
     Given I have a patient
     And the patient is a subject of an investigation
-    And the investigation has a notification status of CCC
+    And the investigation has a notification status of UNASSIGNED
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a notification status of AAA
+    And the investigation has a notification status of APPROVED
     And I have another patient
     And the patient is a subject of an investigation
-    And the investigation has a notification status of BBB
+    And the investigation has a notification status of COMPLETED
     And investigations are available for search
     And I want search results sorted by "notification" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "notification" of "CCC"
-    And the 2nd investigation search result has a "notification" of "BBB"
-    And the 3rd investigation search result has a "notification" of "AAA"
+    Then the 1st investigation search result has a "notification" of "UNASSIGNED"
+    And the 2nd investigation search result has a "notification" of "COMPLETED"
+    And the 3rd investigation search result has a "notification" of "APPROVED"
