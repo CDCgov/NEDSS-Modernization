@@ -5,7 +5,6 @@ $bubbleWidth: calc($arrowWidth + 100%);
 
 [data-tooltip-position][aria-label] {
     position: relative;
-    z-index: 1000;
 
     &::before {
         content: attr(aria-label);
