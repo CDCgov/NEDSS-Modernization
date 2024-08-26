@@ -42,19 +42,6 @@ export const InvestigationChips = ({ filter, onChange }: InvestigationChipsProps
                             }
                         />
                     ))}
-                    {filter.jurisdictions?.map((jurisdiction, index) => (
-                        <Chip
-                            name="JURISDICTION"
-                            value={searchCriteria.jurisdictions.find((j) => j.id === jurisdiction)?.codeDescTxt ?? ''}
-                            key={`jurisdiction${index}`}
-                            handleClose={() =>
-                                onChange({
-                                    ...filter,
-                                    jurisdictions: filter.jurisdictions?.filter((j) => j !== jurisdiction) ?? []
-                                })
-                            }
-                        />
-                    ))}
                     {filter.pregnancyStatus ? (
                         <Chip
                             name="PREGNANCY STATUS"

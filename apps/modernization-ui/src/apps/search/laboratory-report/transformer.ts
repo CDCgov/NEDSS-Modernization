@@ -13,7 +13,7 @@ import {
     UserType
 } from 'generated/graphql/schema';
 import { EventDate, Identification, LabReportFilterEntry } from './labReportFormTypes';
-import { asValue, asValues, Selectable } from 'options/selectable';
+import { asNumericValues, asValue, asValues, Selectable } from 'options/selectable';
 
 const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
     const { orderingFacility, orderingProvider, reportingFacility, ...remaining } = data;
@@ -26,7 +26,7 @@ const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
     return {
         codedResult: asValue(remaining.codedResult),
         createdBy: asValue(data.createdBy),
-        jurisdictions: remaining.jurisdictions && asValues(remaining.jurisdictions),
+        jurisdictions: remaining.jurisdictions && asNumericValues(remaining.jurisdictions),
         eventStatus: remaining.eventStatus && (asValues(remaining.eventStatus) as EventStatus[]),
         processingStatus:
             remaining.processingStatus && (asValues(remaining.processingStatus) as LaboratoryReportStatus[]),

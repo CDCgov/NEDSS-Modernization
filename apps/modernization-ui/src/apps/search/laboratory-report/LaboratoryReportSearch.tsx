@@ -1,12 +1,10 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { LabReport } from 'generated/graphql/schema';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { Term } from 'apps/search/terms';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
+import { LabReport } from 'generated/graphql/schema';
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
-import { LabReportFilterEntry, initial } from './labReportFormTypes';
+import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
 import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
 
@@ -16,26 +14,11 @@ import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const LaboratoryReportSearch = () => {
     const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
-        defaultValues: initial,
+        defaultValues,
         mode: 'onBlur'
     });
 
-    const { status, search, reset, results } = useLaboratoryReportSearch();
-
-    const { state } = useLocation();
-
-    useEffect(() => {
-        if (state) {
-            form.reset(state, { keepDefaultValues: true });
-            search(state as LabReportFilterEntry);
-        }
-    }, [state, form.reset]);
-
-    useEffect(() => {
-        if (status === 'resetting') {
-            form.reset();
-        }
-    }, [form.reset, status]);
+    const { enabled, results, search, clear } = useLaboratoryReportSearch({ form });
 
     const { terms } = useSearchResultDisplay();
 
@@ -52,9 +35,9 @@ const LaboratoryReportSearch = () => {
             } else {
                 form.resetField(matchingField as keyof LabReportFilterEntry);
             }
-            search(form.getValues());
+            search();
         } else {
-            reset();
+            clear();
         }
     };
 
@@ -68,21 +51,18 @@ const LaboratoryReportSearch = () => {
                     criteria={() => <LaboratoryReportSearchCriteria />}
                     resultsAsList={() => (
                         <SearchResultList<LabReport>
-                            results={results?.content || []}
+                            results={results}
                             render={(result) => (
                                 <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={findById} />
                             )}
                         />
                     )}
                     resultsAsTable={() => (
-                        <LaboratoryReportSearchResultsTable
-                            results={results?.content ?? []}
-                            jurisdictionResolver={findById}
-                        />
+                        <LaboratoryReportSearchResultsTable results={results} jurisdictionResolver={findById} />
                     )}
-                    searchEnabled={form.formState.isValid}
-                    onSearch={form.handleSubmit(search)}
-                    onClear={reset}
+                    searchEnabled={enabled}
+                    onSearch={search}
+                    onClear={clear}
                 />
             </FormProvider>
         </ColumnPreferenceProvider>

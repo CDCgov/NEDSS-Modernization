@@ -268,20 +268,20 @@ export enum InvestigationEventIdType {
 
 export type InvestigationFilter = {
   caseStatuses?: InputMaybe<Array<CaseStatus>>;
-  conditions?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  conditions?: InputMaybe<Array<Scalars['String']['input']>>;
   createdBy?: InputMaybe<Scalars['String']['input']>;
   eventDate?: InputMaybe<InvestigationEventDateSearch>;
   eventId?: InputMaybe<EventId>;
   investigationStatus?: InputMaybe<InvestigationStatus>;
-  investigatorId?: InputMaybe<Scalars['ID']['input']>;
-  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  investigatorId?: InputMaybe<Scalars['Int']['input']>;
+  jurisdictions?: InputMaybe<Array<Scalars['Int']['input']>>;
   lastUpdatedBy?: InputMaybe<Scalars['String']['input']>;
   notificationStatuses?: InputMaybe<Array<InputMaybe<NotificationStatus>>>;
   outbreakNames?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   patientId?: InputMaybe<Scalars['Int']['input']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
   processingStatuses?: InputMaybe<Array<InputMaybe<ProcessingStatus>>>;
-  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  programAreas?: InputMaybe<Array<Scalars['String']['input']>>;
   providerFacilitySearch?: InputMaybe<ProviderFacilitySearch>;
   reportingFacilityId?: InputMaybe<Scalars['String']['input']>;
   reportingProviderId?: InputMaybe<Scalars['String']['input']>;
@@ -302,6 +302,8 @@ export type InvestigationPersonParticipation = {
 export type InvestigationResults = {
   __typename?: 'InvestigationResults';
   content: Array<Investigation>;
+  page: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
@@ -355,22 +357,22 @@ export type LabReportEventId = {
 
 export type LabReportFilter = {
   codedResult?: InputMaybe<Scalars['String']['input']>;
-  createdBy?: InputMaybe<Scalars['ID']['input']>;
-  enteredBy?: InputMaybe<Array<InputMaybe<UserType>>>;
-  entryMethods?: InputMaybe<Array<InputMaybe<EntryMethod>>>;
+  createdBy?: InputMaybe<Scalars['Int']['input']>;
+  enteredBy?: InputMaybe<Array<UserType>>;
+  entryMethods?: InputMaybe<Array<EntryMethod>>;
   eventDate?: InputMaybe<LaboratoryEventDateSearch>;
   eventId?: InputMaybe<LabReportEventId>;
-  eventStatus?: InputMaybe<Array<InputMaybe<EventStatus>>>;
-  jurisdictions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  lastUpdatedBy?: InputMaybe<Scalars['ID']['input']>;
-  orderingLabId?: InputMaybe<Scalars['ID']['input']>;
-  orderingProviderId?: InputMaybe<Scalars['ID']['input']>;
+  eventStatus?: InputMaybe<Array<EventStatus>>;
+  jurisdictions?: InputMaybe<Array<Scalars['Int']['input']>>;
+  lastUpdatedBy?: InputMaybe<Scalars['Int']['input']>;
+  orderingLabId?: InputMaybe<Scalars['Int']['input']>;
+  orderingProviderId?: InputMaybe<Scalars['Int']['input']>;
   patientId?: InputMaybe<Scalars['Int']['input']>;
   pregnancyStatus?: InputMaybe<PregnancyStatus>;
-  processingStatus?: InputMaybe<Array<InputMaybe<LaboratoryReportStatus>>>;
-  programAreas?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  processingStatus?: InputMaybe<Array<LaboratoryReportStatus>>;
+  programAreas?: InputMaybe<Array<Scalars['String']['input']>>;
   providerSearch?: InputMaybe<LabReportProviderSearch>;
-  reportingLabId?: InputMaybe<Scalars['ID']['input']>;
+  reportingLabId?: InputMaybe<Scalars['Int']['input']>;
   resultedTest?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -400,6 +402,8 @@ export type LabReportProviderSearch = {
 export type LabReportResults = {
   __typename?: 'LabReportResults';
   content: Array<LabReport>;
+  page: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
@@ -1496,6 +1500,8 @@ export type PatientSearchResultName = {
 export type PatientSearchResults = {
   __typename?: 'PatientSearchResults';
   content: Array<PatientSearchResult>;
+  page: Scalars['Int']['output'];
+  size: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
 
@@ -1616,7 +1622,7 @@ export type PersonFilter = {
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
+  id?: InputMaybe<Scalars['String']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   mortalityStatus?: InputMaybe<Scalars['String']['input']>;
@@ -1871,6 +1877,7 @@ export type QueryFindPatientProfileArgs = {
 export type QueryFindPatientsByFilterArgs = {
   filter: PersonFilter;
   page?: InputMaybe<SortablePage>;
+  share?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -2418,7 +2425,7 @@ export type FindInvestigationsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, content: Array<{ __typename?: 'Investigation', relevance: number, id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd: string, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
+export type FindInvestigationsByFilterQuery = { __typename?: 'Query', findInvestigationsByFilter: { __typename?: 'InvestigationResults', total: number, page: number, size: number, content: Array<{ __typename?: 'Investigation', relevance: number, id?: string | null, cdDescTxt?: string | null, jurisdictionCodeDescTxt?: string | null, localId?: string | null, addTime?: any | null, investigationStatusCd?: string | null, notificationRecordStatusCd?: string | null, personParticipations: Array<{ __typename?: 'InvestigationPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd: string, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }> }> } };
 
 export type FindInvestigationsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -2435,7 +2442,7 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }> }> } };
+export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, page: number, size: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }> }> } };
 
 export type FindLabReportsForPatientQueryVariables = Exact<{
   personUid: Scalars['Int']['input'];
@@ -2479,10 +2486,11 @@ export type FindPatientProfileQuery = { __typename?: 'Query', findPatientProfile
 export type FindPatientsByFilterQueryVariables = Exact<{
   filter: PersonFilter;
   page?: InputMaybe<SortablePage>;
+  share?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }> }> } };
+export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, page: number, size: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', use: string, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }> }> } };
 
 export type FindTreatmentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -4468,6 +4476,8 @@ export const FindInvestigationsByFilterDocument = gql`
       }
     }
     total
+    page
+    size
   }
 }
     `;
@@ -4600,6 +4610,8 @@ export const FindLabReportsByFilterDocument = gql`
       }
     }
     total
+    page
+    size
   }
 }
     `;
@@ -5192,8 +5204,8 @@ export type FindPatientProfileLazyQueryHookResult = ReturnType<typeof useFindPat
 export type FindPatientProfileSuspenseQueryHookResult = ReturnType<typeof useFindPatientProfileSuspenseQuery>;
 export type FindPatientProfileQueryResult = Apollo.QueryResult<FindPatientProfileQuery, FindPatientProfileQueryVariables>;
 export const FindPatientsByFilterDocument = gql`
-    query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage) {
-  findPatientsByFilter(filter: $filter, page: $page) {
+    query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: String) {
+  findPatientsByFilter(filter: $filter, page: $page, share: $share) {
     content {
       patient
       birthday
@@ -5230,6 +5242,8 @@ export const FindPatientsByFilterDocument = gql`
       emails
     }
     total
+    page
+    size
   }
 }
     `;
@@ -5248,6 +5262,7 @@ export const FindPatientsByFilterDocument = gql`
  *   variables: {
  *      filter: // value for 'filter'
  *      page: // value for 'page'
+ *      share: // value for 'share'
  *   },
  * });
  */

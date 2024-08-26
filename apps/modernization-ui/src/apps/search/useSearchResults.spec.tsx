@@ -1,8 +1,18 @@
 import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { Settings, useSearch } from './useSearch';
+import { SearchResultSettings, useSearchResults } from './useSearchResults';
 import { SearchResultDisplayProvider } from './useSearchResultDisplay';
+
+const mockClear = jest.fn();
+const mockChange = jest.fn();
+
+jest.mock('./useSearchCriteria', () => ({
+    useSearchCritiera: () => ({
+        clear: mockClear,
+        change: mockChange
+    })
+}));
 
 type Criteria = { name: string };
 type APIParameters = { search: string };
@@ -14,21 +24,24 @@ const wrapper = ({ children }: { children: ReactNode }) => (
     </MemoryRouter>
 );
 
-const setup = (props?: Partial<Settings<Criteria, APIParameters, Result>>) => {
+const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Result>>) => {
     const defaultTransformer = (criteria: Criteria) => ({ search: criteria.name });
     const defaultResultResolver = () => Promise.resolve({ total: 0, content: [], page: 0 });
     const defaultTermResolver = () => [];
-
+    //
     const transformer = props?.transformer ?? defaultTransformer;
     const resultResolver = props?.resultResolver ?? defaultResultResolver;
     const termResolver = props?.termResolver ?? defaultTermResolver;
 
-    return renderHook(() => useSearch<Criteria, APIParameters, Result>({ transformer, resultResolver, termResolver }), {
-        wrapper
-    });
+    return renderHook(
+        () => useSearchResults<Criteria, APIParameters, Result>({ transformer, resultResolver, termResolver }),
+        {
+            wrapper
+        }
+    );
 };
 
-describe('when searching using useSearch', () => {
+describe('when searching using useSearchResults', () => {
     it('should default to waiting without any results', () => {
         const { result } = setup();
 
@@ -43,7 +56,7 @@ describe('when searching using useSearch', () => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(result.current.status).toEqual('noInput');
+        expect(result.current.status).toEqual('no-input');
     });
 
     it('should change to status to waiting when reset before searching', async () => {
@@ -77,7 +90,7 @@ describe('when searching using useSearch', () => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(result.current.status).toEqual('noInput');
+        expect(result.current.status).toEqual('no-input');
     });
 
     it('should change to status to waiting when reset after error', async () => {
@@ -94,17 +107,14 @@ describe('when searching using useSearch', () => {
         expect(result.current.status).toEqual('waiting');
     });
 
-    it('should use the resolvers for searching', async () => {
+    it('should use change the criteria when searching', async () => {
         const transformer = jest.fn(() => ({ search: 'name-value' }));
 
         const terms = [{ source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock' }];
 
         const termResolver = jest.fn(() => terms);
 
-        const resovled = { total: 0, content: [], page: 0 };
-        const resultResolver = jest.fn(() => Promise.resolve(resovled));
-
-        const { result } = setup({ transformer, resultResolver, termResolver });
+        const { result } = setup({ transformer, termResolver });
 
         await act(async () => {
             result.current.search({ name: 'name-value' });
@@ -114,8 +124,6 @@ describe('when searching using useSearch', () => {
 
         expect(termResolver).toHaveBeenCalledWith({ name: 'name-value' });
 
-        expect(resultResolver).toHaveBeenCalledWith(expect.objectContaining({ parameters: { search: 'name-value' } }));
-
-        expect(result.current.results?.terms).toBe(terms);
+        expect(mockChange).toHaveBeenCalledWith(expect.objectContaining({ name: 'name-value' }));
     });
 });

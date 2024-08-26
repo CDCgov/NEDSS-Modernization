@@ -1,4 +1,6 @@
 export { routing } from './SearchRouting';
 export * from './useSearchResultDisplay';
-export * from './useSearch';
+export * from './useSearchResults';
 export * from './useSearchNavigation';
+export * from './useSearchFormAdapter';
+export * from './useSearch';

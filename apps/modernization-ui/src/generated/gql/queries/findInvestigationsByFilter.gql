@@ -21,5 +21,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             }
         }
         total
+        page
+        size
     }
 }

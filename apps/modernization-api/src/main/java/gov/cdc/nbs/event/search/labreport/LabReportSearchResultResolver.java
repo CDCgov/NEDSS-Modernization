@@ -3,7 +3,8 @@ package gov.cdc.nbs.event.search.labreport;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.search.SearchGraphQLPageableMapper;
-import org.springframework.data.domain.Page;
+import gov.cdc.nbs.search.SearchResolver;
+import gov.cdc.nbs.search.SearchResult;
 import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -12,28 +13,27 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 class LabReportSearchResultResolver {
-  private final LabReportSearcher finder;
   private final SearchGraphQLPageableMapper mapper;
-
+  private final SearchResolver<LabReportFilter, LabReportSearchResult> resolver;
 
   LabReportSearchResultResolver(
-      final LabReportSearcher finder,
-      final SearchGraphQLPageableMapper mapper
+      final SearchGraphQLPageableMapper mapper,
+      final SearchResolver<LabReportFilter, LabReportSearchResult> resolver
   ) {
-    this.finder = finder;
     this.mapper = mapper;
+    this.resolver = resolver;
   }
 
   @QueryMapping("findLabReportsByFilter")
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-OBSERVATIONLABREPORT')")
-  Page<LabReportSearchResult> search(
+  SearchResult<LabReportSearchResult> search(
       @Argument final LabReportFilter filter,
       @Argument final GraphQLPage page
   ) {
 
     Pageable pageable = mapper.from(page);
 
-    return finder.find(
+    return this.resolver.search(
         filter,
         pageable
     );

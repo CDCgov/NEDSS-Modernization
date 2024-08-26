@@ -11,7 +11,7 @@ import {
     ProcessingStatus
 } from 'generated/graphql/schema';
 import { EventDate, Identification, InvestigationFilterEntry } from './InvestigationFormTypes';
-import { asValue, asValues } from 'options/selectable';
+import { asNumericValues, asValue, asValues } from 'options/selectable';
 
 export const transformObject = (data: InvestigationFilterEntry): InvestigationFilter => {
     const { ...remaining } = data;
@@ -19,7 +19,7 @@ export const transformObject = (data: InvestigationFilterEntry): InvestigationFi
     return {
         conditions: remaining.conditions && asValues(remaining.conditions),
         programAreas: remaining.programAreas && asValues(remaining.programAreas),
-        jurisdictions: remaining.jurisdictions && asValues(remaining.jurisdictions),
+        jurisdictions: remaining.jurisdictions && asNumericValues(remaining.jurisdictions),
         pregnancyStatus: remaining.pregnancyStatus && (asValue(remaining.pregnancyStatus) as PregnancyStatus),
         eventId: resolveEventId(remaining.identification),
         eventDate: resolveEventDate(remaining.eventDate),
