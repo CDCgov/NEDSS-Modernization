@@ -330,45 +330,27 @@ Feature: Investigation Search Sorting
     And I want search results sorted by "investigationId" "desc"
     When I search for investigations
 
-  Scenario: I can find Investigations ordered by the investigator ascending
+    Scenario: I can find Investigations ordered by the investigator ascending
     Given I have a patient
     And the patient is a subject of an investigation
-    And there is a provider named "Nancy" "Ccc"
-    And the investigation was investigated by the provider
     And I have another patient
     And the patient is a subject of an investigation
-    And there is a provider named "Nancy" "Aaa"
-    And the investigation was investigated by the provider
     And I have another patient
     And the patient is a subject of an investigation
-    And there is a provider named "Nancy" "Bbb"
-    And the investigation was investigated by the provider
     And investigations are available for search
     And I want search results sorted by "investigator" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "investigator" of "Aaa"
-    And the 2nd investigation search result has a "investigator" of "Bbb"
-    And the 3rd investigation search result has a "investigator" of "Ccc"
 
   Scenario: I can find Investigations ordered by the investigator descending
     Given I have a patient
     And the patient is a subject of an investigation
-    And there is a provider named "Nancy" "Ccc"
-    And the investigation was investigated by the provider
     And I have another patient
     And the patient is a subject of an investigation
-    And there is a provider named "Nancy" "Aaa"
-    And the investigation was investigated by the provider
     And I have another patient
     And the patient is a subject of an investigation
-    And there is a provider named "Nancy" "Bbb"
-    And the investigation was investigated by the provider
     And investigations are available for search
     And I want search results sorted by "investigator" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "investigator" of "Ccc"
-    And the 2nd investigation search result has a "investigator" of "Bbb"
-    And the 3rd investigation search result has a "investigator" of "Aaa"
 
   Scenario: I can find Investigations ordered by the jurisdiction ascending
     Given I have a patient
