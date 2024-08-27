@@ -12,6 +12,7 @@ type Props = {
     disabled?: boolean;
     type?: 'button' | 'submit' | 'reset';
     unstyled?: boolean;
+    unpadded?: boolean;
     labelPosition?: 'left' | 'right';
     onClick?: () => void;
 } & JSX.IntrinsicElements['button'];
@@ -20,6 +21,7 @@ const Button = ({
     className,
     type = 'button',
     icon,
+    unpadded,
     children,
     outline = false,
     destructive = false,
@@ -30,7 +32,8 @@ const Button = ({
     const isIconOnly = icon && !children;
     const classesAarray = classNames(className, {
         [styles.destructive]: destructive,
-        [styles.icon]: icon
+        [styles.icon]: icon,
+        [styles.unpadded]: unpadded
     });
 
     return (
