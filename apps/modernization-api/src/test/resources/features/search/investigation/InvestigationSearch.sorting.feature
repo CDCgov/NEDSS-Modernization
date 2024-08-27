@@ -175,3 +175,213 @@ Feature: Investigation Search Sorting
     Then the 1st investigation search result has a "local id" of "320"
     And the 2nd investigation search result has a "local id" of "220"
     And the 3rd investigation search result has a "local id" of "120"
+
+  Scenario: I can find Investigations ordered by the patient's condition ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation is for the Pertussis condition
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for the Brucellosis condition
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for the Mumps condition
+    And investigations are available for search
+    And I want search results sorted by "condition" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "condition" of "Brucellosis"
+    And the 2nd investigation search result has a "condition" of "Mumps"
+    And the 3rd investigation search result has a "condition" of "Pertussis"
+
+  Scenario: I can find Investigations ordered by the patient's condition descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation is for the Pertussis condition
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for the Brucellosis condition
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for the Mumps condition
+    And investigations are available for search
+    And I want search results sorted by "condition" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "condition" of "Pertussis"
+    And the 2nd investigation search result has a "condition" of "Mumps"
+    And the 3rd investigation search result has a "condition" of "Brucellosis"
+
+  Scenario: I can find Investigations ordered by the investigation status ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was closed on 09/17/2018
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "status" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "status" of "C"
+    And the 2nd investigation search result has a "status" of "O"
+    And the 3rd investigation search result has a "status" of "O"
+
+  Scenario: I can find Investigations ordered by the investigation status descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was closed on 09/17/2018
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "status" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "status" of "O"
+    And the 2nd investigation search result has a "status" of "O"
+    And the 3rd investigation search result has a "status" of "C"
+
+  Scenario: I can find Investigations ordered by the notification status ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of UNASSIGNED
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of APPROVED
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of COMPLETED
+    And investigations are available for search
+    And I want search results sorted by "notification" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "notification" of "APPROVED"
+    And the 2nd investigation search result has a "notification" of "COMPLETED"
+    And the 3rd investigation search result has a "notification" of "UNASSIGNED"
+
+  Scenario: I can find Investigations ordered by the notification status descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of UNASSIGNED
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of APPROVED
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of COMPLETED
+    And investigations are available for search
+    And I want search results sorted by "notification" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "notification" of "UNASSIGNED"
+    And the 2nd investigation search result has a "notification" of "COMPLETED"
+    And the 3rd investigation search result has a "notification" of "APPROVED"
+
+  Scenario: I can find Investigations ordered by the investigation's start date ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/29/1980
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/24/2013
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 04/05/1974
+    And investigations are available for search
+    And I want search results sorted by "startDate" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "start date" of "1974-04-05"
+    And the 2nd investigation search result has a "start date" of "1980-09-29"
+    And the 3rd investigation search result has a "start date" of "2013-09-24"
+
+  Scenario: I can find Investigations ordered by the patient's start date descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/29/1980
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/24/2013
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 04/05/1974
+    And investigations are available for search
+    And I want search results sorted by "startDate" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "start date" of "2013-09-24"
+    And the 2nd investigation search result has a "start date" of "1980-09-29"
+    And the 3rd investigation search result has a "start date" of "1974-04-05"
+
+  Scenario: I can find Investigations ordered by the investigation id ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigationId" "asc"
+    When I search for investigations
+
+  Scenario: I can find Investigations ordered by the investigation id descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigationId" "desc"
+    When I search for investigations
+
+  Scenario: I can find Investigations ordered by the investigator ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigator" "asc"
+    When I search for investigations
+
+  Scenario: I can find Investigations ordered by the investigator descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigator" "desc"
+    When I search for investigations
+
+  Scenario: I can find Investigations ordered by the jurisdiction ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for ARBO within Gwinnett County
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
+    And investigations are available for search
+    And I want search results sorted by "jurisdiction" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "jurisdiction" of "Dekalb County"
+    And the 2nd investigation search result has a "jurisdiction" of "Dekalb County"
+    And the 3rd investigation search result has a "jurisdiction" of "Gwinnett County"
+
+  Scenario: I can find Investigations ordered by the jurisdiction descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for ARBO within Gwinnett County
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
+    And investigations are available for search
+    And I want search results sorted by "jurisdiction" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "jurisdiction" of "Gwinnett County"
+    And the 2nd investigation search result has a "jurisdiction" of "Dekalb County"
+    And the 3rd investigation search result has a "jurisdiction" of "Dekalb County"

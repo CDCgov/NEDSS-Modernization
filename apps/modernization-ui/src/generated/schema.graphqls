@@ -116,6 +116,7 @@ type Investigation {
   jurisdictionCodeDescTxt: String
   localId: String
   addTime: Date
+  startedOn: Date
   investigationStatusCd: String
   notificationRecordStatusCd: String
   personParticipations: [InvestigationPersonParticipation!]!
@@ -1660,17 +1661,24 @@ enum SortField {
   address
   birthTime
   city
+  condition
   country
   county
   email
   firstNm
   id
   identification
+  investigator
+  investigationId
+  jurisdiction
   lastNm
   local_id
+  notification
   phoneNumber
   relevance
+  startDate
   state
+  status
   sex
   zip
 }

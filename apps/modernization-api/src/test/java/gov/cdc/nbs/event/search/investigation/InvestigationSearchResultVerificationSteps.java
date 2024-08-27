@@ -6,7 +6,6 @@ import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
-
 import static gov.cdc.nbs.graphql.GraphQLErrorMatchers.accessDenied;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.hamcrest.Matcher;
@@ -80,6 +79,8 @@ public class InvestigationSearchResultVerificationSteps {
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
       case "local id" -> hasItem(Integer.parseInt(value));
+      case "condition", "notification", "investigator", "status", "start date", "jurisdiction", "investigation id" -> equalTo(
+          value);
       default -> hasItem(value);
     };
   }
@@ -95,6 +96,16 @@ public class InvestigationSearchResultVerificationSteps {
       case "sex" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].currSexCd",
           position);
       case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
+          position);
+      case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].cdDescTxt", position);
+      case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].localId", position);
+      case "investigator" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigatorLastName", position);
+      case "jurisdiction" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].jurisdictionCodeDescTxt",
+          position);
+      case "notification" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].notificationRecordStatusCd",
+          position);
+      case "start date" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].startedOn", position);
+      case "status" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].investigationStatusCd",
           position);
       default -> throw new AssertionError("Unexpected Investigation Search Result property %s".formatted(field));
     };
