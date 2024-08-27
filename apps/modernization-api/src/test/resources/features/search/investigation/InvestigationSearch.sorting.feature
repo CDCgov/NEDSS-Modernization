@@ -333,21 +333,33 @@ Feature: Investigation Search Sorting
   Scenario: I can find Investigations ordered by the jurisdiction ascending
     Given I have a patient
     And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
     And I have another patient
     And the patient is a subject of an investigation
+    And the investigation is for ARBO within Gwinnett County
     And I have another patient
     And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
     And investigations are available for search
     And I want search results sorted by "jurisdiction" "asc"
     When I search for investigations
+    Then the 1st investigation search result has a "jurisdiction" of "Dekalb County"
+    And the 2nd investigation search result has a "jurisdiction" of "Dekalb County"
+    And the 3rd investigation search result has a "jurisdiction" of "Gwinnett County"
 
   Scenario: I can find Investigations ordered by the jurisdiction descending
     Given I have a patient
     And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
     And I have another patient
     And the patient is a subject of an investigation
+    And the investigation is for ARBO within Gwinnett County
     And I have another patient
     And the patient is a subject of an investigation
+    And the investigation is for ARBO within Dekalb County
     And investigations are available for search
     And I want search results sorted by "jurisdiction" "desc"
     When I search for investigations
+    Then the 1st investigation search result has a "jurisdiction" of "Gwinnett County"
+    And the 2nd investigation search result has a "jurisdiction" of "Dekalb County"
+    And the 3rd investigation search result has a "jurisdiction" of "Dekalb County"

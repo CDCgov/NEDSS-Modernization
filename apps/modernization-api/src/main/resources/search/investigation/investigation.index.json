@@ -78,7 +78,7 @@
         "type": "long"
       },
       "jurisdiction_code_desc_txt": {
-        "type": "text"
+        "type": "keyword"
       },
       "last_change_time": {
         "type": "date",
