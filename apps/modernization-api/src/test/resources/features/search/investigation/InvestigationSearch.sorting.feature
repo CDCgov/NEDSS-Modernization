@@ -307,3 +307,25 @@ Feature: Investigation Search Sorting
     Then the 1st investigation search result has a "start date" of "2013-09-24"
     And the 2nd investigation search result has a "start date" of "1980-09-29"
     And the 3rd investigation search result has a "start date" of "1974-04-05"
+
+  Scenario: I can find Investigations ordered by the investigation id ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigationId" "asc"
+    When I search for investigations
+
+  Scenario: I can find Investigations ordered by the investigation id descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigationId" "desc"
+    When I search for investigations
