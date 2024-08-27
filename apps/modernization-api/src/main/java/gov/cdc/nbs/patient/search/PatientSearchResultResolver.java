@@ -2,7 +2,7 @@ package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authorization.permission.Permission;
-import gov.cdc.nbs.graphql.GraphQLPage;
+import gov.cdc.nbs.data.pagination.PaginationRequest;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import org.springframework.data.domain.Pageable;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 class PatientSearchResultResolver {
 
-  private final SearchGraphQLPageableMapper mapper;
+  private final SearchPageableMapper mapper;
   private final SearchResolver<PatientFilter, PatientSearchResult> resolver;
   private final AuthorizedPatientFilterAdjuster adjuster;
 
   PatientSearchResultResolver(
-      final SearchGraphQLPageableMapper mapper,
+      final SearchPageableMapper mapper,
       final SearchResolver<PatientFilter, PatientSearchResult> resolver
   ) {
     this.mapper = mapper;
@@ -33,11 +33,11 @@ class PatientSearchResultResolver {
   SearchResult<PatientSearchResult> resolve(
       @AuthenticationPrincipal final NbsUserDetails user,
       @Argument final PatientFilter filter,
-      @Argument final GraphQLPage page
+      @Argument("page") PaginationRequest paginated
   ) {
 
     PatientFilter adjusted = PatientFilterValidator.validate(this.adjuster.adjusted(user, filter));
-    Pageable pageable = mapper.from(page);
+    Pageable pageable = mapper.from(paginated);
 
     return resolver.search(
         adjusted,
