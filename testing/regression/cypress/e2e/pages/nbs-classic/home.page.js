@@ -47,6 +47,7 @@ class ClassicHomePage {
         cy.wait(2000)
         cy.contains('button', 'Add new').eq(0).click()
         cy.contains('button', 'Add new patient').eq(0).click()
+        cy.wait(2000)
         cy.get("input[data-testid=date-picker-external-input]")
            .eq(0)
            .clear()
@@ -54,7 +55,14 @@ class ClassicHomePage {
           .eq(0)
           .type('03/04/2024');
         cy.contains('button', 'Save changes').eq(0).click()
-        cy.contains('button', 'View patient').eq(0).click()
+        cy.get('body').then(($body) => {
+            if($body.find('button:contains("View patient")').length > 0) {
+                cy.contains('button', 'View patient').click()
+            } else {
+                cy.contains('button', 'Continue anyways').click()
+                cy.contains('button', 'View patient').click()
+            }
+        })
         cy.contains('Home').eq(0).click()
     }
     createPatient()
