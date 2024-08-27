@@ -10,6 +10,7 @@ query findInvestigationsByFilter($filter: InvestigationFilter!, $page: SortableP
             startedOn
             investigationStatusCd
             notificationRecordStatusCd
+            investigatorLastName
             personParticipations{
                 birthTime
                 currSexCd

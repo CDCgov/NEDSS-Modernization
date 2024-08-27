@@ -33,6 +33,7 @@ type Investigation {
   startedOn: Date
   investigationStatusCd: String
   notificationRecordStatusCd: String
+  investigatorLastName: String
   personParticipations: [InvestigationPersonParticipation!]!
 }
 
