@@ -130,13 +130,15 @@ class SearchPage {
   }
 
   selectDelete() {
-    cy.get('#record-status-active').focus().click( { force: true})
-    cy.get('#record-status-deleted').focus().click({ force: true})
+    cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
+    cy.get('label[for="status__checkbox__LOG_DEL"]').click({ force: true });
+    
   }
 
   selectSuperseded() {
-    cy.get('#record-status-active').focus().click( { force: true})
-    cy.get('#record-status-deleted').focus().click({ force: true})
+    cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
+    cy.get('label[for="status__checkbox__SUPERCEDED"]').click({ force: true });
+
   }
 }
 
