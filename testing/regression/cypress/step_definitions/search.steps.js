@@ -103,7 +103,7 @@ Then("I should see Results with the first name {string}", (string) => {
 });
 
 Then("I should see Results with the sex {string}", (string) => {
-  cy.get("span#sex").contains(string).should("be.visible");
+  cy.get('span.result-item_label__4ANhR').contains('Sex').should('be.visible');
 });
 
 Then("I should see Results with the patient id {string}", (string) => {
@@ -199,14 +199,14 @@ Then("I select for Superseded patient", ()=>{
 })
 
 Then("I sort by {string}", (string) => {
-  cy.get('.button-group>button').eq(1).click();
+  cy.get('button[data-testid="button"]').eq(1).click();
   cy.wait(500)
-  cy.get('#basic-nav-section-one>li').eq(1).click();
+  cy.get('button[data-testid="button"]').eq(1).click();
   cy.wait(1000)
 })
 
 Then("I verify the sort of patient name", () => {
-  cy.get('.grid-col-12.margin-bottom-2>a')
+  cy.get('.result-item_label__4ANhR')
   .invoke('text')
   .then(name => {
     //Sort the names

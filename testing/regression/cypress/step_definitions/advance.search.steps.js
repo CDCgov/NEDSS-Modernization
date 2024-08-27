@@ -55,6 +55,11 @@ Then("I should see {string}", (string) => {
   cy.get('main').contains(string).should("be.visible");
 });
 
+Then("I should see error message {string}", (string) => {
+  cy.get('span[data-testid="errorMessage"].usa-error-message').contains(string).should("be.visible")
+
+});
+
 When("the User close the error message", () => {
   searchPage.closeErrorMsg();
 });
