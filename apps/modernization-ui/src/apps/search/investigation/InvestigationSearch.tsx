@@ -2,7 +2,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useConceptOptions } from 'options/concepts';
 import { findByValue } from 'options';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { Term, useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
 import { InvestigationSearchForm } from './InvestigationSearchForm';
@@ -21,6 +21,14 @@ const InvestigationSearch = () => {
 
     const { terms } = useSearchResultDisplay();
 
+    const handleRemoveTerm = removeTerm(form, () => {
+        if (terms.length === 1) {
+            clear();
+        } else {
+            search();
+        }
+    });
+
     const { options: notificationStatus } = useConceptOptions('REC_STAT', { lazy: false });
     const notificationStatusResolver = findByValue(notificationStatus);
 
@@ -28,7 +36,7 @@ const InvestigationSearch = () => {
         <ColumnPreferenceProvider id="search.investigations.preferences.columns" defaults={preferences}>
             <FormProvider {...form}>
                 <SearchLayout
-                    onRemoveTerm={(term: Term) => removeTerm(form, term, search, clear, terms)}
+                    onRemoveTerm={handleRemoveTerm}
                     criteria={() => <InvestigationSearchForm />}
                     resultsAsList={() => (
                         <SearchResultList<Investigation>

@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { removeTerm, Term } from 'apps/search/terms';
+import { removeTerm } from 'apps/search/terms';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { LabReport } from 'generated/graphql/schema';
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
@@ -22,13 +22,21 @@ const LaboratoryReportSearch = () => {
 
     const { terms } = useSearchResultDisplay();
 
+    const handleRemoveTerm = removeTerm(form, () => {
+        if (terms.length === 1) {
+            clear();
+        } else {
+            search();
+        }
+    });
+
     const { resolve: findById } = useJurisdictionOptions();
 
     return (
         <ColumnPreferenceProvider id="search.laboratory-reports.preferences.columns" defaults={preferences}>
             <FormProvider {...form}>
                 <SearchLayout
-                    onRemoveTerm={(term: Term) => removeTerm(form, term, search, clear, terms)}
+                    onRemoveTerm={handleRemoveTerm}
                     criteria={() => <LaboratoryReportSearchCriteria />}
                     resultsAsList={() => (
                         <SearchResultList<LabReport>

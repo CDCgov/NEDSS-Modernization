@@ -1,29 +1,29 @@
-import { Path, UseFormReturn } from 'react-hook-form';
-import { Term } from 'apps/search/terms';
-import { Selectable } from 'options';
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { Term } from './terms';
 
-export function removeTerm<T extends Record<string, any>>(
-    form: UseFormReturn<T>,
-    term: Term,
-    search: () => void,
-    clear: () => void,
-    terms: Term[]
-) {
-    const formValues = form.getValues();
-    const fieldNames = Object.keys(formValues);
-    const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
+const isSelectableNotMatching = (value: string) => (item: any) => 'value' in item && item.value !== value;
 
-    if (matchingField && terms.length > 1) {
-        if (Array.isArray(formValues[matchingField] as Selectable[])) {
-            form.setValue(
-                matchingField as Path<T>,
-                form.getValues()?.[matchingField].filter((p: Selectable) => p.value !== term.value) ?? []
-            );
+const doesNotEqual = (value: string) => (item: any) =>
+    typeof item === 'string' ? value !== item : isSelectableNotMatching(value)(item);
+
+const removeTerm =
+    <C extends FieldValues>(form: UseFormReturn<C>, afterRemove: () => void) =>
+    (term: Term) => {
+        const formValues = form.getValues();
+
+        const key = term.source as Path<C>;
+
+        const value = formValues[key];
+
+        if (Array.isArray(value)) {
+            //  this will most likey be a Selectable
+            const adjusted = value.filter(doesNotEqual(term.value));
+            form.setValue(key, adjusted);
         } else {
-            form.resetField(matchingField as Path<T>);
+            form.resetField(key);
         }
-        search();
-    } else {
-        clear();
-    }
-}
+
+        afterRemove();
+    };
+
+export { removeTerm };
