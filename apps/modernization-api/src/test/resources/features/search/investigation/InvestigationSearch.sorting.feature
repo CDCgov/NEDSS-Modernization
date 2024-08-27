@@ -273,3 +273,37 @@ Feature: Investigation Search Sorting
     Then the 1st investigation search result has a "notification" of "UNASSIGNED"
     And the 2nd investigation search result has a "notification" of "COMPLETED"
     And the 3rd investigation search result has a "notification" of "APPROVED"
+
+  Scenario: I can find Investigations ordered by the investigation's start date ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/29/1980
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/24/2013
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 04/05/1974
+    And investigations are available for search
+    And I want search results sorted by "startDate" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "start date" of "1974-04-05"
+    And the 2nd investigation search result has a "start date" of "1980-09-29"
+    And the 3rd investigation search result has a "start date" of "2013-09-24"
+
+  Scenario: I can find Investigations ordered by the patient's start date descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/29/1980
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 09/24/2013
+    And I have another patient
+    And the patient is a subject of an investigation
+    And the investigation was started on 04/05/1974
+    And investigations are available for search
+    And I want search results sorted by "startDate" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "start date" of "2013-09-24"
+    And the 2nd investigation search result has a "start date" of "1980-09-29"
+    And the 3rd investigation search result has a "start date" of "1974-04-05"
