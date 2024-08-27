@@ -43,10 +43,10 @@ class InvestigationSearchResultConverterTest {
         "notification-value",
         LocalDate.of(2013, Month.AUGUST, 19),
         "notification-status-value",
+        "investigator-value",
         Collections.emptyList(),
         Collections.emptyList(),
-        Collections.emptyList()
-    );
+        Collections.emptyList());
 
     InvestigationSearchResult converted = InvestigationSearchResultConverter.convert(searchable, 56.3d);
 
@@ -89,10 +89,7 @@ class InvestigationSearchResultConverterTest {
                 "first-name-one-value",
                 "last-name-one-value",
                 "gender-value",
-                LocalDate.of(2009, Month.NOVEMBER, 13)
-            )
-        )
-    );
+                LocalDate.of(2009, Month.NOVEMBER, 13))));
 
     InvestigationSearchResult converted = InvestigationSearchResultConverter.convert(searchable, null);
 
@@ -105,9 +102,7 @@ class InvestigationSearchResultConverterTest {
             () -> assertThat(actual.lastName()).isEqualTo("last-name-one-value"),
             () -> assertThat(actual.personCd()).isEqualTo("PAT"),
             () -> assertThat(actual.personParentUid()).isEqualTo(443L),
-            () -> assertThat(actual.local()).isEqualTo("local-one-value")
-        )
-    );
+            () -> assertThat(actual.local()).isEqualTo("local-one-value")));
   }
 
   @Test
@@ -121,10 +116,7 @@ class InvestigationSearchResultConverterTest {
                 857L,
                 "type-two-value",
                 "first-name-two-value",
-                "last-name-two-value"
-            )
-        )
-    );
+                "last-name-two-value")));
 
     InvestigationSearchResult converted = InvestigationSearchResultConverter.convert(searchable, null);
 
@@ -137,8 +129,6 @@ class InvestigationSearchResultConverterTest {
             () -> assertThat(actual.lastName()).isEqualTo("last-name-two-value"),
             () -> assertThat(actual.personCd()).isEqualTo("PRV"),
             () -> assertThat(actual.personParentUid()).isEqualTo(857L),
-            () -> assertThat(actual.local()).isNull()
-        )
-    );
+            () -> assertThat(actual.local()).isNull()));
   }
 }
