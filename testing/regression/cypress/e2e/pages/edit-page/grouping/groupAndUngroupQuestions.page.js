@@ -39,14 +39,14 @@ class GroupAndUngroupQuestions {
 
                 // questions
                 cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
-                cy.wait(2000)
+                cy.wait(5000)
                 cy.get('label[for="selection-0"]').click({ force: true });
                 cy.wait(1000)
                 cy.contains('Apply to page').click();
                 cy.wait(5000)
 
                 cy.get('.subsectionHeader').eq(0).get('.addQuestionBtn').eq(0).click();
-                cy.wait(2000)
+                cy.wait(5000)
                 cy.get('label[for="selection-0"]').click({ force: true });
                 cy.wait(1000)
                 cy.contains('Apply to page').click();
