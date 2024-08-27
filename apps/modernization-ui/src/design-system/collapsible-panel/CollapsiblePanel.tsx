@@ -16,11 +16,10 @@ const CollapsiblePanel = ({ children, id, className, ariaLabel }: Props) => {
 
     return (
         <div id={id} className={classNames(className, styles.collapsible, { [styles.collapsed]: collapsed })}>
-            <span className={styles.wrapper}>
-                <span className={styles.content} aria-hidden={collapsed}>
-                    {children}
-                </span>
+            <span className={styles.content} aria-hidden={collapsed}>
+                {children}
             </span>
+
             <button
                 type="button"
                 className={classNames(styles.control)}

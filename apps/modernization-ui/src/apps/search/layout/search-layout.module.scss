@@ -5,7 +5,7 @@ $search-height: calc(100vh - 74px);
 $navigation-height: 2.75rem;
 $actions-height: 8rem;
 $criteria-width: 320px;
-$content-height: calc($search-height - $navigation-height - 2rem);
+$content-height: calc($search-height - $navigation-height - 3rem);
 
 .search {
     padding: 1rem;
@@ -30,14 +30,13 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         .criteria {
             flex-shrink: 0;
             width: $criteria-width;
-            z-index: 0;
 
-            height: 100%;
+            background-color: colors.$base-white;
 
             @include borders.bordered('border-right');
 
             .inputs {
-                height: calc(100% - $actions-height);
+                height: calc($content-height - $actions-height);
                 overflow-y: scroll;
                 padding: 0rem;
             }

@@ -4,10 +4,6 @@
 $control-height: 3rem;
 $control-width: 1.5rem;
 
-.wrapper {
-    overflow: clip;
-}
-
 .collapsible {
     position: relative;
     transition: transform 600ms ease-in-out;
