@@ -16,7 +16,6 @@ class EventsTabPage {
           .eq(conditionColumnIndex)
           .invoke('text')
           .then(text => {
-            cy.log('Cell Text:', text);
 
             if (text.includes(conditionText)) {
               cy.wrap($row)
