@@ -52,7 +52,7 @@ Then("I should see search button disabled", () => {
 });
 
 Then("I should see {string}", (string) => {
-  cy.contains(string).should("be.visible");
+  cy.get('main').contains(string).should("be.visible");
 });
 
 When("the User close the error message", () => {
