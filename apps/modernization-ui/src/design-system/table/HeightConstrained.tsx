@@ -6,12 +6,13 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 type Props = {
     children: ReactNode;
     rowConstraint: Constraint;
+    name: string;
     onChange: (value: Constraint) => void;
 };
 
 export type Constraint = 'bounded' | 'unbounded' | 'acceptable';
 
-export const HeightConstrained = ({ children, onChange, rowConstraint }: Props) => {
+export const HeightConstrained = ({ children, onChange, rowConstraint, name }: Props) => {
     const measureRef = useRef<HTMLTableRowElement | null>(null);
     const [constraint, setConstraint] = useState<Constraint>('acceptable');
     const matchesRow = useMemo(() => constraint === rowConstraint, [constraint, rowConstraint]);
@@ -39,12 +40,20 @@ export const HeightConstrained = ({ children, onChange, rowConstraint }: Props) 
                 {children}
             </div>
             {constraint === 'bounded' && matchesRow && (
-                <Button aria-label="view more" unpadded className={styles.button} onClick={() => onChange('unbounded')}>
+                <Button
+                    aria-label={`view more ` + name}
+                    unpadded
+                    className={styles.button}
+                    onClick={() => onChange('unbounded')}>
                     View more
                 </Button>
             )}
             {constraint === 'bounded' && rowConstraint === 'unbounded' && (
-                <Button aria-label="view less" unpadded className={styles.button} onClick={() => onChange('bounded')}>
+                <Button
+                    aria-label={`view less ` + name}
+                    unpadded
+                    className={styles.button}
+                    onClick={() => onChange('bounded')}>
                     View less
                 </Button>
             )}
