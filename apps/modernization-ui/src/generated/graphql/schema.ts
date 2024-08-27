@@ -1952,6 +1952,11 @@ export type SendingFacility = {
 
 export type Sensitive = Allowed | Restricted;
 
+export type Sort = {
+  direction?: InputMaybe<SortDirection>;
+  property: Scalars['String']['input'];
+};
+
 export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -1986,6 +1991,7 @@ export enum SortField {
 export type SortablePage = {
   pageNumber?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Sort>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
 };

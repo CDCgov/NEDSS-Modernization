@@ -6,9 +6,20 @@ input Page {
   pageNumber: Int!
 }
 
+enum SortDirection {
+  ASC
+  DESC
+}
+
+input Sort {
+  property: String!
+  direction: SortDirection
+}
+
 input SortablePage {
   pageSize: Int
   pageNumber: Int
+  sort: Sort
   sortField: SortField
   sortDirection: SortDirection
 }
