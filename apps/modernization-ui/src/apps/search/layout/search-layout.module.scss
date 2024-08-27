@@ -5,7 +5,7 @@ $search-height: calc(100vh - 74px);
 $navigation-height: 2.75rem;
 $actions-height: 8rem;
 $criteria-width: 320px;
-$content-height: calc($search-height - $navigation-height - 2rem);
+$content-height: calc($search-height - $navigation-height - 3rem);
 
 .search {
     padding: 1rem;
@@ -30,12 +30,13 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         .criteria {
             flex-shrink: 0;
             width: $criteria-width;
-            z-index: 0;
 
-            height: 100%;
+            background-color: colors.$base-white;
+
+            @include borders.bordered('border-right');
 
             .inputs {
-                height: calc(100% - $actions-height);
+                height: calc($content-height - $actions-height);
                 overflow-y: scroll;
                 padding: 0rem;
             }
@@ -54,39 +55,6 @@ $content-height: calc($search-height - $navigation-height - 2rem);
                 }
             }
         }
-        .collapseButton {
-            display: flex;
-            align-items: center;
-            @include borders.bordered('border-left');
-            position: inherit;
-            z-index: 1;
-
-            .control {
-                display: flex;
-                align-items: center;
-                @include borders.rounded();
-                background-color: colors.$base-lighter;
-                width: 1.5rem;
-                height: 3rem;
-                position: absolute;
-
-                top: calc($search-height / 2);
-
-                &.less {
-                    left: $criteria-width;
-                }
-
-                &.more {
-                    left: unset;
-                }
-
-                svg {
-                    display: flex;
-                    align-items: center;
-                    transform: rotate(-90deg);
-                }
-            }
-        }
 
         .results {
             flex-grow: 1;
@@ -95,8 +63,4 @@ $content-height: calc($search-height - $navigation-height - 2rem);
             z-index: 0;
         }
     }
-}
-
-.collapsed {
-    display: none;
 }

@@ -68,6 +68,9 @@
       "curr_process_state_cd": {
         "type": "keyword"
       },
+      "investigator_last_nm": {
+        "type": "keyword"
+      },
       "investigation_status_cd": {
         "type": "keyword"
       },
@@ -75,7 +78,7 @@
         "type": "long"
       },
       "jurisdiction_code_desc_txt": {
-        "type": "text"
+        "type": "keyword"
       },
       "last_change_time": {
         "type": "date",
