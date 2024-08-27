@@ -19,10 +19,9 @@ const CollapsiblePanel = ({ children, id, className, ariaLabel }: Props) => {
             <span className={styles.content} aria-hidden={collapsed}>
                 {children}
             </span>
-
             <button
                 type="button"
-                className={classNames(styles.control)}
+                className={classNames(styles.control, { [styles.collapsed]: collapsed })}
                 aria-label={collapsed ? `Show ${ariaLabel}` : `Hide ${ariaLabel}`}
                 onClick={() => setCollapsed((current) => !current)}>
                 <Icon name={collapsed ? 'expand_more' : 'expand_less'} />

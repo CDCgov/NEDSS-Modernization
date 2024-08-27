@@ -4,51 +4,53 @@
 $control-height: 3rem;
 $control-width: 1.5rem;
 
-.collapsible {
-    position: relative;
-    transition: transform 600ms ease-in-out;
+.control {
+    position: absolute;
+    z-index: 1000;
+    padding: 0;
 
-    .control {
-        position: absolute;
-        z-index: 1000;
-        padding: 0;
+    background-color: colors.$base-lighter;
+    width: $control-width;
+    height: $control-height;
 
-        background-color: colors.$base-lighter;
-        width: $control-width;
-        height: $control-height;
+    @include borders.bordered('border', colors.$base-light);
+    @include borders.rounded();
 
-        @include borders.bordered('border', colors.$base-light);
-        @include borders.rounded();
+    top: calc(50% - #{$control-height});
 
-        top: calc(50% - #{$control-height});
+    right: -($control-width / 2);
 
-        right: -($control-width / 2);
-
-        &:focus {
-            outline: 0;
-        }
-
-        &:focus-visible {
-            outline: 0.25rem solid colors.$focused;
-            outline-offset: 0rem;
-        }
-
-        svg {
-            width: 100%;
-            height: 100%;
-
-            transform: rotate(-90deg);
-        }
+    &:focus {
+        outline: 0;
     }
 
+    &:focus-visible {
+        outline: 0.25rem solid colors.$focused;
+        outline-offset: 0rem;
+    }
+
+    svg {
+        width: 100%;
+        height: 100%;
+
+        transform: rotate(-90deg);
+    }
+}
+
+.collapsible {
+    position: relative;
+    transition-duration: 0.25s;
+    transition-property: transform;
+    transition-timing-function: ease-out;
+
+    // overflow: clip;
+
     &.collapsed {
+        transition-duration: 0.2s;
+        transition-timing-function: ease-in;
         transform: translateX(-100%);
 
-        .control {
-            right: -($control-width / 2);
-        }
-
-        .content * {
+        .content {
             animation: collapsing 600ms forwards;
         }
     }
