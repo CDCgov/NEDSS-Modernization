@@ -1,8 +1,10 @@
 package gov.cdc.nbs.event.search.labreport;
 
+import gov.cdc.nbs.data.pagination.PaginationRequest;
 import gov.cdc.nbs.event.search.LabReportFilter;
 import gov.cdc.nbs.graphql.GraphQLPage;
 import gov.cdc.nbs.patient.search.SearchGraphQLPageableMapper;
+import gov.cdc.nbs.patient.search.SearchPageableMapper;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +15,11 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 class LabReportSearchResultResolver {
-  private final SearchGraphQLPageableMapper mapper;
+  private final SearchPageableMapper mapper;
   private final SearchResolver<LabReportFilter, LabReportSearchResult> resolver;
 
   LabReportSearchResultResolver(
-      final SearchGraphQLPageableMapper mapper,
+      final SearchPageableMapper mapper,
       final SearchResolver<LabReportFilter, LabReportSearchResult> resolver
   ) {
     this.mapper = mapper;
@@ -28,10 +30,10 @@ class LabReportSearchResultResolver {
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-OBSERVATIONLABREPORT')")
   SearchResult<LabReportSearchResult> search(
       @Argument final LabReportFilter filter,
-      @Argument final GraphQLPage page
+      @Argument("page") PaginationRequest paginated
   ) {
 
-    Pageable pageable = mapper.from(page);
+    Pageable pageable = mapper.from(paginated);
 
     return this.resolver.search(
         filter,
