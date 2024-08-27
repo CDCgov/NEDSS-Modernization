@@ -1,7 +1,6 @@
 package gov.cdc.nbs.event.search.investigation;
 
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
-import gov.cdc.nbs.event.investigation.InvestigationMother;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
@@ -21,7 +20,6 @@ public class InvestigationSearchResultVerificationSteps {
   InvestigationSearchResultVerificationSteps(
       final Active<InvestigationIdentifier> investigation,
       final Active<PatientIdentifier> patient,
-      final InvestigationMother mother,
       final Active<ResultActions> response) {
     this.investigation = investigation;
     this.patient = patient;

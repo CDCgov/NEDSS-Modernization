@@ -330,6 +330,28 @@ Feature: Investigation Search Sorting
     And I want search results sorted by "investigationId" "desc"
     When I search for investigations
 
+  Scenario: I can find Investigations ordered by the investigator ascending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigator" "asc"
+    When I search for investigations
+
+  Scenario: I can find Investigations ordered by the investigator descending
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "investigator" "desc"
+    When I search for investigations
+
   Scenario: I can find Investigations ordered by the jurisdiction ascending
     Given I have a patient
     And the patient is a subject of an investigation
