@@ -28,7 +28,12 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
     }, []);
 
     return (
-        <ButtonActionMenu className={styles.option} outline icon={<Icon.SortArrow />} disabled={disabled}>
+        <ButtonActionMenu
+            className={styles.option}
+            ariaLabel="Sort by list"
+            outline
+            icon={<Icon.SortArrow />}
+            disabled={disabled}>
             <>
                 <Button
                     type="button"
