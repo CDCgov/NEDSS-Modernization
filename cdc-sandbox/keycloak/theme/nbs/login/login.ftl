@@ -67,7 +67,7 @@
                             </#if>
                             </div>
                             <div class="${properties.kcFormOptionsWrapperClass!}">
-                            <a class="reset-password" target="_blank" href="mailto:cdc@nbs.gov?subject=Reset Password&body=Reset your password">
+                            <a class="reset-password" target="_blank" href="mailto:nbs@cdc.gov?subject=Reset Password&body=Reset your password">
                                 Reset password
                             </a>
                                 <#if realm.resetPasswordAllowed>
