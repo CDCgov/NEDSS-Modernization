@@ -1,7 +1,7 @@
 Feature: Patient Search by Basic Info
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
 
   Scenario: Basic Info - Search by Last Name
     When I search by last name as "Althorp"
@@ -48,7 +48,7 @@ Feature: Patient Search by Basic Info
   
   Scenario: Search with Invalid Data
     When I search by dob as "76/5"
-    Then I should see "Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon."
+    Then I should see error message "Please enter a valid date (mm/dd/yyyy) using only numeric characters (0-9) or choose a date from the calendar by clicking on the calendar icon."
 
   Scenario: Clear Search Criteria
     When I fill last name as "Zollie"

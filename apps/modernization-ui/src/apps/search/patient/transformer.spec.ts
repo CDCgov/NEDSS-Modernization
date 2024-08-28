@@ -1,6 +1,7 @@
 import { RecordStatus } from 'generated/graphql/schema';
 import { PatientCriteriaEntry } from './criteria';
 import { transform } from './transformer';
+import { externalizeDate } from 'date';
 
 describe('when the PatientCriteria contains Basic Information criteria', () => {
     it('should transform with status', () => {
@@ -15,9 +16,9 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         );
     });
 
-    it('should transform', () => {
+    it('should disable soundex when not including similar', () => {
         const input: PatientCriteriaEntry = {
-            disableSoundex: true,
+            includeSimilar: false,
             status: []
         };
 
@@ -25,6 +26,18 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         expect(actual).toEqual(expect.objectContaining({ disableSoundex: true }));
     });
+
+    it('should enable soundex when including similar', () => {
+      const input: PatientCriteriaEntry = {
+          includeSimilar: true,
+          status: []
+      };
+
+      const actual = transform(input);
+
+      expect(actual).toEqual(expect.objectContaining({ disableSoundex: false }));
+  });
+
 
     it('should transform with last name', () => {
         const input: PatientCriteriaEntry = {
@@ -57,6 +70,17 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         const actual = transform(input);
 
         expect(actual).toEqual(expect.objectContaining({ gender: 'F' }));
+    });
+
+    it('should transform with DOB', () => {
+        const input: PatientCriteriaEntry = {
+            dateOfBirth: '02/05/1995',
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ dateOfBirth: externalizeDate('02/05/1995') }));
     });
 
     it('should transform with patient id', () => {

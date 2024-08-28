@@ -235,7 +235,7 @@ export const BusinessRulesLibraryTable = ({
                         Add new business rule
                     </Button>
                 ) : (
-                    <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`}>
+                    <NavLinkButton className="test-btn" to={`${redirectRuleURL}/add`} dataTestId="addBusinessRuleBtn">
                         Add new business rule
                     </NavLinkButton>
                 )}

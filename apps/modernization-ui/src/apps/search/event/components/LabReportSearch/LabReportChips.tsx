@@ -1,5 +1,5 @@
 import { LabReportFilter } from 'generated/graphql/schema';
-import { SearchCriteria, SearchCriteriaContext } from 'providers/SearchCriteriaContext';
+import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import Chip from 'apps/search/advancedSearch/components/chips/Chip';
 
 type LabReportChipsProps = {
@@ -7,10 +7,6 @@ type LabReportChipsProps = {
     onChange: (labReportFilter: LabReportFilter) => void;
 };
 export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
-    function lookupUserName(searchCriteria: SearchCriteria, createdBy: string): string {
-        const user = searchCriteria.userResults.find((u) => u.nedssEntryId === createdBy);
-        return user ? `${user.userLastNm}, ${user.userFirstNm}` : '';
-    }
     return (
         <SearchCriteriaContext.Consumer>
             {({ searchCriteria }) => (
@@ -24,19 +20,6 @@ export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
                                 onChange({
                                     ...filter,
                                     programAreas: filter.programAreas?.filter((p) => p !== programArea) ?? []
-                                })
-                            }
-                        />
-                    ))}
-                    {filter.jurisdictions?.map((jurisdiction, index) => (
-                        <Chip
-                            name="JURISDICTION"
-                            value={searchCriteria.jurisdictions.find((j) => j.id === jurisdiction)?.codeDescTxt ?? ''}
-                            key={`jurisdiction-${index}`}
-                            handleClose={() =>
-                                onChange({
-                                    ...filter,
-                                    jurisdictions: filter.jurisdictions?.filter((j) => j !== jurisdiction) ?? []
                                 })
                             }
                         />
@@ -135,20 +118,6 @@ export const LabReportChips = ({ filter, onChange }: LabReportChipsProps) => {
                             }
                         />
                     ))}
-                    {filter.createdBy ? (
-                        <Chip
-                            name="CREATED BY"
-                            value={lookupUserName(searchCriteria, filter.createdBy)}
-                            handleClose={() => onChange({ ...filter, createdBy: undefined })}
-                        />
-                    ) : null}
-                    {filter.lastUpdatedBy ? (
-                        <Chip
-                            name="LAST UPDATED BY"
-                            value={lookupUserName(searchCriteria, filter.lastUpdatedBy)}
-                            handleClose={() => onChange({ ...filter, lastUpdatedBy: undefined })}
-                        />
-                    ) : null}
                     {filter.providerSearch?.providerType ? (
                         <Chip
                             name="ENTITY TYPE"

@@ -1,4 +1,14 @@
-import { Selectable } from 'options';
+import { Selectable, asSelectable } from 'options';
+
+const ACTIVE = asSelectable('ACTIVE', 'Active');
+
+const statusOptions: Selectable[] = [
+    ACTIVE,
+    asSelectable('LOG_DEL', 'Deleted'),
+    asSelectable('SUPERCEDED', 'Superseded')
+];
+
+export { statusOptions };
 
 type BasicInformation = {
     lastName?: string;
@@ -7,7 +17,7 @@ type BasicInformation = {
     gender?: Selectable;
     id?: string;
     status: Selectable[];
-    disableSoundex?: boolean;
+    includeSimilar?: boolean;
 };
 
 type Address = {
@@ -34,10 +44,10 @@ type Identification = {
 
 type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification;
 
-export type { PatientCriteriaEntry };
+export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
 
 const initial: PatientCriteriaEntry = {
-    status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }]
+    status: [ACTIVE]
 };
 
 export { initial };

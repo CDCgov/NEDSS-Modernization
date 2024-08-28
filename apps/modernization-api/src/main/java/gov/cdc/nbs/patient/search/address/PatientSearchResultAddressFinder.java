@@ -19,7 +19,8 @@ class PatientSearchResultAddressFinder {
           [address].city_desc_txt         as [city],
           [state].[state_nm]              as [state],
           [address].zip_cd                as [zipcode],
-          [country].code_short_desc_txt   as [country]
+          [country].code_short_desc_txt   as [country],
+          [county].code_desc_txt          as [county]
       from Entity_locator_participation [locators]
 
           join Postal_locator [address] on
@@ -29,7 +30,9 @@ class PatientSearchResultAddressFinder {
           join NBS_SRTE..Code_value_general [use] on
                   [use].code_set_nm = 'EL_USE_PST_PAT'
               and [use].code = [locators].[use_cd]
-        
+
+          left join NBS_SRTE..State_county_code_value [county] on [county].code = [address].cnty_cd
+
           left join NBS_SRTE..State_code [state] on
                   [state].state_cd = [address].state_cd
 
@@ -48,14 +51,13 @@ class PatientSearchResultAddressFinder {
 
   PatientSearchResultAddressFinder(final JdbcTemplate template) {
     this.template = template;
-    this.mapper = new AddressRowMapper(        new AddressRowMapper.Columns()    );
+    this.mapper = new AddressRowMapper(new AddressRowMapper.Columns());
   }
 
   Collection<Address> find(final long patient) {
     return this.template.query(
         QUERY,
         statement -> statement.setLong(PATIENT_PARAMETER, patient),
-        this.mapper
-    );
+        this.mapper);
   }
 }

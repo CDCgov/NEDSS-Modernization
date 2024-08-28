@@ -1,4 +1,13 @@
-import { Features, Properties, Configuration, Settings } from './configuration';
+import { Features, Properties, Configuration, Settings, Search } from './configuration';
+
+const search: Search = {
+    view: {
+        table: {
+            enabled: false
+        },
+        enabled: false
+    }
+};
 
 const defaultFeatures: Features = {
     address: {
@@ -18,6 +27,14 @@ const defaultFeatures: Features = {
                 edit: {
                     enabled: false
                 }
+            }
+        }
+    },
+    search,
+    patient: {
+        add: {
+            extended: {
+                enabled: false
             }
         }
     }

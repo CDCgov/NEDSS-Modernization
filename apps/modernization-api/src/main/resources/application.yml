@@ -1,5 +1,5 @@
 nbs:
-  max-page-size: 50
+  max-page-size: 25
   security:
     tokenSecret: ${TOKEN_SECRET}
     tokenIssuer: gov.cdc.nbs
@@ -23,8 +23,7 @@ nbs:
     server: localhost
     port: 1433
   search:
-    advanced-search-path: /advanced-search
-    max-page-size: 25
+    max-page-size: 100
     patient:
       index:
         name: person

@@ -1,4 +1,4 @@
-import { Selectable } from 'options';
+import { Selectable, pregnancyStatusOptions } from 'options';
 import { asSelectable } from 'options/selectable';
 
 type EventDate = {
@@ -51,7 +51,7 @@ const NEW_STATUS = asSelectable('NEW', 'New');
 const eventStatusTypes: Selectable[] = [NEW_STATUS, asSelectable('UPDATE', 'Update')];
 
 const identificationTypes: Selectable[] = [
-    asSelectable('ACCESSION_NUMBER', 'Assecsion Number'),
+    asSelectable('ACCESSION_NUMBER', 'Accession Number'),
     asSelectable('LAB_ID', 'Lab Id')
 ];
 
@@ -88,5 +88,6 @@ export {
     entryMethodTypes,
     eventStatusTypes,
     processingStatusTypes,
+    pregnancyStatusOptions as pregnancyStatus,
     initial
 };

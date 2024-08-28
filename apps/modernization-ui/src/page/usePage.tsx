@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useReducer } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 
@@ -20,6 +20,7 @@ type Action =
     | { type: 'ready'; total: number; page: number }
     | { type: 'go-to'; page: number }
     | { type: 'reload' }
+    | { type: 'reset' }
     | { type: 'resize'; size: number };
 
 const pageReducer = (state: PageState, action: Action): PageState => {
@@ -36,10 +37,18 @@ const pageReducer = (state: PageState, action: Action): PageState => {
                 ? { ...state, status: Status.Requested, pageSize: action.size, current: 1 }
                 : state;
         }
+        case 'reset': {
+            return initialize(state.pageSize, 1);
+        }
     }
 };
 
-const initialize = (size: number): PageState => ({ status: Status.Ready, pageSize: size, total: 0, current: 0 });
+const initialize = (size: number, current = 0): PageState => ({
+    status: Status.Ready,
+    pageSize: size,
+    total: 0,
+    current
+});
 
 type PageContextState = {
     page: PageState;
@@ -48,6 +57,7 @@ type PageContextState = {
     request: (page: number) => void;
     ready: (total: number, page: number) => void;
     resize: (size: number) => void;
+    reset: () => void;
 };
 
 const PageContext = createContext<PageContextState | undefined>(undefined);
@@ -75,25 +85,29 @@ const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, childr
         }
     }, [appendToUrl, requested]);
 
-    const requestFromUrl = (next: number) => {
-        if (next != page.current) {
-            // saves the current page to a url param so that it persists
-            // on page refresh or navigating away
-            setSearchParams((current) => {
-                current.set(PAGE_PARAMETER, next.toString());
-                return current;
-            });
-        }
-    };
+    const requestFromUrl = useCallback(
+        (next: number) => {
+            if (next != page.current) {
+                // saves the current page to a url param so that it persists
+                // on page refresh or navigating away
+                setSearchParams((current) => {
+                    current.set(PAGE_PARAMETER, next.toString());
+                    return current;
+                });
+            }
+        },
+        [page.current, setSearchParams]
+    );
 
-    const requestFromDispatch = (page: number) => dispatch({ type: 'go-to', page });
-    const reload = () => dispatch({ type: 'reload' });
+    const requestFromDispatch = useCallback((page: number) => dispatch({ type: 'go-to', page }), [dispatch]);
+    const reload = useCallback(() => dispatch({ type: 'reload' }), [dispatch]);
     const request = appendToUrl ? requestFromUrl : requestFromDispatch;
     const firstPage = () => request(1);
-    const ready = (total: number, page: number) => dispatch({ type: 'ready', total, page });
-    const resize = (size: number) => dispatch({ type: 'resize', size });
+    const ready = useCallback((total: number, page: number) => dispatch({ type: 'ready', total, page }), [dispatch]);
+    const resize = useCallback((size: number) => dispatch({ type: 'resize', size }), [dispatch]);
+    const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
 
-    const value = { page, firstPage, reload, request, ready, resize };
+    const value = { page, firstPage, reload, request, ready, resize, reset };
 
     return <PageContext.Provider value={value}>{children}</PageContext.Provider>;
 };

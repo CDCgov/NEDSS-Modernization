@@ -5,7 +5,7 @@ input IdentificationCriteria {
 }
 
 input PersonFilter {
-  id: ID
+  id: String
   lastName: String
   firstName: String
   race: String
@@ -69,6 +69,7 @@ type PatientSearchResultAddress {
   address: String
   address2: String
   city: String
+  county: String
   state: String
   zipcode: String
 }
@@ -91,11 +92,15 @@ type PatientSearchResult {
 type PatientSearchResults {
   content: [PatientSearchResult!]!
   total: Int!
+  page: Int!
+  size: Int!
+
 }
 
 type Query {
   findPatientsByFilter(
     filter: PersonFilter!
     page: SortablePage
+    share: String
   ): PatientSearchResults!
 }

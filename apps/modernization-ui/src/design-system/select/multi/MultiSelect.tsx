@@ -1,7 +1,11 @@
-import React, { FocusEventHandler, useState } from 'react';
-import Select, { MultiValue, components } from 'react-select';
-import { EntryWrapper, Orientation } from 'components/Entry';
+import { FocusEventHandler, useState } from 'react';
+import Select, { MultiValue } from 'react-select';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, asValue as asSelectableValue } from 'options';
+import classNames from 'classnames';
+
+import { styles, theme } from 'design-system/select/multi';
+import { CheckboxOption } from './CheckboxOption';
 
 type MultiSelectProps = {
     id: string;
@@ -14,23 +18,14 @@ type MultiSelectProps = {
     onBlur?: FocusEventHandler<HTMLInputElement>;
     onChange?: (value: Selectable[]) => void;
     orientation?: Orientation;
+    sizing?: Sizing;
     error?: string;
     required?: boolean;
     asValue?: (selectable: Selectable) => string;
     asDisplay?: (selectable: Selectable) => string;
 };
 
-const CheckedOption = (props: any) => {
-    return (
-        <>
-            <components.Option {...props}>
-                <input type="checkbox" checked={props.isSelected} readOnly /> <label>{props.label}</label>
-            </components.Option>
-        </>
-    );
-};
-
-export const MultiSelect: React.FC<MultiSelectProps> = ({
+export const MultiSelect = ({
     id,
     name,
     label,
@@ -38,23 +33,20 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     value = [],
     onChange,
     onBlur,
-    orientation = 'vertical',
+    orientation,
+    sizing,
     error,
     required,
     placeholder = '- Select -',
     disabled = false,
     asValue = asSelectableValue,
     asDisplay = (selectable: Selectable) => selectable.name
-}) => {
+}: MultiSelectProps) => {
     const [searchText, setSearchText] = useState('');
-    const [selected, setSelected] = useState<Selectable[]>(value);
 
     const handleOnChange = (newValue: MultiValue<Selectable>) => {
-        const nextSelection = newValue as Selectable[];
-        setSelected(nextSelection);
-
         if (onChange) {
-            onChange(nextSelection);
+            onChange(newValue as Selectable[]);
         }
     };
 
@@ -65,29 +57,38 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     };
 
     return (
-        <div>
-            <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
-                <Select<Selectable, true>
-                    isMulti
-                    id={id}
-                    name={name}
-                    options={options}
-                    value={selected}
-                    onChange={handleOnChange}
-                    onBlur={onBlur}
-                    placeholder={placeholder}
-                    isDisabled={disabled}
-                    classNamePrefix="multi-select"
-                    hideSelectedOptions={false}
-                    closeMenuOnSelect={false}
-                    closeMenuOnScroll={false}
-                    inputValue={searchText}
-                    onInputChange={handleInputChange}
-                    getOptionValue={asValue}
-                    getOptionLabel={asDisplay}
-                    components={{ Option: CheckedOption }}
-                />
-            </EntryWrapper>
-        </div>
+        <EntryWrapper
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={id}
+            required={required}
+            error={error}>
+            <Select<Selectable, true>
+                theme={theme}
+                styles={styles}
+                isMulti
+                id={id}
+                name={name}
+                options={options}
+                value={value}
+                onChange={handleOnChange}
+                onBlur={onBlur}
+                placeholder={placeholder}
+                isDisabled={disabled}
+                className={classNames('multi-select', { 'multi-select__compact': sizing === 'compact' })}
+                classNamePrefix="multi-select"
+                hideSelectedOptions={false}
+                closeMenuOnSelect={false}
+                closeMenuOnScroll={false}
+                inputValue={searchText}
+                onInputChange={handleInputChange}
+                getOptionValue={asValue}
+                getOptionLabel={asDisplay}
+                components={{ Option: CheckboxOption }}
+            />
+        </EntryWrapper>
     );
 };
+
+export type { MultiSelectProps };

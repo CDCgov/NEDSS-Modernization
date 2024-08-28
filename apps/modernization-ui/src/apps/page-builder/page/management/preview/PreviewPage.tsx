@@ -132,7 +132,10 @@ const PreviewPageContent = () => {
             <PageManagementLayout name={page.name} mode={page.status}>
                 <PageHeader page={page} tabs={visibleTabs}>
                     <PageManagementMenu>
-                        <NavLinkButton to={`/page-builder/pages/${page.id}/business-rules`} type="outline">
+                        <NavLinkButton
+                            to={`/page-builder/pages/${page.id}/business-rules`}
+                            type="outline"
+                            dataTestId="businessRulesBtn">
                             Business rules
                         </NavLinkButton>
                         <ModalToggleButton modalRef={saveTemplateRef} outline type="button">
@@ -186,7 +189,11 @@ const PreviewPageContent = () => {
                                     Create new draft
                                 </Button>
                             ) : (
-                                <ModalToggleButton modalRef={publishDraftRef} type="button">
+                                <ModalToggleButton
+                                    modalRef={publishDraftRef}
+                                    type="button"
+                                    data-testid="publishBtn"
+                                    className="publishBtn">
                                     Publish
                                 </ModalToggleButton>
                             )}

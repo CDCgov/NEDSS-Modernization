@@ -1,33 +1,29 @@
 package gov.cdc.nbs.patient.profile.address.change;
 
-import gov.cdc.nbs.entity.odse.EntityLocatorParticipation;
-import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientNotFoundException;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@Transactional
 public class PatientAddressChangeService {
 
-    private final IdGeneratorService idGeneratorService;
-    private final PatientProfileService patientProfileService;
+  private final IdGeneratorService generator;
+  private final PatientProfileService service;
 
-    public PatientAddressChangeService(
-            final IdGeneratorService idGeneratorService,
-            final PatientProfileService patientProfileService
-    ) {
-        this.idGeneratorService = idGeneratorService;
-        this.patientProfileService = patientProfileService;
-    }
+  PatientAddressChangeService(
+      final IdGeneratorService generator,
+      final PatientProfileService service) {
+    this.generator = generator;
+    this.service = service;
+  }
 
-    public PatientAddressAdded add(final RequestContext context, final NewPatientAddressInput input) {
-        Person patient = patientProfileService.findPatientById(input.patient());
-
-        EntityLocatorParticipation added = patient.add(
+  public PatientAddressAdded add(final RequestContext context, final NewPatientAddressInput input) {
+    return service.with(
+        input.patient(),
+        found -> found.add(
             new PatientCommand.AddAddress(
                 input.patient(),
                 generateNbsId(),
@@ -44,52 +40,46 @@ public class PatientAddressChangeService {
                 input.censusTract(),
                 input.comment(),
                 context.requestedBy(),
-                context.requestedAt()
-            )
-        );
+                context.requestedAt())))
+        .map(added -> new PatientAddressAdded(input.patient(), added.getId().getLocatorUid()))
+        .orElseThrow(() -> new PatientNotFoundException(input.patient()));
+  }
 
-        return new PatientAddressAdded(input.patient(), added.getId().getLocatorUid());
-    }
+  private Long generateNbsId() {
+    var generatedId = generator.getNextValidId(IdGeneratorService.EntityType.NBS);
+    return generatedId.getId();
+  }
 
-    private Long generateNbsId() {
-        var generatedId = idGeneratorService.getNextValidId(IdGeneratorService.EntityType.NBS);
-        return generatedId.getId();
-    }
+  void update(final RequestContext context, final UpdatePatientAddressInput input) {
 
-    public void update(final RequestContext context, final UpdatePatientAddressInput input) {
+    this.service.using(input.patient(), found -> found.update(
+        new PatientCommand.UpdateAddress(
+            input.patient(),
+            input.id(),
+            input.asOf(),
+            input.type(),
+            input.use(),
+            input.address1(),
+            input.address2(),
+            input.city(),
+            input.state(),
+            input.zipcode(),
+            input.county(),
+            input.country(),
+            input.censusTract(),
+            input.comment(),
+            context.requestedBy(),
+            context.requestedAt())));
 
-        this.patientProfileService.using(input.patient(), found -> found.update(
-            new PatientCommand.UpdateAddress(
-                input.patient(),
-                input.id(),
-                input.asOf(),
-                input.type(),
-                input.use(),
-                input.address1(),
-                input.address2(),
-                input.city(),
-                input.state(),
-                input.zipcode(),
-                input.county(),
-                input.country(),
-                input.censusTract(),
-                input.comment(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        ));
+  }
 
-    }
+  void delete(final RequestContext context, final DeletePatientAddressInput input) {
 
-    public void delete(final RequestContext context, final DeletePatientAddressInput input) {
-
-        this.patientProfileService.using(input.patient(), found -> found.delete(
-            new PatientCommand.DeleteAddress(
-                input.patient(),
-                input.id(),
-                context.requestedBy(),
-                context.requestedAt()
-            )
-        ));
-    }
+    this.service.using(input.patient(), found -> found.delete(
+        new PatientCommand.DeleteAddress(
+            input.patient(),
+            input.id(),
+            context.requestedBy(),
+            context.requestedAt())));
+  }
 }

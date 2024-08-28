@@ -36,12 +36,16 @@ class AddPatientPage {
 
     cy.get(".add-patient-button").click();
 
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
+  }
+
+  clearInformationAsOfDate() {
+    cy.get('#asOf').clear();
   }
 
   addPatientBlank() {
     cy.get('button[class="usa-button add-patient-button"]').click();
-    cy.get(".warning").should("be.visible");
+    cy.get('#form-error').should('exist').and('have.text', 'You have some invalid inputs. Please correct the invalid inputs before moving forward.');
   }
 
   addPatientSingleDetail() {
@@ -50,7 +54,7 @@ class AddPatientPage {
     //   .type(this.getCurrentDate());
     cy.get(".add-patient-button").click();
     cy.wait(500)
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
     cy.wait(500)
   }
 
@@ -83,7 +87,7 @@ class AddPatientPage {
     this.enterPaxName();
 
     cy.get(".add-patient-button").click();
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
   }
 
   addPatientAndDelete() {
@@ -109,7 +113,7 @@ class AddPatientPage {
     cy.wait(1000);
     cy.get(".add-patient-button").click();
 
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
   }
 
   addPatientAddress() {
@@ -131,11 +135,23 @@ class AddPatientPage {
 
     cy.get(".add-patient-button").click();
 
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
   }
 
   viewPatientProfile() {
-    cy.get("button[class*=successModal]").click();
+    cy.get('h1.font-sans-xl.text-medium')
+    .should('be.visible')
+    .and('contain.text', 'Patient profile');
+  }
+
+  viewPatientID(patientIDString) {
+    cy.get('.common-card.patient-summary .border-bottom span')
+    .contains(patientIDString)
+    .should('be.visible');
+  }
+
+  clickViewPatientProfile() {
+    cy.get("button").contains("View patient").click();
   }
 
   addAnotherPatient() {
@@ -160,7 +176,7 @@ class AddPatientPage {
 
     cy.get(".add-patient-button").click();
 
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
   }
 
   addPatientselectRace() {
@@ -182,7 +198,7 @@ class AddPatientPage {
 
     cy.get(".add-patient-button").click();
 
-    cy.get(".usa-modal__main button").eq(1).click();
+    cy.get(".usa-modal__main button").eq(2).click();
   }
 
   addPatientSelectTwoRace() {

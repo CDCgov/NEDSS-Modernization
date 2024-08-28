@@ -18,8 +18,7 @@ public class PatientSteps {
 
   PatientSteps(
       final Active<PatientIdentifier> patient,
-      final PatientMother mother
-  ) {
+      final PatientMother mother) {
     this.patient = patient;
     this.mother = mother;
   }
@@ -73,6 +72,14 @@ public class PatientSteps {
           identifier,
           LocalDate.parse(value));
 
+      case "sex" -> mother.withGender(
+          identifier,
+          value);
+
+      case "id" -> mother.withId(identifier, Long.parseLong(value));
+
+      case "local id" -> mother.withLocalId(identifier, value);
+
       case "phone number" -> mother.withPhone(
           identifier,
           value);
@@ -98,13 +105,47 @@ public class PatientSteps {
           value,
           null,
           null,
+          null,
           null);
+
+      case "zip" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          null,
+          null,
+          value);
 
       case "city" -> mother.withAddress(
           identifier,
           null,
           value,
           null,
+          null,
+          null);
+
+      case "county" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          value,
+          null,
+          null);
+
+      case "country" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          null,
+          null,
+          null);
+
+      case "state" -> mother.withAddress(
+          identifier,
+          null,
+          null,
+          null,
+          value,
           null);
 
       default -> throw new IllegalStateException("Unexpected patient demographic data: " + field + ":" + value);
@@ -181,5 +222,10 @@ public class PatientSteps {
   @Given("the patient has the ethnicity {ethnicity}, specifically {ethnicityDetail}")
   public void the_patient_has_the_ethnicity_specifically(final String ethnicity, final String detail) {
     patient.maybeActive().ifPresent(current -> mother.withSpecificEthnicity(current, ethnicity, detail));
+  }
+
+  @Given("the patient is associated with state HIV case {string}")
+  public void the_patient_is_associated_with_state_HIV_case(final String value) {
+    patient.maybeActive().ifPresent(current -> mother.withStateHIVCase(current, value));
   }
 }

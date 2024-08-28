@@ -1,0 +1,12 @@
+@use 'styles/colors';
+
+.overlay {
+    --modal-min-width: 14.3125rem;
+}
+
+.gear {
+    fill: currentColor;
+
+    width: 1.75rem;
+    height: 1.75rem;
+}

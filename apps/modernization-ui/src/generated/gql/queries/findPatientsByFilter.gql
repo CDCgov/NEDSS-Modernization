@@ -1,5 +1,5 @@
-query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
-    findPatientsByFilter(filter: $filter, page: $page){
+query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: String){
+    findPatientsByFilter(filter: $filter, page: $page, share: $share){
         content{
             patient
             birthday
@@ -28,6 +28,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
                 address
                 address2
                 city
+                county
                 state
                 zipcode
             }
@@ -35,5 +36,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage){
             emails
         }
         total
+        page
+        size
     }
 }

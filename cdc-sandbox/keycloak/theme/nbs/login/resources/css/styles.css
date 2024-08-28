@@ -113,3 +113,18 @@ a {
   font-weight: 700;
   font-size: 2rem;
 }
+
+.reset-password {
+  display: block;
+}
+
+.usa-banner__content {
+  display: none;
+}
+.usa-banner__content.is-visible {
+  display: block;
+}
+.usa-banner__inner,
+.usa-banner__content {
+  max-width: 100%;
+}

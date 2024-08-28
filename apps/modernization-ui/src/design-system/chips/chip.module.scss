@@ -1,0 +1,18 @@
+@use 'styles/colors';
+
+.chip-container {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+    background-color: colors.$primary-lighter;
+    color: colors.$primary-dark;
+    border-radius: 2px;
+
+    .name {
+        text-transform: uppercase;
+    }
+
+    .closeIcon {
+        cursor: pointer;
+        margin-left: 0.5rem;
+    }
+}

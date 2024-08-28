@@ -1,0 +1,93 @@
+import { Controller, useFormContext } from 'react-hook-form';
+import { Input } from 'components/FormInputs/Input';
+import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchCriteriaContext';
+import { SingleSelect } from 'design-system/select';
+import { SearchCriteria } from 'apps/search/criteria';
+import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+
+export const Address = () => {
+    const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+    return (
+        <SearchCriteriaProvider>
+            <SearchCriteria>
+                <Controller
+                    control={control}
+                    name="address"
+                    render={({ field: { onChange, value, name } }) => (
+                        <Input
+                            onChange={onChange}
+                            type="text"
+                            label="Street address"
+                            defaultValue={value}
+                            htmlFor={name}
+                            id={name}
+                            sizing="compact"
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name="city"
+                    render={({ field: { onChange, value, name } }) => (
+                        <Input
+                            onChange={onChange}
+                            defaultValue={value}
+                            type="text"
+                            label="City"
+                            htmlFor={name}
+                            id={name}
+                            sizing="compact"
+                        />
+                    )}
+                />
+                <SearchCriteriaContext.Consumer>
+                    {({ searchCriteria }) => (
+                        <Controller
+                            control={control}
+                            name="state"
+                            render={({ field: { onChange, value, name } }) => (
+                                <SingleSelect
+                                    value={value}
+                                    onChange={onChange}
+                                    label="State"
+                                    id={name}
+                                    sizing="compact"
+                                    options={searchCriteria.states.map((state) => ({
+                                        name: state.name,
+                                        label: state.name,
+                                        value: state.value
+                                    }))}
+                                />
+                            )}
+                        />
+                    )}
+                </SearchCriteriaContext.Consumer>
+                <Controller
+                    control={control}
+                    name="zip"
+                    rules={{
+                        pattern: {
+                            value: /^\d{1,5}(?:[-\s]\d{1,4})?$/,
+                            message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                        }
+                    }}
+                    render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                        <Input
+                            sizing="compact"
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            defaultValue={value?.toString()}
+                            type="text"
+                            label="Zip code"
+                            htmlFor={name}
+                            id={name}
+                            mask="_____-____"
+                            pattern="^\d{1,5}(?:[-\s]\d{1,4})?$"
+                            error={error?.message}
+                        />
+                    )}
+                />
+            </SearchCriteria>
+        </SearchCriteriaProvider>
+    );
+};

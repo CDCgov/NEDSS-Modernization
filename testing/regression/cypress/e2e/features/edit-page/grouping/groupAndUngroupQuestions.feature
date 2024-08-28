@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify grouping and ungrouping questions here.
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
     When User navigates to Edit page and views Edit page for Grouping
 
   Scenario: Edit Page - Ungroup questions - View after clicking

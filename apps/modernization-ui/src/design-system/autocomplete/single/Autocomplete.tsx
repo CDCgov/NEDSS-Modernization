@@ -1,11 +1,10 @@
 import { KeyboardEvent as ReactKeyboardEvent, useRef, useState, useEffect, ReactNode } from 'react';
-import { Suggestions } from 'suggestion/Suggestions';
-import { Selectable } from 'options/selectable';
 import { TextInput } from '@trussworks/react-uswds';
 import classNames from 'classnames';
-import 'components/FormInputs/Input.scss';
-import { EntryWrapper, Orientation } from 'components/Entry';
+import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { Selectable } from 'options/selectable';
 import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
+import { Suggestions } from 'suggestion/Suggestions';
 
 const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
     return <>{suggestion.label}</>;
@@ -17,9 +16,10 @@ type AutocompleteSingleProps = {
     value?: Selectable;
     onChange?: (value?: Selectable) => void;
     orientation?: Orientation;
+    sizing?: Sizing;
     error?: string;
     required?: boolean;
-    onBlur: any;
+    onBlur?: any;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
 const Autocomplete = ({
@@ -28,7 +28,8 @@ const Autocomplete = ({
     placeholder,
     value,
     onChange,
-    orientation = 'vertical',
+    orientation,
+    sizing,
     error,
     required,
     onBlur,
@@ -37,7 +38,8 @@ const Autocomplete = ({
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [entered, setEntered] = useState(value?.name);
+    // setting to empty string prevents error: A component is changing an uncontrolled input to be controlled
+    const [entered, setEntered] = useState(value?.name ?? '');
 
     const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });
 
@@ -72,6 +74,10 @@ const Autocomplete = ({
         }
     };
 
+    useEffect(() => {
+        !value && setEntered('');
+    }, [value]);
+
     const handleCancel = () => {
         reset();
         inputRef?.current?.focus();
@@ -79,11 +85,18 @@ const Autocomplete = ({
 
     return (
         <div className={classNames('input', { 'input--error': error })}>
-            <EntryWrapper orientation={orientation} label={label} htmlFor={id} required={required} error={error}>
+            <EntryWrapper
+                orientation={orientation}
+                sizing={sizing}
+                label={label}
+                htmlFor={id}
+                required={required}
+                error={error}>
                 <TextInput
                     inputRef={inputRef}
                     className="usa-input"
                     id={id}
+                    data-testid={id}
                     validationStatus={error ? 'error' : undefined}
                     aria-describedby={error ? `${error}-message` : undefined}
                     inputMode="text"

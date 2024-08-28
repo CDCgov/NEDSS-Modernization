@@ -9,9 +9,10 @@ export type AlertBannerProps = {
     onClose?: () => void;
     expiration?: number;
     noIcon?: boolean;
+    iconSize?: 3 | 4 | 5 | 6 | 7 | 8 | 9;
 };
 
-export const AlertBanner = ({ type, children, onClose, expiration, noIcon }: AlertBannerProps) => {
+export const AlertBanner = ({ type, children, onClose, expiration, noIcon, iconSize }: AlertBannerProps) => {
     const [hidden, setHidden] = useState(false);
 
     useEffect(() => {
@@ -30,7 +31,7 @@ export const AlertBanner = ({ type, children, onClose, expiration, noIcon }: Ale
                     {type === 'success' && <Icon.CheckCircle size={3} />}
                     {type === 'warning' && <Icon.Warning size={3} />}
                     {type === 'prompt' && <Icon.Info size={3} />}
-                    {type === 'info' && <Icon.Info size={3} />}
+                    {type === 'info' && <Icon.Info size={iconSize} />}
                     {type === 'error' && <Icon.Error size={5} />}
                 </div>
             )}

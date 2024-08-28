@@ -1,37 +1,66 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Investigation } from 'generated/graphql/schema';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useConceptOptions } from 'options/concepts';
+import { findByValue } from 'options';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
+import { Investigation } from 'generated/graphql/schema';
 import { InvestigationSearchResultListItem } from './result/list';
+import { InvestigationSearchForm } from './InvestigationSearchForm';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { useInvestigationSearch } from './useInvestigationSearch';
+import { InvestigationSearchResultsTable, preferences } from './result/table';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
+import { removeTerm } from '../terms';
 
 const InvestigationSearch = () => {
-    const { handleSubmit, reset: resetForm } = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
+    const form = useForm<InvestigationFilterEntry, Partial<InvestigationFilterEntry>>({
         mode: 'onBlur'
     });
 
-    const { status, search, reset, results } = useInvestigationSearch();
+    const { enabled, results, search, clear } = useInvestigationSearch({ form });
 
-    useEffect(() => {
-        if (status === 'waiting') {
-            resetForm();
+    const { terms } = useSearchResultDisplay();
+
+    const handleRemoveTerm = removeTerm(form, () => {
+        if (terms.length === 1) {
+            clear();
+        } else {
+            search();
         }
-    }, [resetForm, status]);
+    });
+
+    const { options: notificationStatus } = useConceptOptions('REC_STAT', { lazy: false });
+    const notificationStatusResolver = findByValue(notificationStatus);
 
     return (
-        <SearchLayout
-            criteria={() => <div>criteria</div>}
-            resultsAsList={() => (
-                <SearchResultList<Investigation>
-                    results={results?.content ?? []}
-                    render={(result) => <InvestigationSearchResultListItem result={result} />}
+        <ColumnPreferenceProvider id="search.investigations.preferences.columns" defaults={preferences}>
+            <FormProvider {...form}>
+                <SearchLayout
+                    onRemoveTerm={handleRemoveTerm}
+                    criteria={() => <InvestigationSearchForm />}
+                    resultsAsList={() => (
+                        <SearchResultList<Investigation>
+                            results={results}
+                            render={(result) => (
+                                <InvestigationSearchResultListItem
+                                    result={result}
+                                    notificationStatusResolver={notificationStatusResolver}
+                                />
+                            )}
+                        />
+                    )}
+                    resultsAsTable={() => (
+                        <InvestigationSearchResultsTable
+                            results={results}
+                            notificationStatusResolver={notificationStatusResolver}
+                        />
+                    )}
+                    searchEnabled={enabled}
+                    onSearch={search}
+                    onClear={clear}
                 />
-            )}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit(search)}
-            onClear={reset}
-        />
+            </FormProvider>
+        </ColumnPreferenceProvider>
     );
 };
 

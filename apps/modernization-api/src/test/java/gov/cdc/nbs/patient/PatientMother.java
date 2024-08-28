@@ -15,10 +15,12 @@ import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
 import net.datafaker.Faker;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,6 +41,7 @@ public class PatientMother {
   private final Active<PatientIdentifier> active;
   private final PatientCleaner cleaner;
   private final RevisionPatientCreator revisionCreator;
+  private final JdbcClient jdbcClient;
 
   PatientMother(
       final MotherSettings settings,
@@ -50,8 +53,8 @@ public class PatientMother {
       final Available<PatientIdentifier> available,
       final Active<PatientIdentifier> active,
       final PatientCleaner cleaner,
-      final RevisionPatientCreator revisionCreator
-  ) {
+      final RevisionPatientCreator revisionCreator,
+      final JdbcClient jdbcClient) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.localIdentifierGenerator = localIdentifierGenerator;
@@ -62,6 +65,7 @@ public class PatientMother {
     this.active = active;
     this.cleaner = cleaner;
     this.revisionCreator = revisionCreator;
+    this.jdbcClient = jdbcClient;
     this.faker = new Faker(Locale.of("en-us"));
   }
 
@@ -127,6 +131,7 @@ public class PatientMother {
       final PatientIdentifier identifier,
       final String address,
       final String city,
+      final String county,
       final String state,
       final String zip) {
     withAddress(
@@ -134,6 +139,7 @@ public class PatientMother {
         "H",
         address,
         city,
+        county,
         state,
         zip);
   }
@@ -143,6 +149,7 @@ public class PatientMother {
       final String use,
       final String address,
       final String city,
+      final String county,
       final String state,
       final String zip) {
     Person patient = managed(identifier);
@@ -159,7 +166,7 @@ public class PatientMother {
             city,
             state,
             zip,
-            null,
+            county,
             "840",
             null,
             null,
@@ -217,8 +224,7 @@ public class PatientMother {
 
   public void withRace(
       final PatientIdentifier identifier,
-      final String race
-  ) {
+      final String race) {
     Person patient = managed(identifier);
 
     patient.add(
@@ -233,8 +239,7 @@ public class PatientMother {
   public void withRaceIncluding(
       final PatientIdentifier identifier,
       final String race,
-      final String detail
-  ) {
+      final String detail) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -244,9 +249,7 @@ public class PatientMother {
             race,
             List.of(detail),
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
   }
 
   public void withName(final PatientIdentifier identifier) {
@@ -438,6 +441,7 @@ public class PatientMother {
     withGender(identifier, RandomUtil.gender().value());
   }
 
+
   public void withGender(final PatientIdentifier identifier, final String gender) {
     Person patient = managed(identifier);
 
@@ -451,6 +455,17 @@ public class PatientMother {
             null,
             this.settings.createdBy(),
             this.settings.createdOn()));
+  }
+
+  public void withLocalId(final PatientIdentifier identifier, final String localId) {
+    Person patient = managed(identifier);
+    patient.setLocalId(localId);
+  }
+
+  public void withId(final PatientIdentifier identifier, final long id) {
+    Person patient = managed(identifier);
+
+    patient.setId(id);
   }
 
   public void withMortality(final PatientIdentifier identifier) {
@@ -479,8 +494,7 @@ public class PatientMother {
 
   public void withEthnicity(
       final PatientIdentifier identifier,
-      final String ethnicity
-  ) {
+      final String ethnicity) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -490,15 +504,13 @@ public class PatientMother {
             ethnicity,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn())
-    );
+            this.settings.createdOn()));
   }
 
   public void withSpecificEthnicity(
       final PatientIdentifier identifier,
       final String ethnicity,
-      final String detail
-  ) {
+      final String detail) {
     Person patient = managed(identifier);
 
     patient.update(
@@ -508,23 +520,26 @@ public class PatientMother {
             ethnicity,
             null,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
     patient.add(
         new PatientCommand.AddDetailedEthnicity(
             identifier.id(),
             detail,
             this.settings.createdBy(),
-            this.settings.createdOn()
-        )
-    );
+            this.settings.createdOn()));
 
 
   }
 
   public void withEthnicity(final PatientIdentifier identifier) {
     withEthnicity(identifier, RandomUtil.ethnicity());
+  }
+
+  public void withStateHIVCase(final PatientIdentifier identifier, final String value) {
+    jdbcClient.sql("update person set ehars_id = ?, as_of_date_general = GETDATE() where person_uid = ?")
+        .params(value, identifier.id())
+        .update();
+
   }
 }

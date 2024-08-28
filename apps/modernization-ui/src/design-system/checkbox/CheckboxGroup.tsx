@@ -1,8 +1,10 @@
-import { useEffect, FocusEvent as ReactFocusEvent } from 'react';
+import React, { FocusEvent as ReactFocusEvent, useEffect } from 'react';
 import classNames from 'classnames';
 import { Selectable, useMultiSelection } from 'options';
-import { Checkbox } from './Checkbox';
+import { SelectableCheckbox } from './SelectableCheckbox';
 import styles from './checkboxGroup.module.scss';
+import { ErrorMessage } from '@trussworks/react-uswds';
+import { Sizing } from 'components/Entry';
 
 type Props = {
     name: string;
@@ -11,17 +13,37 @@ type Props = {
     disabled?: boolean;
     options: Selectable[];
     value?: Selectable[];
+    error?: string;
+    requried?: boolean;
+    sizing?: Sizing;
     onChange?: (selected: Selectable[]) => void;
     onBlur?: (event: ReactFocusEvent<HTMLElement>) => void;
 };
-export const CheckboxGroup = ({ name, label, options, value = [], onChange, disabled = false, className }: Props) => {
-    const { items, selected, select, deselect } = useMultiSelection({ available: options, selected: value });
+
+export const CheckboxGroup = ({
+    name,
+    label,
+    options,
+    value = [],
+    onChange,
+    onBlur,
+    disabled = false,
+    className,
+    error,
+    requried,
+    sizing
+}: Props) => {
+    const { items, selected, select, deselect, reset } = useMultiSelection({ available: options });
 
     useEffect(() => {
         if (onChange) {
             onChange(selected);
         }
     }, [selected]);
+
+    useEffect(() => {
+        reset(value);
+    }, [JSON.stringify(value)]);
 
     const handleChange = (selectable: Selectable) => (selection?: Selectable) => {
         if (selection) {
@@ -32,17 +54,24 @@ export const CheckboxGroup = ({ name, label, options, value = [], onChange, disa
     };
 
     return (
-        <fieldset className={classNames(styles.checkboxGroup, className)}>
+        <fieldset
+            className={classNames(styles.checkboxGroup, className, {
+                [styles.required]: requried,
+                [styles.compact]: sizing === 'compact'
+            })}>
             <legend>{label}</legend>
+            {error && <ErrorMessage className={styles.error}>{error}</ErrorMessage>}
             <div className={styles.options}>
                 {items.map((item, index) => (
-                    <Checkbox
+                    <SelectableCheckbox
                         name={name}
+                        sizing={sizing}
                         key={index}
                         selectable={item.value}
                         onChange={handleChange(item.value)}
                         selected={item.selected}
                         disabled={disabled}
+                        onBlur={onBlur}
                     />
                 ))}
             </div>

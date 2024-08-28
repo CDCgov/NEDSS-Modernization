@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { ErrorMessage, Grid, Label } from '@trussworks/react-uswds';
+import { ErrorMessage, Label } from '@trussworks/react-uswds';
+import styles from './horizontal-wrapper.module.scss';
 
 type Props = {
+    className?: string;
     htmlFor: string;
     label: string;
     error?: string;
@@ -10,18 +12,18 @@ type Props = {
     children: ReactNode;
 };
 
-const HorizontalEntryWrapper = ({ htmlFor, label, required, error, children }: Props) => (
-    <Grid row>
-        <Grid col={6}>
-            {label && (
-                <Label className={classNames({ required })} htmlFor={htmlFor}>
-                    {label}
-                </Label>
-            )}
-            {error && <ErrorMessage id={`${error}-message`}>{error}</ErrorMessage>}
-        </Grid>
-        <Grid col={6}>{children}</Grid>
-    </Grid>
+const HorizontalEntryWrapper = ({ className, htmlFor, label, required, error, children }: Props) => (
+    <div className={classNames(styles.horizontalInput, className)}>
+        {label && (
+            <Label className={classNames({ required })} htmlFor={htmlFor}>
+                {label}
+            </Label>
+        )}
+        <div className={styles.verticalWrapper}>
+            {error && <ErrorMessage id={`${htmlFor}-error`}>{error}</ErrorMessage>}
+            {children}
+        </div>
+    </div>
 );
 
 export { HorizontalEntryWrapper };

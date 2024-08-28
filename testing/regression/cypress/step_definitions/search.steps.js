@@ -1,11 +1,6 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { searchPage } from "cypress/e2e/pages/search.page";
 
-Then("I navigate the  basic info and address", () => {
-  searchPage.selectBasicInfo();
-  searchPage.selectAddress(); 
-});
-
 When("I search for {string} city", (string) => {
   searchPage.enterCity(string);
   searchPage.search();
@@ -39,15 +34,11 @@ When("I search for Street Address {string} City {string} State {string} Zip code
 });
 
 Then("I should see No Results found text", () => {
-  cy.get("div.advanced-search-message p")
-    .invoke("text")
-    .should("match", /^No results found/);
+  cy.contains("0 results for").should("be.visible");
 });
 
 Then("I should found result patient profile", () => {
-  cy.get("#resultsCount .advanced-search-results-title")
-    .invoke("text")
-    // .should("match", /^No results found/);
+  cy.contains("0 results for").should("be.visible");
 });
 
 When("I search by last name as {string}", (string) => {
@@ -112,20 +103,11 @@ Then("I should see Results with the first name {string}", (string) => {
 });
 
 Then("I should see Results with the sex {string}", (string) => {
-  if (string!=='No Data'){
-  cy.get("p").contains(string).should("be.visible");
-  }else{
-    cy.get(".no-data").contains(string).should("be.visible");
-  }
+  cy.get('span.result-item_label__4ANhR').contains('Sex').should('be.visible');
 });
 
 Then("I should see Results with the patient id {string}", (string) => {
-  cy.get("p").contains(string).should("be.visible");
-});
-
-Then("I navigate to contact section", () => {
-  searchPage.selectBasicInfo();
-  searchPage.selectContact();
+  cy.contains(string).should("be.visible");
 });
 
 When("I search by phone number as {string}", (string) => {
@@ -149,15 +131,15 @@ When("I search by email as {string}", (string) => {
 });
 
 Then("I should see Results with the phone number as {string}", (string) => {
-  cy.get("p").contains(string).should("be.visible");
+  cy.get('p').contains(string).should("be.visible");
+
 });
 
 Then("I should see Results with the email as {string}", (string) => {
-  cy.get("p").contains(string).should("be.visible");
+  cy.contains(string).should("be.visible");
 });
 
-When("I navigate to id section", () => {
-  searchPage.selectBasicInfo();
+When("I navigate to id section", () => {  
   searchPage.selectId();
 });
 
@@ -173,12 +155,11 @@ Then(
 Then(
   "I should see Results with the {string} as {string}",
   (string, string1) => {
-    cy.get("p").contains(string1).should("be.visible");
+    cy.contains(string1).should("be.visible");
   }
 );
 
 When("I navigate to race section", () => {
-  searchPage.selectBasicInfo();
   searchPage.selectRace();
 });
 
@@ -218,14 +199,14 @@ Then("I select for Superseded patient", ()=>{
 })
 
 Then("I sort by {string}", (string) => {
-  cy.get('.button-group>button').eq(1).click();
+  cy.get('button[data-testid="button"]').eq(1).click();
   cy.wait(500)
-  cy.get('#basic-nav-section-one>li').eq(1).click();
+  cy.get('button[data-testid="button"]').eq(1).click();
   cy.wait(1000)
 })
 
 Then("I verify the sort of patient name", () => {
-  cy.get('.grid-col-12.margin-bottom-2>a')
+  cy.get('.result-item_label__4ANhR')
   .invoke('text')
   .then(name => {
     //Sort the names

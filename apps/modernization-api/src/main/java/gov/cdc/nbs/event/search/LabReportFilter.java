@@ -29,6 +29,7 @@ public final class LabReportFilter implements EventFilter {
   private LabReportProviderSearch providerSearch;
   private Long orderingLabId;
   private Long orderingProviderId;
+  private Long reportingLabId;
   private String resultedTest;
   private String codedResult;
 
@@ -62,8 +63,24 @@ public final class LabReportFilter implements EventFilter {
 
 
   public enum LaboratoryEventIdType {
-    ACCESSION_NUMBER,
-    LAB_ID;
+    ACCESSION_NUMBER("ACCESSION_NUMBER", "Accession Number"),
+    LAB_ID("LAB_ID", "Lab Id");
+
+    private final String value;
+    private final String display;
+
+    LaboratoryEventIdType(final String value, final String display) {
+      this.value = value;
+      this.display = display;
+    }
+
+    public String value() {
+      return value;
+    }
+
+    public String display() {
+      return display;
+    }
   }
 
 
@@ -206,6 +223,9 @@ public final class LabReportFilter implements EventFilter {
   }
 
   public Optional<Long> reportingFacility() {
+    if (this.reportingLabId != null) {
+      return Optional.of(this.reportingLabId);
+    }
     return (this.providerSearch != null && this.providerSearch.getProviderType() == ProviderType.REPORTING_FACILITY)
         ? Optional.of(this.providerSearch.getProviderId())
         : Optional.empty();

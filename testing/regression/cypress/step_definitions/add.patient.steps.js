@@ -5,6 +5,10 @@ Then("I create a new patient", () => {
     addPatientPage.addPatient()
 });
 
+Then ("I clear the Information as of Date field", () => {
+    addPatientPage.clearInformationAsOfDate()
+});
+
 Then("I create a new patient without enter field and get error message", () => {
     addPatientPage.addPatientBlank()
 });
@@ -32,6 +36,10 @@ Then("I create a new patient to enter address with Information as of Date", () =
 Then("I should see profile of new patient", () => {
     addPatientPage.viewPatientProfile()
 });
+
+Then("I should see on Patient Profile {string}", (patientIDString) => {
+    addPatientPage.viewPatientID(patientIDString)
+  });
 
 Then("the user add another patient profile", () => {
     addPatientPage.addAnotherPatient()

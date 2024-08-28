@@ -34,7 +34,7 @@ class PatientProfileEventReturnRouteLocatorConfiguration {
                 "patient-profile-event-return",
                 route -> route.query("ContextAction", "ReturnToFileEvents")
                     .filters(
-                        filter -> filter.setPath("/nbs/redirect/patientProfile/events/return")
+                        filter -> filter.setPath(parameters.events())
                             .filters(defaults)
                     )
                     .uri(parameters.uri())

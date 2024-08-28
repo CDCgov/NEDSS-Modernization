@@ -1,27 +1,6 @@
 import { Term, fromSelectable, fromSelectables, fromValue } from 'apps/search/terms';
 import { LabReportFilterEntry } from './labReportFormTypes';
 
-const ORDERING_FACILITY_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Ordering facility',
-    value: 'ORDERING_FACILITY'
-};
-
-const ORDERING_PROVIDER_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Ordering provider',
-    value: 'ORDERING_PROVIDER'
-};
-
-const REPORTING_FACILITY_TERM = {
-    source: 'entityType',
-    title: 'ENTITY TYPE',
-    name: 'Reporting facility',
-    value: 'REPORTING_FACILITY'
-};
-
 const programAreas = fromSelectables('programAreas', 'PROGRAM AREA');
 const jurisdictions = fromSelectables('jurisdictions', 'JURISDICTION');
 const entryMethods = fromSelectables('entryMethods', 'ENTRY METHOD');
@@ -40,13 +19,13 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
         terms.push(fromSelectable('pregnancyStatus', 'PREGNANCY STATUS')(entry.pregnancyStatus));
     }
 
-    if (entry.identification) {
-        terms.push(fromSelectable('identification.type', 'INVESTIGATION EVENT TYPE')(entry.identification.type));
+    if (entry.identification && entry.identification.type) {
+        terms.push(fromSelectable('identification.type', 'EVENT ID TYPE')(entry.identification.type));
         terms.push(fromValue('identification.value', 'EVENT ID')(entry.identification.value));
     }
 
-    if (entry.eventDate) {
-        terms.push(fromSelectable('eventDate.type', 'DATE TYPE')(entry.eventDate.type));
+    if (entry.eventDate?.type) {
+        terms.push(fromSelectable('eventDate.type', 'EVENT DATE TYPE')(entry.eventDate.type));
         terms.push(fromValue('eventDate.from', 'FROM')(entry.eventDate.from));
         terms.push(fromValue('eventDate.to', 'TO')(entry.eventDate.to));
     }
@@ -65,18 +44,15 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
     }
 
     if (entry.orderingFacility) {
-        terms.push(ORDERING_FACILITY_TERM);
-        terms.push(fromSelectable('orderingFacility', 'ENTITY ID')(entry.orderingFacility));
+        terms.push(fromSelectable('orderingFacility', 'ORDERING FACILITY')(entry.orderingFacility));
     }
 
     if (entry.orderingProvider) {
-        terms.push(ORDERING_PROVIDER_TERM);
-        terms.push(fromSelectable('orderingProvider', 'ENTITY ID')(entry.orderingProvider));
+        terms.push(fromSelectable('orderingProvider', 'ORDERING PROVIDER')(entry.orderingProvider));
     }
 
     if (entry.reportingFacility) {
-        terms.push(REPORTING_FACILITY_TERM);
-        terms.push(fromSelectable('reportingFacility', 'ENTITY ID')(entry.reportingFacility));
+        terms.push(fromSelectable('reportingFacility', 'REPORTING FACILITY')(entry.reportingFacility));
     }
 
     if (entry.codedResult) {

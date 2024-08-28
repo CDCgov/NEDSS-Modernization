@@ -157,6 +157,7 @@ Feature: Lab Report Search
       | Ordering Facility              |
       | Ordering Facility new api      |
       | Reporting Facility             |
+      | Reporting Facility new api     |
       | resulted test                  |
       | coded result                   |
 
@@ -185,6 +186,7 @@ Feature: Lab Report Search
       | Ordering Facility              | jurisdiction  | lab id       |
       | Ordering Facility new api      | jurisdiction  | lab id       |
       | Reporting Facility             | jurisdiction  | lab id       |
+      | Reporting Facility new api     | jurisdiction  | lab id       |
       | resulted test                  | jurisdiction  | lab id       |
       | coded result                   | jurisdiction  | lab id       |
       | patient id                     | resulted test | lab id       |

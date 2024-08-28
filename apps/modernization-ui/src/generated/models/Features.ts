@@ -4,7 +4,9 @@
 /* eslint-disable */
 import type { Address } from './Address';
 import type { PageBuilder } from './PageBuilder';
+import type { Search } from './Search';
 export type Features = {
+    search?: Search;
     address?: Address;
     pageBuilder?: PageBuilder;
 };

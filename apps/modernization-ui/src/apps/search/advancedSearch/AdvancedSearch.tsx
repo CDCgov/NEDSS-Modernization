@@ -34,6 +34,7 @@ import { focusedTarget } from 'utils';
 import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
 import { OutOfTabOrder } from './components/OutOfTabOrder';
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
+import { Button } from 'components/button';
 
 export enum SEARCH_TYPE {
     PERSON = 'search',
@@ -354,14 +355,14 @@ export const AdvancedSearch = () => {
                 <Grid row className="page-title-bar bg-white">
                     <div className="width-full text-bold flex-row display-flex flex-align-center flex-justify">
                         <h1 className="advanced-search-title margin-0">Search</h1>
-                        <ButtonActionMenu
-                            label="Add new"
-                            items={[
-                                { label: 'Add new patient', action: handleAddNewPatientClick },
-                                { label: 'Add new lab report', action: handleAddNewLabReportClick }
-                            ]}
-                            disabled={!lastSearchType}
-                        />
+                        <ButtonActionMenu label="Add new" disabled={!lastSearchType}>
+                            <Button type="button" onClick={handleAddNewPatientClick}>
+                                Add new patient
+                            </Button>
+                            <Button type="button" onClick={handleAddNewLabReportClick}>
+                                Add new lab report
+                            </Button>
+                        </ButtonActionMenu>
                     </div>
                 </Grid>
                 <Grid row className="search-page-height">
@@ -418,55 +419,59 @@ export const AdvancedSearch = () => {
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <div className="button-group">
                                     {lastSearchType && !isNoResultsFound() && !isError() && !isLoading() && (
-                                        <ButtonActionMenu
-                                            label="Sort by"
-                                            items={[
-                                                {
-                                                    label: 'Closest match',
-                                                    action: () => {
+                                        <ButtonActionMenu label="Sort by">
+                                            <>
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => {
                                                         setSort({
                                                             sortField: SortField.Relevance
                                                         });
-                                                    }
-                                                },
-                                                {
-                                                    label: 'Patient name (A-Z)',
-                                                    action: () => {
+                                                    }}>
+                                                    Closest match
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Asc,
                                                             sortField: SortField.LastNm
                                                         });
-                                                    }
-                                                },
-                                                {
-                                                    label: 'Patient name (Z-A)',
-                                                    action: () => {
+                                                    }}>
+                                                    Patient name (A-Z)
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Desc,
                                                             sortField: SortField.LastNm
                                                         });
-                                                    }
-                                                },
-                                                {
-                                                    label: 'Date of birth (Ascending)',
-                                                    action: () => {
+                                                    }}>
+                                                    Patient name (Z-A)
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Asc,
                                                             sortField: SortField.BirthTime
                                                         });
-                                                    }
-                                                },
-                                                {
-                                                    label: 'Date of birth (Descending)',
-                                                    action: () => {
+                                                    }}>
+                                                    Date of birth (Ascending)
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => {
                                                         setSort({
                                                             sortDirection: SortDirection.Desc,
                                                             sortField: SortField.BirthTime
                                                         });
-                                                    }
-                                                }
-                                            ]}
-                                        />
+                                                    }}>
+                                                    Date of birth (Descending)
+                                                </Button>
+                                            </>
+                                        </ButtonActionMenu>
                                     )}
                                 </div>
                             </div>

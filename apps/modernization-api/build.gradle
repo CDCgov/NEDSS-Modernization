@@ -28,6 +28,7 @@ dependencies {
     implementation(project(':database-entities'))
     implementation(project(':event-schema'))
     implementation(project(':authentication'))
+    implementation(project(':authorization'))
     implementation(project(':id-generator'))
     implementation(project(':web'))
     implementation(project(':classic-interaction'))
@@ -103,7 +104,6 @@ testing {
                 implementation libs.spring.security.test
                 implementation.bundle(libs.bundles.testcontainers.elasticsearch)
                 implementation 'net.datafaker:datafaker:2.0.2'
-                implementation libs.spring.kafka.test
 
                 implementation libs.awaitility
 

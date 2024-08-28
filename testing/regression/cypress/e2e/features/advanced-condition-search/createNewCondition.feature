@@ -1,7 +1,7 @@
-Feature: Page Builder - User can verify advanced condition search here.
+Feature: Page Builder - User can verify advanced condition search create new condition here.
 
     Background:
-        Given I am logged in as "superuser" and password "@test"
+        Given I am logged in as secure user
         When User navigates to Create New Page for new condition
 
     Scenario: Create a new condition

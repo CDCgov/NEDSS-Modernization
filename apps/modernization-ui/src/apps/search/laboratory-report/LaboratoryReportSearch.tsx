@@ -1,39 +1,60 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { removeTerm } from 'apps/search/terms';
+import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { LabReport } from 'generated/graphql/schema';
-
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
-import { LabReportFilterEntry, initial } from './labReportFormTypes';
+import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
+import { LaboratoryReportSearchCriteria } from './LaboratoryReportSearchCriteria';
+
+import { useJurisdictionOptions } from 'options/jurisdictions';
+import { LaboratoryReportSearchResultsTable, preferences } from './result/table';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 
 const LaboratoryReportSearch = () => {
-    const { handleSubmit, reset: resetForm } = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
-        defaultValues: initial,
+    const form = useForm<LabReportFilterEntry, Partial<LabReportFilterEntry>>({
+        defaultValues,
         mode: 'onBlur'
     });
 
-    const { status, search, reset, results } = useLaboratoryReportSearch();
+    const { enabled, results, search, clear } = useLaboratoryReportSearch({ form });
 
-    useEffect(() => {
-        if (status === 'waiting') {
-            resetForm();
+    const { terms } = useSearchResultDisplay();
+
+    const handleRemoveTerm = removeTerm(form, () => {
+        if (terms.length === 1) {
+            clear();
+        } else {
+            search();
         }
-    }, [resetForm, status]);
+    });
+
+    const { resolve: findById } = useJurisdictionOptions();
 
     return (
-        <SearchLayout
-            criteria={() => <div>criteria</div>}
-            resultsAsList={() => (
-                <SearchResultList<LabReport>
-                    results={results?.content ?? []}
-                    render={(result) => <LaboratoryReportSearchResultListItem result={result} />}
+        <ColumnPreferenceProvider id="search.laboratory-reports.preferences.columns" defaults={preferences}>
+            <FormProvider {...form}>
+                <SearchLayout
+                    onRemoveTerm={handleRemoveTerm}
+                    criteria={() => <LaboratoryReportSearchCriteria />}
+                    resultsAsList={() => (
+                        <SearchResultList<LabReport>
+                            results={results}
+                            render={(result) => (
+                                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={findById} />
+                            )}
+                        />
+                    )}
+                    resultsAsTable={() => (
+                        <LaboratoryReportSearchResultsTable results={results} jurisdictionResolver={findById} />
+                    )}
+                    searchEnabled={enabled}
+                    onSearch={search}
+                    onClear={clear}
                 />
-            )}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit(search)}
-            onClear={reset}
-        />
+            </FormProvider>
+        </ColumnPreferenceProvider>
     );
 };
 

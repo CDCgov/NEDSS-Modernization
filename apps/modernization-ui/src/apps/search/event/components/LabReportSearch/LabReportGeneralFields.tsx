@@ -138,7 +138,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                         name={name}
                         value={(value as string) ?? undefined}
                         onChange={(e) => handleEventIdTypeChange(e, onChange)}
-                        label="Event id type"
+                        label="Event ID type"
                         htmlFor={name}
                         dataTestid={name}
                         options={Object.values(LaboratoryEventIdType).map((event) => {
@@ -438,7 +438,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 label="Event ordering facility"
                                 required={true}
                                 placeholder=""
-                                onChange={onChange}
+                                onChange={(e) => onChange(e?.value)}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
@@ -484,7 +484,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 label="Event reporting facility"
                                 required={true}
                                 placeholder=""
-                                onChange={onChange}
+                                onChange={(e) => onChange(e?.value)}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}

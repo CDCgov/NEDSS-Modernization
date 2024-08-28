@@ -4,8 +4,7 @@ import {
     InvestigationStatus,
     NotificationStatus,
     PregnancyStatus,
-    ProcessingStatus,
-    ReportingEntityType
+    ProcessingStatus
 } from 'generated/graphql/schema';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 import { transformObject } from './transformer';
@@ -46,15 +45,15 @@ describe('transformObject', () => {
     it('should tranform with Jurisdictions', () => {
         const input: InvestigationFilterEntry = {
             jurisdictions: [
-                { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: 'jurisdiction-one' },
-                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: 'jurisdiction-two' }
+                { name: 'Jurisdiction One Name', label: 'Jurisdiction One Label', value: '181' },
+                { name: 'Jurisdiction Two Name', label: 'Jurisdiction Two Label', value: '239' }
             ]
         };
         const actual = transformObject(input);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                jurisdictions: ['jurisdiction-one', 'jurisdiction-two']
+                jurisdictions: [181, 239]
             })
         );
     });
@@ -145,42 +144,28 @@ describe('transformObject', () => {
 
     it('should transform with Reporting facility', () => {
         const input = {
-            reportingFacility: {
-                name: 'Reporting facility Name',
-                label: 'Reporting facility Label',
-                value: 'reporting-facility-value'
-            }
+            reportingFacilityId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
         };
 
         const actual = transformObject(input);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                providerFacilitySearch: {
-                    id: 'reporting-facility-value',
-                    entityType: ReportingEntityType.Facility
-                }
+                reportingFacilityId: '2341234'
             })
         );
     });
 
     it('should transform with Reporting provider', () => {
         const input = {
-            reportingProvider: {
-                name: 'Reporting provider Name',
-                label: 'Reporting provider Label',
-                value: 'reporting-provider-value'
-            }
+            reportingProviderId: { name: 'st. joseph hospital', label: 'st. joseph hospital', value: '2341234' }
         };
 
         const actual = transformObject(input);
 
         expect(actual).toEqual(
             expect.objectContaining({
-                providerFacilitySearch: expect.objectContaining({
-                    id: 'reporting-provider-value',
-                    entityType: ReportingEntityType.Provider
-                })
+                reportingProviderId: '2341234'
             })
         );
     });

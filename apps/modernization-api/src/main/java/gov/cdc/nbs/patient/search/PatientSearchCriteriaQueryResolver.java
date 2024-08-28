@@ -67,10 +67,14 @@ class PatientSearchCriteriaQueryResolver {
     if (criteria.getId() != null) {
       String shortOrLongIdStripped = criteria.getId().strip();
 
+      if (shortOrLongIdStripped.isEmpty()) {
+        return Optional.empty();
+      }
+
       if (Character.isDigit(shortOrLongIdStripped.charAt(0))) {
-        //  This may be a short id, resolve the local id and then search for it
+        // This may be a short id, resolve the local id and then search for it
         try {
-          long shortId = Long.parseLong(criteria.getId());
+          long shortId = Long.parseLong(shortOrLongIdStripped);
 
           String localId = resolver.resolve(shortId);
 
@@ -80,7 +84,7 @@ class PatientSearchCriteriaQueryResolver {
           // skip these criteria. it's not a short id or long id
         }
       } else {
-        return applyLocalId(criteria.getId());
+        return applyLocalId(shortOrLongIdStripped);
       }
     }
 
@@ -130,7 +134,7 @@ class PatientSearchCriteriaQueryResolver {
                                                   nested -> nested.path(NAMES)
                                                       .scoreMode(ChildScoreMode.Avg)
                                                       .query(
-                                                          nonPrimary -> nonPrimary.queryString(
+                                                          nonPrimary -> nonPrimary.simpleQueryString(
                                                               queryString -> queryString
                                                                   .fields("name.firstNm")
                                                                   .query(WildCards.startsWith(name))
@@ -183,7 +187,7 @@ class PatientSearchCriteriaQueryResolver {
                           nested -> nested.path(NAMES)
                               .scoreMode(ChildScoreMode.Avg)
                               .query(
-                                  query -> query.queryString(
+                                  query -> query.simpleQueryString(
                                       nonPrimary -> nonPrimary
                                           .fields("name.lastNm")
                                           .query(WildCards.startsWith(name))
@@ -217,7 +221,6 @@ class PatientSearchCriteriaQueryResolver {
                           wildcard -> wildcard.field("phone.telephoneNbr")
                               .value(WildCards.contains(number))))));
 
-
     }
 
     return Optional.empty();
@@ -233,8 +236,8 @@ class PatientSearchCriteriaQueryResolver {
               nested -> nested.path(EMAILS)
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
-                      query -> query.queryString(
-                          queryString -> queryString.defaultField("email.emailAddress")
+                      query -> query.simpleQueryString(
+                          queryString -> queryString.fields("email.emailAddress")
                               .defaultOperator(Operator.And)
                               .query(email)))));
     }
@@ -305,15 +308,17 @@ class PatientSearchCriteriaQueryResolver {
     String address = criteria.getAddress();
     if (address != null && !address.isEmpty()) {
 
+      String result = address.replace("(", "").replace(")", "");
+
       return Optional.of(
           NestedQuery.of(
               nested -> nested.path(ADDRESSES)
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
-                      query -> query.queryString(
-                          queryString -> queryString.defaultField("address.streetAddr1")
+                      query -> query.simpleQueryString(
+                          queryString -> queryString.fields("address.streetAddr1")
                               .defaultOperator(Operator.And)
-                              .query(WildCards.startsWith(address))))));
+                              .query(WildCards.startsWith(result))))));
     }
 
     return Optional.empty();
@@ -329,8 +334,8 @@ class PatientSearchCriteriaQueryResolver {
               nested -> nested.path(ADDRESSES)
                   .scoreMode(ChildScoreMode.Avg)
                   .query(
-                      query -> query.queryString(
-                          queryString -> queryString.defaultField("address.city")
+                      query -> query.simpleQueryString(
+                          queryString -> queryString.fields("address.city")
                               .defaultOperator(Operator.And)
                               .query(WildCards.startsWith(city))))));
     }

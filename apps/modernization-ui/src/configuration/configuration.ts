@@ -1,3 +1,5 @@
+type Toggle = { enabled: boolean };
+
 type Settings = {
     session: {
         warning: number;
@@ -10,6 +12,14 @@ type Settings = {
         key: string;
         host: string;
     };
+};
+
+type SearchView = Toggle & {
+    table: Toggle;
+};
+
+type Search = {
+    view: SearchView;
 };
 
 type Features = {
@@ -33,6 +43,14 @@ type Features = {
             };
         };
     };
+    search: Search;
+    patient: {
+        add: {
+            extended: {
+                enabled: boolean;
+            };
+        };
+    };
 };
 
 type Properties = {
@@ -46,4 +64,4 @@ type Configuration = {
     properties: Properties;
 };
 
-export type { Settings, Features, Properties, Configuration };
+export type { Settings, Features, Search, Properties, Configuration };

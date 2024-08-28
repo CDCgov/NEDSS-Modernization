@@ -1,14 +1,36 @@
 @use 'styles/colors';
+@use 'styles/components';
 
 .checkboxGroup {
+    padding: 0;
     border: none;
 
     legend {
+        padding-top: 0;
         color: colors.$base-darkest;
+        margin-bottom: 0.5rem;
     }
+
+    .error {
+        margin-bottom: 0.5rem;
+        padding-top: 0;
+    }
+
     .options {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    &.required {
+        legend::after {
+            content: ' *';
+            color: colors.$mandatory;
+        }
+    }
+
+    &.compact {
+        @extend %compact;
     }
 }

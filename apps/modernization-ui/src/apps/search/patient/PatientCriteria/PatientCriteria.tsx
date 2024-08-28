@@ -1,49 +1,29 @@
-import { Deceased, Gender, Operator, PersonFilter, Scalars } from 'generated/graphql/schema';
-import { Selectable } from 'options';
-import { useEffect, useState } from 'react';
-import {  } from 'types/patients';
-import { transformObject } from './transformer';
+import { BasicInformation } from './BasicInformation';
+import { Accordion } from 'components/Accordion';
 
-type Props = {
-    handleSubmission: (data: PersonFilter) => void;
-    personFilter: PersonFilter | undefined;
-    clearAll: () => void;
-};
+import { Address } from './Address';
+import { Contact } from './Contact';
+import { RaceEthnicity } from './RaceEthnicity';
+import { Id } from './Id';
 
-export type PatientCriteriaForm = {
-    address?: string;
-    assigningAuthority?: Selectable;
-    city?: string;
-    country?: Selectable;
-    dateOfBirth?: Date;
-    dateOfBirthOperator?: Operator;
-    deceased?: Selectable;
-    disableSoundex?: boolean;
-    email?: string;
-    ethnicity?: Selectable;
-    firstName?: string;
-    gender?: Selectable;
-    id?: string;
-    identification?: string;
-    identificationType?: Selectable;
-    labTest?: string;
-    lastName?: string;
-    mortalityStatus?: Selectable;
-    phoneNumber?: string;
-    race?: Selectable;
-    recordStatus?: Selectable[] | undefined;
-    state?: Selectable;
-    status?: Selectable;
-    treatmentId?: string;
-    vaccinationId?: string;
-    zip?: number;
-};
-
-export const PatientCriteria = ({ personFilter, handleSubmission, clearAll }: Props) => {
-
-    const onSubmit = (data: PatientCriteriaForm) => {
-        handleSubmission(transformObject(data));
-    };
-    
-    return <h2>PatientCriteria</h2>;
+export const PatientCriteria = () => {
+    return (
+        <>
+            <Accordion title="Basic information" open>
+                <BasicInformation />
+            </Accordion>
+            <Accordion title="Address">
+                <Address />
+            </Accordion>
+            <Accordion title="Contact">
+                <Contact />
+            </Accordion>
+            <Accordion title="ID">
+                <Id />
+            </Accordion>
+            <Accordion title="Race/Ethnicity">
+                <RaceEthnicity />
+            </Accordion>
+        </>
+    );
 };

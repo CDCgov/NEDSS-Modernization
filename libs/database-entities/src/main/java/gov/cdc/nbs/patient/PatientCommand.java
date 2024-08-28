@@ -29,7 +29,8 @@ public sealed interface PatientCommand {
       String comments,
       String stateHIVCase,
       long requester,
-      Instant requestedOn) implements PatientCommand {
+      Instant requestedOn
+  ) implements PatientCommand {
   }
 
 
@@ -340,7 +341,6 @@ public sealed interface PatientCommand {
       String educationLevelCode,
       String primaryLanguageCode,
       String speaksEnglishCode,
-      String eharsId,
       long requester,
       Instant requestedOn) implements PatientCommand {
   }
@@ -417,6 +417,7 @@ public sealed interface PatientCommand {
   ) implements PatientCommand {
   }
 
+
   record AddName(
       long person,
       Instant asOf,
@@ -486,6 +487,14 @@ public sealed interface PatientCommand {
   record DeleteNameInfo(
       long person,
       int sequence,
+      long requester,
+      Instant requestedOn
+  ) implements PatientCommand {
+  }
+
+  record AssociateStateHIVCase(
+      long person,
+      String stateHIVCase,
       long requester,
       Instant requestedOn
   ) implements PatientCommand {

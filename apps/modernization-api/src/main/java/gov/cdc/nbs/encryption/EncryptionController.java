@@ -17,11 +17,11 @@ class EncryptionController {
 
   @PostMapping("/encrypt")
   EncryptionResponse encrypt(@RequestBody Object object) {
-    return new EncryptionResponse(encryptionService.handleEncryption(object));
+    return new EncryptionResponse(encryptionService.encrypt(object));
   }
 
   @PostMapping(value = "/decrypt", consumes = MediaType.TEXT_PLAIN_VALUE)
   Object decrypt(@RequestBody String encryptedString) {
-    return encryptionService.handleDecryption(encryptedString);
+    return encryptionService.decrypt(encryptedString);
   }
 }

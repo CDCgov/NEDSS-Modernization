@@ -1,20 +1,29 @@
-import { Button } from '@trussworks/react-uswds';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, ReactNode } from 'react';
 import styles from './buttonActionMenu.module.scss';
 import { Icon } from '@trussworks/react-uswds';
-
-type Action = {
-    label: string;
-    action: () => void;
-};
+import { Button } from 'components/button/Button';
+import classNames from 'classnames';
 
 type Props = {
-    label: string;
-    items: Action[];
+    label?: string;
     disabled?: boolean;
+    icon?: ReactNode;
+    outline?: boolean;
+    className?: string;
+    labelPosition?: 'left' | 'right';
+    children: ReactNode;
 };
 
-export const ButtonActionMenu = ({ label, items, disabled }: Props) => {
+export const ButtonActionMenu = ({
+    label,
+    disabled,
+    icon,
+    outline,
+    className,
+    labelPosition = 'right',
+
+    children
+}: Props) => {
     const wrapperRef = useRef(null);
     const clickOutside = (ref: any) => {
         useEffect(() => {
@@ -36,23 +45,22 @@ export const ButtonActionMenu = ({ label, items, disabled }: Props) => {
     return (
         <div className={styles.actionMenu} ref={wrapperRef}>
             <Button
+                aria-label="Sort by list"
+                data-tooltip-position="top"
                 type="button"
                 onClick={() => setOpen(!open)}
-                className={'action-button ' + styles.actionMenuButton}
-                disabled={disabled}>
-                {label} <Icon.ArrowDropDown size={4} />
+                className={classNames(styles.actionMenuButton, className)}
+                disabled={disabled}
+                outline={outline}
+                labelPosition={labelPosition}
+                icon={icon ? icon : <Icon.ArrowDropDown size={4} />}>
+                {label}
             </Button>
-            {open ? (
-                <div className={'menu ' + styles.menu}>
-                    {items.map((item, i) => {
-                        return (
-                            <Button key={i} type="button" onClick={item.action}>
-                                {item.label}
-                            </Button>
-                        );
-                    })}
+            {open && (
+                <div className={styles.menu}>
+                    <div className={styles.menuContent}>{children}</div>
                 </div>
-            ) : null}
+            )}
         </div>
     );
 };

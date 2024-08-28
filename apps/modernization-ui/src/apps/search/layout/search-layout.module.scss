@@ -5,7 +5,7 @@ $search-height: calc(100vh - 74px);
 $navigation-height: 2.75rem;
 $actions-height: 8rem;
 $criteria-width: 320px;
-$content-height: calc($search-height - $navigation-height - 2rem);
+$content-height: calc($search-height - $navigation-height - 3rem);
 
 .search {
     padding: 1rem;
@@ -28,13 +28,17 @@ $content-height: calc($search-height - $navigation-height - 2rem);
         @include borders.rounded();
 
         .criteria {
+            flex-shrink: 0;
             width: $criteria-width;
+
+            background-color: colors.$base-white;
 
             @include borders.bordered('border-right');
 
-            search {
-                height: calc(100% - $actions-height);
+            .inputs {
+                height: calc($content-height - $actions-height);
                 overflow-y: scroll;
+                padding: 0rem;
             }
 
             .actions {
@@ -54,10 +58,9 @@ $content-height: calc($search-height - $navigation-height - 2rem);
 
         .results {
             flex-grow: 1;
+            width: calc(100% - $criteria-width);
 
-            .loading {
-                margin: auto;
-            }
+            z-index: 0;
         }
     }
 }

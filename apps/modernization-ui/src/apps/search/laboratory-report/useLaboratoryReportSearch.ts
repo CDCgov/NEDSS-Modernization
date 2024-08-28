@@ -1,10 +1,15 @@
+import { UseFormReturn } from 'react-hook-form';
+import { SearchInteraction, ResultRequest, useSearch } from 'apps/search';
 import { LabReport, LabReportFilter, useFindLabReportsByFilterLazyQuery } from 'generated/graphql/schema';
-import { Interaction, ResultRequest, useSearch } from 'apps/search';
-import { LabReportFilterEntry } from './labReportFormTypes';
-import { transformObject } from './transformer';
-import { laboratoryReportTermsResolver } from './laboratoryReportTermsResolver';
+import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
+import { transformObject as transformer } from './transformer';
+import { laboratoryReportTermsResolver as termResolver } from './laboratoryReportTermsResolver';
 
-const useLaboratoryReportSearch = (): Interaction<LabReportFilterEntry, LabReport> => {
+type Settings = {
+    form: UseFormReturn<LabReportFilterEntry>;
+};
+
+const useLaboratoryReportSearch = ({ form }: Settings): SearchInteraction<LabReport> => {
     const [fetch] = useFindLabReportsByFilterLazyQuery();
 
     const resultResolver = (request: ResultRequest<LabReportFilter>) =>
@@ -13,7 +18,9 @@ const useLaboratoryReportSearch = (): Interaction<LabReportFilterEntry, LabRepor
                 filter: request.parameters,
                 page: {
                     pageNumber: request.page.number - 1,
-                    pageSize: request.page.size
+                    pageSize: request.page.size,
+                    sortField: request.sort?.property,
+                    sortDirection: request.sort?.direction
                 }
             },
             notifyOnNetworkStatusChange: true
@@ -21,12 +28,10 @@ const useLaboratoryReportSearch = (): Interaction<LabReportFilterEntry, LabRepor
             if (response.error) {
                 throw new Error(response.error.message);
             }
-            return response.data?.findLabReportsByFilter
-                ? { ...response.data.findLabReportsByFilter, page: request.page.number }
-                : undefined;
+            return response.data?.findLabReportsByFilter;
         });
 
-    return useSearch({ transformer: transformObject, resultResolver, termResolver: laboratoryReportTermsResolver });
+    return useSearch({ form, defaultValues, transformer, resultResolver, termResolver });
 };
 
 export { useLaboratoryReportSearch };

@@ -172,6 +172,9 @@ public class LabReportSearchCriteriaSteps {
               provider))
           .ifPresent(filter::setProviderSearch);
 
+      case "reporting facility new api" -> reportingFacility()
+          .ifPresent(filter::setReportingLabId);
+
       case "resulted test" -> tests().map(SearchableLabReport.LabTest::name)
           .ifPresent(filter::setResultedTest);
 

@@ -1,7 +1,7 @@
-Feature: Page Builder - User can verify advanced condition search here.
+Feature: Page Builder - User can verify advanced condition search pagination here.
 
     Background:
-        Given I am logged in as "superuser" and password "@test"
+        Given I am logged in as secure user
         When User navigates to Create New Page and Advanced condition search modal already displayed
 
     Scenario: User advances to the next list of conditions on the Search and add conditions modal

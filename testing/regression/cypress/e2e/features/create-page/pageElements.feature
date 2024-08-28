@@ -1,7 +1,7 @@
 Feature: Page Builder - User can verify create new page elements here.
 
   Background:
-    Given I am logged in as "superuser" and password "@test"
+    Given I am logged in as secure user
     When User navigates to Create New Page and views the page
 
   Scenario Outline: Verify Add new page displays required key elements

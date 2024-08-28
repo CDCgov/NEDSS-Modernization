@@ -32,5 +32,7 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage){
             }
         }
         total
+        page
+        size
     }
 }

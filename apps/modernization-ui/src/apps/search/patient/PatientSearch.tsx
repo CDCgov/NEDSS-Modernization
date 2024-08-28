@@ -1,54 +1,61 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { PatientSearchResult } from 'generated/graphql/schema';
-import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { usePage } from 'page';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { Term, useSearchResultDisplay } from 'apps/search';
+import { PatientSearchResult } from 'generated/graphql/schema';
 import { usePatientSearch } from './usePatientSearch';
-import { PatientCriteriaEntry, initial } from './criteria';
 import { PatientSearchResultListItem } from './result/list';
+import { NoPatientResults } from './result/none';
+import { PatientSearchResultTable, preferences } from './result/table';
+import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
+
+import { PatientSearchActions } from './PatientSearchActions';
 
 const PatientSearch = () => {
-    const { handleSubmit, reset: resetForm } = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
-        defaultValues: initial,
+    const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
+        defaultValues,
         mode: 'onBlur'
     });
 
-    const {
-        page: { total }
-    } = usePage();
+    const { enabled, results, search, clear } = usePatientSearch({ form });
 
-    const { status, search, reset, results } = usePatientSearch();
+    const { terms } = useSearchResultDisplay();
 
-    useEffect(() => {
-        if (status === 'waiting') {
-            resetForm();
+    const handleRemoveTerm = (term: Term) => {
+        const formValues = form.getValues();
+        const fieldNames = Object.keys(formValues);
+
+        const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
+        if (matchingField && terms.length > 1) {
+            form.resetField(matchingField as keyof PatientCriteriaEntry);
+            search();
+        } else {
+            clear();
         }
-    }, [resetForm, status]);
+    };
 
     return (
-        <SearchLayout
-            actions={() => (
-                <ButtonActionMenu
-                    label="Add new"
-                    items={[
-                        { label: 'Add new patient', action: () => {} },
-                        { label: 'Add new lab report', action: () => {} }
-                    ]}
-                    disabled={total === 0}
+        <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
+            <FormProvider {...form}>
+                <SearchLayout
+                    onRemoveTerm={handleRemoveTerm}
+                    actions={() => <PatientSearchActions />}
+                    criteria={() => <PatientCriteria />}
+                    resultsAsList={() => (
+                        <SearchResultList<PatientSearchResult>
+                            results={results}
+                            render={(result) => <PatientSearchResultListItem result={result} />}
+                        />
+                    )}
+                    resultsAsTable={() => <PatientSearchResultTable results={results} />}
+                    searchEnabled={enabled}
+                    onSearch={search}
+                    noResults={() => <NoPatientResults />}
+                    onClear={clear}
                 />
-            )}
-            criteria={() => <div>criteria</div>}
-            resultsAsList={() => (
-                <SearchResultList<PatientSearchResult>
-                    results={results?.content ?? []}
-                    render={(result) => <PatientSearchResultListItem result={result} />}
-                />
-            )}
-            resultsAsTable={() => <div>result table</div>}
-            onSearch={handleSubmit(search)}
-            onClear={reset}
-        />
+            </FormProvider>
+        </ColumnPreferenceProvider>
     );
 };
 
