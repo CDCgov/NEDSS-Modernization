@@ -4,6 +4,18 @@
 $control-height: 3rem;
 $control-width: 1.5rem;
 
+@mixin expanded($property) {
+    transition-duration: 0.25s;
+    transition-property: #{$property};
+    transition-timing-function: ease-out;
+}
+
+@mixin collapsed($property) {
+    transition-duration: 0.2s;
+    transition-property: #{$property};
+    transition-timing-function: ease-in;
+}
+
 .control {
     position: absolute;
     z-index: 1000;
@@ -19,6 +31,8 @@ $control-width: 1.5rem;
     top: calc(50% - #{$control-height});
 
     right: -($control-width / 2);
+
+    cursor: pointer;
 
     &:focus {
         outline: 0;
@@ -38,19 +52,34 @@ $control-width: 1.5rem;
 }
 
 .collapsible {
-    position: relative;
-    transition-duration: 0.25s;
-    transition-property: transform;
-    transition-timing-function: ease-out;
+    --expanded-max-width: 100%;
+    --collapsed-max-width: 0;
 
-    // overflow: clip;
+    position: relative;
+
+    @include expanded('width');
+    width: var(--expanded-max-width, 100%);
+
+    .boundary {
+        overflow: clip;
+    }
+
+    .content {
+        min-width: max-content;
+
+        position: relative;
+        @include expanded('left');
+        left: 0;
+    }
 
     &.collapsed {
-        transition-duration: 0.2s;
-        transition-timing-function: ease-in;
-        transform: translateX(-100%);
+        @include expanded('width');
+        width: var(--collapsed-max-width, 0);
 
         .content {
+            @include collapsed('left');
+            left: -100%;
+
             animation: collapsing 600ms forwards;
         }
     }
