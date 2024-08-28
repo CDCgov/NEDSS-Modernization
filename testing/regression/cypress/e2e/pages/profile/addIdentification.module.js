@@ -18,7 +18,7 @@ class AddIdentificationModule {
   }
 
   id(idNumber) {
-    cy.get(".usa-modal-wrapper.is-visible #id").scrollIntoView().type(idNumber);
+    cy.get('input[data-testid="textInput"]').scrollIntoView().type(idNumber);
     return this;
   }
 
