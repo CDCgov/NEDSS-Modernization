@@ -20,8 +20,7 @@ public class SearchableInvestigationResolver {
       final SearchableInvestigationFinder finder,
       final SearchableInvestigationPersonFinder personFinder,
       final SearchableInvestigationOrganizationFinder organizationFinder,
-      final SearchableInvestigationIdentifierFinder identifierFinder
-  ) {
+      final SearchableInvestigationIdentifierFinder identifierFinder) {
     this.finder = finder;
     this.personFinder = personFinder;
     this.organizationFinder = organizationFinder;
@@ -65,9 +64,9 @@ public class SearchableInvestigationResolver {
         investigation.notification(),
         investigation.notifiedOn(),
         investigation.notificationStatus(),
+        investigation.investigatorLastName(),
         people,
         organizations,
-        identifiers
-    );
+        identifiers);
   }
 }

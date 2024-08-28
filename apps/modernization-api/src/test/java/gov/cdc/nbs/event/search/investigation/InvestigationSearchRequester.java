@@ -27,6 +27,7 @@ class InvestigationSearchRequester {
                   startedOn
                   investigationStatusCd
                   notificationRecordStatusCd
+                  investigatorLastName
                   personParticipations{
                       birthTime
                       currSexCd
