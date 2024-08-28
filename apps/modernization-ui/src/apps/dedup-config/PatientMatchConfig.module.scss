@@ -1,0 +1,11 @@
+@use 'styles/colors';
+
+.header {
+    display: flex;
+    background-color: colors.$base-white;
+    justify-content: space-between;
+    padding: 1rem;
+    .dataConfigButton {
+        text-decoration: none !important;
+    }
+}
