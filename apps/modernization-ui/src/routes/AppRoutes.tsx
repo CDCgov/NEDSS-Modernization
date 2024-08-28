@@ -9,6 +9,7 @@ import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as welcomeRouting } from 'apps/landing';
 import { routing as logoutRouting } from 'logout';
+import { routing as patientMatchRouting } from 'apps/dedup-config';
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
 
@@ -25,7 +26,8 @@ const routing = [
             ...searchRouting,
             ...addPatientRouting,
             ...patientProfileRouting,
-            ...pageBuilderRouting
+            ...pageBuilderRouting,
+            ...patientMatchRouting
         ]
     },
     { path: '*', element: <Navigate to={'/'} /> },
