@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { Term } from 'apps/search/terms';
+import { removeTerm } from 'apps/search/terms';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { LabReport } from 'generated/graphql/schema';
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
@@ -22,24 +22,13 @@ const LaboratoryReportSearch = () => {
 
     const { terms } = useSearchResultDisplay();
 
-    const handleRemoveTerm = (term: Term) => {
-        const formValues = form.getValues();
-        const fieldNames = Object.keys(formValues);
-        const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
-        if (matchingField && terms.length > 1) {
-            if (matchingField === 'programAreas' || matchingField === 'jurisdictions') {
-                form.setValue(
-                    matchingField,
-                    form.getValues()?.[matchingField]?.filter((p) => p.value !== term.value) ?? []
-                );
-            } else {
-                form.resetField(matchingField as keyof LabReportFilterEntry);
-            }
-            search();
-        } else {
+    const handleRemoveTerm = removeTerm(form, () => {
+        if (terms.length === 1) {
             clear();
+        } else {
+            search();
         }
-    };
+    });
 
     const { resolve: findById } = useJurisdictionOptions();
 
