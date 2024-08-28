@@ -42,7 +42,7 @@ class LabReportFilterTest {
 
     filter.setResultedTest("");
 
-    assertThat(filter.resultedTest()).isEmpty();
+    assertThat(filter.withResultedTest()).isEmpty();
   }
 
   @Test
@@ -51,6 +51,6 @@ class LabReportFilterTest {
 
     filter.setCodedResult("");
 
-    assertThat(filter.codedResult()).isEmpty();
+    assertThat(filter.withCodedResult()).isEmpty();
   }
 }
