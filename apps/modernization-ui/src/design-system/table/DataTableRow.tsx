@@ -28,7 +28,10 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
                             [styles.sorted]: isSorting
                         })}>
                         {column.render(row, index) ? (
-                            <HeightConstrained rowConstraint={constraint} onChange={setConstraint}>
+                            <HeightConstrained
+                                rowConstraint={constraint}
+                                onChange={setConstraint}
+                                name={column.name.toLowerCase()}>
                                 {column.render(row, index)}
                             </HeightConstrained>
                         ) : (

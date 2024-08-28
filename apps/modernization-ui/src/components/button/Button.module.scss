@@ -1,5 +1,21 @@
 @forward 'styles/buttons';
+@use 'styles/colors';
 
 .button-component {
     margin: 0 !important;
+}
+
+.unpadded {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    // text-decoration: underline;
+    cursor: pointer;
+    color: colors.$primary !important;
+    text-align: left !important;
+    height: unset !important;
+    font-size: .875rem;
+    font-weight: 0;
+    line-height: 162%;
+    font-style: normal;
 }
