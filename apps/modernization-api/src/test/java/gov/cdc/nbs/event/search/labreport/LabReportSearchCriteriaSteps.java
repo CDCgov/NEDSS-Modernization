@@ -89,6 +89,16 @@ public class LabReportSearchCriteriaSteps {
             provider -> criteria.setOrderingProviderId(provider.identifier())));
   }
 
+  @Given("I want to find lab reports with test results for {string}")
+  public void i_want_to_find_lab_reports_with_test_results_for(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withResultedTest(value));
+  }
+
+  @Given("I want to find lab reports with the coded result {string}")
+  public void i_want_to_find_lab_reports_with_the_coded_result(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withCodedResult(value));
+  }
+
   @Given("I add the lab report criteria for {string}")
   public void i_add_the_lab_report_criteria_for(final String field) {
     this.activeCriteria.active(current -> applyCriteria(current, field));
@@ -158,18 +168,18 @@ public class LabReportSearchCriteriaSteps {
       case "processing status" -> processingStatus().map(List::of).ifPresent(filter::setProcessingStatus);
 
       case "ordering facility" -> orderingFacility().map(
-          provider -> providerSearch(
-              LabReportFilter.ProviderType.ORDERING_FACILITY,
-              provider))
+              provider -> providerSearch(
+                  LabReportFilter.ProviderType.ORDERING_FACILITY,
+                  provider))
           .ifPresent(filter::setProviderSearch);
 
       case "ordering facility new api" -> orderingFacility()
           .ifPresent(filter::setOrderingLabId);
 
       case "reporting facility" -> reportingFacility().map(
-          provider -> providerSearch(
-              LabReportFilter.ProviderType.REPORTING_FACILITY,
-              provider))
+              provider -> providerSearch(
+                  LabReportFilter.ProviderType.REPORTING_FACILITY,
+                  provider))
           .ifPresent(filter::setProviderSearch);
 
       case "reporting facility new api" -> reportingFacility()

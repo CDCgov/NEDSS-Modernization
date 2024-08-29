@@ -143,6 +143,16 @@ public final class LabReportFilter implements EventFilter {
     REPORTING_FACILITY
   }
 
+  public LabReportFilter withResultedTest(final String resultedTest) {
+    this.resultedTest = resultedTest;
+    return this;
+  }
+
+  public LabReportFilter withCodedResult(final String codedResult) {
+    this.codedResult = codedResult;
+    return this;
+  }
+
   public LabReportFilter withEventStatus(final EventStatus status) {
     this.eventStatus.add(status);
     return this;
@@ -231,13 +241,13 @@ public final class LabReportFilter implements EventFilter {
         : Optional.empty();
   }
 
-  public Optional<String> resultedTest() {
+  public Optional<String> withResultedTest() {
     return (this.resultedTest == null || this.resultedTest.isEmpty())
         ? Optional.empty()
         : Optional.of(this.resultedTest);
   }
 
-  public Optional<String> codedResult() {
+  public Optional<String> withCodedResult() {
     return (this.codedResult == null || this.codedResult.isEmpty())
         ? Optional.empty()
         : Optional.of(this.codedResult);
