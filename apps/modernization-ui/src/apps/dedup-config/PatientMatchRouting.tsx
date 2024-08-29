@@ -1,9 +1,14 @@
 import PatientMatchConfiguration from './PatientMatchConfiguration';
+import PatientMatchContextProvider from './context/PatientMatchContext';
 
 const routing = [
     {
         path: '/patient-match-config',
-        element: <PatientMatchConfiguration />
+        element: (
+            <PatientMatchContextProvider>
+                <PatientMatchConfiguration />
+            </PatientMatchContextProvider>
+        )
     }
 ];
 
