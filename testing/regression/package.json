@@ -40,5 +40,8 @@
       "enabled": true,
       "output": "./reports/cucumber-report.html"
     }
+  },
+  "dependencies": {
+    "badeball": "^20.1.1"
   }
 }

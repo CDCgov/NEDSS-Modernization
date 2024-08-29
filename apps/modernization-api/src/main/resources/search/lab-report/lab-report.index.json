@@ -189,10 +189,22 @@
             "type": "keyword"
           },
           "cd_desc_txt": {
-            "type": "keyword"
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           },
           "display_name": {
-            "type": "keyword"
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
           },
           "domain_cd_st_1": {
             "type": "keyword"

@@ -23,23 +23,28 @@ public class CodedResultedTestMother {
         'OBS',
         'EVN'
       );
-      
+     
       insert into Observation(
         observation_uid,
         ctrl_cd_display_form,
         obs_domain_cd_st_1,
         cd,
+        cd_desc_txt,
         version_ctrl_nbr,
         shared_ind
-      ) values (
+      )
+      select
         :identifier,
         'LabReport',
         'Result',
-        :test,
+        lab_test_cd,
+        lab_test_desc_txt,
         1,
         'N'
-      );
-            
+      from [NBS_SRTE]..[Lab_test]
+      where lab_test_cd = :test
+     ;
+     
        insert into Act_relationship(
         source_act_uid,
         source_class_cd,
@@ -53,16 +58,21 @@ public class CodedResultedTestMother {
         'OBS',
         'COMP'
       );
-            
+     
       insert into Obs_value_coded (
         observation_uid,
-        code
-      ) values (
+        code,
+        display_name
+      )
+      select
         :identifier,
-        :result
-      );
-            
-      """;
+        lab_result_cd,
+        lab_result_desc_txt
+      from [NBS_SRTE]..[Lab_result]
+      where lab_result_cd = :result
+      and laboratory_id = 'DEFAULT'
+     ;
+     """;
 
 
 
