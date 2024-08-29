@@ -1,17 +1,18 @@
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { Icon } from '@trussworks/react-uswds';
 import styles from './search-results-list-options.module.scss';
 import { Direction, useSorting } from 'sorting';
 import { SortField } from 'generated/graphql/schema';
 import { useEffect } from 'react';
 import { Button } from 'components/button';
+import { Icon } from 'design-system/icon';
+import classNames from 'classnames';
 
 type Props = {
     disabled?: boolean;
 };
 
 const SearchResultsListOptions = ({ disabled = false }: Props) => {
-    const { sortBy } = useSorting();
+    const { sortBy, property, direction } = useSorting();
 
     const savePreferences = (selection: SortField, direction: Direction) => {
         localStorage.setItem('searchResultsSortBy', selection);
@@ -27,55 +28,34 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
         }
     }, []);
 
+    const isActive = (field: SortField, dir: Direction) => property === field && direction === dir;
+
+    const renderSortButton = (field: SortField, dir: Direction, label: string) => (
+        <Button
+            className={classNames(styles.optionItem, isActive(field, dir) ? styles.active : '')}
+            icon={isActive(field, dir) ? <Icon name="check" className={styles.check} /> : undefined}
+            labelPosition="right"
+            type="button"
+            onClick={() => {
+                sortBy(field, dir);
+                savePreferences(field, dir);
+            }}>
+            {label}
+        </Button>
+    );
+
     return (
         <ButtonActionMenu
             className={styles.option}
             ariaLabel="Sort by list"
             outline
-            icon={<Icon.SortArrow />}
+            icon={<Icon className={styles.sortArrow} name="sort_arrow" />}
             disabled={disabled}>
-            <>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.Relevance, Direction.Descending);
-                        savePreferences(SortField.Relevance, Direction.Descending);
-                    }}>
-                    Closest match
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.LastNm, Direction.Ascending);
-                        savePreferences(SortField.LastNm, Direction.Ascending);
-                    }}>
-                    Patient name (A-Z)
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.LastNm, Direction.Descending);
-                        savePreferences(SortField.LastNm, Direction.Descending);
-                    }}>
-                    Patient name (Z-A)
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.BirthTime, Direction.Ascending);
-                        savePreferences(SortField.BirthTime, Direction.Ascending);
-                    }}>
-                    Date of birth (Ascending)
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.BirthTime, Direction.Descending);
-                        savePreferences(SortField.BirthTime, Direction.Descending);
-                    }}>
-                    Date of birth (Descending)
-                </Button>
-            </>
+            {renderSortButton(SortField.Relevance, Direction.Descending, 'Closest match')}
+            {renderSortButton(SortField.LastNm, Direction.Ascending, 'Patient name (A-Z)')}
+            {renderSortButton(SortField.LastNm, Direction.Descending, 'Patient name (Z-A)')}
+            {renderSortButton(SortField.BirthTime, Direction.Ascending, 'Date of birth (Ascending)')}
+            {renderSortButton(SortField.BirthTime, Direction.Descending, 'Date of birth (Descending)')}
         </ButtonActionMenu>
     );
 };
