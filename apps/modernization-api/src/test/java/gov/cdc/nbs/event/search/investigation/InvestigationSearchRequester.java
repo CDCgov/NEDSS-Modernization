@@ -62,8 +62,7 @@ class InvestigationSearchRequester {
   ResultActions search(
       final InvestigationFilter filter,
       final Pageable paging,
-      final SortCriteria sorting
-  ) {
+      final SortCriteria sorting) {
     try {
 
 
