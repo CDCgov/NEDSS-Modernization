@@ -7,11 +7,12 @@ import { orNull } from 'utils/orNull';
 import { interalize } from 'sensitive';
 import { useAlert } from 'alert/useAlert';
 import { Data, EditableCard } from 'components/EditableCard';
-import { GeneralInformationEntry, GeneralPatientInformationForm } from './GeneralInformationForm';
+import { GeneralPatientInformationForm } from './GeneralInformationForm';
 import { maybeDescription, maybeId } from 'apps/patient/profile/coded';
 import { useProfileContext } from 'apps/patient/profile/ProfileContext';
 import { Patient } from 'apps/patient/profile/Patient';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
+import { GeneralInformationEntry } from './GeneralInformationEntry';
 
 const initialEntry = {
     asOf: null,

@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 type Props = {
     label?: string;
+    ariaLabel?: string;
     disabled?: boolean;
     icon?: ReactNode;
     outline?: boolean;
@@ -17,10 +18,12 @@ type Props = {
 export const ButtonActionMenu = ({
     label,
     disabled,
+    ariaLabel,
     icon,
     outline,
     className,
     labelPosition = 'right',
+
     children
 }: Props) => {
     const wrapperRef = useRef(null);
@@ -44,6 +47,8 @@ export const ButtonActionMenu = ({
     return (
         <div className={styles.actionMenu} ref={wrapperRef}>
             <Button
+                aria-label={ariaLabel}
+                data-tooltip-position="top"
                 type="button"
                 onClick={() => setOpen(!open)}
                 className={classNames(styles.actionMenuButton, className)}

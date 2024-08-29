@@ -25,7 +25,7 @@ const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientE
         asOf: internalizeDate(new Date()),
         firstName: orNull(criteria.firstName),
         lastName: orNull(criteria.lastName),
-        dateOfBirth: internalizeDate(criteria.dateOfBirth),
+        dateOfBirth: criteria.dateOfBirth,
         currentGender: orNull(asValue(criteria.gender)),
         streetAddress1: orNull(criteria.address),
         city: orNull(criteria.city),

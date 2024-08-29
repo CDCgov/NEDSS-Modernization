@@ -57,23 +57,23 @@ enum LaboratoryReportStatus {
 
 input LabReportFilter {
   patientId: Int
-  programAreas: [String]
-  jurisdictions: [ID]
+  programAreas: [String!]
+  jurisdictions: [Int!]
   pregnancyStatus: PregnancyStatus
   eventId: LabReportEventId
   eventDate: LaboratoryEventDateSearch
-  entryMethods: [EntryMethod]
-  enteredBy: [UserType]
-  eventStatus: [EventStatus]
-  processingStatus: [LaboratoryReportStatus]
-  createdBy: ID
-  lastUpdatedBy: ID
+  entryMethods: [EntryMethod!]
+  enteredBy: [UserType!]
+  eventStatus: [EventStatus!]
+  processingStatus: [LaboratoryReportStatus!]
+  createdBy: Int
+  lastUpdatedBy: Int
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
-  orderingLabId: ID
-  orderingProviderId: ID
-  reportingLabId: ID
+  orderingLabId: Int
+  orderingProviderId: Int
+  reportingLabId: Int
 }
 
 input LabReportEventId {
@@ -84,6 +84,8 @@ input LabReportEventId {
 type LabReportResults {
   content: [LabReport!]!
   total: Int!
+  page: Int!
+  size: Int!
 }
 
 type LabReport {

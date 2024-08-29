@@ -24,8 +24,10 @@ class InvestigationSearchRequester {
                   jurisdictionCodeDescTxt
                   localId
                   addTime
+                  startedOn
                   investigationStatusCd
                   notificationRecordStatusCd
+                  investigatorLastName
                   personParticipations{
                       birthTime
                       currSexCd
@@ -47,8 +49,7 @@ class InvestigationSearchRequester {
 
   public InvestigationSearchRequester(
       final ObjectMapper mapper,
-      final GraphQLRequest graphql
-  ) {
+      final GraphQLRequest graphql) {
     this.mapper = mapper;
     this.graphql = graphql;
   }
@@ -56,25 +57,22 @@ class InvestigationSearchRequester {
   ResultActions search(
       final InvestigationFilter filter,
       final Pageable paging,
-      final SortCriteria sorting
-  ) {
+      final SortCriteria sorting) {
     try {
       return graphql.query(
           QUERY,
           mapper.createObjectNode()
               .<ObjectNode>set(
                   "filter",
-                  mapper.convertValue(filter, JsonNode.class)
-              )
+                  mapper.convertValue(filter, JsonNode.class))
               .set(
                   "page",
                   mapper.createObjectNode()
                       .put("pageNumber", paging.getPageNumber())
                       .put("pageSize", paging.getPageSize())
                       .put("sortDirection", sorting.direction().name())
-                      .put("sortField", sorting.field())
-              )
-      ).andDo(print());
+                      .put("sortField", sorting.field())))
+          .andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");
     }

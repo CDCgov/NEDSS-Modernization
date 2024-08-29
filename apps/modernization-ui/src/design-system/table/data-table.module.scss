@@ -47,19 +47,25 @@
                 left: 0;
                 z-index: 10;
 
+                min-width: 12.5rem;
+                max-width: 12.5rem;
                 border-right-width: 1px;
                 border-right-style: solid !important;
                 border-right-color: colors.$base;
             }
 
             &.sorted {
-                background-color: colors.$cool-accent-lighter !important;
+                background-color: colors.$cool-accent-lightest;
             }
         }
 
         tr:nth-child(odd) {
             td {
                 background-color: colors.$base-lightest;
+
+                &.sorted {
+                    background-color: colors.$cool-accent-lighter;
+                }
             }
         }
 

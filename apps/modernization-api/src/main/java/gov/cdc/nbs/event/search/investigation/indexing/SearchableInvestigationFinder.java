@@ -36,28 +36,39 @@ class SearchableInvestigationFinder {
           [investigation].investigation_status_cd,
           [notification].local_id as notification_local_id,
           [notification].add_time as notification_add_time,
-          coalesce([notification].record_status_cd,'UNASSIGNED') as notification_record_status_cd
+          coalesce([notification].record_status_cd,'UNASSIGNED') as notification_record_status_cd,
+          [investigator].last_nm as investigator_last_nm
       from Public_health_case [investigation]
-            
+
           join act on
                   [act].act_uid = [investigation].public_health_case_uid
-            
+
           join nbs_srte.dbo.Condition_code [condition] on
                           [condition].condition_cd = [investigation].cd
-            
+
           join NBS_SRTE.dbo.Jurisdiction_code [jurisdiction] on
                   [jurisdiction].code = [investigation].jurisdiction_cd
-            
+
           left join Act_relationship [notified] with (nolock) on
                   [notified].[target_act_uid] = [investigation].[public_health_case_uid]
               and [notified].type_cd = 'Notification'
               and [notified].[target_class_cd] = 'CASE'
               and [notified].[source_class_cd] = 'NOTF'
               and [notified].record_status_cd = 'ACTIVE'
-            
+
           left join [Notification] [notification] with (nolock) on
                   [notification].[notification_uid] = [notified].[source_act_uid]
-            
+
+          LEFT JOIN (
+              SELECT MAX(person.last_nm) last_nm, act_uid
+              FROM participation p WITH (NOLOCK)
+                  JOIN person WITH (NOLOCK) ON person.person_uid = (
+                    select person.person_parent_uid
+                    from person WITH (NOLOCK)
+                    where person.person_uid = p.subject_entity_uid)
+              WHERE p.type_cd='InvestgrOfPHC' group by act_uid
+          ) investigator ON investigator.act_uid = [investigation].[public_health_case_uid]
+
       where [investigation].[public_health_case_uid] = ?
       """;
   private static final int IDENTIFIER_PARAMETER = 1;
@@ -87,6 +98,7 @@ class SearchableInvestigationFinder {
   private static final int NOTIFICATION_COLUMN = 24;
   private static final int NOTIFIED_ON_COLUMN = 25;
   private static final int NOTIFICATION_STATUS_COLUMN = 26;
+  private static final int INVESTIGATOR_LAST_NAME_COLUMN = 27;
 
   private final JdbcTemplate template;
   private final SearchableInvestigationRowMapper mapper;
@@ -120,17 +132,15 @@ class SearchableInvestigationFinder {
             STATUS_COLUMN,
             NOTIFICATION_COLUMN,
             NOTIFIED_ON_COLUMN,
-            NOTIFICATION_STATUS_COLUMN
-        )
-    );
+            NOTIFICATION_STATUS_COLUMN,
+            INVESTIGATOR_LAST_NAME_COLUMN));
   }
 
   Optional<SearchableInvestigation> find(final long identifier) {
     return this.template.query(
-            QUERY,
-            statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier),
-            this.mapper
-        ).stream()
+        QUERY,
+        statement -> statement.setLong(IDENTIFIER_PARAMETER, identifier),
+        this.mapper).stream()
         .findFirst();
   }
 }

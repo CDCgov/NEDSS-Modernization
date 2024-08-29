@@ -52,34 +52,33 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient to enter numeric and special character in name field
-        # user should get restricted message
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
 
     Scenario: User add a patient to enter other information with Information as of Date field
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient to enter other information with Information as of Date
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
 
     Scenario: User add a patient to enter Address with Information as of Date field
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient to enter address with Information as of Date
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
 
     Scenario: View the patient detail of new created patient profile
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient
         Then I should see profile of new patient
-        Then I should see "Patient ID: "
+        Then I should see on Patient Profile "Patient ID: "
 
     Scenario: Verify the detail of new created patient
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient 
         Then I should see profile of new patient
-        Then I should see "Patient ID: "
+        Then I should see on Patient Profile "Patient ID: "
         # Then I should see "SEX"
         # Then I should see "PHONE NUMBER"
         # Then I should see "DATE OF BIRTH"
@@ -105,7 +104,7 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient with select Ethnicity option
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
 
     # Scenario: User add a patient to select two Ethnicity option
     #     Then the user has searched for a patient by "Person number" as "63506872864"
@@ -117,7 +116,7 @@ Feature: User can add a patient profilenp
         Then the user has searched for a patient by "Person number" as "63506872864"
         When nagivate to add new patient page
         Then I create a new patient to select one optios of Race of the patient
-        Then I should see "You have successfully added"
+        Then I should see profile of new patient
 
     # Scenario: User add a patient to select more then one options of the Race  
     #     Then the user has searched for a patient by "Person number" as "63506872864"

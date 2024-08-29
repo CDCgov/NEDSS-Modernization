@@ -94,6 +94,8 @@ extend type Query {
 type InvestigationResults {
   content: [Investigation!]!
   total: Int!
+  page: Int!
+  size: Int!
 }
 
 type InvestigationPersonParticipation {
@@ -114,23 +116,25 @@ type Investigation {
   jurisdictionCodeDescTxt: String
   localId: String
   addTime: Date
+  startedOn: Date
   investigationStatusCd: String
   notificationRecordStatusCd: String
+  investigatorLastName: String
   personParticipations: [InvestigationPersonParticipation!]!
 }
 
 input InvestigationFilter {
   patientId: Int
-  conditions: [String]
-  programAreas: [String]
-  jurisdictions: [ID]
+  conditions: [String!]
+  programAreas: [String!]
+  jurisdictions: [Int!]
   pregnancyStatus: PregnancyStatus
   eventId: EventId
   eventDate: InvestigationEventDateSearch
   createdBy: String
   lastUpdatedBy: String
   providerFacilitySearch: ProviderFacilitySearch
-  investigatorId: ID
+  investigatorId: Int
   investigationStatus: InvestigationStatus
   outbreakNames: [String]
   caseStatuses: [CaseStatus!]
@@ -296,23 +300,23 @@ enum LaboratoryReportStatus {
 
 input LabReportFilter {
   patientId: Int
-  programAreas: [String]
-  jurisdictions: [ID]
+  programAreas: [String!]
+  jurisdictions: [Int!]
   pregnancyStatus: PregnancyStatus
   eventId: LabReportEventId
   eventDate: LaboratoryEventDateSearch
-  entryMethods: [EntryMethod]
-  enteredBy: [UserType]
-  eventStatus: [EventStatus]
-  processingStatus: [LaboratoryReportStatus]
-  createdBy: ID
-  lastUpdatedBy: ID
+  entryMethods: [EntryMethod!]
+  enteredBy: [UserType!]
+  eventStatus: [EventStatus!]
+  processingStatus: [LaboratoryReportStatus!]
+  createdBy: Int
+  lastUpdatedBy: Int
   providerSearch: LabReportProviderSearch
   resultedTest: String
   codedResult: String
-  orderingLabId: ID
-  orderingProviderId: ID
-  reportingLabId: ID
+  orderingLabId: Int
+  orderingProviderId: Int
+  reportingLabId: Int
 }
 
 input LabReportEventId {
@@ -323,6 +327,8 @@ input LabReportEventId {
 type LabReportResults {
   content: [LabReport!]!
   total: Int!
+  page: Int!
+  size: Int!
 }
 
 type LabReport {
@@ -1082,7 +1088,7 @@ input IdentificationCriteria {
 }
 
 input PersonFilter {
-  id: ID
+  id: String
   lastName: String
   firstName: String
   race: String
@@ -1169,12 +1175,16 @@ type PatientSearchResult {
 type PatientSearchResults {
   content: [PatientSearchResult!]!
   total: Int!
+  page: Int!
+  size: Int!
+
 }
 
 type Query {
   findPatientsByFilter(
     filter: PersonFilter!
     page: SortablePage
+    share: String
   ): PatientSearchResults!
 }
 type PatientTreatment {
@@ -1652,17 +1662,24 @@ enum SortField {
   address
   birthTime
   city
+  condition
   country
   county
   email
   firstNm
   id
   identification
+  investigator
+  investigationId
+  jurisdiction
   lastNm
   local_id
+  notification
   phoneNumber
   relevance
+  startDate
   state
+  status
   sex
   zip
 }

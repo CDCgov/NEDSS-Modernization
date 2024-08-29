@@ -31,6 +31,7 @@ export type { Smarty } from './models/Smarty';
 export type { Table } from './models/Table';
 export type { View } from './models/View';
 
+export { CodedResultOptionsService } from './services/CodedResultOptionsService';
 export { ConceptOptionsService } from './services/ConceptOptionsService';
 export { ConditionOptionsService } from './services/ConditionOptionsService';
 export { ConfigurationControllerService } from './services/ConfigurationControllerService';

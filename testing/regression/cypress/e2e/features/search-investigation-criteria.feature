@@ -7,8 +7,8 @@ Feature: Investigation Search by criteria
 
   Scenario: Basic Info - Search by Condition
     When I select an investigation status for event investigation
-    Then I should see Results with the text "CLOSED"
-    Then I should see "CLOSED"
+    Then I should see Results with the text "closed"
+    Then I should see "closed"
 
   Scenario: Basic Info - Search by Outbreak name
     When I select outbreak name for event investigation

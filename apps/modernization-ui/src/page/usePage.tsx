@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useReducer } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useReducer } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { TOTAL_TABLE_DATA } from 'utils/util';
 
@@ -85,24 +85,27 @@ const PageProvider = ({ pageSize = TOTAL_TABLE_DATA, appendToUrl = false, childr
         }
     }, [appendToUrl, requested]);
 
-    const requestFromUrl = (next: number) => {
-        if (next != page.current) {
-            // saves the current page to a url param so that it persists
-            // on page refresh or navigating away
-            setSearchParams((current) => {
-                current.set(PAGE_PARAMETER, next.toString());
-                return current;
-            });
-        }
-    };
+    const requestFromUrl = useCallback(
+        (next: number) => {
+            if (next != page.current) {
+                // saves the current page to a url param so that it persists
+                // on page refresh or navigating away
+                setSearchParams((current) => {
+                    current.set(PAGE_PARAMETER, next.toString());
+                    return current;
+                });
+            }
+        },
+        [page.current, setSearchParams]
+    );
 
-    const requestFromDispatch = (page: number) => dispatch({ type: 'go-to', page });
-    const reload = () => dispatch({ type: 'reload' });
+    const requestFromDispatch = useCallback((page: number) => dispatch({ type: 'go-to', page }), [dispatch]);
+    const reload = useCallback(() => dispatch({ type: 'reload' }), [dispatch]);
     const request = appendToUrl ? requestFromUrl : requestFromDispatch;
     const firstPage = () => request(1);
-    const ready = (total: number, page: number) => dispatch({ type: 'ready', total, page });
-    const resize = (size: number) => dispatch({ type: 'resize', size });
-    const reset = () => dispatch({ type: 'reset' });
+    const ready = useCallback((total: number, page: number) => dispatch({ type: 'ready', total, page }), [dispatch]);
+    const resize = useCallback((size: number) => dispatch({ type: 'resize', size }), [dispatch]);
+    const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
 
     const value = { page, firstPage, reload, request, ready, resize, reset };
 

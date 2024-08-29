@@ -8,6 +8,8 @@ extend type Query {
 type InvestigationResults {
   content: [Investigation!]!
   total: Int!
+  page: Int!
+  size: Int!
 }
 
 type InvestigationPersonParticipation {
@@ -28,23 +30,25 @@ type Investigation {
   jurisdictionCodeDescTxt: String
   localId: String
   addTime: Date
+  startedOn: Date
   investigationStatusCd: String
   notificationRecordStatusCd: String
+  investigatorLastName: String
   personParticipations: [InvestigationPersonParticipation!]!
 }
 
 input InvestigationFilter {
   patientId: Int
-  conditions: [String]
-  programAreas: [String]
-  jurisdictions: [ID]
+  conditions: [String!]
+  programAreas: [String!]
+  jurisdictions: [Int!]
   pregnancyStatus: PregnancyStatus
   eventId: EventId
   eventDate: InvestigationEventDateSearch
   createdBy: String
   lastUpdatedBy: String
   providerFacilitySearch: ProviderFacilitySearch
-  investigatorId: ID
+  investigatorId: Int
   investigationStatus: InvestigationStatus
   outbreakNames: [String]
   caseStatuses: [CaseStatus!]

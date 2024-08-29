@@ -37,6 +37,10 @@ Then("I should see profile of new patient", () => {
     addPatientPage.viewPatientProfile()
 });
 
+Then("I should see on Patient Profile {string}", (patientIDString) => {
+    addPatientPage.viewPatientID(patientIDString)
+  });
+
 Then("the user add another patient profile", () => {
     addPatientPage.addAnotherPatient()
 });
