@@ -28,7 +28,7 @@ Then("I should see Condition Results with the link {string}", (string) => {
 });
 
 Then("I should see Results with the link {string}", (string) => {
-  cy.get("a#condition").contains(string).should("be.visible");
+  cy.get("a#documentType").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the text {string}", (string) => {
