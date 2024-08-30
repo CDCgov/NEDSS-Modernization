@@ -18,11 +18,11 @@ const SEX = { id: 'sex', name: 'Sex' };
 const PATIENT_ID = { id: 'id', name: 'Patient ID' };
 const CONDITION = { id: 'condition', name: 'Condition' };
 const START_DATE = { id: 'startDate', name: 'Start date' };
-const JURSIDICTION = { id: 'jurisdition', name: 'Jurisdiction' };
+const JURSIDICTION = { id: 'jurisdiction', name: 'Jurisdiction' };
 const INVESTIGATOR = { id: 'investigator', name: 'Investigator' };
 const INVESTIGATION_ID = { id: 'investigationId', name: 'Investigation ID' };
 const STATUS = { id: 'status', name: 'Status' };
-const NOTIFICATION = { id: 'notificaiton', name: 'Notification' };
+const NOTIFICATION = { id: 'notification', name: 'Notification' };
 
 const columns = (notificationStatusResolver: SelectableResolver): Column<Investigation>[] => [
     {
