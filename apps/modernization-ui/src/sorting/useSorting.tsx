@@ -37,7 +37,6 @@ const reducer = (current: Sorting, action: Action): Sorting => {
             return asSorting(action.property, action.direction);
         }
         case 'toggle': {
-            console.log(current?.property);
             if (action.property === current?.property) {
                 return asSorting(current.property, nextDirection(current.direction));
             } else {
