@@ -2,8 +2,6 @@ package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.data.pagination.PaginationRequest;
 import gov.cdc.nbs.event.search.LabReportFilter;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.patient.search.SearchGraphQLPageableMapper;
 import gov.cdc.nbs.patient.search.SearchPageableMapper;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
