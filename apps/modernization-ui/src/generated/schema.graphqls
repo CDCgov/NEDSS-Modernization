@@ -1651,9 +1651,11 @@ enum SortDirection {
   DESC
 }
 
+scalar Direction
+
 input Sort {
   property: String!
-  direction: SortDirection
+  direction: Direction!
 }
 
 input SortablePage {
