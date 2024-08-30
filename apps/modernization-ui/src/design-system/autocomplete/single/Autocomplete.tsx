@@ -19,6 +19,7 @@ type AutocompleteSingleProps = {
     sizing?: Sizing;
     error?: string;
     required?: boolean;
+    asSuggestion?: (suggestion: { label: string; value: string }) => ReactNode;
     onBlur?: any;
 } & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
@@ -33,6 +34,7 @@ const Autocomplete = ({
     error,
     required,
     onBlur,
+    asSuggestion = renderSuggestion,
     resolver
 }: AutocompleteSingleProps & { resolver: AutocompleteOptionsResolver }) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
@@ -115,7 +117,7 @@ const Autocomplete = ({
                     listRef={suggestionRef}
                     id={`${id}-options-autocomplete`}
                     suggestions={options}
-                    renderSuggestion={renderSuggestion}
+                    renderSuggestion={asSuggestion}
                     onSelection={handleSelection}
                     onCancel={handleCancel}
                 />

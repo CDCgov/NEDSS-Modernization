@@ -5,11 +5,15 @@ import { Selectable } from 'options/selectable';
 const onSelectableResultedTest = (response: Array<Option>) => {
     return response.map(
         (data): Selectable => ({
-            name: `${data.name} [${data.value}]`,
+            name: data.name,
             value: data.value,
-            label: `${data.name} [${data.value}]`
+            label: data.label
         })
     );
+};
+
+const renderSuggestion = (suggestion: { label: string; value: string }) => {
+    return <>{`${suggestion.label} [${suggestion.value}]`}</>;
 };
 
 const resolver = (criteria: string, limit?: number) =>
@@ -20,7 +24,7 @@ const resolver = (criteria: string, limit?: number) =>
         return onSelectableResultedTest(response);
     });
 
-const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur, ...rest }: AutocompleteSingleProps) => (
+const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur }: AutocompleteSingleProps) => (
     <Autocomplete
         resolver={resolver}
         onChange={onChange}
@@ -28,7 +32,7 @@ const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur, ...r
         onBlur={onBlur}
         id={id}
         label={label}
-        {...rest}
+        asSuggestion={renderSuggestion}
     />
 );
 
