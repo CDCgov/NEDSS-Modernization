@@ -48,7 +48,7 @@ describe('Autocomplete', () => {
 
         await userEvent.click(appleSuggestion);
 
-        expect(onChange).toHaveBeenCalledWith({ name: 'Value 1', value: 'val-1', label: 'label-1' });
+        expect(onChange).toHaveBeenCalledWith('val-1');
         expect(input).toHaveValue('Value 1');
     });
 

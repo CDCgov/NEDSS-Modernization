@@ -18,6 +18,7 @@ import { UserAutocomplete } from 'options/autocompete/UserAutocomplete';
 import { ProviderAutocomplete } from 'options/autocompete/ProviderAutocomplete';
 import { FacilityAutocomplete } from 'options/autocompete/FacilityAutocomplete';
 import { handleChangeToDefaultValue } from 'forms/event';
+import { Selectable } from 'options';
 
 type InvestigationGeneralAccordionProps = {
     form: UseFormReturn<InvestigationFilter>;
@@ -311,7 +312,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 id={name}
                                 label="Event facility type"
                                 placeholder=""
-                                onChange={(e) => onChange(e?.value)}
+                                onChange={(e) => onChange((e as Selectable)?.value)}
                                 required={true}
                                 onBlur={onBlur}
                             />

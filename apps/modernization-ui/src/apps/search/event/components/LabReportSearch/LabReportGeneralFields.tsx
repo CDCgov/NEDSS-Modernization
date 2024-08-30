@@ -21,6 +21,7 @@ import { SearchCriteriaContext } from 'providers/SearchCriteriaContext';
 import { ChangeEvent } from 'react';
 import { Controller, UseFormReturn, useWatch } from 'react-hook-form';
 import { formatInterfaceString } from 'utils/util';
+import { Selectable } from 'options';
 
 type LabReportGeneralFieldProps = {
     form: UseFormReturn<LabReportFilter>;
@@ -438,7 +439,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 label="Event ordering facility"
                                 required={true}
                                 placeholder=""
-                                onChange={(e) => onChange(e?.value)}
+                                onChange={(e) => onChange((e as Selectable)?.value)}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
@@ -484,7 +485,7 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 label="Event reporting facility"
                                 required={true}
                                 placeholder=""
-                                onChange={(e) => onChange(e?.value)}
+                                onChange={(e) => onChange((e as Selectable)?.value)}
                                 onBlur={onBlur}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}

@@ -13,8 +13,8 @@ const renderSuggestion = (suggestion: { label: string; value: string }): ReactNo
 type AutocompleteSingleProps = {
     id: string;
     label: string;
-    value?: Selectable;
-    onChange?: (value?: Selectable) => void;
+    value?: Selectable | string;
+    onChange?: (value?: Selectable | string) => void;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;
@@ -39,12 +39,12 @@ const Autocomplete = ({
     const inputRef = useRef<HTMLInputElement>(null);
 
     // setting to empty string prevents error: A component is changing an uncontrolled input to be controlled
-    const [entered, setEntered] = useState(value?.name ?? '');
+    const [entered, setEntered] = useState(typeof value === 'string' ? value : value?.value);
 
     const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });
 
     useEffect(() => {
-        reset(value?.name);
+        reset(typeof value === 'string' ? value : value?.value);
     }, []);
 
     useEffect(() => {
@@ -69,7 +69,7 @@ const Autocomplete = ({
         reset(option.name);
         setEntered(option.name ?? '');
         if (onChange) {
-            onChange(option);
+            onChange(option.value);
             onBlur?.();
         }
     };
@@ -105,7 +105,10 @@ const Autocomplete = ({
                     autoComplete="off"
                     value={entered}
                     name={id}
-                    onChange={(event) => setEntered(event.target.value)}
+                    onChange={(event) => {
+                        onChange?.(event.target.value);
+                        setEntered(event.target.value);
+                    }}
                     onBlur={onBlur}
                     onKeyDown={handleKeyDown}
                     required={required}
