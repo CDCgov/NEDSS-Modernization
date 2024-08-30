@@ -1,7 +1,6 @@
-package gov.cdc.nbs.patient.search;
+package gov.cdc.nbs.search;
 
 import gov.cdc.nbs.data.pagination.PaginationRequest;
-import gov.cdc.nbs.exception.QueryException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +29,7 @@ public class SearchPageableMapper {
 
   private Pageable asPageable(final PaginationRequest request) {
     if (request.pageSize() != null && request.pageSize() > maxPageSize) {
-      throw new QueryException("Invalid page size: " + request.pageSize() + ". Max size allowed: " + maxPageSize);
+      throw new IllegalArgumentException("Invalid page size: " + request.pageSize() + ". Max size allowed: " + maxPageSize);
     }
 
     int size = request.pageSize() == null ? maxPageSize : request.pageSize();

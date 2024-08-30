@@ -2,7 +2,7 @@ package gov.cdc.nbs.event.search.investigation;
 
 import gov.cdc.nbs.data.pagination.PaginationRequest;
 import gov.cdc.nbs.event.search.InvestigationFilter;
-import gov.cdc.nbs.patient.search.SearchPageableMapper;
+import gov.cdc.nbs.search.SearchPageableMapper;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import org.springframework.data.domain.Pageable;

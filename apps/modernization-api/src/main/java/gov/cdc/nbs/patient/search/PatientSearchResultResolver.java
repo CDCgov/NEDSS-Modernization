@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.search;
 import gov.cdc.nbs.authentication.NbsUserDetails;
 import gov.cdc.nbs.authorization.permission.Permission;
 import gov.cdc.nbs.data.pagination.PaginationRequest;
+import gov.cdc.nbs.search.SearchPageableMapper;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import org.springframework.data.domain.Pageable;
