@@ -12,8 +12,8 @@ import {
     getPatient
 } from 'apps/search/investigation/result';
 
-const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
-const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };
+const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
+const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Sex' };
 const PATIENT_ID = { id: 'id', name: 'Patient ID' };
 const CONDITION = { id: 'condition', name: 'Condition' };
