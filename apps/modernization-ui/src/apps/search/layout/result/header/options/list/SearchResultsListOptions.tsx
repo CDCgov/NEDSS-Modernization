@@ -32,7 +32,7 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
 
     const renderSortButton = (field: SortField, dir: Direction, label: string) => (
         <Button
-            className={classNames(styles.optionItem, isActive(field, dir) ? styles.active : '')}
+            className={classNames(styles.optionItem, { [styles.active]: isActive(field, dir) })}
             icon={isActive(field, dir) ? <Icon name="check" className={styles.check} /> : undefined}
             labelPosition="right"
             type="button"
