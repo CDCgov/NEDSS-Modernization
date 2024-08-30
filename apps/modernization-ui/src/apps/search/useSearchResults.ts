@@ -244,7 +244,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
             //  the sorting changing without the criteria changing
             dispatch({ type: 'refresh' });
         }
-    }, [sort?.direction, sort?.field]);
+    }, [sort?.direction, sort?.property]);
 
     const status = useMemo(
         () => (state.status === 'fetching' || state.status === 'requesting' ? 'loading' : state.status),
