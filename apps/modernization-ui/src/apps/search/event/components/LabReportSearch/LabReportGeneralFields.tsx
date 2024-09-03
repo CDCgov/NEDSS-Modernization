@@ -393,14 +393,26 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                 control={form.control}
                 name="createdBy"
                 render={({ field: { onChange } }) => (
-                    <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
+                    <UserAutocomplete
+                        id="createdBy"
+                        asValue={(value) => value}
+                        asText={(value) => value?.name}
+                        label="Event created by user"
+                        onChange={onChange}
+                    />
                 )}
             />
             <Controller
                 control={form.control}
                 name="lastUpdatedBy"
                 render={({ field: { onChange } }) => (
-                    <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
+                    <UserAutocomplete
+                        id="lastUpdatedBy"
+                        onChange={onChange}
+                        asValue={(value) => value}
+                        asText={(value) => value?.name}
+                        label="Event updated by user"
+                    />
                 )}
             />
             <Controller
@@ -440,6 +452,8 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 placeholder=""
                                 onChange={(e) => onChange(e?.value)}
                                 onBlur={onBlur}
+                                asValue={(value) => value}
+                                asText={(value) => value?.name}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                         </>
@@ -463,6 +477,8 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 placeholder=""
                                 onChange={onChange}
                                 onBlur={onBlur}
+                                asValue={(value) => value}
+                                asText={(value) => value?.name}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                         </>
@@ -486,6 +502,8 @@ export const LabReportGeneralFields = ({ form }: LabReportGeneralFieldProps) => 
                                 placeholder=""
                                 onChange={(e) => onChange(e?.value)}
                                 onBlur={onBlur}
+                                asValue={(value) => value}
+                                asText={(value) => value?.name}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                         </>

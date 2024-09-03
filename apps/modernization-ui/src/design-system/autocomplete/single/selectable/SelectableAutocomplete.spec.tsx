@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { AutocompleteOptionsResolver } from 'options/autocompete';
 import { SelectableAutocomplete } from './SelectableAutocomplete';
+import { Selectable } from 'options';
 
 const mockResolver: AutocompleteOptionsResolver = async (criteria: string) => {
     const options = [
@@ -22,29 +23,40 @@ describe('SelectableAutocomplete', () => {
     };
 
     it('renders with label and input', () => {
-        const { getByLabelText, getByRole } = render(<SelectableAutocomplete {...defaultProps} />);
+        const { getByLabelText, getByRole } = render(
+            <SelectableAutocomplete asValue={(value) => value} asText={(value) => value?.name} {...defaultProps} />
+        );
         expect(getByLabelText('Test Autocomplete')).toBeInTheDocument();
         expect(getByRole('textbox')).toBeInTheDocument();
     });
 
     it('displays suggestions when typing', async () => {
-        const { getByRole, findByText } = render(<SelectableAutocomplete {...defaultProps} />);
+        const { getByRole, findByText } = render(
+            <SelectableAutocomplete asValue={(value) => value} asText={(value) => value?.name} {...defaultProps} />
+        );
         const input = getByRole('textbox');
 
         await act(async () => userEvent.type(input, 'a'));
 
-        const appleSuggestion = await findByText('label-1');
+        const appleSuggestion = await findByText('Value 1');
         expect(appleSuggestion).toBeInTheDocument();
     });
 
     it('calls onChange when a suggestion is selected', async () => {
         const onChange = jest.fn();
-        const { getByRole, findByText } = render(<SelectableAutocomplete {...defaultProps} onChange={onChange} />);
+        const { getByRole, findByText } = render(
+            <SelectableAutocomplete
+                asValue={(value) => value}
+                asText={(value) => value?.name}
+                {...defaultProps}
+                onChange={onChange}
+            />
+        );
 
         const input = getByRole('textbox');
         await userEvent.type(input, 'a');
 
-        const appleSuggestion = await findByText('label-1');
+        const appleSuggestion = await findByText('Value 1');
         expect(appleSuggestion).toBeInTheDocument();
 
         act(() => userEvent.click(appleSuggestion));
@@ -54,12 +66,26 @@ describe('SelectableAutocomplete', () => {
     });
 
     it('displays error message when error prop is provided', () => {
-        const { getByText } = render(<SelectableAutocomplete {...defaultProps} error="This is an error message" />);
+        const { getByText } = render(
+            <SelectableAutocomplete
+                asValue={(value) => value}
+                asText={(value) => value?.name}
+                {...defaultProps}
+                error="This is an error message"
+            />
+        );
         expect(getByText('This is an error message')).toBeInTheDocument();
     });
 
     it('marks input as required when required prop is true', () => {
-        const { getByRole } = render(<SelectableAutocomplete {...defaultProps} required={true} />);
+        const { getByRole } = render(
+            <SelectableAutocomplete
+                asValue={(value) => value}
+                asText={(value) => value?.name}
+                {...defaultProps}
+                required={true}
+            />
+        );
         expect(getByRole('textbox')).toHaveAttribute('required');
     });
 });

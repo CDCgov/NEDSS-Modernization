@@ -206,6 +206,8 @@ const GeneralSearchFields = () => {
                         sizing="compact"
                         onChange={onChange}
                         value={value}
+                        asValue={(value) => value}
+                        asText={(value) => value?.name}
                     />
                 )}
             />
@@ -219,6 +221,8 @@ const GeneralSearchFields = () => {
                         sizing="compact"
                         onChange={onChange}
                         value={value}
+                        asValue={(value) => value}
+                        asText={(value) => value?.name}
                     />
                 )}
             />
@@ -236,6 +240,8 @@ const GeneralSearchFields = () => {
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
+                            asValue={(value) => value}
+                            asText={(value) => value?.name}
                         />
                     </>
                 )}
@@ -254,6 +260,8 @@ const GeneralSearchFields = () => {
                             value={value}
                             onChange={(e) => onChange(e)}
                             onBlur={onBlur}
+                            asValue={(value) => value}
+                            asText={(value) => value?.name}
                         />
                     </>
                 )}
