@@ -16,13 +16,13 @@ on:
         required: true
       DATABASE_PASSWORD:
         description: "Secret named DATABASE_PASSWORD that references the test database container default password"
-        required: true
+        required: false
       TOKEN_SECRET:
         description: "Secret named TOKEN_SECRET that references a default JWT token key"
-        required: true
+        required: false
       PARAMETER_SECRET:
         description: "Secret named PARAMETER_SECRET that references a default key for encrypting search parameters"
-        required: true
+        required: false
   pull_request:
     paths:
       - "apps/**"
