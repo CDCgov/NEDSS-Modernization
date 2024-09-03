@@ -9,15 +9,21 @@ import { Selectable } from 'options/selectable';
 const CodedResultsAutocomplete = (props: Omit<AutoCompleteWithStringProps, 'resolver'>) => {
     const [getCodedResults] = useFindDistinctCodedResultsLazyQuery();
 
-    const labTestToComboOption = (test: any): Selectable => ({
-        name: test.name,
-        value: test.name,
-        label: test.name
-    });
+    const labTestToComboOption = useCallback(
+        (test: any): Selectable => ({
+            name: test.name,
+            value: test.name,
+            label: test.name
+        }),
+        []
+    );
 
-    const onCompleteCodedResults = (response: FindDistinctCodedResultsQuery) => {
-        return response.findDistinctCodedResults.map(labTestToComboOption) || [];
-    };
+    const onCompleteCodedResults = useCallback(
+        (response: FindDistinctCodedResultsQuery) => {
+            return response.findDistinctCodedResults.map(labTestToComboOption) || [];
+        },
+        [labTestToComboOption]
+    );
 
     const resolver = useCallback(
         async (criteria: string): Promise<Selectable[]> => {
