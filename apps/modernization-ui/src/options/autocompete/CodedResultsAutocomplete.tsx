@@ -15,12 +15,9 @@ const CodedResultsAutocomplete = (props: Omit<AutoCompleteWithStringProps, 'reso
         label: test.name
     });
 
-    const onCompleteCodedResults = useCallback(
-        (response: FindDistinctCodedResultsQuery) => {
-            return response.findDistinctCodedResults.map(labTestToComboOption) || [];
-        },
-        [labTestToComboOption]
-    );
+    const onCompleteCodedResults = (response: FindDistinctCodedResultsQuery) => {
+        return response.findDistinctCodedResults.map(labTestToComboOption) || [];
+    };
 
     const resolver = useCallback(
         async (criteria: string): Promise<Selectable[]> => {
