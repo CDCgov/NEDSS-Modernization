@@ -6,24 +6,28 @@ import { Selectable } from 'options/selectable';
 import { AutocompleteOptionsResolver, useSelectableAutocomplete } from 'options/autocompete';
 import { Suggestions } from 'suggestion/Suggestions';
 
-const renderSuggestion = (suggestion: { label: string; value: string }): ReactNode => {
-    return <>{suggestion.label}</>;
-};
+type SuggestionRenderer = (suggestion: Selectable) => ReactNode;
+type TextConverter<V> = (value?: V) => string | undefined;
+type ValueConverter<V> = (suggestion?: Selectable) => V | undefined;
 
-type AutocompleteSingleProps = {
+const renderSuggestion = (suggestion: Selectable): ReactNode => suggestion.name;
+
+type AutocompleteSingleProps<V> = {
     id: string;
     label: string;
-    value?: Selectable;
-    onChange?: (value?: Selectable) => void;
+    value?: V;
+    onChange?: (value?: V) => void;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;
     required?: boolean;
-    asSuggestion?: (suggestion: { label: string; value: string }) => ReactNode;
+    asValue: ValueConverter<V>;
+    asText: TextConverter<V>;
+    asSuggestion?: SuggestionRenderer;
     onBlur?: any;
-} & Omit<JSX.IntrinsicElements['select'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
+} & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
 
-const Autocomplete = ({
+const Autocomplete = <V,>({
     id,
     label,
     placeholder,
@@ -34,19 +38,21 @@ const Autocomplete = ({
     error,
     required,
     onBlur,
+    asValue,
+    asText,
     asSuggestion = renderSuggestion,
     resolver
-}: AutocompleteSingleProps & { resolver: AutocompleteOptionsResolver }) => {
+}: AutocompleteSingleProps<V> & { resolver: AutocompleteOptionsResolver }) => {
     const suggestionRef = useRef<HTMLUListElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
     // setting to empty string prevents error: A component is changing an uncontrolled input to be controlled
-    const [entered, setEntered] = useState(value?.name ?? '');
+    const [entered, setEntered] = useState(asText(value) ?? '');
 
     const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });
 
     useEffect(() => {
-        reset(value?.name);
+        reset(asText(value));
     }, []);
 
     useEffect(() => {
@@ -71,7 +77,7 @@ const Autocomplete = ({
         reset(option.name);
         setEntered(option.name ?? '');
         if (onChange) {
-            onChange(option);
+            onChange(asValue(option));
             onBlur?.();
         }
     };
