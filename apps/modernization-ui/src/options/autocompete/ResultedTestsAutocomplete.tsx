@@ -1,4 +1,7 @@
-import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
+import {
+    AutoCompleteWithString,
+    AutoCompleteWithStringProps
+} from 'design-system/autocomplete/autoCompleteWithString/AutoCompleteWithString';
 import { Option, ResultedTestOptionsService } from 'generated';
 import { Selectable } from 'options/selectable';
 
@@ -24,8 +27,9 @@ const resolver = (criteria: string, limit?: number) =>
         return onSelectableResultedTest(response);
     });
 
-const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur }: AutocompleteSingleProps) => (
-    <Autocomplete
+const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur, value }: AutoCompleteWithStringProps) => (
+    <AutoCompleteWithString
+        value={value}
         resolver={resolver}
         onChange={onChange}
         required={required}

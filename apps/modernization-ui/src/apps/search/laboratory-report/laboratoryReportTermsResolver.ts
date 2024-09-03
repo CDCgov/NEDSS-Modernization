@@ -56,11 +56,21 @@ const laboratoryReportTermsResolver = (entry: LabReportFilterEntry): Term[] => {
     }
 
     if (entry.codedResult) {
-        terms.push(fromSelectable('codedResult', 'CODED RESULT')(entry.codedResult));
+        terms.push(
+            fromValue(
+                'codedResult',
+                'CODED RESULT'
+            )(typeof entry.codedResult === 'string' ? entry.codedResult : entry.codedResult.name)
+        );
     }
 
     if (entry.resultedTest) {
-        terms.push(fromSelectable('resultedTest', 'RESULTED TEST')(entry.resultedTest));
+        terms.push(
+            fromValue(
+                'resultedTest',
+                'RESULTED TEST'
+            )(typeof entry.resultedTest === 'string' ? entry.resultedTest : entry.resultedTest.name)
+        );
     }
 
     return terms;

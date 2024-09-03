@@ -1,8 +1,12 @@
-import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
+import React, { useCallback } from 'react';
+import {
+    AutoCompleteWithString,
+    AutoCompleteWithStringProps
+} from 'design-system/autocomplete/autoCompleteWithString/AutoCompleteWithString';
 import { FindDistinctCodedResultsQuery, useFindDistinctCodedResultsLazyQuery } from 'generated/graphql/schema';
 import { Selectable } from 'options/selectable';
 
-const CodedResultsAutocomplete = (props: Omit<AutocompleteSingleProps, 'resolver'>) => {
+const CodedResultsAutocomplete = (props: Omit<AutoCompleteWithStringProps, 'resolver'>) => {
     const [getCodedResults] = useFindDistinctCodedResultsLazyQuery();
 
     const labTestToComboOption = (test: any): Selectable => ({
@@ -11,31 +15,36 @@ const CodedResultsAutocomplete = (props: Omit<AutocompleteSingleProps, 'resolver
         label: test.name
     });
 
-    const onCompleteCodedResults = (response: FindDistinctCodedResultsQuery) => {
-        const resultedTests = response.findDistinctCodedResults.map(labTestToComboOption) || [];
-        return resultedTests;
-    };
+    const onCompleteCodedResults = useCallback(
+        (response: FindDistinctCodedResultsQuery) => {
+            return response.findDistinctCodedResults.map(labTestToComboOption) || [];
+        },
+        [labTestToComboOption]
+    );
 
-    const resolver = async (criteria: string): Promise<Selectable[]> => {
-        try {
-            const response = await getCodedResults({
-                variables: {
-                    searchText: criteria
+    const resolver = useCallback(
+        async (criteria: string): Promise<Selectable[]> => {
+            try {
+                const response = await getCodedResults({
+                    variables: {
+                        searchText: criteria
+                    }
+                });
+
+                if (response.data) {
+                    return onCompleteCodedResults(response.data);
+                } else {
+                    return [];
                 }
-            });
-
-            if (response.data) {
-                return onCompleteCodedResults(response.data);
-            } else {
+            } catch (error) {
+                console.error('Error fetching resulted tests:', error);
                 return [];
             }
-        } catch (error) {
-            console.error('Error fetching resulted tests:', error);
-            return [];
-        }
-    };
+        },
+        [getCodedResults, onCompleteCodedResults]
+    );
 
-    return <Autocomplete resolver={resolver} {...props} />;
+    return <AutoCompleteWithString resolver={resolver} {...props} />;
 };
 
 export { CodedResultsAutocomplete };

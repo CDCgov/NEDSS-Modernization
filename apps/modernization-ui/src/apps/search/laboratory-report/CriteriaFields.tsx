@@ -14,7 +14,7 @@ export const CriteriaFields = () => {
                 name={'resultedTest'}
                 render={({ field: { onChange, name, value } }) => (
                     <ResultedTestsAutocomplete
-                        value={value}
+                        value={value || ''}
                         id={name}
                         label="Resulted test"
                         sizing="compact"
@@ -28,7 +28,7 @@ export const CriteriaFields = () => {
                 name={'codedResult'}
                 render={({ field: { onChange, name, value } }) => (
                     <CodedResultsAutocomplete
-                        value={value}
+                        value={value || ''}
                         id={name}
                         label="Coded result/organism"
                         sizing="compact"
