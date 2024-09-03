@@ -13,8 +13,8 @@ type Identification = {
 };
 
 type ReportCriteria = {
-    codedResult?: string | Selectable;
-    resultedTest?: string | Selectable;
+    codedResult?: string;
+    resultedTest?: string;
 };
 
 type General = {
