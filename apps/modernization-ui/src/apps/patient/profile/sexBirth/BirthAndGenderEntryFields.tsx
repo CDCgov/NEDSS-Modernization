@@ -22,10 +22,10 @@ export const BirthAndGenderEntryFields = () => {
 
     const coded = usePatientSexBirthCodedValues();
 
-    const { counties } = useCountyCodedValues(selectedState ?? '');
+    const { counties } = useCountyCodedValues(selectedState);
 
     useEffect(() => {
-        if (selectedState == null || selectedState == undefined || selectedState == '') {
+        if (!selectedState) {
             setValue('birth.county', '');
         }
     }, [selectedState]);
