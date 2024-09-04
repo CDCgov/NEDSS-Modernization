@@ -113,7 +113,10 @@ const Autocomplete = <V,>({
                     autoComplete="off"
                     value={entered}
                     name={id}
-                    onChange={(event) => setEntered(event.target.value)}
+                    onChange={(event) => {
+                        setEntered(event.target.value);
+                        onChange?.(event.target.value as V);
+                    }}
                     onBlur={onBlur}
                     onKeyDown={handleKeyDown}
                     required={required}
