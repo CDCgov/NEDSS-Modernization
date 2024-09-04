@@ -2,16 +2,18 @@ import { SVGProps as ReactSVGProps } from 'react';
 import uswds from '@uswds/uswds/img/sprite.svg';
 import classNames from 'classnames';
 
+import styles from './icon.module.scss';
+
 type Icons = USWDSIcons | ExtendedIcons;
 
 type Props = { name: Icons } & ReactSVGProps<SVGSVGElement>;
 
-const Icon = ({ name, role = 'img', ...props }: Props) => {
+const Icon = ({ name, role = 'img', className, ...props }: Props) => {
     const location = resolveLocation(name);
 
     return (
         <svg
-            className={classNames(props.className)}
+            className={classNames(styles.icon, className)}
             role={role}
             aria-hidden={props['aria-hidden'] || !props['aria-label'] || !props['aria-labelledby']}
             {...props}>
