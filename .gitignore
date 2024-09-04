@@ -28,7 +28,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# local environment set up
 application-local.yml
-
-# merged .graphqls files used in code generation
-ui/src/generated/schema.graphqls
+local.env
