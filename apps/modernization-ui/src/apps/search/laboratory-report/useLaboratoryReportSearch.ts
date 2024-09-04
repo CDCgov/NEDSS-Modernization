@@ -19,8 +19,7 @@ const useLaboratoryReportSearch = ({ form }: Settings): SearchInteraction<LabRep
                 page: {
                     pageNumber: request.page.number - 1,
                     pageSize: request.page.size,
-                    sortField: request.sort?.property,
-                    sortDirection: request.sort?.direction
+                    sort: request.sort
                 }
             },
             notifyOnNetworkStatusChange: true

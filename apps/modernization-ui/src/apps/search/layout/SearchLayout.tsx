@@ -70,7 +70,10 @@ const SearchLayout = ({
         <section className={styles.search}>
             <SearchNavigation className={styles.navigation} actions={actions} />
             <div className={styles.content}>
-                <CollapsiblePanel className={styles.criteria} ariaLabel="Search criteria">
+                <CollapsiblePanel
+                    className={styles.panel}
+                    contentClassName={styles.criteria}
+                    ariaLabel="Search criteria">
                     <div className={styles.inputs}>{criteria()}</div>
                     <div className={styles.actions}>
                         <Button type="button" onClick={onSearch} disabled={!searchEnabled}>
