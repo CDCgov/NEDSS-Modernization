@@ -1,31 +1,22 @@
-import { Closeable, CloseablePanel } from 'design-system/panel/closeable';
+import { Closable, ClosablePanel } from 'design-system/panel/closable';
 import { SortingSelectable } from './selectable';
-import { useSorting } from 'sorting';
 import { SortPreference } from './SortPreference';
+import { useSortingPreferences } from './useSortingPreferences';
 
-type Props = { selection: SortingSelectable[] } & Closeable;
+type Props = Closable;
 
-const SortingPreferencesPanel = ({ selection, onClose }: Props) => {
-    const { sortBy, property, direction } = useSorting();
+const SortingPreferencesPanel = ({ onClose }: Props) => {
+    const { available, sortOn, active } = useSortingPreferences();
 
     const isActive = (selectable: SortingSelectable) =>
-        selectable.property === property && selectable.direction === direction;
-
-    const handleSelection = (selectable: SortingSelectable) => {
-        sortBy(selectable.property, selectable.direction);
-    };
+        selectable.property === active?.property && selectable.direction === active?.direction;
 
     return (
-        <CloseablePanel title="Sort by list" headingLevel={2} onClose={onClose}>
-            {selection.map((selectable, index) => (
-                <SortPreference
-                    key={index}
-                    selectable={selectable}
-                    active={isActive(selectable)}
-                    onSelect={handleSelection}
-                />
+        <ClosablePanel title="Sort by list" headingLevel={2} onClose={onClose}>
+            {available.map((selectable, index) => (
+                <SortPreference key={index} selectable={selectable} active={isActive(selectable)} onSelect={sortOn} />
             ))}
-        </CloseablePanel>
+        </ClosablePanel>
     );
 };
 

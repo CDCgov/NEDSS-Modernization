@@ -1,2 +1,3 @@
 export { SortingPreferencesPanel } from './SortingPreferencesPanel';
-export { SortingSelectable } from './selectable';
+export { useSortingPreferences, SortingPreferenceProvider } from './useSortingPreferences';
+export type { SortingSelectable } from './selectable';

@@ -2,14 +2,14 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 
-import { CloseablePanel } from './CloseablePanel';
+import { ClosablePanel } from './ClosablePanel';
 
 describe('CloseablePanel', () => {
     it('should render with no accessibility violations', async () => {
         const { container } = render(
-            <CloseablePanel title="title" onClose={jest.fn()}>
+            <ClosablePanel title="title" onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         expect(await axe(container)).toHaveNoViolations();
@@ -17,9 +17,9 @@ describe('CloseablePanel', () => {
 
     it('should render the title', () => {
         const { getByText } = render(
-            <CloseablePanel title="title-value" onClose={jest.fn()}>
+            <ClosablePanel title="title-value" onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const title = getByText('title-value');
@@ -29,9 +29,9 @@ describe('CloseablePanel', () => {
 
     it('should render the title as an h2', () => {
         const { getByRole } = render(
-            <CloseablePanel title="title-value" headingLevel={2} onClose={jest.fn()}>
+            <ClosablePanel title="title-value" headingLevel={2} onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const title = getByRole('heading');
@@ -41,9 +41,9 @@ describe('CloseablePanel', () => {
 
     it('should render the title as an h3', () => {
         const { getByRole } = render(
-            <CloseablePanel title="title-value" headingLevel={3} onClose={jest.fn()}>
+            <ClosablePanel title="title-value" headingLevel={3} onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const title = getByRole('heading');
@@ -53,9 +53,9 @@ describe('CloseablePanel', () => {
 
     it('should render the title as an h4', () => {
         const { getByRole } = render(
-            <CloseablePanel title="title-value" headingLevel={4} onClose={jest.fn()}>
+            <ClosablePanel title="title-value" headingLevel={4} onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const title = getByRole('heading');
@@ -65,9 +65,9 @@ describe('CloseablePanel', () => {
 
     it('should render the title as an h5', () => {
         const { getByRole } = render(
-            <CloseablePanel title="title-value" headingLevel={5} onClose={jest.fn()}>
+            <ClosablePanel title="title-value" headingLevel={5} onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const title = getByRole('heading');
@@ -77,9 +77,9 @@ describe('CloseablePanel', () => {
 
     it('should render the content', () => {
         const { getByText } = render(
-            <CloseablePanel title="title-value" onClose={jest.fn()}>
+            <ClosablePanel title="title-value" onClose={jest.fn()}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const content = getByText('content');
@@ -90,9 +90,9 @@ describe('CloseablePanel', () => {
     it('should invoke the onClose when icon close called', () => {
         const onClose = jest.fn();
         const { getByLabelText } = render(
-            <CloseablePanel title="title-value" onClose={onClose}>
+            <ClosablePanel title="title-value" onClose={onClose}>
                 content
-            </CloseablePanel>
+            </ClosablePanel>
         );
 
         const closer = getByLabelText('Close title-value');

@@ -3,6 +3,8 @@ import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { removeTerm } from 'apps/search/terms';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { LabReport } from 'generated/graphql/schema';
+import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
+import { sorting } from 'apps/search/basic';
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
 import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
@@ -34,26 +36,31 @@ const LaboratoryReportSearch = () => {
 
     return (
         <ColumnPreferenceProvider id="search.laboratory-reports.preferences.columns" defaults={preferences}>
-            <FormProvider {...form}>
-                <SearchLayout
-                    onRemoveTerm={handleRemoveTerm}
-                    criteria={() => <LaboratoryReportSearchCriteria />}
-                    resultsAsList={() => (
-                        <SearchResultList<LabReport>
-                            results={results}
-                            render={(result) => (
-                                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={findById} />
-                            )}
-                        />
-                    )}
-                    resultsAsTable={() => (
-                        <LaboratoryReportSearchResultsTable results={results} jurisdictionResolver={findById} />
-                    )}
-                    searchEnabled={enabled}
-                    onSearch={search}
-                    onClear={clear}
-                />
-            </FormProvider>
+            <SortingPreferenceProvider id="search.laboratory-reports.preferences.sorting" available={sorting}>
+                <FormProvider {...form}>
+                    <SearchLayout
+                        onRemoveTerm={handleRemoveTerm}
+                        criteria={() => <LaboratoryReportSearchCriteria />}
+                        resultsAsList={() => (
+                            <SearchResultList<LabReport>
+                                results={results}
+                                render={(result) => (
+                                    <LaboratoryReportSearchResultListItem
+                                        result={result}
+                                        jurisdictionResolver={findById}
+                                    />
+                                )}
+                            />
+                        )}
+                        resultsAsTable={() => (
+                            <LaboratoryReportSearchResultsTable results={results} jurisdictionResolver={findById} />
+                        )}
+                        searchEnabled={enabled}
+                        onSearch={search}
+                        onClear={clear}
+                    />
+                </FormProvider>
+            </SortingPreferenceProvider>
         </ColumnPreferenceProvider>
     );
 };

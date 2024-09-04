@@ -1,26 +1,26 @@
 import { Icon } from 'design-system/icon';
 import { ReactNode } from 'react';
 
-import styles from './closeable-panel.module.scss';
+import styles from './closable-panel.module.scss';
 
 type HeadingLevel = 2 | 3 | 4 | 5;
 
 type CloseHander = () => void;
 
-type Closeable = {
+type Closable = {
     onClose: CloseHander;
 };
 
-type FooterRenderer = (closeable: Closeable) => ReactNode;
+type FooterRenderer = (closeable: Closable) => ReactNode;
 
 type Props = {
     title: string;
     headingLevel?: HeadingLevel;
     children: ReactNode;
     footer?: FooterRenderer;
-} & Closeable;
+} & Closable;
 
-const CloseablePanel = ({ title, headingLevel, children, footer, onClose }: Props) => {
+const ClosablePanel = ({ title, headingLevel, children, footer, onClose }: Props) => {
     return (
         <div className={styles.panel}>
             <header>
@@ -53,5 +53,5 @@ const renderHeader = (title: string, headingLevel?: HeadingLevel) => {
     }
 };
 
-export { CloseablePanel };
-export type { Closeable };
+export { ClosablePanel };
+export type { Closable };
