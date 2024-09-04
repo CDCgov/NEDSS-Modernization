@@ -55,6 +55,7 @@ class ClassicHomePage {
           .eq(0)
           .type('03/04/2024');
         cy.contains('button', 'Save changes').eq(0).click()
+        cy.wait(3000)
         cy.get('body').then(($body) => {
             if($body.find('button:contains("View patient")').length > 0) {
                 cy.contains('button', 'View patient').click()

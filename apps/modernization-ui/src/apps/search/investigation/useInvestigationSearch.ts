@@ -20,8 +20,7 @@ const useInvestigationSearch = ({ form }: Settings): SearchInteraction<Investiga
                 page: {
                     pageNumber: request.page.number - 1,
                     pageSize: request.page.size,
-                    sortField: request.sort?.property,
-                    sortDirection: request.sort?.direction
+                    sort: request.sort
                 }
             },
             notifyOnNetworkStatusChange: true

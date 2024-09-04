@@ -33,16 +33,24 @@ class PreviewPagePage {
     navigateToPreviewPageWithStatusPublished() {
         cy.visit('/page-builder/pages');
         cy.wait(2000);
-        cy.get('#range-toggle').select('100')
-        cy.wait(5000);
-        let isExist = false;
-        cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
-            if($tr.find("td").eq(3).text() === "Published") {
-                isExist = true;
-                cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
-                return false
-            }
-        });
+        function search () {
+            cy.get('#range-toggle').select('100')
+            cy.wait(5000);
+            let isExist = false;
+            cy.get("table[data-testid=table]").eq(0).find("tbody tr").each(($tr, index) => {
+                if($tr.find("td").eq(3).text() === "Published") {
+                    isExist = true;
+                    cy.get('table.pageLibraryTable tbody tr td a').eq(index).click();
+                    return false
+                }
+            }).then(() => {
+                if(!isExist) {
+                    cy.contains('Next').eq(0).click()
+                    search()
+                }
+            })
+        }
+        search()
     }
 
     navigateToPreviewPageWithStatusPublishedWithDraft() {

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import { SortDirection, SortField } from 'generated/graphql/schema';
 import { usePage, Status as PageStatus } from 'page';
-import { Direction, useSorting } from 'sorting';
+import { useSorting } from 'sorting';
 import { Predicate } from 'utils';
 import { Term, useSearchResultDisplay } from './useSearchResultDisplay';
 import { useSearchCritiera } from './useSearchCriteria';
@@ -102,13 +101,15 @@ type SearchResulstInteraction<C, R> = {
 
 type Tranformer<C, A> = (criteria: C) => A;
 
+type SortRequest = {
+    property: string;
+    direction: string;
+};
+
 type ResultRequest<A> = {
     parameters: A;
     page: { number: number; size: number };
-    sort?: {
-        property: SortField;
-        direction: SortDirection;
-    };
+    sort?: SortRequest;
 };
 type ResultResolver<A, R> = (request: ResultRequest<A>) => Promise<Resolved<R> | undefined>;
 type TermResolver<C> = (criteria: C) => Term[];
@@ -135,8 +136,8 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     const sort = useMemo(() => {
         if (property && direction) {
             return {
-                property: asSortField(property),
-                direction: asSortDirection(direction)
+                property,
+                direction
             };
         }
     }, [property, direction]);
@@ -266,48 +267,6 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         reset,
         search
     };
-};
-
-const asSortDirection = (direction: Direction): SortDirection => {
-    switch (direction) {
-        case Direction.Ascending: {
-            return SortDirection.Asc;
-        }
-        default: {
-            return SortDirection.Desc;
-        }
-    }
-};
-
-const asSortField = (property: string): SortField => {
-    switch (property) {
-        case SortField.BirthTime: {
-            return SortField.BirthTime;
-        }
-        case SortField.LastNm: {
-            return SortField.LastNm;
-        }
-        case SortField.Sex: {
-            return SortField.Sex;
-        }
-        case SortField.Address: {
-            return SortField.Address;
-        }
-        case SortField.Email: {
-            return SortField.Email;
-        }
-        case SortField.PhoneNumber: {
-            return SortField.PhoneNumber;
-        }
-        case SortField.Id: {
-            return SortField.LocalId;
-        }
-        case SortField.Identification: {
-            return SortField.Identification;
-        }
-        default:
-            return SortField.Relevance;
-    }
 };
 
 export type { SearchResultSettings, ResultRequest, Resolved, SearchResulstInteraction };
