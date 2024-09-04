@@ -1,0 +1,27 @@
+@use 'styles/colors';
+
+.wrapper {
+    display: flex;
+    margin-top: 1rem;
+    margin-right: 1.5rem;
+
+    .configurationList {
+        background-color: colors.$base-white;
+        margin-right: 1rem;
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem 1rem;
+        border-right: 1px solid colors.$base-lighter;
+        width: 18.75rem;
+
+        .noConfigurationText {
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 162%;
+            color: colors.$base;
+        }
+    }
+    .configurationDetails {
+    }
+}

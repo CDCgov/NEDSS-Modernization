@@ -1,0 +1,6 @@
+@use 'styles/colors';
+
+.content {
+    padding: 1.5rem;
+    background-color: colors.$base-white;
+}
