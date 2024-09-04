@@ -33,7 +33,7 @@ describe('TextAutocomplete', () => {
 
         await act(async () => userEvent.type(input, 'a'));
 
-        const suggestion = await findByText('label-1');
+        const suggestion = await findByText('Value 1');
         expect(suggestion).toBeInTheDocument();
     });
 
@@ -44,7 +44,7 @@ describe('TextAutocomplete', () => {
         const input = getByRole('textbox');
         await userEvent.type(input, 'a');
 
-        const select = await findByText('label-1');
+        const select = await findByText('Value 1');
         expect(select).toBeInTheDocument();
 
         act(() => userEvent.click(select));
