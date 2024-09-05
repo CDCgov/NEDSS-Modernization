@@ -52,21 +52,6 @@ $control-width: 1.5rem;
 }
 
 .collapsible {
-<<<<<<< HEAD
-    position: relative;
-    transition-duration: 0.25s;
-    transition-property: transform;
-    transition-timing-function: ease-out;
-
-    // overflow: clip;
-
-    &.collapsed {
-        transition-duration: 0.2s;
-        transition-timing-function: ease-in;
-        transform: translateX(-100%);
-
-        .content {
-=======
     --expanded-max-width: 100%;
     --collapsed-max-width: 0;
 
@@ -95,7 +80,6 @@ $control-width: 1.5rem;
             @include collapsed('left');
             left: -100%;
 
->>>>>>> main
             animation: collapsing 600ms forwards;
         }
     }
