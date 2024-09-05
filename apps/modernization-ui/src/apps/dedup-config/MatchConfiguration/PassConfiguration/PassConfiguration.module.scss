@@ -1,0 +1,7 @@
+@use 'styles/colors';
+
+.criteria {
+    background-color: colors.$base-white;
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+}
