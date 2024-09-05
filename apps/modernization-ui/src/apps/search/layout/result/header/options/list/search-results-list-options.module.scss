@@ -1,7 +1,26 @@
+@use 'styles/colors.scss';
+
 .option {
-    svg {
+    .sortArrow {
         width: 1.75rem;
         height: 1.75rem;
-        margin: 0 !important;
+        margin: 0;
+        fill: colors.$primary;
+    }
+}
+
+.optionItem {
+    padding: 0.625rem 2.75rem !important;
+    gap: 0.5rem !important;
+
+    &.active {
+        padding: 0.625rem 1rem !important;
+
+        .check {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin: 0 !important;
+            fill: colors.$primary;
+        }
     }
 }

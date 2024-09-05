@@ -19,6 +19,7 @@ public class SortCriteriaSteps {
 
     String field = switch (sortBy.toLowerCase()) {
       case "birthday" -> "birthTime";
+      case "legal name" -> "legalName";
       case "first name" -> "firstNm";
       case "last name" -> "lastNm";
       case "phone" -> "phoneNumber";
