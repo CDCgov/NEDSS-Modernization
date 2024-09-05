@@ -22,8 +22,8 @@ type AutocompleteSingleProps<V> = {
     sizing?: Sizing;
     error?: string;
     required?: boolean;
-    asValue: ValueConverter<V>;
-    asText: TextConverter<V>;
+    asValue?: ValueConverter<V>;
+    asText?: TextConverter<V>;
     asSuggestion?: SuggestionRenderer;
     onBlur?: any;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'onBlur' | 'value'>;
@@ -49,12 +49,12 @@ const Autocomplete = <V,>({
     const inputRef = useRef<HTMLInputElement>(null);
 
     // setting to empty string prevents error: A component is changing an uncontrolled input to be controlled
-    const [entered, setEntered] = useState(asText(value) ?? '');
+    const [entered, setEntered] = useState(asText?.(value) ?? '');
 
     const { options, suggest, reset } = useSelectableAutocomplete({ resolver, criteria: entered });
 
     useEffect(() => {
-        reset(asText(value));
+        reset(asText?.(value));
     }, []);
 
     useEffect(() => {
@@ -79,7 +79,7 @@ const Autocomplete = <V,>({
         reset(option.name);
         setEntered(option.name ?? '');
         if (onChange) {
-            onChange(asValue(option));
+            onChange(asValue?.(option));
             onBlur?.();
         }
     };

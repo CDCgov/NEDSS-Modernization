@@ -253,8 +253,6 @@ export const GeneralFields = () => {
                         label="Event created by user"
                         sizing="compact"
                         onChange={onChange}
-                        asValue={(value) => value}
-                        asText={(value) => value?.name}
                     />
                 )}
             />
@@ -268,8 +266,6 @@ export const GeneralFields = () => {
                         sizing="compact"
                         onChange={onChange}
                         label="Event updated by user"
-                        asValue={(value) => value}
-                        asText={(value) => value?.name}
                     />
                 )}
             />
@@ -286,8 +282,6 @@ export const GeneralFields = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        asValue={(value) => value}
-                        asText={(value) => value?.name}
                     />
                 )}
             />
@@ -305,8 +299,6 @@ export const GeneralFields = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        asValue={(value) => value}
-                        asText={(value) => value?.name}
                     />
                 )}
             />
@@ -324,8 +316,6 @@ export const GeneralFields = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         error={error?.message}
-                        asValue={(value) => value}
-                        asText={(value) => value?.name}
                     />
                 )}
             />

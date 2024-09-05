@@ -233,13 +233,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     control={form.control}
                     name="createdBy"
                     render={({ field: { onChange } }) => (
-                        <UserAutocomplete
-                            asValue={(value) => value}
-                            asText={(value) => value?.name}
-                            id="createdBy"
-                            label="Event created by user"
-                            onChange={onChange}
-                        />
+                        <UserAutocomplete id="createdBy" label="Event created by user" onChange={onChange} />
                     )}
                 />
 
@@ -247,13 +241,7 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                     control={form.control}
                     name="lastUpdatedBy"
                     render={({ field: { onChange } }) => (
-                        <UserAutocomplete
-                            asValue={(value) => value}
-                            asText={(value) => value?.name}
-                            id="lastUpdatedBy"
-                            onChange={onChange}
-                            label="Event updated by user"
-                        />
+                        <UserAutocomplete id="lastUpdatedBy" onChange={onChange} label="Event updated by user" />
                     )}
                 />
             </>
@@ -303,8 +291,6 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 onChange={onChange}
                                 required={true}
                                 onBlur={onBlur}
-                                asValue={(value) => value}
-                                asText={(value) => value?.name}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                         </>
@@ -328,8 +314,6 @@ export const InvestigationGeneralFields = ({ form }: InvestigationGeneralAccordi
                                 onChange={(e) => onChange(e?.value)}
                                 required={true}
                                 onBlur={onBlur}
-                                asValue={(value) => value}
-                                asText={(value) => value?.name}
                             />
                             {error && <ErrorMessage id={`${error}-message`}>{error?.message}</ErrorMessage>}
                         </>
