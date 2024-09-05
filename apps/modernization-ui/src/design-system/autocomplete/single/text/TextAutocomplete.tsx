@@ -5,8 +5,15 @@ import { AutocompleteOptionsResolver } from 'options/autocompete';
 type TextAutocompleteSingleProps = Optional<AutocompleteSingleProps<string>, 'asValue' | 'asText'>;
 type Props = TextAutocompleteSingleProps & { resolver: AutocompleteOptionsResolver };
 
-const TextAutocomplete = ({ ...props }: Props) => {
-    return <Autocomplete<string> {...props} asValue={(suggestion) => suggestion?.name} asText={(value) => value} />;
+const TextAutocomplete = ({ onChange, ...props }: Props) => {
+    return (
+        <Autocomplete<string>
+            {...props}
+            onEnteredValue={onChange}
+            asValue={(suggestion) => suggestion?.name}
+            asText={(value) => value}
+        />
+    );
 };
 
 export { TextAutocomplete };
