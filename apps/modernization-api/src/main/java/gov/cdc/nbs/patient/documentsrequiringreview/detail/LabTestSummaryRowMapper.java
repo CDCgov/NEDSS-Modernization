@@ -26,10 +26,6 @@ public class LabTestSummaryRowMapper implements RowMapper<LabTestSummary> {
 
   @Override
   public LabTestSummary mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
-    return map(resultSet);
-  }
-
-  public LabTestSummary map(final ResultSet resultSet) throws SQLException {
     String name = resultSet.getString(columns.name());
     String coded = resultSet.getString(columns.coded());
     String status = resultSet.getString(columns.status());
