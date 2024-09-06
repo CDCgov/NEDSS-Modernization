@@ -1,0 +1,64 @@
+@use 'styles/colors';
+
+li {
+    list-style-type: none;
+    display: flex;
+    cursor: pointer;
+
+    .leftBar {
+        min-width: 0.25rem;
+    }
+
+    &.selected {
+        background-color: colors.$primary-lightest;
+
+        .leftBar {
+            border-radius: 1.875rem;
+            background-color: colors.$primary;
+        }
+    }
+
+    .cardContent {
+        margin-left: 0.75rem;
+        padding-top: 0.62rem;
+        padding-bottom: 0.62rem;
+
+        label {
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            color: colors.$primary;
+        }
+
+        .description {
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 162%;
+            margin-bottom: 0.5rem;
+        }
+
+        .active {
+            margin-left: 0.5rem;
+            display: inline-block;
+            background-color: green;
+            border-radius: 0.125rem;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 100%;
+        }
+
+        .inactive {
+            margin-left: 0.5rem;
+            display: inline-block;
+            background-color: colors.$disabled-light;
+            border-radius: 0.125rem;
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 100%;
+        }
+    }
+}
