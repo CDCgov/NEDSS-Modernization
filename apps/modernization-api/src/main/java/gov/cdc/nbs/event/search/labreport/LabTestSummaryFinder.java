@@ -54,7 +54,6 @@ public class LabTestSummaryFinder {
 
       @Override
       public LabTestSummary mapRow(ResultSet rs, int rowNum) throws SQLException {
-        // return new LabTestSummary("name", "status", "coded", new BigDecimal("1.0"), "high", "low", "unit");
         return new LabTestSummary(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBigDecimal(4),
             rs.getString(5), rs.getString(6),
             rs.getString(7));
