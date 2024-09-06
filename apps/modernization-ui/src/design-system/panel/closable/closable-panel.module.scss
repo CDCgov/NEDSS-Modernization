@@ -1,0 +1,26 @@
+@use 'styles/borders';
+
+.panel {
+    display: flex;
+    flex-direction: column;
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 1.5rem;
+
+        @extend %thin-bottom;
+
+        .closer {
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        h2 {
+            margin: 0;
+        }
+    }
+}
