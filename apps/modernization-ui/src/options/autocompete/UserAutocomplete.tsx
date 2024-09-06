@@ -1,4 +1,7 @@
-import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
+import {
+    SelectableAutocomplete,
+    SelectableAutocompleteSingleProps
+} from 'design-system/autocomplete/single/selectable';
 import { UserOptionsService } from 'generated';
 
 const resolver = (criteria: string, limit?: number) =>
@@ -7,8 +10,8 @@ const resolver = (criteria: string, limit?: number) =>
         limit: limit
     }).then((response) => response);
 
-const UserAutocomplete = (props: Omit<AutocompleteSingleProps, 'resolver'>) => (
-    <Autocomplete resolver={resolver} {...props} />
+const UserAutocomplete = (props: SelectableAutocompleteSingleProps) => (
+    <SelectableAutocomplete resolver={resolver} {...props} />
 );
 
 export { UserAutocomplete };

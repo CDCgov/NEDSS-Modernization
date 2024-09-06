@@ -19,8 +19,7 @@ ADD builder/NEDSSDev ./NEDSSDev/
 # Massage NEDSS source code
 ENV NEDSS_HOME=/home/NEDSSDev
 ADD builder/dependencies.xml .
-RUN sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/g' $NEDSS_HOME/BuildAndDeployment/build.report.xml
-RUN sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/g' $NEDSS_HOME/pom.xml
+RUN sed -i 's/PhcMartEtl.bat/PHCMartETL.bat/gi' $NEDSS_HOME/pom.xml
 RUN sed -i "s#</dependencies>#$(cat dependencies.xml)</dependencies>#g" $NEDSS_HOME/pom-jar.xml
 RUN cp $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/Globals.js $NEDSS_HOME/source/gov/cdc/nedss/webapp/nbs/resource/javascript/globals.js
 

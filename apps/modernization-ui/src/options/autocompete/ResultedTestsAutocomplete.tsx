@@ -1,31 +1,17 @@
-import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
-import { Option, ResultedTestOptionsService } from 'generated';
+import { TextAutocomplete, TextAutocompleteSingleProps } from 'design-system/autocomplete/single/text';
+import { ResultedTestOptionsService } from 'generated';
 import { Selectable } from 'options/selectable';
 
-const onSelectableResultedTest = (response: Array<Option>) => {
-    return response.map(
-        (data): Selectable => ({
-            name: data.name,
-            value: data.value,
-            label: data.label
-        })
-    );
-};
-
-const renderSuggestion = (suggestion: { label: string; value: string }) => {
-    return <>{`${suggestion.label} [${suggestion.value}]`}</>;
-};
+const renderSuggestion = (suggestion: Selectable) => `${suggestion.name} [${suggestion.value}]`;
 
 const resolver = (criteria: string, limit?: number) =>
     ResultedTestOptionsService.resultedtestAutocomplete({
         criteria: criteria,
         limit: limit
-    }).then((response) => {
-        return onSelectableResultedTest(response);
-    });
+    }).then((response) => response as Selectable[]);
 
-const ResultedTestsAutocomplete = (props: AutocompleteSingleProps) => (
-    <Autocomplete resolver={resolver} {...props} asSuggestion={renderSuggestion} />
+const ResultedTestsAutocomplete = (props: TextAutocompleteSingleProps) => (
+    <TextAutocomplete resolver={resolver} {...props} asSuggestion={renderSuggestion} />
 );
 
 export { ResultedTestsAutocomplete };

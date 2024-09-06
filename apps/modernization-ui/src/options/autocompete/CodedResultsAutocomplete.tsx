@@ -1,41 +1,37 @@
-import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
-import { FindDistinctCodedResultsQuery, useFindDistinctCodedResultsLazyQuery } from 'generated/graphql/schema';
 import { Selectable } from 'options/selectable';
+import { TextAutocomplete, TextAutocompleteSingleProps } from 'design-system/autocomplete/single/text';
+import { CodedResultOptionsService } from 'generated';
 
-const CodedResultsAutocomplete = (props: Omit<AutocompleteSingleProps, 'resolver'>) => {
-    const [getCodedResults] = useFindDistinctCodedResultsLazyQuery();
+const CodedResultsAutocomplete = ({
+    id,
+    label,
+    onChange,
+    required,
+    onBlur,
+    value,
+    sizing
+}: TextAutocompleteSingleProps) => {
+    const renderSuggestion = (suggestion: Selectable) => `${suggestion.name} [${suggestion.value}]`;
 
-    const labTestToComboOption = (test: any): Selectable => ({
-        name: test.name,
-        value: test.name,
-        label: test.name
-    });
+    const resolver = (criteria: string, limit?: number) =>
+        CodedResultOptionsService.codedResultAutocomplete({
+            criteria: criteria,
+            limit: limit
+        }).then((response) => response as Selectable[]);
 
-    const onCompleteCodedResults = (response: FindDistinctCodedResultsQuery) => {
-        const resultedTests = response.findDistinctCodedResults.map(labTestToComboOption) || [];
-        return resultedTests;
-    };
-
-    const resolver = async (criteria: string): Promise<Selectable[]> => {
-        try {
-            const response = await getCodedResults({
-                variables: {
-                    searchText: criteria
-                }
-            });
-
-            if (response.data) {
-                return onCompleteCodedResults(response.data);
-            } else {
-                return [];
-            }
-        } catch (error) {
-            console.error('Error fetching resulted tests:', error);
-            return [];
-        }
-    };
-
-    return <Autocomplete resolver={resolver} {...props} />;
+    return (
+        <TextAutocomplete
+            sizing={sizing}
+            resolver={resolver}
+            value={value}
+            onChange={onChange}
+            required={required}
+            onBlur={onBlur}
+            id={id}
+            label={label}
+            asSuggestion={renderSuggestion}
+        />
+    );
 };
 
 export { CodedResultsAutocomplete };
