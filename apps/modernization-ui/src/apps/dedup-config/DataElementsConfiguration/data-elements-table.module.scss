@@ -1,0 +1,29 @@
+@use 'styles/colors';
+
+.table {
+    width: 100%;
+    tbody tr:nth-child(odd) {
+        background-color: colors.$base-lightest;
+      }
+    th {
+        label::before {
+            margin-top: -0.5rem;
+            content: '';
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+    }
+    td {
+        height: 3rem;
+        label::before {
+            margin-top: -0.75rem;
+            content: '';
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+        }
+    }
+}

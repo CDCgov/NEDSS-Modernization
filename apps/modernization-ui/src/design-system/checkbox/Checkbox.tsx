@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import styles from './checkbox.module.scss';
 
 type Props = Omit<JSX.IntrinsicElements['input'], 'onChange' | 'checked' | 'value'> & {
-    label: string;
+    label?: string;
     selected?: boolean;
     onChange?: (checked: boolean) => void;
 };
