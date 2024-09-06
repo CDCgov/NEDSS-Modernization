@@ -22,7 +22,7 @@ export type Cell = {
 };
 
 export type Header = {
-    name: string;
+    name: string | ReactNode;
     sortable?: boolean;
 };
 
@@ -126,8 +126,11 @@ export const TableComponent = ({
                             </td>
                         )}
                         {row.tableDetails.map((detail: Cell, column: number) => {
-                            const isSorting = sorting.isSorting(columns[offset + column].name);
+                            const columnData = columns[offset + column];
+
+                            const isSorting = typeof columnData.name === 'string' && sorting.isSorting(columnData.name);
                             const className = classNames({ [styles.sorted]: isSorting });
+
                             return (
                                 <td className={className} key={column}>
                                     {detail.title ? detail.title : <NoData key={column} className={className} />}

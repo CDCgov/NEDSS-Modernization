@@ -12,22 +12,29 @@ type TableHeaderProps = {
 };
 
 const TableHeader = ({ sorting, header }: TableHeaderProps) => {
-    const direction = sorting.currentDirection(header.name);
-    const ariaSort = resolveSortAria(direction);
+    const isStringHeader = typeof header.name === 'string';
+    // Only apply sorting logic if the header is a string
+    const headerString = isStringHeader ? (header.name as string) : '';
+
+    const direction = isStringHeader ? sorting.currentDirection(headerString) : Direction.None;
+    const ariaSort = isStringHeader ? resolveSortAria(direction) : undefined;
 
     return (
         <th
             className={classNames({ [styles.sorted]: direction !== Direction.None })}
             {...(ariaSort && { 'aria-sort': ariaSort })}>
             <div>
+                {/* Render header name, whether it's a string or ReactNode */}
                 {header.name}
-                {header.sortable && (
+
+                {/* If sortable and name is a string, render the sorting button */}
+                {isStringHeader && header.sortable && (
                     <Button
                         disabled={!sorting.enabled}
                         className="usa-button--unstyled"
-                        type={'button'}
+                        type="button"
                         aria-label="sort"
-                        onClick={() => sorting.toggleSort(header.name)}>
+                        onClick={() => sorting.toggleSort(headerString)}>
                         {resolveSortIcon(direction)}
                     </Button>
                 )}
@@ -54,7 +61,7 @@ const resolveSortAria = (direction: Direction) => {
         case Direction.Descending:
             return 'descending';
         default:
-            return;
+            return undefined;
     }
 };
 
