@@ -17,4 +17,16 @@ else
   echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" > $ROOT/.env
   echo "TOKEN_SECRET=$TOKEN_SECRET" >> $ROOT/.env
   echo "PARAMETER_SECRET=$PARAMETER_SECRET" >> $ROOT/.env
+
+  # Supplmental values
+  echo 'NBS_DATASOURCE_SERVER=nbs-mssql' >> $ROOT/.env
+  echo 'CLASSIC_SERVICE=wildfly:7001' >> $ROOT/.env
+  echo 'MODERNIZATION_SERVICE=${MODERNIZATION_API_SERVER:-modernization-api}:${MODERNIZATION_API_PORT:-8080}' >> $ROOT/.env
+  echo 'UI_SERVICE=${MODERNIZATION_UI_SERVER:-modernization-api}:${MODERNIZATION_UI_PORT:-8080}' >> $ROOT/.env
+  echo 'PAGEBUILDER_SERVICE=${PAGEBUILDER_API_SERVER:-pagebuilder-api}:${PAGEBUILDER_API_PORT:-8095}' >> $ROOT/.env
+  echo 'NBS_SECURITY_OIDC_ENABLED=${OIDC_ENABLED:-false}' >> $ROOT/.env
+  echo 'NBS_SECURITY_OIDC_URI=${ISSUER_URI:-http://keycloak:8080/realms/nbs-users}' >> $ROOT/.env
+  echo 'PAGEBUILDER_ENABLED=true' >> $ROOT/.env
+
+
 fi
