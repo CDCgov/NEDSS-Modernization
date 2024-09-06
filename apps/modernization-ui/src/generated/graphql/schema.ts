@@ -17,6 +17,7 @@ export type Scalars = {
   Float: { input: number; output: number; }
   Date: { input: any; output: any; }
   DateTime: { input: any; output: any; }
+  Direction: { input: any; output: any; }
 };
 
 export type AdministrativeInput = {
@@ -1952,6 +1953,11 @@ export type SendingFacility = {
 
 export type Sensitive = Allowed | Restricted;
 
+export type Sort = {
+  direction: Scalars['Direction']['input'];
+  property: Scalars['String']['input'];
+};
+
 export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -1986,6 +1992,7 @@ export enum SortField {
 export type SortablePage = {
   pageNumber?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Sort>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
 };

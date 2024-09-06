@@ -1,8 +1,8 @@
 package gov.cdc.nbs.event.search.investigation;
 
+import gov.cdc.nbs.data.pagination.PaginationRequest;
 import gov.cdc.nbs.event.search.InvestigationFilter;
-import gov.cdc.nbs.graphql.GraphQLPage;
-import gov.cdc.nbs.patient.search.SearchGraphQLPageableMapper;
+import gov.cdc.nbs.search.SearchPageableMapper;
 import gov.cdc.nbs.search.SearchResolver;
 import gov.cdc.nbs.search.SearchResult;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Controller;
 class InvestigationSearchResultResolver {
 
   private final SearchResolver<InvestigationFilter, InvestigationSearchResult> resolver;
-  private final SearchGraphQLPageableMapper mapper;
+  private final SearchPageableMapper mapper;
 
   InvestigationSearchResultResolver(
       final SearchResolver<InvestigationFilter, InvestigationSearchResult> resolver,
-      final SearchGraphQLPageableMapper mapper
+      final SearchPageableMapper mapper
   ) {
     this.resolver = resolver;
     this.mapper = mapper;
@@ -29,9 +29,9 @@ class InvestigationSearchResultResolver {
   @PreAuthorize("hasAuthority('FIND-PATIENT') and hasAuthority('VIEW-INVESTIGATION')")
   SearchResult<InvestigationSearchResult> search(
       @Argument InvestigationFilter filter,
-      @Argument GraphQLPage page
+      @Argument("page") PaginationRequest paginated
   ) {
-    Pageable pageable = mapper.from(page);
+    Pageable pageable = mapper.from(paginated);
 
     return resolver.search(
         filter,

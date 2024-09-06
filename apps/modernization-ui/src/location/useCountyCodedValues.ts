@@ -30,7 +30,7 @@ type CountiesCodedValues = {
     counties: GroupedCodedValue[];
 };
 
-const useCountyCodedValues = (state?: string | undefined) => {
+const useCountyCodedValues = (state?: string | undefined | null) => {
     const [coded, setCoded] = useState<CountiesCodedValues>(initial);
 
     const [getCodedValues] = useCodedValueQuery({ onCompleted: setCoded });

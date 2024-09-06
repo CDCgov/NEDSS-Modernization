@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+if [ -z "$DATABASE_PASSWORD" ]
+then
+    echo "DATABASE_PASSWORD is required"
+    exit 1
+fi
+
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev

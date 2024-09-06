@@ -32,6 +32,38 @@ Feature: Patient Search Sorting
     And search result 2 has a "birthday" of "1987-01-15"
     And search result 3 has a "birthday" of "1974-05-29"
 
+  Scenario: I can find the most relevant patient when sorting by legal name  ascending
+    Given the patient has the "legal" name "Wanda" "Maximoff"
+    And I have another patient
+    And the patient has the "legal" name "Helen" "Cho"
+    And I have another patient
+    And the patient has the "legal" name "Pietro" "Maximoff"
+    And patients are available for search
+    And I want patients sorted by "legal name" "asc"
+    When I search for patients
+    Then search result 1 has a "first name" of "Helen"
+    And search result 1 has a "last name" of "Cho"
+    And search result 2 has a "first name" of "Pietro"
+    And search result 2 has a "last name" of "Maximoff"
+    And search result 3 has a "first name" of "Wanda"
+    And search result 3 has a "last name" of "Maximoff"
+
+  Scenario: I can find the most relevant patient when sorting by legal name descending
+    Given the patient has the "legal" name "Wanda" "Maximoff"
+    And I have another patient
+    And the patient has the "legal" name "Helen" "Cho"
+    And I have another patient
+    And the patient has the "legal" name "Pietro" "Maximoff"
+    And patients are available for search
+    And I want patients sorted by "last name" "desc"
+    When I search for patients
+    Then search result 1 has a "first name" of "Wanda"
+    And search result 1 has a "last name" of "Maximoff"
+    And search result 2 has a "first name" of "Pietro"
+    And search result 2 has a "last name" of "Maximoff"
+    And search result 3 has a "first name" of "Helen"
+    And search result 3 has a "last name" of "Cho"
+
   Scenario: I can find the most relevant patient when sorting by last name  ascending
     Given the patient has the "legal" name "Timothy" "Jackson"
     And I have another patient
@@ -281,9 +313,9 @@ Feature: Patient Search Sorting
     And patients are available for search
     And I want patients sorted by "local_id" "asc"
     When I search for patients
-    Then search result 1 has an "local id" of "120"
-    And search result 2 has an "local id" of "220"
-    And search result 3 has an "local id" of "320"
+    Then search result 1 has a "patient id" of "120"
+    And search result 2 has a "patient id" of "220"
+    And search result 3 has a "patient id" of "320"
 
   Scenario: I can find the most relevant patient when sorting by local id descending
     Given the patient has an "local id" of "PSN10000120GA01"
@@ -292,11 +324,11 @@ Feature: Patient Search Sorting
     And I have another patient
     And the patient has an "local id" of "PSN10000220GA01"
     And patients are available for search
-    And I want patients sorted by "local_id" "desc"
+    And I want patients sorted by "patient id" "desc"
     When I search for patients
-    Then search result 1 has an "local id" of "320"
-    And search result 2 has an "local id" of "220"
-    And search result 3 has an "local id" of "120"
+    Then search result 1 has a "patient id" of "320"
+    And search result 2 has a "patient id" of "220"
+    And search result 3 has a "patient id" of "120"
 
   Scenario: I can find the most relevant patient when sorting by state ascending
     Given the patient has a "state" of "01"

@@ -7,6 +7,7 @@
 1. Java 21
 2. Node / NPM
 3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
+4. `DATABASE_PASSWORD`, `TOKEN_SECRET` and `PARAMETER_SECRET` environment variables are set or relevant properties set in an `application-local.yml`
 
 ### VSCode
 

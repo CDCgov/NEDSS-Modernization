@@ -45,7 +45,8 @@ public class PatientSearchVerificationSteps {
   public void search_result_n_has_a_x_of_y(
       final int position,
       final String field,
-      final String value) throws Exception {
+      final String value
+  ) throws Exception {
 
     int index = position - 1;
 
@@ -118,7 +119,7 @@ public class PatientSearchVerificationSteps {
           "$.data.findPatientsByFilter.content[%s].identification[*].value",
           position
       );
-      case "local id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId", position);
+      case "patientid", "patient id", "short id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }
@@ -126,7 +127,7 @@ public class PatientSearchVerificationSteps {
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
       case "birthday", "sex" -> equalTo(value);
-      case "local id" -> equalTo(Integer.parseInt(value));
+      case "patientid","patient id", "short id" -> equalTo(Integer.parseInt(value));
       case "status" -> hasItem(PatientStatusCriteriaResolver.resolve(value).name());
       default -> hasItem(value);
     };
