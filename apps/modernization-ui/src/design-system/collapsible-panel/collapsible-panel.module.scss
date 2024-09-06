@@ -65,7 +65,7 @@ $control-width: 1.5rem;
     }
 
     .content {
-        min-width: max-content;
+        width: var(--expanded-max-width, 100%);
 
         position: relative;
         @include expanded('left');

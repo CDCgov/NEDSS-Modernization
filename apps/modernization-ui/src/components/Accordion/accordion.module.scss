@@ -29,6 +29,10 @@
                 display: inline;
             }
         }
+
+        &::-webkit-details-marker {
+            display: none;
+        }
     }
 
     &[open] summary {
