@@ -5,3 +5,4 @@ nifi/repo
 nifi/nifi_conf/conf/flow.json.gz
 archive/
 NEDSSDev
+.env
