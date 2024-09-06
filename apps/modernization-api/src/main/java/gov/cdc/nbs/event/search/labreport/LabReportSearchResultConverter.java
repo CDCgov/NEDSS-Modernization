@@ -42,7 +42,7 @@ class LabReportSearchResultConverter {
         organizationParticipations,
         observations,
         associatedInvestigations,
-        labTestSummaries.isEmpty() ? null : labTestSummaries.getFirst());
+        labTestSummaries == null || labTestSummaries.isEmpty() ? null : labTestSummaries.getFirst());
   }
 
   private static LabReportSearchResult.PersonParticipation asPerson(final SearchableLabReport.Person person) {
