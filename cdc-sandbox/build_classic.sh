@@ -10,7 +10,7 @@ fi
 BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
-CLASSIC_VERSION=NBS_6.0.15
+CLASSIC_VERSION=NBS_6.0.16
 
 # Clone NEDSSDev
 rm -rf $CLASSIC_PATH
