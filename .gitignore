@@ -31,6 +31,7 @@ yarn-error.log*
 # local environment set up
 application-local.yml
 local.env
+.env
 
 # cdc-sandbox
 dist/
