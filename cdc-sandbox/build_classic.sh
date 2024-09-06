@@ -1,13 +1,19 @@
 #!/bin/sh
 set -e
 
+BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+source $BASE/check_env.sh
+
 if [ -z "$DATABASE_PASSWORD" ]
 then
     echo "DATABASE_PASSWORD is required"
     exit 1
+else
+    echo "Building NBS classic with:"
+    echo "DATABASE_PASSWORD=$DATABASE_PASSWORD"
 fi
 
-BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 CLASSIC_PATH=$BASE/nbs-classic/builder/NEDSSDev
 CLASSIC_VERSION=NBS_6.0.16

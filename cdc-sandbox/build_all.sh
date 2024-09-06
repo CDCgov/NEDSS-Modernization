@@ -1,5 +1,8 @@
 #!/bin/sh
 set -e
+BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+source $BASE/check_env.sh
 
 if [ -z "$DATABASE_PASSWORD" ] || [ -z "$NIFI_PASSWORD" ] || [ -z "$KEYCLOAK_ADMIN_PASSWORD" ] || [ -z "$TOKEN_SECRET" ] || [ -z "$PARAMETER_SECRET" ]
 then
