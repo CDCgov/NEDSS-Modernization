@@ -3,6 +3,8 @@ import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { Term, useSearchResultDisplay } from 'apps/search';
 import { PatientSearchResult } from 'generated/graphql/schema';
+import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
+import { sorting } from 'apps/search/basic';
 import { usePatientSearch } from './usePatientSearch';
 import { PatientSearchResultListItem } from './result/list';
 import { NoPatientResults } from './result/none';
@@ -37,24 +39,26 @@ const PatientSearch = () => {
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
-            <FormProvider {...form}>
-                <SearchLayout
-                    onRemoveTerm={handleRemoveTerm}
-                    actions={() => <PatientSearchActions />}
-                    criteria={() => <PatientCriteria />}
-                    resultsAsList={() => (
-                        <SearchResultList<PatientSearchResult>
-                            results={results}
-                            render={(result) => <PatientSearchResultListItem result={result} />}
-                        />
-                    )}
-                    resultsAsTable={() => <PatientSearchResultTable results={results} />}
-                    searchEnabled={enabled}
-                    onSearch={search}
-                    noResults={() => <NoPatientResults />}
-                    onClear={clear}
-                />
-            </FormProvider>
+            <SortingPreferenceProvider id="search.patients.preferences.sorting" available={sorting}>
+                <FormProvider {...form}>
+                    <SearchLayout
+                        onRemoveTerm={handleRemoveTerm}
+                        actions={() => <PatientSearchActions />}
+                        criteria={() => <PatientCriteria />}
+                        resultsAsList={() => (
+                            <SearchResultList<PatientSearchResult>
+                                results={results}
+                                render={(result) => <PatientSearchResultListItem result={result} />}
+                            />
+                        )}
+                        resultsAsTable={() => <PatientSearchResultTable results={results} />}
+                        searchEnabled={enabled}
+                        onSearch={search}
+                        noResults={() => <NoPatientResults />}
+                        onClear={clear}
+                    />
+                </FormProvider>
+            </SortingPreferenceProvider>
         </ColumnPreferenceProvider>
     );
 };
