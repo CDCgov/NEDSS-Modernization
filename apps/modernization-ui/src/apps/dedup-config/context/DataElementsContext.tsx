@@ -3,9 +3,10 @@ import React, { createContext, useContext, useState } from 'react';
 const DataElementsContext = createContext<DataElementsContextProps | undefined>(undefined);
 
 type DataElementsContextProps = {
-    dataElements: typeof DataElements;
-    setDataElements: (dataElements: typeof DataElements) => void;
+    dataElements: DataElement[];
+    setDataElements: (dataElements: DataElement[]) => void;
 };
+
 export type DataElement = {
     name: string;
     active: boolean;
