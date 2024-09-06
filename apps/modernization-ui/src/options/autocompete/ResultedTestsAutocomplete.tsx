@@ -24,16 +24,8 @@ const resolver = (criteria: string, limit?: number) =>
         return onSelectableResultedTest(response);
     });
 
-const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur }: AutocompleteSingleProps) => (
-    <Autocomplete
-        resolver={resolver}
-        onChange={onChange}
-        required={required}
-        onBlur={onBlur}
-        id={id}
-        label={label}
-        asSuggestion={renderSuggestion}
-    />
+const ResultedTestsAutocomplete = (props: AutocompleteSingleProps) => (
+    <Autocomplete resolver={resolver} {...props} asSuggestion={renderSuggestion} />
 );
 
 export { ResultedTestsAutocomplete };
