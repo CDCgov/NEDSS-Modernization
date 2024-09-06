@@ -2,6 +2,7 @@ package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.event.search.RelevanceResolver;
 import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummary;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,9 +30,6 @@ class LabReportSearchResultConverter {
     List<LabReportSearchResult.AssociatedInvestigation> associatedInvestigations =
         asAssociatedInvestigations(searchable.associated());
 
-    List<LabTestSummary> labTestSummaries =
-        labTestSummaryFinder == null ? null : labTestSummaryFinder.find(searchable.identifier());
-
     return new LabReportSearchResult(
         relevance,
         String.valueOf(searchable.identifier()),
@@ -42,7 +40,8 @@ class LabReportSearchResultConverter {
         organizationParticipations,
         observations,
         associatedInvestigations,
-        labTestSummaries == null || labTestSummaries.isEmpty() ? null : labTestSummaries.getFirst());
+        labTestSummaryFinder == null ? new ArrayList<LabTestSummary>()
+            : labTestSummaryFinder.find(searchable.identifier()));
   }
 
   private static LabReportSearchResult.PersonParticipation asPerson(final SearchableLabReport.Person person) {
