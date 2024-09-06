@@ -3,8 +3,9 @@ package gov.cdc.nbs.patient.documentsrequiringreview.detail;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-public class LabTestSummaryRowMapper {
+public class LabTestSummaryRowMapper implements RowMapper<LabTestSummary> {
 
   public record Column(
       int name,
@@ -13,8 +14,7 @@ public class LabTestSummaryRowMapper {
       int numeric,
       int high,
       int low,
-      int unit
-  ) {
+      int unit) {
   }
 
 
@@ -22,6 +22,11 @@ public class LabTestSummaryRowMapper {
 
   public LabTestSummaryRowMapper(final Column columns) {
     this.columns = columns;
+  }
+
+  @Override
+  public LabTestSummary mapRow(final ResultSet resultSet, final int rowNum) throws SQLException {
+    return map(resultSet);
   }
 
   public LabTestSummary map(final ResultSet resultSet) throws SQLException {
@@ -40,7 +45,6 @@ public class LabTestSummaryRowMapper {
         numeric,
         high,
         low,
-        unit
-    );
+        unit);
   }
 }

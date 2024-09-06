@@ -1,13 +1,12 @@
 package gov.cdc.nbs.event.search.labreport;
 
 import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummary;
+import gov.cdc.nbs.patient.documentsrequiringreview.detail.LabTestSummaryRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +34,19 @@ public class LabTestSummaryFinder {
                                               """;
 
   private final NamedParameterJdbcTemplate namedTemplate;
+  private final RowMapper<LabTestSummary> mapper;
 
   public LabTestSummaryFinder(
       final NamedParameterJdbcTemplate template) {
+    this.mapper = new LabTestSummaryRowMapper(new LabTestSummaryRowMapper.Column(
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7));
     this.namedTemplate = template;
-
   }
 
   /**
@@ -50,15 +57,7 @@ public class LabTestSummaryFinder {
     SqlParameterSource namedParameters = new MapSqlParameterSource(
         Map.of("observationUid", observationUid));
 
-    return namedTemplate.query(QUERY, namedParameters, new RowMapper<LabTestSummary>() {
-
-      @Override
-      public LabTestSummary mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new LabTestSummary(rs.getString(1), rs.getString(2), rs.getString(3), rs.getBigDecimal(4),
-            rs.getString(5), rs.getString(6),
-            rs.getString(7));
-      }
-    });
+    return namedTemplate.query(QUERY, namedParameters, mapper);
   }
 
 }
