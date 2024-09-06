@@ -1,20 +1,62 @@
 import { Button, Icon } from '@trussworks/react-uswds';
 import styles from './MatchConfiguration.module.scss';
 import NoPassConfigurations from './PassConfiguration/NoPassConfigurations';
+import PassConfigurationListItem from './PassConfiguration/PassConfigurationListItem';
+import { useState } from 'react';
+import PassConfiguration from './PassConfiguration/PassConfiguration';
+
+type ConfigurationListItem = {
+    name: string;
+    description: string;
+    active: boolean;
+};
 
 const MatchConfiguration = () => {
+    const [configurations, setConfigurations] = useState<ConfigurationListItem[]>([]);
+    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number>(0);
+
+    const handleAddConfiguration = () => {
+        const configs = [...configurations];
+        configs.push({
+            name: `New configuration (${configurations.length})`,
+            description: 'a description will go here',
+            active: false
+        });
+        setConfigurations(configs);
+        setSelectedConfigurationIndex(configurations.length);
+    };
+
+    const handleConfigListItemClick = (index: number) => {
+        setSelectedConfigurationIndex(index);
+    };
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.configurationList}>
                 <h3>Pass configurations</h3>
-                <p className={styles.noConfigurationText}>No pass configurations have been created.</p>
-                <Button unstyled type={'button'}>
+                {configurations.length ? (
+                    <ul>
+                        {configurations.map((configuration, index) => (
+                            <PassConfigurationListItem
+                                {...configuration}
+                                key={index}
+                                selected={index === selectedConfigurationIndex}
+                                onClick={handleConfigListItemClick}
+                                index={index}
+                            />
+                        ))}
+                    </ul>
+                ) : (
+                    <p className={styles.noConfigurationText}>No pass configurations have been created.</p>
+                )}
+
+                <Button className={styles.addButton} unstyled type={'button'} onClick={handleAddConfiguration}>
                     <Icon.Add />
                     Add new pass configuration
                 </Button>
             </div>
             <div className={styles.configurationDetails}>
-                <NoPassConfigurations />
+                {selectedConfigurationIndex ? <PassConfiguration /> : <NoPassConfigurations />}
             </div>
         </div>
     );
