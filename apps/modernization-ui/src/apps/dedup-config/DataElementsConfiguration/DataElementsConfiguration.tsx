@@ -3,11 +3,17 @@ import { useDataElementsContext } from '../context/DataElementsContext';
 import { useDedupeContext } from '../context/DedupeContext';
 import styles from './data-elements-configuration.module.scss';
 import { Input } from 'components/FormInputs/Input';
+import { DataElementsTable } from './DataElementsTable';
+import { useForm, FormProvider } from 'react-hook-form';
 
 const DataElementsConfiguration = () => {
     const { dataElements } = useDataElementsContext();
     const { setMode } = useDedupeContext();
-    console.log(dataElements);
+    const form = useForm({
+        mode: 'onBlur',
+        defaultValues: { dataElements }
+    });
+
     return (
         <div className={styles.dataElements}>
             <div className={styles.header}>
@@ -17,27 +23,31 @@ const DataElementsConfiguration = () => {
             </div>
             <div className={styles.body}>
                 <div className={styles.sections}>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                            <h4>Global settings</h4>
-                        </div>
-                        <div className={styles.sectionBody}>
-                            <Input
-                                type="text"
-                                label="Belongingness ratio"
-                                defaultValue="0.5"
-                                orientation="horizontal"
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.table}>
+                    <FormProvider {...form}>
+                        <div className={styles.section}>
                             <div className={styles.sectionHeader}>
-                                <h4>Data elements</h4>
+                                <h4>Global settings</h4>
                             </div>
-                            <div className={styles.sectionBody}>Table data</div>
+                            <div className={styles.sectionBody}>
+                                <Input
+                                    type="text"
+                                    label="Belongingness ratio"
+                                    defaultValue="0.5"
+                                    orientation="horizontal"
+                                />
+                            </div>
                         </div>
-                    </div>
+                        <div className={styles.section}>
+                            <div className={styles.table}>
+                                <div className={styles.sectionHeader}>
+                                    <h4>Data elements</h4>
+                                </div>
+                                <div className={styles.sectionBody}>
+                                    <DataElementsTable />
+                                </div>
+                            </div>
+                        </div>
+                    </FormProvider>
                 </div>
                 <div className={styles.sidebar}>
                     <h3>How to </h3>
