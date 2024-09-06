@@ -1,6 +1,3 @@
-DB = 'localhost'
-USER = 'sa'
-PASSWORD = 'fake.fake.fake.1234'
 STARTING_PERSON_UID = 10_068_317 # select max(person_uid)+1 from person
 STARTING_LOCATOR_UID = 10_090_360 # select max(locator_uid)+1 from Entity_locator_participation
 
@@ -8,7 +5,10 @@ ID_CSV = 'ids.csv' # input file with rows prefixed with sequential ids
 
 # csv input format: Information as of Date,Comments,Last,First,Middle,Suffix,Date of birth,Current sex,Birth sex,Is this patient deceased?,Date of death,Marital Status,State HIV case ID,Street address 1,Street address 2,City,State,Zip,County,Census Tract,Country,Home phone,Work phone,Ext,Cell phone,Email,Ethnicity,Race,ID type,Assigning authority,ID value
 class BulkPatientImport
-  def initialize
+  def initialize(db, user, pwd)
+    @db = db
+    @user = user
+    @pwd = pwd
     @state_name_to_code = {}
     @county_name_to_code = {}
   end
@@ -203,12 +203,12 @@ class BulkPatientImport
   end
 
   def bcp(table)
-    cmd = "bcp NBS_ODSE.dbo.#{table} in #{table}.csv -U #{USER} -S #{DB} -P '#{PASSWORD}' -u -t ',' -r '0x0a' -F 1 -k -c"
+    cmd = "bcp NBS_ODSE.dbo.#{table} in #{table}.csv -U #{@user} -S #{@db} -P '#{@pwd}' -u -t ',' -r '0x0a' -F 1 -k -c"
     puts cmd
     system(cmd)
   end
 end
 
-BulkPatientImport.new.main(ARGV[0])
+BulkPatientImport.new(ARGV[1], ARGV[2], ARGV[3]).main(ARGV[0])
 
-# ruby bulk_patient_import.rb demo_patient_records.csv
+# ruby bulk_patient_import.rb demo_patient_records.csv dbhost dbuser dbpassword
