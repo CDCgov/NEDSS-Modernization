@@ -4,6 +4,8 @@ import { findByValue } from 'options';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
 import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { Investigation } from 'generated/graphql/schema';
+import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
+import { sorting } from 'apps/search/basic';
 import { InvestigationSearchResultListItem } from './result/list';
 import { InvestigationSearchForm } from './InvestigationSearchForm';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
@@ -34,32 +36,34 @@ const InvestigationSearch = () => {
 
     return (
         <ColumnPreferenceProvider id="search.investigations.preferences.columns" defaults={preferences}>
-            <FormProvider {...form}>
-                <SearchLayout
-                    onRemoveTerm={handleRemoveTerm}
-                    criteria={() => <InvestigationSearchForm />}
-                    resultsAsList={() => (
-                        <SearchResultList<Investigation>
-                            results={results}
-                            render={(result) => (
-                                <InvestigationSearchResultListItem
-                                    result={result}
-                                    notificationStatusResolver={notificationStatusResolver}
-                                />
-                            )}
-                        />
-                    )}
-                    resultsAsTable={() => (
-                        <InvestigationSearchResultsTable
-                            results={results}
-                            notificationStatusResolver={notificationStatusResolver}
-                        />
-                    )}
-                    searchEnabled={enabled}
-                    onSearch={search}
-                    onClear={clear}
-                />
-            </FormProvider>
+            <SortingPreferenceProvider id="search.investigations.preferences.sorting" available={sorting}>
+                <FormProvider {...form}>
+                    <SearchLayout
+                        onRemoveTerm={handleRemoveTerm}
+                        criteria={() => <InvestigationSearchForm />}
+                        resultsAsList={() => (
+                            <SearchResultList<Investigation>
+                                results={results}
+                                render={(result) => (
+                                    <InvestigationSearchResultListItem
+                                        result={result}
+                                        notificationStatusResolver={notificationStatusResolver}
+                                    />
+                                )}
+                            />
+                        )}
+                        resultsAsTable={() => (
+                            <InvestigationSearchResultsTable
+                                results={results}
+                                notificationStatusResolver={notificationStatusResolver}
+                            />
+                        )}
+                        searchEnabled={enabled}
+                        onSearch={search}
+                        onClear={clear}
+                    />
+                </FormProvider>
+            </SortingPreferenceProvider>
         </ColumnPreferenceProvider>
     );
 };
