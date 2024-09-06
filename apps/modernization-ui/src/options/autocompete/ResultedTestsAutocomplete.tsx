@@ -10,9 +10,18 @@ const resolver = (criteria: string, limit?: number) =>
         limit: limit
     }).then((response) => response as Selectable[]);
 
-const ResultedTestsAutocomplete = ({ id, label, onChange, required, onBlur, value }: TextAutocompleteSingleProps) => (
+const ResultedTestsAutocomplete = ({
+    id,
+    label,
+    onChange,
+    required,
+    onBlur,
+    value,
+    sizing
+}: TextAutocompleteSingleProps) => (
     <TextAutocomplete
         value={value}
+        sizing={sizing}
         resolver={resolver}
         onChange={onChange}
         required={required}

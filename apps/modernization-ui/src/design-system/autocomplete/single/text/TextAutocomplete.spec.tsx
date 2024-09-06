@@ -62,4 +62,20 @@ describe('TextAutocomplete', () => {
         const { getByRole } = render(<TextAutocomplete {...defaultProps} required={true} />);
         expect(getByRole('textbox')).toHaveAttribute('required');
     });
+
+    it('calls onChange when input loses focus', async () => {
+        const onChange = jest.fn();
+        const { getByRole } = render(<TextAutocomplete {...defaultProps} onChange={onChange} />);
+
+        const input = getByRole('textbox');
+        await act(async () => {
+            await userEvent.type(input, 'test');
+        });
+
+        expect(onChange).toHaveBeenCalledWith('t');
+        expect(onChange).toHaveBeenCalledWith('e');
+        expect(onChange).toHaveBeenCalledWith('s');
+        expect(onChange).toHaveBeenCalledWith('t');
+        expect(onChange).toHaveBeenCalledTimes(4);
+    });
 });

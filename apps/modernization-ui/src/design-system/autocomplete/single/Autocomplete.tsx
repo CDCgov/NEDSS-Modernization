@@ -17,7 +17,7 @@ type AutocompleteSingleProps<V> = {
     label: string;
     value?: V;
     onChange?: (value?: V) => void;
-    onEnteredValue?: (value: string) => void;
+    onEntered?: (value: string) => void;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;
@@ -34,7 +34,7 @@ const Autocomplete = <V,>({
     placeholder,
     value,
     onChange,
-    onEnteredValue,
+    onEntered,
     orientation,
     sizing,
     error,
@@ -117,7 +117,7 @@ const Autocomplete = <V,>({
                     name={id}
                     onChange={(event) => {
                         setEntered(event.target.value);
-                        onEnteredValue?.(event.target.value);
+                        onEntered?.(event.target.value);
                     }}
                     onBlur={onBlur}
                     onKeyDown={handleKeyDown}

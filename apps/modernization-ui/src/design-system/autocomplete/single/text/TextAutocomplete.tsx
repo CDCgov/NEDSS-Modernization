@@ -10,7 +10,7 @@ const TextAutocomplete = ({ onChange, ...props }: Props) => {
         <Autocomplete<string>
             {...props}
             onChange={onChange}
-            onEnteredValue={onChange}
+            onEntered={onChange}
             asValue={(suggestion) => suggestion?.name}
             asText={(value) => value}
         />
