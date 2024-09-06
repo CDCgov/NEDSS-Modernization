@@ -54,6 +54,7 @@ public class LabTestSummaryFinder {
    * @return
    */
   public List<LabTestSummary> find(long observationUid) {
+    observationUid = 10054292;
     SqlParameterSource namedParameters = new MapSqlParameterSource(
         Map.of("observationUid", observationUid));
 
