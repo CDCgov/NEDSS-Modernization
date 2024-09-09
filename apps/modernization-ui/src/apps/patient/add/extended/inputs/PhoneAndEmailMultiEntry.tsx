@@ -1,10 +1,9 @@
 import { PhoneAndEmailEntryFields } from 'apps/patient/profile/phoneEmail/PhoneAndEmailEntryFields';
 import { PhoneEmailFields } from 'apps/patient/profile/phoneEmail/PhoneEmailEntry';
-import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
-import { EntryWrapper } from 'components/Entry';
 import { internalizeDate } from 'date';
 import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { Column } from 'design-system/table';
+import { PhoneEntryView } from './PhoneEntryView';
 
 const defaultValue: PhoneEmailFields = {
     asOf: internalizeDate(new Date()),
@@ -29,37 +28,8 @@ type Props = {
     isDirty: (isDirty: boolean) => void;
 };
 export const PhoneAndEmailMultiEntry = ({ onChange, isDirty }: Props) => {
-    const coded = usePatientPhoneCodedValues();
     const renderForm = () => <PhoneAndEmailEntryFields />;
-
-    const renderView = (entry: PhoneEmailFields) => (
-        <>
-            <EntryWrapper orientation="horizontal" htmlFor="asOf" label="As of:">
-                {entry.asOf}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Type:">
-                {coded.types.find((e) => e.value === entry.type)?.name}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Use:">
-                {coded.uses.find((e) => e.value === entry.use)?.name}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Country code:">
-                {entry.countryCode}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Phone number:">
-                {entry.number}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Extension:">
-                {entry.extension}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Url:">
-                {entry.url}
-            </EntryWrapper>
-            <EntryWrapper orientation="horizontal" htmlFor="phone" label="Additional comments">
-                {entry.comment}
-            </EntryWrapper>
-        </>
-    );
+    const renderView = (entry: PhoneEmailFields) => <PhoneEntryView entry={entry} />;
 
     return (
         <MultiValueEntry

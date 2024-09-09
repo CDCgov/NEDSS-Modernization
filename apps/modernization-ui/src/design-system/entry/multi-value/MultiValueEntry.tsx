@@ -42,6 +42,11 @@ export const MultiValueEntry = <V extends FieldValues>({
         isDirty(form.formState.isDirty);
     }, [form.formState.isDirty]);
 
+    const handleReset = () => {
+        form.reset();
+        reset();
+    };
+
     const handleSubmit = (value: V) => {
         // Submit button performs various actions based on the current state
         if (state.status === 'adding') {
@@ -130,7 +135,7 @@ export const MultiValueEntry = <V extends FieldValues>({
                     </Button>
                 )}
                 {state.status === 'viewing' && (
-                    <Button outline onClick={reset}>
+                    <Button outline onClick={handleReset}>
                         <Icon.Add />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
