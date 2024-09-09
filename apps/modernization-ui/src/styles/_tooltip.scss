@@ -16,7 +16,7 @@ $bubbleWidth: calc($arrowWidth + 100%);
         padding: 0.5rem;
         border-radius: 0.25rem;
         opacity: 0;
-        visibility: none;
+        visibility: hidden;
         font-weight: normal;
         font-size: 0.875rem;
         line-height: 1.3;
@@ -33,7 +33,7 @@ $bubbleWidth: calc($arrowWidth + 100%);
         border-width: 0;
         border-style: solid;
         opacity: 0;
-        visibility: none;
+        visibility: hidden;
     }
 
     &:hover {
