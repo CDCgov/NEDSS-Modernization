@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import { Pagination } from 'design-system/Pagination';
 import { View } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
-import styles from './search-results.module.scss';
-import { Pagination } from 'design-system/Pagination/Pagination';
 import { Term } from 'apps/search/terms';
+import styles from './search-results.module.scss';
 
 type Props = {
     children: ReactNode;
