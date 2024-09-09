@@ -42,6 +42,7 @@ describe('when displaying a Laboratory Search Result', () => {
                     shortId: 571
                 }
             ],
+            labTestSummaries: [],
             relevance: 1
         };
 
@@ -84,6 +85,7 @@ describe('when displaying a Laboratory Search Result', () => {
                     shortId: 571
                 }
             ],
+            labTestSummaries: [],
             relevance: 1
         };
 
@@ -109,6 +111,7 @@ describe('when displaying a Laboratory Search Result', () => {
                 }
             ],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 1
         };
 
@@ -142,6 +145,7 @@ describe('when displaying a Laboratory Search Result', () => {
             ],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 1
         };
 
@@ -172,6 +176,7 @@ describe('when displaying a Laboratory Search Result', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 1
         };
 
