@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
-import { SearchResultDisplayProvider } from './useSearchResultDisplay';
+import { SearchPageProvider } from './SearchPage';
 
 const mockClear = jest.fn();
 const mockChange = jest.fn();
@@ -20,7 +20,7 @@ type Result = { label: string; value: string };
 
 const wrapper = ({ children }: { children: ReactNode }) => (
     <MemoryRouter>
-        <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
+        <SearchPageProvider>{children}</SearchPageProvider>
     </MemoryRouter>
 );
 
@@ -45,7 +45,7 @@ describe('when searching using useSearchResults', () => {
     it('should default to waiting without any results', () => {
         const { result } = setup();
 
-        expect(result.current.results).toBeUndefined();
+        expect(result.current.results).toEqual(expect.objectContaining({ total: 0 }));
         expect(result.current.status).toEqual('waiting');
     });
 

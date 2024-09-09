@@ -1,14 +1,11 @@
 import { ReactNode, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Button } from 'components/button';
-import { Term, useSearchResultDisplay } from 'apps/search';
-import { SearchLanding } from './landing';
-import { SearchResults } from './result';
-
 import { Loading } from 'components/Spinner';
 import { CollapsiblePanel } from 'design-system/collapsible-panel';
 import { SearchNavigation } from './navigation/SearchNavigation';
-import { usePage } from 'page';
+import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
+import { SearchLanding } from './landing';
+import { SearchResults } from './result';
 import { NoResults } from './result/none';
 import { NoInput } from './result/NoInput';
 
@@ -26,10 +23,9 @@ type Props = {
     searchEnabled?: boolean;
     onSearch: () => void;
     onClear: () => void;
-    onRemoveTerm: (term: Term) => void;
 };
 
-const SearchLayout = ({
+const SearchLayout = <R,>({
     actions,
     criteria,
     resultsAsList,
@@ -38,20 +34,14 @@ const SearchLayout = ({
     searchEnabled = true,
     onClear,
     noInput = () => <NoInput />,
-    noResults = () => <NoResults />,
-    onRemoveTerm
+    noResults = () => <NoResults />
 }: Props) => {
-    const { view, status, reset } = useSearchResultDisplay();
-
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-        reset();
-    }, [pathname]);
-
     const {
-        page: { total }
-    } = usePage();
+        status,
+        results: { total, terms }
+    } = useSearchInteraction<R>();
+
+    const { view } = useSearchResultDisplay();
 
     const handleKeyPress = (event: { key: string }) => {
         if (event.key === 'Enter') {
@@ -87,15 +77,19 @@ const SearchLayout = ({
 
                 <div className={styles.results}>
                     {status === 'waiting' && <SearchLanding />}
-                    {status === 'searching' && <Loading center />}
+                    {status === 'loading' && <Loading center />}
                     {status === 'completed' && (
-                        <SearchResults onRemoveTerm={onRemoveTerm}>
+                        <SearchResults view={view} total={total} terms={terms}>
                             {total === 0 && noResults()}
                             {view === 'list' && total > 0 && resultsAsList()}
                             {view === 'table' && total > 0 && resultsAsTable()}
                         </SearchResults>
                     )}
-                    {status === 'no-input' && <SearchResults onRemoveTerm={onRemoveTerm}>{noInput()}</SearchResults>}
+                    {status === 'no-input' && (
+                        <SearchResults view={view} total={total} terms={terms}>
+                            {noInput()}
+                        </SearchResults>
+                    )}
                 </div>
             </div>
         </section>
