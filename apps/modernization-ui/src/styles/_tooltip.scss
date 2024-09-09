@@ -49,13 +49,20 @@ $bubbleWidth: calc($arrowWidth + 100%);
     }
 }
 
-@mixin bubble($offset) {
-    @if $offset == 'top' or $offset == 'bottom' {
-        #{$offset}: $bubbleWidth;
+@mixin bubble($position, $offset: 'none') {
+    @if $position == 'top' or $position == 'bottom' {
+        #{$position}: $bubbleWidth;
         transform: translateX(50%);
-        right: 50%;
+
+        @if $offset == 'left' {
+            right: 100%;
+        } @else if $offset == 'right' {
+            right: 0;
+        } @else {
+            right: 50%;
+        }
     } @else {
-        #{$offset}: calc(1rem + 100%);
+        #{$position}: calc(1rem + 100%);
         transform: translateY(50%);
         bottom: 50%;
     }
@@ -80,8 +87,20 @@ $bubbleWidth: calc($arrowWidth + 100%);
 }
 
 [data-tooltip-position='top'][aria-label] {
-    &::before {
+    &:not([data-tooltip-offset])::before {
         @include bubble(bottom);
+    }
+
+    &[data-tooltip-offset='left'] {
+        &::before {
+            @include bubble(bottom, left);
+        }
+    }
+
+    &[data-tooltip-offset='right'] {
+        &::before {
+            @include bubble(bottom, right);
+        }
     }
 
     &::after {
