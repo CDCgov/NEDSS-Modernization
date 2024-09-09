@@ -10,6 +10,7 @@ import { useMultiValueEntryState } from './useMultiValueEntryState';
 import styles from './MultiValueEntry.module.scss';
 
 type Props<V extends FieldValues> = {
+    id?: string;
     title: string;
     columns: Column<V>[];
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
@@ -20,6 +21,7 @@ type Props<V extends FieldValues> = {
     viewRenderer: (entry: V) => ReactNode;
 };
 export const MultiValueEntry = <V extends FieldValues>({
+    id,
     title,
     defaultValues,
     columns,
@@ -82,7 +84,7 @@ export const MultiValueEntry = <V extends FieldValues>({
     };
 
     return (
-        <section className={styles.input}>
+        <section id={id} className={styles.input}>
             <header>
                 <Heading level={2}>{title}</Heading>
                 <span>
@@ -103,13 +105,14 @@ export const MultiValueEntry = <V extends FieldValues>({
                     </AlertBanner>
                 </section>
             )}
-
-            <DataTable<V>
-                className={styles.dataTable}
-                id={`${title}-data-table`}
-                columns={[...columns, iconColumn]}
-                data={state.data}
-            />
+            <div>
+                <DataTable<V>
+                    className={styles.dataTable}
+                    id={`${title}-data-table`}
+                    columns={[...columns, iconColumn]}
+                    data={state.data}
+                />
+            </div>
             <FormProvider {...form}>
                 {state.status === 'viewing' ? (
                     viewRenderer(state.data[state.index])
@@ -127,7 +130,7 @@ export const MultiValueEntry = <V extends FieldValues>({
                     </Button>
                 )}
                 {state.status === 'viewing' && (
-                    <Button outline disabled={!form.formState.isValid} onClick={reset}>
+                    <Button outline onClick={reset}>
                         <Icon.Add />
                         {`Add ${title.toLowerCase()}`}
                     </Button>

@@ -4,7 +4,6 @@
 .addPatientExtended {
     display: flex;
     height: calc(100vh - 75px);
-    flex-grow: 1;
     background-color: colors.$base-white;
 
     .contet {
@@ -19,7 +18,7 @@
             align-items: center;
             @extend %thin-bottom;
 
-            h2 {
+            h1 {
                 margin: 0;
             }
 
@@ -31,29 +30,11 @@
 
         main {
             display: flex;
-            justify-content: space-between;
             height: 100%;
-            padding: 1rem;
+            padding: 1rem 1rem 0 1rem;
             background-color: colors.$background;
-
-            aside nav {
-                .navTitle {
-                    padding: 0;
-                    font-size: 0.875rem;
-                    font-weight: 700;
-                }
-
-                .navOptions {
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: 1rem;
-                    @include borders.bordered('border-left');
-
-                    a {
-                        padding: 0.5rem 1rem;
-                    }
-                }
-            }
+            overflow: auto;
+            scroll-behavior: smooth;
         }
     }
 }
