@@ -1,6 +1,6 @@
 import styles from './extended-patient-nav.module.scss';
 
-export const ExtendedPatientFormNav = () => {
+export const AddPatientExtendedNav = () => {
     return (
         <aside>
             <nav>
