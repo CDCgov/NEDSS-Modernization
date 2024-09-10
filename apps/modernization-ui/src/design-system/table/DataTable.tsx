@@ -6,7 +6,7 @@ import { DataTableRow } from './DataTableRow';
 
 type Column<V> = {
     id: string;
-    name: string;
+    name: string | ReactNode;
     fixed?: boolean;
     sortable?: boolean;
     render: (value: V, index: number) => ReactNode | undefined;
