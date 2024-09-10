@@ -67,7 +67,8 @@ public class InvestigationSearchResultVerificationSteps {
   public void the_nth_search_result_has_a_x_of_y(
       final int position,
       final String field,
-      final String value) throws Exception {
+      final String value
+  ) throws Exception {
     int index = position - 1;
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
@@ -78,7 +79,7 @@ public class InvestigationSearchResultVerificationSteps {
 
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
-      case "local id" -> hasItem(Integer.parseInt(value));
+      case "patientid","shortid" -> hasItem(Integer.parseInt(value));
       case "condition", "notification", "investigator", "status", "start date", "jurisdiction", "investigation id" -> equalTo(
           value);
       default -> hasItem(value);
@@ -95,7 +96,7 @@ public class InvestigationSearchResultVerificationSteps {
           position);
       case "sex" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].currSexCd",
           position);
-      case "local id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
+      case "patientid","shortid" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].personParticipations[*].shortId",
           position);
       case "condition" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].cdDescTxt", position);
       case "investigation id" -> jsonPath("$.data.findInvestigationsByFilter.content[%s].localId", position);

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
-import { Term, View } from 'apps/search';
+import { View } from 'apps/search';
+import { Term } from 'apps/search/terms';
 import { SearchTerms } from './terms/SearchTerms';
 import { SearchResultsOptionsBar } from './options/SearchResultsOptionsBar';
 import styles from './search-results-header.module.scss';
@@ -10,13 +11,12 @@ type Props = {
     className?: string;
     total: number;
     terms: Term[];
-    onRemoveTerm: (term: Term) => void;
 };
 
-const SearchResultsHeader = ({ className, view, total, terms, onRemoveTerm }: Props) => {
+const SearchResultsHeader = ({ className, view, total, terms }: Props) => {
     return (
         <header className={classNames(styles.header, className)}>
-            <SearchTerms onRemoveTerm={onRemoveTerm} total={total} terms={terms} />
+            <SearchTerms total={total} terms={terms} />
             <SearchResultsOptionsBar view={view} disabled={total === 0} />
         </header>
     );

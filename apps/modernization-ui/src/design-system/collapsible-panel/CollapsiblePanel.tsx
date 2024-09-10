@@ -8,17 +8,20 @@ type Props = {
     id?: string;
     children: ReactNode;
     className?: string;
+    contentClassName?: string;
     ariaLabel?: string;
 };
 
-const CollapsiblePanel = ({ children, id, className, ariaLabel }: Props) => {
+const CollapsiblePanel = ({ children, id, className, contentClassName, ariaLabel }: Props) => {
     const [collapsed, setCollapsed] = useState<boolean>(false);
 
     return (
-        <div id={id} className={classNames(className, styles.collapsible, { [styles.collapsed]: collapsed })}>
-            <span className={styles.content} aria-hidden={collapsed}>
-                {children}
-            </span>
+        <div id={id} className={classNames(styles.collapsible, className, { [styles.collapsed]: collapsed })}>
+            <div className={styles.boundary}>
+                <div className={classNames(styles.content, contentClassName)} aria-hidden={collapsed}>
+                    {children}
+                </div>
+            </div>
             <button
                 type="button"
                 className={classNames(styles.control, { [styles.collapsed]: collapsed })}

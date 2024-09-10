@@ -331,6 +331,16 @@ type LabReportResults {
   size: Int!
 }
 
+type LabTestSummary {
+  name: String
+  status: String
+  coded: String
+  numeric: Float
+  high: String
+  low: String
+  unit: String
+}
+
 type LabReport {
   relevance: Float!
   id: String!
@@ -341,6 +351,7 @@ type LabReport {
   organizationParticipations: [LabReportOrganizationParticipation!]!
   observations: [Observation!]!
   associatedInvestigations: [AssociatedInvestigation!]!
+  labTestSummaries: [LabTestSummary!]!
 }
 
 type LabReportPersonParticipation {
@@ -1130,11 +1141,6 @@ enum Operator {
   AFTER
 }
 
-enum SortDirection {
-  ASC
-  DESC
-}
-
 type PatientSearchResultIdentification {
   type: String!
   value: String!
@@ -1651,9 +1657,22 @@ input Page {
   pageNumber: Int!
 }
 
+enum SortDirection {
+  ASC
+  DESC
+}
+
+scalar Direction
+
+input Sort {
+  property: String!
+  direction: Direction!
+}
+
 input SortablePage {
   pageSize: Int
   pageNumber: Int
+  sort: Sort
   sortField: SortField
   sortDirection: SortDirection
 }

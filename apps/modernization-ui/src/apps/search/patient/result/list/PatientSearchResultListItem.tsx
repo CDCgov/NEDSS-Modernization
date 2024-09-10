@@ -46,6 +46,7 @@ const PatientSearchResultListItem = ({ result }: Props) => (
                     {id.value}
                 </ResultItem>
             ))}
+            {!result.identification.length && <ResultItem label="ID Types" orientation="vertical"></ResultItem>}
         </ResultItemGroup>
     </Result>
 );

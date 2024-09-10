@@ -13,16 +13,10 @@ import {
 const displayIdentifications = (result: PatientSearchResult): string =>
     result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
 
-const LEGAL_NAME = {
-    id: 'lastNm',
-    name: 'Legal name'
-};
-
-const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };
-
+const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
+const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Sex' };
-
-const PATIENT_ID = { id: 'id', name: 'Patient ID' };
+const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
 
 const ADDRESS = { id: 'address', name: 'Address' };
 

@@ -283,7 +283,7 @@ describe('when the Laboratory Seach Criteria contains General search criteria', 
 describe('when the Laboratory Seach Criteria contains Lab Report Criteria', () => {
     it('should transform with a coded result', () => {
         const input: LabReportFilterEntry = {
-            codedResult: { name: 'Coded Name', label: 'Coded Label', value: 'coded-value' }
+            codedResult: 'coded-value'
         };
 
         const actual = transformObject(input);
@@ -297,7 +297,7 @@ describe('when the Laboratory Seach Criteria contains Lab Report Criteria', () =
 
     it('should transform with a resulted test', () => {
         const input: LabReportFilterEntry = {
-            resultedTest: { name: 'Resulted Name', label: 'Resulted Label', value: 'resulted-value' }
+            resultedTest: 'resulted-value'
         };
 
         const actual = transformObject(input);

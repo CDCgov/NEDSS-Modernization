@@ -110,6 +110,7 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
                         shortId: 63000
                     }
                 ],
+                labTestSummaries: [],
                 relevance: 1
             }
         ];

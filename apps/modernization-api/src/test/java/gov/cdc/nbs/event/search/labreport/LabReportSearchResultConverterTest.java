@@ -29,36 +29,30 @@ class LabReportSearchResultConverterTest {
         LocalDate.of(
             2002,
             Month.FEBRUARY,
-            17
-        ),
+            17),
         LocalDate.of(
             2002,
             Month.MARCH,
-            19
-        ),
+            19),
         LocalDate.of(
             2003,
             Month.MAY,
-            23
-        ),
+            23),
         179L,
         LocalDate.of(
             2005,
             Month.JULY,
-            29
-        ),
+            29),
         857L,
         LocalDate.of(
             2007,
             Month.NOVEMBER,
-            2
-        ),
+            2),
         1,
         "status-value",
-        "entry-value"
-    );
+        "entry-value");
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, 101d);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, 101d, null);
 
     assertThat(converted.relevance()).isEqualTo(101f);
     assertThat(converted.id()).isEqualTo("1019");
@@ -76,7 +70,7 @@ class LabReportSearchResultConverterTest {
     when(searchable.associated()).thenReturn(Collections.emptyList());
     when(searchable.organizations()).thenReturn(Collections.emptyList());
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null, null);
 
     assertThat(converted.relevance()).isZero();
   }
@@ -99,12 +93,9 @@ class LabReportSearchResultConverterTest {
                 "first-name-one-value",
                 "last-name-one-value",
                 "gender-value",
-                LocalDate.of(2009, Month.NOVEMBER, 13)
-            )
-        )
-    );
+                LocalDate.of(2009, Month.NOVEMBER, 13))));
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null, null);
 
     assertThat(converted.personParticipations()).satisfiesExactly(
         actual -> assertAll(
@@ -115,9 +106,7 @@ class LabReportSearchResultConverterTest {
             () -> assertThat(actual.lastName()).isEqualTo("last-name-one-value"),
             () -> assertThat(actual.personCd()).isEqualTo("PAT"),
             () -> assertThat(actual.personParentUid()).isEqualTo(443L),
-            () -> assertThat(actual.local()).isEqualTo("local-one-value")
-        )
-    );
+            () -> assertThat(actual.local()).isEqualTo("local-one-value")));
   }
 
   @Test
@@ -135,12 +124,9 @@ class LabReportSearchResultConverterTest {
                 "type-two-value",
                 "subject-type-two-value",
                 "first-name-two-value",
-                "last-name-two-value"
-            )
-        )
-    );
+                "last-name-two-value")));
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null, null);
 
     assertThat(converted.personParticipations()).satisfiesExactly(
         actual -> assertAll(
@@ -151,9 +137,7 @@ class LabReportSearchResultConverterTest {
             () -> assertThat(actual.lastName()).isEqualTo("last-name-two-value"),
             () -> assertThat(actual.personCd()).isEqualTo("PRV"),
             () -> assertThat(actual.personParentUid()).isEqualTo(857L),
-            () -> assertThat(actual.local()).isNull()
-        )
-    );
+            () -> assertThat(actual.local()).isNull()));
   }
 
 
@@ -171,30 +155,23 @@ class LabReportSearchResultConverterTest {
                 787L,
                 "type-one-value",
                 "subject-type-one-value",
-                "name-one-value"
-            ),
+                "name-one-value"),
             new SearchableLabReport.Organization(
                 829L,
                 "type-two-value",
                 "subject-type-two-value",
-                "name-two-value"
-            )
-        )
-    );
+                "name-two-value")));
 
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null, null);
 
     assertThat(converted.organizationParticipations()).satisfiesExactly(
         actual -> assertAll(
             () -> assertThat(actual.typeCd()).isEqualTo("type-one-value"),
-            () -> assertThat(actual.name()).isEqualTo("name-one-value")
-        ),
+            () -> assertThat(actual.name()).isEqualTo("name-one-value")),
         actual -> assertAll(
             () -> assertThat(actual.typeCd()).isEqualTo("type-two-value"),
-            () -> assertThat(actual.name()).isEqualTo("name-two-value")
-        )
-    );
+            () -> assertThat(actual.name()).isEqualTo("name-two-value")));
   }
 
   @Test
@@ -212,31 +189,24 @@ class LabReportSearchResultConverterTest {
             new SearchableLabReport.LabTest(
                 "name-one-value",
                 "result-one-value",
-                "alternative-one-value"
-            ),
+                "alternative-one-value"),
             new SearchableLabReport.LabTest(
                 "name-two-value",
                 "result-two-value",
-                "alternative-two-value"
-            )
-        )
-    );
+                "alternative-two-value")));
 
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null, null);
 
     assertThat(converted.observations()).satisfiesExactly(
         actual -> assertAll(
             () -> assertThat(actual.cdDescTxt()).isEqualTo("name-one-value"),
             () -> assertThat(actual.altCd()).isEqualTo("alternative-one-value"),
-            () -> assertThat(actual.displayName()).isEqualTo("result-one-value")
-        ),
+            () -> assertThat(actual.displayName()).isEqualTo("result-one-value")),
         actual -> assertAll(
             () -> assertThat(actual.cdDescTxt()).isEqualTo("name-two-value"),
             () -> assertThat(actual.altCd()).isEqualTo("alternative-two-value"),
-            () -> assertThat(actual.displayName()).isEqualTo("result-two-value")
-        )
-    );
+            () -> assertThat(actual.displayName()).isEqualTo("result-two-value")));
   }
 
   @Test
@@ -247,7 +217,7 @@ class LabReportSearchResultConverterTest {
     when(searchable.organizations()).thenReturn(Collections.emptyList());
     when(searchable.tests()).thenReturn(Collections.emptyList());
 
-    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null);
+    LabReportSearchResult converted = LabReportSearchResultConverter.convert(searchable, null, null);
 
     assertThat(converted.associatedInvestigations()).isEmpty();
   }

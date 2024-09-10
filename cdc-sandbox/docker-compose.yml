@@ -7,7 +7,10 @@
 
 services:
   nbs-mssql:
-    build: ./db
+    build: 
+      context: ./db
+      args:
+          - DB_PW=${DATABASE_PASSWORD}
     container_name: nbs-mssql
     ports:
       - 1433:1433
@@ -15,8 +18,8 @@ services:
       - nbs-mssql-data:/var/opt/mssql
     environment:
       - ACCEPT_EULA=1
-      - SQLCMDPASSWORD=fake.fake.fake.1234
-      - SA_PASSWORD=fake.fake.fake.1234
+      - SQLCMDPASSWORD=${DATABASE_PASSWORD}
+      - SA_PASSWORD=${DATABASE_PASSWORD}
     networks:
       - nbs
   wildfly:
@@ -90,9 +93,9 @@ services:
       - NIFI_JVM_HEAP_INIT=1g
       - NIFI_JVM_HEAP_MAX=2g
       - SINGLE_USER_CREDENTIALS_USERNAME=admin
-      - SINGLE_USER_CREDENTIALS_PASSWORD=fake.fake.fake.1234
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PASSWORD}
       - NIFI_SENSITIVE_PROPS_KEY=12345678901234567890A
-      - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=fake.fake.fake.1234;authenticationScheme=nativeAuthentication;
+      - JDBC_CONNECTION_STRING=jdbc:sqlserver://nbs-mssql:1433;integratedSecurity=false;encrypt=false;databaseName=NBS_ODSE;user=sa;password=${DATABASE_PASSWORD};authenticationScheme=nativeAuthentication;
       - ELASTICSEARCH_HTTP_HOSTS=http://elasticsearch:9200
     networks:
       - nbs
@@ -106,7 +109,7 @@ services:
       - ./keycloak/theme/nbs:/opt/keycloak/themes/nbs
     environment:
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: fake.1234    
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       NBS7_BASE_URL: "http://localhost:8000"
     entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"      
     networks:

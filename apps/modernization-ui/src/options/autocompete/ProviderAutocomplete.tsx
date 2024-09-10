@@ -1,4 +1,7 @@
-import { Autocomplete, AutocompleteSingleProps } from 'design-system/autocomplete';
+import {
+    SelectableAutocomplete,
+    SelectableAutocompleteSingleProps
+} from 'design-system/autocomplete/single/selectable';
 import { ProviderOptionsService } from 'generated';
 
 const resolver = (criteria: string, limit?: number) =>
@@ -7,8 +10,15 @@ const resolver = (criteria: string, limit?: number) =>
         limit: limit
     }).then((response) => response);
 
-const ProviderAutocomplete = ({ id, label, onChange, required, onBlur, ...rest }: AutocompleteSingleProps) => (
-    <Autocomplete
+const ProviderAutocomplete = ({
+    id,
+    label,
+    onChange,
+    required,
+    onBlur,
+    ...rest
+}: SelectableAutocompleteSingleProps) => (
+    <SelectableAutocomplete
         resolver={resolver}
         onChange={onChange}
         required={required}

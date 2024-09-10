@@ -19,8 +19,7 @@ class LaboratoryReportDetailRowMapper implements RowMapper<DocumentRequiringRevi
       FacilityProvidersRowMapper.Column facilities,
       int electronic,
       int event,
-      LabTestSummaryRowMapper.Column tests
-  ) {
+      LabTestSummaryRowMapper.Column tests) {
   }
 
 
@@ -55,8 +54,7 @@ class LaboratoryReportDetailRowMapper implements RowMapper<DocumentRequiringRevi
         electronic,
         false,
         providers,
-        descriptions
-    );
+        descriptions);
   }
 
   private Instant maybeMap(final ResultSet resultSet, final int column) throws SQLException {
@@ -69,7 +67,7 @@ class LaboratoryReportDetailRowMapper implements RowMapper<DocumentRequiringRevi
   }
 
   private List<DocumentRequiringReview.Description> maybeMapTests(final ResultSet resultSet) throws SQLException {
-    LabTestSummary summary = this.labTestSummaryMapper.map(resultSet);
+    LabTestSummary summary = this.labTestSummaryMapper.mapRow(resultSet, 0);
 
     return LabTestSummaryDescriptionMapper.maybeMap(summary).map(List::of).orElse(Collections.emptyList());
   }

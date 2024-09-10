@@ -47,11 +47,6 @@ enum Operator {
   AFTER
 }
 
-enum SortDirection {
-  ASC
-  DESC
-}
-
 type PatientSearchResultIdentification {
   type: String!
   value: String!

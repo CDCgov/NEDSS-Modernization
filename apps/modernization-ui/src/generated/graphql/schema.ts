@@ -17,6 +17,7 @@ export type Scalars = {
   Float: { input: number; output: number; }
   Date: { input: any; output: any; }
   DateTime: { input: any; output: any; }
+  Direction: { input: any; output: any; }
 };
 
 export type AdministrativeInput = {
@@ -345,6 +346,7 @@ export type LabReport = {
   associatedInvestigations: Array<AssociatedInvestigation>;
   id: Scalars['String']['output'];
   jurisdictionCd: Scalars['Int']['output'];
+  labTestSummaries: Array<LabTestSummary>;
   localId: Scalars['String']['output'];
   observations: Array<Observation>;
   organizationParticipations: Array<LabReportOrganizationParticipation>;
@@ -407,6 +409,17 @@ export type LabReportResults = {
   page: Scalars['Int']['output'];
   size: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
+};
+
+export type LabTestSummary = {
+  __typename?: 'LabTestSummary';
+  coded?: Maybe<Scalars['String']['output']>;
+  high?: Maybe<Scalars['String']['output']>;
+  low?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  numeric?: Maybe<Scalars['Float']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+  unit?: Maybe<Scalars['String']['output']>;
 };
 
 export type LaboratoryEventDateSearch = {
@@ -1952,6 +1965,11 @@ export type SendingFacility = {
 
 export type Sensitive = Allowed | Restricted;
 
+export type Sort = {
+  direction: Scalars['Direction']['input'];
+  property: Scalars['String']['input'];
+};
+
 export enum SortDirection {
   Asc = 'ASC',
   Desc = 'DESC'
@@ -1986,6 +2004,7 @@ export enum SortField {
 export type SortablePage = {
   pageNumber?: InputMaybe<Scalars['Int']['input']>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Sort>;
   sortDirection?: InputMaybe<SortDirection>;
   sortField?: InputMaybe<SortField>;
 };
@@ -2451,7 +2470,7 @@ export type FindLabReportsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, page: number, size: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }> }> } };
+export type FindLabReportsByFilterQuery = { __typename?: 'Query', findLabReportsByFilter: { __typename?: 'LabReportResults', total: number, page: number, size: number, content: Array<{ __typename?: 'LabReport', relevance: number, id: string, jurisdictionCd: number, localId: string, addTime: any, personParticipations: Array<{ __typename?: 'LabReportPersonParticipation', birthTime?: any | null, currSexCd?: string | null, typeCd?: string | null, firstName?: string | null, lastName?: string | null, personCd: string, personParentUid?: number | null, shortId?: number | null }>, organizationParticipations: Array<{ __typename?: 'LabReportOrganizationParticipation', typeCd: string, name: string }>, observations: Array<{ __typename?: 'Observation', cdDescTxt?: string | null, statusCd?: string | null, altCd?: string | null, displayName?: string | null }>, associatedInvestigations: Array<{ __typename?: 'AssociatedInvestigation', cdDescTxt: string, localId: string }>, labTestSummaries: Array<{ __typename?: 'LabTestSummary', name?: string | null, status?: string | null, coded?: string | null, numeric?: number | null, high?: string | null, low?: string | null, unit?: string | null }> }> } };
 
 export type FindLabReportsForPatientQueryVariables = Exact<{
   personUid: Scalars['Int']['input'];
@@ -4618,6 +4637,15 @@ export const FindLabReportsByFilterDocument = gql`
       associatedInvestigations {
         cdDescTxt
         localId
+      }
+      labTestSummaries {
+        name
+        status
+        coded
+        numeric
+        high
+        low
+        unit
       }
     }
     total

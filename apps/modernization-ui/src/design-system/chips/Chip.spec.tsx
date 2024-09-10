@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import Chip from './Chip';
+import { Chip } from './Chip';
 import userEvent from '@testing-library/user-event';
 
 describe('Chip', () => {

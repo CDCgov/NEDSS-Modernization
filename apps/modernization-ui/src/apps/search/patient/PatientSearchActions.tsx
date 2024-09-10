@@ -1,14 +1,16 @@
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { Button } from 'components/button';
 import { useAddPatientFromSearch } from './add';
-import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 
-const PatientSearchActions = () => {
-    const { status } = useSearchResultDisplay();
+type Props = {
+    disabled: boolean;
+};
+
+const PatientSearchActions = ({ disabled }: Props) => {
     const { add } = useAddPatientFromSearch();
 
     return (
-        <ButtonActionMenu label="Add new" disabled={status != 'completed'}>
+        <ButtonActionMenu label="Add new" disabled={disabled}>
             <>
                 <Button type="button" onClick={add}>
                     Add new patient

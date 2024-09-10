@@ -1,16 +1,17 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { ColumnPreferenceProvider } from 'design-system/table/preferences';
-import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { Term, useSearchResultDisplay } from 'apps/search';
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { usePatientSearch } from './usePatientSearch';
+import { SearchInteractionProvider } from 'apps/search';
+import { SearchLayout, SearchResultList } from 'apps/search/layout';
+import { sorting } from 'apps/search/basic';
+import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
 import { PatientSearchResultListItem } from './result/list';
 import { NoPatientResults } from './result/none';
 import { PatientSearchResultTable, preferences } from './result/table';
-import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { ColumnPreferenceProvider } from 'design-system/table/preferences';
 import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
-
 import { PatientSearchActions } from './PatientSearchActions';
+import { PatientCriteria } from './PatientCriteria/PatientCriteria';
+import { usePatientSearch } from './usePatientSearch';
 
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
@@ -18,43 +19,31 @@ const PatientSearch = () => {
         mode: 'onBlur'
     });
 
-    const { enabled, results, search, clear } = usePatientSearch({ form });
-
-    const { terms } = useSearchResultDisplay();
-
-    const handleRemoveTerm = (term: Term) => {
-        const formValues = form.getValues();
-        const fieldNames = Object.keys(formValues);
-
-        const matchingField = fieldNames.find((fieldName) => fieldName === term.source);
-        if (matchingField && terms.length > 1) {
-            form.resetField(matchingField as keyof PatientCriteriaEntry);
-            search();
-        } else {
-            clear();
-        }
-    };
+    const interaction = usePatientSearch({ form });
 
     return (
         <ColumnPreferenceProvider id="search.patients.preferences.columns" defaults={preferences}>
-            <FormProvider {...form}>
-                <SearchLayout
-                    onRemoveTerm={handleRemoveTerm}
-                    actions={() => <PatientSearchActions />}
-                    criteria={() => <PatientCriteria />}
-                    resultsAsList={() => (
-                        <SearchResultList<PatientSearchResult>
-                            results={results}
-                            render={(result) => <PatientSearchResultListItem result={result} />}
+            <SortingPreferenceProvider id="search.patients.preferences.sorting" available={sorting}>
+                <SearchInteractionProvider interaction={interaction}>
+                    <FormProvider {...form}>
+                        <SearchLayout
+                            actions={() => <PatientSearchActions disabled={interaction.status !== 'completed'} />}
+                            criteria={() => <PatientCriteria />}
+                            resultsAsList={() => (
+                                <SearchResultList<PatientSearchResult>
+                                    results={interaction.results.content}
+                                    render={(result) => <PatientSearchResultListItem result={result} />}
+                                />
+                            )}
+                            resultsAsTable={() => <PatientSearchResultTable results={interaction.results.content} />}
+                            searchEnabled={interaction.enabled}
+                            onSearch={interaction.search}
+                            noResults={() => <NoPatientResults />}
+                            onClear={interaction.clear}
                         />
-                    )}
-                    resultsAsTable={() => <PatientSearchResultTable results={results} />}
-                    searchEnabled={enabled}
-                    onSearch={search}
-                    noResults={() => <NoPatientResults />}
-                    onClear={clear}
-                />
-            </FormProvider>
+                    </FormProvider>
+                </SearchInteractionProvider>
+            </SortingPreferenceProvider>
         </ColumnPreferenceProvider>
     );
 };

@@ -3,8 +3,8 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { calculateAge } from 'date';
-import { CountiesCodedValues, useCountyCodedValues } from 'location';
-import { useMemo } from 'react';
+import { useCountyCodedValues } from 'location';
+import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { BirthAndGenderEntry } from './BirthAndGenderEntry';
@@ -13,20 +13,22 @@ import { usePatientSexBirthCodedValues } from './usePatientSexBirthCodedValues';
 const UNKNOWN_GENDER = 'U';
 
 export const BirthAndGenderEntryFields = () => {
-    const { control } = useFormContext<BirthAndGenderEntry>();
+    const { control, setValue } = useFormContext<BirthAndGenderEntry>();
     const currentBirthday = useWatch({ control, name: 'birth.bornOn' });
-
     const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
-
     const selectedCurrentGender = useWatch({ control, name: 'gender.current' });
-
     const selectedState = useWatch({ control, name: 'birth.state' });
-
     const selectedMultipleBirth = useWatch({ control, name: 'birth.multipleBirth' });
 
     const coded = usePatientSexBirthCodedValues();
 
-    const byState: CountiesCodedValues = selectedState ? useCountyCodedValues(selectedState) : { counties: [] };
+    const { counties } = useCountyCodedValues(selectedState);
+
+    useEffect(() => {
+        if (!selectedState) {
+            setValue('birth.county', '');
+        }
+    }, [selectedState]);
 
     return (
         <section>
@@ -244,7 +246,7 @@ export const BirthAndGenderEntryFields = () => {
                         id={name}
                         name={name}
                         htmlFor={name}
-                        options={byState.counties}
+                        options={counties}
                     />
                 )}
             />

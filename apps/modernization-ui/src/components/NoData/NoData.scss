@@ -1,8 +1,9 @@
+@use 'styles/colors';
+
 .no-data {
-    $no-data-color: #757575;
     min-width: 8ch;
     display: inline-block;
-    color: $no-data-color;
+    color: colors.$base-dark;
     margin: 0;
     font-style: italic;
 }

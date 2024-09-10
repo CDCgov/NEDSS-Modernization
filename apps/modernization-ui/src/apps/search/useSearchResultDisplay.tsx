@@ -1,60 +1,34 @@
-import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
-import { PageProvider, PagingSettings } from 'page';
-import { SortingProvider, SortingSettings } from 'sorting';
-import { Term } from './terms';
+import { ReactNode, createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 import { SearchSettings, useSearchSettings } from './useSearchSettings';
+import { useLocalStorage } from 'storage';
 
 type View = 'list' | 'table';
 
-type Waiting = { status: 'waiting' };
+type ViewPreference = {
+    view: View;
+};
 
-type Searching = { status: 'searching' };
-
-type Complete = { status: 'completed'; terms: Term[] };
-
-type NoInput = { status: 'no-input' };
-
-type State = { view: View } & (Waiting | Searching | Complete | NoInput);
+type State = { preference: ViewPreference; changed?: Date };
 
 type Interaction = {
-    status: 'waiting' | 'searching' | 'completed' | 'no-input';
     view: View;
-    terms: Term[];
-    reset: () => void;
-    search: () => void;
-    complete: (terms: Term[]) => void;
-    noInput: () => void;
     asTable: () => void;
     asList: () => void;
 };
 
 const SearchContext = createContext<Interaction | undefined>(undefined);
 
-type Action =
-    | { type: 'reset' }
-    | { type: 'search' }
-    | { type: 'complete'; terms: Term[] }
-    | { type: 'setView'; view: View }
-    | { type: 'no-input' };
+type Action = { type: 'load'; view: View } | { type: 'save'; view: View };
 
-const initialize = (settings: SearchSettings): State => ({ status: 'waiting', view: settings.defaultView });
+const initialize = (settings: SearchSettings): State => ({ preference: { view: settings.defaultView } });
 
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
-        case 'reset': {
-            return { view: current.view, status: 'waiting' };
+        case 'save': {
+            return { changed: new Date(), preference: { view: action.view } };
         }
-        case 'search': {
-            return { ...current, status: 'searching' };
-        }
-        case 'complete': {
-            return { ...current, status: 'completed', terms: action.terms };
-        }
-        case 'no-input': {
-            return { ...current, status: 'no-input' };
-        }
-        case 'setView': {
-            return { ...current, view: action.view };
+        case 'load': {
+            return { ...current, preference: { view: action.view } };
         }
         default:
             return current;
@@ -63,71 +37,41 @@ const reducer = (current: State, action: Action): State => {
 
 type Props = {
     children: ReactNode;
-    sorting?: SortingSettings;
-    paging?: PagingSettings;
 };
 
-const SearchResultDisplayProvider = ({ sorting, paging, children }: Props) => {
-    const { settings, updateDefaultView } = useSearchSettings();
+const SearchResultDisplayProvider = ({ children }: Props) => {
+    const { settings } = useSearchSettings();
 
-    return (
-        <SortingProvider {...sorting} appendToUrl={sorting?.appendToUrl === undefined ? false : sorting.appendToUrl}>
-            <PageProvider {...paging} appendToUrl={paging?.appendToUrl === undefined ? false : paging.appendToUrl}>
-                <Wrapper settings={settings} updateDefaultView={updateDefaultView}>
-                    {children}
-                </Wrapper>
-            </PageProvider>
-        </SortingProvider>
-    );
-};
-
-type WrapperProps = {
-    children: ReactNode;
-    settings: SearchSettings;
-    updateDefaultView: (newView: View) => void;
-};
-
-const Wrapper = ({ children, settings, updateDefaultView }: WrapperProps) => {
     const [state, dispatch] = useReducer(reducer, settings, initialize);
 
+    const { value, save } = useLocalStorage<ViewPreference>({
+        key: 'search.view',
+        initial: { view: settings.defaultView }
+    });
+
     useEffect(() => {
-        //  udpates the current view if the default changes
-        if (settings.defaultView === 'list') {
-            dispatch({ type: 'setView', view: 'list' });
-        } else if (settings.defaultView === 'table') {
-            dispatch({ type: 'setView', view: 'table' });
+        if (value) {
+            dispatch({ type: 'load', ...value });
         }
-    }, [settings.defaultView]);
+    }, [value]);
 
-    const terms = useMemo(() => (state.status === 'completed' ? state.terms : []), [state.status]);
+    useEffect(() => {
+        if (state.changed) {
+            save(state.preference);
+        }
+    }, [state.changed]);
 
-    const complete = useCallback((terms: Term[]) => dispatch({ type: 'complete', terms }), [dispatch]);
-    const noInput = useCallback(() => dispatch({ type: 'no-input' }), [dispatch]);
-    const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
-    const search = useCallback(() => dispatch({ type: 'search' }), [dispatch]);
+    const asTable = useCallback(() => dispatch({ type: 'save', view: 'table' }), [dispatch]);
 
-    const asTable = () => {
-        updateDefaultView('table');
-        dispatch({ type: 'setView', view: 'table' });
-    };
-    const asList = () => {
-        updateDefaultView('list');
-        dispatch({ type: 'setView', view: 'list' });
-    };
+    const asList = useCallback(() => dispatch({ type: 'save', view: 'list' }), [dispatch]);
 
-    const value = {
-        status: state.status,
-        view: state.view,
-        terms,
-        reset,
-        search,
-        complete,
-        noInput,
+    const interaction = {
+        view: state.preference.view,
         asTable,
         asList
     };
 
-    return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>;
+    return <SearchContext.Provider value={interaction}>{children}</SearchContext.Provider>;
 };
 
 const useSearchResultDisplay = () => {
@@ -140,6 +84,6 @@ const useSearchResultDisplay = () => {
     return context;
 };
 
-export type { Term, View };
+export type { View };
 
 export { SearchResultDisplayProvider, useSearchResultDisplay };

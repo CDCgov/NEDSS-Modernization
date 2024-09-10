@@ -1,82 +1,33 @@
-import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
-import { Icon } from '@trussworks/react-uswds';
-import styles from './search-results-list-options.module.scss';
-import { Direction, useSorting } from 'sorting';
-import { SortField } from 'generated/graphql/schema';
-import { useEffect } from 'react';
 import { Button } from 'components/button';
+import { Icon } from 'design-system/icon';
+import { SortingPreferencesPanel } from 'design-system/sorting/preferences';
+import { OverlayPanel } from 'overlay';
+
+import styles from './search-results-list-options.module.scss';
 
 type Props = {
     disabled?: boolean;
 };
 
 const SearchResultsListOptions = ({ disabled = false }: Props) => {
-    const { sortBy } = useSorting();
-
-    const savePreferences = (selection: SortField, direction: Direction) => {
-        localStorage.setItem('searchResultsSortBy', selection);
-        localStorage.setItem('searchResultsSortDirection', direction);
-    };
-
-    useEffect(() => {
-        const sortName = localStorage.getItem('searchResultsSortBy');
-        const sortDirection = localStorage.getItem('searchResultsSortDirection');
-
-        if (sortName && sortDirection) {
-            sortBy(sortName, sortDirection as Direction);
-        }
-    }, []);
-
     return (
-        <ButtonActionMenu
-            className={styles.option}
-            ariaLabel="Sort by list"
-            outline
-            icon={<Icon.SortArrow />}
-            disabled={disabled}>
-            <>
+        <OverlayPanel
+            className={styles.options}
+            position="right"
+            toggle={({ toggle }) => (
                 <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.Relevance, Direction.Descending);
-                        savePreferences(SortField.Relevance, Direction.Descending);
-                    }}>
-                    Closest match
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.LastNm, Direction.Ascending);
-                        savePreferences(SortField.LastNm, Direction.Ascending);
-                    }}>
-                    Patient name (A-Z)
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.LastNm, Direction.Descending);
-                        savePreferences(SortField.LastNm, Direction.Descending);
-                    }}>
-                    Patient name (Z-A)
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.BirthTime, Direction.Ascending);
-                        savePreferences(SortField.BirthTime, Direction.Ascending);
-                    }}>
-                    Date of birth (Ascending)
-                </Button>
-                <Button
-                    type="button"
-                    onClick={() => {
-                        sortBy(SortField.BirthTime, Direction.Descending);
-                        savePreferences(SortField.BirthTime, Direction.Descending);
-                    }}>
-                    Date of birth (Descending)
-                </Button>
-            </>
-        </ButtonActionMenu>
+                    className={styles.opener}
+                    aria-label="Sort list by"
+                    data-tooltip-position="top"
+                    data-tooltip-offset="left"
+                    outline
+                    disabled={disabled}
+                    icon={<Icon name="sort_arrow" className={styles.icon} />}
+                    onClick={toggle}
+                />
+            )}
+            render={(close) => <SortingPreferencesPanel onClose={close} />}
+        />
     );
 };
 

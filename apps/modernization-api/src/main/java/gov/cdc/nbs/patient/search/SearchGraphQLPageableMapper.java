@@ -19,4 +19,5 @@ public class SearchGraphQLPageableMapper {
   public Pageable from(final GraphQLPage page) {
     return GraphQLPage.toPageable(page, maxPageSize);
   }
+
 }

@@ -1,6 +1,6 @@
 import { UseFormReturn } from 'react-hook-form';
 import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } from 'generated/graphql/schema';
-import { ResultRequest, SearchInteraction, useSearch } from 'apps/search';
+import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { transform as transformer } from './transformer';
 import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
 import { patientTermsResolver as termResolver } from './patientTermsResovler';
@@ -19,8 +19,7 @@ const usePatientSearch = ({ form }: Settings): SearchInteraction<PatientSearchRe
                 page: {
                     pageNumber: request.page.number - 1,
                     pageSize: request.page.size,
-                    sortField: request.sort?.property,
-                    sortDirection: request.sort?.direction
+                    sort: request.sort
                 }
             },
             notifyOnNetworkStatusChange: true
@@ -31,7 +30,7 @@ const usePatientSearch = ({ form }: Settings): SearchInteraction<PatientSearchRe
             return response.data?.findPatientsByFilter;
         });
 
-    return useSearch({ form, defaultValues, transformer, resultResolver, termResolver });
+    return useSearchResultsFormAdapter({ form, defaultValues, transformer, resultResolver, termResolver });
 };
 
 export { usePatientSearch };

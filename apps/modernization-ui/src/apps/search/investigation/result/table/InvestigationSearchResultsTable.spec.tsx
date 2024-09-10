@@ -152,7 +152,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
         const results: Investigation[] = [
             {
                 relevance: 1,
-                addTime: '2015-09-22',
+                startedOn: '2015-09-22',
                 personParticipations: []
             }
         ];

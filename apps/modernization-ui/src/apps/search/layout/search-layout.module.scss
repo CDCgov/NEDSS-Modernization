@@ -27,10 +27,11 @@ $content-height: calc($search-height - $navigation-height - 3rem);
         @include borders.bordered();
         @include borders.rounded();
 
-        .criteria {
-            flex-shrink: 0;
-            width: $criteria-width;
+        .panel {
+            --expanded-max-width: 320px;
+        }
 
+        .criteria {
             background-color: colors.$base-white;
 
             @include borders.bordered('border-right');
@@ -58,9 +59,7 @@ $content-height: calc($search-height - $navigation-height - 3rem);
 
         .results {
             flex-grow: 1;
-            width: calc(100% - $criteria-width);
-
-            z-index: 0;
+            min-width: calc(100% - $criteria-width);
         }
     }
 }

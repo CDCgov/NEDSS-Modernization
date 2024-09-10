@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { displayName } from 'name';
 import { asSelectableGender } from 'options/gender';
 import { Mapping, Maybe } from 'utils';
+import { SortingSelectable } from 'design-system/sorting/preferences';
+import { Direction } from 'sorting';
 
 type BasicPatient = {
     birthTime?: string | null;
@@ -28,3 +30,13 @@ const displayProfileLink = (patient: Maybe<BasicPatient>) => (
 const displayGender = (patient: Maybe<BasicPatient>) => asSelectableGender(patient?.currSexCd)?.name;
 
 export { withPatient, displayProfileLink, displayGender };
+
+const sorting: SortingSelectable[] = [
+    { property: 'relavance', direction: Direction.Descending, name: 'Closest match' },
+    { property: 'legalName', direction: Direction.Ascending, name: 'Patient name (A-Z)' },
+    { property: 'legalName', direction: Direction.Descending, name: 'Patient name (Z-A)' },
+    { property: 'birthday', direction: Direction.Ascending, name: 'Date of birth (Ascending)' },
+    { property: 'birthday', direction: Direction.Descending, name: 'Date of birth (Descending)' }
+];
+
+export { sorting };

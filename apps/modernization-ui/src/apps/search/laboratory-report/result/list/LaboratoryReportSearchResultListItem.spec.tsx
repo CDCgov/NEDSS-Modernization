@@ -22,6 +22,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -52,6 +53,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -81,6 +83,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -110,6 +113,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -131,6 +135,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -152,6 +157,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -173,6 +179,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [{ cdDescTxt: 'test description', altCd: 'alt-cd-vlalue', displayName: 'test display' }],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -196,6 +203,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 5
         };
 
@@ -220,6 +228,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            labTestSummaries: [],
             relevance: 5
         };
 

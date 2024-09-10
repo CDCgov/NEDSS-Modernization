@@ -41,40 +41,6 @@ Feature: Investigation Search Sorting
     And the 2nd investigation search result has a "last name" of "Hanscom"
     And the 3rd investigation search result has a "last name" of "Denbrough"
 
-  Scenario: I can find Investigations ordered by the patient's birthday ascending
-    Given I have a patient
-    And the patient has a "birthday" of "1980-09-29"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "birthday" of "2013-09-24"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "birthday" of "1974-04-05"
-    And the patient is a subject of an investigation
-    And investigations are available for search
-    And I want search results sorted by "birthday" "asc"
-    When I search for investigations
-    Then the 1st investigation search result has a "birthday" of "1974-04-05"
-    And the 2nd investigation search result has a "birthday" of "1980-09-29"
-    And the 3rd investigation search result has a "birthday" of "2013-09-24"
-
-  Scenario: I can find Investigations ordered by the patient's birthday descending
-    Given I have a patient
-    And the patient has a "birthday" of "1980-09-29"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "birthday" of "2013-09-24"
-    And the patient is a subject of an investigation
-    And I have another patient
-    And the patient has a "birthday" of "1974-04-05"
-    And the patient is a subject of an investigation
-    And investigations are available for search
-    And I want search results sorted by "birthday" "desc"
-    When I search for investigations
-    Then the 1st investigation search result has a "birthday" of "2013-09-24"
-    And the 2nd investigation search result has a "birthday" of "1980-09-29"
-    And the 3rd investigation search result has a "birthday" of "1974-04-05"
-
   Scenario: I can find Investigations ordered by the patient's first name ascending
     Given I have a patient
     And the patient has the "legal" name "Beverly" "Hanscom"
@@ -109,6 +75,74 @@ Feature: Investigation Search Sorting
     And the 2nd investigation search result has a "first name" of "Beverly"
     And the 3rd investigation search result has a "first name" of "Ben"
 
+  Scenario: I can find Investigations ordered by the patient's legal name ascending
+    Given I have a patient
+    And the patient has the "legal" name "Torrhen" "Stark"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has the "legal" name "Lyanna" "Stark"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has the "legal" name "Talisa" "Maegyr"
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "legal name" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "first name" of "Talisa"
+    And the 2nd investigation search result has a "first name" of "Lyanna"
+    And the 3rd investigation search result has a "first name" of "Torrhen"
+
+  Scenario: I can find Investigations ordered by the patient's legal name Descending
+    Given I have a patient
+    And the patient has the "legal" name "Torrhen" "Stark"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has the "legal" name "Lyanna" "Stark"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has the "legal" name "Talisa" "Maegyr"
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "legal name" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "first name" of "Torrhen"
+    And the 2nd investigation search result has a "first name" of "Lyanna"
+    And the 3rd investigation search result has a "first name" of "Talisa"
+
+  Scenario: I can find Investigations ordered by the patient's birthday ascending
+    Given I have a patient
+    And the patient has a "birthday" of "1980-09-29"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "birthday" of "2013-09-24"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "birthday" of "1974-04-05"
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "birthday" "asc"
+    When I search for investigations
+    Then the 1st investigation search result has a "birthday" of "1974-04-05"
+    And the 2nd investigation search result has a "birthday" of "1980-09-29"
+    And the 3rd investigation search result has a "birthday" of "2013-09-24"
+
+  Scenario: I can find Investigations ordered by the patient's birthday descending
+    Given I have a patient
+    And the patient has a "birthday" of "1980-09-29"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "birthday" of "2013-09-24"
+    And the patient is a subject of an investigation
+    And I have another patient
+    And the patient has a "birthday" of "1974-04-05"
+    And the patient is a subject of an investigation
+    And investigations are available for search
+    And I want search results sorted by "birthday" "desc"
+    When I search for investigations
+    Then the 1st investigation search result has a "birthday" of "2013-09-24"
+    And the 2nd investigation search result has a "birthday" of "1980-09-29"
+    And the 3rd investigation search result has a "birthday" of "1974-04-05"
+
   Scenario: I can find Investigations ordered by the patient's sex ascending
     Given I have a patient
     And the patient has a "sex" of "F"
@@ -142,7 +176,7 @@ Feature: Investigation Search Sorting
     Then the 1st investigation search result has a "sex" of "U"
     And the 2nd investigation search result has a "sex" of "M"
 
-  Scenario: I can find Investigations ordered by the patient's local_id ascending
+  Scenario: I can find Investigations ordered by the patient's id ascending
     Given I have a patient
     And the patient has a "local id" of "PSN10000120GA01"
     And the patient is a subject of an investigation
@@ -153,13 +187,13 @@ Feature: Investigation Search Sorting
     And the patient has a "local id" of "PSN10000220GA01"
     And the patient is a subject of an investigation
     And investigations are available for search
-    And I want search results sorted by "local_id" "asc"
+    And I want search results sorted by "patientId" "asc"
     When I search for investigations
-    Then the 1st investigation search result has a "local id" of "120"
-    And the 2nd investigation search result has a "local id" of "220"
-    And the 3rd investigation search result has a "local id" of "320"
+    Then the 1st investigation search result has a "patientId" of "120"
+    And the 2nd investigation search result has a "patientId" of "220"
+    And the 3rd investigation search result has a "patientId" of "320"
 
-  Scenario: I can find Investigations ordered by the patient's local_id descending
+  Scenario: I can find Investigations ordered by the patient's id descending
     Given I have a patient
     And the patient has a "local id" of "PSN10000120GA01"
     And the patient is a subject of an investigation
@@ -170,11 +204,11 @@ Feature: Investigation Search Sorting
     And the patient has a "local id" of "PSN10000220GA01"
     And the patient is a subject of an investigation
     And investigations are available for search
-    And I want search results sorted by "local_id" "desc"
+    And I want search results sorted by "patientId" "desc"
     When I search for investigations
-    Then the 1st investigation search result has a "local id" of "320"
-    And the 2nd investigation search result has a "local id" of "220"
-    And the 3rd investigation search result has a "local id" of "120"
+    Then the 1st investigation search result has a "patientId" of "320"
+    And the 2nd investigation search result has a "patientId" of "220"
+    And the 3rd investigation search result has a "patientId" of "120"
 
   Scenario: I can find Investigations ordered by the patient's condition ascending
     Given I have a patient
