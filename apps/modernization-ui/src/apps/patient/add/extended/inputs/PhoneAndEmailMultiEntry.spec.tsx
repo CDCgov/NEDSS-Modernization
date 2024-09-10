@@ -86,9 +86,11 @@ describe('PhoneAndEmailMultiEntry', () => {
         });
 
         await waitFor(async () => {
+          const date = internalizeDate(new Date());
+
             expect(onChange).toHaveBeenNthCalledWith(2, [
                 {
-                    asOf: '09/09/2024',
+                    asOf: date,
                     comment: 'comments go here',
                     countryCode: '1',
                     email: 'email@email.com',
