@@ -14,6 +14,8 @@ const DataElementsConfiguration = () => {
         defaultValues: { dataElements }
     });
 
+    const { formState } = form;
+
     return (
         <div className={styles.dataElements}>
             <div className={styles.header}>
@@ -95,7 +97,7 @@ const DataElementsConfiguration = () => {
                 <Button type="button" outline onClick={() => setMode('patient')}>
                     Cancel
                 </Button>
-                <Button type="button" onClick={() => console.log('save')} disabled>
+                <Button type="button" onClick={() => console.log('save')} disabled={!formState.isValid}>
                     Save data elements configuration
                 </Button>
             </div>
