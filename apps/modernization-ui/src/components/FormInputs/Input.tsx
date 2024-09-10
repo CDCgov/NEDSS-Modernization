@@ -23,6 +23,7 @@ type InputProps = {
     rows?: number;
     textInputRef?: RefObject<HTMLInputElement>;
     textAreaRef?: RefObject<HTMLTextAreaElement>;
+    tooltipDirection?: 'top' | 'left' | 'right' | 'bottom';
     mask?: string;
     pattern?: string;
     ariaLabel?: string;
@@ -47,6 +48,7 @@ export const Input = ({
     rows,
     textInputRef,
     textAreaRef,
+    tooltipDirection,
     mask,
     pattern,
     ariaLabel,
@@ -59,7 +61,8 @@ export const Input = ({
             orientation={flexBox ? 'horizontal' : orientation}
             sizing={sizing}
             required={required}
-            error={error}>
+            error={error}
+            tooltipDirection={tooltipDirection ?? undefined}>
             {!multiline ? (
                 mask ? (
                     <TextInputMask

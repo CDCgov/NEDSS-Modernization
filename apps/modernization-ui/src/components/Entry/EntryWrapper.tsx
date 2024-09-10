@@ -16,11 +16,31 @@ type Props = {
     label: string;
     error?: string;
     required?: boolean;
+    tooltipDirection?: 'top' | 'left' | 'right' | 'bottom';
     children: ReactNode;
 };
 
-const EntryWrapper = ({ sizing = 'standard', orientation = 'vertical', className, children, ...remaining }: Props) => {
-    if (orientation === 'horizontal') {
+const EntryWrapper = ({
+    sizing = 'standard',
+    orientation = 'vertical',
+    className,
+    tooltipDirection,
+    children,
+    ...remaining
+}: Props) => {
+    if (tooltipDirection) {
+        return (
+            <VerticalEntryWrapper
+                tooltipDirection={tooltipDirection}
+                className={classNames(styles.entry, styles.tooltip, styles.ASDF, styles.centered, {
+                    [styles.compact]: sizing === 'compact'
+                })}
+                {...remaining}>
+                {children}
+            </VerticalEntryWrapper>
+        );
+    }
+    if (orientation === 'horizontal' && !tooltipDirection) {
         return (
             <HorizontalEntryWrapper
                 className={classNames(styles.entry, className, { [styles.compact]: sizing === 'compact' })}
@@ -29,14 +49,17 @@ const EntryWrapper = ({ sizing = 'standard', orientation = 'vertical', className
             </HorizontalEntryWrapper>
         );
     }
-
-    return (
-        <VerticalEntryWrapper
-            className={classNames(styles.entry, className, styles.vertical, { [styles.compact]: sizing === 'compact' })}
-            {...remaining}>
-            {children}
-        </VerticalEntryWrapper>
-    );
+    if (orientation === 'vertical' && !tooltipDirection) {
+        return (
+            <VerticalEntryWrapper
+                className={classNames(styles.entry, className, styles.vertical, {
+                    [styles.compact]: sizing === 'compact'
+                })}
+                {...remaining}>
+                {children}
+            </VerticalEntryWrapper>
+        );
+    }
 };
 
 export { EntryWrapper };

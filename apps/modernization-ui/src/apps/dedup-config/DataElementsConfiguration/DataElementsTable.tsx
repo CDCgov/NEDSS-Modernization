@@ -5,16 +5,26 @@ import { DataTable, Column } from 'design-system/table';
 import { Checkbox } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
 import { useDataElementsContext } from '../context/DataElementsContext';
+import styles from './data-elements-table.module.scss';
 
 const columns = (
     control: any,
     handleRowCheckboxChange: (index: number, checked: boolean) => void,
     checkedState: boolean[],
-    watchedDataElements: DataElement[]
+    watchedDataElements: DataElement[],
+    handleHeaderCheckboxChange: (checked: boolean) => void // Add this parameter
 ): Column<DataElement>[] => [
     {
         id: 'active',
-        name: 'Active',
+        name: (
+            <Checkbox
+                name="select-all"
+                id="select-all-checkbox"
+                label=""
+                checked={checkedState.every(Boolean)} // Check if all rows are selected
+                onChange={(e) => handleHeaderCheckboxChange(e.target.checked)} // Handle "Select All"
+            />
+        ),
         render: (dataElement, index) => (
             <Controller
                 control={control}
@@ -46,7 +56,8 @@ const columns = (
             <Controller
                 control={control}
                 name={`dataElements.${index}.m`}
-                render={({ field: { value, onChange, onBlur, name } }) => (
+                rules={{ required: { value: checkedState[index], message: 'M is required' } }}
+                render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                     <Input
                         type="number"
                         defaultValue={value}
@@ -55,6 +66,8 @@ const columns = (
                         onBlur={onBlur}
                         name={name}
                         disabled={!checkedState[index]}
+                        error={error?.message}
+                        tooltipDirection="top"
                     />
                 )}
             />
@@ -67,7 +80,8 @@ const columns = (
             <Controller
                 control={control}
                 name={`dataElements.${index}.u`}
-                render={({ field: { value, onChange, onBlur, name } }) => (
+                rules={{ required: { value: checkedState[index], message: 'U is required' } }}
+                render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                     <Input
                         type="number"
                         defaultValue={value}
@@ -76,6 +90,8 @@ const columns = (
                         onBlur={onBlur}
                         name={name}
                         disabled={!checkedState[index]}
+                        error={error?.message}
+                        tooltipDirection="top"
                     />
                 )}
             />
@@ -108,7 +124,8 @@ const columns = (
             <Controller
                 control={control}
                 name={`dataElements.${index}.threshold`}
-                render={({ field: { value, onChange, onBlur, name } }) => (
+                rules={{ required: { value: checkedState[index], message: 'Threshold is required' } }}
+                render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
                     <Input
                         type="number"
                         defaultValue={value}
@@ -117,6 +134,8 @@ const columns = (
                         onBlur={onBlur}
                         name={name}
                         disabled={!checkedState[index]}
+                        error={error?.message}
+                        tooltipDirection="top"
                     />
                 )}
             />
@@ -144,14 +163,35 @@ const DataElementsTable = () => {
         const updatedCheckedState = [...checkedState];
         updatedCheckedState[index] = checked;
         setCheckedState(updatedCheckedState);
+
+        // Update the form state
+        setValue(`dataElements.${index}.active`, checked);
+    };
+
+    const handleHeaderCheckboxChange = (checked: boolean) => {
+        const updatedCheckedState = dataElements.map(() => checked);
+        setCheckedState(updatedCheckedState);
+
+        // Update the form state for all rows
+        dataElements.forEach((_, index) => {
+            setValue(`dataElements.${index}.active`, checked);
+        });
     };
 
     return (
-        <DataTable<DataElement>
-            id="dataElementsTable"
-            columns={columns(control, handleRowCheckboxChange, checkedState, watchedDataElements)}
-            data={dataElements}
-        />
+        <div className={styles.table}>
+            <DataTable<DataElement>
+                id="dataElementsTable"
+                columns={columns(
+                    control,
+                    handleRowCheckboxChange,
+                    checkedState,
+                    watchedDataElements,
+                    handleHeaderCheckboxChange
+                )}
+                data={dataElements}
+            />
+        </div>
     );
 };
 
