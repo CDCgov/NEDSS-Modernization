@@ -6,15 +6,13 @@ type Props = {
 };
 export const ResultedTestDisplay = ({ test }: Props) => {
     const numericResult = (): ReactNode | undefined => {
-        if (test.numeric) {
-            return (
+        return (
+            test.numeric && (
                 <div className={styles.testResult}>
                     Numeric result: <span>{`${test.numeric} ${test.unit ? test.unit : ''}`}</span>
                 </div>
-            );
-        } else {
-            return undefined;
-        }
+            )
+        );
     };
 
     const referenceRange = (): ReactNode | undefined => {
@@ -39,15 +37,13 @@ export const ResultedTestDisplay = ({ test }: Props) => {
     };
 
     const codedResult = (): ReactNode | undefined => {
-        if (test.coded) {
-            return (
+        return (
+            test.coded && (
                 <div className={styles.testResult}>
                     Coded result: <span>{test.coded}</span>
                 </div>
-            );
-        } else {
-            return undefined;
-        }
+            )
+        );
     };
 
     return (
