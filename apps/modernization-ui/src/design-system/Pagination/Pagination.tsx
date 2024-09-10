@@ -3,26 +3,29 @@ import styles from './pagination.module.scss';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { usePage } from 'page';
 
-export const Pagination = () => {
-    const { request, page } = usePage();
+const Pagination = () => {
+    const {
+        request,
+        page: { total, pageSize, current }
+    } = usePage();
 
-    return page.total ? (
+    return (
         <div className={styles.pagination}>
             <div className={styles.range}>
-                Showing <RangeToggle initial={page.pageSize} /> of <span id="totalRowCount">{page.total}</span>
+                Showing <RangeToggle initial={pageSize} aria-label="selected page size" /> of {total}
             </div>
             <div className={styles.pages}>
                 <PaginationUswds
-                    totalPages={Math.ceil(page.total / page.pageSize)}
-                    currentPage={page.current}
-                    pathname={``}
-                    onClickNext={() => request(page.current + 1)}
-                    onClickPrevious={() => request(page.current - 1)}
+                    totalPages={Math.ceil(total / pageSize)}
+                    currentPage={current}
+                    pathname={''}
+                    onClickNext={() => request(current + 1)}
+                    onClickPrevious={() => request(current - 1)}
                     onClickPageNumber={(_, page) => request(page)}
                 />
             </div>
         </div>
-    ) : (
-        <></>
     );
 };
+
+export { Pagination };

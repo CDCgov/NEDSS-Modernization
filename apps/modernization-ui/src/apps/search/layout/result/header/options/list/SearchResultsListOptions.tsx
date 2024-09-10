@@ -17,8 +17,9 @@ const SearchResultsListOptions = ({ disabled = false }: Props) => {
             toggle={({ toggle }) => (
                 <Button
                     className={styles.opener}
-                    aria-label="Sort settings"
+                    aria-label="Sort list by"
                     data-tooltip-position="top"
+                    data-tooltip-offset="left"
                     outline
                     disabled={disabled}
                     icon={<Icon name="sort_arrow" className={styles.icon} />}

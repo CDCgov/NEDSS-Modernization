@@ -208,4 +208,24 @@ describe('PatientSearchResultListItem', () => {
         expect(getByText('identification-two-type')).toBeInTheDocument();
         expect(getByText('identification-two-value')).toBeInTheDocument();
     });
+
+    it('should render "ID Types" label when there are no identifications', () => {
+        const patient: PatientSearchResult = {
+            patient: 829,
+            shortId: 653,
+            status: 'status-value',
+            addresses: [],
+            phones: [],
+            emails: [],
+            names: [],
+            identification: []
+        };
+
+        const { getByText } = render(
+            <MemoryRouter>
+                <PatientSearchResultListItem result={patient}/>
+            </MemoryRouter>
+        );
+        expect(getByText('ID Types')).toBeInTheDocument();
+    });
 });

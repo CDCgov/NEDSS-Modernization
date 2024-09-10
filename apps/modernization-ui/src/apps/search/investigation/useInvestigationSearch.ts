@@ -1,5 +1,5 @@
 import { UseFormReturn } from 'react-hook-form';
-import { ResultRequest, SearchInteraction, useSearch } from 'apps/search';
+import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { Investigation, InvestigationFilter, useFindInvestigationsByFilterLazyQuery } from 'generated/graphql/schema';
 import { InvestigationFilterEntry } from './InvestigationFormTypes';
 
@@ -32,7 +32,7 @@ const useInvestigationSearch = ({ form }: Settings): SearchInteraction<Investiga
         });
     };
 
-    return useSearch({ form, transformer, resultResolver, termResolver });
+    return useSearchResultsFormAdapter({ form, transformer, resultResolver, termResolver });
 };
 
 export { useInvestigationSearch };

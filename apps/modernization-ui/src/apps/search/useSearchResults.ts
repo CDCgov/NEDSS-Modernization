@@ -2,19 +2,11 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { usePage, Status as PageStatus } from 'page';
 import { useSorting } from 'sorting';
 import { Predicate } from 'utils';
-import { Term, useSearchResultDisplay } from './useSearchResultDisplay';
 import { useSearchCritiera } from './useSearchCriteria';
+import { SearchResults } from './useSearchInteraction';
+import { Term } from './terms';
 
-type Resolved<R> = {
-    total: number;
-    page: number;
-    size?: number;
-    content: R[];
-};
-
-type Results<R> = Resolved<R> & {
-    terms: Term[];
-};
+type Resolved<R> = Omit<SearchResults<R>, 'terms'>;
 
 type Waiting = { status: 'waiting' };
 
@@ -26,11 +18,11 @@ type Requesting<C> = { status: 'requesting'; criteria: C };
 
 type Fetching<A> = { status: 'fetching'; parameters: A; terms: Term[] };
 
-type Completed<A, R> = { status: 'completed'; parameters: A; results: Results<R> };
+type Completed<A, R> = { status: 'completed'; parameters: A; results: SearchResults<R> };
 
 type Failed = { status: 'error'; reason: string };
 
-type NoInput<R> = { status: 'no-input'; results: Results<R> };
+type NoInput<R> = { status: 'no-input'; results: SearchResults<R> };
 
 type State<C, A, R> =
     | Waiting
@@ -82,18 +74,26 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
 type ResultHandler<R> = (result: Resolved<R>) => void;
 
 const orElseEmptyResult =
-    <R>(handler: ResultHandler<R>) =>
+    <R>(size: number, handler: ResultHandler<R>) =>
     (result?: Resolved<R>) => {
-        const ensured = result ?? { total: 0, content: [], page: 0 };
+        const ensured = result ?? { size, total: 0, content: [], page: 0 };
         handler(ensured);
     };
 
 const defaultNoInputCheck: Predicate<Term[]> = (terms: Term[]) => terms.length === 0;
 
+const blankResults = (size: number, page: number) => ({
+    total: 0,
+    content: [],
+    terms: [],
+    page,
+    size
+});
+
 type SearchResulstInteraction<C, R> = {
     status: 'waiting' | 'resetting' | 'loading' | 'completed' | 'error' | 'no-input' | 'initializing';
     criteria?: C;
-    results?: Results<R>;
+    results: SearchResults<R>;
     error?: string;
     reset: () => void;
     search: (criteria: C) => void;
@@ -148,8 +148,6 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         change: changeCriteria
     } = useSearchCritiera({ defaultValues });
 
-    const searchResults = useSearchResultDisplay();
-
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
 
     useEffect(() => {
@@ -164,18 +162,6 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
             pageReset();
         }
     }, [state.status, pageReset]);
-
-    useEffect(() => {
-        if (state.status === 'fetching' || state.status === 'requesting') {
-            searchResults.search();
-        } else if (state.status === 'completed') {
-            searchResults.complete(state.results.terms);
-        } else if (state.status === 'resetting') {
-            searchResults.reset();
-        } else if (state.status === 'no-input') {
-            searchResults.noInput();
-        }
-    }, [state.status, searchResults.search, searchResults.complete, searchResults.reset, searchResults.noInput]);
 
     const handleComplete = (resolved: Resolved<R>) => {
         ready(resolved.total, resolved.page + 1);
@@ -232,7 +218,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
                     size: page.pageSize
                 },
                 sort
-            }).then(orElseEmptyResult(handleComplete), handleError);
+            }).then(orElseEmptyResult(page.pageSize, handleComplete), handleError);
         } else if (state.status === 'completed' && page.status === PageStatus.Requested) {
             //  the page changing without the criteria changing
             dispatch({ type: 'refresh' });
@@ -254,7 +240,10 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         () => (state.status === 'initializing' || state.status === 'requesting' ? state.criteria : undefined),
         [state.status]
     );
-    const results = useMemo(() => (state.status === 'completed' ? state.results : undefined), [state.status]);
+    const results = useMemo(
+        () => (state.status === 'completed' ? state.results : blankResults(page.pageSize, page.current)),
+        [state.status, page.pageSize, page.current]
+    );
     const error = useMemo(() => (state.status === 'error' ? state.reason : undefined), [state.status]);
     const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch]);
     const search = useCallback((criteria: C) => dispatch({ type: 'request', criteria }), [dispatch]);

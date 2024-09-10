@@ -30,6 +30,15 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage){
                 cdDescTxt
                 localId
             }
+            tests{
+                name
+                status
+                coded
+                numeric
+                high
+                low
+                unit
+            }
         }
         total
         page
