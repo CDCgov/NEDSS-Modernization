@@ -31,7 +31,7 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
                             <HeightConstrained
                                 rowConstraint={constraint}
                                 onChange={setConstraint}
-                                name={column.name.toLowerCase()}>
+                                name={typeof column.name === 'string' ? column.name.toLowerCase() : ''}>
                                 {column.render(row, index)}
                             </HeightConstrained>
                         ) : (

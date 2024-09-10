@@ -41,4 +41,28 @@
             outline: none;
         }
     }
+    &.tooltip {
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        column-gap: 2px;
+        input {
+            outline: none;
+        }
+        span {
+            span {
+                background-color: colors.$error-dark;
+                &::after {
+                    border-top: 5px solid colors.$error-dark;
+                }
+            }
+        }
+    }
+    &.centered {
+        align-items: center;
+        gap: 0.25rem;
+        button:hover {
+            background-color: unset;
+            color: colors.$secondary;
+        }
+    }
 }

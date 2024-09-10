@@ -1,0 +1,32 @@
+@use 'styles/colors';
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    span {
+        .tooltipIcon {
+            margin-left: 0.25rem;
+            font-size: 1rem;
+            border-radius: 50%;
+            width: 19.25px;
+            height: 19.25px;
+        }
+        .tooltip {
+            background-color: unset;
+            min-width: unset;
+            min-height: unset;
+            padding: 0;
+            margin: 0;
+            color: colors.$secondary;
+            height: auto;
+            width: auto;
+            svg {
+                margin: 0.25rem 0 0;
+            }
+        }
+        .usa-tooltip__body--left {
+            margin-left: 5rem;
+            background-color: green;
+        }
+    }
+}
