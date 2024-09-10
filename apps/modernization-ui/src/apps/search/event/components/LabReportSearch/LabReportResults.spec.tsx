@@ -37,7 +37,7 @@ const labReports: [LabReport] = [
             }
         ],
         associatedInvestigations: [],
-        labTestSummaries: []
+        tests: []
     }
 ];
 

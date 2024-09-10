@@ -14,7 +14,7 @@ record LabReportSearchResult(
     List<OrganizationParticipation> organizationParticipations,
     List<Observation> observations,
     List<AssociatedInvestigation> associatedInvestigations,
-    List<LabTestSummary> labTestSummaries) {
+    List<LabTestSummary> tests) {
 
   record PersonParticipation(
       LocalDate birthTime,
