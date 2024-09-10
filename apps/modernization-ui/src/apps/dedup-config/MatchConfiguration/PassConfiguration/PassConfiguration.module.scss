@@ -3,5 +3,24 @@
 .criteria {
     background-color: colors.$base-white;
     margin-bottom: 1rem;
-    padding: 1.5rem;
+    border: 1px solid colors.$base-lighter;
+    border-radius: 0.3125rem;
+
+    &.disabled {
+        background-color: colors.$disabled-light;
+    }
+
+    .criteriaHeadingContainer {
+        padding: 1.5rem;
+        border-bottom: 1px solid colors.$base-lighter;
+    }
+
+    .criteriaContentContainer {
+        padding: 1.5rem;
+
+        .criteriaRequest {
+            border-bottom: 1px solid colors.$base-lighter;
+            padding-bottom: 1.5rem;
+        }
+    }
 }
