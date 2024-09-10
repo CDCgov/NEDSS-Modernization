@@ -10,7 +10,6 @@ const resolver = (criteria: string, limit?: number) =>
         limit: limit
     }).then((response) => response as Selectable[]);
 
-
 const ResultedTestsAutocomplete = (props: TextAutocompleteSingleProps) => (
     <TextAutocomplete resolver={resolver} {...props} asSuggestion={renderSuggestion} />
 );
