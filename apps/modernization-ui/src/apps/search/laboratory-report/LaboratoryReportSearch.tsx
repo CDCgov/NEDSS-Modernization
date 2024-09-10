@@ -1,8 +1,9 @@
 import { FormProvider, useForm } from 'react-hook-form';
+import { SearchInteractionProvider } from 'apps/search';
 import { SearchLayout, SearchResultList } from 'apps/search/layout';
-import { removeTerm } from 'apps/search/terms';
-import { useSearchResultDisplay } from 'apps/search/useSearchResultDisplay';
 import { LabReport } from 'generated/graphql/schema';
+import { SortingPreferenceProvider } from 'design-system/sorting/preferences';
+import { sorting } from 'apps/search/basic';
 import { useLaboratoryReportSearch } from './useLaboratoryReportSearch';
 import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
 import { LaboratoryReportSearchResultListItem } from './result/list';
@@ -18,42 +19,41 @@ const LaboratoryReportSearch = () => {
         mode: 'onBlur'
     });
 
-    const { enabled, results, search, clear } = useLaboratoryReportSearch({ form });
-
-    const { terms } = useSearchResultDisplay();
-
-    const handleRemoveTerm = removeTerm(form, () => {
-        if (terms.length === 1) {
-            clear();
-        } else {
-            search();
-        }
-    });
+    const interaction = useLaboratoryReportSearch({ form });
 
     const { resolve: findById } = useJurisdictionOptions();
 
     return (
         <ColumnPreferenceProvider id="search.laboratory-reports.preferences.columns" defaults={preferences}>
-            <FormProvider {...form}>
-                <SearchLayout
-                    onRemoveTerm={handleRemoveTerm}
-                    criteria={() => <LaboratoryReportSearchCriteria />}
-                    resultsAsList={() => (
-                        <SearchResultList<LabReport>
-                            results={results}
-                            render={(result) => (
-                                <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={findById} />
+            <SortingPreferenceProvider id="search.laboratory-reports.preferences.sorting" available={sorting}>
+                <SearchInteractionProvider interaction={interaction}>
+                    <FormProvider {...form}>
+                        <SearchLayout
+                            criteria={() => <LaboratoryReportSearchCriteria />}
+                            resultsAsList={() => (
+                                <SearchResultList<LabReport>
+                                    results={interaction.results.content}
+                                    render={(result) => (
+                                        <LaboratoryReportSearchResultListItem
+                                            result={result}
+                                            jurisdictionResolver={findById}
+                                        />
+                                    )}
+                                />
                             )}
+                            resultsAsTable={() => (
+                                <LaboratoryReportSearchResultsTable
+                                    results={interaction.results.content}
+                                    jurisdictionResolver={findById}
+                                />
+                            )}
+                            searchEnabled={interaction.enabled}
+                            onSearch={interaction.search}
+                            onClear={interaction.clear}
                         />
-                    )}
-                    resultsAsTable={() => (
-                        <LaboratoryReportSearchResultsTable results={results} jurisdictionResolver={findById} />
-                    )}
-                    searchEnabled={enabled}
-                    onSearch={search}
-                    onClear={clear}
-                />
-            </FormProvider>
+                    </FormProvider>
+                </SearchInteractionProvider>
+            </SortingPreferenceProvider>
         </ColumnPreferenceProvider>
     );
 };

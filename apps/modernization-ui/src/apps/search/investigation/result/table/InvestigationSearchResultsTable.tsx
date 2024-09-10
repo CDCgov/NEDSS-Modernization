@@ -55,7 +55,7 @@ const columns = (notificationStatusResolver: SelectableResolver): Column<Investi
     {
         ...START_DATE,
         sortable: true,
-        render: (row) => internalizeDate(row.addTime)
+        render: (row) => internalizeDate(row.startedOn)
     },
     {
         ...JURSIDICTION,

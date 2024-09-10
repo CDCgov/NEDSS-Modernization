@@ -126,7 +126,6 @@ const SortingProvider = ({ appendToUrl = false, children }: SortingProviderProps
             setSearchParams((current) => {
                 current.set(SORT_ON_PARAMETER, property);
                 current.set(DIRECTION_PARAMETER, direction);
-                console.log({ current });
                 return current;
             });
         }

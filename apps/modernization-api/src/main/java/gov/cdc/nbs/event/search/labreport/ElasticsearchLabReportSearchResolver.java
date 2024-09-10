@@ -28,6 +28,7 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
   private final LabReportSearchCriteriaSortResolver sortResolver;
   private final ElasticsearchClient client;
   private final SearchResultResolver resultResolver;
+  private final LabTestSummaryFinder labTestSummaryFinder;
 
   ElasticsearchLabReportSearchResolver(
       final PermissionScopeResolver resolver,
@@ -35,21 +36,21 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
       final LabReportSearchCriteriaQueryResolver queryResolver,
       final LabReportSearchCriteriaSortResolver sortResolver,
       final ElasticsearchClient client,
-      final SearchResultResolver resultResolver
-  ) {
+      final SearchResultResolver resultResolver,
+      final LabTestSummaryFinder labTestSummaryFinder) {
     this.resolver = resolver;
     this.filterResolver = filterResolver;
     this.queryResolver = queryResolver;
     this.sortResolver = sortResolver;
     this.client = client;
     this.resultResolver = resultResolver;
+    this.labTestSummaryFinder = labTestSummaryFinder;
   }
 
   @Override
   public SearchResult<LabReportSearchResult> search(
       final LabReportFilter criteria,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
     PermissionScope scope = this.resolver.resolve(PERMISSION);
 
     Query filter = filterResolver.resolve(criteria, scope);
@@ -65,8 +66,7 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
               .sort(sorting)
               .from((int) pageable.getOffset())
               .size(pageable.getPageSize()),
-          SearchableLabReport.class
-      );
+          SearchableLabReport.class);
 
       HitsMetadata<SearchableLabReport> hits = response.hits();
 
@@ -84,18 +84,16 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
 
   private SearchResult<LabReportSearchResult> paged(
       final HitsMetadata<SearchableLabReport> hits,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
 
     List<LabReportSearchResult> results = hits.hits().stream()
         .filter(hit -> hit.source() != null)
-        .map(hit -> LabReportSearchResultConverter.convert(hit.source(), hit.score()))
+        .map(hit -> LabReportSearchResultConverter.convert(hit.source(), hit.score(), labTestSummaryFinder))
         .toList();
 
     return resultResolver.resolve(
         results,
         pageable,
-        hits.total().value()
-    );
+        hits.total().value());
   }
 }

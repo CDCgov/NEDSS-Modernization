@@ -303,29 +303,25 @@ describe('when a Laboratory Seach contains General search criteria', () => {
 describe('when a Laboratory Seach contains Lab report criteria', () => {
     it('should resolve terms with Coded result', () => {
         const input: LabReportFilterEntry = {
-            codedResult: { name: 'Coded Name', label: 'Coded Label', value: 'coded-value' }
+            codedResult: 'coded-result'
         };
 
         const actual = laboratoryReportTermsResolver(input);
 
-        expect(actual).toEqual(
-            expect.arrayContaining([
-                { source: 'codedResult', title: 'CODED RESULT', name: 'Coded Name', value: 'coded-value' }
-            ])
-        );
+        expect(actual).toEqual([
+            { name: 'coded-result', source: 'codedResult', title: 'CODED RESULT', value: 'coded-result' }
+        ]);
     });
 
     it('should resolve terms with Resulted test', () => {
         const input: LabReportFilterEntry = {
-            resultedTest: { name: 'Resulted Name', label: 'Resulted Label', value: 'resulted-value' }
+            resultedTest: 'resulted-value'
         };
 
         const actual = laboratoryReportTermsResolver(input);
 
-        expect(actual).toEqual(
-            expect.arrayContaining([
-                { source: 'resultedTest', title: 'RESULTED TEST', name: 'Resulted Name', value: 'resulted-value' }
-            ])
-        );
+        expect(actual).toEqual([
+            { source: 'resultedTest', title: 'RESULTED TEST', name: 'resulted-value', value: 'resulted-value' }
+        ]);
     });
 });
