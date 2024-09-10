@@ -16,7 +16,7 @@ import { EventDate, Identification, LabReportFilterEntry } from './labReportForm
 import { asNumericValues, asValue, asValues, Selectable } from 'options/selectable';
 
 const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
-    const { orderingFacility, orderingProvider, reportingFacility, ...remaining } = data;
+    const { orderingFacility, orderingProvider, reportingFacility, codedResult, resultedTest, ...remaining } = data;
 
     const providerSearch =
         resolveOrderingFacility(orderingFacility) ||
@@ -24,14 +24,14 @@ const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
         resolveReportingFacility(reportingFacility);
 
     return {
-        codedResult: asValue(remaining.codedResult),
+        codedResult,
         createdBy: asValue(data.createdBy),
         jurisdictions: remaining.jurisdictions && asNumericValues(remaining.jurisdictions),
         eventStatus: remaining.eventStatus && (asValues(remaining.eventStatus) as EventStatus[]),
         processingStatus:
             remaining.processingStatus && (asValues(remaining.processingStatus) as LaboratoryReportStatus[]),
         programAreas: remaining.programAreas && asValues(remaining.programAreas),
-        resultedTest: asValue(remaining.resultedTest),
+        resultedTest,
         entryMethods: remaining.entryMethods && (asValues(remaining.entryMethods) as EntryMethod[]),
         enteredBy: remaining.enteredBy && (asValues(remaining.enteredBy) as UserType[]),
         lastUpdatedBy: asValue(remaining.updatedBy),

@@ -12,7 +12,7 @@ const SortingPreferencesPanel = ({ onClose }: Props) => {
         selectable.property === active?.property && selectable.direction === active?.direction;
 
     return (
-        <ClosablePanel title="Sort by list" headingLevel={2} onClose={onClose}>
+        <ClosablePanel title="Sort list by" headingLevel={2} onClose={onClose}>
             {available.map((selectable, index) => (
                 <SortPreference key={index} selectable={selectable} active={isActive(selectable)} onSelect={sortOn} />
             ))}

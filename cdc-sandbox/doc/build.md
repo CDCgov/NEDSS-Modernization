@@ -3,14 +3,14 @@
 NBS is a Java EE application which is distributed as a .ear (enterprise application archive) file.
 It is currently built using Maven and Java 8.
 Because it has typically been built using the tools on Windows OS, in order to gain the convenience
-of using Docker, it is necessary to massage a few changes into the code before it can
-be built in the linux environment.
+of using Docker, it is necessary to make a few changes before it can
+be built in a linux environment.
 
 - The project code files are currently encoded with the ISO-8859-1 character set.
   This causes problems if the java compiler is expecting UTF-8 which is it's default
 - One of the files referenced in the build.xml build script has incorrect matching
   case with the actual file on the filesystem
-- The pom-jar.xml is missing an for a couple of `provided` dependencies. `Xalan` and `xerces`. 
+- The pom-jar.xml is missing an entry for a couple of `provided` dependencies. `Xalan` and `xerces`. 
 
 The builder docker in this project addresses these concerns automatically.
 
