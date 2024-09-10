@@ -13,7 +13,8 @@ type ConfigurationListItem = {
 
 const MatchConfiguration = () => {
     const [configurations, setConfigurations] = useState<ConfigurationListItem[]>([]);
-    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number>(0);
+    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
+    const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
 
     const handleAddConfiguration = () => {
         const configs = [...configurations];
@@ -24,11 +25,15 @@ const MatchConfiguration = () => {
         });
         setConfigurations(configs);
         setSelectedConfigurationIndex(configurations.length);
+        setIsEditingConfiguration(true);
     };
 
     const handleConfigListItemClick = (index: number) => {
         setSelectedConfigurationIndex(index);
+        setIsEditingConfiguration(true);
     };
+
+    const showConfiguration = isEditingConfiguration && configurations.length;
 
     return (
         <div className={styles.wrapper}>
@@ -56,7 +61,7 @@ const MatchConfiguration = () => {
                 </Button>
             </div>
             <div className={styles.configurationDetails}>
-                {selectedConfigurationIndex ? <PassConfiguration /> : <NoPassConfigurations />}
+                {showConfiguration ? <PassConfiguration /> : <NoPassConfigurations />}
             </div>
         </div>
     );
