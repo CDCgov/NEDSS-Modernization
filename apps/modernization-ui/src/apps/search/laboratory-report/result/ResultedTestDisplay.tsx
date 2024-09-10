@@ -5,7 +5,7 @@ type Props = {
     test: LabTestSummary;
 };
 export const ResultedTestDisplay = ({ test }: Props) => {
-    const numericResult = (): ReactNode => {
+    const numericResult = (): ReactNode | undefined => {
         if (test.numeric) {
             return (
                 <div className={styles.testResult}>
@@ -13,13 +13,13 @@ export const ResultedTestDisplay = ({ test }: Props) => {
                 </div>
             );
         } else {
-            return <></>;
+            return undefined;
         }
     };
 
-    const referenceRange = (): ReactNode => {
+    const referenceRange = (): ReactNode | undefined => {
         if (!test.high && test.high !== '0' && !test.low && test.low !== '0') {
-            return <></>;
+            return undefined;
         }
         let display: string = '';
         const status = test.status ? ` - (${test.status})` : '';
@@ -38,7 +38,7 @@ export const ResultedTestDisplay = ({ test }: Props) => {
         );
     };
 
-    const codedResult = (): ReactNode => {
+    const codedResult = (): ReactNode | undefined => {
         if (test.coded) {
             return (
                 <div className={styles.testResult}>
@@ -46,7 +46,7 @@ export const ResultedTestDisplay = ({ test }: Props) => {
                 </div>
             );
         } else {
-            return <></>;
+            return undefined;
         }
     };
 
