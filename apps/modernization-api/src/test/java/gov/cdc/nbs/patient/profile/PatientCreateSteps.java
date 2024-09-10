@@ -106,10 +106,10 @@ public class PatientCreateSteps {
         RandomUtil.getRandomDateInPast(),
         "type-value",
         "use-value",
-        "country-code",
-        "number",
-        "extension",
         null,
+        null,
+        null,
+        "email",
         "url",
         "comment")));
     this.input.active(newPatient);
@@ -121,12 +121,12 @@ public class PatientCreateSteps {
         RandomUtil.getRandomDateInPast(),
         "type-value",
         "use-value",
+        "country-code",
+        "number",
+        "extension",
         null,
-        null,
-        null,
-        "email",
-        null,
-        null)));
+        "url",
+        "comment")));
     this.input.active(newPatient);
 
   }
@@ -190,6 +190,7 @@ public class PatientCreateSteps {
     assertThat(actualElp)
         .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
+        .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.email(), TeleLocator::getEmailAddress);
   }
 
@@ -203,6 +204,7 @@ public class PatientCreateSteps {
         .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.number(), TeleLocator::getPhoneNbrTxt)
+        .returns(expected.countryCode(), TeleLocator::getCntryCd)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.extension(), TeleLocator::getExtensionTxt);
   }
