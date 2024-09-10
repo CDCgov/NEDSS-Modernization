@@ -1,7 +1,9 @@
-import { LabReport } from 'generated/graphql/schema';
 import { BasicPatient } from 'apps/search/basic';
-import { Maybe } from 'utils';
+import { LabReport } from 'generated/graphql/schema';
 import { displayName } from 'name';
+import { ReactNode } from 'react';
+import { Maybe } from 'utils';
+import { ResultedTestDisplay } from './ResultedTestDisplay';
 
 const getPatient = (labReport: LabReport): Maybe<BasicPatient> =>
     labReport.personParticipations?.find((p) => p?.typeCd === 'PATSBJ');
@@ -16,10 +18,14 @@ const getReportingFacility = (labReport: LabReport): string | undefined => {
     return labReport.organizationParticipations.find((o) => o?.typeCd === 'AUT')?.name;
 };
 
-const getDescription = (labReport: LabReport): string | undefined => {
-    const observation = labReport.observations?.find((o) => o?.altCd && o?.displayName && o?.cdDescTxt);
-
-    return observation && `${observation.cdDescTxt} = ${observation.displayName}`;
+const getDescription = (labReport: LabReport): ReactNode => {
+    return (
+        <div>
+            {labReport.tests.map((s, k) => (
+                <ResultedTestDisplay key={k} test={s} />
+            ))}
+        </div>
+    );
 };
 
 const getAssociatedInvestigations = (labReport: LabReport) =>
@@ -27,4 +33,4 @@ const getAssociatedInvestigations = (labReport: LabReport) =>
         ?.map((investigation) => `${investigation?.localId}\n${investigation?.cdDescTxt}\n`)
         .join('\n');
 
-export { getPatient, getOrderingProviderName, getReportingFacility, getDescription, getAssociatedInvestigations };
+export { getAssociatedInvestigations, getDescription, getOrderingProviderName, getPatient, getReportingFacility };

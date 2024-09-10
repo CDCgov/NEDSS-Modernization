@@ -6,6 +6,7 @@ import {
     getPatient,
     getReportingFacility
 } from './laboratoryReportResult';
+import { render } from '@testing-library/react';
 
 describe('when displaying a Laboratory Search Result', () => {
     it('should resolve the patient when present', () => {
@@ -42,7 +43,7 @@ describe('when displaying a Laboratory Search Result', () => {
                     shortId: 571
                 }
             ],
-            labTestSummaries: [],
+            tests: [],
             relevance: 1
         };
 
@@ -85,7 +86,7 @@ describe('when displaying a Laboratory Search Result', () => {
                     shortId: 571
                 }
             ],
-            labTestSummaries: [],
+            tests: [],
             relevance: 1
         };
 
@@ -111,7 +112,7 @@ describe('when displaying a Laboratory Search Result', () => {
                 }
             ],
             personParticipations: [],
-            labTestSummaries: [],
+            tests: [],
             relevance: 1
         };
 
@@ -120,7 +121,7 @@ describe('when displaying a Laboratory Search Result', () => {
         expect(actual).toEqual('ordering-facility-value');
     });
 
-    it('should resolve the description when lab results are present', () => {
+    it('should resolve the description when lab summaries are present', () => {
         const result: LabReport = {
             __typename: 'LabReport',
             addTime: '2015-09-22',
@@ -145,13 +146,12 @@ describe('when displaying a Laboratory Search Result', () => {
             ],
             organizationParticipations: [],
             personParticipations: [],
-            labTestSummaries: [],
+            tests: [{ coded: 'abnormal' }],
             relevance: 1
         };
 
-        const actual = getDescription(result);
-
-        expect(actual).toEqual('lab-test-name = lab-test-value');
+        const { getByText } = render(<>{getDescription(result)}</>);
+        expect(getByText('abnormal')).toBeInTheDocument();
     });
 
     it('should resolve associated investigations when present', () => {
@@ -176,7 +176,7 @@ describe('when displaying a Laboratory Search Result', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
-            labTestSummaries: [],
+            tests: [],
             relevance: 1
         };
 

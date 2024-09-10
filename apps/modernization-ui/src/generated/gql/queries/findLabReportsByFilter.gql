@@ -30,7 +30,7 @@ query findLabReportsByFilter($filter: LabReportFilter!, $page: SortablePage){
                 cdDescTxt
                 localId
             }
-            labTestSummaries{
+            tests{
                 name
                 status
                 coded
