@@ -79,4 +79,27 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform identifictions', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            identifications: [
+                {
+                    asOf: '04/13/2017',
+                    type: { value: 'identification-type-value', name: 'identification-type-name' },
+                    id: 'id-value'
+                }
+            ]
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                identifications: expect.arrayContaining([
+                    expect.objectContaining({ type: 'identification-type-value' })
+                ])
+            })
+        );
+    });
 });

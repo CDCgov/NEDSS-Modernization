@@ -28,8 +28,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the use', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' }
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' }
         };
 
         const actual = asPhoneEmail(entry);
@@ -40,8 +40,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the country code', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' },
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' },
             countryCode: 'country-code-value'
         };
 
@@ -53,8 +53,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the phone number', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' },
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' },
             phoneNumber: 'phone-number-value'
         };
 
@@ -66,8 +66,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the extension', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' },
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' },
             extension: 'extension-value'
         };
 
@@ -79,8 +79,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the email', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' },
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' },
             email: 'email-value'
         };
 
@@ -92,8 +92,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the url', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' },
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' },
             url: 'url-value'
         };
 
@@ -105,8 +105,8 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
     it('should include the comment', () => {
         const entry = {
             asOf: '04/13/2017',
-            type: { value: 'type-value', name: 'type-phone-email' },
-            use: { value: 'use-value', name: 'use-phone-email' },
+            type: { value: 'type-value', name: 'type-name' },
+            use: { value: 'use-value', name: 'use-name' },
             comment: 'comment-value'
         };
 
