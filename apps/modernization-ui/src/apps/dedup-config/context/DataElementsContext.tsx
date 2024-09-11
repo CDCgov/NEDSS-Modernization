@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const DataElementsContext = createContext<DataElementsContextProps | undefined>(undefined);
 
 type DataElementsContextProps = {
-    dataElements: DataElement[];
+    dataElements?: DataElement[];
     setDataElements: (dataElements: DataElement[]) => void;
     belongingnessRatio: number | undefined;
     setBelongingnessRatio: (belongingnessRatio: number | undefined) => void;
@@ -100,8 +100,15 @@ export const DataElements: DataElement[] = [
 const DataElementsContextProvider: React.FC<{
     children: React.ReactNode;
 }> = ({ children }) => {
-    const [dataElements, setDataElements] = useState(DataElements);
+    const [dataElements, setDataElements] = useState<DataElement[] | undefined>();
     const [belongingnessRatio, setBelongingnessRatio] = useState<number | undefined>(undefined);
+
+    useEffect(() => {
+        const storedElements = localStorage.getItem('dataElements');
+        if (storedElements) {
+            setDataElements(JSON.parse(storedElements));
+        }
+    }, []);
 
     return (
         <DataElementsContext.Provider
