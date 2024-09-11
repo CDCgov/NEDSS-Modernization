@@ -64,7 +64,7 @@ type EthnicityEntry = EffectiveDated & {
 };
 
 type SexEntry = EffectiveDated & {
-    currentSex?: Selectable;
+    current?: Selectable;
     unknownReason?: Selectable;
     transgenderInformation?: Selectable;
     additionalGender?: string;

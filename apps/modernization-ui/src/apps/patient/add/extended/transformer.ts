@@ -5,7 +5,8 @@ import {
     asPhoneEmail,
     asIdentification,
     asRace,
-    asEthnicity
+    asEthnicity,
+    asSex
 } from 'apps/patient/data';
 import { ExtendedNewPatientEntry } from './entry';
 import { Transformer } from './useAddExtendedPatient';
@@ -28,6 +29,7 @@ const asIdentifications = maybeMapAll(asIdentification);
 const asRaces = maybeMapAll(asRace);
 
 const maybeAsEthnicity = maybeMap(asEthnicity);
+const maybeAsSex = maybeMap(asSex);
 
 const transformer: Transformer = (entry: ExtendedNewPatientEntry) => {
     const administrative = asAdministrative(entry.administrative);
@@ -38,8 +40,9 @@ const transformer: Transformer = (entry: ExtendedNewPatientEntry) => {
     const races = asRaces(entry.races);
 
     const ethnicity = maybeAsEthnicity(entry.ethnicity);
+    const sex = maybeAsSex(entry.sex);
 
-    return { administrative, names, addresses, phoneEmails, identifications, races, ethnicity };
+    return { administrative, names, addresses, phoneEmails, identifications, races, ethnicity, sex };
 };
 
 export { transformer };

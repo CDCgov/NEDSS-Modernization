@@ -63,7 +63,7 @@ type Ethnicity = EffectiveDated & {
 };
 
 type Sex = {
-    currentSex?: string;
+    current?: string;
     unknownReason?: string;
     transgenderInformation?: string;
     additionalGender?: string;

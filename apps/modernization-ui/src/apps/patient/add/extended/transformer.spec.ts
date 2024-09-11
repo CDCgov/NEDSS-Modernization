@@ -142,4 +142,22 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform sex', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            sex: {
+                asOf: '04/13/2017',
+                current: { value: 'current-sex-value', name: 'current-sex-name' }
+            }
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                sex: expect.objectContaining({ current: 'current-sex-value' })
+            })
+        );
+    });
 });
