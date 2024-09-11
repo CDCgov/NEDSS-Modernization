@@ -102,4 +102,25 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform races', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            races: [
+                {
+                    asOf: '04/13/2017',
+                    race: { value: 'race-value', name: 'race-name' },
+                    detailed: []
+                }
+            ]
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                races: expect.arrayContaining([expect.objectContaining({ race: 'race-value' })])
+            })
+        );
+    });
 });
