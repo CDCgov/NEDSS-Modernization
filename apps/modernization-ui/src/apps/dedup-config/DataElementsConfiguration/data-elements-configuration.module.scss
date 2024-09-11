@@ -86,22 +86,27 @@
                 font-size: 0.875rem;
                 font-weight: 400;
                 span {
+                    display: inline-block;
                     font-weight: 700;
+                    width: 1.5rem;
+                }
+                .listItem {
+                    width: 5rem;
                 }
             }
             ol {
                 padding-left: 0;
                 li {   
+                    display: list-item;
                     margin-left: 1.25rem;
-                    &::marker {
-                        // padding-right: 2rem;
-                    }
+                    list-style-type: decimal;
                 }
             }
             ul {
                 li {
                     margin: 0 0 1rem -1.25rem;
                     list-style-type: none;
+                    display: list-item;
                 }
             }
         }

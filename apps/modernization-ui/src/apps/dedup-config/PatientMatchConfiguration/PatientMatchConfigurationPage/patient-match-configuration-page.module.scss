@@ -2,9 +2,8 @@
 
 .wrapper {
     display: flex;
-    margin-right: 1.5rem;
     height: 100vh;
-
+    gap: 1rem;
     .header {
         background-color: colors.$base-white;
         padding: 1.5rem;
@@ -43,14 +42,16 @@
 
     .configurationList {
         background-color: colors.$base-white;
-        margin-right: 1rem;
         display: flex;
         flex-direction: column;
         padding: 1.5rem 1rem;
         border-right: 1px solid colors.$base-lighter;
         width: 18.75rem;
         min-height: 100%;
-
+        h3 {
+            font-size: 1.375rem;
+            margin-top: 0;
+        }
         ul {
             padding: 0;
             margin: 0;
@@ -71,7 +72,7 @@
     }
 
     .configurationDetails {
-        width: 100rem;
-        margin-top: 1.5rem;
+        width: calc( 100% - 19.75rem );
+        padding-top: 1rem;
     }
 }

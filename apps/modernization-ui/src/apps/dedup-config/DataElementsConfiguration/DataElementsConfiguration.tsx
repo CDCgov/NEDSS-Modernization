@@ -102,9 +102,9 @@ const DataElementsConfiguration = () => {
                             records
                         </li>
                         <li>
-                            <span>Threshold -</span> Values above which two strings are said to be “similar enough” that
-                            they’re probably the same thing. Values that are less than the threshold will be calculated
-                            as 0.
+                            <span className={styles.listItem}>Threshold -</span> Values above which two strings are said
+                            to be “similar enough” that they’re probably the same thing. Values that are less than the
+                            threshold will be calculated as 0.
                         </li>
                     </ul>
                     <h4>Log odds</h4>
