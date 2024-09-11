@@ -1,6 +1,8 @@
 package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.util.RandomUtil;
@@ -59,7 +61,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with comments")
   public void i_am_adding_a_new_patient() {
-    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null);
+    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null, null);
     this.input.active(newPatient);
   }
 
@@ -75,7 +77,7 @@ public class PatientCreateSteps {
         faker.name().lastName(),
         faker.name().lastName(),
         "JR",
-        "BS")), null);
+        "BS")), null, null);
     this.input.active(newPatient);
   }
 
@@ -93,7 +95,38 @@ public class PatientCreateSteps {
         RandomUtil.getRandomString(),
         RandomUtil.getRandomString(10),
         RandomUtil.country(),
-        RandomUtil.getRandomString())));
+        RandomUtil.getRandomString())), null);
+    this.input.active(newPatient);
+
+  }
+
+  @Given("I am adding a new patient with emails")
+  public void i_am_adding_a_new_patient_with_emails() {
+    NewPatient newPatient = new NewPatient(null, null, null, null, Arrays.asList(new Phone(
+        RandomUtil.getRandomDateInPast(),
+        "type-value",
+        "use-value",
+        null,
+        null,
+        null,
+        "email",
+        "url",
+        "comment")));
+    this.input.active(newPatient);
+  }
+
+  @Given("I am adding a new patient with phones")
+  public void i_am_adding_a_new_patient_with_phones() {
+    NewPatient newPatient = new NewPatient(null, null, null, null, Arrays.asList(new Phone(
+        RandomUtil.getRandomDateInPast(),
+        "type-value",
+        "use-value",
+        "country-code",
+        "number",
+        "extension",
+        null,
+        "url",
+        "comment")));
     this.input.active(newPatient);
 
   }
@@ -147,4 +180,33 @@ public class PatientCreateSteps {
     assertThat(accessDeniedException)
         .hasMessageContaining("Access Denied");
   }
+
+  @Then("the patient created has the entered emails")
+  public void the_patient_created_has_the_entered_emails() {
+    TeleEntityLocatorParticipation actualElp = patient.active().phoneNumbers().getFirst();
+    TeleLocator actualLocator = patient.active().phoneNumbers().getFirst().getLocator();
+    Phone expected = this.input.active().phones().getFirst();
+
+    assertThat(actualElp)
+        .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
+    assertThat(actualLocator)
+        .returns(expected.url(), TeleLocator::getUrlAddress)
+        .returns(expected.email(), TeleLocator::getEmailAddress);
+  }
+
+  @Then("the patient created has the entered phones")
+  public void the_patient_created_has_the_entered_phones() {
+    TeleEntityLocatorParticipation actualElp = patient.active().phoneNumbers().getFirst();
+    TeleLocator actualLocator = patient.active().phoneNumbers().getFirst().getLocator();
+    Phone expected = this.input.active().phones().getFirst();
+
+    assertThat(actualElp)
+        .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
+    assertThat(actualLocator)
+        .returns(expected.number(), TeleLocator::getPhoneNbrTxt)
+        .returns(expected.countryCode(), TeleLocator::getCntryCd)
+        .returns(expected.url(), TeleLocator::getUrlAddress)
+        .returns(expected.extension(), TeleLocator::getExtensionTxt);
+  }
 }
+
