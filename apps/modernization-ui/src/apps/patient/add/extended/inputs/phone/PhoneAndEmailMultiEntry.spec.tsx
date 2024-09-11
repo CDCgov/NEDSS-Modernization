@@ -30,7 +30,7 @@ describe('PhoneAndEmailMultiEntry', () => {
     it('should display proper defaults', async () => {
         const { getByLabelText } = render(<PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />);
 
-        const dateInput = getByLabelText('As of');
+        const dateInput = getByLabelText('Phone & email as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
 
         const type = getByLabelText('Type');
@@ -86,7 +86,7 @@ describe('PhoneAndEmailMultiEntry', () => {
         });
 
         await waitFor(async () => {
-          const date = internalizeDate(new Date());
+            const date = internalizeDate(new Date());
 
             expect(onChange).toHaveBeenNthCalledWith(2, [
                 {
