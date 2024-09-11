@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
-import { DataElement } from '../const/init';
+import { DataElement, dataElements } from '../const/init';
 import { DataTable, Column } from 'design-system/table';
 import { Checkbox } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
-import { useDataElementsContext } from '../context/DataElementsContext';
 import styles from './data-elements-table.module.scss';
 
 const columns = (
@@ -145,7 +144,6 @@ const columns = (
 
 const DataElementsTable = () => {
     const { control, setValue } = useFormContext<{ dataElements: DataElement[] }>();
-    const { dataElements } = useDataElementsContext();
     const [checkedState, setCheckedState] = useState<boolean[]>([]);
 
     const watchedDataElements = useWatch({
