@@ -22,7 +22,9 @@ const DataElementsConfiguration = () => {
             finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
         }
         console.log('SUBMIT', { ...data, belongingnessRatio: finalBelongingnessRatio });
-        setDataElements(data.dataElements);
+        if (data.dataElements) {
+            setDataElements(data.dataElements);
+        }
         setBelongingnessRatio(finalBelongingnessRatio);
         setMode('match');
     });
