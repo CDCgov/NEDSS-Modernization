@@ -56,4 +56,27 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform phone and emails', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            phoneEmails: [
+                {
+                    asOf: '04/13/2017',
+                    type: { value: 'phone-email-type-value', name: 'phone-email-type-name' },
+                    use: { value: 'phone-email-use-value', name: 'phone-email-use-name' }
+                }
+            ]
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                phoneEmails: expect.arrayContaining([
+                    expect.objectContaining({ type: 'phone-email-type-value', use: 'phone-email-use-value' })
+                ])
+            })
+        );
+    });
 });

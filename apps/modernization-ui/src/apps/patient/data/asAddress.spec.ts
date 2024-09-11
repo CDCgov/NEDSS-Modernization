@@ -140,4 +140,17 @@ describe('when mapping a address entry to a format accepted by the API', () => {
 
         expect(actual).toEqual(expect.objectContaining({ censusTract: 'census-tract-value' }));
     });
+
+    it('should include the comment', () => {
+        const entry = {
+            asOf: '04/13/2017',
+            type: { value: 'type-value', name: 'type-phone-email' },
+            use: { value: 'use-value', name: 'use-phone-email' },
+            comment: 'comment-value'
+        };
+
+        const actual = asAddress(entry);
+
+        expect(actual).toEqual(expect.objectContaining({ comment: 'comment-value' }));
+    });
 });

@@ -16,7 +16,7 @@ type ExtendedNewPatientEntry = {
     administrative: AdministrativeEntry;
     names?: NameEntry[];
     addresses?: AddressEntry[];
-    phoneEmail?: PhoneEmailEntry[];
+    phoneEmails?: PhoneEmailEntry[];
     identifications?: IdentificationEntry[];
     races?: RaceEntry[];
     ethnicity?: EthnicityEntry;
