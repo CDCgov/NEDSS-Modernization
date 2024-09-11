@@ -4,3 +4,4 @@ export { asAddress } from './asAddress';
 export { asPhoneEmail } from './asPhoneEmail';
 export { asIdentification } from './asIdentification';
 export { asRace } from './asRace';
+export { asEthnicity } from './asEthnicity';
