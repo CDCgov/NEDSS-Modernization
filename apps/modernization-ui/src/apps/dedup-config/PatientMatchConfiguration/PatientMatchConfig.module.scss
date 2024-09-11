@@ -1,0 +1,29 @@
+@use 'styles/colors';
+
+.header {
+    display: flex;
+    background-color: colors.$base-white;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid colors.$base-lighter;
+    h2 {
+        font-size: 2rem;
+        margin: 0;
+    }
+
+    .dataConfigButton {
+        text-decoration: none !important;
+    }
+}
+// .body {
+//     width: 100%;
+//     display: flex;
+//     flex-direction: row;
+//     gap: 1rem;
+//     .sidebar {
+//         width: 300px;
+//     }
+//     .content {
+//         width: calc(100% - 316px);
+//     }
+// }
