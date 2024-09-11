@@ -19,7 +19,7 @@ export const PhoneAndEmailEntryFields = () => {
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="As of:"
+                        label="As of"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
@@ -37,7 +37,7 @@ export const PhoneAndEmailEntryFields = () => {
                 rules={{ required: { value: true, message: 'Type is required.' } }}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Type:"
+                        label="Type"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -56,7 +56,7 @@ export const PhoneAndEmailEntryFields = () => {
                 rules={{ required: { value: true, message: 'Use is required.' } }}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Use:"
+                        label="Use"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -81,7 +81,7 @@ export const PhoneAndEmailEntryFields = () => {
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => {
                     return (
                         <Input
-                            label="Country code:"
+                            label="Country code"
                             orientation="horizontal"
                             onChange={onChange}
                             onBlur={onBlur}
@@ -105,7 +105,7 @@ export const PhoneAndEmailEntryFields = () => {
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Phone number:"
+                        label="Phone number"
                         orientation="horizontal"
                         onBlur={onBlur}
                         onChange={onChange}
@@ -134,7 +134,7 @@ export const PhoneAndEmailEntryFields = () => {
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Extension:"
+                        label="Extension"
                         orientation="horizontal"
                         onBlur={onBlur}
                         onChange={onChange}
@@ -160,7 +160,7 @@ export const PhoneAndEmailEntryFields = () => {
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Email address:"
+                        label="Email"
                         orientation="horizontal"
                         onBlur={onBlur}
                         onChange={onChange}
@@ -179,12 +179,12 @@ export const PhoneAndEmailEntryFields = () => {
                 rules={maxLengthRule(100)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
+                        label="URL"
                         orientation="horizontal"
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
-                        label="Url:"
                         htmlFor={name}
                         id={name}
                         name={name}
@@ -198,7 +198,7 @@ export const PhoneAndEmailEntryFields = () => {
                 rules={maxLengthRule(2000)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Additional comments:"
+                        label="Phone & email comments"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
