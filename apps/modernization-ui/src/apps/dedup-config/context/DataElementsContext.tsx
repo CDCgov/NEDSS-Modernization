@@ -5,6 +5,8 @@ const DataElementsContext = createContext<DataElementsContextProps | undefined>(
 type DataElementsContextProps = {
     dataElements: DataElement[];
     setDataElements: (dataElements: DataElement[]) => void;
+    belongingnessRatio: number | undefined;
+    setBelongingnessRatio: (belongingnessRatio: number | undefined) => void;
 };
 
 export type DataElement = {
@@ -99,9 +101,11 @@ const DataElementsContextProvider: React.FC<{
     children: React.ReactNode;
 }> = ({ children }) => {
     const [dataElements, setDataElements] = useState(DataElements);
+    const [belongingnessRatio, setBelongingnessRatio] = useState<number | undefined>(undefined);
 
     return (
-        <DataElementsContext.Provider value={{ dataElements, setDataElements }}>
+        <DataElementsContext.Provider
+            value={{ dataElements, setDataElements, belongingnessRatio, setBelongingnessRatio }}>
             {children}
         </DataElementsContext.Provider>
     );
