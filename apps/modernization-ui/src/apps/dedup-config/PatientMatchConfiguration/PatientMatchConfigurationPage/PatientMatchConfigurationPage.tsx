@@ -1,9 +1,9 @@
 import { Button, Icon } from '@trussworks/react-uswds';
-import styles from './MatchConfiguration.module.scss';
-import NoPassConfigurations from './PassConfiguration/NoPassConfigurations';
-import PassConfigurationListItem from './PassConfiguration/PassConfigurationListItem';
+import styles from './patient-match-configuration-page.module.scss';
+import NoPassConfigurations from '../PassConfiguration/NoPassConfigurations';
+import PassConfigurationListItem from '../PassConfiguration/PassConfigurationListItem';
 import { useState } from 'react';
-import PassConfiguration from './PassConfiguration/PassConfiguration';
+import PatientMatchBody from '../PatientMatchBody';
 
 type ConfigurationListItem = {
     name: string;
@@ -11,7 +11,7 @@ type ConfigurationListItem = {
     active: boolean;
 };
 
-const MatchConfiguration = () => {
+const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<ConfigurationListItem[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
     const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
@@ -61,10 +61,10 @@ const MatchConfiguration = () => {
                 </Button>
             </div>
             <div className={styles.configurationDetails}>
-                {showConfiguration ? <PassConfiguration /> : <NoPassConfigurations />}
+                {showConfiguration ? <PatientMatchBody /> : <NoPassConfigurations />}
             </div>
         </div>
     );
 };
 
-export default MatchConfiguration;
+export default PatientMatchConfigurationPage;
