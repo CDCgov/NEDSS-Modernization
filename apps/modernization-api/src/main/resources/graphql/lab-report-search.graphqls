@@ -86,7 +86,6 @@ type LabReportResults {
   total: Int!
   page: Int!
   size: Int!
-<<<<<<< HEAD
 }
 
 type LabTestSummary {
@@ -97,8 +96,6 @@ type LabTestSummary {
   high: String
   low: String
   unit: String
-=======
->>>>>>> 741e49d44 (Cnft2 2763 data elements table setup (#1754))
 }
 
 type LabReport {
