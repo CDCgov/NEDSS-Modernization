@@ -1,4 +1,4 @@
-import PatientMatchConfiguration from './PatientMatchConfiguration';
+import PatientMatchConfiguration from './PatientMatchConfiguration/PatientMatchConfiguration';
 import DedupeContextProvider from './context/DedupeContext';
 
 const routing = [

@@ -1,10 +1,10 @@
 import styles from './PatientMatchConfig.module.scss';
 import { Button, Icon } from '@trussworks/react-uswds';
-import DataElementsConfiguration from './DataElementsConfiguration/DataElementsConfiguration';
-import { useDedupeContext } from './context/DedupeContext';
-import { useDataElementsContext } from './context/DataElementsContext';
+import DataElementsConfiguration from '../DataElementsConfiguration/DataElementsConfiguration';
+import { useDedupeContext } from '../context/DedupeContext';
+import { useDataElementsContext } from '../context/DataElementsContext';
 import NoDataElements from './NoDataElementsContent';
-import MatchConfiguration from './MatchConfiguration/MatchConfiguration';
+import PassConfiguration from './PatientMatchConfigurationPage/PatientMatchConfigurationPage';
 
 const PatientMatchConfiguration = () => {
     const { mode, setMode } = useDedupeContext();
@@ -26,7 +26,9 @@ const PatientMatchConfiguration = () => {
                             <Icon.Settings size={3} /> Data elements configuration
                         </Button>
                     </div>
-                    {!dataElements ? <NoDataElements onConfigClick={handleSetDataMode} /> : <MatchConfiguration />}
+                    <div className={styles.body}>
+                        {!dataElements ? <NoDataElements onConfigClick={handleSetDataMode} /> : <PassConfiguration />}
+                    </div>
                 </>
             )}
         </div>
