@@ -7,7 +7,7 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { MultiSelectInput } from 'components/selection/multi';
 
 type Props = {
-    patient: number;
+    patient?: number;
     editing?: boolean;
 };
 export const RaceEntryFields = ({ patient, editing }: Props) => {
@@ -15,6 +15,12 @@ export const RaceEntryFields = ({ patient, editing }: Props) => {
     const categories = useRaceCodedValues();
     const selectedCategory = useWatch({ control, name: 'category' });
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory);
+
+    const handleCategoryValidation = () => {
+        if (patient) {
+            return validateCategory(patient);
+        }
+    };
 
     return (
         <section>
@@ -24,7 +30,7 @@ export const RaceEntryFields = ({ patient, editing }: Props) => {
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="As of:"
+                        label="As of"
                         onBlur={onBlur}
                         orientation="horizontal"
                         defaultValue={value}
@@ -41,17 +47,19 @@ export const RaceEntryFields = ({ patient, editing }: Props) => {
                 name="category"
                 rules={{
                     required: { value: true, message: 'Race is required.' },
-                    validate: validateCategory(patient)
+                    validate: handleCategoryValidation()
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Race:"
+                        label="Race"
                         orientation="horizontal"
                         required
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         htmlFor={name}
+                        id={name}
+                        name={name}
                         options={categories}
                         error={error?.message}
                         disabled={editing}
@@ -65,7 +73,7 @@ export const RaceEntryFields = ({ patient, editing }: Props) => {
                     shouldUnregister
                     render={({ field: { onChange, value, name } }) => (
                         <MultiSelectInput
-                            label="Detailed race:"
+                            label="Detailed race"
                             orientation="horizontal"
                             id={name}
                             name={name}
