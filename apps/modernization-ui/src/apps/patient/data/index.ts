@@ -1,0 +1,1 @@
+export { asAdministrative } from './asAdministrative';
