@@ -4,6 +4,7 @@ import { DataElement } from '../const/init';
 import { DataTable, Column } from 'design-system/table';
 import { Checkbox } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
+<<<<<<< HEAD
 import styles from './data-elements-table.module.scss';
 
 export const dataElements: DataElement[] = [
@@ -86,12 +87,21 @@ export const dataElements: DataElement[] = [
     }
 ];
 
+=======
+import { useDataElementsContext } from '../context/DataElementsContext';
+import styles from './data-elements-table.module.scss';
+
+>>>>>>> case-dedup-ui
 const columns = (
     control: any,
     handleRowCheckboxChange: (index: number, checked: boolean) => void,
     checkedState: boolean[],
     watchedDataElements: DataElement[],
+<<<<<<< HEAD
     handleHeaderCheckboxChange: (checked: boolean) => void // Add this parameter
+=======
+    handleHeaderCheckboxChange: (checked: boolean) => void
+>>>>>>> case-dedup-ui
 ): Column<DataElement>[] => [
     {
         id: 'active',
@@ -100,8 +110,13 @@ const columns = (
                 name="select-all"
                 id="select-all-checkbox"
                 label=""
+<<<<<<< HEAD
                 checked={checkedState.every(Boolean)} // Check if all rows are selected
                 onChange={(e) => handleHeaderCheckboxChange(e.target.checked)} // Handle "Select All"
+=======
+                checked={checkedState.every(Boolean)}
+                onChange={(e) => handleHeaderCheckboxChange(e.target.checked)}
+>>>>>>> case-dedup-ui
             />
         ),
         render: (dataElement, index) => (
@@ -224,6 +239,10 @@ const columns = (
 
 const DataElementsTable = () => {
     const { control, setValue } = useFormContext<{ dataElements: DataElement[] }>();
+<<<<<<< HEAD
+=======
+    const { dataElements } = useDataElementsContext();
+>>>>>>> case-dedup-ui
     const [checkedState, setCheckedState] = useState<boolean[]>([]);
 
     const watchedDataElements = useWatch({
@@ -242,7 +261,10 @@ const DataElementsTable = () => {
         updatedCheckedState[index] = checked;
         setCheckedState(updatedCheckedState);
 
+<<<<<<< HEAD
         // Update the form state
+=======
+>>>>>>> case-dedup-ui
         setValue(`dataElements.${index}.active`, checked);
     };
 
@@ -250,7 +272,10 @@ const DataElementsTable = () => {
         const updatedCheckedState = dataElements.map(() => checked);
         setCheckedState(updatedCheckedState);
 
+<<<<<<< HEAD
         // Update the form state for all rows
+=======
+>>>>>>> case-dedup-ui
         dataElements.forEach((_, index) => {
             setValue(`dataElements.${index}.active`, checked);
         });

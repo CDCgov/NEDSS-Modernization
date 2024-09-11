@@ -18,6 +18,8 @@ import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
+import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
+import gov.cdc.nbs.patient.profile.phone.change.PatientPhoneChangeService;
 import gov.cdc.nbs.patient.profile.names.change.NewPatientNameInput;
 import gov.cdc.nbs.patient.profile.names.change.PatientNameChangeService;
 
@@ -31,11 +33,13 @@ public class PatientCreateController {
       final PatientCreator creator,
       final PatientNameChangeService nameService,
       final PatientAddressChangeService addressService,
+      final PatientPhoneChangeService phoneService,
       final PatientIndexer indexer) {
     this.clock = clock;
     this.creator = creator;
     this.nameService = nameService;
     this.addressService = addressService;
+    this.phoneService = phoneService;
     this.indexer = indexer;
   }
 
@@ -44,6 +48,7 @@ public class PatientCreateController {
   private final PatientIndexer indexer;
   private final PatientNameChangeService nameService;
   private final PatientAddressChangeService addressService;
+  private final PatientPhoneChangeService phoneService;
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
@@ -90,7 +95,24 @@ public class PatientCreateController {
         addressService.add(context, newPatientAddressInput);
       });
     }
+    if (newPatient.phones() != null) {
+      newPatient.phones().forEach(phone -> {
+        NewPatientPhoneInput newPatientPhoneInput = new NewPatientPhoneInput(
+            created.id(),
+            phone.asOf(),
+            phone.type(),
+            phone.use(),
+            phone.countryCode(),
+            phone.number(),
+            phone.extension(),
+            phone.email(),
+            phone.url(),
+            phone.comment());
+        phoneService.add(context, newPatientPhoneInput);
+      });
+    }
     this.indexer.index(created.id());
     return created;
   }
 }
+

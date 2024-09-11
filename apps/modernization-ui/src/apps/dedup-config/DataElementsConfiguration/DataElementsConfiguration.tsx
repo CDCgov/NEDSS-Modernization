@@ -3,6 +3,7 @@ import { useDataElementsContext } from '../context/DataElementsContext';
 import { useDedupeContext } from '../context/DedupeContext';
 import styles from './data-elements-configuration.module.scss';
 import { Input } from 'components/FormInputs/Input';
+<<<<<<< HEAD
 import { DataElementsTable, dataElements } from './DataElementsTable';
 import { useForm, FormProvider } from 'react-hook-form';
 
@@ -12,10 +13,22 @@ const DataElementsConfiguration = () => {
     const form = useForm({
         mode: 'onBlur',
         defaultValues: { dataElements }
+=======
+import { DataElementsTable } from './DataElementsTable';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
+
+const DataElementsConfiguration = () => {
+    const { dataElements, setDataElements, belongingnessRatio, setBelongingnessRatio } = useDataElementsContext();
+    const { setMode } = useDedupeContext();
+    const form = useForm({
+        mode: 'onBlur',
+        defaultValues: { dataElements, belongingnessRatio: belongingnessRatio ?? undefined }
+>>>>>>> case-dedup-ui
     });
 
     const { formState } = form;
 
+<<<<<<< HEAD
     const handleSaveElements = () => {
         const values = form.getValues().dataElements;
         if (values) {
@@ -24,6 +37,18 @@ const DataElementsConfiguration = () => {
             setMode('match');
         }
     };
+=======
+    const onSubmit = form.handleSubmit((data) => {
+        let finalBelongingnessRatio = data.belongingnessRatio;
+        if (typeof finalBelongingnessRatio === 'string') {
+            finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
+        }
+        console.log('SUBMIT', { ...data, belongingnessRatio: finalBelongingnessRatio });
+        setDataElements(data.dataElements);
+        setBelongingnessRatio(finalBelongingnessRatio);
+        setMode('match');
+    });
+>>>>>>> case-dedup-ui
 
     return (
         <div className={styles.dataElements}>
@@ -40,11 +65,29 @@ const DataElementsConfiguration = () => {
                                 <h4>Global settings</h4>
                             </div>
                             <div className={styles.sectionBody}>
+<<<<<<< HEAD
                                 <Input
                                     type="text"
                                     label="Belongingness ratio"
                                     defaultValue="0.5"
                                     orientation="horizontal"
+=======
+                                <Controller
+                                    control={form.control}
+                                    name="belongingnessRatio"
+                                    render={({ field: { onChange, onBlur, value, name } }) => (
+                                        <Input
+                                            type="number"
+                                            name={name}
+                                            label="Belongingness ratio"
+                                            value={value !== undefined ? String(value) : ''}
+                                            defaultValue={value !== undefined ? String(value) : ''}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            orientation="horizontal"
+                                        />
+                                    )}
+>>>>>>> case-dedup-ui
                                 />
                             </div>
                         </div>
@@ -106,7 +149,11 @@ const DataElementsConfiguration = () => {
                 <Button type="button" outline onClick={() => setMode('patient')}>
                     Cancel
                 </Button>
+<<<<<<< HEAD
                 <Button type="button" onClick={handleSaveElements} disabled={!formState.isValid}>
+=======
+                <Button type="button" onClick={() => onSubmit()} disabled={!formState.isValid}>
+>>>>>>> case-dedup-ui
                     Save data elements configuration
                 </Button>
             </div>

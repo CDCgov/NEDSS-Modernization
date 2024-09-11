@@ -30,9 +30,9 @@ public class LabTestSummaryFinder {
           and ar.target_class_cd = 'OBS'
         join observation o2 on o2.observation_uid = ar.source_act_uid and o2.obs_domain_cd_st_1 = 'Result'
         join NBS_SRTE..Lab_test lt on lt.lab_test_cd = o2.cd
-        join Obs_value_coded ovc on ovc.observation_uid = o2.observation_uid
-        join NBS_SRTE..Lab_result lr on lr.lab_result_cd = ovc.code
-        join Obs_value_numeric ovn on ovn.observation_uid = o2.observation_uid
+        left join Obs_value_coded ovc on ovc.observation_uid = o2.observation_uid
+        left join NBS_SRTE..Lab_result lr on lr.lab_result_cd = ovc.code
+        left join Obs_value_numeric ovn on ovn.observation_uid = o2.observation_uid
         left join NBS_SRTE..Code_value_general cvg on cvg.code = o2.status_cd and cvg.code_set_nm = 'ACT_OBJ_ST'
       where
         lt.test_type_cd = 'R'

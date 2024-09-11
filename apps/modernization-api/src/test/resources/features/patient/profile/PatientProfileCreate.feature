@@ -38,3 +38,19 @@ Feature: Patient Profile create
     And I am adding a new patient with comments
     When I send a create patient request
     Then I am unable to create a patient
+
+  Scenario: I can create a patient with emails
+    Given I am logged into NBS
+    And I have the authorities: "FIND-PATIENT,ADD-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And I am adding a new patient with emails
+    When I send a create patient request
+    Then the patient is created
+    And the patient created has the entered emails
+
+  Scenario: I can create a patient with phones
+    Given I am logged into NBS
+    And I have the authorities: "FIND-PATIENT,ADD-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And I am adding a new patient with phones
+    When I send a create patient request
+    Then the patient is created
+    And the patient created has the entered phones
