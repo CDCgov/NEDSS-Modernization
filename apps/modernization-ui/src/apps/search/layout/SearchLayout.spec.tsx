@@ -2,17 +2,13 @@ import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { SearchLayout } from './SearchLayout';
 import { SkipLinkProvider } from 'SkipLink/SkipLinkContext';
-import { SearchResultDisplayProvider } from 'apps/search/useSearchResultDisplay';
-
-const mockReset = jest.fn();
+import { SearchPageProvider } from '../SearchPage';
 
 jest.mock('apps/search', () => ({
     useSearchResultDisplay: () => ({
-        status: 'no-input',
-        view: 'list',
-        terms: [],
-        reset: mockReset
-    })
+        view: 'list'
+    }),
+    useSearchInteraction: () => ({ status: 'no-input', results: { total: 199, terms: [] } })
 }));
 
 describe('no input', () => {
@@ -20,16 +16,15 @@ describe('no input', () => {
         const { container } = render(
             <MemoryRouter>
                 <SkipLinkProvider>
-                    <SearchResultDisplayProvider>
+                    <SearchPageProvider>
                         <SearchLayout
                             criteria={jest.fn()}
                             resultsAsList={jest.fn()}
                             resultsAsTable={jest.fn()}
                             onSearch={jest.fn()}
                             onClear={jest.fn()}
-                            onRemoveTerm={jest.fn()}
                         />
-                    </SearchResultDisplayProvider>
+                    </SearchPageProvider>
                 </SkipLinkProvider>
             </MemoryRouter>
         );

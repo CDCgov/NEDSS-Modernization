@@ -1,5 +1,6 @@
 import { Icon } from '@trussworks/react-uswds';
 import classNames from 'classnames';
+
 import styles from './chip.module.scss';
 
 type ChipProps = {
@@ -19,4 +20,4 @@ const Chip = ({ name, value, handleClose }: ChipProps) => {
     );
 };
 
-export default Chip;
+export { Chip };

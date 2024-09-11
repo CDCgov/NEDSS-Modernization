@@ -22,6 +22,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            tests: [],
             relevance: 5
         };
 
@@ -52,6 +53,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            tests: [],
             relevance: 5
         };
 
@@ -81,6 +83,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            tests: [],
             relevance: 5
         };
 
@@ -110,6 +113,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
                     typeCd: 'PATSBJ'
                 }
             ],
+            tests: [],
             relevance: 5
         };
 
@@ -131,6 +135,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            tests: [],
             relevance: 5
         };
 
@@ -152,6 +157,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            tests: [],
             relevance: 5
         };
 
@@ -173,6 +179,13 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [{ cdDescTxt: 'test description', altCd: 'alt-cd-vlalue', displayName: 'test display' }],
             organizationParticipations: [],
             personParticipations: [],
+            tests: [
+                {
+                    name: 'some resulted test',
+                    high: '20',
+                    low: '10'
+                }
+            ],
             relevance: 5
         };
 
@@ -181,7 +194,8 @@ describe('LaboratoryReportSearchResultListItem', () => {
                 <LaboratoryReportSearchResultListItem result={result} jurisdictionResolver={jest.fn()} />
             </MemoryRouter>
         );
-        expect(getByText('test description = test display')).toBeInTheDocument();
+        expect(getByText('some resulted test:')).toBeInTheDocument();
+        expect(getByText('(10 - 20)')).toBeInTheDocument();
     });
 
     it('should render the jurisdiction', () => {
@@ -196,6 +210,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            tests: [],
             relevance: 5
         };
 
@@ -220,6 +235,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             observations: [],
             organizationParticipations: [],
             personParticipations: [],
+            tests: [],
             relevance: 5
         };
 

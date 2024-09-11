@@ -36,7 +36,8 @@ const labReports: [LabReport] = [
                 displayName: 'abnormal'
             }
         ],
-        associatedInvestigations: []
+        associatedInvestigations: [],
+        tests: []
     }
 ];
 
