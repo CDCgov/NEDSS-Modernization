@@ -28,10 +28,7 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
   private final LabReportSearchCriteriaSortResolver sortResolver;
   private final ElasticsearchClient client;
   private final SearchResultResolver resultResolver;
-<<<<<<< HEAD
   private final LabTestSummaryFinder labTestSummaryFinder;
-=======
->>>>>>> 741e49d44 (Cnft2 2763 data elements table setup (#1754))
 
   ElasticsearchLabReportSearchResolver(
       final PermissionScopeResolver resolver,
@@ -39,23 +36,15 @@ class ElasticsearchLabReportSearchResolver implements SearchResolver<LabReportFi
       final LabReportSearchCriteriaQueryResolver queryResolver,
       final LabReportSearchCriteriaSortResolver sortResolver,
       final ElasticsearchClient client,
-<<<<<<< HEAD
       final SearchResultResolver resultResolver,
       final LabTestSummaryFinder labTestSummaryFinder) {
-=======
-      final SearchResultResolver resultResolver
-  ) {
->>>>>>> 741e49d44 (Cnft2 2763 data elements table setup (#1754))
     this.resolver = resolver;
     this.filterResolver = filterResolver;
     this.queryResolver = queryResolver;
     this.sortResolver = sortResolver;
     this.client = client;
     this.resultResolver = resultResolver;
-<<<<<<< HEAD
     this.labTestSummaryFinder = labTestSummaryFinder;
-=======
->>>>>>> 741e49d44 (Cnft2 2763 data elements table setup (#1754))
   }
 
   @Override
