@@ -4,8 +4,87 @@ import { DataElement } from '../const/init';
 import { DataTable, Column } from 'design-system/table';
 import { Checkbox } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
-import { useDataElementsContext } from '../context/DataElementsContext';
 import styles from './data-elements-table.module.scss';
+
+export const dataElements: DataElement[] = [
+    { name: 'lastName', active: false, m: 0.5, u: 0.5, threshold: 0.5 },
+    { name: 'secondLastName', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
+    { name: 'firstName', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
+    { name: 'middleName', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
+    { name: 'secondMiddleName', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
+    { name: 'suffix', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
+    { name: 'currentSex', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
+    {
+        name: 'dateOfBirth',
+        active: true,
+        m: 0.5,
+        u: 0.5,
+        threshold: 0.5
+    },
+    {
+        name: 'ssn',
+        active: true,
+        m: 0.5,
+        u: 0.5,
+        threshold: 0.5
+    },
+    {
+        name: 'idType',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'idAssigningAuthority',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'idValue',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'streetAddress1',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'city',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'state',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'zip',
+        active: true,
+        m: 0.5,
+        u: 0.25,
+        threshold: 0.5
+    },
+    {
+        name: 'telephone',
+        active: true,
+        m: 0.5,
+        u: 0.1,
+        threshold: 0.5
+    }
+];
 
 const columns = (
     control: any,
@@ -145,7 +224,6 @@ const columns = (
 
 const DataElementsTable = () => {
     const { control, setValue } = useFormContext<{ dataElements: DataElement[] }>();
-    const { dataElements } = useDataElementsContext();
     const [checkedState, setCheckedState] = useState<boolean[]>([]);
 
     const watchedDataElements = useWatch({

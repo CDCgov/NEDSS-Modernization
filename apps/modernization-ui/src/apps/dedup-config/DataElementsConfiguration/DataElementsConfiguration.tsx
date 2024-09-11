@@ -3,11 +3,11 @@ import { useDataElementsContext } from '../context/DataElementsContext';
 import { useDedupeContext } from '../context/DedupeContext';
 import styles from './data-elements-configuration.module.scss';
 import { Input } from 'components/FormInputs/Input';
-import { DataElementsTable } from './DataElementsTable';
+import { DataElementsTable, dataElements } from './DataElementsTable';
 import { useForm, FormProvider } from 'react-hook-form';
 
 const DataElementsConfiguration = () => {
-    const { dataElements } = useDataElementsContext();
+    const { setDataElements } = useDataElementsContext();
     const { setMode } = useDedupeContext();
     const form = useForm({
         mode: 'onBlur',
@@ -15,6 +15,15 @@ const DataElementsConfiguration = () => {
     });
 
     const { formState } = form;
+
+    const handleSaveElements = () => {
+        const values = form.getValues().dataElements;
+        if (values) {
+            localStorage.setItem('dataElements', JSON.stringify(values));
+            setDataElements(values);
+            setMode('match');
+        }
+    };
 
     return (
         <div className={styles.dataElements}>
@@ -97,7 +106,7 @@ const DataElementsConfiguration = () => {
                 <Button type="button" outline onClick={() => setMode('patient')}>
                     Cancel
                 </Button>
-                <Button type="button" onClick={() => console.log('save')} disabled={!formState.isValid}>
+                <Button type="button" onClick={handleSaveElements} disabled={!formState.isValid}>
                     Save data elements configuration
                 </Button>
             </div>
