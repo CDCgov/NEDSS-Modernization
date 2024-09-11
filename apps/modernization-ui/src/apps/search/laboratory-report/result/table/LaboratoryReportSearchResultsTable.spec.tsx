@@ -110,6 +110,12 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
                         shortId: 63000
                     }
                 ],
+                tests: [
+                    {
+                        name: '11-Desoxycortisol',
+                        coded: 'abnormal'
+                    }
+                ],
                 relevance: 1
             }
         ];
@@ -126,7 +132,7 @@ describe('When a Laboratory Report search result is viewed in a table', () => {
         expect(columns[3]).toHaveTextContent('63000');
         expect(columns[4]).toHaveTextContent('Lab report');
         expect(columns[5]).toHaveTextContent('09/22/2015');
-        expect(columns[6]).toHaveTextContent('11-Desoxycortisol = abnormal');
+        expect(columns[6]).toHaveTextContent('11-Desoxycortisol:');
         expect(columns[7]).toHaveTextContent('Emory University Hospital');
         expect(columns[8]).toHaveTextContent('John Henry');
         expect(columns[9]).toHaveTextContent('Gwinnett County');

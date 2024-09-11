@@ -7,7 +7,8 @@ public record NewPatient(
     Instant asOf,
     String comment,
     List<Name> names,
-    List<Address> addresses) {
+    List<Address> addresses,
+    List<Phone> phones) {
 }
 
 
@@ -37,5 +38,18 @@ record Address(
     String county,
     String censusTract,
     String country,
+    String comment) {
+}
+
+
+record Phone(
+    Instant asOf,
+    String type,
+    String use,
+    String countryCode,
+    String number,
+    String extension,
+    String email,
+    String url,
     String comment) {
 }

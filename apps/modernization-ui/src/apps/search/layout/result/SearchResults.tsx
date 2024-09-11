@@ -1,22 +1,18 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { Term, useSearchResultDisplay } from 'apps/search';
+import { Pagination } from 'design-system/Pagination';
+import { View } from 'apps/search';
 import { SearchResultsHeader } from './header/SearchResultsHeader';
+import { Term } from 'apps/search/terms';
 import styles from './search-results.module.scss';
-import { usePage } from 'page';
-import { Pagination } from 'design-system/Pagination/Pagination';
 
 type Props = {
     children: ReactNode;
-    onRemoveTerm: (term: Term) => void;
+    view: View;
+    total: number;
+    terms: Term[];
 };
 
-const SearchResults = ({ children, onRemoveTerm }: Props) => {
-    const {
-        page: { total }
-    } = usePage();
-
-    const { view, terms } = useSearchResultDisplay();
-
+const SearchResults = ({ children, total, view, terms }: Props) => {
     const headerRef = useRef<HTMLDivElement>(null);
     const paginationRef = useRef<HTMLDivElement>(null);
     const [contentHeight, setContentHeight] = useState<string>('auto');
@@ -39,13 +35,7 @@ const SearchResults = ({ children, onRemoveTerm }: Props) => {
     return (
         <div className={styles.results}>
             <div ref={headerRef}>
-                <SearchResultsHeader
-                    className={styles.header}
-                    onRemoveTerm={onRemoveTerm}
-                    view={view}
-                    total={total}
-                    terms={terms}
-                />
+                <SearchResultsHeader className={styles.header} view={view} total={total} terms={terms} />
             </div>
             <main className={styles.content} style={{ height: contentHeight }}>
                 {children}
