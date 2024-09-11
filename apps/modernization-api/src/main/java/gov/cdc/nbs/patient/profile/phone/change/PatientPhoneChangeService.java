@@ -8,40 +8,37 @@ import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 
 @Component
-class PatientPhoneChangeService {
+public class PatientPhoneChangeService {
 
   private final IdGeneratorService generator;
   private final PatientProfileService service;
 
   public PatientPhoneChangeService(
       final IdGeneratorService generator,
-      final PatientProfileService service
-  ) {
+      final PatientProfileService service) {
     this.generator = generator;
     this.service = service;
   }
 
-  PatientPhoneAdded add(final RequestContext context, final NewPatientPhoneInput input) {
+  public PatientPhoneAdded add(final RequestContext context, final NewPatientPhoneInput input) {
     return service.with(
-            input.patient(),
-            found -> found.add(
-                new PatientCommand.AddPhone(
-                    input.patient(),
-                    generateNbsId(),
-                    input.type(),
-                    input.use(),
-                    input.asOf(),
-                    input.countryCode(),
-                    input.number(),
-                    input.extension(),
-                    input.email(),
-                    input.url(),
-                    input.comment(),
-                    context.requestedBy(),
-                    context.requestedAt()
-                )
-            )
-        ).map(added -> new PatientPhoneAdded(input.patient(), added.getId().getLocatorUid()))
+        input.patient(),
+        found -> found.add(
+            new PatientCommand.AddPhone(
+                input.patient(),
+                generateNbsId(),
+                input.type(),
+                input.use(),
+                input.asOf(),
+                input.countryCode(),
+                input.number(),
+                input.extension(),
+                input.email(),
+                input.url(),
+                input.comment(),
+                context.requestedBy(),
+                context.requestedAt())))
+        .map(added -> new PatientPhoneAdded(input.patient(), added.getId().getLocatorUid()))
         .orElseThrow(() -> new PatientNotFoundException(input.patient()));
   }
 
@@ -65,9 +62,7 @@ class PatientPhoneChangeService {
             input.url(),
             input.comment(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    ));
+            context.requestedAt())));
 
   }
 
@@ -78,8 +73,6 @@ class PatientPhoneChangeService {
             input.patient(),
             input.id(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    ));
+            context.requestedAt())));
   }
 }
