@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
+import DataElementsContextProvider from './DataElementsContext'; // Import other context providers
+import PatientMatchContextProvider from './PatientMatchContext';
 
 const DedupeContext = createContext<DedupeContextProps | undefined>(undefined);
 
@@ -9,7 +11,14 @@ type DedupeContextProps = {
 
 const DedupeContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [mode, setMode] = useState('patient');
-    return <DedupeContext.Provider value={{ mode, setMode }}>{children}</DedupeContext.Provider>;
+
+    return (
+        <DedupeContext.Provider value={{ mode, setMode }}>
+            <DataElementsContextProvider>
+                <PatientMatchContextProvider>{children}</PatientMatchContextProvider>
+            </DataElementsContextProvider>
+        </DedupeContext.Provider>
+    );
 };
 
 export const useDedupeContext = () => {
