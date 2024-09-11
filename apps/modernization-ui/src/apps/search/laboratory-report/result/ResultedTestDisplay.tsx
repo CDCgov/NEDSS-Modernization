@@ -7,11 +7,7 @@ type Props = {
 export const ResultedTestDisplay = ({ test }: Props) => {
     const numericResult = (): ReactNode | undefined => {
         return (
-            test.numeric && (
-                <div className={styles.testResult}>
-                    Numeric result: <span>{`${test.numeric} ${test.unit ? test.unit : ''}`}</span>
-                </div>
-            )
+            test.numeric && <div className={styles.testResult}>{`${test.numeric} ${test.unit ? test.unit : ''}`}</div>
         );
     };
 
@@ -37,13 +33,7 @@ export const ResultedTestDisplay = ({ test }: Props) => {
     };
 
     const codedResult = (): ReactNode | undefined => {
-        return (
-            test.coded && (
-                <div className={styles.testResult}>
-                    Coded result: <span>{test.coded}</span>
-                </div>
-            )
-        );
+        return test.coded && <div className={styles.testResult}>{test.coded}</div>;
     };
 
     return (

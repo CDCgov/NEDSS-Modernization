@@ -10,7 +10,6 @@ describe('ResultedTestDisplay', () => {
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
-        expect(getByText('Numeric result:')).toBeInTheDocument();
         expect(getByText('1144 someUnit')).toBeInTheDocument();
     });
 
@@ -20,7 +19,6 @@ describe('ResultedTestDisplay', () => {
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
-        expect(getByText('Numeric result:')).toBeInTheDocument();
         expect(getByText('1144')).toBeInTheDocument();
     });
 
@@ -95,7 +93,6 @@ describe('ResultedTestDisplay', () => {
         };
 
         const { getByText } = render(<ResultedTestDisplay test={summary} />);
-        expect(getByText('Coded result:')).toBeInTheDocument();
         expect(getByText('abnormal')).toBeInTheDocument();
     });
 });
