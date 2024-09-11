@@ -1,13 +1,13 @@
 import PatientMatchConfiguration from './PatientMatchConfiguration';
-import PatientMatchContextProvider from './context/PatientMatchContext';
+import DedupeContextProvider from './context/DedupeContext';
 
 const routing = [
     {
         path: '/patient-match-config',
         element: (
-            <PatientMatchContextProvider>
+            <DedupeContextProvider>
                 <PatientMatchConfiguration />
-            </PatientMatchContextProvider>
+            </DedupeContextProvider>
         )
     }
 ];

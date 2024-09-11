@@ -12,7 +12,7 @@ const columns = (
     handleRowCheckboxChange: (index: number, checked: boolean) => void,
     checkedState: boolean[],
     watchedDataElements: DataElement[],
-    handleHeaderCheckboxChange: (checked: boolean) => void // Add this parameter
+    handleHeaderCheckboxChange: (checked: boolean) => void
 ): Column<DataElement>[] => [
     {
         id: 'active',
@@ -21,8 +21,8 @@ const columns = (
                 name="select-all"
                 id="select-all-checkbox"
                 label=""
-                checked={checkedState.every(Boolean)} // Check if all rows are selected
-                onChange={(e) => handleHeaderCheckboxChange(e.target.checked)} // Handle "Select All"
+                checked={checkedState.every(Boolean)}
+                onChange={(e) => handleHeaderCheckboxChange(e.target.checked)}
             />
         ),
         render: (dataElement, index) => (
@@ -164,7 +164,6 @@ const DataElementsTable = () => {
         updatedCheckedState[index] = checked;
         setCheckedState(updatedCheckedState);
 
-        // Update the form state
         setValue(`dataElements.${index}.active`, checked);
     };
 
@@ -172,7 +171,6 @@ const DataElementsTable = () => {
         const updatedCheckedState = dataElements.map(() => checked);
         setCheckedState(updatedCheckedState);
 
-        // Update the form state for all rows
         dataElements.forEach((_, index) => {
             setValue(`dataElements.${index}.active`, checked);
         });
