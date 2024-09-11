@@ -1,56 +1,56 @@
 import { Selectable } from 'options';
-import { EffectiveDated, HasComments, Maybe } from 'utils';
+import { EffectiveDated, HasComments } from 'utils';
 
 type LocationEntry = {
-    city: Maybe<string>;
-    state: Maybe<Selectable>;
-    county: Maybe<Selectable>;
-    country: Maybe<Selectable>;
+    city?: string;
+    state?: Selectable;
+    county?: Selectable;
+    country?: Selectable;
 };
 
 type AdministrativeEntry = EffectiveDated & HasComments;
 
 type NameEntry = EffectiveDated & {
     type: Selectable;
-    prefix?: Maybe<Selectable>;
-    first?: Maybe<string>;
-    middle?: Maybe<string>;
-    secondMiddle?: Maybe<string>;
-    last?: Maybe<string>;
-    secondLast?: Maybe<string>;
-    suffix?: Maybe<Selectable>;
-    degree?: Maybe<Selectable>;
+    prefix?: Selectable;
+    first?: string;
+    middle?: string;
+    secondMiddle?: string;
+    last?: string;
+    secondLast?: string;
+    suffix?: Selectable;
+    degree?: Selectable;
 };
 
 type AddressEntry = EffectiveDated &
     HasComments & {
         type: Selectable;
         use: Selectable;
-        address1: Maybe<string>;
-        address2: Maybe<string>;
-        city: Maybe<string>;
-        state: Maybe<Selectable>;
-        zipcode: Maybe<string>;
-        county: Maybe<Selectable>;
-        country: Maybe<Selectable>;
-        censusTract: Maybe<string>;
+        address1: string;
+        address2: string;
+        city: string;
+        state: Selectable;
+        zipcode: string;
+        county: Selectable;
+        country: Selectable;
+        censusTract: string;
     };
 
 type PhoneEmailEntry = EffectiveDated &
     HasComments & {
         type: Selectable;
         use: Selectable;
-        countryCode: Maybe<string>;
-        phoneNumber: Maybe<string>;
-        extension: Maybe<string>;
-        email: Maybe<string>;
-        url: Maybe<string>;
+        countryCode: string;
+        phoneNumber: string;
+        extension: string;
+        email: string;
+        url: string;
     };
 
 type IdentificationEntry = EffectiveDated & {
     type: Selectable;
     id: string;
-    issuer: Maybe<Selectable>;
+    issuer: Selectable;
 };
 
 type RaceEntry = EffectiveDated & {
@@ -59,41 +59,41 @@ type RaceEntry = EffectiveDated & {
 };
 
 type EthnicityEntry = EffectiveDated & {
-    ethnicity: Maybe<Selectable>;
+    ethnicity: Selectable;
     detailed: Selectable[];
 };
 
 type SexEntry = EffectiveDated & {
-    currentSex: Maybe<Selectable>;
-    unknownReason: Maybe<Selectable>;
-    transgenderInformation: Maybe<Selectable>;
-    additionalGender: Maybe<string>;
+    currentSex: Selectable;
+    unknownReason: Selectable;
+    transgenderInformation: Selectable;
+    additionalGender: string;
 };
 
 type BirthEntry = EffectiveDated &
     LocationEntry & {
-        dateOfBirth: Maybe<String>;
-        sex: Maybe<Selectable>;
-        multiple: Maybe<Selectable>;
-        order: Maybe<number>;
+        dateOfBirth: string;
+        sex: Selectable;
+        multiple: Selectable;
+        order: number;
     };
 
 type MortalityEntry = EffectiveDated &
     LocationEntry & {
-        deceased: Maybe<Selectable>;
-        deceasedOn: Maybe<string>;
+        deceased: Selectable;
+        deceasedOn: string;
     };
 
 type GeneralInformationEntry = EffectiveDated &
     HasComments & {
-        maritalStatus: Maybe<Selectable>;
-        maternalMaidenName: Maybe<string>;
-        adultsInResidence?: Maybe<number>;
-        childrenInResidence?: Maybe<number>;
-        primaryOccupation: Maybe<Selectable>;
-        educationLevel: Maybe<Selectable>;
-        speaksEnglish: Maybe<Selectable>;
-        stateHIVCase?: Maybe<string>;
+        maritalStatus: Selectable;
+        maternalMaidenName: string;
+        adultsInResidence?: number;
+        childrenInResidence?: number;
+        primaryOccupation: Selectable;
+        educationLevel: Selectable;
+        speaksEnglish: Selectable;
+        stateHIVCase?: string;
     };
 
 export type {

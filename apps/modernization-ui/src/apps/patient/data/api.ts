@@ -1,55 +1,55 @@
-import { EffectiveDated, HasComments, Maybe } from 'utils';
+import { EffectiveDated, HasComments } from 'utils';
 
 type HasLocation = {
-    city: Maybe<string>;
-    state: Maybe<string>;
-    county: Maybe<string>;
-    country: Maybe<string>;
+    city?: string;
+    state?: string;
+    county?: string;
+    country?: string;
 };
 
 type Administrative = EffectiveDated & HasComments;
 
 type Name = EffectiveDated & {
     type: string;
-    prefix: Maybe<string>;
-    first: Maybe<string>;
-    middle: Maybe<string>;
-    secondMiddle: Maybe<string>;
-    last: Maybe<string>;
-    secondLast: Maybe<string>;
-    suffix: Maybe<string>;
-    degree: Maybe<string>;
+    prefix?: string;
+    first?: string;
+    middle?: string;
+    secondMiddle?: string;
+    last?: string;
+    secondLast?: string;
+    suffix?: string;
+    degree?: string;
 };
 
 type Address = EffectiveDated &
     HasComments & {
         type: string;
         use: string;
-        address1: Maybe<string>;
-        address2: Maybe<string>;
-        city: Maybe<string>;
-        state: Maybe<string>;
-        zipcode: Maybe<string>;
-        county: Maybe<string>;
-        country: Maybe<string>;
-        censusTract: Maybe<string>;
+        address1?: string;
+        address2?: string;
+        city?: string;
+        state?: string;
+        zipcode?: string;
+        county?: string;
+        country?: string;
+        censusTract?: string;
     };
 
 type PhoneEmail = EffectiveDated &
     HasComments & {
         type: string;
         use: string;
-        countryCode: Maybe<string>;
-        phoneNumber: Maybe<string>;
-        extension: Maybe<string>;
-        email: Maybe<string>;
-        url: Maybe<string>;
+        countryCode?: string;
+        phoneNumber?: string;
+        extension?: string;
+        email?: string;
+        url?: string;
     };
 
 type Identification = EffectiveDated & {
     type: string;
     id: string;
-    issuer: Maybe<string>;
+    issuer?: string;
 };
 
 type Race = EffectiveDated & {
@@ -58,41 +58,41 @@ type Race = EffectiveDated & {
 };
 
 type Ethnicity = EffectiveDated & {
-    ethnicity: Maybe<string>;
+    ethnicity: string;
     detailed: string[];
 };
 
 type Sex = {
-    currentSex: Maybe<string>;
-    unknownReason: Maybe<string>;
-    transgenderInformation: Maybe<string>;
-    additionalGender: Maybe<string>;
+    currentSex?: string;
+    unknownReason?: string;
+    transgenderInformation?: string;
+    additionalGender?: string;
 };
 
 type Birth = EffectiveDated &
     HasLocation & {
-        dateOfBirth: Maybe<string>;
-        sex: Maybe<string>;
-        multiple: Maybe<string>;
-        order: Maybe<number>;
+        dateOfBirth?: string;
+        sex?: string;
+        multiple?: string;
+        order?: number;
     };
 
 type Mortality = EffectiveDated &
     HasLocation & {
-        deceased: Maybe<string>;
-        deceasedOn: Maybe<string>;
+        deceased?: string;
+        deceasedOn?: string;
     };
 
 type GeneralInformation = EffectiveDated &
     HasComments & {
-        maritalStatus: Maybe<string>;
-        maternalMaidenName: Maybe<string>;
-        adultsInResidence: Maybe<number>;
-        childrenInResidence: Maybe<number>;
-        primaryOccupation: Maybe<string>;
-        educationLevel: Maybe<string>;
-        speaksEnglish: Maybe<string>;
-        stateHIVCase: Maybe<string>;
+        maritalStatus?: string;
+        maternalMaidenName?: string;
+        adultsInResidence?: number;
+        childrenInResidence?: number;
+        primaryOccupation?: string;
+        educationLevel?: string;
+        speaksEnglish?: string;
+        stateHIVCase?: string;
     };
 
 export type {
