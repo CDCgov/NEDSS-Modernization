@@ -4,17 +4,28 @@ import { useDedupeContext } from '../context/DedupeContext';
 import styles from './data-elements-configuration.module.scss';
 import { Input } from 'components/FormInputs/Input';
 import { DataElementsTable } from './DataElementsTable';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
 
 const DataElementsConfiguration = () => {
-    const { dataElements } = useDataElementsContext();
+    const { dataElements, setDataElements, belongingnessRatio, setBelongingnessRatio } = useDataElementsContext();
     const { setMode } = useDedupeContext();
     const form = useForm({
         mode: 'onBlur',
-        defaultValues: { dataElements }
+        defaultValues: { dataElements, belongingnessRatio: belongingnessRatio ?? undefined }
     });
 
     const { formState } = form;
+
+    const onSubmit = form.handleSubmit((data) => {
+        let finalBelongingnessRatio = data.belongingnessRatio;
+        if (typeof finalBelongingnessRatio === 'string') {
+            finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
+        }
+        console.log('SUBMIT', { ...data, belongingnessRatio: finalBelongingnessRatio });
+        setDataElements(data.dataElements);
+        setBelongingnessRatio(finalBelongingnessRatio);
+        setMode('match');
+    });
 
     return (
         <div className={styles.dataElements}>
@@ -31,11 +42,21 @@ const DataElementsConfiguration = () => {
                                 <h4>Global settings</h4>
                             </div>
                             <div className={styles.sectionBody}>
-                                <Input
-                                    type="text"
-                                    label="Belongingness ratio"
-                                    defaultValue="0.5"
-                                    orientation="horizontal"
+                                <Controller
+                                    control={form.control}
+                                    name="belongingnessRatio"
+                                    render={({ field: { onChange, onBlur, value, name } }) => (
+                                        <Input
+                                            type="number"
+                                            name={name}
+                                            label="Belongingness ratio"
+                                            value={value !== undefined ? String(value) : ''}
+                                            defaultValue={value !== undefined ? String(value) : ''}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            orientation="horizontal"
+                                        />
+                                    )}
                                 />
                             </div>
                         </div>
@@ -97,7 +118,7 @@ const DataElementsConfiguration = () => {
                 <Button type="button" outline onClick={() => setMode('patient')}>
                     Cancel
                 </Button>
-                <Button type="button" onClick={() => console.log('save')} disabled={!formState.isValid}>
+                <Button type="button" onClick={() => onSubmit()} disabled={!formState.isValid}>
                     Save data elements configuration
                 </Button>
             </div>
