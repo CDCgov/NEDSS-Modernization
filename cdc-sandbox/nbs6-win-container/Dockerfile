@@ -28,11 +28,7 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk1.8.0_181" \
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 
-# WORKDIR C:\
 COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-
-# Unzip and Wildfly Zip as ContainerUser to set permissions
-# USER ContainerUser
 
 USER ContainerAdministrator
 
@@ -49,7 +45,6 @@ RUN Remove-Item -Path C:\$env:S3_ZIP_NAME -Recurse -Force
 # Configure Task Schedular. Requires Administrator Permissions
 COPY task-scheduler.ps1 task-scheduler.ps1
 RUN C:\task-scheduler.ps1
-
 
 # Setup Entrypoint Script
 COPY entrypoint.ps1 entrypoint.ps1
