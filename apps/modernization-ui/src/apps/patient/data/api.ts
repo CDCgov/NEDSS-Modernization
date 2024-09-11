@@ -28,9 +28,9 @@ type Address = EffectiveDated &
         address1?: string;
         address2?: string;
         city?: string;
+        county?: string;
         state?: string;
         zipcode?: string;
-        county?: string;
         country?: string;
         censusTract?: string;
     };

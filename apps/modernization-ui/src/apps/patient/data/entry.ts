@@ -26,31 +26,31 @@ type AddressEntry = EffectiveDated &
     HasComments & {
         type: Selectable;
         use: Selectable;
-        address1: string;
-        address2: string;
-        city: string;
-        state: Selectable;
-        zipcode: string;
-        county: Selectable;
-        country: Selectable;
-        censusTract: string;
+        address1?: string;
+        address2?: string;
+        city?: string;
+        county?: Selectable;
+        state?: Selectable;
+        zipcode?: string;
+        country?: Selectable;
+        censusTract?: string;
     };
 
 type PhoneEmailEntry = EffectiveDated &
     HasComments & {
         type: Selectable;
         use: Selectable;
-        countryCode: string;
-        phoneNumber: string;
-        extension: string;
-        email: string;
-        url: string;
+        countryCode?: string;
+        phoneNumber?: string;
+        extension?: string;
+        email?: string;
+        url?: string;
     };
 
 type IdentificationEntry = EffectiveDated & {
     type: Selectable;
     id: string;
-    issuer: Selectable;
+    issuer?: Selectable;
 };
 
 type RaceEntry = EffectiveDated & {
@@ -64,35 +64,35 @@ type EthnicityEntry = EffectiveDated & {
 };
 
 type SexEntry = EffectiveDated & {
-    currentSex: Selectable;
-    unknownReason: Selectable;
-    transgenderInformation: Selectable;
-    additionalGender: string;
+    currentSex?: Selectable;
+    unknownReason?: Selectable;
+    transgenderInformation?: Selectable;
+    additionalGender?: string;
 };
 
 type BirthEntry = EffectiveDated &
     LocationEntry & {
-        dateOfBirth: string;
-        sex: Selectable;
-        multiple: Selectable;
-        order: number;
+        dateOfBirth?: string;
+        sex?: Selectable;
+        multiple?: Selectable;
+        order?: number;
     };
 
 type MortalityEntry = EffectiveDated &
     LocationEntry & {
-        deceased: Selectable;
-        deceasedOn: string;
+        deceased?: Selectable;
+        deceasedOn?: string;
     };
 
 type GeneralInformationEntry = EffectiveDated &
     HasComments & {
-        maritalStatus: Selectable;
-        maternalMaidenName: string;
+        maritalStatus?: Selectable;
+        maternalMaidenName?: string;
         adultsInResidence?: number;
         childrenInResidence?: number;
-        primaryOccupation: Selectable;
-        educationLevel: Selectable;
-        speaksEnglish: Selectable;
+        primaryOccupation?: Selectable;
+        educationLevel?: Selectable;
+        speaksEnglish?: Selectable;
         stateHIVCase?: string;
     };
 

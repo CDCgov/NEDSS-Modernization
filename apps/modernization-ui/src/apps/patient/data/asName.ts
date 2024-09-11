@@ -4,17 +4,12 @@ import { Name } from './api';
 import { NameEntry } from './entry';
 
 const asName = (entry: NameEntry): Name => {
-    const { asOf, type, prefix, first, middle, secondMiddle, last, secondLast, suffix, degree } = entry;
+    const { type, prefix, suffix, degree, ...remaining } = entry;
 
     return {
-        asOf,
+        ...remaining,
         type: asValue(type),
         prefix: asValue(prefix),
-        first,
-        middle,
-        secondMiddle,
-        last,
-        secondLast,
         suffix: asValue(suffix),
         degree: asValue(degree)
     };

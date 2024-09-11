@@ -14,7 +14,7 @@ describe('when transforming entered extended patient data', () => {
         );
     });
 
-    it('should transform names to a format accepted by the API', () => {
+    it('should transform names', () => {
         const entry: ExtendedNewPatientEntry = {
             administrative: { asOf: '04/13/2017' },
             names: [
@@ -24,5 +24,36 @@ describe('when transforming entered extended patient data', () => {
                 }
             ]
         };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                names: expect.arrayContaining([expect.objectContaining({ type: 'name-type-value' })])
+            })
+        );
+    });
+
+    it('should transform addresses', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            addresses: [
+                {
+                    asOf: '04/13/2017',
+                    type: { value: 'address-type-value', name: 'address-type-name' },
+                    use: { value: 'address-use-value', name: 'address-use-name' }
+                }
+            ]
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                addresses: expect.arrayContaining([
+                    expect.objectContaining({ type: 'address-type-value', use: 'address-use-value' })
+                ])
+            })
+        );
     });
 });
