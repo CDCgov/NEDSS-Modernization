@@ -5,11 +5,11 @@ import { SelectInput } from 'components/FormInputs/SelectInput';
 import { useLocationCodedValues } from 'location';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import { AddressEntry } from './AddressEntry';
+import { AddressFields } from './AddressEntry';
 import { usePatientAddressCodedValues } from './usePatientAddressCodedValues';
 
 export const AddressEntryFields = () => {
-    const { control, reset } = useFormContext<AddressEntry>();
+    const { control, reset } = useFormContext<AddressFields>();
     const coded = usePatientAddressCodedValues();
     const location = useLocationCodedValues();
     const selectedState = useWatch({ control, name: 'state' });
@@ -37,7 +37,7 @@ export const AddressEntryFields = () => {
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="As of:"
+                        label="Address as of"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
@@ -55,7 +55,7 @@ export const AddressEntryFields = () => {
                 rules={{ required: { value: true, message: 'Type is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Type:"
+                        label="Type"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
@@ -75,7 +75,7 @@ export const AddressEntryFields = () => {
                 rules={{ required: { value: true, message: 'Use is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SelectInput
-                        label="Use:"
+                        label="Use"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
@@ -95,7 +95,7 @@ export const AddressEntryFields = () => {
                 rules={maxLengthRule(100)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <AddressSuggestionInput
-                        label="Street address 1:"
+                        label="Street address 1"
                         orientation="horizontal"
                         id={name}
                         locations={location}
@@ -118,7 +118,7 @@ export const AddressEntryFields = () => {
                 rules={maxLengthRule(100)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Street address 2:"
+                        label="Street address 2"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
@@ -137,7 +137,7 @@ export const AddressEntryFields = () => {
                 rules={maxLengthRule(100)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="City:"
+                        label="City"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
@@ -155,7 +155,7 @@ export const AddressEntryFields = () => {
                 name="state"
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
-                        label="State:"
+                        label="State"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -178,7 +178,7 @@ export const AddressEntryFields = () => {
                 }}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
                     <Input
-                        label="Zip:"
+                        label="Zip"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
@@ -196,7 +196,7 @@ export const AddressEntryFields = () => {
                 name="county"
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
-                        label="County:"
+                        label="County"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -213,7 +213,7 @@ export const AddressEntryFields = () => {
                 rules={maxLengthRule(10)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Census tract:"
+                        label="Census tract"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
@@ -231,7 +231,7 @@ export const AddressEntryFields = () => {
                 name="country"
                 render={({ field: { onChange, value, name } }) => (
                     <SelectInput
-                        label="Country:"
+                        label="Country"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -250,7 +250,7 @@ export const AddressEntryFields = () => {
                 rules={maxLengthRule(2000)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Additional comments:"
+                        label="Address comments"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
