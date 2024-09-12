@@ -4,15 +4,10 @@ import NoPassConfigurations from '../PassConfiguration/NoPassConfigurations';
 import PassConfigurationListItem from '../PassConfiguration/PassConfigurationListItem';
 import { useState } from 'react';
 import PatientMatchForm from './PatientMatchForm';
-
-type ConfigurationListItem = {
-    name: string;
-    description: string;
-    active: boolean;
-};
+import { PassConfiguration } from 'apps/dedup-config/types';
 
 const PatientMatchConfigurationPage = () => {
-    const [configurations, setConfigurations] = useState<ConfigurationListItem[]>([]);
+    const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
     const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
 
