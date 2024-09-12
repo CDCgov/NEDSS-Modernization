@@ -1,7 +1,15 @@
-import { Button, Icon } from '@trussworks/react-uswds';
+import { ModalToggleButton, Icon } from '@trussworks/react-uswds';
 import styles from '../patient-match-body.module.scss';
+import { ModalRef } from '@trussworks/react-uswds';
+import { useRef } from 'react';
+import { AddBlockingCriteria } from './AddBlockingCriteria';
+import { ModalComponent } from 'components/ModalComponent/ModalComponent';
+import { usePatientMatchContext } from '../../context/PatientMatchContext';
+// import { BlockingCriteriaRow } from './BlockingCriteriaRow';
 
 export const BlockingCriteria = () => {
+    const modalRef = useRef<ModalRef>(null);
+    const { blockingCriteria } = usePatientMatchContext();
     return (
         <div className={styles.criteria}>
             <div className={styles.criteriaHeadingContainer}>
@@ -9,12 +17,27 @@ export const BlockingCriteria = () => {
                 <p>Include records that meet all these conditions</p>
             </div>
             <div className={styles.criteriaContentContainer}>
-                <p className={styles.criteriaRequest}>Please add blocking criteria to get started</p>
-                <Button unstyled type={'button'}>
+                {blockingCriteria.length > 0 ? (
+                    blockingCriteria.map((criteria, index) => (
+                        <div key={index}>
+                            <div>{criteria.field.name}</div>
+                        </div>
+                        // <BlockingCriteriaRow key={index} criteria={criteria} />
+                    ))
+                ) : (
+                    <p className={styles.criteriaRequest}>Please add blocking criteria to get started</p>
+                )}
+                <ModalToggleButton type="button" unstyled modalRef={modalRef}>
                     <Icon.Add />
                     Add blocking criteria
-                </Button>
+                </ModalToggleButton>
             </div>
+            <ModalComponent
+                modalRef={modalRef}
+                size="medium"
+                modalHeading={'Add static element'}
+                modalBody={<AddBlockingCriteria modalRef={modalRef} />}
+            />
         </div>
     );
 };

@@ -3,7 +3,7 @@ import styles from './patient-match-configuration-page.module.scss';
 import NoPassConfigurations from '../PassConfiguration/NoPassConfigurations';
 import PassConfigurationListItem from '../PassConfiguration/PassConfigurationListItem';
 import { useState } from 'react';
-import PatientMatchBody from '../PatientMatchBody';
+import PatientMatchForm from './PatientMatchForm';
 
 type ConfigurationListItem = {
     name: string;
@@ -61,7 +61,7 @@ const PatientMatchConfigurationPage = () => {
                 </Button>
             </div>
             <div className={styles.configurationDetails}>
-                {showConfiguration ? <PatientMatchBody /> : <NoPassConfigurations />}
+                {showConfiguration ? <PatientMatchForm /> : <NoPassConfigurations />}
             </div>
         </div>
     );

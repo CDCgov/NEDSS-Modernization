@@ -37,9 +37,11 @@
             color: colors.$base-darkest;
         }
     }
-    &.tall {
+    &.tall, &.medium {
         min-height: 50rem;
         height: 50rem;
+        width: 66.25rem;
+        max-width: 66.25rem;
         .usa-modal__heading {
             width: 100%;
             display: flex;
@@ -76,6 +78,10 @@
                 }
             }
         }
+    }
+    &.medium {
+        max-width: 34rem;
+        width: 34rem;
     }
     &.wide {
         width: 66.25rem;
