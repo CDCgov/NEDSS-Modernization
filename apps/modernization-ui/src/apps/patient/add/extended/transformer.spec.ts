@@ -178,4 +178,22 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform mortality', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            mortality: {
+                asOf: '04/13/2017',
+                deceasedOn: '09/07/1976'
+            }
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                mortality: expect.objectContaining({ deceasedOn: '09/07/1976' })
+            })
+        );
+    });
 });
