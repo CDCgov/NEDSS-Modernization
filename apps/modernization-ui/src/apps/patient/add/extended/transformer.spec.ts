@@ -196,4 +196,22 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform general information', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            general: {
+                asOf: '04/13/2017',
+                comment: 'general-information'
+            }
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                general: expect.objectContaining({ comment: 'general-information' })
+            })
+        );
+    });
 });
