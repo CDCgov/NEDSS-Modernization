@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
-import { DataElement, dataElements } from '../const/init';
+import { dataElements } from '../const/init';
 import { DataTable, Column } from 'design-system/table';
 import { Checkbox } from '@trussworks/react-uswds';
 import { Input } from 'components/FormInputs/Input';
 import styles from './data-elements-table.module.scss';
+import { DataElement } from '../types';
 
 const columns = (
     control: any,

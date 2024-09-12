@@ -1,10 +1,10 @@
-import { BlockingCriteria } from 'apps/dedup-config/context/PatientMatchContext';
 import { SingleSelect } from 'design-system/select';
 import { Icon } from '@trussworks/react-uswds';
 import { availableMethods } from 'apps/dedup-config/context/PatientMatchContext';
 import { Controller, useFormContext } from 'react-hook-form';
 import styles from './blocking-criteria-row.module.scss';
 import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchContext';
+import { BlockingCriteria } from 'apps/dedup-config/types';
 
 export const BlockingCriteriaRow = ({ criteria }: { criteria: BlockingCriteria }) => {
     const { removeBlockingCriteria } = usePatientMatchContext();
