@@ -24,6 +24,7 @@ const DataElementsConfiguration = () => {
         console.log('SUBMIT', { ...data, belongingnessRatio: finalBelongingnessRatio });
         if (data.dataElements) {
             setDataElements(data.dataElements);
+            localStorage.setItem('dataElements', JSON.stringify(data.dataElements));
         }
         setBelongingnessRatio(finalBelongingnessRatio);
         setMode('match');
