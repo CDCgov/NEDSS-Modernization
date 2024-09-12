@@ -1,7 +1,8 @@
-import { getAllByRole, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { MemoryRouter } from 'react-router-dom';
 import { CodedValue } from 'coded';
+import { MockedProvider } from '@apollo/client/testing';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
@@ -26,12 +27,29 @@ const mockDetailedOptions: CodedValue[] = [
 jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
     useDetailedRaceCodedValues: () => mockDetailedOptions
 }));
+
+jest.mock('@apollo/client', () => ({
+    ...jest.requireActual('@apollo/client'),
+    useApolloClient: () => ({
+        readQuery: jest.fn(),
+        writeQuery: jest.fn(),
+        cache: {
+            modify: jest.fn(),
+            evict: jest.fn()
+        },
+        mutate: jest.fn().mockResolvedValue({ data: { addPatient: { id: '123' } } }),
+        query: jest.fn().mockResolvedValue({ data: { patient: { id: '123', name: 'John Doe' } } }),
+    })
+}));
+
 describe('AddPatientExtended', () => {
     it('should have a heading', () => {
         const { getAllByRole } = render(
-            <MemoryRouter>
-                <AddPatientExtended />
-            </MemoryRouter>
+            <MockedProvider mocks={[]} addTypename={false}>
+                <MemoryRouter>
+                    <AddPatientExtended />
+                </MemoryRouter>
+            </MockedProvider>
         );
 
         const headings = getAllByRole('heading');
@@ -39,13 +57,15 @@ describe('AddPatientExtended', () => {
     });
 
     it('should have cancel and save buttons', () => {
-        const { getAllByRole } = render(
-            <MemoryRouter>
-                <AddPatientExtended />
-            </MemoryRouter>
+        render(
+            <MockedProvider mocks={[]} addTypename={false}>
+                <MemoryRouter>
+                    <AddPatientExtended />
+                </MemoryRouter>
+            </MockedProvider>
         );
 
-        const buttons = getAllByRole('button');
+        const buttons = screen.getAllByRole('button');
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Save');
     });
