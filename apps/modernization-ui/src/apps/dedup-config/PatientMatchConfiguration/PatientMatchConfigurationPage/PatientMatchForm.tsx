@@ -8,7 +8,10 @@ import { Button } from 'components/button';
 
 const PatientMatchForm = () => {
     const patientMatchForm = useForm({
-        mode: 'onBlur'
+        mode: 'onBlur',
+        defaultValues: {
+            active: true
+        }
     });
 
     return (
@@ -20,7 +23,7 @@ const PatientMatchForm = () => {
                     <MatchingBounds />
                     <Controller
                         control={patientMatchForm.control}
-                        name="includeSimilar"
+                        name="active"
                         render={({ field: { onChange, value, name } }) => (
                             <Toggle
                                 value={value}
