@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -61,7 +62,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with comments")
   public void i_am_adding_a_new_patient() {
-    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null, null);
+    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null, null, null);
     this.input.active(newPatient);
   }
 
@@ -77,7 +78,7 @@ public class PatientCreateSteps {
         faker.name().lastName(),
         faker.name().lastName(),
         "JR",
-        "BS")), null, null);
+        "BS")), null, null, null);
     this.input.active(newPatient);
   }
 
@@ -95,7 +96,7 @@ public class PatientCreateSteps {
         RandomUtil.getRandomString(),
         RandomUtil.getRandomString(10),
         RandomUtil.country(),
-        RandomUtil.getRandomString())), null);
+        RandomUtil.getRandomString())), null, null);
     this.input.active(newPatient);
 
   }
@@ -111,7 +112,7 @@ public class PatientCreateSteps {
         null,
         "email",
         "url",
-        "comment")));
+        "comment")), null);
     this.input.active(newPatient);
   }
 
@@ -126,9 +127,18 @@ public class PatientCreateSteps {
         "extension",
         null,
         "url",
-        "comment")));
+        "comment")), null);
     this.input.active(newPatient);
 
+  }
+
+  @Given("I am adding a new patient with races")
+  public void i_am_adding_a_new_patient_with_races() {
+    NewPatient newPatient = new NewPatient(null, null, null, null, null, Arrays.asList(new Race(
+        RandomUtil.getRandomDateInPast(),
+        "category-value",
+        Arrays.asList("detail1", "detail2"))));
+    this.input.active(newPatient);
   }
 
   @When("I send a create patient request")
@@ -207,6 +217,16 @@ public class PatientCreateSteps {
         .returns(expected.countryCode(), TeleLocator::getCntryCd)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.extension(), TeleLocator::getExtensionTxt);
+  }
+
+  @Then("the patient created has the entered races")
+  public void the_patient_created_has_the_entered_races() {
+    PersonRace actual = patient.active().getRaces().getFirst();
+    Race expected = this.input.active().races().getFirst();
+
+    assertThat(actual)
+        .returns(expected.asOf(), PersonRace::getAsOfDate)
+        .returns(expected.category(), PersonRace::getRaceCategoryCd);
   }
 }
 

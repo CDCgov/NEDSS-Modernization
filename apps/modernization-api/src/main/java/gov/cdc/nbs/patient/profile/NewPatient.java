@@ -8,7 +8,8 @@ public record NewPatient(
     String comment,
     List<Name> names,
     List<Address> addresses,
-    List<Phone> phones) {
+    List<Phone> phones,
+    List<Race> races) {
 }
 
 
@@ -52,4 +53,11 @@ record Phone(
     String email,
     String url,
     String comment) {
+}
+
+
+record Race(
+    Instant asOf,
+    String category,
+    List<String> detailed) {
 }

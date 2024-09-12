@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.message.patient.input.PatientInput;
+import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.create.PatientCreator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -20,6 +21,7 @@ import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
 import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
 import gov.cdc.nbs.patient.profile.phone.change.PatientPhoneChangeService;
+import gov.cdc.nbs.patient.profile.race.change.PatientRaceChangeService;
 import gov.cdc.nbs.patient.profile.names.change.NewPatientNameInput;
 import gov.cdc.nbs.patient.profile.names.change.PatientNameChangeService;
 
@@ -34,12 +36,14 @@ public class PatientCreateController {
       final PatientNameChangeService nameService,
       final PatientAddressChangeService addressService,
       final PatientPhoneChangeService phoneService,
+      final PatientRaceChangeService raceService,
       final PatientIndexer indexer) {
     this.clock = clock;
     this.creator = creator;
     this.nameService = nameService;
     this.addressService = addressService;
     this.phoneService = phoneService;
+    this.raceService = raceService;
     this.indexer = indexer;
   }
 
@@ -49,6 +53,7 @@ public class PatientCreateController {
   private final PatientNameChangeService nameService;
   private final PatientAddressChangeService addressService;
   private final PatientPhoneChangeService phoneService;
+  private final PatientRaceChangeService raceService;
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
@@ -111,6 +116,17 @@ public class PatientCreateController {
         phoneService.add(context, newPatientPhoneInput);
       });
     }
+    if (newPatient.races() != null) {
+      newPatient.races().forEach(race -> {
+        RaceInput newRaceInput = new RaceInput();
+        newRaceInput.setPatient(created.id());
+        newRaceInput.setAsOf(race.asOf());
+        newRaceInput.setCategory(race.category());
+        newRaceInput.setDetailed(race.detailed());
+        raceService.add(context, newRaceInput);
+      });
+    }
+
     this.indexer.index(created.id());
     return created;
   }

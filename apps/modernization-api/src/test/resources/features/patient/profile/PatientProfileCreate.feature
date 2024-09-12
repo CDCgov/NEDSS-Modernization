@@ -54,3 +54,11 @@ Feature: Patient Profile create
     When I send a create patient request
     Then the patient is created
     And the patient created has the entered phones
+
+  Scenario: I can create a patient with races
+    Given I am logged into NBS
+    And I have the authorities: "FIND-PATIENT,ADD-PATIENT" for the jurisdiction: "ALL" and program area: "STD"
+    And I am adding a new patient with races
+    When I send a create patient request
+    Then the patient is created
+    And the patient created has the entered races
