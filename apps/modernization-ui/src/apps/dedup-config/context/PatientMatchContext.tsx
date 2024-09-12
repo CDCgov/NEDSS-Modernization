@@ -1,14 +1,16 @@
 import React, { createContext, useContext, useState } from 'react';
 import { DataElement } from './DataElementsContext';
 
-type BlockingCriteria = {
+export type Method = { value: string; name: string }; // Update Method type to be an array of objects with value and name
+
+export type BlockingCriteria = {
     field: DataElement;
-    method: string;
+    method: Method;
 };
 
 type MatchingCriteria = {
     field: DataElement;
-    method: string;
+    method: Method;
 };
 
 type PatientMatchContextProps = {
@@ -16,9 +18,17 @@ type PatientMatchContextProps = {
     setBlockingCriteria: (criteria: BlockingCriteria[]) => void;
     matchingCriteria: MatchingCriteria[];
     setMatchingCriteria: (criteria: MatchingCriteria[]) => void;
+    availableMethods: Method[]; // Add availableMethods to the context
 };
 
 const PatientMatchContext = createContext<PatientMatchContextProps | undefined>(undefined);
+
+export const availableMethods: Method[] = [
+    { value: 'EQUALS', name: 'Equals' },
+    { value: 'NOT_EQUAL_TO', name: 'Not equal to' },
+    { value: 'STARTS_WITH', name: 'Starts with' },
+    { value: 'CONTAINS', name: 'Contains' }
+];
 
 const PatientMatchContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [blockingCriteria, setBlockingCriteria] = useState<BlockingCriteria[]>([]);
@@ -30,7 +40,8 @@ const PatientMatchContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
                 blockingCriteria,
                 setBlockingCriteria,
                 matchingCriteria,
-                setMatchingCriteria
+                setMatchingCriteria,
+                availableMethods // Provide available methods in context
             }}>
             {children}
         </PatientMatchContext.Provider>
