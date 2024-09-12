@@ -51,18 +51,20 @@ export const AddBlockingCriteria = ({ modalRef }: Props) => {
     return (
         <div className={styles.addBlockingCriteria}>
             <div className={styles.addBlockingCriteriaContent}>
-                {dataElements.map((dataElement: DataElement, index: number) => (
-                    <Checkbox
-                        key={index}
-                        name={dataElement.name}
-                        label={dataElement.label}
-                        id={dataElement.name}
-                        tile
-                        disabled={!dataElement.active}
-                        checked={selectedFields.includes(dataElement.name)} // Check if this field is already selected
-                        onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
-                    />
-                ))}
+                {dataElements &&
+                    dataElements.length > 0 &&
+                    dataElements.map((dataElement: DataElement, index: number) => (
+                        <Checkbox
+                            key={index}
+                            name={dataElement.name}
+                            label={dataElement.label}
+                            id={dataElement.name}
+                            tile
+                            disabled={!dataElement.active}
+                            checked={selectedFields.includes(dataElement.name)} // Check if this field is already selected
+                            onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
+                        />
+                    ))}
             </div>
             <div className={styles.addBlockingCriteriaFooter}>
                 <ModalToggleButton type="button" closer outline modalRef={modalRef}>
