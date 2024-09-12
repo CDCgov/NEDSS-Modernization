@@ -1,17 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { DataElement } from '../const/init';
-
-export type Method = { value: string; name: string }; // Update Method type to be an array of objects with value and name
-
-export type BlockingCriteria = {
-    field: DataElement;
-    method: Method;
-};
-
-type MatchingCriteria = {
-    field: DataElement;
-    method: Method;
-};
+import { BlockingCriteria, MatchingCriteria, Method } from '../types';
 
 type PatientMatchContextProps = {
     blockingCriteria: BlockingCriteria[];

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { DataElement } from '../const/init';
+import { DataElement } from '../types';
 
 const DataElementsContext = createContext<DataElementsContextProps | undefined>(undefined);
 
