@@ -1,8 +1,8 @@
 import { PatientNameDegree, PatientNamePrefix, PatientNameSuffix, PatientNameUse } from 'generated/graphql/schema';
 
 export type NameEntry = {
-    patient: number;
-    sequence: number | null;
+    patient?: number;
+    sequence?: number | null;
     asOf: string | null;
     type: string | null;
     prefix: string | null;
