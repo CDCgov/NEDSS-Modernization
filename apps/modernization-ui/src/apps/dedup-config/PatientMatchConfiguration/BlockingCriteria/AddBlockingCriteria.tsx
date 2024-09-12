@@ -1,6 +1,7 @@
 import React, { RefObject, useState, useEffect } from 'react';
 import { ModalToggleButton, ModalRef, Checkbox } from '@trussworks/react-uswds';
-import { useDataElementsContext, DataElement } from '../../context/DataElementsContext';
+import { DataElement } from '../../const/init';
+import { useDataElementsContext } from '../../context/DataElementsContext';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
 import styles from './add-blocking-criteria.module.scss';
 
