@@ -5,7 +5,7 @@ import { useRef } from 'react';
 import { AddBlockingCriteria } from './AddBlockingCriteria';
 import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
-// import { BlockingCriteriaRow } from './BlockingCriteriaRow';
+import { BlockingCriteriaRow } from './BlockingCriteriaRow';
 
 export const BlockingCriteria = () => {
     const modalRef = useRef<ModalRef>(null);
@@ -19,10 +19,10 @@ export const BlockingCriteria = () => {
             <div className={styles.criteriaContentContainer}>
                 {blockingCriteria.length > 0 ? (
                     blockingCriteria.map((criteria, index) => (
-                        <div key={index}>
-                            <div>{criteria.field.name}</div>
-                        </div>
-                        // <BlockingCriteriaRow key={index} criteria={criteria} />
+                        // <div key={index}>
+                        //     <div>{criteria.field.name}</div>
+                        // </div>
+                        <BlockingCriteriaRow key={index} criteria={criteria} />
                     ))
                 ) : (
                     <p className={styles.criteriaRequest}>Please add blocking criteria to get started</p>
