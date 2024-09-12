@@ -1,9 +1,9 @@
 import React, { RefObject, useState, useEffect } from 'react';
 import { ModalToggleButton, ModalRef, Checkbox } from '@trussworks/react-uswds';
-import { DataElement } from '../../const/init';
 import { useDataElementsContext } from '../../context/DataElementsContext';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
 import styles from './add-blocking-criteria.module.scss';
+import { DataElement } from 'apps/dedup-config/types';
 
 type Props = {
     modalRef: RefObject<ModalRef>;
