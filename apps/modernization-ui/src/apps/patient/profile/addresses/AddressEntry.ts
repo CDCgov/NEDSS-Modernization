@@ -22,6 +22,6 @@ type AddressEntry = NewAddressEntry | UpdateAddressEntry;
 const isAdd = (obj: AddressEntry): obj is NewAddressEntry => !('id' in obj);
 const isUpdate = (obj: AddressEntry): obj is NewAddressEntry => 'id' in obj;
 
-export type { AddressEntry, NewAddressEntry, UpdateAddressEntry };
+export type { AddressEntry, NewAddressEntry, UpdateAddressEntry, AddressFields };
 
 export { isAdd, isUpdate };

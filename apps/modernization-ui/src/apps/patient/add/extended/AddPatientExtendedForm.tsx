@@ -4,25 +4,34 @@ import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry'
 import { PhoneEmailFields } from 'apps/patient/profile/phoneEmail/PhoneEmailEntry';
 import { useState } from 'react';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
+import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
+import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 
 type ExtendedPatientCreationForm = {
+    address: AddressFields[];
     phone: PhoneEmailFields[];
     race: RaceEntry[];
     name: NameEntry[];
 };
 
 type DirtyState = {
+    address: boolean;
     phone: boolean;
     name: boolean;
     race: boolean;
 };
 export const AddPatientExtendedForm = () => {
-    const form = useForm<ExtendedPatientCreationForm>({ defaultValues: { phone: [], name: [] } });
-    const [dirtyState, setDirtyState] = useState<DirtyState>({ phone: false, race: false, name: false });
+    const form = useForm<ExtendedPatientCreationForm>({ defaultValues: { phone: [] } });
+    const [dirtyState, setDirtyState] = useState<DirtyState>({
+        address: false,
+        phone: false,
+        race: false,
+        name: false
+    });
 
     return (
         <>
@@ -33,6 +42,12 @@ export const AddPatientExtendedForm = () => {
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, name: isDirty })}
                             onChange={(nameData) => {
                                 form.setValue('name', nameData);
+                            }}
+                        />
+                        <AddressMultiEntry
+                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, address: isDirty })}
+                            onChange={(addressData) => {
+                                form.setValue('address', addressData);
                             }}
                         />
                         <PhoneAndEmailMultiEntry

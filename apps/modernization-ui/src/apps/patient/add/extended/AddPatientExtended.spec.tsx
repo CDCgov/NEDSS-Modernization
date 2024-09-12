@@ -1,9 +1,30 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { MemoryRouter } from 'react-router-dom';
 import { CodedValue } from 'coded';
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider } from '@apollo/react-testing';
+const mockPatientAddressCodedValues = {
+    types: [{ name: 'House', value: 'H' }],
+    uses: [{ name: 'Home', value: 'HM' }]
+};
 
+jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
+    usePatientAddressCodedValues: () => mockPatientAddressCodedValues
+}));
+
+const mockLocationCodedValues = {
+    states: {
+        all: [{ name: 'StateName', value: '1' }]
+    },
+    counties: {
+        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
+    },
+    countries: [{ name: 'CountryName', value: '3' }]
+};
+
+jest.mock('location/useLocationCodedValues', () => ({
+    useLocationCodedValues: () => mockLocationCodedValues
+}));
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
     uses: [{ name: 'Home', value: 'H' }]
