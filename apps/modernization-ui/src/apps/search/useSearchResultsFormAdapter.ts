@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { SearchInteraction, SearchResultSettings, useSearchResults } from 'apps/search';
 import { removeTerm, Term } from 'apps/search/terms';
@@ -16,12 +15,6 @@ const useSearchResultsFormAdapter = <C extends object, A extends object, R exten
         resultResolver: settings.resultResolver,
         termResolver: settings.termResolver
     });
-
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-        interaction.reset();
-    }, [pathname]);
 
     useEffect(() => {
         if (interaction.status === 'resetting') {
