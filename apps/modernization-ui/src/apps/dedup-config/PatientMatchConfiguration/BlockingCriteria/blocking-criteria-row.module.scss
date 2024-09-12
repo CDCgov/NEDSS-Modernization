@@ -1,0 +1,35 @@
+@use 'styles/colors';
+
+.row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid colors.$base-lighter;
+    gap: 2rem;
+    padding: 0.75rem 0;
+    h5 {
+        display: inline-block;
+        width: 16.5rem;
+        font-size: 1rem;
+        text-transform: none;
+        margin: 0;
+    }
+    div {
+        border: none;
+        padding: 0;
+        height: 2rem;
+        min-height: 2rem;
+        label {
+            width: 2rem;
+            font-size: 0.875rem;
+            font-weight: 400;
+        }
+    }
+    .delete {
+        color: colors.$secondary;
+        display: flex;
+        width: 7rem;
+        text-align: center;
+        align-items: center;
+        cursor: pointer;
+    }
+}
