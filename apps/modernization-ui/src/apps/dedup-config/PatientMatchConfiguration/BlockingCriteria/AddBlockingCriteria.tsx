@@ -12,33 +12,39 @@ export const AddBlockingCriteria = ({ modalRef }: Props) => {
     const { dataElements } = useDataElementsContext();
     const { blockingCriteria, setBlockingCriteria, availableMethods } = usePatientMatchContext();
 
-    // Initialize state to track selected fields
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
-    // Pre-select checkboxes for already selected blockingCriteria
     useEffect(() => {
         const selected = blockingCriteria.map((criteria) => criteria.field.name);
-        setSelectedFields(selected); // Pre-check the ones that are already selected
+        setSelectedFields(selected);
     }, [blockingCriteria]);
 
-    // Handle checkbox change
     const handleCheckboxChange = (fieldName: string, checked: boolean) => {
         setSelectedFields((prev) => (checked ? [...prev, fieldName] : prev.filter((name) => name !== fieldName)));
     };
 
-    // Add selected dataElements as blocking criteria
     const addBlockingCriteria = () => {
+        if (!dataElements) {
+            return;
+        }
         const newCriteria = selectedFields
             .filter((fieldName) => !blockingCriteria.some((criteria) => criteria.field.name === fieldName))
-            .map((fieldName) => ({
-                field: dataElements.find((element) => element.name === fieldName)!,
-                method: availableMethods[0] // Default to 'Equals' method object
-            }));
+            .map((fieldName) => {
+                const field = dataElements.find((element) => element.name === fieldName);
+                if (!field) {
+                    return null;
+                }
+                return {
+                    field: field,
+                    method: availableMethods[0]
+                };
+            })
+            .filter((criteria) => criteria !== null);
 
-        // Update the context with new criteria
-        setBlockingCriteria([...blockingCriteria, ...newCriteria]);
+        if (newCriteria.length > 0) {
+            setBlockingCriteria([...blockingCriteria, ...newCriteria]);
+        }
 
-        // Close the modal
         modalRef.current?.toggleModal();
     };
 
