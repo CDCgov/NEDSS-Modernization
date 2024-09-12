@@ -18,3 +18,11 @@ export type MatchingCriteria = {
     field: DataElement;
     method: Method;
 };
+
+export type PassConfiguration = {
+    name: string;
+    description: string;
+    active: boolean;
+    matchingCriteria?: MatchingCriteria[];
+    blockingCriteria?: BlockingCriteria[];
+};
