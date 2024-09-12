@@ -44,9 +44,9 @@ const columns = (
         )
     },
     {
-        id: 'name',
+        id: 'label',
         name: 'Name',
-        render: (dataElement) => dataElement.name
+        render: (dataElement) => dataElement.label
     },
     {
         id: 'm',
