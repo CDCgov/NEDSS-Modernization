@@ -20,7 +20,7 @@ foreach ($key in $keys) {
 }
 
 # Replace datasources in standalone.xml file
-$xmlFileName = "C:\nbs\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml"
+$xmlFileName = "C:\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml"
 
 # Create a XML document
 [xml]$xmlDoc = New-Object system.Xml.XmlDocument
@@ -80,7 +80,7 @@ $zip_folder = $zip_file_name.Trim(".zip")
 $user_guide_name = $(Get-ChildItem -Path $zip_folder\$zip_folder\*"User Guide.pdf" -Recurse).Name
 # Move zip file the final destination
 $zip_user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder\$user_guide_name"
-$user_guide_directory = "C:\nbs\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME"
+$user_guide_directory = "C:\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME"
 Write-Output "Moving and Renaming User Guide '$user_guide_name' to '$env:FINAL_NBS_USER_GUIDE_NAME'"
 Copy-Item -Path "$zip_user_guide_path" -Destination "$user_guide_directory" -Force
 # Cleanup
@@ -89,4 +89,4 @@ Remove-Item $zip_folder -Recurse -Force -Confirm:$false
 #### END OF Configure User Guide ####
 
 
-Start-Process "C:\\nbs\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
+Start-Process "C:\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
