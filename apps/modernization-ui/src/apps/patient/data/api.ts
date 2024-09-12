@@ -71,7 +71,7 @@ type Sex = {
 
 type Birth = EffectiveDated &
     HasLocation & {
-        dateOfBirth?: string;
+        bornOn?: string;
         sex?: string;
         multiple?: string;
         order?: number;

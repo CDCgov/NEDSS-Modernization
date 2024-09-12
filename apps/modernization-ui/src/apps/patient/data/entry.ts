@@ -72,7 +72,7 @@ type SexEntry = EffectiveDated & {
 
 type BirthEntry = EffectiveDated &
     LocationEntry & {
-        dateOfBirth?: string;
+        bornOn?: string;
         sex?: Selectable;
         multiple?: Selectable;
         order?: number;

@@ -6,3 +6,4 @@ export { asIdentification } from './asIdentification';
 export { asRace } from './asRace';
 export { asEthnicity } from './asEthnicity';
 export { asSex } from './asSex';
+export { asBirth } from './asBirth';

@@ -160,4 +160,22 @@ describe('when transforming entered extended patient data', () => {
             })
         );
     });
+
+    it('should transform birth', () => {
+        const entry: ExtendedNewPatientEntry = {
+            administrative: { asOf: '04/13/2017' },
+            birth: {
+                asOf: '04/13/2017',
+                bornOn: '06/17/2003'
+            }
+        };
+
+        const actual = transformer(entry);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                birth: expect.objectContaining({ bornOn: '06/17/2003' })
+            })
+        );
+    });
 });
