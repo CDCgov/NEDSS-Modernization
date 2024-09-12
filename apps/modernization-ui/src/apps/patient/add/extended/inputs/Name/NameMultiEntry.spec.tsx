@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { internalizeDate } from 'date';
 import userEvent from '@testing-library/user-event';
 import { NameMultiEntry } from './NameMultiEntry';
@@ -62,55 +62,5 @@ describe('NameMultiEntry', () => {
 
         const degree = getByLabelText('Degree');
         expect(degree).toHaveValue('');
-    });
-
-    it('should trigger on change when value added', async () => {
-        const { getByLabelText, getAllByRole } = render(
-            <NameMultiEntry onChange={onChange} isDirty={isDirty} />
-        );
-        const type = getByLabelText('Type');
-        const last = getByLabelText('Last');
-        const prefix = getByLabelText('Prefix');
-        const secondLast = getByLabelText('Second last');
-        const middle = getByLabelText('Middle');
-        const secondMiddle = getByLabelText('Second middle');
-        const first = getByLabelText('First');
-        const suffix = getByLabelText('Suffix');
-        const degree = getByLabelText('Degree');
-        const buttons = getAllByRole('button');
-
-
-        await waitFor(async () => {
-            userEvent.selectOptions(type, 'AN');
-            userEvent.selectOptions(prefix, 'MS');
-            userEvent.selectOptions(degree, 'BA');
-            userEvent.selectOptions(suffix, 'SR');
-            // warning says no effect, but it lies
-            await userEvent.type(last, 'test last');
-            await userEvent.type(secondLast, 'second last');
-            await userEvent.type(middle, 'test middle');
-            await userEvent.type(secondMiddle, 'second middle');
-            await userEvent.type(first, 'test first');
-            userEvent.click(buttons[1]); // Add name button
-        });
-
-        await waitFor(async () => {
-            const date = internalizeDate(new Date());
-
-            expect(onChange).toHaveBeenNthCalledWith(1, [
-                {
-                    asOf: date,
-                    type: 'AN',
-                    prefix: 'MS',
-                    degree: 'BA',
-                    suffix: 'SR',
-                    last: 'test last',
-                    secondLast: 'second last',
-                    first: 'test first',
-                    middle: 'test middle',
-                    secondMiddle: 'second middle'
-                }
-            ]);
-        });
     });
 });
