@@ -1,11 +1,4 @@
-export type DataElement = {
-    name: string;
-    label: string;
-    active: boolean;
-    m: number;
-    u: number;
-    threshold: number;
-};
+import { DataElement } from '../types';
 
 export const dataElements: DataElement[] = [
     { name: 'lastName', label: 'Last name', active: true, m: 0.5, u: 0.5, threshold: 0.5 },
