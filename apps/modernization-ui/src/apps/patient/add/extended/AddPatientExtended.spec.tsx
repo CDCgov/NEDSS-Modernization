@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { getByRole, render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { MemoryRouter } from 'react-router-dom';
 import { CodedValue } from 'coded';
@@ -59,7 +59,7 @@ jest.mock('@apollo/client', () => ({
             evict: jest.fn()
         },
         mutate: jest.fn().mockResolvedValue({ data: { addPatient: { id: '123' } } }),
-        query: jest.fn().mockResolvedValue({ data: { patient: { id: '123', name: 'John Doe' } } }),
+        query: jest.fn().mockResolvedValue({ data: { patient: { id: '123', name: 'John Doe' } } })
     })
 }));
 
@@ -78,7 +78,7 @@ describe('AddPatientExtended', () => {
     });
 
     it('should have cancel and save buttons', () => {
-        render(
+        const { getAllByRole } = render(
             <MockedProvider mocks={[]} addTypename={false}>
                 <MemoryRouter>
                     <AddPatientExtended />
@@ -86,7 +86,7 @@ describe('AddPatientExtended', () => {
             </MockedProvider>
         );
 
-        const buttons = screen.getAllByRole('button');
+        const buttons = getAllByRole('button');
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Save');
     });
