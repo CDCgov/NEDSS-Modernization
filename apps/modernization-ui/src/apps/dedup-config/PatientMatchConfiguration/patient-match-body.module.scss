@@ -3,8 +3,10 @@
 .criteria {
     background-color: colors.$base-white;
     margin-bottom: 1rem;
+    margin-left: 1rem;
     border: 1px solid colors.$base-lighter;
     border-radius: 0.3125rem;
+    margin-right: 1rem;
 
     &.disabled {
         background-color: colors.$disabled-lighter;
@@ -12,7 +14,8 @@
         border-color: colors.$base-light;
         .criteriaHeadingContainer {
             border-color: colors.$base-light;
-            h4, p {
+            h4,
+            p {
                 color: colors.$disabled-darkest;
             }
         }
@@ -22,7 +25,7 @@
                 border-color: colors.$base-light;
             }
             button {
-                color: colors.$disabled-darkest !important
+                color: colors.$disabled-darkest !important;
             }
             .bounds {
                 display: flex;
@@ -66,7 +69,7 @@
             padding-left: 0;
             text-decoration: none;
             padding: 1rem 0;
-            &:disabled  {
+            &:disabled {
                 background-color: unset !important;
                 color: colors.$disabled;
                 border: none;
@@ -85,7 +88,7 @@
             background-color: colors.$base-light;
             border-radius: 0.5rem;
             border: 1px solid colors.$base-dark;
-            margin:  0.5rem 0 1.25rem 0;
+            margin: 0.5rem 0 1.25rem 0;
         }
     }
 }

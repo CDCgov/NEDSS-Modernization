@@ -61,7 +61,26 @@ const PatientMatchConfigurationPage = () => {
                 </Button>
             </div>
             <div className={styles.configurationDetails}>
-                {showConfiguration ? <PatientMatchBody /> : <NoPassConfigurations />}
+                {showConfiguration ? (
+                    <>
+                        <PatientMatchBody />
+                        <div className={styles.footerControls}>
+                            <div>
+                                <Button type={'button'} secondary>
+                                    Delete pass configuration
+                                </Button>
+                            </div>
+                            <div>
+                                <Button type={'button'} outline>
+                                    Cancel
+                                </Button>
+                                <Button type={'button'}>Save pass configuration</Button>
+                            </div>
+                        </div>{' '}
+                    </>
+                ) : (
+                    <NoPassConfigurations />
+                )}
             </div>
         </div>
     );
