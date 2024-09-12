@@ -40,6 +40,8 @@ export const NameEntryFields = () => {
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
+                        htmlFor={name}
+                        id={name}
                         onChange={onChange}
                         name={name}
                         options={coded.types}
@@ -56,6 +58,8 @@ export const NameEntryFields = () => {
                         label="Prefix"
                         orientation="horizontal"
                         defaultValue={value}
+                        htmlFor={name}
+                        id={name}
                         onChange={onChange}
                         onBlur={onBlur}
                         name={name}
@@ -168,6 +172,8 @@ export const NameEntryFields = () => {
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
+                        htmlFor={name}
+                        id={name}
                         name={name}
                         options={coded.suffixes}
                     />
@@ -182,6 +188,8 @@ export const NameEntryFields = () => {
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
+                        htmlFor={name}
+                        id={name}
                         name={name}
                         options={coded.degrees}
                     />
