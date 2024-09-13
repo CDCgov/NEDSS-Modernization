@@ -27,7 +27,7 @@ export const ResultedTestDisplay = ({ test }: Props) => {
 
         return (
             <div className={styles.testResult}>
-                Reference range: <span>{display}</span>
+                <b>Reference range:</b> <span>{display}</span>
             </div>
         );
     };
