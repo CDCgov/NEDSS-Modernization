@@ -1,7 +1,8 @@
-import { render } from '@testing-library/react';
+import { getByRole, render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { MemoryRouter } from 'react-router-dom';
 import { CodedValue } from 'coded';
+import { MockedProvider } from '@apollo/react-testing';
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
     uses: [{ name: 'Home', value: 'HM' }]
@@ -47,12 +48,29 @@ const mockDetailedOptions: CodedValue[] = [
 jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
     useDetailedRaceCodedValues: () => mockDetailedOptions
 }));
+
+jest.mock('@apollo/client', () => ({
+    ...jest.requireActual('@apollo/client'),
+    useApolloClient: () => ({
+        readQuery: jest.fn(),
+        writeQuery: jest.fn(),
+        cache: {
+            modify: jest.fn(),
+            evict: jest.fn()
+        },
+        mutate: jest.fn().mockResolvedValue({ data: { addPatient: { id: '123' } } }),
+        query: jest.fn().mockResolvedValue({ data: { patient: { id: '123', name: 'John Doe' } } })
+    })
+}));
+
 describe('AddPatientExtended', () => {
     it('should have a heading', () => {
         const { getAllByRole } = render(
-            <MemoryRouter>
-                <AddPatientExtended />
-            </MemoryRouter>
+            <MockedProvider mocks={[]} addTypename={false}>
+                <MemoryRouter>
+                    <AddPatientExtended />
+                </MemoryRouter>
+            </MockedProvider>
         );
 
         const headings = getAllByRole('heading');
@@ -61,9 +79,11 @@ describe('AddPatientExtended', () => {
 
     it('should have cancel and save buttons', () => {
         const { getAllByRole } = render(
-            <MemoryRouter>
-                <AddPatientExtended />
-            </MemoryRouter>
+            <MockedProvider mocks={[]} addTypename={false}>
+                <MemoryRouter>
+                    <AddPatientExtended />
+                </MemoryRouter>
+            </MockedProvider>
         );
 
         const buttons = getAllByRole('button');
