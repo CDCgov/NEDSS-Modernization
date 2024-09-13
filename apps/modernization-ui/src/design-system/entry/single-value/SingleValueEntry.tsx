@@ -55,9 +55,6 @@ export const SingleValueEntry = <V extends FieldValues>({
         <section id={id} className={styles.input}>
             <header>
                 <Heading level={2}>{title}</Heading>
-                <span>
-                    <span className="required"></span>All required fields for {title.toLowerCase()}
-                </span>
             </header>
             {errors && errors.length > 0 && (
                 <section>
