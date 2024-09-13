@@ -14,7 +14,7 @@ export const AdministrativeEntryFields = () => {
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="As of:"
+                        label="Information as of date"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
@@ -37,7 +37,7 @@ export const AdministrativeEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <>
                         <Input
-                            label="Additional comments:"
+                            label="General comments"
                             type="text"
                             orientation="horizontal"
                             onBlur={onBlur}
