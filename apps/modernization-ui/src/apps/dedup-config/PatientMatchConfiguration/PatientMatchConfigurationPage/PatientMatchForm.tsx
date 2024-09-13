@@ -19,6 +19,10 @@ const PatientMatchForm = ({ passConfiguration }: Props) => {
         }
     });
 
+    const saveConfiguration = () => {
+        localStorage.setItem('passConfigurations', JSON.stringify(patientMatchForm.getValues()));
+    };
+
     return (
         <div className={styles.form}>
             <FormProvider {...patientMatchForm}>
@@ -48,7 +52,10 @@ const PatientMatchForm = ({ passConfiguration }: Props) => {
                         <Button type="reset" outline>
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={!patientMatchForm.formState.isValid}>
+                        <Button
+                            type="submit"
+                            disabled={!patientMatchForm.formState.isValid}
+                            onClick={saveConfiguration}>
                             Save pass configuration
                         </Button>
                     </div>

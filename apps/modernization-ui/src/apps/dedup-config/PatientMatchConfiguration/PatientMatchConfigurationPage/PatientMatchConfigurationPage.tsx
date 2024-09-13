@@ -40,7 +40,7 @@ const PatientMatchConfigurationPage = () => {
         }
     };
 
-    const showConfiguration = isEditingConfiguration && configurations.length;
+    const showConfiguration = isEditingConfiguration && configurations.length && selectedConfigurationIndex;
 
     useEffect(() => {
         const storedConfiguration = localStorage.getItem('passConfigurations');
@@ -77,7 +77,11 @@ const PatientMatchConfigurationPage = () => {
                 </Button>
             </div>
             <div className={styles.configurationDetails}>
-                {showConfiguration ? <PatientMatchForm /> : <NoPassConfigurations />}
+                {showConfiguration ? (
+                    <PatientMatchForm passConfiguration={configurations[selectedConfigurationIndex]} />
+                ) : (
+                    <NoPassConfigurations />
+                )}
             </div>
         </div>
     );
