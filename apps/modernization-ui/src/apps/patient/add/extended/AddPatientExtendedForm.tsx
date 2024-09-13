@@ -10,15 +10,15 @@ import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
-import { AdministrativeEntry } from './inputs/administrative/AdministrativeEntry';
-import { AdministrativeEntryFieldsType } from './inputs/administrative/administrative';
+import { AdministrativeSingleEntry } from './inputs/administrative/AdministrativeSingleEntry';
+import { AdministrativeEntry } from 'apps/patient/profile/administrative/AdministrativeEntry';
 
 type ExtendedPatientCreationForm = {
     address: AddressFields[];
     phone: PhoneEmailFields[];
     race: RaceEntry[];
     name: NameEntry[];
-    administrative: AdministrativeEntryFieldsType;
+    administrative: AdministrativeEntry;
 };
 
 type DirtyState = {
@@ -45,7 +45,7 @@ export const AddPatientExtendedForm = () => {
             <div className={styles.addPatientForm}>
                 <FormProvider {...form}>
                     <div className={styles.formContent}>
-                        <AdministrativeEntry
+                        <AdministrativeSingleEntry
                             onChange={(data) => {
                                 form.setValue('administrative', data);
                             }}

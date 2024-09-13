@@ -1,23 +1,23 @@
 import { internalizeDate } from 'date';
 import { SingleValueEntry } from 'design-system/entry/single-value/SingleValueEntry';
-import { AdministrativeEntryFieldsType } from './administrative';
-import { AdministrativeEntryFields } from './AdministrativeEntryFields';
+import { AdministrativeEntryFields } from 'apps/patient/profile/administrative/AdministrativeEntryFields';
+import { AdministrativeEntry } from 'apps/patient/profile/administrative/AdministrativeEntry';
 
-const defaultValue: AdministrativeEntryFieldsType = {
+const defaultValue: AdministrativeEntry = {
     asOf: internalizeDate(new Date()),
     comment: ''
 };
 
 type Props = {
-    onChange: (data: AdministrativeEntryFieldsType) => void;
+    onChange: (data: AdministrativeEntry) => void;
     isDirty: (isDirty: boolean) => void;
 };
 
-export const AdministrativeEntry = ({ onChange, isDirty }: Props) => {
+export const AdministrativeSingleEntry = ({ onChange, isDirty }: Props) => {
     const renderForm = () => <AdministrativeEntryFields />;
 
     return (
-        <SingleValueEntry<AdministrativeEntryFieldsType>
+        <SingleValueEntry<AdministrativeEntry>
             id="administrative"
             title="Administrative"
             defaultValues={defaultValue}
