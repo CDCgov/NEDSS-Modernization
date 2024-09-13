@@ -10,6 +10,7 @@ import { BlockingCriteriaRow } from './BlockingCriteriaRow';
 export const BlockingCriteria = () => {
     const modalRef = useRef<ModalRef>(null);
     const { blockingCriteria } = usePatientMatchContext();
+
     return (
         <div className={styles.criteria}>
             <div className={styles.criteriaHeadingContainer}>
