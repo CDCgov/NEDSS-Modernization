@@ -8,27 +8,42 @@ import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
+import { AdministrativeEntry } from './inputs/administrative/AdministrativeEntry';
+import { AdministrativeEntryFieldsType } from './inputs/administrative/administrative';
 
 type ExtendedPatientCreationForm = {
     address: AddressFields[];
     phone: PhoneEmailFields[];
     race: RaceEntry[];
+    administrative: AdministrativeEntryFieldsType;
 };
 
 type DirtyState = {
     address: boolean;
     phone: boolean;
     race: boolean;
+    administrative: boolean;
 };
 export const AddPatientExtendedForm = () => {
     const form = useForm<ExtendedPatientCreationForm>({ defaultValues: { phone: [] } });
-    const [dirtyState, setDirtyState] = useState<DirtyState>({ address: false, phone: false, race: false });
+    const [dirtyState, setDirtyState] = useState<DirtyState>({
+        address: false,
+        phone: false,
+        race: false,
+        administrative: false
+    });
 
     return (
         <>
             <div className={styles.addPatientForm}>
                 <FormProvider {...form}>
                     <div className={styles.formContent}>
+                        <AdministrativeEntry
+                            onChange={(data) => {
+                                form.setValue('administrative', data);
+                            }}
+                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, administrative: isDirty })}
+                        />
                         <AddressMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, address: isDirty })}
                             onChange={(addressData) => {
