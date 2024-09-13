@@ -1,0 +1,11 @@
+export { asAdministrative } from './asAdministrative';
+export { asName } from './asName';
+export { asAddress } from './asAddress';
+export { asPhoneEmail } from './asPhoneEmail';
+export { asIdentification } from './asIdentification';
+export { asRace } from './asRace';
+export { asEthnicity } from './asEthnicity';
+export { asSex } from './asSex';
+export { asBirth } from './asBirth';
+export { asMortality } from './asMortality';
+export { asGeneral } from './asGeneral';

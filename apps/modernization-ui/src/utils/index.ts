@@ -10,5 +10,12 @@ export * from './mapIf';
 type Predicate<T> = (item: T) => boolean;
 type Mapping<I, O> = (input: I) => O;
 type Maybe<V> = V | null | undefined;
+type EffectiveDated = {
+    asOf: string;
+};
 
-export type { Predicate, Mapping, Maybe };
+type HasComments = {
+    comment?: Maybe<string>;
+};
+
+export type { Predicate, Mapping, Maybe, EffectiveDated, HasComments };

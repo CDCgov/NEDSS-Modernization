@@ -1,14 +1,11 @@
 import { Mapping, Maybe } from 'utils';
 
-type WithName = { name: string };
-type WithLabel = { label: string };
-
-type WithDisplay = WithName & WithLabel;
-
 type Selectable = {
     value: string;
+    name: string;
+    label?: string;
     order?: number;
-} & WithDisplay;
+};
 
 export type { Selectable };
 
