@@ -1,13 +1,13 @@
+import React from 'react';
 import { SingleSelect } from 'design-system/select';
 import { Icon } from '@trussworks/react-uswds';
-import { availableMethods } from 'apps/dedup-config/context/PatientMatchContext';
-import { Controller, useFormContext } from 'react-hook-form';
-import styles from './blocking-criteria-row.module.scss';
-import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchContext';
-import { BlockingCriteria } from 'apps/dedup-config/types';
+import { useFormContext, Controller } from 'react-hook-form';
+import { MatchingCriteria } from '../../types';
+import { usePatientMatchContext } from '../../context/PatientMatchContext';
+import styles from './matching-criteria-row.module.scss';
 
-export const BlockingCriteriaRow = ({ criteria }: { criteria: BlockingCriteria }) => {
-    const { removeBlockingCriteria } = usePatientMatchContext();
+export const MatchingCriteriaRow = ({ criteria }: { criteria: MatchingCriteria }) => {
+    const { availableMethods, removeMatchingCriteria } = usePatientMatchContext();
     const form = useFormContext<any>();
     const options = availableMethods.map((method, index) => ({
         name: method.name,
@@ -22,8 +22,8 @@ export const BlockingCriteriaRow = ({ criteria }: { criteria: BlockingCriteria }
             <Controller
                 control={form.control}
                 defaultValue={criteria.method.value}
-                name={`blockingCriteria.${criteria.field.name}.method`}
-                render={({ field: { onChange, value, name } }) => (
+                name={`matchingCriteria.${criteria.field.name}.value`}
+                render={({ field: { name, value, onChange } }) => (
                     <SingleSelect
                         id={`method-select-${criteria.field.name}`}
                         name={name}
@@ -31,14 +31,13 @@ export const BlockingCriteriaRow = ({ criteria }: { criteria: BlockingCriteria }
                         options={options}
                         value={options.find((option) => option.value === value) || value}
                         onChange={onChange}
-                        orientation="horizontal"
-                        size={1}
                         sizing="compact"
+                        orientation="horizontal"
                     />
                 )}
             />
-            <div className={styles.gap}></div>
-            <h5 className={styles.delete} onClick={() => removeBlockingCriteria(criteria.field.name)}>
+            <p className={styles.logOdds}>Log odds &nbsp; {criteria.field.logOdds}</p>
+            <h5 className={styles.delete} onClick={() => removeMatchingCriteria(criteria.field.name)}>
                 <Icon.Delete size={3} /> Remove
             </h5>
         </div>

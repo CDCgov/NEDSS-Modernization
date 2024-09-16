@@ -1,5 +1,5 @@
 import { ModalToggleButton, Icon } from '@trussworks/react-uswds';
-import styles from '../patient-match-body.module.scss';
+import styles from '../PatientMatchConfigurationPage/patient-match-form.module.scss';
 import { ModalRef } from '@trussworks/react-uswds';
 import { useRef } from 'react';
 import { AddBlockingCriteria } from './AddBlockingCriteria';
@@ -19,12 +19,7 @@ export const BlockingCriteria = () => {
             </div>
             <div className={styles.criteriaContentContainer}>
                 {blockingCriteria.length > 0 ? (
-                    blockingCriteria.map((criteria, index) => (
-                        // <div key={index}>
-                        //     <div>{criteria.field.name}</div>
-                        // </div>
-                        <BlockingCriteriaRow key={index} criteria={criteria} />
-                    ))
+                    blockingCriteria.map((criteria, index) => <BlockingCriteriaRow key={index} criteria={criteria} />)
                 ) : (
                     <p className={styles.criteriaRequest}>Please add blocking criteria to get started</p>
                 )}
@@ -37,7 +32,7 @@ export const BlockingCriteria = () => {
                 modalRef={modalRef}
                 size="medium"
                 modalHeading={'Add static element'}
-                modalBody={<AddBlockingCriteria modalRef={modalRef} />}
+                modalBody={<AddBlockingCriteria blockingModalRef={modalRef} />}
             />
         </div>
     );

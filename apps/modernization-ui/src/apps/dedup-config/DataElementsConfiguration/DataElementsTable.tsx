@@ -62,7 +62,11 @@ const columns = (
                         type="number"
                         defaultValue={value}
                         value={value}
-                        onChange={onChange}
+                        onChange={(e: any) => {
+                            onChange(e);
+                            // Recalculate oddsRatio and logOdds whenever m changes
+                            handleRowCheckboxChange(index, checkedState[index]);
+                        }}
                         onBlur={onBlur}
                         name={name}
                         disabled={!checkedState[index]}
@@ -86,7 +90,11 @@ const columns = (
                         type="number"
                         defaultValue={value}
                         value={value}
-                        onChange={onChange}
+                        onChange={(e: any) => {
+                            onChange(e);
+                            // Recalculate oddsRatio and logOdds whenever u changes
+                            handleRowCheckboxChange(index, checkedState[index]);
+                        }}
                         onBlur={onBlur}
                         name={name}
                         disabled={!checkedState[index]}
@@ -100,22 +108,24 @@ const columns = (
     {
         id: 'oddsRatio',
         name: 'Odds ratio',
-        render: (dataElement, index) => {
-            const m = watchedDataElements[index]?.m;
-            const u = watchedDataElements[index]?.u;
-            const oddsRatio = m && u && u !== 0 ? (m / u).toFixed(2) : 'No Data';
-            return oddsRatio;
-        }
+        render: (dataElement, index) => (
+            <Controller
+                control={control}
+                name={`dataElements.${index}.oddsRatio`}
+                render={({ field: { value } }) => <span>{value || 'No Data'}</span>}
+            />
+        )
     },
     {
         id: 'logOdds',
         name: 'Log odds',
-        render: (dataElement, index) => {
-            const m = watchedDataElements[index]?.m;
-            const u = watchedDataElements[index]?.u;
-            const logOdds = m && u && u !== 0 && m !== 0 ? Math.log(m / u).toFixed(2) : 'No Data';
-            return logOdds;
-        }
+        render: (dataElement, index) => (
+            <Controller
+                control={control}
+                name={`dataElements.${index}.logOdds`}
+                render={({ field: { value } }) => <span>{value || 'No Data'}</span>}
+            />
+        )
     },
     {
         id: 'threshold',
@@ -163,7 +173,16 @@ const DataElementsTable = () => {
         updatedCheckedState[index] = checked;
         setCheckedState(updatedCheckedState);
 
+        const m = watchedDataElements[index]?.m;
+        const u = watchedDataElements[index]?.u;
+
+        // Calculate and set oddsRatio and logOdds
+        const oddsRatio = m && u && u !== 0 ? m / u : 0;
+        const logOdds = m && u && u !== 0 && m !== 0 ? Math.log(m / u) : 0;
+
         setValue(`dataElements.${index}.active`, checked);
+        setValue(`dataElements.${index}.oddsRatio`, oddsRatio);
+        setValue(`dataElements.${index}.logOdds`, logOdds);
     };
 
     const handleHeaderCheckboxChange = (checked: boolean) => {
@@ -172,6 +191,14 @@ const DataElementsTable = () => {
 
         dataElements.forEach((_, index) => {
             setValue(`dataElements.${index}.active`, checked);
+
+            const m = watchedDataElements[index]?.m;
+            const u = watchedDataElements[index]?.u;
+            const oddsRatio = m && u && u !== 0 ? m / u : 0;
+            const logOdds = m && u && u !== 0 && m !== 0 ? Math.log(m / u) : 0;
+
+            setValue(`dataElements.${index}.oddsRatio`, oddsRatio);
+            setValue(`dataElements.${index}.logOdds`, logOdds);
         });
     };
 
