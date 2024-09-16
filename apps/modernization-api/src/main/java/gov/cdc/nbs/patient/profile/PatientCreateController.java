@@ -105,15 +105,15 @@ public class PatientCreateController {
         addressService.add(context, newPatientAddressInput);
       });
     }
-    if (newPatient.phones() != null) {
-      newPatient.phones().forEach(phone -> {
+    if (newPatient.phoneEmails() != null) {
+      newPatient.phoneEmails().forEach(phone -> {
         NewPatientPhoneInput newPatientPhoneInput = new NewPatientPhoneInput(
             created.id(),
             phone.asOf(),
             phone.type(),
             phone.use(),
             phone.countryCode(),
-            phone.number(),
+            phone.phoneNumber(),
             phone.extension(),
             phone.email(),
             phone.url(),
@@ -126,7 +126,7 @@ public class PatientCreateController {
         RaceInput newRaceInput = new RaceInput();
         newRaceInput.setPatient(created.id());
         newRaceInput.setAsOf(race.asOf());
-        newRaceInput.setCategory(race.category());
+        newRaceInput.setCategory(race.race());
         newRaceInput.setDetailed(race.detailed());
         raceService.add(context, newRaceInput);
       });

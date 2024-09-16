@@ -207,7 +207,7 @@ public class PatientCreateSteps {
   public void the_patient_created_has_the_entered_emails() {
     TeleEntityLocatorParticipation actualElp = patient.active().phoneNumbers().getFirst();
     TeleLocator actualLocator = patient.active().phoneNumbers().getFirst().getLocator();
-    Phone expected = this.input.active().phones().getFirst();
+    Phone expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
         .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
@@ -220,12 +220,12 @@ public class PatientCreateSteps {
   public void the_patient_created_has_the_entered_phones() {
     TeleEntityLocatorParticipation actualElp = patient.active().phoneNumbers().getFirst();
     TeleLocator actualLocator = patient.active().phoneNumbers().getFirst().getLocator();
-    Phone expected = this.input.active().phones().getFirst();
+    Phone expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
         .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
-        .returns(expected.number(), TeleLocator::getPhoneNbrTxt)
+        .returns(expected.phoneNumber(), TeleLocator::getPhoneNbrTxt)
         .returns(expected.countryCode(), TeleLocator::getCntryCd)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.extension(), TeleLocator::getExtensionTxt);
@@ -238,7 +238,7 @@ public class PatientCreateSteps {
 
     assertThat(actual)
         .returns(expected.asOf(), PersonRace::getAsOfDate)
-        .returns(expected.category(), PersonRace::getRaceCategoryCd);
+        .returns(expected.race(), PersonRace::getRaceCategoryCd);
   }
 
   @Then("the patient created has the entered identifications")
