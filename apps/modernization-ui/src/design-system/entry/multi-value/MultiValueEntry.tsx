@@ -111,12 +111,14 @@ export const MultiValueEntry = <V extends FieldValues>({
                 </section>
             )}
             <div>
-                <DataTable<V>
-                    className={styles.dataTable}
-                    id={`${title}-data-table`}
-                    columns={[...columns, iconColumn]}
-                    data={state.data}
-                />
+                {state.data.length > 0 && (
+                    <DataTable<V>
+                        className={styles.dataTable}
+                        id={`${title}-data-table`}
+                        columns={[...columns, iconColumn]}
+                        data={state.data}
+                    />
+                )}
             </div>
             <FormProvider {...form}>
                 {state.status === 'viewing' ? (

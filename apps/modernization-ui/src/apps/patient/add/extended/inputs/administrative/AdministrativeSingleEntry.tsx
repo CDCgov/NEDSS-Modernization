@@ -18,7 +18,7 @@ export const AdministrativeSingleEntry = ({ onChange, isDirty }: Props) => {
 
     return (
         <SingleValueEntry<AdministrativeEntry>
-            id="administrative"
+            id="section-Administrative"
             title="Administrative"
             defaultValues={defaultValue}
             onChange={onChange}
