@@ -1,11 +1,12 @@
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { AdministrativeEntry } from './AdministrativeEntry';
 import { Input } from 'components/FormInputs/Input';
 
 export const AdministrativeEntryFields = () => {
-    const { control } = useFormContext<AdministrativeEntry>();
+    const form = useForm<AdministrativeEntry>({ mode: 'onBlur' });
+    const { control } = form;
     return (
         <section>
             <Controller
@@ -31,7 +32,6 @@ export const AdministrativeEntryFields = () => {
                 control={control}
                 name="comment"
                 rules={{
-                    required: { value: true, message: 'Comments are required.' },
                     ...maxLengthRule(2000)
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
