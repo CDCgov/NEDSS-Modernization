@@ -185,6 +185,14 @@ public class PatientCreateSteps {
     Name expected = this.input.active().names().getFirst();
 
     assertThat(actual)
+        .returns(expected.asOf(), PersonName::getAsOfDate)
+        .returns(expected.degree(), PersonName::getNmDegree)
+        .returns(expected.secondMiddle(), PersonName::getMiddleNm2)
+        .returns(expected.secondLast(), PersonName::getLastNm2)
+        .returns(expected.prefix(), PersonName::getNmPrefix)
+        .returns(expected.middle(), PersonName::getMiddleNm)
+        .returns(expected.first(), PersonName::getFirstNm)
+        .returns(expected.first(), PersonName::getFirstNm)
         .returns(expected.first(), PersonName::getFirstNm)
         .returns(expected.last(), PersonName::getLastNm);
   }
