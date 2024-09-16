@@ -9,7 +9,8 @@ public record NewPatient(
     List<Name> names,
     List<Address> addresses,
     List<Phone> phones,
-    List<Race> races) {
+    List<Race> races,
+    List<Identification> identifications) {
 }
 
 
@@ -60,4 +61,12 @@ record Race(
     Instant asOf,
     String category,
     List<String> detailed) {
+}
+
+
+record Identification(
+    Instant asOf,
+    String type,
+    String authority,
+    String value) {
 }

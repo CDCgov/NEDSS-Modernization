@@ -7,28 +7,26 @@ import gov.cdc.nbs.patient.profile.PatientProfileService;
 import org.springframework.stereotype.Component;
 
 @Component
-class PatientIdentificationChangeService {
+public class PatientIdentificationChangeService {
   private final PatientProfileService service;
 
   PatientIdentificationChangeService(final PatientProfileService service) {
     this.service = service;
   }
 
-  PatientIdentificationAdded add(final RequestContext context, final NewPatientIdentificationInput input) {
+  public PatientIdentificationAdded add(final RequestContext context, final NewPatientIdentificationInput input) {
     return service.with(
-            input.patient(),
-            found -> found.add(
-                new PatientCommand.AddIdentification(
-                    input.patient(),
-                    input.asOf(),
-                    input.value(),
-                    input.authority(),
-                    input.type(),
-                    context.requestedBy(),
-                    context.requestedAt()
-                )
-            )
-        ).map(added -> new PatientIdentificationAdded(added.getId().getEntityUid(), added.getId().getEntityIdSeq()))
+        input.patient(),
+        found -> found.add(
+            new PatientCommand.AddIdentification(
+                input.patient(),
+                input.asOf(),
+                input.value(),
+                input.authority(),
+                input.type(),
+                context.requestedBy(),
+                context.requestedAt())))
+        .map(added -> new PatientIdentificationAdded(added.getId().getEntityUid(), added.getId().getEntityIdSeq()))
         .orElseThrow(() -> new PatientNotFoundException(input.patient()));
   }
 
@@ -44,10 +42,7 @@ class PatientIdentificationChangeService {
                 input.authority(),
                 input.type(),
                 context.requestedBy(),
-                context.requestedAt()
-            )
-        )
-    );
+                context.requestedAt())));
   }
 
   void delete(final RequestContext context, final DeletePatientIdentificationInput input) {
@@ -58,9 +53,6 @@ class PatientIdentificationChangeService {
                 input.patient(),
                 input.sequence(),
                 context.requestedBy(),
-                context.requestedAt()
-            )
-        )
-    );
+                context.requestedAt())));
   }
 }

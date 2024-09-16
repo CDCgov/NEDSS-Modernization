@@ -19,6 +19,8 @@ import java.time.Instant;
 import lombok.extern.slf4j.Slf4j;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
+import gov.cdc.nbs.patient.profile.identification.change.NewPatientIdentificationInput;
+import gov.cdc.nbs.patient.profile.identification.change.PatientIdentificationChangeService;
 import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
 import gov.cdc.nbs.patient.profile.phone.change.PatientPhoneChangeService;
 import gov.cdc.nbs.patient.profile.race.change.PatientRaceChangeService;
@@ -37,6 +39,7 @@ public class PatientCreateController {
       final PatientAddressChangeService addressService,
       final PatientPhoneChangeService phoneService,
       final PatientRaceChangeService raceService,
+      final PatientIdentificationChangeService identificationService,
       final PatientIndexer indexer) {
     this.clock = clock;
     this.creator = creator;
@@ -44,6 +47,7 @@ public class PatientCreateController {
     this.addressService = addressService;
     this.phoneService = phoneService;
     this.raceService = raceService;
+    this.identificationService = identificationService;
     this.indexer = indexer;
   }
 
@@ -54,6 +58,7 @@ public class PatientCreateController {
   private final PatientAddressChangeService addressService;
   private final PatientPhoneChangeService phoneService;
   private final PatientRaceChangeService raceService;
+  private final PatientIdentificationChangeService identificationService;
 
   @PostMapping()
   @ResponseStatus(HttpStatus.CREATED)
@@ -124,6 +129,17 @@ public class PatientCreateController {
         newRaceInput.setCategory(race.category());
         newRaceInput.setDetailed(race.detailed());
         raceService.add(context, newRaceInput);
+      });
+    }
+    if (newPatient.identifications() != null) {
+      newPatient.identifications().forEach(identification -> {
+        NewPatientIdentificationInput newPatientIdentificationInput = new NewPatientIdentificationInput(
+            created.id(),
+            identification.asOf(),
+            identification.type(),
+            identification.authority(),
+            identification.value());
+        identificationService.add(context, newPatientIdentificationInput);
       });
     }
 

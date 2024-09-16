@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.profile;
 
+import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PersonRace;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
@@ -45,6 +46,7 @@ public class PatientCreateSteps {
   @Autowired
   Available<PatientIdentifier> patients;
 
+
   private AccessDeniedException accessDeniedException;
   private final Faker faker = new Faker(Locale.of("en-us"));
 
@@ -62,7 +64,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with comments")
   public void i_am_adding_a_new_patient() {
-    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null, null, null);
+    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null, null, null, null);
     this.input.active(newPatient);
   }
 
@@ -78,7 +80,7 @@ public class PatientCreateSteps {
         faker.name().lastName(),
         faker.name().lastName(),
         "JR",
-        "BS")), null, null, null);
+        "BS")), null, null, null, null);
     this.input.active(newPatient);
   }
 
@@ -96,7 +98,7 @@ public class PatientCreateSteps {
         RandomUtil.getRandomString(),
         RandomUtil.getRandomString(10),
         RandomUtil.country(),
-        RandomUtil.getRandomString())), null, null);
+        RandomUtil.getRandomString())), null, null, null);
     this.input.active(newPatient);
 
   }
@@ -112,7 +114,7 @@ public class PatientCreateSteps {
         null,
         "email",
         "url",
-        "comment")), null);
+        "comment")), null, null);
     this.input.active(newPatient);
   }
 
@@ -127,7 +129,7 @@ public class PatientCreateSteps {
         "extension",
         null,
         "url",
-        "comment")), null);
+        "comment")), null, null);
     this.input.active(newPatient);
 
   }
@@ -137,7 +139,17 @@ public class PatientCreateSteps {
     NewPatient newPatient = new NewPatient(null, null, null, null, null, Arrays.asList(new Race(
         RandomUtil.getRandomDateInPast(),
         "category-value",
-        Arrays.asList("detail1", "detail2"))));
+        Arrays.asList("detail1", "detail2"))), null);
+    this.input.active(newPatient);
+  }
+
+  @Given("I am adding a new patient with identifications")
+  public void i_am_adding_a_new_patient_with_identifications() {
+    NewPatient newPatient = new NewPatient(null, null, null, null, null, null, Arrays.asList(new Identification(
+        RandomUtil.getRandomDateInPast(),
+        "DL",
+        "TX",
+        "value")));
     this.input.active(newPatient);
   }
 
@@ -227,6 +239,18 @@ public class PatientCreateSteps {
     assertThat(actual)
         .returns(expected.asOf(), PersonRace::getAsOfDate)
         .returns(expected.category(), PersonRace::getRaceCategoryCd);
+  }
+
+  @Then("the patient created has the entered identifications")
+  public void the_patient_created_has_the_entered_identifications() {
+    EntityId actual = patient.active().identifications().getFirst();
+    Identification expected = this.input.active().identifications().getFirst();
+
+    assertThat(actual)
+        .returns(expected.asOf(), EntityId::getAsOfDate)
+        .returns(expected.type(), EntityId::getTypeCd)
+        .returns(expected.authority(), EntityId::getAssigningAuthorityCd)
+        .returns(expected.value(), EntityId::getRootExtensionTxt);
   }
 }
 
