@@ -11,14 +11,15 @@ import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { internalizeDate } from 'date';
 
 type ExtendedPatientCreationForm = {
+    administrative: AdministrativeEntry;
     address: AddressFields[];
     phone: PhoneEmailFields[];
     race: RaceEntry[];
     name: NameEntry[];
-    asOf: string | null | undefined;
-    comments?: string | null;
 };
 
 type DirtyState = {
@@ -28,7 +29,15 @@ type DirtyState = {
     race: boolean;
 };
 export const AddPatientExtendedForm = () => {
-    const form = useForm<ExtendedPatientCreationForm>({ defaultValues: { phone: [] } });
+    const form = useForm<ExtendedPatientCreationForm>({
+        defaultValues: {
+            phone: [],
+            administrative: {
+                asOf: internalizeDate(new Date()),
+                comment: ''
+            }
+        }
+    });
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,
         phone: false,
@@ -41,12 +50,7 @@ export const AddPatientExtendedForm = () => {
             <div className={styles.addPatientForm}>
                 <FormProvider {...form}>
                     <div className={styles.formContent}>
-                        <Administrative
-                            onChange={(data) => {
-                                form.setValue('asOf', data.asOf);
-                                form.setValue('comments', data.comment);
-                            }}
-                        />
+                        <Administrative />
                         <NameMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, name: isDirty })}
                             onChange={(nameData) => {

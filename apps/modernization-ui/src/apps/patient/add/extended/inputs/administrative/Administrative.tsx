@@ -1,43 +1,66 @@
-import { internalizeDate } from 'date';
-import { AdministrativeEntryFields } from 'apps/patient/profile/administrative/AdministrativeEntryFields';
-import { AdministrativeEntry } from 'apps/patient/profile/administrative/AdministrativeEntry';
 import { Heading } from 'components/heading';
 import styles from './Administrative.module.scss';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule } from 'validation/entry';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 
-const defaultValue: AdministrativeEntry = {
-    asOf: internalizeDate(new Date()),
-    comment: ''
-};
-
-type Props = {
-    onChange: (data: AdministrativeEntry) => void;
-};
-
-export const Administrative = ({ onChange }: Props) => {
-    const form = useForm<AdministrativeEntry>({
-        mode: 'onBlur',
-        defaultValues: defaultValue
-    });
-
-    form.watch((data) => {
-        onChange({
-            asOf: data.asOf,
-            comment: data.comment
-        });
-    });
+export const Administrative = () => {
+    const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
         <section id="administrative" className={styles.input}>
             <header>
                 <Heading level={2}>Administrative</Heading>
             </header>
-            <FormProvider {...form}>
-                <div className={classNames(styles.form)}>
-                    <AdministrativeEntryFields />
-                </div>
-            </FormProvider>
+            <div className={classNames(styles.form)}>
+                <Controller
+                    control={control}
+                    name="administrative.asOf"
+                    rules={{ required: { value: true, message: 'As of date is required.' } }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <DatePickerInput
+                            label="Information as of date"
+                            orientation="horizontal"
+                            defaultValue={value}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            name={name}
+                            disableFutureDates
+                            errorMessage={error?.message}
+                            required
+                        />
+                    )}
+                />
+
+                <Controller
+                    control={control}
+                    name="administrative.comment"
+                    rules={{
+                        required: { value: true, message: 'Comments are required.' },
+                        ...maxLengthRule(2000)
+                    }}
+                    render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                        <>
+                            <Input
+                                label="General comments"
+                                type="text"
+                                orientation="horizontal"
+                                onBlur={onBlur}
+                                onChange={onChange}
+                                defaultValue={value}
+                                name={name}
+                                htmlFor={name}
+                                id={name}
+                                error={error?.message}
+                                multiline
+                            />
+                        </>
+                    )}
+                />
+            </div>
         </section>
     );
 };
