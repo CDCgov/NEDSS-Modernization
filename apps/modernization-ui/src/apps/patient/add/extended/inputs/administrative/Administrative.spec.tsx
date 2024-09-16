@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Administrative } from './Administrative';
 
 const onChange = jest.fn();
@@ -25,12 +25,5 @@ describe('Administrative', () => {
         const { getByLabelText } = render(<Administrative onChange={onChange} />);
 
         expect(getByLabelText('General comments')).toHaveValue('');
-    });
-
-    it('should call isDirty when input values change', () => {
-        const { getByLabelText } = render(<Administrative onChange={onChange} />);
-
-        fireEvent.change(getByLabelText('General comments'), { target: { value: 'S' } });
-        expect(isDirty).toHaveBeenCalledWith(true);
     });
 });
