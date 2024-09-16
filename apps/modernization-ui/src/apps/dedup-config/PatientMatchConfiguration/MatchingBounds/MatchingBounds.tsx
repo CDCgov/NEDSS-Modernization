@@ -1,5 +1,5 @@
 import { Input } from 'components/FormInputs/Input';
-import styles from '../patient-match-body.module.scss';
+import styles from '../PatientMatchConfigurationPage/patient-match-form.module.scss';
 
 export const MatchingBounds = () => {
     return (

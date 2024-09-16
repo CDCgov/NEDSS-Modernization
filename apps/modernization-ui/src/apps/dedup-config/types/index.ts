@@ -5,6 +5,8 @@ export type DataElement = {
     m: number;
     u: number;
     threshold: number;
+    oddsRatio: number;
+    logOdds: number;
 };
 
 export type Method = { value: string; name: string }; // Update Method type to be an array of objects with value and name
