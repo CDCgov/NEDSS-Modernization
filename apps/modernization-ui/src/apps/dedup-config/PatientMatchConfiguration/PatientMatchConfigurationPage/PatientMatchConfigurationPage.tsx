@@ -49,7 +49,7 @@ const PatientMatchConfigurationPage = () => {
         } else {
             setConfigurations([]);
         }
-    });
+    }, []);
 
     return (
         <div className={styles.wrapper}>

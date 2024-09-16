@@ -6,10 +6,10 @@ import styles from './add-blocking-criteria.module.scss';
 import { DataElement } from 'apps/dedup-config/types';
 
 type Props = {
-    modalRef: RefObject<ModalRef>;
+    blockingModalRef: RefObject<ModalRef>;
 };
 
-export const AddBlockingCriteria = ({ modalRef }: Props) => {
+export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
     const { dataElements } = useDataElementsContext();
     const { blockingCriteria, setBlockingCriteria, availableMethods } = usePatientMatchContext();
 
@@ -21,7 +21,13 @@ export const AddBlockingCriteria = ({ modalRef }: Props) => {
     }, [blockingCriteria]);
 
     const handleCheckboxChange = (fieldName: string, checked: boolean) => {
-        setSelectedFields((prev) => (checked ? [...prev, fieldName] : prev.filter((name) => name !== fieldName)));
+        setSelectedFields((prev) => {
+            if (checked) {
+                return [...prev, fieldName];
+            } else {
+                return prev.filter((name) => name !== fieldName);
+            }
+        });
     };
 
     const addBlockingCriteria = () => {
@@ -46,7 +52,10 @@ export const AddBlockingCriteria = ({ modalRef }: Props) => {
             setBlockingCriteria([...blockingCriteria, ...newCriteria]);
         }
 
-        modalRef.current?.toggleModal();
+        const updatedCriteria = blockingCriteria.filter((criteria) => selectedFields.includes(criteria.field.name));
+
+        setBlockingCriteria([...updatedCriteria, ...newCriteria]);
+        blockingModalRef.current?.toggleModal();
     };
 
     return (
@@ -68,10 +77,10 @@ export const AddBlockingCriteria = ({ modalRef }: Props) => {
                     ))}
             </div>
             <div className={styles.addBlockingCriteriaFooter}>
-                <ModalToggleButton type="button" closer outline modalRef={modalRef}>
+                <ModalToggleButton type="button" closer outline modalRef={blockingModalRef}>
                     Cancel
                 </ModalToggleButton>
-                <ModalToggleButton type="button" onClick={addBlockingCriteria} closer modalRef={modalRef}>
+                <ModalToggleButton type="button" onClick={addBlockingCriteria} closer modalRef={blockingModalRef}>
                     Add blocking criteria
                 </ModalToggleButton>
             </div>

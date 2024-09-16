@@ -1,0 +1,54 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.addMatchingCriteria {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 3.5rem);
+    .addMatchingCriteriaHeader {
+        display: flex;
+        align-items: center;
+        svg {
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+    }
+    .addMatchingCriteriaContent {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-content: flex-start;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem;
+        height: calc(100% - 3.5rem);
+        div {
+            width: 15.5rem;
+            height: 2.75rem;
+            padding: 0;
+            label {
+                font-size: 1rem;
+                text-wrap: nowrap;
+                height: 2.75rem;
+                margin: 0;
+                padding: 0.65rem 0 0.65rem 2.25rem;
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    width: 1rem;
+                    height: 1rem;
+                    margin-right: 0.5rem;
+                    margin-top: 0.15rem;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+        .addMatchingCriteriaFooter {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+            @extend %thin-top;
+            height: 5rem;
+        }
+}

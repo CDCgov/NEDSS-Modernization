@@ -25,16 +25,11 @@ const PatientMatchContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     const [matchingCriteria, setMatchingCriteria] = useState<MatchingCriteria[]>([]);
 
     const removeBlockingCriteria = (value: string) => {
-        setBlockingCriteria((prevCriteria) =>
-            prevCriteria.filter((criteria) => criteria.field.name !== value && criteria.method.value !== value)
-        );
+        setBlockingCriteria((prevCriteria) => prevCriteria.filter((criteria) => criteria.field.name !== value));
     };
 
-    // Method to remove matching criteria by field name or method value
     const removeMatchingCriteria = (value: string) => {
-        setMatchingCriteria((prevCriteria) =>
-            prevCriteria.filter((criteria) => criteria.field.name !== value && criteria.method.value !== value)
-        );
+        setMatchingCriteria((prevCriteria) => prevCriteria.filter((criteria) => criteria.field.name !== value));
     };
 
     return (
