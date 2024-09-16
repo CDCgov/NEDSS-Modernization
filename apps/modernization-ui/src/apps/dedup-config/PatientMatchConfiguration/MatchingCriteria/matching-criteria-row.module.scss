@@ -30,10 +30,20 @@
         select {
             width: 15rem !important;
         }
+        div {
+            width: 15rem !important;
+        }
     }
-    .gap {
+    .logOdds {
         width: 100%;
+        font-size: 0.875rem;
+        font-weight: 400;
+        display: inline-block;
+        white-space: nowrap;
+        text-align: left;
         min-width: 10rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .delete {
         color: colors.$secondary;
@@ -43,5 +53,6 @@
         justify-content: flex-end;
         align-items: center;
         cursor: pointer;
+        min-width: 8rem;
     }
 }
