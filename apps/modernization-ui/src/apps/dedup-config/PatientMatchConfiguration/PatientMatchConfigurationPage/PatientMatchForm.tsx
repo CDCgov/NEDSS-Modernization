@@ -1,6 +1,6 @@
 import styles from './patient-match-form.module.scss';
 import { BlockingCriteria } from '../BlockingCriteria/BlockingCriteria';
-import { MatchingCriteria } from '../MatchingCriteria/MatchingCriteria';
+import { MatchingCriteriaSection } from '../MatchingCriteria/MatchingCriteriaSection';
 import { MatchingBounds } from '../MatchingBounds/MatchingBounds';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { Toggle } from 'design-system/toggle/Toggle';
@@ -28,7 +28,7 @@ const PatientMatchForm = ({ passConfiguration }: Props) => {
             <FormProvider {...patientMatchForm}>
                 <div className={styles.fields}>
                     <BlockingCriteria />
-                    <MatchingCriteria />
+                    <MatchingCriteriaSection />
                     <MatchingBounds />
                     <Controller
                         control={patientMatchForm.control}
