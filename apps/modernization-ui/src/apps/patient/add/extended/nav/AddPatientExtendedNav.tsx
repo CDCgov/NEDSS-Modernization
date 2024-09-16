@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styles from './extended-patient-nav.module.scss';
 
 export const AddPatientExtendedNav = () => {
-    const [onSelected, setSelected] = useState<boolean>();
     return (
         <aside>
             <nav>
