@@ -196,6 +196,11 @@ public class PatientCreateSteps {
     Address expected = this.input.active().addresses().getFirst();
 
     assertThat(actual)
+        .returns(expected.city(), PostalLocator::getCityDescTxt)
+        .returns(expected.state(), PostalLocator::getStateCd)
+        .returns(expected.county(), PostalLocator::getCntyCd)
+        .returns(expected.country(), PostalLocator::getCntryCd)
+        .returns(expected.zipcode(), PostalLocator::getZipCd)
         .returns(expected.address1(), PostalLocator::getStreetAddr1)
         .returns(expected.address2(), PostalLocator::getStreetAddr2)
         .returns(expected.censusTract(), PostalLocator::getCensusTract);
