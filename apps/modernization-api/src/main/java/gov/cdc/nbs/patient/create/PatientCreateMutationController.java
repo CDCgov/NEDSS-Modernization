@@ -14,13 +14,13 @@ import java.time.Clock;
 import java.time.Instant;
 
 @Controller
-class PatientCreationController {
+class PatientCreateMutationController {
 
     private final Clock clock;
     private final PatientCreator creator;
     private final PatientIndexer indexer;
 
-    PatientCreationController(
+    PatientCreateMutationController(
         final Clock clock,
         final PatientCreator creator,
         final PatientIndexer indexer

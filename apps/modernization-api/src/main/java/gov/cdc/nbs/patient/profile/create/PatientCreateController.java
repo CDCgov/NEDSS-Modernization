@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile;
+package gov.cdc.nbs.patient.profile.create;
 
 import java.time.Clock;
 import org.springframework.http.HttpStatus;
@@ -116,7 +116,7 @@ public class PatientCreateController {
             phone.type(),
             phone.use(),
             phone.countryCode(),
-            phone.phoneNumber(),
+            phone.number(),
             phone.extension(),
             phone.email(),
             phone.url(),

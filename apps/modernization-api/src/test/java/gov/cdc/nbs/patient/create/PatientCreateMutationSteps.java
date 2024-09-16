@@ -20,10 +20,10 @@ import org.springframework.security.access.AccessDeniedException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class PatientCreateSteps {
+public class PatientCreateMutationSteps {
 
   @Autowired
-  PatientCreationController controller;
+  PatientCreateMutationController controller;
 
   @Autowired
   PersonRepository repository;
