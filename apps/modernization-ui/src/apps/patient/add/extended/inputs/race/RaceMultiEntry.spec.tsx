@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
 import { RaceMultiEntry } from './RaceMultiEntry';
+import { useMultiValueEntryState } from 'design-system/entry/multi-value/useMultiValueEntryState';
+import userEvent from '@testing-library/user-event';
 
 const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
 
@@ -22,7 +24,16 @@ const isDirty = jest.fn();
 
 describe('RaceMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<RaceMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole, getByLabelText } = render(<RaceMultiEntry onChange={onChange} isDirty={isDirty} />);
+
+        const race = getByLabelText('Race');
+        const buttons = getAllByRole('button');
+
+        await waitFor(async () => {
+            userEvent.selectOptions(race, '1');
+            // warning says no effect, but it lies
+            userEvent.click(buttons[1]);
+        });
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
