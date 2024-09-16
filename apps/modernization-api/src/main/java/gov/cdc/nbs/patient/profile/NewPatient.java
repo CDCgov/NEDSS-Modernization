@@ -4,13 +4,18 @@ import java.time.Instant;
 import java.util.List;
 
 public record NewPatient(
-    Instant asOf,
-    String comment,
+    Administrative administrative,
     List<Name> names,
     List<Address> addresses,
     List<Phone> phoneEmails,
     List<Race> races,
     List<Identification> identifications) {
+}
+
+
+record Administrative(
+    Instant asOf,
+    String comment) {
 }
 
 

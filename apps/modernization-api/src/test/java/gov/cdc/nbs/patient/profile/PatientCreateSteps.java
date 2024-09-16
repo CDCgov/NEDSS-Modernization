@@ -2,7 +2,10 @@ package gov.cdc.nbs.patient.profile;
 
 import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.entity.odse.PersonRace;
+import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
+import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -64,13 +67,14 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with comments")
   public void i_am_adding_a_new_patient() {
-    NewPatient newPatient = new NewPatient(RandomUtil.getRandomDateInPast(), "abc", null, null, null, null, null);
+    NewPatient newPatient =
+        new NewPatient(new Administrative(RandomUtil.getRandomDateInPast(), "abc"), null, null, null, null, null);
     this.input.active(newPatient);
   }
 
   @Given("I am adding a new patient with names")
   public void i_am_adding_a_new_patient_with_names() {
-    NewPatient newPatient = new NewPatient(null, null, Arrays.asList(new Name(
+    NewPatient newPatient = new NewPatient(null, Arrays.asList(new Name(
         Instant.parse("2023-05-15T10:00:00Z"),
         "L",
         "MR",
@@ -86,7 +90,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with addresses")
   public void i_am_adding_a_new_patient_with_addresses() {
-    NewPatient newPatient = new NewPatient(null, null, null, Arrays.asList(new Address(
+    NewPatient newPatient = new NewPatient(null, null, Arrays.asList(new Address(
         RandomUtil.getRandomDateInPast(),
         "H",
         "H",
@@ -105,7 +109,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with emails")
   public void i_am_adding_a_new_patient_with_emails() {
-    NewPatient newPatient = new NewPatient(null, null, null, null, Arrays.asList(new Phone(
+    NewPatient newPatient = new NewPatient(null, null, null, Arrays.asList(new Phone(
         RandomUtil.getRandomDateInPast(),
         "type-value",
         "use-value",
@@ -120,7 +124,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with phones")
   public void i_am_adding_a_new_patient_with_phones() {
-    NewPatient newPatient = new NewPatient(null, null, null, null, Arrays.asList(new Phone(
+    NewPatient newPatient = new NewPatient(null, null, null, Arrays.asList(new Phone(
         RandomUtil.getRandomDateInPast(),
         "type-value",
         "use-value",
@@ -136,7 +140,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with races")
   public void i_am_adding_a_new_patient_with_races() {
-    NewPatient newPatient = new NewPatient(null, null, null, null, null, Arrays.asList(new Race(
+    NewPatient newPatient = new NewPatient(null, null, null, null, Arrays.asList(new Race(
         RandomUtil.getRandomDateInPast(),
         "category-value",
         Arrays.asList("detail1", "detail2"))), null);
@@ -145,7 +149,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with identifications")
   public void i_am_adding_a_new_patient_with_identifications() {
-    NewPatient newPatient = new NewPatient(null, null, null, null, null, null, Arrays.asList(new Identification(
+    NewPatient newPatient = new NewPatient(null, null, null, null, null, Arrays.asList(new Identification(
         RandomUtil.getRandomDateInPast(),
         "DL",
         "TX",
@@ -169,7 +173,7 @@ public class PatientCreateSteps {
   @Then("the patient created has the entered comment")
   public void the_patient_created_has_the_entered_comment() {
     Person actual = patient.active();
-    NewPatient expected = this.input.active();
+    Administrative expected = this.input.active().administrative();
 
     assertThat(actual)
         .returns(expected.asOf(), Person::getAsOfDateAdmin)
@@ -178,21 +182,23 @@ public class PatientCreateSteps {
 
   @Then("the patient created has the entered names")
   public void the_patient_created_has_the_entered_names() {
-    Person actual = patient.active();
-    NewPatient expected = this.input.active();
+    PersonName actual = patient.active().getNames().getFirst();
+    Name expected = this.input.active().names().getFirst();
 
     assertThat(actual)
-        .returns(expected.asOf(), Person::getAsOfDateAdmin);
+        .returns(expected.first(), PersonName::getFirstNm)
+        .returns(expected.last(), PersonName::getLastNm);
   }
 
   @Then("the patient created has the entered addresses")
   public void the_patient_created_has_the_entered_addresses() {
-    Person actual = patient.active();
-    NewPatient expected = this.input.active();
+    PostalLocator actual = patient.active().addresses().getFirst().getLocator();
+    Address expected = this.input.active().addresses().getFirst();
 
     assertThat(actual)
-        .returns(expected.comment(), Person::getDescription)
-        .returns(expected.asOf(), Person::getAsOfDateAdmin);
+        .returns(expected.address1(), PostalLocator::getStreetAddr1)
+        .returns(expected.address2(), PostalLocator::getStreetAddr2)
+        .returns(expected.censusTract(), PostalLocator::getCensusTract);
   }
 
   @Then("I am unable to create a patient")

@@ -67,8 +67,10 @@ public class PatientCreateController {
     var user = SecurityUtil.getUserDetails();
     RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
     PatientInput input = new PatientInput();
-    input.setComments(newPatient.comment());
-    input.setAsOf(newPatient.asOf());
+    if (newPatient.administrative() != null) {
+      input.setComments(newPatient.administrative().comment());
+      input.setAsOf(newPatient.administrative().asOf());
+    }
     PatientIdentifier created = creator.create(context, input);
     if (newPatient.names() != null) {
       newPatient.names().forEach(name -> {
