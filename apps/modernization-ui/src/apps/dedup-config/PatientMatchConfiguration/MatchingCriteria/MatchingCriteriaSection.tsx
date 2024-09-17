@@ -9,17 +9,16 @@ import { MatchingCriteriaRow } from './MatchingCriteriaRow';
 
 export const MatchingCriteriaSection = () => {
     const matchingModalRef = useRef<ModalRef>(null);
-    const { blockingCriteria, matchingCriteria } = usePatientMatchContext();
+    const { blockingCriteria, matchingCriteria, setTotalLogOdds } = usePatientMatchContext();
     const [logOddsSum, setLogOddsSum] = useState<number>(0);
 
     useEffect(() => {
-        // Sum up the logOdds from each criteria.form.logOdds
         const sum = matchingCriteria
-            .map((criteria) => criteria.field.logOdds || 0) // Ensure logOdds exists, fallback to 0 if not
-            .reduce((acc, logOdds) => acc + logOdds, 0); // Sum the logOdds
+            .map((criteria) => criteria.field.logOdds || 0)
+            .reduce((acc, logOdds) => acc + logOdds, 0);
 
-        // Set the final log odds sum rounded to two decimal places
-        setLogOddsSum(sum); // Round final sum to 2 decimal places
+        setLogOddsSum(sum);
+        setTotalLogOdds(sum);
     }, [matchingCriteria]);
 
     return (
