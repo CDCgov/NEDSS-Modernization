@@ -5,10 +5,10 @@ import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry
 import { Column } from 'design-system/table';
 import { PhoneEntryView } from './PhoneEntryView';
 
-const defaultValue: PhoneEmailEntry = {
+const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: internalizeDate(new Date()),
-    type: { name: '', value: '' },
-    use: { name: '', value: '' },
+    type: undefined,
+    use: undefined,
     countryCode: '',
     phoneNumber: '',
     extension: '',
@@ -26,7 +26,7 @@ export const PhoneAndEmailMultiEntry = ({ onChange, isDirty }: Props) => {
 
     const columns: Column<PhoneEmailEntry>[] = [
         { id: 'phoneEmailAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'phoneEmailType', name: 'Type', render: (v) => v.type.name },
+        { id: 'phoneEmailType', name: 'Type', render: (v) => v.type?.name },
         { id: 'phoneNumber', name: 'Phone number', render: (v) => v.phoneNumber },
         { id: 'email', name: 'Email address', render: (v) => v.email },
         { id: 'comments', name: 'Comments', render: (v) => v.comment }

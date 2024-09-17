@@ -35,11 +35,12 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         onChange={onChange}
+                        onBlur={onBlur}
                         value={value}
                         id={name}
                         name={name}
@@ -53,11 +54,12 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="use"
                 rules={{ required: { value: true, message: 'Use is required.' } }}
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
                         orientation="horizontal"
                         onChange={onChange}
+                        onBlur={onBlur}
                         value={value}
                         id={name}
                         name={name}
