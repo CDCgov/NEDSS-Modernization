@@ -172,9 +172,17 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
 
     useEffect(() => {
         if (searchCriteria) {
+            //  the search criteria has changed initialize a search
             dispatch({ type: 'initialize', criteria: searchCriteria });
         }
     }, [searchCriteria, dispatch]);
+
+    useEffect(() => {
+        if (state.status === 'completed' && !searchCriteria) {
+            //  the search criteria has removed, reset the search
+            dispatch({ type: 'reset' });
+        }
+    }, [state.status, searchCriteria, dispatch]);
 
     useEffect(() => {
         if (state.status === 'resetting') {
