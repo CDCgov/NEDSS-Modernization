@@ -10,15 +10,16 @@ import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
-import { AdministrativeSingleEntry } from './inputs/administrative/AdministrativeSingleEntry';
-import { AdministrativeEntry } from 'apps/patient/profile/administrative/AdministrativeEntry';
+import { Administrative } from './inputs/administrative/Administrative';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { internalizeDate } from 'date';
 
 type ExtendedPatientCreationForm = {
+    administrative: AdministrativeEntry;
     address: AddressFields[];
     phone: PhoneEmailFields[];
     race: RaceEntry[];
     name: NameEntry[];
-    administrative: AdministrativeEntry;
 };
 
 type DirtyState = {
@@ -26,18 +27,23 @@ type DirtyState = {
     phone: boolean;
     name: boolean;
     race: boolean;
-    administrative: boolean;
 };
 export const AddPatientExtendedForm = () => {
-    const form = useForm<ExtendedPatientCreationForm>({ defaultValues: { phone: [] } });
+    const form = useForm<ExtendedPatientCreationForm>({
+        defaultValues: {
+            phone: [],
+            administrative: {
+                asOf: internalizeDate(new Date()),
+                comment: ''
+            }
+        },
+        mode: 'onBlur'
+    });
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,
-
         phone: false,
-
         race: false,
-        name: false,
-        administrative: false
+        name: false
     });
 
     return (
@@ -45,12 +51,7 @@ export const AddPatientExtendedForm = () => {
             <div className={styles.addPatientForm}>
                 <FormProvider {...form}>
                     <div className={styles.formContent}>
-                        <AdministrativeSingleEntry
-                            onChange={(data) => {
-                                form.setValue('administrative', data);
-                            }}
-                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, administrative: isDirty })}
-                        />
+                        <Administrative />
                         <NameMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, name: isDirty })}
                             onChange={(nameData) => {

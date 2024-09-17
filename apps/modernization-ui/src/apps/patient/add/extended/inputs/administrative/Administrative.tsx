@@ -1,17 +1,18 @@
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Controller, useFormContext } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { AdministrativeEntry } from './AdministrativeEntry';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule } from 'validation/entry';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Card } from '../../card/Card';
 
-export const AdministrativeEntryFields = () => {
-    const { control } = useFormContext<AdministrativeEntry>();
+export const Administrative = () => {
+    const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <section>
+        <Card title="Administrative" id="section-Administrative">
             <Controller
                 control={control}
-                name="asOf"
+                name="administrative.asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
@@ -30,29 +31,26 @@ export const AdministrativeEntryFields = () => {
 
             <Controller
                 control={control}
-                name="comment"
+                name="administrative.comment"
                 rules={{
-                    required: { value: true, message: 'Comments are required.' },
                     ...maxLengthRule(2000)
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <>
-                        <Input
-                            label="General comments"
-                            type="text"
-                            orientation="horizontal"
-                            onBlur={onBlur}
-                            onChange={onChange}
-                            defaultValue={value}
-                            name={name}
-                            htmlFor={name}
-                            id={name}
-                            error={error?.message}
-                            multiline
-                        />
-                    </>
+                    <Input
+                        label="General comments"
+                        type="text"
+                        orientation="horizontal"
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        defaultValue={value}
+                        name={name}
+                        htmlFor={name}
+                        id={name}
+                        error={error?.message}
+                        multiline
+                    />
                 )}
             />
-        </section>
+        </Card>
     );
 };
