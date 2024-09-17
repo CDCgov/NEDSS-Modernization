@@ -35,10 +35,13 @@ describe('RaceMultiEntry', () => {
             userEvent.click(buttons[1]);
         });
 
-        const headers = getAllByRole('columnheader');
-        expect(headers[0]).toHaveTextContent('As of');
-        expect(headers[1]).toHaveTextContent('Race');
-        expect(headers[2]).toHaveTextContent('Detailed race');
+        await waitFor(async () => {
+            const headers = getAllByRole('columnheader');
+
+            expect(headers[0]).toHaveTextContent('As of');
+            expect(headers[1]).toHaveTextContent('Race');
+            expect(headers[2]).toHaveTextContent('Detailed race');
+        });
     });
 
     it('should display proper defaults', async () => {
