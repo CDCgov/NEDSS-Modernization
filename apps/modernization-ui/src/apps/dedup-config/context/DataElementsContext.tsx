@@ -19,7 +19,6 @@ const DataElementsContextProvider: React.FC<{
     useEffect(() => {
         const storedElements = localStorage.getItem('dataElements');
         if (storedElements) {
-            console.log('dataElements', JSON.parse(storedElements));
             setDataElements(JSON.parse(storedElements));
         }
     }, []);
