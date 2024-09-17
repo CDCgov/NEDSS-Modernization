@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
+import { PhoneEmailEntry } from 'apps/patient/data/entry';
 import { PhoneEntryView } from './PhoneEntryView';
-import { PhoneEmailFields } from 'apps/patient/profile/phoneEmail/PhoneEmailEntry';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
@@ -11,12 +11,12 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
-const entry: PhoneEmailFields = {
+const entry: PhoneEmailEntry = {
     asOf: '12/25/2020',
-    type: 'PH',
-    use: 'H',
+    type: { name: 'Phone', value: 'PH' },
+    use: { name: 'Home', value: 'H' },
     countryCode: '1',
-    number: '123-456-7890',
+    phoneNumber: '123-456-7890',
     extension: '2',
     email: 'email@email.com',
     url: 'someUrl@nbs.gov',
