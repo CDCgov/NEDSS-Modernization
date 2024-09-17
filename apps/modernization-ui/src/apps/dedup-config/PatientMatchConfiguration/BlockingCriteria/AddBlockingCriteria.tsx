@@ -71,7 +71,7 @@ export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
                             id={dataElement.name}
                             tile
                             disabled={!dataElement.active}
-                            checked={selectedFields.includes(dataElement.name)} // Check if this field is already selected
+                            checked={selectedFields.includes(dataElement.name)}
                             onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
                         />
                     ))}

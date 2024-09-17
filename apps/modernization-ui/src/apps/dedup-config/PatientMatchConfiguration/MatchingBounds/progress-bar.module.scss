@@ -1,0 +1,66 @@
+@use 'styles/colors';
+
+.progressBarContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.progressBar {
+    display: flex;
+    align-items: center;
+    width: calc(92% - 1rem);
+    height: 25px;
+    margin: 2rem calc( 8% - 1rem ) 1rem 1rem;
+    border-radius: 15px;
+    background-color: colors.$base-lightest;
+    position: relative;
+    border: 1px solid #000;
+}
+
+.progressBarSection {
+    height: 100%;
+    position: absolute;
+}
+
+.requiresReview {
+    background-color: colors.$warm-accent-light;
+    left: 0;
+    border-right: 1px solid #000;
+}
+
+.automaticMatch {
+    background-color: colors.$success;
+    border-right: 1px solid colors.$base-black;
+    border-radius: 0 3rem 3rem 0;
+}
+
+.boundValue {
+    position: absolute;
+    top: -1rem;
+    font-size: 12px;
+    font-weight: 400;
+    border-left: 1px solid colors.$base-dark;
+    padding-left: 0.5rem;;
+}
+
+.lowerBoundLabel {
+    left: calc(0%);
+    background-color: unset !important;
+    border: unset !important;
+}
+
+.upperBoundLabel {
+    right: calc(0%);
+}
+
+.totalLogOddsLabel {
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    color: colors.$base-dark;
+    font-weight: 400;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 4rem;
+}

@@ -17,7 +17,6 @@ export const AddMatchingCriteria = ({ matchingModalRef }: Props) => {
 
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
-    // Sync `selectedFields` with `matchingCriteria` when the component mounts or `matchingCriteria` changes
     useEffect(() => {
         const selected = matchingCriteria.map((criteria) => criteria.field.name);
         setSelectedFields(selected);
@@ -75,8 +74,8 @@ export const AddMatchingCriteria = ({ matchingModalRef }: Props) => {
                                 blockingCriteria.some((criteria) => criteria.field.name === dataElement.name)
                             }
                             tile
-                            checked={selectedFields.includes(dataElement.name)} // Locally track selected checkboxes
-                            onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)} // Update local selectedFields state only
+                            checked={selectedFields.includes(dataElement.name)}
+                            onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
                         />
                     ))}
             </div>
