@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import DataElementsContextProvider from './DataElementsContext'; // Import other context providers
+import DataElementsContextProvider from './DataElementsContext';
 import PatientMatchContextProvider from './PatientMatchContext';
 
 const DedupeContext = createContext<DedupeContextProps | undefined>(undefined);
