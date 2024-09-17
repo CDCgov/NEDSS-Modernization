@@ -4,7 +4,7 @@ import DataElementsConfiguration from '../DataElementsConfiguration/DataElements
 import { useDedupeContext } from '../context/DedupeContext';
 import { useDataElementsContext } from '../context/DataElementsContext';
 import NoDataElements from './NoDataElementsContent';
-import PassConfiguration from './PatientMatchConfigurationPage/PatientMatchConfigurationPage';
+import PassConfigurationPage from './PatientMatchConfigurationPage/PatientMatchConfigurationPage';
 
 const PatientMatchConfiguration = () => {
     const { mode, setMode } = useDedupeContext();
@@ -27,7 +27,11 @@ const PatientMatchConfiguration = () => {
                         </Button>
                     </div>
                     <div className={styles.body}>
-                        {!dataElements ? <NoDataElements onConfigClick={handleSetDataMode} /> : <PassConfiguration />}
+                        {!dataElements ? (
+                            <NoDataElements onConfigClick={handleSetDataMode} />
+                        ) : (
+                            <PassConfigurationPage />
+                        )}
                     </div>
                 </>
             )}

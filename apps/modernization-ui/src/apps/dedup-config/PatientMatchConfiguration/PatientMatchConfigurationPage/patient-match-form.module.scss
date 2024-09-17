@@ -10,7 +10,7 @@
             margin-bottom: 1rem;
             border: 1px solid colors.$base-lighter;
             border-radius: 0.3125rem;
-        
+
             .criteriaHeadingContainer {
                 position: relative;
                 padding: 1rem 1.5rem;
@@ -47,26 +47,26 @@
                     }
                 }
             }
-        
+
             .criteriaContentContainer {
                 padding: 0 1rem 0 1rem;
                 button {
                     padding-left: 0;
                     text-decoration: none;
                     padding: 1rem 0;
-                    &:disabled  {
+                    &:disabled {
                         background-color: unset !important;
                         color: colors.$disabled;
                         border: none;
                     }
                 }
-        
+
                 .criteriaRequest {
                     border-bottom: 1px solid colors.$base-lighter;
                     padding: 1rem 0;
                     margin: 0;
                 }
-        
+
                 .progressBar {
                     width: 100%;
                 }
@@ -91,14 +91,15 @@
                     }
                 }
             }
-        
+
             &.disabled {
                 background-color: colors.$disabled-lighter;
                 color: colors.$base-darkest;
                 border-color: colors.$base-light;
                 .criteriaHeadingContainer {
                     border-color: colors.$base-light;
-                    h4, p {
+                    h4,
+                    p {
                         color: colors.$disabled-darkest;
                     }
                     .labels {
@@ -114,7 +115,7 @@
                         border-color: colors.$base-light;
                     }
                     button {
-                        color: colors.$disabled-darkest !important
+                        color: colors.$disabled-darkest !important;
                     }
                 }
             }
@@ -136,7 +137,7 @@
         @extend %thin-top;
         position: fixed;
         background-color: colors.$base-white;
-        width: calc( 100% - 18.75rem );
+        width: calc(100% - 18.75rem);
         bottom: 0;
         margin-left: -1rem;
         .saveButton {
