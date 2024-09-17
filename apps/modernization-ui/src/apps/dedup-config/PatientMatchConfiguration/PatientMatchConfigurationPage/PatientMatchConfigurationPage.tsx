@@ -40,7 +40,7 @@ const PatientMatchConfigurationPage = () => {
         }
     };
 
-    const showConfiguration = isEditingConfiguration && configurations.length && selectedConfigurationIndex;
+    const showConfiguration = isEditingConfiguration && configurations.length && selectedConfigurationIndex !== null;
 
     useEffect(() => {
         const storedConfiguration = localStorage.getItem('passConfigurations');
