@@ -4,11 +4,18 @@ import java.time.Instant;
 import java.util.List;
 
 public record NewPatient(
-    Instant asOf,
-    String comment,
+    Administrative administrative,
     List<Name> names,
     List<Address> addresses,
-    List<Phone> phones) {
+    List<Phone> phoneEmails,
+    List<Race> races,
+    List<Identification> identifications) {
+}
+
+
+record Administrative(
+    Instant asOf,
+    String comment) {
 }
 
 
@@ -47,9 +54,24 @@ record Phone(
     String type,
     String use,
     String countryCode,
-    String number,
+    String phoneNumber,
     String extension,
     String email,
     String url,
     String comment) {
+}
+
+
+record Race(
+    Instant asOf,
+    String race,
+    List<String> detailed) {
+}
+
+
+record Identification(
+    Instant asOf,
+    String type,
+    String issuer,
+    String id) {
 }
