@@ -36,7 +36,8 @@ export const AddPatientExtendedForm = () => {
                 asOf: internalizeDate(new Date()),
                 comment: ''
             }
-        }
+        },
+        mode: 'onBlur'
     });
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,

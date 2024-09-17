@@ -1,12 +1,12 @@
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { AdministrativeEntry } from './AdministrativeEntry';
 import { Input } from 'components/FormInputs/Input';
 
 export const AdministrativeEntryFields = () => {
-    const form = useForm<AdministrativeEntry>({ mode: 'onBlur' });
-    const { control } = form;
+    const { control } = useFormContext<AdministrativeEntry>();
+
     return (
         <section>
             <Controller
