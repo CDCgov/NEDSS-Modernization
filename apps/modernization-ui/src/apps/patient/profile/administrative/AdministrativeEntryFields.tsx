@@ -32,6 +32,7 @@ export const AdministrativeEntryFields = () => {
                 control={control}
                 name="comment"
                 rules={{
+                    required: { value: true, message: 'Comments are required.' },
                     ...maxLengthRule(2000)
                 }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (

@@ -1,19 +1,14 @@
 import { render } from '@testing-library/react';
 import { Administrative } from './Administrative';
 import { FormProvider, useForm } from 'react-hook-form';
+import { ReactNode } from 'react';
 
-const mockOnChange = jest.fn();
-
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
+const TestWrapper = ({ children }: { children: ReactNode }) => {
     const methods = useForm();
     return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
 describe('Administrative', () => {
-    beforeEach(() => {
-        mockOnChange.mockClear();
-    });
-
     it('should render the component with correct title', () => {
         const { getByText } = render(
             <TestWrapper>
