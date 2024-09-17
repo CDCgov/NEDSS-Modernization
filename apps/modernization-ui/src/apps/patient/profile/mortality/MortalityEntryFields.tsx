@@ -14,7 +14,7 @@ export const MortalityEntryFields = () => {
 
     const coded = useLocationCodedValues();
 
-    const byState: CountiesCodedValues = selectedState ? useCountyCodedValues(selectedState) : { counties: [] };
+    const byState: CountiesCodedValues = useCountyCodedValues(selectedState);
     return (
         <section>
             <Controller
