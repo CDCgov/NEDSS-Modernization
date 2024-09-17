@@ -11,14 +11,14 @@ const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
     const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
-    const { setBlockingCriteria } = usePatientMatchContext();
+    const { setBlockingCriteria, setMatchingCriteria } = usePatientMatchContext();
 
     const handleAddConfiguration = () => {
         const configs = [...configurations];
         configs.push({
             name: `New configuration (${configurations.length})`,
             description: 'a description will go here',
-            active: false,
+            active: true,
             blockingCriteria: [],
             matchingCriteria: []
         });
@@ -37,6 +37,12 @@ const PatientMatchConfigurationPage = () => {
             setBlockingCriteria(selectedConfig.blockingCriteria);
         } else {
             setBlockingCriteria([]);
+        }
+
+        if (selectedConfig.matchingCriteria?.length) {
+            setMatchingCriteria(selectedConfig.matchingCriteria);
+        } else {
+            setMatchingCriteria([]);
         }
     };
 
