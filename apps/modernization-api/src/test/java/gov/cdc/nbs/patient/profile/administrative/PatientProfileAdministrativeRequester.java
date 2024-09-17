@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @Component
-class PatientAdministrativeRequester {
+class PatientProfileAdministrativeRequester {
 
   private static final String QUERY = """
       query profile($patient: ID!, $page: Page) {
@@ -34,7 +34,7 @@ class PatientAdministrativeRequester {
 
   private final GraphQLRequest graphql;
 
-  PatientAdministrativeRequester(final GraphQLRequest graphql) {
+  PatientProfileAdministrativeRequester(final GraphQLRequest graphql) {
     this.graphql = graphql;
   }
 

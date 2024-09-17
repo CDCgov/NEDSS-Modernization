@@ -8,13 +8,13 @@ import org.springframework.test.web.servlet.ResultActions;
 
 public class PatientProfileAdministrativeSteps {
 
-  private final PatientAdministrativeRequester requester;
+  private final PatientProfileAdministrativeRequester requester;
 
   private final Active<PatientIdentifier> activePatient;
   private final Active<ResultActions> response;
 
   PatientProfileAdministrativeSteps(
-      final PatientAdministrativeRequester requester,
+      final PatientProfileAdministrativeRequester requester,
       final Active<PatientIdentifier> activePatient,
       final Active<ResultActions> response
   ) {
