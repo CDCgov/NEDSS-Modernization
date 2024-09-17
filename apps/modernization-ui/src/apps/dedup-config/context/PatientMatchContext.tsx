@@ -9,6 +9,13 @@ type PatientMatchContextProps = {
     setMatchingCriteria: (criteria: MatchingCriteria[]) => void;
     removeMatchingCriteria: (value: string) => void;
     availableMethods: Method[];
+    totalLogOdds: number | undefined;
+    setTotalLogOdds: (logOdds: number | undefined) => void;
+    lowerBound: number | undefined;
+    upperBound: number | undefined;
+    setLowerBound: (value: number) => void;
+    setUpperBound: (value: number) => void;
+    saveBounds: (lower: number, upper: number) => void;
 };
 
 const PatientMatchContext = createContext<PatientMatchContextProps | undefined>(undefined);
@@ -23,6 +30,14 @@ export const availableMethods: Method[] = [
 const PatientMatchContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [blockingCriteria, setBlockingCriteria] = useState<BlockingCriteria[]>([]);
     const [matchingCriteria, setMatchingCriteria] = useState<MatchingCriteria[]>([]);
+    const [totalLogOdds, setTotalLogOdds] = useState<number | undefined>(undefined);
+    const [lowerBound, setLowerBound] = useState<number | undefined>(undefined);
+    const [upperBound, setUpperBound] = useState<number | undefined>(undefined);
+
+    const saveBounds = (lower: number, upper: number) => {
+        setLowerBound(lower);
+        setUpperBound(upper);
+    };
 
     const removeBlockingCriteria = (value: string) => {
         setBlockingCriteria((prevCriteria) => prevCriteria.filter((criteria) => criteria.field.name !== value));
@@ -41,7 +56,14 @@ const PatientMatchContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
                 matchingCriteria,
                 setMatchingCriteria,
                 removeMatchingCriteria,
-                availableMethods
+                availableMethods,
+                totalLogOdds,
+                setTotalLogOdds,
+                lowerBound,
+                upperBound,
+                setLowerBound,
+                setUpperBound,
+                saveBounds
             }}>
             {children}
         </PatientMatchContext.Provider>
