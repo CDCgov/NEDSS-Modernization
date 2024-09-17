@@ -1,15 +1,14 @@
 import { Heading } from 'components/heading';
-import classNames from 'classnames';
-import styles from './Wrapper.module.scss';
 import { ReactNode } from 'react';
+import styles from './Card.module.scss';
 
-export const Wrapper = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => {
+export const Card = ({ id, title, children }: { id: string; title: string; children: ReactNode }) => {
     return (
         <section id={id} className={styles.input}>
             <header>
                 <Heading level={2}>{title}</Heading>
             </header>
-            <div className={classNames(styles.form)}>{children}</div>
+            {children}
         </section>
     );
 };

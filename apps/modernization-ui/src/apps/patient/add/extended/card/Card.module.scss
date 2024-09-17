@@ -12,12 +12,8 @@
         padding: 1.5rem;
         justify-content: space-between;
         align-items: center;
-        background-color: colors.$base-white;
-
         @extend %thin-bottom;
     }
 
-    .form {
-        background-color: colors.$base-white;
-    }
+   
 }

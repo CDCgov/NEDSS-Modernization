@@ -3,13 +3,13 @@ import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Wrapper } from '../../wrapper/Wrapper';
+import { Card } from '../../card/Card';
 
 export const Administrative = () => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <Wrapper title="Administrative" id="section-Administrative">
+        <Card title="Administrative" id="section-Administrative">
             <Controller
                 control={control}
                 name="administrative.asOf"
@@ -51,6 +51,6 @@ export const Administrative = () => {
                     />
                 )}
             />
-        </Wrapper>
+        </Card>
     );
 };
