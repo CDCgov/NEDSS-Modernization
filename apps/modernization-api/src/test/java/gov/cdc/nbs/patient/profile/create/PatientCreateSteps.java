@@ -45,7 +45,7 @@ public class PatientCreateSteps {
 
   @Given("I add the comment {string} to the extended patient data")
   public void i_add_the_comment(final String value) {
-//        this.input.active(current -> current.administrative().withComment(value));
+    this.input.active(current -> current.withAdministrative(current.administrative().withComment(value)));
   }
 
   @When("I create a patient with extended data")

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile.create;
+package gov.cdc.nbs.patient.profile.administrative;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.spring.ScenarioScope;
@@ -9,11 +9,11 @@ import java.time.Clock;
 import java.time.Instant;
 
 @Configuration
-class PatientCreateSupportConfiguration {
+class AdministrativeSupportConfiguration {
 
   @Bean
   @ScenarioScope
-  Active<NewPatient> activeNewPatient(final Clock clock) {
-    return new Active<>(() -> new NewPatient(Instant.now(clock)));
+  Active<Administrative> activeAdministrative(final Clock clock) {
+    return new Active<>(() -> new Administrative(Instant.now(clock)));
   }
 }

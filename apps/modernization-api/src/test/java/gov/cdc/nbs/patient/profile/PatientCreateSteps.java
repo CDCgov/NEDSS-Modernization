@@ -1,6 +1,9 @@
 package gov.cdc.nbs.patient.profile;
 
+import gov.cdc.nbs.entity.odse.EntityId;
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonRace;
+import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -20,6 +23,7 @@ import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -135,12 +139,47 @@ public class PatientCreateSteps {
 
   }
 
+  @Given("I am adding a new patient with races")
+  public void i_am_adding_a_new_patient_with_races() {
+    NewPatient newPatient = new NewPatient(null, null, null, null, List.of(new NewPatient.Race(
+        RandomUtil.getRandomDateInPast(),
+        "category-value",
+        Arrays.asList("detail1", "detail2"))), null);
+    this.input.active(newPatient);
+  }
+
+  @Given("I am adding a new patient with identifications")
+  public void i_am_adding_a_new_patient_with_identifications() {
+    NewPatient newPatient = new NewPatient(null, null, null, null, null, List.of(new NewPatient.Identification(
+        RandomUtil.getRandomDateInPast(),
+        "DL",
+        "TX",
+        "value")));
+    this.input.active(newPatient);
+  }
+
   @When("I send a create patient request")
   public void i_submit_the_patient() {
     PatientIdentifier created = controller.create(input.active());
     patients.available(created);
 
     repository.findById(created.id()).ifPresent(patient::active);
+  }
+
+  @Then("the patient created has the entered addresses")
+  public void the_patient_created_has_the_entered_addresses() {
+    PostalLocator actual = patient.active().addresses().getFirst().getLocator();
+    NewPatient.Address expected = this.input.active().addresses().getFirst();
+
+    assertThat(actual)
+        .returns(expected.city(), PostalLocator::getCityDescTxt)
+        .returns(expected.state(), PostalLocator::getStateCd)
+        .returns(expected.county(), PostalLocator::getCntyCd)
+        .returns(expected.country(), PostalLocator::getCntryCd)
+        .returns(expected.zipcode(), PostalLocator::getZipCd)
+        .returns(expected.address1(), PostalLocator::getStreetAddr1)
+        .returns(expected.address2(), PostalLocator::getStreetAddr2)
+        .returns(expected.censusTract(), PostalLocator::getCensusTract);
   }
 
   @Then("the patient created has the entered emails")
@@ -165,10 +204,32 @@ public class PatientCreateSteps {
     assertThat(actualElp)
         .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
-        .returns(expected.number(), TeleLocator::getPhoneNbrTxt)
+        .returns(expected.phoneNumber(), TeleLocator::getPhoneNbrTxt)
         .returns(expected.countryCode(), TeleLocator::getCntryCd)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.extension(), TeleLocator::getExtensionTxt);
+  }
+
+  @Then("the patient created has the entered races")
+  public void the_patient_created_has_the_entered_races() {
+    PersonRace actual = patient.active().getRaces().getFirst();
+    NewPatient.Race expected = this.input.active().races().getFirst();
+
+    assertThat(actual)
+        .returns(expected.asOf(), PersonRace::getAsOfDate)
+        .returns(expected.race(), PersonRace::getRaceCategoryCd);
+  }
+
+  @Then("the patient created has the entered identifications")
+  public void the_patient_created_has_the_entered_identifications() {
+    EntityId actual = patient.active().identifications().getFirst();
+    NewPatient.Identification expected = this.input.active().identifications().getFirst();
+
+    assertThat(actual)
+        .returns(expected.asOf(), EntityId::getAsOfDate)
+        .returns(expected.type(), EntityId::getTypeCd)
+        .returns(expected.issuer(), EntityId::getAssigningAuthorityCd)
+        .returns(expected.id(), EntityId::getRootExtensionTxt);
   }
 }
 

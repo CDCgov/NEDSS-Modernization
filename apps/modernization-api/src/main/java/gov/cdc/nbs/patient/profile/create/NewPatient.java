@@ -1,47 +1,21 @@
 package gov.cdc.nbs.patient.profile.create;
 
+import gov.cdc.nbs.accumulation.Including;
+import gov.cdc.nbs.patient.profile.administrative.Administrative;
+import gov.cdc.nbs.patient.profile.names.NameDemographic;
+
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
 public record NewPatient(
     Administrative administrative,
-    List<Name> names,
+    List<NameDemographic> names,
     List<Address> addresses,
     List<Phone> phoneEmails,
     List<Race> races,
     List<Identification> identifications
 ) {
-
-
-  public record Administrative(
-      Instant asOf,
-      String comment
-  ) {
-
-    public Administrative(Instant asOf) {
-      this(asOf, null);
-    }
-
-    public Administrative withComment(final String comment) {
-      return new Administrative(asOf(), comment);
-    }
-  }
-
-  public record Name(
-      Instant asOf,
-      String type,
-      String prefix,
-      String first,
-      String middle,
-      String secondMiddle,
-      String last,
-      String secondLast,
-      String suffix,
-      String degree
-  ) {
-  }
-
 
   public record Address(
       Instant asOf,
@@ -55,39 +29,32 @@ public record NewPatient(
       String county,
       String censusTract,
       String country,
-      String comment
-  ) {
+      String comment) {
   }
-
 
   public record Phone(
       Instant asOf,
       String type,
       String use,
       String countryCode,
-      String number,
+      String phoneNumber,
       String extension,
       String email,
       String url,
-      String comment
-  ) {
+      String comment) {
   }
-
 
   public record Race(
       Instant asOf,
       String race,
-      List<String> detailed
-  ) {
+      List<String> detailed) {
   }
-
 
   public record Identification(
       Instant asOf,
       String type,
       String issuer,
-      String id
-  ) {
+      String id) {
   }
 
   public NewPatient(Instant asOf) {
@@ -97,8 +64,28 @@ public record NewPatient(
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList(),
-        Collections.emptyList()
+        Collections.emptyList());
+  }
+
+  public NewPatient withAdministrative(final Administrative administrative) {
+    return new NewPatient(
+        administrative,
+        names(),
+        addresses(),
+        phoneEmails(),
+        races(),
+        identifications()
     );
   }
 
+  public NewPatient withName(final NameDemographic name) {
+    return new NewPatient(
+        administrative(),
+        Including.include(names(), name),
+        addresses(),
+        phoneEmails(),
+        races(),
+        identifications()
+    );
+  }
 }

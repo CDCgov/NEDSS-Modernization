@@ -116,7 +116,7 @@ public class PatientCreateController {
             phone.type(),
             phone.use(),
             phone.countryCode(),
-            phone.number(),
+            phone.phoneNumber(),
             phone.extension(),
             phone.email(),
             phone.url(),
