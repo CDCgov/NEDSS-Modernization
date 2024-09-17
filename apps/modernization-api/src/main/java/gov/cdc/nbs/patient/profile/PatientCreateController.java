@@ -140,8 +140,8 @@ public class PatientCreateController {
             created.id(),
             identification.asOf(),
             identification.type(),
-            identification.authority(),
-            identification.value());
+            identification.issuer(),
+            identification.id());
         identificationService.add(context, newPatientIdentificationInput);
       });
     }

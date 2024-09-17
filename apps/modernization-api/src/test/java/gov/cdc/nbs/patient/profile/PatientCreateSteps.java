@@ -267,8 +267,8 @@ public class PatientCreateSteps {
     assertThat(actual)
         .returns(expected.asOf(), EntityId::getAsOfDate)
         .returns(expected.type(), EntityId::getTypeCd)
-        .returns(expected.authority(), EntityId::getAssigningAuthorityCd)
-        .returns(expected.value(), EntityId::getRootExtensionTxt);
+        .returns(expected.issuer(), EntityId::getAssigningAuthorityCd)
+        .returns(expected.id(), EntityId::getRootExtensionTxt);
   }
 }
 

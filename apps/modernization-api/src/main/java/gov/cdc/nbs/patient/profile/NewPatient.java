@@ -72,6 +72,6 @@ record Race(
 record Identification(
     Instant asOf,
     String type,
-    String authority,
-    String value) {
+    String issuer,
+    String id) {
 }
