@@ -99,7 +99,7 @@ const useSearchCritiera = <C extends object>({ defaultValues }: Options<C>): Int
         }
     }, [state.status, dispatch]);
 
-    const criteria = useMemo(() => (state.status === 'waiting' ? state.criteria : undefined), [state.status]);
+    const criteria = state.status === 'waiting' ? state.criteria : undefined;
     const clear = useCallback(() => dispatch({ type: 'clear' }), [dispatch]);
     const change = useCallback((criteria: C) => dispatch({ type: 'prepare', criteria }), [dispatch]);
 
