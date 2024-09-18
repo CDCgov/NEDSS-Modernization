@@ -1,9 +1,8 @@
 import { useDetailedRaceCodedValues, useRaceCodedValues } from 'coded/race';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { MultiSelectInput } from 'components/selection/multi';
 import { RaceEntry } from '../entry';
+import { MultiSelect, SingleSelect } from 'design-system/select';
 
 export const RaceEntryFields = () => {
     const { control } = useFormContext<RaceEntry>();
@@ -38,14 +37,13 @@ export const RaceEntryFields = () => {
                     required: { value: true, message: 'Race is required.' }
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Race"
                         orientation="horizontal"
                         required
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value?.value}
-                        htmlFor={name}
+                        value={value}
                         id={name}
                         name={name}
                         options={categories}
@@ -59,12 +57,12 @@ export const RaceEntryFields = () => {
                     name="detailed"
                     shouldUnregister
                     render={({ field: { onChange, value, name } }) => (
-                        <MultiSelectInput
+                        <MultiSelect
                             label="Detailed race"
                             orientation="horizontal"
                             id={name}
                             name={name}
-                            value={value.map((v) => v?.value)}
+                            value={value}
                             onChange={onChange}
                             options={detailedRaces}
                         />
