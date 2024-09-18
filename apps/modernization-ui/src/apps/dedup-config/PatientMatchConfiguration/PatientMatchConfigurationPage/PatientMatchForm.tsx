@@ -10,9 +10,10 @@ import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchCo
 
 type Props = {
     passConfiguration: PassConfiguration;
+    onDeleteConfiguration: () => void;
 };
 
-const PatientMatchForm = ({ passConfiguration }: Props) => {
+const PatientMatchForm = ({ passConfiguration, onDeleteConfiguration }: Props) => {
     const { blockingCriteria, matchingCriteria } = usePatientMatchContext();
     const patientMatchForm = useForm({
         mode: 'onBlur',
@@ -50,7 +51,7 @@ const PatientMatchForm = ({ passConfiguration }: Props) => {
                     />
                 </div>
                 <div className={styles.footer}>
-                    <Button type="button" destructive onClick={() => patientMatchForm.reset()}>
+                    <Button type="button" destructive onClick={onDeleteConfiguration}>
                         Delete pass configuration
                     </Button>
                     <div className={styles.saveButton}>
