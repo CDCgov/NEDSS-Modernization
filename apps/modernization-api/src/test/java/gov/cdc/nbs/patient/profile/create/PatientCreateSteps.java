@@ -9,7 +9,6 @@ import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Optional;
 
 public class PatientCreateSteps {
