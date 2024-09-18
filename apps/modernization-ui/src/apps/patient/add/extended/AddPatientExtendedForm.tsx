@@ -1,5 +1,4 @@
-import { AdministrativeEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
-import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
+import { AddressEntry, AdministrativeEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { internalizeDate } from 'date';
@@ -16,7 +15,7 @@ import styles from './add-patient-extended-form.module.scss';
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
     administrative: AdministrativeEntry;
-    address: AddressFields[];
+    address: AddressEntry[];
     phone: PhoneEmailEntry[];
     race: RaceEntry[];
     name: NameEntry[];
