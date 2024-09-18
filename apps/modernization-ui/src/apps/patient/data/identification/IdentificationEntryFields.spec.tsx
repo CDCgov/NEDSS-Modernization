@@ -16,8 +16,8 @@ jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValu
     usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
 }));
 
-const form = renderHook(() =>
-    useForm<IdentificationEntry>({
+const Fixture = () => {
+    const form = useForm<IdentificationEntry>({
         mode: 'onBlur',
         defaultValues: {
             asOf: undefined,
@@ -25,16 +25,17 @@ const form = renderHook(() =>
             issuer: undefined,
             id: ''
         }
-    })
-).result.current;
+    });
+    return (
+        <FormProvider {...form}>
+            <IdentificationEntryFields />
+        </FormProvider>
+    );
+};
 
 describe('IdentificationEntryFields', () => {
     it('should render the proper labels', async () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <IdentificationEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText } = render(<Fixture />);
         await screen.findByText('ID value');
 
         expect(getByLabelText('Identification as of')).toBeInTheDocument();
@@ -44,11 +45,7 @@ describe('IdentificationEntryFields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <IdentificationEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
         await screen.findByText('ID value');
 
         const asOf = getByLabelText('Identification as of');
@@ -61,11 +58,7 @@ describe('IdentificationEntryFields', () => {
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <IdentificationEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
         await screen.findByText('ID value');
 
         const typeInput = getByLabelText('Type');
@@ -78,11 +71,7 @@ describe('IdentificationEntryFields', () => {
     });
 
     it('should require id value', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <IdentificationEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
         await screen.findByText('ID value');
 
         const valueInput = getByLabelText('ID value');
@@ -95,11 +84,7 @@ describe('IdentificationEntryFields', () => {
     });
 
     it('should be valid with as of, type, and id value', async () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <IdentificationEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Identification as of');
         const type = getByLabelText('Type');
@@ -116,9 +101,9 @@ describe('IdentificationEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(form.getFieldState('asOf').invalid).toBeFalsy();
-            expect(form.getFieldState('type').invalid).toBeFalsy();
-            expect(form.getFieldState('id').invalid).toBeFalsy();
+            expect(queryByText('Type is required.')).not.toBeInTheDocument();
+            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
+            expect(queryByText('ID value is required.')).not.toBeInTheDocument();
         });
     });
 });

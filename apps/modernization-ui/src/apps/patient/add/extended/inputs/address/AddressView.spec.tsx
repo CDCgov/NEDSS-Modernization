@@ -21,39 +21,39 @@ describe('PhoneEntryView', () => {
     it('should render label with values', () => {
         const { getByText } = render(<AddressView entry={entry} />);
         const asOf = getByText('Address as of');
-        expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
+        expect(asOf.parentElement).toContainElement(getByText('12/25/2020'));
 
         const type = getByText('Type');
-        expect(type.parentElement?.children[1]).toHaveTextContent('House');
+        expect(type.parentElement).toContainElement(getByText('House'));
 
         const use = getByText('Use');
-        expect(use.parentElement?.children[1]).toHaveTextContent('Home');
+        expect(use.parentElement).toContainElement(getByText('Home'));
 
         const street1 = getByText('Street address 1');
-        expect(street1.parentElement?.children[1]).toHaveTextContent('123 main st');
+        expect(street1.parentElement).toContainElement(getByText('123 main st'));
 
         const street2 = getByText('Street address 2');
-        expect(street2.parentElement?.children[1]).toHaveTextContent('2nd floor');
+        expect(street2.parentElement).toContainElement(getByText('2nd floor'));
 
         const city = getByText('City');
-        expect(city.parentElement?.children[1]).toHaveTextContent('city');
+        expect(city.parentElement).toContainElement(getByText('city'));
 
         const state = getByText('State');
-        expect(state.parentElement?.children[1]).toHaveTextContent('StateName');
+        expect(state.parentElement).toContainElement(getByText('StateName'));
 
         const zip = getByText('Zip');
-        expect(zip.parentElement?.children[1]).toHaveTextContent('12345');
+        expect(zip.parentElement).toContainElement(getByText('12345'));
 
         const county = getByText('County');
-        expect(county.parentElement?.children[1]).toHaveTextContent('CountyName');
+        expect(county.parentElement).toContainElement(getByText('CountyName'));
 
         const censusTract = getByText('Census tract');
-        expect(censusTract.parentElement?.children[1]).toHaveTextContent('22222');
+        expect(censusTract.parentElement).toContainElement(getByText('22222'));
 
         const country = getByText('Country');
-        expect(country.parentElement?.children[1]).toHaveTextContent('CountryName');
+        expect(country.parentElement).toContainElement(getByText('CountryName'));
 
         const comments = getByText('Address comments');
-        expect(comments.parentElement?.children[1]).toHaveTextContent('comment');
+        expect(comments.parentElement).toContainElement(getByText('comment'));
     });
 });

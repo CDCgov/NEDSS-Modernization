@@ -29,8 +29,8 @@ jest.mock('location/useLocationCodedValues', () => ({
     useLocationCodedValues: () => mockLocationCodedValues
 }));
 
-const form = renderHook(() =>
-    useForm<AddressEntry>({
+const Fixture = () => {
+    const form = useForm<AddressEntry>({
         mode: 'onBlur',
         defaultValues: {
             asOf: undefined,
@@ -46,16 +46,17 @@ const form = renderHook(() =>
             censusTract: '',
             comment: ''
         }
-    })
-).result.current;
+    });
+    return (
+        <FormProvider {...form}>
+            <AddressEntryFields />
+        </FormProvider>
+    );
+};
 
 describe('AddressEntryFields', () => {
     it('should render the proper labels', () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <AddressEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Address as of')).toBeInTheDocument();
         expect(getByLabelText('Type')).toBeInTheDocument();
@@ -72,11 +73,7 @@ describe('AddressEntryFields', () => {
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <AddressEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const typeInput = getByLabelText('Type');
         act(() => {
@@ -88,11 +85,7 @@ describe('AddressEntryFields', () => {
     });
 
     it('should require use', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <AddressEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const useInput = getByLabelText('Use');
         act(() => {
@@ -104,11 +97,7 @@ describe('AddressEntryFields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <AddressEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Address as of');
         act(() => {
@@ -120,11 +109,7 @@ describe('AddressEntryFields', () => {
     });
 
     it('should be valid with as of, type, and use', async () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <AddressEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Address as of');
         const type = getByLabelText('Type');
@@ -141,9 +126,9 @@ describe('AddressEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(form.getFieldState('asOf').invalid).toBeFalsy();
-            expect(form.getFieldState('type').invalid).toBeFalsy();
-            expect(form.getFieldState('use').invalid).toBeFalsy();
+            expect(queryByText('Type is required.')).not.toBeInTheDocument();
+            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
+            expect(queryByText('Use is required.')).not.toBeInTheDocument();
         });
     });
 });

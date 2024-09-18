@@ -13,16 +13,16 @@ describe('IdentificationView', () => {
     it('should render label with values', () => {
         const { getByText } = render(<IdentificationView entry={entry} />);
         const asOf = getByText('Identification as of');
-        expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
+        expect(asOf.parentElement).toContainElement(getByText('12/25/2020'));
 
         const type = getByText('Type');
-        expect(type.parentElement?.children[1]).toHaveTextContent('Account number');
+        expect(type.parentElement).toContainElement(getByText('Account number'));
 
         const issuer = getByText('Assigning authority');
-        expect(issuer.parentElement?.children[1]).toHaveTextContent('Texas');
+        expect(issuer.parentElement).toContainElement(getByText('Texas'));
 
         const value = getByText('ID value');
-        expect(value.parentElement?.children[1]).toHaveTextContent('1122');
+        expect(value.parentElement).toContainElement(getByText('1122'));
     });
 
     it('should display required for the proper inputs', () => {
