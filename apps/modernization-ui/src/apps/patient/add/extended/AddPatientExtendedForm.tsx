@@ -1,22 +1,21 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import styles from './add-patient-extended-form.module.scss';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
 import { PhoneEmailFields } from 'apps/patient/profile/phoneEmail/PhoneEmailEntry';
 import { useState } from 'react';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
-import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
-import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { AddressEntry, AdministrativeEntry } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
+import styles from './add-patient-extended-form.module.scss';
 
 type ExtendedPatientCreationForm = {
     administrative: AdministrativeEntry;
-    address: AddressFields[];
+    address: AddressEntry[];
     phone: PhoneEmailFields[];
     race: RaceEntry[];
     name: NameEntry[];
