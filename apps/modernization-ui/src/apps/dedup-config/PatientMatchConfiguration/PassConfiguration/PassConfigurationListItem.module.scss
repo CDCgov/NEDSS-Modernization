@@ -42,7 +42,7 @@ li {
         .active {
             margin-left: 0.5rem;
             display: inline-block;
-            background-color: green;
+            background-color: colors.$success;
             border-radius: 0.125rem;
             font-size: 0.875rem;
             font-style: normal;
