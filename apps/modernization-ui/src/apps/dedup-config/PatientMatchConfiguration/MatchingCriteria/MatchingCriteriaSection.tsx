@@ -16,7 +16,6 @@ export const MatchingCriteriaSection = () => {
         const sum = matchingCriteria
             .map((criteria) => criteria.field.logOdds || 0)
             .reduce((acc, logOdds) => acc + logOdds, 0);
-        console.log('SUM', sum);
         setLogOddsSum(sum);
         setTotalLogOdds(sum);
     }, [matchingCriteria]);
