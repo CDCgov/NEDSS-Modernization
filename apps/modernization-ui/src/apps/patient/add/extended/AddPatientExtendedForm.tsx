@@ -32,6 +32,7 @@ type ExtendedPatientCreationForm = {
 type DirtyState = {
     address: boolean;
     phone: boolean;
+    identification: boolean;
     name: boolean;
     race: boolean;
 };
@@ -49,6 +50,7 @@ export const AddPatientExtendedForm = () => {
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,
         phone: false,
+        identification: false,
         race: false,
         name: false
     });
@@ -78,9 +80,9 @@ export const AddPatientExtendedForm = () => {
                             }}
                         />
                         <IdentificationMultiEntry
-                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, phone: isDirty })}
-                            onChange={(phoneEmailData) => {
-                                form.setValue('identifications', phoneEmailData);
+                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, identification: isDirty })}
+                            onChange={(identificationData) => {
+                                form.setValue('identifications', identificationData);
                             }}
                         />
                         <RaceMultiEntry
