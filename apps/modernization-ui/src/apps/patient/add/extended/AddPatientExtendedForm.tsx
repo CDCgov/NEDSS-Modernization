@@ -1,26 +1,27 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
-import { PhoneEmailFields } from 'apps/patient/profile/phoneEmail/PhoneEmailEntry';
-import { useState } from 'react';
-import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
-import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
-import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
-import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
+import { AddressEntry, AdministrativeEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
-import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
-import { Administrative } from './inputs/administrative/Administrative';
-import { AddressEntry, AdministrativeEntry } from 'apps/patient/data/entry';
+import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { internalizeDate } from 'date';
+import { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
+import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
+import { Administrative } from './inputs/administrative/Administrative';
+import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
+import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
+import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
 
+// Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
     administrative: AdministrativeEntry;
     address: AddressEntry[];
-    phone: PhoneEmailFields[];
+    phone: PhoneEmailEntry[];
     race: RaceEntry[];
     name: NameEntry[];
 };
 
+// used to track sub-form state to display error on parent form submisson
 type DirtyState = {
     address: boolean;
     phone: boolean;
