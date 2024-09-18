@@ -4,16 +4,18 @@ export const dataElements: DataElement[] = [
     {
         name: 'lastName',
         label: 'Last name',
+        category: 'Name',
         active: true,
         m: 0.5,
         u: 0.5,
         threshold: 0.5,
-        oddsRatio: 0.5 / 0.5, // 1
-        logOdds: Math.log(0.5 / 0.5) // 0
+        oddsRatio: 0.5 / 0.5,
+        logOdds: Math.log(0.5 / 0.5)
     },
     {
         name: 'secondLastName',
         label: 'Second last name',
+        category: 'Name',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -24,6 +26,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'firstName',
         label: 'First name',
+        category: 'Name',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -34,6 +37,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'middleName',
         label: 'Middle name',
+        category: 'Name',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -44,6 +48,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'secondMiddleName',
         label: 'Second middle name',
+        category: 'Name',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -54,6 +59,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'suffix',
         label: 'Suffix',
+        category: 'Name',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -64,6 +70,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'currentSex',
         label: 'Current sex',
+        category: 'Sex and birth',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -74,6 +81,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'dateOfBirth',
         label: 'Date of birth',
+        category: 'Sex and birth',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -84,6 +92,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'ssn',
         label: 'Social security number',
+        category: 'Identification',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -94,6 +103,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'idType',
         label: 'ID type',
+        category: 'Identification',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -104,6 +114,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'idAssigningAuthority',
         label: 'ID assigning authority',
+        category: 'Identification',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -114,6 +125,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'idValue',
         label: 'ID value',
+        category: 'Identification',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -124,6 +136,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'streetAddress1',
         label: 'Street address 1',
+        category: 'Address',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -134,6 +147,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'streetAddress2',
         label: 'Street address 2',
+        category: 'Address',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -144,6 +158,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'city',
         label: 'City',
+        category: 'Address',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -154,6 +169,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'state',
         label: 'State',
+        category: 'Address',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -164,6 +180,7 @@ export const dataElements: DataElement[] = [
     {
         name: 'zip',
         label: 'Zip code',
+        category: 'Address',
         active: true,
         m: 0.5,
         u: 0.5,
@@ -174,11 +191,12 @@ export const dataElements: DataElement[] = [
     {
         name: 'telephone',
         label: 'Telephone',
+        category: 'Address',
         active: true,
         m: 0.5,
-        u: 0.1, // Different 'u' value
+        u: 0.1,
         threshold: 0.5,
-        oddsRatio: 0.5 / 0.1, // Calculated dynamically
-        logOdds: Math.log(0.5 / 0.1) // Calculated dynamically
+        oddsRatio: 0.5 / 0.1,
+        logOdds: Math.log(0.5 / 0.1)
     }
 ];

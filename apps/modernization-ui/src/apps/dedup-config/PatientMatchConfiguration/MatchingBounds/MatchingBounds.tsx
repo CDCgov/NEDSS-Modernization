@@ -39,11 +39,7 @@ export const MatchingBounds = () => {
             </div>
             <div className={styles.criteriaContentContainer}>
                 <div className={styles.progressBar}>
-                    <ProgressBar
-                        lowerBound={watchedLowerBound}
-                        upperBound={watchedUpperBound}
-                        totalLogOdds={totalLogOdds ?? 100}
-                    />
+                    <ProgressBar lowerBound={watchedLowerBound} upperBound={watchedUpperBound} />
                 </div>
                 <div className={styles.bounds}>
                     <Controller
@@ -61,6 +57,7 @@ export const MatchingBounds = () => {
                                     const val = parseFloat(e.target.value);
                                     onChange(isNaN(val) ? undefined : val);
                                 }}
+                                disabled={!totalLogOdds}
                             />
                         )}
                     />
@@ -79,6 +76,7 @@ export const MatchingBounds = () => {
                                     const val = parseFloat(e.target.value);
                                     onChange(isNaN(val) ? undefined : val);
                                 }}
+                                disabled={!totalLogOdds}
                             />
                         )}
                     />
