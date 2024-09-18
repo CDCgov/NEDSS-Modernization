@@ -64,7 +64,6 @@ const columns = (
                         value={value}
                         onChange={(e: any) => {
                             onChange(e);
-                            // Recalculate oddsRatio and logOdds whenever m changes
                             handleRowCheckboxChange(index, checkedState[index]);
                         }}
                         onBlur={onBlur}
@@ -92,7 +91,6 @@ const columns = (
                         value={value}
                         onChange={(e: any) => {
                             onChange(e);
-                            // Recalculate oddsRatio and logOdds whenever u changes
                             handleRowCheckboxChange(index, checkedState[index]);
                         }}
                         onBlur={onBlur}
@@ -176,7 +174,6 @@ const DataElementsTable = () => {
         const m = watchedDataElements[index]?.m;
         const u = watchedDataElements[index]?.u;
 
-        // Calculate and set oddsRatio and logOdds
         const oddsRatio = m && u && u !== 0 ? m / u : 0;
         const logOdds = m && u && u !== 0 && m !== 0 ? Math.log(m / u) : 0;
 

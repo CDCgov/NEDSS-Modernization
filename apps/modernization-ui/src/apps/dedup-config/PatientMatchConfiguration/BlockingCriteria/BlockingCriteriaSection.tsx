@@ -7,7 +7,7 @@ import { ModalComponent } from 'components/ModalComponent/ModalComponent';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
 import { BlockingCriteriaRow } from './BlockingCriteriaRow';
 
-export const BlockingCriteria = () => {
+export const BlockingCriteriaSection = () => {
     const modalRef = useRef<ModalRef>(null);
     const { blockingCriteria } = usePatientMatchContext();
 
