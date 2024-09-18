@@ -63,7 +63,6 @@ export const AddMatchingCriteria = ({ matchingModalRef }: Props) => {
             <div className={styles.addMatchingCriteriaContent}>
                 {dataElements &&
                     dataElements.length > 0 &&
-                    // Group the dataElements by category, filtering out inactive elements
                     Object.entries(
                         dataElements.reduce(
                             (acc, dataElement) => {
@@ -71,7 +70,7 @@ export const AddMatchingCriteria = ({ matchingModalRef }: Props) => {
                                     acc[dataElement.category] = [];
                                 }
                                 if (dataElement.active) {
-                                    acc[dataElement.category].push(dataElement); // Only include active elements
+                                    acc[dataElement.category].push(dataElement);
                                 }
                                 return acc;
                             },
@@ -88,7 +87,6 @@ export const AddMatchingCriteria = ({ matchingModalRef }: Props) => {
                                         label={dataElement.label}
                                         id={dataElement.name + index}
                                         tile
-                                        // Disable if it's inactive or already selected in blockingCriteria
                                         disabled={
                                             !dataElement.active ||
                                             blockingCriteria.some(

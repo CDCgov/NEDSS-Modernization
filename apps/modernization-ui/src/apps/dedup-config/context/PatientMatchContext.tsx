@@ -39,23 +39,6 @@ const PatientMatchContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
         setUpperBound(upper);
     };
 
-    // useEffect(() => {
-    //     console.log('MATCHING CRITERIA', totalLogOdds, matchingCriteria);
-    //     // setTotalLogOdds(calculateTotalLogOdds(matchingCriteria));
-    // }, [matchingCriteria]);
-
-    // const calculateTotalLogOdds = (criteria: MatchingCriteria[]) => {
-    //     const logOddsSum = criteria.reduce((sum, { field }) => {
-    //         const { m, u } = field;
-    //         if (m && u && u !== 0 && m !== 0) {
-    //             return sum + Math.log(m / u); // Calculate log odds and sum it up
-    //         }
-    //         return sum;
-    //     }, 0);
-    //     return logOddsSum;
-    // };
-
-    // Method to remove matching criteria by field name or method value
     const removeMatchingCriteria = (value: string) => {
         const updatedCriteria = matchingCriteria.filter((criteria) => criteria.field.name !== value);
         setMatchingCriteria(updatedCriteria);
