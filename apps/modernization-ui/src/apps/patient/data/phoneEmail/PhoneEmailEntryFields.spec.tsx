@@ -1,5 +1,4 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { render, waitFor, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneEmailEntry } from '../entry';
@@ -56,7 +55,8 @@ describe('PhoneEmailEntryFields', () => {
 
         const typeInput = getByLabelText('Type');
         act(() => {
-            fireEvent.blur(typeInput);
+            userEvent.click(typeInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Type is required.')).toBeInTheDocument();
@@ -68,7 +68,8 @@ describe('PhoneEmailEntryFields', () => {
 
         const useInput = getByLabelText('Use');
         act(() => {
-            fireEvent.blur(useInput);
+            userEvent.click(useInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Use is required.')).toBeInTheDocument();
@@ -80,7 +81,8 @@ describe('PhoneEmailEntryFields', () => {
 
         const asOf = getByLabelText('Phone & email as of');
         act(() => {
-            fireEvent.blur(asOf);
+            userEvent.click(asOf);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('As of date is required.')).toBeInTheDocument();
@@ -96,11 +98,11 @@ describe('PhoneEmailEntryFields', () => {
         await screen.findByText('Use');
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
-            fireEvent.blur(asOf);
+            userEvent.tab();
             userEvent.selectOptions(use, 'H');
-            fireEvent.blur(use);
+            userEvent.tab();
             userEvent.selectOptions(type, 'PH');
-            fireEvent.blur(type);
+            userEvent.tab();
         });
 
         await waitFor(() => {

@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { render, screen, waitFor } from '@testing-library/react';
 import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -50,7 +49,8 @@ describe('IdentificationEntryFields', () => {
 
         const asOf = getByLabelText('Identification as of');
         act(() => {
-            fireEvent.blur(asOf);
+            userEvent.click(asOf);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('As of date is required.')).toBeInTheDocument();
@@ -63,7 +63,8 @@ describe('IdentificationEntryFields', () => {
 
         const typeInput = getByLabelText('Type');
         act(() => {
-            fireEvent.blur(typeInput);
+            userEvent.click(typeInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Type is required.')).toBeInTheDocument();
@@ -76,7 +77,8 @@ describe('IdentificationEntryFields', () => {
 
         const valueInput = getByLabelText('ID value');
         act(() => {
-            fireEvent.blur(valueInput);
+            userEvent.click(valueInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('ID value is required.')).toBeInTheDocument();
@@ -93,11 +95,11 @@ describe('IdentificationEntryFields', () => {
 
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
-            fireEvent.blur(asOf);
+            userEvent.tab();
             userEvent.selectOptions(type, 'AN');
-            fireEvent.blur(type);
+            userEvent.tab();
             userEvent.type(idValue, '1234');
-            fireEvent.blur(idValue);
+            userEvent.tab();
         });
 
         await waitFor(() => {

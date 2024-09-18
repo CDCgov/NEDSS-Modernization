@@ -1,5 +1,4 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { render, waitFor, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddressEntry } from '../entry';
@@ -77,7 +76,8 @@ describe('AddressEntryFields', () => {
 
         const typeInput = getByLabelText('Type');
         act(() => {
-            fireEvent.blur(typeInput);
+            userEvent.click(typeInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Type is required.')).toBeInTheDocument();
@@ -89,7 +89,8 @@ describe('AddressEntryFields', () => {
 
         const useInput = getByLabelText('Use');
         act(() => {
-            fireEvent.blur(useInput);
+            userEvent.click(useInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Use is required.')).toBeInTheDocument();
@@ -101,7 +102,8 @@ describe('AddressEntryFields', () => {
 
         const asOf = getByLabelText('Address as of');
         act(() => {
-            fireEvent.blur(asOf);
+            userEvent.click(asOf);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('As of date is required.')).toBeInTheDocument();
@@ -118,11 +120,11 @@ describe('AddressEntryFields', () => {
 
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
-            fireEvent.blur(asOf);
+            userEvent.tab();
             userEvent.selectOptions(use, 'HM');
-            fireEvent.blur(use);
+            userEvent.tab();
             userEvent.selectOptions(type, 'H');
-            fireEvent.blur(type);
+            userEvent.tab();
         });
 
         await waitFor(() => {
