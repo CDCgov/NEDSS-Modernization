@@ -1,5 +1,4 @@
-import { NameEntry } from 'apps/patient/profile/names/NameEntry';
-import { AddressEntry, AdministrativeEntry, RaceEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
+import { AddressEntry, AdministrativeEntry, RaceEntry, PhoneEmailEntry, NameEntry } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

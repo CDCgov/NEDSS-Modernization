@@ -1,4 +1,5 @@
-import { asName } from './asName';
+import { asName } from "..";
+
 
 describe('when mapping a name entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
