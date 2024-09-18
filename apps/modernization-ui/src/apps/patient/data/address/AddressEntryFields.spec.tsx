@@ -49,7 +49,7 @@ const form = renderHook(() =>
     })
 ).result.current;
 
-describe('PhoneEmailEntryFields', () => {
+describe('AddressEntryFields', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(
             <FormProvider {...form}>

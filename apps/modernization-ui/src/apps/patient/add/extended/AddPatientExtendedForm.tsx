@@ -1,4 +1,4 @@
-import { AddressEntry, AdministrativeEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
+import { AddressEntry, AdministrativeEntry, IdentificationEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { internalizeDate } from 'date';
@@ -11,6 +11,7 @@ import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry'
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
+import { IdentificationMultiEntry } from './inputs/identification/IdentificationMultiEntry';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
@@ -19,6 +20,7 @@ type ExtendedPatientCreationForm = {
     phone: PhoneEmailEntry[];
     race: RaceEntry[];
     name: NameEntry[];
+    identifications: IdentificationEntry[];
 };
 
 // used to track sub-form state to display error on parent form submisson
@@ -68,6 +70,12 @@ export const AddPatientExtendedForm = () => {
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, phone: isDirty })}
                             onChange={(phoneEmailData) => {
                                 form.setValue('phone', phoneEmailData);
+                            }}
+                        />
+                        <IdentificationMultiEntry
+                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, phone: isDirty })}
+                            onChange={(phoneEmailData) => {
+                                form.setValue('identifications', phoneEmailData);
                             }}
                         />
                         <RaceMultiEntry
