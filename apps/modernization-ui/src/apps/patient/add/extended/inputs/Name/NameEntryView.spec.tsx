@@ -31,30 +31,30 @@ describe('NameEntryView', () => {
     it('should render label with value', () => {
         const { getByText } = render(<NameEntryView entry={entry} />);
         const asOf = getByText('As of');
-        expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
+        expect(asOf.parentElement).toContainElement(getByText('12/25/2020'));
 
         const type = getByText('Type');
-        expect(type.parentElement?.children[1]).toHaveTextContent('Adopted name');
+        expect(type.parentElement).toContainElement(getByText('Adopted name'));
 
         const prefix = getByText('Prefix');
-        expect(prefix.parentElement?.children[1]).toHaveTextContent('Miss');
+        expect(prefix.parentElement).toContainElement(getByText('Miss'));
 
         const last = getByText('Last');
-        expect(last.parentElement?.children[1]).toHaveTextContent('test last');
+        expect(last.parentElement).toContainElement(getByText('test last'));
 
         const first = getByText('First');
-        expect(first.parentElement?.children[1]).toHaveTextContent('test first');
+        expect(first.parentElement).toContainElement(getByText('test first'));
 
         const middle = getByText('Middle');
-        expect(middle.parentElement?.children[1]).toHaveTextContent('test middle');
+        expect(middle.parentElement).toContainElement(getByText('test middle'));
 
         const secondMiddle = getByText('Second middle');
-        expect(secondMiddle.parentElement?.children[1]).toHaveTextContent('second middle');
+        expect(secondMiddle.parentElement).toContainElement(getByText('second middle'));
 
         const suffix = getByText('Suffix');
-        expect(suffix.parentElement?.children[1]).toHaveTextContent('test 2');
+        expect(suffix.parentElement).toContainElement(getByText('test 2'));
 
         const degree = getByText('Degree');
-        expect(degree.parentElement?.children[1]).toHaveTextContent('test ba');
+        expect(degree.parentElement).toContainElement(getByText('test ba'));
     });
 });

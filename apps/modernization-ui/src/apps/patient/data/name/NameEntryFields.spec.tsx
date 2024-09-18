@@ -6,18 +6,18 @@ import userEvent from '@testing-library/user-event';
 import { NameEntryFields } from './NameEntryFields';
 
 const mockPatientNameCodedValues = {
-  types: [{ name: 'Adopted name', value: 'AN' }],
-  prefixes: [{ name: 'Miss', value: 'MS' }],
-  suffixes: [{ name: 'Sr.', value: 'SR' }],
-  degrees: [{ name: 'BA', value: 'BA' }]
+    types: [{ name: 'Adopted name', value: 'AN' }],
+    prefixes: [{ name: 'Miss', value: 'MS' }],
+    suffixes: [{ name: 'Sr.', value: 'SR' }],
+    degrees: [{ name: 'BA', value: 'BA' }]
 };
 
 jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
-  usePatientNameCodedValues: () => mockPatientNameCodedValues
+    usePatientNameCodedValues: () => mockPatientNameCodedValues
 }));
 
-const form = renderHook(() =>
-    useForm<NameEntry>({
+const Fixture = () => {
+    const form = useForm<NameEntry>({
         mode: 'onBlur',
         defaultValues: {
             asOf: undefined,
@@ -31,16 +31,18 @@ const form = renderHook(() =>
             suffix: undefined,
             degree: undefined
         }
-    })
-).result.current;
+    });
+
+    return (
+        <FormProvider {...form}>
+            <NameEntryFields />
+        </FormProvider>
+    );
+};
 
 describe('Name entry fields', () => {
     it('should render the proper labels', () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <NameEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Name as of')).toBeInTheDocument();
         expect(getByLabelText('Type')).toBeInTheDocument();
@@ -55,15 +57,12 @@ describe('Name entry fields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <NameEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Name as of');
         act(() => {
-            fireEvent.blur(asOf);
+            userEvent.click(asOf);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('As of date is required.')).toBeInTheDocument();
@@ -71,15 +70,12 @@ describe('Name entry fields', () => {
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <NameEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const type = getByLabelText('Type');
         act(() => {
-            fireEvent.blur(type);
+            userEvent.click(type);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Type is required.')).toBeInTheDocument();
@@ -87,24 +83,20 @@ describe('Name entry fields', () => {
     });
 
     it('should be valid with as of, race', async () => {
-      const { getByLabelText } = render(
-          <FormProvider {...form}>
-              <NameEntryFields />
-          </FormProvider>
-      );
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
-      const asOf = getByLabelText('Name as of');
-      const type = getByLabelText('Type');
-      act(() => {
-          userEvent.paste(asOf, '01/20/2020');
-          fireEvent.blur(asOf);
-          userEvent.selectOptions(type, 'AN');
-          fireEvent.blur(type);
-      });
+        const asOf = getByLabelText('Name as of');
+        const type = getByLabelText('Type');
+        act(() => {
+            userEvent.paste(asOf, '01/20/2020');
+            userEvent.tab();
+            userEvent.selectOptions(type, 'AN');
+            userEvent.tab();
+        });
 
-      await waitFor(() => {
-          expect(form.getFieldState('asOf').invalid).toBeFalsy();
-          expect(form.getFieldState('type').invalid).toBeFalsy();
-      });
-  });
+        await waitFor(() => {
+            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
+            expect(queryByText('Type is required.')).not.toBeInTheDocument();
+        });
+    });
 });

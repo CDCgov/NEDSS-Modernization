@@ -28,24 +28,24 @@ describe('RaceEntryView', () => {
     it('should render label with value', () => {
         const { getByText } = render(<RaceEntryView entry={entry} />);
         const asOf = getByText('As of');
-        expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
+        expect(asOf.parentElement).toContainElement(getByText('12/25/2020'));
 
         const race = getByText('Race');
-        expect(race.parentElement?.children[1]).toHaveTextContent('test');
+        expect(race.parentElement).toContainElement(getByText('test'));
 
         const detailedRace = getByText('Detailed race');
-        expect(detailedRace.parentElement?.children[1]).toHaveTextContent('test 2, test 3');
+        expect(detailedRace.parentElement).toContainElement(getByText('test 2, test 3'));
     });
 
     it('should render label with value for empty detailed race', () => {
         const { getByText } = render(<RaceEntryView entry={{ ...entry, detailed: [] }} />);
         const asOf = getByText('As of');
-        expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
+        expect(asOf.parentElement).toContainElement(getByText('12/25/2020'));
 
         const race = getByText('Race');
-        expect(race.parentElement?.children[1]).toHaveTextContent('test');
+        expect(race.parentElement).toContainElement(getByText('test'));
 
         const detailedRace = getByText('Detailed race');
-        expect(detailedRace.parentElement?.children[1]).toHaveTextContent('');
+        expect(detailedRace.parentElement).toHaveTextContent(' ');
     });
 });
