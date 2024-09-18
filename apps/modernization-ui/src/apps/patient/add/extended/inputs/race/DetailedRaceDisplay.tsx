@@ -1,10 +1,8 @@
-import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
-import { useDetailedRaceCodedValues } from 'coded/race';
+import { RaceEntry } from 'apps/patient/data/entry';
 
 type Props = {
     entry: RaceEntry;
 };
 export const DetailedRaceDisplay = ({ entry }: Props) => {
-    const options = useDetailedRaceCodedValues(entry.category);
-    return <div>{entry.detailed?.map((v) => options.find((o) => o.value === v)?.name).join(', ')}</div>;
+    return <div>{entry.detailed?.map((v) => v.name).join(', ')}</div>;
 };
