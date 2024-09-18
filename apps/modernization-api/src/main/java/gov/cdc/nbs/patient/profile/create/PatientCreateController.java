@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.profile;
+package gov.cdc.nbs.patient.profile.create;
 
 import java.time.Clock;
 import org.springframework.http.HttpStatus;
