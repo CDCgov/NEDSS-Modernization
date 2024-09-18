@@ -1,30 +1,30 @@
-import { NameEntry } from 'apps/patient/profile/names/NameEntry';
-import { NameEntryFields } from 'apps/patient/profile/names/NameEntryFields';
 import { internalizeDate } from 'date';
 import { Column } from 'design-system/table';
 import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { NameEntryView } from './NameEntryView';
+import { NameEntry } from 'apps/patient/data/entry';
+import { NameEntryFields } from 'apps/patient/data/name/NameEntryFields';
 
-const defaultValue: NameEntry = {
+const defaultValue: Partial<NameEntry> = {
     asOf: internalizeDate(new Date()),
-    type: '',
-    prefix: '',
+    type: undefined,
+    prefix: undefined,
     first: '',
     middle: '',
     secondMiddle: '',
     last: '',
     secondLast: '',
-    suffix: '',
-    degree: ''
+    suffix: undefined,
+    degree: undefined
 };
 
 const columns: Column<NameEntry>[] = [
     { id: 'nameAsOf', name: 'As of', render: (v) => v.asOf },
-    { id: 'nameType', name: 'Type', render: (v) => v.type },
+    { id: 'nameType', name: 'Type', render: (v) => v.type.name },
     { id: 'nameLast', name: 'Last', render: (v) => v.last },
     { id: 'nameFirst', name: 'First', render: (v) => v.first },
     { id: 'nameMiddle', name: 'Middle', render: (v) => v.middle },
-    { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix }
+    { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name }
 ];
 
 type Props = {
@@ -37,7 +37,7 @@ export const NameMultiEntry = ({ onChange, isDirty }: Props) => {
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
-        <MultiValueEntry
+        <MultiValueEntry<NameEntry>
             id="section-Name"
             title="Name"
             defaultValues={defaultValue}

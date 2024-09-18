@@ -1,5 +1,5 @@
 export { asAdministrative } from './asAdministrative';
-export { asName } from './asName';
+export { asName } from './name/asName';
 export { asAddress } from './address/asAddress';
 export { asPhoneEmail } from './phoneEmail/asPhoneEmail';
 export { asIdentification } from './asIdentification';
