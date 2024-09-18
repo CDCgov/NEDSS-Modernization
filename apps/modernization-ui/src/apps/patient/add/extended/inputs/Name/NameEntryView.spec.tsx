@@ -1,12 +1,13 @@
 import { render } from '@testing-library/react';
+import { NameEntry } from 'apps/patient/data/entry';
 import { NameEntryView } from './NameEntryView';
-import { NameEntry } from 'apps/patient/profile/names/NameEntry';
+import { asSelectable } from 'options/selectable';
 
 const mockPatientNameCodedValues = {
     types: [{ name: 'Adopted name', value: 'AN' }],
     prefixes: [{ name: 'Miss', value: 'MS' }],
-    suffixes: [{name: 'Sr.', value: 'SR'}],
-    degrees: [{name: 'BA', value: 'BA'}]
+    suffixes: [{ name: 'Sr.', value: 'SR' }],
+    degrees: [{ name: 'BA', value: 'BA' }]
 };
 
 jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
@@ -15,15 +16,15 @@ jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
 
 const entry: NameEntry = {
     asOf: '12/25/2020',
-    type: 'AN',
-    prefix: 'MS',
+    type: asSelectable('AN', 'Adopted name'),
+    prefix: asSelectable('MS', 'Miss'),
     first: 'test first',
     middle: 'test middle',
     secondMiddle: 'second middle',
     last: 'test last',
     secondLast: 'second last',
-    suffix: 'SR',
-    degree: 'BA'
+    suffix: asSelectable('SR', 'test 2'),
+    degree: asSelectable('BA', 'test ba')
 };
 
 describe('NameEntryView', () => {
@@ -50,6 +51,10 @@ describe('NameEntryView', () => {
         const secondMiddle = getByText('Second middle');
         expect(secondMiddle.parentElement?.children[1]).toHaveTextContent('second middle');
 
+        const suffix = getByText('Suffix');
+        expect(suffix.parentElement?.children[1]).toHaveTextContent('test 2');
 
+        const degree = getByText('Degree');
+        expect(degree.parentElement?.children[1]).toHaveTextContent('test ba');
     });
 });
