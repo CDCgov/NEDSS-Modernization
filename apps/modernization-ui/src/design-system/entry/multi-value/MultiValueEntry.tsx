@@ -67,8 +67,15 @@ export const MultiValueEntry = <V extends FieldValues>({
 
     const handleEdit = (index: number) => {
         edit(index);
-        form.reset(state.data[index], { keepDefaultValues: true });
     };
+
+    useEffect(() => {
+        // Perform form reset after status update to allow time for rendering of form
+        // fixes issue with coded values not being selected within the form
+        if ('editing' === state.status) {
+            form.reset(state.data[state.index], { keepDefaultValues: true });
+        }
+    }, [state.status]);
 
     const iconColumn: Column<V> = {
         id: '',

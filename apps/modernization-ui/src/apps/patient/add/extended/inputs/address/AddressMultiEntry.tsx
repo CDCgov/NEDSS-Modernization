@@ -1,48 +1,44 @@
-import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
-import { AddressEntryFields } from 'apps/patient/profile/addresses/AddressEntryFields';
+import { AddressEntry } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { Column } from 'design-system/table';
 import { AddressView } from './AddressView';
-import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
-import { useLocationCodedValues } from 'location';
+import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
 
-const defaultValue: AddressFields = {
+const defaultValue: AddressEntry = {
     asOf: internalizeDate(new Date()),
-    type: '',
-    use: '',
+    type: { name: '', value: '' },
+    use: { name: '', value: '' },
     address1: '',
     address2: '',
     city: '',
-    state: '',
+    state: { name: '', value: '' },
     zipcode: '',
-    county: '',
-    country: '',
+    county: { name: '', value: '' },
+    country: { name: '', value: '' },
     censusTract: '',
     comment: ''
 };
 
 type Props = {
-    onChange: (data: AddressFields[]) => void;
+    onChange: (data: AddressEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
 export const AddressMultiEntry = ({ onChange, isDirty }: Props) => {
-    const coded = usePatientAddressCodedValues();
-    const location = useLocationCodedValues();
     const renderForm = () => <AddressEntryFields />;
-    const renderView = (entry: AddressFields) => <AddressView entry={entry} />;
+    const renderView = (entry: AddressEntry) => <AddressView entry={entry} />;
 
-    const columns: Column<AddressFields>[] = [
+    const columns: Column<AddressEntry>[] = [
         { id: 'addressAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'addressType', name: 'Type', render: (v) => coded.types.find((t) => t.value === v.type)?.name },
+        { id: 'addressType', name: 'Type', render: (v) => v.type.name },
         { id: 'address', name: 'Address', render: (v) => v.address1 },
         { id: 'city', name: 'City', render: (v) => v.city },
-        { id: 'state', name: 'State', render: (v) => location.states.all.find((s) => s.value === v.state)?.name },
+        { id: 'state', name: 'State', render: (v) => v.state?.name },
         { id: 'zip', name: 'Zip', render: (v) => v.zipcode }
     ];
 
     return (
-        <MultiValueEntry<AddressFields>
+        <MultiValueEntry<AddressEntry>
             id="section-Address"
             title="Address"
             defaultValues={defaultValue}

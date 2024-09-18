@@ -1,6 +1,5 @@
-import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
-import { AdministrativeEntry, RaceEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
+import { AddressEntry, AdministrativeEntry, RaceEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -15,7 +14,7 @@ import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
     administrative: AdministrativeEntry;
-    address: AddressFields[];
+    address: AddressEntry[];
     phone: PhoneEmailEntry[];
     race: RaceEntry[];
     name: NameEntry[];
