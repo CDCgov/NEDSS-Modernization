@@ -38,11 +38,6 @@ public class PatientCreateSteps {
     this.mapper = mapper;
   }
 
-  @Given("I am entering extended data for a new patient as of {date}")
-  public void i_am_entering_extended_data_for_a_new_patient(final Instant asOf) {
-    this.input.active(new NewPatient(asOf));
-  }
-
   @Given("I add the comment {string} to the extended patient data")
   public void i_add_the_comment(final String value) {
     this.input.active(current -> current.withAdministrative(current.administrative().withComment(value)));
