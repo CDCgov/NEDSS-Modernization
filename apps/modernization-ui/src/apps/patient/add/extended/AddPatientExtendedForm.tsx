@@ -4,7 +4,7 @@ import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
+import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
