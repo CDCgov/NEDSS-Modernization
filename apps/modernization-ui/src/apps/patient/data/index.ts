@@ -3,7 +3,7 @@ export { asName } from './asName';
 export { asAddress } from './asAddress';
 export { asPhoneEmail } from './asPhoneEmail';
 export { asIdentification } from './asIdentification';
-export { asRace } from './asRace';
+export { asRace } from './race/asRace';
 export { asEthnicity } from './asEthnicity';
 export { asSex } from './asSex';
 export { asBirth } from './asBirth';

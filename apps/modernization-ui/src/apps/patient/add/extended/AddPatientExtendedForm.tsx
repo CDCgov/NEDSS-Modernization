@@ -7,11 +7,10 @@ import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { AddressFields } from 'apps/patient/profile/addresses/AddressEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
-import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
-import { AdministrativeEntry } from 'apps/patient/data/entry';
+import { AdministrativeEntry, RaceEntry } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 
 type ExtendedPatientCreationForm = {
