@@ -12,7 +12,6 @@ type Props = {
 export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
     const { dataElements } = useDataElementsContext();
     const { blockingCriteria, setBlockingCriteria, availableMethods } = usePatientMatchContext();
-    // const renderedCategories = new Set<string>();
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
     useEffect(() => {
