@@ -2,8 +2,8 @@ import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { NameEntryFields } from 'apps/patient/profile/names/NameEntryFields';
 import { internalizeDate } from 'date';
 import { Column } from 'design-system/table';
-import { NameEntryView } from './NameEntryView';
 import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
+import { NameEntryView } from './NameEntryView';
 
 const defaultValue: NameEntry = {
     asOf: internalizeDate(new Date()),

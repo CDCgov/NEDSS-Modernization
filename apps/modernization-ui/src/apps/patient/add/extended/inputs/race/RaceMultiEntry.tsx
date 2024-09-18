@@ -1,16 +1,15 @@
-import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
-import { RaceEntryFields } from 'apps/patient/profile/race/RaceEntryFields';
-import { useRaceCodedValues } from 'coded/race';
 import { internalizeDate } from 'date';
 import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { Column } from 'design-system/table';
 import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
+import { RaceEntry } from 'apps/patient/data/entry';
+import { RaceEntryFields } from 'apps/patient/data/race/RaceEntryFields';
 
-const defaultValue: RaceEntry = {
+const defaultValue: Partial<RaceEntry> = {
     asOf: internalizeDate(new Date()),
-    category: '',
-    detailed: []
+    race: undefined,
+    detailed: undefined
 };
 
 type Props = {
@@ -18,13 +17,12 @@ type Props = {
     isDirty: (isDirty: boolean) => void;
 };
 export const RaceMultiEntry = ({ onChange, isDirty }: Props) => {
-    const categories = useRaceCodedValues();
     const renderForm = () => <RaceEntryFields />;
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
 
     const columns: Column<RaceEntry>[] = [
         { id: 'raceAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'race', name: 'Race', render: (v) => categories.find((c) => c.value === v.category)?.name },
+        { id: 'race', name: 'Race', render: (v) => v.race.name },
         {
             id: 'detailedRace',
             name: 'Detailed race',

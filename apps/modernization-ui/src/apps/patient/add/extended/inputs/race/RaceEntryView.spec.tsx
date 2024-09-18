@@ -1,7 +1,8 @@
 import { render } from '@testing-library/react';
-import { RaceEntry } from 'apps/patient/profile/race/RaceEntry';
 import { CodedValue } from 'coded';
 import { RaceEntryView } from './RaceEntryView';
+import { RaceEntry } from 'apps/patient/data/entry';
+import { asSelectable } from 'options';
 
 const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
 
@@ -19,8 +20,8 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
 
 const entry: RaceEntry = {
     asOf: '12/25/2020',
-    category: '1',
-    detailed: ['2', '3']
+    race: asSelectable('1', 'test'),
+    detailed: [asSelectable('2', 'test 2'), asSelectable('3', 'test 3')]
 };
 
 describe('RaceEntryView', () => {
@@ -29,11 +30,11 @@ describe('RaceEntryView', () => {
         const asOf = getByText('As of');
         expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
 
-        const type = getByText('Race');
-        expect(type.parentElement?.children[1]).toHaveTextContent('race name');
+        const race = getByText('Race');
+        expect(race.parentElement?.children[1]).toHaveTextContent('test');
 
-        const use = getByText('Detailed race');
-        expect(use.parentElement?.children[1]).toHaveTextContent('detailed race1, detailed race2');
+        const detailedRace = getByText('Detailed race');
+        expect(detailedRace.parentElement?.children[1]).toHaveTextContent('test 2, test 3');
     });
 
     it('should render label with value for empty detailed race', () => {
@@ -41,10 +42,10 @@ describe('RaceEntryView', () => {
         const asOf = getByText('As of');
         expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
 
-        const type = getByText('Race');
-        expect(type.parentElement?.children[1]).toHaveTextContent('race name');
+        const race = getByText('Race');
+        expect(race.parentElement?.children[1]).toHaveTextContent('test');
 
-        const use = getByText('Detailed race');
-        expect(use.parentElement?.children[1]).toHaveTextContent('');
+        const detailedRace = getByText('Detailed race');
+        expect(detailedRace.parentElement?.children[1]).toHaveTextContent('');
     });
 });
