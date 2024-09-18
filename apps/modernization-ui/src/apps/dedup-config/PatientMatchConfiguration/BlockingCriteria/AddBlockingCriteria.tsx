@@ -12,7 +12,7 @@ type Props = {
 export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
     const { dataElements } = useDataElementsContext();
     const { blockingCriteria, setBlockingCriteria, availableMethods } = usePatientMatchContext();
-
+    // const renderedCategories = new Set<string>();
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
     useEffect(() => {
@@ -63,17 +63,37 @@ export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
             <div className={styles.addBlockingCriteriaContent}>
                 {dataElements &&
                     dataElements.length > 0 &&
-                    dataElements.map((dataElement: DataElement, index: number) => (
-                        <Checkbox
-                            key={index}
-                            name={dataElement.name}
-                            label={dataElement.label}
-                            id={dataElement.name}
-                            tile
-                            disabled={!dataElement.active}
-                            checked={selectedFields.includes(dataElement.name)}
-                            onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
-                        />
+                    Object.entries(
+                        dataElements.reduce(
+                            (acc, dataElement) => {
+                                if (!acc[dataElement.category]) {
+                                    acc[dataElement.category] = [];
+                                }
+                                if (dataElement.active) {
+                                    acc[dataElement.category].push(dataElement);
+                                }
+                                return acc;
+                            },
+                            {} as { [key: string]: DataElement[] }
+                        )
+                    ).map(([category, elements], index) => (
+                        <div key={index} className={styles.category}>
+                            <h3>{category}</h3>
+                            <div className={styles.categoryGroup}>
+                                {elements.map((dataElement, index) => (
+                                    <Checkbox
+                                        key={index}
+                                        name={dataElement.name}
+                                        label={dataElement.label}
+                                        id={dataElement.name}
+                                        tile
+                                        disabled={!dataElement.active}
+                                        checked={selectedFields.includes(dataElement.name)}
+                                        onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     ))}
             </div>
             <div className={styles.addBlockingCriteriaFooter}>
