@@ -63,20 +63,44 @@ export const AddMatchingCriteria = ({ matchingModalRef }: Props) => {
             <div className={styles.addMatchingCriteriaContent}>
                 {dataElements &&
                     dataElements.length > 0 &&
-                    dataElements.map((dataElement: DataElement, index: number) => (
-                        <Checkbox
-                            key={index}
-                            name={dataElement.name}
-                            label={dataElement.label}
-                            id={dataElement.name + index}
-                            disabled={
-                                !dataElement.active ||
-                                blockingCriteria.some((criteria) => criteria.field.name === dataElement.name)
-                            }
-                            tile
-                            checked={selectedFields.includes(dataElement.name)}
-                            onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
-                        />
+                    // Group the dataElements by category, filtering out inactive elements
+                    Object.entries(
+                        dataElements.reduce(
+                            (acc, dataElement) => {
+                                if (!acc[dataElement.category]) {
+                                    acc[dataElement.category] = [];
+                                }
+                                if (dataElement.active) {
+                                    acc[dataElement.category].push(dataElement); // Only include active elements
+                                }
+                                return acc;
+                            },
+                            {} as { [key: string]: DataElement[] }
+                        )
+                    ).map(([category, elements], index) => (
+                        <div key={index} className={styles.category}>
+                            <h3>{category}</h3>
+                            <div className={styles.categoryGroup}>
+                                {elements.map((dataElement, index) => (
+                                    <Checkbox
+                                        key={index}
+                                        name={dataElement.name}
+                                        label={dataElement.label}
+                                        id={dataElement.name + index}
+                                        tile
+                                        // Disable if it's inactive or already selected in blockingCriteria
+                                        disabled={
+                                            !dataElement.active ||
+                                            blockingCriteria.some(
+                                                (criteria) => criteria.field.name === dataElement.name
+                                            )
+                                        }
+                                        checked={selectedFields.includes(dataElement.name)}
+                                        onChange={(e) => handleCheckboxChange(dataElement.name, e.target.checked)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     ))}
             </div>
             <div className={styles.addMatchingCriteriaFooter}>

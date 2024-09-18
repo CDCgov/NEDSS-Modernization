@@ -31,7 +31,7 @@ export const BlockingCriteria = () => {
             <ModalComponent
                 modalRef={modalRef}
                 size="medium"
-                modalHeading={'Add static element'}
+                modalHeading={'Add an attribute for blocking'}
                 modalBody={<AddBlockingCriteria blockingModalRef={modalRef} />}
             />
         </div>
