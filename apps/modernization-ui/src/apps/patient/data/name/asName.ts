@@ -1,7 +1,7 @@
 /* eslint-disable no-redeclare */
 import { asValue } from 'options';
-import { Name } from './api';
-import { NameEntry } from './entry';
+import { NameEntry } from '../entry';
+import { Name } from '../api';
 
 const asName = (entry: NameEntry): Name => {
     const { type, prefix, suffix, degree, ...remaining } = entry;

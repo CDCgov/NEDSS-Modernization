@@ -3,9 +3,9 @@ import {
     AdministrativeEntry,
     IdentificationEntry,
     PhoneEmailEntry,
-    RaceEntry
+    RaceEntry,
+    NameEntry
 } from 'apps/patient/data/entry';
-import { NameEntry } from 'apps/patient/profile/names/NameEntry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';

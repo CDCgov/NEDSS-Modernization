@@ -20,35 +20,33 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
     useDetailedRaceCodedValues: () => mockDetailedOptions
 }));
 
-const form = renderHook(() =>
-    useForm<RaceEntry>({
+const Fixture = () => {
+    const form = useForm<RaceEntry>({
         mode: 'onBlur',
         defaultValues: {
             asOf: undefined,
             race: undefined,
             detailed: undefined
         }
-    })
-).result.current;
+    });
+
+    return (
+        <FormProvider {...form}>
+            <RaceEntryFields />
+        </FormProvider>
+    );
+};
 
 describe('Race entry fields', () => {
     it('should render the proper labels', () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <RaceEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('As of')).toBeInTheDocument();
         expect(getByLabelText('Race')).toBeInTheDocument();
     });
 
     it('detailed race should render once race is chosen', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <RaceEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const race = getByLabelText('Race');
 
@@ -62,15 +60,12 @@ describe('Race entry fields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <RaceEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const asOf = getByLabelText('As of');
         act(() => {
-            fireEvent.blur(asOf);
+            userEvent.click(asOf);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('As of date is required.')).toBeInTheDocument();
@@ -78,15 +73,12 @@ describe('Race entry fields', () => {
     });
 
     it('should require race', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <RaceEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const raceInput = getByLabelText('Race');
         act(() => {
-            fireEvent.blur(raceInput);
+            userEvent.click(raceInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Race is required.')).toBeInTheDocument();
@@ -94,24 +86,20 @@ describe('Race entry fields', () => {
     });
 
     it('should be valid with as of, race', async () => {
-      const { getByLabelText } = render(
-          <FormProvider {...form}>
-              <RaceEntryFields />
-          </FormProvider>
-      );
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
-      const asOf = getByLabelText('As of');
-      const race = getByLabelText('Race');
-      act(() => {
-          userEvent.paste(asOf, '01/20/2020');
-          fireEvent.blur(asOf);
-          userEvent.selectOptions(race, '1');
-          fireEvent.blur(race);
-      });
+        const asOf = getByLabelText('As of');
+        const race = getByLabelText('Race');
+        act(() => {
+            userEvent.paste(asOf, '01/20/2020');
+            userEvent.tab();
+            userEvent.selectOptions(race, '1');
+            userEvent.tab();
+        });
 
-      await waitFor(() => {
-          expect(form.getFieldState('asOf').invalid).toBeFalsy();
-          expect(form.getFieldState('race').invalid).toBeFalsy();
-      });
-  });
+        await waitFor(() => {
+            expect(queryByText('As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('Race is required')).not.toBeInTheDocument();
+        });
+    });
 });
