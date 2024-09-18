@@ -76,13 +76,24 @@ const PatientMatchConfigurationPage = () => {
 
     return (
         <>
-            <ConfirmationModal
-                modal={deleteModalRef}
-                title={'Delete'}
-                message={'are you sure'}
-                onConfirm={handleDeleteConfiguration}
-                onCancel={() => deleteModalRef.current?.toggleModal()}
-            />
+            {selectedConfigurationIndex != null ? (
+                <ConfirmationModal
+                    modal={deleteModalRef}
+                    title={'Delete pass configuration'}
+                    message={
+                        <p>
+                            Are you sure you would like to delete the{' '}
+                            <span style={{ fontWeight: 'bold' }}>
+                                {configurations[selectedConfigurationIndex].name}
+                            </span>{' '}
+                            pass configuration?
+                        </p>
+                    }
+                    onConfirm={handleDeleteConfiguration}
+                    onCancel={() => deleteModalRef.current?.toggleModal()}
+                />
+            ) : null}
+
             <div className={styles.wrapper}>
                 <div className={styles.configurationList}>
                     <h3>Pass configurations</h3>
