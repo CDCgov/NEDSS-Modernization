@@ -31,7 +31,7 @@
             min-width: unset;
             padding-bottom: 5rem;
             .section {
-                border-radius: 5px;
+                border-radius: 0.3125rem;
                 background-color: colors.$base-white;
                 border: 1px solid colors.$base-lighter;
                 &:first-of-type {
@@ -127,7 +127,7 @@
     .dataElements {
         .body {
             .sections {
-                min-width: 1024px;
+                min-width: 64rem;
             }
         }
     }
