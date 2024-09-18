@@ -8,7 +8,6 @@ type ProgressBarProps = {
 
 export const ProgressBar = ({ lowerBound, upperBound }: ProgressBarProps) => {
     const { totalLogOdds } = usePatientMatchContext();
-    console.log('totalLogOdds', totalLogOdds);
     const safeTotalLogOdds = totalLogOdds ?? 1;
 
     const requiresReviewPercentage =
