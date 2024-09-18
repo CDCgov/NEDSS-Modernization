@@ -16,7 +16,7 @@ export const MatchingCriteriaSection = () => {
         const sum = matchingCriteria
             .map((criteria) => criteria.field.logOdds || 0)
             .reduce((acc, logOdds) => acc + logOdds, 0);
-
+        console.log('SUM', sum);
         setLogOddsSum(sum);
         setTotalLogOdds(sum);
     }, [matchingCriteria]);
@@ -50,7 +50,7 @@ export const MatchingCriteriaSection = () => {
             <ModalComponent
                 modalRef={matchingModalRef}
                 size="medium"
-                modalHeading={'Add static element'}
+                modalHeading={'Add an attribute for matching'}
                 modalBody={<AddMatchingCriteria matchingModalRef={matchingModalRef} />}
             />
         </div>
