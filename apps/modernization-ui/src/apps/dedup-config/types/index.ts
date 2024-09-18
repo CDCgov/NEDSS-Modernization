@@ -1,6 +1,7 @@
 export type DataElement = {
     name: string;
     label: string;
+    category: string;
     active: boolean;
     m: number;
     u: number;
