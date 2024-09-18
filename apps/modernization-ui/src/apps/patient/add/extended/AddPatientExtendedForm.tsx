@@ -10,7 +10,7 @@ import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry'
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
-import { NameMultiEntry } from './inputs/name/NameMultiEntry';
+import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
