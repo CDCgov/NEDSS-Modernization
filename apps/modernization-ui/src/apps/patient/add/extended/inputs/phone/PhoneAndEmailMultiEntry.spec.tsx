@@ -15,9 +15,16 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
+const awaitRender = async () => {
+    // wait on render to prevent act warning
+    expect(await screen.findByText('URL')).toBeInTheDocument();
+};
+
 describe('PhoneAndEmailMultiEntry', () => {
     it('should display correct table headers', async () => {
         const { getAllByRole } = render(<PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />);
+        // wait on render to prevent act warning
+        await awaitRender();
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -29,6 +36,8 @@ describe('PhoneAndEmailMultiEntry', () => {
 
     it('should display proper defaults', async () => {
         const { getByLabelText } = render(<PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />);
+        // wait on render to prevent act warning
+        await awaitRender();
 
         const dateInput = getByLabelText('Phone & email as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
@@ -62,6 +71,8 @@ describe('PhoneAndEmailMultiEntry', () => {
         const { getByLabelText, getAllByRole } = render(
             <PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />
         );
+        // wait on render to prevent act warning
+        await awaitRender();
         const type = getByLabelText('Type');
         const use = getByLabelText('Use');
         const countryCode = getByLabelText('Country code');
@@ -95,10 +106,10 @@ describe('PhoneAndEmailMultiEntry', () => {
                     countryCode: '1',
                     email: 'email@email.com',
                     extension: '2',
-                    number: '123-456-7890',
-                    type: 'PH',
+                    phoneNumber: '123-456-7890',
+                    type: mockPatientPhoneCodedValues.types[0],
                     url: 'url',
-                    use: 'H'
+                    use: mockPatientPhoneCodedValues.uses[0]
                 }
             ]);
         });

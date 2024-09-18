@@ -1,41 +1,39 @@
-import { PhoneAndEmailEntryFields } from 'apps/patient/profile/phoneEmail/PhoneAndEmailEntryFields';
-import { PhoneEmailFields } from 'apps/patient/profile/phoneEmail/PhoneEmailEntry';
+import { PhoneEmailEntry } from 'apps/patient/data/entry';
+import { PhoneEmailEntryFields } from 'apps/patient/data/phoneEmail/PhoneEmailEntryFields';
 import { internalizeDate } from 'date';
 import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { Column } from 'design-system/table';
 import { PhoneEntryView } from './PhoneEntryView';
-import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
 
-const defaultValue: PhoneEmailFields = {
+const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: internalizeDate(new Date()),
-    type: '',
-    use: '',
+    type: undefined,
+    use: undefined,
     countryCode: '',
-    number: '',
+    phoneNumber: '',
     extension: '',
     email: '',
     url: '',
     comment: ''
 };
 type Props = {
-    onChange: (data: PhoneEmailFields[]) => void;
+    onChange: (data: PhoneEmailEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
 export const PhoneAndEmailMultiEntry = ({ onChange, isDirty }: Props) => {
-    const coded = usePatientPhoneCodedValues();
-    const renderForm = () => <PhoneAndEmailEntryFields />;
-    const renderView = (entry: PhoneEmailFields) => <PhoneEntryView entry={entry} />;
+    const renderForm = () => <PhoneEmailEntryFields />;
+    const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
 
-    const columns: Column<PhoneEmailFields>[] = [
+    const columns: Column<PhoneEmailEntry>[] = [
         { id: 'phoneEmailAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'phoneEmailType', name: 'Type', render: (v) => coded.types.find((t) => t.value === v.type)?.name },
-        { id: 'phoneNumber', name: 'Phone number', render: (v) => v.number },
+        { id: 'phoneEmailType', name: 'Type', render: (v) => v.type?.name },
+        { id: 'phoneNumber', name: 'Phone number', render: (v) => v.phoneNumber },
         { id: 'email', name: 'Email address', render: (v) => v.email },
         { id: 'comments', name: 'Comments', render: (v) => v.comment }
     ];
 
     return (
-        <MultiValueEntry<PhoneEmailFields>
+        <MultiValueEntry<PhoneEmailEntry>
             id="section-PhoneAndEmail"
             title="Phone & email"
             defaultValues={defaultValue}

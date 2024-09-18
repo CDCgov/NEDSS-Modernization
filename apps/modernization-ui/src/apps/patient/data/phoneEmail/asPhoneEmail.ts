@@ -1,6 +1,6 @@
 import { asValue } from 'options';
-import { PhoneEmail } from './api';
-import { PhoneEmailEntry } from './entry';
+import { PhoneEmail } from '../api';
+import { PhoneEmailEntry } from '../entry';
 
 const asPhoneEmail = (entry: PhoneEmailEntry): PhoneEmail => {
     const { type, use, ...remaining } = entry;
