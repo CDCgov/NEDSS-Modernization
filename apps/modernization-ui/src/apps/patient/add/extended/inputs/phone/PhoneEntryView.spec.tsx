@@ -27,30 +27,30 @@ describe('PhoneEntryView', () => {
     it('should render label with value', () => {
         const { getByText } = render(<PhoneEntryView entry={entry} />);
         const asOf = getByText('As of');
-        expect(asOf.parentElement?.children[1]).toHaveTextContent('12/25/2020');
+        expect(asOf.parentElement).toContainElement(getByText('12/25/2020'));
 
         const type = getByText('Type');
-        expect(type.parentElement?.children[1]).toHaveTextContent('Phone');
+        expect(type.parentElement).toContainElement(getByText('Phone'));
 
         const use = getByText('Use');
-        expect(use.parentElement?.children[1]).toHaveTextContent('Home');
+        expect(use.parentElement).toContainElement(getByText('Home'));
 
         const countryCode = getByText('Country code');
-        expect(countryCode.parentElement?.children[1]).toHaveTextContent('1');
+        expect(countryCode.parentElement).toContainElement(getByText('1'));
 
         const number = getByText('Phone number');
-        expect(number.parentElement?.children[1]).toHaveTextContent('123-456-7890');
+        expect(number.parentElement).toContainElement(getByText('123-456-7890'));
 
         const extension = getByText('Extension');
-        expect(extension.parentElement?.children[1]).toHaveTextContent('2');
+        expect(extension.parentElement).toContainElement(getByText('2'));
 
         const email = getByText('Email');
-        expect(email.parentElement?.children[1]).toHaveTextContent('email@email.com');
+        expect(email.parentElement).toContainElement(getByText('email@email.com'));
 
         const url = getByText('URL');
-        expect(url.parentElement?.children[1]).toHaveTextContent('someUrl@nbs.gov');
+        expect(url.parentElement).toContainElement(getByText('someUrl@nbs.gov'));
 
         const comments = getByText('Phone & email comments');
-        expect(comments.parentElement?.children[1]).toHaveTextContent('test comments');
+        expect(comments.parentElement).toContainElement(getByText('test comments'));
     });
 });

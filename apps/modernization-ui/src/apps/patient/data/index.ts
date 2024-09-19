@@ -2,7 +2,7 @@ export { asAdministrative } from './asAdministrative';
 export { asName } from './name/asName';
 export { asAddress } from './address/asAddress';
 export { asPhoneEmail } from './phoneEmail/asPhoneEmail';
-export { asIdentification } from './asIdentification';
+export { asIdentification } from './identification/asIdentification';
 export { asRace } from './race/asRace';
 export { asEthnicity } from './ethnicity/asEthnicity';
 export { asSex } from './asSex';

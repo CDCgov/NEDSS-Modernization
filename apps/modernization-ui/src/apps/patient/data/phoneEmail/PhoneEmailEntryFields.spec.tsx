@@ -1,5 +1,4 @@
-import { fireEvent, render, waitFor, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { render, waitFor, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneEmailEntry } from '../entry';
@@ -15,8 +14,8 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
-const form = renderHook(() =>
-    useForm<PhoneEmailEntry>({
+const Fixture = () => {
+    const form = useForm<PhoneEmailEntry>({
         mode: 'onBlur',
         defaultValues: {
             asOf: undefined,
@@ -29,16 +28,17 @@ const form = renderHook(() =>
             url: '',
             comment: ''
         }
-    })
-).result.current;
+    });
+    return (
+        <FormProvider {...form}>
+            <PhoneEmailEntryFields />
+        </FormProvider>
+    );
+};
 
 describe('PhoneEmailEntryFields', () => {
     it('should render the proper labels', () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <PhoneEmailEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Phone & email as of')).toBeInTheDocument();
         expect(getByLabelText('Type')).toBeInTheDocument();
@@ -51,15 +51,12 @@ describe('PhoneEmailEntryFields', () => {
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <PhoneEmailEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const typeInput = getByLabelText('Type');
         act(() => {
-            fireEvent.blur(typeInput);
+            userEvent.click(typeInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Type is required.')).toBeInTheDocument();
@@ -67,15 +64,12 @@ describe('PhoneEmailEntryFields', () => {
     });
 
     it('should require use', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <PhoneEmailEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const useInput = getByLabelText('Use');
         act(() => {
-            fireEvent.blur(useInput);
+            userEvent.click(useInput);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('Use is required.')).toBeInTheDocument();
@@ -83,15 +77,12 @@ describe('PhoneEmailEntryFields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(
-            <FormProvider {...form}>
-                <PhoneEmailEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, getByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Phone & email as of');
         act(() => {
-            fireEvent.blur(asOf);
+            userEvent.click(asOf);
+            userEvent.tab();
         });
         await waitFor(() => {
             expect(getByText('As of date is required.')).toBeInTheDocument();
@@ -99,11 +90,7 @@ describe('PhoneEmailEntryFields', () => {
     });
 
     it('should be valid with as of, type, and use', async () => {
-        const { getByLabelText } = render(
-            <FormProvider {...form}>
-                <PhoneEmailEntryFields />
-            </FormProvider>
-        );
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Phone & email as of');
         const type = getByLabelText('Type');
@@ -111,17 +98,17 @@ describe('PhoneEmailEntryFields', () => {
         await screen.findByText('Use');
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
-            fireEvent.blur(asOf);
+            userEvent.tab();
             userEvent.selectOptions(use, 'H');
-            fireEvent.blur(use);
+            userEvent.tab();
             userEvent.selectOptions(type, 'PH');
-            fireEvent.blur(type);
+            userEvent.tab();
         });
 
         await waitFor(() => {
-            expect(form.getFieldState('asOf').invalid).toBeFalsy();
-            expect(form.getFieldState('type').invalid).toBeFalsy();
-            expect(form.getFieldState('use').invalid).toBeFalsy();
+            expect(queryByText('Type is required.')).not.toBeInTheDocument();
+            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
+            expect(queryByText('Use is required.')).not.toBeInTheDocument();
         });
     });
 });
