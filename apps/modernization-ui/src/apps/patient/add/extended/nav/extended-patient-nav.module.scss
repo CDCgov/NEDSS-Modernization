@@ -4,6 +4,7 @@
 aside {
     position: sticky;
     top: 0;
+    width: 30%;
     nav {
         .navTitle {
             padding: 0;
@@ -24,6 +25,8 @@ aside {
 
         .visible {
             border-left: solid 4px colors.$base-darkest;
+            color: colors.$base-darkest;
+            text-decoration: none;
         }
     }
 }
