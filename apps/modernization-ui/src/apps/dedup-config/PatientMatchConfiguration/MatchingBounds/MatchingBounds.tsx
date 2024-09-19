@@ -1,22 +1,12 @@
 import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
 import styles from '../PatientMatchConfigurationPage/patient-match-form.module.scss';
 import { ProgressBar } from './ProgressBar';
 
-type FormValues = {
-    lowerBound: number | undefined;
-    upperBound: number | undefined;
-};
-
 export const MatchingBounds = () => {
-    const { control, watch, setValue } = useForm<FormValues>({
-        defaultValues: {
-            lowerBound: undefined,
-            upperBound: undefined
-        }
-    });
+    const { control, setValue, watch } = useFormContext();
     const { lowerBound, upperBound, totalLogOdds, matchingCriteria } = usePatientMatchContext();
 
     useEffect(() => {

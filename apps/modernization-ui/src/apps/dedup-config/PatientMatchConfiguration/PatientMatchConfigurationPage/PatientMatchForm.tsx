@@ -7,6 +7,7 @@ import { Toggle } from 'design-system/toggle/Toggle';
 import { Button } from 'components/button';
 import { PassConfiguration } from 'apps/dedup-config/types';
 import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchContext';
+import { useAlert } from 'alert';
 
 type Props = {
     passConfiguration: PassConfiguration;
@@ -15,18 +16,37 @@ type Props = {
 
 const PatientMatchForm = ({ passConfiguration, onDeleteConfiguration }: Props) => {
     const { blockingCriteria, matchingCriteria } = usePatientMatchContext();
+    const { showSuccess } = useAlert();
     const patientMatchForm = useForm({
         mode: 'onBlur',
         defaultValues: {
-            ...passConfiguration
+            ...passConfiguration,
+            lowerBound: passConfiguration.lowerBound ?? undefined,
+            upperBound: passConfiguration.upperBound ?? undefined
         }
     });
 
     const saveConfiguration = () => {
         const formValues = patientMatchForm.getValues();
-        const formValuesString = JSON.stringify([{ ...formValues, blockingCriteria, matchingCriteria }]);
+        console.log('FORM VALUES', formValues);
+        const formValuesString = JSON.stringify([
+            {
+                ...formValues,
+                blockingCriteria,
+                matchingCriteria,
+                lowerBound: formValues.lowerBound, // Make sure these are included
+                upperBound: formValues.upperBound
+            }
+        ]);
 
         localStorage.setItem('passConfigurations', formValuesString);
+        showSuccess({
+            message: (
+                <>
+                    Successfully saved <strong>{formValues.name}</strong>
+                </>
+            )
+        });
     };
 
     return (
