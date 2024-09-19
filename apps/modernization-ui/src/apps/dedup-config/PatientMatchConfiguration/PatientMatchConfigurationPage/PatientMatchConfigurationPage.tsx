@@ -13,7 +13,7 @@ const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
     const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
-    const { setBlockingCriteria, setMatchingCriteria } = usePatientMatchContext();
+    const { blockingCriteria, matchingCriteria, setBlockingCriteria, setMatchingCriteria } = usePatientMatchContext();
     const deleteModalRef = useRef<ModalRef>(null);
 
     const handleAddConfiguration = () => {
@@ -88,6 +88,21 @@ const PatientMatchConfigurationPage = () => {
         localStorage.setItem('passConfigurations', JSON.stringify(updatedConfigurations));
     };
 
+    const handleSaveConfiguration = (config: PassConfiguration) => {
+        const configs = [...configurations];
+        const newConfig = {
+            ...config,
+            blockingCriteria,
+            matchingCriteria,
+            lowerBound: config.lowerBound, // Make sure these are included
+            upperBound: config.upperBound
+        };
+
+        configs[selectedConfigurationIndex || 0] = newConfig;
+        setConfigurations(configs);
+        localStorage.setItem('passConfigurations', JSON.stringify(configs));
+    };
+
     return (
         <>
             {selectedConfigurationIndex != null ? (
@@ -149,6 +164,7 @@ const PatientMatchConfigurationPage = () => {
                     {showConfiguration ? (
                         <PatientMatchForm
                             passConfiguration={configurations[selectedConfigurationIndex]}
+                            onSaveConfiguration={handleSaveConfiguration}
                             onDeleteConfiguration={() => deleteModalRef.current?.toggleModal()}
                         />
                     ) : (
