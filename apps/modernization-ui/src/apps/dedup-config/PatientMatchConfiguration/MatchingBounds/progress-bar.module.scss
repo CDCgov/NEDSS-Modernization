@@ -25,13 +25,13 @@
 .requiresReview {
     background-color: colors.$warm-accent-light;
     left: 0;
-    border-right: 1px solid #000;
+    border-left: 1px solid colors.$base-darker;
 }
 
 .automaticMatch {
     background-color: colors.$success;
-    border-right: 1px solid colors.$base-black;
     border-radius: 0 3rem 3rem 0;
+    border-left: 1px solid colors.$base-darker;
 }
 
 .boundValue {
@@ -46,7 +46,6 @@
 .lowerBoundLabel {
     left: calc(0%);
     background-color: unset !important;
-    border: unset !important;
 }
 
 .upperBoundLabel {
