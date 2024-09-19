@@ -7,6 +7,7 @@ import PatientMatchForm from './PatientMatchForm';
 import { PassConfiguration } from 'apps/dedup-config/types';
 import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchContext';
 import { ConfirmationModal } from 'confirmation';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
@@ -74,6 +75,19 @@ const PatientMatchConfigurationPage = () => {
         }
     };
 
+    const handleDragEnd = (result: any) => {
+        const { source, destination } = result;
+        if (!destination) return;
+        if (source.index === destination.index) return;
+
+        const updatedConfigurations = Array.from(configurations);
+        const [movedConfiguration] = updatedConfigurations.splice(source.index, 1);
+        updatedConfigurations.splice(destination.index, 0, movedConfiguration);
+
+        setConfigurations(updatedConfigurations);
+        localStorage.setItem('passConfigurations', JSON.stringify(updatedConfigurations));
+    };
+
     return (
         <>
             {selectedConfigurationIndex != null ? (
@@ -97,22 +111,35 @@ const PatientMatchConfigurationPage = () => {
             <div className={styles.wrapper}>
                 <div className={styles.configurationList}>
                     <h3>Pass configurations</h3>
-                    {configurations.length ? (
-                        <ul>
-                            {configurations.map((configuration, index) => (
-                                <PassConfigurationListItem
-                                    {...configuration}
-                                    key={index}
-                                    selected={index === selectedConfigurationIndex}
-                                    onClick={handleConfigListItemClick}
-                                    index={index}
-                                />
-                            ))}
-                        </ul>
-                    ) : (
-                        <p className={styles.noConfigurationText}>No pass configurations have been created.</p>
-                    )}
-
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                        <Droppable droppableId="configurations-list">
+                            {(provided, snapshot) => (
+                                <div
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? '#d9e8f6' : 'white' }}>
+                                    {configurations.length ? (
+                                        <ul>
+                                            {configurations.map((configuration, index) => (
+                                                <PassConfigurationListItem
+                                                    {...configuration}
+                                                    key={index}
+                                                    selected={index === selectedConfigurationIndex}
+                                                    onClick={handleConfigListItemClick}
+                                                    index={index}
+                                                />
+                                            ))}
+                                        </ul>
+                                    ) : (
+                                        <p className={styles.noConfigurationText}>
+                                            No pass configurations have been created.
+                                        </p>
+                                    )}
+                                    {provided.placeholder}
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                     <Button className={styles.addButton} unstyled type={'button'} onClick={handleAddConfiguration}>
                         <Icon.Add />
                         Add new pass configuration

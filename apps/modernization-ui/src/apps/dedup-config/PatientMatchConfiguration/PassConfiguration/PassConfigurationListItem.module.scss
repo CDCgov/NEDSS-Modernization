@@ -3,10 +3,18 @@
 li {
     list-style-type: none;
     display: flex;
-    cursor: pointer;
-
+    justify-content: space-between;
+    gap: 1.5rem;
+    background-color: colors.$base-white;
     .leftBar {
         min-width: 0.25rem;
+    }
+
+    .rightBar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 3rem;
     }
 
     &.selected {
@@ -16,12 +24,15 @@ li {
             border-radius: 1.875rem;
             background-color: colors.$primary;
         }
+        .cardContent {
+            border-left: 0.25rem solid colors.$primary;
+        }
     }
 
     .cardContent {
-        margin-left: 0.75rem;
-        padding-top: 0.62rem;
-        padding-bottom: 0.62rem;
+        border-left: 0.25rem solid colors.$base-white;
+        padding: 0.62rem 0 0.62rem 0.75rem;
+        cursor: pointer;
 
         label {
             font-size: 1rem;
@@ -29,6 +40,7 @@ li {
             font-weight: 700;
             line-height: normal;
             color: colors.$primary;
+            padding: 0.25rem 0.5rem;
         }
 
         .description {
