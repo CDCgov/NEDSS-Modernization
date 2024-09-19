@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import styles from './extended-patient-nav.module.scss';
 
 const sections = [
@@ -17,47 +18,36 @@ const sections = [
 export const AddPatientExtendedNav = () => {
     const [activeSection, setActiveSection] = useState<string>('section-Administrative');
 
-    useEffect(() => {
-        const sections = Array.from(document.querySelectorAll('section[id]'));
-        const scrollHandler: any = (entries: any) => {
-            entries.forEach((entry: any) => {
-                const section: any = entry.target;
-                const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-                if (scrollY >= sectionTop - window.innerHeight / 2 && scrollY < sectionTop + section.offsetHeight) {
-                    setActiveSection(section.id);
-                }
-            });
-        };
+    const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                setActiveSection(entry.target.id);
+            }
+        });
+    }, []);
 
-        const observer = new IntersectionObserver(scrollHandler, {
-            threshold: 0.5 // Trigger when at least half of the section is visible
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleIntersection, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
         });
 
-        sections.forEach((section) => observer.observe(section));
-
-        // Smooth scrolling function
-        const smoothScroll = (element: any) => {
-            setActiveSection(element.id);
-            element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        };
-
-        // Add click event listeners to each sectionLink
         sections.forEach((section) => {
-            const sectionId = section.id;
-            const sectionLink = document.querySelector(`a[href="#${sectionId}"]`);
-            if (sectionLink) {
-                sectionLink.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    smoothScroll(section);
-                });
-            }
+            const element = document.getElementById(section.id);
+            if (element) observer.observe(element);
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [handleIntersection]);
+
+    const handleClick = (sectionId: string) => (e: React.MouseEvent) => {
+        e.preventDefault();
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     return (
         <aside>
@@ -68,7 +58,8 @@ export const AddPatientExtendedNav = () => {
                         <a
                             key={section.id}
                             href={`#${section.id}`}
-                            className={activeSection === section.id ? styles.visible : ''}>
+                            className={activeSection === section.id ? styles.visible : ''}
+                            onClick={handleClick(section.id)}>
                             {section.label}
                         </a>
                     ))}
