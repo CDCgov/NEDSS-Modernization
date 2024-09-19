@@ -24,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,11 +63,8 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with addresses")
   public void i_am_adding_a_new_patient_with_addresses() {
-    NewPatient newPatient = new NewPatient(
-        null,
-        null,
-        Collections.emptyList(),
-        List.of(
+    this.input.active(
+        current -> current.withAddress(
             new NewPatient.Address(
                 RandomUtil.getRandomDateInPast(),
                 "H",
@@ -84,19 +79,14 @@ public class PatientCreateSteps {
                 RandomUtil.country(),
                 RandomUtil.getRandomString()
             )
-        ), Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
-    this.input.active(newPatient);
-
+        )
+    );
   }
 
   @Given("I am adding a new patient with emails")
   public void i_am_adding_a_new_patient_with_emails() {
-    NewPatient newPatient = new NewPatient(
-        null,
-        null,
-        Collections.emptyList(),
-        Collections.emptyList(),
-        List.of(
+    this.input.active(
+        current -> current.withPhoneEmail(
             new NewPatient.Phone(
                 RandomUtil.getRandomDateInPast(),
                 "type-value",
@@ -108,21 +98,14 @@ public class PatientCreateSteps {
                 "url",
                 "comment"
             )
-        ),
-        Collections.emptyList(),
-        Collections.emptyList()
+        )
     );
-    this.input.active(newPatient);
   }
 
   @Given("I am adding a new patient with phones")
   public void i_am_adding_a_new_patient_with_phones() {
-    NewPatient newPatient = new NewPatient(
-        null,
-        null,
-        Collections.emptyList(),
-        Collections.emptyList(),
-        List.of(
+    this.input.active(
+        current -> current.withPhoneEmail(
             new NewPatient.Phone(
                 RandomUtil.getRandomDateInPast(),
                 "type-value",
@@ -134,31 +117,35 @@ public class PatientCreateSteps {
                 "url",
                 "comment"
             )
-        ),
-        Collections.emptyList(),
-        Collections.emptyList()
+        )
     );
-    this.input.active(newPatient);
 
   }
 
   @Given("I am adding a new patient with races")
   public void i_am_adding_a_new_patient_with_races() {
-    NewPatient newPatient = new NewPatient(null,null, null, null, null, List.of(new NewPatient.Race(
-        RandomUtil.getRandomDateInPast(),
-        "category-value",
-        Arrays.asList("detail1", "detail2"))), null);
-    this.input.active(newPatient);
+    this.input.active(
+        current -> current.withRace(
+            new NewPatient.Race(
+                RandomUtil.getRandomDateInPast(),
+                "category-value",
+                Arrays.asList("detail1", "detail2"))
+        )
+    );
   }
 
   @Given("I am adding a new patient with identifications")
   public void i_am_adding_a_new_patient_with_identifications() {
-    NewPatient newPatient = new NewPatient(null,null, null, null, null, null, List.of(new NewPatient.Identification(
-        RandomUtil.getRandomDateInPast(),
-        "DL",
-        "TX",
-        "value")));
-    this.input.active(newPatient);
+    this.input.active(
+        current -> current.withIdentification(
+            new NewPatient.Identification(
+                RandomUtil.getRandomDateInPast(),
+                "DL",
+                "TX",
+                "value"
+            )
+        )
+    );
   }
 
   @When("I send a create patient request")

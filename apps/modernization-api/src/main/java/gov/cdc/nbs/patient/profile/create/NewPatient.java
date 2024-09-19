@@ -97,6 +97,54 @@ public record NewPatient(
     );
   }
 
+  public NewPatient withAddress(final Address value) {
+    return new NewPatient(
+        administrative(),
+        birth(),
+        names(),
+        Including.include(addresses(), value),
+        phoneEmails(),
+        races(),
+        identifications()
+    );
+  }
+
+  public NewPatient withPhoneEmail(final Phone value) {
+    return new NewPatient(
+        administrative(),
+        birth(),
+        names(),
+        addresses(),
+        Including.include(phoneEmails(), value),
+        races(),
+        identifications()
+    );
+  }
+
+  public NewPatient withRace(final Race value) {
+    return new NewPatient(
+        administrative(),
+        birth(),
+        names(),
+        addresses(),
+        phoneEmails(),
+        Including.include(races(), value),
+        identifications()
+    );
+  }
+
+  public NewPatient withIdentification(final Identification value) {
+    return new NewPatient(
+        administrative(),
+        birth(),
+        names(),
+        addresses(),
+        phoneEmails(),
+        races(),
+        Including.include(identifications(), value)
+    );
+  }
+
   public NewPatient withBirth(final BirthDemographic value) {
     return new NewPatient(
         administrative(),
