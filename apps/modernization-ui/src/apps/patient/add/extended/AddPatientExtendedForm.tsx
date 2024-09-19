@@ -47,7 +47,7 @@ export const AddPatientExtendedForm = () => {
     });
 
     return (
-        <>
+        <div className={styles.addPatientFormContainer}>
             <div className={styles.addPatientForm}>
                 <FormProvider {...form}>
                     <div className={styles.formContent}>
@@ -80,6 +80,6 @@ export const AddPatientExtendedForm = () => {
                 </FormProvider>
             </div>
             <AddPatientExtendedNav />
-        </>
+        </div>
     );
 };

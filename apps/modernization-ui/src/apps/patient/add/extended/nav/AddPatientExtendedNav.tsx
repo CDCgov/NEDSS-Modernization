@@ -15,36 +15,49 @@ const sections = [
 ];
 
 export const AddPatientExtendedNav = () => {
-    const [activeSection, setActiveSection] = useState<string>('');
+    const [activeSection, setActiveSection] = useState<string>('section-Administrative');
 
     useEffect(() => {
-        const sectionElements = sections.map((section) => document.getElementById(section.id));
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    setActiveSection(entry.target.id);
+        const sections = Array.from(document.querySelectorAll('section[id]'));
+        const scrollHandler: any = (entries: any) => {
+            entries.forEach((entry: any) => {
+                const section: any = entry.target;
+                const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+                if (scrollY >= sectionTop - window.innerHeight / 2 && scrollY < sectionTop + section.offsetHeight) {
+                    setActiveSection(section.id);
                 }
             });
+        };
+
+        const observer = new IntersectionObserver(scrollHandler, {
+            threshold: 0.5 // Trigger when at least half of the section is visible
         });
 
-        sectionElements.forEach((section) => {
-            if (section) observer.observe(section);
-        });
+        sections.forEach((section) => observer.observe(section));
 
-        return () => {
-            sectionElements.forEach((section) => {
-                if (section) observer.unobserve(section);
+        // Smooth scrolling function
+        const smoothScroll = (element: any) => {
+            setActiveSection(element.id);
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
         };
-    }, []);
 
-    const handleScrollToSection = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
+        // Add click event listeners to each sectionLink
+        sections.forEach((section) => {
+            const sectionId = section.id;
+            const sectionLink = document.querySelector(`a[href="#${sectionId}"]`);
+            if (sectionLink) {
+                sectionLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    smoothScroll(section);
+                });
+            }
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     return (
         <aside>
@@ -55,8 +68,7 @@ export const AddPatientExtendedNav = () => {
                         <a
                             key={section.id}
                             href={`#${section.id}`}
-                            className={activeSection === section.id ? styles.visible : ''}
-                            onClick={() => handleScrollToSection(section.id)}>
+                            className={activeSection === section.id ? styles.visible : ''}>
                             {section.label}
                         </a>
                     ))}
