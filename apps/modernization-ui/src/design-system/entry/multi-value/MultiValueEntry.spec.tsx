@@ -92,13 +92,12 @@ const UnderTest = () => {
 };
 describe('MultiValueEntry', () => {
     it('should display provided title', async () => {
-        const { getByText } = render(<UnderTest />);
+        const { getByRole } = render(<UnderTest />);
         // wait on render to prevent act warning
         expect(await screen.findByText('Test')).toBeInTheDocument();
 
-        const heading = getByText('Test');
-        expect(heading).toBeInTheDocument();
-        expect(heading.className).toBe('heading two');
+        const heading = getByRole('heading');
+        expect(heading).toHaveTextContent('Test');
     });
 
     it('should display provided form', async () => {
