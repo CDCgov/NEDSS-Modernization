@@ -46,14 +46,13 @@ public class PatientCreateSteps {
   Active<NewPatient> input;
 
   @Autowired
-  Available<PatientIdentifier> patients;
+  Active<PatientIdentifier> activePatient;
 
   private final Faker faker = new Faker(Locale.of("en-us"));
 
   @Before("@patient_profile_create")
   public void reset() {
     this.input.reset();
-    this.patients.reset();
   }
 
   @After("@patient_profile_create")
@@ -151,7 +150,7 @@ public class PatientCreateSteps {
   @When("I send a create patient request")
   public void i_submit_the_patient() {
     PatientIdentifier created = controller.create(input.active());
-    patients.available(created);
+    activePatient.active(created);
 
     repository.findById(created.id()).ifPresent(patient::active);
   }

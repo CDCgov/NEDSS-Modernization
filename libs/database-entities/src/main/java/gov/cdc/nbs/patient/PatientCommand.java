@@ -15,6 +15,13 @@ public sealed interface PatientCommand {
 
   Instant requestedOn();
 
+  record CreatePatient(
+      long person,
+      String localId,
+      long requester,
+      Instant requestedOn
+  ) implements PatientCommand {}
+
   record AddPatient(
       long person,
       String localId,

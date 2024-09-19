@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
@@ -38,7 +39,14 @@ class PatientCreationService {
   ) {
     PatientIdentifier identifier = patientIdentifierGenerator.generate();
 
-    Person patient = new Person(identifier.id(), identifier.local())
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            identifier.id(),
+            identifier.local(),
+            context.requestedBy(),
+            context.requestedAt()
+        )
+    )
         .update(
             asUpdateAdministrativeInfo(
                 identifier.id(),
