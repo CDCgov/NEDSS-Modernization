@@ -88,23 +88,10 @@ const PatientMatchConfigurationPage = () => {
         localStorage.setItem('passConfigurations', JSON.stringify(updatedConfigurations));
     };
 
-    const generateName = () => {
-        const first = `${blockingCriteria[0].field.name}`;
-        let second = '';
-
-        if (blockingCriteria.length > 1) {
-            second = `${blockingCriteria[1].field.name}`;
-            return `${first}_${second}`;
-        } else {
-            return first;
-        }
-    };
-
     const handleSaveConfiguration = (config: PassConfiguration) => {
         const configs = [...configurations];
         const newConfig = {
             ...config,
-            name: generateName(),
             blockingCriteria,
             matchingCriteria,
             lowerBound: config.lowerBound, // Make sure these are included
