@@ -28,4 +28,7 @@ export type PassConfiguration = {
     active: boolean;
     matchingCriteria?: MatchingCriteria[];
     blockingCriteria?: BlockingCriteria[];
+    lowerBound?: number;
+    upperBound?: number;
+    totalLogOdds?: number;
 };

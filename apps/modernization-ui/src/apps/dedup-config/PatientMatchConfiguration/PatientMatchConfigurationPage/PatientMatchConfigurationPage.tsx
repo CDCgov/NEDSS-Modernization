@@ -95,13 +95,13 @@ const PatientMatchConfigurationPage = () => {
                     modal={deleteModalRef}
                     title={'Delete pass configuration'}
                     message={
-                        <p>
+                        <>
                             Are you sure you would like to delete the{' '}
                             <span style={{ fontWeight: 'bold' }}>
                                 {configurations[selectedConfigurationIndex].name}
                             </span>{' '}
                             pass configuration?
-                        </p>
+                        </>
                     }
                     onConfirm={handleDeleteConfiguration}
                     onCancel={() => deleteModalRef.current?.toggleModal()}
