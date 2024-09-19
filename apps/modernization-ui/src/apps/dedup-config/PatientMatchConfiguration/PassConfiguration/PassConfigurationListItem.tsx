@@ -1,4 +1,6 @@
+import { Draggable } from 'react-beautiful-dnd';
 import styles from './PassConfigurationListItem.module.scss';
+import { Icon } from 'components/Icon/Icon';
 
 type Props = {
     name?: string;
@@ -14,25 +16,23 @@ const defaultValues = {
     description: 'a description goes here'
 };
 
-const PassConfigurationListItem = ({
-    name = defaultValues.name,
-    description = defaultValues.description,
-    selected,
-    active = false,
-    onClick,
-    index
-}: Props) => {
+const PassConfigurationListItem = ({ name = defaultValues.name, selected, active = false, onClick, index }: Props) => {
     const activeStatus = active ? 'Active' : 'Inactive';
 
     return (
-        <li className={selected ? styles.selected : ''} onClick={() => onClick(index)}>
-            <div className={styles.leftBar}></div>
-            <div className={styles.cardContent}>
-                <label>{name}</label>
-                <div className={styles.description}>{description}</div>
-                <div className={active ? styles.active : styles.inactive}>{activeStatus}</div>
-            </div>
-        </li>
+        <Draggable draggableId={index.toString()} index={index} key={index}>
+            {(provided) => (
+                <li ref={provided.innerRef} {...provided.draggableProps} className={selected ? styles.selected : ''}>
+                    <div className={styles.cardContent} onClick={() => onClick(index)}>
+                        <label>{name}</label>
+                        <div className={active ? styles.active : styles.inactive}>{activeStatus}</div>
+                    </div>
+                    <div className={styles.rightBar} {...provided.dragHandleProps}>
+                        <Icon name="drag" size="m" />
+                    </div>
+                </li>
+            )}
+        </Draggable>
     );
 };
 
