@@ -1,14 +1,22 @@
-import { AddressEntry, AdministrativeEntry, RaceEntry, PhoneEmailEntry, NameEntry } from 'apps/patient/data/entry';
+import {
+    AddressEntry,
+    AdministrativeEntry,
+    IdentificationEntry,
+    PhoneEmailEntry,
+    RaceEntry,
+    NameEntry
+} from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
+import { IdentificationMultiEntry } from './inputs/identification/IdentificationMultiEntry';
+import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
-import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
@@ -17,12 +25,14 @@ type ExtendedPatientCreationForm = {
     phone: PhoneEmailEntry[];
     race: RaceEntry[];
     name: NameEntry[];
+    identifications: IdentificationEntry[];
 };
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
     address: boolean;
     phone: boolean;
+    identification: boolean;
     name: boolean;
     race: boolean;
 };
@@ -40,6 +50,7 @@ export const AddPatientExtendedForm = () => {
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,
         phone: false,
+        identification: false,
         race: false,
         name: false
     });
@@ -66,6 +77,12 @@ export const AddPatientExtendedForm = () => {
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, phone: isDirty })}
                             onChange={(phoneEmailData) => {
                                 form.setValue('phone', phoneEmailData);
+                            }}
+                        />
+                        <IdentificationMultiEntry
+                            isDirty={(isDirty) => setDirtyState({ ...dirtyState, identification: isDirty })}
+                            onChange={(identificationData) => {
+                                form.setValue('identifications', identificationData);
                             }}
                         />
                         <RaceMultiEntry

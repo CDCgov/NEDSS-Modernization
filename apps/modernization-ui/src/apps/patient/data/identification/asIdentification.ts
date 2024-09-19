@@ -1,6 +1,6 @@
 import { asValue } from 'options';
-import { Identification } from './api';
-import { IdentificationEntry } from './entry';
+import { Identification } from '../api';
+import { IdentificationEntry } from '../entry';
 
 const asIdentification = (entry: IdentificationEntry): Identification => {
     const { type, issuer, ...remaining } = entry;
