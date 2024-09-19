@@ -1,4 +1,11 @@
-import { AddressEntry, AdministrativeEntry, RaceEntry, PhoneEmailEntry, NameEntry } from 'apps/patient/data/entry';
+import {
+    AddressEntry,
+    AdministrativeEntry,
+    RaceEntry,
+    PhoneEmailEntry,
+    NameEntry,
+    EthnicityEntry
+} from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,10 +16,12 @@ import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
 import { NameMultiEntry } from './inputs/Name/NameMultiEntry';
+import { EthnicityEntryCard } from './inputs/ethnicity/EthnicityEntryCard';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
     administrative: AdministrativeEntry;
+    ethnicity: EthnicityEntry;
     address: AddressEntry[];
     phone: PhoneEmailEntry[];
     race: RaceEntry[];
@@ -27,12 +36,16 @@ type DirtyState = {
     race: boolean;
 };
 export const AddPatientExtendedForm = () => {
+    const today = internalizeDate(new Date());
     const form = useForm<ExtendedPatientCreationForm>({
         defaultValues: {
             phone: [],
             administrative: {
-                asOf: internalizeDate(new Date()),
+                asOf: today,
                 comment: ''
+            },
+            ethnicity: {
+                asOf: today
             }
         },
         mode: 'onBlur'
@@ -74,6 +87,7 @@ export const AddPatientExtendedForm = () => {
                                 form.setValue('race', raceData);
                             }}
                         />
+                        <EthnicityEntryCard />
                     </div>
                 </FormProvider>
             </div>

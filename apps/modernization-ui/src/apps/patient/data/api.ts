@@ -60,6 +60,7 @@ type Race = EffectiveDated & {
 type Ethnicity = EffectiveDated & {
     ethnicity: string;
     detailed: string[];
+    reasonUnknown?: string;
 };
 
 type Sex = {

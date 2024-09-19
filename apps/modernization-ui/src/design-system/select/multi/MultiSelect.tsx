@@ -68,7 +68,7 @@ export const MultiSelect = ({
                 theme={theme}
                 styles={styles}
                 isMulti
-                id={id}
+                inputId={id}
                 name={name}
                 options={options}
                 value={value}
