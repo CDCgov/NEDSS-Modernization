@@ -440,11 +440,13 @@ public class Person {
     this.generalInformation.associate(resolver, associate);
   }
 
-  public void update(final PatientCommand.UpdateAdministrativeInfo info) {
+  public Person update(final PatientCommand.UpdateAdministrativeInfo info) {
     this.asOfDateAdmin = info.asOf();
     this.description = info.comment();
 
     changed(info);
+
+    return this;
   }
 
   public void update(

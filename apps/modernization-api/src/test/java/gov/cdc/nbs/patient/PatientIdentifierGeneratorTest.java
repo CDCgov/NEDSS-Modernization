@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.create;
+package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;

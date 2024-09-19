@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class PatientCreateMutationSteps {
 
   @Autowired
-  PatientCreateMutationController controller;
+  BasicPatientCreateController controller;
 
   @Autowired
   PersonRepository repository;

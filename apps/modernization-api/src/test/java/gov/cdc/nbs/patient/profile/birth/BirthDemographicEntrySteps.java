@@ -38,22 +38,22 @@ public class BirthDemographicEntrySteps {
     this.input.active(current -> current.withOrder(value));
   }
 
-  @Given("I enter the birth demographics with the patient born in the city {string}")
+  @Given("I enter the birth demographics with the patient born in the city of {string}")
   public void i_enter_patient_birth_city_as(final String value) {
     this.input.active(current -> current.withCity(value));
   }
 
-  @Given("I enter the birth demographics with the patient born in the county {county}")
+  @Given("I enter the birth demographics with the patient born in the county of {county}")
   public void i_enter_patient_birth_county_as(final String value) {
     this.input.active(current -> current.withCounty(value));
   }
 
-  @Given("I enter the birth demographics with the patient born in the state {state}")
+  @Given("I enter the birth demographics with the patient born in the state of {state}")
   public void i_enter_patient_birth_state_as(final String value) {
     this.input.active(current -> current.withState(value));
   }
 
-  @Given("I enter the birth demographics with the patient born in the country {county}")
+  @Given("I enter the birth demographics with the patient born in the country of {country}")
   public void i_enter_patient_birth_country_as(final String value) {
     this.input.active(current -> current.withCountry(value));
   }

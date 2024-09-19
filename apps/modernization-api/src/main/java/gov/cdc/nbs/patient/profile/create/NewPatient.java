@@ -9,6 +9,7 @@ import gov.cdc.nbs.patient.profile.names.NameDemographic;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public record NewPatient(
     Administrative administrative,
@@ -167,6 +168,10 @@ public record NewPatient(
     );
   }
 
+  public Optional<BirthDemographic> maybeBirth() {
+    return Optional.ofNullable(birth());
+  }
+
   public NewPatient withGender(final GenderDemographic value) {
     return new NewPatient(
         administrative(),
@@ -178,5 +183,9 @@ public record NewPatient(
         races(),
         identifications()
     );
+  }
+
+  public Optional<GenderDemographic> maybeGender() {
+    return Optional.ofNullable(gender());
   }
 }

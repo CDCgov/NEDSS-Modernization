@@ -30,7 +30,7 @@ public class PatientProfileBirthDemographicVerificationSteps {
   public void the_patient_profile_birth_has_the_patient_born_on(final LocalDate value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.birth.asOf")
+            jsonPath("$.data.findPatientProfile.birth.bornOn")
                 .value(value.toString())
         );
   }
@@ -39,7 +39,7 @@ public class PatientProfileBirthDemographicVerificationSteps {
   public void the_patient_profile_birth_has_the_birth_sex_of(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.birth.gender.id")
+            jsonPath("$.data.findPatientProfile.gender.birth.id")
                 .value(value)
         );
   }
@@ -48,7 +48,7 @@ public class PatientProfileBirthDemographicVerificationSteps {
   public void the_patient_profile_birth_has_the_value_for_multiple_birth(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.birth.multiple")
+            jsonPath("$.data.findPatientProfile.birth.multipleBirth.id")
                 .value(value)
         );
   }
@@ -57,12 +57,12 @@ public class PatientProfileBirthDemographicVerificationSteps {
   public void the_patient_profile_birth_has_the_patient_born(final int value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.birth.order")
+            jsonPath("$.data.findPatientProfile.birth.birthOrder")
                 .value(value)
         );
   }
 
-  @Then("the patient profile birth demographics has the patient born in the city {string}")
+  @Then("the patient profile birth demographics has the patient born in the city of {string}")
   public void the_patient_profile_birth_has_the_patient_born_in_the_city(final String value) throws Exception {
     this.response.active()
         .andExpect(
@@ -71,7 +71,7 @@ public class PatientProfileBirthDemographicVerificationSteps {
         );
   }
 
-  @Then("the patient profile birth demographics has the patient born in the county {county}")
+  @Then("the patient profile birth demographics has the patient born in the county of {county}")
   public void the_patient_profile_birth_has_the_patient_born_in_the_county(final String value) throws Exception {
     this.response.active()
         .andExpect(
@@ -80,7 +80,7 @@ public class PatientProfileBirthDemographicVerificationSteps {
         );
   }
 
-  @Then("the patient profile birth demographics has the patient born in the state {county}")
+  @Then("the patient profile birth demographics has the patient born in the state of {state}")
   public void the_patient_profile_birth_has_the_patient_born_in_the_state(final String value) throws Exception {
     this.response.active()
         .andExpect(
@@ -90,7 +90,7 @@ public class PatientProfileBirthDemographicVerificationSteps {
   }
 
 
-  @Then("the patient profile birth demographics has the patient born in the country {country}")
+  @Then("the patient profile birth demographics has the patient born in the country of {country}")
   public void the_patient_profile_birth_has_the_patient_born_in_the_country(final String value) throws Exception {
     this.response.active()
         .andExpect(

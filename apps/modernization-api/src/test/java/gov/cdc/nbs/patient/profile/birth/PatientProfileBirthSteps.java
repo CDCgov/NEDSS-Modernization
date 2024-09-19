@@ -6,7 +6,6 @@ import gov.cdc.nbs.patient.profile.PatientProfile;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -18,20 +17,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class PatientProfileBirthSteps {
 
   private final Active<PatientIdentifier> activePatient;
-  private final PatientProfileBirthRequester requester;
-  private final Active<ResultActions> response;
 
   private final PatientBirthResolver resolver;
 
   PatientProfileBirthSteps(
       final Active<PatientIdentifier> activePatient,
-      final PatientProfileBirthRequester requester,
-      final Active<ResultActions> response,
       final PatientBirthResolver resolver
   ) {
     this.activePatient = activePatient;
-    this.requester = requester;
-    this.response = response;
     this.resolver = resolver;
   }
 
@@ -58,10 +51,4 @@ public class PatientProfileBirthSteps {
         .isInstanceOf(AccessDeniedException.class);
   }
 
-  @Then("I view the Patient Profile Birth demographics")
-  public void i_view_the_patient_profile_administration() {
-    this.activePatient.maybeActive()
-        .map(requester::birth)
-        .ifPresent(this.response::active);
-  }
 }

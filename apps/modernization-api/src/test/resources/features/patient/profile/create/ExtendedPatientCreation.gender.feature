@@ -13,8 +13,8 @@ Feature: Creation of Patients with gender demographics
     And I enter the gender demographics with preferred gender of FTM
     And the gender demographics are included in the extended patient data
     When I create a patient with extended data
-    Then I view the Patient Profile Birth demographics
-    And the patient profile gender demographics has the as of date 07/03/1990
+    And I view the Patient Profile Gender demographics
+    Then the patient profile gender demographics has the as of date 07/03/1990
     And the patient profile gender demographics has the current gender as Female
     And the patient profile gender demographics has the additional gender "another gender"
     And the patient profile gender demographics has the preferred gender FTM
@@ -24,5 +24,5 @@ Feature: Creation of Patients with gender demographics
     And I enter the gender demographics with the unknown reason of did not ask
     And the gender demographics are included in the extended patient data
     When I create a patient with extended data
-    Then I view the Patient Profile Birth demographics
-    And the patient profile gender demographics has the unknown reason did not ask
+    And I view the Patient Profile Gender demographics
+    Then the patient profile gender demographics has the unknown reason did not ask
