@@ -72,7 +72,7 @@ public class PatientBirthChangeSteps {
 
         assertThat(actual)
                 .returns(changes.asOf(), Person::getAsOfDateSex)
-                .returns(changes.birth().bornOn().atStartOfDay(ZoneOffset.UTC).toInstant(), Person::getBirthTime)
+                .returns(changes.birth().bornOn().atStartOfDay(), Person::getBirthTime)
                 .returns(Gender.resolve(changes.birth().gender()), Person::getBirthGenderCd)
                 .returns(changes.birth().birthOrder().shortValue(), Person::getBirthOrderNbr)
                 .satisfies(

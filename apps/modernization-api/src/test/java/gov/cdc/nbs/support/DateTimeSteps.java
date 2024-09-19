@@ -4,6 +4,7 @@ import io.cucumber.java.ParameterType;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -14,6 +15,11 @@ public class DateTimeSteps {
   @ParameterType(name = "localDate", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
   public LocalDate localDate(final String value) {
     return LocalDate.parse(value, DATE_FORMATTER);
+  }
+
+  @ParameterType(name = "localDateTime", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
+  public LocalDateTime localDateTime(final String value) {
+    return localDate(value).atStartOfDay();
   }
 
   @ParameterType(name = "date", value = "(?:[0]\\d|1[0-2])/(?:[0-2]\\d|3[01])/(?:(?:19|20)\\d{2})")
