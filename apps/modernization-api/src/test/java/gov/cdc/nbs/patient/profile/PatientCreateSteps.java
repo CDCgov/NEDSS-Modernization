@@ -67,6 +67,7 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_addresses() {
     NewPatient newPatient = new NewPatient(
         null,
+        null,
         Collections.emptyList(),
         List.of(
             new NewPatient.Address(
@@ -91,6 +92,7 @@ public class PatientCreateSteps {
   @Given("I am adding a new patient with emails")
   public void i_am_adding_a_new_patient_with_emails() {
     NewPatient newPatient = new NewPatient(
+        null,
         null,
         Collections.emptyList(),
         Collections.emptyList(),
@@ -117,6 +119,7 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_phones() {
     NewPatient newPatient = new NewPatient(
         null,
+        null,
         Collections.emptyList(),
         Collections.emptyList(),
         List.of(
@@ -141,7 +144,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with races")
   public void i_am_adding_a_new_patient_with_races() {
-    NewPatient newPatient = new NewPatient(null, null, null, null, List.of(new NewPatient.Race(
+    NewPatient newPatient = new NewPatient(null,null, null, null, null, List.of(new NewPatient.Race(
         RandomUtil.getRandomDateInPast(),
         "category-value",
         Arrays.asList("detail1", "detail2"))), null);
@@ -150,7 +153,7 @@ public class PatientCreateSteps {
 
   @Given("I am adding a new patient with identifications")
   public void i_am_adding_a_new_patient_with_identifications() {
-    NewPatient newPatient = new NewPatient(null, null, null, null, null, List.of(new NewPatient.Identification(
+    NewPatient newPatient = new NewPatient(null,null, null, null, null, null, List.of(new NewPatient.Identification(
         RandomUtil.getRandomDateInPast(),
         "DL",
         "TX",

@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.accumulation.Including;
 import gov.cdc.nbs.patient.profile.administrative.Administrative;
+import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 
 import java.time.Instant;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public record NewPatient(
     Administrative administrative,
+    BirthDemographic birth,
     List<NameDemographic> names,
     List<Address> addresses,
     List<Phone> phoneEmails,
@@ -32,6 +34,7 @@ public record NewPatient(
       String comment) {
   }
 
+
   public record Phone(
       Instant asOf,
       String type,
@@ -44,11 +47,13 @@ public record NewPatient(
       String comment) {
   }
 
+
   public record Race(
       Instant asOf,
       String race,
       List<String> detailed) {
   }
+
 
   public record Identification(
       Instant asOf,
@@ -60,6 +65,7 @@ public record NewPatient(
   public NewPatient(Instant asOf) {
     this(
         new Administrative(asOf),
+        null,
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList(),
@@ -70,6 +76,7 @@ public record NewPatient(
   public NewPatient withAdministrative(final Administrative administrative) {
     return new NewPatient(
         administrative,
+        birth(),
         names(),
         addresses(),
         phoneEmails(),
@@ -81,7 +88,20 @@ public record NewPatient(
   public NewPatient withName(final NameDemographic name) {
     return new NewPatient(
         administrative(),
+        birth(),
         Including.include(names(), name),
+        addresses(),
+        phoneEmails(),
+        races(),
+        identifications()
+    );
+  }
+
+  public NewPatient withBirth(final BirthDemographic value) {
+    return new NewPatient(
+        administrative(),
+        value,
+        names(),
         addresses(),
         phoneEmails(),
         races(),
