@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.profile.create;
 import gov.cdc.nbs.accumulation.Including;
 import gov.cdc.nbs.patient.profile.administrative.Administrative;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
+import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.util.List;
 public record NewPatient(
     Administrative administrative,
     BirthDemographic birth,
+    GenderDemographic gender,
     List<NameDemographic> names,
     List<Address> addresses,
     List<Phone> phoneEmails,
@@ -66,6 +68,7 @@ public record NewPatient(
     this(
         new Administrative(asOf),
         null,
+        null,
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList(),
@@ -77,6 +80,7 @@ public record NewPatient(
     return new NewPatient(
         administrative,
         birth(),
+        gender(),
         names(),
         addresses(),
         phoneEmails(),
@@ -89,6 +93,7 @@ public record NewPatient(
     return new NewPatient(
         administrative(),
         birth(),
+        gender(),
         Including.include(names(), name),
         addresses(),
         phoneEmails(),
@@ -101,6 +106,7 @@ public record NewPatient(
     return new NewPatient(
         administrative(),
         birth(),
+        gender(),
         names(),
         Including.include(addresses(), value),
         phoneEmails(),
@@ -113,6 +119,7 @@ public record NewPatient(
     return new NewPatient(
         administrative(),
         birth(),
+        gender(),
         names(),
         addresses(),
         Including.include(phoneEmails(), value),
@@ -125,6 +132,7 @@ public record NewPatient(
     return new NewPatient(
         administrative(),
         birth(),
+        gender(),
         names(),
         addresses(),
         phoneEmails(),
@@ -137,6 +145,7 @@ public record NewPatient(
     return new NewPatient(
         administrative(),
         birth(),
+        gender(),
         names(),
         addresses(),
         phoneEmails(),
@@ -148,6 +157,20 @@ public record NewPatient(
   public NewPatient withBirth(final BirthDemographic value) {
     return new NewPatient(
         administrative(),
+        value,
+        gender(),
+        names(),
+        addresses(),
+        phoneEmails(),
+        races(),
+        identifications()
+    );
+  }
+
+  public NewPatient withGender(final GenderDemographic value) {
+    return new NewPatient(
+        administrative(),
+        birth(),
         value,
         names(),
         addresses(),
