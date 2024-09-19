@@ -13,7 +13,7 @@ const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
     const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
-    const { setBlockingCriteria, setMatchingCriteria } = usePatientMatchContext();
+    const { blockingCriteria, matchingCriteria, setBlockingCriteria, setMatchingCriteria } = usePatientMatchContext();
     const deleteModalRef = useRef<ModalRef>(null);
 
     const handleAddConfiguration = () => {
@@ -88,6 +88,34 @@ const PatientMatchConfigurationPage = () => {
         localStorage.setItem('passConfigurations', JSON.stringify(updatedConfigurations));
     };
 
+    const generateName = () => {
+        const first = `${blockingCriteria[0].field.name}`;
+        let second = '';
+
+        if (blockingCriteria.length > 1) {
+            second = `${blockingCriteria[1].field.name}`;
+            return `${first}_${second}`;
+        } else {
+            return first;
+        }
+    };
+
+    const handleSaveConfiguration = (config: PassConfiguration) => {
+        const configs = [...configurations];
+        const newConfig = {
+            ...config,
+            name: generateName(),
+            blockingCriteria,
+            matchingCriteria,
+            lowerBound: config.lowerBound, // Make sure these are included
+            upperBound: config.upperBound
+        };
+
+        configs[selectedConfigurationIndex || 0] = newConfig;
+        setConfigurations(configs);
+        localStorage.setItem('passConfigurations', JSON.stringify(configs));
+    };
+
     return (
         <>
             {selectedConfigurationIndex != null ? (
@@ -149,6 +177,7 @@ const PatientMatchConfigurationPage = () => {
                     {showConfiguration ? (
                         <PatientMatchForm
                             passConfiguration={configurations[selectedConfigurationIndex]}
+                            onSaveConfiguration={handleSaveConfiguration}
                             onDeleteConfiguration={() => deleteModalRef.current?.toggleModal()}
                         />
                     ) : (
