@@ -42,6 +42,7 @@ const PatientMatchConfigurationPage = () => {
     };
 
     const handleConfigListItemClick = (index: number) => {
+        if (isAddingConfiguration) return;
         setSelectedConfigurationIndex(index);
         const selectedConfig = configurations[index];
         setBlockingCriteria(selectedConfig.blockingCriteria ?? []);
