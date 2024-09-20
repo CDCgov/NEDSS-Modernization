@@ -4,14 +4,14 @@ export type Section = {
 };
 
 export const sections: Section[] = [
-    { id: 'section-Administrative', label: 'Administrative' },
-    { id: 'section-Name', label: 'Name' },
-    { id: 'section-Address', label: 'Address' },
-    { id: 'section-PhoneAndEmail', label: 'Phone & email' },
-    { id: 'section-Identification', label: 'Identification' },
-    { id: 'section-Race', label: 'Race' },
-    { id: 'section-Ethnicity', label: 'Ethnicity' },
-    { id: 'section-SexAndBirth', label: 'Sex & birth' },
-    { id: 'section-Mortality', label: 'Mortality' },
-    { id: 'section-General', label: 'General patient information' }
+    { id: 'administrative', label: 'Administrative' },
+    { id: 'name', label: 'Name' },
+    { id: 'address', label: 'Address' },
+    { id: 'phoneAndEmail', label: 'Phone & email' },
+    { id: 'identification', label: 'Identification' },
+    { id: 'race', label: 'Race' },
+    { id: 'ethnicity', label: 'Ethnicity' },
+    { id: 'sexAndBirth', label: 'Sex & birth' },
+    { id: 'mortality', label: 'Mortality' },
+    { id: 'general', label: 'General patient information' }
 ];

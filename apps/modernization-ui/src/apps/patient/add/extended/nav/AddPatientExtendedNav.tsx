@@ -4,7 +4,7 @@ import styles from './extended-patient-nav.module.scss';
 import { Section } from '../sections';
 
 export const AddPatientExtendedNav = ({ sections }: { sections: Section[] }) => {
-    const [activeSection, setActiveSection] = useState<string>('section-Administrative');
+    const [activeSection, setActiveSection] = useState<string>('administrative');
 
     const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {

@@ -39,7 +39,7 @@ export const AddressMultiEntry = ({ onChange, isDirty }: Props) => {
 
     return (
         <MultiValueEntry<AddressEntry>
-            id="section-Address"
+            id="address"
             title="Address"
             defaultValues={defaultValue}
             columns={columns}

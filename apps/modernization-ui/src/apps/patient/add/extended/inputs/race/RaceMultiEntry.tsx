@@ -31,7 +31,7 @@ export const RaceMultiEntry = ({ onChange, isDirty }: Props) => {
     ];
     return (
         <MultiValueEntry<RaceEntry>
-            id="section-Race"
+            id="race"
             title="Race"
             defaultValues={defaultValue}
             columns={columns}

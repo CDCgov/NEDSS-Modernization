@@ -17,6 +17,7 @@ import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry'
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
+import { sections } from './sections';
 
 // Once all sections have been updated with proper types this will be removedimport { sections } from './sections';
 
