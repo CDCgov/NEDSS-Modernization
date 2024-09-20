@@ -69,15 +69,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install react dependencies
-        working-directory: ./apps/modernization-ui
-        run: npm install
-
       - name: Configure Environment Variables
         run: |
           github_repo_name="$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"        
