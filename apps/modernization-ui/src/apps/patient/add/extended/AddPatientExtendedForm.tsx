@@ -4,7 +4,9 @@ import {
     IdentificationEntry,
     PhoneEmailEntry,
     RaceEntry,
-    NameEntry
+    NameEntry,
+    BirthEntry,
+    SexEntry
 } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
@@ -27,6 +29,7 @@ type ExtendedPatientCreationForm = {
     race: RaceEntry[];
     name: NameEntry[];
     identifications: IdentificationEntry[];
+    sexAndBirth?: SexEntry & BirthEntry;
 };
 
 // used to track sub-form state to display error on parent form submisson
