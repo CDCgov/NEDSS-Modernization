@@ -12,7 +12,7 @@ export const AddPatientExtendedNav = () => {
                     <a href="#section-PhoneAndEmail">Phone & email</a>
                     <a href="#identification">Identification</a>
                     <a href="#section-Race">Race</a>
-                    <a href="#section-Ethnicity">Ethnicity</a>
+                    <a href="#ethnicity">Ethnicity</a>
                     <a href="#sexAndBirth">Sex & birth</a>
                     <a href="#section-Mortality">Mortality</a>
                     <a href="#section-General">General patient information</a>

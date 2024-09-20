@@ -1,16 +1,18 @@
 import { today } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import styles from './add-patient-extended-form.module.scss';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
 import { IdentificationMultiEntry } from './inputs/identification/IdentificationMultiEntry';
-import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { SexAndBirthCard } from './inputs/sexAndBirth/SexAndBirthCard';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
+
+import styles from './add-patient-extended-form.module.scss';
+import { EthnicityEntryCard } from './inputs/ethnicity/EthnicityEntryCard';
+import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
@@ -30,6 +32,9 @@ export const AddPatientExtendedForm = () => {
                 comment: ''
             },
             birthAndSex: {
+                asOf: defaultDate
+            },
+            ethnicity: {
                 asOf: defaultDate
             }
         },
@@ -79,6 +84,7 @@ export const AddPatientExtendedForm = () => {
                                 form.setValue('races', raceData);
                             }}
                         />
+                        <EthnicityEntryCard />
                         <SexAndBirthCard />
                     </div>
                 </FormProvider>

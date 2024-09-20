@@ -4,7 +4,7 @@ export { asAddress } from './address/asAddress';
 export { asPhoneEmail } from './phoneEmail/asPhoneEmail';
 export { asIdentification } from './identification/asIdentification';
 export { asRace } from './race/asRace';
-export { asEthnicity } from './asEthnicity';
+export { asEthnicity } from './ethnicity/asEthnicity';
 export { asSex } from './sexAndBirth/asSex';
 export { asBirth } from './sexAndBirth/asBirth';
 export { asMortality } from './asMortality';
