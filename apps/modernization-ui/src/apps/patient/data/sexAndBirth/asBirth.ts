@@ -1,6 +1,6 @@
 import { asValue } from 'options';
-import { Birth } from './api';
-import { BirthEntry } from './entry';
+import { Birth } from '../api';
+import { BirthEntry } from '../entry';
 
 const asBirth = (entry: BirthEntry): Birth => {
     const { sex, multiple, county, state, country, ...remaining } = entry;

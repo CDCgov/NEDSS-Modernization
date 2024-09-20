@@ -17,6 +17,7 @@ import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry'
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
+import { SexAndBirthCard } from './inputs/sexAndBirth/SexAndBirthCard';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
@@ -91,6 +92,7 @@ export const AddPatientExtendedForm = () => {
                                 form.setValue('race', raceData);
                             }}
                         />
+                        <SexAndBirthCard />
                     </div>
                 </FormProvider>
             </div>

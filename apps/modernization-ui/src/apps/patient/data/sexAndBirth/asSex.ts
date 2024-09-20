@@ -1,6 +1,6 @@
 import { asValue } from 'options';
-import { Sex } from './api';
-import { SexEntry } from './entry';
+import { Sex } from '../api';
+import { SexEntry } from '../entry';
 
 const asSex = (entry: SexEntry): Sex => {
     const { current, unknownReason, transgenderInformation, ...remaining } = entry;
