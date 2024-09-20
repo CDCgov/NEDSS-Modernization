@@ -1,36 +1,16 @@
-import {
-    AddressEntry,
-    AdministrativeEntry,
-    IdentificationEntry,
-    PhoneEmailEntry,
-    RaceEntry,
-    NameEntry,
-    BirthEntry,
-    SexEntry
-} from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { ExtendedNewPatientEntry } from './entry';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
 import { IdentificationMultiEntry } from './inputs/identification/IdentificationMultiEntry';
 import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
+import { SexAndBirthCard } from './inputs/sexAndBirth/SexAndBirthCard';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
-import { SexAndBirthCard } from './inputs/sexAndBirth/SexAndBirthCard';
-
-// Once all sections have been updated with proper types this will be removed
-type ExtendedPatientCreationForm = {
-    administrative: AdministrativeEntry;
-    address: AddressEntry[];
-    phone: PhoneEmailEntry[];
-    race: RaceEntry[];
-    name: NameEntry[];
-    identifications: IdentificationEntry[];
-    sexAndBirth?: SexEntry & BirthEntry;
-};
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
@@ -41,9 +21,9 @@ type DirtyState = {
     race: boolean;
 };
 export const AddPatientExtendedForm = () => {
-    const form = useForm<ExtendedPatientCreationForm>({
+    const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: {
-            phone: [],
+            phoneEmails: [],
             administrative: {
                 asOf: internalizeDate(new Date()),
                 comment: ''
@@ -68,19 +48,19 @@ export const AddPatientExtendedForm = () => {
                         <NameMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, name: isDirty })}
                             onChange={(nameData) => {
-                                form.setValue('name', nameData);
+                                form.setValue('names', nameData);
                             }}
                         />
                         <AddressMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, address: isDirty })}
                             onChange={(addressData) => {
-                                form.setValue('address', addressData);
+                                form.setValue('addresses', addressData);
                             }}
                         />
                         <PhoneAndEmailMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, phone: isDirty })}
                             onChange={(phoneEmailData) => {
-                                form.setValue('phone', phoneEmailData);
+                                form.setValue('phoneEmails', phoneEmailData);
                             }}
                         />
                         <IdentificationMultiEntry
@@ -92,7 +72,7 @@ export const AddPatientExtendedForm = () => {
                         <RaceMultiEntry
                             isDirty={(isDirty) => setDirtyState({ ...dirtyState, race: isDirty })}
                             onChange={(raceData) => {
-                                form.setValue('race', raceData);
+                                form.setValue('races', raceData);
                             }}
                         />
                         <SexAndBirthCard />
