@@ -13,7 +13,14 @@ const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
     const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
-    const { blockingCriteria, matchingCriteria, setBlockingCriteria, setMatchingCriteria } = usePatientMatchContext();
+    const {
+        blockingCriteria,
+        matchingCriteria,
+        setBlockingCriteria,
+        setMatchingCriteria,
+        setUpperBound,
+        setLowerBound
+    } = usePatientMatchContext();
     const deleteModalRef = useRef<ModalRef>(null);
 
     const handleAddConfiguration = () => {
@@ -30,6 +37,8 @@ const PatientMatchConfigurationPage = () => {
         setIsEditingConfiguration(true);
         setBlockingCriteria([]);
         setMatchingCriteria([]);
+        setUpperBound(0);
+        setLowerBound(0);
         localStorage.setItem('passConfigurations', JSON.stringify(configs));
     };
 
@@ -39,6 +48,8 @@ const PatientMatchConfigurationPage = () => {
         const selectedConfig = configurations[index];
         setBlockingCriteria(selectedConfig.blockingCriteria ?? []);
         setMatchingCriteria(selectedConfig.matchingCriteria ?? []);
+        setUpperBound(selectedConfig.upperBound ?? 0);
+        setLowerBound(selectedConfig.lowerBound ?? 0);
     };
 
     const showConfiguration = isEditingConfiguration && configurations.length && selectedConfigurationIndex !== null;
@@ -89,6 +100,8 @@ const PatientMatchConfigurationPage = () => {
     };
 
     const handleSaveConfiguration = (config: PassConfiguration) => {
+        console.log('config', config);
+        console.log('blocking', blockingCriteria);
         const configs = [...configurations];
         const newConfig = {
             ...config,

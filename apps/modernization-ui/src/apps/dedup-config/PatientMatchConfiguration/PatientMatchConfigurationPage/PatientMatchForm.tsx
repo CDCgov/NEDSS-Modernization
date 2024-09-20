@@ -41,6 +41,7 @@ const PatientMatchForm = ({ passConfiguration, onDeleteConfiguration, onSaveConf
 
     const saveConfiguration = () => {
         const name = generateName();
+        console.log('saving...', patientMatchForm.getValues());
         patientMatchForm.setValue('name', name);
         onSaveConfiguration(patientMatchForm.getValues());
         showSuccess({
