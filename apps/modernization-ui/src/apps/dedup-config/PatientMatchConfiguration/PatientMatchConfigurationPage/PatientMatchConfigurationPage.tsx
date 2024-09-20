@@ -19,7 +19,7 @@ const PatientMatchConfigurationPage = () => {
     const handleAddConfiguration = () => {
         const configs = [...configurations];
         configs.push({
-            name: `New configuration (${configurations.length})`,
+            name: `New configuration`,
             description: 'a description will go here',
             active: true,
             blockingCriteria: [],

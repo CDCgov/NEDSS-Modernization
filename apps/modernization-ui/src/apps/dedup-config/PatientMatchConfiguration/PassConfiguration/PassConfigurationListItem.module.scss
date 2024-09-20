@@ -33,6 +33,9 @@ li {
         border-left: 0.25rem solid colors.$base-white;
         padding: 0.62rem 0 0.62rem 0.75rem;
         cursor: pointer;
+        //wrap content
+        overflow-wrap: anywhere;
+        width: 12rem;
 
         label {
             font-size: 1rem;
