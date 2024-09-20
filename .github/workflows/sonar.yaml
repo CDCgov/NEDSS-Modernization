@@ -14,6 +14,9 @@ on:
       SONAR_TOKEN:
         description: "Secret named SONAR_TOKEN that references the sonar token secret corresponding to the project in sonarcloud."
         required: true
+      DATABASE_USER:
+        description: "Secret named DATABASE_USER that references the test database container default username"
+        required: true
       DATABASE_PASSWORD:
         description: "Secret named DATABASE_PASSWORD that references the test database container default password"
         required: true
