@@ -1,11 +1,13 @@
 package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.config.security.SecurityUtil;
+import gov.cdc.nbs.message.patient.input.EthnicityInput;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
+import gov.cdc.nbs.patient.profile.ethnicity.PatientEthnicityChangeService;
 import gov.cdc.nbs.patient.profile.identification.change.NewPatientIdentificationInput;
 import gov.cdc.nbs.patient.profile.identification.change.PatientIdentificationChangeService;
 import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
@@ -37,6 +39,7 @@ public class PatientCreateController {
   private final PatientPhoneChangeService phoneService;
   private final PatientRaceChangeService raceService;
   private final PatientIdentificationChangeService identificationService;
+  private final PatientEthnicityChangeService ethnicityService;
 
   PatientCreateController(
       final Clock clock,
@@ -45,23 +48,22 @@ public class PatientCreateController {
       final PatientPhoneChangeService phoneService,
       final PatientRaceChangeService raceService,
       final PatientIdentificationChangeService identificationService,
-      final PatientIndexer indexer
-  ) {
+      final PatientEthnicityChangeService ethnicityService,
+      final PatientIndexer indexer) {
     this.clock = clock;
     this.service = service;
     this.addressService = addressService;
     this.phoneService = phoneService;
     this.raceService = raceService;
     this.identificationService = identificationService;
+    this.ethnicityService = ethnicityService;
     this.indexer = indexer;
   }
-
 
   @Operation(
       summary = "PatientProfile",
       description = "Allows creation of a patient",
-      tags = "PatientProfile"
-  )
+      tags = "PatientProfile")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public PatientIdentifier create(@RequestBody final NewPatient newPatient) {
@@ -126,7 +128,14 @@ public class PatientCreateController {
         identificationService.add(context, newPatientIdentificationInput);
       });
     }
-
+    if (newPatient.ethnicity() != null) {
+      EthnicityInput ethnicityInput;
+      ethnicityInput = new EthnicityInput();
+      ethnicityInput.setPatient(created.id());
+      ethnicityInput.setUnknownReason(newPatient.ethnicity().unknownReason());
+      ethnicityInput.setEthnicGroup(newPatient.ethnicity().ethnicGroup());
+      ethnicityService.update(context, ethnicityInput);
+    }
     this.indexer.index(created.id());
     return created;
   }
