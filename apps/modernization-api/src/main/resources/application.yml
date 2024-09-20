@@ -74,7 +74,7 @@ spring:
           default_storage: NORMALIZE
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
-    username: sa
+    username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
   mvc:
     pathmatch:
