@@ -3,7 +3,7 @@ import { Card } from '../../card/Card';
 
 export const EthnicityEntryCard = () => {
     return (
-        <Card id="section-ethnicity" title="Ethnicity">
+        <Card id="ethnicity" title="Ethnicity">
             <EthnicityEntryFields />
         </Card>
     );
