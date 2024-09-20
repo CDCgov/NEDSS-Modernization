@@ -19,7 +19,9 @@ export const BlockingCriteriaSection = () => {
             </div>
             <div className={styles.criteriaContentContainer}>
                 {blockingCriteria.length > 0 ? (
-                    blockingCriteria.map((criteria, index) => <BlockingCriteriaRow key={index} criteria={criteria} />)
+                    blockingCriteria.map((criteria, index) => (
+                        <BlockingCriteriaRow key={index} criteria={criteria} criteriaIndex={index} />
+                    ))
                 ) : (
                     <p className={styles.criteriaRequest}>Please add blocking criteria to get started</p>
                 )}
