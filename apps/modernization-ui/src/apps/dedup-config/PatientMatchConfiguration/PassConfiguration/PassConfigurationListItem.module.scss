@@ -33,9 +33,12 @@ li {
         border-left: 0.25rem solid colors.$base-white;
         padding: 0.62rem 0 0.62rem 0.75rem;
         cursor: pointer;
-        //wrap content
-        overflow-wrap: anywhere;
+
         width: 12rem;
+        //prevent overflow but use elipsize instead
+        overflow-x: clip;
+        overflow-wrap: break-word;
+        text-overflow: ellipsis;
 
         label {
             font-size: 1rem;
@@ -43,7 +46,7 @@ li {
             font-weight: 700;
             line-height: normal;
             color: colors.$primary;
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0.5rem 0.25rem 0;
         }
 
         .description {
