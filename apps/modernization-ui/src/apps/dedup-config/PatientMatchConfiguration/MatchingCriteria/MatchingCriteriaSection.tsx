@@ -28,7 +28,9 @@ export const MatchingCriteriaSection = () => {
             </div>
             <div className={styles.criteriaContentContainer}>
                 {matchingCriteria.length > 0 ? (
-                    matchingCriteria.map((criteria, index) => <MatchingCriteriaRow key={index} criteria={criteria} />)
+                    matchingCriteria.map((criteria, index) => (
+                        <MatchingCriteriaRow key={index} criteria={criteria} criteriaIndex={index} />
+                    ))
                 ) : (
                     <p className={styles.criteriaRequest}>Please add a matching attribute to continue</p>
                 )}
