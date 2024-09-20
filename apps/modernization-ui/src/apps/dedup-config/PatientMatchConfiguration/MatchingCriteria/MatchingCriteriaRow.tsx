@@ -6,8 +6,15 @@ import { MatchingCriteria } from '../../types';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
 import styles from './matching-criteria-row.module.scss';
 
-export const MatchingCriteriaRow = ({ criteria }: { criteria: MatchingCriteria }) => {
-    const { availableMethods, removeMatchingCriteria } = usePatientMatchContext();
+export const MatchingCriteriaRow = ({
+    criteria,
+    criteriaIndex
+}: {
+    criteria: MatchingCriteria;
+    criteriaIndex: number;
+}) => {
+    const { availableMethods, removeMatchingCriteria, setMatchingCriteria, matchingCriteria } =
+        usePatientMatchContext();
     const form = useFormContext<any>();
     const options = availableMethods.map((method, index) => ({
         name: method.name,
@@ -16,21 +23,30 @@ export const MatchingCriteriaRow = ({ criteria }: { criteria: MatchingCriteria }
         id: index
     }));
 
+    const handleChange = (e: any) => {
+        const method = { name: e.name, value: e.value };
+        const criteriaCopy = { ...criteria, method };
+        const updatedCriteria = [...matchingCriteria];
+        updatedCriteria[criteriaIndex] = criteriaCopy;
+        setMatchingCriteria(updatedCriteria);
+        form.setValue(`matchingCriteria[${criteriaIndex}].method`, method);
+    };
+
     return (
         <div className={styles.row}>
             <h5>{criteria.field.label}</h5>
             <Controller
                 control={form.control}
                 defaultValue={criteria.method.value}
-                name={`matchingCriteria.${criteria.field.name}.value`}
-                render={({ field: { name, value, onChange } }) => (
+                name={`matchingCriteria[${criteriaIndex}].method`}
+                render={({ field: { name, value } }) => (
                     <SingleSelect
                         id={`method-select-${criteria.field.name}`}
                         name={name}
                         label="Method"
                         options={options}
                         value={options.find((option) => option.value === value) || value}
-                        onChange={onChange}
+                        onChange={(e) => handleChange(e)}
                         sizing="compact"
                         orientation="horizontal"
                     />
