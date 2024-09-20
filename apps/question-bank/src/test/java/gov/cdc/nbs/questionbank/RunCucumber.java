@@ -20,11 +20,11 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty,html:build/reports/tests/test/cucumber-report.html")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "gov.cdc.nbs.questionbank,gov.cdc.nbs.testing.authorization")
 @CucumberContextConfiguration
 @EmbeddedNbsDatabase
-@SpringBootTest
+@SpringBootTest(classes = QuestionBankApplication.class)
 @Transactional
 @ActiveProfiles({"default", "test", "local"})
 @AutoConfigureMockMvc
