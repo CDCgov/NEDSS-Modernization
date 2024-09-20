@@ -1,23 +1,30 @@
-import React, { useMemo } from 'react';
-import { BirthEntry, SexEntry } from '../entry';
-import { useFormContext, useWatch } from 'react-hook-form';
 import { calculateAge } from 'date';
+import { useEffect, useMemo } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { BirthEntry, SexEntry } from '../entry';
+import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { useCountyCodedValues } from 'location';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { DataDisplay } from 'design-system/data-display/DataDisplay';
+import { SingleSelect } from 'design-system/select';
+import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule } from 'validation/entry';
 
+const UNKNOWN_GENDER = 'U';
 export const SexAndBirthEntryFields = () => {
-    const { control, setValue } = useFormContext<BirthEntry & SexEntry>();
-    const currentBirthday = useWatch({ control, name: 'birth.bornOn' });
+    const { control, setValue } = useFormContext<{ birthAndSex: BirthEntry & SexEntry }>();
+    const currentBirthday = useWatch({ control, name: 'birthAndSex.bornOn' });
+    const selectedCurrentGender = useWatch({ control, name: 'birthAndSex.current' });
+    const selectedState = useWatch({ control, name: 'birthAndSex.state' });
+    const selectedMultipleBirth = useWatch({ control, name: 'birthAndSex.multiple' });
     const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
-    const selectedCurrentGender = useWatch({ control, name: 'gender.current' });
-    const selectedState = useWatch({ control, name: 'birth.state' });
-    const selectedMultipleBirth = useWatch({ control, name: 'birth.multipleBirth' });
 
     const coded = usePatientSexBirthCodedValues();
-
-    const { counties } = useCountyCodedValues(selectedState);
+    const { counties } = useCountyCodedValues(selectedState?.value);
 
     useEffect(() => {
         if (!selectedState) {
-            setValue('birth.county', '');
+            setValue('birthAndSex.county', undefined);
         }
     }, [selectedState]);
 
@@ -25,11 +32,11 @@ export const SexAndBirthEntryFields = () => {
         <section>
             <Controller
                 control={control}
-                name="asOf"
+                name="birthAndSex.asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="As of:"
+                        label="Sex and birth information as of"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -43,10 +50,10 @@ export const SexAndBirthEntryFields = () => {
             />
             <Controller
                 control={control}
-                name="birth.bornOn"
+                name="birthAndSex.bornOn"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <DatePickerInput
-                        label="Date of birth:"
+                        label="DOB"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -56,67 +63,62 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <EntryWrapper label="Current age:" htmlFor="currentAge" orientation="horizontal">
-                <div>{age}</div>
-            </EntryWrapper>
+            <DataDisplay title="Current age" value={age} />
             <Controller
                 control={control}
-                name="gender.current"
+                name="birthAndSex.current"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Current sex:"
+                    <SingleSelect
+                        label="Current sex"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.genders}
                     />
                 )}
             />
             <Controller
                 control={control}
-                name="gender.unknownReason"
+                name="birthAndSex.unknownReason"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Unknown reason:"
+                    <SingleSelect
+                        label="Unknown reason"
                         orientation="horizontal"
-                        disabled={selectedCurrentGender !== UNKNOWN_GENDER}
-                        defaultValue={value}
+                        disabled={selectedCurrentGender?.value !== UNKNOWN_GENDER}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.genderUnknownReasons}
                     />
                 )}
             />
             <Controller
                 control={control}
-                name="gender.preferred"
+                name="birthAndSex.transgenderInformation"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Transgender information:"
+                    <SingleSelect
+                        label="Transgender information"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.preferredGenders}
                     />
                 )}
             />
             <Controller
                 control={control}
-                name="gender.additional"
+                name="birthAndSex.additionalGender"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <Input
-                        label="Additional gender:"
+                        label="Additional gender"
                         orientation="horizontal"
                         placeholder="No Data"
                         onChange={onChange}
@@ -131,46 +133,44 @@ export const SexAndBirthEntryFields = () => {
             />
             <Controller
                 control={control}
-                name="birth.gender"
+                name="birthAndSex.sex"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Birth sex:"
+                    <SingleSelect
+                        label="Birth sex"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.genders}
                     />
                 )}
             />
             <Controller
                 control={control}
-                name="birth.multipleBirth"
+                name="birthAndSex.multiple"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Multiple birth:"
+                    <SingleSelect
+                        label="Multiple birth"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.multipleBirth}
                     />
                 )}
             />
-            {selectedMultipleBirth === 'Y' && (
+            {selectedMultipleBirth?.value === 'Y' && (
                 <Controller
                     control={control}
-                    name="birth.birthOrder"
+                    name="birthAndSex.order"
                     rules={{ min: { value: 0, message: 'Must be a positive number' } }}
                     render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                         <Input
-                            label="Birth order:"
+                            label="Birth order"
                             orientation="horizontal"
                             placeholder="No Data"
                             onChange={onChange}
@@ -189,11 +189,11 @@ export const SexAndBirthEntryFields = () => {
             )}
             <Controller
                 control={control}
-                name="birth.city"
+                name="birthAndSex.city"
                 rules={maxLengthRule(100)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Birth city:"
+                        label="Birth city"
                         orientation="horizontal"
                         placeholder="No Data"
                         onChange={onChange}
@@ -209,34 +209,32 @@ export const SexAndBirthEntryFields = () => {
             />
             <Controller
                 control={control}
-                name="birth.state"
+                name="birthAndSex.state"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Birth state:"
+                    <SingleSelect
+                        label="Birth state"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.states.all}
                     />
                 )}
             />
             <Controller
                 control={control}
-                name="birth.county"
+                name="birthAndSex.county"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
-                        label="Birth county:"
+                    <SingleSelect
+                        label="Birth county"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={counties}
                     />
                 )}
@@ -244,17 +242,16 @@ export const SexAndBirthEntryFields = () => {
 
             <Controller
                 control={control}
-                name="birth.country"
+                name="birthAndSex.country"
                 render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SelectInput
+                    <SingleSelect
                         label="Birth country:"
                         orientation="horizontal"
-                        defaultValue={value}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
                         name={name}
-                        htmlFor={name}
                         options={coded.countries}
                     />
                 )}

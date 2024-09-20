@@ -20,8 +20,7 @@ type ExtendedNewPatientEntry = {
     identifications?: IdentificationEntry[];
     races?: RaceEntry[];
     ethnicity?: EthnicityEntry;
-    birth?: BirthEntry;
-    sex?: SexEntry;
+    birthAndSex?: BirthEntry & SexEntry;
     mortality?: MortalityEntry;
     general?: GeneralInformationEntry;
 };
