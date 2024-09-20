@@ -15,7 +15,7 @@ tasks.named("test") { testTask ->
 
     testsResults = []
     testLogging {
-        events "failed"
+        events "failed","standard_out"
         exceptionFormat TestExceptionFormat.FULL
         showExceptions true
         showCauses true
