@@ -1,7 +1,7 @@
 package gov.cdc.nbs.questionbank;
 
-import gov.cdc.nbs.questionbank.container.EmbeddedNbsDatabase;
 import gov.cdc.nbs.testing.classic.interaction.EnableClassicMockRestServer;
+import gov.cdc.nbs.testing.database.EmbeddedNbsDatabase;
 import gov.cdc.nbs.testing.interaction.http.EnableAuthenticatedInteractions;
 import gov.cdc.nbs.testing.support.EnableSupport;
 import io.cucumber.spring.CucumberContextConfiguration;

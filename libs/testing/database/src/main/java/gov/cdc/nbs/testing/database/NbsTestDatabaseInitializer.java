@@ -24,6 +24,11 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
 
     container.start();
 
+    System.getLogger(NbsTestDatabaseInitializer.class.getCanonicalName()).log(
+        System.Logger.Level.INFO,
+        () -> "[url]: %s".formatted(container.url())
+    );
+
     TestPropertyValues.of(
             "spring.datasource.url=" + container.url()
         )

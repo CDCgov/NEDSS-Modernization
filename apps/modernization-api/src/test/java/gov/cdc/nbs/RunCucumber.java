@@ -1,9 +1,9 @@
 package gov.cdc.nbs;
 
 import gov.cdc.nbs.containers.NbsElasticsearchContainer;
-import gov.cdc.nbs.containers.database.EmbeddedNbsDatabase;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierGeneratorTestConfiguration;
 import gov.cdc.nbs.testing.classic.interaction.EnableClassicMockRestServer;
+import gov.cdc.nbs.testing.database.EmbeddedNbsDatabase;
 import io.cucumber.junit.platform.engine.Constants;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.junit.platform.suite.api.ConfigurationParameter;
