@@ -24,7 +24,6 @@ class PatientProfileEthnicityRequester {
                   number
                   size
                   content {
-                      asOf: DateTime!
                     asOf
                     ethnicGroup
                     unknownReason
