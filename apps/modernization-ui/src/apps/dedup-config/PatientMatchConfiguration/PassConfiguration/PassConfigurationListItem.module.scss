@@ -34,13 +34,19 @@ li {
         padding: 0.62rem 0 0.62rem 0.75rem;
         cursor: pointer;
 
+        width: 12rem;
+        //prevent overflow but use elipsize instead
+        overflow-x: clip;
+        overflow-wrap: break-word;
+        text-overflow: ellipsis;
+
         label {
             font-size: 1rem;
             font-style: normal;
             font-weight: 700;
             line-height: normal;
             color: colors.$primary;
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0.5rem 0.25rem 0;
         }
 
         .description {
