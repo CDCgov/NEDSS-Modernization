@@ -5,40 +5,36 @@ $four: 0.9375rem;
 $five: 0.8125rem;
 
 @mixin header($level: 1) {
-	font-weight: 700;
+    font-weight: 700;
 
-	@if ($level == 1) {
-		font-size: $one;
-	}
-	@else if ($level == 2) {
-		font-size: $two;
-	} 	
-	@else if ($level == 3) {
-		font-size: $three;
-	} 	
-	@else if ($level == 4) {
-		font-size: $four;
-	} 	
-	@else if ($level == 5) {
-		font-size: $five;
-	    font-size: 0.8125rem;
-	    letter-spacing: 0.02031rem;
-	    text-transform: uppercase;		
-	}
+    @if ($level == 1) {
+        font-size: $one;
+    } @else if ($level == 2) {
+        font-size: $two;
+    } @else if ($level == 3) {
+        font-size: $three;
+    } @else if ($level == 4) {
+        font-size: $four;
+    } @else if ($level == 5) {
+        font-size: $five;
+        font-weight: 400;
+        letter-spacing: 0.02031rem;
+        text-transform: uppercase;
+    }
 }
 
 h1 {
-	@include header(1);
+    @include header(1);
 }
 h2 {
-	@include header(2);
+    @include header(2);
 }
 h3 {
-	@include header(3);
+    @include header(3);
 }
 h4 {
-	@include header(4);
+    @include header(4);
 }
 h5 {
-	@include header(5);
+    @include header(5);
 }
