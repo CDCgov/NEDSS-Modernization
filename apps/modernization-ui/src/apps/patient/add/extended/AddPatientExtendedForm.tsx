@@ -1,6 +1,7 @@
-import { internalizeDate } from 'date';
+import { today } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import styles from './add-patient-extended-form.module.scss';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
@@ -10,7 +11,6 @@ import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry'
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { SexAndBirthCard } from './inputs/sexAndBirth/SexAndBirthCard';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
-import styles from './add-patient-extended-form.module.scss';
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
@@ -21,12 +21,16 @@ type DirtyState = {
     race: boolean;
 };
 export const AddPatientExtendedForm = () => {
+    const defaultDate = today();
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: {
             phoneEmails: [],
             administrative: {
-                asOf: internalizeDate(new Date()),
+                asOf: defaultDate,
                 comment: ''
+            },
+            birthAndSex: {
+                asOf: defaultDate
             }
         },
         mode: 'onBlur'

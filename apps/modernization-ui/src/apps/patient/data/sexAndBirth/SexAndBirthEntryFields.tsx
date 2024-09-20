@@ -28,6 +28,12 @@ export const SexAndBirthEntryFields = () => {
         }
     }, [selectedState]);
 
+    useEffect(() => {
+        if (UNKNOWN_GENDER !== selectedCurrentGender?.value) {
+            setValue('birthAndSex.unknownReason', undefined);
+        }
+    }, [selectedCurrentGender]);
+
     return (
         <section>
             <Controller
@@ -245,7 +251,7 @@ export const SexAndBirthEntryFields = () => {
                 name="birthAndSex.country"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
-                        label="Birth country:"
+                        label="Birth country"
                         orientation="horizontal"
                         value={value}
                         onChange={onChange}
