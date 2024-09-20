@@ -13,9 +13,17 @@ type Props = {
     passConfiguration: PassConfiguration;
     onDeleteConfiguration: () => void;
     onSaveConfiguration: (config: PassConfiguration) => void;
+    onCancel: () => void;
+    isAdding: boolean;
 };
 
-const PatientMatchForm = ({ passConfiguration, onDeleteConfiguration, onSaveConfiguration }: Props) => {
+const PatientMatchForm = ({
+    passConfiguration,
+    onDeleteConfiguration,
+    onSaveConfiguration,
+    onCancel,
+    isAdding
+}: Props) => {
     const { blockingCriteria } = usePatientMatchContext();
     const { showSuccess } = useAlert();
     const patientMatchForm = useForm({
@@ -41,7 +49,6 @@ const PatientMatchForm = ({ passConfiguration, onDeleteConfiguration, onSaveConf
 
     const saveConfiguration = () => {
         const name = generateName();
-        console.log('saving...', patientMatchForm.getValues());
         patientMatchForm.setValue('name', name);
         onSaveConfiguration(patientMatchForm.getValues());
         showSuccess({
@@ -75,16 +82,24 @@ const PatientMatchForm = ({ passConfiguration, onDeleteConfiguration, onSaveConf
                     />
                 </div>
                 <div className={styles.footer}>
-                    <Button type="button" destructive onClick={onDeleteConfiguration}>
-                        Delete pass configuration
-                    </Button>
+                    {isAdding ? (
+                        <div></div>
+                    ) : (
+                        <Button type="button" destructive onClick={onDeleteConfiguration}>
+                            Delete pass configuration
+                        </Button>
+                    )}
+
                     <div className={styles.saveButton}>
-                        <Button type="reset" outline>
+                        <Button type="reset" outline onClick={onCancel}>
                             Cancel
                         </Button>
                         <Button
                             type="submit"
-                            disabled={!patientMatchForm.formState.isValid}
+                            disabled={
+                                !patientMatchForm.getValues('blockingCriteria')?.length &&
+                                !patientMatchForm.getValues('matchingCriteria')?.length
+                            }
                             onClick={saveConfiguration}>
                             Save pass configuration
                         </Button>
