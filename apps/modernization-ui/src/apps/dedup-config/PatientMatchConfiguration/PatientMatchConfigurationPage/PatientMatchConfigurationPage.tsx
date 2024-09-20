@@ -11,8 +11,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
-    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number | null>(null);
-    const [isEditingConfiguration, setIsEditingConfiguration] = useState<boolean>(false);
+    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number>();
+    const [isAddingConfiguration, setIsAddingConfiguration] = useState<boolean>(false);
     const {
         blockingCriteria,
         matchingCriteria,
@@ -34,17 +34,15 @@ const PatientMatchConfigurationPage = () => {
         });
         setConfigurations(configs);
         setSelectedConfigurationIndex(configurations.length);
-        setIsEditingConfiguration(true);
+        setIsAddingConfiguration(true);
         setBlockingCriteria([]);
         setMatchingCriteria([]);
         setUpperBound(0);
         setLowerBound(0);
-        localStorage.setItem('passConfigurations', JSON.stringify(configs));
     };
 
     const handleConfigListItemClick = (index: number) => {
         setSelectedConfigurationIndex(index);
-        setIsEditingConfiguration(true);
         const selectedConfig = configurations[index];
         setBlockingCriteria(selectedConfig.blockingCriteria ?? []);
         setMatchingCriteria(selectedConfig.matchingCriteria ?? []);
@@ -52,18 +50,14 @@ const PatientMatchConfigurationPage = () => {
         setLowerBound(selectedConfig.lowerBound ?? 0);
     };
 
-    const showConfiguration = isEditingConfiguration && configurations.length && selectedConfigurationIndex !== null;
-
     useEffect(() => {
         const storedConfiguration = localStorage.getItem('passConfigurations');
         if (storedConfiguration) {
             setConfigurations(JSON.parse(storedConfiguration));
             setSelectedConfigurationIndex(0);
-            setIsEditingConfiguration(true);
         } else {
             setConfigurations([]);
-            setSelectedConfigurationIndex(null);
-            setIsEditingConfiguration(false);
+            setSelectedConfigurationIndex(0);
         }
     }, []);
 
@@ -77,7 +71,7 @@ const PatientMatchConfigurationPage = () => {
                 setBlockingCriteria(configs[configs.length - 1].blockingCriteria ?? []);
                 setMatchingCriteria(configs[configs.length - 1].matchingCriteria ?? []);
             } else {
-                setSelectedConfigurationIndex(null);
+                setSelectedConfigurationIndex(0);
                 setBlockingCriteria([]);
                 setMatchingCriteria([]);
             }
@@ -100,8 +94,6 @@ const PatientMatchConfigurationPage = () => {
     };
 
     const handleSaveConfiguration = (config: PassConfiguration) => {
-        console.log('config', config);
-        console.log('blocking', blockingCriteria);
         const configs = [...configurations];
         const newConfig = {
             ...config,
@@ -115,6 +107,28 @@ const PatientMatchConfigurationPage = () => {
         setConfigurations(configs);
         localStorage.setItem('passConfigurations', JSON.stringify(configs));
     };
+
+    const handleCancel = () => {
+        if (isAddingConfiguration) {
+            const configs = [...configurations];
+            setIsAddingConfiguration(false);
+            setSelectedConfigurationIndex(configurations.length - 2);
+            setBlockingCriteria([]);
+            setMatchingCriteria([]);
+            setUpperBound(0);
+            setLowerBound(0);
+            configs.pop();
+            setConfigurations(configs);
+        } else {
+            const config = configurations[selectedConfigurationIndex ?? 0];
+            setBlockingCriteria(config.blockingCriteria ?? []);
+            setMatchingCriteria(config.matchingCriteria ?? []);
+            setUpperBound(config.upperBound ?? 0);
+            setLowerBound(config.lowerBound ?? 0);
+        }
+    };
+
+    const showConfiguration = isAddingConfiguration || configurations.length;
 
     return (
         <>
@@ -168,7 +182,12 @@ const PatientMatchConfigurationPage = () => {
                             )}
                         </Droppable>
                     </DragDropContext>
-                    <Button className={styles.addButton} unstyled type={'button'} onClick={handleAddConfiguration}>
+                    <Button
+                        className={styles.addButton}
+                        unstyled
+                        type={'button'}
+                        onClick={handleAddConfiguration}
+                        disabled={isAddingConfiguration}>
                         <Icon.Add />
                         Add new pass configuration
                     </Button>
@@ -176,9 +195,11 @@ const PatientMatchConfigurationPage = () => {
                 <div className={styles.configurationDetails}>
                     {showConfiguration ? (
                         <PatientMatchForm
-                            passConfiguration={configurations[selectedConfigurationIndex]}
+                            passConfiguration={configurations[selectedConfigurationIndex ?? 0]}
                             onSaveConfiguration={handleSaveConfiguration}
                             onDeleteConfiguration={() => deleteModalRef.current?.toggleModal()}
+                            onCancel={handleCancel}
+                            isAdding={isAddingConfiguration}
                         />
                     ) : (
                         <NoPassConfigurations />
