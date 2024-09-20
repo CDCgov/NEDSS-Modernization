@@ -21,8 +21,10 @@ import org.testcontainers.junit.jupiter.Container;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("gov/cdc/nbs")
-@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty")
-@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "html:build/reports/tests/test/cucumber-report.html")
+@ConfigurationParameter(
+    key = Constants.PLUGIN_PROPERTY_NAME,
+    value = "pretty,html:build/reports/tests/test/cucumber-report.html"
+)
 @ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "gov.cdc.nbs")
 @ConfigurationParameter(key = Constants.FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
 @CucumberContextConfiguration

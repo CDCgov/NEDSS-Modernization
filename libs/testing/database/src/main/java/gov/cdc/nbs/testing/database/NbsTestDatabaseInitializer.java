@@ -14,11 +14,7 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
   @SuppressWarnings(
       {
           // We don't want to close the container until after tests have completed
-          "resource",
-          // The database container and credentials are for development only, working on
-          // removing the credentials entirely.
-          "secrets:S6703",
-          "java:S2068"
+          "resource"
       }
   )
   public void initialize(final ConfigurableApplicationContext context) {
