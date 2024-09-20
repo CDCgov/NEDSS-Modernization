@@ -29,9 +29,7 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
     container.start();
 
     TestPropertyValues.of(
-            "spring.datasource.url=" + container.url(),
-            "spring.datasource.username=sa",
-            "spring.datasource.password=fake.fake.fake.1234"
+            "spring.datasource.url=" + container.url()
         )
         .applyTo(context.getEnvironment());
 

@@ -45,7 +45,7 @@ spring:
         timezone:
           default_storage: NORMALIZE
   datasource:
-    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
+    url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
     username: sa
     password: ${DATABASE_PASSWORD}
 
