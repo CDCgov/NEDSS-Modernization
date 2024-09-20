@@ -18,7 +18,8 @@ import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
 
-// Once all sections have been updated with proper types this will be removed
+// Once all sections have been updated with proper types this will be removedimport { sections } from './sections';
+
 type ExtendedPatientCreationForm = {
     administrative: AdministrativeEntry;
     address: AddressEntry[];
@@ -56,7 +57,7 @@ export const AddPatientExtendedForm = () => {
     });
 
     return (
-        <div className={styles.addPatientFormContainer}>
+        <>
             <div className={styles.addPatientForm}>
                 <FormProvider {...form}>
                     <div className={styles.formContent}>
@@ -94,7 +95,7 @@ export const AddPatientExtendedForm = () => {
                     </div>
                 </FormProvider>
             </div>
-            <AddPatientExtendedNav />
-        </div>
+            <AddPatientExtendedNav sections={sections} />
+        </>
     );
 };

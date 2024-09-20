@@ -6,9 +6,6 @@
     flex-grow: 1;
     flex-direction: column;
     margin-right: 1rem;
-    height: calc(100vh - 160px);
-    overflow: auto;
-    min-width: 70%;
 
     .formCard {
         background-color: colors.$base-white;
@@ -27,11 +24,4 @@
         gap: 1rem;
         padding-bottom: 1rem;
     }
-}
-
-.addPatientFormContainer {
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    width: 100%;
 }
