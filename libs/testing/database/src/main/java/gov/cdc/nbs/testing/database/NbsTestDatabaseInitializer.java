@@ -3,12 +3,11 @@ package gov.cdc.nbs.testing.database;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.images.PullPolicy;
 
 
 class NbsTestDatabaseInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-  private static final String DEFAULT_IMAGE_VALUE = "cdc-sandbox-nbs-mssql";
 
   @Override
   @SuppressWarnings(
@@ -18,19 +17,26 @@ class NbsTestDatabaseInitializer implements ApplicationContextInitializer<Config
       }
   )
   public void initialize(final ConfigurableApplicationContext context) {
-    String image = context.getEnvironment().getProperty("testing.database.image", DEFAULT_IMAGE_VALUE);
-    NbsDatabaseContainer container = new NbsDatabaseContainer(image)
+    String image = context.getEnvironment().getProperty("testing.database.image", "cdc-sandbox-nbs-mssql");
+    String username = context.getEnvironment().getProperty("nbs.datasource.username");
+    String credential = context.getEnvironment().getProperty("nbs.datasource.password");
+
+    JdbcDatabaseContainer<?> container = new NbsDatabaseContainer<>(image)
+        .withUsername(username)
+        .withPassword(credential)
         .withImagePullPolicy(PullPolicy.defaultPolicy());
 
     container.start();
 
+    String url = container.getJdbcUrl();
+
     System.getLogger(NbsTestDatabaseInitializer.class.getCanonicalName()).log(
         System.Logger.Level.INFO,
-        () -> "[url]: %s".formatted(container.url())
+        () -> "[url]: %s".formatted(url)
     );
 
     TestPropertyValues.of(
-            "spring.datasource.url=" + container.url()
+            "spring.datasource.url=" + url
         )
         .applyTo(context.getEnvironment());
 
