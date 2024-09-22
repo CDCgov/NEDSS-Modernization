@@ -3,7 +3,7 @@ services:
     build: 
       context: ./db
       args:
-          - DB_PW=${DATABASE_PASSWORD}
+          - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     container_name: nbs-mssql
     ports:
       - 1433:1433
@@ -12,7 +12,7 @@ services:
     environment:
       - ACCEPT_EULA=1
       - SQLCMDPASSWORD=${DATABASE_PASSWORD}
-      - SA_PASSWORD=${DATABASE_PASSWORD}
+      - MSSQL_SA_PASSWORD=${DATABASE_PASSWORD}
     networks:
       - nbs
   wildfly:

@@ -1,20 +1,23 @@
 FROM mcr.microsoft.com/mssql/server:2022-latest
 
-ARG DB_PW
+ARG DATABASE_PASSWORD
 
-ENV ACCEPT_EULA=1 \
-    SQLCMDPASSWORD=${DB_PW} \
-    SA_PASSWORD=${DB_PW} 
+ENV ACCEPT_EULA=Y \
+    MSSQL_PID='Developer' \
+    SQLCMDPASSWORD=${DATABASE_PASSWORD} \
+    MSSQL_SA_PASSWORD=${DATABASE_PASSWORD} 
+
 USER root
 
 RUN apt-get update \
-    && ACCEPT_EULA=Y apt-get install mssql-tools18 unixodbc-dev -y 
+    && apt-get install mssql-tools18 unixodbc-dev -y 
 
 COPY --chown=mssql ./restore /var/opt/database/restore/
 
 USER mssql
 
-# Start the database and execute restore scripts
+# Start the database and execute restore scripts so the data becomes part of the image
+# This is intended for development only
 RUN /opt/mssql/bin/sqlservr & /var/opt/database/restore/restore.sh
 
 
