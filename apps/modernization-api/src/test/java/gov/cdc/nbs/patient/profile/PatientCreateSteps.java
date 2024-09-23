@@ -13,7 +13,6 @@ import gov.cdc.nbs.repository.PersonRepository;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.authorization.ActiveUser;
 import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;

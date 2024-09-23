@@ -1,22 +1,20 @@
 package gov.cdc.nbs.patient.profile.birth.change;
 
-import net.datafaker.Faker;
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.entity.odse.PostalEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.support.Available;
 import gov.cdc.nbs.support.util.RandomUtil;
+import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import jakarta.persistence.EntityManager;
+import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.persistence.EntityManager;
-import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
