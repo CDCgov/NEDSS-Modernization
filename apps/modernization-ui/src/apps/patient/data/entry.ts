@@ -61,6 +61,7 @@ type RaceEntry = EffectiveDated & {
 type EthnicityEntry = EffectiveDated & {
     ethnicity: Selectable;
     detailed: Selectable[];
+    reasonUnknown?: Selectable;
 };
 
 type SexEntry = EffectiveDated & {

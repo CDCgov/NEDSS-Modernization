@@ -10,7 +10,8 @@
         display: flex;
         width: 100%;
         flex-direction: column;
-        header {
+
+        & > header {
             display: flex;
             width: 100%;
             justify-content: space-between;

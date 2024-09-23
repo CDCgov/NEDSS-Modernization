@@ -107,7 +107,7 @@ export const GeneralFields = () => {
                         <Input
                             onChange={onChange}
                             onBlur={onBlur}
-                            label="Event id"
+                            label="Event ID"
                             defaultValue={value}
                             type="text"
                             htmlFor={name}
