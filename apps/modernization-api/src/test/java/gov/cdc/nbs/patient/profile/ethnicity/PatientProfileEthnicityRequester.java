@@ -14,21 +14,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 class PatientProfileEthnicityRequester {
 
   private static final String QUERY = """
-      query profile($patient: ID!, $page: Page) {
+      query profile($patient: ID!) {
               findPatientProfile(patient: $patient) {
                 id
                 local
                 version
-                ethnicity(page: $page) {
-                  total
-                  number
-                  size
-                  content {
+                ethnicity {
                     asOf
-                    ethnicGroup
-                    unknownReason
-                    detailed
-                  }
+                    ethnicGroup {
+                      id
+                      description
+                    }
+                    unknownReason {
+                      id
+                      description
+                    }
+                    detailed {
+                      id
+                      description
+                    }
                 }
               }
             }

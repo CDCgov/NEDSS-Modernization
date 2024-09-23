@@ -34,7 +34,7 @@ public class PatientProfileCreateEthnicitySteps {
   public void the_patient_profile_ethnicity_has_an_as_of_date_of(final Instant value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.ethnicity.content[*].asOf")
+            jsonPath("$.data.findPatientProfile.ethnicity.asOf")
                 .value(value.toString()));
   }
 
@@ -42,7 +42,7 @@ public class PatientProfileCreateEthnicitySteps {
   public void the_patient_profile_ethnicity_has_the_ethnic_group(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.ethnicity.content[*].ethnicGroup")
+            jsonPath("$.data.findPatientProfile.ethnicity.ethnicGroup")
                 .value(value.toString()));
   }
 
@@ -50,7 +50,7 @@ public class PatientProfileCreateEthnicitySteps {
   public void the_patient_profile_ethnicity_has_the_unknown_reason(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.ethnicity.content[*].unknownReason")
+            jsonPath("$.data.findPatientProfile.ethnicity.unknownReason")
                 .value(value.toString()));
   }
 }
