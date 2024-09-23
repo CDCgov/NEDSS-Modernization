@@ -38,7 +38,7 @@ Then("verify user can remove add the conditions", () => {
 });
 
 Then("verify Page name is required field and already prefilled", () => {
-    previewPagePage.checkPageNameField();
+    previewPagePage.checkPageNameField(true);
 });
 
 Then("verify user can update Page name with max characters 50", () => {
@@ -164,7 +164,7 @@ Then("verify all page metadata is downloaded in xls format", () => {
 });
 
 Then("user is at Preview page - Page info section with page under Draft or Published with Draft or Published status", () => {
-    previewPagePage.navigateToPreviewPageWithStatusPublishedWithDraft();
+    previewPagePage.navigateToPreviewPageWithStatusInitialDraft();
 });
 
 Then("user clicks on History tab next to Details", () => {

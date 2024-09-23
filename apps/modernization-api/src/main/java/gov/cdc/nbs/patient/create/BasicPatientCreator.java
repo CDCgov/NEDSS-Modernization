@@ -4,6 +4,7 @@ import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.message.patient.input.PatientInput;
 import gov.cdc.nbs.patient.PatientCommand;
+import gov.cdc.nbs.patient.PatientIdentifierGenerator;
 import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import org.springframework.stereotype.Component;
@@ -13,14 +14,14 @@ import jakarta.persistence.EntityManager;
 import java.time.Instant;
 
 @Component
-public class PatientCreator {
+public class BasicPatientCreator {
 
     private final PatientIdentifierGenerator patientIdentifierGenerator;
     private final IdGeneratorService idGeneratorService;
     private final EntityManager entityManager;
     private final PatientCreatedEmitter emitter;
 
-    PatientCreator(
+    BasicPatientCreator(
         final PatientIdentifierGenerator patientIdentifierGenerator,
         final IdGeneratorService idGenerator,
         final EntityManager entityManager,

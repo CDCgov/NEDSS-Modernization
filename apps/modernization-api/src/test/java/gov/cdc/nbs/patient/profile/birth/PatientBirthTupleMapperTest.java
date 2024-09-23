@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +26,7 @@ class PatientBirthTupleMapperTest {
         when(tuple.get(tables.patient().asOfDateSex)).thenReturn(Instant.parse("2023-01-17T22:54:43Z"));
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
 
-        when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("1999-09-09T09:09:09Z"));
+        when(tuple.get(tables.patient().birthTime)).thenReturn(LocalDateTime.parse("1999-09-09T09:09:09"));
 
         when(tuple.get(tables.address().cityDescTxt)).thenReturn("birth-city");
 
@@ -60,7 +61,7 @@ class PatientBirthTupleMapperTest {
         when(tuple.get(tables.patient().personParentUid.id)).thenReturn(2357L);
         when(tuple.get(tables.patient().id)).thenReturn(433L);
         when(tuple.get(tables.patient().versionCtrlNbr)).thenReturn((short) 227);
-        when(tuple.get(tables.patient().birthTime)).thenReturn(Instant.parse("2001-07-07T00:00:00Z"));
+        when(tuple.get(tables.patient().birthTime)).thenReturn(LocalDateTime.parse("2001-07-07T00:00:00"));
 
         Clock clock = Clock.fixed(
             Instant.parse("2023-06-07T10:15:20Z"),

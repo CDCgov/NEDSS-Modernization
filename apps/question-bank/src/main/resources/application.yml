@@ -5,6 +5,9 @@ server:
 nbs:
   datasource:
     server: localhost
+    port: 1433
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD}
   security:
     tokenSecret: ${TOKEN_SECRET}
     tokenIssuer: gov.cdc.nbs
@@ -45,9 +48,9 @@ spring:
         timezone:
           default_storage: NORMALIZE
   datasource:
-    url: jdbc:sqlserver://${nbs.datasource.server}:1433;database=nbs_odse;encrypt=true;trustServerCertificate=true;
-    username: sa
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
+    username: ${nbs.datasource.username}
+    password: ${nbs.datasource.password}
 
 springdoc:
   packages-to-scan: "gov.cdc.nbs.questionbank"
