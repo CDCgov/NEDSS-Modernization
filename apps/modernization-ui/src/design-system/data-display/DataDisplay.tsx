@@ -4,7 +4,7 @@ import styles from './data-display.module.scss';
 type Props = {
     title: string;
     required?: boolean;
-    value?: number | string | null;
+    value?: string | null;
 };
 export const DataDisplay = ({ title, value, required = false }: Props) => {
     return (

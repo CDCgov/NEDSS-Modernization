@@ -69,7 +69,7 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <DataDisplay title="Current age" value={age} />
+            <DataDisplay title="Current age" value={age !== undefined && age > -1 ? `${age} Years` : ''} />
             <Controller
                 control={control}
                 name="birthAndSex.current"
