@@ -43,6 +43,7 @@ export const SectionNavigation: React.FC<SectionNavigationProps> = ({ sections, 
         const element = document.getElementById(sectionId);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setActiveSection(sectionId);
         }
     };
 
@@ -54,7 +55,7 @@ export const SectionNavigation: React.FC<SectionNavigationProps> = ({ sections, 
                     <a
                         key={section.id}
                         href={`#${section.id}`}
-                        className={classNames(styles.navOption, { [styles.active]: activeSection === section.id })}
+                        className={classNames(styles.navOption, { [styles.visible]: activeSection === section.id })}
                         onClick={handleClick(section.id)}>
                         {section.label}
                     </a>

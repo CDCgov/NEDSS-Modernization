@@ -1,12 +1,6 @@
 import { render, screen as rtlScreen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AddPatientExtendedNav } from './AddPatientExtendedNav';
-import { Section } from '../sections';
-
-const mockSections: Section[] = [
-    { id: 'section1', label: 'Section 1' },
-    { id: 'section2', label: 'Section 2' }
-];
 
 class MockIntersectionObserver {
     observe = jest.fn();
@@ -29,21 +23,20 @@ describe('AddPatientExtendedNav', () => {
     });
 
     it('renders the nav title and section links', () => {
-        render(<AddPatientExtendedNav sections={mockSections} />);
+        render(<AddPatientExtendedNav />);
 
         expect(rtlScreen.getByText('On this page')).toBeInTheDocument();
-        expect(rtlScreen.getByText('Section 1')).toBeInTheDocument();
-        expect(rtlScreen.getByText('Section 2')).toBeInTheDocument();
+        expect(rtlScreen.getByText('Administrative')).toBeInTheDocument();
     });
 
     it('renders links with correct href attributes', () => {
-        render(<AddPatientExtendedNav sections={mockSections} />);
+        render(<AddPatientExtendedNav />);
 
-        const link1 = rtlScreen.getByText('Section 1');
-        const link2 = rtlScreen.getByText('Section 2');
+        const link1 = rtlScreen.getByText('Administrative');
+        const link2 = rtlScreen.getByText('Name');
 
-        expect(link1.getAttribute('href')).toBe('#section1');
-        expect(link2.getAttribute('href')).toBe('#section2');
+        expect(link1.getAttribute('href')).toBe('#administrative');
+        expect(link2.getAttribute('href')).toBe('#name');
     });
 
     it('calls scrollIntoView when a link is clicked', () => {
@@ -51,9 +44,9 @@ describe('AddPatientExtendedNav', () => {
         const mockElement = { scrollIntoView: scrollIntoViewMock };
         jest.spyOn(document, 'getElementById').mockReturnValue(mockElement as any);
 
-        render(<AddPatientExtendedNav sections={mockSections} />);
+        render(<AddPatientExtendedNav />);
 
-        const link = rtlScreen.getByText('Section 1');
+        const link = rtlScreen.getByText('Administrative');
         userEvent.click(link);
 
         // Ensure the click event is processed
