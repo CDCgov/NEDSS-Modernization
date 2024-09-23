@@ -6,7 +6,7 @@ nbs:
   datasource:
     server: localhost
     port: 1433
-    username: ${DATABASE_USER}
+    username: ${DATABASE_USER:sa}
     password: ${DATABASE_PASSWORD}
   security:
     tokenSecret: ${TOKEN_SECRET}
