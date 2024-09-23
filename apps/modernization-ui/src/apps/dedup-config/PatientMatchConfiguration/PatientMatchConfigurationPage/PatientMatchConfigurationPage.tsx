@@ -54,8 +54,14 @@ const PatientMatchConfigurationPage = () => {
     useEffect(() => {
         const storedConfiguration = localStorage.getItem('passConfigurations');
         if (storedConfiguration) {
-            setConfigurations(JSON.parse(storedConfiguration));
+            const configs = JSON.parse(storedConfiguration);
+            setConfigurations(configs);
             setSelectedConfigurationIndex(0);
+            const selectedConfig = configs[0];
+            setBlockingCriteria(selectedConfig?.blockingCriteria ?? []);
+            setMatchingCriteria(selectedConfig?.matchingCriteria ?? []);
+            setUpperBound(selectedConfig?.upperBound ?? 0);
+            setLowerBound(selectedConfig?.lowerBound ?? 0);
         } else {
             setConfigurations([]);
             setSelectedConfigurationIndex(0);
