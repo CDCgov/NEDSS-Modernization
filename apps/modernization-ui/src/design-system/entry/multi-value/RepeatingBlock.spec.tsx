@@ -2,7 +2,7 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Input } from 'components/FormInputs/Input';
 import { Control, Controller } from 'react-hook-form';
-import { ValueView } from './ValueView';
+import { RepeatingBlock } from './RepeatingBlock';
 
 type TestType = {
     firstInput: string;
@@ -68,7 +68,7 @@ const renderView = (entry: TestType) => {
 };
 const UnderTest = () => {
     return (
-        <ValueView<TestType>
+        <RepeatingBlock<TestType>
             title={'Test'}
             defaultValues={defaultValues}
             columns={[

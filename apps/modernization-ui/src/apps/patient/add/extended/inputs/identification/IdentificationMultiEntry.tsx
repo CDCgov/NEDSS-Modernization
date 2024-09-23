@@ -3,7 +3,7 @@ import { IdentificationView } from './IdentificationView';
 import { internalizeDate } from 'date';
 import { Column } from 'design-system/table';
 import { IdentificationEntryFields } from 'apps/patient/data/identification/IdentificationEntryFields';
-import { ValueView } from 'design-system/entry/multi-value/ValueView';
+import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 
 const defaultValue: Partial<IdentificationEntry> = {
     asOf: internalizeDate(new Date()),
@@ -26,7 +26,7 @@ export const IdentificationMultiEntry = ({ onChange, isDirty }: Props) => {
         { id: 'idValue', name: 'Value', render: (v) => v.id }
     ];
     return (
-        <ValueView<IdentificationEntry>
+        <RepeatingBlock<IdentificationEntry>
             id="identification"
             title="Identification"
             defaultValues={defaultValue}

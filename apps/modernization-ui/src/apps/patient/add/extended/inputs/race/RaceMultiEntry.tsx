@@ -4,7 +4,7 @@ import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
 import { RaceEntry } from 'apps/patient/data/entry';
 import { RaceEntryFields } from 'apps/patient/data/race/RaceEntryFields';
-import { ValueView } from 'design-system/entry/multi-value/ValueView';
+import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 
 const defaultValue: Partial<RaceEntry> = {
     asOf: internalizeDate(new Date()),
@@ -30,7 +30,7 @@ export const RaceMultiEntry = ({ onChange, isDirty }: Props) => {
         }
     ];
     return (
-        <ValueView<RaceEntry>
+        <RepeatingBlock<RaceEntry>
             id="section-Race"
             title="Race"
             defaultValues={defaultValue}

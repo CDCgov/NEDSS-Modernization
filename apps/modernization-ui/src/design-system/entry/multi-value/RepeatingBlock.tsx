@@ -7,7 +7,7 @@ import { Column, DataTable } from 'design-system/table';
 import { ReactNode, useEffect } from 'react';
 import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
-import styles from './ValueView.module.scss';
+import styles from './RepeatingBlock.module.scss';
 
 type Props<V extends FieldValues> = {
     id?: string;
@@ -20,7 +20,7 @@ type Props<V extends FieldValues> = {
     formRenderer: (control: Control<V>) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
-export const ValueView = <V extends FieldValues>({
+export const RepeatingBlock = <V extends FieldValues>({
     id,
     title,
     defaultValues,

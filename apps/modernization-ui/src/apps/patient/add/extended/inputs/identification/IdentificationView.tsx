@@ -1,5 +1,5 @@
 import { IdentificationEntry } from 'apps/patient/data/entry';
-import { DataDisplay } from 'design-system/data-display/DataDisplay';
+import { ValueView } from 'design-system/data-display/ValueView';
 
 type Props = {
     entry: IdentificationEntry;
@@ -7,10 +7,10 @@ type Props = {
 export const IdentificationView = ({ entry }: Props) => {
     return (
         <>
-            <DataDisplay title="Identification as of" value={entry.asOf} required />
-            <DataDisplay title="Type" value={entry.type.name} required />
-            <DataDisplay title="Assigning authority" value={entry.issuer?.name} />
-            <DataDisplay title="ID value" value={entry.id} required />
+            <ValueView title="Identification as of" value={entry.asOf} required />
+            <ValueView title="Type" value={entry.type.name} required />
+            <ValueView title="Assigning authority" value={entry.issuer?.name} />
+            <ValueView title="ID value" value={entry.id} required />
         </>
     );
 };
