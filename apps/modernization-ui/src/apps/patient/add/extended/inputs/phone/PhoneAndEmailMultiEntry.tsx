@@ -3,7 +3,7 @@ import { PhoneEmailEntryFields } from 'apps/patient/data/phoneEmail/PhoneEmailEn
 import { internalizeDate } from 'date';
 import { Column } from 'design-system/table';
 import { PhoneEntryView } from './PhoneEntryView';
-import { ValueView } from 'design-system/entry/multi-value/ValueView';
+import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 
 const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: internalizeDate(new Date()),
@@ -33,7 +33,7 @@ export const PhoneAndEmailMultiEntry = ({ onChange, isDirty }: Props) => {
     ];
 
     return (
-        <ValueView<PhoneEmailEntry>
+        <RepeatingBlock<PhoneEmailEntry>
             id="section-PhoneAndEmail"
             title="Phone & email"
             defaultValues={defaultValue}
