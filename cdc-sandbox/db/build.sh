@@ -5,6 +5,8 @@ BASE="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 clean=false
 
+##
+
 while getopts ":c" opt; do
   case $opt in
     c)
@@ -15,6 +17,16 @@ while getopts ":c" opt; do
       ;;
   esac
 done
+
+##
+
+if [ -z "$DATABASE_PASSWORD" ]
+then
+    echo "DATABASE_PASSWORD is required"
+    exit 1
+fi
+
+##
 
 if $clean; then
   docker compose stop nbs-mssql && docker compose rm nbs-mssql

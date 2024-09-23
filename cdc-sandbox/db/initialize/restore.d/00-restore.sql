@@ -9,7 +9,7 @@ go
 ---------------------------------------------------------------------------------------------------
 
 RESTORE DATABASE [NBS_ODSE] FROM
-DISK = N'/var/opt/database/restore/restore.d/NBS_ODSE.bak'
+DISK = N'/var/opt/database/initialize/restore.d/NBS_ODSE.bak'
 WITH  FILE = 1,
 MOVE N'ODS_PRIMARY_DATA01' TO N'/var/opt/mssql/data/Nbs_odse.mdf',
 MOVE N'ODS_PRIMARY_DAT02' TO N'/var/opt/mssql/data/nbs_odse1.mdf',
@@ -40,7 +40,7 @@ GO
 ---------------------------------------------------------------------------------------------------
 
 RESTORE DATABASE [NBS_SRTE] FROM
-DISK = N'/var/opt/database/restore/restore.d/NBS_SRTE.bak'
+DISK = N'/var/opt/database/initialize/restore.d/NBS_SRTE.bak'
 WITH  FILE = 1,
 MOVE N'nbs_srte_generic113_Data' TO N'/var/opt/mssql/data/nbs_srte.mdf',
 MOVE N'nbs_srte_generic113_Log' TO N'/var/opt/mssql/data/nbs_srte.ldf',  NOUNLOAD,  STATS = 10
@@ -53,7 +53,7 @@ GO
 --  NBS_MSGOUTE
 ---------------------------------------------------------------------------------------------------
 
-RESTORE DATABASE [NBS_MSGOUTE] FROM  DISK = N'/var/opt/database/restore/restore.d/NBS_MSGOUTE.bak' WITH  FILE = 1,
+RESTORE DATABASE [NBS_MSGOUTE] FROM  DISK = N'/var/opt/database/initialize/restore.d/NBS_MSGOUTE.bak' WITH  FILE = 1,
 MOVE N'MSGOUT_PRIMARY_DATA01' TO N'/var/opt/mssql/data/nbs_msgoute.mdf',
 MOVE N'MSGOUT_PRIMARY_DATA02' TO N'/var/opt/mssql/data/nbs_msgoute_1.mdf',
 MOVE N'MSGOUT_TEXTFILE01' TO N'/var/opt/mssql/data/nbs_msgoute_2.mdf',
@@ -71,7 +71,7 @@ GO
 --  RDB
 ---------------------------------------------------------------------------------------------------
 
-RESTORE DATABASE [RDB] FROM  DISK = N'/var/opt/database/restore/restore.d/RDB.bak' WITH  FILE = 1,
+RESTORE DATABASE [RDB] FROM  DISK = N'/var/opt/database/initialize/restore.d/RDB.bak' WITH  FILE = 1,
 MOVE N'RDB' TO N'/var/opt/mssql/data/rdb_data.mdf',
 MOVE N'RDB_log' TO N'/var/opt/mssql/data/rdb_log.ldf',  NOUNLOAD,  STATS = 10
 GO
