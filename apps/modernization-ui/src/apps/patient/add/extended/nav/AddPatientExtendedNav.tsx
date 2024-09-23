@@ -13,7 +13,7 @@ export const AddPatientExtendedNav = () => {
                     <a href="#identification">Identification</a>
                     <a href="#section-Race">Race</a>
                     <a href="#ethnicity">Ethnicity</a>
-                    <a href="#section-SexAndBirth">Sex & birth</a>
+                    <a href="#sexAndBirth">Sex & birth</a>
                     <a href="#section-Mortality">Mortality</a>
                     <a href="#section-General">General patient information</a>
                 </div>

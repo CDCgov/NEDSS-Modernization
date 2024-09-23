@@ -47,8 +47,8 @@ const transformer: Transformer = (entry: ExtendedNewPatientEntry): NewPatient =>
     const races = asRaces(entry.races);
 
     const ethnicity = maybeAsEthnicity(entry.ethnicity);
-    const sex = maybeAsSex(entry.sex);
-    const birth = maybeBirth(entry.birth);
+    const sex = maybeAsSex(entry.birthAndSex);
+    const birth = maybeBirth(entry.birthAndSex);
     const mortality = maybeMortality(entry.mortality);
     const general = maybeGeneral(entry.general);
 
