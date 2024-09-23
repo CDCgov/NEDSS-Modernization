@@ -37,6 +37,9 @@ export const AddPatientExtendedForm = () => {
             },
             ethnicity: {
                 asOf: defaultDate
+            },
+            mortality: {
+                asOf: defaultDate
             }
         },
         mode: 'onBlur'

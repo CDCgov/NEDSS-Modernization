@@ -1,6 +1,7 @@
 import { differenceInDays, differenceInMonths, differenceInYears } from 'date-fns';
+import { Maybe } from 'utils';
 
-const asAgeDisplay = (dateOfBirth: string | Date | null | undefined, from: Date = new Date()): string | undefined => {
+const displayAgeAsOf = (dateOfBirth: Maybe<string | Date>, from: Date) => {
     if (typeof dateOfBirth === 'string') {
         dateOfBirth = new Date(dateOfBirth);
     }
@@ -23,4 +24,6 @@ const asAgeDisplay = (dateOfBirth: string | Date | null | undefined, from: Date 
     return days > 1 ? `${days} days` : `${days} day`;
 };
 
-export { asAgeDisplay };
+const displayAgeAsOfToday = (dateOfBirth: Maybe<string | Date>) => displayAgeAsOf(dateOfBirth, new Date());
+
+export { displayAgeAsOf, displayAgeAsOfToday };
