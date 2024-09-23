@@ -69,11 +69,16 @@
         .addButton {
             margin-top: 1rem;
             padding-top: 0;
+
+            &:disabled {
+                color: colors.$disabled-dark !important;
+                background-color: colors.$base-white !important;
+            }
         }
     }
 
     .configurationDetails {
-        width: calc( 100% - 19.75rem );
+        width: calc(100% - 19.75rem);
         padding-top: 1rem;
         box-sizing: border-box;
     }
