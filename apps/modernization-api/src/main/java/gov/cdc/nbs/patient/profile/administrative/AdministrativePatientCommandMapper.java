@@ -2,6 +2,9 @@ package gov.cdc.nbs.patient.profile.administrative;
 
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.RequestContext;
+import gov.cdc.nbs.time.LocalDateInstantMapper;
+
+import java.time.Instant;
 
 public class AdministrativePatientCommandMapper {
 
@@ -10,9 +13,12 @@ public class AdministrativePatientCommandMapper {
       final RequestContext context,
       final Administrative administrative
   ) {
+
+    Instant asOf = LocalDateInstantMapper.from(administrative.asOf());
+
     return new PatientCommand.UpdateAdministrativeInfo(
         patient,
-        administrative.asOf(),
+        asOf,
         administrative.comment(),
         context.requestedBy(),
         context.requestedAt()
