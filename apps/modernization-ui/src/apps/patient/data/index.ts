@@ -7,5 +7,5 @@ export { asRace } from './race/asRace';
 export { asEthnicity } from './ethnicity/asEthnicity';
 export { asSex } from './asSex';
 export { asBirth } from './asBirth';
-export { asMortality } from './asMortality';
+export { asMortality } from './mortality/asMortality';
 export { asGeneral } from './asGeneral';
