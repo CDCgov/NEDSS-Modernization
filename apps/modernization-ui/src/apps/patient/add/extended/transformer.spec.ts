@@ -146,7 +146,7 @@ describe('when transforming entered extended patient data', () => {
     it('should transform sex', () => {
         const entry: ExtendedNewPatientEntry = {
             administrative: { asOf: '04/13/2017' },
-            sex: {
+            birthAndSex: {
                 asOf: '04/13/2017',
                 current: { value: 'current-sex-value', name: 'current-sex-name' }
             }
@@ -164,7 +164,7 @@ describe('when transforming entered extended patient data', () => {
     it('should transform birth', () => {
         const entry: ExtendedNewPatientEntry = {
             administrative: { asOf: '04/13/2017' },
-            birth: {
+            birthAndSex: {
                 asOf: '04/13/2017',
                 bornOn: '06/17/2003'
             }

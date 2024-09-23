@@ -346,12 +346,12 @@ export type LabReport = {
   associatedInvestigations: Array<AssociatedInvestigation>;
   id: Scalars['String']['output'];
   jurisdictionCd: Scalars['Int']['output'];
-  tests: Array<LabTestSummary>;
   localId: Scalars['String']['output'];
   observations: Array<Observation>;
   organizationParticipations: Array<LabReportOrganizationParticipation>;
   personParticipations: Array<LabReportPersonParticipation>;
   relevance: Scalars['Float']['output'];
+  tests: Array<LabTestSummary>;
 };
 
 export type LabReportEventId = {

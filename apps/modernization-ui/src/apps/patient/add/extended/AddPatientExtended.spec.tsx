@@ -3,6 +3,37 @@ import { AddPatientExtended } from './AddPatientExtended';
 import { MemoryRouter } from 'react-router-dom';
 import { CodedValue } from 'coded';
 import { MockedProvider } from '@apollo/react-testing';
+import { CountiesCodedValues } from 'location';
+import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+
+const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
+    genders: [
+        { name: 'Male', value: 'M' },
+        { name: 'Female', value: 'F' },
+        { name: 'Unknown', value: 'U' }
+    ],
+    preferredGenders: [{ name: 'FTM', value: 'FTM' }],
+    genderUnknownReasons: [{ name: 'Did not ask', value: 'DNA' }],
+    multipleBirth: [{ name: 'Yes', value: 'Y' }],
+    states: {
+        all: [{ name: 'Alabama', value: 'AL', abbreviation: 'AL' }],
+        byValue: jest.fn(),
+        byAbbreviation: jest.fn()
+    },
+    counties: {
+        byState: jest.fn()
+    },
+    countries: [{ name: 'United States of America', value: 'US' }]
+};
+
+jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
+    usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
+}));
+
+const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
+jest.mock('location/useCountyCodedValues', () => ({
+    useCountyCodedValues: () => mockCountyCodedValues
+}));
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
     uses: [{ name: 'Home', value: 'HM' }]

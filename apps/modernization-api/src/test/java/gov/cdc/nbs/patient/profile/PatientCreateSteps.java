@@ -7,6 +7,7 @@ import gov.cdc.nbs.entity.odse.PostalLocator;
 import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.patient.profile.address.AddressDemographic;
 import gov.cdc.nbs.patient.profile.create.NewPatient;
 import gov.cdc.nbs.patient.profile.create.PatientCreateController;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -63,7 +64,7 @@ public class PatientCreateSteps {
   public void i_am_adding_a_new_patient_with_addresses() {
     this.input.active(
         current -> current.withAddress(
-            new NewPatient.Address(
+            new AddressDemographic(
                 RandomUtil.getRandomDateInPast(),
                 "H",
                 "H",
@@ -117,7 +118,6 @@ public class PatientCreateSteps {
             )
         )
     );
-
   }
 
   @Given("I am adding a new patient with races")
@@ -127,7 +127,8 @@ public class PatientCreateSteps {
             new NewPatient.Race(
                 RandomUtil.getRandomDateInPast(),
                 "category-value",
-                Arrays.asList("detail1", "detail2"))
+                Arrays.asList("detail1", "detail2")
+            )
         )
     );
   }
@@ -157,7 +158,7 @@ public class PatientCreateSteps {
   @Then("the patient created has the entered addresses")
   public void the_patient_created_has_the_entered_addresses() {
     PostalLocator actual = patient.active().addresses().getFirst().getLocator();
-    NewPatient.Address expected = this.input.active().addresses().getFirst();
+    AddressDemographic expected = this.input.active().addresses().getFirst();
 
     assertThat(actual)
         .returns(expected.city(), PostalLocator::getCityDescTxt)
@@ -220,4 +221,3 @@ public class PatientCreateSteps {
         .returns(expected.id(), EntityId::getRootExtensionTxt);
   }
 }
-

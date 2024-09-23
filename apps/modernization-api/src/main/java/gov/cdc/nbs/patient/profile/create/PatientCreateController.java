@@ -12,6 +12,7 @@ import gov.cdc.nbs.patient.profile.phone.change.NewPatientPhoneInput;
 import gov.cdc.nbs.patient.profile.phone.change.PatientPhoneChangeService;
 import gov.cdc.nbs.patient.profile.race.change.PatientRaceChangeService;
 import gov.cdc.nbs.patient.search.indexing.PatientIndexer;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +57,11 @@ public class PatientCreateController {
   }
 
 
-
+  @Operation(
+      summary = "PatientProfile",
+      description = "Allows creation of a patient",
+      tags = "PatientProfile"
+  )
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public PatientIdentifier create(@RequestBody final NewPatient newPatient) {
