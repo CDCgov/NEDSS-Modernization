@@ -86,23 +86,25 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <Controller
-                control={control}
-                name="birthAndSex.unknownReason"
-                render={({ field: { onChange, onBlur, value, name } }) => (
-                    <SingleSelect
-                        label="Unknown reason"
-                        orientation="horizontal"
-                        disabled={selectedCurrentGender?.value !== UNKNOWN_GENDER}
-                        value={value}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        id={name}
-                        name={name}
-                        options={coded.genderUnknownReasons}
-                    />
-                )}
-            />
+            {selectedCurrentGender?.value === UNKNOWN_GENDER && (
+                <Controller
+                    control={control}
+                    name="birthAndSex.unknownReason"
+                    render={({ field: { onChange, onBlur, value, name } }) => (
+                        <SingleSelect
+                            label="Unknown reason"
+                            orientation="horizontal"
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            id={name}
+                            name={name}
+                            options={coded.genderUnknownReasons}
+                        />
+                    )}
+                />
+            )}
+
             <Controller
                 control={control}
                 name="birthAndSex.transgenderInformation"

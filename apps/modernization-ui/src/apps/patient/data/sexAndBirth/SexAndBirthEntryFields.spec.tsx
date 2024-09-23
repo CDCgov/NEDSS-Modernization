@@ -50,13 +50,13 @@ const Fixture = () => {
 
 describe('SexAndBirthEntryFields', () => {
     it('should render the proper labels', () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, getByText, queryByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Sex & birth information as of')).toBeInTheDocument();
         expect(getByLabelText('DOB')).toBeInTheDocument();
         expect(getByText('Current age')).toBeInTheDocument();
         expect(getByLabelText('Current sex')).toBeInTheDocument();
-        expect(getByLabelText('Unknown reason')).toBeInTheDocument();
+        expect(queryByLabelText('Unknown reason')).not.toBeInTheDocument();
         expect(getByLabelText('Transgender information')).toBeInTheDocument();
         expect(getByLabelText('Additional gender')).toBeInTheDocument();
         expect(getByLabelText('Birth sex')).toBeInTheDocument();
@@ -97,20 +97,20 @@ describe('SexAndBirthEntryFields', () => {
     });
 
     it('should enable unknown reason when current sex is unknown', async () => {
-        const { getByLabelText } = render(<Fixture />);
+        const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         const currentSex = getByLabelText('Current sex');
-        expect(getByLabelText('Unknown reason')).toBeDisabled();
+        expect(queryByLabelText('Unknown reason')).not.toBeInTheDocument();
 
         userEvent.selectOptions(currentSex, 'U');
         expect(getByLabelText('Unknown reason')).not.toBeDisabled();
     });
 
     it('should reset unknown reason when current sex is changed from unknown', async () => {
-        const { getByLabelText } = render(<Fixture />);
+        const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         const currentSex = getByLabelText('Current sex');
-        expect(getByLabelText('Unknown reason')).toBeDisabled();
+        expect(queryByLabelText('Unknown reason')).not.toBeInTheDocument();
 
         userEvent.selectOptions(currentSex, 'U');
         expect(getByLabelText('Unknown reason')).not.toBeDisabled();
