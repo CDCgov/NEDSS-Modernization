@@ -7,9 +7,10 @@ import { Card } from '../../card/Card';
 
 export const Administrative = () => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
+    const info = <span className="required-before">All required fields for adding comments</span>;
 
     return (
-        <Card title="Administrative" id="section-Administrative">
+        <Card title="Administrative" id="section-Administrative" info={info}>
             <Controller
                 control={control}
                 name="administrative.asOf"

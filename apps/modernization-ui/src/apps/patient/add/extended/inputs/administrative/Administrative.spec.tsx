@@ -10,12 +10,21 @@ const TestWrapper = ({ children }: { children: ReactNode }) => {
 
 describe('Administrative', () => {
     it('should render the component with correct title', () => {
+        const { getByRole } = render(
+            <TestWrapper>
+                <Administrative />
+            </TestWrapper>
+        );
+        expect(getByRole('heading')).toHaveTextContent('Administrative');
+    });
+
+    it('should render the component with correct info', () => {
         const { getByText } = render(
             <TestWrapper>
                 <Administrative />
             </TestWrapper>
         );
-        expect(getByText('Administrative')).toBeInTheDocument();
+        expect(getByText('All required fields for adding comments')).toBeInTheDocument();
     });
 
     it('should render all input fields', () => {

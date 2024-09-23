@@ -42,6 +42,12 @@ td span {
         color: colors.$mandatory;
     }
 }
+.required-before {
+    &::before {
+        content: ' *';
+        color: colors.$mandatory;
+    }
+}
 
 .text-red {
     color: colors.$mandatory !important;

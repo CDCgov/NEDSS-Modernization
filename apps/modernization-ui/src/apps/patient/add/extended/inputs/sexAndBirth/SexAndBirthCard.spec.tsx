@@ -49,4 +49,10 @@ describe('SexAndBirthCard', () => {
 
         expect(getByRole('heading')).toHaveTextContent('Sex & birth');
     });
+
+    it('should display proper info', () => {
+        const { getByText } = render(<Fixture />);
+
+        expect(getByText('All required fields for adding sex and birth')).toBeInTheDocument();
+    });
 });
