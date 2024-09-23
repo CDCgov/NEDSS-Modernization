@@ -3,7 +3,9 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
+import java.time.Instant;
 import org.springframework.test.web.servlet.ResultActions;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileCreateEthnicitySteps {
 
@@ -28,4 +30,27 @@ public class PatientProfileCreateEthnicitySteps {
         .ifPresent(this.response::active);
   }
 
+  @Then("the patient profile ethnicity has the as of date {date}")
+  public void the_patient_profile_ethnicity_has_an_as_of_date_of(final Instant value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.ethnicity.content[*].asOf")
+                .value(value.toString()));
+  }
+
+  @Then("the patient profile ethnicity has the ethnic group {ethnicGroup}")
+  public void the_patient_profile_ethnicity_has_the_ethnic_group(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.ethnicity.content[*].ethnicGroup")
+                .value(value.toString()));
+  }
+
+  @Then("the patient profile ethnicity has the unknown reason {unknownReason}")
+  public void the_patient_profile_ethnicity_has_the_unknown_reason(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.ethnicity.content[*].unknownReason")
+                .value(value.toString()));
+  }
 }
