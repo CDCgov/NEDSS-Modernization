@@ -44,7 +44,7 @@ td span {
 }
 .required-before {
     &::before {
-        content: ' *';
+        content: '* ';
         color: colors.$mandatory;
     }
 }
