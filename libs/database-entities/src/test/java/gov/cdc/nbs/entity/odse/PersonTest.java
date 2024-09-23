@@ -18,8 +18,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -72,7 +72,7 @@ class PersonTest {
     assertThat(actual.getRecordStatusCd()).isEqualTo(RecordStatus.ACTIVE);
     assertThat(actual.getRecordStatusTime()).isEqualTo("2020-03-03T10:15:30.00Z");
 
-    assertThat(LocalDate.ofInstant(actual.getBirthTime(), ZoneOffset.UTC)).isEqualTo("2000-09-03");
+    assertThat(actual.getBirthTime()).isEqualTo("2000-09-03T00:00");
     assertThat(actual.getBirthGenderCd()).isEqualTo(Gender.M);
     assertThat(actual.getCurrSexCd()).isEqualTo(Gender.F);
     assertThat(actual.getDeceasedIndCd()).isEqualTo(Deceased.N);
@@ -1653,7 +1653,7 @@ class PersonTest {
 
     assertThat(patient)
         .returns(Instant.parse("2023-06-01T03:21:00Z"), Person::getAsOfDateSex)
-        .returns(Instant.parse("1949-10-15T00:00:00Z"), Person::getBirthTime)
+        .returns(LocalDateTime.parse("1949-10-15T00:00:00"), Person::getBirthTime)
         .returns(Gender.U, Person::getBirthGenderCd)
         .returns((short) 17, Person::getBirthOrderNbr)
         .satisfies(

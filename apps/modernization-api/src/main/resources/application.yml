@@ -22,6 +22,8 @@ nbs:
   datasource:
     server: localhost
     port: 1433
+    username: ${DATABASE_USER:sa}
+    password: ${DATABASE_PASSWORD}
   search:
     max-page-size: 100
     patient:
@@ -74,8 +76,8 @@ spring:
           default_storage: NORMALIZE
   datasource:
     url: jdbc:sqlserver://${nbs.datasource.server}:${nbs.datasource.port};database=nbs_odse;encrypt=true;trustServerCertificate=true;
-    username: sa
-    password: ${DATABASE_PASSWORD}
+    username: ${nbs.datasource.username}
+    password: ${nbs.datasource.password}
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

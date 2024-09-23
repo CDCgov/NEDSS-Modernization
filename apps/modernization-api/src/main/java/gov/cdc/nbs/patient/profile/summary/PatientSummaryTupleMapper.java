@@ -11,6 +11,7 @@ import gov.cdc.nbs.message.enums.Suffix;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -117,11 +118,11 @@ class PatientSummaryTupleMapper {
 
   private LocalDate resolveBirthday(final Tuple tuple) {
 
-    Instant value = tuple.get(tables.patient().birthTime);
+    LocalDateTime value = tuple.get(tables.patient().birthTime);
 
     return value == null
         ? null
-        : LocalDate.ofInstant(value, ZoneId.of("UTC"));
+        : value.toLocalDate();
 
   }
 

@@ -1,4 +1,4 @@
-package gov.cdc.nbs.patient.create;
+package gov.cdc.nbs.patient;
 
 import gov.cdc.nbs.id.IdGeneratorService;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
@@ -6,12 +6,12 @@ import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
 import org.springframework.stereotype.Component;
 
 @Component
-class PatientIdentifierGenerator {
+public class PatientIdentifierGenerator {
     private final IdGeneratorService idGenerator;
     private final PatientShortIdentifierResolver resolver;
 
 
-    PatientIdentifierGenerator(
+    public PatientIdentifierGenerator(
         final IdGeneratorService generator,
         final PatientShortIdentifierResolver resolver
     ) {
@@ -19,7 +19,7 @@ class PatientIdentifierGenerator {
         this.resolver = resolver;
     }
 
-    PatientIdentifier generate() {
+    public PatientIdentifier generate() {
         long identifier = generatePatientId();
         String local = generateLocalId();
         long shortId = resolver.resolve(local).orElse(identifier);

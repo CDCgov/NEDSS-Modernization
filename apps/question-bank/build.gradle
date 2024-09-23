@@ -64,6 +64,7 @@ testing {
                 implementation.bundle(libs.bundles.cucumber)
 
                 implementation project(':testing-support')
+                implementation project(':testing-database')
                 implementation project(':testing-identity')
                 implementation project(':testing-auth')
                 implementation project(':testing-auth-cucumber')

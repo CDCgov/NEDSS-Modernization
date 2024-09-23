@@ -10,7 +10,8 @@ if [ ! -f $ROOT/.env ]; then
   echo "TOKEN_SECRET=$TOKEN_SECRET" >> $ROOT/.env
   echo "PARAMETER_SECRET=$PARAMETER_SECRET" >> $ROOT/.env
 
-  # Supplmental values
+  # Supplmental values  
+  echo "DATABASE_USER=${DATABASE_USER:-sa}" >> $ROOT/.env
   echo 'NBS_DATASOURCE_SERVER=nbs-mssql' >> $ROOT/.env
   echo 'CLASSIC_SERVICE=wildfly:7001' >> $ROOT/.env
   echo 'MODERNIZATION_SERVICE=${MODERNIZATION_API_SERVER:-modernization-api}:${MODERNIZATION_API_PORT:-8080}' >> $ROOT/.env

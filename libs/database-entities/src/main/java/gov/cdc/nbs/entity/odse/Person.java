@@ -34,6 +34,7 @@ import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -109,10 +110,10 @@ public class Person {
   private Instant asOfDateSex;
 
   @Column(name = "birth_time")
-  private Instant birthTime;
+  private LocalDateTime birthTime;
 
   @Column(name = "birth_time_calc")
-  private Instant birthTimeCalc;
+  private LocalDateTime birthTimeCalc;
 
   @Convert(converter = GenderConverter.class)
   @Column(name = "curr_sex_cd")
@@ -220,6 +221,20 @@ public class Person {
 
   }
 
+  public Person(final PatientCommand.CreatePatient patient) {
+    this(patient.person(), patient.localId());
+
+    this.statusTime = patient.requestedOn();
+
+    this.recordStatusTime = patient.requestedOn();
+
+    this.addTime = patient.requestedOn();
+    this.addUserId = patient.requester();
+
+    this.lastChgTime = patient.requestedOn();
+    this.lastChgUserId = patient.requester();
+  }
+
   public Person(final PatientCommand.AddPatient patient) {
 
     this(patient.person(), patient.localId());
@@ -258,7 +273,7 @@ public class Person {
 
   private void resolveDateOfBirth(final LocalDate dateOfBirth) {
     if (dateOfBirth != null) {
-      this.birthTime = dateOfBirth.atStartOfDay(ZoneOffset.UTC).toInstant();
+      this.birthTime = dateOfBirth.atStartOfDay();
     } else {
       this.birthTime = null;
     }
@@ -440,11 +455,13 @@ public class Person {
     this.generalInformation.associate(resolver, associate);
   }
 
-  public void update(final PatientCommand.UpdateAdministrativeInfo info) {
+  public Person update(final PatientCommand.UpdateAdministrativeInfo info) {
     this.asOfDateAdmin = info.asOf();
     this.description = info.comment();
 
     changed(info);
+
+    return this;
   }
 
   public void update(
