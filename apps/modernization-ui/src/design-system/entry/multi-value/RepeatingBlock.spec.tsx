@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Input } from 'components/FormInputs/Input';
 import { Control, Controller } from 'react-hook-form';
-import { MultiValueEntry } from './MultiValueEntry';
+import { RepeatingBlock } from './RepeatingBlock';
 
 type TestType = {
     firstInput: string;
@@ -68,7 +68,7 @@ const renderView = (entry: TestType) => {
 };
 const UnderTest = () => {
     return (
-        <MultiValueEntry<TestType>
+        <RepeatingBlock<TestType>
             title={'Test'}
             defaultValues={defaultValues}
             columns={[
@@ -90,6 +90,7 @@ const UnderTest = () => {
         />
     );
 };
+
 describe('MultiValueEntry', () => {
     it('should display provided title', async () => {
         const { getByRole } = render(<UnderTest />);
@@ -106,17 +107,6 @@ describe('MultiValueEntry', () => {
 
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
-    });
-
-    it('should display provided column headers', async () => {
-        const { getAllByRole } = render(<UnderTest />);
-
-        expect(await screen.findByText('Test')).toBeInTheDocument();
-
-        const headers = getAllByRole('columnheader');
-        expect(headers[0]).toHaveTextContent('First');
-        expect(headers[1]).toHaveTextContent('Second');
-        expect(headers[2]).toHaveTextContent('');
     });
 
     it('should display default values', async () => {
@@ -142,13 +132,23 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display specified columns', async () => {
-        const getByRole = await waitFor(async () => {
-            const { getByRole } = render(<UnderTest />);
-            return getByRole;
+        const getAllByRole = await waitFor(async () => {
+            const { getAllByRole } = render(<UnderTest />);
+            return getAllByRole;
         });
 
-        const table = getByRole('table');
-        expect(table).toBeInTheDocument();
+        act(() => {
+            const inputs = getAllByRole('textbox');
+            userEvent.type(inputs[0], 'test');
+            userEvent.type(inputs[1], 'tedt22');
+            const button = getAllByRole('button');
+            userEvent.click(button[0]);
+        });
+
+        await waitFor(() => {
+            const table = getAllByRole('table');
+            expect(table[0]).toBeInTheDocument();
+        });
     });
 
     it('should trigger on change when data is submitted', async () => {

@@ -1,6 +1,5 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
-import userEvent from '@testing-library/user-event';
 import { NameMultiEntry } from './NameMultiEntry';
 
 const onChange = jest.fn();
@@ -12,6 +11,22 @@ const mockPatientNameCodedValues = {
     suffixes: [{ name: 'Sr.', value: 'SR' }],
     degrees: [{ name: 'BA', value: 'BA' }]
 };
+
+const mockEntry = {
+    state: {
+        data: [
+            {
+                asOf: internalizeDate(new Date()),
+                type: 'AN',
+                first: test
+            }
+        ]
+    }
+};
+
+jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
+    useMultiValueEntryState: () => mockEntry
+}));
 
 jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
     usePatientNameCodedValues: () => mockPatientNameCodedValues
