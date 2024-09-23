@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { ValueView } from './DataDisplay';
+import { ValueView } from './ValueView';
 
 describe('DataRow', () => {
     it('should display title and value', () => {
