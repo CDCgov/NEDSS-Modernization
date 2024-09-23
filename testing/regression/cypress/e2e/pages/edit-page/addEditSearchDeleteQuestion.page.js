@@ -58,7 +58,7 @@ class AddEditSearchDeleteQuestion {
         cy.get('#tooltip').type('new question tooltip');
         cy.get('[data-testid="displayType"]').select(1);
         cy.get('.defaultLabelInReport').eq(0).type('label report');
-        cy.get('.rdbColumnName').eq(0).type(`NEWCOLUMNNAME${newQuestionName}`);
+        cy.get('.rdbColumnName').eq(0).type(`NAME${newQuestionName}`);
     }
 
     clickCreateAndAddToPageBtn() {

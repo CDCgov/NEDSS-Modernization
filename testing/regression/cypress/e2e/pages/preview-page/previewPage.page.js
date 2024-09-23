@@ -84,8 +84,12 @@ class PreviewPagePage {
         cy.get('.multi-select__input-container').eq(0).click({ force: true })
     }
 
-    checkPageNameField() {
+    checkPageNameField(check) {
         cy.get('#name').click()
+        if (check) {
+            cy.get('#name').clear()
+            this.selectPageName()
+        }
     }
 
     checkPageNameFieldMaxLength() {
