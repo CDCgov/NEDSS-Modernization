@@ -1,14 +1,14 @@
-import { calculateAge } from 'date';
-import { useEffect, useMemo } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { BirthEntry, SexEntry } from '../entry';
 import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
-import { useCountyCodedValues } from 'location';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { Input } from 'components/FormInputs/Input';
+import { asAgeDisplay } from 'date/asAgeDisplay';
 import { DataDisplay } from 'design-system/data-display/DataDisplay';
 import { SingleSelect } from 'design-system/select';
-import { Input } from 'components/FormInputs/Input';
+import { useCountyCodedValues } from 'location';
+import { useEffect, useMemo } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+import { BirthEntry, SexEntry } from '../entry';
 
 const UNKNOWN_GENDER = 'U';
 export const SexAndBirthEntryFields = () => {
@@ -17,7 +17,7 @@ export const SexAndBirthEntryFields = () => {
     const selectedCurrentGender = useWatch({ control, name: 'birthAndSex.current' });
     const selectedState = useWatch({ control, name: 'birthAndSex.state' });
     const selectedMultipleBirth = useWatch({ control, name: 'birthAndSex.multiple' });
-    const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
+    const age = useMemo(() => asAgeDisplay(currentBirthday), [currentBirthday]);
 
     const coded = usePatientSexBirthCodedValues();
     const { counties } = useCountyCodedValues(selectedState?.value);
@@ -42,7 +42,7 @@ export const SexAndBirthEntryFields = () => {
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Sex and birth information as of"
+                        label="Sex & birth information as of"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -69,7 +69,7 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <DataDisplay title="Current age" value={age !== undefined && age > -1 ? `${age} Years` : ''} />
+            <DataDisplay title="Current age" value={age} />
             <Controller
                 control={control}
                 name="birthAndSex.current"

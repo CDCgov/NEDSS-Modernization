@@ -52,7 +52,7 @@ describe('SexAndBirthEntryFields', () => {
     it('should render the proper labels', () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
-        expect(getByLabelText('Sex and birth information as of')).toBeInTheDocument();
+        expect(getByLabelText('Sex & birth information as of')).toBeInTheDocument();
         expect(getByLabelText('DOB')).toBeInTheDocument();
         expect(getByText('Current age')).toBeInTheDocument();
         expect(getByLabelText('Current sex')).toBeInTheDocument();
@@ -71,7 +71,7 @@ describe('SexAndBirthEntryFields', () => {
     it('should require as of', async () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
-        const asOf = getByLabelText('Sex and birth information as of');
+        const asOf = getByLabelText('Sex & birth information as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
@@ -84,7 +84,7 @@ describe('SexAndBirthEntryFields', () => {
     it('should be valid with as of', async () => {
         const { getByLabelText, queryByText } = render(<Fixture />);
 
-        const asOf = getByLabelText('Sex and birth information as of');
+        const asOf = getByLabelText('Sex & birth information as of');
 
         act(() => {
             userEvent.paste(asOf, '01/20/2020');

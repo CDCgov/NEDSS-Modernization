@@ -44,9 +44,9 @@ const Fixture = () => {
     );
 };
 describe('SexAndBirthCard', () => {
-    it('should display Sex and birth as header', () => {
+    it('should display Sex & birth as header', () => {
         const { getByRole } = render(<Fixture />);
 
-        expect(getByRole('heading')).toHaveTextContent('Sex and birth');
+        expect(getByRole('heading')).toHaveTextContent('Sex & birth');
     });
 });
