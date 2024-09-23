@@ -8,6 +8,25 @@ const mockPatientAddressCodedValues = {
     uses: [{ name: 'Home', value: 'HM' }]
 };
 
+class MockIntersectionObserver {
+    observe = jest.fn();
+    unobserve = jest.fn();
+    disconnect = jest.fn();
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+    writable: true,
+    configurable: true,
+    value: MockIntersectionObserver
+});
+
+// Mock IntersectionObserverEntry
+Object.defineProperty(window, 'IntersectionObserverEntry', {
+    writable: true,
+    configurable: true,
+    value: jest.fn()
+});
+
 jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
     usePatientAddressCodedValues: () => mockPatientAddressCodedValues
 }));

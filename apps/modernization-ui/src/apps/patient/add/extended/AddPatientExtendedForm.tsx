@@ -19,6 +19,7 @@ import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
 import { EthnicityEntryCard } from './inputs/ethnicity/EthnicityEntryCard';
 import { NameMultiEntry } from './inputs/name/NameMultiEntry';
+import { sections } from './sections';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
@@ -102,7 +103,7 @@ export const AddPatientExtendedForm = () => {
                     </div>
                 </FormProvider>
             </div>
-            <AddPatientExtendedNav />
+            <AddPatientExtendedNav sections={sections} />
         </>
     );
 };

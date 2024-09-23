@@ -1,21 +1,55 @@
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './extended-patient-nav.module.scss';
+import { Section } from '../sections';
 
-export const AddPatientExtendedNav = () => {
+export const AddPatientExtendedNav = ({ sections }: { sections: Section[] }) => {
+    const [activeSection, setActiveSection] = useState<string>('administrative');
+
+    const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                setActiveSection(entry.target.id);
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleIntersection, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        });
+
+        sections.forEach((section) => {
+            const element = document.getElementById(section.id);
+            if (element) observer.observe(element);
+        });
+
+        return () => observer.disconnect();
+    }, [handleIntersection]);
+
+    const handleClick = (sectionId: string) => (e: React.MouseEvent) => {
+        e.preventDefault();
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     return (
         <aside>
             <nav>
                 <div className={styles.navTitle}>On this page</div>
                 <div className={styles.navOptions}>
-                    <a href="#section-Administrative">Administrative</a>
-                    <a href="#section-Name">Name</a>
-                    <a href="#section-Address">Address</a>
-                    <a href="#section-PhoneAndEmail">Phone & email</a>
-                    <a href="#identification">Identification</a>
-                    <a href="#section-Race">Race</a>
-                    <a href="#ethnicity">Ethnicity</a>
-                    <a href="#section-SexAndBirth">Sex & birth</a>
-                    <a href="#section-Mortality">Mortality</a>
-                    <a href="#section-General">General patient information</a>
+                    {sections.map((section) => (
+                        <a
+                            key={section.id}
+                            href={`#${section.id}`}
+                            className={activeSection === section.id ? styles.visible : ''}
+                            onClick={() => handleClick(section.id)}>
+                            {section.label}
+                        </a>
+                    ))}
                 </div>
             </nav>
         </aside>

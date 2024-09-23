@@ -38,7 +38,7 @@ export const NameMultiEntry = ({ onChange, isDirty }: Props) => {
 
     return (
         <MultiValueEntry<NameEntry>
-            id="section-Name"
+            id="name"
             title="Name"
             defaultValues={defaultValue}
             columns={columns}

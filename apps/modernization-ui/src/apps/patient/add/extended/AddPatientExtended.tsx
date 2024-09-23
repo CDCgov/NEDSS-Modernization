@@ -7,7 +7,7 @@ export const AddPatientExtended = () => {
     return (
         <div className={styles.addPatientExtended}>
             <DataEntrySideNav />
-            <div className={styles.contet}>
+            <div className={styles.content}>
                 <header>
                     <h1>New patient - extended</h1>
                     <div className={styles.buttonGroup}>
