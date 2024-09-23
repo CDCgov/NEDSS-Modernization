@@ -38,7 +38,7 @@ public class PatientProfileCreateEthnicitySteps {
                 .value(value.toString()));
   }
 
-  @Then("the patient profile ethnicity has the ethnic group {ethnicGroup}")
+  @Then("the patient profile ethnicity has the ethnic group {string}")
   public void the_patient_profile_ethnicity_has_the_ethnic_group(final String value) throws Exception {
     this.response.active()
         .andExpect(
@@ -46,7 +46,7 @@ public class PatientProfileCreateEthnicitySteps {
                 .value(value.toString()));
   }
 
-  @Then("the patient profile ethnicity has the unknown reason {unknownReason}")
+  @Then("the patient profile ethnicity has the unknown reason {string}")
   public void the_patient_profile_ethnicity_has_the_unknown_reason(final String value) throws Exception {
     this.response.active()
         .andExpect(
