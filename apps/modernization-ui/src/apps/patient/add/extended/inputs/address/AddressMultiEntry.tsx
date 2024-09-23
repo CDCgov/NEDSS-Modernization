@@ -1,9 +1,9 @@
 import { AddressEntry } from 'apps/patient/data/entry';
 import { internalizeDate } from 'date';
-import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { Column } from 'design-system/table';
 import { AddressView } from './AddressView';
 import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
+import { ValueView } from 'design-system/entry/multi-value/ValueView';
 
 const defaultValue: AddressEntry = {
     asOf: internalizeDate(new Date()),
@@ -38,7 +38,7 @@ export const AddressMultiEntry = ({ onChange, isDirty }: Props) => {
     ];
 
     return (
-        <MultiValueEntry<AddressEntry>
+        <ValueView<AddressEntry>
             id="section-Address"
             title="Address"
             defaultValues={defaultValue}

@@ -15,6 +15,22 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
     usePatientPhoneCodedValues: () => mockPatientPhoneCodedValues
 }));
 
+const mockEntry = {
+  state: {
+      data: [
+          {
+              asOf: internalizeDate(new Date()),
+              type: 'PH',
+              use: 'H'
+          }
+      ]
+  }
+};
+
+jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
+  useMultiValueEntryState: () => mockEntry
+}));
+
 const awaitRender = async () => {
     // wait on render to prevent act warning
     expect(await screen.findByText('URL')).toBeInTheDocument();

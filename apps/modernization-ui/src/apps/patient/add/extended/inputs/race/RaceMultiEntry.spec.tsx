@@ -17,6 +17,21 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
     useDetailedRaceCodedValues: () => mockDetailedOptions
 }));
 
+const mockEntry = {
+    state: {
+        data: [
+            {
+                asOf: internalizeDate(new Date()),
+                race: '1'
+            }
+        ]
+    }
+};
+
+jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
+    useMultiValueEntryState: () => mockEntry
+}));
+
 const onChange = jest.fn();
 const isDirty = jest.fn();
 

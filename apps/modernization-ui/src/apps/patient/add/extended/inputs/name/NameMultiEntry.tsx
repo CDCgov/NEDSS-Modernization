@@ -1,9 +1,9 @@
 import { internalizeDate } from 'date';
 import { Column } from 'design-system/table';
-import { MultiValueEntry } from 'design-system/entry/multi-value/MultiValueEntry';
 import { NameEntryView } from './NameEntryView';
 import { NameEntry } from 'apps/patient/data/entry';
 import { NameEntryFields } from 'apps/patient/data/name/NameEntryFields';
+import { ValueView } from 'design-system/entry/multi-value/ValueView';
 
 const defaultValue: Partial<NameEntry> = {
     asOf: internalizeDate(new Date()),
@@ -37,7 +37,7 @@ export const NameMultiEntry = ({ onChange, isDirty }: Props) => {
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
-        <MultiValueEntry<NameEntry>
+        <ValueView<NameEntry>
             id="section-Name"
             title="Name"
             defaultValues={defaultValue}

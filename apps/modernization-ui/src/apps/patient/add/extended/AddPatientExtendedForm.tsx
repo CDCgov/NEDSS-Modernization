@@ -12,11 +12,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
 import { IdentificationMultiEntry } from './inputs/identification/IdentificationMultiEntry';
-import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
+import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 
 // Once all sections have been updated with proper types this will be removed
 type ExtendedPatientCreationForm = {
