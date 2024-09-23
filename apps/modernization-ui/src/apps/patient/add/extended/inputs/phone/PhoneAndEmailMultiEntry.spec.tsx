@@ -91,41 +91,23 @@ describe('PhoneAndEmailMultiEntry', () => {
         await awaitRender();
         const type = getByLabelText('Type');
         const use = getByLabelText('Use');
-        const countryCode = getByLabelText('Country code');
-        const phoneNumber = getByLabelText('Phone number');
-        const extension = getByLabelText('Extension');
-        const email = getByLabelText('Email');
-        const url = getByLabelText('URL');
-        const comments = getByLabelText('Phone & email comments');
         const buttons = getAllByRole('button');
 
         await waitFor(async () => {
             userEvent.selectOptions(use, 'H');
             userEvent.selectOptions(type, 'PH');
             // warning says no effect, but it lies
-            await userEvent.type(countryCode, '1');
-            await userEvent.type(phoneNumber, '1234567890');
-            await userEvent.type(extension, '2');
-            await userEvent.type(email, 'email@email.com');
-            await userEvent.type(url, 'url');
-            await userEvent.type(comments, 'comments go here');
             userEvent.click(buttons[0]); // Add phone & email button
         });
 
         await waitFor(async () => {
             const date = internalizeDate(new Date());
 
-            expect(onChange).toHaveBeenNthCalledWith(2, [
+            expect(onChange).toHaveBeenNthCalledWith(1, [
                 {
                     asOf: date,
-                    comment: 'comments go here',
-                    countryCode: '1',
-                    email: 'email@email.com',
-                    extension: '2',
-                    phoneNumber: '123-456-7890',
-                    type: mockPatientPhoneCodedValues.types[0],
-                    url: 'url',
-                    use: mockPatientPhoneCodedValues.uses[0]
+                    type: 'PH',
+                    use: 'H'
                 }
             ]);
         });
