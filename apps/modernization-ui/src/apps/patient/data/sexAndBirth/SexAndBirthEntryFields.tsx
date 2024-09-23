@@ -59,7 +59,7 @@ export const SexAndBirthEntryFields = () => {
                 name="birthAndSex.bornOn"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <DatePickerInput
-                        label="DOB"
+                        label="Date of birth"
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}

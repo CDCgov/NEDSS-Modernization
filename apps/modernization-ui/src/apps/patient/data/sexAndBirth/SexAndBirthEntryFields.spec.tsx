@@ -53,7 +53,7 @@ describe('SexAndBirthEntryFields', () => {
         const { getByLabelText, getByText, queryByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Sex & birth information as of')).toBeInTheDocument();
-        expect(getByLabelText('DOB')).toBeInTheDocument();
+        expect(getByLabelText('Date of birth')).toBeInTheDocument();
         expect(getByText('Current age')).toBeInTheDocument();
         expect(getByLabelText('Current sex')).toBeInTheDocument();
         expect(queryByLabelText('Unknown reason')).not.toBeInTheDocument();
