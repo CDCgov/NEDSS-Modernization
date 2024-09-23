@@ -1,5 +1,5 @@
 import { AddressEntry } from 'apps/patient/data/entry';
-import { DataDisplay } from 'design-system/data-display/DataDisplay';
+import { ValueView } from 'design-system/data-display/ValueView';
 
 type Props = {
     entry: AddressEntry;
@@ -7,18 +7,18 @@ type Props = {
 export const AddressView = ({ entry }: Props) => {
     return (
         <>
-            <DataDisplay title="Address as of" value={entry.asOf} required />
-            <DataDisplay title="Type" value={entry.type.name} required />
-            <DataDisplay title="Use" value={entry.use.name} required />
-            <DataDisplay title="Street address 1" value={entry.address1} />
-            <DataDisplay title="Street address 2" value={entry.address2} />
-            <DataDisplay title="City" value={entry.city} />
-            <DataDisplay title="State" value={entry.state?.name} />
-            <DataDisplay title="Zip" value={entry.zipcode} />
-            <DataDisplay title="County" value={entry.county?.name} />
-            <DataDisplay title="Census tract" value={entry.censusTract} />
-            <DataDisplay title="Country" value={entry.country?.name} />
-            <DataDisplay title="Address comments" value={entry.comment} />
+            <ValueView title="Address as of" value={entry.asOf} required />
+            <ValueView title="Type" value={entry.type.name} required />
+            <ValueView title="Use" value={entry.use.name} required />
+            <ValueView title="Street address 1" value={entry.address1} />
+            <ValueView title="Street address 2" value={entry.address2} />
+            <ValueView title="City" value={entry.city} />
+            <ValueView title="State" value={entry.state?.name} />
+            <ValueView title="Zip" value={entry.zipcode} />
+            <ValueView title="County" value={entry.county?.name} />
+            <ValueView title="Census tract" value={entry.censusTract} />
+            <ValueView title="Country" value={entry.country?.name} />
+            <ValueView title="Address comments" value={entry.comment} />
         </>
     );
 };

@@ -11,6 +11,22 @@ jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => (
     usePatientAddressCodedValues: () => mockPatientAddressCodedValues
 }));
 
+const mockEntry = {
+  state: {
+      data: [
+          {
+              asOf: internalizeDate(new Date()),
+              type: 'H',
+              use: 'HM'
+          }
+      ]
+  }
+};
+
+jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
+  useMultiValueEntryState: () => mockEntry
+}));
+
 const mockLocationCodedValues = {
     states: {
         all: [{ name: 'StateName', value: '1' }]

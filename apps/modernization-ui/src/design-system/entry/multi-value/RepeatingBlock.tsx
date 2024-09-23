@@ -7,7 +7,7 @@ import { Column, DataTable } from 'design-system/table';
 import { ReactNode, useEffect } from 'react';
 import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
-import styles from './MultiValueEntry.module.scss';
+import styles from './RepeatingBlock.module.scss';
 
 type Props<V extends FieldValues> = {
     id?: string;
@@ -20,7 +20,7 @@ type Props<V extends FieldValues> = {
     formRenderer: (control: Control<V>) => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
-export const MultiValueEntry = <V extends FieldValues>({
+export const RepeatingBlock = <V extends FieldValues>({
     id,
     title,
     defaultValues,
@@ -118,12 +118,14 @@ export const MultiValueEntry = <V extends FieldValues>({
                 </section>
             )}
             <div>
-                <DataTable<V>
-                    className={styles.dataTable}
-                    id={`${title}-data-table`}
-                    columns={[...columns, iconColumn]}
-                    data={state.data}
-                />
+                {state.data.length > 0 && (
+                    <DataTable<V>
+                        className={styles.dataTable}
+                        id={`${title}-data-table`}
+                        columns={[...columns, iconColumn]}
+                        data={state.data}
+                    />
+                )}
             </div>
             <FormProvider {...form}>
                 {state.status === 'viewing' ? (
