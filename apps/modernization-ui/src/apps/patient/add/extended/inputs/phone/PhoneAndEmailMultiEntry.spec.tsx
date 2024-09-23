@@ -109,7 +109,7 @@ describe('PhoneAndEmailMultiEntry', () => {
             await userEvent.type(email, 'email@email.com');
             await userEvent.type(url, 'url');
             await userEvent.type(comments, 'comments go here');
-            userEvent.click(buttons[1]); // Add phone & email button
+            userEvent.click(buttons[0]); // Add phone & email button
         });
 
         await waitFor(async () => {
