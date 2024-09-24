@@ -1,12 +1,12 @@
 import classNames from 'classnames';
-import styles from './data-display.module.scss';
+import styles from './value-view.module.scss';
 
 type Props = {
     title: string;
     required?: boolean;
     value?: string | null;
 };
-export const DataDisplay = ({ title, value, required = false }: Props) => {
+export const ValueView = ({ title, value, required = false }: Props) => {
     return (
         <div className={styles.dataRow}>
             <span className={classNames(styles.title, { required: required })}>{title}</span>

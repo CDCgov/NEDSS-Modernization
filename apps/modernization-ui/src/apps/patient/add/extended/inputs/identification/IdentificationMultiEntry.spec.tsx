@@ -11,6 +11,23 @@ const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
 jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValues', () => ({
     usePatientIdentificationCodedValues: () => mockPatientIdentificationCodedValues
 }));
+
+const mockEntry = {
+  state: {
+      data: [
+          {
+              asOf: internalizeDate(new Date()),
+              type: 'AN',
+              idValue: '12341241'
+          }
+      ]
+  }
+};
+
+jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
+  useMultiValueEntryState: () => mockEntry
+}));
+
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
