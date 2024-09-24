@@ -11,10 +11,17 @@ export const ProgressBar = ({ lowerBound, upperBound }: ProgressBarProps) => {
     const safeTotalLogOdds = totalLogOdds ?? 1;
 
     const requiresReviewPercentage =
-        upperBound !== undefined && lowerBound !== undefined ? ((upperBound - lowerBound) / safeTotalLogOdds) * 100 : 0;
-
+        upperBound !== undefined && lowerBound !== undefined && lowerBound < safeTotalLogOdds
+            ? ((upperBound - lowerBound) / safeTotalLogOdds) * 100
+            : 0;
     const automaticMatchPercentage =
-        upperBound !== undefined ? ((safeTotalLogOdds - upperBound) / safeTotalLogOdds) * 100 : 0;
+        upperBound !== undefined &&
+        upperBound !== 0 &&
+        lowerBound !== undefined &&
+        upperBound > lowerBound &&
+        upperBound < lowerBound + safeTotalLogOdds
+            ? ((safeTotalLogOdds - upperBound) / safeTotalLogOdds) * 100
+            : 0;
 
     return (
         <div className={styles.progressBarContainer}>
@@ -35,7 +42,9 @@ export const ProgressBar = ({ lowerBound, upperBound }: ProgressBarProps) => {
 
                 <div
                     className={`${styles.boundValue} ${styles.lowerBoundLabel}`}
-                    style={{ left: `${lowerBound !== undefined ? (lowerBound / safeTotalLogOdds) * 100 : 0}%` }}>
+                    style={{
+                        left: `${lowerBound !== undefined && lowerBound < safeTotalLogOdds ? (lowerBound / safeTotalLogOdds) * 100 : 0}%`
+                    }}>
                     {lowerBound !== undefined ? lowerBound : ''}
                 </div>
 

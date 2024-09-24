@@ -21,11 +21,12 @@ const DataElementsConfiguration = () => {
         if (typeof finalBelongingnessRatio === 'string') {
             finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
         }
-        console.log('SUBMIT', { ...data, belongingnessRatio: finalBelongingnessRatio });
         if (data.dataElements) {
             setDataElements(data.dataElements);
             localStorage.setItem('dataElements', JSON.stringify(data.dataElements));
         }
+        // Success toast message would normally be displayed upon API response of success.
+        // But for now, without the API, we just show it on submit
         setBelongingnessRatio(finalBelongingnessRatio);
         setMode('match');
     });
