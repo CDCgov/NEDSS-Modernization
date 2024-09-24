@@ -139,7 +139,7 @@ const PatientMatchConfigurationPage = () => {
 
     return (
         <>
-            {selectedConfigurationIndex != null ? (
+            {selectedConfigurationIndex != null && configurations.length > 0 ? (
                 <ConfirmationModal
                     modal={deleteModalRef}
                     title={'Delete pass configuration'}

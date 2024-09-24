@@ -57,26 +57,23 @@ li {
             margin-bottom: 0.5rem;
         }
 
-        .active {
-            margin-left: 0.5rem;
+        .active, .inactive {
             display: inline-block;
-            background-color: colors.$success;
             border-radius: 0.125rem;
             font-size: 0.875rem;
             font-style: normal;
             font-weight: 400;
             line-height: 100%;
+            padding: 0.25rem 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .active {
+            background-color: colors.$success;
         }
 
         .inactive {
-            margin-left: 0.5rem;
-            display: inline-block;
             background-color: colors.$disabled-light;
-            border-radius: 0.125rem;
-            font-size: 0.875rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 100%;
         }
     }
 }
