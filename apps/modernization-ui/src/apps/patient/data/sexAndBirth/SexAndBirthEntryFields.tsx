@@ -2,13 +2,13 @@ import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/use
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOfToday } from 'date/displayAge';
-import { DataDisplay } from 'design-system/data-display/DataDisplay';
 import { SingleSelect } from 'design-system/select';
 import { useCountyCodedValues } from 'location';
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { BirthEntry, SexEntry } from '../entry';
+import { ValueView } from 'design-system/data-display/ValueView';
 
 const UNKNOWN_GENDER = 'U';
 export const SexAndBirthEntryFields = () => {
@@ -69,7 +69,7 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <DataDisplay title="Current age" value={age} />
+            <ValueView title="Current age" value={age} />
             <Controller
                 control={control}
                 name="birthAndSex.current"
