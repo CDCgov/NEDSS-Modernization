@@ -3,8 +3,6 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import gov.cdc.nbs.graphql.GraphQLRequest;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.interaction.http.page.PageableJsonNodeMapper;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -42,14 +40,6 @@ class PatientProfileEthnicityRequester {
 
   PatientProfileEthnicityRequester(final GraphQLRequest graphql) {
     this.graphql = graphql;
-  }
-
-  ResultActions ethnicity(final PatientIdentifier patient, final Pageable pageable) {
-    return graphql.query(
-        QUERY,
-        JsonNodeFactory.instance.objectNode()
-            .put("patient", patient.id())
-            .set("page", PageableJsonNodeMapper.asJsonNode(pageable)));
   }
 
   ResultActions ethnicity(final PatientIdentifier patient) {
