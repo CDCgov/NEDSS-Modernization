@@ -9,7 +9,7 @@ import { MortalityEntry } from '../entry';
 import { useEffect } from 'react';
 
 export const MortalityEntryFields = () => {
-    const { control, resetField } = useFormContext<{ mortality: MortalityEntry }>();
+    const { control, reset, getValues } = useFormContext<{ mortality: MortalityEntry }>();
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
 
@@ -17,12 +17,20 @@ export const MortalityEntryFields = () => {
     const counties = location.counties.byState(selectedState?.value);
 
     useEffect(() => {
-        if (!selectedDeceased || selectedDeceased.value !== Indicator.Yes) {
-            resetField('mortality.deceasedOn');
-            resetField('mortality.state');
-            resetField('mortality.city');
-            resetField('mortality.county');
-            resetField('mortality.country');
+        if (selectedDeceased?.value !== Indicator.Yes) {
+            reset(
+                {
+                    ...getValues(),
+                    mortality: {
+                        deceasedOn: undefined,
+                        state: undefined,
+                        city: undefined,
+                        county: undefined,
+                        country: undefined
+                    }
+                },
+                { keepDefaultValues: true }
+            );
         }
     }, [selectedDeceased?.value]);
 
