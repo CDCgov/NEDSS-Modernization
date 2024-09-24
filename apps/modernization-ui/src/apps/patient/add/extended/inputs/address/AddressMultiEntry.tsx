@@ -38,7 +38,6 @@ export const AddressMultiEntry = ({ onChange, isDirty }: Props) => {
     ];
 
     return (
-
         <RepeatingBlock<AddressEntry>
             id="address"
             title="Address"

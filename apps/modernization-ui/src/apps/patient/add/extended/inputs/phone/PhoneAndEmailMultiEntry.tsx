@@ -33,7 +33,6 @@ export const PhoneAndEmailMultiEntry = ({ onChange, isDirty }: Props) => {
     ];
 
     return (
-
         <RepeatingBlock<PhoneEmailEntry>
             id="phoneAndEmail"
             title="Phone & email"

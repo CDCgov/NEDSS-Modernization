@@ -30,7 +30,6 @@ export const RaceMultiEntry = ({ onChange, isDirty }: Props) => {
         }
     ];
     return (
-          
         <RepeatingBlock<RaceEntry>
             id="race"
             title="Race"

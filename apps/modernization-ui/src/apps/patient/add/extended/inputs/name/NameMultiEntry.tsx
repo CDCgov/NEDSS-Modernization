@@ -37,7 +37,6 @@ export const NameMultiEntry = ({ onChange, isDirty }: Props) => {
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
-      
         <RepeatingBlock<NameEntry>
             id="name"
             title="Name"
