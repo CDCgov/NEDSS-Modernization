@@ -112,6 +112,7 @@ const PatientMatchConfigurationPage = () => {
 
         configs[selectedConfigurationIndex || 0] = newConfig;
         setConfigurations(configs);
+        setIsAddingConfiguration(false);
         localStorage.setItem('passConfigurations', JSON.stringify(configs));
     };
 
@@ -139,7 +140,7 @@ const PatientMatchConfigurationPage = () => {
 
     return (
         <>
-            {selectedConfigurationIndex != null && configurations.length > 0 ? (
+            {selectedConfigurationIndex && selectedConfigurationIndex >= 0 ? (
                 <ConfirmationModal
                     modal={deleteModalRef}
                     title={'Delete pass configuration'}
