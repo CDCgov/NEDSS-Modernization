@@ -77,6 +77,17 @@ describe('when mapping a general information entry to a format accepted by the A
         expect(actual).toEqual(expect.objectContaining({ educationLevel: 'education-level-value' }));
     });
 
+    it('should include patient primary language', () => {
+        const entry = {
+            asOf: '04/13/2017',
+            primaryLanguage: { value: 'W', name: 'Welsh' }
+        };
+
+        const actual = asGeneral(entry);
+
+        expect(actual).toEqual(expect.objectContaining({ primaryLanguage: 'W' }));
+    });
+
     it('should include wether the patient speaks english', () => {
         const entry = {
             asOf: '04/13/2017',
