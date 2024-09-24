@@ -18,7 +18,7 @@ const mockEntry = {
             {
                 asOf: internalizeDate(new Date()),
                 type: 'AN',
-                first: test
+                first: 'TestFirstName'
             }
         ]
     }
@@ -64,7 +64,7 @@ describe('NameMultiEntry', () => {
         expect(secondLast).toHaveValue('');
 
         const middle = getByLabelText('Middle');
-        expect(middle).toHaveValue('');
+        expect(middle).toHaveValue(''); 
 
         const secondMiddle = getByLabelText('Second middle');
         expect(secondMiddle).toHaveValue('');

@@ -1,8 +1,8 @@
 import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { ValueView } from 'design-system/data-display/ValueView';
 import { Input } from 'components/FormInputs/Input';
 import { asAgeDisplay } from 'date/asAgeDisplay';
-import { DataDisplay } from 'design-system/data-display/DataDisplay';
 import { SingleSelect } from 'design-system/select';
 import { useCountyCodedValues } from 'location';
 import { useEffect, useMemo } from 'react';
@@ -69,7 +69,7 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <DataDisplay title="Current age" value={age} />
+            <ValueView title="Current age" value={age} />
             <Controller
                 control={control}
                 name="birthAndSex.current"
