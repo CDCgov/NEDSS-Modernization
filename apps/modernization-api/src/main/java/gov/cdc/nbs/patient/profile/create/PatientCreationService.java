@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
+import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
 import static gov.cdc.nbs.patient.profile.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
 import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
@@ -25,8 +26,7 @@ class PatientCreationService {
   PatientCreationService(
       final PatientIdentifierGenerator patientIdentifierGenerator,
       AddressIdentifierGenerator addressIdentifierGenerator,
-      final EntityManager entityManager
-  ) {
+      final EntityManager entityManager) {
     this.patientIdentifierGenerator = patientIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.entityManager = entityManager;
@@ -35,8 +35,7 @@ class PatientCreationService {
   @Transactional
   public PatientIdentifier create(
       final RequestContext context,
-      final NewPatient newPatient
-  ) {
+      final NewPatient newPatient) {
     PatientIdentifier identifier = patientIdentifierGenerator.generate();
 
     Person patient = new Person(
@@ -44,16 +43,19 @@ class PatientCreationService {
             identifier.id(),
             identifier.local(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    )
-        .update(
-            asUpdateAdministrativeInfo(
-                identifier.id(),
-                context,
-                newPatient.administrative()
-            )
-        );
+            context.requestedAt()))
+                .update(
+                    asUpdateAdministrativeInfo(
+                        identifier.id(),
+                        context,
+                        newPatient.administrative()));
+
+    if (newPatient.ethnicity() != null)
+      patient.update(
+          asUpdateEthnicityInfo(
+              identifier.id(),
+              context,
+              newPatient.ethnicity()));
 
     newPatient.maybeBirth()
         .map(demographic -> asUpdateBirth(identifier.id(), context, demographic))
