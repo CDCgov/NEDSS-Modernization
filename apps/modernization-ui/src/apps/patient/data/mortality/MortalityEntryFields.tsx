@@ -9,7 +9,7 @@ import { MortalityEntry } from '../entry';
 import { useEffect } from 'react';
 
 export const MortalityEntryFields = () => {
-    const { control, reset, getValues } = useFormContext<{ mortality: MortalityEntry }>();
+    const { control, resetField } = useFormContext<{ mortality: MortalityEntry }>();
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
 
@@ -18,19 +18,11 @@ export const MortalityEntryFields = () => {
 
     useEffect(() => {
         if (selectedDeceased?.value !== Indicator.Yes) {
-            reset(
-                {
-                    ...getValues(),
-                    mortality: {
-                        deceasedOn: undefined,
-                        state: undefined,
-                        city: undefined,
-                        county: undefined,
-                        country: undefined
-                    }
-                },
-                { keepDefaultValues: true }
-            );
+            resetField('mortality.deceasedOn');
+            resetField('mortality.state');
+            resetField('mortality.city');
+            resetField('mortality.county');
+            resetField('mortality.country');
         }
     }, [selectedDeceased?.value]);
 
@@ -70,7 +62,7 @@ export const MortalityEntryFields = () => {
                     />
                 )}
             />
-            {selectedDeceased && selectedDeceased.value === Indicator.Yes && (
+            {selectedDeceased?.value === Indicator.Yes && (
                 <>
                     <Controller
                         control={control}
