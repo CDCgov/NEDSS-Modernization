@@ -1,6 +1,6 @@
 import { asValue } from 'options';
-import { Mortality } from './api';
-import { MortalityEntry } from './entry';
+import { Mortality } from '../api';
+import { MortalityEntry } from '../entry';
 
 const asMortality = (entry: MortalityEntry): Mortality => {
     const { deceased, county, state, country, ...remaining } = entry;

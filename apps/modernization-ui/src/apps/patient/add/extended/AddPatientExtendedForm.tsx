@@ -1,20 +1,20 @@
+import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';
 import { today } from 'date';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Card } from './card/Card';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddressMultiEntry } from './inputs/address/AddressMultiEntry';
 import { Administrative } from './inputs/administrative/Administrative';
+import { EthnicityEntryCard } from './inputs/ethnicity/EthnicityEntryCard';
 import { IdentificationMultiEntry } from './inputs/identification/IdentificationMultiEntry';
+import { MortalityCard } from './inputs/mortality/MortalityCard';
+import { NameMultiEntry } from './inputs/name/NameMultiEntry';
 import { PhoneAndEmailMultiEntry } from './inputs/phone/PhoneAndEmailMultiEntry';
 import { RaceMultiEntry } from './inputs/race/RaceMultiEntry';
 import { SexAndBirthCard } from './inputs/sexAndBirth/SexAndBirthCard';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
-
 import styles from './add-patient-extended-form.module.scss';
-import { EthnicityEntryCard } from './inputs/ethnicity/EthnicityEntryCard';
-import { NameMultiEntry } from './inputs/name/NameMultiEntry';
-import { Card } from './card/Card';
-import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
@@ -37,6 +37,9 @@ export const AddPatientExtendedForm = () => {
                 asOf: defaultDate
             },
             ethnicity: {
+                asOf: defaultDate
+            },
+            mortality: {
                 asOf: defaultDate
             },
             general: {
@@ -91,6 +94,7 @@ export const AddPatientExtendedForm = () => {
                         />
                         <EthnicityEntryCard />
                         <SexAndBirthCard />
+                        <MortalityCard />
                         <Card id="generalInformation" title="General patient information">
                             <GeneralInformationEntryFields />
                         </Card>

@@ -5,7 +5,12 @@ export { asPhoneEmail } from './phoneEmail/asPhoneEmail';
 export { asIdentification } from './identification/asIdentification';
 export { asRace } from './race/asRace';
 export { asEthnicity } from './ethnicity/asEthnicity';
+export { asMortality } from './mortality/asMortality';
 export { asSex } from './sexAndBirth/asSex';
 export { asBirth } from './sexAndBirth/asBirth';
+<<<<<<< HEAD
 export { asMortality } from './asMortality';
 export { asGeneral } from './general/asGeneral';
+=======
+export { asGeneral } from './asGeneral';
+>>>>>>> main
