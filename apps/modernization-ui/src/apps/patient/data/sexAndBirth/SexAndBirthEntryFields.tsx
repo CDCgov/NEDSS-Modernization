@@ -2,7 +2,6 @@ import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/use
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { displayAgeAsOfToday } from 'date/displayAge';
-import { ValueView } from 'design-system/data-display/ValueView';
 import { SingleSelect } from 'design-system/select';
 import { useCountyCodedValues } from 'location';
 import { useEffect, useMemo } from 'react';
