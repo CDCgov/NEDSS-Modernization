@@ -9,6 +9,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import gov.cdc.nbs.patient.PatientCommand.AddDetailedEthnicity;
 
 import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
 import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
@@ -50,12 +51,23 @@ class PatientCreationService {
                         context,
                         newPatient.administrative()));
 
-    if (newPatient.ethnicity() != null)
+    if (newPatient.ethnicity() != null) {
       patient.update(
           asUpdateEthnicityInfo(
               identifier.id(),
               context,
               newPatient.ethnicity()));
+      if (newPatient.ethnicity().detailed() != null) {
+        newPatient.ethnicity().detailed().forEach(detail -> patient.add(
+            new PatientCommand.AddDetailedEthnicity(
+                identifier.id(),
+                detail,
+                context.requestedBy(),
+                context.requestedAt())));
+      }
+    }
+
+
 
     newPatient.maybeBirth()
         .map(demographic -> asUpdateBirth(identifier.id(), context, demographic))

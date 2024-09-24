@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 class PatientProfileEthnicityRequester {
 
   private static final String QUERY = """
-      query profile($patient: ID!) {
+      query profileEthnicityInformation($patient: ID!) {
               findPatientProfile(patient: $patient) {
                 id
                 local
