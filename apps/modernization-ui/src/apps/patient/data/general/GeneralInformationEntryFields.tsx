@@ -179,7 +179,7 @@ export const GeneralInformationEntryFields = () => {
                     rules={maxLengthRule(20)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <Input
-                            label="State HIV case ID:"
+                            label="State HIV case ID"
                             orientation="horizontal"
                             placeholder="No Data"
                             onBlur={onBlur}
