@@ -8,4 +8,4 @@ export { asEthnicity } from './ethnicity/asEthnicity';
 export { asSex } from './sexAndBirth/asSex';
 export { asBirth } from './sexAndBirth/asBirth';
 export { asMortality } from './asMortality';
-export { asGeneral } from './asGeneral';
+export { asGeneral } from './general/asGeneral';

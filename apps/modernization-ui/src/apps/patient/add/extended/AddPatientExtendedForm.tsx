@@ -13,6 +13,8 @@ import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 import styles from './add-patient-extended-form.module.scss';
 import { EthnicityEntryCard } from './inputs/ethnicity/EthnicityEntryCard';
 import { NameMultiEntry } from './inputs/name/NameMultiEntry';
+import { Card } from './card/Card';
+import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
@@ -35,6 +37,9 @@ export const AddPatientExtendedForm = () => {
                 asOf: defaultDate
             },
             ethnicity: {
+                asOf: defaultDate
+            },
+            general: {
                 asOf: defaultDate
             }
         },
@@ -86,6 +91,9 @@ export const AddPatientExtendedForm = () => {
                         />
                         <EthnicityEntryCard />
                         <SexAndBirthCard />
+                        <Card id="generalInformation" title="General patient information">
+                            <GeneralInformationEntryFields />
+                        </Card>
                     </div>
                 </FormProvider>
             </div>
