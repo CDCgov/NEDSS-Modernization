@@ -8,6 +8,7 @@ import { Button } from 'components/button';
 import { PassConfiguration } from 'apps/dedup-config/types';
 import { useAlert } from 'alert';
 import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchContext';
+import { useEffect } from 'react';
 
 type Props = {
     passConfiguration: PassConfiguration;
@@ -59,6 +60,14 @@ const PatientMatchForm = ({
             )
         });
     };
+
+    useEffect(() => {
+        if (isAdding) {
+            patientMatchForm.reset();
+        }
+    }, [isAdding]);
+
+    console.log('saving', patientMatchForm.getValues('matchingCriteria'));
 
     return (
         <div className={styles.form}>
