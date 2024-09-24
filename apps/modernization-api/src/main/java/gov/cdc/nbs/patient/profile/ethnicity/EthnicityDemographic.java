@@ -1,13 +1,15 @@
 package gov.cdc.nbs.patient.profile.ethnicity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import gov.cdc.nbs.accumulation.Including;
+import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
 public record EthnicityDemographic(
-    LocalDate asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class) LocalDate asOf,
     String ethnicGroup,
     String unknownReason,
     List<String> detailed
