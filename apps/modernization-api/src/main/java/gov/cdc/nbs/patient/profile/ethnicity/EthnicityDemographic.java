@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile.ethnicity;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 public record EthnicityDemographic(
@@ -21,7 +22,7 @@ public record EthnicityDemographic(
     return new EthnicityDemographic(asOf(), ethnicGroup(), unknownReason, detailed());
   }
 
-  public EthnicityDemographic withDetailed(final List<String> detailed) {
-    return new EthnicityDemographic(asOf(), ethnicGroup(), unknownReason(), detailed);
+  public EthnicityDemographic withDetailed(final String detailed) {
+    return new EthnicityDemographic(asOf(), ethnicGroup(), unknownReason(), Arrays.asList(detailed));
   }
 }

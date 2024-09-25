@@ -2,7 +2,6 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
-import java.util.List;
 import java.time.Instant;
 
 public class EthnicityEntrySteps {
@@ -29,7 +28,7 @@ public class EthnicityEntrySteps {
   }
 
   @Given("I enter the ethnicity detailed {ethnicityDetail}")
-  public void i_enter_the_patient_ethnicity_detailed(final List<String> detailed) {
+  public void i_enter_the_patient_ethnicity_detailed(final String detailed) {
     this.input.active(current -> current.withDetailed(detailed));
   }
 }

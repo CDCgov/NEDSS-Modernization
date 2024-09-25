@@ -6,6 +6,8 @@ import io.cucumber.java.en.Then;
 import java.time.Instant;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 
 public class PatientProfileCreateEthnicitySteps {
 
@@ -52,5 +54,13 @@ public class PatientProfileCreateEthnicitySteps {
         .andExpect(
             jsonPath("$.data.findPatientProfile.ethnicity.unknownReason.id")
                 .value(value));
+  }
+
+  @Then("the patient profile ethnicity has the ethnicity detail {ethnicityDetail}")
+  public void the_patients_ethnicity_includes_the_detail(final String detail) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findPatientProfile.ethnicity.detailed[*].id").value(hasItem(equalTo(detail))));
   }
 }
