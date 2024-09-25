@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 import java.time.Instant;
+import java.util.ArrayList;
 
 public class EthnicityEntrySteps {
 
@@ -14,7 +15,7 @@ public class EthnicityEntrySteps {
 
   @Given("I am entering the ethnicity as of date {date}")
   public void i_am_entering_patient_ethnicity_as_of(final Instant asOf) {
-    this.input.active(new EthnicityDemographic(asOf, null, null, null));
+    this.input.active(new EthnicityDemographic(asOf, null, null, new ArrayList<>()));
   }
 
   @Given("I enter the ethnicity unknown reason {ethnicityUnknownReason}")
@@ -28,7 +29,7 @@ public class EthnicityEntrySteps {
   }
 
   @Given("I enter the ethnicity detailed {ethnicityDetail}")
-  public void i_enter_the_patient_ethnicity_detailed(final String detailed) {
-    this.input.active(current -> current.withDetailed(detailed));
+  public void i_enter_the_patient_ethnicity_detailed(final String detail) {
+    this.input.active(current -> current.withDetail(detail));
   }
 }
