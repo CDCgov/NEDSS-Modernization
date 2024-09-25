@@ -34,7 +34,7 @@ export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty }: Props) => {
 
     return (
         <RepeatingBlock<PhoneEmailEntry>
-            id="section-PhoneAndEmail"
+            id="phoneAndEmail"
             title="Phone & email"
             defaultValues={defaultValue}
             columns={columns}

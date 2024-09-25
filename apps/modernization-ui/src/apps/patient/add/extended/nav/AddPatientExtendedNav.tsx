@@ -1,23 +1,23 @@
+import { NavSection, InPageNavigation } from 'design-system/inPageNavigation/InPageNavigation';
 import styles from './extended-patient-nav.module.scss';
 
 export const AddPatientExtendedNav = () => {
+    const sections: NavSection[] = [
+        { id: 'administrative', label: 'Administrative' },
+        { id: 'name', label: 'Name' },
+        { id: 'address', label: 'Address' },
+        { id: 'phoneAndEmail', label: 'Phone & email' },
+        { id: 'identification', label: 'Identification' },
+        { id: 'races', label: 'Race' },
+        { id: 'ethnicity', label: 'Ethnicity' },
+        { id: 'sexAndBirth', label: 'Sex & birth' },
+        { id: 'mortality', label: 'Mortality' },
+        { id: 'generalInformation', label: 'General patient information' }
+    ];
+
     return (
-        <aside>
-            <nav>
-                <div className={styles.navTitle}>On this page</div>
-                <div className={styles.navOptions}>
-                    <a href="#section-Administrative">Administrative</a>
-                    <a href="#section-Name">Name</a>
-                    <a href="#section-Address">Address</a>
-                    <a href="#section-PhoneAndEmail">Phone & email</a>
-                    <a href="#identification">Identification</a>
-                    <a href="#section-Race">Race</a>
-                    <a href="#ethnicity">Ethnicity</a>
-                    <a href="#sexAndBirth">Sex & birth</a>
-                    <a href="#section-Mortality">Mortality</a>
-                    <a href="#section-General">General patient information</a>
-                </div>
-            </nav>
+        <aside className={styles.aside}>
+            <InPageNavigation title="On this page" sections={sections} />
         </aside>
     );
 };

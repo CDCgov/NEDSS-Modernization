@@ -62,7 +62,7 @@ export const AddPatientExtendedForm = () => {
                     <div className={styles.formContent}>
                         <Card
                             title="Administrative"
-                            id="section-Administrative"
+                            id="administrative"
                             info={<span className="required-before">All required fields for adding comments</span>}>
                             <AdministrativeEntryFields />
                         </Card>
