@@ -9,11 +9,11 @@ import java.util.Collection;
 
 @Getter
 @Setter
-public class BaseContainer implements Serializable, Cloneable
+public class BaseContainer implements Serializable
 {
-    public BaseContainer()
-    {
 
+    public BaseContainer() {
+        // This constructor is intentionally left empty.
     }
     private static final long serialVersionUID = 1L;
     @JsonIgnore
@@ -27,13 +27,5 @@ public class BaseContainer implements Serializable, Cloneable
     @JsonIgnore
     protected String superClassType;
     @JsonIgnore
-    protected Collection<Object> ldfs;
-    /**
-     @param objectname1
-     @param objectname2
-     @param voClass
-     @return boolean
-     @roseuid 3BB8B67D021A
-     */
-//    public abstract boolean isEqual(java.lang.Object objectname1, java.lang.Object objectname2, java.lang.Class<?> voClass);
+    protected transient Collection<Object> ldfs;
 }

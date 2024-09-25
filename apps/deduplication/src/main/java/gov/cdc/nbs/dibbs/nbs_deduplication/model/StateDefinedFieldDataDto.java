@@ -17,7 +17,6 @@ public class StateDefinedFieldDataDto extends BaseContainer
     private String ldfValue;
     private Integer versionCtrlNbr;
     private String conditionCd;
-    private boolean itDirty = false;
     private String codeSetNm;
     private String fieldSize;
     private String dataType;

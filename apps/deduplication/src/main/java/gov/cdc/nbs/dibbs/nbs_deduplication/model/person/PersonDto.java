@@ -113,7 +113,7 @@ public class PersonDto extends BaseContainer implements RootDtoInterface {
     private String wkPhoneNbr;
     private String wkPhoneCntryCd;
     private String wkEmailAddr;
-    private String SSN;
+    private String SSN;//NOSONAR
     private String medicaidNum;
     private String dlNum;
     private String dlStateCd;

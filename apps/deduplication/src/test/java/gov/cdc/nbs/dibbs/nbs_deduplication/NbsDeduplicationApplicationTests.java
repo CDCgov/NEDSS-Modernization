@@ -8,6 +8,7 @@ class NbsDeduplicationApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// This constructor is intentionally left empty.
 	}
 
 }

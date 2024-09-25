@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Setter
 @JsonIgnoreProperties({"postalLocatorUid", "addReasonCd", "addTime", "addUserId", "censusBlockCd", "censusMinorCivilDivisionCd",
     "censusTrackCd", "cityCd", "cntryCd", "cntyCd", "cntyDescTxt", "lastChgReasonCd", "lastChgTime", "lastChgUserId",
-    "MSACongressDistrictCd", "recordStatusCd", "recordStatusTime", "regionDistrictCd", "userAffiliationTxt", "geocodeMatchInd",
+    "msaCongressDistrictCd", "recordStatusCd", "recordStatusTime", "regionDistrictCd", "userAffiliationTxt", "geocodeMatchInd",
     "withinCityLimitsInd", "progAreaCd", "jurisdictionCd", "programJurisdictionOid", "sharedInd", "censusTract"})
 public class PostalLocatorDto extends BaseContainer {
 
@@ -39,7 +39,7 @@ public class PostalLocatorDto extends BaseContainer {
     private String lastChgReasonCd;
     private Timestamp lastChgTime;
     private Long lastChgUserId;
-    private String MSACongressDistrictCd;
+    private String msaCongressDistrictCd;
     private String recordStatusCd;
     private Timestamp recordStatusTime;
     private String regionDistrictCd;

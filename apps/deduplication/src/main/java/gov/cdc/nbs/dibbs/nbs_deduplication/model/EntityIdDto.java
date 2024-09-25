@@ -66,9 +66,6 @@ public class EntityIdDto extends BaseContainer {
 
     private String sharedInd = null;
 
-
-    //   private String universalIdType;
-
     private String assigningAuthorityIdType;
 
     public EntityIdDto() {

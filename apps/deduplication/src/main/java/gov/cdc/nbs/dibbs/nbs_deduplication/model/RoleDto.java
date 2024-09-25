@@ -15,7 +15,6 @@ public class RoleDto extends BaseContainer {
     private Long addUserId;
     private String cd;
     private String cdDescTxt;
-    //private String classCd;
     private String effectiveDurationAmt;
     private String effectiveDurationUnitCd;
     private Timestamp effectiveFromTime;
@@ -36,7 +35,7 @@ public class RoleDto extends BaseContainer {
     private String subjectClassCd;
 
     public RoleDto() {
-
+        // This constructor is intentionally left empty.
     }
 
 

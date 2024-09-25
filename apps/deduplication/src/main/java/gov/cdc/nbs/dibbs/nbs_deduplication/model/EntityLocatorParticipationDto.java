@@ -47,7 +47,7 @@ public class EntityLocatorParticipationDto extends BaseContainer {
     private Integer versionCtrlNbr;
 
     public EntityLocatorParticipationDto() {
-
+        // This constructor is intentionally left empty.
     }
 
 

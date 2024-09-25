@@ -37,7 +37,7 @@ public class ParticipationDto extends BaseContainer {
     private Long actUid;
 
     public ParticipationDto() {
-
+        // This constructor is intentionally left empty.
     }
 
 

@@ -32,7 +32,6 @@ public class DibbsMatchService {
   private final FhirConverter fhirConverter;
   private final ObjectMapper mapper;
 
-
   public ResponseEntity<DedupMatchResponse> match(PersonContainer personContainer)
       throws InterruptedException {
     try {
@@ -45,7 +44,7 @@ public class DibbsMatchService {
     }
   }
 
-  public ResponseEntity<DedupMatchResponse> callRecordLinkageApi(PersonContainer personContainer)
+  ResponseEntity<DedupMatchResponse> callRecordLinkageApi(PersonContainer personContainer)
       throws IOException, InterruptedException {
     String requestJson = fhirConverter.convertPersonToFhirFormat(personContainer);
 
@@ -53,19 +52,24 @@ public class DibbsMatchService {
         .version(HttpClient.Version.HTTP_1_1)
         .build();
     HttpRequest request = createHttpRequest(requestJson);
-    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    HttpResponse<String> response= sendRequest(client,request);
     return handleResponse(response);
+  }
+
+  public HttpResponse<String> sendRequest(HttpClient client,HttpRequest request)
+      throws IOException, InterruptedException {
+    return client.send(request, HttpResponse.BodyHandlers.ofString());
   }
 
   HttpRequest createHttpRequest(String requestJson) {
     return HttpRequest.newBuilder()
-        .uri(URI.create(linkageServiceUrl))
+        .uri(URI.create("http://localhost:8080/link-record"))
         .header("Content-Type", "application/json")
         .POST(HttpRequest.BodyPublishers.ofString(requestJson, StandardCharsets.UTF_8))
         .build();
   }
 
-  public ResponseEntity<DedupMatchResponse> handleResponse(HttpResponse<String> response) throws IOException {
+  ResponseEntity<DedupMatchResponse> handleResponse(HttpResponse<String> response) throws IOException {
     log.info(response.body());
     if (response.statusCode() == 200) {
       JsonNode jsonResponse = mapper.readTree(response.body());

@@ -18,23 +18,23 @@ import java.util.Collection;
 
 public class PersonContainer extends LdfBaseContainer implements Serializable {
 
-    public PersonDto thePersonDto = new PersonDto();
-    public Collection<PersonNameDto> thePersonNameDtoCollection = new ArrayList<>();
-    public Collection<EntityLocatorParticipationDto> theEntityLocatorParticipationDtoCollection = new ArrayList<>();
+    private PersonDto thePersonDto = new PersonDto();
+    private Collection<PersonNameDto> thePersonNameDtoCollection = new ArrayList<>();
+    private Collection<EntityLocatorParticipationDto> theEntityLocatorParticipationDtoCollection = new ArrayList<>();
     @JsonIgnore
-    public Collection<PersonRaceDto> thePersonRaceDtoCollection = new ArrayList<>();
+    private Collection<PersonRaceDto> thePersonRaceDtoCollection = new ArrayList<>();
 
     @JsonIgnore
-    public Collection<PersonEthnicGroupDto> thePersonEthnicGroupDtoCollection = new ArrayList<>();
+    private Collection<PersonEthnicGroupDto> thePersonEthnicGroupDtoCollection = new ArrayList<>();
 
     @JsonIgnore
-    public Collection<EntityIdDto> theEntityIdDtoCollection = new ArrayList<>();
+    private Collection<EntityIdDto> theEntityIdDtoCollection = new ArrayList<>();
 
     @JsonIgnore
-    public Collection<ParticipationDto> theParticipationDtoCollection = new ArrayList<>();
+    private Collection<ParticipationDto> theParticipationDtoCollection = new ArrayList<>();
 
     @JsonIgnore
-    public Collection<RoleDto> theRoleDtoCollection = new ArrayList<>();
+    private Collection<RoleDto> theRoleDtoCollection = new ArrayList<>();
 
     @JsonIgnore
     private String defaultJurisdictionCd;

@@ -23,12 +23,13 @@ public class FhirConverter {
   private final ObjectMapper mapper;
 
   public String convertPersonToFhirFormat(PersonContainer personContainer) {
-    PersonDto personDto = personContainer.thePersonDto;
+    PersonDto personDto = personContainer.getThePersonDto();
     ObjectNode patient = mapper.createObjectNode();
     patient.put("resourceType", "Patient");
-    Collection<PersonNameDto> nameDtos = personContainer.thePersonNameDtoCollection;
+    Collection<PersonNameDto> nameDtos = personContainer.getThePersonNameDtoCollection();
     setPatientName(patient, nameDtos);
-    Collection<EntityLocatorParticipationDto> locatorDtos = personContainer.theEntityLocatorParticipationDtoCollection;
+    Collection<EntityLocatorParticipationDto> locatorDtos =
+        personContainer.getTheEntityLocatorParticipationDtoCollection();
     setPatientAddress(patient, locatorDtos);
     setPatientBirthDate(patient, personDto);
     return getFinalResponse(patient).toString();
