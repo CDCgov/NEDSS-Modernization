@@ -14,20 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-class PatientEthnicityChangeService {
+public class PatientEthnicityChangeService {
 
   private final PatientEventEmitter emitter;
   private final PatientProfileService service;
 
   PatientEthnicityChangeService(
-      final PatientEventEmitter emitter, PatientProfileService service
-  ) {
+      final PatientEventEmitter emitter, PatientProfileService service) {
     this.emitter = emitter;
     this.service = service;
   }
 
 
-  void update(final RequestContext context, final EthnicityInput input) {
+  public void update(final RequestContext context, final EthnicityInput input) {
 
     service.with(input.getPatient(), found -> update(found, context, input))
         .map(this::asChanged)
@@ -42,9 +41,7 @@ class PatientEthnicityChangeService {
             input.getEthnicGroup(),
             input.getUnknownReason(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    );
+            context.requestedAt()));
 
     List<String> detailed = input.getDetailed();
 
@@ -74,27 +71,23 @@ class PatientEthnicityChangeService {
   private PatientCommand.AddDetailedEthnicity asAdded(
       final RequestContext context,
       final long patient,
-      final String detailed
-  ) {
+      final String detailed) {
     return new PatientCommand.AddDetailedEthnicity(
         patient,
         detailed,
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
   }
 
   private PatientCommand.RemoveDetailedEthnicity asRemove(
       final RequestContext context,
       final long patient,
-      final String detailed
-  ) {
+      final String detailed) {
     return new PatientCommand.RemoveDetailedEthnicity(
         patient,
         detailed,
         context.requestedBy(),
-        context.requestedAt()
-    );
+        context.requestedAt());
   }
 
   private PatientEvent asChanged(final Person patient) {
@@ -113,8 +106,7 @@ class PatientEthnicityChangeService {
         ethnicity.unknownReason(),
         detailed,
         patient.getLastChgUserId(),
-        patient.getLastChgTime()
-    );
+        patient.getLastChgTime());
   }
 
 }

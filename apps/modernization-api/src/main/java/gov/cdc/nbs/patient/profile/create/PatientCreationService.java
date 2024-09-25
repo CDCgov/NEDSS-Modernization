@@ -2,8 +2,8 @@ package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
+import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import jakarta.persistence.EntityManager;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
+import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.profile.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
 import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
 
@@ -25,8 +26,7 @@ class PatientCreationService {
   PatientCreationService(
       final PatientIdentifierGenerator patientIdentifierGenerator,
       AddressIdentifierGenerator addressIdentifierGenerator,
-      final EntityManager entityManager
-  ) {
+      final EntityManager entityManager) {
     this.patientIdentifierGenerator = patientIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.entityManager = entityManager;
@@ -35,8 +35,7 @@ class PatientCreationService {
   @Transactional
   public PatientIdentifier create(
       final RequestContext context,
-      final NewPatient newPatient
-  ) {
+      final NewPatient newPatient) {
     PatientIdentifier identifier = patientIdentifierGenerator.generate();
 
     Person patient = new Person(
@@ -44,16 +43,30 @@ class PatientCreationService {
             identifier.id(),
             identifier.local(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    )
-        .update(
-            asUpdateAdministrativeInfo(
+            context.requestedAt()))
+                .update(
+                    asUpdateAdministrativeInfo(
+                        identifier.id(),
+                        context,
+                        newPatient.administrative()));
+
+    if (newPatient.ethnicity() != null) {
+      patient.update(
+          asUpdateEthnicityInfo(
+              identifier.id(),
+              context,
+              newPatient.ethnicity()));
+      if (newPatient.ethnicity().detailed() != null) {
+        newPatient.ethnicity().detailed().forEach(detail -> patient.add(
+            new PatientCommand.AddDetailedEthnicity(
                 identifier.id(),
-                context,
-                newPatient.administrative()
-            )
-        );
+                detail,
+                context.requestedBy(),
+                context.requestedAt())));
+      }
+    }
+
+
 
     newPatient.maybeBirth()
         .map(demographic -> asUpdateBirth(identifier.id(), context, demographic))
