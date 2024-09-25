@@ -11,7 +11,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
-    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number>();
+    const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number>(0);
     const [isAddingConfiguration, setIsAddingConfiguration] = useState<boolean>(false);
     const {
         blockingCriteria,
@@ -140,7 +140,7 @@ const PatientMatchConfigurationPage = () => {
 
     return (
         <>
-            {selectedConfigurationIndex && selectedConfigurationIndex >= 0 ? (
+            {configurations.length && selectedConfigurationIndex >= 0 ? (
                 <ConfirmationModal
                     modal={deleteModalRef}
                     title={'Delete pass configuration'}

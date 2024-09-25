@@ -67,8 +67,6 @@ const PatientMatchForm = ({
         }
     }, [isAdding]);
 
-    console.log('saving', patientMatchForm.getValues('matchingCriteria'));
-
     return (
         <div className={styles.form}>
             <FormProvider {...patientMatchForm}>
