@@ -103,9 +103,8 @@ class SearchPage {
   //   cy.wait(1000);
   // }
 
-  selectState() {
-    cy.get("div[id='2'] select[placeholder='-Select-']");
-    cy.get("option[value='15']");
+  selectState(string) {
+    cy.get("select[name='state']").select(string);    
     cy.wait(500);
   }
 
@@ -139,6 +138,10 @@ class SearchPage {
     cy.get('label[for="status__checkbox__ACTIVE"]').click({ force: true });
     cy.get('label[for="status__checkbox__SUPERCEDED"]').click({ force: true });
 
+  }
+
+  clickAddressTab() {    
+    cy.get('summary').contains("Address").click();
   }
 }
 

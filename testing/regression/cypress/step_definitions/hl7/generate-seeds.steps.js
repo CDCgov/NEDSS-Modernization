@@ -8,29 +8,8 @@ import "cypress-xpath";
 import UtilityFunctions from "@pages/utilityFunctions.page";
 import { faker } from "@faker-js/faker";
 
-Given("I login for HL7 API generate token", () => {
-  const clientid = Cypress.env("DI_CLIENT_ID");
-  const clientsecret = Cypress.env("DI_SECRET");
-  const authurl = Cypress.env("authurl");
-
-  cy.request({
-    method: "POST",
-    url: authurl,
-    headers: {
-      "Content-Type": "text/plain",
-      clientid: clientid,
-      clientsecret: clientsecret,
-    },
-  }).then((response) => {
-    expect(response.status).to.eq(200);
-    attach(`Response: ${JSON.stringify(response.body)}`);
-    const authTokenReponse = response.body;
-    cy.wrap(authTokenReponse).as("authTokenAPI");
-    Cypress.env("authTokenAPI", authTokenReponse);
-  });
-});
-
-When("I Generate HL7 {string} messages to api", (string) => {
+When("I Seed HL7 {string} messages to api", (string) => {
+  
   let messageCondition = string;
   let fakeFullName;
   let currentMessage;
@@ -44,34 +23,28 @@ When("I Generate HL7 {string} messages to api", (string) => {
   const apiurl = Cypress.env("apiurl");
   const checkstatusurl = Cypress.env("checkstatusurl");
   const authurl = Cypress.env("authurl");
-
-  cy.readFile("cypress/fixtures/hepb.json", "utf8").then((jsonData) => {
+  cy.readFile("cypress/fixtures/hepbseedaddress.json", "utf8").then((jsonData) => {
     const randomData = {
-      randomFirstName: faker.person.firstName(),
-      randomLastName: UtilityFunctions.generateRandomLastName(),
-      fakeSSN: UtilityFunctions.generateRandomSSN(),
-      fakeEmail: faker.internet.email(),
-      fakeStreetAddress: faker.address.streetAddress(),
-      fakeState: faker.address.stateAbbr(),
-      fakeCity: faker.address.city(),
-      fakeBuildingNumber: faker.address.buildingNumber(),
-      fakeDOB: `19${faker.number.int(9)}${faker.number.int(9)}`,
+      randomFirstName: "Caden",
+      randomLastName: "Ratkeyklkb",
+      fakeSSN: "123456789",    
+      fakeDOB: "1977",
       faketimestamp: UtilityFunctions.generateTimestamp(),
     };
 
     const replacements = {
-      PawnlandFirstName: randomData.randomFirstName,
-      PawnlandLastName: randomData.randomLastName,
+      PawnlandFirstName: "Caden",
+      PawnlandLastName: "Ratkeyklkb",
       // 'patient.email@example.com': randomData.fakeEmail,
-      SSNHOLDER: randomData.fakeSSN,
-      BIRTHYEAR: randomData.fakeDOB,
-      PATIENTCITY: randomData.fakeCity,
-      STREETADDRESS: randomData.fakeStreetAddress,
-      PATIENTUNITADDRESS: "unit " + randomData.fakeBuildingNumber,
-      PATIENTSTATEADDRESS: randomData.fakeState,
+      SSNHOLDER: "123456789",
+      BIRTHYEAR: "1977",
+      PATIENTCITY: "Cullen",
+      STREETADDRESS: "90 SE Panda",
+      PATIENTUNITADDRESS: "unit 5566",
+      PATIENTSTATEADDRESS: "KY",
       UUIDTIMESTAMP: randomData.faketimestamp,
     };
-
+    
     let modifiedmsg = jsonData[0].data;
     let modifiedData = UtilityFunctions.replacePlaceholders(
       modifiedmsg,
@@ -79,12 +52,13 @@ When("I Generate HL7 {string} messages to api", (string) => {
     );
     const formattedSSN = UtilityFunctions.formatSSN(randomData.fakeSSN);
     cy.log(
-      `${randomData.randomLastName}, ${randomData.randomFirstName} ${formattedSSN}`
+      `${modifiedData.randomLastName}, ${modifiedData.randomFirstName} ${formattedSSN}`
     );
     fakeFormattedSSN = formattedSSN;
     currentMessage = UtilityFunctions.formatHL7(modifiedData);
     fakeFullName = `${randomData.randomLastName}, ${randomData.randomFirstName}`;
     fakeRandomData = randomData;
+    
     Cypress.env("currentMessage", currentMessage);
     Cypress.env(
       "fakeFullName",
