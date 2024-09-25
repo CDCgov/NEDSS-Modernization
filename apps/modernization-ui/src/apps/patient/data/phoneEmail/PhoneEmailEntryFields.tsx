@@ -17,14 +17,14 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Phone & email as of"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={name}
+                        name="phoneAsOf"
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -35,15 +35,15 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
-                        id={name}
-                        name={name}
+                        id="phoneType"
+                        name="phoneType"
                         options={coded.types}
                         error={error?.message}
                         required
@@ -54,15 +54,15 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="use"
                 rules={{ required: { value: true, message: 'Use is required.' } }}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
                         orientation="horizontal"
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
-                        id={name}
-                        name={name}
+                        id="phoneUse"
+                        name="phoneUse"
                         options={coded.uses}
                         error={error?.message}
                         required
@@ -196,7 +196,7 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="comment"
                 rules={maxLengthRule(2000)}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <Input
                         label="Phone & email comments"
                         orientation="horizontal"
@@ -204,9 +204,9 @@ export const PhoneEmailEntryFields = () => {
                         onBlur={onBlur}
                         defaultValue={value}
                         type="text"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
+                        name="phoneComment"
+                        htmlFor="phoneComment"
+                        id="phoneComment"
                         error={error?.message}
                         multiline
                     />

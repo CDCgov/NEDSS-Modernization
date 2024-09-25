@@ -16,14 +16,14 @@ export const NameEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Name as of"
                         orientation="horizontal"
                         onBlur={onBlur}
                         defaultValue={value}
                         onChange={onChange}
-                        name={name}
+                        name="nameAsOf"
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -34,15 +34,15 @@ export const NameEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         value={value}
                         onBlur={onBlur}
-                        id={name}
+                        id="nameType"
                         onChange={onChange}
-                        name={name}
+                        name="nameType"
                         options={coded.types}
                         error={error?.message}
                         required

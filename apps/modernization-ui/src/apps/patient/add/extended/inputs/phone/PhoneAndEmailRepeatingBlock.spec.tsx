@@ -1,5 +1,5 @@
 import { screen, render, waitFor } from '@testing-library/react';
-import { PhoneAndEmailMultiEntry } from './PhoneAndEmailMultiEntry';
+import { PhoneAndEmailRepeatingBlock } from './PhoneAndEmailRepeatingBlock';
 import { internalizeDate } from 'date';
 import userEvent from '@testing-library/user-event';
 
@@ -16,19 +16,19 @@ jest.mock('apps/patient/profile/phoneEmail/usePatientPhoneCodedValues', () => ({
 }));
 
 const mockEntry = {
-  state: {
-      data: [
-          {
-              asOf: internalizeDate(new Date()),
-              type: 'PH',
-              use: 'H'
-          }
-      ]
-  }
+    state: {
+        data: [
+            {
+                asOf: internalizeDate(new Date()),
+                type: 'PH',
+                use: 'H'
+            }
+        ]
+    }
 };
 
 jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-  useMultiValueEntryState: () => mockEntry
+    useMultiValueEntryState: () => mockEntry
 }));
 
 const awaitRender = async () => {
@@ -38,7 +38,7 @@ const awaitRender = async () => {
 
 describe('PhoneAndEmailMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<PhoneAndEmailRepeatingBlock onChange={onChange} isDirty={isDirty} />);
         // wait on render to prevent act warning
         await awaitRender();
 
@@ -51,7 +51,7 @@ describe('PhoneAndEmailMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<PhoneAndEmailRepeatingBlock onChange={onChange} isDirty={isDirty} />);
         // wait on render to prevent act warning
         await awaitRender();
 
@@ -85,7 +85,7 @@ describe('PhoneAndEmailMultiEntry', () => {
 
     it('should trigger on change when value added', async () => {
         const { getByLabelText, getAllByRole } = render(
-            <PhoneAndEmailMultiEntry onChange={onChange} isDirty={isDirty} />
+            <PhoneAndEmailRepeatingBlock onChange={onChange} isDirty={isDirty} />
         );
         // wait on render to prevent act warning
         await awaitRender();

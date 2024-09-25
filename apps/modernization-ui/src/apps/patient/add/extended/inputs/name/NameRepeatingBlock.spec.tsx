@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
-import { NameMultiEntry } from './NameMultiEntry';
+import { NameRepeatingBlock } from './NameRepeatingBlock';
 
 const onChange = jest.fn();
 const isDirty = jest.fn();
@@ -34,7 +34,7 @@ jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
 
 describe('NameMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<NameMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<NameRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -46,7 +46,7 @@ describe('NameMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<NameMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<NameRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const dateInput = getByLabelText('Name as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));

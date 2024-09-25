@@ -1,12 +1,12 @@
 import { IdentificationEntry } from 'apps/patient/data/entry';
-import { IdentificationView } from './IdentificationView';
-import { internalizeDate } from 'date';
-import { Column } from 'design-system/table';
 import { IdentificationEntryFields } from 'apps/patient/data/identification/IdentificationEntryFields';
+import { today } from 'date';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
+import { Column } from 'design-system/table';
+import { IdentificationView } from './IdentificationView';
 
 const defaultValue: Partial<IdentificationEntry> = {
-    asOf: internalizeDate(new Date()),
+    asOf: today(),
     type: undefined,
     issuer: undefined,
     id: ''
@@ -15,7 +15,7 @@ type Props = {
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
-export const IdentificationMultiEntry = ({ onChange, isDirty }: Props) => {
+export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
     const renderForm = () => <IdentificationEntryFields />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 

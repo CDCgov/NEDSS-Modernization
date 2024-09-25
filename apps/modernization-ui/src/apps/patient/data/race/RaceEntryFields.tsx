@@ -16,14 +16,14 @@ export const RaceEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="As of"
+                        label="Race as of"
                         onBlur={onBlur}
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
-                        name={name}
+                        name="raceAsOf"
                         disableFutureDates
                         errorMessage={error?.message}
                         required
