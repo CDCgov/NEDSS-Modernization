@@ -22,7 +22,7 @@ export const RaceRepeatingBlock = ({ onChange, isDirty }: Props) => {
 
     const columns: Column<RaceEntry>[] = [
         { id: 'raceAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'races', name: 'Race', render: (v) => v.race.name },
+        { id: 'raceName', name: 'Race', render: (v) => v.race.name },
         {
             id: 'detailedRace',
             name: 'Detailed race',

@@ -8,7 +8,7 @@ export const AddPatientExtendedNav = () => {
         { id: 'address', label: 'Address' },
         { id: 'phoneAndEmail', label: 'Phone & email' },
         { id: 'identification', label: 'Identification' },
-        { id: 'race', label: 'Race' },
+        { id: 'races', label: 'Race' },
         { id: 'ethnicity', label: 'Ethnicity' },
         { id: 'sexAndBirth', label: 'Sex & birth' },
         { id: 'mortality', label: 'Mortality' },
