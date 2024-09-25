@@ -38,19 +38,19 @@ public class PatientProfileCreateEthnicitySteps {
                 .value(value.toString()));
   }
 
-  @Then("the patient profile ethnicity has the ethnic group {string}")
+  @Then("the patient profile ethnicity has the ethnic group {ethnicity}")
   public void the_patient_profile_ethnicity_has_the_ethnic_group(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.ethnicity.ethnicGroup")
-                .value(value.toString()));
+            jsonPath("$.data.findPatientProfile.ethnicity.ethnicGroup.id")
+                .value(value));
   }
 
-  @Then("the patient profile ethnicity has the unknown reason {string}")
+  @Then("the patient profile ethnicity has the unknown reason {ethnicityUnknownReason}")
   public void the_patient_profile_ethnicity_has_the_unknown_reason(final String value) throws Exception {
     this.response.active()
         .andExpect(
-            jsonPath("$.data.findPatientProfile.ethnicity.unknownReason")
-                .value(value.toString()));
+            jsonPath("$.data.findPatientProfile.ethnicity.unknownReason.id")
+                .value(value));
   }
 }

@@ -2,18 +2,17 @@ package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
+import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import gov.cdc.nbs.patient.PatientCommand.AddDetailedEthnicity;
 
 import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
-import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
+import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.profile.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
 import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
 
