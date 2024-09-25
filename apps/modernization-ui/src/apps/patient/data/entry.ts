@@ -93,6 +93,7 @@ type GeneralInformationEntry = EffectiveDated &
         childrenInResidence?: number;
         primaryOccupation?: Selectable;
         educationLevel?: Selectable;
+        primaryLanguage?: Selectable;
         speaksEnglish?: Selectable;
         stateHIVCase?: string;
     };

@@ -92,6 +92,7 @@ type GeneralInformation = EffectiveDated &
         childrenInResidence?: number;
         primaryOccupation?: string;
         educationLevel?: string;
+        primaryLanguage?: string;
         speaksEnglish?: string;
         stateHIVCase?: string;
     };
