@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
-import { AddressMultiEntry } from './AddressMultiEntry';
+import { AddressRepeatingBlock } from './AddressRepeatingBlock';
 
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
@@ -12,19 +12,19 @@ jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => (
 }));
 
 const mockEntry = {
-  state: {
-      data: [
-          {
-              asOf: internalizeDate(new Date()),
-              type: 'H',
-              use: 'HM'
-          }
-      ]
-  }
+    state: {
+        data: [
+            {
+                asOf: internalizeDate(new Date()),
+                type: 'H',
+                use: 'HM'
+            }
+        ]
+    }
 };
 
 jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-  useMultiValueEntryState: () => mockEntry
+    useMultiValueEntryState: () => mockEntry
 }));
 
 const mockLocationCodedValues = {
@@ -46,7 +46,7 @@ const isDirty = jest.fn();
 
 describe('RaceMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<AddressMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<AddressRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -59,7 +59,7 @@ describe('RaceMultiEntry', () => {
 
     it('should display proper defaults', async () => {
         const { getByLabelText, getAllByRole, getAllByText } = render(
-            <AddressMultiEntry onChange={onChange} isDirty={isDirty} />
+            <AddressRepeatingBlock onChange={onChange} isDirty={isDirty} />
         );
 
         const dateInput = getByLabelText('Address as of');

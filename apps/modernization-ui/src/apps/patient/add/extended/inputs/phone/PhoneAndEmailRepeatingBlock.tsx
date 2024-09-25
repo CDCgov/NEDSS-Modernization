@@ -1,12 +1,12 @@
 import { PhoneEmailEntry } from 'apps/patient/data/entry';
 import { PhoneEmailEntryFields } from 'apps/patient/data/phoneEmail/PhoneEmailEntryFields';
-import { internalizeDate } from 'date';
+import { today } from 'date';
+import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { PhoneEntryView } from './PhoneEntryView';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 
 const defaultValue: Partial<PhoneEmailEntry> = {
-    asOf: internalizeDate(new Date()),
+    asOf: today(),
     type: undefined,
     use: undefined,
     countryCode: '',
@@ -20,7 +20,7 @@ type Props = {
     onChange: (data: PhoneEmailEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
-export const PhoneAndEmailMultiEntry = ({ onChange, isDirty }: Props) => {
+export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty }: Props) => {
     const renderForm = () => <PhoneEmailEntryFields />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
 

@@ -4,6 +4,7 @@ import gov.cdc.nbs.accumulation.Including;
 import gov.cdc.nbs.patient.profile.address.AddressDemographic;
 import gov.cdc.nbs.patient.profile.administrative.Administrative;
 import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
+import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 
@@ -20,7 +21,8 @@ public record NewPatient(
     List<AddressDemographic> addresses,
     List<Phone> phoneEmails,
     List<Race> races,
-    List<Identification> identifications) {
+    List<Identification> identifications,
+    EthnicityDemographic ethnicity) {
 
   public record Phone(
       Instant asOf,
@@ -56,7 +58,8 @@ public record NewPatient(
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList(),
-        Collections.emptyList());
+        Collections.emptyList(),
+        null);
   }
 
   public NewPatient withAdministrative(final Administrative administrative) {
@@ -68,7 +71,8 @@ public record NewPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public NewPatient withName(final NameDemographic name) {
@@ -80,7 +84,8 @@ public record NewPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public NewPatient withAddress(final AddressDemographic value) {
@@ -92,7 +97,8 @@ public record NewPatient(
         Including.include(addresses(), value),
         phoneEmails(),
         races(),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public NewPatient withPhoneEmail(final Phone value) {
@@ -104,7 +110,8 @@ public record NewPatient(
         addresses(),
         Including.include(phoneEmails(), value),
         races(),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public NewPatient withRace(final Race value) {
@@ -116,7 +123,8 @@ public record NewPatient(
         addresses(),
         phoneEmails(),
         Including.include(races(), value),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public NewPatient withIdentification(final Identification value) {
@@ -128,7 +136,8 @@ public record NewPatient(
         addresses(),
         phoneEmails(),
         races(),
-        Including.include(identifications(), value));
+        Including.include(identifications(), value),
+        ethnicity());
   }
 
   public NewPatient withBirth(final BirthDemographic value) {
@@ -140,7 +149,8 @@ public record NewPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public Optional<BirthDemographic> maybeBirth() {
@@ -156,10 +166,24 @@ public record NewPatient(
         addresses(),
         phoneEmails(),
         races(),
-        identifications());
+        identifications(),
+        ethnicity());
   }
 
   public Optional<GenderDemographic> maybeGender() {
     return Optional.ofNullable(gender());
+  }
+
+  public NewPatient withEthnicity(final EthnicityDemographic ethnicity) {
+    return new NewPatient(
+        administrative(),
+        birth(),
+        gender(),
+        names(),
+        addresses(),
+        phoneEmails(),
+        races(),
+        identifications(),
+        ethnicity);
   }
 }

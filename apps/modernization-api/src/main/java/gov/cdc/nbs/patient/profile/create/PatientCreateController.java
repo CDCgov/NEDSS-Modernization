@@ -45,8 +45,7 @@ public class PatientCreateController {
       final PatientPhoneChangeService phoneService,
       final PatientRaceChangeService raceService,
       final PatientIdentificationChangeService identificationService,
-      final PatientIndexer indexer
-  ) {
+      final PatientIndexer indexer) {
     this.clock = clock;
     this.service = service;
     this.addressService = addressService;
@@ -56,12 +55,10 @@ public class PatientCreateController {
     this.indexer = indexer;
   }
 
-
   @Operation(
       summary = "PatientProfile",
       description = "Allows creation of a patient",
-      tags = "PatientProfile"
-  )
+      tags = "PatientProfile")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public PatientIdentifier create(@RequestBody final NewPatient newPatient) {
@@ -126,7 +123,6 @@ public class PatientCreateController {
         identificationService.add(context, newPatientIdentificationInput);
       });
     }
-
     this.indexer.index(created.id());
     return created;
   }

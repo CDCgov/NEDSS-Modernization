@@ -1,12 +1,12 @@
-import { internalizeDate } from 'date';
-import { Column } from 'design-system/table';
-import { NameEntryView } from './NameEntryView';
 import { NameEntry } from 'apps/patient/data/entry';
 import { NameEntryFields } from 'apps/patient/data/name/NameEntryFields';
+import { today } from 'date';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
+import { Column } from 'design-system/table';
+import { NameEntryView } from './NameEntryView';
 
 const defaultValue: Partial<NameEntry> = {
-    asOf: internalizeDate(new Date()),
+    asOf: today(),
     type: undefined,
     prefix: undefined,
     first: '',
@@ -32,7 +32,7 @@ type Props = {
     isDirty: (isDirty: boolean) => void;
 };
 
-export const NameMultiEntry = ({ onChange, isDirty }: Props) => {
+export const NameRepeatingBlock = ({ onChange, isDirty }: Props) => {
     const renderForm = () => <NameEntryFields />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 

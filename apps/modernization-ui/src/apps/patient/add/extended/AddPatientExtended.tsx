@@ -2,6 +2,7 @@ import { Button } from 'components/button';
 import { DataEntrySideNav } from '../DataEntrySideNav/DataEntrySideNav';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import styles from './add-patient-extended.module.scss';
+import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 
 export const AddPatientExtended = () => {
     return (
@@ -17,6 +18,7 @@ export const AddPatientExtended = () => {
                 </header>
                 <main>
                     <AddPatientExtendedForm />
+                    <AddPatientExtendedNav />
                 </main>
             </div>
         </div>

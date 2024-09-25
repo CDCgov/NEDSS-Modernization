@@ -23,7 +23,7 @@ export const NameEntryFields = () => {
                         onBlur={onBlur}
                         defaultValue={value}
                         onChange={onChange}
-                        name={name}
+                        name={`name-${name}`}
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -40,9 +40,9 @@ export const NameEntryFields = () => {
                         orientation="horizontal"
                         value={value}
                         onBlur={onBlur}
-                        id={name}
                         onChange={onChange}
-                        name={name}
+                        id={`name-${name}`}
+                        name={`name-${name}`}
                         options={coded.types}
                         error={error?.message}
                         required

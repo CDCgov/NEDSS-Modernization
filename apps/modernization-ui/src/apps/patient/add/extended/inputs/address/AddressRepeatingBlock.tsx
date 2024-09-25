@@ -1,21 +1,21 @@
 import { AddressEntry } from 'apps/patient/data/entry';
-import { internalizeDate } from 'date';
+import { today } from 'date';
 import { Column } from 'design-system/table';
 import { AddressView } from './AddressView';
 import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 
-const defaultValue: AddressEntry = {
-    asOf: internalizeDate(new Date()),
-    type: { name: '', value: '' },
-    use: { name: '', value: '' },
+const defaultValue: Partial<AddressEntry> = {
+    asOf: today(),
+    type: undefined,
+    use: undefined,
     address1: '',
     address2: '',
     city: '',
-    state: { name: '', value: '' },
+    state: undefined,
     zipcode: '',
-    county: { name: '', value: '' },
-    country: { name: '', value: '' },
+    county: undefined,
+    country: undefined,
     censusTract: '',
     comment: ''
 };
@@ -24,7 +24,7 @@ type Props = {
     onChange: (data: AddressEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
-export const AddressMultiEntry = ({ onChange, isDirty }: Props) => {
+export const AddressRepeatingBlock = ({ onChange, isDirty }: Props) => {
     const renderForm = () => <AddressEntryFields />;
     const renderView = (entry: AddressEntry) => <AddressView entry={entry} />;
 

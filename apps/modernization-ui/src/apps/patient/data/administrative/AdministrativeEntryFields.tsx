@@ -1,15 +1,14 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { AdministrativeEntry } from 'apps/patient/data/entry';
-import { Input } from 'components/FormInputs/Input';
-import { maxLengthRule } from 'validation/entry';
+import { AdministrativeEntry } from '../entry';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Card } from '../../card/Card';
+import { maxLengthRule } from 'validation/entry';
+import { Input } from 'components/FormInputs/Input';
 
-export const Administrative = () => {
+export const AdministrativeEntryFields = () => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <Card title="Administrative" id="administrative">
+        <section>
             <Controller
                 control={control}
                 name="administrative.asOf"
@@ -28,7 +27,6 @@ export const Administrative = () => {
                     />
                 )}
             />
-
             <Controller
                 control={control}
                 name="administrative.comment"
@@ -51,6 +49,6 @@ export const Administrative = () => {
                     />
                 )}
             />
-        </Card>
+        </section>
     );
 };

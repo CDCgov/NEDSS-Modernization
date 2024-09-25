@@ -1,4 +1,4 @@
-export { asAdministrative } from './asAdministrative';
+export { asAdministrative } from './administrative/asAdministrative';
 export { asName } from './name/asName';
 export { asAddress } from './address/asAddress';
 export { asPhoneEmail } from './phoneEmail/asPhoneEmail';

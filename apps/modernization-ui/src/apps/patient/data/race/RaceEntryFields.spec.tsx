@@ -41,7 +41,7 @@ describe('Race entry fields', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(<Fixture />);
 
-        expect(getByLabelText('As of')).toBeInTheDocument();
+        expect(getByLabelText('Race as of')).toBeInTheDocument();
         expect(getByLabelText('Race')).toBeInTheDocument();
     });
 
@@ -62,7 +62,7 @@ describe('Race entry fields', () => {
     it('should require as of', async () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
-        const asOf = getByLabelText('As of');
+        const asOf = getByLabelText('Race as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
@@ -88,7 +88,7 @@ describe('Race entry fields', () => {
     it('should be valid with as of, race', async () => {
         const { getByLabelText, queryByText } = render(<Fixture />);
 
-        const asOf = getByLabelText('As of');
+        const asOf = getByLabelText('Race as of');
         const race = getByLabelText('Race');
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
