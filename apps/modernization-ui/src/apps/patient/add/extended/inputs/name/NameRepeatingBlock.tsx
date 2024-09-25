@@ -39,7 +39,7 @@ export const NameRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
 
     return (
         <RepeatingBlock<NameEntry>
-            id="section-Name"
+            id="name"
             title="Name"
             defaultValues={defaultValue}
             columns={columns}

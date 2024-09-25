@@ -23,7 +23,7 @@ export const RaceRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
 
     const columns: Column<RaceEntry>[] = [
         { id: 'raceAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'race', name: 'Race', render: (v) => v.race.name },
+        { id: 'raceName', name: 'Race', render: (v) => v.race.name },
         {
             id: 'detailedRace',
             name: 'Detailed race',
@@ -32,7 +32,7 @@ export const RaceRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
     ];
     return (
         <RepeatingBlock<RaceEntry>
-            id="section-Race"
+            id="races"
             title="Race"
             defaultValues={defaultValue}
             columns={columns}
