@@ -76,10 +76,7 @@ public class PatientCreateSteps {
                 RandomUtil.getRandomString(),
                 RandomUtil.getRandomString(10),
                 RandomUtil.country(),
-                RandomUtil.getRandomString()
-            )
-        )
-    );
+                RandomUtil.getRandomString())));
   }
 
   @Given("I am adding a new patient with emails")
@@ -95,10 +92,7 @@ public class PatientCreateSteps {
                 null,
                 "email",
                 "url",
-                "comment"
-            )
-        )
-    );
+                "comment")));
   }
 
   @Given("I am adding a new patient with phones")
@@ -114,10 +108,7 @@ public class PatientCreateSteps {
                 "extension",
                 null,
                 "url",
-                "comment"
-            )
-        )
-    );
+                "comment")));
   }
 
   @Given("I am adding a new patient with races")
@@ -127,10 +118,7 @@ public class PatientCreateSteps {
             new NewPatient.Race(
                 RandomUtil.getRandomDateInPast(),
                 "category-value",
-                Arrays.asList("detail1", "detail2")
-            )
-        )
-    );
+                Arrays.asList("detail1", "detail2"))));
   }
 
   @Given("I am adding a new patient with identifications")
@@ -141,10 +129,7 @@ public class PatientCreateSteps {
                 RandomUtil.getRandomDateInPast(),
                 "DL",
                 "TX",
-                "value"
-            )
-        )
-    );
+                "value")));
   }
 
   @When("I send a create patient request")
