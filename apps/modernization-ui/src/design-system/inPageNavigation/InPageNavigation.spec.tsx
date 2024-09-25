@@ -1,4 +1,4 @@
-import { render, screen as rtlScreen } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NavSection, InPageNavigation } from './InPageNavigation';
 
@@ -28,18 +28,18 @@ describe('AddPatientExtendedNav', () => {
     });
 
     it('renders the nav title and section links', () => {
-        render(<InPageNavigation title="On this page" sections={mockSections} />);
+        const { container, getByText } = render(<InPageNavigation title="On this page" sections={mockSections} />);
 
-        expect(rtlScreen.getByText('On this page')).toBeInTheDocument();
-        expect(rtlScreen.getByText('Section 1')).toBeInTheDocument();
-        expect(rtlScreen.getByText('Section 2')).toBeInTheDocument();
+        expect(container.textContent).toBe('On this pageSection 1Section 2');
+        expect(getByText('Section 1')).toBeInTheDocument();
+        expect(getByText('Section 2')).toBeInTheDocument();
     });
 
     it('renders links with correct href attributes', () => {
-        render(<InPageNavigation title="On this page" sections={mockSections} />);
+        const { getByText } = render(<InPageNavigation title="On this page" sections={mockSections} />);
 
-        const link1 = rtlScreen.getByText('Section 1');
-        const link2 = rtlScreen.getByText('Section 2');
+        const link1 = getByText('Section 1');
+        const link2 = getByText('Section 2');
 
         expect(link1.getAttribute('href')).toBe('#section1');
         expect(link2.getAttribute('href')).toBe('#section2');
@@ -50,14 +50,13 @@ describe('AddPatientExtendedNav', () => {
         const mockElement = { scrollIntoView: scrollIntoViewMock };
         jest.spyOn(document, 'getElementById').mockReturnValue(mockElement as any);
 
-        render(<InPageNavigation title="On this page" sections={mockSections} />);
+        const { getByText } = render(<InPageNavigation title="On this page" sections={mockSections} />);
 
-        const link = rtlScreen.getByText('Section 1');
+        const link = getByText('Section 1');
         userEvent.click(link);
 
-        // Ensure the click event is processed
-        setTimeout(() => {
+        waitFor(() => {
             expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
-        }, 0);
+        });
     });
 });

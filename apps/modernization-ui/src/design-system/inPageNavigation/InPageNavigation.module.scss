@@ -27,13 +27,13 @@ nav {
                 background-color: transparent !important;
             }
 
-            &.visible {
+            &.active {
                 color: colors.$base-darkest;
                 border-left: 4px solid colors.$base-darkest !important;
                 transition: 0.2s ease-in;
             }
 
-            &.visible ~ a {
+            &.active ~ a {
                 color: colors.$primary !important;
                 border-left: 4px solid transparent !important;
             }

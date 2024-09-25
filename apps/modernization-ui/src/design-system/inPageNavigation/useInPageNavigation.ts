@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import styles from './InPageNavigation.module.scss';
 
-const useInPageNavigation = () => {
+const useInPageNavigation = (threshold: number = 0) => {
     useEffect(() => {
         const sections = Array.from(document.querySelectorAll('section[id]'));
 
@@ -10,12 +10,12 @@ const useInPageNavigation = () => {
                 const section = entry.target as HTMLElement;
                 const sectionId = section.id;
                 const sectionLink = document.querySelector(`a[href="#${sectionId}"]`);
-                if (entry.intersectionRatio > 0) {
-                    section?.classList.add(styles.visible);
-                    sectionLink?.classList.add(styles.visible);
+                if (entry.intersectionRatio > threshold) {
+                    section?.classList.add(styles.active);
+                    sectionLink?.classList.add(styles.active);
                 } else {
-                    section?.classList?.remove(styles.visible);
-                    sectionLink?.classList?.remove(styles.visible);
+                    section?.classList?.remove(styles.active);
+                    sectionLink?.classList?.remove(styles.active);
                 }
             });
         };
@@ -43,7 +43,7 @@ const useInPageNavigation = () => {
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [threshold]); // Added threshold to dependency array
 };
 
 export default useInPageNavigation;

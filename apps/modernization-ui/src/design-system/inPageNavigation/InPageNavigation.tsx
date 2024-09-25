@@ -14,7 +14,7 @@ interface InPageNavigationProps {
 }
 
 export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, title = 'On this page' }) => {
-    useInPageNavigation();
+    useInPageNavigation(0);
 
     return (
         <nav>
