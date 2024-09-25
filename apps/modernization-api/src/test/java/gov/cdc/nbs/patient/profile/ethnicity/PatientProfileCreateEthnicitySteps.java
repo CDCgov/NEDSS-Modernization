@@ -3,11 +3,13 @@ package gov.cdc.nbs.patient.profile.ethnicity;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Then;
-import java.time.Instant;
 import org.springframework.test.web.servlet.ResultActions;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+import java.time.Instant;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileCreateEthnicitySteps {
 
@@ -19,7 +21,8 @@ public class PatientProfileCreateEthnicitySteps {
   PatientProfileCreateEthnicitySteps(
       final Active<PatientIdentifier> activePatient,
       final PatientProfileEthnicityRequester requester,
-      final Active<ResultActions> response) {
+      final Active<ResultActions> response
+  ) {
     this.activePatient = activePatient;
     this.requester = requester;
     this.response = response;

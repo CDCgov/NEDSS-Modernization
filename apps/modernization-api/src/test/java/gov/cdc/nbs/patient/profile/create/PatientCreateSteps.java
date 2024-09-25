@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.testing.support.Available;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -37,11 +36,6 @@ public class PatientCreateSteps {
     this.mapper = mapper;
   }
 
-  @Given("I add the comment {string} to the extended patient data")
-  public void i_add_the_comment(final String value) {
-    this.input.active(current -> current.withAdministrative(current.administrative().withComment(value)));
-  }
-
   @When("I create a patient with extended data")
   public void i_create_a_patient_with_extended_data() {
     this.input.maybeActive()
@@ -60,12 +54,12 @@ public class PatientCreateSteps {
     try {
 
 
-      PatientIdentifier created = mapper.readValue(
+      CreatedPatient created = mapper.readValue(
           result.andReturn().getResponse().getContentAsByteArray(),
-          PatientIdentifier.class
+          CreatedPatient.class
       );
 
-      return Optional.of(created);
+      return Optional.of(new PatientIdentifier(created.id(), created.shortId(), created.local()));
     } catch (IOException exception) {
       //  The response did not contain a created patient
       return Optional.empty();
