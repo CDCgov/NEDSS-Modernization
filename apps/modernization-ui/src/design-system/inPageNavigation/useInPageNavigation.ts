@@ -43,7 +43,7 @@ const useInPageNavigation = (threshold: number = 0) => {
         });
 
         return () => observer.disconnect();
-    }, [threshold]); // Added threshold to dependency array
+    }, [threshold]);
 };
 
 export default useInPageNavigation;
