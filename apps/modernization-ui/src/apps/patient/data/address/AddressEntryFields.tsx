@@ -35,14 +35,14 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Address as of"
                         orientation="horizontal"
                         defaultValue={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name="addressAsof"
+                        name={`address-${name}`}
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -53,15 +53,15 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id="addressType"
-                        name="addressType"
+                        id={`address-${name}`}
+                        name={`address-${name}`}
                         options={coded.types}
                         error={error?.message}
                         required
@@ -72,15 +72,15 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="use"
                 rules={{ required: { value: true, message: 'Use is required.' } }}
-                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
+                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
                         orientation="horizontal"
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id="addressUse"
-                        name="addressUse"
+                        id={`address-${name}`}
+                        name={`address-${name}`}
                         options={coded.uses}
                         error={error?.message}
                         required
