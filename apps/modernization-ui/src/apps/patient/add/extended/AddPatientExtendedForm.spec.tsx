@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
+import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
+import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
+import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { CodedValue } from 'coded';
+import { internalizeDate } from 'date';
 import { CountiesCodedValues } from 'location';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
-import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
-import { PatientProfilePermission } from 'apps/patient/profile/permission';
-import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
-import { internalizeDate } from 'date';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -139,7 +139,7 @@ const awaitRender = async () => {
 };
 
 const Fixture = () => {
-    return <AddPatientExtendedForm onInternalDirtyStateChange={jest.fn()} />;
+    return <AddPatientExtendedForm />;
 };
 describe('AddPatientExtendedForm', () => {
     it('should render the sections with appropriate help text', async () => {

@@ -2,15 +2,13 @@ import { Button } from 'components/button';
 import { today } from 'date';
 import { FormProvider, useForm } from 'react-hook-form';
 import { DataEntrySideNav } from '../DataEntrySideNav/DataEntrySideNav';
-import { AddPatientExtendedForm, DirtyState } from './AddPatientExtendedForm';
+import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import styles from './add-patient-extended.module.scss';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
-import { useState } from 'react';
 
 export const AddPatientExtended = () => {
     const defaultDate = today();
-    const [dirtyState, setDirtyState] = useState<DirtyState>();
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues: {
             phoneEmails: [],
@@ -42,12 +40,12 @@ export const AddPatientExtended = () => {
                     <h1>New patient - extended</h1>
                     <div className={styles.buttonGroup}>
                         <Button outline>Cancel</Button>
-                        <Button onClick={() => console.log('state', dirtyState)}>Save</Button>
+                        <Button>Save</Button>
                     </div>
                 </header>
                 <main>
                     <FormProvider {...form}>
-                        <AddPatientExtendedForm onInternalDirtyStateChange={setDirtyState} />
+                        <AddPatientExtendedForm />
                     </FormProvider>
                     <AddPatientExtendedNav />
                 </main>

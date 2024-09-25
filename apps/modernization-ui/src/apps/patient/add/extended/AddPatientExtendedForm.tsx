@@ -4,7 +4,7 @@ import { GeneralInformationEntryFields } from 'apps/patient/data/general/General
 import { MortalityEntryFields } from 'apps/patient/data/mortality/MortalityEntryFields';
 import { SexAndBirthEntryFields } from 'apps/patient/data/sexAndBirth/SexAndBirthEntryFields';
 import { ErrorBanner } from 'design-system/entry/multi-value/ErrorBanner';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './add-patient-extended-form.module.scss';
 import { Card } from './card/Card';
@@ -23,10 +23,8 @@ export type DirtyState = {
     name: boolean;
     race: boolean;
 };
-type Props = {
-    onInternalDirtyStateChange: (dirtyState: DirtyState) => void;
-};
-export const AddPatientExtendedForm = ({ onInternalDirtyStateChange }: Props) => {
+
+export const AddPatientExtendedForm = () => {
     const { setValue } = useFormContext<ExtendedNewPatientEntry>();
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,
@@ -35,14 +33,12 @@ export const AddPatientExtendedForm = ({ onInternalDirtyStateChange }: Props) =>
         race: false,
         name: false
     });
+    const errors: string[] = [];
 
-    useEffect(() => {
-        onInternalDirtyStateChange(dirtyState);
-    }, [dirtyState]);
     return (
         <div className={styles.addPatientForm}>
             <div className={styles.formContent}>
-                <ErrorBanner errors={[]} />
+                {errors && errors.length > 0 && <ErrorBanner errors={[]} />}
                 <Card
                     title="Administrative"
                     id="section-Administrative"
