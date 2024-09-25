@@ -42,7 +42,7 @@ export const AddressEntryFields = () => {
                         defaultValue={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={name}
+                        name={`address-${name}`}
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -60,8 +60,8 @@ export const AddressEntryFields = () => {
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id={name}
-                        name={name}
+                        id={`address-${name}`}
+                        name={`address-${name}`}
                         options={coded.types}
                         error={error?.message}
                         required
@@ -79,8 +79,8 @@ export const AddressEntryFields = () => {
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id={name}
-                        name={name}
+                        id={`address-${name}`}
+                        name={`address-${name}`}
                         options={coded.uses}
                         error={error?.message}
                         required

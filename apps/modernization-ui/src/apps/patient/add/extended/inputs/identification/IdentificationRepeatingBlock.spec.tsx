@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { internalizeDate } from 'date';
-import { IdentificationMultiEntry } from './IdentificationMultiEntry';
+import { IdentificationRepeatingBlock } from './IdentificationRepeatingBlock';
 import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
 
 const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
@@ -13,19 +13,19 @@ jest.mock('apps/patient/profile/identification/usePatientIdentificationCodedValu
 }));
 
 const mockEntry = {
-  state: {
-      data: [
-          {
-              asOf: internalizeDate(new Date()),
-              type: 'AN',
-              idValue: '12341241'
-          }
-      ]
-  }
+    state: {
+        data: [
+            {
+                asOf: internalizeDate(new Date()),
+                type: 'AN',
+                idValue: '12341241'
+            }
+        ]
+    }
 };
 
 jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-  useMultiValueEntryState: () => mockEntry
+    useMultiValueEntryState: () => mockEntry
 }));
 
 const onChange = jest.fn();
@@ -33,7 +33,7 @@ const isDirty = jest.fn();
 
 describe('IdentificationMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<IdentificationMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<IdentificationRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -43,7 +43,7 @@ describe('IdentificationMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<IdentificationMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<IdentificationRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const dateInput = getByLabelText('Identification as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));

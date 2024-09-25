@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
-import { RaceMultiEntry } from './RaceMultiEntry';
+import { RaceRepeatingBlock } from './RaceRepeatingBlock';
 
 const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
 
@@ -37,7 +37,7 @@ const isDirty = jest.fn();
 
 describe('RaceMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<RaceMultiEntry onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<RaceRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -46,11 +46,9 @@ describe('RaceMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText, getAllByRole, getAllByText } = render(
-            <RaceMultiEntry onChange={onChange} isDirty={isDirty} />
-        );
+        const { getByLabelText, getAllByRole } = render(<RaceRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
-        const dateInput = getByLabelText('As of');
+        const dateInput = getByLabelText('Race as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
 
         const race = getByLabelText('Race');
