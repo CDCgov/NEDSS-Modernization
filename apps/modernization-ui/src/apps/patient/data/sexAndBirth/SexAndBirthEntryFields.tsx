@@ -1,14 +1,14 @@
 import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
-import { asAgeDisplay } from 'date/asAgeDisplay';
-import { DataDisplay } from 'design-system/data-display/DataDisplay';
+import { displayAgeAsOfToday } from 'date/displayAge';
 import { SingleSelect } from 'design-system/select';
 import { useCountyCodedValues } from 'location';
 import { useEffect, useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { BirthEntry, SexEntry } from '../entry';
+import { ValueView } from 'design-system/data-display/ValueView';
 
 const UNKNOWN_GENDER = 'U';
 export const SexAndBirthEntryFields = () => {
@@ -17,7 +17,7 @@ export const SexAndBirthEntryFields = () => {
     const selectedCurrentGender = useWatch({ control, name: 'birthAndSex.current' });
     const selectedState = useWatch({ control, name: 'birthAndSex.state' });
     const selectedMultipleBirth = useWatch({ control, name: 'birthAndSex.multiple' });
-    const age = useMemo(() => asAgeDisplay(currentBirthday), [currentBirthday]);
+    const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     const coded = usePatientSexBirthCodedValues();
     const { counties } = useCountyCodedValues(selectedState?.value);
@@ -69,7 +69,7 @@ export const SexAndBirthEntryFields = () => {
                     />
                 )}
             />
-            <DataDisplay title="Current age" value={age} />
+            <ValueView title="Current age" value={age} />
             <Controller
                 control={control}
                 name="birthAndSex.current"

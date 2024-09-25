@@ -24,7 +24,7 @@ const Fixture = () => {
 
 describe('EthnicityEntryCard', () => {
     it('should display Ethnicity header on card', () => {
-        const { getAllByText } = render(<Fixture />);
-        expect(getAllByText('Ethnicity')).toHaveLength(2);
+        const { getByRole } = render(<Fixture />);
+        expect(getByRole('heading')).toHaveTextContent('Ethnicity');
     });
 });
