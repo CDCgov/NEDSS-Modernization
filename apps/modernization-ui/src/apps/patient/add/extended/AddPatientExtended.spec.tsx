@@ -26,6 +26,25 @@ const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     countries: [{ name: 'United States of America', value: 'US' }]
 };
 
+class MockIntersectionObserver {
+    observe = jest.fn();
+    unobserve = jest.fn();
+    disconnect = jest.fn();
+}
+
+Object.defineProperty(window, 'IntersectionObserver', {
+    writable: true,
+    configurable: true,
+    value: MockIntersectionObserver
+});
+
+// Mock IntersectionObserverEntry
+Object.defineProperty(window, 'IntersectionObserverEntry', {
+    writable: true,
+    configurable: true,
+    value: jest.fn()
+});
+
 jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => ({
     usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
 }));

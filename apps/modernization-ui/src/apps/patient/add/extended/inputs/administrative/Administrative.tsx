@@ -9,7 +9,7 @@ export const Administrative = () => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
-        <Card title="Administrative" id="section-Administrative">
+        <Card title="Administrative" id="administrative">
             <Controller
                 control={control}
                 name="administrative.asOf"

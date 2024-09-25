@@ -46,15 +46,15 @@ describe('RaceMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText, getAllByRole, getAllByText } = render(
+        const { getByLabelText, getAllByRole, getAllByTestId } = render(
             <RaceMultiEntry onChange={onChange} isDirty={isDirty} />
         );
 
         const dateInput = getByLabelText('As of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
 
-        const race = getByLabelText('Race');
-        expect(race).toHaveValue('');
+        const race = getAllByTestId('label');
+        expect(race[1]).toHaveTextContent('Race');
 
         const detailedRace = getAllByRole('combobox')[0];
         expect(detailedRace).toHaveValue('');
