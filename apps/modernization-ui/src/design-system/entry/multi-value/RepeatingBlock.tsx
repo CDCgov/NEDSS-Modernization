@@ -1,13 +1,13 @@
 import { Icon } from '@trussworks/react-uswds';
-import { AlertBanner } from 'alert';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Column, DataTable } from 'design-system/table';
 import { ReactNode, useEffect } from 'react';
 import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
+import { ErrorBanner } from './ErrorBanner';
+import styles from './repeating-block.module.scss';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
-import styles from './RepeatingBlock.module.scss';
 
 type Props<V extends FieldValues> = {
     id?: string;
@@ -101,20 +101,7 @@ export const RepeatingBlock = <V extends FieldValues>({
                 <Heading level={2}>{title}</Heading>
                 <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
             </header>
-            {errors && errors.length > 0 && (
-                <section>
-                    <AlertBanner type="error">
-                        <div className={styles.errors}>
-                            <div className={styles.errorHeading}>Please fix the following errors: </div>
-                            <ul>
-                                {errors.map((e, i) => (
-                                    <li key={i}>{e}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </AlertBanner>
-                </section>
-            )}
+            {errors && errors.length > 0 && <ErrorBanner errors={errors} />}
             <div>
                 {state.data.length > 0 && (
                     <DataTable<V>

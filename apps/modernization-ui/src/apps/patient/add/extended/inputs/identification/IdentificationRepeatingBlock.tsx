@@ -14,8 +14,9 @@ const defaultValue: Partial<IdentificationEntry> = {
 type Props = {
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    errors?: string[];
 };
-export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const IdentificationRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
     const renderForm = () => <IdentificationEntryFields />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 
@@ -35,6 +36,7 @@ export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };

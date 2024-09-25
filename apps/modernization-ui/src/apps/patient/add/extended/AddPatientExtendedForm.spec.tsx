@@ -139,7 +139,7 @@ const awaitRender = async () => {
 };
 
 const Fixture = () => {
-    return <AddPatientExtendedForm />;
+    return <AddPatientExtendedForm onInternalDirtyStateChange={jest.fn()} />;
 };
 describe('AddPatientExtendedForm', () => {
     it('should render the sections with appropriate help text', async () => {

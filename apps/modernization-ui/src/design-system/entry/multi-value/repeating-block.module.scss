@@ -16,23 +16,6 @@
         @extend %thin-bottom;
     }
 
-    .errors {
-        display: flex;
-        flex-direction: column;
-
-        .errorHeading {
-            color: colors.$base-darkest;
-            font-size: 1.375rem;
-            font-weight: 700;
-        }
-
-        ul {
-            padding: 0;
-            margin: 0;
-            list-style-position: inside;
-        }
-    }
-
     .dataTable {
         padding-bottom: 1rem;
         .iconContainer {

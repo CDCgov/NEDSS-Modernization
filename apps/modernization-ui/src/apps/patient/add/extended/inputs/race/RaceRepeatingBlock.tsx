@@ -15,8 +15,9 @@ const defaultValue: Partial<RaceEntry> = {
 type Props = {
     onChange: (data: RaceEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    errors?: string[];
 };
-export const RaceRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const RaceRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
     const renderForm = () => <RaceEntryFields />;
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
 
@@ -39,6 +40,7 @@ export const RaceRepeatingBlock = ({ onChange, isDirty }: Props) => {
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };
