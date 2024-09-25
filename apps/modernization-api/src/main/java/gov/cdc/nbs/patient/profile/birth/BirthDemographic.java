@@ -1,9 +1,14 @@
 package gov.cdc.nbs.patient.profile.birth;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
+
 import java.time.LocalDate;
 
 public record BirthDemographic(
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate bornOn,
     String sex,
     String multiple,

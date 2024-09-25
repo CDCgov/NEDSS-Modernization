@@ -40,7 +40,7 @@ export const AddressRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
 
     return (
         <RepeatingBlock<AddressEntry>
-            id="section-Address"
+            id="address"
             title="Address"
             defaultValues={defaultValue}
             columns={columns}

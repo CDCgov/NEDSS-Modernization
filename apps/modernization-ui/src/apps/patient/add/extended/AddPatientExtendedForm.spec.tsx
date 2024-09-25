@@ -8,6 +8,7 @@ import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
 import { CountiesCodedValues } from 'location';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -139,7 +140,12 @@ const awaitRender = async () => {
 };
 
 const Fixture = () => {
-    return <AddPatientExtendedForm />;
+    const form = useForm();
+    return (
+        <FormProvider {...form}>
+            <AddPatientExtendedForm />
+        </FormProvider>
+    );
 };
 describe('AddPatientExtendedForm', () => {
     it('should render the sections with appropriate help text', async () => {
@@ -177,30 +183,5 @@ describe('AddPatientExtendedForm', () => {
         expect(headers[9].parentElement).toContainElement(
             getByText('All required fields for adding general patient information')
         );
-    });
-
-    it('should set today as default date for as of fields', async () => {
-        const { getByLabelText } = render(<Fixture />);
-        await awaitRender();
-        const expected = internalizeDate(new Date());
-        expect(getByLabelText('Information as of date')).toHaveValue(expected);
-
-        expect(getByLabelText('Name as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Address as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Phone & email as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Identification as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Race as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Ethnicity information as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Sex & birth information as of')).toHaveValue(expected);
-
-        expect(getByLabelText('Mortality information as of')).toHaveValue(expected);
-
-        expect(getByLabelText('General information as of')).toHaveValue(expected);
     });
 });

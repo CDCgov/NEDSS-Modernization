@@ -1,10 +1,11 @@
-import { getByRole, render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
 import { MemoryRouter } from 'react-router-dom';
 import { CodedValue } from 'coded';
 import { MockedProvider } from '@apollo/react-testing';
 import { CountiesCodedValues } from 'location';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
+import { internalizeDate } from 'date';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -94,31 +95,54 @@ jest.mock('@apollo/client', () => ({
     })
 }));
 
+const Fixture = () => {
+    return (
+        <MockedProvider mocks={[]} addTypename={false}>
+            <MemoryRouter>
+                <AddPatientExtended />
+            </MemoryRouter>
+        </MockedProvider>
+    );
+};
+
 describe('AddPatientExtended', () => {
     it('should have a heading', () => {
-        const { getAllByRole } = render(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <MemoryRouter>
-                    <AddPatientExtended />
-                </MemoryRouter>
-            </MockedProvider>
-        );
+        const { getAllByRole } = render(<Fixture />);
 
         const headings = getAllByRole('heading');
         expect(headings[1]).toHaveTextContent('New patient - extended');
     });
 
     it('should have cancel and save buttons', () => {
-        const { getAllByRole } = render(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <MemoryRouter>
-                    <AddPatientExtended />
-                </MemoryRouter>
-            </MockedProvider>
-        );
+        const { getAllByRole } = render(<Fixture />);
 
         const buttons = getAllByRole('button');
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Save');
+    });
+
+    it('should set today as default date for as of fields', async () => {
+        const { getByLabelText } = render(<Fixture />);
+        expect(await screen.findByText('Information as of date')).toBeInTheDocument();
+        const expected = internalizeDate(new Date());
+        expect(getByLabelText('Information as of date')).toHaveValue(expected);
+
+        expect(getByLabelText('Name as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Address as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Phone & email as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Identification as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Race as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Ethnicity information as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Sex & birth information as of')).toHaveValue(expected);
+
+        expect(getByLabelText('Mortality information as of')).toHaveValue(expected);
+
+        expect(getByLabelText('General information as of')).toHaveValue(expected);
     });
 });

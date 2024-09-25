@@ -7,7 +7,7 @@
       And I can "find" any "patient"
 
     Scenario: I can create a patient with administrative demographics information
-      Given I am entering the administrative as of date 05/29/2023
+      Given I enter the patient administrative as of date 05/29/2023
       And I enter the administrative comment "testing extended patient data"
       And the administrative is included in the extended patient data
       When I create a patient with extended data

@@ -2,16 +2,21 @@ package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.entity.odse.Person;
 import gov.cdc.nbs.patient.PatientCommand;
-import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
+import gov.cdc.nbs.patient.RequestContext;
 import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
 import static gov.cdc.nbs.patient.profile.birth.BirthDemographicPatientCommandMapper.asUpdateBirth;
+import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asAddDetailedEthnicity;
+import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.profile.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
 import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
 
@@ -24,7 +29,7 @@ class PatientCreationService {
 
   PatientCreationService(
       final PatientIdentifierGenerator patientIdentifierGenerator,
-      AddressIdentifierGenerator addressIdentifierGenerator,
+      final AddressIdentifierGenerator addressIdentifierGenerator,
       final EntityManager entityManager
   ) {
     this.patientIdentifierGenerator = patientIdentifierGenerator;
@@ -33,7 +38,7 @@ class PatientCreationService {
   }
 
   @Transactional
-  public PatientIdentifier create(
+  public CreatedPatient create(
       final RequestContext context,
       final NewPatient newPatient
   ) {
@@ -46,14 +51,11 @@ class PatientCreationService {
             context.requestedBy(),
             context.requestedAt()
         )
-    )
-        .update(
-            asUpdateAdministrativeInfo(
-                identifier.id(),
-                context,
-                newPatient.administrative()
-            )
-        );
+    );
+
+    newPatient.maybeAdministrative()
+        .map(administrative -> asUpdateAdministrativeInfo(identifier.id(), context, administrative))
+        .ifPresent(patient::update);
 
     newPatient.maybeBirth()
         .map(demographic -> asUpdateBirth(identifier.id(), context, demographic))
@@ -63,6 +65,17 @@ class PatientCreationService {
         .map(demographic -> asUpdateGender(identifier.id(), context, demographic))
         .ifPresent(patient::update);
 
+    newPatient.maybeEthnicity()
+        .map(demographic -> asUpdateEthnicityInfo(identifier.id(), context, demographic))
+        .ifPresent(patient::update);
+
+    newPatient.maybeEthnicity()
+        .map(EthnicityDemographic::detailed)
+        .stream()
+        .flatMap(Collection::stream)
+        .map(demographic -> asAddDetailedEthnicity(identifier.id(), context, demographic))
+        .forEach(patient::add);
+
     newPatient.names()
         .stream()
         .map(demographic -> asAddName(identifier.id(), context, demographic))
@@ -70,7 +83,7 @@ class PatientCreationService {
 
     this.entityManager.persist(patient);
 
-    return identifier;
+    return new CreatedPatient(identifier.id(), identifier.shortId(), identifier.local());
   }
 
 }
