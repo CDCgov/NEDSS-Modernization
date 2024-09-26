@@ -27,4 +27,4 @@ Feature: Patient Search by Address
 
   Scenario: CNFT1-1283 Address – Search by Multiple Address Criteria
     When I search for Street Address "90 SE Panda" City "Cullen" State "Kentucky" Zip code "42437"
-    Then I should see "Caden Ratkeyklkb"
+    Then I should see "Caden Benjamin Ratkeyklkb, Esquire"
