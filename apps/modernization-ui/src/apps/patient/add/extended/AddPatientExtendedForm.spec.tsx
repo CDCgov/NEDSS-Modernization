@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { CodedValue } from 'coded';
 import { CountiesCodedValues } from 'location';
@@ -7,6 +7,8 @@ import { PatientIdentificationCodedValues } from 'apps/patient/profile/identific
 import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
+import { ExtendedNewPatientEntry, initial } from './entry';
+import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
@@ -34,6 +36,7 @@ jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => (
 }));
 
 const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
+
 jest.mock('location/useCountyCodedValues', () => ({
     useCountyCodedValues: () => mockCountyCodedValues
 }));
@@ -51,7 +54,7 @@ const mockLocationCodedValues = {
         all: [{ name: 'StateName', value: '1' }]
     },
     counties: {
-        byState: (state: string) => [{ name: 'CountyName', value: '2' }]
+        byState: () => [{ name: 'CountyName', value: '2' }]
     },
     countries: [{ name: 'CountryName', value: '3' }]
 };
@@ -133,18 +136,30 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
     usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
-const awaitRender = async () => {
-    // wait on render to prevent act warning
-    expect(await screen.findByText('Administrative')).toBeInTheDocument();
+type Props = {
+    asOf?: string;
 };
 
-const Fixture = () => {
-    return <AddPatientExtendedForm />;
+const Fixture = ({ asOf }: Props) => {
+    const defaultValues = initial(asOf);
+
+    const form = useForm<ExtendedNewPatientEntry>({
+        defaultValues,
+        mode: 'onBlur'
+    });
+
+    return (
+        <FormProvider {...form}>
+            <AddPatientExtendedForm />
+        </FormProvider>
+    );
 };
 describe('AddPatientExtendedForm', () => {
     it('should render the sections with appropriate help text', async () => {
         const { getByText, getAllByRole } = render(<Fixture />);
-        await awaitRender();
+
+        await waitFor(() => expect(getByText('Administrative')).toBeInTheDocument());
+
         const headers = getAllByRole('heading');
         expect(headers[0]).toHaveTextContent('Administrative');
         expect(headers[0].parentElement).toContainElement(getByText('All required fields for adding comments'));
@@ -179,28 +194,32 @@ describe('AddPatientExtendedForm', () => {
         );
     });
 
-    it('should set today as default date for as of fields', async () => {
-        const { getByLabelText } = render(<Fixture />);
-        await awaitRender();
+    it('should set default date for as of fields', async () => {
+        const { getByLabelText } = render(<Fixture asOf="05/07/1977" />);
+
+        //  The Repeating block as of dates are being initialized to today's date within the component.
         const expected = internalizeDate(new Date());
-        expect(getByLabelText('Information as of date')).toHaveValue(expected);
 
-        expect(getByLabelText('Name as of')).toHaveValue(expected);
+        await waitFor(() => {
+            expect(getByLabelText('Information as of date')).toHaveValue('05/07/1977');
 
-        expect(getByLabelText('Address as of')).toHaveValue(expected);
+            expect(getByLabelText('Name as of')).toHaveValue(expected);
 
-        expect(getByLabelText('Phone & email as of')).toHaveValue(expected);
+            expect(getByLabelText('Address as of')).toHaveValue(expected);
 
-        expect(getByLabelText('Identification as of')).toHaveValue(expected);
+            expect(getByLabelText('Phone & email as of')).toHaveValue(expected);
 
-        expect(getByLabelText('Race as of')).toHaveValue(expected);
+            expect(getByLabelText('Identification as of')).toHaveValue(expected);
 
-        expect(getByLabelText('Ethnicity information as of')).toHaveValue(expected);
+            expect(getByLabelText('Race as of')).toHaveValue(expected);
 
-        expect(getByLabelText('Sex & birth information as of')).toHaveValue(expected);
+            expect(getByLabelText('Ethnicity information as of')).toHaveValue('05/07/1977');
 
-        expect(getByLabelText('Mortality information as of')).toHaveValue(expected);
+            expect(getByLabelText('Sex & birth information as of')).toHaveValue('05/07/1977');
 
-        expect(getByLabelText('General information as of')).toHaveValue(expected);
+            expect(getByLabelText('Mortality information as of')).toHaveValue('05/07/1977');
+
+            expect(getByLabelText('General information as of')).toHaveValue('05/07/1977');
+        });
     });
 });

@@ -11,20 +11,19 @@ import {
     Mortality,
     GeneralInformation
 } from 'apps/patient/data/api';
-import { Maybe } from 'utils';
 
 type NewPatient = {
-    administrative: Administrative;
+    administrative?: Administrative;
     names?: Name[];
     addresses?: Address[];
     phoneEmails?: PhoneEmail[];
     identifications?: Identification[];
     races?: Race[];
-    ethnicity?: Maybe<Ethnicity>;
-    birth?: Maybe<Birth>;
-    sex?: Maybe<Sex>;
-    mortality?: Maybe<Mortality>;
-    general?: Maybe<GeneralInformation>;
+    ethnicity?: Ethnicity;
+    birth?: Birth;
+    gender?: Sex;
+    mortality?: Mortality;
+    general?: GeneralInformation;
 };
 
 type CreatedPatient = {
