@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ExtendedNewPatientEntry, initial } from './entry';
 import { Button } from 'components/button';
@@ -10,9 +11,17 @@ import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientIn
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 
 import styles from './add-patient-extended.module.scss';
+import { Shown } from 'conditional-render';
+import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { CreatedPatient } from './api';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
+
+    const created = useMemo<CreatedPatient | undefined>(
+        () => (interaction.status === 'created' ? interaction.created : undefined),
+        [interaction.status]
+    );
 
     const defaultValues = initial();
 
@@ -25,6 +34,9 @@ export const AddPatientExtended = () => {
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
+            <Shown when={interaction.status === 'created'}>
+                {created && <PatientCreatedPanel created={created} />}
+            </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
                     <DataEntrySideNav />
