@@ -1,4 +1,4 @@
-import { Features } from 'generated';
+import { Features } from 'configuration';
 
 type Guard = (features: Features) => boolean | undefined;
 
