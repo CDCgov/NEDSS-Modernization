@@ -1,18 +1,17 @@
 import { ReactNode } from 'react';
-import { useConfiguration, Features } from 'configuration';
 import { RedirectHome } from 'routes';
-
-type Guard = (features: Features) => boolean;
+import { FeatureToggle } from './FeatureToggle';
+import { Guard } from './guard';
 
 type FeatureGuardProps = {
     guard: Guard;
     children: ReactNode;
 };
 
-const FeatureGuard = ({ guard, children }: FeatureGuardProps) => {
-    const { features } = useConfiguration();
-
-    return guard(features) ? <>{children}</> : <RedirectHome />;
-};
+const FeatureGuard = ({ guard, children }: FeatureGuardProps) => (
+    <FeatureToggle guard={guard} fallback={<RedirectHome />}>
+        {children}
+    </FeatureToggle>
+);
 
 export { FeatureGuard };
