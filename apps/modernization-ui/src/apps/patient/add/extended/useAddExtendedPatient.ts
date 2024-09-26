@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { CreatedPatient, NewPatient } from './api';
 import { ExtendedNewPatientEntry } from './entry';
+import { AddExtendedPatientInteraction, Working, Created } from './useAddExtendedPatientInteraction';
 
 type Step =
     | { status: 'requesting'; entry: ExtendedNewPatientEntry }
@@ -36,29 +37,14 @@ const reducer = (current: Step, action: Action): Step => {
 type Transformer = (entry: ExtendedNewPatientEntry) => NewPatient;
 type Creator = (input: NewPatient) => Promise<CreatedPatient>;
 
+type State = Working | Created;
+
 type Settings = {
     transformer: Transformer;
     creator: Creator;
 };
 
-type Working = {
-    status: 'waiting' | 'working';
-};
-
-type Created = {
-    status: 'created';
-    created: CreatedPatient;
-};
-
-type State = Working | Created;
-
-type Interaction = {
-    create: (entry: ExtendedNewPatientEntry) => void;
-};
-
-type Return = Interaction & State;
-
-const useAddExtendedPatient = ({ transformer, creator }: Settings): Return => {
+const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedPatientInteraction => {
     const [step, dispatch] = useReducer(reducer, initial);
 
     useEffect(() => {

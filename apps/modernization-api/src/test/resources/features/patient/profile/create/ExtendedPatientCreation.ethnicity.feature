@@ -10,14 +10,22 @@
       Given I am entering the ethnicity as of date 05/29/2023
       And I enter the ethnicity ethnic group Unknown
       And I enter the ethnicity unknown reason Refused to answer
-      And I enter the ethnicity detailed Spaniard
-      And I enter the ethnicity detailed Cuban
       And the ethnicity is included in the extended patient data
       When I create a patient with extended data
       Then I view the Patient Profile Ethnicity
       And the patient profile ethnicity has the as of date 05/29/2023
       And the patient profile ethnicity has the ethnic group Unknown
       And the patient profile ethnicity has the unknown reason Refused to answer
+
+    Scenario: I can create a patient with detailed ethnicity information
+      Given I am entering the ethnicity as of date 05/11/2023
+      And I enter the ethnicity ethnic group Hispanic or Latino
+      And I enter the ethnicity detailed Spaniard
+      And I enter the ethnicity detailed Cuban
+      And the ethnicity is included in the extended patient data
+      When I create a patient with extended data
+      Then I view the Patient Profile Ethnicity
+      And the patient profile ethnicity has the as of date 05/11/2023
+      And the patient profile ethnicity has the ethnic group Hispanic or Latino
       And the patient profile ethnicity has the ethnicity detail Spaniard
       And the patient profile ethnicity has the ethnicity detail Cuban
-

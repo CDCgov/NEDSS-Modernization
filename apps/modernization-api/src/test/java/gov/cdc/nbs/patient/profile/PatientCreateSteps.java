@@ -8,6 +8,7 @@ import gov.cdc.nbs.entity.odse.TeleEntityLocatorParticipation;
 import gov.cdc.nbs.entity.odse.TeleLocator;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.address.AddressDemographic;
+import gov.cdc.nbs.patient.profile.create.CreatedPatient;
 import gov.cdc.nbs.patient.profile.create.NewPatient;
 import gov.cdc.nbs.patient.profile.create.PatientCreateController;
 import gov.cdc.nbs.repository.PersonRepository;
@@ -23,6 +24,7 @@ import net.datafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -65,7 +67,7 @@ public class PatientCreateSteps {
     this.input.active(
         current -> current.withAddress(
             new AddressDemographic(
-                RandomUtil.getRandomDateInPast(),
+                RandomUtil.dateInPast(),
                 "H",
                 "H",
                 faker.address().streetAddress(),
@@ -84,7 +86,7 @@ public class PatientCreateSteps {
     this.input.active(
         current -> current.withPhoneEmail(
             new NewPatient.Phone(
-                RandomUtil.getRandomDateInPast(),
+                RandomUtil.dateInPast(),
                 "type-value",
                 "use-value",
                 null,
@@ -100,7 +102,7 @@ public class PatientCreateSteps {
     this.input.active(
         current -> current.withPhoneEmail(
             new NewPatient.Phone(
-                RandomUtil.getRandomDateInPast(),
+                RandomUtil.dateInPast(),
                 "type-value",
                 "use-value",
                 "country-code",
@@ -116,7 +118,7 @@ public class PatientCreateSteps {
     this.input.active(
         current -> current.withRace(
             new NewPatient.Race(
-                RandomUtil.getRandomDateInPast(),
+                RandomUtil.dateInPast(),
                 "category-value",
                 Arrays.asList("detail1", "detail2"))));
   }
@@ -126,7 +128,7 @@ public class PatientCreateSteps {
     this.input.active(
         current -> current.withIdentification(
             new NewPatient.Identification(
-                RandomUtil.getRandomDateInPast(),
+                RandomUtil.dateInPast(),
                 "DL",
                 "TX",
                 "value")));
@@ -134,8 +136,9 @@ public class PatientCreateSteps {
 
   @When("I send a create patient request")
   public void i_submit_the_patient() {
-    PatientIdentifier created = controller.create(input.active());
-    activePatient.active(created);
+    CreatedPatient created = controller.create(input.active());
+
+    activePatient.active(new PatientIdentifier(created.id(), created.shortId(), created.local()));
 
     repository.findById(created.id()).ifPresent(patient::active);
   }
@@ -163,7 +166,7 @@ public class PatientCreateSteps {
     NewPatient.Phone expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
-        .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
+        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.url(), TeleLocator::getUrlAddress)
         .returns(expected.email(), TeleLocator::getEmailAddress);
@@ -176,7 +179,7 @@ public class PatientCreateSteps {
     NewPatient.Phone expected = this.input.active().phoneEmails().getFirst();
 
     assertThat(actualElp)
-        .returns(expected.asOf(), TeleEntityLocatorParticipation::getAsOfDate);
+        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), TeleEntityLocatorParticipation::getAsOfDate);
     assertThat(actualLocator)
         .returns(expected.phoneNumber(), TeleLocator::getPhoneNbrTxt)
         .returns(expected.countryCode(), TeleLocator::getCntryCd)
@@ -190,7 +193,7 @@ public class PatientCreateSteps {
     NewPatient.Race expected = this.input.active().races().getFirst();
 
     assertThat(actual)
-        .returns(expected.asOf(), PersonRace::getAsOfDate)
+        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), PersonRace::getAsOfDate)
         .returns(expected.race(), PersonRace::getRaceCategoryCd);
   }
 
@@ -200,7 +203,7 @@ public class PatientCreateSteps {
     NewPatient.Identification expected = this.input.active().identifications().getFirst();
 
     assertThat(actual)
-        .returns(expected.asOf(), EntityId::getAsOfDate)
+        .returns(expected.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(), EntityId::getAsOfDate)
         .returns(expected.type(), EntityId::getTypeCd)
         .returns(expected.issuer(), EntityId::getAssigningAuthorityCd)
         .returns(expected.id(), EntityId::getRootExtensionTxt);

@@ -3,7 +3,7 @@ package gov.cdc.nbs.patient.profile.names;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 public class NameDemographicEntrySteps {
 
@@ -15,8 +15,8 @@ public class NameDemographicEntrySteps {
     this.activeName = activeName;
   }
 
-  @Given("I am entering a {nameUse} name as of {date}")
-  public void i_am_entering_a_name_as_of(final String use, final Instant asOf) {
+  @Given("I am entering a {nameUse} name as of {localDate}")
+  public void i_am_entering_a_name_as_of(final String use, final LocalDate asOf) {
     this.activeName.active(new NameDemographic(asOf, use));
   }
 

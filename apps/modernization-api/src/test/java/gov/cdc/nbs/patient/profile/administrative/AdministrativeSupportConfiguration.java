@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Configuration
 class AdministrativeSupportConfiguration {
@@ -14,6 +14,6 @@ class AdministrativeSupportConfiguration {
   @Bean
   @ScenarioScope
   Active<Administrative> activeAdministrative(final Clock clock) {
-    return new Active<>(() -> new Administrative(Instant.now(clock)));
+    return new Active<>(() -> new Administrative(LocalDate.now(clock)));
   }
 }

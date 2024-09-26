@@ -1,9 +1,13 @@
 package gov.cdc.nbs.patient.profile.names;
 
-import java.time.Instant;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
+
+import java.time.LocalDate;
 
 public record NameDemographic(
-    Instant asOf,
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
+    LocalDate asOf,
     String type,
     String prefix,
     String first,
@@ -16,8 +20,9 @@ public record NameDemographic(
 ) {
 
   public NameDemographic(
-      Instant asOf,
-      String type) {
+      LocalDate asOf,
+      String type
+  ) {
     this(asOf, type, null, null, null, null, null, null, null, null);
   }
 

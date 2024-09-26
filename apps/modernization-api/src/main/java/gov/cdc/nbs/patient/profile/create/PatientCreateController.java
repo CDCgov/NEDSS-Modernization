@@ -3,7 +3,6 @@ package gov.cdc.nbs.patient.profile.create;
 import gov.cdc.nbs.config.security.SecurityUtil;
 import gov.cdc.nbs.message.patient.input.RaceInput;
 import gov.cdc.nbs.patient.RequestContext;
-import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.patient.profile.address.change.NewPatientAddressInput;
 import gov.cdc.nbs.patient.profile.address.change.PatientAddressChangeService;
 import gov.cdc.nbs.patient.profile.identification.change.NewPatientIdentificationInput;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
 
 @RestController
 @RequestMapping("/nbs/api/profile")
@@ -61,17 +61,17 @@ public class PatientCreateController {
       tags = "PatientProfile")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public PatientIdentifier create(@RequestBody final NewPatient newPatient) {
+  public CreatedPatient create(@RequestBody final NewPatient newPatient) {
     var user = SecurityUtil.getUserDetails();
     RequestContext context = new RequestContext(user.getId(), Instant.now(this.clock));
 
-    PatientIdentifier created = service.create(context, newPatient);
+    CreatedPatient created = service.create(context, newPatient);
 
     if (newPatient.addresses() != null) {
       newPatient.addresses().forEach(address -> {
         NewPatientAddressInput newPatientAddressInput = new NewPatientAddressInput(
             created.id(),
-            address.asOf(),
+            address.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
             address.type(),
             address.use(),
             address.address1(),
@@ -90,7 +90,7 @@ public class PatientCreateController {
       newPatient.phoneEmails().forEach(phone -> {
         NewPatientPhoneInput newPatientPhoneInput = new NewPatientPhoneInput(
             created.id(),
-            phone.asOf(),
+            phone.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
             phone.type(),
             phone.use(),
             phone.countryCode(),
@@ -106,7 +106,7 @@ public class PatientCreateController {
       newPatient.races().forEach(race -> {
         RaceInput newRaceInput = new RaceInput();
         newRaceInput.setPatient(created.id());
-        newRaceInput.setAsOf(race.asOf());
+        newRaceInput.setAsOf(race.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant());
         newRaceInput.setCategory(race.race());
         newRaceInput.setDetailed(race.detailed());
         raceService.add(context, newRaceInput);
@@ -116,7 +116,7 @@ public class PatientCreateController {
       newPatient.identifications().forEach(identification -> {
         NewPatientIdentificationInput newPatientIdentificationInput = new NewPatientIdentificationInput(
             created.id(),
-            identification.asOf(),
+            identification.asOf().atStartOfDay(ZoneId.systemDefault()).toInstant(),
             identification.type(),
             identification.issuer(),
             identification.id());

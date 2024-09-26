@@ -1,21 +1,15 @@
-import { Button, Icon, ModalRef, ModalToggleButton } from '@trussworks/react-uswds';
+import { Button, Icon } from '@trussworks/react-uswds';
 import 'apps/patient/profile/style.scss';
-import { useRef } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { usePatientProfile } from './usePatientProfile';
 import { PatientProfileSummary } from './summary/PatientProfileSummary';
-import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
-import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
-import { MessageModal } from 'messageModal';
-import { usePatientProfilePermissions } from './permission';
-import { useAlert } from 'alert';
-import { formattedName } from 'utils';
-import { ProfileProvider } from './ProfileContext';
-import { ConfirmationModal } from 'confirmation';
-import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
-import { useSearchNavigation } from 'apps/search';
 
-import styles from './patient-profile.module.scss';
+import { usePatientProfilePermissions } from './permission';
+
+import { ProfileProvider } from './ProfileContext';
+import { TabNavigationEntry, TabNavigation } from 'components/TabNavigation/TabNavigation';
+
+import { DeletePatient } from './delete';
 
 const openPrintableView = (patient: string | undefined) => () => {
     if (patient) {
@@ -31,46 +25,10 @@ enum ACTIVE_TAB {
 
 export const PatientProfile = () => {
     const { id } = useParams();
-    const { showAlert } = useAlert();
-
-    const modalRef = useRef<ModalRef>(null);
 
     const permissions = usePatientProfilePermissions();
 
     const { patient, summary } = usePatientProfile(id);
-
-    const deletability = resolveDeletability(patient);
-
-    const { go } = useSearchNavigation();
-
-    const handleComplete = (data: DeletePatientMutation) => {
-        if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
-            showAlert({
-                type: 'success',
-                header: 'success',
-                message: `Deleted patient ${formattedName(summary?.legalName?.last, summary?.legalName?.first)}`
-            });
-            go();
-        } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
-            showAlert({
-                type: 'error',
-                header: 'failed',
-                message: 'Delete failed. Please try again later.'
-            });
-        }
-    };
-
-    const [deletePatient] = useDeletePatientMutation({ onCompleted: handleComplete });
-
-    function handleDeletePatient() {
-        if (patient) {
-            deletePatient({
-                variables: {
-                    patient: patient.id
-                }
-            });
-        }
-    }
 
     return (
         <ProfileProvider id={id}>
@@ -82,43 +40,8 @@ export const PatientProfile = () => {
                             <Icon.Print size={3} />
                             Print
                         </Button>
-                        {permissions.delete && (
-                            <ModalToggleButton
-                                modalRef={modalRef}
-                                opener
-                                className={styles.destructive}
-                                type={'submit'}>
-                                <Icon.Delete size={3} />
-                                Delete patient
-                            </ModalToggleButton>
-                        )}
-                        {deletability === DeletabilityResult.Deletable && (
-                            <ConfirmationModal
-                                modal={modalRef}
-                                title="Permanently delete patient?"
-                                message={`Would you like to permanently delete patient record ${patient?.shortId}, ${summary?.legalName?.last}, ${summary?.legalName?.first}`}
-                                cancelText="No, go back"
-                                onCancel={() => {
-                                    modalRef.current?.toggleModal(undefined, false);
-                                }}
-                                confirmText="Yes, delete"
-                                onConfirm={handleDeletePatient}
-                            />
-                        )}
-                        {deletability === DeletabilityResult.Has_Associations && (
-                            <MessageModal
-                                modal={modalRef}
-                                title={`The patient can not be deleted`}
-                                message="This patient file has associated event records."
-                                detail="The file cannot be deleted until all associated event records have been deleted. If you are unable to see the associated event records due to your user permission settings, please contact your system administrator."
-                            />
-                        )}
-                        {deletability === DeletabilityResult.Is_Inactive && (
-                            <MessageModal
-                                modal={modalRef}
-                                title={`The patient can not be deleted`}
-                                message="This patient file is inactive and cannot be deleted."
-                            />
+                        {permissions.delete && patient && summary && (
+                            <DeletePatient patient={patient} summary={summary} />
                         )}
                     </div>
                 </div>

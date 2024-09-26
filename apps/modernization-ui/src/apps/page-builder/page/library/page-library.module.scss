@@ -1,8 +1,9 @@
-@use 'design/system';
+@use 'styles/colors';
+@use 'styles/borders';
 
 .library {
     border-radius: 5px;
-    background-color: system.$colors-base-white;
+    background-color: colors.$base-white;
 
     @extend %thin;
 

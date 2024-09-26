@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import { FocusEventHandler, RefObject } from 'react';
 import { Textarea, TextInput, TextInputMask } from '@trussworks/react-uswds';
 import classNames from 'classnames';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
@@ -104,6 +104,7 @@ export const Input = ({
                     placeholder={placeholder}
                     id={id}
                     onChange={onChange}
+                    onBlur={props.onBlur as FocusEventHandler<HTMLTextAreaElement> | undefined}
                     rows={rows}
                     value={defaultValue ?? ''}
                     name={name ?? ''}

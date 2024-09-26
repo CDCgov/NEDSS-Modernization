@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CreatedPatient } from '../models/CreatedPatient';
 import type { NewPatient } from '../models/NewPatient';
-import type { PatientIdentifier } from '../models/PatientIdentifier';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -11,14 +11,14 @@ export class PatientProfileService {
     /**
      * PatientProfile
      * Allows creation of a patient
-     * @returns PatientIdentifier Created
+     * @returns CreatedPatient Created
      * @throws ApiError
      */
     public static create({
         requestBody,
     }: {
         requestBody: NewPatient,
-    }): CancelablePromise<PatientIdentifier> {
+    }): CancelablePromise<CreatedPatient> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/nbs/api/profile',

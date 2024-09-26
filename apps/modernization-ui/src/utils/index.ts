@@ -15,7 +15,7 @@ type EffectiveDated = {
 };
 
 type HasComments = {
-    comment?: Maybe<string>;
+    comment?: string;
 };
 
 export type { Predicate, Mapping, Maybe, EffectiveDated, HasComments };

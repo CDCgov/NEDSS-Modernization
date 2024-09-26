@@ -1,3 +1,4 @@
+import { today } from 'date';
 import {
     AdministrativeEntry,
     NameEntry,
@@ -13,7 +14,7 @@ import {
 } from 'apps/patient/data/entry';
 
 type ExtendedNewPatientEntry = {
-    administrative: AdministrativeEntry;
+    administrative?: AdministrativeEntry;
     names?: NameEntry[];
     addresses?: AddressEntry[];
     phoneEmails?: PhoneEmailEntry[];
@@ -26,3 +27,24 @@ type ExtendedNewPatientEntry = {
 };
 
 export type { ExtendedNewPatientEntry };
+
+const initial = (asOf: string = today()) => ({
+    administrative: {
+        asOf: asOf
+    },
+    birthAndSex: {
+        asOf: asOf
+    },
+    ethnicity: {
+        asOf: asOf
+    },
+    mortality: {
+        asOf: asOf
+    },
+    general: {
+        asOf: asOf
+    },
+    phoneEmails: []
+});
+
+export { initial };

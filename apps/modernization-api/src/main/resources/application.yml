@@ -64,6 +64,9 @@ spring:
     include: ui,oidc
   graphql:
     path: /graphql
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
 
   jpa:
     properties:

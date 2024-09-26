@@ -1,0 +1,1 @@
+export { DeletePatient } from './DeletePatient';

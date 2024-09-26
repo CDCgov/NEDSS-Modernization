@@ -3,13 +3,14 @@ import { Card } from './Card';
 
 describe('Card Component', () => {
     it('renders correctly with given props', () => {
-        const { getByText } = render(
-            <Card id="test-id" title="Test Title">
+        const { getByText, getByRole } = render(
+            <Card id="test-id" title="Test Title" info="Additional info">
                 <div>Child Content</div>
             </Card>
         );
-        expect(getByText('Test Title')).toBeInTheDocument();
+        expect(getByRole('heading')).toHaveTextContent('Test Title');
         expect(getByText('Child Content')).toBeInTheDocument();
+        expect(getByText('Additional info')).toBeInTheDocument();
     });
 
     it('applies the correct id to the section', () => {

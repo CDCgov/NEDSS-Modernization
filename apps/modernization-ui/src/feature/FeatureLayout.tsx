@@ -1,17 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import { useConfiguration, Features } from 'configuration';
 import { RedirectHome } from 'routes';
-
-type Guard = (features: Features) => boolean;
+import { Guard } from './guard';
+import { FeatureToggle } from './FeatureToggle';
 
 type FeatureLayoutProps = {
     guard: Guard;
 };
 
-const FeatureLayout = ({ guard }: FeatureLayoutProps) => {
-    const { features } = useConfiguration();
-
-    return guard(features) ? <Outlet /> : <RedirectHome />;
-};
+const FeatureLayout = ({ guard }: FeatureLayoutProps) => (
+    <FeatureToggle guard={guard} fallback={<RedirectHome />}>
+        <Outlet />
+    </FeatureToggle>
+);
 
 export { FeatureLayout };
