@@ -3,10 +3,12 @@ package gov.cdc.nbs.configuration;
 import gov.cdc.nbs.configuration.features.Features;
 import gov.cdc.nbs.configuration.nbs.NbsPropertiesFinder;
 import gov.cdc.nbs.configuration.settings.Settings;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Hidden
 @RestController
 @RequestMapping("/nbs/api/configuration")
 public class ConfigurationController {
@@ -18,8 +20,7 @@ public class ConfigurationController {
   public ConfigurationController(
       final Features features,
       final Settings settings,
-      final NbsPropertiesFinder finder
-  ) {
+      final NbsPropertiesFinder finder) {
     this.features = features;
     this.settings = settings;
     this.finder = finder;
@@ -30,7 +31,6 @@ public class ConfigurationController {
     return new Configuration(
         features,
         settings,
-        finder.find()
-    );
+        finder.find());
   }
 }
