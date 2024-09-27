@@ -35,12 +35,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Address as of"
                         orientation="horizontal"
                         defaultValue={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         name={`address-${name}`}
                         disableFutureDates
@@ -53,12 +52,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         id={`address-${name}`}
                         name={`address-${name}`}
@@ -72,12 +70,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="use"
                 rules={{ required: { value: true, message: 'Use is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
                         orientation="horizontal"
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         id={`address-${name}`}
                         name={`address-${name}`}
@@ -91,7 +88,7 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="address1"
                 rules={maxLengthRule(100)}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <AddressSuggestionInput
                         label="Street address 1"
                         orientation="horizontal"
@@ -104,7 +101,6 @@ export const AddressEntryFields = () => {
                         }}
                         defaultValue={value ?? ''}
                         onChange={onChange}
-                        onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
                         error={error?.message}
                     />
@@ -114,12 +110,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="address2"
                 rules={maxLengthRule(100)}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Street address 2"
                         orientation="horizontal"
                         onChange={onChange}
-                        onBlur={onBlur}
                         defaultValue={value}
                         type="text"
                         name={name}
@@ -133,12 +128,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="city"
                 rules={maxLengthRule(100)}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="City"
                         orientation="horizontal"
                         onChange={onChange}
-                        onBlur={onBlur}
                         defaultValue={value}
                         type="text"
                         name={name}
@@ -173,12 +167,11 @@ export const AddressEntryFields = () => {
                     },
                     ...maxLengthRule(20)
                 }}
-                render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Zip"
                         orientation="horizontal"
                         onChange={onChange}
-                        onBlur={onBlur}
                         defaultValue={value}
                         type="text"
                         name="zipcode"
@@ -207,12 +200,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="censusTract"
                 rules={maxLengthRule(10)}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Census tract"
                         orientation="horizontal"
                         onChange={onChange}
-                        onBlur={onBlur}
                         defaultValue={value}
                         type="text"
                         name={name}
@@ -243,12 +235,11 @@ export const AddressEntryFields = () => {
                 control={control}
                 name="comment"
                 rules={maxLengthRule(2000)}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Address comments"
                         orientation="horizontal"
                         onChange={onChange}
-                        onBlur={onBlur}
                         defaultValue={value}
                         type="text"
                         name={name}

@@ -16,10 +16,9 @@ export const RaceEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Race as of"
-                        onBlur={onBlur}
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
@@ -36,12 +35,11 @@ export const RaceEntryFields = () => {
                 rules={{
                     required: { value: true, message: 'Race is required.' }
                 }}
-                render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
+                render={({ field: { onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Race"
                         orientation="horizontal"
                         required
-                        onBlur={onBlur}
                         onChange={onChange}
                         value={value}
                         id={name}

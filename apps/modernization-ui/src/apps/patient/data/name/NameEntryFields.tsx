@@ -16,11 +16,10 @@ export const NameEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Name as of"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         defaultValue={value}
                         onChange={onChange}
                         name={`name-${name}`}
@@ -34,12 +33,11 @@ export const NameEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         id={`name-${name}`}
                         name={`name-${name}`}
@@ -52,14 +50,13 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="prefix"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="Prefix"
                         orientation="horizontal"
                         value={value}
                         id={name}
                         onChange={onChange}
-                        onBlur={onBlur}
                         name={name}
                         options={coded.prefixes}
                     />
@@ -70,11 +67,10 @@ export const NameEntryFields = () => {
                 control={control}
                 name="last"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Last"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
@@ -89,11 +85,10 @@ export const NameEntryFields = () => {
                 control={control}
                 name="secondLast"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second last"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
@@ -108,11 +103,10 @@ export const NameEntryFields = () => {
                 control={control}
                 name="first"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="First"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
@@ -127,11 +121,10 @@ export const NameEntryFields = () => {
                 control={control}
                 name="middle"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
@@ -146,11 +139,10 @@ export const NameEntryFields = () => {
                 control={control}
                 name="secondMiddle"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second middle"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"

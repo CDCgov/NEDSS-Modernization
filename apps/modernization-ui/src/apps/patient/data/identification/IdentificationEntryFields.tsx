@@ -17,11 +17,10 @@ export const IdentificationEntryFields = () => {
                 control={control}
                 name="asOf"
                 rules={{ required: { value: true, message: 'As of date is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Identification as of"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         defaultValue={value}
                         onChange={onChange}
                         name={`identification-${name}`}
@@ -35,12 +34,11 @@ export const IdentificationEntryFields = () => {
                 control={control}
                 name="type"
                 rules={{ required: { value: true, message: 'Type is required.' } }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
                         orientation="horizontal"
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         id={`identification-${name}`}
                         name={`identification-${name}`}
@@ -53,13 +51,12 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="issuer"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="Assigning authority"
                         orientation="horizontal"
                         value={value}
                         onChange={onChange}
-                        onBlur={onBlur}
                         name={name}
                         id={name}
                         options={coded.authorities}
@@ -70,11 +67,10 @@ export const IdentificationEntryFields = () => {
                 control={control}
                 name="id"
                 rules={{ required: { value: true, message: 'ID value is required.' }, ...maxLengthRule(100) }}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="ID value"
                         orientation="horizontal"
-                        onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
