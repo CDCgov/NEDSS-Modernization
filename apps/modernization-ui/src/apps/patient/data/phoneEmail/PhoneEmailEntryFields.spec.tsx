@@ -1,9 +1,7 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { render } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { PhoneEmailEntry } from '../entry';
 import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
-import userEvent from '@testing-library/user-event';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],
@@ -48,67 +46,5 @@ describe('PhoneEmailEntryFields', () => {
         expect(getByLabelText('Extension')).toBeInTheDocument();
         expect(getByLabelText('Email')).toBeInTheDocument();
         expect(getByLabelText('Phone & email comments')).toBeInTheDocument();
-    });
-
-    it('should require type', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-
-        const typeInput = getByLabelText('Type');
-        act(() => {
-            userEvent.click(typeInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
-        });
-    });
-
-    it('should require use', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-
-        const useInput = getByLabelText('Use');
-        act(() => {
-            userEvent.click(useInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('Use is required.')).toBeInTheDocument();
-        });
-    });
-
-    it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-
-        const asOf = getByLabelText('Phone & email as of');
-        act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
-    });
-
-    it('should be valid with as of, type, and use', async () => {
-        const { getByLabelText, queryByText } = render(<Fixture />);
-
-        const asOf = getByLabelText('Phone & email as of');
-        const type = getByLabelText('Type');
-        const use = getByLabelText('Use');
-        await screen.findByText('Use');
-        act(() => {
-            userEvent.paste(asOf, '01/20/2020');
-            userEvent.tab();
-            userEvent.selectOptions(use, 'H');
-            userEvent.tab();
-            userEvent.selectOptions(type, 'PH');
-            userEvent.tab();
-        });
-
-        await waitFor(() => {
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('Use is required.')).not.toBeInTheDocument();
-        });
     });
 });

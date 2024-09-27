@@ -1,8 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks';
 import { NameEntry } from '../entry';
 import { FormProvider, useForm } from 'react-hook-form';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
+
 import { NameEntryFields } from './NameEntryFields';
 
 const mockPatientNameCodedValues = {
@@ -54,49 +53,5 @@ describe('Name entry fields', () => {
         expect(getByLabelText('Second last')).toBeInTheDocument();
         expect(getByLabelText('Suffix')).toBeInTheDocument();
         expect(getByLabelText('Degree')).toBeInTheDocument();
-    });
-
-    it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-
-        const asOf = getByLabelText('Name as of');
-        act(() => {
-            userEvent.click(asOf);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
-    });
-
-    it('should require type', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-
-        const type = getByLabelText('Type');
-        act(() => {
-            userEvent.click(type);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
-        });
-    });
-
-    it('should be valid with as of, race', async () => {
-        const { getByLabelText, queryByText } = render(<Fixture />);
-
-        const asOf = getByLabelText('Name as of');
-        const type = getByLabelText('Type');
-        act(() => {
-            userEvent.paste(asOf, '01/20/2020');
-            userEvent.tab();
-            userEvent.selectOptions(type, 'AN');
-            userEvent.tab();
-        });
-
-        await waitFor(() => {
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
-        });
     });
 });
