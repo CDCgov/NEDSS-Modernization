@@ -1,19 +1,19 @@
+import { Button } from 'components/button';
 import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { ExtendedNewPatientEntry, initial } from './entry';
-import { Button } from 'components/button';
-import { DataEntrySideNav } from '../DataEntrySideNav/DataEntrySideNav';
-import { transformer } from './transformer';
-import { creator } from './creator';
-import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+import { creator } from './creator';
+import { ExtendedNewPatientEntry, initial } from './entry';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
+import { transformer } from './transformer';
+import { useAddExtendedPatient } from './useAddExtendedPatient';
+import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 
-import styles from './add-patient-extended.module.scss';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import styles from './add-patient-extended.module.scss';
 import { CreatedPatient } from './api';
+import { AddPatientExtendedSideNav } from './nav/AddPatientExtendedSideNav';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
@@ -39,7 +39,8 @@ export const AddPatientExtended = () => {
             </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
-                    <DataEntrySideNav />
+                    {/* <DataEntrySideNav /> */}
+                    <AddPatientExtendedSideNav />
                     <div className={styles.contet}>
                         <header>
                             <h1>New patient - extended</h1>
