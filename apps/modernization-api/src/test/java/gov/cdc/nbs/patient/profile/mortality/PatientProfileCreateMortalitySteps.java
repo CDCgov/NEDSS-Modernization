@@ -6,7 +6,7 @@ import io.cucumber.java.en.Then;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Instant;
-
+import java.time.LocalDate;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class PatientProfileCreateMortalitySteps {
@@ -40,8 +40,8 @@ public class PatientProfileCreateMortalitySteps {
                 .value(value.toString()));
   }
 
-  @Then("the patient profile mortality has the deceased on date {date}")
-  public void the_patient_profile_mortality_has_the_deceased_on_date_of(final Instant value) throws Exception {
+  @Then("the patient profile mortality has the deceased on date {localDate}")
+  public void the_patient_profile_mortality_has_the_deceased_on_date_of(final LocalDate value) throws Exception {
     this.response.active()
         .andExpect(
             jsonPath("$.data.findPatientProfile.mortality.deceasedOn")
