@@ -8,6 +8,10 @@ public record CreatedPatient(
     @JsonProperty(required = true)
     long shortId,
     @JsonProperty(required = true)
-    String local
+    String local,
+    Name name
 ) {
+
+    record Name(String first, String last){}
+
 }

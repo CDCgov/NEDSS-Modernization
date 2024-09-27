@@ -54,3 +54,8 @@ nbs:
           enabled: true
           table:
             enabled: true
+      patient:
+        add:
+          extended:
+            enabled: true
+

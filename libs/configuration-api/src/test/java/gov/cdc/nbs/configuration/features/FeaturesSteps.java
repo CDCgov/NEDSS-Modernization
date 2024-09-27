@@ -20,6 +20,7 @@ public class FeaturesSteps {
     return switch (value.toLowerCase()) {
       case "search view" -> "features.search.view.enabled";
       case "search table view" -> "features.search.view.table.enabled";
+      case "patient add extended" -> "features.patient.add.extended.enabled";
       default -> value;
     };
   }

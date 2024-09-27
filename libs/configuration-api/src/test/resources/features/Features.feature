@@ -4,3 +4,4 @@ Feature: Frontend Feature Configuration
     When I request the frontend configuration
     Then the search view feature is enabled
     And the search table view feature is disabled
+    And the patient add extended feature is disabled

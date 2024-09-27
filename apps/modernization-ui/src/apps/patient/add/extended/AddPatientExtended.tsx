@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ExtendedNewPatientEntry, initial } from './entry';
 import { Button } from 'components/button';
@@ -10,16 +11,26 @@ import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientIn
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
 
 import styles from './add-patient-extended.module.scss';
+
 import { ChangeEvent, useState } from 'react';
 import { Confirmation } from 'design-system/modal';
 import { Checkbox } from '@trussworks/react-uswds';
 import { useLocalStorage } from 'storage';
+import { Shown } from 'conditional-render';
+import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { CreatedPatient } from './api';
+
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
     const [visibilityCheckBox, setVisibilityCheckBox] = useState<boolean>(false);
     const { value, save } = useLocalStorage({ key: 'patient.create.extended.cancel', initial: false });
+
+    const created = useMemo<CreatedPatient | undefined>(
+        () => (interaction.status === 'created' ? interaction.created : undefined),
+        [interaction.status]
+    );
 
     const defaultValues = initial();
 
@@ -54,6 +65,9 @@ export const AddPatientExtended = () => {
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
+            <Shown when={interaction.status === 'created'}>
+                {created && <PatientCreatedPanel created={created} />}
+            </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
                     <DataEntrySideNav />

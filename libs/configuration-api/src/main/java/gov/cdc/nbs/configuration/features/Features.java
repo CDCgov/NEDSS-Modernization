@@ -3,7 +3,7 @@ package gov.cdc.nbs.configuration.features;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("nbs.ui.features")
-public record Features(Search search, Address address, PageBuilder pageBuilder) {
+public record Features(Search search, Address address, PageBuilder pageBuilder, Patient patient) {
 
   public record Address(boolean autocomplete, boolean verification) {
   }
@@ -25,6 +25,13 @@ public record Features(Search search, Address address, PageBuilder pageBuilder) 
 
         public record Edit(boolean enabled) {
         }
+      }
+    }
+  }
+
+  public record Patient(Add add) {
+    public record Add(Extended extended) {
+      public record Extended(Boolean enabled) {
       }
     }
   }

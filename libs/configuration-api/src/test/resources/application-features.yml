@@ -6,3 +6,8 @@ nbs:
           enabled: true
           table:
             enabled: false
+      patient:
+        add:
+          extended:
+            enabled: false
+
