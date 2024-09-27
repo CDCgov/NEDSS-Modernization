@@ -15,3 +15,8 @@ Feature: User can view and manage data in classic NBS Questions
     Then Fill the details to create new "PHIN" question
     Then Click submit button to create question
 
+  Scenario: Edit question
+    Then Navigate to Question Library
+    And Click on a question in Question Library
+    Then Click submit button to create question
+
