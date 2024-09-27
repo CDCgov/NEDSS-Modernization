@@ -16,7 +16,7 @@ public class PatientLegalNameResolver {
     return names.stream()
         .filter(
             PersonName.active()
-                .and(PersonName.havingUse("L"))
+                .and(PersonName.havingType("L"))
                 .and(name -> name.asOf().isEqual(asOf) || name.asOf().isBefore(asOf))
         )
         .max(

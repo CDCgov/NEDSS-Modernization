@@ -35,8 +35,8 @@ public class PersonName {
     return input -> Objects.equals(input.recordStatusCd, RecordStatus.ACTIVE.name());
   }
 
-  public static Predicate<PersonName> havingUse(final String use) {
-    return input -> Objects.equals(input.getNmUseCd(),use);
+  public static Predicate<PersonName> havingType(final String use) {
+    return input -> Objects.equals(input.type(),use);
   }
 
   @EmbeddedId
@@ -129,7 +129,7 @@ public class PersonName {
     return this.asOfDate.atZone(ZoneOffset.UTC).toLocalDate();
   }
 
-  public String use() {
+  public String type() {
     return this.nmUseCd;
   }
 
