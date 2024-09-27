@@ -47,4 +47,13 @@ public class PatientCreateVerificationSteps {
         );
   }
 
+  @Then("the new patient's name {string} {string} is returned")
+  public void the_new_patient_name_is_returned(final String first, final String last) throws Exception {
+    this.response.active()
+        .andExpectAll(
+            jsonPath("$.name.first").value(first),
+            jsonPath("$.name.last").value(last)
+        );
+  }
+
 }

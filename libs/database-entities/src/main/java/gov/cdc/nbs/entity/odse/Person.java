@@ -14,6 +14,7 @@ import gov.cdc.nbs.patient.demographic.AddressIdentifierGenerator;
 import gov.cdc.nbs.patient.demographic.GeneralInformation;
 import gov.cdc.nbs.patient.demographic.PatientEthnicity;
 import gov.cdc.nbs.patient.demographic.PatientRaceDemographic;
+import gov.cdc.nbs.patient.demographic.name.PatientLegalNameResolver;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -340,6 +341,12 @@ public class Person {
 
   public List<PersonName> getNames() {
     return this.names == null ? List.of() : this.names.stream().filter(PersonName.active()).toList();
+  }
+
+  public Optional<PersonName> legalName(final LocalDate asOf) {
+    return this.names == null
+        ? Optional.empty()
+        : PatientLegalNameResolver.resolve(this.names, asOf);
   }
 
   public void add(final PatientCommand.AddRace added) {

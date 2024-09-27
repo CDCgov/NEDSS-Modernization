@@ -1,6 +1,7 @@
 package gov.cdc.nbs.patient.profile.create;
 
 import gov.cdc.nbs.entity.odse.Person;
+import gov.cdc.nbs.entity.odse.PersonName;
 import gov.cdc.nbs.patient.PatientCommand;
 import gov.cdc.nbs.patient.PatientIdentifierGenerator;
 import gov.cdc.nbs.patient.RequestContext;
@@ -11,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import static gov.cdc.nbs.patient.profile.administrative.AdministrativePatientCommandMapper.asUpdateAdministrativeInfo;
@@ -83,7 +85,19 @@ class PatientCreationService {
 
     this.entityManager.persist(patient);
 
-    return new CreatedPatient(identifier.id(), identifier.shortId(), identifier.local());
+    CreatedPatient.Name legalName = patient.legalName(LocalDate.now())
+        .map(this::asName)
+        .orElse(null);
+
+    return new CreatedPatient(
+        identifier.id(),
+        identifier.shortId(),
+        identifier.local(),
+        legalName
+    );
   }
 
+  private CreatedPatient.Name asName(final PersonName name) {
+    return new CreatedPatient.Name(name.getFirstNm(), name.getLastNm());
+  }
 }
