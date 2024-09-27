@@ -42,4 +42,9 @@ public class MortalityDemographicEntrySteps {
   public void i_am_entering_patient_mortality_deceased_on_date_of(final LocalDate deceasedOn) {
     this.input.active(current -> current.withDeceasedOn(deceasedOn));
   }
+
+  @Given("I enter the mortality deceased option as {indicator}")
+  public void i_enter_the_patient_mortality_deceased_option_as(final String indicator) {
+    this.input.active(current -> current.withDeceased(indicator));
+  }
 }

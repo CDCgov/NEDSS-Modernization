@@ -81,4 +81,13 @@ public class PatientProfileCreateMortalitySteps {
             jsonPath("$.data.findPatientProfile.mortality.country.id")
                 .value(value));
   }
+
+  @Then("the patient profile mortality has the decease option as {indicator}")
+  public void the_patient_profile_mortality_has_the_decease_option_as(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.mortality.deceased.id")
+                .value(value));
+  }
+
 }
