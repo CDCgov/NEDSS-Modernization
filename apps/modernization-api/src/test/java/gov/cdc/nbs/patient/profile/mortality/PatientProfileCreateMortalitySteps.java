@@ -39,4 +39,46 @@ public class PatientProfileCreateMortalitySteps {
             jsonPath("$.data.findPatientProfile.mortality.asOf")
                 .value(value.toString()));
   }
+
+  @Then("the patient profile mortality has the deceased on date {date}")
+  public void the_patient_profile_mortality_has_the_deceased_on_date_of(final Instant value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.mortality.deceasedOn")
+                .value(value.toString()));
+  }
+
+
+  @Then("the patient profile mortality has the city {string}")
+  public void the_patient_profile_mortality_has_the_city(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.mortality.city")
+                .value(value));
+  }
+
+  @Then("the patient profile mortality has the county {county}")
+  public void the_patient_profile_mortality_has_the_county(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.mortality.county.id")
+                .value(value));
+  }
+
+  @Then("the patient profile mortality has the state {state}")
+  public void the_patient_profile_mortality_has_the_state(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.mortality.state.id")
+                .value(value));
+  }
+
+
+  @Then("the patient profile mortality has the country {country}")
+  public void the_patient_profile_mortality_has_the_country(final String value) throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath("$.data.findPatientProfile.mortality.country.id")
+                .value(value));
+  }
 }

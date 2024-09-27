@@ -37,4 +37,9 @@ public class MortalityDemographicEntrySteps {
   public void i_enter_the_patient_mortality_state(final String state) {
     this.input.active(current -> current.withState(state));
   }
+
+  @Given("I enter the mortality deceased on date of {localDate}")
+  public void i_am_entering_patient_mortality_deceased_on_date_of(final LocalDate deceasedOn) {
+    this.input.active(current -> current.withDeceasedOn(deceasedOn));
+  }
 }
