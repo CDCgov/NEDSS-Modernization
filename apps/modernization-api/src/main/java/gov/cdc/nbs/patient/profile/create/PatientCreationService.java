@@ -21,6 +21,7 @@ import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMappe
 import static gov.cdc.nbs.patient.profile.ethnicity.EthnicityPatientCommandMapper.asUpdateEthnicityInfo;
 import static gov.cdc.nbs.patient.profile.gender.GenderDemographicPatientCommandMapper.asUpdateGender;
 import static gov.cdc.nbs.patient.profile.names.NameDemographicPatientCommandMapper.asAddName;
+import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientCommandMapper.asUpdateMortality;
 
 @Component
 class PatientCreationService {
@@ -32,8 +33,7 @@ class PatientCreationService {
   PatientCreationService(
       final PatientIdentifierGenerator patientIdentifierGenerator,
       final AddressIdentifierGenerator addressIdentifierGenerator,
-      final EntityManager entityManager
-  ) {
+      final EntityManager entityManager) {
     this.patientIdentifierGenerator = patientIdentifierGenerator;
     this.addressIdentifierGenerator = addressIdentifierGenerator;
     this.entityManager = entityManager;
@@ -42,8 +42,7 @@ class PatientCreationService {
   @Transactional
   public CreatedPatient create(
       final RequestContext context,
-      final NewPatient newPatient
-  ) {
+      final NewPatient newPatient) {
     PatientIdentifier identifier = patientIdentifierGenerator.generate();
 
     Person patient = new Person(
@@ -51,9 +50,7 @@ class PatientCreationService {
             identifier.id(),
             identifier.local(),
             context.requestedBy(),
-            context.requestedAt()
-        )
-    );
+            context.requestedAt()));
 
     newPatient.maybeAdministrative()
         .map(administrative -> asUpdateAdministrativeInfo(identifier.id(), context, administrative))
@@ -82,6 +79,10 @@ class PatientCreationService {
         .stream()
         .map(demographic -> asAddName(identifier.id(), context, demographic))
         .forEach(patient::add);
+
+    newPatient.maybeMortality()
+        .map(demographic -> asUpdateMortality(identifier.id(), context, demographic))
+        .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
 
     this.entityManager.persist(patient);
 
