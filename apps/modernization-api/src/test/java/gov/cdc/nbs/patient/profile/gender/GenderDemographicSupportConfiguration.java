@@ -13,7 +13,7 @@ class GenderDemographicSupportConfiguration {
 
   @Bean
   @ScenarioScope
-  Active<GenderDemographic> activeAdministrative(final Clock clock) {
+  Active<GenderDemographic> activeGenderDemographic(final Clock clock) {
     return new Active<>(() -> new GenderDemographic(LocalDate.now(clock)));
   }
 }

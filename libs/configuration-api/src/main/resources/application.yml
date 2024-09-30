@@ -15,3 +15,7 @@ nbs:
               enabled: false
             edit:
               enabled: false
+      patient:
+        add:
+          extended:
+            enabled: true

@@ -31,7 +31,7 @@ export const RepeatingBlock = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const form = useForm<V>({ mode: 'onBlur', defaultValues });
+    const form = useForm<V>({ defaultValues });
     const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
 
     useEffect(() => {
@@ -99,9 +99,7 @@ export const RepeatingBlock = <V extends FieldValues>({
         <section id={id} className={styles.input}>
             <header>
                 <Heading level={2}>{title}</Heading>
-                <span>
-                    <span className="required"></span>All required fields for adding {title.toLowerCase()}
-                </span>
+                <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
             </header>
             {errors && errors.length > 0 && (
                 <section>

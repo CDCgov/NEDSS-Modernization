@@ -1,3 +1,4 @@
+import { FeatureGuard } from 'feature';
 import { AddPatient } from './AddPatient';
 import { AddPatientExtended } from './extended/AddPatientExtended';
 
@@ -8,7 +9,11 @@ const routing = [
     },
     {
         path: '/patient/add/extended',
-        element: <AddPatientExtended />
+        element: (
+            <FeatureGuard guard={(features) => features?.patient?.add?.extended?.enabled}>
+                <AddPatientExtended />
+            </FeatureGuard>
+        )
     }
 ];
 

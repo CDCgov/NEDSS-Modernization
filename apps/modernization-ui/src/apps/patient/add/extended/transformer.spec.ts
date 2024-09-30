@@ -156,7 +156,7 @@ describe('when transforming entered extended patient data', () => {
 
         expect(actual).toEqual(
             expect.objectContaining({
-                sex: expect.objectContaining({ current: 'current-sex-value' })
+                gender: expect.objectContaining({ current: 'current-sex-value' })
             })
         );
     });

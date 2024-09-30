@@ -17,6 +17,12 @@ public class EthnicitySteps {
         .orElse(null);
   }
 
+  @ParameterType(name = "ethnicityUnknownReason", value = ".+")
+  public String ethnicityUnknownReason(final String value) {
+    return resolver.resolve("P_ETHN_UNK_REASON", value)
+        .orElse(null);
+  }
+
   @ParameterType(name = "ethnicityDetail", value = ".+")
   public String ethnicityDetail(final String value) {
     return resolver.resolve("P_ETHN", value)

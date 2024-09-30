@@ -6,14 +6,20 @@ import styles from './icon.module.scss';
 
 type Icons = USWDSIcons | ExtendedIcons;
 
-type Props = { name: Icons } & ReactSVGProps<SVGSVGElement>;
+type Size = 'small' | 'medium' | 'large';
 
-const Icon = ({ name, role = 'img', className, ...props }: Props) => {
+type Props = { name: Icons; size?: Size } & Omit<ReactSVGProps<SVGSVGElement>, 'width' | 'height'>;
+
+const Icon = ({ name, size, role = 'img', className, ...props }: Props) => {
     const location = resolveLocation(name);
 
     return (
         <svg
-            className={classNames(styles.icon, className)}
+            className={classNames(styles.icon, className, {
+                [styles.small]: size === 'small',
+                [styles.medium]: size === 'medium',
+                [styles.large]: size === 'large'
+            })}
             role={role}
             aria-hidden={props['aria-hidden'] || !props['aria-label'] || !props['aria-labelledby']}
             {...props}>

@@ -24,7 +24,7 @@ export const PhoneEmailEntryFields = () => {
                         defaultValue={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={name}
+                        name={`phone-${name}`}
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -42,8 +42,8 @@ export const PhoneEmailEntryFields = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
-                        id={name}
-                        name={name}
+                        id={`phone-${name}`}
+                        name={`phone-${name}`}
                         options={coded.types}
                         error={error?.message}
                         required
@@ -61,8 +61,8 @@ export const PhoneEmailEntryFields = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
-                        id={name}
-                        name={name}
+                        id={`phone-${name}`}
+                        name={`phone-${name}`}
                         options={coded.uses}
                         error={error?.message}
                         required
@@ -204,9 +204,9 @@ export const PhoneEmailEntryFields = () => {
                         onBlur={onBlur}
                         defaultValue={value}
                         type="text"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
+                        name={`phone-${name}`}
+                        htmlFor={`phone-${name}`}
+                        id={`phone-${name}`}
                         error={error?.message}
                         multiline
                     />

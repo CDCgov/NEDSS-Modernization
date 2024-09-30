@@ -24,7 +24,7 @@ export const IdentificationEntryFields = () => {
                         onBlur={onBlur}
                         defaultValue={value}
                         onChange={onChange}
-                        name={name}
+                        name={`identification-${name}`}
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -42,8 +42,8 @@ export const IdentificationEntryFields = () => {
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        id={name}
-                        name={name}
+                        id={`identification-${name}`}
+                        name={`identification-${name}`}
                         options={coded.types}
                         error={error?.message}
                         required

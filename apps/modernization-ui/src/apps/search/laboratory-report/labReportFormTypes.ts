@@ -61,7 +61,7 @@ const processingStatusTypes: Selectable[] = [UNPROCESSED, asSelectable('PROCESSE
 
 const dateTypes: Selectable[] = [
     asSelectable('DATE_OF_REPORT', 'Date Of Report'),
-    asSelectable('DATE_OF_SPECIMEN_COLLECTION', 'Date Of Specification'),
+    asSelectable('DATE_OF_SPECIMEN_COLLECTION', 'Date of Specimen Collection'),
     asSelectable('DATE_RECEIVED_BY_PUBLIC_HEALTH', 'Date Received By Public Health'),
     asSelectable('LAB_REPORT_CREATE_DATE', 'Lab Report Create Date'),
     asSelectable('LAST_UPDATE_DATE', 'Last Update Date')
