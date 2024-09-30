@@ -21,11 +21,7 @@ type ExternalNavEntryProps = {
 };
 
 const asLink = (entry: InternalNavEntryProps | ExternalNavEntryProps) => {
-    return 'external' in entry ? (
-        <a href={entry.href}>{entry.name}</a>
-    ) : (
-        <Link to={entry.href ?? ''}>{entry.name}</Link>
-    );
+    return 'external' in entry ? <a href={entry.href}>{entry.name}</a> : <Link to={entry.href}>{entry.name}</Link>;
 };
 
 const asActive = (navEntry: ActiveNavEntryProps) => {

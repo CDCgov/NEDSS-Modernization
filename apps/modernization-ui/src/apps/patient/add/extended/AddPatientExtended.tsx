@@ -39,7 +39,6 @@ export const AddPatientExtended = () => {
             </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
-                    {/* <DataEntrySideNav /> */}
                     <AddPatientSideNav />
                     <div className={styles.contet}>
                         <header>
