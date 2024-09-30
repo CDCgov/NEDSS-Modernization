@@ -4,16 +4,17 @@
 .sideNav {
     display: flex;
     flex-direction: column;
+    height: 100%;
     padding: 1rem;
     gap: 1.5rem;
     @extend %thin;
 
     .navEntries {
-        width: 14rem;
-
-        & > ol {
+        min-width: 14rem;
+        & > ul {
             list-style: none;
             padding-left: 0;
+            margin: 0;
 
             & > li {
                 position: relative;

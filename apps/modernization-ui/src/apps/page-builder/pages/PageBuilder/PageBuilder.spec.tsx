@@ -10,7 +10,7 @@ describe('when rendered', () => {
             </BrowserRouter>
         );
 
-        const sideNav = container.getElementsByClassName('page-builder-side-nav')[0];
+        const sideNav = container.getElementsByClassName('side-nav')[0];
         expect(sideNav).toBeInTheDocument();
     });
 

@@ -25,3 +25,7 @@
 %thin-bottom {
     @include bordered('border-bottom');
 }
+
+%thin-right {
+    @include bordered('border-right');
+}

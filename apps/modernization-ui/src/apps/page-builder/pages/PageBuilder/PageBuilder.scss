@@ -1,9 +1,17 @@
 @use 'styles/colors';
+@use 'styles/borders';
 
 .page-builder {
     padding: 1rem;
     display: flex;
     gap: 1rem;
+
+    .side-nav {
+        display: flex;
+        flex-grow: 1;
+        background-color: colors.$base-white;
+        @include borders.rounded();
+    }
 
     .page-builder__content {
         width: 100%;

@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { creator } from './creator';
 import { ExtendedNewPatientEntry, initial } from './entry';
-import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
+import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { transformer } from './transformer';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
@@ -13,7 +13,7 @@ import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import styles from './add-patient-extended.module.scss';
 import { CreatedPatient } from './api';
-import { AddPatientExtendedSideNav } from './nav/AddPatientExtendedSideNav';
+import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
@@ -40,7 +40,7 @@ export const AddPatientExtended = () => {
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
                     {/* <DataEntrySideNav /> */}
-                    <AddPatientExtendedSideNav />
+                    <AddPatientSideNav />
                     <div className={styles.contet}>
                         <header>
                             <h1>New patient - extended</h1>
@@ -53,7 +53,7 @@ export const AddPatientExtended = () => {
                         </header>
                         <main>
                             <AddPatientExtendedForm />
-                            <AddPatientExtendedNav />
+                            <AddPatientExtendedInPageNav />
                         </main>
                     </div>
                 </div>
