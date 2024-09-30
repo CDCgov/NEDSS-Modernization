@@ -88,7 +88,6 @@ class PatientCreationService {
         newPatient.maybeGeneralInformation()
                 .flatMap(demographic -> maybeAsAssociateStateHIVCase(identifier.id(), context, demographic))
                 .ifPresent(association -> patient.associate(resolver, association));
-        ;
 
         newPatient.names()
                 .stream()
