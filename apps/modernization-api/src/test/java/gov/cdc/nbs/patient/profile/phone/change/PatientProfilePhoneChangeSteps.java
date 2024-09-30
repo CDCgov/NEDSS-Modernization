@@ -105,7 +105,7 @@ public class PatientProfilePhoneChangeSteps {
         RandomUtil.getRandomDateInPast(),
         RandomUtil.oneFrom("AN", "BP", "CP", "NET", "FAX", "PH"),
         RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
-        RandomUtil.getRandomString(),
+        RandomUtil.getRandomString(15),
         faker.phoneNumber().cellPhone(),
         faker.phoneNumber().extension(),
         faker.internet().emailAddress(),
