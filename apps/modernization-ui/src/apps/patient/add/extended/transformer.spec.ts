@@ -202,7 +202,7 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             general: {
                 asOf: '04/13/2017',
-                comment: 'general-information'
+                maternalMaidenName: 'general-information'
             }
         };
 
@@ -210,7 +210,7 @@ describe('when transforming entered extended patient data', () => {
 
         expect(actual).toEqual(
             expect.objectContaining({
-                general: expect.objectContaining({ comment: 'general-information' })
+                general: expect.objectContaining({ maternalMaidenName: 'general-information' })
             })
         );
     });
