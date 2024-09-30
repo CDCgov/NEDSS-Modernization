@@ -31,7 +31,7 @@ export const RepeatingBlock = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const form = useForm<V>({ mode: 'onBlur', defaultValues });
+    const form = useForm<V>({ mode: 'onSubmit', defaultValues });
     const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
 
     useEffect(() => {
