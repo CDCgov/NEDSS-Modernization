@@ -9,22 +9,18 @@ import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
-
 import styles from './add-patient-extended.module.scss';
-
-import { ChangeEvent, useState } from 'react';
-import { Confirmation } from 'design-system/modal';
-import { Checkbox } from '@trussworks/react-uswds';
-import { useLocalStorage } from 'storage';
+import { useState } from 'react';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { CreatedPatient } from './api';
+import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
+import { useLocalStorage } from 'storage';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
-    const [visibilityCheckBox, setVisibilityCheckBox] = useState<boolean>(false);
-    const { value, save } = useLocalStorage({ key: 'patient.create.extended.cancel', initial: false });
+    const { value } = useLocalStorage({ key: 'patient.create.extended.cancel' });
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -42,24 +38,19 @@ export const AddPatientExtended = () => {
 
     const handleCancel = () => {
         if (value) {
-            closeForm();
+            handleCancelConfirm();
         } else {
             setCancelModal(true);
         }
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setVisibilityCheckBox(e.target.checked);
-    };
-
-    const handleConfirmCancel = () => {
-        save(visibilityCheckBox);
-        closeForm();
-    };
-
-    const closeForm = () => {
+    const handleCancelConfirm = () => {
         form.reset();
         history.go(-1);
+    };
+
+    const closeCancel = () => {
+        setCancelModal(false);
     };
 
     return (
@@ -88,25 +79,12 @@ export const AddPatientExtended = () => {
                         </main>
                     </div>
                     {cancelModal && (
-                        <Confirmation
-                            onCancel={() => {
-                                setCancelModal(false);
-                            }}
-                            title="Warning"
-                            confirmText="Yes, cancel"
-                            cancelText="No, back to form"
+                        <CancelAddPatientExtendedPanel
                             onConfirm={() => {
-                                handleConfirmCancel();
-                            }}>
-                            Canceling the form will result in the loss of all additional data entered. Are you sure you
-                            want to cancel?
-                            <Checkbox
-                                label="Don't show again"
-                                id={'visbilityCheckbox'}
-                                name={'visbilityCheckbox'}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Confirmation>
+                                handleCancelConfirm();
+                            }}
+                            onClose={() => closeCancel()}
+                        />
                     )}
                 </div>
             </FormProvider>
