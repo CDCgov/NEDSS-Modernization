@@ -16,11 +16,13 @@ import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { CreatedPatient } from './api';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { useLocalStorage } from 'storage';
+import { useNavigate } from 'react-router-dom';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
     const { value } = useLocalStorage({ key: 'patient.create.extended.cancel' });
+    const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -45,8 +47,7 @@ export const AddPatientExtended = () => {
     };
 
     const handleCancelConfirm = () => {
-        form.reset();
-        history.go(-1);
+        navigate('/add-patient');
     };
 
     const closeCancel = () => {
