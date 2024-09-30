@@ -24,4 +24,4 @@ Feature: Investigation Search by criteria
 
   Scenario: Basic Info - Search by notification status
     When I select notification status for event investigation
-    Then I should see No Results found text
+    Then I should see no result found text

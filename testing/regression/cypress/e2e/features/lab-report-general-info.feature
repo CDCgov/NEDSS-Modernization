@@ -39,7 +39,7 @@ Feature: Laboratory Report Search by general search
 
   Scenario: Basic Info - Search by Pregnancy
     When I select a pregnancy for event laboratory report
-    Then I should see No Results found text
+    Then I should see Results with the link "Lab report"
 
   Scenario: Basic Info - Search by Event id type
     When I select a event id type for event laboratory report

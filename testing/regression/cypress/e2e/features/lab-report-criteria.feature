@@ -6,7 +6,7 @@ Feature: Lab Report Search by criteria
 
   Scenario: Basic Info - Search by Results test
     When I select resulted test for event laboratory report
-    Then I should see No Results found text
+    Then I should see no result found text
 
   Scenario: Basic Info - Search by Coded result/organism
     When I select coded result for event laboratory report
