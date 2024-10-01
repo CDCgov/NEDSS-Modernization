@@ -85,18 +85,17 @@ type MortalityEntry = EffectiveDated &
         deceasedOn?: string;
     };
 
-type GeneralInformationEntry = EffectiveDated &
-    HasComments & {
-        maritalStatus?: Selectable;
-        maternalMaidenName?: string;
-        adultsInResidence?: number;
-        childrenInResidence?: number;
-        primaryOccupation?: Selectable;
-        educationLevel?: Selectable;
-        primaryLanguage?: Selectable;
-        speaksEnglish?: Selectable;
-        stateHIVCase?: string;
-    };
+type GeneralInformationEntry = EffectiveDated & {
+    maritalStatus?: Selectable;
+    maternalMaidenName?: string;
+    adultsInResidence?: number;
+    childrenInResidence?: number;
+    primaryOccupation?: Selectable;
+    educationLevel?: Selectable;
+    primaryLanguage?: Selectable;
+    speaksEnglish?: Selectable;
+    stateHIVCase?: string;
+};
 
 export type {
     AdministrativeEntry,

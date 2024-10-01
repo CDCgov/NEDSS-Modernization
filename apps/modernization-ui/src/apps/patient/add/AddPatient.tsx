@@ -21,11 +21,11 @@ import { VerifiableAdddress, AddressVerificationModal } from 'address/verificati
 import { orNull } from 'utils';
 import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
-import { DataEntrySideNav } from 'apps/patient/add/DataEntrySideNav/DataEntrySideNav';
 import { SuccessModal } from 'success';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
+import { AddPatientSideNav } from './nav/AddPatientSideNav';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -251,8 +251,8 @@ const AddPatient = () => {
                     </p>
                 </SuccessModal>
             )}
-            <Grid col={3} className="bg-white border-right border-base-light">
-                <DataEntrySideNav />
+            <Grid col={3} className="bg-white">
+                <AddPatientSideNav />
             </Grid>
             <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
                 <FormProvider {...methods}>

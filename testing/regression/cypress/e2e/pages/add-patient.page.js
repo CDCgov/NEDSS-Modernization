@@ -15,7 +15,7 @@ class AddPatientPage {
   addSimplePatient() {
     this.enterPaxName();
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(1).click();
   }
@@ -34,7 +34,7 @@ class AddPatientPage {
     cy.wait(1000);
     cy.get("select[name=deceased]").select("No");
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(2).click();
   }
@@ -52,7 +52,7 @@ class AddPatientPage {
     // cy.get("input[data-testid=date-picker-external-input]")
     //   .first()
     //   .type(this.getCurrentDate());
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
     cy.wait(500)
     cy.get(".usa-modal__main button").eq(2).click();
     cy.wait(500)
@@ -63,7 +63,7 @@ class AddPatientPage {
       .first()
       .clear()
       .type(this.getNextYearDate());
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
     cy.get(".usa-modal__main button").eq(1).click();
   }
 
@@ -86,7 +86,7 @@ class AddPatientPage {
   addPatientNameSpecial() {
     this.enterPaxName();
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
     cy.get(".usa-modal__main button").eq(2).click();
   }
 
@@ -111,7 +111,7 @@ class AddPatientPage {
     cy.wait(1000);
     cy.get("select[name=maritalStatus]").select("Married");
     cy.wait(1000);
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(2).click();
   }
@@ -133,7 +133,7 @@ class AddPatientPage {
     cy.wait(1000);
     cy.get("select[name=country]").select("United States");
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(2).click();
   }
@@ -174,7 +174,7 @@ class AddPatientPage {
 
     cy.get("label[for='2135-2']").click();
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(2).click();
   }
@@ -196,7 +196,7 @@ class AddPatientPage {
     cy.get("label[for='2135-2']").click();
     cy.get("label[for='1002-5']").click();
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(2).click();
   }
@@ -220,7 +220,7 @@ class AddPatientPage {
     cy.get("label[for='2028-9']").click();
     cy.get("label[for='2106-3']").click();
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(1).click();
   }
@@ -249,7 +249,7 @@ class AddPatientPage {
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
     ).select("Medicare number");
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(1).click();
   }
@@ -281,7 +281,7 @@ class AddPatientPage {
       "select[placeholder='-Select-'][name='identification[0].authority']"
     ).select("CO");
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(1).click();
   }
@@ -322,7 +322,7 @@ class AddPatientPage {
       "body > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > section:nth-child(8) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > div:nth-child(1) > select:nth-child(2)"
     ).select("Social Security");
 
-    cy.get(".add-patient-button").click();
+    cy.get(".add-patient-button").eq(1).click();
 
     cy.get(".usa-modal__main button").eq(1).click();
   }

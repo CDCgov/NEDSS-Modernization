@@ -109,15 +109,4 @@ describe('when mapping a general information entry to a format accepted by the A
 
         expect(actual).toEqual(expect.objectContaining({ stateHIVCase: 'state-hiv-case-value' }));
     });
-
-    it('should include the comment', () => {
-        const entry = {
-            asOf: '04/13/2017',
-            comment: 'comment-value'
-        };
-
-        const actual = asGeneral(entry);
-
-        expect(actual).toEqual(expect.objectContaining({ comment: 'comment-value' }));
-    });
 });
