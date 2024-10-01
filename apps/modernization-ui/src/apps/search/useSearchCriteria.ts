@@ -41,7 +41,7 @@ const reducer = <V>(current: State<V>, action: Action<V>): State<V> => {
 };
 
 type Options<V> = {
-    defaultValues?: V;
+    defaultValues?: V | ((obj: V) => V);
 };
 
 type Interaction<V> = {
@@ -50,7 +50,12 @@ type Interaction<V> = {
     change: (criteria: V) => void;
 };
 
-const useSearchCritiera = <C extends object>({ defaultValues }: Options<C>): Interaction<C> => {
+/**
+ * Hook to intercept search criteria from the URL and encrypt/decrypt it.
+ * @param {Options<C>} options Object containing defaultValues field
+ * @return {Interaction<C>} Interaction result
+ */
+const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Interaction<C> => {
     const [searchParams, setSearchParams] = useSearchParams();
     const found = useMemo(() => searchParams.get(CRITERIA_PARAMETER), [searchParams]);
 
@@ -81,7 +86,13 @@ const useSearchCritiera = <C extends object>({ defaultValues }: Options<C>): Int
         if (state.status === 'evaluating') {
             //  decrypt the query and then wait with the decrypted result
             decrypt(state.found)
-                .then((decrypted) => ({ ...defaultValues, ...(decrypted as C) }))
+                .then((decrypted) => {
+                    console.log('q.decrypted', decrypted);
+                    // if they pass a resolver function for default values, call it with the decrypted criteria
+                    const defValuesResolved =
+                        typeof defaultValues === 'function' ? defaultValues(decrypted as C) : defaultValues;
+                    return { ...defValuesResolved, ...(decrypted as C) };
+                })
                 .then((criteria) => dispatch({ type: 'wait', criteria }));
         } else if (state.status === 'preparing') {
             //  encrypt the new criteria
@@ -92,7 +103,7 @@ const useSearchCritiera = <C extends object>({ defaultValues }: Options<C>): Int
                         //  the criteria was encrypted, navigate to it
                         dispatch({ type: 'navigate', encrypted });
                     } else {
-                        //  the critieria was not encrypted, clear it
+                        //  the criteria was not encrypted, clear it
                         dispatch({ type: 'clear' });
                     }
                 });
@@ -110,4 +121,4 @@ const useSearchCritiera = <C extends object>({ defaultValues }: Options<C>): Int
     };
 };
 
-export { useSearchCritiera };
+export { useSearchCriteria };
