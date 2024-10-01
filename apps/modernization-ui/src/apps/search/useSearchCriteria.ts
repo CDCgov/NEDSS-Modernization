@@ -87,7 +87,6 @@ const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Int
             //  decrypt the query and then wait with the decrypted result
             decrypt(state.found)
                 .then((decrypted) => {
-                    console.log('q.decrypted', decrypted);
                     // if they pass a resolver function for default values, call it with the decrypted criteria
                     const defValuesResolved =
                         typeof defaultValues === 'function' ? defaultValues(decrypted as C) : defaultValues;
