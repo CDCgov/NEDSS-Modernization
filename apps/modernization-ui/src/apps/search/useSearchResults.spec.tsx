@@ -8,7 +8,7 @@ const mockClear = jest.fn();
 const mockChange = jest.fn();
 
 jest.mock('./useSearchCriteria', () => ({
-    useSearchCritiera: () => ({
+    useSearchCriteria: () => ({
         clear: mockClear,
         change: mockChange
     })
