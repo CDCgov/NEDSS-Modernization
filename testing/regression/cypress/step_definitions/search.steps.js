@@ -33,12 +33,21 @@ When("I search for Street Address {string} City {string} State {string} Zip code
   searchPage.search();
 });
 
-Then("I should see No Results found text", () => {
-  cy.contains("0 results for").should("be.visible");
+Then("I should see no results found text", () => {
+  cy.contains("No results found").should("be.visible");
 });
 
+Then("I should see No Results found text", () => {
+  cy.contains("No results found").should("be.visible");
+});
+
+Then("I should see no result found text", () => {
+  cy.contains("No result found").should("be.visible");
+});
+
+
 Then("I should found result patient profile", () => {
-  cy.contains("0 results for").should("be.visible");
+  cy.contains("No result found").should("be.visible");
 });
 
 When("I search by last name as {string}", (string) => {
@@ -100,6 +109,10 @@ Then("I should see Results with the last name {string}", (string) => {
 
 Then("I should see Results with the first name {string}", (string) => {
   cy.get("a").contains(string).should("be.visible");
+});
+
+Then("I should see Results with for text {string}", (string) => {
+  cy.get("main").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the sex {string}", (string) => {
@@ -217,4 +230,9 @@ Then("I verify the sort of patient name", () => {
     //Verify that the names are sorted alphabetically
     expect(nameArray).to.deep.equal(sortedNames);
   });
+})
+
+
+Then("I click address tab", () => {    
+  searchPage.clickAddressTab()   
 })

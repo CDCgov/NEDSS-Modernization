@@ -8,7 +8,7 @@ type SearchSettings = {
 };
 
 const defaults: SearchSettings = {
-    defaultView: 'list',
+    defaultView: 'table',
     allowToggle: false
 };
 

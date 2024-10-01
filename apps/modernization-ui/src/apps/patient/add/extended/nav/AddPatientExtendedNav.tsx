@@ -1,7 +1,7 @@
 import { NavSection, InPageNavigation } from 'design-system/inPageNavigation/InPageNavigation';
-import styles from './extended-patient-nav.module.scss';
+import styles from './in-page-nav.module.scss';
 
-export const AddPatientExtendedNav = () => {
+export const AddPatientExtendedInPageNav = () => {
     const sections: NavSection[] = [
         { id: 'administrative', label: 'Administrative' },
         { id: 'name', label: 'Name' },

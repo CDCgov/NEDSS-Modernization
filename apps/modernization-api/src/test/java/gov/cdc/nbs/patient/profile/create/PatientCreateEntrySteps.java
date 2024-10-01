@@ -5,6 +5,7 @@ import gov.cdc.nbs.patient.profile.birth.BirthDemographic;
 import gov.cdc.nbs.patient.profile.ethnicity.EthnicityDemographic;
 import gov.cdc.nbs.patient.profile.gender.GenderDemographic;
 import gov.cdc.nbs.patient.profile.mortality.MortalityDemographic;
+import gov.cdc.nbs.patient.profile.general.GeneralInformationDemographic;
 import gov.cdc.nbs.patient.profile.names.NameDemographic;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -17,6 +18,7 @@ public class PatientCreateEntrySteps {
   private final Active<NameDemographic> activeName;
   private final Active<EthnicityDemographic> activeEthnicity;
   private final Active<MortalityDemographic> activeMortalityDemographic;
+  private final Active<GeneralInformationDemographic> activeGeneralInformation;
   private final Active<NewPatient> input;
 
   public PatientCreateEntrySteps(
@@ -26,13 +28,16 @@ public class PatientCreateEntrySteps {
       final Active<NameDemographic> activeName,
       final Active<EthnicityDemographic> activeEthnicity,
       final Active<MortalityDemographic> activeMortalityDemographic,
-      final Active<NewPatient> input) {
+      final Active<GeneralInformationDemographic> activeGeneralInformation,
+      final Active<NewPatient> input
+  ) {
     this.activeAdministrative = activeAdministrative;
     this.activeBirthDemographic = activeBirthDemographic;
     this.activeGenderDemographic = activeGenderDemographic;
     this.activeMortalityDemographic = activeMortalityDemographic;
     this.activeName = activeName;
     this.activeEthnicity = activeEthnicity;
+    this.activeGeneralInformation = activeGeneralInformation;
     this.input = input;
   }
 
@@ -70,5 +75,11 @@ public class PatientCreateEntrySteps {
   public void the_mortality_demographics_are_included_in_the_extended_patient_data() {
     this.activeMortalityDemographic.maybeActive()
         .ifPresent(demographic -> this.input.active(current -> current.withMortality(demographic)));
+  }
+
+  @Given("the general information demographics are included in the extended patient data")
+  public void the_general_information_is_included_in_the_extended_patient_data() {
+    this.activeGeneralInformation.maybeActive()
+        .ifPresent(demographic -> this.input.active(current -> current.withGeneralInformation(demographic)));
   }
 }

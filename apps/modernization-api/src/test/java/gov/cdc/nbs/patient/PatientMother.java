@@ -329,7 +329,7 @@ public class PatientMother {
             RandomUtil.oneFrom("AN", "BP", "CP", "FAX", "PH"),
             RandomUtil.oneFrom("SB", "EC", "H", "MC", "WP", "TMP"),
             RandomUtil.getRandomDateInPast(),
-            RandomUtil.getRandomString(),
+            RandomUtil.getRandomString(15),
             faker.phoneNumber().cellPhone(),
             faker.phoneNumber().extension(),
             null,

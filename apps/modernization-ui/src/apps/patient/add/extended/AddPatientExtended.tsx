@@ -1,22 +1,21 @@
-import { useMemo } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { ExtendedNewPatientEntry, initial } from './entry';
 import { Button } from 'components/button';
-import { DataEntrySideNav } from '../DataEntrySideNav/DataEntrySideNav';
-import { transformer } from './transformer';
-import { creator } from './creator';
-import { useAddExtendedPatient } from './useAddExtendedPatient';
+import { useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
+import { creator } from './creator';
+import { ExtendedNewPatientEntry, initial } from './entry';
+import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
+import { transformer } from './transformer';
+import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { AddPatientExtendedNav } from './nav/AddPatientExtendedNav';
-import styles from './add-patient-extended.module.scss';
-import { useState } from 'react';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import styles from './add-patient-extended.module.scss';
 import { CreatedPatient } from './api';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { useLocalStorage } from 'storage';
 import { useNavigate } from 'react-router-dom';
+import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
@@ -61,7 +60,7 @@ export const AddPatientExtended = () => {
             </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
-                    <DataEntrySideNav />
+                    <AddPatientSideNav />
                     <div className={styles.contet}>
                         <header>
                             <h1>New patient - extended</h1>
@@ -76,7 +75,7 @@ export const AddPatientExtended = () => {
                         </header>
                         <main>
                             <AddPatientExtendedForm />
-                            <AddPatientExtendedNav />
+                            <AddPatientExtendedInPageNav />
                         </main>
                     </div>
                     {cancelModal && (

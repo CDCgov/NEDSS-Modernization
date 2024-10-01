@@ -22,19 +22,19 @@ Feature: Patient Profile General Information Changes
     Given I want to change the patient's general information to include the mother's maiden name of "Maiden Name"
     When the patient profile general information changes are submitted as of 04/17/2013
     And I view the patient's general information
-    Then the patient's general information includes a "mother's maiden name" of "Maiden Name"
+    Then the patient's general information includes a mother's maiden name of "Maiden Name"
 
   Scenario: I can update a patient's general information to include adults in house
     Given I want to change the patient's general information to include 11 adults in the house
     When the patient profile general information changes are submitted as of 04/17/2013
     And I view the patient's general information
-    Then the patient's general information includes 11 "adults in the house"
+    Then the patient's general information includes 11 adults in the house
 
   Scenario: I can update a patient's general information to include children in house
     Given I want to change the patient's general information to include 67 children in the house
     When the patient profile general information changes are submitted as of 04/17/2013
     And I view the patient's general information
-    Then the patient's general information includes 67 "children in the house"
+    Then the patient's general information includes 67 children in the house
 
   Scenario: I can update a patient's general information to include occupation
     Given I want to change the patient's general information to include the occupation of Envelope Manufacturing

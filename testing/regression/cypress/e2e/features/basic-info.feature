@@ -4,18 +4,18 @@ Feature: Patient Search by Basic Info
     Given I am logged in as secure user
 
   Scenario: Basic Info - Search by Last Name
-    When I search by last name as "Althorp"
-    Then I should see Results with the last name "Althorp"
+    When I search by last name as "Ratkeyklkb"
+    Then I should see Results with the last name "Ratkeyklkb"
 
   Scenario: Basic Info - Search by First Name
-    When I search by first name as "Vivienne"
-    Then I should see Results with the first name "Vivienne"
+    When I search by first name as "Caden"
+    Then I should see Results with the first name "Caden"
 
   Scenario: Basic Info - Search by DOB
     When I search by dob as "10/16/1967"
-    Then I should see No Results found text
-    When I search by dob as "04/02/1991"
-    Then I should see "Zollie Polack Bittlestone, Esquire"
+    Then I should see no result found text
+    When I search by dob as "05/16/1977"
+    Then I should see "Caden Ratkeyklkb"
 
   Scenario: Basic Info - Search by Sex
     When I search by sex as "Male"
@@ -25,16 +25,15 @@ Feature: Patient Search by Basic Info
     When I search by sex as "Other"
     Then I should see Results with the sex "No Data"
 
-
   Scenario: Basic Info - Search by Patient ID
     When I search by patient id as "95136"
     Then I should see Results with the patient id "95136"
 
   Scenario: Search by Multiple Criteria
-    When I fill last name as "Bittlestone"
-    When I fill first name as "Zollie"
-    When I search by dob as "04/02/1991"
-    Then I should see "Zollie Polack Bittlestone, Esquire"
+    When I fill last name as "Ratkeyklkb"
+    When I fill first name as "Caden"
+    When I search by dob as "05/16/1977"
+    Then I should see "Caden Ratkeyklkb"
 
   Scenario: Search for Deleted Patients
     When I fill last name as "Green Sonum Allen"
