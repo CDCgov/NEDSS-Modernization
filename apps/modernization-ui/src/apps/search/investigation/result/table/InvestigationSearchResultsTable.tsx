@@ -14,7 +14,7 @@ import {
 
 const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
 const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
-const SEX = { id: 'sex', name: 'Sex' };
+const SEX = { id: 'sex', name: 'Current sex' };
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
 
 const CONDITION = { id: 'condition', name: 'Condition' };

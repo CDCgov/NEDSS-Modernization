@@ -93,6 +93,7 @@ describe('LaboratoryReportSearchResultListItem', () => {
             </MemoryRouter>
         );
         expect(getByText('Male')).toBeInTheDocument();
+        expect(getByText('Current sex')).toBeInTheDocument();
     });
 
     it('should render the patient ID', () => {

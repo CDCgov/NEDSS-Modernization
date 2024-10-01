@@ -27,7 +27,7 @@ const LaboratoryReportSearchResultListItem = ({ result, jurisdictionResolver }: 
                     {displayProfileLink(patient)}
                 </ResultItem>
                 <ResultItem label="Date of birth">{internalizeDate(patient?.birthTime)}</ResultItem>
-                <ResultItem label="Sex">{displayGender(patient)}</ResultItem>
+                <ResultItem label="Current sex">{displayGender(patient)}</ResultItem>
                 <ResultItem label="Patient ID">{patient?.shortId}</ResultItem>
             </ResultItemGroup>
 
