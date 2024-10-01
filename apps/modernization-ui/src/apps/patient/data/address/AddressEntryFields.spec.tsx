@@ -133,4 +133,23 @@ describe('AddressEntryFields', () => {
             expect(queryByText('Use is required.')).not.toBeInTheDocument();
         });
     });
+
+    it('should invalidate Census Tract format', async () => {
+        const { getByLabelText, getByText } = render(<Fixture />);
+
+        const censusTractInput = getByLabelText('Census tract');
+
+        act(() => {
+            userEvent.clear(censusTractInput);
+            userEvent.type(censusTractInput, '12345');
+            userEvent.tab();
+        });
+        await waitFor(() => {
+            expect(
+                getByText(
+                    'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
+                )
+            ).toBeInTheDocument();
+        });
+    });
 });

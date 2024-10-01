@@ -211,8 +211,7 @@ export const AddressEntryFields = () => {
                         value: /^(\d{4}|\d{4}\.(0[1-9]|[1-9][0-8]))$/,
                         message:
                             'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                    },
-                    ...maxLengthRule(7)
+                    }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
