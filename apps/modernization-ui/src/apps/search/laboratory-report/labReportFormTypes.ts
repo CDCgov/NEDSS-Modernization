@@ -80,6 +80,14 @@ const initial: LabReportFilterEntry = {
     processingStatus: [UNPROCESSED]
 };
 
+// when EventID is provided, the form should be initialized with all fields selected
+const initialForEventId: LabReportFilterEntry = {
+    enteredBy: enteredByTypes,
+    entryMethods: entryMethodTypes,
+    eventStatus: eventStatusTypes,
+    processingStatus: processingStatusTypes
+};
+
 export {
     entityTypes,
     identificationTypes,
@@ -89,5 +97,6 @@ export {
     eventStatusTypes,
     processingStatusTypes,
     pregnancyStatusOptions as pregnancyStatus,
-    initial
+    initial,
+    initialForEventId
 };
