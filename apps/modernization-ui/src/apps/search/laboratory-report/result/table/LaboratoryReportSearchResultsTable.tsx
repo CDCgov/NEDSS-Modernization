@@ -15,7 +15,7 @@ import {
 
 const LEGAL_NAME = { id: 'lastNm', name: 'Legal name' };
 const DATE_OF_BIRTH = { id: 'birthTime', name: 'Date of birth' };
-const SEX = { id: 'sex', name: 'Sex' };
+const SEX = { id: 'sex', name: 'Current sex' };
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
 
 const DOCUMENT_TYPE = { id: 'documentType', name: 'Document type' };
@@ -23,7 +23,7 @@ const DATE_RECEIVED = { id: 'dateReceived', name: 'Date received' };
 const DESCRIPTION = { id: 'description', name: 'Description' };
 const REPORTING_FACILITY = { id: 'reportingFacility', name: 'Reporting facility' };
 const ORDERING_PROVIDER = { id: 'orderingProvider', name: 'Ordering provider' };
-const JURSIDICTION = { id: 'jurisdiction', name: 'Jurisdiction' };
+const JURISDICTION = { id: 'jurisdiction', name: 'Jurisdiction' };
 const ASSOCIATED_WITH = { id: 'associatedWith', name: 'Associated with' };
 const LOCAL_ID = { id: 'localId', name: 'Local ID' };
 
@@ -37,7 +37,7 @@ const preferences: ColumnPreference[] = [
     { ...DESCRIPTION, moveable: true, toggleable: true },
     { ...REPORTING_FACILITY, moveable: true, toggleable: true },
     { ...ORDERING_PROVIDER, moveable: true, toggleable: true },
-    { ...JURSIDICTION, moveable: true, toggleable: true },
+    { ...JURISDICTION, moveable: true, toggleable: true },
     { ...ASSOCIATED_WITH, moveable: true, toggleable: true },
     { ...LOCAL_ID, moveable: true, toggleable: true }
 ];
@@ -98,7 +98,7 @@ const LaboratoryReportSearchResultsTable = ({ results, jurisdictionResolver }: P
             render: getOrderingProviderName
         },
         {
-            ...JURSIDICTION,
+            ...JURISDICTION,
             render: (row) => jurisdictionResolver(String(row.jurisdictionCd))?.name
         },
         {

@@ -1,6 +1,6 @@
 import { Selectable, asSelectable, findByValue } from 'options';
 
-const UNKNOWN = asSelectable('U', 'Other');
+const UNKNOWN = asSelectable('U', 'Unknown');
 
 const genders: Selectable[] = [asSelectable('F', 'Female'), asSelectable('M', 'Male'), UNKNOWN];
 
