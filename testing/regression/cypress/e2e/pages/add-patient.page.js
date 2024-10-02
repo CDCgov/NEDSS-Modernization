@@ -139,7 +139,7 @@ class AddPatientPage {
   }
 
   viewPatientProfile() {
-    cy.get('h1.font-sans-xl.text-medium')
+    cy.get('header h1')
     .should('be.visible')
     .and('contain.text', 'Patient profile');
   }

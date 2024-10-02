@@ -1,4 +1,4 @@
-Feature: User can add a patient profilenp
+Feature: User can add a patient profile
 
     Background:
         Given I am logged in as secure user
