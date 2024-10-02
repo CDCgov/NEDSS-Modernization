@@ -13,7 +13,7 @@ type SearchInteractionStatus =
 type SearchResults<R> = {
     total: number;
     page: number;
-    size?: number;
+    size: number;
     content: R[];
     terms: Term[];
 };

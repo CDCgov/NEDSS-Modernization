@@ -21,7 +21,7 @@ const PatientSearchResultListItem = ({ result }: Props) => (
                 {displayProfileLink(result)}
             </ResultItem>
             <ResultItem label="Date of birth">{internalizeDate(result.birthday)}</ResultItem>
-            <ResultItem label="Sex">{result.gender}</ResultItem>
+            <ResultItem label="Current sex">{result.gender}</ResultItem>
             <ResultItem label="Patient ID">{result.shortId}</ResultItem>
         </ResultItemGroup>
         <ResultItemGroup>
