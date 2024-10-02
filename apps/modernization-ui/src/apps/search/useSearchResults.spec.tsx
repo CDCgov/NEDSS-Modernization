@@ -16,8 +16,10 @@ jest.mock('./useSearchCriteria', () => ({
     })
 }));
 
+const { Status } = jest.requireActual('page');
+
 const mockPage: Page = {
-    status: 0,
+    status: Status.Ready,
     pageSize: 5,
     total: 7,
     current: 11
@@ -42,12 +44,18 @@ jest.mock('page', () => ({
     })
 }));
 
+const { Direction } = jest.requireActual('sorting');
+
+let mockSortProperty: string | undefined = undefined;
+let mockSortDirection: any | undefined = undefined;
 const mockSortReset = jest.fn();
 const mockSortBy = jest.fn();
 const mockToggle = jest.fn();
 
 jest.mock('sorting', () => ({
     useSorting: () => ({
+        property: mockSortProperty,
+        direction: mockSortDirection,
         reset: mockSortReset,
         sortBy: mockSortBy,
         toggle: mockToggle
@@ -82,6 +90,10 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
 };
 
 describe('when searching using useSearchResults', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should default to waiting without any results', () => {
         const { result } = setup();
 
@@ -189,6 +201,50 @@ describe('when searching using useSearchResults', () => {
 
         mockPage.current = 227;
         mockPage.pageSize = 307;
+
+        const { result, rerender } = setup({ resultResolver });
+
+        await act(async () => {
+            result.current.search({ name: 'name-value' });
+        });
+
+        rerender();
+
+        expect(resultResolver).toBeCalledWith(
+            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        );
+    });
+
+    it('should use the request first page when sort property changes', async () => {
+        const resultResolver = jest.fn();
+        resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
+
+        mockPage.current = 227;
+        mockPage.pageSize = 307;
+
+        mockSortProperty = 'property-value';
+
+        const { result, rerender } = setup({ resultResolver });
+
+        await act(async () => {
+            result.current.search({ name: 'name-value' });
+        });
+
+        rerender();
+
+        expect(resultResolver).toBeCalledWith(
+            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        );
+    });
+
+    it('should use the request first page when sort direction changes', async () => {
+        const resultResolver = jest.fn();
+        resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
+
+        mockPage.current = 227;
+        mockPage.pageSize = 307;
+
+        mockSortDirection = Direction.Ascending;
 
         const { result, rerender } = setup({ resultResolver });
 

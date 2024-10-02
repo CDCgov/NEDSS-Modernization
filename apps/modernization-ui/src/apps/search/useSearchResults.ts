@@ -58,7 +58,7 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
     } else if (action.type === 'complete' && current.status === 'fetching') {
         return { ...current, status: 'completed', results: { ...action.found, terms: current.terms } };
     } else if (action.type === 'change-sort' && current.status === 'completed') {
-        const page = { number: current.results.page, size: current.results.size };
+        const page = { number: 1, size: current.results.size };
 
         return {
             status: 'fetching',
@@ -93,14 +93,16 @@ const reducer = <C, A, R>(current: State<C, A, R>, action: Action<C, A, R>): Sta
     return current;
 };
 
-type ResultHandler<R> = (result: Resolved<R>) => void;
-
 const orElseEmptyResult =
-    <R>(size: number, handler: ResultHandler<R>) =>
-    (result?: Resolved<R>) => {
-        const ensured = result ?? { size, total: 0, content: [], page: 0 };
-        handler(ensured);
-    };
+    <A, R>(request: ResultRequest<A>) =>
+    (result?: Resolved<R>) =>
+        result ?? { size: request.page.size, total: 0, content: [], page: 0 };
+
+const adjustResult = <R>(result: Resolved<R>) => {
+    const { total, page, size, content } = result;
+
+    return { total, size, content, page: page + 1 };
+};
 
 const defaultNoInputCheck: Predicate<Term[]> = (terms: Term[]) => terms.length === 0;
 
@@ -186,7 +188,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     }, [state.status, pageReset]);
 
     const handleComplete = (resolved: Resolved<R>) => {
-        ready(resolved.total, resolved.page + 1);
+        ready(resolved.total, resolved.page);
         dispatch({ type: 'complete', found: { ...resolved } });
     };
 
@@ -243,11 +245,15 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     useEffect(() => {
         if (state.status === 'fetching') {
             // the criteria has changed invoke search
-            resultResolver({
+            const request = {
                 parameters: state.parameters,
                 page: state.page,
                 sort
-            }).then(orElseEmptyResult(state.page.size, handleComplete), handleError);
+            };
+            resultResolver(request)
+                .then(orElseEmptyResult(request))
+                .then(adjustResult)
+                .then(handleComplete, handleError);
         }
     }, [state.status]);
 
