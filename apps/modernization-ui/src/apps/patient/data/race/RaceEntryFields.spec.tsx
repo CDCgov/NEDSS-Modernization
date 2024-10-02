@@ -1,16 +1,10 @@
-import { renderHook } from '@testing-library/react-hooks';
-import { CodedValue } from 'coded/CodedValue';
-import { RaceEntry } from '../entry';
 import { FormProvider, useForm } from 'react-hook-form';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
-import { RaceEntryFields } from './RaceEntryFields';
+import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { CodedValue } from 'coded/CodedValue';
+import { RaceEntry } from './entry';
+import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
-const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
-
-jest.mock('coded/race/useRaceCodedValues', () => ({
-    useRaceCodedValues: () => mockRaceCodedValues
-}));
 const mockDetailedOptions: CodedValue[] = [
     { value: '2', name: 'detailed race1' },
     { value: '3', name: 'detailed race2' }
@@ -20,7 +14,9 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
     useDetailedRaceCodedValues: () => mockDetailedOptions
 }));
 
-const Fixture = () => {
+type Props = Partial<RaceEntryFieldsProps>;
+
+const Fixture = ({ categories = [{ value: '1', name: 'race name' }] }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
         defaultValues: {
@@ -32,7 +28,7 @@ const Fixture = () => {
 
     return (
         <FormProvider {...form}>
-            <RaceEntryFields />
+            <RaceEntryFields categories={categories} />
         </FormProvider>
     );
 };

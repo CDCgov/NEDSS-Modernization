@@ -1,11 +1,11 @@
+import { Controller, useFormContext } from 'react-hook-form';
+import { Card } from './card/Card';
+import { ExtendedNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
 import { GeneralInformationEntryFields } from 'apps/patient/data/general/GeneralInformationEntryFields';
 import { MortalityEntryFields } from 'apps/patient/data/mortality/MortalityEntryFields';
 import { SexAndBirthEntryFields } from 'apps/patient/data/sexAndBirth/SexAndBirthEntryFields';
-import { useFormContext } from 'react-hook-form';
-import { Card } from './card/Card';
-import { ExtendedNewPatientEntry } from './entry';
 import { AddressRepeatingBlock } from './inputs/address/AddressRepeatingBlock';
 import { IdentificationRepeatingBlock } from './inputs/identification/IdentificationRepeatingBlock';
 import { NameRepeatingBlock } from './inputs/name/NameRepeatingBlock';
@@ -21,7 +21,7 @@ type Props = {
     setSubFormState: (state: Partial<SubFormDirtyState>) => void;
 };
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
-    const { setValue } = useFormContext<ExtendedNewPatientEntry>();
+    const { setValue, control } = useFormContext<ExtendedNewPatientEntry>();
 
     const renderErrorMessages = () => {
         const generateError = (section: string, id: string) => {
@@ -75,9 +75,17 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                     isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
                     onChange={(identificationData) => setValue('identifications', identificationData)}
                 />
-                <RaceRepeatingBlock
-                    isDirty={(isDirty) => setSubFormState({ race: isDirty })}
-                    onChange={(raceData) => setValue('races', raceData)}
+                <Controller
+                    control={control}
+                    name="races"
+                    render={({ field: { onChange, value, name } }) => (
+                        <RaceRepeatingBlock
+                            id={name}
+                            values={value}
+                            isDirty={(isDirty) => setSubFormState({ race: isDirty })}
+                            onChange={onChange}
+                        />
+                    )}
                 />
                 <Card
                     id="ethnicity"
