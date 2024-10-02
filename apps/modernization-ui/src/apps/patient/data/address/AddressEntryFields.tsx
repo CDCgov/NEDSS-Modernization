@@ -220,7 +220,9 @@ export const AddressEntryFields = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
-                        type="number"
+                        type="text"
+                        mask="____.__"
+                        pattern="^(?!0000)(\d{4})(?:\.(?!00|99)\d{2})?$"
                         name={name}
                         htmlFor={name}
                         id={name}

@@ -88,7 +88,7 @@ describe('RaceMultiEntry', () => {
         expect(county).toHaveValue('');
 
         const censusTract = getByLabelText('Census tract');
-        expect(censusTract).toHaveValue(null);
+        expect(censusTract).toHaveValue('');
 
         const country = getByLabelText('Country');
         expect(country).toHaveValue('');
