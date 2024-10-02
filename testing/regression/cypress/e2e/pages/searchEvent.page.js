@@ -101,6 +101,8 @@ class SearchEventPage {
 
   search() {
     cy.get('button').contains("Search").click();
+    cy.wait(100);
+    cy.get('button').contains("List").click();
   }
 
   selectInvestigationUpdatedBy() {
