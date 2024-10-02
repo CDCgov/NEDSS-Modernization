@@ -84,6 +84,7 @@ class SearchPage {
     cy.get('button').contains("Search").click();
     // cy.get('div.bottom-search button[type="submit"]').click();
     cy.wait(100);
+    cy.get('button').contains("List").click();
   }
 
   verifySearchPage() {
