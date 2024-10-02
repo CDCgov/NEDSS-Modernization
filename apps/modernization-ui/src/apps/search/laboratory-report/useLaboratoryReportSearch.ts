@@ -1,7 +1,11 @@
 import { UseFormReturn } from 'react-hook-form';
 import { SearchInteraction, ResultRequest, useSearchResultsFormAdapter } from 'apps/search';
 import { LabReport, LabReportFilter, useFindLabReportsByFilterLazyQuery } from 'generated/graphql/schema';
-import { LabReportFilterEntry, initial as defaultValues } from './labReportFormTypes';
+import {
+    LabReportFilterEntry,
+    initial as defaultValues,
+    initialForEventId as defaultValuesForIdentification
+} from './labReportFormTypes';
 import { transformObject as transformer } from './transformer';
 import { laboratoryReportTermsResolver as termResolver } from './laboratoryReportTermsResolver';
 
@@ -30,7 +34,16 @@ const useLaboratoryReportSearch = ({ form }: Settings): SearchInteraction<LabRep
             return response.data?.findLabReportsByFilter;
         });
 
-    return useSearchResultsFormAdapter({ form, defaultValues, transformer, resultResolver, termResolver });
+    const defaultValuesResolver = (vals: LabReportFilterEntry) =>
+        vals?.identification ? defaultValuesForIdentification : defaultValues;
+
+    return useSearchResultsFormAdapter({
+        form,
+        defaultValues: defaultValuesResolver,
+        transformer,
+        resultResolver,
+        termResolver
+    });
 };
 
 export { useLaboratoryReportSearch };

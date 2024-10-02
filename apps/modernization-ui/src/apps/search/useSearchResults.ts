@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { usePage, Status as PageStatus } from 'page';
 import { useSorting } from 'sorting';
 import { Predicate } from 'utils';
-import { useSearchCritiera } from './useSearchCriteria';
+import { useSearchCriteria } from './useSearchCriteria';
 import { SearchResults } from './useSearchInteraction';
 import { Term } from './terms';
 
@@ -90,7 +90,7 @@ const blankResults = (size: number, page: number) => ({
     size
 });
 
-type SearchResulstInteraction<C, R> = {
+type SearchResultsInteraction<C, R> = {
     status: 'waiting' | 'resetting' | 'loading' | 'completed' | 'error' | 'no-input' | 'initializing';
     criteria?: C;
     results: SearchResults<R>;
@@ -99,7 +99,7 @@ type SearchResulstInteraction<C, R> = {
     search: (criteria: C) => void;
 };
 
-type Tranformer<C, A> = (criteria: C) => A;
+type Transformer<C, A> = (criteria: C) => A;
 
 type SortRequest = {
     property: string;
@@ -115,10 +115,10 @@ type ResultResolver<A, R> = (request: ResultRequest<A>) => Promise<Resolved<R> |
 type TermResolver<C> = (criteria: C) => Term[];
 
 type SearchResultSettings<C, A, R> = {
-    transformer: Tranformer<C, A>;
+    transformer: Transformer<C, A>;
     resultResolver: ResultResolver<A, R>;
     termResolver: TermResolver<C>;
-    defaultValues?: C;
+    defaultValues?: C | ((obj: C) => C);
     noInputCheck?: Predicate<Term[]>;
 };
 
@@ -128,7 +128,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     termResolver,
     noInputCheck = defaultNoInputCheck,
     defaultValues
-}: SearchResultSettings<C, A, R>): SearchResulstInteraction<C, R> => {
+}: SearchResultSettings<C, A, R>): SearchResultsInteraction<C, R> => {
     const { page, ready, reset: pageReset } = usePage();
 
     const { property, direction } = useSorting();
@@ -146,7 +146,7 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
         criteria: searchCriteria,
         clear: clearCriteria,
         change: changeCriteria
-    } = useSearchCritiera({ defaultValues });
+    } = useSearchCriteria({ defaultValues });
 
     const [state, dispatch] = useReducer(reducer<C, A, R>, { status: 'waiting' });
 
@@ -266,5 +266,5 @@ const useSearchResults = <C extends object, A extends object, R extends object>(
     };
 };
 
-export type { SearchResultSettings, ResultRequest, Resolved, SearchResulstInteraction };
+export type { SearchResultSettings, ResultRequest, Resolved, SearchResultsInteraction };
 export { useSearchResults };
