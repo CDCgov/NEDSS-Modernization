@@ -58,9 +58,7 @@ describe('RaceMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText, getAllByRole, getAllByText } = render(
-            <AddressRepeatingBlock onChange={onChange} isDirty={isDirty} />
-        );
+        const { getByLabelText } = render(<AddressRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 
         const dateInput = getByLabelText('Address as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
