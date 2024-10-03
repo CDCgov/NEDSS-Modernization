@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const displayProfileLink = (result: PatientSearchResult) => (
     <Link to={`/patient-profile/${result.shortId}/summary`}>
-        {(result.legalName && displayName('short')(result.legalName)) || 'No Data'}
+        {(result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data'}
     </Link>
 );
 

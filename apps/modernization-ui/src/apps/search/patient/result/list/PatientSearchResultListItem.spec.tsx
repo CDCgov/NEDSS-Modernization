@@ -26,7 +26,7 @@ describe('PatientSearchResultListItem', () => {
             </MemoryRouter>
         );
 
-        expect(getByText('Legal Name')).toBeInTheDocument();
+        expect(getByText('Name, Legal')).toBeInTheDocument();
     });
 
     it('should render the date of birth', () => {
@@ -223,7 +223,7 @@ describe('PatientSearchResultListItem', () => {
 
         const { getByText } = render(
             <MemoryRouter>
-                <PatientSearchResultListItem result={patient}/>
+                <PatientSearchResultListItem result={patient} />
             </MemoryRouter>
         );
         expect(getByText('ID Types')).toBeInTheDocument();

@@ -15,6 +15,11 @@ import {
 import { EventDate, Identification, LabReportFilterEntry } from './labReportFormTypes';
 import { asNumericValues, asValue, asValues, Selectable } from 'options/selectable';
 
+/**
+ * Transforms the form data into a GraphQL object
+ * @param {LabReportFilterEntry} data Filter field data
+ * @return {LabReportFilter}
+ */
 const transformObject = (data: LabReportFilterEntry): LabReportFilter => {
     const { orderingFacility, orderingProvider, reportingFacility, codedResult, resultedTest, ...remaining } = data;
 

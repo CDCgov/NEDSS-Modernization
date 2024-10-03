@@ -95,7 +95,7 @@ describe('when showing an investigation search results', () => {
             </MemoryRouter>
         );
 
-        expect(getByText('Sex')).toBeInTheDocument();
+        expect(getByText('Current sex')).toBeInTheDocument();
         expect(getByText('Female')).toBeInTheDocument();
     });
 

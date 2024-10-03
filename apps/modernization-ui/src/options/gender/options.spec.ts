@@ -13,27 +13,27 @@ describe('when resolving a Selectable gender', () => {
         expect(actual).toEqual(expect.objectContaining({ name: 'Female' }));
     });
 
-    it('should resolve Other for U', () => {
+    it('should resolve Unknown for U', () => {
         const actual = asSelectableGender('U');
 
-        expect(actual).toEqual(expect.objectContaining({ name: 'Other' }));
+        expect(actual).toEqual(expect.objectContaining({ name: 'Unknown' }));
     });
 
-    it('should resolve Other for unknown value', () => {
+    it('should resolve Unknown for unknown value', () => {
         const actual = asSelectableGender('any value');
 
-        expect(actual).toEqual(expect.objectContaining({ name: 'Other' }));
+        expect(actual).toEqual(expect.objectContaining({ name: 'Unknown' }));
     });
 
-    it('should resolve Other for undefined', () => {
+    it('should resolve Unknown for undefined', () => {
         const actual = asSelectableGender(undefined);
 
-        expect(actual).toEqual(expect.objectContaining({ name: 'Other' }));
+        expect(actual).toEqual(expect.objectContaining({ name: 'Unknown' }));
     });
 
-    it('should resolve Other for null', () => {
+    it('should resolve Unknown for null', () => {
         const actual = asSelectableGender(null);
 
-        expect(actual).toEqual(expect.objectContaining({ name: 'Other' }));
+        expect(actual).toEqual(expect.objectContaining({ name: 'Unknown' }));
     });
 });

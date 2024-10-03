@@ -1,16 +1,16 @@
 package gov.cdc.nbs.message.enums;
 
 public enum Gender {
-  M("M", "Male"),
   F("F", "Female"),
+  M("M", "Male"),
   U("U", "Unknown");
 
   public static Gender resolve(final String value) {
     return value == null
         ? null
         : switch (value.toLowerCase()) {
-      case "m" -> Gender.M;
       case "f" -> Gender.F;
+      case "m" -> Gender.M;
       case "u" -> Gender.U;
       default -> null;
     };
