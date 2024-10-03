@@ -1,4 +1,4 @@
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddressEntry } from '../entry';
@@ -116,7 +116,7 @@ describe('AddressEntryFields', () => {
         const asOf = getByLabelText('Address as of');
         const type = getByLabelText('Type');
         const use = getByLabelText('Use');
-        await screen.findByText('Use');
+        await waitFor(() => expect(use).toBeInTheDocument());
 
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
@@ -148,26 +148,21 @@ describe('AddressEntryFields', () => {
         { value: '0001.99', valid: false },
         { value: '1234.56', valid: true }
     ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
-        const { getByLabelText, getByText, queryByText } = render(<Fixture />);
+        const { getByLabelText, queryByText } = render(<Fixture />);
         const censusTractInput = getByLabelText('Census tract');
 
         userEvent.clear(censusTractInput);
         userEvent.paste(censusTractInput, value);
         userEvent.tab();
 
+        const validationMessage =
+            'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
+
         await waitFor(() => {
             if (valid) {
-                expect(
-                    queryByText(
-                        'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                    )
-                ).not.toBeInTheDocument();
+                expect(queryByText(validationMessage)).not.toBeInTheDocument();
             } else {
-                expect(
-                    getByText(
-                        'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                    )
-                ).toBeInTheDocument();
+                expect(queryByText(validationMessage)).toBeInTheDocument();
             }
         });
     });
