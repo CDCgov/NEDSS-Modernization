@@ -12,7 +12,7 @@ import { NameRepeatingBlock } from './inputs/name/NameRepeatingBlock';
 import { PhoneAndEmailRepeatingBlock } from './inputs/phone/PhoneAndEmailRepeatingBlock';
 import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 
-import { AlertMessage } from 'design-system/message/AlertMessage';
+import { AlertMessage } from 'design-system/message';
 import styles from './add-patient-extended-form.module.scss';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
 

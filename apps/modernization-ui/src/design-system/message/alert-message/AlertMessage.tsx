@@ -2,7 +2,7 @@ import sprite from '@uswds/uswds/img/sprite.svg';
 import classNames from 'classnames';
 import { ReactNode } from 'react';
 import styles from './alert-message.module.scss';
-import { resolveIcon, Type } from './Message';
+import { resolveIcon, Type } from '../Message';
 type Props = {
     title: string;
     type: Type;
