@@ -58,6 +58,32 @@ public record NewPatient(
       String id) {
   }
 
+  public NewPatient(
+      Administrative administrative,
+      BirthDemographic birth,
+      GenderDemographic gender,
+      EthnicityDemographic ethnicity,
+      MortalityDemographic mortality,
+      GeneralInformationDemographic general,
+      List<NameDemographic> names,
+      List<AddressDemographic> addresses,
+      List<Phone> phoneEmails,
+      List<Race> races,
+      List<Identification> identifications
+  ) {
+    this.administrative = administrative;
+    this.birth = birth;
+    this.gender = gender;
+    this.ethnicity = ethnicity;
+    this.mortality = mortality;
+    this.general = general;
+    this.names = names == null ? List.of() : List.copyOf(names);
+    this.addresses = addresses == null ? List.of() : List.copyOf(addresses);
+    this.phoneEmails = phoneEmails == null ? List.of() : List.copyOf(phoneEmails);
+    this.races = races == null ? List.of() : List.copyOf(races);
+    this.identifications = identifications == null ? List.of() : List.copyOf(identifications);
+  }
+
   public NewPatient() {
     this(
         null,
