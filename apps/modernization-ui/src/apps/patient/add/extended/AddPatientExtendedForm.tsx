@@ -14,10 +14,10 @@ import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 
 import { AlertMessage } from 'design-system/message/AlertMessage';
 import styles from './add-patient-extended-form.module.scss';
-import { SubFormDirtyState } from './useAddExtendedPatientInteraction';
+import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
 
 type Props = {
-    validationErrors?: SubFormDirtyState;
+    validationErrors?: ValidationErrors;
     setSubFormState: (state: Partial<SubFormDirtyState>) => void;
 };
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
@@ -34,11 +34,13 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
         };
         return (
             <ul className={styles.errorList}>
-                {validationErrors?.name && <li>{generateError('Name', 'name')}</li>}
-                {validationErrors?.address && <li>{generateError('Address', 'address')}</li>}
-                {validationErrors?.phone && <li>{generateError('Phone & Email', 'phoneAndEmail')}</li>}
-                {validationErrors?.identification && <li>{generateError('Identification', 'identification')}</li>}
-                {validationErrors?.race && <li>{generateError('Race', 'races')}</li>}
+                {validationErrors?.dirtySections.name && <li>{generateError('Name', 'name')}</li>}
+                {validationErrors?.dirtySections.address && <li>{generateError('Address', 'address')}</li>}
+                {validationErrors?.dirtySections.phone && <li>{generateError('Phone & Email', 'phoneAndEmail')}</li>}
+                {validationErrors?.dirtySections.identification && (
+                    <li>{generateError('Identification', 'identification')}</li>
+                )}
+                {validationErrors?.dirtySections.race && <li>{generateError('Race', 'races')}</li>}
             </ul>
         );
     };

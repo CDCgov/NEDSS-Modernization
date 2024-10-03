@@ -6,19 +6,20 @@ import {
     Working,
     Created,
     Invalid,
-    SubFormDirtyState
+    SubFormDirtyState,
+    ValidationErrors
 } from './useAddExtendedPatientInteraction';
 
 type Step =
     | { status: 'requesting'; entry: ExtendedNewPatientEntry }
     | { status: 'creating'; input: NewPatient }
     | { status: 'created'; created: CreatedPatient }
-    | { status: 'invalid'; validationErrors: SubFormDirtyState }
+    | { status: 'invalid'; validationErrors: ValidationErrors }
     | { status: 'waiting' };
 
 type Action =
     | { type: 'request'; entry: ExtendedNewPatientEntry }
-    | { type: 'invalidate'; validationErrors: SubFormDirtyState }
+    | { type: 'invalidate'; validationErrors: ValidationErrors }
     | { type: 'create'; input: NewPatient }
     | { type: 'complete'; created: CreatedPatient }
     | { type: 'wait' };
@@ -83,7 +84,7 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
                 const input = transformer(step.entry);
                 dispatch({ type: 'create', input });
             } else {
-                dispatch({ type: 'invalidate', validationErrors: subFormDirtyState });
+                dispatch({ type: 'invalidate', validationErrors: { dirtySections: subFormDirtyState } });
             }
         } else if (step.status === 'creating') {
             creator(step.input).then((created) => dispatch({ type: 'complete', created }));

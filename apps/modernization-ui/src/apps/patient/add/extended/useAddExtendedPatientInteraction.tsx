@@ -13,9 +13,13 @@ type Created = {
 
 type Invalid = {
     status: 'invalid';
-    validationErrors: SubFormDirtyState;
+    validationErrors: ValidationErrors;
 };
 type SubFormDirtyState = { address: boolean; phone: boolean; identification: boolean; name: boolean; race: boolean };
+
+type ValidationErrors = {
+    dirtySections: SubFormDirtyState;
+};
 
 type AddExtendedPatientInteraction = (Working | Created | Invalid) & {
     create: (entry: ExtendedNewPatientEntry) => void;
@@ -50,4 +54,4 @@ const useAddExtendedPatientInteraction = (): AddExtendedPatientInteraction => {
 };
 
 export { AddExtendedPatientInteractionProvider, useAddExtendedPatientInteraction };
-export type { SubFormDirtyState };
+export type { SubFormDirtyState, ValidationErrors };
