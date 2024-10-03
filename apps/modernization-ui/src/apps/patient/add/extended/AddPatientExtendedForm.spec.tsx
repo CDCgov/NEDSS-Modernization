@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, within } from '@testing-library/react';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { CodedValue } from 'coded';
 import { CountiesCodedValues } from 'location';
@@ -238,20 +238,44 @@ describe('AddPatientExtendedForm', () => {
 
         const errors = getAllByRole('listitem', getAllByRole('list')[0]);
         expect(errors).toHaveLength(5);
+        // Name error
         expect(errors[0]).toHaveTextContent(
             'Data has been entered in the Name section. Please press Add or clear the data and submit again.'
         );
+        let link = within(errors[0]).getByRole('link');
+        expect(link).toHaveTextContent('Name');
+        expect(link).toHaveAttribute('href', '#name');
+
+        // Address
         expect(errors[1]).toHaveTextContent(
             'Data has been entered in the Address section. Please press Add or clear the data and submit again.'
         );
+        link = within(errors[1]).getByRole('link');
+        expect(link).toHaveTextContent('Address');
+        expect(link).toHaveAttribute('href', '#address');
+
+        // Phone & Email
         expect(errors[2]).toHaveTextContent(
             'Data has been entered in the Phone & Email section. Please press Add or clear the data and submit again.'
         );
+        link = within(errors[2]).getByRole('link');
+        expect(link).toHaveTextContent('Phone & Email');
+        expect(link).toHaveAttribute('href', '#phoneAndEmail');
+
+        // Identification
         expect(errors[3]).toHaveTextContent(
             'Data has been entered in the Identification section. Please press Add or clear the data and submit again.'
         );
+        link = within(errors[3]).getByRole('link');
+        expect(link).toHaveTextContent('Identification');
+        expect(link).toHaveAttribute('href', '#identification');
+
+        // Race
         expect(errors[4]).toHaveTextContent(
             'Data has been entered in the Race section. Please press Add or clear the data and submit again.'
         );
+        link = within(errors[4]).getByRole('link');
+        expect(link).toHaveTextContent('Race');
+        expect(link).toHaveAttribute('href', '#races');
     });
 });
