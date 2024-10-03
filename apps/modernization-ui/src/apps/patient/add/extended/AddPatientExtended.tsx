@@ -10,10 +10,10 @@ import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 
 import { Shown } from 'conditional-render';
+import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import styles from './add-patient-extended.module.scss';
 import { CreatedPatient } from './api';
-import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
@@ -51,7 +51,12 @@ export const AddPatientExtended = () => {
                             </div>
                         </header>
                         <main>
-                            <AddPatientExtendedForm />
+                            <AddPatientExtendedForm
+                                validationErrors={
+                                    interaction.status === 'invalid' ? interaction.validationErrors : undefined
+                                }
+                                setSubFormState={interaction.setSubFormState}
+                            />
                             <AddPatientExtendedInPageNav />
                         </main>
                     </div>

@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import classNames from 'classnames';
 import sprite from '@uswds/uswds/img/sprite.svg';
+import classNames from 'classnames';
+import { ReactNode } from 'react';
 import styles from './message.module.scss';
 
 type Type = 'information' | 'success' | 'warning' | 'error';
@@ -44,4 +44,5 @@ const resolveIcon = (type: Type) => {
     }
 };
 
-export { Message };
+export { Message, resolveIcon };
+export type { Type };

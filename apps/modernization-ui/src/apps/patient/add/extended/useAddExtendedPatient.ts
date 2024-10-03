@@ -1,16 +1,24 @@
-import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { CreatedPatient, NewPatient } from './api';
 import { ExtendedNewPatientEntry } from './entry';
-import { AddExtendedPatientInteraction, Working, Created } from './useAddExtendedPatientInteraction';
+import {
+    AddExtendedPatientInteraction,
+    Working,
+    Created,
+    Invalid,
+    SubFormDirtyState
+} from './useAddExtendedPatientInteraction';
 
 type Step =
     | { status: 'requesting'; entry: ExtendedNewPatientEntry }
     | { status: 'creating'; input: NewPatient }
     | { status: 'created'; created: CreatedPatient }
+    | { status: 'invalid'; validationErrors: SubFormDirtyState }
     | { status: 'waiting' };
 
 type Action =
     | { type: 'request'; entry: ExtendedNewPatientEntry }
+    | { type: 'invalidate'; validationErrors: SubFormDirtyState }
     | { type: 'create'; input: NewPatient }
     | { type: 'complete'; created: CreatedPatient }
     | { type: 'wait' };
@@ -21,6 +29,9 @@ const reducer = (current: Step, action: Action): Step => {
     switch (action.type) {
         case 'request': {
             return { status: 'requesting', entry: action.entry };
+        }
+        case 'invalidate': {
+            return { status: 'invalid', validationErrors: action.validationErrors };
         }
         case 'create': {
             return { status: 'creating', input: action.input };
@@ -37,7 +48,7 @@ const reducer = (current: Step, action: Action): Step => {
 type Transformer = (entry: ExtendedNewPatientEntry) => NewPatient;
 type Creator = (input: NewPatient) => Promise<CreatedPatient>;
 
-type State = Working | Created;
+type State = Working | Created | Invalid;
 
 type Settings = {
     transformer: Transformer;
@@ -46,11 +57,34 @@ type Settings = {
 
 const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedPatientInteraction => {
     const [step, dispatch] = useReducer(reducer, initial);
+    const [subFormDirtyState, setSubFormDirtyState] = useState<SubFormDirtyState>({
+        address: false,
+        phone: false,
+        identification: false,
+        name: false,
+        race: false
+    });
+
+    const setSubFormState = (subFormState: Partial<SubFormDirtyState>) => {
+        setSubFormDirtyState((current) => {
+            return { ...current, ...subFormState };
+        });
+    };
 
     useEffect(() => {
         if (step.status === 'requesting') {
-            const input = transformer(step.entry);
-            dispatch({ type: 'create', input });
+            if (
+                !subFormDirtyState.address &&
+                !subFormDirtyState.identification &&
+                !subFormDirtyState.name &&
+                !subFormDirtyState.phone &&
+                !subFormDirtyState.race
+            ) {
+                const input = transformer(step.entry);
+                dispatch({ type: 'create', input });
+            } else {
+                dispatch({ type: 'invalidate', validationErrors: subFormDirtyState });
+            }
         } else if (step.status === 'creating') {
             creator(step.input).then((created) => dispatch({ type: 'complete', created }));
         }
@@ -62,7 +96,8 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
 
     return {
         ...state,
-        create
+        create,
+        setSubFormState
     };
 };
 
@@ -74,6 +109,9 @@ const evaluateState = (step: Step): State => {
         }
         case 'created': {
             return { status: 'created', created: step.created };
+        }
+        case 'invalid': {
+            return { status: 'invalid', validationErrors: step.validationErrors };
         }
         default: {
             return { status: step.status };

@@ -150,7 +150,10 @@ const Fixture = ({ asOf }: Props) => {
 
     return (
         <FormProvider {...form}>
-            <AddPatientExtendedForm />
+            <AddPatientExtendedForm
+                setSubFormState={jest.fn()}
+                // invalid={false}
+            />
         </FormProvider>
     );
 };
