@@ -10,6 +10,7 @@ import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { ExtendedNewPatientEntry, initial } from './entry';
 import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
+import { ValidationErrors } from './useAddExtendedPatientInteraction';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -138,9 +139,10 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
 
 type Props = {
     asOf?: string;
+    validationErrors?: ValidationErrors;
 };
 
-const Fixture = ({ asOf }: Props) => {
+const Fixture = ({ asOf, validationErrors }: Props) => {
     const defaultValues = initial(asOf);
 
     const form = useForm<ExtendedNewPatientEntry>({
@@ -150,10 +152,7 @@ const Fixture = ({ asOf }: Props) => {
 
     return (
         <FormProvider {...form}>
-            <AddPatientExtendedForm
-                setSubFormState={jest.fn()}
-                // invalid={false}
-            />
+            <AddPatientExtendedForm setSubFormState={jest.fn()} validationErrors={validationErrors} />
         </FormProvider>
     );
 };
@@ -224,5 +223,35 @@ describe('AddPatientExtendedForm', () => {
 
             expect(getByLabelText('General information as of')).toHaveValue('05/07/1977');
         });
+    });
+
+    it('should display validation errors', () => {
+        const { getByText, getAllByRole } = render(
+            <Fixture
+                validationErrors={{
+                    dirtySections: { name: true, phone: true, address: true, identification: true, race: true }
+                }}
+            />
+        );
+
+        expect(getByText('Please fix the following errors:')).toBeInTheDocument();
+
+        const errors = getAllByRole('listitem', getAllByRole('list')[0]);
+        expect(errors).toHaveLength(5);
+        expect(errors[0]).toHaveTextContent(
+            'Data has been entered in the Name section. Please press Add or clear the data and submit again.'
+        );
+        expect(errors[1]).toHaveTextContent(
+            'Data has been entered in the Address section. Please press Add or clear the data and submit again.'
+        );
+        expect(errors[2]).toHaveTextContent(
+            'Data has been entered in the Phone & Email section. Please press Add or clear the data and submit again.'
+        );
+        expect(errors[3]).toHaveTextContent(
+            'Data has been entered in the Identification section. Please press Add or clear the data and submit again.'
+        );
+        expect(errors[4]).toHaveTextContent(
+            'Data has been entered in the Race section. Please press Add or clear the data and submit again.'
+        );
     });
 });
