@@ -159,10 +159,11 @@ describe('AddressEntryFields', () => {
             'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
 
         await waitFor(() => {
+            const validationError = queryByText(validationMessage);
             if (valid) {
-                expect(queryByText(validationMessage)).not.toBeInTheDocument();
+                expect(validationError).not.toBeInTheDocument();
             } else {
-                expect(queryByText(validationMessage)).toBeInTheDocument();
+                expect(validationError).toBeInTheDocument();
             }
         });
     });
