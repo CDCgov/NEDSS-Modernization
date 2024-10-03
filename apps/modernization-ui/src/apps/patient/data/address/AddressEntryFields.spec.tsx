@@ -1,4 +1,4 @@
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddressEntry } from '../entry';
@@ -116,7 +116,7 @@ describe('AddressEntryFields', () => {
         const asOf = getByLabelText('Address as of');
         const type = getByLabelText('Type');
         const use = getByLabelText('Use');
-        await screen.findByText('Use');
+        await waitFor(() => expect(use).toBeInTheDocument());
 
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
@@ -131,6 +131,40 @@ describe('AddressEntryFields', () => {
             expect(queryByText('Type is required.')).not.toBeInTheDocument();
             expect(queryByText('As of date is required.')).not.toBeInTheDocument();
             expect(queryByText('Use is required.')).not.toBeInTheDocument();
+        });
+    });
+
+    test.each([
+        { value: '0000.00', valid: false },
+        { value: '0001.00', valid: false },
+        { value: '0001.01', valid: true },
+        { value: '1000.00', valid: false },
+        { value: '9999.99', valid: false },
+        { value: '9999.98', valid: true },
+        { value: '0001', valid: true },
+        { value: '9999', valid: true },
+        { value: '0000', valid: false },
+        { value: '9999.00', valid: false },
+        { value: '0001.99', valid: false },
+        { value: '1234.56', valid: true }
+    ])('should validate Census Tract format for value: $value', async ({ value, valid }) => {
+        const { getByLabelText, queryByText } = render(<Fixture />);
+        const censusTractInput = getByLabelText('Census tract');
+
+        userEvent.clear(censusTractInput);
+        userEvent.paste(censusTractInput, value);
+        userEvent.tab();
+
+        const validationMessage =
+            'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
+
+        await waitFor(() => {
+            const validationError = queryByText(validationMessage);
+            if (valid) {
+                expect(validationError).not.toBeInTheDocument();
+            } else {
+                expect(validationError).toBeInTheDocument();
+            }
         });
     });
 });
