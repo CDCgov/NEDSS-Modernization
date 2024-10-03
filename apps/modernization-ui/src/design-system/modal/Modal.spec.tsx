@@ -63,6 +63,18 @@ describe('when a modal is displayed', () => {
         expect(closer).toBeNull();
     });
 
+    it('should not render close icon when showCloseX is false', () => {
+        const { queryByLabelText } = render(
+            <Modal id={'identifier-value'} title="Title Value" onClose={() => {}} showCloseX={false}>
+                Contents
+            </Modal>
+        );
+
+        const closer = queryByLabelText('Close Title Value');
+
+        expect(closer).toBeNull();
+    });
+
     it('should invoke the onClose when icon close called', () => {
         const onClose = jest.fn();
         const { getByRole } = render(
