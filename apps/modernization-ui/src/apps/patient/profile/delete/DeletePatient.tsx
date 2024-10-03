@@ -1,10 +1,10 @@
-import { Icon } from '@trussworks/react-uswds';
 import { DeletePatientMutation, PatientSummary, useDeletePatientMutation } from 'generated/graphql/schema';
+import { Icon } from 'design-system/icon';
+import { Confirmation, Warning } from 'design-system/modal';
 import { useAlert } from 'alert';
 import { displayName } from 'name';
 import { Patient } from 'apps/patient/profile/Patient';
 
-import { Confirmation, Warning } from 'design-system/modal';
 import { Shown, useConditionalRender } from 'conditional-render';
 import { Note } from 'components/Note';
 import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
@@ -51,7 +51,7 @@ const DeletePatient = ({ patient, summary }: Props) => {
 
     return (
         <>
-            <Button destructive icon={<Icon.Delete size={3} />} onClick={show}>
+            <Button destructive icon={<Icon name="delete" size="small" />} labelPosition="right" onClick={show}>
                 Delete patient
             </Button>
             {render(
