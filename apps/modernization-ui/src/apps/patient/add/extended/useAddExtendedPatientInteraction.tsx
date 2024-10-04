@@ -11,11 +11,22 @@ type Created = {
     created: CreatedPatient;
 };
 
-type AddExtendedPatientInteraction = (Working | Created) & {
-    create: (entry: ExtendedNewPatientEntry) => void;
+type Invalid = {
+    status: 'invalid';
+    validationErrors: ValidationErrors;
+};
+type SubFormDirtyState = { address: boolean; phone: boolean; identification: boolean; name: boolean; race: boolean };
+
+type ValidationErrors = {
+    dirtySections: SubFormDirtyState;
 };
 
-export type { AddExtendedPatientInteraction, Working, Created };
+type AddExtendedPatientInteraction = (Working | Created | Invalid) & {
+    create: (entry: ExtendedNewPatientEntry) => void;
+    setSubFormState: (subFormState: Partial<SubFormDirtyState>) => void;
+};
+
+export type { AddExtendedPatientInteraction, Working, Created, Invalid };
 
 const AddExtendedPatientInteractionContext = createContext<AddExtendedPatientInteraction | undefined>(undefined);
 
@@ -43,3 +54,4 @@ const useAddExtendedPatientInteraction = (): AddExtendedPatientInteraction => {
 };
 
 export { AddExtendedPatientInteractionProvider, useAddExtendedPatientInteraction };
+export type { SubFormDirtyState, ValidationErrors };
