@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { CodedValue } from 'coded';
 import { MockedProvider } from '@apollo/react-testing';
 import { CountiesCodedValues } from 'location';
@@ -153,28 +153,42 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
     usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
+const renderWithRouter = () => {
+    const routes = [
+        {
+            path: '/',
+            element: <AddPatientExtended />
+        }
+    ];
+
+    const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+
+    return render(
+        <MockedProvider mocks={[]} addTypename={false}>
+            <RouterProvider router={router} />
+        </MockedProvider>
+    );
+
+    // old way, but this doesn't work with data router
+    // render(
+    //     <MockedProvider mocks={[]} addTypename={false}>
+    //         <MemoryRouter>
+    //             <AddPatientExtended />
+    //         </MemoryRouter>
+    //     </MockedProvider>
+    // );
+};
+
 describe('AddPatientExtended', () => {
     it('should have a heading', () => {
-        const { getAllByRole } = render(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <MemoryRouter>
-                    <AddPatientExtended />
-                </MemoryRouter>
-            </MockedProvider>
-        );
+        const { getAllByRole } = renderWithRouter();
 
         const headings = getAllByRole('heading');
         expect(headings[1]).toHaveTextContent('New patient - extended');
     });
 
     it('should have cancel and save buttons', () => {
-        const { getAllByRole } = render(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <MemoryRouter>
-                    <AddPatientExtended />
-                </MemoryRouter>
-            </MockedProvider>
-        );
+        const { getAllByRole } = renderWithRouter();
 
         const buttons = getAllByRole('button');
         expect(buttons[0]).toHaveTextContent('Cancel');

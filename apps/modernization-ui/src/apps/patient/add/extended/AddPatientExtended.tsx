@@ -1,5 +1,5 @@
 import { Button } from 'components/button';
-import { useMemo, useState } from 'react';
+import { useEffect, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { creator } from './creator';
@@ -16,10 +16,12 @@ import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { useLocalStorage } from 'storage';
 import { useNavigate } from 'react-router-dom';
 import { AddPatientSideNav } from '../nav/AddPatientSideNav';
+import { useNavigationBlock } from 'navigation/useNavigationBlock';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
+    const [bypassBlocker, setBypassBlocker] = useState<boolean>(false);
     const { value } = useLocalStorage({ key: 'patient.create.extended.cancel' });
     const navigate = useNavigate();
 
@@ -29,29 +31,55 @@ export const AddPatientExtended = () => {
     );
 
     const defaultValues = initial();
-
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues,
         mode: 'onBlur'
     });
+    const formIsDirty = form.formState.isDirty;
 
-    const handleSave = form.handleSubmit(interaction.create);
+    // setup navigation blocking for back button
+    const shouldBlockNavigation = formIsDirty && !bypassBlocker;
+    // Fires when user attempts to navigate away from the page, i.e. via router link or back button
+    const onBlock = useCallback(() => {
+        // open modal to confirm cancel
+        setCancelModal(true);
+    }, []);
+    const blocker = useNavigationBlock({ shouldBlock: shouldBlockNavigation, onBlock });
 
-    const handleCancel = () => {
+    const handleSaveClick = form.handleSubmit(interaction.create);
+
+    const handleCancelClick = () => {
+        // if user clicked cancel button, we don't want to block navigation
+        setBypassBlocker(true);
+        handleCancelForm();
+    };
+
+    const handleCancelForm = useCallback(() => {
         if (value) {
-            handleCancelConfirm();
+            handleModalConfirm();
         } else {
             setCancelModal(true);
         }
-    };
+    }, [bypassBlocker]);
 
-    const handleCancelConfirm = () => {
+    const handleModalConfirm = () => {
+        blocker.proceed();
         navigate('/add-patient');
     };
 
-    const closeCancel = () => {
+    const handleModalClose = () => {
+        blocker.reset();
         setCancelModal(false);
+        setBypassBlocker(false);
     };
+
+    // Reset the blocker after a successful submission
+    useEffect(() => {
+        if (interaction.status === 'created') {
+            blocker.reset();
+            setBypassBlocker(false);
+        }
+    }, [interaction.status]);
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
@@ -65,10 +93,10 @@ export const AddPatientExtended = () => {
                         <header>
                             <h1>New patient - extended</h1>
                             <div className={styles.buttonGroup}>
-                                <Button onClick={handleCancel} outline>
+                                <Button onClick={handleCancelClick} outline>
                                     Cancel
                                 </Button>
-                                <Button onClick={handleSave} disabled={!form.formState.isValid}>
+                                <Button onClick={handleSaveClick} disabled={!form.formState.isValid}>
                                     Save
                                 </Button>
                             </div>
@@ -79,12 +107,7 @@ export const AddPatientExtended = () => {
                         </main>
                     </div>
                     {cancelModal && (
-                        <CancelAddPatientExtendedPanel
-                            onConfirm={() => {
-                                handleCancelConfirm();
-                            }}
-                            onClose={() => closeCancel()}
-                        />
+                        <CancelAddPatientExtendedPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
                     )}
                 </div>
             </FormProvider>
