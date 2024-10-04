@@ -96,6 +96,7 @@ class ManageSectionPage {
     }
 
     checkAddedSectionExist() {
+        cy.wait(5000)
         cy.contains("test new section");
     }
 
