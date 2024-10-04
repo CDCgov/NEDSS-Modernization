@@ -12,8 +12,8 @@ type ModalProps = {
     id: string;
     title: string;
     size?: 'small' | 'large' | 'auto';
+    /** Whether to force interaction on the modal. This also hides the "X" button. */
     forceAction?: boolean;
-    showCloseX?: boolean;
     className?: string;
     ariaDescribedBy?: string;
     children: ReactNode;
@@ -26,7 +26,6 @@ const Modal = ({
     title,
     size = 'auto',
     forceAction = false,
-    showCloseX = true,
     children,
     className,
     ariaDescribedBy,
@@ -65,7 +64,7 @@ const Modal = ({
                     open>
                     <header id={header} className={'usa-modal__heading'}>
                         <h2>{title}</h2>
-                        {showCloseX && !forceAction && (
+                        {!forceAction && (
                             <svg
                                 tabIndex={0}
                                 role="button"
