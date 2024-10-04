@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, within } from '@testing-library/react';
 import { PatientSexBirthCodedValue } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { CodedValue } from 'coded';
 import { CountiesCodedValues } from 'location';
@@ -10,6 +10,7 @@ import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { ExtendedNewPatientEntry, initial } from './entry';
 import { FormProvider, useForm } from 'react-hook-form';
 import { internalizeDate } from 'date';
+import { ValidationErrors } from './useAddExtendedPatientInteraction';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -138,9 +139,10 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
 
 type Props = {
     asOf?: string;
+    validationErrors?: ValidationErrors;
 };
 
-const Fixture = ({ asOf }: Props) => {
+const Fixture = ({ asOf, validationErrors }: Props) => {
     const defaultValues = initial(asOf);
 
     const form = useForm<ExtendedNewPatientEntry>({
@@ -150,7 +152,7 @@ const Fixture = ({ asOf }: Props) => {
 
     return (
         <FormProvider {...form}>
-            <AddPatientExtendedForm />
+            <AddPatientExtendedForm setSubFormState={jest.fn()} validationErrors={validationErrors} />
         </FormProvider>
     );
 };
@@ -221,5 +223,59 @@ describe('AddPatientExtendedForm', () => {
 
             expect(getByLabelText('General information as of')).toHaveValue('05/07/1977');
         });
+    });
+
+    it('should display validation errors', () => {
+        const { getByText, getAllByRole } = render(
+            <Fixture
+                validationErrors={{
+                    dirtySections: { name: true, phone: true, address: true, identification: true, race: true }
+                }}
+            />
+        );
+
+        expect(getByText('Please fix the following errors:')).toBeInTheDocument();
+
+        const errors = getAllByRole('listitem', getAllByRole('list')[0]);
+        expect(errors).toHaveLength(5);
+        // Name error
+        expect(errors[0]).toHaveTextContent(
+            'Data has been entered in the Name section. Please press Add or clear the data and submit again.'
+        );
+        let link = within(errors[0]).getByRole('link');
+        expect(link).toHaveTextContent('Name');
+        expect(link).toHaveAttribute('href', '#name');
+
+        // Address
+        expect(errors[1]).toHaveTextContent(
+            'Data has been entered in the Address section. Please press Add or clear the data and submit again.'
+        );
+        link = within(errors[1]).getByRole('link');
+        expect(link).toHaveTextContent('Address');
+        expect(link).toHaveAttribute('href', '#address');
+
+        // Phone & Email
+        expect(errors[2]).toHaveTextContent(
+            'Data has been entered in the Phone & Email section. Please press Add or clear the data and submit again.'
+        );
+        link = within(errors[2]).getByRole('link');
+        expect(link).toHaveTextContent('Phone & Email');
+        expect(link).toHaveAttribute('href', '#phoneAndEmail');
+
+        // Identification
+        expect(errors[3]).toHaveTextContent(
+            'Data has been entered in the Identification section. Please press Add or clear the data and submit again.'
+        );
+        link = within(errors[3]).getByRole('link');
+        expect(link).toHaveTextContent('Identification');
+        expect(link).toHaveAttribute('href', '#identification');
+
+        // Race
+        expect(errors[4]).toHaveTextContent(
+            'Data has been entered in the Race section. Please press Add or clear the data and submit again.'
+        );
+        link = within(errors[4]).getByRole('link');
+        expect(link).toHaveTextContent('Race');
+        expect(link).toHaveAttribute('href', '#races');
     });
 });

@@ -1,21 +1,21 @@
 import { Button } from 'components/button';
+import { Shown } from 'conditional-render';
 import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'storage';
+import { AddPatientSideNav } from '../nav/AddPatientSideNav';
+import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
+import { CreatedPatient } from './api';
+import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { creator } from './creator';
 import { ExtendedNewPatientEntry, initial } from './entry';
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { transformer } from './transformer';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { Shown } from 'conditional-render';
-import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import styles from './add-patient-extended.module.scss';
-import { CreatedPatient } from './api';
-import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
-import { useLocalStorage } from 'storage';
-import { useNavigate } from 'react-router-dom';
-import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
@@ -74,7 +74,12 @@ export const AddPatientExtended = () => {
                             </div>
                         </header>
                         <main>
-                            <AddPatientExtendedForm />
+                            <AddPatientExtendedForm
+                                validationErrors={
+                                    interaction.status === 'invalid' ? interaction.validationErrors : undefined
+                                }
+                                setSubFormState={interaction.setSubFormState}
+                            />
                             <AddPatientExtendedInPageNav />
                         </main>
                     </div>
