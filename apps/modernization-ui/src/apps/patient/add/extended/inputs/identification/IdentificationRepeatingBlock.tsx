@@ -4,6 +4,7 @@ import { today } from 'date';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { IdentificationView } from './IdentificationView';
+import { ReactNode } from 'react';
 
 const defaultValue: Partial<IdentificationEntry> = {
     asOf: today(),
@@ -14,8 +15,9 @@ const defaultValue: Partial<IdentificationEntry> = {
 type Props = {
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    errors?: ReactNode[];
 };
-export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const IdentificationRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
     const renderForm = () => <IdentificationEntryFields />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 
@@ -35,6 +37,7 @@ export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };

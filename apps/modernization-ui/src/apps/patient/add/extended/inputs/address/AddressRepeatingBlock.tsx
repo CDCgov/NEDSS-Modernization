@@ -4,6 +4,7 @@ import { Column } from 'design-system/table';
 import { AddressView } from './AddressView';
 import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
+import { ReactNode } from 'react';
 
 const defaultValue: Partial<AddressEntry> = {
     asOf: today(),
@@ -23,8 +24,9 @@ const defaultValue: Partial<AddressEntry> = {
 type Props = {
     onChange: (data: AddressEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    errors?: ReactNode[];
 };
-export const AddressRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const AddressRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
     const renderForm = () => <AddressEntryFields />;
     const renderView = (entry: AddressEntry) => <AddressView entry={entry} />;
 
@@ -47,6 +49,7 @@ export const AddressRepeatingBlock = ({ onChange, isDirty }: Props) => {
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };

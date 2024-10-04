@@ -14,7 +14,7 @@ type Props<V extends FieldValues> = {
     title: string;
     columns: Column<V>[];
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
-    errors?: string[];
+    errors?: ReactNode[];
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
     formRenderer: (control: Control<V>) => ReactNode;

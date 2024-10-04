@@ -15,6 +15,7 @@ import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 import { AlertMessage } from 'design-system/message';
 import styles from './add-patient-extended-form.module.scss';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
+import React from 'react';
 
 type Props = {
     validationErrors?: ValidationErrors;
@@ -23,24 +24,28 @@ type Props = {
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
     const { setValue } = useFormContext<ExtendedNewPatientEntry>();
 
+    // Generates an error message that will contain a link to the section if an id is provided
+    const generateErrorMessage = (section: string, id?: string) => {
+        return (
+            <React.Fragment key={section}>
+                Data has been entered in the {id ? <a href={`#${id}`}>{section}</a> : `${section}`} section. Please
+                press Add or clear the data and submit again.
+            </React.Fragment>
+        );
+    };
+
     const renderErrorMessages = () => {
-        const generateError = (section: string, id: string) => {
-            return (
-                <>
-                    Data has been entered in the <a href={`#${id}`}>{section}</a> section. Please press Add or clear the
-                    data and submit again.
-                </>
-            );
-        };
         return (
             <ul className={styles.errorList}>
-                {validationErrors?.dirtySections.name && <li>{generateError('Name', 'name')}</li>}
-                {validationErrors?.dirtySections.address && <li>{generateError('Address', 'address')}</li>}
-                {validationErrors?.dirtySections.phone && <li>{generateError('Phone & Email', 'phoneAndEmail')}</li>}
-                {validationErrors?.dirtySections.identification && (
-                    <li>{generateError('Identification', 'identification')}</li>
+                {validationErrors?.dirtySections.name && <li>{generateErrorMessage('Name', 'name')}</li>}
+                {validationErrors?.dirtySections.address && <li>{generateErrorMessage('Address', 'address')}</li>}
+                {validationErrors?.dirtySections.phone && (
+                    <li>{generateErrorMessage('Phone & Email', 'phoneAndEmail')}</li>
                 )}
-                {validationErrors?.dirtySections.race && <li>{generateError('Race', 'races')}</li>}
+                {validationErrors?.dirtySections.identification && (
+                    <li>{generateErrorMessage('Identification', 'identification')}</li>
+                )}
+                {validationErrors?.dirtySections.race && <li>{generateErrorMessage('Race', 'races')}</li>}
             </ul>
         );
     };
@@ -62,22 +67,31 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                 <NameRepeatingBlock
                     isDirty={(isDirty) => setSubFormState({ name: isDirty })}
                     onChange={(nameData) => setValue('names', nameData)}
+                    errors={validationErrors?.dirtySections.name ? [generateErrorMessage('Name')] : undefined}
                 />
                 <AddressRepeatingBlock
                     isDirty={(isDirty) => setSubFormState({ address: isDirty })}
                     onChange={(addressData) => setValue('addresses', addressData)}
+                    errors={validationErrors?.dirtySections.address ? [generateErrorMessage('Address')] : undefined}
                 />
                 <PhoneAndEmailRepeatingBlock
                     isDirty={(isDirty) => setSubFormState({ phone: isDirty })}
                     onChange={(phoneEmailData) => setValue('phoneEmails', phoneEmailData)}
+                    errors={
+                        validationErrors?.dirtySections.address ? [generateErrorMessage('Phone & Email')] : undefined
+                    }
                 />
                 <IdentificationRepeatingBlock
                     isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
                     onChange={(identificationData) => setValue('identifications', identificationData)}
+                    errors={
+                        validationErrors?.dirtySections.address ? [generateErrorMessage('Identification')] : undefined
+                    }
                 />
                 <RaceRepeatingBlock
                     isDirty={(isDirty) => setSubFormState({ race: isDirty })}
                     onChange={(raceData) => setValue('races', raceData)}
+                    errors={validationErrors?.dirtySections.address ? [generateErrorMessage('Race')] : undefined}
                 />
                 <Card
                     id="ethnicity"
