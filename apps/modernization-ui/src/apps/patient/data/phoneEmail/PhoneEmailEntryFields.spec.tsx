@@ -111,4 +111,52 @@ describe('PhoneEmailEntryFields', () => {
             expect(queryByText('Use is required.')).not.toBeInTheDocument();
         });
     });
+
+    test.each([
+        { value: '1', valid: true },
+        { value: '123', valid: true }
+    ])('should validate country code format for value: $value', async ({ value, valid }) => {
+        const { getByLabelText, queryByText } = render(<Fixture />);
+        const countryCodeInput = getByLabelText('Country code');
+
+        userEvent.clear(countryCodeInput);
+        userEvent.paste(countryCodeInput, value);
+        userEvent.tab();
+
+        const validationMessage = 'A country code should be 1 to 3 digits';
+
+        await waitFor(() => {
+            const validationError = queryByText(validationMessage);
+            if (valid) {
+                expect(validationError).not.toBeInTheDocument();
+            } else {
+                expect(validationError).toBeInTheDocument();
+            }
+        });
+    });
+
+    test.each([
+        { value: '1', valid: true },
+        { value: '12', valid: true },
+        { value: '123', valid: true },
+        { value: '1234', valid: true }
+    ])('should validate extensionformat for value: $value', async ({ value, valid }) => {
+        const { getByLabelText, queryByText } = render(<Fixture />);
+        const extensionInput = getByLabelText('Extension');
+
+        userEvent.clear(extensionInput);
+        userEvent.paste(extensionInput, value);
+        userEvent.tab();
+
+        const validationMessage = 'A Extension should be 1 to 4 digits';
+
+        await waitFor(() => {
+            const validationError = queryByText(validationMessage);
+            if (valid) {
+                expect(validationError).not.toBeInTheDocument();
+            } else {
+                expect(validationError).toBeInTheDocument();
+            }
+        });
+    });
 });
