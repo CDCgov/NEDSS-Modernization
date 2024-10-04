@@ -29,7 +29,7 @@ export const CancelAddPatientExtendedPanel = ({ onClose, onConfirm }: Props) => 
             title="Warning"
             confirmText="Yes, cancel"
             cancelText="No, back to form"
-            forceAction={false}
+            forceAction={true}
             onConfirm={() => {
                 onSubmit();
             }}>
