@@ -16,20 +16,13 @@
         @extend %thin-bottom;
     }
 
-    .errors {
-        display: flex;
-        flex-direction: column;
+    .errorList {
+        list-style: inside;
+        padding: 0;
+        margin: 0;
 
-        .errorHeading {
-            color: colors.$base-darkest;
-            font-size: 1.375rem;
-            font-weight: 700;
-        }
-
-        ul {
-            padding: 0;
-            margin: 0;
-            list-style-position: inside;
+        & > li {
+            line-height: 1.62rem;
         }
     }
 

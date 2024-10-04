@@ -9,7 +9,7 @@ const useInPageNavigation = (threshold: number = 0) => {
             entries.forEach((entry) => {
                 const section = entry.target as HTMLElement;
                 const sectionId = section.id;
-                const sectionLink = document.querySelector(`a[href="#${sectionId}"]`);
+                const sectionLink = document.querySelector(`a[id="inPageNav-${sectionId}"]`);
                 if (entry.intersectionRatio > threshold) {
                     section?.classList.add(styles.active);
                     sectionLink?.classList.add(styles.active);
@@ -33,7 +33,7 @@ const useInPageNavigation = (threshold: number = 0) => {
 
         sections.forEach((section) => {
             const sectionId = section.id;
-            const sectionLink = document.querySelector(`a[href="#${sectionId}"]`);
+            const sectionLink = document.querySelector(`a[id="inPageNav-${sectionId}"]`);
             if (sectionLink) {
                 sectionLink.addEventListener('click', (event) => {
                     event.preventDefault();

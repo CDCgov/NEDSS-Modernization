@@ -1,13 +1,13 @@
 import { Icon } from '@trussworks/react-uswds';
-import { AlertBanner } from 'alert';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
+import { AlertMessage } from 'design-system/message';
 import { Column, DataTable } from 'design-system/table';
-import { ReactNode, useEffect } from 'react';
-import { Control, DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
-import { useMultiValueEntryState } from './useMultiValueEntryState';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { Control, DefaultValues, FieldValues, FormProvider, useForm, useFormState } from 'react-hook-form';
 import styles from './RepeatingBlock.module.scss';
+import { useMultiValueEntryState } from './useMultiValueEntryState';
 
 type Props<V extends FieldValues> = {
     id?: string;
@@ -31,7 +31,8 @@ export const RepeatingBlock = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const form = useForm<V>({ defaultValues });
+    const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onSubmit', defaultValues });
+    const { errors: formErrors } = useFormState({ control: form.control });
     const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
 
     useEffect(() => {
@@ -95,24 +96,40 @@ export const RepeatingBlock = <V extends FieldValues>({
         )
     };
 
+    // Combine error message prop and internal form error messages into an array for display in the banner
+    const errorMessages = useMemo<ReactNode[]>(() => {
+        const formErrorMessages = Object.values(formErrors).map((error) => error?.message?.toString());
+
+        // const messages: ReactNode[] = [];
+        return errors ? errors.concat(formErrorMessages) : formErrorMessages;
+        // return messages
+        //     .concat(errors)
+        //     .concat(formErrorMessages)
+        //     .filter((a) => a !== undefined);
+    }, [JSON.stringify(formErrors), errors]);
+
+    // If a user clears the form, remove internal form validation errors
+    useEffect(() => {
+        if (!form.formState.isDirty) {
+            form.clearErrors();
+        }
+    }, [form.formState.isDirty]);
+
     return (
         <section id={id} className={styles.input}>
             <header>
                 <Heading level={2}>{title}</Heading>
                 <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
             </header>
-            {errors && errors.length > 0 && (
+            {errorMessages && errorMessages.length > 0 && (
                 <section>
-                    <AlertBanner type="error">
-                        <div className={styles.errors}>
-                            <div className={styles.errorHeading}>Please fix the following errors: </div>
-                            <ul>
-                                {errors.map((e, i) => (
-                                    <li key={i}>{e}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </AlertBanner>
+                    <AlertMessage title="Please fix the following errors:" type="error">
+                        <ul className={styles.errorList}>
+                            {errorMessages.map((e, i) => (
+                                <li key={i}>{e}</li>
+                            ))}
+                        </ul>
+                    </AlertMessage>
                 </section>
             )}
             <div>
@@ -136,7 +153,7 @@ export const RepeatingBlock = <V extends FieldValues>({
             </FormProvider>
             <footer>
                 {(state.status === 'editing' || state.status === 'adding') && (
-                    <Button outline disabled={!form.formState.isValid} onClick={form.handleSubmit(handleSubmit)}>
+                    <Button outline onClick={form.handleSubmit(handleSubmit)}>
                         <Icon.Add />
                         {`${state.status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
                     </Button>
