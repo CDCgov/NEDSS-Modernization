@@ -140,7 +140,7 @@ describe('PhoneEmailEntryFields', () => {
         { value: '12', valid: true },
         { value: '123', valid: true },
         { value: '1234', valid: true }
-    ])('should validate extensionformat for value: $value', async ({ value, valid }) => {
+    ])('should validate extension format for value: $value', async ({ value, valid }) => {
         const { getByLabelText, queryByText } = render(<Fixture />);
         const extensionInput = getByLabelText('Extension');
 
