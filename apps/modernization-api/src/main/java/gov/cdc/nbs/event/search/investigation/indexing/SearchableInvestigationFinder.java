@@ -99,6 +99,10 @@ class SearchableInvestigationFinder {
   private static final int NOTIFIED_ON_COLUMN = 25;
   private static final int NOTIFICATION_STATUS_COLUMN = 26;
   private static final int INVESTIGATOR_LAST_NAME_COLUMN = 27;
+  private static final int DOCUMENT_IDS_COLUMN = 28;
+  private static final int MORBIDITY_REPORT_IDS_COLUMN = 29;
+  private static final int TREATMENT_IDS_COLUMN = 30;
+  private static final int VACCINATION_IDS_COLUMN = 31;
 
   private final JdbcTemplate template;
   private final SearchableInvestigationRowMapper mapper;
@@ -133,7 +137,11 @@ class SearchableInvestigationFinder {
             NOTIFICATION_COLUMN,
             NOTIFIED_ON_COLUMN,
             NOTIFICATION_STATUS_COLUMN,
-            INVESTIGATOR_LAST_NAME_COLUMN));
+            INVESTIGATOR_LAST_NAME_COLUMN,
+            DOCUMENT_IDS_COLUMN,
+            MORBIDITY_REPORT_IDS_COLUMN,
+            TREATMENT_IDS_COLUMN,
+            VACCINATION_IDS_COLUMN));
   }
 
   Optional<SearchableInvestigation> find(final long identifier) {

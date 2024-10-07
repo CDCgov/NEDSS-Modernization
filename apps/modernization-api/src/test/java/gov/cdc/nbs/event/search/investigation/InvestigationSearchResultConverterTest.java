@@ -44,6 +44,10 @@ class InvestigationSearchResultConverterTest {
         LocalDate.of(2013, Month.AUGUST, 19),
         "notification-status-value",
         "investigator-value",
+        "document1,document2",
+        "morbid1,morbid2",
+        "treatment1,treatment2",
+        "vaccination1,vaccination2",
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList());

@@ -37,9 +37,11 @@ class SearchableInvestigationRowMapper implements RowMapper<SearchableInvestigat
       int notification,
       int notifiedOn,
       int notificationStatus,
-      int investigatorLastName
-
-  ) {
+      int investigatorLastName,
+      int documentIds,
+      int morbidityReportIds,
+      int treatmentIds,
+      int vaccinationIds) {
   }
 
   private final Column columns;
@@ -85,6 +87,10 @@ class SearchableInvestigationRowMapper implements RowMapper<SearchableInvestigat
     LocalDate notifiedOn = LocalDateColumnMapper.map(resultSet, this.columns.notifiedOn());
 
     String investigatorLastName = resultSet.getString(this.columns.investigatorLastName());
+    String documentIds = resultSet.getString(this.columns.documentIds());
+    String morbidityReportIds = resultSet.getString(this.columns.morbidityReportIds());
+    String treatmentIds = resultSet.getString(this.columns.treatmentIds());
+    String vaccinationIds = resultSet.getString(this.columns.vaccinationIds());
 
     return new SearchableInvestigation(
         identifier,
@@ -113,6 +119,10 @@ class SearchableInvestigationRowMapper implements RowMapper<SearchableInvestigat
         notification,
         notifiedOn,
         notificationStatus,
-        investigatorLastName);
+        investigatorLastName,
+        documentIds,
+        morbidityReportIds,
+        treatmentIds,
+        vaccinationIds);
   }
 }

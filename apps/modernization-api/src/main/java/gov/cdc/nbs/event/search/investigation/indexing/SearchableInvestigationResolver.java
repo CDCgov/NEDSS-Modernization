@@ -65,6 +65,10 @@ public class SearchableInvestigationResolver {
         investigation.notifiedOn(),
         investigation.notificationStatus(),
         investigation.investigatorLastName(),
+        investigation.documentIds(),
+        investigation.morbidityReportIds(),
+        investigation.treatmentIds(),
+        investigation.vaccinationIds(),
         people,
         organizations,
         identifiers);
