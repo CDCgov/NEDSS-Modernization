@@ -2,12 +2,14 @@ import { render } from '@testing-library/react';
 import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
 import { RaceRepeatingBlock } from './RaceRepeatingBlock';
+import { Selectable } from 'options';
 
-const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
+const mockRaceCodedValues: Selectable[] = [{ value: '1', name: 'race name' }];
 
-jest.mock('coded/race/useRaceCodedValues', () => ({
-    useRaceCodedValues: () => mockRaceCodedValues
+jest.mock('options/concepts', () => ({
+    useConceptOptions: () => ({ options: mockRaceCodedValues })
 }));
+
 const mockDetailedOptions: CodedValue[] = [
     { value: '2', name: 'detailed race1' },
     { value: '3', name: 'detailed race2' }
@@ -35,9 +37,9 @@ jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
-describe('RaceMultiEntry', () => {
+describe('RaceRepeatingBlock', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<RaceRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -46,7 +48,9 @@ describe('RaceMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText, getAllByRole } = render(<RaceRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText, getAllByRole } = render(
+            <RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />
+        );
 
         const dateInput = getByLabelText('Race as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
