@@ -37,7 +37,122 @@ class SearchableInvestigationFinder {
           [notification].local_id as notification_local_id,
           [notification].add_time as notification_add_time,
           coalesce([notification].record_status_cd,'UNASSIGNED') as notification_record_status_cd,
-          [investigator].last_nm as investigator_last_nm
+          [investigator].last_nm as investigator_last_nm,
+
+          (SELECT STUFF(
+            (
+              SELECT ','+ cast(documentId as varchar)
+              FROM (
+            SELECT distinct
+              Document.local_id documentId
+            FROM
+              Public_Health_Case phc2  with (nolock)  inner join
+              Act_Relationship ar  with (nolock) on
+                phc2.public_health_case_uid = ar.target_act_uid
+                AND UPPER(ar.record_status_cd) = 'ACTIVE'
+                AND ar.source_class_cd = 'DOC'
+                AND ar.target_class_cd = 'CASE'
+                AND ar.status_cd='A'
+                AND ar.type_cd='DocToPHC'
+              inner join nbs_document Document  with (nolock) on
+                Document.nbs_document_uid = ar.source_act_uid
+                AND UPPER(Document.record_status_cd) = 'PROCESSED'
+              inner join nbs_document_metadata ndm  with (nolock) on
+                Document.nbs_document_metadata_uid = ndm.nbs_document_metadata_uid
+              left outer join edx_event_process eep  with (nolock) on
+                eep.nbs_document_uid = Document.nbs_document_uid
+                and eep.doc_event_type_cd in('CASE','LabReport','MorbReport','CT')
+                and eep.parsed_ind = 'N'
+            Where
+              phc2.public_health_case_uid = [investigation].public_health_case_uid
+              ) tmp
+              FOR XML PATH('')
+          ), 1, 1, '')) document_ids,
+
+          (SELECT STUFF(
+            (
+              SELECT ','+ cast(morbidityReportId as varchar)
+              FROM (
+            select distinct
+              obs.local_id morbidityReportId
+            from public_health_case
+              inner JOIN act_relationship ar
+                ON ar.target_act_uid = public_health_case.public_health_case_uid
+                and upper(ar.record_status_cd) = 'ACTIVE'
+                and ar.type_cd in ('MorbReport')
+                and ar.source_class_cd = 'OBS'
+                and ar.target_class_cd = 'CASE'
+              inner join observation obs on obs.observation_uid = ar.source_act_uid
+              LEFT OUTER JOIN nbs_srte..condition_code code2
+                ON code2.condition_codeset_nm = 'PHC_TYPE'
+              and  obs.cd= code2.condition_cd
+              LEFT OUTER JOIN Obs_value_coded obsv
+                on obsv.observation_uid = obs.observation_uid
+              LEFT OUTER JOIN Obs_value_date obsd
+                on obsd.observation_uid = obs.observation_uid
+              LEFT OUTER JOIN nbs_srte..code_value_general code1
+                ON code1.code_set_nm = 'MORB_RPT_TYPE'
+              and  obsv.code = code1.code
+            where
+              public_health_case.public_health_case_uid = [investigation].public_health_case_uid
+              ) tmp
+              FOR XML PATH('')
+          ), 1, 1, '')) morbidity_report_ids,
+
+          (SELECT STUFF(
+            (
+              SELECT ','+ cast(treatmentId as varchar)
+              FROM (
+            SELECT distinct
+              Treatment.local_id treatmentId
+            FROM
+              Public_health_case phc2 with (nolock),
+              Act_Relationship ar with (nolock),
+              treatment Treatment with (nolock),
+              Participation par  with (nolock)
+            WHERE phc2.public_health_case_uid = ar.target_act_uid
+              AND UPPER(ar.record_status_cd) = 'ACTIVE'
+              AND UPPER(Treatment.record_status_cd) = 'ACTIVE'
+              AND ar.source_class_cd = 'TRMT'
+              AND ar.target_class_cd = 'CASE'
+              AND Treatment.treatment_uid = ar.source_act_uid
+              AND par.act_uid =  Treatment.treatment_uid
+              AND par.act_class_cd = 'TRMT'
+              AND par.record_status_cd = 'ACTIVE'
+              AND phc2.public_health_case_uid = [investigation].public_health_case_uid
+              ) tmp
+              FOR XML PATH('')
+           ), 1, 1, '')) treatment_ids,
+
+           (SELECT STUFF(
+           (
+              SELECT ','+ cast(vaccinationId as varchar)
+              FROM (
+            SELECT distinct
+              Intervention.local_id vaccinationId
+            FROM
+              Public_health_case phc2 with (nolock)
+              INNER JOIN Act_relationship ar  with (nolock)
+                ON phc2.public_health_case_uid = ar.target_act_uid
+                AND UPPER(ar.record_status_cd) = 'ACTIVE'
+                AND (ar.type_cd = '1180')
+                AND (ar.source_class_cd = 'INTV' )
+                AND ar.target_class_cd = 'CASE'
+              INNER JOIN Intervention Intervention  with (nolock)
+                ON Intervention.intervention_uid = ar.source_act_uid
+              INNER JOIN Participation  with (nolock)
+                ON Intervention.intervention_uid = Participation.act_uid
+              and Participation.subject_class_cd='PAT'
+              and upper(Participation.type_cd)= 'SUBOFVACC'
+              LEFT OUTER JOIN nbs_srte..code_value_general code1   with (nolock)
+                ON code1.code_set_nm = 'VAC_NM'
+              AND Intervention.material_cd = code1.code
+            WHERE
+              phc2.public_health_case_uid = [investigation].public_health_case_uid
+              ) tmp
+              FOR XML PATH('')
+            ), 1, 1, '')) vaccination_ids
+
       from Public_health_case [investigation]
 
           join act on
