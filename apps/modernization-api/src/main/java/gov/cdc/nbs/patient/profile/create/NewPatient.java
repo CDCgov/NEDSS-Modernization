@@ -13,7 +13,6 @@ import gov.cdc.nbs.patient.profile.names.NameDemographic;
 import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,11 +91,11 @@ public record NewPatient(
         null,
         null,
         null,
-        Collections.emptyList(),
-        Collections.emptyList(),
-        Collections.emptyList(),
-        Collections.emptyList(),
-        Collections.emptyList()
+        null,
+        null,
+        null,
+        null,
+        null
     );
   }
 
