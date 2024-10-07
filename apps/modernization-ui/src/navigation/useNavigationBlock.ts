@@ -24,7 +24,6 @@ type NavigationBlock = {
  * @return {NavigationBlock} Functions to control navigation.
  */
 const useNavigationBlock = ({ shouldBlock, onBlock }: NavigationBlockProps): NavigationBlock => {
-    // Block navigating elsewhere when data has been entered into the input
     const blocker = useBlocker(
         useCallback<BlockerFunction>(
             ({ currentLocation, nextLocation }) => shouldBlock && currentLocation.pathname !== nextLocation.pathname,
@@ -47,6 +46,7 @@ const useNavigationBlock = ({ shouldBlock, onBlock }: NavigationBlockProps): Nav
     };
 
     // These are other ways to block navigation
+    // in the future, if we need to block outside of react-router
 
     // Alt method 1: uses history.pushState to prevent back button
     // useEffect(() => {

@@ -8,7 +8,7 @@ jest.mock('react-router-dom', () => ({
 
 /*
 shouldBlock is false: no blocking should happen
-shouldBlock is true:
+shouldBlock is true: watches for router navigation
 */
 
 describe('useNavigationBlock', () => {
