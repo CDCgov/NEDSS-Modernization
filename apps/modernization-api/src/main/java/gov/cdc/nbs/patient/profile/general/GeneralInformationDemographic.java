@@ -1,8 +1,12 @@
 package gov.cdc.nbs.patient.profile.general;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import gov.cdc.nbs.time.json.FormattedLocalDateJsonDeserializer;
+
 import java.time.LocalDate;
 
 public record GeneralInformationDemographic(
+    @JsonDeserialize(using = FormattedLocalDateJsonDeserializer.class)
     LocalDate asOf,
     String maritalStatus,
     String maternalMaidenName,
