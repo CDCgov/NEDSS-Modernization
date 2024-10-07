@@ -3,6 +3,7 @@ import { asRace } from './asRace';
 describe('when mapping a race entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
         const entry = {
+            id: 331,
             asOf: '04/13/2017',
             race: { value: 'race-value', name: 'race-name' },
             detailed: []
@@ -15,6 +16,7 @@ describe('when mapping a race entry to a format accepted by the API', () => {
 
     it('should include the race', () => {
         const entry = {
+            id: 331,
             asOf: '04/13/2017',
             race: { value: 'race-value', name: 'race-name' },
             detailed: []
@@ -27,6 +29,7 @@ describe('when mapping a race entry to a format accepted by the API', () => {
 
     it('should include the race details', () => {
         const entry = {
+            id: 331,
             asOf: '04/13/2017',
             race: { value: 'race-value', name: 'race-name' },
             detailed: [

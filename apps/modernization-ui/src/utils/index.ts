@@ -7,7 +7,8 @@ export * from './exists';
 export * from './focusedTarget';
 export * from './mapIf';
 
-type Predicate<T> = (item: T) => boolean;
+export type { Predicate } from './predicate';
+
 type Mapping<I, O> = (input: I) => O;
 type Maybe<V> = V | null | undefined;
 type EffectiveDated = {
@@ -18,4 +19,4 @@ type HasComments = {
     comment?: string;
 };
 
-export type { Predicate, Mapping, Maybe, EffectiveDated, HasComments };
+export type { Mapping, Maybe, EffectiveDated, HasComments };

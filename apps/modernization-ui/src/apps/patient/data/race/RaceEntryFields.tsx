@@ -1,16 +1,19 @@
 import { useDetailedRaceCodedValues } from 'coded/race';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { RaceEntry } from './entry';
+import { RaceCategoryValidator, RaceEntry } from './entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
+    categoryValidator: RaceCategoryValidator;
 };
 
-const RaceEntryFields = ({ categories }: RaceEntryFieldsProps) => {
+const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps) => {
     const { control } = useFormContext<RaceEntry>();
+
+    const id = useWatch({ control, name: 'id' });
 
     const selectedCategory = useWatch({ control, name: 'race' });
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory?.value);
@@ -39,7 +42,8 @@ const RaceEntryFields = ({ categories }: RaceEntryFieldsProps) => {
                 control={control}
                 name="race"
                 rules={{
-                    required: { value: true, message: 'Race is required.' }
+                    required: { value: true, message: 'Race is required.' },
+                    validate: (category) => categoryValidator(id, category)
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect
@@ -60,7 +64,6 @@ const RaceEntryFields = ({ categories }: RaceEntryFieldsProps) => {
             <Controller
                 control={control}
                 name="detailed"
-                shouldUnregister
                 render={({ field: { onChange, value, name } }) => (
                     <MultiSelect
                         label="Detailed race"

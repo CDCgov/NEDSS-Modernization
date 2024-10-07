@@ -1,13 +1,17 @@
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
 import { RaceRepeatingBlock } from './RaceRepeatingBlock';
 import { Selectable } from 'options';
+import userEvent from '@testing-library/user-event';
 
-const mockRaceCodedValues: Selectable[] = [{ value: '1', name: 'race name' }];
+const mockRaceCodedValues: Selectable[] = [
+    { value: '1', name: 'race one name' },
+    { value: '2', name: 'race two name' }
+];
 
-jest.mock('options/concepts', () => ({
-    useConceptOptions: () => ({ options: mockRaceCodedValues })
+jest.mock('options/race/useRaceCategoryOptions', () => ({
+    useRaceCategoryOptions: () => ({ categories: mockRaceCodedValues })
 }));
 
 const mockDetailedOptions: CodedValue[] = [
@@ -19,27 +23,26 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
     useDetailedRaceCodedValues: () => mockDetailedOptions
 }));
 
-const mockEntry = {
-    state: {
-        data: [
-            {
-                asOf: internalizeDate(new Date()),
-                race: '1'
-            }
-        ]
-    }
-};
-
-jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
-    useMultiValueEntryState: () => mockEntry
-}));
-
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
 describe('RaceRepeatingBlock', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(
+            <RaceRepeatingBlock
+                id="testing"
+                values={[
+                    {
+                        id: 3,
+                        asOf: '06/05/2024',
+                        race: { value: '1', name: 'race one name' },
+                        detailed: []
+                    }
+                ]}
+                onChange={onChange}
+                isDirty={isDirty}
+            />
+        );
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -48,7 +51,7 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText, getAllByRole } = render(
+        const { getByLabelText, getByRole } = render(
             <RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />
         );
 
@@ -58,7 +61,51 @@ describe('RaceRepeatingBlock', () => {
         const race = getByLabelText('Race');
         expect(race).toHaveValue('');
 
-        const detailedRace = getAllByRole('combobox')[0];
+        const detailedRace = getByRole('combobox');
         expect(detailedRace).toHaveValue('');
+    });
+
+    it('should mark repeating block as dirty when input changes', () => {
+        const { getByLabelText } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
+
+        const category = getByLabelText('Race');
+
+        act(() => {
+            userEvent.selectOptions(category, '1');
+            userEvent.tab();
+        });
+
+        expect(isDirty).toHaveBeenCalledWith(true);
+    });
+
+    it('should not allow adding the same race more than once', async () => {
+        const { getByLabelText, getByRole } = render(
+            <RaceRepeatingBlock
+                id="testing"
+                values={[
+                    {
+                        id: 3,
+                        asOf: '06/05/2024',
+                        race: { value: '1', name: 'race one name' },
+                        detailed: []
+                    }
+                ]}
+                onChange={onChange}
+                isDirty={isDirty}
+            />
+        );
+
+        const category = getByLabelText('Race');
+
+        const add = getByRole('button', { name: 'Add race' });
+
+        act(() => {
+            userEvent.selectOptions(category, '1');
+            userEvent.tab();
+        });
+
+        expect(isDirty).toHaveBeenCalledWith(true);
+
+        expect(add).toBeDisabled();
     });
 });

@@ -53,11 +53,6 @@ type IdentificationEntry = EffectiveDated & {
     issuer?: Selectable;
 };
 
-type RaceEntry = EffectiveDated & {
-    race: Selectable;
-    detailed: Selectable[];
-};
-
 type EthnicityEntry = EffectiveDated & {
     ethnicity: Selectable;
     detailed: Selectable[];
@@ -103,7 +98,6 @@ export type {
     AddressEntry,
     PhoneEmailEntry,
     IdentificationEntry,
-    RaceEntry,
     EthnicityEntry,
     SexEntry,
     BirthEntry,
