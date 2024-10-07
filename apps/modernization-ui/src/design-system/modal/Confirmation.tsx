@@ -6,6 +6,7 @@ type Props = {
     title?: string;
     children?: ReactNode;
     confirmText?: string;
+    forceAction?: boolean;
     onConfirm: () => void;
     cancelText?: string;
     onCancel: () => void;
@@ -15,6 +16,7 @@ const Confirmation = ({
     title = 'Confirmation',
     children,
     confirmText = 'Confirm',
+    forceAction,
     onConfirm,
     cancelText = 'No, go back',
     onCancel
@@ -24,6 +26,7 @@ const Confirmation = ({
             id={`confirmation-${title}`}
             size="small"
             title={title}
+            forceAction={forceAction}
             onClose={onCancel}
             footer={(close) => (
                 <>
