@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
 
@@ -97,6 +97,7 @@ const AddPatient = () => {
         defaultValues: initialEntry(),
         mode: 'onBlur'
     });
+    const watch = useWatch({ control: methods.control });
 
     const {
         handleSubmit,
@@ -206,6 +207,12 @@ const AddPatient = () => {
         return () => observer.disconnect();
     }, []);
 
+    const checkExtended = () => {};
+
+    useEffect(() => {
+        console.log(watch.middleName);
+    }, [watch]);
+
     return (
         <Grid
             row
@@ -275,7 +282,8 @@ const AddPatient = () => {
                                         <NavLinkButton
                                             type="outline"
                                             className="add-patient-button"
-                                            to={'/patient/add/extended'}>
+                                            to={'/patient/add/extended'}
+                                            state={{ defaults: watch }}>
                                             Add extended data
                                         </NavLinkButton>
                                     )}

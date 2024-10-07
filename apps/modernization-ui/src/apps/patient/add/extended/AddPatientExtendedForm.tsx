@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Card } from './card/Card';
 import { ExtendedNewPatientEntry } from './entry';
@@ -14,6 +14,7 @@ import { PhoneAndEmailRepeatingBlock } from './inputs/phone/PhoneAndEmailRepeati
 import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 
 import styles from './add-patient-extended-form.module.scss';
+import { useLocation } from 'react-router-dom';
 
 // used to track sub-form state to display error on parent form submisson
 type DirtyState = {
@@ -25,12 +26,18 @@ type DirtyState = {
 };
 export const AddPatientExtendedForm = () => {
     const { setValue } = useFormContext<ExtendedNewPatientEntry>();
+    
+    const location = useLocation();
     const [dirtyState, setDirtyState] = useState<DirtyState>({
         address: false,
         phone: false,
         identification: false,
         race: false,
         name: false
+    });
+
+    useEffect(() => {
+        console.log(location.state.defaults);
     });
 
     return (

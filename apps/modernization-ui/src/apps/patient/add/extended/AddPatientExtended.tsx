@@ -1,5 +1,5 @@
 import { Button } from 'components/button';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { creator } from './creator';
@@ -14,9 +14,11 @@ import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import styles from './add-patient-extended.module.scss';
 import { CreatedPatient } from './api';
 import { AddPatientSideNav } from '../nav/AddPatientSideNav';
+import { useLocation } from 'react-router-dom';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
+    const location = useLocation();
 
     const created = useMemo<CreatedPatient | undefined>(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -31,6 +33,15 @@ export const AddPatientExtended = () => {
     });
 
     const handleSave = form.handleSubmit(interaction.create);
+
+    // useEffect(() => {
+    //     console.log(location.state);
+    //     console.log(useBasicToExtended(location.state.defaults));
+    // }, []);
+
+    // get basic info
+    // transfer it into extended type
+    // and then pass it into the rest of the things?
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
