@@ -18,11 +18,13 @@ import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientIn
 import styles from './add-patient-extended.module.scss';
 import { useNavigationBlock } from 'navigation/useNavigationBlock';
 
+const MODAL_STORAGE_KEY = 'patient.create.extended.cancel';
+
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
     const [bypassBlocker, setBypassBlocker] = useState<boolean>(false);
-    const { value } = useLocalStorage({ key: 'patient.create.extended.cancel' });
+    const { value: bypassModal } = useLocalStorage<{ value: boolean | undefined }>({ key: MODAL_STORAGE_KEY });
     const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
@@ -38,7 +40,7 @@ export const AddPatientExtended = () => {
     const formIsDirty = form.formState.isDirty;
 
     // setup navigation blocking for back button
-    const shouldBlockNavigation = formIsDirty && !bypassBlocker;
+    const shouldBlockNavigation = formIsDirty && !bypassBlocker && !bypassModal;
     // Fires when user attempts to navigate away from the page, i.e. via router link or back button
     const onBlock = useCallback(() => {
         // open modal to confirm cancel
@@ -48,30 +50,26 @@ export const AddPatientExtended = () => {
 
     const handleSaveClick = form.handleSubmit(interaction.create);
 
-    const handleCancelClick = () => {
+    const handleCancelClick = useCallback(() => {
         // if user clicked cancel button, we don't want to block navigation
         setBypassBlocker(true);
-        handleCancelForm();
-    };
-
-    const handleCancelForm = useCallback(() => {
-        if (value) {
+        if (bypassModal) {
             handleModalConfirm();
         } else {
             setCancelModal(true);
         }
-    }, [bypassBlocker]);
+    }, [bypassBlocker, bypassModal]);
 
-    const handleModalConfirm = () => {
+    const handleModalConfirm = useCallback(() => {
         blocker.proceed();
         navigate('/add-patient');
-    };
+    }, [blocker, navigate]);
 
-    const handleModalClose = () => {
+    const handleModalClose = useCallback(() => {
         blocker.reset();
         setCancelModal(false);
         setBypassBlocker(false);
-    };
+    }, [blocker]);
 
     // Reset the blocker after a successful submission
     useEffect(() => {

@@ -31,7 +31,6 @@ const useNavigationBlock = ({ shouldBlock, onBlock }: NavigationBlockProps): Nav
             [shouldBlock]
         )
     );
-    console.log('blocker state, shouldBlock = ', blocker.state, shouldBlock);
 
     // Reset the blocker if the user cleans the form
     useEffect(() => {
@@ -51,20 +50,14 @@ const useNavigationBlock = ({ shouldBlock, onBlock }: NavigationBlockProps): Nav
 
     // Alt method 1: uses history.pushState to prevent back button
     // useEffect(() => {
-    //     console.log('useEffect back button');
-    //     console.log('history', window.history);
     //     // const handlePopState = (e: PopStateEvent) => {
-    //     //     console.log('popstate', e);
     //     //     e.preventDefault();
     //     //     e.returnValue = false;
-    //     //     // setUsedBackButton(true);
     //     //     handleCancel();
     //     //     return false;
     //     // };
-
     //     // window.addEventListener('popstate', handlePopState);
     //     // window.history.pushState({ modalOpened: false }, '');
-
     //     // return () => {
     //     //     window.removeEventListener('popstate', handlePopState);
     //     // };
@@ -73,9 +66,7 @@ const useNavigationBlock = ({ shouldBlock, onBlock }: NavigationBlockProps): Nav
     // Alt method 2: uses beforeunload to prevent back button or page reload navigation
     // this unfortunately is not consistent and may be deprecated in the future as browsers increasingly prevent this behavior
     // useEffect(() => {
-    //     console.log('useEffect beforeunload');
     //     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    //         console.log('beforeunload', e);
     //         e.preventDefault();
     //         e.returnValue = false;
     //         handleCancel();

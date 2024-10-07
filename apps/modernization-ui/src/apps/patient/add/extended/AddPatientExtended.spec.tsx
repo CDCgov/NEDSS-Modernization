@@ -9,6 +9,7 @@ import { PatientIdentificationCodedValues } from 'apps/patient/profile/identific
 import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
+import { useLocalStorage } from 'storage';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -153,6 +154,10 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
     usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
+jest.mock('storage', () => ({
+    useLocalStorage: jest.fn()
+}));
+
 const renderWithRouter = () => {
     const routes = [
         {
@@ -162,24 +167,18 @@ const renderWithRouter = () => {
     ];
 
     const router = createMemoryRouter(routes, { initialEntries: ['/'] });
-
     return render(
         <MockedProvider mocks={[]} addTypename={false}>
             <RouterProvider router={router} />
         </MockedProvider>
     );
-
-    // old way, but this doesn't work with data router
-    // render(
-    //     <MockedProvider mocks={[]} addTypename={false}>
-    //         <MemoryRouter>
-    //             <AddPatientExtended />
-    //         </MemoryRouter>
-    //     </MockedProvider>
-    // );
 };
 
 describe('AddPatientExtended', () => {
+    beforeEach(() => {
+        (useLocalStorage as jest.Mock).mockReturnValue({ value: false });
+    });
+
     it('should have a heading', () => {
         const { getAllByRole } = renderWithRouter();
 
@@ -193,5 +192,33 @@ describe('AddPatientExtended', () => {
         const buttons = getAllByRole('button');
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Save');
+    });
+
+    it('should not be showing modal by default', () => {
+        renderWithRouter();
+        const modal = document.querySelector('dialog');
+        expect(modal).not.toBeInTheDocument();
+    });
+
+    it('should show modal when cancel is clicked', () => {
+        const { getByText } = renderWithRouter();
+
+        const cancelButton = getByText('Cancel');
+        cancelButton.click();
+
+        const modal = document.querySelector('dialog');
+        expect(modal).toBeInTheDocument();
+    });
+
+    it('should bypass showing modal when local storage flag is set', () => {
+        (useLocalStorage as jest.Mock).mockReturnValue({ value: true });
+
+        const { getByText } = renderWithRouter();
+
+        const cancelButton = getByText('Cancel');
+        cancelButton.click();
+
+        const modal = document.querySelector('dialog');
+        expect(modal).not.toBeInTheDocument();
     });
 });
