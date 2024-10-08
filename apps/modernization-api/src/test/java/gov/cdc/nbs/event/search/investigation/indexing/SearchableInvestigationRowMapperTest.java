@@ -45,11 +45,7 @@ class SearchableInvestigationRowMapperTest {
         101,
         103,
         107,
-        108,
-        109,
-        110,
-        111,
-        112);
+        108);
 
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getLong(columns.identifier())).thenReturn(419L);

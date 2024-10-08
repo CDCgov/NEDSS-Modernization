@@ -25,7 +25,11 @@ public record SearchablePatient(
     @JsonProperty("phone") List<Phone> phones,
     @JsonProperty("email") List<Email> emails,
     @JsonProperty("race") List<Race> races,
-    @JsonProperty("entity_id") List<Identification> identifications) {
+    @JsonProperty("entity_id") List<Identification> identifications,
+    @JsonProperty("document_ids") String documentIds,
+    @JsonProperty("morbidity_report_ids") String morbidityReportIds,
+    @JsonProperty("treatment_ids") String treatmentIds,
+    @JsonProperty("vaccination_ids") String vaccinationIds) {
 
   public SearchablePatient(
       long identifier,
@@ -34,7 +38,11 @@ public record SearchablePatient(
       LocalDate birthday,
       String deceased,
       String gender,
-      String ethnicity) {
+      String ethnicity,
+      String documentIds,
+      String morbidityReportIds,
+      String treatmentIds,
+      String vaccinationIds) {
     this(
         identifier,
         local,
@@ -48,7 +56,11 @@ public record SearchablePatient(
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList(),
-        Collections.emptyList());
+        Collections.emptyList(),
+        documentIds,
+        morbidityReportIds,
+        treatmentIds,
+        vaccinationIds);
   }
 
   public record Name(

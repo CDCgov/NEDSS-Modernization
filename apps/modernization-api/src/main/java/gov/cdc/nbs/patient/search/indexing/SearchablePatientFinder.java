@@ -30,6 +30,10 @@ class SearchablePatientFinder {
   private static final int DECEASED_COLUMN = 5;
   private static final int GENDER_COLUMN = 6;
   private static final int ETHNICITY_COLUMN = 7;
+  private static final int DOCUMENT_IDS_COLUMN = 8;
+  private static final int MORBIDITY_REPORT_IDS_COLUMN = 9;
+  private static final int TREATMENT_IDS_COLUMN = 10;
+  private static final int VACCINATION_IDS_COLUMN = 11;
 
   private final JdbcTemplate template;
   private final SearchablePatientRowMapper mapper;
@@ -44,17 +48,18 @@ class SearchablePatientFinder {
             BIRTHDAY_COLUMN,
             DECEASED_COLUMN,
             GENDER_COLUMN,
-            ETHNICITY_COLUMN
-        )
-    );
+            ETHNICITY_COLUMN,
+            DOCUMENT_IDS_COLUMN,
+            MORBIDITY_REPORT_IDS_COLUMN,
+            TREATMENT_IDS_COLUMN,
+            VACCINATION_IDS_COLUMN));
   }
 
   Optional<SearchablePatient> find(long identifier) {
     return this.template.query(
-            QUERY,
-            statement -> statement.setLong(PATIENT_PARAMETER, identifier),
-            this.mapper
-        ).stream()
+        QUERY,
+        statement -> statement.setLong(PATIENT_PARAMETER, identifier),
+        this.mapper).stream()
         .findFirst();
   }
 }

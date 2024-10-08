@@ -48,10 +48,6 @@ public record SearchableInvestigation(
             using = LocalDateWithTimeJsonDeserializer.class) LocalDate notifiedOn,
     @JsonProperty("notification_record_status_cd") String notificationStatus,
     @JsonProperty("investigator_last_nm") String investigatorLastName,
-    @JsonProperty("document_ids") String documentIds,
-    @JsonProperty("morbidity_report_ids") String morbidityReportIds,
-    @JsonProperty("treatment_ids") String treatmentIds,
-    @JsonProperty("vaccination_ids") String vaccinationIds,
     @JsonProperty("person_participations") List<Person> people,
     @JsonProperty("organization_participations") List<Organization> organizations,
     @JsonProperty("act_ids") List<Identifier> identifiers) {
@@ -97,11 +93,7 @@ public record SearchableInvestigation(
       String notification,
       LocalDate notifiedOn,
       String notificationStatus,
-      String investigatorLastName,
-      String documentIds,
-      String morbidityReportIds,
-      String treatmentIds,
-      String vaccinationIds) {
+      String investigatorLastName) {
     this(
         identifier,
         classCode,
@@ -130,10 +122,6 @@ public record SearchableInvestigation(
         notifiedOn,
         notificationStatus,
         investigatorLastName,
-        documentIds,
-        morbidityReportIds,
-        treatmentIds,
-        vaccinationIds,
         Collections.emptyList(),
         Collections.emptyList(),
         Collections.emptyList());
