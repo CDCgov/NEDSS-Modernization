@@ -79,11 +79,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             values={value}
                             isDirty={(isDirty) => setSubFormState({ name: isDirty })}
                             onChange={onChange}
-                            errors={
-                                validationErrors?.dirtySections.identification
-                                    ? [generateErrorMessage('Name')]
-                                    : undefined
-                            }
+                            errors={validationErrors?.dirtySections.name ? [generateErrorMessage('Name')] : undefined}
                         />
                     )}
                 />
@@ -97,9 +93,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             isDirty={(isDirty) => setSubFormState({ address: isDirty })}
                             onChange={onChange}
                             errors={
-                                validationErrors?.dirtySections.identification
-                                    ? [generateErrorMessage('Address')]
-                                    : undefined
+                                validationErrors?.dirtySections.address ? [generateErrorMessage('Address')] : undefined
                             }
                         />
                     )}
@@ -114,7 +108,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             isDirty={(isDirty) => setSubFormState({ phone: isDirty })}
                             onChange={onChange}
                             errors={
-                                validationErrors?.dirtySections.identification
+                                validationErrors?.dirtySections.phone
                                     ? [generateErrorMessage('Phone & Email')]
                                     : undefined
                             }
