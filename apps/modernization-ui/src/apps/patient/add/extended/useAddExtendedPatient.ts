@@ -67,6 +67,7 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
     });
 
     const setSubFormState = (subFormState: Partial<SubFormDirtyState>) => {
+        console.log('setting to dirty', subFormState);
         setSubFormDirtyState((current) => {
             return { ...current, ...subFormState };
         });
