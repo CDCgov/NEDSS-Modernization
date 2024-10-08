@@ -226,7 +226,7 @@ describe('AddPatientExtendedForm', () => {
     });
 
     it('should display validation errors', () => {
-        const { getByText, getAllByRole } = render(
+        const { getAllByText, getAllByRole } = render(
             <Fixture
                 validationErrors={{
                     dirtySections: { name: true, phone: true, address: true, identification: true, race: true }
@@ -234,9 +234,9 @@ describe('AddPatientExtendedForm', () => {
             />
         );
 
-        expect(getByText('Please fix the following errors:')).toBeInTheDocument();
+        expect(getAllByText('Please fix the following errors:')).toHaveLength(6);
 
-        const errors = getAllByRole('listitem', getAllByRole('list')[0]);
+        const errors = within(getAllByRole('list')[0]).getAllByRole('listitem');
         expect(errors).toHaveLength(5);
         // Name error
         expect(errors[0]).toHaveTextContent(
