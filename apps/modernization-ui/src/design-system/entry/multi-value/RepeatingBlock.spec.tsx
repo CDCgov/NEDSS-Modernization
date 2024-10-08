@@ -90,7 +90,7 @@ type Props = {
 const Fixture = ({ values = [], errors }: Props) => (
     <RepeatingBlock<TestType>
         id="testing"
-        title={'Test'}
+        title={'Test title'}
         defaultValues={defaultValues}
         columns={columns}
         values={values}

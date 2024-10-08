@@ -103,6 +103,11 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                             values={value}
                             isDirty={(isDirty) => setSubFormState({ race: isDirty })}
                             onChange={onChange}
+                            errors={
+                                validationErrors?.dirtySections.identification
+                                    ? [generateErrorMessage('Race')]
+                                    : undefined
+                            }
                         />
                     )}
                 />
