@@ -43,7 +43,6 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
     const renderErrorMessages = () => {
         return (
             <ul className={styles.errorList}>
-                Is name dirty: {validationErrors?.dirtySections.name ? 'true' : 'false'}
                 {validationErrors?.dirtySections.name && <li>{generateErrorMessage('Name', 'names')}</li>}
                 {validationErrors?.dirtySections.address && <li>{generateErrorMessage('Address', 'addresses')}</li>}
                 {validationErrors?.dirtySections.phone && (
