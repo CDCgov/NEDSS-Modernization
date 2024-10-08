@@ -87,6 +87,8 @@ export const PhoneEmailEntryFields = () => {
                             onBlur={onBlur}
                             defaultValue={value}
                             type="tel"
+                            mask="___"
+                            pattern="^\+?\d{1,3}$"
                             htmlFor={name}
                             id={name}
                             name={name}
@@ -140,10 +142,12 @@ export const PhoneEmailEntryFields = () => {
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
+                        mask="____"
+                        pattern="^\+?\d{1,4}$"
                         htmlFor={name}
                         id={name}
                         name={name}
-                        error={error && 'Invalid extension'}
+                        error={error?.message}
                     />
                 )}
             />

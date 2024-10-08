@@ -170,8 +170,7 @@ export const AddressEntryFields = () => {
                     pattern: {
                         value: /^\d{5}(?:[-\s]\d{4})?$/,
                         message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
-                    },
-                    ...maxLengthRule(20)
+                    }
                 }}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
                     <Input
@@ -182,6 +181,8 @@ export const AddressEntryFields = () => {
                         defaultValue={value}
                         type="text"
                         name="zipcode"
+                        mask="_____-____"
+                        pattern="^\d{5}(?:[-\s]\d{4})?$"
                         htmlFor={name}
                         id={name}
                         error={error?.message}

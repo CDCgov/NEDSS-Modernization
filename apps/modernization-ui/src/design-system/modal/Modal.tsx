@@ -12,6 +12,7 @@ type ModalProps = {
     id: string;
     title: string;
     size?: 'small' | 'large' | 'auto';
+    /** Whether to force interaction on the modal. This also hides the "X" button. */
     forceAction?: boolean;
     className?: string;
     ariaDescribedBy?: string;

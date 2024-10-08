@@ -18,7 +18,7 @@ const mockEntry = {
             {
                 asOf: internalizeDate(new Date()),
                 type: 'AN',
-                first: test
+                first: 'test'
             }
         ]
     }
@@ -32,7 +32,7 @@ jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
     usePatientNameCodedValues: () => mockPatientNameCodedValues
 }));
 
-describe('NameMultiEntry', () => {
+describe('NameRepeatingBlock', () => {
     it('should display correct table headers', async () => {
         const { getAllByRole } = render(<NameRepeatingBlock onChange={onChange} isDirty={isDirty} />);
 

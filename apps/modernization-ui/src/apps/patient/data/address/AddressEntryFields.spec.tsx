@@ -167,4 +167,33 @@ describe('AddressEntryFields', () => {
             }
         });
     });
+
+    test.each([
+        { value: '12345', valid: true },
+        { value: '1234', valid: false },
+        { value: '123456', valid: false },
+        { value: '12345-6789', valid: true },
+        { value: '12345 6789', valid: true },
+        { value: '12345-678', valid: false },
+        { value: '12345 678', valid: false },
+        { value: '1234-5678', valid: false }
+    ])('should validate ZIP code format for value: $value', async ({ value, valid }) => {
+        const { getByLabelText, queryByText } = render(<Fixture />);
+        const zipCodeInput = getByLabelText('Zip');
+
+        userEvent.clear(zipCodeInput);
+        userEvent.paste(zipCodeInput, value);
+        userEvent.tab();
+
+        const validationMessage = 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).';
+
+        await waitFor(() => {
+            const validationError = queryByText(validationMessage);
+            if (valid) {
+                expect(validationError).not.toBeInTheDocument();
+            } else {
+                expect(validationError).toBeInTheDocument();
+            }
+        });
+    });
 });

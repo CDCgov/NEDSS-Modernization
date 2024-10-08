@@ -1,23 +1,27 @@
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
-import { Control, Controller } from 'react-hook-form';
 import { RepeatingBlock } from './RepeatingBlock';
+import { ReactNode } from 'react';
 
 type TestType = {
     firstInput: string;
     secondInput: string;
+    thirdInput?: number;
+    others: [];
 };
 
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
-const defaultValues: TestType = {
+const defaultValues: Partial<TestType> = {
     firstInput: 'first value',
     secondInput: 'second value'
 };
 
-const renderForm = (control: Control<TestType>) => {
+const UnderTestForm = () => {
+    const { control } = useFormContext<TestType>();
     return (
         <section>
             <Controller
@@ -54,54 +58,57 @@ const renderForm = (control: Control<TestType>) => {
     );
 };
 
-const renderView = (entry: TestType) => {
-    return (
-        <section>
-            <div>
-                <label>Render view first value: {entry.firstInput}</label>
-            </div>
-            <div>
-                <label>Render view second value: {entry.secondInput}</label>
-            </div>
-        </section>
-    );
-};
+const UnderTestView = ({ entry }: { entry: TestType }) => (
+    <section>
+        <div>
+            <label>Render view first value: {entry.firstInput}</label>
+        </div>
+        <div>
+            <label>Render view second value: {entry.secondInput}</label>
+        </div>
+    </section>
+);
+
+const columns = [
+    {
+        id: 'first',
+        name: 'First column name',
+        render: (entry: TestType) => entry.firstInput
+    },
+    {
+        id: 'second',
+        name: 'Second column name',
+        render: (entry: TestType) => entry.secondInput
+    }
+];
+
 type Props = {
-    errors?: string[];
+    values?: TestType[];
+    errors?: ReactNode[];
 };
-const UnderTest = ({ errors }: Props) => {
-    return (
-        <RepeatingBlock<TestType>
-            title={'Test title'}
-            defaultValues={defaultValues}
-            columns={[
-                {
-                    id: 'first',
-                    name: 'First',
-                    render: (entry: TestType) => <>{entry.firstInput}</>
-                },
-                {
-                    id: 'second',
-                    name: 'Second',
-                    render: (entry: TestType) => <>{entry.secondInput}</>
-                }
-            ]}
-            onChange={onChange}
-            isDirty={isDirty}
-            formRenderer={renderForm}
-            viewRenderer={renderView}
-            errors={errors}
-        />
-    );
-};
+
+const Fixture = ({ values = [], errors }: Props) => (
+    <RepeatingBlock<TestType>
+        id="testing"
+        title={'Test'}
+        defaultValues={defaultValues}
+        columns={columns}
+        values={values}
+        onChange={onChange}
+        isDirty={isDirty}
+        formRenderer={() => <UnderTestForm />}
+        viewRenderer={(entry) => <UnderTestView entry={entry} />}
+        errors={errors}
+    />
+);
 
 const awaitRender = async () => {
     expect(await screen.findByText('Test title')).toBeInTheDocument();
 };
 
-describe('MultiValueEntry', () => {
+describe('RepeatingBlock', () => {
     it('should display provided title', async () => {
-        const { getByRole } = render(<UnderTest />);
+        const { getByRole } = render(<Fixture />);
         // wait on render to prevent act warning
         await awaitRender();
 
@@ -110,7 +117,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display provided form', async () => {
-        const { getByLabelText } = render(<UnderTest />);
+        const { getByLabelText } = render(<Fixture />);
         await awaitRender();
 
         expect(getByLabelText('First Input')).toBeInTheDocument();
@@ -118,7 +125,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display default values', async () => {
-        const { getByLabelText } = render(<UnderTest />);
+        const { getByLabelText } = render(<Fixture />);
         await awaitRender();
 
         const firstInput = getByLabelText('First Input');
@@ -131,7 +138,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display add button', async () => {
-        const { getByRole } = render(<UnderTest />);
+        const { getByRole } = render(<Fixture />);
         await awaitRender();
 
         const button = getByRole('button');
@@ -140,27 +147,20 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display specified columns', async () => {
-        const getAllByRole = await waitFor(async () => {
-            const { getAllByRole } = render(<UnderTest />);
-            return getAllByRole;
-        });
-
-        act(() => {
-            const inputs = getAllByRole('textbox');
-            userEvent.type(inputs[0], 'test');
-            userEvent.type(inputs[1], 'tedt22');
-            const button = getAllByRole('button');
-            userEvent.click(button[0]);
-        });
+        const { getByRole } = render(
+            <Fixture values={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
+        );
 
         await waitFor(() => {
-            const table = getAllByRole('table');
-            expect(table[0]).toBeInTheDocument();
+            expect(getByRole('table')).toBeInTheDocument();
         });
+
+        expect(getByRole('columnheader', { name: 'First column name' })).toBeInTheDocument();
+        expect(getByRole('columnheader', { name: 'Second column name' })).toBeInTheDocument();
     });
 
     it('should trigger on change when data is submitted', async () => {
-        const { getByRole, getByLabelText } = render(<UnderTest />);
+        const { getByRole, getByLabelText } = render(<Fixture />);
 
         await awaitRender();
 
@@ -189,7 +189,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display submitted data in table', async () => {
-        const { getByRole, getAllByRole } = render(<UnderTest />);
+        const { getByRole, getAllByRole } = render(<Fixture />);
 
         await awaitRender();
 
@@ -210,7 +210,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display icons in last column of table', async () => {
-        const { getByRole, getAllByRole } = render(<UnderTest />);
+        const { getByRole, getAllByRole } = render(<Fixture />);
 
         await awaitRender();
 
@@ -240,7 +240,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should render view when view icon clicked', async () => {
-        const { getByRole, getAllByRole, getByText } = render(<UnderTest />);
+        const { getByRole, getAllByRole, getByText } = render(<Fixture />);
 
         await awaitRender();
 
@@ -264,7 +264,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const { getByRole, getAllByRole } = render(<UnderTest />);
+        const { getByRole, getAllByRole } = render(<Fixture />);
 
         await awaitRender();
 
@@ -287,7 +287,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should allow edit of row', async () => {
-        const { getByRole, getAllByRole, getByLabelText } = render(<UnderTest />);
+        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture />);
 
         await awaitRender();
 
@@ -350,7 +350,7 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display errors passed to component', async () => {
-        const { getByText } = render(<UnderTest errors={['First error', 'Second error']} />);
+        const { getByText } = render(<Fixture errors={['First error', 'Second error']} />);
         await awaitRender();
 
         expect(getByText('First error')).toBeInTheDocument();

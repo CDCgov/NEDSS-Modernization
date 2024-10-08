@@ -29,14 +29,15 @@ export const CancelAddPatientExtendedPanel = ({ onClose, onConfirm }: Props) => 
             title="Warning"
             confirmText="Yes, cancel"
             cancelText="No, back to form"
+            forceAction={true}
             onConfirm={() => {
                 onSubmit();
             }}>
             Canceling the form will result in the loss of all additional data entered. Are you sure you want to cancel?
             <Checkbox
                 label="Don't show again"
-                id={'visbilityCheckbox'}
-                name={'visbilityCheckbox'}
+                id={'visibilityCheckbox'}
+                name={'visibilityCheckbox'}
                 onChange={(e) => handleChange(e)}
             />
         </Confirmation>

@@ -1,29 +1,33 @@
-import { Icon } from '@trussworks/react-uswds';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { DefaultValues, FieldValues, FormProvider, useForm, useFormState } from 'react-hook-form';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { AlertMessage } from 'design-system/message';
+import { Shown } from 'conditional-render';
 import { Column, DataTable } from 'design-system/table';
-import { ReactNode, useEffect, useMemo } from 'react';
-import { Control, DefaultValues, FieldValues, FormProvider, useForm, useFormState } from 'react-hook-form';
-import styles from './RepeatingBlock.module.scss';
 import { useMultiValueEntryState } from './useMultiValueEntryState';
+import styles from './RepeatingBlock.module.scss';
+import { Icon } from 'design-system/icon';
 
 type Props<V extends FieldValues> = {
-    id?: string;
+    id: string;
     title: string;
     columns: Column<V>[];
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
     errors?: ReactNode[];
+    values?: V[];
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
-    formRenderer: (control: Control<V>) => ReactNode;
+    formRenderer: () => ReactNode;
     viewRenderer: (entry: V) => ReactNode;
 };
-export const RepeatingBlock = <V extends FieldValues>({
+
+const RepeatingBlock = <V extends FieldValues>({
     id,
     title,
     defaultValues,
+    values = [],
     columns,
     errors,
     onChange,
@@ -33,7 +37,7 @@ export const RepeatingBlock = <V extends FieldValues>({
 }: Props<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onSubmit', defaultValues });
     const { errors: formErrors } = useFormState({ control: form.control });
-    const { add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>();
+    const { status, selected, add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>({ values });
 
     useEffect(() => {
         onChange(state.data);
@@ -44,7 +48,7 @@ export const RepeatingBlock = <V extends FieldValues>({
     }, [form.formState.isDirty]);
 
     const handleReset = () => {
-        form.reset();
+        form.reset(defaultValues);
         reset();
     };
 
@@ -52,16 +56,16 @@ export const RepeatingBlock = <V extends FieldValues>({
         // Submit button performs various actions based on the current state
         if (state.status === 'adding') {
             add(value);
-            form.reset();
-        } else if (state.status === 'editing') {
+            form.reset(defaultValues);
+        } else if (status === 'editing') {
             update(state.index, value);
-            form.reset();
+            form.reset(defaultValues);
         }
     };
 
     const handleRemove = (index: number) => {
         if ((state.status === 'editing' || state.status === 'viewing') && state.index === index) {
-            form.reset();
+            form.reset(defaultValues);
         }
         remove(index);
     };
@@ -73,24 +77,24 @@ export const RepeatingBlock = <V extends FieldValues>({
     useEffect(() => {
         // Perform form reset after status update to allow time for rendering of form
         // fixes issue with coded values not being selected within the form
-        if ('editing' === state.status) {
-            form.reset(state.data[state.index], { keepDefaultValues: true });
+        if ('editing' === status) {
+            form.reset(selected);
         }
-    }, [state.status]);
+    }, [status]);
 
     const iconColumn: Column<V> = {
-        id: '',
+        id: 'actions',
         name: '',
-        render: (entry: V, index: number) => (
+        render: (_entry: V, index: number) => (
             <div className={styles.iconContainer}>
                 <div data-tooltip-position="top" aria-label="View">
-                    <Icon.Visibility onClick={() => view(index)} />
+                    <Icon name="visibility" onClick={() => view(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Edit">
-                    <Icon.Edit onClick={() => handleEdit(index)} />
+                    <Icon name="edit" onClick={() => handleEdit(index)} />
                 </div>
                 <div data-tooltip-position="top" aria-label="Delete">
-                    <Icon.Delete onClick={() => handleRemove(index)} />
+                    <Icon name="delete" onClick={() => handleRemove(index)} />
                 </div>
             </div>
         )
@@ -117,7 +121,8 @@ export const RepeatingBlock = <V extends FieldValues>({
                 <Heading level={2}>{title}</Heading>
                 <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
             </header>
-            {errorMessages && errorMessages.length > 0 && (
+
+            <Shown when={errorMessages && errorMessages.length > 0}>
                 <section>
                     <AlertMessage title="Please fix the following errors:" type="error">
                         <ul className={styles.errorList}>
@@ -127,40 +132,41 @@ export const RepeatingBlock = <V extends FieldValues>({
                         </ul>
                     </AlertMessage>
                 </section>
-            )}
+            </Shown>
             <div>
-                {state.data.length > 0 && (
+                <Shown when={state.data.length > 0}>
                     <DataTable<V>
                         className={styles.dataTable}
-                        id={`${title}-data-table`}
+                        id={`${id}-data-table`}
                         columns={[...columns, iconColumn]}
                         data={state.data}
                     />
-                )}
+                </Shown>
             </div>
-            <FormProvider {...form}>
-                {state.status === 'viewing' ? (
-                    viewRenderer(state.data[state.index])
-                ) : (
-                    <div className={classNames(styles.form, form.formState.isDirty ? styles.changed : '')}>
-                        {formRenderer(form.control)}
+            <Shown when={status === 'viewing'}>{selected && viewRenderer(selected)}</Shown>
+            <Shown when={status !== 'viewing'}>
+                <FormProvider {...form}>
+                    <div className={classNames(styles.form, { [styles.changed]: form.formState.isDirty })}>
+                        {formRenderer()}
                     </div>
-                )}
-            </FormProvider>
+                </FormProvider>
+            </Shown>
             <footer>
-                {(state.status === 'editing' || state.status === 'adding') && (
+                <Shown when={status === 'editing' || status === 'adding'}>
                     <Button outline onClick={form.handleSubmit(handleSubmit)}>
-                        <Icon.Add />
-                        {`${state.status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
+                        <Icon name="add" />
+                        {`${status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
                     </Button>
-                )}
-                {state.status === 'viewing' && (
+                </Shown>
+                <Shown when={status === 'viewing'}>
                     <Button outline onClick={handleReset}>
-                        <Icon.Add />
+                        <Icon name="add" />
                         {`Add ${title.toLowerCase()}`}
                     </Button>
-                )}
+                </Shown>
             </footer>
         </section>
     );
 };
+
+export { RepeatingBlock };
