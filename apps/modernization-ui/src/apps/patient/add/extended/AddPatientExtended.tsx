@@ -3,7 +3,7 @@ import { Shown } from 'conditional-render';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'storage';
+// import { useLocalStorage } from 'storage';
 import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
@@ -17,14 +17,14 @@ import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 import styles from './add-patient-extended.module.scss';
 import { useNavigationBlock } from 'navigation/useNavigationBlock';
-
-const MODAL_STORAGE_KEY = 'patient.create.extended.cancel';
+import { useShowCancelModal } from './useShowCancelModal';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
-    const [bypassBlocker, setBypassBlocker] = useState<boolean>(false);
-    const { value: bypassModal } = useLocalStorage<{ value: boolean | undefined }>({ key: MODAL_STORAGE_KEY });
+    // const [bypassBlocker, setBypassBlocker] = useState<boolean>(false);
+    // const { value: bypassModal } = useLocalStorage<{ value: boolean | undefined }>({ key: MODAL_STORAGE_KEY });
+    const { value: bypassModal } = useShowCancelModal();
     const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
@@ -39,43 +39,42 @@ export const AddPatientExtended = () => {
     });
     const formIsDirty = form.formState.isDirty;
 
-    // setup navigation blocking for back button
-    const shouldBlockNavigation = formIsDirty && !bypassBlocker && !bypassModal;
-    // Fires when user attempts to navigate away from the page, i.e. via router link or back button
-    const onBlock = useCallback(() => {
-        // open modal to confirm cancel
-        setCancelModal(true);
-    }, []);
-    const blocker = useNavigationBlock({ shouldBlock: shouldBlockNavigation, onBlock });
+    const handleSave = form.handleSubmit(interaction.create);
 
-    const handleSaveClick = form.handleSubmit(interaction.create);
-
-    const handleCancelClick = useCallback(() => {
-        // if user clicked cancel button, we don't want to block navigation
-        setBypassBlocker(true);
+    const handleCancel = useCallback(() => {
         if (bypassModal) {
             handleModalConfirm();
         } else {
             setCancelModal(true);
         }
-    }, [bypassBlocker, bypassModal]);
+    }, [bypassModal]);
+
+    // setup navigation blocking for back button
+    // const shouldBlockNavigation = formIsDirty;
+    // Fires when user attempts to navigate away from the page, i.e. via router link or back button
+    // const handleBlock = useCallback(() => {
+    //     // open modal to confirm cancel
+    //     setCancelModal(true);
+    // }, []);
+    const blocker = useNavigationBlock({ shouldBlock: formIsDirty, onBlock: handleCancel });
 
     const handleModalConfirm = useCallback(() => {
-        blocker.proceed();
+        // console.log('handleModalConfirm');
+        blocker.unblock();
         navigate('/add-patient');
     }, [blocker, navigate]);
 
     const handleModalClose = useCallback(() => {
         blocker.reset();
         setCancelModal(false);
-        setBypassBlocker(false);
+        // setBypassBlocker(false);
     }, [blocker]);
 
     // Reset the blocker after a successful submission
     useEffect(() => {
         if (interaction.status === 'created') {
             blocker.reset();
-            setBypassBlocker(false);
+            // setBypassBlocker(false);
         }
     }, [interaction.status]);
 
@@ -91,10 +90,10 @@ export const AddPatientExtended = () => {
                         <header>
                             <h1>New patient - extended</h1>
                             <div className={styles.buttonGroup}>
-                                <Button onClick={handleCancelClick} outline>
+                                <Button onClick={handleCancel} outline>
                                     Cancel
                                 </Button>
-                                <Button onClick={handleSaveClick} disabled={!form.formState.isValid}>
+                                <Button onClick={handleSave} disabled={!form.formState.isValid}>
                                     Save
                                 </Button>
                             </div>
