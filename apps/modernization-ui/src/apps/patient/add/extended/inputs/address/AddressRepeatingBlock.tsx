@@ -22,11 +22,13 @@ const defaultValue: Partial<AddressEntry> = {
 };
 
 type Props = {
+    id: string;
+    values?: AddressEntry[];
     onChange: (data: AddressEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
 };
-export const AddressRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
+export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
     const renderForm = () => <AddressEntryFields />;
     const renderView = (entry: AddressEntry) => <AddressView entry={entry} />;
 
@@ -41,9 +43,10 @@ export const AddressRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
 
     return (
         <RepeatingBlock<AddressEntry>
-            id="address"
+            id={id}
             title="Address"
             defaultValues={defaultValue}
+            values={values}
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}

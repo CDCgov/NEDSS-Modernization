@@ -32,9 +32,11 @@ jest.mock('apps/patient/profile/names/usePatientNameCodedValues', () => ({
     usePatientNameCodedValues: () => mockPatientNameCodedValues
 }));
 
+const Fixture = () => <NameRepeatingBlock id="names" onChange={onChange} isDirty={isDirty} />;
+
 describe('NameRepeatingBlock', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<NameRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<Fixture />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -46,7 +48,7 @@ describe('NameRepeatingBlock', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<NameRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<Fixture />);
 
         const dateInput = getByLabelText('Name as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));

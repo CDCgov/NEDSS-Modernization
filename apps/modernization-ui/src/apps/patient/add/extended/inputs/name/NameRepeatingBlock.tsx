@@ -29,20 +29,23 @@ const columns: Column<NameEntry>[] = [
 ];
 
 type Props = {
+    id: string;
+    values?: NameEntry[];
     onChange: (data: NameEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
     errors?: ReactNode[];
 };
 
-export const NameRepeatingBlock = ({ onChange, isDirty, errors }: Props) => {
+export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
     const renderForm = () => <NameEntryFields />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
         <RepeatingBlock<NameEntry>
-            id="name"
+            id={id}
             title="Name"
             defaultValues={defaultValue}
+            values={values}
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}

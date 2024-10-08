@@ -31,9 +31,11 @@ jest.mock('design-system/entry/multi-value/useMultiValueEntryState', () => ({
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
+const Fixture = () => <IdentificationRepeatingBlock id="identifications" onChange={onChange} isDirty={isDirty} />;
+
 describe('IdentificationMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<IdentificationRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<Fixture />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -43,7 +45,7 @@ describe('IdentificationMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<IdentificationRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<Fixture />);
 
         const dateInput = getByLabelText('Identification as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
