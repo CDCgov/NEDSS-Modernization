@@ -98,13 +98,10 @@ export const RepeatingBlock = <V extends FieldValues>({
 
     // Combine error message prop and internal form error messages into an array for display in the banner
     const errorMessages = useMemo<ReactNode[]>(() => {
-        const messages: ReactNode[] = [];
         const formErrorMessages = Object.values(formErrors).map((error) => error?.message?.toString());
+        const messages: ReactNode[] = [...(errors ?? []), ...formErrorMessages];
 
-        return messages
-            .concat(errors)
-            .concat(formErrorMessages)
-            .filter((a) => a != undefined);
+        return messages.filter((a) => a != undefined);
     }, [JSON.stringify(formErrors), errors]);
 
     // If a user clears the form, remove internal form validation errors
