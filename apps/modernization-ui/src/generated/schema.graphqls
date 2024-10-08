@@ -1154,7 +1154,8 @@ type PatientSearchResultName {
 }
 
 type PatientSearchResultAddress {
-  use: String!
+  type: String
+  use: String
   address: String
   address2: String
   city: String
