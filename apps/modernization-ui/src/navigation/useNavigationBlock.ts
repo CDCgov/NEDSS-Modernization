@@ -46,7 +46,6 @@ const useNavigationBlock = ({
             [shouldBlock, bypassBlocker]
         )
     );
-    console.log('blocker state, bypassBlocker', blocker.state, bypassBlocker);
 
     // Reset the blocker if the user cleans the form
     useEffect(() => {

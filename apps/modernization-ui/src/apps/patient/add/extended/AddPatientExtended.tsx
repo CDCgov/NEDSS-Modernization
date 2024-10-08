@@ -22,8 +22,6 @@ import { useShowCancelModal } from './useShowCancelModal';
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
-    // const [bypassBlocker, setBypassBlocker] = useState<boolean>(false);
-    // const { value: bypassModal } = useLocalStorage<{ value: boolean | undefined }>({ key: MODAL_STORAGE_KEY });
     const { value: bypassModal } = useShowCancelModal();
     const navigate = useNavigate();
 
@@ -49,17 +47,10 @@ export const AddPatientExtended = () => {
         }
     }, [bypassModal]);
 
-    // setup navigation blocking for back button
-    // const shouldBlockNavigation = formIsDirty;
-    // Fires when user attempts to navigate away from the page, i.e. via router link or back button
-    // const handleBlock = useCallback(() => {
-    //     // open modal to confirm cancel
-    //     setCancelModal(true);
-    // }, []);
+    // Setup navigation blocking for back button
     const blocker = useNavigationBlock({ shouldBlock: formIsDirty, onBlock: handleCancel });
 
     const handleModalConfirm = useCallback(() => {
-        // console.log('handleModalConfirm');
         blocker.unblock();
         navigate('/add-patient');
     }, [blocker, navigate]);
@@ -67,14 +58,12 @@ export const AddPatientExtended = () => {
     const handleModalClose = useCallback(() => {
         blocker.reset();
         setCancelModal(false);
-        // setBypassBlocker(false);
     }, [blocker]);
 
     // Reset the blocker after a successful submission
     useEffect(() => {
         if (interaction.status === 'created') {
             blocker.reset();
-            // setBypassBlocker(false);
         }
     }, [interaction.status]);
 

@@ -41,10 +41,6 @@ describe('CancelAddPatientExtendedPanel', () => {
         const confirmButton = getByRole('button', { name: 'Yes, cancel' });
         userEvent.click(confirmButton);
         expect(onConfirm).toBeCalled();
-
-        // (useShowCancelModal as jest.Mock).mockReturnValue({ value: true, save: defaultSave });
-        // rerender(<CancelAddPatientExtendedPanel onConfirm={onConfirm} />);
-        // expect(onConfirm).toBeCalled();
     });
 
     it('should save checkbox state to local storage on confirm', () => {
