@@ -311,8 +311,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query search($filter: PersonFilter!, $page: SortablePage, $share: String) {\n  findPatientsByFilter(filter: $filter, page: $page, share: $share) {\n    content {\n      patient\n      shortId\n      legalName {\n        first\n        middle\n        last\n        suffix\n      }\n    }\n    total\n    page\n    size\n  }\n}\n",
-								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"]\n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 5,\n        \"sort\" : {\n            \"property\": \"lastNm\",\n            \"direction\": \"DESC\"\n        }\n\t}\n}"
+								"query": "query search($filter: PersonFilter!, $page: SortablePage, $share: String) {\n  findPatientsByFilter(filter: $filter, page: $page, share: $share) {\n    content {\n      patient\n      shortId\n      legalName {\n        first\n        middle\n        last\n        suffix\n      }\n      addresses {\n        type\n        use\n        address\n        city\n        county\n        zipcode\n        state\n      }\n    }\n    total\n    page\n    size\n  }\n}\n",
+								"variables": "{\n    \"filter\" :{\n        \"recordStatus\": [\"ACTIVE\"]\n    },\n    \"page\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 5\n\t}\n}"
 							}
 						},
 						"url": {
@@ -328,50 +328,6 @@
 									"key": "",
 									"value": null
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Patient Search (7.0.0)",
-					"protocolProfileBehavior": {
-						"followRedirects": false,
-						"followOriginalHttpMethod": false,
-						"followAuthorizationHeader": false
-					},
-					"request": {
-						"auth": {
-							"type": "oauth2",
-							"oauth2": [
-								{
-									"key": "accessToken",
-									"value": "{{token}}",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "graphql",
-							"graphql": {
-								"query": "query search($filter:PersonFilter!,$page:SortablePage){\n    findPatientsByFilter(filter:$filter,page:$page){\n        content{\n            id\n            shortId\n            names {\n                firstNm\n                middleNm\n                lastNm\n            } \n        }\n        total\n    }\n}",
-								"variables": "{\n\t\t\"filter\": {\n\t\t\t\"recordStatus\": [\n\t\t\t\t\"ACTIVE\"\n\t\t\t]\n\t\t},\n\t\t\"page\": {\n\t\t\t\"pageNumber\": 0,\n\t\t\t\"pageSize\": 25,\n\t\t\t\"sortDirection\": \"ASC\",\n\t\t\t\"sortField\": \"lastNm\"\n\t\t}\n\t}"
-							}
-						},
-						"url": {
-							"raw": "{{base}}/graphql",
-							"host": [
-								"{{base}}"
-							],
-							"path": [
-								"graphql"
 							]
 						}
 					},
@@ -569,7 +525,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"testing extended patient data\"\n    },\n    \"names\": [],\n    \"addresses\": [],\n    \"phoneEmails\": [],\n    \"races\": [],\n    \"identifications\": []\n}",
+									"raw": "{\n    \"administrative\": {\n        \"asOf\": \"{{localDate}}\",\n        \"comment\": \"testing extended patient data\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
