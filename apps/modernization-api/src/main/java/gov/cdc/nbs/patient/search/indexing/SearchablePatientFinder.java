@@ -33,7 +33,7 @@ class SearchablePatientFinder {
                   AND par.record_status_cd = 'ACTIVE'
                   AND par.act_class_cd = 'DOC'
                   AND par.type_cd = 'SubjOfDoc'
-                  AND par.subject_entity_uid = ?
+                  AND par.subject_entity_uid = person_uid
                 JOIN NBS_SRTE..Code_value_general cvg
                 ON cvg.code_set_nm = 'PUBLIC_HEALTH_EVENT'
                 AND cvg.code = doc.doc_type_cd
@@ -56,7 +56,7 @@ class SearchablePatientFinder {
                   AND par.record_status_cd = 'ACTIVE'
                   AND par.act_class_cd = 'OBS'
                   AND par.type_cd = 'SubjOfMorbReport'
-                AND par.subject_entity_uid = ?
+                AND par.subject_entity_uid = person_uid
             ) tmp
             FOR XML PATH('')
           ), 1, 1, '')) morbidity_report_ids,
@@ -72,7 +72,7 @@ class SearchablePatientFinder {
               Treatment trt with (NOLOCK)
               JOIN Participation par WITH (NOLOCK)
                 ON par.act_uid = trt.treatment_uid
-              AND par.subject_entity_uid = ?
+              AND par.subject_entity_uid = person_uid
                 AND par.act_class_cd = 'TRMT'
                 AND par.record_status_cd = 'ACTIVE'
                   AND par.subject_class_cd='PAT'
@@ -93,7 +93,7 @@ class SearchablePatientFinder {
               ON inv.intervention_uid = par.act_uid
             AND par.subject_class_cd='PAT'
               AND UPPER(par.type_cd)= 'SUBOFVACC'
-            AND par.subject_entity_uid = ?
+            AND par.subject_entity_uid = person_uid
             ) tmp
             FOR XML PATH('')
           ), 1, 1, '')) vaccination_ids
