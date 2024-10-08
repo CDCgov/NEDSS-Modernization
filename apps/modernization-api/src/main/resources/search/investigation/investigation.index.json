@@ -68,9 +68,6 @@
       "curr_process_state_cd": {
         "type": "keyword"
       },
-      "document_ids": {
-        "type": "text"
-      },
       "investigator_last_nm": {
         "type": "keyword"
       },
@@ -95,9 +92,6 @@
       },
       "mood_cd": {
         "type": "keyword"
-      },
-      "morbidity_report_ids": {
-        "type": "text"
       },
       "notification_add_time": {
         "type": "date",
@@ -265,12 +259,6 @@
       "rpt_form_cmplt_time": {
         "type": "date",
         "format": "uuuu-MM-dd'T'HH:mm:ss||uuuu-MM-dd'T'HH:mm:ss.SSS||uuuu-MM-dd'T'HH:mm:ss.SS||uuuu-MM-dd HH:mm:ss.SSS||uuuu-MM-dd HH:mm:ss.S||uuuu-MM-dd HH:mm:ss.SS"
-      },
-      "treatment_ids": {
-        "type": "text"
-      },
-      "vaccination_ids": {
-        "type": "text"
       }
     }
   }
