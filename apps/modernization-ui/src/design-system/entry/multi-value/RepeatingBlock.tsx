@@ -1,14 +1,14 @@
-import { ReactNode, useEffect, useMemo } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm, useFormState } from 'react-hook-form';
 import classNames from 'classnames';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
-import { AlertMessage } from 'design-system/message';
 import { Shown } from 'conditional-render';
-import { Column, DataTable } from 'design-system/table';
-import { useMultiValueEntryState } from './useMultiValueEntryState';
-import styles from './RepeatingBlock.module.scss';
 import { Icon } from 'design-system/icon';
+import { AlertMessage } from 'design-system/message';
+import { Column, DataTable } from 'design-system/table';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
+import styles from './RepeatingBlock.module.scss';
+import { useMultiValueEntryState } from './useMultiValueEntryState';
 
 type Props<V extends FieldValues> = {
     id: string;
@@ -36,7 +36,6 @@ const RepeatingBlock = <V extends FieldValues>({
     viewRenderer
 }: Props<V>) => {
     const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onSubmit', defaultValues });
-    const { errors: formErrors } = useFormState({ control: form.control });
     const { status, selected, add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>({ values });
 
     useEffect(() => {
@@ -102,11 +101,11 @@ const RepeatingBlock = <V extends FieldValues>({
 
     // Combine error message prop and internal form error messages into an array for display in the banner
     const errorMessages = useMemo<ReactNode[]>(() => {
-        const formErrorMessages = Object.values(formErrors).map((error) => error?.message?.toString());
+        const formErrorMessages = Object.values(form.formState.errors).map((error) => error?.message?.toString());
         const messages: ReactNode[] = [...(errors ?? []), ...formErrorMessages];
 
         return messages.filter((a) => a != undefined);
-    }, [JSON.stringify(formErrors), errors]);
+    }, [JSON.stringify(form.formState.errors), errors]);
 
     // If a user clears the form, remove internal form validation errors
     useEffect(() => {

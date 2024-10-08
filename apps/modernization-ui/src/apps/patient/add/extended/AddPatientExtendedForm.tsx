@@ -43,13 +43,14 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
     const renderErrorMessages = () => {
         return (
             <ul className={styles.errorList}>
-                {validationErrors?.dirtySections.name && <li>{generateErrorMessage('Name', 'name')}</li>}
-                {validationErrors?.dirtySections.address && <li>{generateErrorMessage('Address', 'address')}</li>}
+                Is name dirty: {validationErrors?.dirtySections.name ? 'true' : 'false'}
+                {validationErrors?.dirtySections.name && <li>{generateErrorMessage('Name', 'names')}</li>}
+                {validationErrors?.dirtySections.address && <li>{generateErrorMessage('Address', 'addresses')}</li>}
                 {validationErrors?.dirtySections.phone && (
-                    <li>{generateErrorMessage('Phone & Email', 'phoneAndEmail')}</li>
+                    <li>{generateErrorMessage('Phone & Email', 'phoneEmails')}</li>
                 )}
                 {validationErrors?.dirtySections.identification && (
-                    <li>{generateErrorMessage('Identification', 'identification')}</li>
+                    <li>{generateErrorMessage('Identification', 'identifications')}</li>
                 )}
                 {validationErrors?.dirtySections.race && <li>{generateErrorMessage('Race', 'races')}</li>}
             </ul>
@@ -77,7 +78,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         <NameRepeatingBlock
                             id={name}
                             values={value}
-                            isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
+                            isDirty={(isDirty) => setSubFormState({ name: isDirty })}
                             onChange={onChange}
                             errors={
                                 validationErrors?.dirtySections.identification
@@ -94,7 +95,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         <AddressRepeatingBlock
                             id={name}
                             values={value}
-                            isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
+                            isDirty={(isDirty) => setSubFormState({ address: isDirty })}
                             onChange={onChange}
                             errors={
                                 validationErrors?.dirtySections.identification
@@ -111,7 +112,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         <PhoneAndEmailRepeatingBlock
                             id={name}
                             values={value}
-                            isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
+                            isDirty={(isDirty) => setSubFormState({ phone: isDirty })}
                             onChange={onChange}
                             errors={
                                 validationErrors?.dirtySections.identification

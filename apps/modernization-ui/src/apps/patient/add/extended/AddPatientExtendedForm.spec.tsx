@@ -244,7 +244,7 @@ describe('AddPatientExtendedForm', () => {
         );
         let link = within(errors[0]).getByRole('link');
         expect(link).toHaveTextContent('Name');
-        expect(link).toHaveAttribute('href', '#name');
+        expect(link).toHaveAttribute('href', '#names');
 
         // Address
         expect(errors[1]).toHaveTextContent(
@@ -252,7 +252,7 @@ describe('AddPatientExtendedForm', () => {
         );
         link = within(errors[1]).getByRole('link');
         expect(link).toHaveTextContent('Address');
-        expect(link).toHaveAttribute('href', '#address');
+        expect(link).toHaveAttribute('href', '#addresses');
 
         // Phone & Email
         expect(errors[2]).toHaveTextContent(
@@ -260,7 +260,7 @@ describe('AddPatientExtendedForm', () => {
         );
         link = within(errors[2]).getByRole('link');
         expect(link).toHaveTextContent('Phone & Email');
-        expect(link).toHaveAttribute('href', '#phoneAndEmail');
+        expect(link).toHaveAttribute('href', '#phoneEmails');
 
         // Identification
         expect(errors[3]).toHaveTextContent(
@@ -268,7 +268,7 @@ describe('AddPatientExtendedForm', () => {
         );
         link = within(errors[3]).getByRole('link');
         expect(link).toHaveTextContent('Identification');
-        expect(link).toHaveAttribute('href', '#identification');
+        expect(link).toHaveAttribute('href', '#identifications');
 
         // Race
         expect(errors[4]).toHaveTextContent(
