@@ -1,23 +1,26 @@
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
-import { Control, Controller } from 'react-hook-form';
 import { RepeatingBlock } from './RepeatingBlock';
 
 type TestType = {
     firstInput: string;
     secondInput: string;
+    thirdInput?: number;
+    others: [];
 };
 
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
-const defaultValues: TestType = {
+const defaultValues: Partial<TestType> = {
     firstInput: 'first value',
     secondInput: 'second value'
 };
 
-const renderForm = (control: Control<TestType>) => {
+const UnderTestForm = () => {
+    const { control } = useFormContext<TestType>();
     return (
         <section>
             <Controller
@@ -54,64 +57,69 @@ const renderForm = (control: Control<TestType>) => {
     );
 };
 
-const renderView = (entry: TestType) => {
-    return (
-        <section>
-            <div>
-                <label>Render view first value: {entry.firstInput}</label>
-            </div>
-            <div>
-                <label>Render view second value: {entry.secondInput}</label>
-            </div>
-        </section>
-    );
-};
-const UnderTest = () => {
-    return (
-        <RepeatingBlock<TestType>
-            title={'Test'}
-            defaultValues={defaultValues}
-            columns={[
-                {
-                    id: 'first',
-                    name: 'First',
-                    render: (entry: TestType) => <>{entry.firstInput}</>
-                },
-                {
-                    id: 'second',
-                    name: 'Second',
-                    render: (entry: TestType) => <>{entry.secondInput}</>
-                }
-            ]}
-            onChange={onChange}
-            isDirty={isDirty}
-            formRenderer={renderForm}
-            viewRenderer={renderView}
-        />
-    );
+const UnderTestView = ({ entry }: { entry: TestType }) => (
+    <section>
+        <div>
+            <label>Render view first value: {entry.firstInput}</label>
+        </div>
+        <div>
+            <label>Render view second value: {entry.secondInput}</label>
+        </div>
+    </section>
+);
+
+const columns = [
+    {
+        id: 'first',
+        name: 'First column name',
+        render: (entry: TestType) => entry.firstInput
+    },
+    {
+        id: 'second',
+        name: 'Second column name',
+        render: (entry: TestType) => entry.secondInput
+    }
+];
+
+type Props = {
+    values?: TestType[];
 };
 
-describe('MultiValueEntry', () => {
+const Fixture = ({ values = [] }: Props) => (
+    <RepeatingBlock<TestType>
+        id="testing"
+        title={'Test'}
+        defaultValues={defaultValues}
+        columns={columns}
+        values={values}
+        onChange={onChange}
+        isDirty={isDirty}
+        formRenderer={() => <UnderTestForm />}
+        viewRenderer={(entry) => <UnderTestView entry={entry} />}
+    />
+);
+
+describe('RepeatingBlock', () => {
     it('should display provided title', async () => {
-        const { getByRole } = render(<UnderTest />);
+        const { getByRole, findByText } = render(<Fixture />);
         // wait on render to prevent act warning
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const heading = getByRole('heading');
         expect(heading).toHaveTextContent('Test');
     });
 
     it('should display provided form', async () => {
-        const { getByLabelText } = render(<UnderTest />);
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        const { getByLabelText, findByText } = render(<Fixture />);
+        expect(await findByText('Test')).toBeInTheDocument();
 
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
     });
 
     it('should display default values', async () => {
-        const { getByLabelText } = render(<UnderTest />);
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        const { getByLabelText, findByText } = render(<Fixture />);
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const firstInput = getByLabelText('First Input');
         expect(firstInput).toBeInTheDocument();
@@ -123,8 +131,8 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display add button', async () => {
-        const { getByRole } = render(<UnderTest />);
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        const { getByRole, findByText } = render(<Fixture />);
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         expect(button).toBeInTheDocument();
@@ -132,29 +140,22 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display specified columns', async () => {
-        const getAllByRole = await waitFor(async () => {
-            const { getAllByRole } = render(<UnderTest />);
-            return getAllByRole;
-        });
-
-        act(() => {
-            const inputs = getAllByRole('textbox');
-            userEvent.type(inputs[0], 'test');
-            userEvent.type(inputs[1], 'tedt22');
-            const button = getAllByRole('button');
-            userEvent.click(button[0]);
-        });
+        const { getByRole } = render(
+            <Fixture values={[{ firstInput: 'first-input-value', secondInput: 'second-input-value', others: [] }]} />
+        );
 
         await waitFor(() => {
-            const table = getAllByRole('table');
-            expect(table[0]).toBeInTheDocument();
+            expect(getByRole('table')).toBeInTheDocument();
         });
+
+        expect(getByRole('columnheader', { name: 'First column name' })).toBeInTheDocument();
+        expect(getByRole('columnheader', { name: 'Second column name' })).toBeInTheDocument();
     });
 
     it('should trigger on change when data is submitted', async () => {
-        const { getByRole, getByLabelText } = render(<UnderTest />);
+        const { getByRole, getByLabelText, findByText } = render(<Fixture />);
 
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         expect(button).toBeInTheDocument();
@@ -181,9 +182,9 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display submitted data in table', async () => {
-        const { getByRole, getAllByRole } = render(<UnderTest />);
+        const { findByText, getByRole, getAllByRole } = render(<Fixture />);
 
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -202,9 +203,9 @@ describe('MultiValueEntry', () => {
     });
 
     it('should display icons in last column of table', async () => {
-        const { getByRole, getAllByRole } = render(<UnderTest />);
+        const { findByText, getByRole, getAllByRole } = render(<Fixture />);
 
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -232,9 +233,9 @@ describe('MultiValueEntry', () => {
     });
 
     it('should render view when view icon clicked', async () => {
-        const { getByRole, getAllByRole, getByText } = render(<UnderTest />);
+        const { findByText, getByRole, getAllByRole, getByText } = render(<Fixture />);
 
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -256,9 +257,9 @@ describe('MultiValueEntry', () => {
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const { getByRole, getAllByRole } = render(<UnderTest />);
+        const { getByRole, getAllByRole, findByText } = render(<Fixture />);
 
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -279,9 +280,9 @@ describe('MultiValueEntry', () => {
     });
 
     it('should allow edit of row', async () => {
-        const { getByRole, getAllByRole, getByLabelText } = render(<UnderTest />);
+        const { getByRole, getAllByRole, getByLabelText, findByText } = render(<Fixture />);
 
-        expect(await screen.findByText('Test')).toBeInTheDocument();
+        expect(await findByText('Test')).toBeInTheDocument();
 
         const button = getByRole('button');
         const input1 = getByLabelText('First Input');

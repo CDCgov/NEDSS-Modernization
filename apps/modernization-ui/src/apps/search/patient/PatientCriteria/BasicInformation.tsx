@@ -88,7 +88,7 @@ export const BasicInformation = () => {
                         value={value}
                         onChange={onChange}
                         name={name}
-                        label="Sex"
+                        label="Current sex"
                         id={name}
                         options={genders}
                         sizing="compact"

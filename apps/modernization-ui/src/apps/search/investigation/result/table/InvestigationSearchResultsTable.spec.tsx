@@ -35,7 +35,7 @@ describe('When InvestigationSearchResultsTable renders', () => {
         expect(headers[0]).toHaveTextContent('Legal name');
         expect(headers[1]).toHaveTextContent('Date of birth');
 
-        expect(headers[2]).toHaveTextContent('Sex');
+        expect(headers[2]).toHaveTextContent('Current sex');
         expect(headers[3]).toHaveTextContent('Patient ID');
         expect(headers[4]).toHaveTextContent('Condition');
         expect(headers[5]).toHaveTextContent('Start date');

@@ -1,16 +1,64 @@
 import { ReactNode } from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { SearchResultSettings, useSearchResults } from './useSearchResults';
-import { SearchPageProvider } from './SearchPage';
+import { Page } from 'page';
+import { SearchResultDisplayProvider } from './useSearchResultDisplay';
 
+let mockCriteria: Criteria | undefined = undefined;
 const mockClear = jest.fn();
 const mockChange = jest.fn();
 
 jest.mock('./useSearchCriteria', () => ({
-    useSearchCritiera: () => ({
+    useSearchCriteria: () => ({
+        criteria: mockCriteria,
         clear: mockClear,
         change: mockChange
+    })
+}));
+
+const { Status } = jest.requireActual('page');
+
+const mockPage: Page = {
+    status: Status.Ready,
+    pageSize: 5,
+    total: 7,
+    current: 11
+};
+
+const mockFirstPage = jest.fn();
+const mockReload = jest.fn();
+const mockRequest = jest.fn();
+const mockReady = jest.fn();
+const mockResize = jest.fn();
+const mockPageReset = jest.fn();
+
+jest.mock('page', () => ({
+    usePage: () => ({
+        page: mockPage,
+        firstPage: mockFirstPage,
+        reload: mockReload,
+        request: mockRequest,
+        ready: mockReady,
+        resize: mockResize,
+        reset: mockPageReset
+    })
+}));
+
+const { Direction } = jest.requireActual('sorting');
+
+let mockSortProperty: string | undefined = undefined;
+let mockSortDirection: any | undefined = undefined;
+const mockSortReset = jest.fn();
+const mockSortBy = jest.fn();
+const mockToggle = jest.fn();
+
+jest.mock('sorting', () => ({
+    useSorting: () => ({
+        property: mockSortProperty,
+        direction: mockSortDirection,
+        reset: mockSortReset,
+        sortBy: mockSortBy,
+        toggle: mockToggle
     })
 }));
 
@@ -19,15 +67,15 @@ type APIParameters = { search: string };
 type Result = { label: string; value: string };
 
 const wrapper = ({ children }: { children: ReactNode }) => (
-    <MemoryRouter>
-        <SearchPageProvider>{children}</SearchPageProvider>
-    </MemoryRouter>
+    <SearchResultDisplayProvider>{children}</SearchResultDisplayProvider>
 );
 
 const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Result>>) => {
     const defaultTransformer = (criteria: Criteria) => ({ search: criteria.name });
-    const defaultResultResolver = () => Promise.resolve({ total: 0, content: [], page: 0 });
-    const defaultTermResolver = () => [];
+    const defaultResultResolver = () => Promise.resolve({ total: 0, content: [], page: 0, size: 7 });
+    const defaultTermResolver = () => [
+        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-vlaue' }
+    ];
     //
     const transformer = props?.transformer ?? defaultTransformer;
     const resultResolver = props?.resultResolver ?? defaultResultResolver;
@@ -42,6 +90,10 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
 };
 
 describe('when searching using useSearchResults', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should default to waiting without any results', () => {
         const { result } = setup();
 
@@ -49,8 +101,18 @@ describe('when searching using useSearchResults', () => {
         expect(result.current.status).toEqual('waiting');
     });
 
-    it('should change to status to completed when search results have been resolved', async () => {
+    it('should change to status to loading after invoking a search', async () => {
         const { result } = setup();
+
+        await act(async () => {
+            result.current.search({ name: 'name-value' });
+        });
+
+        expect(result.current.status).toEqual('loading');
+    });
+
+    it('should change to status to no-input when terms cannot be resolved', async () => {
+        const { result } = setup({ termResolver: () => [] });
 
         await act(async () => {
             result.current.search({ name: 'name-value' });
@@ -84,13 +146,17 @@ describe('when searching using useSearchResults', () => {
     });
 
     it('should change to status to error when search produces an error', async () => {
-        const { result } = setup({ resultResolver: () => Promise.reject(new Error('there has been an error')) });
+        const { result } = setup({
+            resultResolver: () => Promise.reject(new Error('there has been an error'))
+        });
+
+        mockCriteria = { name: 'name-value' };
 
         await act(async () => {
             result.current.search({ name: 'name-value' });
         });
 
-        expect(result.current.status).toEqual('no-input');
+        expect(result.current.status).toEqual('error');
     });
 
     it('should change to status to waiting when reset after error', async () => {
@@ -107,7 +173,7 @@ describe('when searching using useSearchResults', () => {
         expect(result.current.status).toEqual('waiting');
     });
 
-    it('should use change the criteria when searching', async () => {
+    it('should change the criteria when searching', async () => {
         const transformer = jest.fn(() => ({ search: 'name-value' }));
 
         const terms = [{ source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock' }];
@@ -125,5 +191,71 @@ describe('when searching using useSearchResults', () => {
         expect(termResolver).toHaveBeenCalledWith({ name: 'name-value' });
 
         expect(mockChange).toHaveBeenCalledWith(expect.objectContaining({ name: 'name-value' }));
+    });
+
+    it('should use the request first page when criteria changes', async () => {
+        mockCriteria = { name: 'mocked' };
+
+        const resultResolver = jest.fn();
+        resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
+
+        mockPage.current = 227;
+        mockPage.pageSize = 307;
+
+        const { result, rerender } = setup({ resultResolver });
+
+        await act(async () => {
+            result.current.search({ name: 'name-value' });
+        });
+
+        rerender();
+
+        expect(resultResolver).toBeCalledWith(
+            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        );
+    });
+
+    it('should use the request first page when sort property changes', async () => {
+        const resultResolver = jest.fn();
+        resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
+
+        mockPage.current = 227;
+        mockPage.pageSize = 307;
+
+        mockSortProperty = 'property-value';
+
+        const { result, rerender } = setup({ resultResolver });
+
+        await act(async () => {
+            result.current.search({ name: 'name-value' });
+        });
+
+        rerender();
+
+        expect(resultResolver).toBeCalledWith(
+            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        );
+    });
+
+    it('should use the request first page when sort direction changes', async () => {
+        const resultResolver = jest.fn();
+        resultResolver.mockResolvedValue({ total: 2, content: [], page: 3, size: 5 });
+
+        mockPage.current = 227;
+        mockPage.pageSize = 307;
+
+        mockSortDirection = Direction.Ascending;
+
+        const { result, rerender } = setup({ resultResolver });
+
+        await act(async () => {
+            result.current.search({ name: 'name-value' });
+        });
+
+        rerender();
+
+        expect(resultResolver).toBeCalledWith(
+            expect.objectContaining({ page: expect.objectContaining({ number: 1, size: 307 }) })
+        );
     });
 });

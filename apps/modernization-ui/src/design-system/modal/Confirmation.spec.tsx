@@ -158,4 +158,28 @@ describe('when a confirmation is displayed', () => {
         expect(onConfirm).toBeCalled();
         expect(onCancel).not.toBeCalled();
     });
+
+    it('should render close icon by default', () => {
+        const result = render(
+            <Confirmation title="Hello Modal" onCancel={() => {}} onConfirm={() => {}}>
+                Confirmation of something
+            </Confirmation>
+        );
+
+        const closeX = result.container.querySelector('svg[data-close-modal]');
+
+        expect(closeX).not.toBeNull();
+    });
+
+    it('should not render close icon when forceAction is true', () => {
+        const result = render(
+            <Confirmation title="Hello Modal" onCancel={() => {}} onConfirm={() => {}} forceAction={true}>
+                Confirmation of something
+            </Confirmation>
+        );
+
+        const closeX = result.container.querySelector('svg[data-close-modal]');
+
+        expect(closeX).toBeNull();
+    });
 });

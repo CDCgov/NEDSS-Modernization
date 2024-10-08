@@ -1,40 +1,40 @@
-import { RaceEntry } from 'apps/patient/data/entry';
-import { RaceEntryFields } from 'apps/patient/data/race/RaceEntryFields';
-import { today } from 'date';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { useConceptOptions } from 'options/concepts';
+import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
 import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
 
-const defaultValue: Partial<RaceEntry> = {
-    asOf: today(),
-    race: undefined,
-    detailed: undefined
-};
+const columns: Column<RaceEntry>[] = [
+    { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
+    { id: 'race-name', name: 'Race', render: (v) => v.race.name },
+    {
+        id: 'race-detailed',
+        name: 'Detailed race',
+        render: (v) => <DetailedRaceDisplay entry={v} />
+    }
+];
 
 type Props = {
+    id: string;
+    values?: RaceEntry[];
     onChange: (data: RaceEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
-export const RaceRepeatingBlock = ({ onChange, isDirty }: Props) => {
-    const renderForm = () => <RaceEntryFields />;
+
+const RaceRepeatingBlock = ({ id, values, onChange, isDirty }: Props) => {
+    const categories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
+
+    const renderForm = () => <RaceEntryFields categories={categories} />;
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
 
-    const columns: Column<RaceEntry>[] = [
-        { id: 'raceAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'raceName', name: 'Race', render: (v) => v.race.name },
-        {
-            id: 'detailedRace',
-            name: 'Detailed race',
-            render: (v) => <DetailedRaceDisplay entry={v} />
-        }
-    ];
     return (
         <RepeatingBlock<RaceEntry>
-            id="races"
+            id={id}
             title="Race"
-            defaultValues={defaultValue}
             columns={columns}
+            defaultValues={initial()}
+            values={values}
             onChange={onChange}
             isDirty={isDirty}
             formRenderer={renderForm}
@@ -42,3 +42,5 @@ export const RaceRepeatingBlock = ({ onChange, isDirty }: Props) => {
         />
     );
 };
+
+export { RaceRepeatingBlock };

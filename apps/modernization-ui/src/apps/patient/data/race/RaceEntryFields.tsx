@@ -1,12 +1,17 @@
-import { useDetailedRaceCodedValues, useRaceCodedValues } from 'coded/race';
+import { useDetailedRaceCodedValues } from 'coded/race';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { RaceEntry } from '../entry';
+import { RaceEntry } from './entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
+import { Selectable } from 'options';
 
-export const RaceEntryFields = () => {
+type RaceEntryFieldsProps = {
+    categories: Selectable[];
+};
+
+const RaceEntryFields = ({ categories }: RaceEntryFieldsProps) => {
     const { control } = useFormContext<RaceEntry>();
-    const categories = useRaceCodedValues();
+
     const selectedCategory = useWatch({ control, name: 'race' });
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory?.value);
 
@@ -44,31 +49,35 @@ export const RaceEntryFields = () => {
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        id={name}
+                        id={`race-${name}`}
                         name={name}
                         options={categories}
                         error={error?.message}
                     />
                 )}
             />
-            {detailedRaces.length > 0 && (
-                <Controller
-                    control={control}
-                    name="detailed"
-                    shouldUnregister
-                    render={({ field: { onChange, value, name } }) => (
-                        <MultiSelect
-                            label="Detailed race"
-                            orientation="horizontal"
-                            id={name}
-                            name={name}
-                            value={value}
-                            onChange={onChange}
-                            options={detailedRaces}
-                        />
-                    )}
-                />
-            )}
+
+            <Controller
+                control={control}
+                name="detailed"
+                shouldUnregister
+                render={({ field: { onChange, value, name } }) => (
+                    <MultiSelect
+                        label="Detailed race"
+                        orientation="horizontal"
+                        id={`race-${name}`}
+                        name={name}
+                        disabled={selectedCategory === undefined}
+                        value={value}
+                        onChange={onChange}
+                        options={detailedRaces}
+                    />
+                )}
+            />
         </section>
     );
 };
+
+export { RaceEntryFields };
+
+export type { RaceEntryFieldsProps };

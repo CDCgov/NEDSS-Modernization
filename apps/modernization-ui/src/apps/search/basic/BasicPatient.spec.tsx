@@ -44,6 +44,6 @@ describe('when displaying a search result with basic patient information', () =>
 
         const actual = displayGender(result);
 
-        expect(actual).toEqual('Other');
+        expect(actual).toEqual('Unknown');
     });
 });
