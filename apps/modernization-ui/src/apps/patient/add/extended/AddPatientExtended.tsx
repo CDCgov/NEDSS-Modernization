@@ -1,9 +1,8 @@
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
-import { useMemo, useState } from 'react';
+import { useEffect, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'storage';
 import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
@@ -16,11 +15,13 @@ import { transformer } from './transformer';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 import styles from './add-patient-extended.module.scss';
+import { useNavigationBlock } from 'navigation/useNavigationBlock';
+import { useShowCancelModal } from './useShowCancelModal';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
-    const { value } = useLocalStorage({ key: 'patient.create.extended.cancel' });
+    const { value: bypassModal } = useShowCancelModal();
     const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
@@ -29,29 +30,41 @@ export const AddPatientExtended = () => {
     );
 
     const defaultValues = initial();
-
     const form = useForm<ExtendedNewPatientEntry>({
         defaultValues,
         mode: 'onBlur'
     });
+    const formIsDirty = form.formState.isDirty;
 
     const handleSave = form.handleSubmit(interaction.create);
 
-    const handleCancel = () => {
-        if (value) {
-            handleCancelConfirm();
+    const handleCancel = useCallback(() => {
+        if (bypassModal) {
+            handleModalConfirm();
         } else {
             setCancelModal(true);
         }
-    };
+    }, [bypassModal]);
 
-    const handleCancelConfirm = () => {
+    // Setup navigation blocking for back button
+    const blocker = useNavigationBlock({ shouldBlock: formIsDirty, onBlock: handleCancel });
+
+    const handleModalConfirm = useCallback(() => {
+        blocker.unblock();
         navigate('/add-patient');
-    };
+    }, [blocker, navigate]);
 
-    const closeCancel = () => {
+    const handleModalClose = useCallback(() => {
+        blocker.reset();
         setCancelModal(false);
-    };
+    }, [blocker]);
+
+    // Reset the blocker after a successful submission
+    useEffect(() => {
+        if (interaction.status === 'created') {
+            blocker.reset();
+        }
+    }, [interaction.status]);
 
     return (
         <AddExtendedPatientInteractionProvider interaction={interaction}>
@@ -84,12 +97,7 @@ export const AddPatientExtended = () => {
                         </main>
                     </div>
                     {cancelModal && (
-                        <CancelAddPatientExtendedPanel
-                            onConfirm={() => {
-                                handleCancelConfirm();
-                            }}
-                            onClose={() => closeCancel()}
-                        />
+                        <CancelAddPatientExtendedPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
                     )}
                 </div>
             </FormProvider>

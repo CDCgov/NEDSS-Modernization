@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
-import { MemoryRouter } from 'react-router-dom';
+import { createMemoryRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { CodedValue } from 'coded';
 import { MockedProvider } from '@apollo/react-testing';
 import { CountiesCodedValues } from 'location';
@@ -9,6 +9,7 @@ import { PatientIdentificationCodedValues } from 'apps/patient/profile/identific
 import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
+import { useShowCancelModal } from './useShowCancelModal';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -153,31 +154,72 @@ jest.mock('apps/patient/profile/generalInfo/usePatientGeneralCodedValues', () =>
     usePatientGeneralCodedValues: () => mockPatientCodedValues
 }));
 
+jest.mock('./useShowCancelModal', () => ({
+    useShowCancelModal: jest.fn()
+}));
+
+const renderWithRouter = () => {
+    const routes = [
+        {
+            path: '/',
+            element: <AddPatientExtended />
+        },
+        {
+            path: '/add-patient',
+            element: <Navigate to={'/'} />
+        }
+    ];
+
+    const router = createMemoryRouter(routes, { initialEntries: ['/'] });
+    return render(
+        <MockedProvider mocks={[]} addTypename={false}>
+            <RouterProvider router={router} />
+        </MockedProvider>
+    );
+};
+
 describe('AddPatientExtended', () => {
+    beforeEach(() => {
+        (useShowCancelModal as jest.Mock).mockReturnValue({ value: false });
+    });
+
     it('should have a heading', () => {
-        const { getAllByRole } = render(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <MemoryRouter>
-                    <AddPatientExtended />
-                </MemoryRouter>
-            </MockedProvider>
-        );
+        const { getAllByRole } = renderWithRouter();
 
         const headings = getAllByRole('heading');
         expect(headings[1]).toHaveTextContent('New patient - extended');
     });
 
     it('should have cancel and save buttons', () => {
-        const { getAllByRole } = render(
-            <MockedProvider mocks={[]} addTypename={false}>
-                <MemoryRouter>
-                    <AddPatientExtended />
-                </MemoryRouter>
-            </MockedProvider>
-        );
+        const { getAllByRole } = renderWithRouter();
 
         const buttons = getAllByRole('button');
         expect(buttons[0]).toHaveTextContent('Cancel');
         expect(buttons[1]).toHaveTextContent('Save');
+    });
+
+    it('should not be showing modal by default', () => {
+        const { queryByRole } = renderWithRouter();
+
+        const modal = queryByRole('dialog', { name: 'Warning' });
+        expect(modal).not.toBeInTheDocument();
+    });
+
+    it('should show modal when cancel is clicked', () => {
+        const { getByRole, getByText } = renderWithRouter();
+
+        const cancelButton = getByText('Cancel');
+        cancelButton.click();
+
+        const modal = getByRole('dialog', { name: 'Warning' });
+        expect(modal).toBeInTheDocument();
+    });
+
+    it('should not show modal when local storage flag is set', () => {
+        (useShowCancelModal as jest.Mock).mockReturnValue({ value: true });
+        const { queryByRole } = renderWithRouter();
+
+        const modal = queryByRole('dialog', { name: 'Warning' });
+        expect(modal).not.toBeInTheDocument();
     });
 });
