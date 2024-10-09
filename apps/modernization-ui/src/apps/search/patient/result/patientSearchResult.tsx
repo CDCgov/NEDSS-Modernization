@@ -3,11 +3,11 @@ import { displayName } from 'name';
 import { displayAddress } from 'address/display';
 import { Link } from 'react-router-dom';
 
-const displayProfileLink = (result: PatientSearchResult) => (
-    <Link to={`/patient-profile/${result.shortId}/summary`}>
-        {(result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data'}
-    </Link>
-);
+const displayProfileLink = (result: PatientSearchResult, displayType: 'name' | 'id') => {
+    const displayContent =
+        displayType === 'name' ? result.legalName && displayName('fullLastFirst')(result.legalName) : result.shortId;
+    return <Link to={`/patient-profile/${result.shortId}/summary`}>{displayContent || 'No Data'}</Link>;
+};
 
 const displayNames = (result: PatientSearchResult): string => {
     const legalName = result.legalName;

@@ -9,6 +9,7 @@ import {
     displayEmails,
     displayAddresses
 } from 'apps/search/patient/result';
+import { displayName } from 'name';
 
 const displayIdentifications = (result: PatientSearchResult): string =>
     result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
@@ -30,10 +31,10 @@ const EMAIL = { id: 'email', name: 'Email' };
 
 const columns: Column<PatientSearchResult>[] = [
     {
-        ...LEGAL_NAME,
+        ...PATIENT_ID,
         fixed: true,
         sortable: true,
-        render: displayProfileLink
+        render: (result) => displayProfileLink(result, 'id')
     },
     {
         ...DATE_OF_BIRTH,
@@ -41,7 +42,11 @@ const columns: Column<PatientSearchResult>[] = [
         render: (result) => internalizeDate(result.birthday)
     },
     { ...SEX, sortable: true, render: (result) => result.gender },
-    { ...PATIENT_ID, sortable: true, render: (row) => row.shortId },
+    {
+        ...LEGAL_NAME,
+        sortable: true,
+        render: (result) => result.legalName && displayName('fullLastFirst')(result.legalName)
+    },
     { ...ADDRESS, render: displayAddresses },
     { ...PHONE, render: displayPhones },
     { ...NAMES, render: displayNames },
@@ -50,10 +55,10 @@ const columns: Column<PatientSearchResult>[] = [
 ];
 
 const preferences: ColumnPreference[] = [
+    { ...PATIENT_ID },
     { ...LEGAL_NAME },
     { ...DATE_OF_BIRTH },
     { ...SEX },
-    { ...PATIENT_ID },
     { ...ADDRESS, moveable: true, toggleable: true },
     { ...PHONE, moveable: true, toggleable: true },
     { ...NAMES, moveable: true, toggleable: true },

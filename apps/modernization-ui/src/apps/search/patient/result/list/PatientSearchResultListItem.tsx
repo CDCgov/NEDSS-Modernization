@@ -18,7 +18,7 @@ const PatientSearchResultListItem = ({ result }: Props) => (
     <Result>
         <ResultItemGroup>
             <ResultItem label="Legal name" orientation="vertical">
-                {displayProfileLink(result)}
+                {displayProfileLink(result, 'name')}
             </ResultItem>
             <ResultItem label="Date of birth">{internalizeDate(result.birthday)}</ResultItem>
             <ResultItem label="Current sex">{result.gender}</ResultItem>
