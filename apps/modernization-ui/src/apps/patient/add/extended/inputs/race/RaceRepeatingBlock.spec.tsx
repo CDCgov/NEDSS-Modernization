@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import { CodedValue } from 'coded';
 import { internalizeDate } from 'date';
 import { RaceRepeatingBlock } from './RaceRepeatingBlock';
@@ -79,7 +79,7 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should not allow adding the same race more than once', async () => {
-        const { getByLabelText, getByRole } = render(
+        const { getByLabelText, getByRole, getByText } = render(
             <RaceRepeatingBlock
                 id="testing"
                 values={[
@@ -102,10 +102,14 @@ describe('RaceRepeatingBlock', () => {
         act(() => {
             userEvent.selectOptions(category, '1');
             userEvent.tab();
+
+            userEvent.click(add);
         });
 
-        expect(isDirty).toHaveBeenCalledWith(true);
-
-        expect(add).toBeDisabled();
+        await waitFor(() => {
+            expect(getByRole('listitem')).toHaveTextContent(
+                /Race race one name has already been added to the repeating block/
+            );
+        });
     });
 });
