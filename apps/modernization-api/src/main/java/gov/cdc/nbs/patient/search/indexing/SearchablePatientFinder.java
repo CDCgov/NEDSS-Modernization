@@ -76,7 +76,8 @@ class SearchablePatientFinder {
                   AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                     AND par.act_class_cd = 'TRMT'
                     AND par.record_status_cd = 'ACTIVE'
-                      AND par.subject_class_cd='PAT'
+                    AND par.subject_class_cd='PSN'
+                    AND par.type_cd = 'SubjOfTrmt'
                 ) tmp
                 FOR XML PATH('')
               ), 1, 1, '')) treatment_ids,
@@ -93,7 +94,7 @@ class SearchablePatientFinder {
                 JOIN Participation par WITH (NOLOCK)
                   ON inv.intervention_uid = par.act_uid
                 AND par.subject_class_cd='PAT'
-                  AND UPPER(par.type_cd)= 'SUBOFVACC'
+                  AND par.type_cd = 'SubOfVacc'
                 AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                 ) tmp
                 FOR XML PATH('')
