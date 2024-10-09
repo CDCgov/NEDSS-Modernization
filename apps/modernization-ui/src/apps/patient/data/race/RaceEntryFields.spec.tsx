@@ -16,10 +16,14 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
 
 type Props = Partial<RaceEntryFieldsProps>;
 
-const Fixture = ({ categories = [{ value: '1', name: 'race name' }] }: Props) => {
+const Fixture = ({
+    categories = [{ value: '1', name: 'race name' }],
+    categoryValidator = jest.fn().mockResolvedValue(true)
+}: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
         defaultValues: {
+            id: 19,
             asOf: undefined,
             race: undefined,
             detailed: undefined
@@ -28,7 +32,7 @@ const Fixture = ({ categories = [{ value: '1', name: 'race name' }] }: Props) =>
 
     return (
         <FormProvider {...form}>
-            <RaceEntryFields categories={categories} />
+            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} />
         </FormProvider>
     );
 };
@@ -68,10 +72,11 @@ describe('Race entry fields', () => {
         });
     });
 
-    it('should require race', async () => {
+    it('should require race category', async () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
         const raceInput = getByLabelText('Race');
+
         act(() => {
             userEvent.click(raceInput);
             userEvent.tab();
@@ -79,6 +84,24 @@ describe('Race entry fields', () => {
         await waitFor(() => {
             expect(getByText('Race is required.')).toBeInTheDocument();
         });
+    });
+
+    it('should require race category to pass validation', async () => {
+        const validator = jest.fn();
+        validator.mockResolvedValue('category not valid');
+
+        const { getByLabelText, getByText } = render(<Fixture categoryValidator={validator} />);
+
+        const category = getByLabelText('Race');
+        act(() => {
+            userEvent.selectOptions(category, '1');
+            userEvent.tab();
+        });
+        await waitFor(() => {
+            expect(getByText('category not valid')).toBeInTheDocument();
+        });
+
+        expect(validator).toBeCalledWith(19, expect.objectContaining({ value: '1' }));
     });
 
     it('should be valid with as of, race', async () => {

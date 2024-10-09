@@ -108,6 +108,7 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             races: [
                 {
+                    id: 331,
                     asOf: '04/13/2017',
                     race: { value: 'race-value', name: 'race-name' },
                     detailed: []

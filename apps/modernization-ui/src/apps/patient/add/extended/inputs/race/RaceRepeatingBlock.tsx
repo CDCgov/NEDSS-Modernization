@@ -1,10 +1,11 @@
 import { Column } from 'design-system/table';
 import { RepeatingBlock } from 'design-system/entry/multi-value';
-import { useConceptOptions } from 'options/concepts';
+import { useRaceCategoryOptions } from 'options/race/useRaceCategoryOptions';
 import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
 import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
 import { ReactNode } from 'react';
+import { categoryValidator } from './categoryValidator';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
@@ -24,10 +25,10 @@ type Props = {
     errors?: ReactNode[];
 };
 
-const RaceRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
-    const categories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
+const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Props) => {
+    const { categories } = useRaceCategoryOptions();
 
-    const renderForm = () => <RaceEntryFields categories={categories} />;
+    const renderForm = () => <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} />;
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
 
     return (

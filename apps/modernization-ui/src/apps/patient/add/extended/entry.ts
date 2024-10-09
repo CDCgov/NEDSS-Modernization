@@ -5,13 +5,13 @@ import {
     AddressEntry,
     PhoneEmailEntry,
     IdentificationEntry,
-    RaceEntry,
     EthnicityEntry,
     SexEntry,
     BirthEntry,
     MortalityEntry,
     GeneralInformationEntry
 } from 'apps/patient/data/entry';
+import { RaceEntry } from 'apps/patient/data/race';
 
 type ExtendedNewPatientEntry = {
     administrative?: AdministrativeEntry;
