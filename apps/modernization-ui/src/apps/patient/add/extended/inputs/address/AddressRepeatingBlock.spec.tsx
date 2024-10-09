@@ -44,9 +44,11 @@ jest.mock('location/useLocationCodedValues', () => ({
 const onChange = jest.fn();
 const isDirty = jest.fn();
 
+const Fixture = () => <AddressRepeatingBlock id="races" onChange={onChange} isDirty={isDirty} />;
+
 describe('RaceMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<AddressRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<Fixture />);
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('As of');
@@ -58,7 +60,7 @@ describe('RaceMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<AddressRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<Fixture />);
 
         const dateInput = getByLabelText('Address as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));
