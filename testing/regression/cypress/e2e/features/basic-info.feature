@@ -15,7 +15,7 @@ Feature: Patient Search by Basic Info
     When I search by dob as "10/16/1967"
     Then I should see no result found text
     When I search by dob as "05/16/1977"
-    Then I should see "Caden Ratkeyklkb"
+    Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
 
   Scenario: Basic Info - Search by Sex
     When I search by sex as "Male"
@@ -33,17 +33,17 @@ Feature: Patient Search by Basic Info
     When I fill last name as "Ratkeyklkb"
     When I fill first name as "Caden"
     When I search by dob as "05/16/1977"
-    Then I should see "Caden Ratkeyklkb"
+    Then I should see "Ratkeyklkb, Caden Benjamin, Esquire"
 
   Scenario: Search for Deleted Patients
-    When I fill last name as "Green Sonum Allen"
+    When I fill last name as "Greensonum"
     When I select for Deleted patient
-    Then I should see "Green Sonum Allen"
+    Then I should see "Greensonum, Allen"
 
   Scenario: Search for Superseded Patients
     When I fill last name as "Deeanna Denesik"
     When I select for Superseded patient
-    Then I should see "Deeanna Denesik"
+    Then I should see "Denesik, Deeanna"
   
   Scenario: Search with Invalid Data
     When I search by dob as "76/5"

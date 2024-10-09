@@ -72,13 +72,13 @@ class SearchEventPage {
   }
 
   selectInvestigationEventType() {
-    let elm = cy.get("select[name='identification.type']").select("State Case ID");
-    let elm2 = cy.get('input[id="identification.value"]').type("1");
+    let elm = cy.get("select[name='identification.type']").select("Investigation ID");
+    let elm2 = cy.get('input[id="identification.value"]').type("CAS10000000GA01");
   }  
 
   selectLabReportEventType() {
     let elm = cy.get('select[name="identification.type"]').select("Accession Number");
-    let elm2 = cy.get('input[id="identification.value"]').type("1");
+    let elm2 = cy.get('input[id="identification.value"]').type("2");
     let elm3 = cy.get('label[for="eventStatus__checkbox__NEW"]').click();
 
   }
@@ -111,7 +111,7 @@ class SearchEventPage {
   }
 
   selectInvestigationFacility() {
-    cy.get('#reportingFacilityId').type('c');
+    cy.get('#reportingFacilityId').type('p');
     let elm3 = cy.get('li[class="usa-combo-box__list-option"]').first().click({multiple: true});
   }
 
