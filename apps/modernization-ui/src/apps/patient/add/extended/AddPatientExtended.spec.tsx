@@ -199,8 +199,9 @@ describe('AddPatientExtended', () => {
     });
 
     it('should not be showing modal by default', () => {
-        renderWithRouter();
-        const modal = document.querySelector('dialog');
+        const { queryByRole } = renderWithRouter();
+
+        const modal = queryByRole('dialog', { name: 'Warning' });
         expect(modal).not.toBeInTheDocument();
     });
 
