@@ -112,11 +112,11 @@ Then("I should see Results with the first name {string}", (string) => {
 });
 
 Then("I should see Results with for text {string}", (string) => {
-  cy.get("main").contains(string).should("be.visible");
+  cy.get("main p").contains(string).should("be.visible");
 });
 
 Then("I should see Results with the sex {string}", (string) => {
-  cy.get('span.result-item_label__4ANhR').contains('Sex').should('be.visible');
+  cy.get('main').contains(string).should('be.visible');
 });
 
 Then("I should see Results with the patient id {string}", (string) => {
