@@ -1,8 +1,6 @@
-import { RaceEntry } from 'apps/patient/data/entry';
+import { RaceEntry } from 'apps/patient/data/race';
 
 type Props = {
     entry: RaceEntry;
 };
-export const DetailedRaceDisplay = ({ entry }: Props) => {
-    return <div>{entry.detailed?.map((v) => v.name).join(', ')}</div>;
-};
+export const DetailedRaceDisplay = ({ entry }: Props) => entry.detailed?.map((v) => v.name).join(', ');

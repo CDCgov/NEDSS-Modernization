@@ -52,11 +52,6 @@ type Identification = EffectiveDated & {
     issuer?: string;
 };
 
-type Race = EffectiveDated & {
-    race: string;
-    detailed: string[];
-};
-
 type Ethnicity = EffectiveDated & {
     ethnicity: string;
     detailed: string[];
@@ -103,7 +98,6 @@ export type {
     Address,
     PhoneEmail,
     Identification,
-    Race,
     Ethnicity,
     Sex,
     Birth,

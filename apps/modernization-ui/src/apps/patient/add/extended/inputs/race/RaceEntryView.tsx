@@ -1,4 +1,4 @@
-import { RaceEntry } from 'apps/patient/data/entry';
+import { RaceEntry } from 'apps/patient/data/race';
 import { ValueView } from 'design-system/data-display/ValueView';
 
 type Props = {

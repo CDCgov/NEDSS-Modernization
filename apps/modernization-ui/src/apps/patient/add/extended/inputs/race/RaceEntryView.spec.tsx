@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { CodedValue } from 'coded';
 import { RaceEntryView } from './RaceEntryView';
-import { RaceEntry } from 'apps/patient/data/entry';
+import { RaceEntry } from 'apps/patient/data/race';
 import { asSelectable } from 'options';
 
 const mockRaceCodedValues: CodedValue[] = [{ value: '1', name: 'race name' }];
@@ -19,6 +19,7 @@ jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
 }));
 
 const entry: RaceEntry = {
+    id: 331,
     asOf: '12/25/2020',
     race: asSelectable('1', 'test'),
     detailed: [asSelectable('2', 'test 2'), asSelectable('3', 'test 3')]
