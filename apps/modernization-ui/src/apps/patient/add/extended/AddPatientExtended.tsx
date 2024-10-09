@@ -3,7 +3,6 @@ import { Shown } from 'conditional-render';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-// import { useLocalStorage } from 'storage';
 import { AddPatientSideNav } from '../nav/AddPatientSideNav';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
