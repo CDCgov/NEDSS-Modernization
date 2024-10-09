@@ -91,6 +91,8 @@ public class PatientSearchVerificationSteps {
       case "status" -> jsonPath("$.data.findPatientsByFilter.content[%s].status", position);
       case "birthday" -> jsonPath("$.data.findPatientsByFilter.content[%s].birthday", position);
       case "address" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].address", position);
+      case "address type" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].type", position);
+      case "address use" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].use", position);
       case "city" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].city", position);
       case "state" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].state", position);
       case "county" -> jsonPath("$.data.findPatientsByFilter.content[%s].addresses[*].county", position);

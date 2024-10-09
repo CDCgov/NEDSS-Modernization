@@ -24,6 +24,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: 
                 value
             }
             addresses{
+                type
                 use
                 address
                 address2
