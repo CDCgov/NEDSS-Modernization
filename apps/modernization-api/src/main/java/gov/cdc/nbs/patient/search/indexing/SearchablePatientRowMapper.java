@@ -10,7 +10,17 @@ import java.time.LocalDate;
 
 class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
 
-  record Column(int identifier, int local, int status, int birthday, int deceased, int gender, int ethnicity) {
+  record Column(
+      int identifier,
+      int local, int status,
+      int birthday,
+      int deceased,
+      int gender,
+      int ethnicity,
+      int documentIds,
+      int morbidityReportIds,
+      int treatmentIds,
+      int vaccinationIds) {
   }
 
 
@@ -29,6 +39,11 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
     String deceased = resultSet.getString(columns.deceased());
     String gender = resultSet.getString(columns.gender());
     String ethnicity = resultSet.getString(columns.ethnicity());
+    String documentIds = resultSet.getString(columns.documentIds());
+    String morbidityReportIds = resultSet.getString(columns.morbidityReportIds());
+    String treatmentIds = resultSet.getString(columns.treatmentIds());
+    String vaccinationIds = resultSet.getString(columns.vaccinationIds());
+
 
     return new SearchablePatient(
         identifier,
@@ -37,7 +52,10 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
         birthday,
         deceased,
         gender,
-        ethnicity
-    );
+        ethnicity,
+        documentIds,
+        morbidityReportIds,
+        treatmentIds,
+        vaccinationIds);
   }
 }
