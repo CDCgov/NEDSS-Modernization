@@ -34,7 +34,7 @@ const columns: Column<PatientSearchResult>[] = [
         ...PATIENT_ID,
         fixed: true,
         sortable: true,
-        render: (result) => displayProfileLink(result, 'id')
+        render: displayProfileLink
     },
     {
         ...DATE_OF_BIRTH,
