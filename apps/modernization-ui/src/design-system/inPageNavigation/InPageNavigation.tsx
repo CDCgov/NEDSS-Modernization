@@ -21,7 +21,11 @@ export const InPageNavigation: React.FC<InPageNavigationProps> = ({ sections, ti
             <div className={styles.navTitle}>{title}</div>
             <div className={styles.navOptions}>
                 {sections.map((section) => (
-                    <a key={section.id} href={`#${section.id}`} className={classNames(styles.navOption)}>
+                    <a
+                        key={section.id}
+                        id={`inPageNav-${section.id}`}
+                        href={`#${section.id}`}
+                        className={classNames(styles.navOption)}>
                         {section.label}
                     </a>
                 ))}

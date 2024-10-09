@@ -4,6 +4,7 @@ import { useConceptOptions } from 'options/concepts';
 import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
 import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
+import { ReactNode } from 'react';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
@@ -20,9 +21,10 @@ type Props = {
     values?: RaceEntry[];
     onChange: (data: RaceEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    errors?: ReactNode[];
 };
 
-const RaceRepeatingBlock = ({ id, values, onChange, isDirty }: Props) => {
+const RaceRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
     const categories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
 
     const renderForm = () => <RaceEntryFields categories={categories} />;
@@ -39,6 +41,7 @@ const RaceRepeatingBlock = ({ id, values, onChange, isDirty }: Props) => {
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };

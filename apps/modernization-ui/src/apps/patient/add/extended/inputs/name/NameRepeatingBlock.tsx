@@ -4,6 +4,7 @@ import { today } from 'date';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { NameEntryView } from './NameEntryView';
+import { ReactNode } from 'react';
 
 const defaultValue: Partial<NameEntry> = {
     asOf: today(),
@@ -28,24 +29,29 @@ const columns: Column<NameEntry>[] = [
 ];
 
 type Props = {
+    id: string;
+    values?: NameEntry[];
     onChange: (data: NameEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    errors?: ReactNode[];
 };
 
-export const NameRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const NameRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
     const renderForm = () => <NameEntryFields />;
     const renderView = (entry: NameEntry) => <NameEntryView entry={entry} />;
 
     return (
         <RepeatingBlock<NameEntry>
-            id="name"
+            id={id}
             title="Name"
             defaultValues={defaultValue}
+            values={values}
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };
