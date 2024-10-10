@@ -1,17 +1,5 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.time.Instant;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import gov.cdc.nbs.questionbank.entity.question.CodedQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.DateQuestionEntity;
 import gov.cdc.nbs.questionbank.entity.question.NumericQuestionEntity;
@@ -26,9 +14,22 @@ import gov.cdc.nbs.questionbank.page.command.PageContentCommand.UpdateTab;
 import gov.cdc.nbs.questionbank.page.content.PageContentModificationException;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.GroupSubSectionRequest;
 import gov.cdc.nbs.questionbank.page.exception.AddQuestionException;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.Instant;
 
 @AllArgsConstructor
 @Getter
@@ -44,7 +45,7 @@ public class WaUiMetadata {
   private static final Long READ_ONLY_COMMENTS_ID = 1014L;
   private static final Long READ_ONLY_PARTICIPANTS_LIST_ID = 1030L;
   private static final Long ORIGINAL_ELECTRONIC_DOCUMENT_LIST_ID = 1036L;
-  private static final Long READONLY_USER_ENTERED = 1026l;
+  private static final Long READONLY_USER_ENTERED = 1026L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -237,7 +238,12 @@ public class WaUiMetadata {
           CascadeType.PERSIST,
           CascadeType.REMOVE
       },
-      orphanRemoval = true)
+      orphanRemoval = true
+  )
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   private WaNndMetadatum waNndMetadatum;
 
 

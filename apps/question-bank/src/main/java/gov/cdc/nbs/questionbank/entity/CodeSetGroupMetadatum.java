@@ -42,6 +42,10 @@ public class CodeSetGroupMetadatum {
   @Column(name = "phin_std_val_ind")
   private Character phinStdValInd;
 
+  @SuppressWarnings(
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @OneToMany(mappedBy = "codeSetGroup")
   private Set<Codeset> codesets = new LinkedHashSet<>();
 
