@@ -9,13 +9,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's last name ascending
     Given I have a patient
-    And the patient has the "legal" name "Ben" "Hanscom"
+    And the patient has the legal name "Ben" "Hanscom"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Beverly" "Marsh"
+    And the patient has the legal name "Beverly" "Marsh"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Bill" "Denbrough"
+    And the patient has the legal name "Bill" "Denbrough"
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "last name" "asc"
@@ -26,13 +26,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's last name Descending
     Given I have a patient
-    And the patient has the "legal" name "Ben" "Hanscom"
+    And the patient has the legal name "Ben" "Hanscom"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Beverly" "Marsh"
+    And the patient has the legal name "Beverly" "Marsh"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Bill" "Denbrough"
+    And the patient has the legal name "Bill" "Denbrough"
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "last name" "desc"
@@ -43,13 +43,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's first name ascending
     Given I have a patient
-    And the patient has the "legal" name "Beverly" "Hanscom"
+    And the patient has the legal name "Beverly" "Hanscom"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Ben" "Marsh"
+    And the patient has the legal name "Ben" "Marsh"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Bill" "Denbrough"
+    And the patient has the legal name "Bill" "Denbrough"
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "first name" "asc"
@@ -60,13 +60,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's first name Descending
     Given I have a patient
-    And the patient has the "legal" name "Beverly" "Hanscom"
+    And the patient has the legal name "Beverly" "Hanscom"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Ben" "Marsh"
+    And the patient has the legal name "Ben" "Marsh"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Bill" "Denbrough"
+    And the patient has the legal name "Bill" "Denbrough"
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "first name" "desc"
@@ -77,13 +77,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's legal name ascending
     Given I have a patient
-    And the patient has the "legal" name "Torrhen" "Stark"
+    And the patient has the legal name "Torrhen" "Stark"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Lyanna" "Stark"
+    And the patient has the legal name "Lyanna" "Stark"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Talisa" "Maegyr"
+    And the patient has the legal name "Talisa" "Maegyr"
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "legal name" "asc"
@@ -94,13 +94,13 @@ Feature: Investigation Search Sorting
 
   Scenario: I can find Investigations ordered by the patient's legal name Descending
     Given I have a patient
-    And the patient has the "legal" name "Torrhen" "Stark"
+    And the patient has the legal name "Torrhen" "Stark"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Lyanna" "Stark"
+    And the patient has the legal name "Lyanna" "Stark"
     And the patient is a subject of an investigation
     And I have another patient
-    And the patient has the "legal" name "Talisa" "Maegyr"
+    And the patient has the legal name "Talisa" "Maegyr"
     And the patient is a subject of an investigation
     And investigations are available for search
     And I want search results sorted by "legal name" "desc"
