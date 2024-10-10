@@ -16,7 +16,7 @@ const DataElementsConfiguration = () => {
 
     const { formState } = form;
 
-    const onSubmit = form.handleSubmit((data) => {
+    const onSubmit = form.handleSubmit(async (data) => {
         let finalBelongingnessRatio = data.belongingnessRatio;
         if (typeof finalBelongingnessRatio === 'string') {
             finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
@@ -25,10 +25,42 @@ const DataElementsConfiguration = () => {
             setDataElements(data.dataElements);
             localStorage.setItem('dataElements', JSON.stringify(data.dataElements));
         }
-        // Success toast message would normally be displayed upon API response of success.
-        // But for now, without the API, we just show it on submit
-        setBelongingnessRatio(finalBelongingnessRatio);
-        setMode('match');
+        // Preparing the API body
+        const apiBody = {
+            name: "SaveConfigurations",
+            belongingness_ratio: finalBelongingnessRatio,  // Use the parsed belongingness ratio
+            thresholds: data.dataElements.reduce((acc, element) => {
+                acc[element.name] = {
+                    m: element.m,
+                    u: element.u,
+                    value: element.threshold
+                };
+                return acc;
+            }, {})
+        };
+        try {
+            // API POST request
+            const response = await fetch('http://localhost:8080/configurations/save-data-elements', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(apiBody),
+            });
+
+            if (response.ok) {
+                // Handle successful response
+                const responseData = await response.json();
+                // Display success toast or message
+                console.log("Configuration saved successfully", responseData);
+                setMode('match');
+            } else {
+                // Handle error response
+                console.error("Error saving configuration:", response.status);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     });
 
     return (
