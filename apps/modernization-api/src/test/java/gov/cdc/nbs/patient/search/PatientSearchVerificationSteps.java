@@ -121,7 +121,8 @@ public class PatientSearchVerificationSteps {
           "$.data.findPatientsByFilter.content[%s].identification[*].value",
           position
       );
-      case "patientid", "patient id", "short id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId", position);
+      case "patientid", "patient id", "short id" ->
+          jsonPath("$.data.findPatientsByFilter.content[%s].shortId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }
@@ -129,10 +130,27 @@ public class PatientSearchVerificationSteps {
   private Matcher<?> matchingValue(final String field, final String value) {
     return switch (field.toLowerCase()) {
       case "birthday", "sex" -> equalTo(value);
-      case "patientid","patient id", "short id" -> equalTo(Integer.parseInt(value));
+      case "patientid", "patient id", "short id" -> equalTo(Integer.parseInt(value));
       case "status" -> hasItem(PatientStatusCriteriaResolver.resolve(value).name());
       default -> hasItem(value);
     };
+  }
+
+  @Then("the search results have a patient with a(n) {string} {} name of {string}")
+  public void search_result_n_has_a_x_of_y(
+      final String type,
+      final String field,
+      final String value
+  ) throws Exception {
+
+    JsonPathResultMatchers pathMatcher = switch (field.toLowerCase()) {
+      case "first" -> jsonPath("$.data.findPatientsByFilter.content[*].names[?(@.type=='%s')].first", type);
+      case "last" -> jsonPath("$.data.findPatientsByFilter.content[*].names[?(@.type=='%s')].last", type);
+      default -> throw new IllegalStateException("Unexpected value: " + field);
+    };
+
+    this.results.active()
+        .andExpect(pathMatcher.value(matchingValue(field, value)));
   }
 
   @Then("the patient is in the search result(s)")
