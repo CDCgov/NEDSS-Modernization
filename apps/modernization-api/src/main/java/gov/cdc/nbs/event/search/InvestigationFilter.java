@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Data
 @NoArgsConstructor
-public final class InvestigationFilter implements EventFilter {
+public final class InvestigationFilter  {
 
   private static final String UNASSIGNED = "UNASSIGNED";
 

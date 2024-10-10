@@ -28,6 +28,10 @@ import java.util.function.Predicate;
 @Getter
 @Entity
 @Table(name = "Person_name")
+@SuppressWarnings(
+    //  The PatientNameHistoryListener is an entity listener specifically for instances of this class
+    "javaarchitecture:S7027"
+)
 @EntityListeners(PatientNameHistoryListener.class)
 public class PersonName {
 

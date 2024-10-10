@@ -13,7 +13,7 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public final class LabReportFilter implements EventFilter {
+public final class LabReportFilter {
   private Long patientId;
   private List<String> programAreas = new ArrayList<>();
   private List<Long> jurisdictions = new ArrayList<>();
