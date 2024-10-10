@@ -54,11 +54,13 @@ const RepeatingBlock = <V extends FieldValues>({
     const handleSubmit = (value: V) => {
         // Submit button performs various actions based on the current state
         if (state.status === 'adding') {
+            // form reset must be triggered prior to `add` call,
+            // otherwise internal form state retains some values and fails to properly reset
+            form.reset(defaultValues);
             add(value);
-            form.reset(defaultValues);
         } else if (status === 'editing') {
-            update(state.index, value);
             form.reset(defaultValues);
+            update(state.index, value);
         }
     };
 

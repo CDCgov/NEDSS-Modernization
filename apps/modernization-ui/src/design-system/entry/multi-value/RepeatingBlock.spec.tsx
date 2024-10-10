@@ -27,6 +27,7 @@ const UnderTestForm = () => {
             <Controller
                 name="firstInput"
                 control={control}
+                rules={{ required: { value: true, message: 'First input is required.' } }}
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <Input
                         flexBox
@@ -36,6 +37,7 @@ const UnderTestForm = () => {
                         type="text"
                         label="First Input"
                         id={name}
+                        required
                     />
                 )}
             />
@@ -85,13 +87,14 @@ const columns = [
 type Props = {
     values?: TestType[];
     errors?: ReactNode[];
+    defaults?: Partial<TestType>;
 };
 
-const Fixture = ({ values = [], errors }: Props) => (
+const Fixture = ({ values = [], errors, defaults }: Props) => (
     <RepeatingBlock<TestType>
         id="testing"
         title={'Test title'}
-        defaultValues={defaultValues}
+        defaultValues={{ ...defaultValues, ...defaults }}
         columns={columns}
         values={values}
         onChange={onChange}
@@ -207,6 +210,43 @@ describe('RepeatingBlock', () => {
         expect(columns[0]).toHaveTextContent('first value');
         expect(columns[1]).toHaveTextContent('second value');
         expect(columns[2]).toHaveTextContent('');
+    });
+
+    it('should reset after adding data', async () => {
+        const { getByRole, getByLabelText, queryByText } = render(<Fixture defaults={{ firstInput: undefined }} />);
+
+        await awaitRender();
+        // try to add with empty required field
+        userEvent.click(getByRole('button'));
+
+        // ensure validation message appears
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
+
+        // enter data and submit
+        userEvent.type(getByLabelText('First Input'), 'typed value');
+        userEvent.click(getByRole('button'));
+
+        // expect value to be added
+        await waitFor(() => {
+            expect(onChange).toBeCalledTimes(2);
+            expect(onChange).toHaveBeenNthCalledWith(1, []);
+            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: 'second value' }]);
+        });
+
+        // verify validation message is no longer visible
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).not.toBeInTheDocument();
+        });
+
+        // immediately click add button again
+        userEvent.click(getByRole('button'));
+
+        // verify validation text is shown
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
     });
 
     it('should display icons in last column of table', async () => {
