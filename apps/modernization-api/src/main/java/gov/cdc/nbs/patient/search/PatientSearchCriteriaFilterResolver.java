@@ -12,7 +12,6 @@ import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Gender;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -77,33 +76,11 @@ class PatientSearchCriteriaFilterResolver {
 
     Gender gender = Gender.resolve(criteria.getGender());
 
-    if (gender == null) {
-      return Optional.empty();
-    } else if (!Objects.equals(gender, Gender.U)) {
-      //  not unknown, search for the team exactly
-      return Optional.of(
-          TermQuery.of(
-              query -> query.field(CURRENT_GENDER).value(gender.value())
-          )
-      );
-    } else {
-      //  for unknown, search for values of U or NULL
-      return Optional.of(
-          BoolQuery.of(
-              query -> query.should(
-                  should -> should.term(term -> term.field(CURRENT_GENDER).value(gender.value()))
-              ).should(
-                  should -> should.bool(
-                      bool -> bool.mustNot(
-                          not -> not.exists(
-                              exists -> exists.field(CURRENT_GENDER)
-                          )
-                      )
-                  )
-              )
-          )
-      );
-    }
+    return (gender == null) ? Optional.empty() : Optional.of(
+        TermQuery.of(
+            query -> query.field(CURRENT_GENDER).value(gender.value())
+        )
+    );
   }
 
   private Optional<QueryVariant> applyDeceasedCriteria(final PatientFilter criteria) {
