@@ -5,8 +5,7 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.Instant;
 
 public class PatientNameDemographicSteps {
 
@@ -26,75 +25,58 @@ public class PatientNameDemographicSteps {
     mother.withName(patient.active());
   }
 
-  @Given("the patient has the {string} name {string} {string}")
+  @Given("the patient has the {nameUse} name {string} {string}")
   public void the_patient_has_the_name(
       final String type,
       final String first,
-      final String last) {
-
-    String resolvedType = resolveType(type);
+      final String last
+  ) {
 
     mother.withName(
         patient.active(),
-        resolvedType,
+        type,
         first,
-        last);
+        last
+    );
   }
 
-  @Given("the patient has the {string} name {string} {string} as of {string}")
+  @Given("the patient has the {nameUse} name {string} {string} as of {date}")
   public void the_patient_has_the_name_as_of(
       final String type,
       final String first,
       final String last,
-      final String asOf) {
-
-    String resolvedType = resolveType(type);
+      final Instant asOf
+  ) {
 
     mother.withName(
         patient.active(),
-        LocalDate.parse(asOf).atStartOfDay(ZoneId.systemDefault()).toInstant(),
-        resolvedType,
+        asOf,
+        type,
         first,
-        last);
+        last
+    );
   }
 
-  @Given("the patient has the {string} name {string} {string} {string}, {string} as of {string}")
+  @Given("the patient has the {nameUse} name {string} {string} {string}, {nameSuffix} as of {date}")
   public void the_patient_has_the_name_use_first_middle_last_suffix_as_of(
       final String type,
       final String first,
       final String middle,
       final String last,
       final String suffix,
-      final String asOf) {
-
-    String resolvedType = resolveType(type);
-    String resolvedSuffix = resolveSuffix(suffix);
+      final Instant asOf
+  ) {
 
     mother.withName(
         patient.active(),
-        LocalDate.parse(asOf).atStartOfDay(ZoneId.systemDefault()).toInstant(),
-        resolvedType,
+        asOf,
+        type,
         first,
         middle,
         last,
-        resolvedSuffix);
+        suffix
+    );
 
-  }
-
-  private String resolveType(final String use) {
-    return switch (use.toLowerCase()) {
-      case "legal" -> "L";
-      case "alias" -> "AL";
-      default -> throw new IllegalStateException("Unexpected name type: " + use);
-    };
-  }
-
-  private String resolveSuffix(final String suffix) {
-    return switch (suffix.toLowerCase()) {
-      case "junior", "jr" -> "JR";
-      case "esquire" -> "ESQ";
-      default -> throw new IllegalStateException("Unexpected name suffix: " + suffix);
-    };
   }
 
 }
