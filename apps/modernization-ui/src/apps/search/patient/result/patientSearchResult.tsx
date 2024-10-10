@@ -3,16 +3,13 @@ import { displayName } from 'name';
 import { displayAddress } from 'address/display';
 import { Link } from 'react-router-dom';
 
-const displayProfileLink = (result: PatientSearchResult) => {
-    return <Link to={`/patient-profile/${result.shortId}/summary`}>{result.shortId || 'No Data'}</Link>;
+const displayProfileLink = (shortId: number, displayName?: string) => {
+    return <Link to={`/patient-profile/${shortId}/summary`}>{displayName || shortId}</Link>;
 };
 
 const displayProfileLegalName = (result: PatientSearchResult) => {
-    return (
-        <Link to={`/patient-profile/${result.shortId}/summary`}>
-            {(result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data'}
-        </Link>
-    );
+    const legalNameDisplay = (result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data';
+    return displayProfileLink(result.shortId, legalNameDisplay);
 };
 
 const displayNames = (result: PatientSearchResult): string => {
