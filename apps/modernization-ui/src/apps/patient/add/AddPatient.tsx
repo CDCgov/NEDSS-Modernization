@@ -19,13 +19,14 @@ import OtherInfoFields from 'apps/patient/add/otherInfoFields/OtherInfoFields';
 import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
-import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
+import { DefaultNewPatentEntry, initialEntry, NewPatientEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { SuccessModal } from 'success';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
 import { AddPatientSideNav } from './nav/AddPatientSideNav';
+import { useBasicToExtended } from './extended/useBasicToExtended';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -89,6 +90,8 @@ const AddPatient = () => {
 
     const prefillled = usePreFilled(initialEntry());
 
+    const { add } = useBasicToExtended();
+
     useEffect(() => {
         reset(prefillled);
     }, [prefillled]);
@@ -97,7 +100,7 @@ const AddPatient = () => {
         defaultValues: initialEntry(),
         mode: 'onBlur'
     });
-    const watch = useWatch({ control: methods.control });
+    const watch = useWatch<NewPatientEntry>({ control: methods.control });
 
     const {
         handleSubmit,
@@ -207,12 +210,6 @@ const AddPatient = () => {
         return () => observer.disconnect();
     }, []);
 
-    const checkExtended = () => {};
-
-    useEffect(() => {
-        console.log(watch.middleName);
-    }, [watch]);
-
     return (
         <Grid
             row
@@ -279,13 +276,9 @@ const AddPatient = () => {
                                 <h1 className="new-patient-title margin-0">New patient</h1>
                                 <div className="nav-buttons">
                                     {features.patient?.add?.extended?.enabled && (
-                                        <NavLinkButton
-                                            type="outline"
-                                            className="add-patient-button"
-                                            to={'/patient/add/extended'}
-                                            state={{ defaults: watch }}>
+                                        <Button type="button" onClick={() => add(watch)}>
                                             Add extended data
-                                        </NavLinkButton>
+                                        </Button>
                                     )}
                                     <Button className="add-patient-button" type={'submit'}>
                                         Save changes

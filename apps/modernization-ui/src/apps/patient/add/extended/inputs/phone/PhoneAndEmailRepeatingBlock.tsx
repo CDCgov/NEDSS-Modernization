@@ -17,10 +17,12 @@ const defaultValue: Partial<PhoneEmailEntry> = {
     comment: ''
 };
 type Props = {
+    id?: string;
     onChange: (data: PhoneEmailEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
+    values?: PhoneEmailEntry[];
 };
-export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty, values, id }: Props) => {
     const renderForm = () => <PhoneEmailEntryFields />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
 
@@ -34,9 +36,10 @@ export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty }: Props) => {
 
     return (
         <RepeatingBlock<PhoneEmailEntry>
-            id="phoneAndEmail"
+            id={id ?? 'phoneEmailEntry'}
             title="Phone & email"
             defaultValues={defaultValue}
+            values={values}
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}

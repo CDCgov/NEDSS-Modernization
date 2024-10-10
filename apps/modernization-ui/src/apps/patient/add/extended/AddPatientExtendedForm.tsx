@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Card } from './card/Card';
 import { ExtendedNewPatientEntry } from './entry';
@@ -15,7 +14,6 @@ import { RaceRepeatingBlock } from './inputs/race/RaceRepeatingBlock';
 
 import { AlertMessage } from 'design-system/message';
 import styles from './add-patient-extended-form.module.scss';
-import { useLocation } from 'react-router-dom';
 import { SubFormDirtyState, ValidationErrors } from './useAddExtendedPatientInteraction';
 
 type Props = {
@@ -23,8 +21,7 @@ type Props = {
     setSubFormState: (state: Partial<SubFormDirtyState>) => void;
 };
 export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Props) => {
-    const { setValue, control } = useFormContext<ExtendedNewPatientEntry>();
-    const location = useLocation();
+    const { control } = useFormContext<ExtendedNewPatientEntry>();
 
     const renderErrorMessages = () => {
         const generateError = (section: string, id: string) => {
@@ -48,10 +45,6 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
         );
     };
 
-    useEffect(() => {
-        console.log(location.state.defaults);
-    });
-
     return (
         <div className={styles.addPatientForm}>
             <div className={styles.formContent}>
@@ -66,22 +59,56 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                     info={<span className="required-before">All required fields for adding comments</span>}>
                     <AdministrativeEntryFields />
                 </Card>
-                <NameRepeatingBlock
-                    isDirty={(isDirty) => setSubFormState({ name: isDirty })}
-                    onChange={(nameData) => setValue('names', nameData)}
+                <Controller
+                    control={control}
+                    name="names"
+                    render={({ field: { onChange, value, name } }) => (
+                        <NameRepeatingBlock
+                            id={name}
+                            isDirty={(isDirty) => setSubFormState({ name: isDirty })}
+                            onChange={onChange}
+                            values={value}
+                        />
+                    )}
                 />
-                <AddressRepeatingBlock
-                    isDirty={(isDirty) => setSubFormState({ address: isDirty })}
-                    onChange={(addressData) => setValue('addresses', addressData)}
+                <Controller
+                    control={control}
+                    name="addresses"
+                    render={({ field: { onChange, value, name } }) => (
+                        <AddressRepeatingBlock
+                            id={name}
+                            isDirty={(isDirty) => setSubFormState({ address: isDirty })}
+                            onChange={onChange}
+                            values={value}
+                        />
+                    )}
                 />
-                <PhoneAndEmailRepeatingBlock
-                    isDirty={(isDirty) => setSubFormState({ phone: isDirty })}
-                    onChange={(phoneEmailData) => setValue('phoneEmails', phoneEmailData)}
+                <Controller
+                    control={control}
+                    name="phoneEmails"
+                    render={({ field: { onChange, value, name } }) => (
+                        <PhoneAndEmailRepeatingBlock
+                            id={name}
+                            isDirty={(isDirty) => setSubFormState({ phone: isDirty })}
+                            onChange={onChange}
+                            values={value}
+                        />
+                    )}
                 />
-                <IdentificationRepeatingBlock
-                    isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
-                    onChange={(identificationData) => setValue('identifications', identificationData)}
+
+                <Controller
+                    control={control}
+                    name="identifications"
+                    render={({ field: { onChange, value, name } }) => (
+                        <IdentificationRepeatingBlock
+                            id={name}
+                            values={value}
+                            isDirty={(isDirty) => setSubFormState({ identification: isDirty })}
+                            onChange={onChange}
+                        />
+                    )}
                 />
+
                 <Controller
                     control={control}
                     name="races"

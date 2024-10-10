@@ -12,10 +12,12 @@ const defaultValue: Partial<IdentificationEntry> = {
     id: ''
 };
 type Props = {
+    id?: string;
+    values?: IdentificationEntry[];
     onChange: (data: IdentificationEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
 };
-export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
+export const IdentificationRepeatingBlock = ({ onChange, isDirty, values, id }: Props) => {
     const renderForm = () => <IdentificationEntryFields />;
     const renderView = (entry: IdentificationEntry) => <IdentificationView entry={entry} />;
 
@@ -27,9 +29,10 @@ export const IdentificationRepeatingBlock = ({ onChange, isDirty }: Props) => {
     ];
     return (
         <RepeatingBlock<IdentificationEntry>
-            id="identification"
+            id={id ?? 'identification'}
             title="Identification"
             defaultValues={defaultValue}
+            values={values}
             columns={columns}
             onChange={onChange}
             isDirty={isDirty}
