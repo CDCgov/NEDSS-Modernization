@@ -3,13 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { displayProfileLink, displayPhones, displayEmails } from './patientSearchResult';
 
-jest.mock('name', () => ({
-    displayName: jest.fn(() => jest.fn((name) => `${name.last}, ${name.first}`))
-}));
-jest.mock('address/display', () => ({
-    displayAddress: jest.fn((address) => `${address.street}, ${address.city}`)
-}));
-
 describe('patientSearchResult functions', () => {
     const mockPatient: PatientSearchResult = {
         patient: 10043290,
@@ -57,17 +50,17 @@ describe('patientSearchResult functions', () => {
         emails: ['emily.reynolds@owensborohealth.org']
     };
 
-    test('displayPhones returns correct string', () => {
+    it('should displayPhones returns correct string', () => {
         const result = displayPhones(mockPatient);
         expect(result).toBe('270-685-4067');
     });
 
-    test('displayEmails returns correct string', () => {
+    it('should displayEmails returns correct string', () => {
         const result = displayEmails(mockPatient);
         expect(result).toBe('emily.reynolds@owensborohealth.org');
     });
 
-    test('displayProfileLink renders correctly with shortId', () => {
+    it('should displayProfileLink renders correctly with shortId', () => {
         const { getByText } = render(
             <BrowserRouter>{displayProfileLink(mockPatient.shortId, 'John Doe')}</BrowserRouter>
         );
