@@ -9,6 +9,7 @@ import {
     displayEmails,
     displayAddresses
 } from 'apps/search/patient/result';
+import { displayName } from 'name';
 
 const displayIdentifications = (result: PatientSearchResult): string =>
     result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
@@ -26,12 +27,11 @@ const EMAIL = { id: 'email', name: 'Email' };
 
 // table columns
 const columns: Column<PatientSearchResult>[] = [
-    { ...PATIENT_ID, sortable: true, render: (row) => row.shortId },
     {
-        ...LEGAL_NAME,
+        ...PATIENT_ID,
         fixed: true,
         sortable: true,
-        render: displayProfileLink
+        render: (result) => displayProfileLink(result.shortId)
     },
     {
         ...DATE_OF_BIRTH,
@@ -39,6 +39,11 @@ const columns: Column<PatientSearchResult>[] = [
         render: (result) => internalizeDate(result.birthday)
     },
     { ...SEX, sortable: true, render: (result) => result.gender },
+    {
+        ...LEGAL_NAME,
+        sortable: true,
+        render: (result) => result.legalName && displayName('fullLastFirst')(result.legalName)
+    },
     { ...ADDRESS, render: displayAddresses },
     { ...PHONE, render: displayPhones },
     { ...NAMES, render: displayNames },
