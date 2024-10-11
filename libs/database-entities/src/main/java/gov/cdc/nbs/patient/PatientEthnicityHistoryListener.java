@@ -17,6 +17,7 @@ public class PatientEthnicityHistoryListener {
     }
 
     @PreRemove
+    @SuppressWarnings("javaarchitecture:S7027")
     void preRemove(final PersonEthnicGroup personEthnicGroup) {
         long personUid = personEthnicGroup.getPersonUid().getId();
         String personEthnicityGroupCd = personEthnicGroup.getId().getEthnicGroupCd();

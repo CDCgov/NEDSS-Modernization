@@ -16,6 +16,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "Person_ethnic_group")
 @EntityListeners(PatientEthnicityHistoryListener.class)
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class PersonEthnicGroup {
     @EmbeddedId
     private PersonEthnicGroupId id;

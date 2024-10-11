@@ -19,6 +19,7 @@ public class QueryDSLFilterApplier {
     Stream<BooleanExpression> resolve(final Filter filter, final Expression<?> expression);
   }
 
+  @SuppressWarnings("javaarchitecture:S7027") // static method uses default implementation
   public static Stream<BooleanExpression> apply(
       final ExpressionResolver expressionResolver,
       final Collection<Filter> filters) {
