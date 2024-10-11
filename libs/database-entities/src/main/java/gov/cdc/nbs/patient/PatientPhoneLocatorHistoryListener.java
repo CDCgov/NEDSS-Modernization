@@ -17,6 +17,7 @@ public class PatientPhoneLocatorHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings("javaarchitecture:S7027")
     void preUpdate(final TeleEntityLocatorParticipation teleEntityLocatorParticipation) {
         long locatorId = teleEntityLocatorParticipation.getId().getLocatorUid();
         int currentVersion = getCurrentVersionNumber(locatorId);

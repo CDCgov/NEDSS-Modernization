@@ -60,6 +60,9 @@ public class Codeset {
   @Column(name = "status_to_time")
   private Instant statusToTime;
 
+  @SuppressWarnings(
+  //  Bidirectional mappings require knowledge of each other
+  "javaarchitecture:S7027")
   @ManyToOne(fetch = FetchType.LAZY, cascade = {
       CascadeType.MERGE,
       CascadeType.REMOVE,

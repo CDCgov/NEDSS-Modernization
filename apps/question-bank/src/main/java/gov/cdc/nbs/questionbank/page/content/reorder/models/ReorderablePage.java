@@ -33,6 +33,7 @@ public class ReorderablePage {
     /**
      * Converts the ReorderablePage into a list of PageEntry's
      */
+    @SuppressWarnings("javaarchitecture:S7027") // References static fields
     public List<PageEntry> toPageEntries() {
         List<PageEntry> entries = new ArrayList<>();
         int orderNumber = 1;

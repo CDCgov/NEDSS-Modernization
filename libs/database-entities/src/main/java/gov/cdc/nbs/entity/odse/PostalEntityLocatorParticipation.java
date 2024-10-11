@@ -15,6 +15,7 @@ import jakarta.persistence.OneToOne;
 @Entity
 @DiscriminatorValue(PostalEntityLocatorParticipation.POSTAL_CLASS_CODE)
 @EntityListeners(PatientPostalLocatorHistoryListener.class)
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class PostalEntityLocatorParticipation extends EntityLocatorParticipation {
 
     static final String POSTAL_CLASS_CODE = "PST";

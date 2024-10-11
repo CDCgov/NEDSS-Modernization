@@ -98,6 +98,9 @@ public class WaNndMetadatum {
   @Column(name = "local_id", length = 50)
   private String localId;
 
+  @SuppressWarnings(
+  //  Bidirectional mappings require knowledge of each other
+  "javaarchitecture:S7027")
   @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
   private WaUiMetadata waUiMetadataUid;
