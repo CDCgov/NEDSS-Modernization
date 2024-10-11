@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: config_db
+    volumes:
+      - ./config_schema.sql:/docker-entrypoint-initdb.d/config_schema.sql
+    ports:
+      - "5432:5432"
+    restart: always
