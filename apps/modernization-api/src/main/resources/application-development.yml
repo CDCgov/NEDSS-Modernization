@@ -37,19 +37,25 @@ nbs:
   ui:
     features:
       address:
-          autocomplete: false
-          verification: false
+        autocomplete: false
+        verification: false
       pageBuilder:
         enabled: true
         page:
-          library: 
+          library:
             enabled: true
-          management: 
+          management:
             create:
               enabled: true
             edit:
               enabled: true
       search:
+        events:
+          enabled: true
+        investigations:
+          enabled: true
+        laboratory-reports:
+          enabled: true
         view:
           enabled: true
           table:
