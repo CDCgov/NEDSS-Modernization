@@ -7,7 +7,8 @@
 1. Java 21
 2. Node / NPM
 3. nbs-mssql, elasticsearch, and nifi docker containers are running. See [CDC Sandbox](../../cdc-sandbox/README.md)
-4. `DATABASE_PASSWORD`, `TOKEN_SECRET` and `PARAMETER_SECRET` environment variables are set or relevant properties set in an `application-local.yml`
+4. `DATABASE_PASSWORD`, `TOKEN_SECRET` and `PARAMETER_SECRET` environment variables are set or relevant properties set
+   in an `application-local.yml`
 
 ### VSCode
 
@@ -137,7 +138,7 @@ following configurations are present
 | nbs.ui.features.pageBuilder.page.management.enabled | false   | Enables the PageBuilder Page Management feature   |
 | nbs.ui.features.search.events.enabled               | true    | Enables access to NBS6 Event Search               |
 | nbs.ui.features.search.investigations.enabled       | false   | Enables access to modernized Investigation search |
-| nbs.ui.features.search.laboratory-reports.enabled   | false   | Enables access to modernized Laboratory search    |
+| nbs.ui.features.search.laboratoryReports.enabled    | false   | Enables access to modernized Laboratory search    |
 | nbs.ui.features.patient.add.extended.enabled        | false   | Enables access to modernized Patient Extended add |
 
 Configuration properties can be overwritten at runtime using the `--args` Gradle option to pass arguments to Spring
