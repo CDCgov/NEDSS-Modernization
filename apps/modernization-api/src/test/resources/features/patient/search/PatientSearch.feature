@@ -295,7 +295,7 @@ Feature: Patient Search
     Then the search results have a patient with a "gender" equal to "Unknown"
     And the search results have a patient without a "gender" equal to "Female"
     And the search results have a patient without a "gender" equal to "Male"
-    And there are 2 patient search results
+    And there is only one patient search result
 
   Scenario: BUG: CNFT1-1560 Patients with only a country code are searchable
     Given the patient has a "country code" of "+32"
