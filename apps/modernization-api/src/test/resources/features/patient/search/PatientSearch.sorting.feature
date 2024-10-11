@@ -33,11 +33,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "birthday" of "1974-05-29"
 
   Scenario: I can find the most relevant patient when sorting by legal name  ascending
-    Given the patient has the "legal" name "Wanda" "Maximoff"
+    Given the patient has the legal name "Wanda" "Maximoff"
     And I have another patient
-    And the patient has the "legal" name "Helen" "Cho"
+    And the patient has the legal name "Helen" "Cho"
     And I have another patient
-    And the patient has the "legal" name "Pietro" "Maximoff"
+    And the patient has the legal name "Pietro" "Maximoff"
     And patients are available for search
     And I want patients sorted by "legal name" "asc"
     When I search for patients
@@ -49,11 +49,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "last name" of "Maximoff"
 
   Scenario: I can find the most relevant patient when sorting by legal name descending
-    Given the patient has the "legal" name "Wanda" "Maximoff"
+    Given the patient has the legal name "Wanda" "Maximoff"
     And I have another patient
-    And the patient has the "legal" name "Helen" "Cho"
+    And the patient has the legal name "Helen" "Cho"
     And I have another patient
-    And the patient has the "legal" name "Pietro" "Maximoff"
+    And the patient has the legal name "Pietro" "Maximoff"
     And patients are available for search
     And I want patients sorted by "last name" "desc"
     When I search for patients
@@ -65,11 +65,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "last name" of "Cho"
 
   Scenario: I can find the most relevant patient when sorting by last name  ascending
-    Given the patient has the "legal" name "Timothy" "Jackson"
+    Given the patient has the legal name "Timothy" "Jackson"
     And I have another patient
-    And the patient has the "legal" name "Jason" "Todd"
+    And the patient has the legal name "Jason" "Todd"
     And I have another patient
-    And the patient has the "legal" name "Stephanie" "Brown"
+    And the patient has the legal name "Stephanie" "Brown"
     And patients are available for search
     And I want patients sorted by "last name" "asc"
     When I search for patients
@@ -81,11 +81,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "last name" of "Todd"
 
   Scenario: I can find the most relevant patient when sorting by last name descending
-    Given the patient has the "legal" name "Timothy" "Jackson"
+    Given the patient has the legal name "Timothy" "Jackson"
     And I have another patient
-    And the patient has the "legal" name "Jason" "Todd"
+    And the patient has the legal name "Jason" "Todd"
     And I have another patient
-    And the patient has the "legal" name "Stephanie" "Brown"
+    And the patient has the legal name "Stephanie" "Brown"
     And patients are available for search
     And I want patients sorted by "last name" "desc"
     When I search for patients
@@ -97,11 +97,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "last name" of "Brown"
 
   Scenario: I can find the most relevant patient when sorting by first name  ascending
-    Given the patient has the "legal" name "Timothy" "Jackson"
+    Given the patient has the legal name "Timothy" "Jackson"
     And I have another patient
-    And the patient has the "legal" name "Jason" "Todd"
+    And the patient has the legal name "Jason" "Todd"
     And I have another patient
-    And the patient has the "legal" name "Stephanie" "Brown"
+    And the patient has the legal name "Stephanie" "Brown"
     And patients are available for search
     And I want patients sorted by "first name" "asc"
     When I search for patients
@@ -110,11 +110,11 @@ Feature: Patient Search Sorting
     And search result 3 has a "first name" of "Timothy"
 
   Scenario: I can find the most relevant patient when sorting by first name descending
-    Given the patient has the "legal" name "Timothy" "Jackson"
+    Given the patient has the legal name "Timothy" "Jackson"
     And I have another patient
-    And the patient has the "legal" name "Jason" "Todd"
+    And the patient has the legal name "Jason" "Todd"
     And I have another patient
-    And the patient has the "legal" name "Stephanie" "Brown"
+    And the patient has the legal name "Stephanie" "Brown"
     And patients are available for search
     And I want patients sorted by "first name" "desc"
     When I search for patients

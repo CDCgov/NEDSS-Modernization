@@ -31,6 +31,7 @@ class PatientSearchRequester {
               suffix
             }
             names {
+              type
               first
               middle
               last
