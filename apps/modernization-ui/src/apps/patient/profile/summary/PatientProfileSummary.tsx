@@ -11,7 +11,7 @@ import {
 import { Loading } from 'components/Spinner';
 import { internalizeDate } from 'date';
 import { Patient } from 'apps/patient/profile';
-import { displayAddress } from 'address/display/displayAddress';
+import { displayAddressText } from 'address/display';
 import { NoData } from 'components/NoData';
 import { displayName } from 'name';
 import { useProfileContext } from '../ProfileContext';
@@ -49,7 +49,7 @@ const asPhones = (items: PatientSummaryPhone[]) => asText(items.map((items) => i
 const asEmails = (items: PatientSummaryEmail[]) => asText(items.map((item) => item.address).join('\n'));
 
 const asAddress = (address: PatientSummaryAddress) => {
-    const value = displayAddress(address);
+    const value = displayAddressText(address);
     return maybeRender(value, asText);
 };
 
