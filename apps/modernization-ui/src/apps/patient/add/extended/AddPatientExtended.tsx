@@ -32,7 +32,7 @@ export const AddPatientExtended = () => {
     );
 
     const form = useForm<ExtendedNewPatientEntry>({
-        defaultValues: location.state.defaults ?? initial(),
+        defaultValues: location.state?.defaults ?? initial(),
         mode: 'onBlur'
     });
     const formIsDirty = form.formState.isDirty;
