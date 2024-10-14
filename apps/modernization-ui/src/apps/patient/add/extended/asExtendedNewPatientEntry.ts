@@ -138,14 +138,16 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
             });
         }
 
-        if (initial.emailAddresses.length > 0) {
+        if (initial.emailAddresses.length) {
             initial.emailAddresses.map((emailAddress) => {
-                phoneEmails.push({
-                    asOf: initial.asOf,
-                    type: asSelectable('NET', 'Email address'),
-                    use: asSelectable('H', 'Home'),
-                    email: emailAddress.email ?? ''
-                });
+                if (emailAddress.email != null) {
+                    phoneEmails.push({
+                        asOf: initial.asOf,
+                        type: asSelectable('NET', 'Email address'),
+                        use: asSelectable('H', 'Home'),
+                        email: emailAddress.email ?? ''
+                    });
+                }
             });
         }
         return phoneEmails;
