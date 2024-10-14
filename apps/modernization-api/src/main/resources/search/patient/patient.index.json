@@ -9,6 +9,12 @@
         "index": false,
         "doc_values": false
       },
+      "abcs_case_ids": {
+        "type": "text"
+      },
+      "accession_ids": {
+        "type": "text"
+      },
       "add_reason_cd": {
         "type": "keyword"
       },
@@ -209,6 +215,9 @@
       "children_in_house_nbr": {
         "type": "short"
       },
+      "city_case_ids": {
+        "type": "text"
+      },
       "curr_sex_cd": {
         "type": "keyword"
       },
@@ -363,6 +372,12 @@
       "id": {
         "type": "long"
       },
+      "investigation_ids": {
+        "type": "text"
+      },
+      "lab_report_ids": {
+        "type": "text"
+      },
       "last_chg_reason_cd": {
         "type": "keyword"
       },
@@ -503,6 +518,9 @@
       "nm_suffix": {
         "type": "text"
       },
+      "notification_ids": {
+        "type": "text"
+      },
       "occupation_cd": {
         "type": "keyword"
       },
@@ -610,6 +628,9 @@
       },
       "speaks_english_cd": {
         "type": "keyword"
+      },
+      "state_case_ids": {
+        "type": "text"
       },
       "status_cd": {
         "type": "keyword"
