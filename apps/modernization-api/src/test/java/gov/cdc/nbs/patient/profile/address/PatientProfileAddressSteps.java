@@ -72,7 +72,8 @@ public class PatientProfileAddressSteps {
       final String use,
       final String address,
       final String city,
-      final String zip) {
+      final String zip
+  ) {
 
     PatientIdentifier identifier = activePatient.active();
 
@@ -85,7 +86,8 @@ public class PatientProfileAddressSteps {
         city,
         null,
         null,
-        zip);
+        zip
+    );
 
   }
 
@@ -100,6 +102,30 @@ public class PatientProfileAddressSteps {
       case "temporary" -> "TMP";
       default -> throw new IllegalStateException("Unexpected address use: " + use.toLowerCase());
     };
+  }
+
+  @Given("the patient has a {addressType} - {addressUse} address at {string} {string} {string}")
+  public void the_patient_has_an_address_at(
+      final String type,
+      final String use,
+      final String address,
+      final String city,
+      final String zip
+  ) {
+
+    PatientIdentifier identifier = activePatient.active();
+
+    mother.withAddress(
+        identifier,
+        type,
+        use,
+        address,
+        city,
+        null,
+        null,
+        zip
+    );
+
   }
 
   @Given("the new patient's address is entered")

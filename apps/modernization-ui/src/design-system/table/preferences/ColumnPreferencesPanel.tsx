@@ -88,9 +88,11 @@ const ColumnPreferencesPanel = ({ close }: Props) => {
                                                 selected={!preference.hidden}
                                                 onChange={handleVisibilityChange(preference)}
                                             />
-                                            <span className={styles.handle} {...draggable.dragHandleProps}>
-                                                <Icon name="drag" />
-                                            </span>
+                                            {preference.moveable && (
+                                                <span className={styles.handle} {...draggable.dragHandleProps}>
+                                                    <Icon name="drag" />
+                                                </span>
+                                            )}
                                         </div>
                                     )}
                                 </Draggable>

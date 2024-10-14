@@ -1,23 +1,22 @@
-import { ReactNode, useEffect } from 'react';
-import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import classNames from 'classnames';
-import { AlertBanner } from 'alert';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { Column, DataTable } from 'design-system/table';
 import { Icon } from 'design-system/icon';
-import { useMultiValueEntryState } from './useMultiValueEntryState';
-
+import { AlertMessage } from 'design-system/message';
+import { Column, DataTable } from 'design-system/table';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { DefaultValues, FieldValues, FormProvider, useForm } from 'react-hook-form';
 import styles from './RepeatingBlock.module.scss';
+import { useMultiValueEntryState } from './useMultiValueEntryState';
 
 type Props<V extends FieldValues> = {
     id: string;
     title: string;
     columns: Column<V>[];
     defaultValues?: DefaultValues<V>; // Provide all default values to allow `isDirty` to function
+    errors?: ReactNode[];
     values?: V[];
-    errors?: string[];
     onChange: (data: V[]) => void;
     isDirty: (isDirty: boolean) => void;
     formRenderer: () => ReactNode;
@@ -36,7 +35,7 @@ const RepeatingBlock = <V extends FieldValues>({
     formRenderer,
     viewRenderer
 }: Props<V>) => {
-    const form = useForm<V>({ defaultValues });
+    const form = useForm<V>({ mode: 'onSubmit', reValidateMode: 'onSubmit', defaultValues });
     const { status, selected, add, edit, update, remove, view, reset, state } = useMultiValueEntryState<V>({ values });
 
     useEffect(() => {
@@ -55,11 +54,13 @@ const RepeatingBlock = <V extends FieldValues>({
     const handleSubmit = (value: V) => {
         // Submit button performs various actions based on the current state
         if (state.status === 'adding') {
+            // form reset must be triggered prior to `add` call,
+            // otherwise internal form state retains some values and fails to properly reset
+            form.reset(defaultValues);
             add(value);
-            form.reset(defaultValues);
         } else if (status === 'editing') {
-            update(state.index, value);
             form.reset(defaultValues);
+            update(state.index, value);
         }
     };
 
@@ -100,20 +101,37 @@ const RepeatingBlock = <V extends FieldValues>({
         )
     };
 
+    // Combine error message prop and internal form error messages into an array for display in the banner
+    const errorMessages = useMemo<ReactNode[]>(() => {
+        const formErrorMessages = Object.values(form.formState.errors).map((error) => error?.message?.toString());
+        const messages: ReactNode[] = [...(errors ?? []), ...formErrorMessages];
+
+        return messages.filter((a) => a != undefined);
+    }, [JSON.stringify(form.formState.errors), errors]);
+
+    // If a user clears the form, remove internal form validation errors
+    useEffect(() => {
+        if (!form.formState.isDirty) {
+            form.clearErrors();
+        }
+    }, [form.formState.isDirty]);
+
     return (
         <section id={id} className={styles.input}>
             <header>
                 <Heading level={2}>{title}</Heading>
                 <span className="required-before">All required fields for adding {title.toLowerCase()}</span>
             </header>
-            <Shown when={errors && errors.length > 0}>
+
+            <Shown when={errorMessages && errorMessages.length > 0}>
                 <section>
-                    <AlertBanner type="error">
-                        <div className={styles.errors}>
-                            <div className={styles.errorHeading}>Please fix the following errors: </div>
-                            <ul>{errors?.map((e, i) => <li key={i}>{e}</li>)}</ul>
-                        </div>
-                    </AlertBanner>
+                    <AlertMessage title="Please fix the following errors:" type="error">
+                        <ul className={styles.errorList}>
+                            {errorMessages.map((e, i) => (
+                                <li key={i}>{e}</li>
+                            ))}
+                        </ul>
+                    </AlertMessage>
                 </section>
             </Shown>
             <div>
@@ -136,7 +154,7 @@ const RepeatingBlock = <V extends FieldValues>({
             </Shown>
             <footer>
                 <Shown when={status === 'editing' || status === 'adding'}>
-                    <Button outline disabled={!form.formState.isValid} onClick={form.handleSubmit(handleSubmit)}>
+                    <Button outline onClick={form.handleSubmit(handleSubmit)}>
                         <Icon name="add" />
                         {`${status === 'editing' ? 'Update' : 'Add'} ${title.toLowerCase()}`}
                     </Button>

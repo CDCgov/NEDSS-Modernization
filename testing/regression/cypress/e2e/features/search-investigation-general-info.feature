@@ -6,7 +6,7 @@ Feature: Investigation Search by general search
 
   Scenario: Basic Info - Search by Condition
     When I select a condition for event investigation
-    Then I should see Condition Results with the link "Acanthamoeba Disease (Excluding Keratitis)"
+    Then I should see Condition Results with the link "Hepatitis B virus infection, Chronic"
 
   Scenario: Basic Info - Search by Program Area
     When I select a program area for event investigation
@@ -34,12 +34,12 @@ Feature: Investigation Search by general search
 
   Scenario: Basic Info - Search by Event id type
     When I select a event id type for event investigation
-    Then I should see Results with the link "Diphtheria"
+    Then I should see Condition Results with the link "Pertussis"
 
   Scenario: Basic Info - Search by Event Facility
     When I select a facility for event investigation
-    Then I should see Results with the link "Hepatitis C, acute"
+    Then I should see Results with the link "Samson, Sam"
 
   Scenario: Basic Info - Search by Event Provider
     When I select a provider for event investigation
-    Then I should see No Results found text
+    Then I should see Results with the text "John Xerogeanes"

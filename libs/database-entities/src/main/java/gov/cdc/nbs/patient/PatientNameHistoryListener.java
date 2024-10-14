@@ -18,6 +18,7 @@ public class PatientNameHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings("javaarchitecture:S7027")
     void preUpdate(PersonName personName) {
         int personNameSequence = personName.getId().getPersonNameSeq();
         int currentVersion = getCurrentVersionNumber(personName.getPersonUid(), personNameSequence);

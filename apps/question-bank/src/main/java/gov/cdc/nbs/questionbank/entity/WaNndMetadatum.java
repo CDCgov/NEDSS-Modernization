@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -97,7 +98,10 @@ public class WaNndMetadatum {
   @Column(name = "local_id", length = 50)
   private String localId;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @SuppressWarnings(
+  //  Bidirectional mappings require knowledge of each other
+  "javaarchitecture:S7027")
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "wa_ui_metadata_uid", nullable = false)
   private WaUiMetadata waUiMetadataUid;
 

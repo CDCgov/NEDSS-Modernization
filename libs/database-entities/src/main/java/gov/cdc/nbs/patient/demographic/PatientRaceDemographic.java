@@ -31,6 +31,10 @@ public class PatientRaceDemographic {
     return test -> !Objects.equals(test.getRaceCategoryCd(), test.getRaceCd());
   }
 
+  @SuppressWarnings(
+      //  The parent entity is needed to add races to
+      "javaarchitecture:S7027"
+  )
   @Transient
   private Person patient;
 

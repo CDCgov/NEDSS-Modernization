@@ -9,13 +9,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's last name ascending
     Given I have a patient
-    And the patient has the "legal" name "Ryu" "Jose"
+    And the patient has the legal name "Ryu" "Jose"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Tem" "Ray"
+    And the patient has the legal name "Tem" "Ray"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Fraw" "Bow"
+    And the patient has the legal name "Fraw" "Bow"
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "last name" "asc"
@@ -26,13 +26,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's last name descending
     Given I have a patient
-    And the patient has the "legal" name "Ryu" "Jose"
+    And the patient has the legal name "Ryu" "Jose"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Tem" "Ray"
+    And the patient has the legal name "Tem" "Ray"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Fraw" "Bow"
+    And the patient has the legal name "Fraw" "Bow"
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "last name" "desc"
@@ -77,13 +77,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's first name ascending
     Given I have a patient
-    And the patient has the "legal" name "Ryu" "Jose"
+    And the patient has the legal name "Ryu" "Jose"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Tem" "Ray"
+    And the patient has the legal name "Tem" "Ray"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Fraw" "Bow"
+    And the patient has the legal name "Fraw" "Bow"
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "first name" "asc"
@@ -94,13 +94,13 @@ Feature: Lab Report Search Sorting
 
   Scenario: I can find Lab Reports ordered by the patient's first name descending
     Given I have a patient
-    And the patient has the "legal" name "Ryu" "Jose"
+    And the patient has the legal name "Ryu" "Jose"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Tem" "Ray"
+    And the patient has the legal name "Tem" "Ray"
     And the patient has a lab report
     And I have another patient
-    And the patient has the "legal" name "Fraw" "Bow"
+    And the patient has the legal name "Fraw" "Bow"
     And the patient has a lab report
     And lab reports are available for search
     And I want search results sorted by "first name" "desc"

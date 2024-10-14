@@ -1,44 +1,42 @@
 import { Checkbox } from '@trussworks/react-uswds';
 import { Confirmation } from 'design-system/modal';
-import { ChangeEvent, useState } from 'react';
-import { useLocalStorage } from 'storage';
+import { ChangeEvent, useCallback, useState } from 'react';
+import { useShowCancelModal } from './useShowCancelModal';
 
-type Props = {
-    onClose: () => void;
-    onConfirm: () => void;
+type CancelAddPatientExtendedPanelProps = {
+    onClose?: () => void;
+    onConfirm?: () => void;
 };
 
-export const CancelAddPatientExtendedPanel = ({ onClose, onConfirm }: Props) => {
+export const CancelAddPatientExtendedPanel = ({ onClose, onConfirm }: CancelAddPatientExtendedPanelProps) => {
     const [visibilityCheckBox, setVisibilityCheckBox] = useState<boolean>(false);
-    const { save } = useLocalStorage({ key: 'patient.create.extended.cancel', initial: false });
+    const { save } = useShowCancelModal();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
         setVisibilityCheckBox(e.target.checked);
     };
 
-    const onSubmit = () => {
+    const handleConfirm = useCallback(() => {
         save(visibilityCheckBox);
-        onConfirm();
-    };
+        onConfirm?.();
+    }, [visibilityCheckBox, onConfirm, save]);
 
     return (
         <Confirmation
-            onCancel={() => {
-                onClose();
-            }}
             title="Warning"
             confirmText="Yes, cancel"
             cancelText="No, back to form"
             forceAction={true}
-            onConfirm={() => {
-                onSubmit();
+            onConfirm={handleConfirm}
+            onCancel={() => {
+                onClose && onClose();
             }}>
             Canceling the form will result in the loss of all additional data entered. Are you sure you want to cancel?
             <Checkbox
                 label="Don't show again"
                 id={'visibilityCheckbox'}
                 name={'visibilityCheckbox'}
-                onChange={(e) => handleChange(e)}
+                onChange={handleCheckboxChange}
             />
         </Confirmation>
     );

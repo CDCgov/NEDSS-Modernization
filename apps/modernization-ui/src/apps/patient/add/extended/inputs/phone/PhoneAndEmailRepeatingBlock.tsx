@@ -4,6 +4,7 @@ import { today } from 'date';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { PhoneEntryView } from './PhoneEntryView';
+import { ReactNode } from 'react';
 
 const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: today(),
@@ -17,12 +18,13 @@ const defaultValue: Partial<PhoneEmailEntry> = {
     comment: ''
 };
 type Props = {
-    id?: string;
+    id: string;
+    values?: PhoneEmailEntry[];
     onChange: (data: PhoneEmailEntry[]) => void;
     isDirty: (isDirty: boolean) => void;
-    values?: PhoneEmailEntry[];
+    errors?: ReactNode[];
 };
-export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty, values, id }: Props) => {
+export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDirty }: Props) => {
     const renderForm = () => <PhoneEmailEntryFields />;
     const renderView = (entry: PhoneEmailEntry) => <PhoneEntryView entry={entry} />;
 
@@ -36,7 +38,7 @@ export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty, values, id }: P
 
     return (
         <RepeatingBlock<PhoneEmailEntry>
-            id={id ?? 'phoneEmailEntry'}
+            id={id}
             title="Phone & email"
             defaultValues={defaultValue}
             values={values}
@@ -45,6 +47,7 @@ export const PhoneAndEmailRepeatingBlock = ({ onChange, isDirty, values, id }: P
             isDirty={isDirty}
             formRenderer={renderForm}
             viewRenderer={renderView}
+            errors={errors}
         />
     );
 };

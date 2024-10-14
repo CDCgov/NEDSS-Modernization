@@ -1,5 +1,9 @@
 package gov.cdc.nbs.questionbank.page.component;
 
+@SuppressWarnings(
+    //  Sealed classes require the implementing classes be listed if not in the same file
+    "javaarchitecture:S7027"
+)
 public abstract sealed class LayoutNode extends ComponentNode permits PageNode, SectionNode, SubSectionNode, TabNode {
 
   public enum Type implements ComponentNode.Type {

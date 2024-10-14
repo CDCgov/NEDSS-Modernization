@@ -1147,6 +1147,7 @@ type PatientSearchResultIdentification {
 }
 
 type PatientSearchResultName {
+  type: String
   first: String
   middle: String
   last: String
@@ -1154,7 +1155,8 @@ type PatientSearchResultName {
 }
 
 type PatientSearchResultAddress {
-  use: String!
+  type: String
+  use: String
   address: String
   address2: String
   city: String

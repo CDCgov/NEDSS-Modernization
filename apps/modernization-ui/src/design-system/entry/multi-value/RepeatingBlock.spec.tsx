@@ -1,8 +1,9 @@
-import { act, render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Input } from 'components/FormInputs/Input';
 import { RepeatingBlock } from './RepeatingBlock';
+import { ReactNode } from 'react';
 
 type TestType = {
     firstInput: string;
@@ -26,6 +27,7 @@ const UnderTestForm = () => {
             <Controller
                 name="firstInput"
                 control={control}
+                rules={{ required: { value: true, message: 'First input is required.' } }}
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <Input
                         flexBox
@@ -35,6 +37,7 @@ const UnderTestForm = () => {
                         type="text"
                         label="First Input"
                         id={name}
+                        required
                     />
                 )}
             />
@@ -83,43 +86,50 @@ const columns = [
 
 type Props = {
     values?: TestType[];
+    errors?: ReactNode[];
+    defaults?: Partial<TestType>;
 };
 
-const Fixture = ({ values = [] }: Props) => (
+const Fixture = ({ values = [], errors, defaults }: Props) => (
     <RepeatingBlock<TestType>
         id="testing"
-        title={'Test'}
-        defaultValues={defaultValues}
+        title={'Test title'}
+        defaultValues={{ ...defaultValues, ...defaults }}
         columns={columns}
         values={values}
         onChange={onChange}
         isDirty={isDirty}
         formRenderer={() => <UnderTestForm />}
         viewRenderer={(entry) => <UnderTestView entry={entry} />}
+        errors={errors}
     />
 );
 
+const awaitRender = async () => {
+    expect(await screen.findByText('Test title')).toBeInTheDocument();
+};
+
 describe('RepeatingBlock', () => {
     it('should display provided title', async () => {
-        const { getByRole, findByText } = render(<Fixture />);
+        const { getByRole } = render(<Fixture />);
         // wait on render to prevent act warning
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
 
         const heading = getByRole('heading');
         expect(heading).toHaveTextContent('Test');
     });
 
     it('should display provided form', async () => {
-        const { getByLabelText, findByText } = render(<Fixture />);
-        expect(await findByText('Test')).toBeInTheDocument();
+        const { getByLabelText } = render(<Fixture />);
+        await awaitRender();
 
         expect(getByLabelText('First Input')).toBeInTheDocument();
         expect(getByLabelText('Second Input')).toBeInTheDocument();
     });
 
     it('should display default values', async () => {
-        const { getByLabelText, findByText } = render(<Fixture />);
-        expect(await findByText('Test')).toBeInTheDocument();
+        const { getByLabelText } = render(<Fixture />);
+        await awaitRender();
 
         const firstInput = getByLabelText('First Input');
         expect(firstInput).toBeInTheDocument();
@@ -131,8 +141,8 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display add button', async () => {
-        const { getByRole, findByText } = render(<Fixture />);
-        expect(await findByText('Test')).toBeInTheDocument();
+        const { getByRole } = render(<Fixture />);
+        await awaitRender();
 
         const button = getByRole('button');
         expect(button).toBeInTheDocument();
@@ -153,9 +163,9 @@ describe('RepeatingBlock', () => {
     });
 
     it('should trigger on change when data is submitted', async () => {
-        const { getByRole, getByLabelText, findByText } = render(<Fixture />);
+        const { getByRole, getByLabelText } = render(<Fixture />);
 
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
 
         const button = getByRole('button');
         expect(button).toBeInTheDocument();
@@ -182,9 +192,9 @@ describe('RepeatingBlock', () => {
     });
 
     it('should display submitted data in table', async () => {
-        const { findByText, getByRole, getAllByRole } = render(<Fixture />);
+        const { getByRole, getAllByRole } = render(<Fixture />);
 
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -202,10 +212,47 @@ describe('RepeatingBlock', () => {
         expect(columns[2]).toHaveTextContent('');
     });
 
-    it('should display icons in last column of table', async () => {
-        const { findByText, getByRole, getAllByRole } = render(<Fixture />);
+    it('should reset after adding data', async () => {
+        const { getByRole, getByLabelText, queryByText } = render(<Fixture defaults={{ firstInput: undefined }} />);
 
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
+        // try to add with empty required field
+        userEvent.click(getByRole('button'));
+
+        // ensure validation message appears
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
+
+        // enter data and submit
+        userEvent.type(getByLabelText('First Input'), 'typed value');
+        userEvent.click(getByRole('button'));
+
+        // expect value to be added
+        await waitFor(() => {
+            expect(onChange).toBeCalledTimes(2);
+            expect(onChange).toHaveBeenNthCalledWith(1, []);
+            expect(onChange).toHaveBeenNthCalledWith(2, [{ firstInput: 'typed value', secondInput: 'second value' }]);
+        });
+
+        // verify validation message is no longer visible
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).not.toBeInTheDocument();
+        });
+
+        // immediately click add button again
+        userEvent.click(getByRole('button'));
+
+        // verify validation text is shown
+        await waitFor(() => {
+            expect(queryByText('First input is required.')).toBeInTheDocument();
+        });
+    });
+
+    it('should display icons in last column of table', async () => {
+        const { getByRole, getAllByRole } = render(<Fixture />);
+
+        await awaitRender();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -233,9 +280,9 @@ describe('RepeatingBlock', () => {
     });
 
     it('should render view when view icon clicked', async () => {
-        const { findByText, getByRole, getAllByRole, getByText } = render(<Fixture />);
+        const { getByRole, getAllByRole, getByText } = render(<Fixture />);
 
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -257,9 +304,9 @@ describe('RepeatingBlock', () => {
     });
 
     it('should delete row when delete icon clicked', async () => {
-        const { getByRole, getAllByRole, findByText } = render(<Fixture />);
+        const { getByRole, getAllByRole } = render(<Fixture />);
 
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
 
         const button = getByRole('button');
         userEvent.click(button);
@@ -280,9 +327,9 @@ describe('RepeatingBlock', () => {
     });
 
     it('should allow edit of row', async () => {
-        const { getByRole, getAllByRole, getByLabelText, findByText } = render(<Fixture />);
+        const { getByRole, getAllByRole, getByLabelText } = render(<Fixture />);
 
-        expect(await findByText('Test')).toBeInTheDocument();
+        await awaitRender();
 
         const button = getByRole('button');
         const input1 = getByLabelText('First Input');
@@ -340,5 +387,13 @@ describe('RepeatingBlock', () => {
         expect(columns[0]).toHaveTextContent('first changed again');
         expect(columns[1]).toHaveTextContent('second changed again');
         expect(columns[2]).toHaveTextContent('');
+    });
+
+    it('should display errors passed to component', async () => {
+        const { getByText } = render(<Fixture errors={['First error', 'Second error']} />);
+        await awaitRender();
+
+        expect(getByText('First error')).toBeInTheDocument();
+        expect(getByText('Second error')).toBeInTheDocument();
     });
 });

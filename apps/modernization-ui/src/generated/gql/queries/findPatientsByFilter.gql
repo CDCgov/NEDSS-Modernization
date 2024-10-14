@@ -8,12 +8,14 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: 
             status
             shortId
             legalName{
+                type
                 first
                 middle
                 last
                 suffix
             }
             names{
+                type
                 first
                 middle
                 last
@@ -24,6 +26,7 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: 
                 value
             }
             addresses{
+                type
                 use
                 address
                 address2

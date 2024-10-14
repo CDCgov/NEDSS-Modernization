@@ -14,6 +14,7 @@ public class PatientEntityLocatorHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings("javaarchitecture:S7027")
     void preUpdate(final EntityLocatorParticipation entityLocatorParticipation) {
         int version = entityLocatorParticipation.getVersionCtrlNbr() - 1;
         this.creator.createEntityLocatorHistory(entityLocatorParticipation.getId().getEntityUid(),

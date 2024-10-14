@@ -18,6 +18,7 @@ public class PatientIdentificationHistoryListener {
     }
 
     @PreUpdate
+    @SuppressWarnings("javaarchitecture:S7027")
     void preUpdate(final EntityId entityId) {
         int entityIdSequence = entityId.getId().getEntityIdSeq();
         int currentVersion = getCurrentVersionNumber(entityId.getId(), entityIdSequence);

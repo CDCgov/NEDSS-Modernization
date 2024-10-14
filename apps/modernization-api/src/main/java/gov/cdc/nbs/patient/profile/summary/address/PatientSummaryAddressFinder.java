@@ -12,7 +12,14 @@ import java.util.Collection;
 class PatientSummaryAddressFinder {
   private static final String QUERY = """
       select
-          [use].[code_short_desc_txt]     as [use],
+          coalesce(
+                [type].code_short_desc_txt,
+                [locators].cd
+          )                               as [type],
+          coalesce(
+                [use].code_short_desc_txt,
+                [locators].[use_cd]
+          )                               as [use],
           [address].street_addr1          as [address_1],
           [address].street_addr2          as [address_2],
           [address].city_desc_txt         as [city],
@@ -26,7 +33,11 @@ class PatientSummaryAddressFinder {
                   [address].[postal_locator_uid] = [locators].[locator_uid]
               and [address].record_status_cd = [locators].record_status_cd
 
-          join NBS_SRTE..Code_value_general [use] on
+          left join  NBS_SRTE..Code_value_general [type] on
+                  [type].code_set_nm = 'EL_TYPE_PST_PAT'
+              and [type].code = [locators].cd
+    
+          left join NBS_SRTE..Code_value_general [use] on
                   [use].code_set_nm = 'EL_USE_PST_PAT'
               and [use].code = [locators].[use_cd]
 

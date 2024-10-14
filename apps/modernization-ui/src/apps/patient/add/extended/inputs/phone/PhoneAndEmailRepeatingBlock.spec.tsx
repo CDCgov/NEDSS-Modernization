@@ -36,9 +36,11 @@ const awaitRender = async () => {
     expect(await screen.findByText('URL')).toBeInTheDocument();
 };
 
+const Fixture = () => <PhoneAndEmailRepeatingBlock id="phoneAndEmail" onChange={onChange} isDirty={isDirty} />;
+
 describe('PhoneAndEmailMultiEntry', () => {
     it('should display correct table headers', async () => {
-        const { getAllByRole } = render(<PhoneAndEmailRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getAllByRole } = render(<Fixture />);
         // wait on render to prevent act warning
         await awaitRender();
 
@@ -51,7 +53,7 @@ describe('PhoneAndEmailMultiEntry', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(<PhoneAndEmailRepeatingBlock onChange={onChange} isDirty={isDirty} />);
+        const { getByLabelText } = render(<Fixture />);
         // wait on render to prevent act warning
         await awaitRender();
 
@@ -84,9 +86,7 @@ describe('PhoneAndEmailMultiEntry', () => {
     });
 
     it('should trigger on change when value added', async () => {
-        const { getByLabelText, getAllByRole } = render(
-            <PhoneAndEmailRepeatingBlock onChange={onChange} isDirty={isDirty} />
-        );
+        const { getByLabelText, getAllByRole } = render(<Fixture />);
         // wait on render to prevent act warning
         await awaitRender();
         const type = getByLabelText('Type');

@@ -17,6 +17,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Auth_perm_set", catalog = "NBS_ODSE")
+@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class AuthPermSet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
