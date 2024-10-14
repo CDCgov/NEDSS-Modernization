@@ -2,13 +2,13 @@ package gov.cdc.nbs.configuration;
 
 import io.cucumber.java.ParameterType;
 
-import java.util.Objects;
-
 public class ToggleSteps {
 
-  @ParameterType(name = "toggle", value = "enabled|disabled")
+  private static final String PREFIX = "enable";
+
+  @ParameterType(name = "toggle", value = "enabled|enable|disabled|disable")
   public boolean setting(final String value) {
-    return Objects.equals(value.toLowerCase(), "enabled");
+    return value.regionMatches(true, 0, PREFIX,0 , PREFIX.length());
   }
 
 }
