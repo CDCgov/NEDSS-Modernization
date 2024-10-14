@@ -110,6 +110,8 @@ class SearchablePatientFinder {
                     Public_health_case phc
                     JOIN Act_id ai ON phc.public_health_case_uid = ai.act_uid
                     and ai.type_cd='STATE'
+                    and ai.root_extension_txt is not null
+                    and ai.root_extension_txt<>''
                     JOIN participation par ON par.act_uid = phc.public_health_case_uid
                       AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                   ) tmp
@@ -127,6 +129,8 @@ class SearchablePatientFinder {
                     JOIN Act_id ai ON phc.public_health_case_uid = ai.act_uid
                       and ai.act_id_seq=2
                     and ai.type_cd='STATE'
+                    and ai.root_extension_txt is not null
+                    and ai.root_extension_txt<>''
                     JOIN participation par ON par.act_uid = phc.public_health_case_uid
                       AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                   ) tmp
@@ -143,6 +147,8 @@ class SearchablePatientFinder {
                     Public_health_case phc
                     JOIN Act_id ai ON phc.public_health_case_uid = ai.act_uid
                     and ai.type_cd='CITY'
+                    and ai.root_extension_txt is not null
+                    and ai.root_extension_txt<>''
                     JOIN participation par ON par.act_uid = phc.public_health_case_uid
                       AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                   ) tmp
@@ -210,6 +216,8 @@ class SearchablePatientFinder {
                     observation obs
                     JOIN act_id ai ON ai.act_uid = obs.observation_uid
                       AND ai.type_cd='FN'
+                      and ai.root_extension_txt is not null
+                      and ai.root_extension_txt<>''
                     JOIN participation par ON par.act_uid = obs.observation_uid
                       AND par.subject_entity_uid IN (select person_uid from Person p2 where p2.person_parent_uid=[patient].person_parent_uid)
                     ) tmp
