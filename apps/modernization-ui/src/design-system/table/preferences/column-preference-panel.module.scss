@@ -4,6 +4,7 @@
 .panel {
     display: flex;
     flex-direction: column;
+    min-width: 15.5rem;
 
     header {
         display: flex;
@@ -29,6 +30,12 @@
         gap: 1rem;
 
         @extend %thin-top;
+
+        .reset {
+            padding: 0;
+            font-size: 0.875rem;
+            min-width: auto;
+        }
     }
 }
 
