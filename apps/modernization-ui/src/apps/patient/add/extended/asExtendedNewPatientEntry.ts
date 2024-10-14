@@ -1,11 +1,12 @@
 import { asSelectable, findByValue, Selectable } from 'options';
 import { NewPatientEntry } from '../NewPatientEntry';
 import { ExtendedNewPatientEntry } from './entry';
-import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry, RaceEntry } from 'apps/patient/data/entry';
+import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 import { CodedValue } from 'coded';
 import { isEmpty } from 'utils/isEmpty';
 import { LocationCodedValues } from 'location';
+import { RaceEntry } from 'apps/patient/data/race/entry';
 
 const asExtendedNewPatientEntry = (
     initial: NewPatientEntry,
@@ -137,7 +138,7 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
             });
         }
 
-        if (initial.emailAddresses) {
+        if (initial.emailAddresses.length > 0) {
             initial.emailAddresses.map((emailAddress) => {
                 phoneEmails.push({
                     asOf: initial.asOf,
@@ -176,6 +177,7 @@ const raceExtended = (initial: NewPatientEntry, raceCodes: Selectable[]): RaceEn
     if (initial.race?.length ?? 0 > 0) {
         initial.race?.map((race) => {
             races.push({
+                id: new Date().getTime(),
                 asOf: initial.asOf,
                 race: raceResolver(race) ?? asSelectable(''),
                 detailed: []
