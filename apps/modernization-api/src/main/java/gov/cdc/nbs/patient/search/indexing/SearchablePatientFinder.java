@@ -232,6 +232,13 @@ class SearchablePatientFinder {
   private static final int MORBIDITY_REPORT_IDS_COLUMN = 9;
   private static final int TREATMENT_IDS_COLUMN = 10;
   private static final int VACCINATION_IDS_COLUMN = 11;
+  private static final int ABCS_CASE_IDS_COLUMN = 12;
+  private static final int CITY_CASE_IDS_COLUMN = 13;
+  private static final int STATE_CASE_IDS_COLUMN = 14;
+  private static final int ACCESSION_IDS_COLUMN = 15;
+  private static final int INVESTIGATION_IDS_COLUMN = 16;
+  private static final int LAB_REPORT_IDS_COLUMN = 17;
+  private static final int NOTIFICATION_IDS_COLUMN = 18;
 
   private final JdbcTemplate template;
   private final SearchablePatientRowMapper mapper;
@@ -250,7 +257,14 @@ class SearchablePatientFinder {
             DOCUMENT_IDS_COLUMN,
             MORBIDITY_REPORT_IDS_COLUMN,
             TREATMENT_IDS_COLUMN,
-            VACCINATION_IDS_COLUMN));
+            VACCINATION_IDS_COLUMN,
+            ABCS_CASE_IDS_COLUMN,
+            CITY_CASE_IDS_COLUMN,
+            STATE_CASE_IDS_COLUMN,
+            ACCESSION_IDS_COLUMN,
+            INVESTIGATION_IDS_COLUMN,
+            LAB_REPORT_IDS_COLUMN,
+            NOTIFICATION_IDS_COLUMN));
   }
 
   Optional<SearchablePatient> find(long identifier) {
