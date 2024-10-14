@@ -10,7 +10,7 @@ import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { CreatedPatient } from './api';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { creator } from './creator';
-import { ExtendedNewPatientEntry } from './entry';
+import { ExtendedNewPatientEntry, initial } from './entry';
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 import { transformer } from './transformer';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
@@ -32,7 +32,7 @@ export const AddPatientExtended = () => {
     );
 
     const form = useForm<ExtendedNewPatientEntry>({
-        defaultValues: location.state.defaults,
+        defaultValues: location.state.defaults ?? initial(),
         mode: 'onBlur'
     });
     const formIsDirty = form.formState.isDirty;
