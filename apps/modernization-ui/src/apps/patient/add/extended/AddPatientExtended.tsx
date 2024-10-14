@@ -16,7 +16,6 @@ import { transformer } from './transformer';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 import styles from './add-patient-extended.module.scss';
-import { useBasicToExtended } from './useBasicToExtended';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });

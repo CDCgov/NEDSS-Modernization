@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { PersonInput, useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
 
@@ -22,7 +22,6 @@ import { orNull } from 'utils';
 import { DefaultNewPatentEntry, initialEntry, NewPatientEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { SuccessModal } from 'success';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
 import { AddPatientSideNav } from './nav/AddPatientSideNav';
@@ -100,7 +99,6 @@ const AddPatient = () => {
         defaultValues: initialEntry(),
         mode: 'onBlur'
     });
-    const watch = useWatch<NewPatientEntry>({ control: methods.control });
 
     const {
         handleSubmit,
@@ -276,7 +274,11 @@ const AddPatient = () => {
                                 <h1 className="new-patient-title margin-0">New patient</h1>
                                 <div className="nav-buttons">
                                     {features.patient?.add?.extended?.enabled && (
-                                        <Button type="button" onClick={() => add(watch)}>
+                                        <Button
+                                            type="button"
+                                            onClick={handleSubmit(add)}
+                                            outline
+                                            className="add-patient-button">
                                             Add extended data
                                         </Button>
                                     )}
