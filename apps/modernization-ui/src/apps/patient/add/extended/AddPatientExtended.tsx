@@ -37,10 +37,6 @@ export const AddPatientExtended = () => {
     });
     const formIsDirty = form.formState.isDirty;
 
-    useEffect(() => {
-        console.log(location.state.defaults);
-    }, [location.state.defaults]);
-
     const handleSave = form.handleSubmit(interaction.create);
 
     const handleCancel = useCallback(() => {
