@@ -12,7 +12,8 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
 
   record Column(
       int identifier,
-      int local, int status,
+      int local,
+      int status,
       int birthday,
       int deceased,
       int gender,
@@ -20,7 +21,14 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
       int documentIds,
       int morbidityReportIds,
       int treatmentIds,
-      int vaccinationIds) {
+      int vaccinationIds,
+      int abcsCaseIds,
+      int cityCaseIds,
+      int stateCaseIds,
+      int accessionIds,
+      int investigationIds,
+      int labReportIds,
+      int notificationIds) {
   }
 
 
@@ -43,6 +51,13 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
     String morbidityReportIds = resultSet.getString(columns.morbidityReportIds());
     String treatmentIds = resultSet.getString(columns.treatmentIds());
     String vaccinationIds = resultSet.getString(columns.vaccinationIds());
+    String abcsCaseIds = resultSet.getString(columns.abcsCaseIds());
+    String cityCaseIds = resultSet.getString(columns.cityCaseIds());
+    String stateCaseIds = resultSet.getString(columns.stateCaseIds());
+    String accessionIds = resultSet.getString(columns.accessionIds());
+    String investigationIds = resultSet.getString(columns.investigationIds());
+    String labReportIds = resultSet.getString(columns.labReportIds());
+    String notificationIds = resultSet.getString(columns.notificationIds());
 
 
     return new SearchablePatient(
@@ -56,6 +71,13 @@ class SearchablePatientRowMapper implements RowMapper<SearchablePatient> {
         documentIds,
         morbidityReportIds,
         treatmentIds,
-        vaccinationIds);
+        vaccinationIds,
+        abcsCaseIds,
+        cityCaseIds,
+        stateCaseIds,
+        accessionIds,
+        investigationIds,
+        labReportIds,
+        notificationIds);
   }
 }
