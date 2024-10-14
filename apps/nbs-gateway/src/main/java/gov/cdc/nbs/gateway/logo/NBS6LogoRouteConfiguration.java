@@ -1,7 +1,6 @@
 package gov.cdc.nbs.gateway.logo;
 
 import gov.cdc.nbs.gateway.classic.NBSClassicService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
