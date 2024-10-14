@@ -4,7 +4,6 @@ import { today } from 'date';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { NameEntryView } from './NameEntryView';
-import { useEffect } from 'react';
 import { ReactNode } from 'react';
 
 const defaultValue: Partial<NameEntry> = {
