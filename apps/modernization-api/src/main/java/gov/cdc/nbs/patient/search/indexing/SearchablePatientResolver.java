@@ -70,6 +70,13 @@ class SearchablePatientResolver {
         patient.documentIds(),
         patient.morbidityReportIds(),
         patient.treatmentIds(),
-        patient.vaccinationIds());
+        patient.vaccinationIds(),
+        patient.abcsCaseIds(),
+        patient.cityCaseIds(),
+        patient.stateCaseIds(),
+        patient.accessionIds(),
+        patient.investigationIds(),
+        patient.labReportIds(),
+        patient.notificationIds());
   }
 }

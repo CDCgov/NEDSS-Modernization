@@ -1,38 +1,12 @@
 package gov.cdc.nbs.configuration.features;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import gov.cdc.nbs.configuration.features.address.Address;
+import gov.cdc.nbs.configuration.features.page_builder.PageBuilder;
+import gov.cdc.nbs.configuration.features.patient.Patient;
+import gov.cdc.nbs.configuration.features.search.Search;
 
-@ConfigurationProperties("nbs.ui.features")
+
 public record Features(Search search, Address address, PageBuilder pageBuilder, Patient patient) {
 
-  public record Address(boolean autocomplete, boolean verification) {
-  }
 
-
-  public record PageBuilder(boolean enabled, Page page) {
-
-    public record Page(Library library, Management management) {
-
-      public record Library(boolean enabled) {
-      }
-
-
-      public record Management(Create create, Edit edit) {
-
-        public record Create(boolean enabled) {
-        }
-
-
-        public record Edit(boolean enabled) {
-        }
-      }
-    }
-  }
-
-  public record Patient(Add add) {
-    public record Add(Extended extended) {
-      public record Extended(Boolean enabled) {
-      }
-    }
-  }
 }

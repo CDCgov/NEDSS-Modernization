@@ -11,9 +11,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-public record SearchablePatient(
-    @JsonProperty("person_uid") long identifier,
-    @JsonProperty("local_id") String local,
+public record SearchablePatient(@JsonProperty("person_uid") long identifier, @JsonProperty("local_id") String local,
     @JsonProperty("record_status_cd") String status,
     @JsonProperty("birth_time") @JsonSerialize(using = LocalDateWithTimeJsonSerializer.class) @JsonDeserialize(
         using = LocalDateWithTimeJsonDeserializer.class) LocalDate birthday,
@@ -29,7 +27,14 @@ public record SearchablePatient(
     @JsonProperty("document_ids") String documentIds,
     @JsonProperty("morbidity_report_ids") String morbidityReportIds,
     @JsonProperty("treatment_ids") String treatmentIds,
-    @JsonProperty("vaccination_ids") String vaccinationIds) {
+    @JsonProperty("vaccination_ids") String vaccinationIds,
+    @JsonProperty("abcs_case_ids") String abcsCaseIds,
+    @JsonProperty("city_case_ids") String cityCaseIds,
+    @JsonProperty("state_case_ids") String stateCaseIds,
+    @JsonProperty("accession_ids") String accessionIds,
+    @JsonProperty("investigation_ids") String investigationIds,
+    @JsonProperty("lab_report_ids") String labReportIds,
+    @JsonProperty("notification_ids") String notificationIds) {
 
   public SearchablePatient(
       long identifier,
@@ -42,7 +47,14 @@ public record SearchablePatient(
       String documentIds,
       String morbidityReportIds,
       String treatmentIds,
-      String vaccinationIds) {
+      String vaccinationIds,
+      String abcsCaseIds,
+      String cityCaseIds,
+      String stateCaseIds,
+      String accessionIds,
+      String investigationIds,
+      String labReportIds,
+      String notificationIds) {
     this(
         identifier,
         local,
@@ -60,7 +72,14 @@ public record SearchablePatient(
         documentIds,
         morbidityReportIds,
         treatmentIds,
-        vaccinationIds);
+        vaccinationIds,
+        abcsCaseIds,
+        cityCaseIds,
+        stateCaseIds,
+        accessionIds,
+        investigationIds,
+        labReportIds,
+        notificationIds);
   }
 
   public record Name(
