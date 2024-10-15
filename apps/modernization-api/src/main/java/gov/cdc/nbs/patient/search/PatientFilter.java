@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -59,6 +60,8 @@ public class PatientFilter {
   private List<RecordStatus> recordStatus;
   private String treatmentId;
   private String vaccinationId;
+  private String morbidityReport;
+
   private boolean disableSoundex;
   @JsonIgnore
   @Getter(AccessLevel.NONE)
@@ -101,5 +104,14 @@ public class PatientFilter {
   public PatientFilter withId(final String id) {
     this.id = id;
     return this;
+  }
+
+  public PatientFilter withMorbidityReport(final String identifier) {
+    this.morbidityReport = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeMorbidityReport() {
+   return Optional.ofNullable(morbidityReport);
   }
 }
