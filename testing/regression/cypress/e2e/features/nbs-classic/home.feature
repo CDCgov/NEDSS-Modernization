@@ -1,4 +1,4 @@
-Feature: User can view data in classic NBS Home
+Feature: Classic NBS - User can view data in NBS Home
 
   Background:
     Given I am logged in as secure user and stay on classic
