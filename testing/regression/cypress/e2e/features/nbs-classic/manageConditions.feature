@@ -1,4 +1,4 @@
-Feature: User can view and manage data in classic NBS Conditions
+Feature: Classic NBS - User can view and manage data in NBS Conditions
 
   Background:
     Given I am logged in as secure user and stay on classic
