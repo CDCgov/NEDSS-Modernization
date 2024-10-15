@@ -51,7 +51,7 @@ export const MortalityEntryFields = () => {
                 name="mortality.deceased"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
-                        label="Is the patient deceased"
+                        label="Is the patient deceased?"
                         orientation="horizontal"
                         value={value}
                         onChange={onChange}
