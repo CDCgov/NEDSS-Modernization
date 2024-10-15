@@ -46,14 +46,18 @@ describe('Basic form to extended form data transfer', () => {
             suffix: Suffix.Jr
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.names).toBeTruthy();
-        expect(result.current.names?.length).toBe(1);
-        expect(result.current.names?.at(0)?.first).toBe('test first');
-        expect(result.current.names?.at(0)?.last).toBe('test last');
-        expect(result.current.names?.at(0)?.middle).toBe('test middle');
-        expect(result.current.names?.at(0)?.suffix?.label).toBe('Junior');
+        expect(result.names).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    first: 'test first',
+                    last: 'test last',
+                    middle: 'test middle',
+                    suffix: expect.objectContaining({ value: 'JR' })
+                })
+            ])
+        );
     });
 
     it('basic phone numbers to extended', async () => {
@@ -68,22 +72,30 @@ describe('Basic form to extended form data transfer', () => {
             cellPhone: '0987654321'
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.phoneEmails).toBeTruthy();
-        expect(result.current.phoneEmails?.at(0)?.phoneNumber).toBe('1234567890');
-        expect(result.current.phoneEmails?.at(0)?.type.label).toBe('Phone');
-        expect(result.current.phoneEmails?.at(0)?.use.label).toBe('Home');
-
-        expect(result.current.phoneEmails?.at(1)?.phoneNumber).toBe('0987654321');
-        expect(result.current.phoneEmails?.at(1)?.type.label).toBe('Cellular phone');
-        expect(result.current.phoneEmails?.at(1)?.use.label).toBe('Mobile contact');
-
-        expect(result.current.phoneEmails?.at(2)?.phoneNumber).toBe('1231231234');
-        expect(result.current.phoneEmails?.at(2)?.type.label).toBe('Phone');
-        expect(result.current.phoneEmails?.at(2)?.use.label).toBe('Primary work place');
-
-        expect(result.current.phoneEmails?.at(3)?.email).toBe('test@test.com');
+        expect(result.phoneEmails).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    phoneNumber: '1234567890',
+                    type: expect.objectContaining({ label: 'Phone' }),
+                    use: expect.objectContaining({ label: 'Home' })
+                }),
+                expect.objectContaining({
+                    phoneNumber: '0987654321',
+                    type: expect.objectContaining({ label: 'Cellular phone' }),
+                    use: expect.objectContaining({ label: 'Mobile contact' })
+                }),
+                expect.objectContaining({
+                    phoneNumber: '1231231234',
+                    type: expect.objectContaining({ label: 'Phone' }),
+                    use: expect.objectContaining({ label: 'Primary work place' })
+                }),
+                expect.objectContaining({
+                    email: 'test@test.com'
+                })
+            ])
+        );
     });
 
     it('identification basic to extended', () => {
@@ -95,12 +107,12 @@ describe('Basic form to extended form data transfer', () => {
             emailAddresses: []
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.identifications).toBeTruthy();
-        expect(result.current.identifications?.at(0)?.id).toBe('12344');
-        expect(result.current.identifications?.at(0)?.issuer?.name).toBe('test authority');
-        expect(result.current.identifications?.at(0)?.type?.name).toBe('ID');
+        expect(result.identifications).toBeTruthy();
+        expect(result.identifications?.at(0)?.id).toBe('12344');
+        expect(result.identifications?.at(0)?.issuer?.name).toBe('test authority');
+        expect(result.identifications?.at(0)?.type?.name).toBe('ID');
     });
     it('race basic to extended', () => {
         const date = today();
@@ -112,10 +124,17 @@ describe('Basic form to extended form data transfer', () => {
             race: ['A']
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.races).toBeTruthy();
-        expect(result.current.races?.at(0)?.race.name).toBe('Asian');
+        expect(result.races).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    race: expect.objectContaining({
+                        name: 'Asian'
+                    })
+                })
+            ])
+        );
     });
     it('ethnicity basic to extended', () => {
         const date = today();
@@ -127,10 +146,10 @@ describe('Basic form to extended form data transfer', () => {
             ethnicity: 'Unknown'
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.ethnicity).toBeTruthy();
-        expect(result.current.ethnicity?.ethnicity.name).toBe('Unknown');
+        expect(result.ethnicity).toBeTruthy();
+        expect(result.ethnicity?.ethnicity.name).toBe('Unknown');
     });
     it('address basic to extended', () => {
         const date = today();
@@ -146,14 +165,23 @@ describe('Basic form to extended form data transfer', () => {
             zip: '12345'
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.addresses).toBeTruthy();
-        expect(result.current.addresses?.at(0)?.address1).toBe('st address 1');
-        expect(result.current.addresses?.at(0)?.address2).toBe('st address 2');
-        expect(result.current.addresses?.at(0)?.country?.name).toBe('USA');
-        expect(result.current.addresses?.at(0)?.state?.name).toBe('Arkansas');
-        expect(result.current.addresses?.at(0)?.zipcode).toBe('12345');
+        expect(result.addresses).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    address1: 'st address 1',
+                    address2: 'st address 2',
+                    country: expect.objectContaining({
+                        name: 'USA'
+                    }),
+                    state: expect.objectContaining({
+                        name: 'Arkansas'
+                    }),
+                    zipcode: '12345'
+                })
+            ])
+        );
     });
     it('other information basic to extended', () => {
         const date = today();
@@ -172,15 +200,36 @@ describe('Basic form to extended form data transfer', () => {
             comments: 'test comments'
         };
 
-        const { result } = renderHook(() => asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode));
+        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.current.birthAndSex?.bornOn).toBe('01/01/1999');
-        expect(result.current.birthAndSex?.sex?.name).toBe('M');
-        expect(result.current.general?.maritalStatus?.name).toBe('Anulled');
-        expect(result.current.birthAndSex?.current?.name).toBe('M');
-        expect(result.current.mortality?.deceased?.name).toBe('Y');
-        expect(result.current.mortality?.deceasedOn).toBe('01/01/2004');
-        expect(result.current.general?.stateHIVCase).toBe('1234');
-        expect(result.current.administrative?.comment).toBe('test comments');
+        expect(result.administrative?.comment).toBe('test comments');
+
+        expect(result.birthAndSex).toEqual(
+            expect.objectContaining({
+                bornOn: '01/01/1999',
+                sex: expect.objectContaining({
+                    name: 'M'
+                }),
+                current: expect.objectContaining({
+                    name: 'M'
+                })
+            })
+        );
+
+        expect(result.mortality).toEqual(
+            expect.objectContaining({
+                deceased: expect.objectContaining({
+                    name: 'Y'
+                }),
+                deceasedOn: '01/01/2004'
+            })
+        );
+
+        expect(result.general).toEqual(
+            expect.objectContaining({
+                maritalStatus: expect.objectContaining({ name: 'Anulled' }),
+                stateHIVCase: '1234'
+            })
+        );
     });
 });

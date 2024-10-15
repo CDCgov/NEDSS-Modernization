@@ -1,10 +1,10 @@
 import { RefAttributes } from 'react';
-import { NavLink, NavLinkProps, To } from 'react-router-dom';
+import { NavLink, NavLinkProps } from 'react-router-dom';
 import classnames from 'classnames';
 
 type Props = {
     to: string;
-    label?: string & To;
+    label?: string;
     type?: 'outline';
     className?: string;
     dataTestId?: string;
