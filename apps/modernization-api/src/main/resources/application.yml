@@ -56,7 +56,7 @@ nbs:
         - /expired
 
 logging:
-  file.name:
+  file:
     path: ./log/
 
 spring:
