@@ -26,14 +26,12 @@
         display: flex;
         justify-content: center;
         padding: 1.5rem;
-        gap: 1rem;
+        gap: 2.2rem;
 
         @extend %thin-top;
 
         .reset {
             padding: 0;
-            font-size: 0.875rem;
-            min-width: auto;
         }
     }
 }

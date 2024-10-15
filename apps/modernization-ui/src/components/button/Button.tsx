@@ -33,7 +33,8 @@ const Button = ({
     const classesAarray = classNames(className, {
         [styles.destructive]: destructive,
         [styles.icon]: icon,
-        [styles.unpadded]: unpadded
+        [styles.unpadded]: unpadded,
+        [styles.unstyled]: unstyled
     });
 
     return (
