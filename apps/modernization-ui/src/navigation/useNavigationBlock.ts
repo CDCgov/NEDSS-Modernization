@@ -1,21 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BlockerFunction, useBlocker } from 'react-router-dom';
+import { BlockerFunction, useBlocker, Location as RouterLocation, useNavigate } from 'react-router-dom';
 import { unblockableRoutes } from 'routes';
 
+const isNavigating = (current: RouterLocation, next: RouterLocation) => current.pathname !== next.pathname;
+
 type NavigationBlockProps = {
-    /** Whether to block navigation, for example, if a form is dirty */
-    shouldBlock: boolean;
+    /** Whether blocking navigation is allowed, for example, if a user opts in to bypassing the warning */
+    activated?: boolean;
     /** Callback to handle when navigation is blocked. Use this to take action like opening a modal. */
     onBlock?: () => void;
-    /** When specified, only blocks navigation to these routes. */
-    blockedRoutes?: string[];
-    /** When true, blocks navigation to the current path (default: false) */
-    blockCurrentRoute?: boolean;
 };
 
 type NavigationBlock = {
     /** Whether navigation is current blocked */
     blocked: boolean;
+    /** Deactivates the navigation block allowing internal navigation to occur  */
+    allow: () => void;
+    /** Activates the navigation block preventing internal navigation from occurring */
+    block: () => void;
     /** Invoke to allow navigation to continue */
     unblock: () => void;
     /** Reset the navigation blocker */
@@ -23,56 +25,65 @@ type NavigationBlock = {
 };
 
 /**
- * Blocks the user from navigating away from the current page. Invokes onBlock when the attempt is made.
+ * When activated the user is prevented from navigating away from the current page. If navigation is attempted when the block is activated the navigation block will enter a blocked state.
+ *
  * Currently uses useBlocker from react-router, but can be expanded in the future to use other methods like onbeforeunload.
+ *
  * @param {NavigationBlockProps} props - The properties object.
  * @return {NavigationBlock} Functions to control navigation.
  */
-const useNavigationBlock = ({
-    shouldBlock,
-    onBlock,
-    blockedRoutes,
-    blockCurrentRoute = false
-}: NavigationBlockProps): NavigationBlock => {
-    const [bypassBlocker, setBypassBlocker] = useState<boolean>(false);
-    const blocker = useBlocker(
-        useCallback<BlockerFunction>(
-            ({ currentLocation, nextLocation }) =>
-                shouldBlock &&
-                !bypassBlocker &&
-                (blockCurrentRoute || currentLocation.pathname !== nextLocation.pathname) &&
-                (!blockedRoutes || blockedRoutes.includes(nextLocation.pathname)) &&
-                !unblockableRoutes.includes(nextLocation.pathname),
-            [shouldBlock, bypassBlocker]
-        )
+const useNavigationBlock = ({ activated = true, onBlock }: NavigationBlockProps): NavigationBlock => {
+    //
+    const [isEngaged, setEngaged] = useState<boolean>(false);
+
+    const isBlockedPath = (path: string) => !unblockableRoutes.includes(path);
+
+    const blockingFn = useCallback<BlockerFunction>(
+        ({ currentLocation, nextLocation }) =>
+            isEngaged && isBlockedPath(nextLocation.pathname) && isNavigating(currentLocation, nextLocation),
+        [isEngaged]
     );
+
+    const { state, proceed, reset: blockerReset, location } = useBlocker(blockingFn);
+    const navigate = useNavigate();
 
     // Reset the blocker if the user cleans the form
     useEffect(() => {
-        if (blocker.state === 'blocked') {
-            if (bypassBlocker) {
-                blocker.proceed?.();
-            } else {
-                // navigation has been attempted, so fire onBlock event
-                onBlock?.();
-            }
+        if (state === 'blocked') {
+            // navigation has been attempted, so fire onBlock event
+            onBlock?.();
+        } else if (state === 'proceeding' && location) {
+            //  The block has been resolved, navigate the user to the location that was blocked.
+            navigate(location);
         }
-    }, [blocker.state, bypassBlocker, onBlock]);
+    }, [state, onBlock, navigate]);
 
-    const unblock = () => {
-        setBypassBlocker(true);
-        blocker.proceed?.();
-    };
+    const block = useCallback(() => {
+        if (activated) {
+            setEngaged(true);
+        }
+    }, [activated, setEngaged]);
 
-    const reset = () => {
-        setBypassBlocker(false);
-        blocker.reset?.();
-    };
+    const allow = useCallback(() => setEngaged(false), [setEngaged]);
+
+    const unblock = useCallback(() => {
+        if (state === 'blocked') {
+            proceed?.();
+        }
+    }, [state, proceed]);
+
+    const reset = useCallback(() => {
+        if (state === 'blocked') {
+            blockerReset?.();
+        }
+    }, [state, blockerReset]);
 
     return {
-        blocked: blocker.state === 'blocked',
-        unblock: unblock,
-        reset: reset
+        blocked: state === 'blocked',
+        allow,
+        block,
+        unblock,
+        reset
     };
 
     // These are other ways to block navigation
