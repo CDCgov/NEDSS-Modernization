@@ -44,7 +44,7 @@ describe('categoryValidator', () => {
         const actual = categoryValidator(entries)(5, { value: 'race-one-value', name: 'race one name' });
 
         await expect(actual).resolves.toBe(
-            'Race race one name has already been added to the repeating block.Please select another race to add .'
+            'Race race one name has already been added to the repeating block. Please select another race to add.'
         );
     });
 });

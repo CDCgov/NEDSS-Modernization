@@ -18,7 +18,7 @@ const categoryValidator = (entries: RaceEntry[]) => (id: number, category: Selec
         if (resolved) {
             //  validation fails
             resolve(
-                `Race ${category.name} has already been added to the repeating block.Please select another race to add .`
+                `Race ${category.name} has already been added to the repeating block. Please select another race to add.`
             );
         } else {
             resolve(true);
