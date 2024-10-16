@@ -130,7 +130,7 @@ describe('when transforming entered extended patient data', () => {
             administrative: { asOf: '04/13/2017' },
             ethnicity: {
                 asOf: '04/13/2017',
-                ethnicity: { value: 'ethnicity-value', name: 'ethnicity-name' },
+                ethnicGroup: { value: 'ethnicity-value', name: 'ethnicity-name' },
                 detailed: []
             }
         };
@@ -139,7 +139,7 @@ describe('when transforming entered extended patient data', () => {
 
         expect(actual).toEqual(
             expect.objectContaining({
-                ethnicity: expect.objectContaining({ ethnicity: 'ethnicity-value' })
+                ethnicity: expect.objectContaining({ ethnicGroup: 'ethnicity-value' })
             })
         );
     });
