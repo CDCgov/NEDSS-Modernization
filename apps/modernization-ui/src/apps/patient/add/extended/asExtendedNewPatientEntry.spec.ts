@@ -3,7 +3,7 @@ import { NewPatientEntry } from '../NewPatientEntry';
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 import { LocationCodedValues, StateCodedValue } from 'location';
 import { CodedValue } from 'coded';
-import { Selectable } from 'options';
+import { asSelectable, Selectable } from 'options';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { asExtendedNewPatientEntry } from './asExtendedNewPatientEntry';
 import { Deceased, Gender, Suffix } from 'generated/graphql/schema';
@@ -46,7 +46,7 @@ describe('Basic form to extended form data transfer', () => {
             suffix: Suffix.Jr
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result.names).toEqual(
             expect.arrayContaining([
@@ -72,7 +72,7 @@ describe('Basic form to extended form data transfer', () => {
             cellPhone: '0987654321'
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result.phoneEmails).toEqual(
             expect.arrayContaining([
@@ -107,7 +107,7 @@ describe('Basic form to extended form data transfer', () => {
             emailAddresses: []
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result.identifications).toBeTruthy();
         expect(result.identifications?.at(0)?.id).toBe('12344');
@@ -124,7 +124,7 @@ describe('Basic form to extended form data transfer', () => {
             race: ['A']
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result.races).toEqual(
             expect.arrayContaining([
@@ -146,7 +146,7 @@ describe('Basic form to extended form data transfer', () => {
             ethnicity: 'Unknown'
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result).toEqual(
             expect.objectContaining({
@@ -163,12 +163,12 @@ describe('Basic form to extended form data transfer', () => {
             emailAddresses: [],
             streetAddress1: 'st address 1',
             streetAddress2: 'st address 2',
-            country: 'USA',
-            state: 'AR',
+            country: asSelectable('USA'),
+            state: asSelectable('AR', 'Arkansas'),
             zip: '12345'
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result.addresses).toEqual(
             expect.arrayContaining([
@@ -203,7 +203,7 @@ describe('Basic form to extended form data transfer', () => {
             comments: 'test comments'
         };
 
-        const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
+        const result = asExtendedNewPatientEntry(initial, nameCodes, raceCode);
 
         expect(result.administrative?.comment).toBe('test comments');
 

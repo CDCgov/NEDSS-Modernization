@@ -29,7 +29,7 @@ const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientE
         currentGender: orNull(asValue(criteria.gender)),
         streetAddress1: orNull(criteria.address),
         city: orNull(criteria.city),
-        state: orNull(asValue(criteria.state)),
+        state: criteria.state,
         zip: (criteria.zip && String(criteria.zip)) || null,
         ethnicity: orNull(asValue(criteria.ethnicity)),
         race: resolveRace(criteria),

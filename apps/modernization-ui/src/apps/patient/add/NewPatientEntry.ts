@@ -1,5 +1,6 @@
 import { internalizeDate } from 'date';
 import { Gender, Suffix, Deceased } from 'generated/graphql/schema';
+import { Selectable } from 'options';
 
 type Maybe<T> = T | null;
 
@@ -14,11 +15,11 @@ type AddressEntry = {
     streetAddress1: Maybe<string>;
     streetAddress2: Maybe<string>;
     city: Maybe<string>;
-    state: Maybe<string>;
+    state?: Selectable;
     zip: Maybe<string>;
-    county: Maybe<string>;
+    county?: Selectable;
     censusTract: Maybe<string>;
-    country: Maybe<string>;
+    country?: Selectable;
 };
 
 type EmailEntry = {

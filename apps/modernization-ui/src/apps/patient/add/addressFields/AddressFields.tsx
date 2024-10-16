@@ -4,10 +4,10 @@ import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 
 import { Grid } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
-import { SelectInput } from 'components/FormInputs/SelectInput';
 
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
+import { SingleSelect } from 'design-system/select';
 
 type Props = {
     id: string;
@@ -22,7 +22,7 @@ export default function AddressFields({ id, title, coded }: Props) {
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zip' });
 
-    const counties = coded.counties.byState(selectedState);
+    const counties = coded.counties.byState(selectedState.value);
 
     function handleSuggestionSelection(selected: AddressSuggestion) {
         setValue('streetAddress1', selected.address1);
@@ -105,11 +105,11 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="state"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <SingleSelect
+                                    id={name}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     name={name}
-                                    htmlFor={name}
                                     label="State"
                                     options={coded.states.all}
                                 />
@@ -150,11 +150,11 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="county"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <SingleSelect
+                                    id={name}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     name={name}
-                                    htmlFor={name}
                                     label="County"
                                     options={counties}
                                 />
@@ -196,11 +196,11 @@ export default function AddressFields({ id, title, coded }: Props) {
                             control={control}
                             name="country"
                             render={({ field: { onChange, value, name } }) => (
-                                <SelectInput
+                                <SingleSelect
+                                    id={name}
                                     onChange={onChange}
-                                    defaultValue={value}
+                                    value={value}
                                     name={name}
-                                    htmlFor={name}
                                     label="Country"
                                     options={coded.countries}
                                 />

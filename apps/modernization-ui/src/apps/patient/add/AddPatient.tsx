@@ -26,6 +26,7 @@ import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
 import { AddPatientSideNav } from './nav/AddPatientSideNav';
 import { useBasicToExtended } from './extended/useBasicToExtended';
+import { asValue } from 'options';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -49,7 +50,7 @@ import { useBasicToExtended } from './extended/useBasicToExtended';
 const asVerifiableAddress = (states: StateCodedValues, input: NewPatientEntry): VerifiableAdddress => ({
     address1: orNull(input.streetAddress1),
     city: orNull(input.city),
-    state: states.byValue(input.state),
+    state: states.byValue(input.state?.value),
     zip: orNull(input.zip)
 });
 
@@ -57,7 +58,7 @@ const withVerifiedAddress = (entry: NewPatientEntry, address: VerifiableAdddress
     ...entry,
     streetAddress1: address.address1,
     city: address.city,
-    state: orNull(address.state?.value),
+    state: asValue(address.state),
     zip: address.zip
 });
 

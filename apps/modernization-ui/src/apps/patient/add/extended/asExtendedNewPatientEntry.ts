@@ -5,19 +5,17 @@ import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry } from 'a
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 import { CodedValue } from 'coded';
 import { isEmpty } from 'utils/isEmpty';
-import { LocationCodedValues } from 'location';
 import { RaceEntry } from 'apps/patient/data/race/entry';
 
 const asExtendedNewPatientEntry = (
     initial: NewPatientEntry,
     nameCodes: PatientNameCodedValues,
-    addressCodes: LocationCodedValues,
     raceCodes: Selectable[]
 ): ExtendedNewPatientEntry => {
     const extendedFormValues: ExtendedNewPatientEntry = {
         administrative: { asOf: initial.asOf, comment: initial.comments ?? undefined },
         names: nameExtended(initial, nameCodes),
-        addresses: addressExtended(initial, addressCodes),
+        addresses: addressExtended(initial),
         phoneEmails: phoneEmailsExtended(initial),
         races: raceExtended(initial, raceCodes),
         identifications: identificationExtended(initial),
@@ -68,9 +66,7 @@ const nameExtended = (initial: NewPatientEntry, nameCodes: PatientNameCodedValue
     }
 };
 
-const addressExtended = (initial: NewPatientEntry, addressCodes: LocationCodedValues): AddressEntry[] | undefined => {
-    const state = initial.state ? addressCodes.states.all.find((state) => state.value === initial.state) : undefined;
-
+const addressExtended = (initial: NewPatientEntry): AddressEntry[] | undefined => {
     if (
         !isEmpty({
             address1: initial.streetAddress1,
@@ -90,10 +86,10 @@ const addressExtended = (initial: NewPatientEntry, addressCodes: LocationCodedVa
                 address1: initial.streetAddress1 ?? undefined,
                 address2: initial.streetAddress2 ?? undefined,
                 city: initial.city ?? undefined,
-                state: state ? asSelectable(state.value, state.name) : undefined,
+                state: initial.state,
                 zipcode: initial.zip ?? undefined,
-                county: asSelectable(initial.county ?? ''),
-                country: asSelectable(initial.country ?? ''),
+                county: initial.county,
+                country: initial.country,
                 censusTract: initial.censusTract ?? undefined
             }
         ];

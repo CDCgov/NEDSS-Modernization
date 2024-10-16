@@ -47,11 +47,11 @@ export const asPersonInput = (data: NewPatientEntry) => {
     const address = {
         streetAddress1: data.streetAddress1,
         streetAddress2: data.streetAddress2,
-        state: data.state,
-        county: data.county,
+        state: data.state?.value,
+        county: data.county?.value,
         zip: data.zip,
         censusTract: data.censusTract,
-        country: data.country,
+        country: data.country?.value,
         city: data.city
     };
 
