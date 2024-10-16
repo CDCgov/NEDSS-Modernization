@@ -22,7 +22,7 @@ export default function AddressFields({ id, title, coded }: Props) {
     const enteredCity = useWatch({ control, name: 'city' });
     const enteredZip = useWatch({ control, name: 'zip' });
 
-    const counties = coded.counties.byState(selectedState.value);
+    const counties = coded.counties.byState(selectedState?.value);
 
     function handleSuggestionSelection(selected: AddressSuggestion) {
         setValue('streetAddress1', selected.address1);
