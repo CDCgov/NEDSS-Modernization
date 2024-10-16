@@ -36,7 +36,7 @@ describe('MortalityEntryFields', () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Mortality information as of')).toBeInTheDocument();
-        expect(getByLabelText('Is the patient deceased')).toBeInTheDocument();
+        expect(getByLabelText('Is the patient deceased?')).toBeInTheDocument();
         expect(queryByLabelText('Date of death')).not.toBeInTheDocument();
         expect(queryByLabelText('Death city')).not.toBeInTheDocument();
         expect(queryByLabelText('Death state')).not.toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('MortalityEntryFields', () => {
     it('should render the death information when deceased is true', () => {
         const { getByLabelText } = render(<Fixture />);
 
-        const deceased = getByLabelText('Is the patient deceased');
+        const deceased = getByLabelText('Is the patient deceased?');
 
         userEvent.selectOptions(deceased, 'Y');
 
@@ -61,7 +61,7 @@ describe('MortalityEntryFields', () => {
     it('should reset the death information when deceased is reverted to false', () => {
         const { getByLabelText } = render(<Fixture />);
         // Set patient deceased Y
-        userEvent.selectOptions(getByLabelText('Is the patient deceased'), 'Y');
+        userEvent.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
 
         // Enter data in previously hidden fields
         userEvent.paste(getByLabelText('Date of death'), '12/01/2020');
@@ -71,8 +71,8 @@ describe('MortalityEntryFields', () => {
         userEvent.selectOptions(getByLabelText('Death country'), '3');
 
         // Toggle deceased to N then back to Y
-        userEvent.selectOptions(getByLabelText('Is the patient deceased'), 'N');
-        userEvent.selectOptions(getByLabelText('Is the patient deceased'), 'Y');
+        userEvent.selectOptions(getByLabelText('Is the patient deceased?'), 'N');
+        userEvent.selectOptions(getByLabelText('Is the patient deceased?'), 'Y');
 
         // Verify previously input data is cleared
         expect(getByLabelText('Date of death')).toHaveValue('');
