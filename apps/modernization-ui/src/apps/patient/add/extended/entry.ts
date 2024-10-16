@@ -42,7 +42,11 @@ const initial = (asOf: string = today()) => ({
     general: {
         asOf: asOf
     },
-    phoneEmails: []
+    names: [],
+    addresses: [],
+    phoneEmails: [],
+    identifications: [],
+    races: []
 });
 
 export { initial };
