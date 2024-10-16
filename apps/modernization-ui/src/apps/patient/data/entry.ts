@@ -1,5 +1,5 @@
 import { Selectable } from 'options';
-import { EffectiveDated, HasComments } from 'utils';
+import { EffectiveDated, HasComments, Maybe } from 'utils';
 
 type LocationEntry = {
     city?: string;
@@ -53,12 +53,6 @@ type IdentificationEntry = EffectiveDated & {
     issuer?: Selectable;
 };
 
-type EthnicityEntry = EffectiveDated & {
-    ethnicity: Selectable;
-    detailed: Selectable[];
-    reasonUnknown?: Selectable;
-};
-
 type SexEntry = EffectiveDated & {
     current?: Selectable;
     unknownReason?: Selectable;
@@ -98,7 +92,6 @@ export type {
     AddressEntry,
     PhoneEmailEntry,
     IdentificationEntry,
-    EthnicityEntry,
     SexEntry,
     BirthEntry,
     MortalityEntry,

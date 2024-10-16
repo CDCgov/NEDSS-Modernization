@@ -3,7 +3,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { EthnicityEntry } from '../entry';
+import { EthnicityEntry } from './entry';
 
 const UNKNOWN = 'UNK';
 const HISPANIC = '2135-2';
@@ -11,12 +11,12 @@ const HISPANIC = '2135-2';
 export const EthnicityEntryFields = () => {
     const { control, setValue } = useFormContext<{ ethnicity: EthnicityEntry }>();
     const coded = usePatientEthnicityCodedValues();
-    const selectedEthinicity = useWatch({ control, name: 'ethnicity.ethnicity' });
+    const selectedEthnicity = useWatch({ control, name: 'ethnicity.ethnicGroup' });
 
     useEffect(() => {
-        setValue('ethnicity.reasonUnknown', undefined);
+        setValue('ethnicity.unknownReason', undefined);
         setValue('ethnicity.detailed', []);
-    }, [selectedEthinicity]);
+    }, [selectedEthnicity]);
 
     return (
         <section>
@@ -40,7 +40,7 @@ export const EthnicityEntryFields = () => {
             />
             <Controller
                 control={control}
-                name="ethnicity.ethnicity"
+                name="ethnicity.ethnicGroup"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Ethnicity"
@@ -55,7 +55,7 @@ export const EthnicityEntryFields = () => {
                 )}
             />
 
-            {selectedEthinicity?.value === HISPANIC && (
+            {selectedEthnicity?.value === HISPANIC && (
                 <Controller
                     control={control}
                     name="ethnicity.detailed"
@@ -74,10 +74,10 @@ export const EthnicityEntryFields = () => {
                     )}
                 />
             )}
-            {selectedEthinicity?.value === UNKNOWN && (
+            {selectedEthnicity?.value === UNKNOWN && (
                 <Controller
                     control={control}
-                    name="ethnicity.reasonUnknown"
+                    name="ethnicity.unknownReason"
                     shouldUnregister
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect

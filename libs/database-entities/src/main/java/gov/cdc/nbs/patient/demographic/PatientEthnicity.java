@@ -9,84 +9,91 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Embeddable
 public class PatientEthnicity {
 
-    @Column(name = "as_of_date_ethnicity")
-    private Instant asOfDateEthnicity;
-    @Column(name = "ethnic_group_ind", length = 20)
-    private String ethnicGroupInd;
+  @Column(name = "as_of_date_ethnicity")
+  private Instant asOfDateEthnicity;
+  @Column(name = "ethnic_group_ind", length = 20)
+  private String ethnicGroupInd;
 
-    @Column(name = "ethnic_unk_reason_cd", length = 20)
-    private String ethnicUnkReasonCd;
+  @Column(name = "ethnic_unk_reason_cd", length = 20)
+  private String ethnicUnkReasonCd;
 
-    @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.REMOVE
-    }, orphanRemoval = true)
-    private List<PersonEthnicGroup> ethnicities;
+  @OneToMany(mappedBy = "personUid", fetch = FetchType.LAZY, cascade = {
+      CascadeType.PERSIST,
+      CascadeType.MERGE,
+      CascadeType.REMOVE
+  }, orphanRemoval = true)
+  private List<PersonEthnicGroup> ethnicities;
 
-    public PatientEthnicity() {
+  public PatientEthnicity() {
 
+  }
+
+  public PatientEthnicity(final PatientCommand.AddPatient patient) {
+    this.ethnicGroupInd = patient.ethnicityCode();
+
+    if (this.ethnicGroupInd != null) {
+      this.asOfDateEthnicity = patient.asOf();
     }
+  }
 
-    public PatientEthnicity(final PatientCommand.AddPatient patient) {
-        this.ethnicGroupInd = patient.ethnicityCode();
+  public Instant asOf() {
+    return asOfDateEthnicity;
+  }
 
-        if (this.ethnicGroupInd != null) {
-            this.asOfDateEthnicity = patient.asOf();
-        }
+  public String ethnicGroup() {
+    return ethnicGroupInd;
+  }
+
+  public String unknownReason() {
+    return ethnicUnkReasonCd;
+  }
+
+  public List<PersonEthnicGroup> ethnicities() {
+    return ethnicities == null ? List.of() : List.copyOf(ethnicities);
+  }
+
+  public void update(final PatientCommand.UpdateEthnicityInfo info) {
+    this.asOfDateEthnicity = info.asOf();
+    this.ethnicGroupInd = info.ethnicGroup();
+    this.ethnicUnkReasonCd = info.unknownReason();
+  }
+
+  public Optional<PersonEthnicGroup> add(
+      final Person patient,
+      final PatientCommand.AddDetailedEthnicity add
+  ) {
+
+    if (this.ethnicGroupInd != null) {
+      PersonEthnicGroup added = new PersonEthnicGroup(
+          patient,
+          add);
+
+      ensureEthnicities().add(added);
+
+      return Optional.of(added);
+    } else {
+      return Optional.empty();
     }
+  }
 
-    public Instant asOf() {
-        return asOfDateEthnicity;
+  private List<PersonEthnicGroup> ensureEthnicities() {
+    if (this.ethnicities == null) {
+      this.ethnicities = new ArrayList<>();
     }
+    return this.ethnicities;
+  }
 
-    public String ethnicGroup() {
-        return ethnicGroupInd;
-    }
-
-    public String unknownReason() {
-        return ethnicUnkReasonCd;
-    }
-
-    public List<PersonEthnicGroup> ethnicities() {
-        return ethnicities == null ? List.of() : List.copyOf(ethnicities);
-    }
-
-    public void update(final PatientCommand.UpdateEthnicityInfo info) {
-        this.asOfDateEthnicity = info.asOf();
-        this.ethnicGroupInd = info.ethnicGroup();
-        this.ethnicUnkReasonCd = info.unknownReason();
-    }
-
-    public PersonEthnicGroup add(
-            final Person patient,
-            final PatientCommand.AddDetailedEthnicity add) {
-
-        PersonEthnicGroup added = new PersonEthnicGroup(
-                patient,
-                add);
-
-        ensureEthnicities().add(added);
-
-        return added;
-    }
-
-    private List<PersonEthnicGroup> ensureEthnicities() {
-        if (this.ethnicities == null) {
-            this.ethnicities = new ArrayList<>();
-        }
-        return this.ethnicities;
-    }
-
-    public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
-        this.ethnicities.removeIf(detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
-    }
+  public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
+    this.ethnicities.removeIf(detail -> Objects.equals(detail.getId().getEthnicGroupCd(), remove.ethnicity()));
+  }
 }

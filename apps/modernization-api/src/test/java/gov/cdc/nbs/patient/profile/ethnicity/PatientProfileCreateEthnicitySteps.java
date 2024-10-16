@@ -66,4 +66,13 @@ public class PatientProfileCreateEthnicitySteps {
             jsonPath(
                 "$.data.findPatientProfile.ethnicity.detailed[*].id").value(hasItem(equalTo(detail))));
   }
+
+  @Then("the patient profile does not have ethnicity demographics")
+  public void the_patient_profile_does_not_have_ethnicity_demographics() throws Exception {
+    this.response.active()
+        .andExpect(
+            jsonPath(
+                "$.data.findPatientProfile.ethnicity").isEmpty()
+        );
+  }
 }

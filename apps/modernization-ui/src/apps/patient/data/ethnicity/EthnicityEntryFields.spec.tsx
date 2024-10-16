@@ -1,10 +1,9 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import { EthnicityEntryFields } from './EthnicityEntryFields';
-import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
-import { EthnicityEntry } from '../entry';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
+import { EthnicityEntry } from './entry';
+import { EthnicityEntryFields } from './EthnicityEntryFields';
 
 const mockEthnicityValues: PatientEthnicityCodedValue = {
     ethnicGroups: [
