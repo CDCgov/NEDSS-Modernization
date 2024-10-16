@@ -531,18 +531,19 @@ public class Person {
     changed(delete);
   }
 
-  public void update(final PatientCommand.UpdateEthnicityInfo info) {
-    this.ethnicity.update(info);
+  public Person update(final PatientCommand.UpdateEthnicityInfo info) {
+    if (info.ethnicGroup() != null) {
+      this.ethnicity.update(info);
 
-    changed(info);
+      changed(info);
+    }
+
+    return this;
   }
 
-  public PersonEthnicGroup add(final PatientCommand.AddDetailedEthnicity add) {
-    PersonEthnicGroup ethnicGroup = this.ethnicity.add(this, add);
-
-    changed(add);
-
-    return ethnicGroup;
+  public Person add(final PatientCommand.AddDetailedEthnicity add) {
+    this.ethnicity.add(this, add).ifPresent(added -> changed(add));
+    return this;
   }
 
   public void remove(final PatientCommand.RemoveDetailedEthnicity remove) {
