@@ -1,4 +1,4 @@
-import './displayAddress.scss';
+import { ItemGroup } from 'design-system/item';
 import { exists } from 'utils';
 
 export type DisplayableAddress = {
@@ -21,18 +21,17 @@ const displayAddressText = ({ address, address2, city, state, zipcode }: Display
     return [street, location].filter(exists).join('\n');
 };
 
-/** Returns the full text + label addres element. Example: "Home 123 Main St Springfield, IL 62701"
+/** Returns the full text + label address element. Example: "Home 123 Main St Springfield, IL 62701"
  * @param {DisplayableAddress} address - The address object to display.
  * @return {JSX.Element} The address block as JSX.
  */
 const displayAddress = (address: DisplayableAddress): JSX.Element => {
     const addressText = displayAddressText(address);
-    const { use: addressHeader } = address;
+    const addressHeader = address.use ?? undefined;
     return (
-        <address>
-            {addressHeader && <label>{addressHeader}</label>}
+        <ItemGroup type="address" label={addressHeader}>
             {addressText}
-        </address>
+        </ItemGroup>
     );
 };
 

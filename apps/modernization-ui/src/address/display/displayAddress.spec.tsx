@@ -1,3 +1,4 @@
+import { ItemGroup } from 'design-system/item';
 import { displayAddress, displayAddressText } from './displayAddress';
 
 describe('when given an address', () => {
@@ -23,12 +24,10 @@ describe('when given an address', () => {
             zipcode: '10013'
         };
 
+        // expect(addressElement.props.children).toBe('14 North Moore St, Suite A\nNew York, NY 10013');
+
         const addressElement = displayAddress(address);
-        expect(addressElement.type).toBe('address');
-        expect(addressElement.props.children).toEqual([
-            // eslint-disable-next-line react/jsx-key
-            <label>Home</label>,
-            '14 North Moore St, Suite A\nNew York, NY 10013'
-        ]);
+        expect(addressElement.type).toBe(ItemGroup);
+        expect(addressElement.props.children).toBe('14 North Moore St, Suite A\nNew York, NY 10013');
     });
 });
