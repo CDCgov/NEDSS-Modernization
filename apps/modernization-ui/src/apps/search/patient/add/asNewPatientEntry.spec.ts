@@ -54,7 +54,7 @@ describe('when addind a new patient from a patient search', () => {
 
         const actual = asNewPatientEntry(critiera);
 
-        expect(actual).toEqual(expect.objectContaining({ state: 'state-value' }));
+        expect(actual).toEqual(expect.objectContaining({ state: expect.objectContaining({value: 'state-value'}) }));
     });
 
     it('should populate the zip that was searched for', () => {
