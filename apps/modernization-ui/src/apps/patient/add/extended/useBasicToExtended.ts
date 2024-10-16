@@ -4,7 +4,7 @@ import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatient
 import { useConceptOptions } from 'options/concepts';
 import { NewPatientEntry } from '..';
 import { asExtendedNewPatientEntry } from './asExtendedNewPatientEntry';
-import { useLocationCodedValues } from 'location';
+import { useCountyCodedValues, useLocationCodedValues } from 'location';
 
 type Interaction = {
     add: (initial: NewPatientEntry) => void;
@@ -17,6 +17,7 @@ const useBasicToExtended = (): Interaction => {
     const raceCategories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
 
     const add = (initial: NewPatientEntry) => {
+        const counties = initial.state ? useCountyCodedValues(initial.state) : undefined;
         const defaults: ExtendedNewPatientEntry = asExtendedNewPatientEntry(
             initial,
             nameCodes,
