@@ -22,7 +22,7 @@ const asExtendedNewPatientEntry = (
         phoneEmails: phoneEmailsExtended(initial),
         races: raceExtended(initial, raceCodes),
         identifications: identificationExtended(initial),
-        ethnicity: { asOf: initial.asOf, ethnicity: asSelectable(initial.ethnicity ?? ''), detailed: [] },
+        ethnicity: { asOf: initial.asOf, ethnicGroup: asSelectable(initial.ethnicity ?? ''), detailed: [] },
         birthAndSex: {
             asOf: initial.asOf,
             bornOn: initial.dateOfBirth ?? undefined,

@@ -148,8 +148,11 @@ describe('Basic form to extended form data transfer', () => {
 
         const result = asExtendedNewPatientEntry(initial, nameCodes, addressCodes, raceCode);
 
-        expect(result.ethnicity).toBeTruthy();
-        expect(result.ethnicity?.ethnicity.name).toBe('Unknown');
+        expect(result).toEqual(
+            expect.objectContaining({
+                ethnicity: expect.objectContaining({ ethnicGroup: expect.objectContaining({ value: 'Unknown' }) })
+            })
+        );
     });
     it('address basic to extended', () => {
         const date = today();
