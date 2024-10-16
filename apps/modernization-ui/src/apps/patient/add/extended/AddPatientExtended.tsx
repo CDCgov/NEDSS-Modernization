@@ -1,28 +1,28 @@
+import { useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FormProvider, useForm } from 'react-hook-form';
+import { CreatedPatient } from './api';
+import { creator } from './creator';
+import { transformer } from './transformer';
+import { ExtendedNewPatientEntry } from './entry';
+import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+import { useAddExtendedPatient } from './useAddExtendedPatient';
+import { useShowCancelModal } from './useShowCancelModal';
+import { useNavigationBlock } from 'navigation/useNavigationBlock';
+import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
-import { useLocation } from 'react-router-dom';
-import { useEffect, useCallback, useMemo, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { AddPatientSideNav } from '../nav/AddPatientSideNav';
-import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { AddPatientSideNav } from 'apps/patient/add/nav/AddPatientSideNav';
+import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
-import { CreatedPatient } from './api';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
-import { creator } from './creator';
-import { ExtendedNewPatientEntry, initial } from './entry';
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
-import { transformer } from './transformer';
-import { useAddExtendedPatient } from './useAddExtendedPatient';
-import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+
 import styles from './add-patient-extended.module.scss';
-import { useNavigationBlock } from 'navigation/useNavigationBlock';
-import { useShowCancelModal } from './useShowCancelModal';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
-    const [cancelModal, setCancelModal] = useState<boolean>(false);
-    const location = useLocation();
+    const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
     const navigate = useNavigate();
 
@@ -32,33 +32,32 @@ export const AddPatientExtended = () => {
     );
 
     const form = useForm<ExtendedNewPatientEntry>({
-        defaultValues: location.state?.defaults ?? initial(),
-        mode: 'onBlur'
+        defaultValues: initialize(),
+        mode: 'onBlur',
+        reValidateMode: 'onBlur'
     });
-    const formIsDirty = form.formState.isDirty;
 
     const handleSave = form.handleSubmit(interaction.create);
 
-    const handleCancel = useCallback(() => {
-        if (bypassModal) {
-            handleModalConfirm();
-        } else {
-            setCancelModal(true);
-        }
-    }, [bypassModal]);
+    const handleCancel = () => navigate('/add-patient');
 
     // Setup navigation blocking for back button
-    const blocker = useNavigationBlock({ shouldBlock: formIsDirty, onBlock: handleCancel });
+    const blocker = useNavigationBlock({ activated: !bypassModal });
 
-    const handleModalConfirm = useCallback(() => {
-        blocker.unblock();
-        navigate('/add-patient');
-    }, [blocker, navigate]);
+    useEffect(() => {
+        if (form.formState.isSubmitted) {
+            //  the form is in a dirty state even after submitting, since we know a submit occurred allow navigation
+            blocker.allow();
+        } else if (form.formState.isDirty) {
+            blocker.block();
+        } else {
+            blocker.allow();
+        }
+    }, [form.formState.isSubmitted, form.formState.isDirty, blocker.allow, blocker.block]);
 
-    const handleModalClose = useCallback(() => {
-        blocker.reset();
-        setCancelModal(false);
-    }, [blocker]);
+    const handleModalConfirm = blocker.unblock;
+
+    const handleModalClose = blocker.reset;
 
     // Reset the blocker after a successful submission
     useEffect(() => {
@@ -75,7 +74,7 @@ export const AddPatientExtended = () => {
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
                     <AddPatientSideNav />
-                    <div className={styles.contet}>
+                    <div className={styles.content}>
                         <header>
                             <h1>New patient - extended</h1>
                             <div className={styles.buttonGroup}>
@@ -97,9 +96,9 @@ export const AddPatientExtended = () => {
                             <AddPatientExtendedInPageNav />
                         </main>
                     </div>
-                    {cancelModal && (
+                    <Shown when={blocker.blocked}>
                         <CancelAddPatientExtendedPanel onConfirm={handleModalConfirm} onClose={handleModalClose} />
-                    )}
+                    </Shown>
                 </div>
             </FormProvider>
         </AddExtendedPatientInteractionProvider>

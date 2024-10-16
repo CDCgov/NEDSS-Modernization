@@ -29,89 +29,91 @@ import static gov.cdc.nbs.patient.profile.mortality.MortalityDemographicPatientC
 @Component
 class PatientCreationService {
 
-    private final PatientIdentifierGenerator patientIdentifierGenerator;
-    private final AddressIdentifierGenerator addressIdentifierGenerator;
-    private final PermissionScopeResolver resolver;
-    private final EntityManager entityManager;
+  private final PatientIdentifierGenerator patientIdentifierGenerator;
+  private final AddressIdentifierGenerator addressIdentifierGenerator;
+  private final PermissionScopeResolver resolver;
+  private final EntityManager entityManager;
 
-    PatientCreationService(
-            final PatientIdentifierGenerator patientIdentifierGenerator,
-            final AddressIdentifierGenerator addressIdentifierGenerator,
-            final PermissionScopeResolver resolver,
-            final EntityManager entityManager) {
-        this.patientIdentifierGenerator = patientIdentifierGenerator;
-        this.addressIdentifierGenerator = addressIdentifierGenerator;
-        this.resolver = resolver;
-        this.entityManager = entityManager;
-    }
+  PatientCreationService(
+      final PatientIdentifierGenerator patientIdentifierGenerator,
+      final AddressIdentifierGenerator addressIdentifierGenerator,
+      final PermissionScopeResolver resolver,
+      final EntityManager entityManager) {
+    this.patientIdentifierGenerator = patientIdentifierGenerator;
+    this.addressIdentifierGenerator = addressIdentifierGenerator;
+    this.resolver = resolver;
+    this.entityManager = entityManager;
+  }
 
-    @Transactional
-    public CreatedPatient create(
-            final RequestContext context,
-            final NewPatient newPatient) {
-        PatientIdentifier identifier = patientIdentifierGenerator.generate();
+  @Transactional
+  public CreatedPatient create(
+      final RequestContext context,
+      final NewPatient newPatient) {
+    PatientIdentifier identifier = patientIdentifierGenerator.generate();
 
-        Person patient = new Person(
-                new PatientCommand.CreatePatient(
-                        identifier.id(),
-                        identifier.local(),
-                        context.requestedBy(),
-                        context.requestedAt()));
+    Person patient = new Person(
+        new PatientCommand.CreatePatient(
+            identifier.id(),
+            identifier.local(),
+            context.requestedBy(),
+            context.requestedAt()));
 
-        newPatient.maybeAdministrative()
-                .map(administrative -> asUpdateAdministrativeInfo(identifier.id(), context, administrative))
-                .ifPresent(patient::update);
+    newPatient.maybeAdministrative()
+        .map(administrative -> asUpdateAdministrativeInfo(identifier.id(), context, administrative))
+        .ifPresent(patient::update);
 
-        newPatient.maybeBirth()
-                .map(demographic -> asUpdateBirth(identifier.id(), context, demographic))
-                .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
+    newPatient.maybeBirth()
+        .map(demographic -> asUpdateBirth(identifier.id(), context, demographic))
+        .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
 
-        newPatient.maybeGender()
-                .map(demographic -> asUpdateGender(identifier.id(), context, demographic))
-                .ifPresent(patient::update);
+    newPatient.maybeGender()
+        .map(demographic -> asUpdateGender(identifier.id(), context, demographic))
+        .ifPresent(patient::update);
 
-        newPatient.maybeEthnicity()
-                .map(demographic -> asUpdateEthnicityInfo(identifier.id(), context, demographic))
-                .ifPresent(patient::update);
+    newPatient.maybeEthnicity()
+        .filter(demographic -> demographic.ethnicGroup() != null)
+        .map(demographic -> asUpdateEthnicityInfo(identifier.id(), context, demographic))
+        .ifPresent(patient::update);
 
-        newPatient.maybeEthnicity()
-                .map(EthnicityDemographic::detailed)
-                .stream()
-                .flatMap(Collection::stream)
-                .map(demographic -> asAddDetailedEthnicity(identifier.id(), context, demographic))
-                .forEach(patient::add);
+    newPatient.maybeEthnicity()
+        .filter(demographic -> demographic.ethnicGroup() != null)
+        .map(EthnicityDemographic::detailed)
+        .stream()
+        .flatMap(Collection::stream)
+        .map(demographic -> asAddDetailedEthnicity(identifier.id(), context, demographic))
+        .forEach(patient::add);
 
-        newPatient.maybeGeneralInformation()
-                .map(demographic -> asUpdateGeneralInfo(identifier.id(), context, demographic))
-                .ifPresent(patient::update);
+    newPatient.maybeGeneralInformation()
+        .map(demographic -> asUpdateGeneralInfo(identifier.id(), context, demographic))
+        .ifPresent(patient::update);
 
-        newPatient.maybeGeneralInformation()
-                .flatMap(demographic -> maybeAsAssociateStateHIVCase(identifier.id(), context, demographic))
-                .ifPresent(association -> patient.associate(resolver, association));
+    newPatient.maybeGeneralInformation()
+        .flatMap(demographic -> maybeAsAssociateStateHIVCase(identifier.id(), context, demographic))
+        .ifPresent(association -> patient.associate(resolver, association));
 
-        newPatient.names()
-                .stream()
-                .map(demographic -> asAddName(identifier.id(), context, demographic))
-                .forEach(patient::add);
+    newPatient.names()
+        .stream()
+        .map(demographic -> asAddName(identifier.id(), context, demographic))
+        .forEach(patient::add);
 
-        newPatient.maybeMortality()
-                .map(demographic -> asUpdateMortality(identifier.id(), context, demographic))
-                .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
+    newPatient.maybeMortality()
+        .map(demographic -> asUpdateMortality(identifier.id(), context, demographic))
+        .ifPresent(command -> patient.update(command, addressIdentifierGenerator));
 
-        this.entityManager.persist(patient);
+    this.entityManager.persist(patient);
 
-        CreatedPatient.Name legalName = patient.legalName(LocalDate.now())
-                .map(this::asName)
-                .orElse(null);
+    CreatedPatient.Name legalName = patient.legalName(LocalDate.now())
+        .map(this::asName)
+        .orElse(null);
 
-        return new CreatedPatient(
-                identifier.id(),
-                identifier.shortId(),
-                identifier.local(),
-                legalName);
-    }
+    return new CreatedPatient(
+        identifier.id(),
+        identifier.shortId(),
+        identifier.local(),
+        legalName);
+  }
 
-    private CreatedPatient.Name asName(final PersonName name) {
-        return new CreatedPatient.Name(name.getFirstNm(), name.getLastNm());
-    }
+  private CreatedPatient.Name asName(final PersonName name) {
+    return new CreatedPatient.Name(name.getFirstNm(), name.getLastNm());
+  }
 }

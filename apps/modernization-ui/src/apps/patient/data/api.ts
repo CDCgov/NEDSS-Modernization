@@ -53,9 +53,9 @@ type Identification = EffectiveDated & {
 };
 
 type Ethnicity = EffectiveDated & {
-    ethnicity: string;
+    ethnicGroup: string;
     detailed: string[];
-    reasonUnknown?: string;
+    unknownReason?: string;
 };
 
 type Sex = EffectiveDated & {

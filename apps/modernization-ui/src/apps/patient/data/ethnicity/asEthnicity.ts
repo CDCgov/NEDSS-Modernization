@@ -1,16 +1,18 @@
 import { asValue, asValues } from 'options';
-import { EthnicityEntry } from '../entry';
-import { Ethnicity } from '../api';
+import { EthnicityEntry } from './entry';
+import { Ethnicity } from './api';
 
-const asEthnicity = (entry: EthnicityEntry): Ethnicity => {
-    const { ethnicity, detailed, reasonUnknown, ...remaining } = entry;
+const asEthnicity = (entry: EthnicityEntry): Ethnicity | undefined => {
+    const { ethnicGroup, detailed, unknownReason, asOf } = entry;
 
-    return {
-        ethnicity: asValue(ethnicity),
-        detailed: asValues(detailed),
-        reasonUnknown: asValue(reasonUnknown),
-        ...remaining
-    };
+    if (ethnicGroup) {
+        return {
+            asOf,
+            ethnicGroup: asValue(ethnicGroup),
+            detailed: asValues(detailed),
+            unknownReason: asValue(unknownReason)
+        };
+    }
 };
 
 export { asEthnicity };

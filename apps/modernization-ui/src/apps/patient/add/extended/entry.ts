@@ -5,12 +5,12 @@ import {
     AddressEntry,
     PhoneEmailEntry,
     IdentificationEntry,
-    EthnicityEntry,
     SexEntry,
     BirthEntry,
     MortalityEntry,
     GeneralInformationEntry
 } from 'apps/patient/data/entry';
+import { EthnicityEntry, initial as initialEthnicity } from 'apps/patient/data/ethnicity';
 import { RaceEntry } from 'apps/patient/data/race';
 
 type ExtendedNewPatientEntry = {
@@ -35,16 +35,18 @@ const initial = (asOf: string = today()) => ({
     birthAndSex: {
         asOf: asOf
     },
-    ethnicity: {
-        asOf: asOf
-    },
+    ethnicity: initialEthnicity(asOf),
     mortality: {
         asOf: asOf
     },
     general: {
         asOf: asOf
     },
-    phoneEmails: []
+    names: [],
+    addresses: [],
+    phoneEmails: [],
+    identifications: [],
+    races: []
 });
 
 export { initial };
