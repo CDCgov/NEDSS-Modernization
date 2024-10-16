@@ -132,6 +132,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
                         />
                     )}
                 />
+
                 <Controller
                     control={control}
                     name="races"

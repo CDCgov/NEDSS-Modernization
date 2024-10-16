@@ -1,5 +1,6 @@
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
+import { useLocation } from 'react-router-dom';
 import { useEffect, useCallback, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ import { useShowCancelModal } from './useShowCancelModal';
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const [cancelModal, setCancelModal] = useState<boolean>(false);
+    const location = useLocation();
     const { value: bypassModal } = useShowCancelModal();
     const navigate = useNavigate();
 
@@ -29,9 +31,8 @@ export const AddPatientExtended = () => {
         [interaction.status]
     );
 
-    const defaultValues = initial();
     const form = useForm<ExtendedNewPatientEntry>({
-        defaultValues,
+        defaultValues: location.state?.defaults ?? initial(),
         mode: 'onBlur'
     });
     const formIsDirty = form.formState.isDirty;

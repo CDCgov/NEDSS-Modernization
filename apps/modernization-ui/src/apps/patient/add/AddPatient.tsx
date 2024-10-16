@@ -19,13 +19,13 @@ import OtherInfoFields from 'apps/patient/add/otherInfoFields/OtherInfoFields';
 import './AddPatient.scss';
 import { VerifiableAdddress, AddressVerificationModal } from 'address/verification';
 import { orNull } from 'utils';
-import { DefaultNewPatentEntry, NewPatientEntry, initialEntry } from 'apps/patient/add';
+import { DefaultNewPatentEntry, initialEntry, NewPatientEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { SuccessModal } from 'success';
-import { NavLinkButton } from 'components/button/nav/NavLinkButton';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
 import { AddPatientSideNav } from './nav/AddPatientSideNav';
+import { useBasicToExtended } from './extended/useBasicToExtended';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -88,6 +88,8 @@ const AddPatient = () => {
     const [entryState, setEntryState] = useState<EntryState>({ step: 'entry' });
 
     const prefillled = usePreFilled(initialEntry());
+
+    const { add } = useBasicToExtended();
 
     useEffect(() => {
         reset(prefillled);
@@ -272,12 +274,13 @@ const AddPatient = () => {
                                 <h1 className="new-patient-title margin-0">New patient</h1>
                                 <div className="nav-buttons">
                                     {features.patient?.add?.extended?.enabled && (
-                                        <NavLinkButton
-                                            type="outline"
-                                            className="add-patient-button"
-                                            to={'/patient/add/extended'}>
+                                        <Button
+                                            type="button"
+                                            onClick={handleSubmit(add)}
+                                            outline
+                                            className="add-patient-button">
                                             Add extended data
-                                        </NavLinkButton>
+                                        </Button>
                                     )}
                                     <Button className="add-patient-button" type={'submit'}>
                                         Save changes
