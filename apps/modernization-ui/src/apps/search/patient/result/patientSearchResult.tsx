@@ -20,7 +20,14 @@ const displayNames = (result: PatientSearchResult): string => {
         .join('\n');
 };
 
-const displayAddresses = (result: PatientSearchResult): string => result.addresses.map(displayAddress).join('\n\n');
+// Returns JSX that represents a list of addresses to display
+const displayAddresses = (result: PatientSearchResult): JSX.Element => (
+    <div>
+        {result.addresses.map((address, index) => (
+            <div key={index}>{displayAddress(address)}</div>
+        ))}
+    </div>
+);
 
 const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
