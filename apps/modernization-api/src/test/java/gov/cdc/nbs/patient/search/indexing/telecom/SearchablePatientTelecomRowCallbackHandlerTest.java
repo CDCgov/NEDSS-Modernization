@@ -15,7 +15,7 @@ class SearchablePatientTelecomRowCallbackHandlerTest {
   void should_map_phone_from_result_set_when_number_is_present() throws SQLException {
 
     SearchablePatientEmailMapper.Column emailColumns = new SearchablePatientEmailMapper.Column(3);
-    SearchablePatientPhoneMapper.Column phoneColumns = new SearchablePatientPhoneMapper.Column(5, 7);
+    SearchablePatientPhoneMapper.Column phoneColumns = new SearchablePatientPhoneMapper.Column(5, 7, 8, 9);
 
     ResultSet resultSet = mock(ResultSet.class);
 
@@ -24,16 +24,14 @@ class SearchablePatientTelecomRowCallbackHandlerTest {
 
     SearchablePatientTelecomRowCallbackHandler handler = new SearchablePatientTelecomRowCallbackHandler(
         emailColumns,
-        phoneColumns
-    );
+        phoneColumns);
 
     handler.processRow(resultSet);
 
     SearchablePatientTelecom mapped = handler.telecom();
 
     assertThat(mapped.phones()).satisfiesExactly(
-        actual -> assertThat(actual.number()).isEqualTo("number-value")
-    );
+        actual -> assertThat(actual.number()).isEqualTo("number-value"));
 
     assertThat(mapped.emails()).isEmpty();
   }
@@ -41,15 +39,14 @@ class SearchablePatientTelecomRowCallbackHandlerTest {
   @Test
   void should_map_email_from_result_set_when_email_present() throws SQLException {
     SearchablePatientEmailMapper.Column emailColumns = new SearchablePatientEmailMapper.Column(3);
-    SearchablePatientPhoneMapper.Column phoneColumns = new SearchablePatientPhoneMapper.Column(5, 7);
+    SearchablePatientPhoneMapper.Column phoneColumns = new SearchablePatientPhoneMapper.Column(5, 7, 8, 9);
 
     ResultSet resultSet = mock(ResultSet.class);
     when(resultSet.getString(emailColumns.address())).thenReturn("address-value");
 
     SearchablePatientTelecomRowCallbackHandler handler = new SearchablePatientTelecomRowCallbackHandler(
         emailColumns,
-        phoneColumns
-    );
+        phoneColumns);
 
     handler.processRow(resultSet);
 
@@ -58,8 +55,7 @@ class SearchablePatientTelecomRowCallbackHandlerTest {
     assertThat(mapped.phones()).isEmpty();
 
     assertThat(mapped.emails()).satisfiesExactly(
-        actual -> assertThat(actual.address()).isEqualTo("address-value")
-    );
+        actual -> assertThat(actual.address()).isEqualTo("address-value"));
 
   }
 }

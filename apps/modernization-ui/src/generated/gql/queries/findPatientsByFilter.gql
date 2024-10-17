@@ -37,6 +37,12 @@ query findPatientsByFilter($filter: PersonFilter!, $page: SortablePage, $share: 
             }
             phones
             emails
+            detailedPhones{
+                extension
+                number
+                type
+                use
+            }
         }
         total
         page
