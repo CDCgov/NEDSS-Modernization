@@ -53,7 +53,12 @@ class PatientSearchRequester {
                 state
                 zipcode
             }
-            detailedPhones
+            detailedPhones {
+              number
+              extension
+              type
+              use
+            }
           }
           total
         }
