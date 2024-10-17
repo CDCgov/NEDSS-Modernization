@@ -1,7 +1,13 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { displayProfileLink, displayPhones, displayEmails, displayAddresses } from './patientSearchResult';
+import {
+    displayProfileLink,
+    displayPhones,
+    displayEmails,
+    displayAddresses,
+    displayOtherNames
+} from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
     const mockPatient: PatientSearchResult = {
@@ -17,8 +23,9 @@ describe('patientSearchResult functions', () => {
         },
         names: [
             {
-                first: 'jonny',
-                last: 'TestnullTest'
+                first: 'Johnny',
+                last: 'TestnullTest',
+                type: 'Alias'
             }
         ],
         identification: [],
@@ -75,5 +82,11 @@ describe('patientSearchResult functions', () => {
         expect(queryAllByText('3333 Test Valley Rd', { exact: false })).toHaveLength(1);
         expect(getByText('Business')).toBeInTheDocument();
         expect(getByText('Alternate')).toBeInTheDocument();
+    });
+
+    it('should render other names correctly', () => {
+        const { getByText } = render(displayOtherNames(mockPatient));
+        expect(getByText('Alias')).toBeInTheDocument();
+        expect(getByText('Johnny TestnullTest')).toBeInTheDocument();
     });
 });
