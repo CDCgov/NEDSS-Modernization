@@ -11,8 +11,8 @@ public class SearchablePatientTelecomFinder {
           [locator].email_address         as [email],
           [locator].[phone_nbr_txt]       as [phone_number],
           [locator].extension_txt         as [extension],
-          [locator].cd                    as [type_cd],
-          [locator].use_cd                as [use_cd]
+          [participation].cd              as [type_cd],
+          [participation].use_cd          as [use_cd]
 
       from Entity_locator_participation [participation]
 
