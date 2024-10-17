@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/save-data-elements/config")
+@RequestMapping("/api/configuration")
 public class DataElementConfigController {
 
     @Autowired

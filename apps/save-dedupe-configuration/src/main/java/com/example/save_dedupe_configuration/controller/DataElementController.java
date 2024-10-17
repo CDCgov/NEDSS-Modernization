@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/save-data-elements")
+@RequestMapping("/api/configuration")
 public class DataElementController {
 
     private final DataElementService dataElementService;
