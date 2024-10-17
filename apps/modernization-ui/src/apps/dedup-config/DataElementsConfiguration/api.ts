@@ -1,6 +1,6 @@
 const saveDataElementsConfiguration = async (data: { dataElements: any[]; belongingnessRatio: number | undefined }) => {
     try {
-        const response = await fetch('http://localhost:8080/configurations/save-data-elements', {
+        const response = await fetch('http://localhost:8080/api/configurations', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
