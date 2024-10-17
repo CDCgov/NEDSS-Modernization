@@ -3,9 +3,9 @@ const saveDataElementsConfiguration = async (data: { dataElements: any[]; belong
         const response = await fetch('http://localhost:8080/configurations/save-data-elements', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data)
         });
         if (response.ok) {
             const result = await response.json();
