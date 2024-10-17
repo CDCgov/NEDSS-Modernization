@@ -1,16 +1,17 @@
 package com.example.save_dedupe_configuration.controller;
 
-import com.example.save_dedupe_configuration.model.DataElements;
+import com.example.save_dedupe_configuration.model.DataElement;
 import com.example.save_dedupe_configuration.service.DataElementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/save-data-elements")
-public class DataElementController {
+@RequestMapping("/api/save-data-elements/config")
+public class DataElementConfigController {
 
     @Autowired
     private DataElementService dataElementService;

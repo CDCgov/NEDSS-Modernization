@@ -15,7 +15,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.yourcompany.dataelements.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.save_dedupe_configuration.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

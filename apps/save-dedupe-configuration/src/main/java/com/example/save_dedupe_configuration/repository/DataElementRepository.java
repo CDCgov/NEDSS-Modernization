@@ -1,6 +1,6 @@
 package com.example.save_dedupe_configuration.repository;
 
-import com.example.mybackend.model.DataElement;
+import com.example.save_dedupe_configuration.model.DataElement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DataElementRepository extends JpaRepository<DataElement, Long> {

@@ -14,22 +14,27 @@ public class DataElementService {
     @Autowired
     private DataElementRepository dataElementRepository;
 
+    // Find all DataElements
     public List<DataElement> findAll() {
         return dataElementRepository.findAll();
     }
 
+    // Find DataElement by ID
     public Optional<DataElement> findById(Long id) {
         return dataElementRepository.findById(id);
     }
 
+    // Save a DataElement
     public DataElement save(DataElement dataElement) {
         return dataElementRepository.save(dataElement);
     }
 
+    // Save a list of DataElements
     public List<DataElement> saveAll(List<DataElement> dataElements) {
         return dataElementRepository.saveAll(dataElements);
     }
 
+    // Delete DataElement by ID
     public void deleteById(Long id) {
         dataElementRepository.deleteById(id);
     }
