@@ -24,14 +24,14 @@ const DataElementsConfiguration = () => {
         }
 
         const payload = {
-            dataElements: data.dataElements || [],  // Ensure dataElements is always an array
-            belongingnessRatio: finalBelongingnessRatio,
+            dataElements: data.dataElements || [],
+            belongingnessRatio: finalBelongingnessRatio
         };
 
         // Call API to save data
         await saveDataElementsConfiguration(payload);
 
-        setDataElements(data.dataElements || []);  // Ensure no undefined is passed
+        setDataElements(data.dataElements || []);
         setBelongingnessRatio(finalBelongingnessRatio);
         setMode('match');
     });
