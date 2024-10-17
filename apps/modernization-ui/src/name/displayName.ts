@@ -1,13 +1,5 @@
 import { exists } from 'utils';
-
-type DisplayableName = {
-    first?: string | null;
-    middle?: string | null;
-    last?: string | null;
-    suffix?: string | null;
-};
-
-type Format = 'full' | 'short' | 'fullLastFirst';
+import { DisplayableName, NameFormat } from './types';
 
 /**
  * Displays a name in a 'full' or 'short' format.  Where the 'short' format will
@@ -28,7 +20,7 @@ type Format = 'full' | 'short' | 'fullLastFirst';
  * @param {string} format The format to display names in, either 'full', 'short' or 'fullLastFirst'
  * @return {string}
  */
-const displayName = (format: Format = 'full') => {
+const displayName = (format: NameFormat = 'full') => {
     switch (format) {
         case 'full':
             return displayFullName;

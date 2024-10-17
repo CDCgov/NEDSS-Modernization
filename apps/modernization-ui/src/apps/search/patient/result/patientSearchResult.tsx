@@ -1,5 +1,5 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { displayName } from 'name';
+import { displayName, displayNameElement, matchesLegalName } from 'name';
 import { displayAddress } from 'address/display';
 import { Link } from 'react-router-dom';
 
@@ -12,12 +12,18 @@ const displayProfileLegalName = (result: PatientSearchResult) => {
     return displayProfileLink(result.shortId, legalNameDisplay);
 };
 
-const displayNames = (result: PatientSearchResult): string => {
+// Displays Other names, that are not the legal name
+const displayOtherNames = (result: PatientSearchResult): JSX.Element => {
     const legalName = result.legalName;
-    return result.names
-        .filter((name) => name?.first != legalName?.first || name?.last != legalName?.last)
-        .map(displayName())
-        .join('\n');
+    return (
+        <div>
+            {result.names
+                .filter((name) => !matchesLegalName(name, legalName))
+                .map((name, index) => (
+                    <div key={index}>{displayNameElement(name)}</div>
+                ))}
+        </div>
+    );
 };
 
 // Returns JSX that represents a list of addresses to display
@@ -32,4 +38,11 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
 const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 
-export { displayNames, displayProfileLink, displayProfileLegalName, displayPhones, displayAddresses, displayEmails };
+export {
+    displayOtherNames,
+    displayProfileLink,
+    displayProfileLegalName,
+    displayPhones,
+    displayAddresses,
+    displayEmails
+};

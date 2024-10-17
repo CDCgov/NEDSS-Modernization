@@ -23,9 +23,6 @@ describe('when given an address', () => {
             state: 'NY',
             zipcode: '10013'
         };
-
-        // expect(addressElement.props.children).toBe('14 North Moore St, Suite A\nNew York, NY 10013');
-
         const addressElement = displayAddress(address);
         expect(addressElement.type).toBe(ItemGroup);
         expect(addressElement.props.children).toBe('14 North Moore St, Suite A\nNew York, NY 10013');
