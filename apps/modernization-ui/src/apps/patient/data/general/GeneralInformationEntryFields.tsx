@@ -6,6 +6,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SingleSelect } from 'design-system/select';
 import { maxLengthRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { NumericInput } from 'design-system/input';
 
 export const GeneralInformationEntryFields = () => {
     const { control } = useFormContext<{ general: GeneralInformationEntry }>();
@@ -73,17 +74,15 @@ export const GeneralInformationEntryFields = () => {
                 name="general.adultsInResidence"
                 rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <NumericInput
                         label="Number of adults in residence"
                         orientation="horizontal"
-                        placeholder="No Data"
                         onBlur={onBlur}
                         onChange={onChange}
-                        type="number"
-                        defaultValue={value?.toString() ?? ''}
+                        value={value}
                         id={name}
                         name={name}
-                        htmlFor={name}
+                        min="0"
                         error={error?.message}
                     />
                 )}
@@ -93,17 +92,15 @@ export const GeneralInformationEntryFields = () => {
                 name="general.childrenInResidence"
                 rules={{ min: { value: 0, message: 'Must be greater than 0' } }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <NumericInput
                         label="Number of children in residence"
                         orientation="horizontal"
-                        placeholder="No Data"
                         onBlur={onBlur}
                         onChange={onChange}
-                        type="number"
-                        defaultValue={value?.toString() ?? ''}
+                        value={value}
                         id={name}
                         name={name}
-                        htmlFor={name}
+                        min="0"
                         error={error?.message}
                     />
                 )}
