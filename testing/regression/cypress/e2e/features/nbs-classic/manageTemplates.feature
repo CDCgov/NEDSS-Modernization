@@ -13,3 +13,8 @@ Feature: Classic NBS - User can view and manage data in NBS Templates
     Then Enter filter text in the input
     And Click OK button to filter
 
+  Scenario: View rule in template library
+    And Click a template in template library
+    Then Click View Rules button in Template view
+    And Verify rules listed in the results page
+
