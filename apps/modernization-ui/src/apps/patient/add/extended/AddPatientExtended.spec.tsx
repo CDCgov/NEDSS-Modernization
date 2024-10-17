@@ -10,6 +10,7 @@ import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { useShowCancelModal } from './useShowCancelModal';
+import { PatientDataProvider } from '../usePatientData/usePatientData';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -172,9 +173,11 @@ const renderWithRouter = () => {
 
     const router = createMemoryRouter(routes, { initialEntries: ['/'] });
     return render(
-        <MockedProvider mocks={[]} addTypename={false}>
-            <RouterProvider router={router} />
-        </MockedProvider>
+        <PatientDataProvider>
+            <MockedProvider mocks={[]} addTypename={false}>
+                <RouterProvider router={router} />
+            </MockedProvider>
+        </PatientDataProvider>
     );
 };
 

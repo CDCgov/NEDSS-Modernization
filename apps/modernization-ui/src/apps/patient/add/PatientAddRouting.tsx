@@ -1,18 +1,25 @@
 import { FeatureGuard } from 'feature';
 import { AddPatient } from './AddPatient';
 import { AddPatientExtended } from './extended/AddPatientExtended';
+import { PatientDataProvider } from './usePatientData/usePatientData';
 
 const routing = [
     {
         path: '/add-patient',
-        element: <AddPatient />
+        element: (
+            <PatientDataProvider>
+                <AddPatient />
+            </PatientDataProvider>
+        )
     },
     {
         path: '/patient/add/extended',
         element: (
-            <FeatureGuard guard={(features) => features?.patient?.add?.extended?.enabled}>
-                <AddPatientExtended />
-            </FeatureGuard>
+            <PatientDataProvider>
+                <FeatureGuard guard={(features) => features?.patient?.add?.extended?.enabled}>
+                    <AddPatientExtended />
+                </FeatureGuard>
+            </PatientDataProvider>
         )
     }
 ];
