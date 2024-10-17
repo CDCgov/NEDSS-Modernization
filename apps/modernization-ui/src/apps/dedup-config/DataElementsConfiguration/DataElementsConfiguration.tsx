@@ -5,6 +5,7 @@ import styles from './data-elements-configuration.module.scss';
 import { Input } from 'components/FormInputs/Input';
 import { DataElementsTable } from './DataElementsTable';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
+import saveDataElementsConfiguration from './api';
 
 const DataElementsConfiguration = () => {
     const { dataElements, setDataElements, belongingnessRatio, setBelongingnessRatio } = useDataElementsContext();
@@ -16,17 +17,21 @@ const DataElementsConfiguration = () => {
 
     const { formState } = form;
 
-    const onSubmit = form.handleSubmit((data) => {
+    const onSubmit = form.handleSubmit(async (data) => {
         let finalBelongingnessRatio = data.belongingnessRatio;
         if (typeof finalBelongingnessRatio === 'string') {
             finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
         }
-        if (data.dataElements) {
-            setDataElements(data.dataElements);
-            localStorage.setItem('dataElements', JSON.stringify(data.dataElements));
-        }
-        // Success toast message would normally be displayed upon API response of success.
-        // But for now, without the API, we just show it on submit
+
+        const payload = {
+            dataElements: data.dataElements,
+            belongingnessRatio: finalBelongingnessRatio,
+        };
+
+        // Call API to save data
+        await saveDataElementsConfiguration(payload);
+
+        setDataElements(data.dataElements);
         setBelongingnessRatio(finalBelongingnessRatio);
         setMode('match');
     });
