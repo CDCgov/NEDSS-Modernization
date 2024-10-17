@@ -9,7 +9,7 @@ import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
 import { routing as welcomeRouting } from 'apps/landing';
 import { routing as logoutRouting } from 'logout';
-import { routing as patientMatchRouting } from 'apps/dedup-config';
+import { routing as patientMatchRouting } from 'apps/dedup-config'; // your dedup config app
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
 
@@ -17,6 +17,11 @@ const routing = [
     welcomeRouting,
     logoutRouting,
     { path: '/login', element: <Login /> },
+    // Route for patient-match-config bypassing authentication
+    {
+        path: '/patient-match-config',
+        children: [...patientMatchRouting] // routes for your dedup config without authentication
+    },
     {
         path: '/',
         element: <ProtectedLayout />,
@@ -26,8 +31,7 @@ const routing = [
             ...searchRouting,
             ...addPatientRouting,
             ...patientProfileRouting,
-            ...pageBuilderRouting,
-            ...patientMatchRouting
+            ...pageBuilderRouting
         ]
     },
     { path: '*', element: <Navigate to={'/'} /> },
