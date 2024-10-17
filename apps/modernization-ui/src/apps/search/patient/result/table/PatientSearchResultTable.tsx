@@ -54,10 +54,10 @@ const columns: Column<PatientSearchResult>[] = [
 // column preferences
 const preferences: ColumnPreference[] = [
     { ...PATIENT_ID },
-    { ...LEGAL_NAME, moveable: true, toggleable: true, hidden: true },
-    { ...NAMES, moveable: true, toggleable: true, hidden: true },
     { ...DATE_OF_BIRTH, moveable: true, toggleable: true },
     { ...SEX, moveable: true, toggleable: true },
+    { ...LEGAL_NAME, moveable: true, toggleable: true, hidden: true },
+    { ...NAMES, moveable: true, toggleable: true, hidden: true },
     { ...ADDRESS, moveable: true, toggleable: true },
     { ...PHONE, moveable: true, toggleable: true },
     { ...IDENTIFICATIONS, moveable: true, toggleable: true },
