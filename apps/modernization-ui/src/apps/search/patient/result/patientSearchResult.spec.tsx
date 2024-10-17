@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { displayProfileLink, displayPhones, displayEmails } from './patientSearchResult';
+import { displayProfileLink, displayPhones, displayEmails, displayAddresses } from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
     const mockPatient: PatientSearchResult = {
@@ -31,7 +31,7 @@ describe('patientSearchResult functions', () => {
                 zipcode: '42303'
             },
             {
-                use: 'Home',
+                use: 'Business',
                 address: '2222 Test Valley Rd',
                 city: 'OWENSBORO',
                 county: 'Appling County',
@@ -39,7 +39,7 @@ describe('patientSearchResult functions', () => {
                 zipcode: '30309'
             },
             {
-                use: 'Home',
+                use: 'Alternate',
                 address: '3333 Test Valley Rd',
                 city: 'OWENSBORO',
                 state: 'KY',
@@ -66,5 +66,14 @@ describe('patientSearchResult functions', () => {
         );
         const link = getByText('John Doe');
         expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
+    });
+
+    it('should render addresses correctly', () => {
+        const { getByText, queryAllByText } = render(displayAddresses(mockPatient));
+        expect(getByText('Home')).toBeInTheDocument();
+        expect(queryAllByText('2222 Test Valley Rd', { exact: false })).toHaveLength(2);
+        expect(queryAllByText('3333 Test Valley Rd', { exact: false })).toHaveLength(1);
+        expect(getByText('Business')).toBeInTheDocument();
+        expect(getByText('Alternate')).toBeInTheDocument();
     });
 });
