@@ -19,11 +19,13 @@ import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 
 import styles from './add-patient-extended.module.scss';
+import { usePatientData } from '../usePatientData/usePatientData';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
+    const { addPatientFormData } = usePatientData();
     const navigate = useNavigate();
 
     const created = useMemo<CreatedPatient | undefined>(
@@ -55,7 +57,10 @@ export const AddPatientExtended = () => {
         }
     }, [form.formState.isSubmitted, form.formState.isDirty, blocker.allow, blocker.block]);
 
-    const handleModalConfirm = blocker.unblock;
+    const handleModalConfirm = () => {
+        blocker.unblock();
+        navigate('/add-patient', { state: { defaults: addPatientFormData } });
+    };
 
     const handleModalClose = blocker.reset;
 

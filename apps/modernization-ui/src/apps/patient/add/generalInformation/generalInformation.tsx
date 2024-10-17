@@ -40,10 +40,16 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                             control={control}
                             name="comments"
                             rules={maxLengthRule(2000)}
-                            render={({ field: { onChange, name, onBlur }, fieldState: { error } }) => (
+                            render={({ field: { onChange, name, onBlur, value }, fieldState: { error } }) => (
                                 <>
                                     <Label htmlFor={name}>Comments</Label>
-                                    <Textarea onChange={onChange} onBlur={onBlur} name={name} id={name} />
+                                    <Textarea
+                                        defaultValue={value}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        name={name}
+                                        id={name}
+                                    />
                                     {error?.message && (
                                         <ErrorMessage id={error?.message}>{error?.message}</ErrorMessage>
                                     )}
