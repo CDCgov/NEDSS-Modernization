@@ -53,6 +53,7 @@ class PatientSearchRequester {
                 state
                 zipcode
             }
+            detailedPhones
           }
           total
         }
@@ -66,8 +67,7 @@ class PatientSearchRequester {
   public PatientSearchRequester(
       final ObjectMapper mapper,
       final GraphQLRequest graphql,
-      final PaginatedRequestJSONMapper paginatedMapper
-  ) {
+      final PaginatedRequestJSONMapper paginatedMapper) {
     this.mapper = mapper;
     this.graphql = graphql;
     this.paginatedMapper = paginatedMapper;
@@ -76,21 +76,19 @@ class PatientSearchRequester {
   ResultActions search(
       final PatientFilter filter,
       final Pageable paging,
-      final SortCriteria sorting
-  ) {
+      final SortCriteria sorting) {
     try {
 
       JsonNode page = paginatedMapper.map(paging, sorting);
 
 
       return graphql.query(
-              QUERY,
-              mapper.createObjectNode()
-                  .<ObjectNode>set(
-                      "filter",
-                      mapper.convertValue(filter, JsonNode.class))
-                  .set("page", page)
-          )
+          QUERY,
+          mapper.createObjectNode()
+              .<ObjectNode>set(
+                  "filter",
+                  mapper.convertValue(filter, JsonNode.class))
+              .set("page", page))
           .andDo(print());
     } catch (Exception exception) {
       throw new IllegalStateException("Unable to request a Patient Search");

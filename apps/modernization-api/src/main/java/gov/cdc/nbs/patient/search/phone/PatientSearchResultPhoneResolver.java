@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
 
-// TODO: OBSELETE AFTER FRONT END SWITCHES TO detailedPhones
-
 @Controller
 class PatientSearchResultPhoneResolver {
 
