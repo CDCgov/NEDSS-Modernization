@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/apps/modernization-api" />
+            <option value="$PROJECT_DIR$/apps/nbs-gateway" />
+            <option value="$PROJECT_DIR$/apps/question-bank" />
+            <option value="$PROJECT_DIR$/libs/accumulation" />
+            <option value="$PROJECT_DIR$/libs/audit" />
+            <option value="$PROJECT_DIR$/libs/authentication" />
+            <option value="$PROJECT_DIR$/libs/authorization" />
+            <option value="$PROJECT_DIR$/libs/classic-interaction" />
+            <option value="$PROJECT_DIR$/libs/configuration-api" />
+            <option value="$PROJECT_DIR$/libs/database-entities" />
+            <option value="$PROJECT_DIR$/libs/event-schema" />
+            <option value="$PROJECT_DIR$/libs/id-generator" />
+            <option value="$PROJECT_DIR$/libs/me-api" />
+            <option value="$PROJECT_DIR$/libs/options-api" />
+            <option value="$PROJECT_DIR$/libs/redirect" />
+            <option value="$PROJECT_DIR$/libs/testing/auth" />
+            <option value="$PROJECT_DIR$/libs/testing/auth-cucumber" />
+            <option value="$PROJECT_DIR$/libs/testing/classic-interaction-cucumber" />
+            <option value="$PROJECT_DIR$/libs/testing/database" />
+            <option value="$PROJECT_DIR$/libs/testing/http-interaction" />
+            <option value="$PROJECT_DIR$/libs/testing/identity" />
+            <option value="$PROJECT_DIR$/libs/testing/support" />
+            <option value="$PROJECT_DIR$/libs/web" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
