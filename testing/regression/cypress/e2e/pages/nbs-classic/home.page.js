@@ -127,6 +127,16 @@ class ClassicHomePage {
     cy.get("input#SearchText1").first().type("jaja")
     cy.get("#b1SearchText1").click({force: true})
   }
+
+  verifyDocumentsRequiringReview() {
+    cy.get("a").contains("Documents Requiring Review").eq(0).click()
+    cy.get("a").contains("Lab Report").eq(0).click()
+  }
+
+  verifyOpenInvestigations() {
+    cy.get("a").contains("Open Investigations").eq(0).click()    
+  } 
+
 }
 
 export default new ClassicHomePage();
