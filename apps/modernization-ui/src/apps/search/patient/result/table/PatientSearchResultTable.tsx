@@ -16,7 +16,7 @@ const displayIdentifications = (result: PatientSearchResult): string =>
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
-const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
+const LEGAL_NAME = { id: 'legalName', name: 'Patient name' };
 const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };
