@@ -31,5 +31,32 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
 
 const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
+const displayPatientName = (result: PatientSearchResult): JSX.Element => (
+    <div>
+        <div>
+            <b>Legal name</b>
+            <br />
+            {result.legalName && displayName('fullLastFirst')(result.legalName)}
 
-export { displayNames, displayProfileLink, displayProfileLegalName, displayPhones, displayAddresses, displayEmails };
+            {result.names
+                .filter((v) => JSON.stringify(v) !== JSON.stringify(result.legalName))
+                .map((name, index) => (
+                    <div key={index}>
+                        <b>{name.type}</b>
+                        <br />
+                        {result.legalName && displayName('fullLastFirst')(name)}
+                    </div>
+                ))}
+        </div>
+    </div>
+);
+
+export {
+    displayNames,
+    displayPatientName,
+    displayProfileLink,
+    displayProfileLegalName,
+    displayPhones,
+    displayAddresses,
+    displayEmails
+};
