@@ -8,7 +8,7 @@ describe('ItemGroup Component', () => {
         expect(getByText('Test Children')).toBeDefined();
     });
 
-    it('renders with a label', () => {
+    it('renders with a header label', () => {
         const { getByText } = render(
             <ItemGroup label="Test Label">
                 <span>Test Child</span>
@@ -36,5 +36,25 @@ describe('ItemGroup Component', () => {
 
         const div = result.baseElement.querySelector('div.itemgroup');
         expect(div).toHaveAttribute('data-item-type', 'address');
+    });
+
+    it('renders with a <address> element when type is addressable', () => {
+        const result = render(
+            <ItemGroup type="address">
+                123 Happy St <br />
+                Farmington, NM 83640
+            </ItemGroup>
+        );
+
+        const addrElement = result.baseElement.querySelector('div.itemgroup > address');
+        expect(addrElement).toBeDefined();
+    });
+
+    it('renders with a <p> element when type is not addressable', () => {
+        const result = render(<ItemGroup type="other">Some information here</ItemGroup>);
+
+        const pElement = result.baseElement.querySelector('div.itemgroup > p');
+        expect(pElement).toBeDefined();
+        expect(pElement).toHaveAttribute('role', 'group');
     });
 });
