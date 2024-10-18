@@ -60,9 +60,7 @@ const nameExtended = (initial: NewPatientEntry, nameCodes: PatientNameCodedValue
                 first: initial.firstName ?? undefined,
                 last: initial.lastName ?? undefined,
                 middle: initial.middleName ?? undefined,
-                suffix: suffix ? asSelectable(suffix.value, suffix.name) : undefined,
-                prefix: undefined,
-                degree: undefined
+                suffix: suffix ? asSelectable(suffix.value, suffix.name) : undefined
             }
         ];
     }
