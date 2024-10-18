@@ -130,7 +130,8 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
                 asOf: initial.asOf,
                 type: asSelectable('PH', 'Phone'),
                 use: asSelectable('WP', 'Primary work place'),
-                phoneNumber: initial.workPhone
+                phoneNumber: initial.workPhone,
+                extension: initial.extension ?? undefined
             });
         }
 
