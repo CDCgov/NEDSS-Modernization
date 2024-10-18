@@ -4,7 +4,7 @@ import { PatientSearchResultListItem } from './PatientSearchResultListItem';
 import { PatientSearchResult } from 'generated/graphql/schema';
 
 describe('PatientSearchResultListItem', () => {
-    it('should render the legal name', () => {
+    it('should render the patient name', () => {
         const patient: PatientSearchResult = {
             patient: 829,
             shortId: 653,
