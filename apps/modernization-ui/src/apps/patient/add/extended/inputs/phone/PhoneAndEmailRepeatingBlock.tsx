@@ -5,11 +5,12 @@ import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { PhoneEntryView } from './PhoneEntryView';
 import { ReactNode } from 'react';
+import { asSelectable } from 'options';
 
 const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: today(),
-    type: undefined,
-    use: undefined,
+    type: asSelectable(''),
+    use: asSelectable(''),
     countryCode: '',
     phoneNumber: '',
     extension: '',

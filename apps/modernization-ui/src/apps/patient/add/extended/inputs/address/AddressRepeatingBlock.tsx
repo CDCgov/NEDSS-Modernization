@@ -5,18 +5,19 @@ import { AddressView } from './AddressView';
 import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { ReactNode } from 'react';
+import { asSelectable } from 'options';
 
 const defaultValue: Partial<AddressEntry> = {
     asOf: today(),
-    type: undefined,
-    use: undefined,
+    type: asSelectable(''),
+    use: asSelectable(''),
     address1: '',
     address2: '',
     city: '',
-    state: undefined,
+    state: null,
     zipcode: '',
-    county: undefined,
-    country: undefined,
+    county: null,
+    country: null,
     censusTract: '',
     comment: ''
 };
