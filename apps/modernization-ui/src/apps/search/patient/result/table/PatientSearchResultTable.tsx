@@ -6,7 +6,7 @@ import {
     displayPhones,
     displayPatientName,
     displayProfileLink,
-    displayNames,
+    displayOtherNames,
     displayEmails,
     displayAddresses
 } from 'apps/search/patient/result';
@@ -46,7 +46,7 @@ const columns: Column<PatientSearchResult>[] = [
     },
     { ...ADDRESS, render: displayAddresses },
     { ...PHONE, render: displayPhones },
-    { ...NAMES, render: displayNames },
+    { ...NAMES, render: displayOtherNames },
     { ...IDENTIFICATIONS, render: displayIdentifications },
     { ...EMAIL, render: displayEmails }
 ];

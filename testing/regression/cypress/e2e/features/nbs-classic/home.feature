@@ -43,4 +43,4 @@ Feature: Classic NBS - User can view data in NBS Home
   Scenario: Display selected home page reports
     Then Click on Reports tab on upper left side
     And Verify user navigated to Reports page
-
+    And Create and run a report
