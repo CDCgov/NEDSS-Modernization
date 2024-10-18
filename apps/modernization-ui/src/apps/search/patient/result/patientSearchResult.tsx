@@ -40,6 +40,7 @@ const displayPatientName = (result: PatientSearchResult): JSX.Element => (
 
             {result.names
                 .filter((v) => JSON.stringify(v) !== JSON.stringify(result.legalName))
+                .reverse()
                 .map((name, index) => (
                     <div key={index}>
                         <b>{name.type}</b>
