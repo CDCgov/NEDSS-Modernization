@@ -10,7 +10,7 @@ import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { useShowCancelModal } from './useShowCancelModal';
-import { PatientDataProvider } from '../usePatientData/usePatientData';
+import { PatientDataProvider } from 'apps/patient/add/usePatientData';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [

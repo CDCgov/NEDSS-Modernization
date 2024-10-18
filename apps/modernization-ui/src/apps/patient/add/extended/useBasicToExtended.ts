@@ -4,7 +4,7 @@ import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatient
 import { useConceptOptions } from 'options/concepts';
 import { NewPatientEntry } from '..';
 import { asExtendedNewPatientEntry } from './asExtendedNewPatientEntry';
-import { usePatientData } from '../usePatientData/usePatientData';
+import { usePatientData } from 'apps/patient/add/usePatientData';
 
 type Interaction = {
     add: (initial: NewPatientEntry) => void;

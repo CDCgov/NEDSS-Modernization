@@ -19,7 +19,7 @@ import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
 import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 
 import styles from './add-patient-extended.module.scss';
-import { usePatientData } from '../usePatientData/usePatientData';
+import { usePatientData } from 'apps/patient/add/usePatientData';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient({ transformer, creator });

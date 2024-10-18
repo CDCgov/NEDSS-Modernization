@@ -1,8 +1,8 @@
 import { FeatureGuard } from 'feature';
 import { AddPatient } from './AddPatient';
 import { AddPatientExtended } from './extended/AddPatientExtended';
-import { PatientDataProvider } from './usePatientData/usePatientData';
 import { Outlet } from 'react-router-dom';
+import { PatientDataProvider } from 'apps/patient/add/usePatientData';
 
 const PatientDataProviderWrapper = () => (
     <PatientDataProvider>
