@@ -44,3 +44,6 @@ Feature: Classic NBS - User can view data in NBS Home
     Then Click on Reports tab on upper left side
     And Verify user navigated to Reports page
     And Create and run a report
+  
+  Scenario: Verify Documents Requiring Security Assignment
+    Then Verify Documents Requiring Security Assignment
