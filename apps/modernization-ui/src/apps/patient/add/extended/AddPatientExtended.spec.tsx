@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
-import { createMemoryRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { createMemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router-dom';
 import { CodedValue } from 'coded';
 import { MockedProvider } from '@apollo/react-testing';
 import { CountiesCodedValues } from 'location';
@@ -10,7 +10,7 @@ import { PatientEthnicityCodedValue } from 'apps/patient/profile/ethnicity';
 import { PatientProfilePermission } from 'apps/patient/profile/permission';
 import { PatientGeneralCodedValue } from 'apps/patient/profile/generalInfo';
 import { useShowCancelModal } from './useShowCancelModal';
-import { PatientDataProvider } from 'apps/patient/add/usePatientData';
+import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 
 const mockSexBirthCodedValues: PatientSexBirthCodedValue = {
     genders: [
@@ -66,6 +66,11 @@ const mockPatientAddressCodedValues = {
 
 jest.mock('apps/patient/profile/addresses/usePatientAddressCodedValues', () => ({
     usePatientAddressCodedValues: () => mockPatientAddressCodedValues
+}));
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: jest.fn()
 }));
 
 const mockLocationCodedValues = {
@@ -173,17 +178,18 @@ const renderWithRouter = () => {
 
     const router = createMemoryRouter(routes, { initialEntries: ['/'] });
     return render(
-        <PatientDataProvider>
+        <BasicExtendedTransitionProvider>
             <MockedProvider mocks={[]} addTypename={false}>
                 <RouterProvider router={router} />
             </MockedProvider>
-        </PatientDataProvider>
+        </BasicExtendedTransitionProvider>
     );
 };
 
 describe('AddPatientExtended', () => {
     beforeEach(() => {
         (useShowCancelModal as jest.Mock).mockReturnValue({ value: false });
+        (useNavigate as jest.Mock).mockReturnValue(jest.fn());
     });
 
     it('should have a heading', () => {
@@ -208,14 +214,13 @@ describe('AddPatientExtended', () => {
         expect(modal).not.toBeInTheDocument();
     });
 
-    it('should show modal when cancel is clicked', () => {
-        const { getByRole, getByText } = renderWithRouter();
+    it('should redirect to add-patient when cancel is clicked', () => {
+        const { getByText } = renderWithRouter();
 
         const cancelButton = getByText('Cancel');
         cancelButton.click();
 
-        const modal = getByRole('dialog', { name: 'Warning' });
-        expect(modal).toBeInTheDocument();
+        expect(useNavigate).toBeCalled();
     });
 
     it('should not show modal when local storage flag is set', () => {

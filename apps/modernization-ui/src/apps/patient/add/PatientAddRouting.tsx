@@ -2,12 +2,12 @@ import { FeatureGuard } from 'feature';
 import { AddPatient } from './AddPatient';
 import { AddPatientExtended } from './extended/AddPatientExtended';
 import { Outlet } from 'react-router-dom';
-import { PatientDataProvider } from 'apps/patient/add/usePatientData';
+import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 
 const PatientDataProviderWrapper = () => (
-    <PatientDataProvider>
+    <BasicExtendedTransitionProvider>
         <Outlet />
-    </PatientDataProvider>
+    </BasicExtendedTransitionProvider>
 );
 
 const routing = [
