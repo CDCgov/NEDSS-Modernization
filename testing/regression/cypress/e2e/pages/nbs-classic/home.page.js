@@ -113,5 +113,12 @@ class ClassicHomePage {
   verifyReportsPageDisplayed() {
     cy.contains("Private Reports").eq(0)
   }
+
+  createRunReports() {
+    cy.get("#Public a").contains("Expand Subsections").eq(0).click()
+    cy.get("table#Public2 a").contains("Run").eq(0).click()
+    cy.get("#id_C_D01").select("AIDS", {force: true})
+    cy.get("td").contains("Run").eq(0).click()
+  }
 }
 export default new ClassicHomePage();
