@@ -164,12 +164,13 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="suffix"
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onBlur, onChange, value, name } }) => (
                     <SingleSelect
                         label="Suffix"
                         orientation="horizontal"
                         value={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                         id={name}
                         name={name}
                         options={coded.suffixes}

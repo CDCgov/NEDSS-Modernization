@@ -5,18 +5,19 @@ import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { NameEntryView } from './NameEntryView';
 import { ReactNode } from 'react';
+import { asSelectable } from 'options';
 
 const defaultValue: Partial<NameEntry> = {
     asOf: today(),
-    type: undefined,
-    prefix: undefined,
+    type: asSelectable(''),
+    prefix: null,
     first: '',
     middle: '',
     secondMiddle: '',
     last: '',
     secondLast: '',
-    suffix: undefined,
-    degree: undefined
+    suffix: null,
+    degree: null
 };
 
 const columns: Column<NameEntry>[] = [
