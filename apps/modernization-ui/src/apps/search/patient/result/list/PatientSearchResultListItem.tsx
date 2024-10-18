@@ -4,7 +4,7 @@ import { internalizeDate } from 'date';
 import { Result, ResultItem, ResultItemGroup } from 'apps/search/layout/result/list';
 import {
     displayPhones,
-    displayNames,
+    displayOtherNames,
     displayEmails,
     displayAddresses,
     displayProfileLegalName
@@ -29,7 +29,7 @@ const PatientSearchResultListItem = ({ result }: Props) => (
                 {displayPhones(result)}
             </ResultItem>
             <ResultItem label="Other names" orientation="vertical">
-                {displayNames(result)}
+                {displayOtherNames(result)}
             </ResultItem>
         </ResultItemGroup>
         <ResultItemGroup>

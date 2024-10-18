@@ -25,8 +25,8 @@ import { SuccessModal } from 'success';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
 import { AddPatientSideNav } from './nav/AddPatientSideNav';
-import { useBasicToExtended } from './extended/useBasicToExtended';
 import { asValue } from 'options';
+import { useBasicExtendedTransition } from './useBasicExtendedTransition';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -90,7 +90,7 @@ const AddPatient = () => {
 
     const prefillled = usePreFilled(initialEntry());
 
-    const { add } = useBasicToExtended();
+    const { toExtended } = useBasicExtendedTransition();
 
     useEffect(() => {
         reset(prefillled);
@@ -277,7 +277,7 @@ const AddPatient = () => {
                                     {features.patient?.add?.extended?.enabled && (
                                         <Button
                                             type="button"
-                                            onClick={handleSubmit(add)}
+                                            onClick={handleSubmit(toExtended)}
                                             outline
                                             className="add-patient-button">
                                             Add extended data
