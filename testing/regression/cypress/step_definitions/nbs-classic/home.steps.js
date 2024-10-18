@@ -72,3 +72,7 @@ Then("Click on Reports tab on upper left side", () => {
 Then("Verify user navigated to Reports page", () => {
     classicHomePage.verifyReportsPageDisplayed()
 });
+
+Then("Create and run a report", () => {
+    classicHomePage.createRunReports()
+});
