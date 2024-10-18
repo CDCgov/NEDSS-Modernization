@@ -114,7 +114,9 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
   public record Phone(
       @JsonProperty("telephoneNbr") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
           as = String.class) String number,
-      @JsonProperty("extensionTxt") String extension) {
+      @JsonProperty("extensionTxt") String extension,
+      @JsonProperty("typeCd") String type,
+      @JsonProperty("useCd") String use) {
 
   }
 

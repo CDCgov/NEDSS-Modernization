@@ -1476,6 +1476,7 @@ export type PatientSearchResult = {
   addresses: Array<PatientSearchResultAddress>;
   age?: Maybe<Scalars['Int']['output']>;
   birthday?: Maybe<Scalars['Date']['output']>;
+  detailedPhones: Array<PatientSearchResultPhone>;
   emails: Array<Scalars['String']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   identification: Array<PatientSearchResultIdentification>;
@@ -1512,6 +1513,14 @@ export type PatientSearchResultName = {
   middle?: Maybe<Scalars['String']['output']>;
   suffix?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
+};
+
+export type PatientSearchResultPhone = {
+  __typename?: 'PatientSearchResultPhone';
+  extension?: Maybe<Scalars['String']['output']>;
+  number?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  use?: Maybe<Scalars['String']['output']>;
 };
 
 export type PatientSearchResults = {
@@ -2520,7 +2529,7 @@ export type FindPatientsByFilterQueryVariables = Exact<{
 }>;
 
 
-export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, page: number, size: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', type?: string | null, use?: string | null, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }> }> } };
+export type FindPatientsByFilterQuery = { __typename?: 'Query', findPatientsByFilter: { __typename?: 'PatientSearchResults', total: number, page: number, size: number, content: Array<{ __typename?: 'PatientSearchResult', patient: number, birthday?: any | null, age?: number | null, gender?: string | null, status: string, shortId: number, phones: Array<string>, emails: Array<string>, legalName?: { __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null } | null, names: Array<{ __typename?: 'PatientSearchResultName', type?: string | null, first?: string | null, middle?: string | null, last?: string | null, suffix?: string | null }>, identification: Array<{ __typename?: 'PatientSearchResultIdentification', type: string, value: string }>, addresses: Array<{ __typename?: 'PatientSearchResultAddress', type?: string | null, use?: string | null, address?: string | null, address2?: string | null, city?: string | null, county?: string | null, state?: string | null, zipcode?: string | null }>, detailedPhones: Array<{ __typename?: 'PatientSearchResultPhone', extension?: string | null, number?: string | null, type?: string | null, use?: string | null }> }> } };
 
 export type FindTreatmentsForPatientQueryVariables = Exact<{
   patient: Scalars['ID']['input'];
@@ -5284,6 +5293,12 @@ export const FindPatientsByFilterDocument = gql`
       }
       phones
       emails
+      detailedPhones {
+        extension
+        number
+        type
+        use
+      }
     }
     total
     page
