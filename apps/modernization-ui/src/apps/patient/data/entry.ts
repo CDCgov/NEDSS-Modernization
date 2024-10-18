@@ -12,14 +12,14 @@ type AdministrativeEntry = EffectiveDated & HasComments;
 
 type NameEntry = EffectiveDated & {
     type: Selectable;
-    prefix: Maybe<Selectable>;
+    prefix?: Maybe<Selectable>;
     first?: string;
     middle?: string;
     secondMiddle?: string;
     last?: string;
     secondLast?: string;
-    suffix: Maybe<Selectable>;
-    degree: Maybe<Selectable>;
+    suffix?: Maybe<Selectable>;
+    degree?: Maybe<Selectable>;
 };
 
 type AddressEntry = EffectiveDated &
@@ -29,10 +29,10 @@ type AddressEntry = EffectiveDated &
         address1?: string;
         address2?: string;
         city?: string;
-        county: Maybe<Selectable>;
-        state: Maybe<Selectable>;
+        county?: Maybe<Selectable>;
+        state?: Maybe<Selectable>;
         zipcode?: string;
-        country: Maybe<Selectable>;
+        country?: Maybe<Selectable>;
         censusTract?: string;
     };
 
