@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Settings, useAddExtendedPatient } from './useAddExtendedPatient';
 import { ExtendedNewPatientEntry } from './entry';
-import { NewPatient } from './api';
+import { NewPatient } from 'apps/patient/add/api';
 import { Invalid } from './useAddExtendedPatientInteraction';
 
 const setup = (settings?: Partial<Settings>) => {

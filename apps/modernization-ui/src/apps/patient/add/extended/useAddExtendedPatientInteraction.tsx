@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { CreatedPatient } from './api';
+import { CreatedPatient } from 'apps/patient/add/api';
 import { ExtendedNewPatientEntry } from './entry';
 
 type Working = {

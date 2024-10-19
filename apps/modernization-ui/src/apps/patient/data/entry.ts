@@ -1,5 +1,5 @@
 import { Selectable } from 'options';
-import { EffectiveDated, HasComments, Maybe } from 'utils';
+import { EffectiveDated, HasComments } from 'utils';
 
 type LocationEntry = {
     city?: string;

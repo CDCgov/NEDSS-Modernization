@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreatedPatient } from './api';
+import { CreatedPatient } from '../api';
 import { creator } from './creator';
 import { transformer } from './transformer';
 import { ExtendedNewPatientEntry } from './entry';
