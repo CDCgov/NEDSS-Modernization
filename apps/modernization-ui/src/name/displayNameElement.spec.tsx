@@ -7,7 +7,7 @@ describe('displayNameElement', () => {
         const name: DisplayableName = { first: 'John', last: 'Doe', type: 'Home' };
         const { getByText } = render(displayNameElement(name));
         expect(getByText('Home')).toBeInTheDocument();
-        expect(getByText('John Doe')).toBeInTheDocument();
+        expect(getByText('Doe, John')).toBeInTheDocument();
     });
 
     it('should render full name format by default with label', () => {
