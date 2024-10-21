@@ -51,8 +51,8 @@ export default function RaceFields({ id, title, coded }: Props) {
                                                     }
                                                 }
                                             }}
-                                            defaultChecked={value?.find((it: any) => it === race.value) || false}
-                                            value={value?.find((it: any) => it === race.value) || race.value}
+                                            checked={value?.find((it: any) => it === race.value) || false}
+                                            defaultValue={value?.find((it: any) => it === race.value) || race.value}
                                             id={race.value}
                                             name={'race'}
                                             label={race.name === 'not asked' ? 'Not asked' : race.name}

@@ -72,7 +72,7 @@ export default function ContactFields({ id, title }: Props) {
                                     onChange={onChange}
                                     onBlur={onBlur}
                                     label="Home phone"
-                                    value={value}
+                                    defaultValue={value}
                                     id="homePhone"
                                     error={error?.message}
                                     mask="___-___-____"
