@@ -7,7 +7,7 @@ import { DisplayableName, NameFormat } from './types';
  * @param {NameFormat} format - The format to display names in, either 'full', 'short' or 'fullLastFirst'. Default = 'full'.
  * @return {JSX.Element} The address block as JSX.
  */
-export const displayNameElement = (name: DisplayableName, format?: NameFormat): JSX.Element => {
+export const displayNameElement = (name: DisplayableName, format: NameFormat = 'fullLastFirst'): JSX.Element => {
     const nameText = displayName(format)(name);
     const nameHeader = name.type ?? undefined;
     return (
