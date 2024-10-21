@@ -17,7 +17,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -39,7 +40,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -60,7 +62,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
         const { getByText } = render(
             <MemoryRouter>
@@ -79,7 +82,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -108,7 +112,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -130,7 +135,8 @@ describe('PatientSearchResultListItem', () => {
             phones: ['phone-number-value'],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -150,7 +156,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: ['email-address-value'],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -170,7 +177,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [{ first: 'Jane', last: 'Doe' }],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -179,7 +187,7 @@ describe('PatientSearchResultListItem', () => {
             </MemoryRouter>
         );
 
-        expect(getByText('Jane Doe')).toBeInTheDocument();
+        expect(getByText('Doe, Jane')).toBeInTheDocument();
     });
 
     it('should render each identification', () => {
@@ -194,7 +202,8 @@ describe('PatientSearchResultListItem', () => {
             identification: [
                 { type: 'identification-one-type', value: 'identification-one-value' },
                 { type: 'identification-two-type', value: 'identification-two-value' }
-            ]
+            ],
+            detailedPhones: []
         };
 
         const { getByText } = render(
@@ -218,7 +227,8 @@ describe('PatientSearchResultListItem', () => {
             phones: [],
             emails: [],
             names: [],
-            identification: []
+            identification: [],
+            detailedPhones: []
         };
 
         const { getByText } = render(

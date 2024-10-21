@@ -64,7 +64,15 @@ describe('patientSearchResult functions', () => {
             }
         ],
         phones: ['270-685-4067'],
-        emails: ['emily.reynolds@owensborohealth.org']
+        emails: ['emily.reynolds@owensborohealth.org'],
+        detailedPhones: [
+            {
+                use: '',
+                type: '',
+                number: '270-685-4067',
+                extension: ''
+            }
+        ]
     };
 
     it('should displayPhones returns correct string', () => {
@@ -97,7 +105,7 @@ describe('patientSearchResult functions', () => {
     it('should render other names with header and content', () => {
         const { getByText } = render(displayOtherNames(mockPatient));
         expect(getByText('Alias')).toBeInTheDocument();
-        expect(getByText('Johnny TestnullTest')).toBeInTheDocument();
+        expect(getByText('TestnullTest, Johnny')).toBeInTheDocument();
     });
 
     it('should render identifications with header and content', () => {
