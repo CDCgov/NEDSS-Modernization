@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import styles from './item.module.scss';
 
-type ItemType = 'address' | 'phone' | 'name' | 'other';
+type ItemType = 'address' | 'phone' | 'email' | 'name' | 'other';
 
 type Props = { type?: ItemType; label?: string; children: ReactNode };
 

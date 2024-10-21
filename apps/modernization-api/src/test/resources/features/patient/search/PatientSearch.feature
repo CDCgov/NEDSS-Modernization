@@ -181,6 +181,11 @@ Feature: Patient Search
     And I add the patient criteria for an "phone number" equal to "888-240-2200"
     When I search for patients
     Then the search results have a patient with a "phone number" equal to "888-240-2200"
+    And the search results have a patient with a "detailed phone number" equal to "888-240-2200"
+    And the search results have a patient with a "detailed phone extension" equal to "1009"
+    And the search results have a patient with a "detailed phone type" equal to "PH"
+    And the search results have a patient with a "detailed phone use" equal to "H"
+
 
   Scenario: I can search for a Patient using a partial phone number
     Given the patient has a "phone number" of "888-240-2200"

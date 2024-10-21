@@ -1154,6 +1154,13 @@ type PatientSearchResultName {
   suffix: String
 }
 
+type PatientSearchResultPhone {
+  extension: String
+  number: String
+  type: String
+  use: String
+}
+
 type PatientSearchResultAddress {
   type: String
   use: String
@@ -1178,6 +1185,7 @@ type PatientSearchResult {
   addresses: [PatientSearchResultAddress!]!
   phones: [String!]!
   emails: [String!]!
+  detailedPhones: [PatientSearchResultPhone!]!
 }
 
 type PatientSearchResults {
@@ -1185,7 +1193,6 @@ type PatientSearchResults {
   total: Int!
   page: Int!
   size: Int!
-
 }
 
 type Query {

@@ -552,6 +552,12 @@
                 "ignore_above": 256
               }
             }
+          },
+          "typeCd": {
+            "type": "keyword"
+          },
+          "useCd": {
+            "type": "keyword"
           }
         }
       },

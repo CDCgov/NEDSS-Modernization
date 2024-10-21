@@ -8,7 +8,7 @@ describe('ItemGroup Component', () => {
         expect(getByText('Test Children')).toBeDefined();
     });
 
-    it('renders with a label', () => {
+    it('renders with a header label', () => {
         const { getByText } = render(
             <ItemGroup label="Test Label">
                 <span>Test Child</span>
@@ -36,5 +36,13 @@ describe('ItemGroup Component', () => {
 
         const div = result.baseElement.querySelector('div.itemgroup');
         expect(div).toHaveAttribute('data-item-type', 'address');
+    });
+
+    it('renders children with a <p> element', () => {
+        const result = render(<ItemGroup type="other">Some information here</ItemGroup>);
+
+        const pElement = result.baseElement.querySelector('div.itemgroup > p');
+        expect(pElement).toBeDefined();
+        expect(result.getByText('Some information here')).toBeInTheDocument();
     });
 });

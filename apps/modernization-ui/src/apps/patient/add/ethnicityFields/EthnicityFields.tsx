@@ -23,8 +23,8 @@ export default function EthnicityFields({ id, title, coded }: Props) {
                         render={({ field: { onChange, name, value } }) => (
                             <Radio
                                 onChange={onChange}
-                                defaultChecked={value === ethnicity.value}
-                                value={ethnicity.value}
+                                checked={value === ethnicity.value}
+                                defaultValue={ethnicity.value}
                                 id={ethnicity.value}
                                 name={name}
                                 label={ethnicity.name}

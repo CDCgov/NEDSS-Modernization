@@ -4,19 +4,17 @@ import { ColumnPreference, useColumnPreferences } from 'design-system/table/pref
 import { internalizeDate } from 'date';
 import {
     displayPhones,
+    displayPatientName,
     displayProfileLink,
     displayOtherNames,
     displayEmails,
-    displayAddresses
+    displayAddresses,
+    displayIdentifications
 } from 'apps/search/patient/result';
-import { displayName } from 'name';
-
-const displayIdentifications = (result: PatientSearchResult): string =>
-    result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
-const LEGAL_NAME = { id: 'legalName', name: 'Legal name' };
+const LEGAL_NAME = { id: 'legalName', name: 'Patient name' };
 const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };
@@ -42,11 +40,11 @@ const columns: Column<PatientSearchResult>[] = [
     {
         ...LEGAL_NAME,
         sortable: true,
-        render: (result) => result.legalName && displayName('fullLastFirst')(result.legalName)
+        render: displayPatientName
     },
     { ...ADDRESS, render: displayAddresses },
     { ...PHONE, render: displayPhones },
-    { ...NAMES, render: displayOtherNames },
+    { ...NAMES, render: (result) => displayOtherNames(result) },
     { ...IDENTIFICATIONS, render: displayIdentifications },
     { ...EMAIL, render: displayEmails }
 ];
