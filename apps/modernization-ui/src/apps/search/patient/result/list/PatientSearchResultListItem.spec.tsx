@@ -179,7 +179,7 @@ describe('PatientSearchResultListItem', () => {
             </MemoryRouter>
         );
 
-        expect(getByText('Jane Doe')).toBeInTheDocument();
+        expect(getByText('Doe, Jane')).toBeInTheDocument();
     });
 
     it('should render each identification', () => {

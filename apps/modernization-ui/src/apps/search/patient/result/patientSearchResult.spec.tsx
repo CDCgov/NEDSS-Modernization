@@ -97,7 +97,7 @@ describe('patientSearchResult functions', () => {
     it('should render other names with header and content', () => {
         const { getByText } = render(displayOtherNames(mockPatient));
         expect(getByText('Alias')).toBeInTheDocument();
-        expect(getByText('Johnny TestnullTest')).toBeInTheDocument();
+        expect(getByText('TestnullTest, Johnny')).toBeInTheDocument();
     });
 
     it('should render identifications with header and content', () => {
