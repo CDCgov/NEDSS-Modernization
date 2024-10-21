@@ -13,7 +13,7 @@ ARG S3_ZIP_NAME
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
 # Set environment variables and AWS credentials and region
-ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\dk8u412b08" \
+ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     JBOSS_HOME="D:\wildfly-10.0.0.Final" \
     JAVA_TOOL_OPTIONS="-Dsun.stdout.encoding=cp437 -Dsun.stderr.encoding=cp437" \
     # GITHUB_RELEASE_TAG provided on RUN to create URL and download Release Package from. Default is always latest or Null
