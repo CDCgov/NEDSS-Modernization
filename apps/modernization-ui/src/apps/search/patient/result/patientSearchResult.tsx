@@ -13,11 +13,12 @@ const displayProfileLegalName = (result: PatientSearchResult) => {
 };
 
 // Displays Other names, that are not the legal name
-const displayOtherNames = (result: PatientSearchResult): JSX.Element => {
+const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element => {
     const legalName = result.legalName;
+    const patientSearchResultNames = order === 'normal' ? result.names : [...result.names].reverse();
     return (
         <div>
-            {result.names
+            {patientSearchResultNames
                 .filter((name) => !matchesLegalName(name, legalName))
                 .map((name, index) => (
                     <div key={index}>{displayNameElement(name)}</div>
@@ -37,8 +38,15 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
 
 const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
+const displayPatientName = (result: PatientSearchResult): JSX.Element => (
+    <div>
+        {result.legalName && displayNameElement(result.legalName)}
+        {displayOtherNames(result, 'reverse')}
+    </div>
+);
 
 export {
+    displayPatientName,
     displayOtherNames,
     displayProfileLink,
     displayProfileLegalName,
