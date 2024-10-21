@@ -6,7 +6,8 @@ import {
     displayPhones,
     displayEmails,
     displayAddresses,
-    displayOtherNames
+    displayOtherNames,
+    displayIdentifications
 } from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
@@ -28,7 +29,16 @@ describe('patientSearchResult functions', () => {
                 type: 'Alias'
             }
         ],
-        identification: [],
+        identification: [
+            {
+                type: 'SSN',
+                value: '123-45-6789'
+            },
+            {
+                type: 'MRN',
+                value: '123456'
+            }
+        ],
         addresses: [
             {
                 use: 'Home',
@@ -84,9 +94,17 @@ describe('patientSearchResult functions', () => {
         expect(getByText('Alternate')).toBeInTheDocument();
     });
 
-    it('should render other names correctly', () => {
+    it('should render other names with header and content', () => {
         const { getByText } = render(displayOtherNames(mockPatient));
         expect(getByText('Alias')).toBeInTheDocument();
         expect(getByText('Johnny TestnullTest')).toBeInTheDocument();
+    });
+
+    it('should render identifications with header and content', () => {
+        const { getByText } = render(displayIdentifications(mockPatient));
+        expect(getByText('SSN')).toBeInTheDocument();
+        expect(getByText('123-45-6789')).toBeInTheDocument();
+        expect(getByText('MRN')).toBeInTheDocument();
+        expect(getByText('123456')).toBeInTheDocument();
     });
 });

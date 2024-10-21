@@ -8,11 +8,9 @@ import {
     displayProfileLink,
     displayOtherNames,
     displayEmails,
-    displayAddresses
+    displayAddresses,
+    displayIdentifications
 } from 'apps/search/patient/result';
-
-const displayIdentifications = (result: PatientSearchResult): string =>
-    result.identification.map((identification) => identification.type + '\n' + identification.value).join('\n');
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
