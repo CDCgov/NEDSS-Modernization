@@ -46,7 +46,7 @@ const columns: Column<PatientSearchResult>[] = [
     },
     { ...ADDRESS, render: displayAddresses },
     { ...PHONE, render: displayPhones },
-    { ...NAMES, render: displayOtherNames },
+    { ...NAMES, render: (result) => displayOtherNames(result) },
     { ...IDENTIFICATIONS, render: displayIdentifications },
     { ...EMAIL, render: displayEmails }
 ];
