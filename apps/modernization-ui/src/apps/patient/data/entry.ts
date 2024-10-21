@@ -11,7 +11,7 @@ type LocationEntry = {
 type AdministrativeEntry = EffectiveDated & HasComments;
 
 type NameEntry = EffectiveDated & {
-    type: Selectable;
+    type: Maybe<Selectable>;
     prefix?: Maybe<Selectable>;
     first?: string;
     middle?: string;
@@ -24,8 +24,8 @@ type NameEntry = EffectiveDated & {
 
 type AddressEntry = EffectiveDated &
     HasComments & {
-        type: Selectable;
-        use: Selectable;
+        type: Maybe<Selectable>;
+        use: Maybe<Selectable>;
         address1?: string;
         address2?: string;
         city?: string;
@@ -38,8 +38,8 @@ type AddressEntry = EffectiveDated &
 
 type PhoneEmailEntry = EffectiveDated &
     HasComments & {
-        type: Selectable;
-        use: Selectable;
+        type: Maybe<Selectable>;
+        use: Maybe<Selectable>;
         countryCode?: string;
         phoneNumber?: string;
         extension?: string;
@@ -48,9 +48,9 @@ type PhoneEmailEntry = EffectiveDated &
     };
 
 type IdentificationEntry = EffectiveDated & {
-    type: Selectable;
+    type: Maybe<Selectable>;
     id: string;
-    issuer?: Selectable;
+    issuer?: Maybe<Selectable>;
 };
 
 type SexEntry = EffectiveDated & {

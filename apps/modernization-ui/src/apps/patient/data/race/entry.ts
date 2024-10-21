@@ -1,10 +1,10 @@
 import { today } from 'date';
 import { asSelectable, Selectable } from 'options';
-import { EffectiveDated } from 'utils';
+import { EffectiveDated, Maybe } from 'utils';
 
 type RaceEntry = EffectiveDated & {
     id: number;
-    race: Selectable;
+    race: Maybe<Selectable>;
     detailed: Selectable[];
 };
 
@@ -15,7 +15,7 @@ export type { RaceEntry, RaceCategoryValidator };
 const initial = (asOf: string = today()): Partial<RaceEntry> => ({
     id: new Date().getTime(),
     asOf,
-    race: asSelectable(''),
+    race: null,
     detailed: []
 });
 

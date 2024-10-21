@@ -9,7 +9,7 @@ import { asSelectable } from 'options';
 
 const defaultValue: Partial<NameEntry> = {
     asOf: today(),
-    type: asSelectable(''),
+    type: null,
     prefix: null,
     first: '',
     middle: '',
@@ -22,7 +22,7 @@ const defaultValue: Partial<NameEntry> = {
 
 const columns: Column<NameEntry>[] = [
     { id: 'nameAsOf', name: 'As of', render: (v) => v.asOf },
-    { id: 'nameType', name: 'Type', render: (v) => v.type.name },
+    { id: 'nameType', name: 'Type', render: (v) => v.type?.name },
     { id: 'nameLast', name: 'Last', render: (v) => v.last },
     { id: 'nameFirst', name: 'First', render: (v) => v.first },
     { id: 'nameMiddle', name: 'Middle', render: (v) => v.middle },

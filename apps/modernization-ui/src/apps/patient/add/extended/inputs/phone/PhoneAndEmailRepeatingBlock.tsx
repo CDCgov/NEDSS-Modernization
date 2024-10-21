@@ -9,8 +9,8 @@ import { asSelectable } from 'options';
 
 const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: today(),
-    type: asSelectable(''),
-    use: asSelectable(''),
+    type: null,
+    use: null,
     countryCode: '',
     phoneNumber: '',
     extension: '',

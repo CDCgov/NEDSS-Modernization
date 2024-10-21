@@ -9,8 +9,8 @@ import { asSelectable } from 'options';
 
 const defaultValue: Partial<AddressEntry> = {
     asOf: today(),
-    type: asSelectable(''),
-    use: asSelectable(''),
+    type: null,
+    use: null,
     address1: '',
     address2: '',
     city: '',
@@ -35,7 +35,7 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty }:
 
     const columns: Column<AddressEntry>[] = [
         { id: 'addressAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'addressType', name: 'Type', render: (v) => v.type.name },
+        { id: 'addressType', name: 'Type', render: (v) => v.type?.name },
         { id: 'address', name: 'Address', render: (v) => v.address1 },
         { id: 'city', name: 'City', render: (v) => v.city },
         { id: 'state', name: 'State', render: (v) => v.state?.name },
