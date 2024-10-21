@@ -135,9 +135,9 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
             });
         }
 
-        if (initial.emailAddresses.length) {
+        if (initial.emailAddresses.length > 0) {
             initial.emailAddresses.map((emailAddress) => {
-                if (emailAddress.email != null) {
+                if (!isEmpty(emailAddress)) {
                     phoneEmails.push({
                         asOf: initial.asOf,
                         type: asSelectable('NET', 'Email address'),
