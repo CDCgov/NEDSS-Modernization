@@ -5,7 +5,6 @@ import { AddressView } from './AddressView';
 import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { ReactNode } from 'react';
-import { asSelectable } from 'options';
 
 const defaultValue: Partial<AddressEntry> = {
     asOf: today(),

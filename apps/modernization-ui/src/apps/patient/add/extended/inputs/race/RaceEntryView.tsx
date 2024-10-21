@@ -8,7 +8,7 @@ export const RaceEntryView = ({ entry }: Props) => {
     return (
         <>
             <ValueView title="As of" value={entry.asOf} required />
-            <ValueView title="Race" value={entry.race.name} required />
+            <ValueView title="Race" value={entry.race?.name} required />
             <ValueView title="Detailed race" value={entry.detailed?.map((d) => d.name).join(', ')} />
         </>
     );

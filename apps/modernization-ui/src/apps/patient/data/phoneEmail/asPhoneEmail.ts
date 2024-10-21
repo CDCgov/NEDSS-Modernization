@@ -6,8 +6,8 @@ const asPhoneEmail = (entry: PhoneEmailEntry): PhoneEmail => {
     const { type, use, ...remaining } = entry;
 
     return {
-        type: asValue(type),
-        use: asValue(use),
+        type: asValue(type) ?? '',
+        use: asValue(use) ?? '',
         ...remaining
     };
 };

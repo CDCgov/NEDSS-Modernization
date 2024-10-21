@@ -43,7 +43,7 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
                 name="race"
                 rules={{
                     required: { value: true, message: 'Race is required.' },
-                    validate: (category) => categoryValidator(id, category)
+                    validate: (category) => categoryValidator(id, category ?? undefined)
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect

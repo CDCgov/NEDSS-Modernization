@@ -5,7 +5,6 @@ import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { IdentificationView } from './IdentificationView';
 import { ReactNode } from 'react';
-import { asSelectable } from 'options';
 
 const defaultValue: Partial<IdentificationEntry> = {
     asOf: today(),

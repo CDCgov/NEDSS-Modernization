@@ -1,5 +1,5 @@
 import { today } from 'date';
-import { asSelectable, Selectable } from 'options';
+import { Selectable } from 'options';
 import { EffectiveDated, Maybe } from 'utils';
 
 type RaceEntry = EffectiveDated & {
@@ -8,7 +8,7 @@ type RaceEntry = EffectiveDated & {
     detailed: Selectable[];
 };
 
-type RaceCategoryValidator = (id: number, category: Selectable) => Promise<string | boolean>;
+type RaceCategoryValidator = (id: number, category?: Selectable) => Promise<string | boolean>;
 
 export type { RaceEntry, RaceCategoryValidator };
 

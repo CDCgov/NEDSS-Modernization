@@ -6,7 +6,7 @@ const asIdentification = (entry: IdentificationEntry): Identification => {
     const { type, issuer, ...remaining } = entry;
 
     return {
-        type: asValue(type),
+        type: asValue(type) ?? '',
         issuer: asValue(issuer),
         ...remaining
     };

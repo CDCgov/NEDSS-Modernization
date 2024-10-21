@@ -9,7 +9,7 @@ export const NameEntryView = ({ entry }: Props) => {
     return (
         <>
             <ValueView title="As of" value={entry.asOf} required />
-            <ValueView title="Type" value={entry.type.name} required />
+            <ValueView title="Type" value={entry.type?.name} required />
             <ValueView title="Prefix" value={entry.prefix?.name} />
             <ValueView title="Last" value={entry.last} />
             <ValueView title="Second last" value={entry.secondLast} />

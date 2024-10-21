@@ -7,7 +7,7 @@ const asRace = (entry: RaceEntry): Race => {
 
     return {
         asOf,
-        race: asValue(race),
+        race: asValue(race) ?? '',
         detailed: asValues(detailed)
     };
 };
