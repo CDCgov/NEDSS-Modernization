@@ -94,13 +94,13 @@ describe('patientSearchResult functions', () => {
         expect(getByText('Alternate')).toBeInTheDocument();
     });
 
-    it('should render other names correctly', () => {
+    it('should render other names with header and content', () => {
         const { getByText } = render(displayOtherNames(mockPatient));
         expect(getByText('Alias')).toBeInTheDocument();
         expect(getByText('Johnny TestnullTest')).toBeInTheDocument();
     });
 
-    it('should render identifications correctly', () => {
+    it('should render identifications with header and content', () => {
         const { getByText } = render(displayIdentifications(mockPatient));
         expect(getByText('SSN')).toBeInTheDocument();
         expect(getByText('123-45-6789')).toBeInTheDocument();
