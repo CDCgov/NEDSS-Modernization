@@ -22,7 +22,7 @@ const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'rever
             {patientSearchResultNames
                 .filter((name) => !matchesLegalName(name, legalName))
                 .map((name, index) => (
-                    <div key={index}>{displayNameElement(name)}</div>
+                    <div key={index}>{displayNameElement(name, 'fullLastFirst')}</div>
                 ))}
         </div>
     );
@@ -41,7 +41,7 @@ const displayPhones = (result: PatientSearchResult): string => result.phones.joi
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 const displayPatientName = (result: PatientSearchResult): JSX.Element => (
     <div>
-        {result.legalName && displayNameElement(result.legalName)}
+        {result.legalName && displayNameElement(result.legalName, 'fullLastFirst')}
         {displayOtherNames(result, 'reverse')}
     </div>
 );
