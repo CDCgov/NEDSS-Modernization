@@ -14,10 +14,6 @@
         @include borders.rounded();
     }
 
-    input {
-        background-color: colors.$base-white;
-    }
-
     .formContent {
         display: flex;
         flex-direction: column;
