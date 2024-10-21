@@ -1,0 +1,4 @@
+server:
+  port: 8081
+
+linkageServiceUrl: http://localhost:8080/link-record
