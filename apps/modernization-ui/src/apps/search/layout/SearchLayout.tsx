@@ -3,6 +3,7 @@ import { Button } from 'components/button';
 import { Loading } from 'components/Spinner';
 import { CollapsiblePanel } from 'design-system/collapsible-panel';
 import { SearchNavigation } from './navigation/SearchNavigation';
+import { PatientSearchHeader } from './patientSearchHeader/PatientSearchHeader';
 import { useSearchInteraction, useSearchResultDisplay } from 'apps/search';
 import { SearchLanding } from './landing';
 import { SearchResults } from './result';
@@ -58,6 +59,7 @@ const SearchLayout = <R,>({
 
     return (
         <section className={styles.search}>
+            <PatientSearchHeader className={styles.navigation} actions={actions} />
             <SearchNavigation className={styles.navigation} actions={actions} />
             <div className={styles.content}>
                 <CollapsiblePanel
