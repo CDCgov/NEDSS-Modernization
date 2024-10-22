@@ -10,7 +10,7 @@ type HasLocation = {
 type Administrative = EffectiveDated & HasComments;
 
 type Name = EffectiveDated & {
-    type?: string;
+    type: string;
     prefix?: string;
     first?: string;
     middle?: string;
@@ -23,8 +23,8 @@ type Name = EffectiveDated & {
 
 type Address = EffectiveDated &
     HasComments & {
-        type?: string;
-        use?: string;
+        type: string;
+        use: string;
         address1?: string;
         address2?: string;
         city?: string;
@@ -37,8 +37,8 @@ type Address = EffectiveDated &
 
 type PhoneEmail = EffectiveDated &
     HasComments & {
-        type?: string;
-        use?: string;
+        type: string;
+        use: string;
         countryCode?: string;
         phoneNumber?: string;
         extension?: string;
@@ -47,7 +47,7 @@ type PhoneEmail = EffectiveDated &
     };
 
 type Identification = EffectiveDated & {
-    type?: string;
+    type: string;
     id: string;
     issuer?: string;
 };
