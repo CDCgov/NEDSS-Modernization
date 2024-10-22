@@ -1,6 +1,6 @@
 import { Modal } from 'design-system/modal';
 import { Message } from 'design-system/message';
-import { CreatedPatient } from './extended/api';
+import { CreatedPatient } from './api';
 import { displayName } from 'name';
 import { ClassicButton } from 'classic';
 import { NavLinkButton } from 'components/button/nav/NavLinkButton';

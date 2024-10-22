@@ -35,4 +35,7 @@ type CreatedPatient = {
     };
 };
 
-export type { NewPatient, CreatedPatient };
+type Transformer<E> = (entry: E) => NewPatient;
+type Creator = (input: NewPatient) => Promise<CreatedPatient>;
+
+export type { NewPatient, CreatedPatient, Transformer, Creator };

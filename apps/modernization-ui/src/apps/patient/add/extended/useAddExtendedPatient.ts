@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { CreatedPatient, NewPatient } from './api';
+import { CreatedPatient, NewPatient, Creator, Transformer } from 'apps/patient/add/api';
 import { ExtendedNewPatientEntry } from './entry';
 import {
     AddExtendedPatientInteraction,
@@ -46,13 +46,10 @@ const reducer = (current: Step, action: Action): Step => {
     }
 };
 
-type Transformer = (entry: ExtendedNewPatientEntry) => NewPatient;
-type Creator = (input: NewPatient) => Promise<CreatedPatient>;
-
 type State = Working | Created | Invalid;
 
 type Settings = {
-    transformer: Transformer;
+    transformer: Transformer<ExtendedNewPatientEntry>;
     creator: Creator;
 };
 
