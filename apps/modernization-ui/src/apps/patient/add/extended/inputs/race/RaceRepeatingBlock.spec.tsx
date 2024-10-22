@@ -51,9 +51,7 @@ describe('RaceRepeatingBlock', () => {
     });
 
     it('should display proper defaults', async () => {
-        const { getByLabelText } = render(
-            <RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />
-        );
+        const { getByLabelText } = render(<RaceRepeatingBlock id="testing" onChange={onChange} isDirty={isDirty} />);
 
         const dateInput = getByLabelText('Race as of');
         expect(dateInput).toHaveValue(internalizeDate(new Date()));

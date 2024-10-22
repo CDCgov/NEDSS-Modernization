@@ -42,8 +42,7 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
                 control={control}
                 name="race"
                 rules={{
-                    required: { value: true, message: 'Race is required.' },
-                    validate: (category) => categoryValidator(id, category ?? undefined)
+                    validate: (category) => categoryValidator(id, category)
                 }}
                 render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
                     <SingleSelect
