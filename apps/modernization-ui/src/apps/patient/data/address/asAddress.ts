@@ -6,7 +6,7 @@ import { exists, orUndefined } from 'utils';
 const asAddress = (entry: AddressEntry): Address | undefined => {
     const { asOf, use, type, state, county, country, address1, address2, city, zipcode, censusTract, comment } = entry;
 
-    if (asOf && use && exists(use) && type && exists(type)) {
+    if (asOf && exists(use) && exists(type)) {
         return {
             asOf,
             type: asValue(type),
