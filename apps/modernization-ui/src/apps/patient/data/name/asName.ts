@@ -8,7 +8,7 @@ const asName = (entry: NameEntry): Name => {
 
     return {
         ...remaining,
-        type: asValue(type) ?? '',
+        type: asValue(type),
         prefix: asValue(prefix),
         suffix: asValue(suffix),
         degree: asValue(degree)
