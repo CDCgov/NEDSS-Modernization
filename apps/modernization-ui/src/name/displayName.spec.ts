@@ -100,7 +100,7 @@ describe('when given a partial name', () => {
 
         const actual = displayName('fullLastFirst')(name);
 
-        expect(actual).toBe('Ted');
+        expect(actual).toBe('--, Ted');
     });
 
     it('should display the last name with fullLastFirst format', () => {
@@ -110,6 +110,6 @@ describe('when given a partial name', () => {
 
         const actual = displayName('fullLastFirst')(name);
 
-        expect(actual).toBe('Logan');
+        expect(actual).toBe('Logan, --');
     });
 });
