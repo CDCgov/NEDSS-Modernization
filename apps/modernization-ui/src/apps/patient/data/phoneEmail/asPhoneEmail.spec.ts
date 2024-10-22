@@ -114,4 +114,28 @@ describe('when mapping a phone email entry to a format accepted by the API', () 
 
         expect(actual).toEqual(expect.objectContaining({ comment: 'comment-value' }));
     });
+
+    it('should not map when type is null', () => {
+        const entry = {
+            asOf: '04/13/2017',
+            type: null,
+            use: { value: 'use-value', name: 'use-value' }
+        };
+
+        const actual = asPhoneEmail(entry);
+
+        expect(actual).toBeUndefined();
+    });
+
+    it('should not map when use is null', () => {
+        const entry = {
+            asOf: '04/13/2017',
+            type: { value: 'type-value', name: 'type-value' },
+            use: null
+        };
+
+        const actual = asPhoneEmail(entry);
+
+        expect(actual).toBeUndefined();
+    });
 });
