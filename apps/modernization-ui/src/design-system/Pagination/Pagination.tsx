@@ -3,12 +3,14 @@ import styles from './pagination.module.scss';
 import { RangeToggle } from 'components/Table/RangeToggle/RangeToggle';
 import { usePage } from 'page';
 
-const Pagination = () => {
-    const {
-        request,
-        page: { total, pageSize, current }
-    } = usePage();
+type PaginationLayoutProps = {
+    total: number;
+    pageSize: number;
+    current: number;
+    request?: (page: number) => void;
+};
 
+const PaginationLayout = ({ total, pageSize, current, request }: PaginationLayoutProps) => {
     return (
         <div className={styles.pagination}>
             <div className={styles.range}>
@@ -19,13 +21,22 @@ const Pagination = () => {
                     totalPages={Math.ceil(total / pageSize)}
                     currentPage={current}
                     pathname={''}
-                    onClickNext={() => request(current + 1)}
-                    onClickPrevious={() => request(current - 1)}
-                    onClickPageNumber={(_, page) => request(page)}
+                    onClickNext={() => request?.(current + 1)}
+                    onClickPrevious={() => request?.(current - 1)}
+                    onClickPageNumber={(_, page) => request?.(page)}
                 />
             </div>
         </div>
     );
 };
 
-export { Pagination };
+const Pagination = () => {
+    const {
+        request,
+        page: { total, pageSize, current }
+    } = usePage();
+
+    return <PaginationLayout request={request} total={total} pageSize={pageSize} current={current} />;
+};
+
+export { Pagination, PaginationLayout };
