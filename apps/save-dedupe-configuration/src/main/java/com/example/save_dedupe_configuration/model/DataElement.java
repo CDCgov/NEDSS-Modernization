@@ -2,6 +2,11 @@ package com.example.save_dedupe_configuration.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.HashMap;
+import java.math.BigDecimal;
+import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -48,7 +53,7 @@ public class DataElement {
     private BigDecimal logOdds;
 
     @Column(name = "belongingness_ratio", precision = 10, scale = 5)
-    private BigDecimal belongingnessRatio;
+    private Integer belongingnessRatio;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -141,11 +146,11 @@ public class DataElement {
         this.logOdds = logOdds;
     }
 
-    public BigDecimal getBelongingnessRatio() { // Getter for belongingnessRatio
+    public Integer getBelongingnessRatio() {
         return belongingnessRatio;
     }
 
-    public void setBelongingnessRatio(BigDecimal belongingnessRatio) { // Setter for belongingnessRatio
+    public void setBelongingnessRatio(Integer belongingnessRatio) {
         this.belongingnessRatio = belongingnessRatio;
     }
 
@@ -166,5 +171,18 @@ public class DataElement {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataElement)) return false;
+        DataElement that = (DataElement) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

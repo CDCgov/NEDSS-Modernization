@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DataElementService {
@@ -24,9 +25,27 @@ public class DataElementService {
         return dataElementRepository.findById(id);
     }
 
+    // Check if a DataElement with the same name already exists
+    public Optional<DataElement> findByName(String name) {
+        return dataElementRepository.findByName(name); // Implement this method in your repository
+    }
+
     // Save a DataElement
     public DataElement save(DataElement dataElement) {
-        return dataElementRepository.save(dataElement);
+        // Check if the ID is set (non-null)
+        if (dataElement.getId() != null) {
+            // Existing DataElement; perform an update
+            return dataElementRepository.save(dataElement);
+        } else {
+            // Check if DataElement with the same name already exists
+            Optional<DataElement> existingElement = findByName(dataElement.getName());
+            if (existingElement.isPresent()) {
+                // Optionally, update the existing entry or return it
+                return existingElement.get(); // Return existing DataElement instead of saving a new one
+            }
+            // New DataElement; perform an insert
+            return dataElementRepository.save(dataElement);
+        }
     }
 
     // Save a list of DataElements
