@@ -5,12 +5,10 @@ import { LaboratoryReportSearch } from './laboratory-report';
 import { InvestigationSearch } from './investigation';
 import { SimpleSearch } from './simple';
 
-const SEARCH_PAGE_SIZE = 20;
-
 const routing = [
     {
         path: 'search',
-        element: <SearchPage paging={{ pageSize: SEARCH_PAGE_SIZE }} />,
+        element: <SearchPage />,
         children: [
             { index: true, element: <Navigate to="patients" /> },
             {
