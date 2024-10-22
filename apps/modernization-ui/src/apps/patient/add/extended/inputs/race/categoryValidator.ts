@@ -1,4 +1,4 @@
-import { asSelectable, Selectable } from 'options';
+import { Selectable } from 'options';
 import { RaceEntry } from 'apps/patient/data/race';
 import { Predicate } from 'utils';
 import { allOf } from 'utils/predicate';
@@ -10,10 +10,10 @@ const withCategory =
 
 const withId = (id: number) => (entry: RaceEntry) => entry.id !== id;
 
-const categoryValidator = (entries: RaceEntry[]) => (id: number, category?: Selectable) =>
+const categoryValidator = (entries: RaceEntry[]) => (id: number, category: Selectable) =>
     new Promise<string | boolean>((resolve) => {
         //  find any existing entries that have the same category but not the same if
-        const resolved = entries.find(allOf(withCategory(category ?? asSelectable('')), withId(id)));
+        const resolved = entries.find(allOf(withCategory(category), withId(id)));
 
         if (resolved) {
             //  validation fails

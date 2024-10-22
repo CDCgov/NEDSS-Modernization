@@ -5,6 +5,7 @@ import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { NameEntryView } from './NameEntryView';
 import { ReactNode } from 'react';
+import { asName } from 'options';
 
 const defaultValue: Partial<NameEntry> = {
     asOf: today(),
@@ -21,11 +22,11 @@ const defaultValue: Partial<NameEntry> = {
 
 const columns: Column<NameEntry>[] = [
     { id: 'nameAsOf', name: 'As of', render: (v) => v.asOf },
-    { id: 'nameType', name: 'Type', render: (v) => v.type?.name },
+    { id: 'nameType', name: 'Type', render: (v) => asName(v.type) },
     { id: 'nameLast', name: 'Last', render: (v) => v.last },
     { id: 'nameFirst', name: 'First', render: (v) => v.first },
     { id: 'nameMiddle', name: 'Middle', render: (v) => v.middle },
-    { id: 'nameSuffix', name: 'Suffix', render: (v) => v.suffix?.name }
+    { id: 'nameSuffix', name: 'Suffix', render: (v) => asName(v.suffix) }
 ];
 
 type Props = {

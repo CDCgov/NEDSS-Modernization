@@ -6,10 +6,11 @@ import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
 import { ReactNode } from 'react';
 import { categoryValidator } from './categoryValidator';
+import { asName } from 'options';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
-    { id: 'race-name', name: 'Race', render: (v) => v.race?.name },
+    { id: 'race-name', name: 'Race', render: (v) => asName(v.race) },
     {
         id: 'race-detailed',
         name: 'Detailed race',

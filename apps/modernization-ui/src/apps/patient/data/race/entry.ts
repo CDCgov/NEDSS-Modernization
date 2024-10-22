@@ -8,7 +8,7 @@ type RaceEntry = EffectiveDated & {
     detailed: Selectable[];
 };
 
-type RaceCategoryValidator = (id: number, category?: Selectable) => Promise<string | boolean>;
+type RaceCategoryValidator = (id: number, category: Selectable) => Promise<string | boolean>;
 
 export type { RaceEntry, RaceCategoryValidator };
 

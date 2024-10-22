@@ -5,6 +5,7 @@ import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { Column } from 'design-system/table';
 import { IdentificationView } from './IdentificationView';
 import { ReactNode } from 'react';
+import { asName } from 'options';
 
 const defaultValue: Partial<IdentificationEntry> = {
     asOf: today(),
@@ -25,8 +26,8 @@ export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isD
 
     const columns: Column<IdentificationEntry>[] = [
         { id: 'identificationAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'identificationType', name: 'Type', render: (v) => v.type?.name },
-        { id: 'assigningAuthority', name: 'Authority', render: (v) => v.issuer?.name },
+        { id: 'identificationType', name: 'Type', render: (v) => asName(v.type) },
+        { id: 'assigningAuthority', name: 'Authority', render: (v) => asName(v.issuer) },
         { id: 'idValue', name: 'Value', render: (v) => v.id }
     ];
     return (
