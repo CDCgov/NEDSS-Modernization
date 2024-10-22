@@ -10,8 +10,13 @@ import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 
 type NumericOnChange = (value?: number) => void;
 
+const isNonNumericKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    const value = event.key as string;
+    return value.length == 1 ? !/[0-9]/.test(value) : false;
+};
+
 const handleKeydown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (!event.altKey && !event.ctrlKey && !event.metaKey && /Space|Key*/.test(event.code)) {
+    if (!event.altKey && !event.ctrlKey && !event.metaKey && isNonNumericKey(event)) {
         //  prevents spaces and letter characters from being entered but allows keyboard short cuts like (crtl-v)
         event.preventDefault();
     }
@@ -22,18 +27,20 @@ const asDisplay = (value?: string | number | null) => (value === undefined ? '' 
 type NumericInputProps = {
     id: string;
     label: string;
+    inputMode?: 'decimal' | 'numeric';
     value?: number;
     onChange?: NumericOnChange;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;
     required?: boolean;
-} & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type'>;
+} & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
 const NumericInput = ({
     id,
     name,
     label,
+    inputMode = 'numeric',
     value,
     onChange,
     orientation,
@@ -62,7 +69,7 @@ const NumericInput = ({
         } else {
             const adjusted = Number(next);
             if (!Number.isNaN(adjusted)) {
-                setCurrent(Number(next));
+                setCurrent(adjusted);
             }
         }
     };
@@ -80,6 +87,7 @@ const NumericInput = ({
                 name={name}
                 className={classNames('usa-input', className)}
                 type="number"
+                inputMode={inputMode}
                 onChange={handleChange}
                 placeholder={placeholder}
                 value={display}

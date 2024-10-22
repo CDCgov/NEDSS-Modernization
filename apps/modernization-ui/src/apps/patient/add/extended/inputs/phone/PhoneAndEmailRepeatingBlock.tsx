@@ -30,7 +30,7 @@ export const PhoneAndEmailRepeatingBlock = ({ id, values, errors, onChange, isDi
 
     const columns: Column<PhoneEmailEntry>[] = [
         { id: 'phoneEmailAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'phoneEmailType', name: 'Type', render: (v) => v.type?.name },
+        { id: 'phoneEmailType', name: 'Type', render: (v) => v.type?.name + '/' + v.use?.name },
         { id: 'phoneNumber', name: 'Phone number', render: (v) => v.phoneNumber },
         { id: 'email', name: 'Email address', render: (v) => v.email },
         { id: 'comments', name: 'Comments', render: (v) => v.comment }
