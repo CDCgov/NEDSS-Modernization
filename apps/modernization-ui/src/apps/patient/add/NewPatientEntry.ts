@@ -80,7 +80,7 @@ const initialEntry = (asOf: Date = new Date()): DefaultNewPatentEntry => ({
     asOf: internalizeDate(asOf) || '',
     identification: [{ type: null, authority: null, value: null }],
     phoneNumbers: [],
-    emailAddresses: []
+    emailAddresses: [{ email: null }]
 });
 
 export { initialEntry };

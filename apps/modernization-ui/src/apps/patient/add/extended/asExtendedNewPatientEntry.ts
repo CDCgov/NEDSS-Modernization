@@ -134,19 +134,17 @@ const phoneEmailsExtended = (initial: NewPatientEntry): PhoneEmailEntry[] | unde
                 extension: initial.extension ?? undefined
             });
         }
+        initial.emailAddresses.map((emailAddress) => {
+            if (!isEmpty(emailAddress)) {
+                phoneEmails.push({
+                    asOf: initial.asOf,
+                    type: asSelectable('NET', 'Email address'),
+                    use: asSelectable('H', 'Home'),
+                    email: emailAddress.email ?? ''
+                });
+            }
+        });
 
-        if (initial.emailAddresses.length > 0) {
-            initial.emailAddresses.map((emailAddress) => {
-                if (!isEmpty(emailAddress)) {
-                    phoneEmails.push({
-                        asOf: initial.asOf,
-                        type: asSelectable('NET', 'Email address'),
-                        use: asSelectable('H', 'Home'),
-                        email: emailAddress.email ?? ''
-                    });
-                }
-            });
-        }
         return phoneEmails;
     }
 };
