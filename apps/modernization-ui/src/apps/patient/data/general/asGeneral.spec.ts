@@ -3,7 +3,8 @@ import { asGeneral } from './asGeneral';
 describe('when mapping a general information entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
         const entry = {
-            asOf: '04/13/2017'
+            asOf: '04/13/2017',
+            adultsInResidence: 17
         };
 
         const actual = asGeneral(entry);
@@ -108,5 +109,15 @@ describe('when mapping a general information entry to a format accepted by the A
         const actual = asGeneral(entry);
 
         expect(actual).toEqual(expect.objectContaining({ stateHIVCase: 'state-hiv-case-value' }));
+    });
+
+    it('should not map when only as of is present', () => {
+        const entry = {
+            asOf: '04/13/2017'
+        };
+
+        const actual = asGeneral(entry);
+
+        expect(actual).toBeUndefined();
     });
 });

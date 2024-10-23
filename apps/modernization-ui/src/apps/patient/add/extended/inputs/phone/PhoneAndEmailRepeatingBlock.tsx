@@ -8,8 +8,8 @@ import { ReactNode } from 'react';
 
 const defaultValue: Partial<PhoneEmailEntry> = {
     asOf: today(),
-    type: undefined,
-    use: undefined,
+    type: null,
+    use: null,
     countryCode: '',
     phoneNumber: '',
     extension: '',

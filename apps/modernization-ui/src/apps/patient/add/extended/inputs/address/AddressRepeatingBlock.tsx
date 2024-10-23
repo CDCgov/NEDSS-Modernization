@@ -8,15 +8,15 @@ import { ReactNode } from 'react';
 
 const defaultValue: Partial<AddressEntry> = {
     asOf: today(),
-    type: undefined,
-    use: undefined,
+    type: null,
+    use: null,
     address1: '',
     address2: '',
     city: '',
-    state: undefined,
+    state: null,
     zipcode: '',
-    county: undefined,
-    country: undefined,
+    county: null,
+    country: null,
     censusTract: '',
     comment: ''
 };
@@ -34,7 +34,7 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty }:
 
     const columns: Column<AddressEntry>[] = [
         { id: 'addressAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'addressType', name: 'Type', render: (v) => v.type.name },
+        { id: 'addressType', name: 'Type', render: (v) => v.type?.name },
         { id: 'address', name: 'Address', render: (v) => v.address1 },
         { id: 'city', name: 'City', render: (v) => v.city },
         { id: 'state', name: 'State', render: (v) => v.state?.name },
