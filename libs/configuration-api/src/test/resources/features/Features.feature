@@ -20,6 +20,8 @@ Feature: Frontend Feature Configuration
       | search view              | disabled |
       | tabular search results   | enabled  |
       | tabular search results   | disabled |
+      | patient add              | enabled  |
+      | patient add              | disabled |
       | patient add extended     | enabled  |
       | patient add extended     | disabled |
       | NBS6 event search        | enabled  |
