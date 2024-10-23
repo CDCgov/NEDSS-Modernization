@@ -136,7 +136,7 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: []
+            detailedPhones: [{ number: 'phone-number-value' }]
         };
 
         const { getByText } = render(

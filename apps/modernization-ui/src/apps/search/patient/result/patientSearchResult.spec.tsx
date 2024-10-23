@@ -68,7 +68,7 @@ describe('patientSearchResult functions', () => {
         detailedPhones: [
             {
                 use: '',
-                type: '',
+                type: 'PH',
                 number: '270-685-4067',
                 extension: ''
             }
@@ -76,8 +76,9 @@ describe('patientSearchResult functions', () => {
     };
 
     it('should displayPhones returns correct string', () => {
-        const result = displayPhones(mockPatient);
-        expect(result).toBe('270-685-4067');
+        const {getByText} = render(displayPhones(mockPatient));
+        expect(getByText('Phone')).toBeInTheDocument();
+        expect(getByText('270-685-4067')).toBeInTheDocument();
     });
 
     it('should displayEmails returns correct string', () => {
