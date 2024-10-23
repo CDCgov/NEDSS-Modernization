@@ -33,6 +33,7 @@ const defaultFeatures: Features = {
     search,
     patient: {
         add: {
+            enabled: false,
             extended: {
                 enabled: false
             }

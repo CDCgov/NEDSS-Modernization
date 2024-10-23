@@ -46,6 +46,7 @@ type Features = {
     search: Search;
     patient: {
         add: {
+            enabled: boolean;
             extended: {
                 enabled: boolean;
             };
