@@ -1,6 +1,6 @@
 import { Tooltip } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
-import styles from './extended-tooltip.module.scss';
+import styles from './rich-tooltip.module.scss';
 
 type Props = {
     labelTitle: string;
@@ -9,7 +9,7 @@ type Props = {
     children: ReactNode;
 };
 
-const ExtendedTooltip = ({ labelTitle, labelText, position, children }: Props) => {
+const RichTooltip = ({ labelTitle, labelText, position, children }: Props) => {
     return (
         <div className={styles.tooltipContainer}>
             <Tooltip
@@ -29,4 +29,4 @@ const ExtendedTooltip = ({ labelTitle, labelText, position, children }: Props) =
     );
 };
 
-export default ExtendedTooltip;
+export default RichTooltip;
