@@ -13,7 +13,7 @@ type Props = {
 };
 
 const HorizontalEntryWrapper = ({ className, htmlFor, label, required, error, children }: Props) => (
-    <div className={classNames(styles.horizontalInput, { [styles.error]: error }, className)}>
+    <div className={classNames(styles.horizontalInput, className)}>
         {label && (
             <Label className={classNames({ required })} htmlFor={htmlFor}>
                 {label}
