@@ -321,7 +321,7 @@ class PatientSearchCriteriaQueryResolver {
   private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientFilter criteria) {
 
     LocalDate dateOfBirth = criteria.getDateOfBirth();
-    LocalDate highDateOfBirth = criteria.getBirthDateLowRange();
+    LocalDate highDateOfBirth = criteria.getBirthDateHighRange();
 
     if (dateOfBirth != null || highDateOfBirth == null) {
       return Optional.empty();
