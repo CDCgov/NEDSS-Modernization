@@ -4,6 +4,7 @@ Feature: Frontend Feature Configuration
     When I request the frontend configuration
     Then the search view feature is enabled
     And the tabular search results feature is enabled
+    And the patient add feature is disabled
     And the patient add extended feature is disabled
     And the NBS6 event search feature is enabled
     And the investigation search feature is disabled
