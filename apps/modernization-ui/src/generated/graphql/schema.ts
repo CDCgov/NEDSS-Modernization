@@ -1641,7 +1641,12 @@ export type PersonFilter = {
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
+  dateOfBirthDay?: InputMaybe<Scalars['Int']['input']>;
+  dateOfBirthHigh?: InputMaybe<Scalars['Date']['input']>;
+  dateOfBirthLow?: InputMaybe<Scalars['Date']['input']>;
+  dateOfBirthMonth?: InputMaybe<Scalars['Int']['input']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
+  dateOfBirthYear?: InputMaybe<Scalars['Int']['input']>;
   deceased?: InputMaybe<Deceased>;
   disableSoundex?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;

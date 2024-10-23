@@ -47,6 +47,11 @@ public class PatientFilter {
   private String email;
   private LocalDate dateOfBirth;
   private String dateOfBirthOperator;
+  private Integer dateOfBirthDay;
+  private Integer dateOfBirthMonth;
+  private Integer dateOfBirthYear;
+  private LocalDate birthDateLowRange;
+  private LocalDate birthDateHighRange;
   private String gender;
   private Deceased deceased;
   private String address;

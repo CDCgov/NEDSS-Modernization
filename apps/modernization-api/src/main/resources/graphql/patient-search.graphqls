@@ -14,6 +14,11 @@ input PersonFilter {
   email: String
   dateOfBirth: Date
   dateOfBirthOperator: Operator
+  dateOfBirthDay: Int
+  dateOfBirthMonth: Int
+  dateOfBirthYear: Int
+  dateOfBirthLow: Date
+  dateOfBirthHigh: Date
   gender: String
   deceased: Deceased
   address: String

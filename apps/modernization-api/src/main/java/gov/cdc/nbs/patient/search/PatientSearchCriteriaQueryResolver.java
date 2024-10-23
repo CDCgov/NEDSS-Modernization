@@ -52,6 +52,8 @@ class PatientSearchCriteriaQueryResolver {
         applyEmailCriteria(criteria),
         applyIdentificationCriteria(criteria),
         applyDateOfBirthCriteria(criteria),
+        applyDateOfBirthLowRangeCriteria(criteria),
+        applyDateOfBirthHighRangeCriteria(criteria),
         applyStreetAddressCriteria(criteria),
         applyCityCriteria(criteria),
         applyZipcodeCriteria(criteria)).flatMap(Optional::stream)
@@ -298,6 +300,41 @@ class PatientSearchCriteriaQueryResolver {
 
     return Optional.empty();
   }
+
+  private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
+
+    LocalDate dateOfBirth = criteria.getDateOfBirth();
+    LocalDate lowDateOfBirth = criteria.getBirthDateLowRange();
+
+    if (dateOfBirth != null || lowDateOfBirth == null) {
+      return Optional.empty();
+    }
+
+    String value = FlexibleInstantConverter.toString(lowDateOfBirth);
+
+    return Optional.of(
+        RangeQuery.of(
+            range -> range.field(BIRTHDAY)
+                .gte(JsonData.of(value))));
+  }
+
+  private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientFilter criteria) {
+
+    LocalDate dateOfBirth = criteria.getDateOfBirth();
+    LocalDate highDateOfBirth = criteria.getBirthDateLowRange();
+
+    if (dateOfBirth != null || highDateOfBirth == null) {
+      return Optional.empty();
+    }
+
+    String value = FlexibleInstantConverter.toString(highDateOfBirth);
+
+    return Optional.of(
+        RangeQuery.of(
+            range -> range.field(BIRTHDAY)
+                .lte(JsonData.of(value))));
+  }
+
 
   private String resolveDateOperator(final String operator) {
     return operator == null ? "equal" : operator.toLowerCase();
