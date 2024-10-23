@@ -42,7 +42,18 @@ type Identification = {
     identificationType?: Selectable;
 };
 
-type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification;
+type EventIds = {
+    morbidityId?: string;
+    documentId?: string;
+    stateCaseId?: string;
+    abcCaseId?: string;
+    cityCountyCaseId?: string;
+    notificationId?: string;
+    labReportId?: string;
+    accessionNumberId?: string;
+};
+
+type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
 
 export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
 

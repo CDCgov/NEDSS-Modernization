@@ -1118,7 +1118,15 @@ input PersonFilter {
   mortalityStatus: String
   ethnicity: String
   vaccinationId: String
+  morbidityId: String
+  documentId: String
+  stateCaseId: String
+  abcCaseId: String
+  cityCountyCaseId: String
+  notificationId: String
   treatmentId: String
+  labReportId: String
+  accessionNumberId: String
   disableSoundex: Boolean
   recordStatus: [RecordStatus!]!
 }
