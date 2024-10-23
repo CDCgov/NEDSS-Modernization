@@ -8,8 +8,8 @@ import { ReactNode } from 'react';
 
 const defaultValue: Partial<IdentificationEntry> = {
     asOf: today(),
-    type: undefined,
-    issuer: undefined,
+    type: null,
+    issuer: null,
     id: ''
 };
 type Props = {
@@ -25,7 +25,7 @@ export const IdentificationRepeatingBlock = ({ id, errors, values, onChange, isD
 
     const columns: Column<IdentificationEntry>[] = [
         { id: 'identificationAsOf', name: 'As of', render: (v) => v.asOf },
-        { id: 'identificationType', name: 'Type', render: (v) => v.type.name },
+        { id: 'identificationType', name: 'Type', render: (v) => v.type?.name },
         { id: 'assigningAuthority', name: 'Authority', render: (v) => v.issuer?.name },
         { id: 'idValue', name: 'Value', render: (v) => v.id }
     ];

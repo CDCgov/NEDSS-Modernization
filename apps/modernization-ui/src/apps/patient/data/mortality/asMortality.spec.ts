@@ -3,7 +3,8 @@ import { asMortality } from './asMortality';
 describe('when mapping a mortality entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
         const entry = {
-            asOf: '04/13/2017'
+            asOf: '04/13/2017',
+            deceasedOn: '10/08/1927'
         };
 
         const actual = asMortality(entry);
@@ -64,5 +65,15 @@ describe('when mapping a mortality entry to a format accepted by the API', () =>
         const actual = asMortality(entry);
 
         expect(actual).toEqual(expect.objectContaining({ country: 'country-value' }));
+    });
+
+    it('should not map when only as of is present', () => {
+        const entry = {
+            asOf: '04/13/2017'
+        };
+
+        const actual = asMortality(entry);
+
+        expect(actual).toBeUndefined();
     });
 });
