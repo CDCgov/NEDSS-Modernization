@@ -31,8 +31,7 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
       final PatientSearchCriteriaFilterResolver filterResolver,
       final PatientSearchCriteriaQueryResolver queryResolver,
       final PatientSearchCriteriaSortResolver sortResolver,
-      final SearchResultResolver resultResolver
-  ) {
+      final SearchResultResolver resultResolver) {
     this.client = client;
     this.finder = finder;
     this.filterResolver = filterResolver;
@@ -44,8 +43,7 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
   @Override
   public SearchResult<PatientSearchResult> search(
       final PatientFilter criteria,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
 
     Query filter = filterResolver.resolve(criteria);
     Query query = queryResolver.resolve(criteria);
@@ -60,8 +58,7 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
               .sort(sorting)
               .from((int) pageable.getOffset())
               .size(pageable.getPageSize()),
-          SearchablePatient.class
-      );
+          SearchablePatient.class);
 
       HitsMetadata<SearchablePatient> hits = response.hits();
 
@@ -78,8 +75,7 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
 
   private SearchResult<PatientSearchResult> paged(
       final HitsMetadata<SearchablePatient> hits,
-      final Pageable pageable
-  ) {
+      final Pageable pageable) {
     List<Long> ids = hits.hits()
         .stream()
         .map(hit -> Long.parseLong(hit.id()))
@@ -93,7 +89,6 @@ class ElasticsearchPatientSearcher implements SearchResolver<PatientFilter, Pati
     return resultResolver.resolve(
         results,
         pageable,
-        hits.total().value()
-    );
+        hits.total().value());
   }
 }
