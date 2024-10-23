@@ -120,5 +120,23 @@ class ClassicHomePage {
     cy.get("#id_C_D01").select("AIDS", {force: true})
     cy.get("td").contains("Run").eq(0).click()
   }
+
+  verifyDocumentsRequiringSecurityAssignment() {
+    cy.get("a").contains("Documents Requiring Security Assignment").eq(0).click()
+    cy.get("table#parent th img#queueIcon").eq(3).click()
+    cy.get("input#SearchText1").first().type("jaja")
+    cy.get("#b1SearchText1").click({force: true})
+  }
+
+  verifyDocumentsRequiringReview() {
+    cy.get("a").contains("Documents Requiring Review").eq(0).click()
+    cy.get("a").contains("Lab Report").eq(0).click()
+  }
+
+  verifyOpenInvestigations() {
+    cy.get("a").contains("Open Investigations").eq(0).click()    
+  } 
+
 }
+
 export default new ClassicHomePage();
