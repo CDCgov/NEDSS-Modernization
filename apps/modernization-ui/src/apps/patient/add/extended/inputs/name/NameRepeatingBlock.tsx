@@ -8,20 +8,20 @@ import { ReactNode } from 'react';
 
 const defaultValue: Partial<NameEntry> = {
     asOf: today(),
-    type: undefined,
-    prefix: undefined,
+    type: null,
+    prefix: null,
     first: '',
     middle: '',
     secondMiddle: '',
     last: '',
     secondLast: '',
-    suffix: undefined,
-    degree: undefined
+    suffix: null,
+    degree: null
 };
 
 const columns: Column<NameEntry>[] = [
     { id: 'nameAsOf', name: 'As of', render: (v) => v.asOf },
-    { id: 'nameType', name: 'Type', render: (v) => v.type.name },
+    { id: 'nameType', name: 'Type', render: (v) => v.type?.name },
     { id: 'nameLast', name: 'Last', render: (v) => v.last },
     { id: 'nameFirst', name: 'First', render: (v) => v.first },
     { id: 'nameMiddle', name: 'Middle', render: (v) => v.middle },
