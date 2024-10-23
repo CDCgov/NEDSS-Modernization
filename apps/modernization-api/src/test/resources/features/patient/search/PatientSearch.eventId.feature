@@ -15,6 +15,16 @@ Feature: Patient Search by Event ID
     Then the patient is in the search results
     And there is only one patient search result
 
+
+  Scenario: I can find a patient with a Document ID
+    Given I have another patient
+    And the patient has a Case Report
+    And patients are available for search
+    And I would like to search for a patient using the Document ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find a patient with a Lab Report ID
     Given I have another patient
     And the patient has a Lab Report

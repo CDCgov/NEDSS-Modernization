@@ -113,6 +113,24 @@ public class PatientFilter {
     return this;
   }
 
+  public PatientFilter withMorbidityId(final String identifier) {
+    this.morbidityId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeMorbidityId() {
+    return Optional.ofNullable(morbidityId);
+  }
+
+  public PatientFilter withDocumentId(final String identifier) {
+    this.documentId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeDocumentId() {
+    return Optional.ofNullable(documentId);
+  }
+
   public PatientFilter withLabReportId(final String identifier) {
     this.labReportId = identifier;
     return this;
@@ -122,12 +140,5 @@ public class PatientFilter {
     return Optional.ofNullable(labReportId);
   }
 
-  public PatientFilter withMorbidityId(final String identifier) {
-    this.morbidityId = identifier;
-    return this;
-  }
 
-  public Optional<String> maybeMorbidityId() {
-    return Optional.ofNullable(morbidityId);
-  }
 }
