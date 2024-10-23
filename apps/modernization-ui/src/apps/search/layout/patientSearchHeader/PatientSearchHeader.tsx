@@ -20,7 +20,10 @@ const PatientSearchHeader = ({ className, actions }: Props) => {
             <div className={styles.links}>
                 <div className={styles.linkContainer}>
                     <Link href="/nbs/LoadFindPatient1.do?ContextAction=GlobalPatient">Go to classic search</Link>
-                    <ExtendedTooltip>
+                    <ExtendedTooltip
+                        labelTitle="We are modernizing search"
+                        labelText="To perform an event search or save a new custom queue, continue using classic search"
+                        position="bottom">
                         <Icon name="info_outline" color="#265e9d" />
                     </ExtendedTooltip>
                 </div>

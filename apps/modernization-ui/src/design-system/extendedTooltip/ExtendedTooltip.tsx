@@ -2,23 +2,28 @@ import { Tooltip } from '@trussworks/react-uswds';
 import { ReactNode } from 'react';
 import styles from './extended-tooltip.module.scss';
 
-type Props = { label?: string; children: ReactNode };
+type Props = {
+    labelTitle: string;
+    labelText: string;
+    position?: 'bottom' | 'top' | 'left' | 'right' | undefined;
+    children: ReactNode;
+};
 
-const ExtendedTooltip = ({ children }: Props) => {
+const ExtendedTooltip = ({ labelTitle, labelText, position, children }: Props) => {
     return (
         <div className={styles.tooltipContainer}>
             <Tooltip
-                position="bottom"
+                position={position}
                 label={
                     <div className={styles.label}>
                         <p>
-                            <b>We are modernizing search</b>
+                            <b>{labelTitle}</b>
                             <br />
-                            To perform an event search or save a new custom queue, continue using classic search.
+                            {labelText}
                         </p>
                     </div>
                 }>
-                <span>{children}</span>
+                {children}
             </Tooltip>
         </div>
     );
