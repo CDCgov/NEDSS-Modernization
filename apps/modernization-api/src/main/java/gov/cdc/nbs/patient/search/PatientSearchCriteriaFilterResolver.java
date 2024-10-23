@@ -26,6 +26,7 @@ class PatientSearchCriteriaFilterResolver {
   private static final String DECEASED = "deceased_ind_cd";
   private static final String PERSON_TYPE = "cd";
   private static final String PERSON_TYPE_PATIENT = "PAT";
+  private static final String PAINLESS = "painless";
 
   Query resolve(final PatientFilter criteria) {
     return Stream.of(
@@ -126,7 +127,7 @@ class PatientSearchCriteriaFilterResolver {
         Script.of(s -> s
             .inline(inline -> inline
                 .source("doc['birth_time'].value.getDayOfMonth() == " + criteria.getDateOfBirthDay())
-                .lang("painless"))))));
+                .lang(PAINLESS))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthMonthCriteria(final PatientFilter criteria) {
@@ -138,7 +139,7 @@ class PatientSearchCriteriaFilterResolver {
         Script.of(s -> s
             .inline(inline -> inline
                 .source("doc['birth_time'].value.getMonthValue() == " + criteria.getDateOfBirthMonth())
-                .lang("painless"))))));
+                .lang(PAINLESS))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthYearCriteria(final PatientFilter criteria) {
@@ -150,7 +151,7 @@ class PatientSearchCriteriaFilterResolver {
         Script.of(s -> s
             .inline(inline -> inline
                 .source("doc['birth_time'].value.getYear() == " + criteria.getDateOfBirthYear())
-                .lang("painless"))))));
+                .lang(PAINLESS))))));
   }
 
   private Optional<QueryVariant> applyIdentificationCriteria(final PatientFilter criteria) {
