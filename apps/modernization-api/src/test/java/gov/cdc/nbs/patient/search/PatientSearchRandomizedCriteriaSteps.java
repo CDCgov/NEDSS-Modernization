@@ -92,12 +92,12 @@ public class PatientSearchRandomizedCriteriaSteps {
 
       case "birthday low" -> birthdayFromTarget("equal")
           .ifPresent(birthday -> {
-            filter.setBirthDateLowRange(birthday.minusDays(2));
+            filter.setDateOfBirthLow(birthday.minusDays(2));
           });
 
       case "birthday high" -> birthdayFromTarget("equal")
           .ifPresent(birthday -> {
-            filter.setBirthDateHighRange(birthday.plusDays(2));
+            filter.setDateOfBirthHigh(birthday.plusDays(2));
           });
 
       case "gender" -> this.searchable.maybeActive()

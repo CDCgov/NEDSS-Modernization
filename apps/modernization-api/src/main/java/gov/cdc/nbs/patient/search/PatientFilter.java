@@ -50,8 +50,8 @@ public class PatientFilter {
   private Integer dateOfBirthDay;
   private Integer dateOfBirthMonth;
   private Integer dateOfBirthYear;
-  private LocalDate birthDateLowRange;
-  private LocalDate birthDateHighRange;
+  private LocalDate dateOfBirthLow;
+  private LocalDate dateOfBirthHigh;
   private String gender;
   private Deceased deceased;
   private String address;

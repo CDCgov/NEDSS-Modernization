@@ -304,7 +304,7 @@ class PatientSearchCriteriaQueryResolver {
   private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
 
     LocalDate dateOfBirth = criteria.getDateOfBirth();
-    LocalDate lowDateOfBirth = criteria.getBirthDateLowRange();
+    LocalDate lowDateOfBirth = criteria.getDateOfBirthLow();
 
     if (dateOfBirth != null || lowDateOfBirth == null) {
       return Optional.empty();
@@ -321,7 +321,7 @@ class PatientSearchCriteriaQueryResolver {
   private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientFilter criteria) {
 
     LocalDate dateOfBirth = criteria.getDateOfBirth();
-    LocalDate highDateOfBirth = criteria.getBirthDateHighRange();
+    LocalDate highDateOfBirth = criteria.getDateOfBirthHigh();
 
     if (dateOfBirth != null || highDateOfBirth == null) {
       return Optional.empty();
