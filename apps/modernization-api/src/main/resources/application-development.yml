@@ -62,7 +62,7 @@ nbs:
             enabled: true
       patient:
         add:
-          enabled: true
+          enabled: false
           extended:
             enabled: true
 
