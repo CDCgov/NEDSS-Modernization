@@ -44,4 +44,17 @@ describe('when mapping a race entry to a format accepted by the API', () => {
             expect.objectContaining({ detailed: expect.arrayContaining(['detail-one-value', 'detail-two-value']) })
         );
     });
+
+    it('should not map when race is null', () => {
+        const entry = {
+            id: 331,
+            asOf: '04/13/2017',
+            race: null,
+            detailed: []
+        };
+
+        const actual = asRace(entry);
+
+        expect(actual).toBeUndefined();
+    });
 });
