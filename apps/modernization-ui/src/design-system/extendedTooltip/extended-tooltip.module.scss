@@ -1,0 +1,27 @@
+.tooltipContainer {
+    span {
+        left: 0%
+    }
+    button {
+        background-color: transparent;
+        &:hover {
+            background-color: transparent;
+        }
+    }
+    span {
+        background-color: transparent;
+    }
+}
+
+.label {
+    margin: 0;
+    padding: 1rem;
+    text-wrap: wrap;
+    background-color: white;
+    color: black;
+    outline-color: #E6E7E8;
+    outline-width: 2px;
+    outline-style: solid;
+    filter: drop-shadow(0px 2px 4px #b8b8b8);
+    width: 300px;
+}

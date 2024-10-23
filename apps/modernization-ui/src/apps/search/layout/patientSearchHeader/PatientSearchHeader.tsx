@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import styles from './patient-search-header.module.scss';
 import { Link } from '@trussworks/react-uswds';
 import { Icon } from 'design-system/icon';
+import ExtendedTooltip from 'design-system/extendedTooltip/ExtendedTooltip';
 
 type ActionsRenderer = () => ReactNode;
 
@@ -19,7 +20,9 @@ const PatientSearchHeader = ({ className, actions }: Props) => {
             <div className={styles.links}>
                 <div className={styles.linkContainer}>
                     <Link href="/nbs/LoadFindPatient1.do?ContextAction=GlobalPatient">Go to classic search</Link>
-                    <Icon name="info_outline" color="#265e9d" />
+                    <ExtendedTooltip>
+                        <Icon name="info_outline" color="#265e9d" />
+                    </ExtendedTooltip>
                 </div>
             </div>
 
