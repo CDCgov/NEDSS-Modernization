@@ -1,33 +1,14 @@
-.tooltipContainer {
-    button {
-        background-color: transparent;
-
-
-        &:hover {
-            background-color: transparent;
-        }
-        &:focus {
-            outline-color: transparent;
-        }
-    }
-
-    span {
-        background-color: transparent;
-    }
-}
-
-
-.label {
-    padding-right: 1rem;
-    padding-left: 1rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-    text-wrap: wrap;
-    background-color: white;
-    color: black;
-    outline-color: #E6E7E8;
-    outline-width: 2px;
-    outline-style: solid;
-    filter: drop-shadow(0px 2px 4px #9f9f9f);
-    width: 300px;
+.tooltipcontainer {
+  position: absolute;
+  margin: 0;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  background-color: white;
+  color: black;
+  outline-color: #E6E7E8;
+  outline-width: 1px;
+  outline-style: solid;
+  filter: drop-shadow(0px 4px 2px #9f9f9f);
+  width: 300px;
 }

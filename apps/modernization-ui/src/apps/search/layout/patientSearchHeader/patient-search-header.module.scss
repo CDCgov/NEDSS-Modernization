@@ -18,3 +18,11 @@
         flex-grow: 1;
     }
 }
+
+.infoIconContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+}
