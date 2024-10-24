@@ -1,7 +1,7 @@
 import { RefObject, useCallback, useMemo, useState } from 'react';
 
 type UseTooltipProps = {
-    ref: RefObject<HTMLElement>;
+    anchorRef: RefObject<HTMLElement>;
     richTooltipRef: RefObject<HTMLDivElement>;
     marginTop?: number;
     marginLeft?: number;
@@ -13,7 +13,7 @@ type Position = {
     width?: number;
 };
 
-export function useTooltip({ ref, richTooltipRef, marginTop, marginLeft }: UseTooltipProps) {
+export function useTooltip({ anchorRef, richTooltipRef, marginTop, marginLeft }: UseTooltipProps) {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [position, setPosition] = useState<Position>({});
 
@@ -25,19 +25,19 @@ export function useTooltip({ ref, richTooltipRef, marginTop, marginLeft }: UseTo
     };
 
     useMemo(() => {
-        if (!ref.current) {
+        if (!anchorRef.current) {
             return;
         }
 
         if (isVisible) {
-            const { top, left, width } = ref.current.getBoundingClientRect();
+            const { top, left, width } = anchorRef.current.getBoundingClientRect();
             setPosition({ ...calcBottomLeftPosition(marginTop || top, marginLeft || left, width) });
         }
 
         if (!isVisible) {
             setPosition({});
         }
-    }, [isVisible, ref, richTooltipRef]);
+    }, [isVisible, anchorRef, richTooltipRef]);
 
     const onMouseEnter = useCallback(() => {
         setIsVisible(true);

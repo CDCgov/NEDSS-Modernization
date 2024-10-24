@@ -21,7 +21,7 @@ const PatientSearchHeader = ({ className, actions }: Props) => {
             <div className={styles.links}>
                 <div className={styles.linkContainer}>
                     <Link href="/nbs/LoadFindPatient1.do?ContextAction=GlobalPatient">Go to classic search</Link>
-                    <RichTooltip marginTop={42} elementRef={infoIconRef}>
+                    <RichTooltip marginTop={42} anchorRef={infoIconRef}>
                         <span>
                             <b>We are modernizing search</b>
                             <br />
