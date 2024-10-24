@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,7 @@ public class PatientFilter {
   @AllArgsConstructor
   @NoArgsConstructor
   @EqualsAndHashCode
+  @JsonInclude(Include.NON_NULL)
   public static class Identification {
     private String identificationNumber;
     private String assigningAuthority;
@@ -70,6 +72,8 @@ public class PatientFilter {
   @Setter(AccessLevel.NONE)
   private List<RecordStatus> adjustedStatus;
 
+  private DateCriteria bornOn;
+
   public PatientFilter() {
     this(RecordStatus.ACTIVE);
   }
@@ -105,6 +109,38 @@ public class PatientFilter {
 
   public PatientFilter withId(final String id) {
     this.id = id;
+    return this;
+  }
+
+  public PatientFilter withBornOnDay(final int day) {
+    if (this.bornOn != null) {
+      this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withDay(day));
+    } else {
+      this.bornOn = DateCriteria.equals(day, null, null);
+    }
+    return this;
+  }
+
+  public PatientFilter withBornOnMonth(final int month) {
+    if (this.bornOn != null) {
+      this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withMonth(month));
+    } else {
+      this.bornOn = DateCriteria.equals(null, month, null);
+    }
+    return this;
+  }
+
+  public PatientFilter withBornOnYear(final int year) {
+    if (this.bornOn != null) {
+      this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withYear(year));
+    } else {
+      this.bornOn = DateCriteria.equals(null, null, year);
+    }
+    return this;
+  }
+
+  public PatientFilter withBornBetween(final LocalDate from, final LocalDate to) {
+    this.bornOn = DateCriteria.between(from, to);
     return this;
   }
 }
