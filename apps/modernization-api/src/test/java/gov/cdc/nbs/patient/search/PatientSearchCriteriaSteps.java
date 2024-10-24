@@ -6,6 +6,9 @@ import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 public class PatientSearchCriteriaSteps {
 
   private final Active<PatientIdentifier> patient;
@@ -78,5 +81,33 @@ public class PatientSearchCriteriaSteps {
   public void i_would_like_to_search_for_a_patient_using_a_local_ID() {
     this.patient.maybeActive().ifPresent(
         found -> this.activeCriteria.active(criteria -> criteria.withId(found.local())));
+  }
+
+  @Given("I add the patient criteria for patient's born on the {nth} day of the month")
+  public void i_would_like_to_search_for_a_patient_born_on_a_specific_day_of_the_month(final int value) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria.active(criteria -> criteria.withBornOnDay(value))
+    );
+  }
+
+  @Given("I add the patient criteria for patient's born in the month of {month}")
+  public void i_would_like_to_search_for_a_patient_born_on_a_specific_month(final Month month) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria.active(criteria -> criteria.withBornOnMonth(month.getValue()))
+    );
+  }
+
+  @Given("I add the patient criteria for patient's born in the year {int}")
+  public void i_would_like_to_search_for_a_patient_born_on_a_specific_year(final int year) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria.active(criteria -> criteria.withBornOnYear(year))
+    );
+  }
+
+  @Given("I add the patient criteria for patient's born between {localDate} and {localDate}")
+  public void i_would_like_to_search_for_a_patient_born_between(final LocalDate from, final LocalDate to) {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria.active(criteria -> criteria.withBornBetween(from,to))
+    );
   }
 }

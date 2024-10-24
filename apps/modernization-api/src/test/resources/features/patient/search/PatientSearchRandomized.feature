@@ -23,6 +23,11 @@ Feature: Patient Search Randomized
       | birthday         | before    |
       | birthday         | after     |
       | birthday         | equal     |
+      | birthday day     |           |
+      | birthday month   |           |
+      | birthday year    |           |
+      | birthday low     |           |
+      | birthday high    |           |
       | gender           |           |
       | deceased         |           |
       | address          |           |
