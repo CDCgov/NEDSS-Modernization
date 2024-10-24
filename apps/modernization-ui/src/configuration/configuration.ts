@@ -19,6 +19,9 @@ type SearchView = Toggle & {
 };
 
 type Search = {
+    events: Toggle;
+    investigations: Toggle;
+    laboratoryReports: Toggle;
     view: SearchView;
 };
 

@@ -1,0 +1,16 @@
+@use 'styles/colors.scss';
+
+.richtooltipcontainer {
+  position: absolute;
+  margin: 0;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 20px;
+  background-color: colors.$base-white;
+  color: colors.$base-darkest;
+  outline-color: colors.$base-lighter;
+  outline-width: 1px;
+  outline-style: solid;
+  filter: drop-shadow(0px 4px 4px colors.$base-light);
+  width: 300px;
+}
