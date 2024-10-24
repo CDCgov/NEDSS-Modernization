@@ -14,7 +14,7 @@ type Props = {
     options: Selectable[];
     value?: Selectable[];
     error?: string;
-    requried?: boolean;
+    required?: boolean;
     sizing?: Sizing;
     onChange?: (selected: Selectable[]) => void;
     onBlur?: (event: ReactFocusEvent<HTMLElement>) => void;
@@ -30,7 +30,7 @@ export const CheckboxGroup = ({
     disabled = false,
     className,
     error,
-    requried,
+    required,
     sizing
 }: Props) => {
     const { items, selected, select, deselect, reset } = useMultiSelection({ available: options });
@@ -56,7 +56,7 @@ export const CheckboxGroup = ({
     return (
         <fieldset
             className={classNames(styles.checkboxGroup, className, {
-                [styles.required]: requried,
+                [styles.required]: required,
                 [styles.compact]: sizing === 'compact'
             })}>
             <legend>{label}</legend>

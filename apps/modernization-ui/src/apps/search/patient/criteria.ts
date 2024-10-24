@@ -12,7 +12,9 @@ export { statusOptions };
 
 type BasicInformation = {
     lastName?: string;
+    lastNameOperator?: Selectable;
     firstName?: string;
+    firstNameOperator?: Selectable;
     dateOfBirth?: string;
     gender?: Selectable;
     id?: string;
