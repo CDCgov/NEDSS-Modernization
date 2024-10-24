@@ -8,15 +8,19 @@ import { validNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { genders } from 'options/gender';
-import { OperatorSelect } from 'components/FormInputs/OperatorSelect/OperatorSelect';
-import { EntryWrapper } from 'components/Entry';
-import { Grid } from '@trussworks/react-uswds';
+// import { OperatorSelect } from 'components/FormInputs/OperatorSelect';
+// import { EntryWrapper } from 'components/Entry';
+// import { Grid } from '@trussworks/react-uswds';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
         <SearchCriteria>
+            {/* 
+            
+            // WHEN READY: Uncomment this section to add the operator select for last name, the copy for first name and any others
+
             <EntryWrapper orientation="vertical" label="Last name" htmlFor="lastName" sizing="compact">
                 <Grid col={12}>
                     <Grid row>
@@ -52,7 +56,7 @@ export const BasicInformation = () => {
                     </Grid>
                 </Grid>
             </EntryWrapper>
-            {/* 
+            */}
             <Controller
                 control={control}
                 name="lastName"
@@ -72,7 +76,6 @@ export const BasicInformation = () => {
                     />
                 )}
             />
-            */}
             <Controller
                 control={control}
                 name="firstName"
