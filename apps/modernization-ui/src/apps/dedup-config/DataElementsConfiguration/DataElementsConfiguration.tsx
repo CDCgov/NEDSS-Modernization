@@ -6,6 +6,7 @@ import { Input } from 'components/FormInputs/Input';
 import { DataElementsTable } from './DataElementsTable';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import saveDataElementsConfiguration from './api';
+import { useAlert } from 'alert/useAlert';
 
 const DataElementsConfiguration = () => {
     const { dataElements, setDataElements, belongingnessRatio, setBelongingnessRatio } = useDataElementsContext();
@@ -14,10 +15,18 @@ const DataElementsConfiguration = () => {
         mode: 'onBlur',
         defaultValues: { dataElements, belongingnessRatio: belongingnessRatio ?? undefined }
     });
+    console.log(
+        'DataElementsConfiguration component initialized with dataElements:',
+        dataElements,
+        'and belongingnessRatio:',
+        belongingnessRatio
+    );
 
     const { formState } = form;
+    const { showSuccess, showError } = useAlert();
 
     const onSubmit = form.handleSubmit(async (data) => {
+        console.log('Form submitted with data:', data);
         let finalBelongingnessRatio = data.belongingnessRatio;
         if (typeof finalBelongingnessRatio === 'string') {
             finalBelongingnessRatio = finalBelongingnessRatio === '' ? undefined : parseFloat(finalBelongingnessRatio);
@@ -27,9 +36,16 @@ const DataElementsConfiguration = () => {
             dataElements: data.dataElements || [],
             belongingnessRatio: finalBelongingnessRatio
         };
+        console.log('Payload for saveDataElementsConfiguration API:', payload);
 
-        // Call API to save data
-        await saveDataElementsConfiguration(payload);
+        try {
+            await saveDataElementsConfiguration(payload);
+            console.log('Data elements configuration saved successfully');
+            showSuccess({ message: 'Data elements configuration saved successfully' });
+        } catch (error) {
+            console.error('Error saving data elements configuration:', error);
+            showError({ message: 'Error saving data elements configuration' });
+        }
 
         setDataElements(data.dataElements || []);
         setBelongingnessRatio(finalBelongingnessRatio);
