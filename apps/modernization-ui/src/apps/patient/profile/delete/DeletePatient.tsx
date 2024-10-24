@@ -1,4 +1,4 @@
-import { DeletePatientMutation, PatientSummary, useDeletePatientMutation } from 'generated/graphql/schema';
+import { DeletePatientMutation, useDeletePatientMutation } from 'generated/graphql/schema';
 import { Icon } from 'design-system/icon';
 import { Confirmation, Warning } from 'design-system/modal';
 import { useAlert } from 'alert';
@@ -11,23 +11,23 @@ import { DeletabilityResult, resolveDeletability } from './resolveDeletability';
 
 import { useSearchNavigation } from 'apps/search';
 import { Button } from 'components/button';
+import { useProfileContext } from '../ProfileContext';
 
 type Props = {
     patient: Patient;
-    summary: PatientSummary;
 };
 
-const DeletePatient = ({ patient, summary }: Props) => {
+const DeletePatient = ({ patient }: Props) => {
     const { showSuccess, showError } = useAlert();
-
     const { go } = useSearchNavigation();
+    const { summary } = useProfileContext();
 
     const deletability = resolveDeletability(patient);
 
     const handleDeleteComplete = (data: DeletePatientMutation) => {
         if (data.deletePatient.__typename === 'PatientDeleteSuccessful') {
             showSuccess({
-                message: `Deleted patient ${(summary.legalName && displayName('short')(summary.legalName)) || patient.shortId}`
+                message: `Deleted patient ${(summary?.legalName && displayName('short')(summary.legalName)) || patient.shortId}`
             });
             go();
         } else if (data.deletePatient.__typename === 'PatientDeleteFailed') {
@@ -64,12 +64,12 @@ const DeletePatient = ({ patient, summary }: Props) => {
                             confirmText="Yes, delete"
                             onConfirm={handleDeletePatient}>
                             Would you like to permanently delete patient record <strong>{patient?.shortId}</strong>
-                            {summary.legalName && (
+                            {summary?.legalName && (
                                 <>
-                                    , <strong>{displayName()(summary.legalName)}</strong>
+                                    , <strong>{displayName('fullLastFirst')(summary.legalName)}</strong>
                                 </>
                             )}
-                            ,
+                            .
                         </Confirmation>
                     </Shown>
                     <Shown when={deletability === DeletabilityResult.Has_Associations}>

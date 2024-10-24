@@ -44,9 +44,7 @@ export const PatientProfile = () => {
                             labelPosition="right">
                             Print
                         </Button>
-                        {permissions.delete && patient && summary && (
-                            <DeletePatient patient={patient} summary={summary} />
-                        )}
+                        {permissions.delete && patient && <DeletePatient patient={patient} />}
                     </div>
                 </header>
                 <main className="main-body">
