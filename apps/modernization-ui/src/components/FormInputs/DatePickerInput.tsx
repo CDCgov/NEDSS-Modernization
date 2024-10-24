@@ -71,9 +71,9 @@ export const DatePickerInput = (props: DatePickerProps) => {
             required={props.required}
             error={_error}>
             {props.defaultValue && (
-                <InternalDatePicker {...props} onBlur={checkValidity} defaultValue={intialDefault} />
+                <InternalDatePicker {...props} error={_error} onBlur={checkValidity} defaultValue={intialDefault} />
             )}
-            {!props.defaultValue && <InternalDatePicker {...props} onBlur={checkValidity} />}
+            {!props.defaultValue && <InternalDatePicker {...props} error={_error} onBlur={checkValidity} />}
         </EntryWrapper>
     );
 };
@@ -87,7 +87,7 @@ const InternalDatePicker = ({
     disabled = false,
     disableFutureDates = false,
     label,
-    errorMessage
+    error
 }: DatePickerProps) => {
     const toggleCalendar = label ? `${label} toggle calendar` : EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
@@ -111,8 +111,7 @@ const InternalDatePicker = ({
             onKeyDown={handleKeyDown}
             onChange={handleOnChange(onChange)}
             className={classNames(className)}
-            validationStatus={errorMessage ? 'error' : undefined}
-            aria-describedby={errorMessage ? `${errorMessage}-message` : undefined}
+            validationStatus={error ? 'error' : undefined}
             name={name}
             disabled={disabled}
             defaultValue={defaultValue || undefined}
