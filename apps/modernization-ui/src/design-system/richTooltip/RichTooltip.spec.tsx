@@ -8,7 +8,7 @@ describe('when a rich tooltip is displayed', () => {
         };
         const { container } = render(
             <div>
-                <RichTooltip elementRef={mockRichTooltipAnchorRef}>Contents</RichTooltip>
+                <RichTooltip anchorRef={mockRichTooltipAnchorRef}>Contents</RichTooltip>
             </div>
         );
 
