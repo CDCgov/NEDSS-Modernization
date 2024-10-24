@@ -3,7 +3,8 @@ import { asBirth } from './asBirth';
 describe('when mapping a birth entry to a format accepted by the API', () => {
     it('should include the as of date', () => {
         const entry = {
-            asOf: '04/13/2017'
+            asOf: '04/13/2017',
+            bornOn: '11/05/2003'
         };
 
         const actual = asBirth(entry);
@@ -86,5 +87,15 @@ describe('when mapping a birth entry to a format accepted by the API', () => {
         const actual = asBirth(entry);
 
         expect(actual).toEqual(expect.objectContaining({ country: 'country-value' }));
+    });
+
+    it('should not map when only as of is present', () => {
+        const entry = {
+            asOf: '04/13/2017'
+        };
+
+        const actual = asBirth(entry);
+
+        expect(actual).toBeUndefined();
     });
 });

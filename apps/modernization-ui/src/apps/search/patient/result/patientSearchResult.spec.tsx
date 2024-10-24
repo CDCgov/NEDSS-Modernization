@@ -67,10 +67,9 @@ describe('patientSearchResult functions', () => {
         emails: ['emily.reynolds@owensborohealth.org'],
         detailedPhones: [
             {
-                use: '',
-                type: 'PH',
-                number: '270-685-4067',
-                extension: ''
+                use: 'phone-use-value',
+                type: 'phone-type-value',
+                number: '270-685-4067'
             }
         ]
     };

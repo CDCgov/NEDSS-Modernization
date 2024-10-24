@@ -16,4 +16,12 @@ describe('when mapping an AdministrativeEntry to an Administrative', () => {
 
         expect(actual).toEqual(expect.objectContaining({ comment: 'entered-value' }));
     });
+
+    it('should not include a blank comment', () => {
+        const entry = { asOf: '04/13/2017', comment: '' };
+
+        const actual = asAdministrative(entry);
+
+        expect(actual).toEqual(expect.objectContaining({ comment: undefined }));
+    });
 });

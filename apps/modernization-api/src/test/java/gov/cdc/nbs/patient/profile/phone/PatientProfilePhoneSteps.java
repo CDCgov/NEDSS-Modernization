@@ -9,11 +9,9 @@ import gov.cdc.nbs.patient.PatientMother;
 import gov.cdc.nbs.patient.TestPatient;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.support.Active;
-import gov.cdc.nbs.testing.support.Available;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -24,21 +22,29 @@ public class PatientProfilePhoneSteps {
 
     private final Faker faker = new Faker();
 
-    @Autowired
-    PatientMother mother;
+    final PatientMother mother;
 
-    @Autowired
-    Available<PatientIdentifier> patients;
+    final Active<PatientIdentifier> activePatient;
 
-    @Autowired
-    Active<PatientInput> input;
+    final Active<PatientInput> input;
 
-    @Autowired
-    TestPatient patient;
+    final TestPatient patient;
+
+    PatientProfilePhoneSteps(
+        final PatientMother mother,
+        final Active<PatientIdentifier> activePatient,
+        final Active<PatientInput> input,
+        final TestPatient patient
+    ) {
+        this.mother = mother;
+        this.activePatient = activePatient;
+        this.input = input;
+        this.patient = patient;
+    }
 
     @Given("the patient has a phone")
     public void the_patient_has_a_phone() {
-        mother.withPhone(patients.one());
+        activePatient.maybeActive().ifPresent(mother::withPhone);
 
     }
 
@@ -70,6 +76,12 @@ public class PatientProfilePhoneSteps {
 
         }
 
+    }
+
+    @Given("the patient has the {phoneType} - {phoneUse} number of {string}")
+    public void the_patient_has_the_phone(final String type, final String use, final String number) {
+        this.activePatient.maybeActive()
+            .ifPresent(found -> mother.withPhone(found, type, use, null, number, null));
     }
 
 }

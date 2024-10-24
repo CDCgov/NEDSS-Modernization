@@ -9,7 +9,7 @@ import { categoryValidator } from './categoryValidator';
 
 const columns: Column<RaceEntry>[] = [
     { id: 'race-as-of', name: 'As of', render: (v) => v.asOf },
-    { id: 'race-name', name: 'Race', render: (v) => v.race.name },
+    { id: 'race-name', name: 'Race', render: (v) => v.race?.name },
     {
         id: 'race-detailed',
         name: 'Detailed race',

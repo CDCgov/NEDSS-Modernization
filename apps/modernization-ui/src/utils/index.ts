@@ -1,4 +1,5 @@
 export * from './orNull';
+export * from './orUndefined';
 export * from './mapNonNull';
 export * from './maybeNumber';
 export * from './formattedName';
@@ -6,6 +7,7 @@ export * from './objectOrUndefined';
 export * from './exists';
 export * from './focusedTarget';
 export * from './mapIf';
+export * from './isEmpty';
 
 export type { Predicate } from './predicate';
 
