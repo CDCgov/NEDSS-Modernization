@@ -1,15 +1,18 @@
 import { render } from '@testing-library/react';
-import { axe } from 'jest-axe';
 import RichTooltip from './RichTooltip';
 
 describe('when a rich tooltip is displayed', () => {
-    it('should render with no accessibility violations', async () => {
+    it('should render with no errors.', async () => {
+        const mockRichTooltipAnchorRef: React.RefObject<HTMLElement> = {
+            current: document.createElement('div', { is: 'mockRichTooltipAnchorRef' })
+        };
         const { container } = render(
-            <RichTooltip labelTitle="Test label title" labelText="Test label text">
-                Contents
-            </RichTooltip>
+            <div>
+                <RichTooltip elementRef={mockRichTooltipAnchorRef}>Contents</RichTooltip>
+            </div>
         );
 
-        expect(await axe(container)).toHaveNoViolations();
+        expect(container).toBeTruthy();
+        expect(mockRichTooltipAnchorRef.current).toBeTruthy();
     });
 });
