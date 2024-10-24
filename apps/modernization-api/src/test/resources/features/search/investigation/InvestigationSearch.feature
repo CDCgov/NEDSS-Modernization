@@ -234,9 +234,9 @@ Feature: Investigation search
     And there is only one investigation search result
 
   Scenario: I can find investigations related to Active Bacterial Core Surveillance cases
-    Given the investigation is related to ABCS Case "1013673"
+    Given the investigation is related to ABCs Case "1013673"
     And the investigation is available for search
-    And I want to find investigations for the ABCS Case "1013673"
+    And I want to find investigations for the ABCs Case "1013673"
     When I search for investigations
     Then the Investigation search results contain the Investigation
     And there is only one investigation search result

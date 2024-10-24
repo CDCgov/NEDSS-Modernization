@@ -34,6 +34,8 @@ public class InvestigationMother {
 
   private final Available<InvestigationIdentifier> available;
   private final Active<InvestigationIdentifier> active;
+  private final Active<AbcCaseIdentifier> activeAbcCase;
+  private final Active<StateCaseIdentifier> activeStateCase;
   private final PatientMother patientMother;
   private final TestInvestigationCleaner cleaner;
 
@@ -45,6 +47,8 @@ public class InvestigationMother {
       final Available<InvestigationIdentifier> available,
       final Active<InvestigationIdentifier> active,
       final PatientMother patientMother,
+      final Active<AbcCaseIdentifier> activeAbcCase,
+      final Active<StateCaseIdentifier> activeStateCase,
       final TestInvestigationCleaner cleaner) {
     this.idGenerator = idGenerator;
     this.settings = settings;
@@ -53,6 +57,8 @@ public class InvestigationMother {
     this.available = available;
     this.active = active;
     this.patientMother = patientMother;
+    this.activeAbcCase = activeAbcCase;
+    this.activeStateCase = activeStateCase;
     this.cleaner = cleaner;
   }
 
@@ -221,16 +227,18 @@ public class InvestigationMother {
 
   void relatedToABCSCase(
       final InvestigationIdentifier identifier,
-      final String number) {
+      final String abcCaseId) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
 
     ActId relatedTo = new ActId(new ActIdId(act.getId(), 2));
     relatedTo.setTypeCd("STATE");
-    relatedTo.setRootExtensionTxt(number);
+    relatedTo.setAssigningAuthorityCd("ABCS");
+    relatedTo.setRootExtensionTxt(abcCaseId);
 
     act.addIdentifier(relatedTo);
+    activeAbcCase.active(new AbcCaseIdentifier(abcCaseId));
 
   }
 
@@ -251,16 +259,18 @@ public class InvestigationMother {
 
   void relatedToStateCase(
       final InvestigationIdentifier identifier,
-      final String number) {
+      final String stateCaseId) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
 
     ActId relatedTo = new ActId(new ActIdId(act.getId(), 1));
     relatedTo.setTypeCd("STATE");
-    relatedTo.setRootExtensionTxt(number);
+    relatedTo.setRootExtensionTxt(stateCaseId);
 
     act.addIdentifier(relatedTo);
+
+    activeStateCase.active(new StateCaseIdentifier(stateCaseId));
 
   }
 

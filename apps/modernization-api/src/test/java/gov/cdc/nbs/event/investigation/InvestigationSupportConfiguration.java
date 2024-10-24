@@ -18,4 +18,14 @@ class InvestigationSupportConfiguration {
     return new Available<>();
   }
 
+  @Bean
+  Active<AbcCaseIdentifier> activeAbcCaseId() {
+    return new Active<>();
+  }
+
+  @Bean
+  Active<StateCaseIdentifier> activeStateCaseId() {
+    return new Active<>();
+  }
+
 }

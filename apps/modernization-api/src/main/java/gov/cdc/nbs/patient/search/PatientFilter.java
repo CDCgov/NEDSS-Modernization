@@ -131,6 +131,26 @@ public class PatientFilter {
     return Optional.ofNullable(documentId);
   }
 
+
+  public PatientFilter withStateCaseId(final String identifier) {
+    this.stateCaseId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeStateCaseId() {
+    return Optional.ofNullable(stateCaseId);
+  }
+
+
+  public PatientFilter withAbcCaseId(final String identifier) {
+    this.abcCaseId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeAbcCaseId() {
+    return Optional.ofNullable(abcCaseId);
+  }
+
   public PatientFilter withLabReportId(final String identifier) {
     this.labReportId = identifier;
     return this;
