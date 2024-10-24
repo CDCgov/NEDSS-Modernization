@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
-import { defaultOperator, operators } from 'options/operator';
+import { basicOperators, defaultOperator, operators } from 'options/operator';
 
 describe('OperatorSelect', () => {
     const mockOnChange = jest.fn();
@@ -52,10 +52,17 @@ describe('OperatorSelect', () => {
         expect(selectElement.value).toBe(operators[1].value);
     });
 
-    it('renders all of the operator options', () => {
+    it('renders all of the operator options when mode is not specified', () => {
         const { getAllByRole } = render(<OperatorSelect {...defaultProps} />);
         const options = getAllByRole('option');
         // all options + the placeholder
         expect(options.length).toBe(operators.length + 1);
+    });
+
+    it('renders only the basic operator options when mode is basic', () => {
+        const { getAllByRole } = render(<OperatorSelect {...defaultProps} mode="basic" />);
+        const options = getAllByRole('option');
+        // basic options + the placeholder
+        expect(options.length).toBe(basicOperators.length + 1);
     });
 });
