@@ -37,30 +37,11 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
     </div>
 );
 
-const phoneTypeResolver = (typeCode?: string) => {
-    switch (typeCode) {
-        case 'PH':
-            return 'Phone';
-        case 'AN':
-            return 'Answering service';
-        case 'BP':
-            return 'Beeper';
-        case 'CP':
-            return 'Cellular phone';
-        case 'NET':
-            return 'Email address';
-        case 'FAX':
-            return 'Fax';
-        default:
-            return typeCode;
-    }
-};
-
 const displayPhones = (result: PatientSearchResult): JSX.Element => (
     <div>
         {result.detailedPhones.map((phone, index) => (
             <div key={index}>
-                <ItemGroup type="phone" label={phoneTypeResolver(phone.type ?? undefined)}>
+                <ItemGroup type="phone" label={phone.use ?? undefined}>
                     {phone.number}
                 </ItemGroup>
             </div>
