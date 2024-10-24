@@ -8,12 +8,51 @@ import { validNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { genders } from 'options/gender';
+import { OperatorSelect } from 'components/FormInputs/OperatorSelect/OperatorSelect';
+import { EntryWrapper } from 'components/Entry';
+import { Grid } from '@trussworks/react-uswds';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
         <SearchCriteria>
+            <EntryWrapper orientation="vertical" label="Last name" htmlFor="lastName" sizing="compact">
+                <Grid col={12}>
+                    <Grid row>
+                        <Grid col={5} className="padding-right-1">
+                            <Controller
+                                control={control}
+                                name="lastNameOperator"
+                                render={({ field: { onChange, value, name } }) => (
+                                    <OperatorSelect id={name} value={value} onChange={onChange} sizing="compact" />
+                                )}
+                            />
+                        </Grid>
+                        <Grid col={7}>
+                            <Controller
+                                control={control}
+                                name="lastName"
+                                rules={validNameRule}
+                                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                                    <Input
+                                        onBlur={onBlur}
+                                        onChange={onChange}
+                                        type="text"
+                                        name={name}
+                                        defaultValue={value}
+                                        htmlFor={name}
+                                        id={name}
+                                        sizing="compact"
+                                        error={error?.message}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </EntryWrapper>
+            {/* 
             <Controller
                 control={control}
                 name="lastName"
@@ -33,6 +72,7 @@ export const BasicInformation = () => {
                     />
                 )}
             />
+            */}
             <Controller
                 control={control}
                 name="firstName"
@@ -122,7 +162,7 @@ export const BasicInformation = () => {
                         name={name}
                         label={'Include records that are'}
                         sizing="compact"
-                        requried
+                        required
                         options={statusOptions}
                         value={value}
                         onChange={onChange}
