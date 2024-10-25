@@ -1,6 +1,7 @@
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import RichTooltip from './RichTooltip';
 import { useRef } from 'react';
+import userEvent from '@testing-library/user-event';
 
 describe('when a rich tooltip is displayed', () => {
     it('should render with no errors by default.', async () => {
@@ -35,7 +36,7 @@ describe('when a rich tooltip is displayed', () => {
         };
 
         const { container, getByTestId } = render(<MockRichTooltipAnchorElement />);
-        fireEvent.mouseEnter(getByTestId('mock-rich-tooltip-anchor-div'));
+        userEvent.hover(getByTestId('mock-rich-tooltip-anchor-div'));
         expect(container).toBeTruthy();
     });
 
@@ -57,7 +58,7 @@ describe('when a rich tooltip is displayed', () => {
         };
 
         const { getByTestId, findByText } = render(<MockRichTooltipAnchorElement />);
-        fireEvent.mouseEnter(getByTestId('mock-rich-tooltip-anchor-div'));
+        userEvent.hover(getByTestId('mock-rich-tooltip-anchor-div'));
         expect(await findByText('Tooltip Content Text')).toBeInTheDocument();
         expect(await findByText('Tooltip Content Text')).toBeVisible();
     });
@@ -80,8 +81,8 @@ describe('when a rich tooltip is displayed', () => {
         };
 
         const { getByTestId } = render(<MockRichTooltipAnchorElement />);
-        fireEvent.mouseEnter(getByTestId('mock-rich-tooltip-anchor-div'));
-        fireEvent.mouseLeave(getByTestId('mock-rich-tooltip-anchor-div'));
+        userEvent.hover(getByTestId('mock-rich-tooltip-anchor-div'));
+        userEvent.unhover(getByTestId('mock-rich-tooltip-anchor-div'));
         expect(getByTestId('mock-rich-tooltip-container-div')).toBeEmptyDOMElement();
     });
 });
