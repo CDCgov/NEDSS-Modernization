@@ -1654,6 +1654,7 @@ export type PersonFilter = {
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
+  investigationId?: InputMaybe<Scalars['String']['input']>;
   labReportId?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
   morbidityId?: InputMaybe<Scalars['String']['input']>;
@@ -1665,7 +1666,6 @@ export type PersonFilter = {
   state?: InputMaybe<Scalars['String']['input']>;
   stateCaseId?: InputMaybe<Scalars['String']['input']>;
   treatmentId?: InputMaybe<Scalars['String']['input']>;
-  investigationId?: InputMaybe<Scalars['String']['input']>;
   vaccinationId?: InputMaybe<Scalars['String']['input']>;
   zip?: InputMaybe<Scalars['String']['input']>;
 };
