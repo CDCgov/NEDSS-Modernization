@@ -7,7 +7,7 @@ import gov.cdc.nbs.event.investigation.NotificationIdentifier;
 import gov.cdc.nbs.event.investigation.StateCaseIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
-import gov.cdc.nbs.patient.treatment.TestTreatments;
+import gov.cdc.nbs.patient.treatment.TreatmentIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
@@ -20,7 +20,7 @@ public class PatientSearchEventIdSteps {
   private final Active<AbcCaseIdentifier> activeAbcCase;
   private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
   private final Active<NotificationIdentifier> activeNotification;
-  private final TestTreatments treatments;
+  private final Active<TreatmentIdentifier> activeTreatment;
 
   PatientSearchEventIdSteps(
       final Active<PatientFilter> activeCriteria,
@@ -30,7 +30,7 @@ public class PatientSearchEventIdSteps {
       final Active<AbcCaseIdentifier> activeAbcCase,
       final Active<CityCountyCaseIdentifier> activeCityCountyCase,
       final Active<NotificationIdentifier> activeNotification,
-      final TestTreatments treatments,
+      final Active<TreatmentIdentifier> activeTreatment,
       final Active<MorbidityReportIdentifier> activeMorbidityReport) {
     this.activeCriteria = activeCriteria;
     this.activeMorbidityReport = activeMorbidityReport;
@@ -39,7 +39,7 @@ public class PatientSearchEventIdSteps {
     this.activeAbcCase = activeAbcCase;
     this.activeCityCountyCase = activeCityCountyCase;
     this.activeNotification = activeNotification;
-    this.treatments = treatments;
+    this.activeTreatment = activeTreatment;
     this.activeCaseReport = activeCaseReport;
   }
 
@@ -88,13 +88,15 @@ public class PatientSearchEventIdSteps {
     this.activeNotification.maybeActive()
         .map(NotificationIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withNotificationId(identifier.toString())));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withNotificationId(identifier)));
   }
 
   @Given("I would like to search for a patient using the Treatment ID")
   public void i_would_like_to_search_for_a_patient_using_the_treatment_ID() {
-    this.treatments.maybeOne().ifPresent(
-        identifier -> this.activeCriteria.active(criteria -> criteria.withTreatmentId(identifier.toString())));
+    this.activeTreatment.maybeActive()
+        .map(TreatmentIdentifier::local)
+        .ifPresent(
+            identifier -> this.activeCriteria.active(criteria -> criteria.withTreatmentId(identifier)));
   }
 
   @Given("I would like to search for a patient using the Lab Report ID")

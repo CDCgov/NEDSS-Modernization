@@ -8,6 +8,7 @@ import gov.cdc.nbs.entity.odse.Treatment;
 import gov.cdc.nbs.entity.odse.TreatmentAdministered;
 import gov.cdc.nbs.identity.MotherSettings;
 import gov.cdc.nbs.testing.identity.SequentialIdentityGenerator;
+import gov.cdc.nbs.testing.support.Active;
 import gov.cdc.nbs.support.util.RandomUtil;
 import org.springframework.stereotype.Component;
 
@@ -26,19 +27,22 @@ class TreatmentMother {
     private final TestTreatmentCleaner cleaner;
 
     private final TestTreatments treatments;
+    private final Active<TreatmentIdentifier> activeTreatment;
 
     TreatmentMother(
         final MotherSettings settings,
         final SequentialIdentityGenerator idGenerator,
         final EntityManager entityManager,
         final TestTreatmentCleaner cleaner,
-        final TestTreatments treatments
+        final TestTreatments treatments,
+        final Active<TreatmentIdentifier> activeTreatment
     ) {
         this.settings = settings;
         this.idGenerator = idGenerator;
         this.entityManager = entityManager;
         this.cleaner = cleaner;
         this.treatments = treatments;
+        this.activeTreatment = activeTreatment;
     }
 
     void reset() {
@@ -74,7 +78,7 @@ class TreatmentMother {
         this.entityManager.persist(treatment);
 
         this.treatments.available(identifier);
-
+        this.activeTreatment.active(new TreatmentIdentifier(identifier, localId));
 
         return treatment;
     }
