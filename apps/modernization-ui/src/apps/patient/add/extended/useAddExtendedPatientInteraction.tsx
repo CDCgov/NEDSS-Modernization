@@ -21,12 +21,14 @@ type ValidationErrors = {
     dirtySections: SubFormDirtyState;
 };
 
-type AddExtendedPatientInteraction = (Working | Created | Invalid) & {
+type AddExtendedPatientState = Working | Created | Invalid;
+
+type AddExtendedPatientInteraction = AddExtendedPatientState & {
     create: (entry: ExtendedNewPatientEntry) => void;
     setSubFormState: (subFormState: Partial<SubFormDirtyState>) => void;
 };
 
-export type { AddExtendedPatientInteraction, Working, Created, Invalid };
+export type { AddExtendedPatientInteraction, AddExtendedPatientState };
 
 const AddExtendedPatientInteractionContext = createContext<AddExtendedPatientInteraction | undefined>(undefined);
 

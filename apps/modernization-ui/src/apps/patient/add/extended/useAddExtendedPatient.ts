@@ -3,36 +3,39 @@ import { CreatedPatient, NewPatient, Creator, Transformer } from 'apps/patient/a
 import { ExtendedNewPatientEntry } from './entry';
 import {
     AddExtendedPatientInteraction,
-    Working,
-    Created,
-    Invalid,
+    AddExtendedPatientState,
     SubFormDirtyState,
     ValidationErrors
 } from './useAddExtendedPatientInteraction';
 
-type Step =
+type ExtendedStep =
+    | { status: 'validating'; entry: ExtendedNewPatientEntry }
     | { status: 'requesting'; entry: ExtendedNewPatientEntry }
     | { status: 'creating'; input: NewPatient }
     | { status: 'created'; created: CreatedPatient }
     | { status: 'invalid'; validationErrors: ValidationErrors }
     | { status: 'waiting' };
 
-type Action =
-    | { type: 'request'; entry: ExtendedNewPatientEntry }
+type ExtendedAction =
+    | { type: 'validate'; entry: ExtendedNewPatientEntry }
+    | { type: 'request' }
     | { type: 'invalidate'; validationErrors: ValidationErrors }
     | { type: 'create'; input: NewPatient }
     | { type: 'complete'; created: CreatedPatient }
     | { type: 'wait' };
 
-const initial: Step = { status: 'waiting' };
+const initial: ExtendedStep = { status: 'waiting' };
 
-const reducer = (current: Step, action: Action): Step => {
+const reducer = (current: ExtendedStep, action: ExtendedAction): ExtendedStep => {
     switch (action.type) {
-        case 'request': {
-            return { status: 'requesting', entry: action.entry };
+        case 'validate': {
+            return { status: 'validating', entry: action.entry };
         }
         case 'invalidate': {
             return { status: 'invalid', validationErrors: action.validationErrors };
+        }
+        case 'request': {
+            return current.status === 'validating' ? { status: 'requesting', entry: current.entry } : current;
         }
         case 'create': {
             return { status: 'creating', input: action.input };
@@ -45,8 +48,6 @@ const reducer = (current: Step, action: Action): Step => {
         }
     }
 };
-
-type State = Working | Created | Invalid;
 
 type Settings = {
     transformer: Transformer<ExtendedNewPatientEntry>;
@@ -64,13 +65,11 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
     });
 
     const setSubFormState = (subFormState: Partial<SubFormDirtyState>) => {
-        setSubFormDirtyState((current) => {
-            return { ...current, ...subFormState };
-        });
+        setSubFormDirtyState((current) => ({ ...current, ...subFormState }));
     };
 
     useEffect(() => {
-        if (step.status === 'requesting') {
+        if (step.status === 'validating') {
             if (
                 !subFormDirtyState.address &&
                 !subFormDirtyState.identification &&
@@ -78,19 +77,21 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
                 !subFormDirtyState.phone &&
                 !subFormDirtyState.race
             ) {
-                const input = transformer(step.entry);
-                dispatch({ type: 'create', input });
+                dispatch({ type: 'request' });
             } else {
                 dispatch({ type: 'invalidate', validationErrors: { dirtySections: subFormDirtyState } });
             }
+        } else if (step.status === 'requesting') {
+            const input = transformer(step.entry);
+            dispatch({ type: 'create', input });
         } else if (step.status === 'creating') {
             creator(step.input).then((created) => dispatch({ type: 'complete', created }));
         }
     }, [step.status, dispatch]);
 
-    const state: State = useMemo(() => evaluateState(step), [step]);
+    const state: AddExtendedPatientState = useMemo(() => evaluateState(step), [step]);
 
-    const create = useCallback((entry: ExtendedNewPatientEntry) => dispatch({ type: 'request', entry }), [dispatch]);
+    const create = useCallback((entry: ExtendedNewPatientEntry) => dispatch({ type: 'validate', entry }), [dispatch]);
 
     return {
         ...state,
@@ -99,9 +100,10 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
     };
 };
 
-const evaluateState = (step: Step): State => {
+const evaluateState = (step: ExtendedStep): AddExtendedPatientState => {
     switch (step.status) {
         case 'creating':
+        case 'validating':
         case 'requesting': {
             return { status: 'working' };
         }
