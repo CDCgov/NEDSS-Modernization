@@ -1,5 +1,5 @@
 package gov.cdc.nbs.event.investigation;
 
-public record CityCountyCaseIdentifier(String identifier) {
+public record CityCountyCaseIdentifier(Long identifier, String local) {
 
 }

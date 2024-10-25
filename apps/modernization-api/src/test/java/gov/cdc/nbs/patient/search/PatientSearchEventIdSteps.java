@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.search;
 import gov.cdc.nbs.event.document.CaseReportIdentifier;
 import gov.cdc.nbs.event.investigation.AbcCaseIdentifier;
 import gov.cdc.nbs.event.investigation.CityCountyCaseIdentifier;
+import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.investigation.NotificationIdentifier;
 import gov.cdc.nbs.event.investigation.StateCaseIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
@@ -22,6 +23,7 @@ public class PatientSearchEventIdSteps {
   private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
   private final Active<NotificationIdentifier> activeNotification;
   private final Active<VaccinationIdentifier> activeVaccination;
+  private final Active<InvestigationIdentifier> activeInvestigation;
   private final Active<TreatmentIdentifier> activeTreatment;
 
   PatientSearchEventIdSteps(
@@ -34,6 +36,7 @@ public class PatientSearchEventIdSteps {
       final Active<NotificationIdentifier> activeNotification,
       final Active<TreatmentIdentifier> activeTreatment,
       final Active<VaccinationIdentifier> activeVaccination,
+      final Active<InvestigationIdentifier> activeInvestigation,
       final Active<MorbidityReportIdentifier> activeMorbidityReport) {
     this.activeCriteria = activeCriteria;
     this.activeMorbidityReport = activeMorbidityReport;
@@ -44,6 +47,7 @@ public class PatientSearchEventIdSteps {
     this.activeNotification = activeNotification;
     this.activeTreatment = activeTreatment;
     this.activeVaccination = activeVaccination;
+    this.activeInvestigation = activeInvestigation;
     this.activeCaseReport = activeCaseReport;
   }
 
@@ -66,7 +70,7 @@ public class PatientSearchEventIdSteps {
   @Given("I would like to search for a patient using the State Case ID")
   public void i_would_like_to_search_for_a_patient_using_the_state_case_ID() {
     this.activeStateCase.maybeActive()
-        .map(StateCaseIdentifier::identifier)
+        .map(StateCaseIdentifier::local)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withStateCaseId(identifier)));
   }
@@ -74,7 +78,7 @@ public class PatientSearchEventIdSteps {
   @Given("I would like to search for a patient using the ABC Case ID")
   public void i_would_like_to_search_for_a_patient_using_the_abc_case_ID() {
     this.activeAbcCase.maybeActive()
-        .map(AbcCaseIdentifier::identifier)
+        .map(AbcCaseIdentifier::local)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withAbcCaseId(identifier)));
   }
@@ -82,7 +86,7 @@ public class PatientSearchEventIdSteps {
   @Given("I would like to search for a patient using the County Case ID")
   public void i_would_like_to_search_for_a_patient_using_the_county_case_ID() {
     this.activeCityCountyCase.maybeActive()
-        .map(CityCountyCaseIdentifier::identifier)
+        .map(CityCountyCaseIdentifier::local)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withCityCountyCaseId(identifier)));
   }
@@ -109,6 +113,14 @@ public class PatientSearchEventIdSteps {
         .map(VaccinationIdentifier::local)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withVaccinationId(identifier)));
+  }
+
+  @Given("I would like to search for a patient using the Investigation ID")
+  public void i_would_like_to_search_for_a_patient_using_the_investigation_ID() {
+    this.activeInvestigation.maybeActive()
+        .map(InvestigationIdentifier::local)
+        .ifPresent(
+            identifier -> this.activeCriteria.active(criteria -> criteria.withInvestigationId(identifier)));
   }
 
   @Given("I would like to search for a patient using the Lab Report ID")

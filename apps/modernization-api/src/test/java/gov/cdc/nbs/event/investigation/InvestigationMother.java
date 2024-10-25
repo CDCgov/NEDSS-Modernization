@@ -241,7 +241,7 @@ public class InvestigationMother {
     relatedTo.setRootExtensionTxt(abcCaseId);
 
     act.addIdentifier(relatedTo);
-    activeAbcCase.active(new AbcCaseIdentifier(abcCaseId));
+    activeAbcCase.active(new AbcCaseIdentifier(act.getId(), abcCaseId));
 
   }
 
@@ -257,7 +257,7 @@ public class InvestigationMother {
     relatedTo.setRootExtensionTxt(cityCountyCaseId);
 
     act.addIdentifier(relatedTo);
-    activeCityCountyCase.active(new CityCountyCaseIdentifier(cityCountyCaseId));
+    activeCityCountyCase.active(new CityCountyCaseIdentifier(act.getId(), cityCountyCaseId));
 
   }
 
@@ -274,7 +274,7 @@ public class InvestigationMother {
 
     act.addIdentifier(relatedTo);
 
-    activeStateCase.active(new StateCaseIdentifier(stateCaseId));
+    activeStateCase.active(new StateCaseIdentifier(act.getId(), stateCaseId));
 
   }
 

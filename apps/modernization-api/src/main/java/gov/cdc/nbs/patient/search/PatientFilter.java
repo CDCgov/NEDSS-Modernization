@@ -66,6 +66,7 @@ public class PatientFilter {
   private String notificationId;
   private String treatmentId;
   private String vaccinationId;
+  private String investigationId;
   private String labReportId;
   private String accessionNumberId;
 
@@ -185,6 +186,15 @@ public class PatientFilter {
 
   public Optional<String> maybeVaccinationId() {
     return Optional.ofNullable(vaccinationId);
+  }
+
+  public PatientFilter withInvestigationId(final String identifier) {
+    this.investigationId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeInvestigationId() {
+    return Optional.ofNullable(investigationId);
   }
 
   public PatientFilter withLabReportId(final String identifier) {

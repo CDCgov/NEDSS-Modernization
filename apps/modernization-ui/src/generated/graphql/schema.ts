@@ -1665,6 +1665,7 @@ export type PersonFilter = {
   state?: InputMaybe<Scalars['String']['input']>;
   stateCaseId?: InputMaybe<Scalars['String']['input']>;
   treatmentId?: InputMaybe<Scalars['String']['input']>;
+  investigationId?: InputMaybe<Scalars['String']['input']>;
   vaccinationId?: InputMaybe<Scalars['String']['input']>;
   zip?: InputMaybe<Scalars['String']['input']>;
 };

@@ -1125,6 +1125,7 @@ input PersonFilter {
   cityCountyCaseId: String
   notificationId: String
   treatmentId: String
+  investigationId: String
   labReportId: String
   accessionNumberId: String
   disableSoundex: Boolean
