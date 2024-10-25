@@ -19,6 +19,7 @@ class PatientEventQueryResolver {
   private static final String VACCINATION_ID = "vaccination_ids";
   private static final String INVESTIGATION_ID = "investigation_ids";
   private static final String LAB_REPORT_ID = "lab_report_ids";
+  private static final String ACCESSION_ID = "accession_ids";
 
   Stream<Query> resolve(final PatientFilter criteria) {
     return Stream.of(
@@ -31,7 +32,8 @@ class PatientEventQueryResolver {
         applyTreatmentIdCriteria(criteria),
         applyVaccinationIdCriteria(criteria),
         applyInvestigationIdCriteria(criteria),
-        applyLabIdCriteria(criteria))
+        applyLabIdCriteria(criteria),
+        applyAccessionNumberIdCriteria(criteria))
         .flatMap(Optional::stream)
         .map(QueryVariant::_toQuery);
   }
@@ -89,6 +91,11 @@ class PatientEventQueryResolver {
   private Optional<QueryVariant> applyLabIdCriteria(final PatientFilter criteria) {
     return criteria.maybeLabReportId()
         .map(identifier -> MatchQuery.of(match -> match.field(LAB_REPORT_ID).query(criteria.getLabReportId())));
+  }
+
+  private Optional<QueryVariant> applyAccessionNumberIdCriteria(final PatientFilter criteria) {
+    return criteria.maybeAccessionNumberId()
+        .map(identifier -> MatchQuery.of(match -> match.field(ACCESSION_ID).query(criteria.getAccessionNumberId())));
   }
 
 }

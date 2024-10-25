@@ -99,3 +99,13 @@ Feature: Patient Search by Event ID
     When I search for patients
     Then the patient is in the search results
     And there is only one patient search result
+
+  Scenario: I can find a patient with an Accession number
+    Given I have a patient
+    And the patient has a Lab Report
+    And the lab report has an Accession number of "3034112"
+    And patients are available for search
+    And I would like to search for a patient using the Accession number
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result

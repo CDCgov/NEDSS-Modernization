@@ -6,6 +6,7 @@ import gov.cdc.nbs.event.investigation.CityCountyCaseIdentifier;
 import gov.cdc.nbs.event.investigation.InvestigationIdentifier;
 import gov.cdc.nbs.event.investigation.NotificationIdentifier;
 import gov.cdc.nbs.event.investigation.StateCaseIdentifier;
+import gov.cdc.nbs.event.report.lab.AccessionIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
 import gov.cdc.nbs.patient.profile.vaccination.VaccinationIdentifier;
@@ -25,6 +26,7 @@ public class PatientSearchEventIdSteps {
   private final Active<VaccinationIdentifier> activeVaccination;
   private final Active<InvestigationIdentifier> activeInvestigation;
   private final Active<TreatmentIdentifier> activeTreatment;
+  private final Active<AccessionIdentifier> activeAccessionNumber;
 
   PatientSearchEventIdSteps(
       final Active<PatientFilter> activeCriteria,
@@ -37,7 +39,8 @@ public class PatientSearchEventIdSteps {
       final Active<TreatmentIdentifier> activeTreatment,
       final Active<VaccinationIdentifier> activeVaccination,
       final Active<InvestigationIdentifier> activeInvestigation,
-      final Active<MorbidityReportIdentifier> activeMorbidityReport) {
+      final Active<MorbidityReportIdentifier> activeMorbidityReport,
+      final Active<AccessionIdentifier> activeAccessionNumber) {
     this.activeCriteria = activeCriteria;
     this.activeMorbidityReport = activeMorbidityReport;
     this.activeLabReport = activeLabReport;
@@ -49,6 +52,7 @@ public class PatientSearchEventIdSteps {
     this.activeVaccination = activeVaccination;
     this.activeInvestigation = activeInvestigation;
     this.activeCaseReport = activeCaseReport;
+    this.activeAccessionNumber = activeAccessionNumber;
   }
 
   @Given("I would like to search for a patient using the Morbidity Report ID")
@@ -129,5 +133,13 @@ public class PatientSearchEventIdSteps {
         .map(LabReportIdentifier::local)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withLabReportId(identifier)));
+  }
+
+  @Given("I would like to search for a patient using the Accession number")
+  public void i_would_like_to_search_for_a_patient_using_the_accession_number() {
+    this.activeAccessionNumber.maybeActive()
+        .map(AccessionIdentifier::local)
+        .ifPresent(
+            identifier -> this.activeCriteria.active(criteria -> criteria.withAccessiontNumberId(identifier)));
   }
 }

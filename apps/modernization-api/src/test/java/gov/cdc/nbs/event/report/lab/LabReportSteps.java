@@ -109,6 +109,7 @@ public class LabReportSteps {
     activeReport.maybeActive().ifPresent(reportMother::forPregnantPatient);
   }
 
+  @Given("the lab report has an Accession number of {string}")
   @Given("the lab report was filled by {string}")
   public void the_lab_report_was_filled_by(final String filler) {
     activeReport.maybeActive().ifPresent(lab -> reportMother.filledBy(lab, filler));

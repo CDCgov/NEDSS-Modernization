@@ -206,5 +206,12 @@ public class PatientFilter {
     return Optional.ofNullable(labReportId);
   }
 
+  public PatientFilter withAccessiontNumberId(final String identifier) {
+    this.accessionNumberId = identifier;
+    return this;
+  }
 
+  public Optional<String> maybeAccessionNumberId() {
+    return Optional.ofNullable(accessionNumberId);
+  }
 }
