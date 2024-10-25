@@ -37,7 +37,17 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
     </div>
 );
 
-const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
+const displayPhones = (result: PatientSearchResult): JSX.Element => (
+    <div>
+        {result.detailedPhones.map((phone, index) => (
+            <div key={index}>
+                <ItemGroup type="phone" label={phone.use ?? undefined}>
+                    {phone.number}
+                </ItemGroup>
+            </div>
+        ))}
+    </div>
+);
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 const displayPatientName = (result: PatientSearchResult): JSX.Element => (
     <div>
