@@ -1,32 +1,25 @@
 import { createContext, ReactNode, useContext } from 'react';
-import { CreatedPatient } from 'apps/patient/add/api';
+import { AddPatientInteraction } from 'apps/patient/add';
 import { ExtendedNewPatientEntry } from './entry';
-
-type Working = {
-    status: 'waiting' | 'working';
-};
-
-type Created = {
-    status: 'created';
-    created: CreatedPatient;
-};
+import { Created, Working } from '../useAddPatient';
 
 type Invalid = {
     status: 'invalid';
     validationErrors: ValidationErrors;
 };
+
+type AddExtendedPatientState = Working | Created | Invalid;
+
 type SubFormDirtyState = { address: boolean; phone: boolean; identification: boolean; name: boolean; race: boolean };
 
 type ValidationErrors = {
     dirtySections: SubFormDirtyState;
 };
 
-type AddExtendedPatientState = Working | Created | Invalid;
-
-type AddExtendedPatientInteraction = AddExtendedPatientState & {
-    create: (entry: ExtendedNewPatientEntry) => void;
-    setSubFormState: (subFormState: Partial<SubFormDirtyState>) => void;
-};
+type AddExtendedPatientInteraction = AddExtendedPatientState &
+    Pick<AddPatientInteraction<ExtendedNewPatientEntry>, 'create'> & {
+        setSubFormState: (subFormState: Partial<SubFormDirtyState>) => void;
+    };
 
 export type { AddExtendedPatientInteraction, AddExtendedPatientState };
 

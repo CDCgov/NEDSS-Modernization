@@ -50,6 +50,15 @@ type AddPatientSettings<E> = {
     creator: Creator;
 };
 
+/**
+ * Allows creation of a patient from an entry object.
+ *
+ * By default the status will be "waiting", when create is invoked the status will change to
+ * "working" until the patient has been created.  Once patient is created the status will
+ * change to "created" and the "created" property will contain the CreatedPatient.
+ *
+ * @return {AddPatientInteraction}
+ */
 const useAddPatient = <E>({ transformer, creator }: AddPatientSettings<E>): AddPatientInteraction<E> => {
     const [step, dispatch] = useReducer(reducer<E>, { status: 'waiting' });
 
@@ -87,5 +96,5 @@ const evaluateState = <I>(step: Step<I>): AddPatientState => {
     }
 };
 
-export type { AddPatientState, AddPatientInteraction, AddPatientSettings };
+export type { AddPatientState, AddPatientInteraction, AddPatientSettings, Working, Created };
 export { useAddPatient };
