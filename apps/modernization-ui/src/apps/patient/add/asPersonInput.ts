@@ -1,6 +1,7 @@
 import { externalizeDate, externalizeDateTime } from 'date';
 import { NameUseCd, NewPatientIdentification, NewPatientPhoneNumber, PersonInput } from 'generated/graphql/schema';
-import { NewPatientEntry } from 'apps/patient/add';
+import { EmailEntry, NewPatientEntry } from 'apps/patient/add';
+import { maybeMapAll } from 'utils/mapping';
 
 function isEmpty(obj: any) {
     for (const key in obj) {
@@ -38,7 +39,7 @@ export const asPersonInput = (data: NewPatientEntry) => {
 
     data.phoneNumbers.filter((item) => item.number).forEach((item) => phoneNumbers.push(item as NewPatientPhoneNumber));
 
-    const emailAddresses = data.emailAddresses.filter((item) => item.email).map((item) => item.email);
+    const emailAddresses = maybeMapAll((item: EmailEntry) => item.email)(data.emailAddresses);
 
     const identifications = data.identification
         .filter((item) => item.type && item.value)

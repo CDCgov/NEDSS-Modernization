@@ -273,7 +273,7 @@ const asIdentification =
     (entry: BasicIdentificationEntry): Identification | undefined => {
         const { type, issuer, id } = entry;
 
-        if (exists(type)) {
+        if (exists(type) && id) {
             return {
                 asOf,
                 type: asValue(type),

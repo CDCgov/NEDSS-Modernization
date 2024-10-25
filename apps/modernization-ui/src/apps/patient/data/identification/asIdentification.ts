@@ -6,7 +6,7 @@ import { exists } from 'utils';
 const asIdentification = (entry: IdentificationEntry): Identification | undefined => {
     const { asOf, type, issuer, id } = entry;
 
-    if (exists(type)) {
+    if (exists(type) && id) {
         return {
             asOf,
             type: asValue(type),
