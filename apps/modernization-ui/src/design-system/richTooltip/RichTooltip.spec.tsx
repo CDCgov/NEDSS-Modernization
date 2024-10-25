@@ -1,8 +1,9 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import RichTooltip from './RichTooltip';
+import { useRef } from 'react';
 
 describe('when a rich tooltip is displayed', () => {
-    it('should render with no errors.', async () => {
+    it('should render with no errors by default.', async () => {
         const mockRichTooltipAnchorRef: React.RefObject<HTMLElement> = {
             current: document.createElement('div', { is: 'mockRichTooltipAnchorRef' })
         };
@@ -14,5 +15,73 @@ describe('when a rich tooltip is displayed', () => {
 
         expect(container).toBeTruthy();
         expect(mockRichTooltipAnchorRef.current).toBeTruthy();
+    });
+
+    it('should render with no errors when a mouse enter event triggers the popup message.', async () => {
+        const MockRichTooltipAnchorElement = () => {
+            const mockRichTooltipAnchorRef = useRef<HTMLDivElement>(null);
+            return (
+                <div>
+                    <div ref={mockRichTooltipAnchorRef} data-testid="mock-rich-tooltip-anchor-div">
+                        <p>Mock Anchor Element for Tooltip</p>
+                    </div>
+                    <div>
+                        <RichTooltip anchorRef={mockRichTooltipAnchorRef}>
+                            <p>Tooltip Content Text</p>
+                        </RichTooltip>
+                    </div>
+                </div>
+            );
+        };
+
+        const { container, getByTestId } = render(<MockRichTooltipAnchorElement />);
+        fireEvent.mouseEnter(getByTestId('mock-rich-tooltip-anchor-div'));
+        expect(container).toBeTruthy();
+    });
+
+    it('should properly display the children props passed into the component.', async () => {
+        const MockRichTooltipAnchorElement = () => {
+            const mockRichTooltipAnchorRef = useRef<HTMLDivElement>(null);
+            return (
+                <div>
+                    <div ref={mockRichTooltipAnchorRef} data-testid="mock-rich-tooltip-anchor-div">
+                        <p>Mock Anchor Element for Tooltip</p>
+                    </div>
+                    <div>
+                        <RichTooltip anchorRef={mockRichTooltipAnchorRef}>
+                            <p>Tooltip Content Text</p>
+                        </RichTooltip>
+                    </div>
+                </div>
+            );
+        };
+
+        const { getByTestId, findByText } = render(<MockRichTooltipAnchorElement />);
+        fireEvent.mouseEnter(getByTestId('mock-rich-tooltip-anchor-div'));
+        expect(await findByText('Tooltip Content Text')).toBeInTheDocument();
+        expect(await findByText('Tooltip Content Text')).toBeVisible();
+    });
+
+    it('should not display the children props passed into the component when the mouse is not over the tooltip.', async () => {
+        const MockRichTooltipAnchorElement = () => {
+            const mockRichTooltipAnchorRef = useRef<HTMLDivElement>(null);
+            return (
+                <div>
+                    <div ref={mockRichTooltipAnchorRef} data-testid="mock-rich-tooltip-anchor-div">
+                        <p>Mock Anchor Element for Tooltip</p>
+                    </div>
+                    <div data-testid="mock-rich-tooltip-container-div">
+                        <RichTooltip anchorRef={mockRichTooltipAnchorRef}>
+                            <p>Tooltip Content Text</p>
+                        </RichTooltip>
+                    </div>
+                </div>
+            );
+        };
+
+        const { getByTestId } = render(<MockRichTooltipAnchorElement />);
+        fireEvent.mouseEnter(getByTestId('mock-rich-tooltip-anchor-div'));
+        fireEvent.mouseLeave(getByTestId('mock-rich-tooltip-anchor-div'));
+        expect(getByTestId('mock-rich-tooltip-container-div')).toBeEmptyDOMElement();
     });
 });
