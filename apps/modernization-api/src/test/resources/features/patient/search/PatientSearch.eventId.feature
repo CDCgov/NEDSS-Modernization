@@ -73,6 +73,15 @@ Feature: Patient Search by Event ID
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: I can find a patient with a Vaccination ID
+    Given I have a patient
+    And the patient is vaccinated
+    And patients are available for search
+    And I would like to search for a patient using the Vaccination ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find a patient with a Lab Report ID
     Given I have a patient
     And the patient has a Lab Report

@@ -178,6 +178,15 @@ public class PatientFilter {
     return Optional.ofNullable(treatmentId);
   }
 
+  public PatientFilter withVaccinationId(final String identifier) {
+    this.vaccinationId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeVaccinationId() {
+    return Optional.ofNullable(vaccinationId);
+  }
+
   public PatientFilter withLabReportId(final String identifier) {
     this.labReportId = identifier;
     return this;

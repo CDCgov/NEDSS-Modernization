@@ -7,6 +7,7 @@ import gov.cdc.nbs.event.investigation.NotificationIdentifier;
 import gov.cdc.nbs.event.investigation.StateCaseIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
+import gov.cdc.nbs.patient.profile.vaccination.VaccinationIdentifier;
 import gov.cdc.nbs.patient.treatment.TreatmentIdentifier;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -20,6 +21,7 @@ public class PatientSearchEventIdSteps {
   private final Active<AbcCaseIdentifier> activeAbcCase;
   private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
   private final Active<NotificationIdentifier> activeNotification;
+  private final Active<VaccinationIdentifier> activeVaccination;
   private final Active<TreatmentIdentifier> activeTreatment;
 
   PatientSearchEventIdSteps(
@@ -31,6 +33,7 @@ public class PatientSearchEventIdSteps {
       final Active<CityCountyCaseIdentifier> activeCityCountyCase,
       final Active<NotificationIdentifier> activeNotification,
       final Active<TreatmentIdentifier> activeTreatment,
+      final Active<VaccinationIdentifier> activeVaccination,
       final Active<MorbidityReportIdentifier> activeMorbidityReport) {
     this.activeCriteria = activeCriteria;
     this.activeMorbidityReport = activeMorbidityReport;
@@ -40,6 +43,7 @@ public class PatientSearchEventIdSteps {
     this.activeCityCountyCase = activeCityCountyCase;
     this.activeNotification = activeNotification;
     this.activeTreatment = activeTreatment;
+    this.activeVaccination = activeVaccination;
     this.activeCaseReport = activeCaseReport;
   }
 
@@ -97,6 +101,14 @@ public class PatientSearchEventIdSteps {
         .map(TreatmentIdentifier::local)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withTreatmentId(identifier)));
+  }
+
+  @Given("I would like to search for a patient using the Vaccination ID")
+  public void i_would_like_to_search_for_a_patient_using_the_vaccination_ID() {
+    this.activeVaccination.maybeActive()
+        .map(VaccinationIdentifier::local)
+        .ifPresent(
+            identifier -> this.activeCriteria.active(criteria -> criteria.withVaccinationId(identifier)));
   }
 
   @Given("I would like to search for a patient using the Lab Report ID")
