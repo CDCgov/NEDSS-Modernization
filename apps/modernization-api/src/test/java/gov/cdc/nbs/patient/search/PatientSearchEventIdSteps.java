@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.event.document.CaseReportIdentifier;
 import gov.cdc.nbs.event.investigation.AbcCaseIdentifier;
+import gov.cdc.nbs.event.investigation.CityCountyCaseIdentifier;
 import gov.cdc.nbs.event.investigation.StateCaseIdentifier;
 import gov.cdc.nbs.event.report.lab.LabReportIdentifier;
 import gov.cdc.nbs.event.report.morbidity.MorbidityReportIdentifier;
@@ -15,6 +16,7 @@ public class PatientSearchEventIdSteps {
   private final Active<CaseReportIdentifier> activeCaseReport;
   private final Active<StateCaseIdentifier> activeStateCase;
   private final Active<AbcCaseIdentifier> activeAbcCase;
+  private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
 
   PatientSearchEventIdSteps(
       final Active<PatientFilter> activeCriteria,
@@ -22,12 +24,14 @@ public class PatientSearchEventIdSteps {
       final Active<CaseReportIdentifier> activeCaseReport,
       final Active<StateCaseIdentifier> activeStateCase,
       final Active<AbcCaseIdentifier> activeAbcCase,
+      final Active<CityCountyCaseIdentifier> activeCityCountyCase,
       final Active<MorbidityReportIdentifier> activeMorbidityReport) {
     this.activeCriteria = activeCriteria;
     this.activeMorbidityReport = activeMorbidityReport;
     this.activeLabReport = activeLabReport;
     this.activeStateCase = activeStateCase;
     this.activeAbcCase = activeAbcCase;
+    this.activeCityCountyCase = activeCityCountyCase;
     this.activeCaseReport = activeCaseReport;
   }
 
@@ -61,6 +65,14 @@ public class PatientSearchEventIdSteps {
         .map(AbcCaseIdentifier::identifier)
         .ifPresent(
             identifier -> this.activeCriteria.active(criteria -> criteria.withAbcCaseId(identifier)));
+  }
+
+  @Given("I would like to search for a patient using the County Case ID")
+  public void i_would_like_to_search_for_a_patient_using_the_county_case_ID() {
+    this.activeCityCountyCase.maybeActive()
+        .map(CityCountyCaseIdentifier::identifier)
+        .ifPresent(
+            identifier -> this.activeCriteria.active(criteria -> criteria.withCityCountyCaseId(identifier)));
   }
 
   @Given("I would like to search for a patient using the Lab Report ID")

@@ -36,6 +36,7 @@ public class InvestigationMother {
   private final Active<InvestigationIdentifier> active;
   private final Active<AbcCaseIdentifier> activeAbcCase;
   private final Active<StateCaseIdentifier> activeStateCase;
+  private final Active<CityCountyCaseIdentifier> activeCityCountyCase;
   private final PatientMother patientMother;
   private final TestInvestigationCleaner cleaner;
 
@@ -49,6 +50,7 @@ public class InvestigationMother {
       final PatientMother patientMother,
       final Active<AbcCaseIdentifier> activeAbcCase,
       final Active<StateCaseIdentifier> activeStateCase,
+      final Active<CityCountyCaseIdentifier> activeCityCountyCase,
       final TestInvestigationCleaner cleaner) {
     this.idGenerator = idGenerator;
     this.settings = settings;
@@ -59,6 +61,7 @@ public class InvestigationMother {
     this.patientMother = patientMother;
     this.activeAbcCase = activeAbcCase;
     this.activeStateCase = activeStateCase;
+    this.activeCityCountyCase = activeCityCountyCase;
     this.cleaner = cleaner;
   }
 
@@ -244,16 +247,17 @@ public class InvestigationMother {
 
   void relatedToCountyCase(
       final InvestigationIdentifier identifier,
-      final String number) {
+      final String cityCountyCaseId) {
     PublicHealthCase investigation = managed(identifier);
 
     Act act = investigation.act();
 
     ActId relatedTo = new ActId(new ActIdId(act.getId(), 2));
     relatedTo.setTypeCd("CITY");
-    relatedTo.setRootExtensionTxt(number);
+    relatedTo.setRootExtensionTxt(cityCountyCaseId);
 
     act.addIdentifier(relatedTo);
+    activeCityCountyCase.active(new CityCountyCaseIdentifier(cityCountyCaseId));
 
   }
 

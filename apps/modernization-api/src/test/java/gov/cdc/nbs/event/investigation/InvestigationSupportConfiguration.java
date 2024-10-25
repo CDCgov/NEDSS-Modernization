@@ -28,4 +28,9 @@ class InvestigationSupportConfiguration {
     return new Active<>();
   }
 
+  @Bean
+  Active<CityCountyCaseIdentifier> activeCityCountyCaseId() {
+    return new Active<>();
+  }
+
 }

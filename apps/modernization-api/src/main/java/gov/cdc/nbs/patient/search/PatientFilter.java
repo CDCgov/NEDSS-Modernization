@@ -151,6 +151,15 @@ public class PatientFilter {
     return Optional.ofNullable(abcCaseId);
   }
 
+  public PatientFilter withCityCountyCaseId(final String identifier) {
+    this.cityCountyCaseId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeCityCountyCaseId() {
+    return Optional.ofNullable(cityCountyCaseId);
+  }
+
   public PatientFilter withLabReportId(final String identifier) {
     this.labReportId = identifier;
     return this;

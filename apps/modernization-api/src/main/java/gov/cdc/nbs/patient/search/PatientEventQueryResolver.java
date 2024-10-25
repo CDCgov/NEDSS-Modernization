@@ -13,6 +13,7 @@ class PatientEventQueryResolver {
   private static final String DOCUMENT_ID = "document_ids";
   private static final String STATE_CASE_ID = "state_case_ids";
   private static final String ABC_CASE_ID = "abcs_case_ids";
+  private static final String CITY_COUNTY_CASE_ID = "city_case_ids";
   private static final String LAB_REPORT_ID = "lab_report_ids";
 
   Stream<Query> resolve(final PatientFilter criteria) {
@@ -21,6 +22,7 @@ class PatientEventQueryResolver {
         applyDocumentIdCriteria(criteria),
         applyStateCaseIdCriteria(criteria),
         applyAbcCaseIdCriteria(criteria),
+        applyCityCountyCaseIdCriteria(criteria),
         applyLabIdCriteria(criteria))
         .flatMap(Optional::stream)
         .map(QueryVariant::_toQuery);
@@ -44,6 +46,12 @@ class PatientEventQueryResolver {
   private Optional<QueryVariant> applyAbcCaseIdCriteria(final PatientFilter criteria) {
     return criteria.maybeAbcCaseId()
         .map(identifier -> MatchQuery.of(match -> match.field(ABC_CASE_ID).query(criteria.getAbcCaseId())));
+  }
+
+  private Optional<QueryVariant> applyCityCountyCaseIdCriteria(final PatientFilter criteria) {
+    return criteria.maybeCityCountyCaseId()
+        .map(identifier -> MatchQuery
+            .of(match -> match.field(CITY_COUNTY_CASE_ID).query(criteria.getCityCountyCaseId())));
   }
 
 
