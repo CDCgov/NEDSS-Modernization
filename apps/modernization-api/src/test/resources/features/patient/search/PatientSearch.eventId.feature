@@ -53,6 +53,26 @@ Feature: Patient Search by Event ID
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: I can find a patient with a Notification ID
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the investigation has a notification status of APPROVED
+    And patients are available for search
+    And I would like to search for a patient using the Notification ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient with a Treatment ID
+    Given I have a patient
+    And the patient is a subject of an investigation
+    And the patient is a subject of a Treatment
+    And patients are available for search
+    And I would like to search for a patient using the Treatment ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find a patient with a Lab Report ID
     Given I have a patient
     And the patient has a Lab Report

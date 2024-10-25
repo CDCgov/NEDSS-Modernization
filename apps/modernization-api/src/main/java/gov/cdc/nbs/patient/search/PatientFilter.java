@@ -160,6 +160,24 @@ public class PatientFilter {
     return Optional.ofNullable(cityCountyCaseId);
   }
 
+  public PatientFilter withNotificationId(final String identifier) {
+    this.notificationId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeNotificationId() {
+    return Optional.ofNullable(notificationId);
+  }
+
+  public PatientFilter withTreatmentId(final String identifier) {
+    this.treatmentId = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeTreatmentId() {
+    return Optional.ofNullable(treatmentId);
+  }
+
   public PatientFilter withLabReportId(final String identifier) {
     this.labReportId = identifier;
     return this;

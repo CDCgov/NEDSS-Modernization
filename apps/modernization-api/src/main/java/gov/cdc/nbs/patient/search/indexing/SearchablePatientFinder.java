@@ -245,10 +245,10 @@ class SearchablePatientFinder {
   private static final int STATE_CASE_IDS_COLUMN = 12;
   private static final int ABCS_CASE_IDS_COLUMN = 13;
   private static final int CITY_CASE_IDS_COLUMN = 14;
-  private static final int ACCESSION_IDS_COLUMN = 15;
+  private static final int NOTIFICATION_IDS_COLUMN = 15;
   private static final int INVESTIGATION_IDS_COLUMN = 16;
   private static final int LAB_REPORT_IDS_COLUMN = 17;
-  private static final int NOTIFICATION_IDS_COLUMN = 18;
+  private static final int ACCESSION_IDS_COLUMN = 18;
 
   private final JdbcTemplate template;
   private final SearchablePatientRowMapper mapper;
