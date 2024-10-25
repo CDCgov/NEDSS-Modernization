@@ -14,6 +14,9 @@ import co.elastic.clients.json.JsonData;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.search.AdjustStrings;
 import gov.cdc.nbs.search.WildCards;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 import org.apache.commons.codec.language.Soundex;
 import org.springframework.stereotype.Component;
@@ -295,6 +298,16 @@ class PatientSearchCriteriaQueryResolver {
                 match -> match.field(BIRTHDAY)
                     .query(value)));
       };
+    }
+
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria != null && dateCriteria.equals() != null && dateCriteria.equals().isCompleteDate()) {
+      Equals equals = dateCriteria.equals();
+      String value = FlexibleInstantConverter.toString(LocalDate.of(equals.year(), equals.month(), equals.day()));
+      return Optional.of(
+          MatchQuery.of(
+              match -> match.field(BIRTHDAY)
+                  .query(value)));
 
     }
 
@@ -302,15 +315,17 @@ class PatientSearchCriteriaQueryResolver {
   }
 
   private Optional<QueryVariant> applyDateOfBirthLowRangeCriteria(final PatientFilter criteria) {
-
-    LocalDate dateOfBirth = criteria.getDateOfBirth();
-    LocalDate lowDateOfBirth = criteria.getDateOfBirthLow();
-
-    if (dateOfBirth != null || lowDateOfBirth == null) {
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria == null) {
+      return Optional.empty();
+    }
+    Between betweenDate = dateCriteria.between();
+    if (betweenDate == null || betweenDate.from() == null) {
       return Optional.empty();
     }
 
-    String value = FlexibleInstantConverter.toString(lowDateOfBirth);
+
+    String value = FlexibleInstantConverter.toString(betweenDate.from());
 
     return Optional.of(
         RangeQuery.of(
@@ -319,15 +334,16 @@ class PatientSearchCriteriaQueryResolver {
   }
 
   private Optional<QueryVariant> applyDateOfBirthHighRangeCriteria(final PatientFilter criteria) {
-
-    LocalDate dateOfBirth = criteria.getDateOfBirth();
-    LocalDate highDateOfBirth = criteria.getDateOfBirthHigh();
-
-    if (dateOfBirth != null || highDateOfBirth == null) {
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria == null) {
+      return Optional.empty();
+    }
+    Between betweenDate = dateCriteria.between();
+    if (betweenDate == null || betweenDate.to() == null) {
       return Optional.empty();
     }
 
-    String value = FlexibleInstantConverter.toString(highDateOfBirth);
+    String value = FlexibleInstantConverter.toString(betweenDate.to());
 
     return Optional.of(
         RangeQuery.of(

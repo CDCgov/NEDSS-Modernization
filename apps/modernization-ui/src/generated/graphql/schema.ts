@@ -77,6 +77,22 @@ export type ContactsNamedByPatientResults = {
   total: Scalars['Int']['output'];
 };
 
+export type DateBetweenCriteria = {
+  from?: InputMaybe<Scalars['Date']['input']>;
+  to?: InputMaybe<Scalars['Date']['input']>;
+};
+
+export type DateCriteria = {
+  between?: InputMaybe<DateBetweenCriteria>;
+  equals?: InputMaybe<DateEqualsCriteria>;
+};
+
+export type DateEqualsCriteria = {
+  day?: InputMaybe<Scalars['Int']['input']>;
+  month?: InputMaybe<Scalars['Int']['input']>;
+  year?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export enum Deceased {
   N = 'N',
   Unk = 'UNK',
@@ -1638,15 +1654,11 @@ export type PatientVaccinationResults = {
 
 export type PersonFilter = {
   address?: InputMaybe<Scalars['String']['input']>;
+  bornOn?: InputMaybe<DateCriteria>;
   city?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
-  dateOfBirthDay?: InputMaybe<Scalars['Int']['input']>;
-  dateOfBirthHigh?: InputMaybe<Scalars['Date']['input']>;
-  dateOfBirthLow?: InputMaybe<Scalars['Date']['input']>;
-  dateOfBirthMonth?: InputMaybe<Scalars['Int']['input']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
-  dateOfBirthYear?: InputMaybe<Scalars['Int']['input']>;
   deceased?: InputMaybe<Deceased>;
   disableSoundex?: InputMaybe<Scalars['Boolean']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;

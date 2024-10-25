@@ -1,5 +1,6 @@
 package gov.cdc.nbs.search.criteria.date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
@@ -26,16 +27,31 @@ public record DateCriteria(Equals equals, Between between) {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   public record Equals(Integer day, Integer month, Integer year) {
 
-    public Equals withDay(final int day ) {
+    public Equals withDay(final int day) {
       return new Equals(day, month, year);
     }
 
-    public Equals withMonth(final int month ) {
+    public Equals withMonth(final int month) {
       return new Equals(day, month, year);
     }
 
-    public Equals withYear(final int year ) {
+    public Equals withYear(final int year) {
       return new Equals(day, month, year);
+    }
+
+    @JsonIgnore
+    public boolean isPartialDate() {
+      return (day == null || month == null || year == null) && !isBlank();
+    }
+
+    @JsonIgnore
+    public boolean isCompleteDate() {
+      return day != null && month != null && year != null;
+    }
+
+    @JsonIgnore
+    public boolean isBlank() {
+      return day == null && month == null && year == null;
     }
   }
 

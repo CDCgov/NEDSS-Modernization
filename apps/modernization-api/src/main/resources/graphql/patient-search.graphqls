@@ -5,8 +5,8 @@ input DateEqualsCriteria {
 }
 
 input DateBetweenCriteria {
- from: Date
- to: Date
+  from: Date
+  to: Date
 }
 
 input DateCriteria {
@@ -31,11 +31,6 @@ input PersonFilter {
   dateOfBirth: Date
   bornOn: DateCriteria
   dateOfBirthOperator: Operator
-  dateOfBirthDay: Int
-  dateOfBirthMonth: Int
-  dateOfBirthYear: Int
-  dateOfBirthLow: Date
-  dateOfBirthHigh: Date
   gender: String
   deceased: Deceased
   address: String

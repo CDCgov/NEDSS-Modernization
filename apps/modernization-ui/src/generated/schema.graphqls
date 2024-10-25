@@ -1092,6 +1092,22 @@ type PatientProfile {
 extend type Query {
     findPatientProfile(patient: ID, shortId: Int): PatientProfile
 }
+input DateEqualsCriteria {
+  day: Int
+  month: Int
+  year: Int
+}
+
+input DateBetweenCriteria {
+  from: Date
+  to: Date
+}
+
+input DateCriteria {
+  equals: DateEqualsCriteria
+  between: DateBetweenCriteria
+}
+
 input IdentificationCriteria {
   identificationNumber: String
   identificationType: String
@@ -1107,12 +1123,8 @@ input PersonFilter {
   phoneNumber: String
   email: String
   dateOfBirth: Date
+  bornOn: DateCriteria
   dateOfBirthOperator: Operator
-  dateOfBirthDay: Int
-  dateOfBirthMonth: Int
-  dateOfBirthYear: Int
-  dateOfBirthLow: Date
-  dateOfBirthHigh: Date
   gender: String
   deceased: Deceased
   address: String

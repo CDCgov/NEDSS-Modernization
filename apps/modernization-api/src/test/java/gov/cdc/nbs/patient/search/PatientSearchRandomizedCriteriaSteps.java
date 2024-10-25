@@ -2,6 +2,9 @@ package gov.cdc.nbs.patient.search;
 
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.patient.identifier.PatientShortIdentifierResolver;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import gov.cdc.nbs.support.util.RandomUtil;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
@@ -77,27 +80,27 @@ public class PatientSearchRandomizedCriteriaSteps {
 
       case "birthday day" -> birthdayDayFromTarget()
           .ifPresent(day -> {
-            filter.setDateOfBirthDay(day);
+            filter.setBornOn(new DateCriteria(new Equals(day, null, null), null));
           });
 
       case "birthday month" -> birthdayMonthFromTarget()
           .ifPresent(month -> {
-            filter.setDateOfBirthMonth(month);
+            filter.setBornOn(new DateCriteria(new Equals(null, month, null), null));
           });
 
       case "birthday year" -> birthdayYearFromTarget()
           .ifPresent(year -> {
-            filter.setDateOfBirthYear(year);
+            filter.setBornOn(new DateCriteria(new Equals(null, null, year), null));
           });
 
       case "birthday low" -> birthdayFromTarget("equal")
           .ifPresent(birthday -> {
-            filter.setDateOfBirthLow(birthday.minusDays(2));
+            filter.setBornOn(new DateCriteria(null, new Between(birthday.minusDays(2), null)));
           });
 
       case "birthday high" -> birthdayFromTarget("equal")
           .ifPresent(birthday -> {
-            filter.setDateOfBirthHigh(birthday.plusDays(2));
+            filter.setBornOn(new DateCriteria(null, new Between(null, birthday.plusDays(2))));
           });
 
       case "gender" -> this.searchable.maybeActive()

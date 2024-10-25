@@ -12,6 +12,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.ScriptQuery;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Gender;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -119,38 +121,53 @@ class PatientSearchCriteriaFilterResolver {
   }
 
   private Optional<QueryVariant> applyDateOfBirthDayCriteria(final PatientFilter criteria) {
-    if (criteria.getDateOfBirthDay() == null) {
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria == null) {
+      return Optional.empty();
+    }
+    Equals equalsDate = dateCriteria.equals();
+    if (equalsDate == null || !equalsDate.isPartialDate() || equalsDate.day() == null) {
       return Optional.empty();
     }
 
     return Optional.of(ScriptQuery.of(q -> q.script(
         Script.of(s -> s
             .inline(inline -> inline
-                .source("doc['birth_time'].value.getDayOfMonth() == " + criteria.getDateOfBirthDay())
+                .source("doc['birth_time'].value.getDayOfMonth() == " + equalsDate.day())
                 .lang(PAINLESS))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthMonthCriteria(final PatientFilter criteria) {
-    if (criteria.getDateOfBirthMonth() == null) {
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria == null) {
+      return Optional.empty();
+    }
+    Equals equalsDate = dateCriteria.equals();
+    if (equalsDate == null || !equalsDate.isPartialDate() || equalsDate.month() == null) {
       return Optional.empty();
     }
 
     return Optional.of(ScriptQuery.of(q -> q.script(
         Script.of(s -> s
             .inline(inline -> inline
-                .source("doc['birth_time'].value.getMonthValue() == " + criteria.getDateOfBirthMonth())
+                .source("doc['birth_time'].value.getMonthValue() == " + equalsDate.month())
                 .lang(PAINLESS))))));
   }
 
   private Optional<QueryVariant> applyDateOfBirthYearCriteria(final PatientFilter criteria) {
-    if (criteria.getDateOfBirthYear() == null) {
+    DateCriteria dateCriteria = criteria.getBornOn();
+    if (dateCriteria == null) {
+      return Optional.empty();
+    }
+    Equals equalsDate = dateCriteria.equals();
+    if (equalsDate == null || !equalsDate.isPartialDate() || equalsDate.year() == null) {
       return Optional.empty();
     }
 
     return Optional.of(ScriptQuery.of(q -> q.script(
         Script.of(s -> s
             .inline(inline -> inline
-                .source("doc['birth_time'].value.getYear() == " + criteria.getDateOfBirthYear())
+                .source("doc['birth_time'].value.getYear() == " + equalsDate.year())
                 .lang(PAINLESS))))));
   }
 
