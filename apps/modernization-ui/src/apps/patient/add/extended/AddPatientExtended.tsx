@@ -2,8 +2,6 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CreatedPatient } from '../api';
-import { creator } from './creator';
-import { transformer } from './transformer';
 import { ExtendedNewPatientEntry } from './entry';
 import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
 import { useAddExtendedPatient } from './useAddExtendedPatient';
@@ -22,7 +20,7 @@ import styles from './add-patient-extended.module.scss';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
 
 export const AddPatientExtended = () => {
-    const interaction = useAddExtendedPatient({ transformer, creator });
+    const interaction = useAddExtendedPatient();
     const { initialize } = useAddPatientExtendedDefaults();
     const { value: bypassModal } = useShowCancelModal();
     const { toBasic } = useBasicExtendedTransition();
