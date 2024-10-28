@@ -94,7 +94,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'address', title: 'Street Address', name: 'address-value', value: 'address-value' }
+                { source: 'address', title: 'Street address', name: 'address-value', value: 'address-value' }
             ])
         );
     });
