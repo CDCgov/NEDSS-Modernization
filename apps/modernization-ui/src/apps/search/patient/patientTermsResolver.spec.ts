@@ -217,7 +217,7 @@ describe('when the PatientCriteria contains Identification criteria', () => {
             expect.arrayContaining([
                 {
                     source: 'identificationType',
-                    title: 'Id Type',
+                    title: 'Id type',
                     name: 'Identification Type Name',
                     value: 'identification-type-value'
                 },

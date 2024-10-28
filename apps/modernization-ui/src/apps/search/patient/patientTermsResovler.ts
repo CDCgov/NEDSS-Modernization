@@ -57,7 +57,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.identification && entry.identificationType) {
-        terms.push(fromSelectable('identificationType', 'Id Type')(entry.identificationType));
+        terms.push(fromSelectable('identificationType', 'Id type')(entry.identificationType));
         terms.push(fromValue('identification', 'Id')(entry.identification));
     }
 
