@@ -1,10 +1,10 @@
-import { Selectable, asSelectable, findByValue } from 'options';
+import { Selectable, asSelectable } from 'options';
 
-const STARTS_WITH_OPERATOR = asSelectable('S', 'Starts with');
-const CONTAINS_OPERATOR = asSelectable('C', 'Contains');
-const EQUAL_OPERATOR = asSelectable('E', 'Equal');
-const NOT_EQUAL_OPERATOR = asSelectable('N', 'Not equal');
-const SOUNDS_LIKE_OPERATOR = asSelectable('L', 'Sounds like');
+const STARTS_WITH_OPERATOR = asSelectable('startsWith', 'Starts with');
+const CONTAINS_OPERATOR = asSelectable('contains', 'Contains');
+const EQUAL_OPERATOR = asSelectable('equals', 'Equal');
+const NOT_EQUAL_OPERATOR = asSelectable('not', 'Not equal');
+const SOUNDS_LIKE_OPERATOR = asSelectable('soundsLike', 'Sounds like');
 
 const operators: Selectable[] = [
     STARTS_WITH_OPERATOR,
@@ -20,7 +20,4 @@ const basicOperators: Selectable[] = [EQUAL_OPERATOR, NOT_EQUAL_OPERATOR, CONTAI
 /** The default operator to be used. Currently: EQUAL */
 const defaultOperator = EQUAL_OPERATOR;
 
-const asSelectableOperator = (value: string | null | undefined) =>
-    (value && findByValue(operators, EQUAL_OPERATOR)(value)) || EQUAL_OPERATOR;
-
-export { operators, basicOperators, defaultOperator, asSelectableOperator };
+export { operators, basicOperators, defaultOperator };

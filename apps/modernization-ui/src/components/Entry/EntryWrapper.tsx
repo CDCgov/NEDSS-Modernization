@@ -13,7 +13,7 @@ type Props = {
     orientation?: Orientation;
     sizing?: Sizing;
     htmlFor: string;
-    label: string;
+    label?: string;
     error?: string;
     required?: boolean;
     children: ReactNode;
