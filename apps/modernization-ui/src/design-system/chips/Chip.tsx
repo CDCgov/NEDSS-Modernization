@@ -12,7 +12,7 @@ type ChipProps = {
 const Chip = ({ name, value, handleClose }: ChipProps) => {
     return (
         <div className={classNames(styles['chip-container'])}>
-            <span className={styles.name}>
+            <span>
                 {name}: {value}
             </span>
             <Icon.Close aria-label="Close chip" onClick={() => handleClose()} className={styles.closeIcon} />
