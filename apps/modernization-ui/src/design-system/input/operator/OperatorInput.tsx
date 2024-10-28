@@ -57,10 +57,8 @@ export const OperatorInput = ({
     const [combinedValue, setCombinedValue] = useState<OperatorAndValue>(initialValue);
     const operatorSelectId = `${id}Operator`;
     const effectiveOperator = combinedValue.operator || operator;
-    console.log('initialValue', initialValue);
 
     const onSelectionChange = (selectedOperation?: Selectable) => {
-        console.log('selectedOperation', selectedOperation);
         setCombinedValue((cur) => ({ ...cur, operator: selectedOperation?.value as Operation }));
         const operationValue = asOperationValueOrString(combinedValue.value, selectedOperation?.value as Operation);
         onChange(operationValue);
