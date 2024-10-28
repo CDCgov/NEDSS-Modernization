@@ -9,7 +9,8 @@ const displayProfileLink = (shortId: number, displayName?: string) => {
 };
 
 const displayProfileLegalName = (result: PatientSearchResult) => {
-    const legalNameDisplay = (result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data';
+    const legalNameDisplay =
+        result.legalName?.first || result.legalName?.last ? displayName('fullLastFirst')(result.legalName) : 'No Data';
     return displayProfileLink(result.shortId, legalNameDisplay);
 };
 
