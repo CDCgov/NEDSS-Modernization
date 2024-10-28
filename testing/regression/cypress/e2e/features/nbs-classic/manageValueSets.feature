@@ -9,3 +9,8 @@ Feature: Classic NBS - User can view and manage data in NBS Questions
     Then Fill the details to create new "LOCAL" Value Set
     Then Click submit button to create Value Set
 
+  Scenario: Add new Value Set PHIN
+    And Click on Add new in Value Set Library
+    Then Fill the details to create new "PHIN" Value Set
+    Then Click submit button to create Value Set
+

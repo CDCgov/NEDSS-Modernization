@@ -75,8 +75,9 @@ describe('patientSearchResult functions', () => {
     };
 
     it('should displayPhones returns correct string', () => {
-        const result = displayPhones(mockPatient);
-        expect(result).toBe('270-685-4067');
+        const {getByText} = render(displayPhones(mockPatient));
+        expect(getByText('phone-use-value')).toBeInTheDocument();
+        expect(getByText('270-685-4067')).toBeInTheDocument();
     });
 
     it('should displayEmails returns correct string', () => {
