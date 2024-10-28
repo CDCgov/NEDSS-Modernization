@@ -43,14 +43,14 @@ type Identification = {
 };
 
 type EventIds = {
-    morbidityId?: string;
-    documentId?: string;
-    stateCaseId?: string;
-    abcCaseId?: string;
-    cityCountyCaseId?: string;
-    notificationId?: string;
-    labReportId?: string;
-    accessionNumberId?: string;
+    morbidity?: string;
+    document?: string;
+    stateCase?: string;
+    abcCase?: string;
+    cityCountyCase?: string;
+    notification?: string;
+    labReport?: string;
+    accessionNumber?: string;
 };
 
 type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;

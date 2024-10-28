@@ -1637,36 +1637,36 @@ export type PatientVaccinationResults = {
 };
 
 export type PersonFilter = {
-  abcCaseId?: InputMaybe<Scalars['String']['input']>;
-  accessionNumberId?: InputMaybe<Scalars['String']['input']>;
+  abcCase?: InputMaybe<Scalars['String']['input']>;
+  accessionNumber?: InputMaybe<Scalars['String']['input']>;
   address?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Scalars['String']['input']>;
-  cityCountyCaseId?: InputMaybe<Scalars['String']['input']>;
+  cityCountyCase?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
   dateOfBirth?: InputMaybe<Scalars['Date']['input']>;
   dateOfBirthOperator?: InputMaybe<Operator>;
   deceased?: InputMaybe<Deceased>;
   disableSoundex?: InputMaybe<Scalars['Boolean']['input']>;
-  documentId?: InputMaybe<Scalars['String']['input']>;
+  document?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   ethnicity?: InputMaybe<Scalars['String']['input']>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
-  investigationId?: InputMaybe<Scalars['String']['input']>;
-  labReportId?: InputMaybe<Scalars['String']['input']>;
+  investigation?: InputMaybe<Scalars['String']['input']>;
+  labReport?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
-  morbidityId?: InputMaybe<Scalars['String']['input']>;
+  morbidity?: InputMaybe<Scalars['String']['input']>;
   mortalityStatus?: InputMaybe<Scalars['String']['input']>;
-  notificationId?: InputMaybe<Scalars['String']['input']>;
+  notification?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   race?: InputMaybe<Scalars['String']['input']>;
   recordStatus: Array<RecordStatus>;
   state?: InputMaybe<Scalars['String']['input']>;
-  stateCaseId?: InputMaybe<Scalars['String']['input']>;
-  treatmentId?: InputMaybe<Scalars['String']['input']>;
-  vaccinationId?: InputMaybe<Scalars['String']['input']>;
+  stateCase?: InputMaybe<Scalars['String']['input']>;
+  treatment?: InputMaybe<Scalars['String']['input']>;
+  vaccination?: InputMaybe<Scalars['String']['input']>;
   zip?: InputMaybe<Scalars['String']['input']>;
 };
 

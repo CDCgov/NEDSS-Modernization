@@ -9,93 +9,93 @@ import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
 
 @Component
 class PatientEventQueryResolver {
-  private static final String MORBIDITY_REPORT_ID = "morbidity_report_ids";
-  private static final String DOCUMENT_ID = "document_ids";
-  private static final String STATE_CASE_ID = "state_case_ids";
-  private static final String ABC_CASE_ID = "abcs_case_ids";
-  private static final String CITY_COUNTY_CASE_ID = "city_case_ids";
-  private static final String NOTIFICATION_ID = "notification_ids";
-  private static final String TREATMENT_ID = "treatment_ids";
-  private static final String VACCINATION_ID = "vaccination_ids";
-  private static final String INVESTIGATION_ID = "investigation_ids";
-  private static final String LAB_REPORT_ID = "lab_report_ids";
-  private static final String ACCESSION_ID = "accession_ids";
+  private static final String MORBIDITY_REPORTS = "morbidity_report_ids";
+  private static final String DOCUMENTS = "document_ids";
+  private static final String STATE_CASES = "state_case_ids";
+  private static final String ABC_CASES = "abcs_case_ids";
+  private static final String CITY_COUNTY_CASES = "city_case_ids";
+  private static final String NOTIFICATIONS = "notification_ids";
+  private static final String TREATMENTS = "treatment_ids";
+  private static final String VACCINATIONS = "vaccination_ids";
+  private static final String INVESTIGATIONS = "investigation_ids";
+  private static final String LAB_REPORTS = "lab_report_ids";
+  private static final String ACCESSIONS = "accession_ids";
 
   Stream<Query> resolve(final PatientFilter criteria) {
     return Stream.of(
-        applyMorbidityIdCriteria(criteria),
-        applyDocumentIdCriteria(criteria),
-        applyStateCaseIdCriteria(criteria),
-        applyAbcCaseIdCriteria(criteria),
-        applyCityCountyCaseIdCriteria(criteria),
-        applyNotificationIdCriteria(criteria),
-        applyTreatmentIdCriteria(criteria),
-        applyVaccinationIdCriteria(criteria),
-        applyInvestigationIdCriteria(criteria),
-        applyLabIdCriteria(criteria),
-        applyAccessionNumberIdCriteria(criteria))
+        applyMorbidityCriteria(criteria),
+        applyDocumentCriteria(criteria),
+        applyStateCaseCriteria(criteria),
+        applyAbcCaseCriteria(criteria),
+        applyCityCountyCaseCriteria(criteria),
+        applyNotificationCriteria(criteria),
+        applyTreatmentCriteria(criteria),
+        applyVaccinationCriteria(criteria),
+        applyInvestigationCriteria(criteria),
+        applyLabCriteria(criteria),
+        applyAccessionNumberCriteria(criteria))
         .flatMap(Optional::stream)
         .map(QueryVariant::_toQuery);
   }
 
-  private Optional<QueryVariant> applyMorbidityIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeMorbidityId()
-        .map(identifier -> MatchQuery.of(match -> match.field(MORBIDITY_REPORT_ID).query(criteria.getMorbidityId())));
+  private Optional<QueryVariant> applyMorbidityCriteria(final PatientFilter criteria) {
+    return criteria.maybeMorbidity()
+        .map(identifier -> MatchQuery.of(match -> match.field(MORBIDITY_REPORTS).query(criteria.getMorbidity())));
   }
 
-  private Optional<QueryVariant> applyDocumentIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeDocumentId()
-        .map(identifier -> MatchQuery.of(match -> match.field(DOCUMENT_ID).query(criteria.getDocumentId())));
+  private Optional<QueryVariant> applyDocumentCriteria(final PatientFilter criteria) {
+    return criteria.maybeDocument()
+        .map(identifier -> MatchQuery.of(match -> match.field(DOCUMENTS).query(criteria.getDocument())));
   }
 
-  private Optional<QueryVariant> applyStateCaseIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeStateCaseId()
-        .map(identifier -> MatchQuery.of(match -> match.field(STATE_CASE_ID).query(criteria.getStateCaseId())));
+  private Optional<QueryVariant> applyStateCaseCriteria(final PatientFilter criteria) {
+    return criteria.maybeStateCase()
+        .map(identifier -> MatchQuery.of(match -> match.field(STATE_CASES).query(criteria.getStateCase())));
   }
 
-  private Optional<QueryVariant> applyAbcCaseIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeAbcCaseId()
-        .map(identifier -> MatchQuery.of(match -> match.field(ABC_CASE_ID).query(criteria.getAbcCaseId())));
+  private Optional<QueryVariant> applyAbcCaseCriteria(final PatientFilter criteria) {
+    return criteria.maybeAbcCase()
+        .map(identifier -> MatchQuery.of(match -> match.field(ABC_CASES).query(criteria.getAbcCase())));
   }
 
-  private Optional<QueryVariant> applyCityCountyCaseIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeCityCountyCaseId()
+  private Optional<QueryVariant> applyCityCountyCaseCriteria(final PatientFilter criteria) {
+    return criteria.maybeCityCountyCase()
         .map(identifier -> MatchQuery
-            .of(match -> match.field(CITY_COUNTY_CASE_ID).query(criteria.getCityCountyCaseId())));
+            .of(match -> match.field(CITY_COUNTY_CASES).query(criteria.getCityCountyCase())));
   }
 
-  private Optional<QueryVariant> applyNotificationIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeNotificationId()
+  private Optional<QueryVariant> applyNotificationCriteria(final PatientFilter criteria) {
+    return criteria.maybeNotification()
         .map(identifier -> MatchQuery
-            .of(match -> match.field(NOTIFICATION_ID).query(criteria.getNotificationId())));
+            .of(match -> match.field(NOTIFICATIONS).query(criteria.getNotification())));
   }
 
-  private Optional<QueryVariant> applyTreatmentIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeTreatmentId()
+  private Optional<QueryVariant> applyTreatmentCriteria(final PatientFilter criteria) {
+    return criteria.maybeTreatment()
         .map(identifier -> MatchQuery
-            .of(match -> match.field(TREATMENT_ID).query(criteria.getTreatmentId())));
+            .of(match -> match.field(TREATMENTS).query(criteria.getTreatment())));
   }
 
-  private Optional<QueryVariant> applyVaccinationIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeVaccinationId()
+  private Optional<QueryVariant> applyVaccinationCriteria(final PatientFilter criteria) {
+    return criteria.maybeVaccination()
         .map(identifier -> MatchQuery
-            .of(match -> match.field(VACCINATION_ID).query(criteria.getVaccinationId())));
+            .of(match -> match.field(VACCINATIONS).query(criteria.getVaccination())));
   }
 
-  private Optional<QueryVariant> applyInvestigationIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeInvestigationId()
+  private Optional<QueryVariant> applyInvestigationCriteria(final PatientFilter criteria) {
+    return criteria.maybeInvestigation()
         .map(identifier -> MatchQuery
-            .of(match -> match.field(INVESTIGATION_ID).query(criteria.getInvestigationId())));
+            .of(match -> match.field(INVESTIGATIONS).query(criteria.getInvestigation())));
   }
 
-  private Optional<QueryVariant> applyLabIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeLabReportId()
-        .map(identifier -> MatchQuery.of(match -> match.field(LAB_REPORT_ID).query(criteria.getLabReportId())));
+  private Optional<QueryVariant> applyLabCriteria(final PatientFilter criteria) {
+    return criteria.maybeLabReport()
+        .map(identifier -> MatchQuery.of(match -> match.field(LAB_REPORTS).query(criteria.getLabReport())));
   }
 
-  private Optional<QueryVariant> applyAccessionNumberIdCriteria(final PatientFilter criteria) {
-    return criteria.maybeAccessionNumberId()
-        .map(identifier -> MatchQuery.of(match -> match.field(ACCESSION_ID).query(criteria.getAccessionNumberId())));
+  private Optional<QueryVariant> applyAccessionNumberCriteria(final PatientFilter criteria) {
+    return criteria.maybeAccessionNumber()
+        .map(identifier -> MatchQuery.of(match -> match.field(ACCESSIONS).query(criteria.getAccessionNumber())));
   }
 
 }

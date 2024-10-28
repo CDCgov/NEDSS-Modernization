@@ -58,17 +58,17 @@ public class PatientFilter {
   private String mortalityStatus;
   private String ethnicity;
   private List<RecordStatus> recordStatus;
-  private String morbidityId;
-  private String documentId;
-  private String stateCaseId;
-  private String abcCaseId;
-  private String cityCountyCaseId;
-  private String notificationId;
-  private String treatmentId;
-  private String vaccinationId;
-  private String investigationId;
-  private String labReportId;
-  private String accessionNumberId;
+  private String morbidity;
+  private String document;
+  private String stateCase;
+  private String abcCase;
+  private String cityCountyCase;
+  private String notification;
+  private String treatment;
+  private String vaccination;
+  private String investigation;
+  private String labReport;
+  private String accessionNumber;
 
   private boolean disableSoundex;
   @JsonIgnore
@@ -114,104 +114,104 @@ public class PatientFilter {
     return this;
   }
 
-  public PatientFilter withMorbidityId(final String identifier) {
-    this.morbidityId = identifier;
+  public PatientFilter withMorbidity(final String identifier) {
+    this.morbidity = identifier;
     return this;
   }
 
-  public Optional<String> maybeMorbidityId() {
-    return Optional.ofNullable(morbidityId);
+  public Optional<String> maybeMorbidity() {
+    return Optional.ofNullable(morbidity);
   }
 
-  public PatientFilter withDocumentId(final String identifier) {
-    this.documentId = identifier;
+  public PatientFilter withDocument(final String identifier) {
+    this.document = identifier;
     return this;
   }
 
-  public Optional<String> maybeDocumentId() {
-    return Optional.ofNullable(documentId);
+  public Optional<String> maybeDocument() {
+    return Optional.ofNullable(document);
   }
 
 
-  public PatientFilter withStateCaseId(final String identifier) {
-    this.stateCaseId = identifier;
+  public PatientFilter withStateCase(final String identifier) {
+    this.stateCase = identifier;
     return this;
   }
 
-  public Optional<String> maybeStateCaseId() {
-    return Optional.ofNullable(stateCaseId);
+  public Optional<String> maybeStateCase() {
+    return Optional.ofNullable(stateCase);
   }
 
 
-  public PatientFilter withAbcCaseId(final String identifier) {
-    this.abcCaseId = identifier;
+  public PatientFilter withAbcCase(final String identifier) {
+    this.abcCase = identifier;
     return this;
   }
 
-  public Optional<String> maybeAbcCaseId() {
-    return Optional.ofNullable(abcCaseId);
+  public Optional<String> maybeAbcCase() {
+    return Optional.ofNullable(abcCase);
   }
 
-  public PatientFilter withCityCountyCaseId(final String identifier) {
-    this.cityCountyCaseId = identifier;
+  public PatientFilter withCityCountyCase(final String identifier) {
+    this.cityCountyCase = identifier;
     return this;
   }
 
-  public Optional<String> maybeCityCountyCaseId() {
-    return Optional.ofNullable(cityCountyCaseId);
+  public Optional<String> maybeCityCountyCase() {
+    return Optional.ofNullable(cityCountyCase);
   }
 
-  public PatientFilter withNotificationId(final String identifier) {
-    this.notificationId = identifier;
+  public PatientFilter withNotification(final String identifier) {
+    this.notification = identifier;
     return this;
   }
 
-  public Optional<String> maybeNotificationId() {
-    return Optional.ofNullable(notificationId);
+  public Optional<String> maybeNotification() {
+    return Optional.ofNullable(notification);
   }
 
-  public PatientFilter withTreatmentId(final String identifier) {
-    this.treatmentId = identifier;
+  public PatientFilter withTreatment(final String identifier) {
+    this.treatment = identifier;
     return this;
   }
 
-  public Optional<String> maybeTreatmentId() {
-    return Optional.ofNullable(treatmentId);
+  public Optional<String> maybeTreatment() {
+    return Optional.ofNullable(treatment);
   }
 
-  public PatientFilter withVaccinationId(final String identifier) {
-    this.vaccinationId = identifier;
+  public PatientFilter withVaccination(final String identifier) {
+    this.vaccination = identifier;
     return this;
   }
 
-  public Optional<String> maybeVaccinationId() {
-    return Optional.ofNullable(vaccinationId);
+  public Optional<String> maybeVaccination() {
+    return Optional.ofNullable(vaccination);
   }
 
-  public PatientFilter withInvestigationId(final String identifier) {
-    this.investigationId = identifier;
+  public PatientFilter withInvestigation(final String identifier) {
+    this.investigation = identifier;
     return this;
   }
 
-  public Optional<String> maybeInvestigationId() {
-    return Optional.ofNullable(investigationId);
+  public Optional<String> maybeInvestigation() {
+    return Optional.ofNullable(investigation);
   }
 
-  public PatientFilter withLabReportId(final String identifier) {
-    this.labReportId = identifier;
+  public PatientFilter withLabReport(final String identifier) {
+    this.labReport = identifier;
     return this;
   }
 
-  public Optional<String> maybeLabReportId() {
-    return Optional.ofNullable(labReportId);
+  public Optional<String> maybeLabReport() {
+    return Optional.ofNullable(labReport);
   }
 
-  public PatientFilter withAccessiontNumberId(final String identifier) {
-    this.accessionNumberId = identifier;
+  public PatientFilter withAccessiontNumber(final String identifier) {
+    this.accessionNumber = identifier;
     return this;
   }
 
-  public Optional<String> maybeAccessionNumberId() {
-    return Optional.ofNullable(accessionNumberId);
+  public Optional<String> maybeAccessionNumber() {
+    return Optional.ofNullable(accessionNumber);
   }
 }

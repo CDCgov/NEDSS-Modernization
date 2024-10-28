@@ -60,7 +60,7 @@ public class PatientSearchEventIdSteps {
     this.activeMorbidityReport.maybeActive()
         .map(MorbidityReportIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withMorbidityId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withMorbidity(identifier)));
   }
 
   @Given("I would like to search for a patient using the Document ID")
@@ -68,7 +68,7 @@ public class PatientSearchEventIdSteps {
     this.activeCaseReport.maybeActive()
         .map(CaseReportIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withDocumentId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withDocument(identifier)));
   }
 
   @Given("I would like to search for a patient using the State Case ID")
@@ -76,7 +76,7 @@ public class PatientSearchEventIdSteps {
     this.activeStateCase.maybeActive()
         .map(StateCaseIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withStateCaseId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withStateCase(identifier)));
   }
 
   @Given("I would like to search for a patient using the ABC Case ID")
@@ -84,7 +84,7 @@ public class PatientSearchEventIdSteps {
     this.activeAbcCase.maybeActive()
         .map(AbcCaseIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withAbcCaseId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withAbcCase(identifier)));
   }
 
   @Given("I would like to search for a patient using the County Case ID")
@@ -92,7 +92,7 @@ public class PatientSearchEventIdSteps {
     this.activeCityCountyCase.maybeActive()
         .map(CityCountyCaseIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withCityCountyCaseId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withCityCountyCase(identifier)));
   }
 
   @Given("I would like to search for a patient using the Notification ID")
@@ -100,7 +100,7 @@ public class PatientSearchEventIdSteps {
     this.activeNotification.maybeActive()
         .map(NotificationIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withNotificationId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withNotification(identifier)));
   }
 
   @Given("I would like to search for a patient using the Treatment ID")
@@ -108,7 +108,7 @@ public class PatientSearchEventIdSteps {
     this.activeTreatment.maybeActive()
         .map(TreatmentIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withTreatmentId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withTreatment(identifier)));
   }
 
   @Given("I would like to search for a patient using the Vaccination ID")
@@ -116,7 +116,7 @@ public class PatientSearchEventIdSteps {
     this.activeVaccination.maybeActive()
         .map(VaccinationIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withVaccinationId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withVaccination(identifier)));
   }
 
   @Given("I would like to search for a patient using the Investigation ID")
@@ -124,7 +124,7 @@ public class PatientSearchEventIdSteps {
     this.activeInvestigation.maybeActive()
         .map(InvestigationIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withInvestigationId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withInvestigation(identifier)));
   }
 
   @Given("I would like to search for a patient using the Lab Report ID")
@@ -132,7 +132,7 @@ public class PatientSearchEventIdSteps {
     this.activeLabReport.maybeActive()
         .map(LabReportIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withLabReportId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withLabReport(identifier)));
   }
 
   @Given("I would like to search for a patient using the Accession number")
@@ -140,6 +140,6 @@ public class PatientSearchEventIdSteps {
     this.activeAccessionNumber.maybeActive()
         .map(AccessionIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withAccessiontNumberId(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withAccessiontNumber(identifier)));
   }
 }
