@@ -13,11 +13,11 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.dateOfBirth) {
-        terms.push(fromValue('dateOfBirth', 'DOB')(entry.dateOfBirth));
+        terms.push(fromValue('dateOfBirth', 'Dob')(entry.dateOfBirth));
     }
 
     if (entry.gender) {
-        terms.push(fromSelectable('gender', 'SEX')(entry.gender));
+        terms.push(fromSelectable('gender', 'Sex')(entry.gender));
     }
 
     if (entry.id) {
@@ -25,40 +25,40 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.address) {
-        terms.push(fromValue('address', 'STREET ADDRESS')(entry.address));
+        terms.push(fromValue('address', 'Street Address')(entry.address));
     }
 
     if (entry.city) {
-        terms.push(fromValue('city', 'CITY')(entry.city));
+        terms.push(fromValue('city', 'City')(entry.city));
     }
 
     if (entry.state) {
-        terms.push(fromSelectable('state', 'STATE')(entry.state));
+        terms.push(fromSelectable('state', 'State')(entry.state));
     }
 
     if (entry.zip) {
-        terms.push(fromValue('zip', 'ZIP code')(String(entry.zip)));
+        terms.push(fromValue('zip', 'Zip code')(String(entry.zip)));
     }
 
     if (entry.email) {
-        terms.push(fromValue('email', 'EMAIL')(entry.email));
+        terms.push(fromValue('email', 'Email')(entry.email));
     }
 
     if (entry.phoneNumber) {
-        terms.push(fromValue('phoneNumber', 'PHONE')(entry.phoneNumber));
+        terms.push(fromValue('phoneNumber', 'Phone')(entry.phoneNumber));
     }
 
     if (entry.race) {
-        terms.push(fromSelectable('race', 'RACE')(entry.race));
+        terms.push(fromSelectable('race', 'Race')(entry.race));
     }
 
     if (entry.ethnicity) {
-        terms.push(fromSelectable('ethnicity', 'ETHNICITY')(entry.ethnicity));
+        terms.push(fromSelectable('ethnicity', 'Ethnicity')(entry.ethnicity));
     }
 
     if (entry.identification && entry.identificationType) {
-        terms.push(fromSelectable('identificationType', 'ID TYPE')(entry.identificationType));
-        terms.push(fromValue('identification', 'ID')(entry.identification));
+        terms.push(fromSelectable('identificationType', 'Id Type')(entry.identificationType));
+        terms.push(fromValue('identification', 'Id')(entry.identification));
     }
 
     return terms;
