@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.patient.profile.events.investigation.delete;
 
+import gov.cdc.nbs.gateway.RouteOrdering;
 import gov.cdc.nbs.gateway.patient.profile.PatientProfileService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -45,7 +46,7 @@ class DeletedLegacyInvestigationReturnPatientProfileLocatorConfiguration {
     return builder.routes()
         .route(
             "deleted-legacy-investigation-patient-profile-return",
-            route -> route.order(Ordered.HIGHEST_PRECEDENCE)
+            route -> route.order(RouteOrdering.PATIENT_PROFILE.before())
                 .path("/nbs/ViewInvestigation1.do",
                     "/nbs/ViewInvestigation3.do")
                 .and()

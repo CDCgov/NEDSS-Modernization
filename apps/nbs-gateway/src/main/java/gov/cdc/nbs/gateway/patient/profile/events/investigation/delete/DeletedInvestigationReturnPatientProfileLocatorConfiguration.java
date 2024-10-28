@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.patient.profile.events.investigation.delete;
 
+import gov.cdc.nbs.gateway.RouteOrdering;
 import gov.cdc.nbs.gateway.patient.profile.PatientProfileService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -8,7 +9,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 import java.util.List;
 
@@ -45,13 +45,13 @@ class DeletedInvestigationReturnPatientProfileLocatorConfiguration {
     return builder.routes()
         .route(
             "deleted-investigation-patient-profile-return",
-            route -> route.order(Ordered.HIGHEST_PRECEDENCE)
+            route -> route.order(RouteOrdering.PATIENT_PROFILE.before())
                 .path("/nbs/PageAction.do")
                 .and()
                 .query("method", "deleteSubmit")
                 .and()
                 .query("ContextAction",
-                    "ReturnToFile(:?Summary|Events)")
+                    "(?:ReturnTo)?File(:?Summary|Events)")
                 .filters(
                     filter -> filter.setPath(
                             "/nbs/redirect/patient/investigation/delete")
