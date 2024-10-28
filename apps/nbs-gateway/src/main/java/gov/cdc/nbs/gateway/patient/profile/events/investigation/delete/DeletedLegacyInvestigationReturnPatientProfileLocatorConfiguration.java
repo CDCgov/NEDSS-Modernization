@@ -9,7 +9,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 import java.util.List;
 
@@ -33,6 +32,15 @@ import java.util.List;
  * <li>Query Parameter {@code ContextAction} equal to
  * {@code ReturnToFileEvents}</li>
  * </ul>
+ *
+ * OR
+ *
+ * <ul>
+ * <li>Path equal to {@code /nbs/ViewInvestigation3.do}</li>
+ * <li>Query Parameter {@code delete} equal to {@code true}</li>
+ * <li>Query Parameter {@code ContextAction} equal to
+ * {@code FileSummary}</li>
+ * </ul>
  */
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
@@ -47,18 +55,24 @@ class DeletedLegacyInvestigationReturnPatientProfileLocatorConfiguration {
         .route(
             "deleted-legacy-investigation-patient-profile-return",
             route -> route.order(RouteOrdering.PATIENT_PROFILE.before())
-                .path("/nbs/ViewInvestigation1.do",
-                    "/nbs/ViewInvestigation3.do")
+                .path(
+                    "/nbs/ViewInvestigation1.do",
+                    "/nbs/ViewInvestigation2.do",
+                    "/nbs/ViewInvestigation3.do"
+                )
                 .and()
                 .query("delete", "true")
                 .and()
-                .query("ContextAction",
-                    "ReturnToFile(:?Summary|Events)")
+                .query(
+                    "ContextAction",
+                    "ReturnToFileSummary|ReturnToFileEvents|FileSummary"
+                )
                 .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patient/investigation/delete")
-                        .filters(defaults))
-                .uri(service.uri()))
+                    filter -> filter.setPath("/nbs/redirect/patient/investigation/delete")
+                        .filters(defaults)
+                )
+                .uri(service.uri())
+        )
         .build();
   }
 

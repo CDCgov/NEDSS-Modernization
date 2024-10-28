@@ -9,7 +9,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 import java.util.List;
 
@@ -28,11 +27,21 @@ import java.util.List;
  * OR
  *
  * <ul>
- * <li>Path equal to {@code /nbs/PamAction.do.do}</li>
+ * <li>Path equal to {@code /nbs/PamAction.do}</li>
  * <li>Query Parameter {@code method} equal to {@code deleteSubmit}</li>
  * <li>Query Parameter {@code ContextAction} equal to
  * {@code ReturnToFileEvents}</li>
  * </ul>
+ *
+ * OR
+ *
+ * <ul>
+ * <li>Path equal to {@code /nbs/PamAction.do}</li>
+ * <li>Query Parameter {@code method} equal to {@code deleteSubmit}</li>
+ * <li>Query Parameter {@code ContextAction} equal to
+ * {@code FileSummary}</li>
+ * </ul>
+ *
  */
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
@@ -42,7 +51,8 @@ class DeletedPAMInvestigationReturnPatientProfileLocatorConfiguration {
   RouteLocator deletedPAMInvestigationPatientProfileReturn(
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final PatientProfileService service) {
+      final PatientProfileService service
+  ) {
     return builder.routes()
         .route(
             "deleted-PAM-investigation-patient-profile-return",
@@ -51,13 +61,13 @@ class DeletedPAMInvestigationReturnPatientProfileLocatorConfiguration {
                 .and()
                 .query("method", "deleteSubmit")
                 .and()
-                .query("ContextAction",
-                    "ReturnToFile(:?Summary|Events)")
+                .query("ContextAction", "ReturnToFileSummary|ReturnToFileEvents|FileSummary")
                 .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patient/investigation/delete")
-                        .filters(defaults))
-                .uri(service.uri()))
+                    filter -> filter.setPath("/nbs/redirect/patient/investigation/delete")
+                        .filters(defaults)
+                )
+                .uri(service.uri())
+        )
         .build();
   }
 

@@ -29,8 +29,15 @@ import java.util.List;
  * <ul>
  * <li>Path equal to {@code /nbs/PageAction.do}</li>
  * <li>Query Parameter {@code method} equal to {@code deleteSubmit}</li>
- * <li>Query Parameter {@code ContextAction} equal to
- * {@code ReturnToFileEvents}</li>
+ * <li>Query Parameter {@code ContextAction} equal to {@code ReturnToFileEvents}</li>
+ * </ul>
+ *
+ * OR
+ *
+ * <ul>
+ * <li>Path equal to {@code /nbs/PageAction.do}</li>
+ * <li>Query Parameter {@code method} equal to {@code deleteSubmit}</li>
+ * <li>Query Parameter {@code ContextAction} equal to {@code FileSummary}</li>
  * </ul>
  */
 @Configuration
@@ -41,7 +48,8 @@ class DeletedInvestigationReturnPatientProfileLocatorConfiguration {
   RouteLocator deletedInvestigationPatientProfileReturn(
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final PatientProfileService service) {
+      final PatientProfileService service
+  ) {
     return builder.routes()
         .route(
             "deleted-investigation-patient-profile-return",
@@ -50,12 +58,11 @@ class DeletedInvestigationReturnPatientProfileLocatorConfiguration {
                 .and()
                 .query("method", "deleteSubmit")
                 .and()
-                .query("ContextAction",
-                    "(?:ReturnTo)?File(:?Summary|Events)")
+                .query("ContextAction", "ReturnToFileSummary|ReturnToFileEvents|FileSummary")
                 .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patient/investigation/delete")
-                        .filters(defaults))
+                    filter -> filter.setPath("/nbs/redirect/patient/investigation/delete")
+                        .filters(defaults)
+                )
                 .uri(service.uri()))
         .build();
   }
