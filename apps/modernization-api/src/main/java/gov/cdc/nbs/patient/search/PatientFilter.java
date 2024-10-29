@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -59,8 +60,18 @@ public class PatientFilter {
   private String mortalityStatus;
   private String ethnicity;
   private List<RecordStatus> recordStatus;
-  private String treatmentId;
-  private String vaccinationId;
+  private String morbidity;
+  private String document;
+  private String stateCase;
+  private String abcCase;
+  private String cityCountyCase;
+  private String notification;
+  private String treatment;
+  private String vaccination;
+  private String investigation;
+  private String labReport;
+  private String accessionNumber;
+
   private boolean disableSoundex;
   @JsonIgnore
   @Getter(AccessLevel.NONE)
@@ -105,6 +116,107 @@ public class PatientFilter {
   public PatientFilter withId(final String id) {
     this.id = id;
     return this;
+  }
+
+  public PatientFilter withMorbidity(final String identifier) {
+    this.morbidity = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeMorbidity() {
+    return Optional.ofNullable(morbidity);
+  }
+
+  public PatientFilter withDocument(final String identifier) {
+    this.document = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeDocument() {
+    return Optional.ofNullable(document);
+  }
+
+
+  public PatientFilter withStateCase(final String identifier) {
+    this.stateCase = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeStateCase() {
+    return Optional.ofNullable(stateCase);
+  }
+
+
+  public PatientFilter withAbcCase(final String identifier) {
+    this.abcCase = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeAbcCase() {
+    return Optional.ofNullable(abcCase);
+  }
+
+  public PatientFilter withCityCountyCase(final String identifier) {
+    this.cityCountyCase = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeCityCountyCase() {
+    return Optional.ofNullable(cityCountyCase);
+  }
+
+  public PatientFilter withNotification(final String identifier) {
+    this.notification = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeNotification() {
+    return Optional.ofNullable(notification);
+  }
+
+  public PatientFilter withTreatment(final String identifier) {
+    this.treatment = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeTreatment() {
+    return Optional.ofNullable(treatment);
+  }
+
+  public PatientFilter withVaccination(final String identifier) {
+    this.vaccination = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeVaccination() {
+    return Optional.ofNullable(vaccination);
+  }
+
+  public PatientFilter withInvestigation(final String identifier) {
+    this.investigation = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeInvestigation() {
+    return Optional.ofNullable(investigation);
+  }
+
+  public PatientFilter withLabReport(final String identifier) {
+    this.labReport = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeLabReport() {
+    return Optional.ofNullable(labReport);
+  }
+
+  public PatientFilter withAccessiontNumber(final String identifier) {
+    this.accessionNumber = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeAccessionNumber() {
+    return Optional.ofNullable(accessionNumber);
   }
 
   public PatientFilter withBornOnDay(final int day) {

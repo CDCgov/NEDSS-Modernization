@@ -40,8 +40,17 @@ input PersonFilter {
   zip: String
   mortalityStatus: String
   ethnicity: String
-  vaccinationId: String
-  treatmentId: String
+  vaccination: String
+  morbidity: String
+  document: String
+  stateCase: String
+  abcCase: String
+  cityCountyCase: String
+  notification: String
+  treatment: String
+  investigation: String
+  labReport: String
+  accessionNumber: String
   disableSoundex: Boolean
   recordStatus: [RecordStatus!]!
 }
