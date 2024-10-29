@@ -76,3 +76,15 @@ Then("Verify user navigated to Reports page", () => {
 Then("Create and run a report", () => {
     classicHomePage.createRunReports()
 });
+
+Then("Verify Documents Requiring Security Assignment", () => {
+    classicHomePage.verifyDocumentsRequiringSecurityAssignment()
+});
+
+Then("Verify Documents Requiring Review", () => {
+    classicHomePage.verifyDocumentsRequiringReview()
+});
+
+Then("Verify Open Investigations", () => {
+    classicHomePage.verifyOpenInvestigations()
+});

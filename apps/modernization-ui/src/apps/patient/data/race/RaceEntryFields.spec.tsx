@@ -3,6 +3,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CodedValue } from 'coded/CodedValue';
 import { RaceEntry } from './entry';
+import { categoryRequiredValidator } from './categoryRequiredValidator';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
 const mockDetailedOptions: CodedValue[] = [
@@ -73,7 +74,7 @@ describe('Race entry fields', () => {
     });
 
     it('should require race category', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, getByText } = render(<Fixture categoryValidator={categoryRequiredValidator} />);
 
         const raceInput = getByLabelText('Race');
 

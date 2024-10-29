@@ -109,6 +109,7 @@ export const Input = ({
                     value={defaultValue ?? ''}
                     name={name ?? ''}
                     inputRef={textAreaRef}
+                    error={!!error}
                     aria-describedby={error ? `${error}-message` : undefined}
                     className={classNames(className)}
                     aria-label={ariaLabel}

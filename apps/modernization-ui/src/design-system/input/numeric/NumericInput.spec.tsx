@@ -74,4 +74,51 @@ describe('when entering numeric values', () => {
 
         expect(input).toHaveValue(5);
     });
+
+    describe('that require non-scientific values ', () => {
+        it.each([
+            'e',
+            '-',
+            '=',
+            '_',
+            '+',
+            '[',
+            '{',
+            ']',
+            '}',
+            ';',
+            ':',
+            '"',
+            "'",
+            '<',
+            ',',
+            '>',
+            '.',
+            '/',
+            '?',
+            '*',
+            '-',
+            '+',
+            '`',
+            '!',
+            '@',
+            '#',
+            '$',
+            '%',
+            '^',
+            '&',
+            '*',
+            '(',
+            ')'
+        ])('should not allow input of "%s"', (value) => {
+            const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} />);
+
+            const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+
+            userEvent.type(input, value);
+            userEvent.tab();
+
+            expect(input).not.toHaveValue();
+        });
+    });
 });

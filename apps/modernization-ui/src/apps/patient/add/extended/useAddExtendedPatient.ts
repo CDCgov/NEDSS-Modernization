@@ -1,44 +1,38 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { CreatedPatient, NewPatient } from './api';
+import { AddPatientState, useAddPatient, creator } from 'apps/patient/add';
+import { Creator, Transformer } from 'apps/patient/add/api';
 import { ExtendedNewPatientEntry } from './entry';
+import { transformer } from './transformer';
 import {
     AddExtendedPatientInteraction,
-    Working,
-    Created,
-    Invalid,
+    AddExtendedPatientState,
     SubFormDirtyState,
     ValidationErrors
 } from './useAddExtendedPatientInteraction';
 
-type Step =
-    | { status: 'requesting'; entry: ExtendedNewPatientEntry }
-    | { status: 'creating'; input: NewPatient }
-    | { status: 'created'; created: CreatedPatient }
+type ExtendedStep =
+    | { status: 'validating'; entry: ExtendedNewPatientEntry }
+    | { status: 'valid'; entry: ExtendedNewPatientEntry }
     | { status: 'invalid'; validationErrors: ValidationErrors }
     | { status: 'waiting' };
 
-type Action =
-    | { type: 'request'; entry: ExtendedNewPatientEntry }
+type ExtendedAction =
+    | { type: 'validate'; entry: ExtendedNewPatientEntry }
     | { type: 'invalidate'; validationErrors: ValidationErrors }
-    | { type: 'create'; input: NewPatient }
-    | { type: 'complete'; created: CreatedPatient }
-    | { type: 'wait' };
+    | { type: 'validated' };
 
-const initial: Step = { status: 'waiting' };
+const initial: ExtendedStep = { status: 'waiting' };
 
-const reducer = (current: Step, action: Action): Step => {
+const reducer = (current: ExtendedStep, action: ExtendedAction): ExtendedStep => {
     switch (action.type) {
-        case 'request': {
-            return { status: 'requesting', entry: action.entry };
+        case 'validate': {
+            return { status: 'validating', entry: action.entry };
         }
         case 'invalidate': {
             return { status: 'invalid', validationErrors: action.validationErrors };
         }
-        case 'create': {
-            return { status: 'creating', input: action.input };
-        }
-        case 'complete': {
-            return { status: 'created', created: action.created };
+        case 'validated': {
+            return current.status === 'validating' ? { status: 'valid', entry: current.entry } : current;
         }
         default: {
             return current;
@@ -46,17 +40,9 @@ const reducer = (current: Step, action: Action): Step => {
     }
 };
 
-type Transformer = (entry: ExtendedNewPatientEntry) => NewPatient;
-type Creator = (input: NewPatient) => Promise<CreatedPatient>;
+const useAddExtendedPatient = (): AddExtendedPatientInteraction => {
+    const addPatient = useAddPatient({ transformer, creator });
 
-type State = Working | Created | Invalid;
-
-type Settings = {
-    transformer: Transformer;
-    creator: Creator;
-};
-
-const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedPatientInteraction => {
     const [step, dispatch] = useReducer(reducer, initial);
     const [subFormDirtyState, setSubFormDirtyState] = useState<SubFormDirtyState>({
         address: false,
@@ -67,33 +53,30 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
     });
 
     const setSubFormState = (subFormState: Partial<SubFormDirtyState>) => {
-        setSubFormDirtyState((current) => {
-            return { ...current, ...subFormState };
-        });
+        setSubFormDirtyState((current) => ({ ...current, ...subFormState }));
     };
 
     useEffect(() => {
-        if (step.status === 'requesting') {
+        if (step.status === 'validating') {
             if (
-                !subFormDirtyState.address &&
-                !subFormDirtyState.identification &&
-                !subFormDirtyState.name &&
-                !subFormDirtyState.phone &&
-                !subFormDirtyState.race
+                subFormDirtyState.address ||
+                subFormDirtyState.identification ||
+                subFormDirtyState.name ||
+                subFormDirtyState.phone ||
+                subFormDirtyState.race
             ) {
-                const input = transformer(step.entry);
-                dispatch({ type: 'create', input });
-            } else {
                 dispatch({ type: 'invalidate', validationErrors: { dirtySections: subFormDirtyState } });
+            } else {
+                dispatch({ type: 'validated' });
             }
-        } else if (step.status === 'creating') {
-            creator(step.input).then((created) => dispatch({ type: 'complete', created }));
+        } else if (step.status === 'valid') {
+            addPatient.create(step.entry);
         }
-    }, [step.status, dispatch]);
+    }, [step.status, dispatch, addPatient.create]);
 
-    const state: State = useMemo(() => evaluateState(step), [step]);
+    const state: AddExtendedPatientState = useMemo(() => evaluateState(step, addPatient), [step, addPatient]);
 
-    const create = useCallback((entry: ExtendedNewPatientEntry) => dispatch({ type: 'request', entry }), [dispatch]);
+    const create = useCallback((entry: ExtendedNewPatientEntry) => dispatch({ type: 'validate', entry }), [dispatch]);
 
     return {
         ...state,
@@ -102,23 +85,19 @@ const useAddExtendedPatient = ({ transformer, creator }: Settings): AddExtendedP
     };
 };
 
-const evaluateState = (step: Step): State => {
+const evaluateState = (step: ExtendedStep, state: AddPatientState): AddExtendedPatientState => {
     switch (step.status) {
-        case 'creating':
-        case 'requesting': {
+        case 'validating': {
             return { status: 'working' };
-        }
-        case 'created': {
-            return { status: 'created', created: step.created };
         }
         case 'invalid': {
             return { status: 'invalid', validationErrors: step.validationErrors };
         }
         default: {
-            return { status: step.status };
+            return state;
         }
     }
 };
 
 export { useAddExtendedPatient };
-export type { Settings, Transformer, Creator };
+export type { Transformer, Creator };

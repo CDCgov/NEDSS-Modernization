@@ -53,6 +53,7 @@ const SingleSelect = ({
         <TrussworksSelect
             {...inputProps}
             id={id}
+            validationStatus={error ? 'error' : undefined}
             name={inputProps.name ?? id}
             defaultValue={value?.value}
             placeholder="-Select-"

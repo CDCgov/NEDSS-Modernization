@@ -1,3 +1,19 @@
+input DateEqualsCriteria {
+  day: Int
+  month: Int
+  year: Int
+}
+
+input DateBetweenCriteria {
+  from: Date
+  to: Date
+}
+
+input DateCriteria {
+  equals: DateEqualsCriteria
+  between: DateBetweenCriteria
+}
+
 input IdentificationCriteria {
   identificationNumber: String
   identificationType: String
@@ -13,6 +29,7 @@ input PersonFilter {
   phoneNumber: String
   email: String
   dateOfBirth: Date
+  bornOn: DateCriteria
   dateOfBirthOperator: Operator
   gender: String
   deceased: Deceased
@@ -70,10 +87,9 @@ type PatientSearchResultName {
 }
 
 type PatientSearchResultPhone {
-  extension: String
+  type: String!
+  use: String!
   number: String
-  type: String
-  use: String
 }
 
 type PatientSearchResultAddress {

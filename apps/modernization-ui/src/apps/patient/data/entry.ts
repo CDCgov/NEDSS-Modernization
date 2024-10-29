@@ -11,35 +11,35 @@ type LocationEntry = {
 type AdministrativeEntry = EffectiveDated & HasComments;
 
 type NameEntry = EffectiveDated & {
-    type: Selectable;
-    prefix?: Selectable;
+    type: Selectable | null;
+    prefix?: Maybe<Selectable>;
     first?: string;
     middle?: string;
     secondMiddle?: string;
     last?: string;
     secondLast?: string;
-    suffix?: Selectable;
-    degree?: Selectable;
+    suffix?: Maybe<Selectable>;
+    degree?: Maybe<Selectable>;
 };
 
 type AddressEntry = EffectiveDated &
     HasComments & {
-        type: Selectable;
-        use: Selectable;
+        type: Selectable | null;
+        use: Selectable | null;
         address1?: string;
         address2?: string;
         city?: string;
-        county?: Selectable;
-        state?: Selectable;
+        county?: Maybe<Selectable>;
+        state?: Maybe<Selectable>;
         zipcode?: string;
-        country?: Selectable;
+        country?: Maybe<Selectable>;
         censusTract?: string;
     };
 
 type PhoneEmailEntry = EffectiveDated &
     HasComments & {
-        type: Selectable;
-        use: Selectable;
+        type: Selectable | null;
+        use: Selectable | null;
         countryCode?: string;
         phoneNumber?: string;
         extension?: string;
@@ -48,9 +48,9 @@ type PhoneEmailEntry = EffectiveDated &
     };
 
 type IdentificationEntry = EffectiveDated & {
-    type: Selectable;
+    type: Selectable | null;
     id: string;
-    issuer?: Selectable;
+    issuer?: Maybe<Selectable>;
 };
 
 type SexEntry = EffectiveDated & {
