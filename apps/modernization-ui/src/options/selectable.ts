@@ -67,9 +67,11 @@ function asName(selectable: Maybe<Selectable>) {
 
 export { asName };
 
-function asSelectable(value: string, name?: string): Selectable {
-    return { name: name ?? value, label: name ?? value, value };
-}
+const asSelectable = (value: string, name?: string): Selectable => ({
+    name: name ?? value,
+    label: name ?? value,
+    value
+});
 
 export { asSelectable };
 
