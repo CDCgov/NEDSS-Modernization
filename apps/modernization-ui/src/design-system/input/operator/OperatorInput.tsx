@@ -76,19 +76,6 @@ export const OperatorInput = ({
             <Grid col={12}>
                 <Grid row>
                     <Grid col={5} className="padding-right-1">
-                        {/* <Controller
-                            control={control}
-                            name={operatorSelectId}
-                            defaultValue={operatorValue}
-                            render={({ field: { value, name } }) => (
-                                <OperatorSelect
-                                    id={name}
-                                    value={value}
-                                    mode={operationMode}
-                                    sizing={sizing}
-                                    onChange={onSelectionChange}
-                                />
-                            )} */}
                         <OperatorSelect
                             id={operatorSelectId}
                             value={asSelectableOperator(effectiveOperator)}
@@ -98,25 +85,6 @@ export const OperatorInput = ({
                         />
                     </Grid>
                     <Grid col={7}>
-                        {/* <Controller
-                            control={control}
-                            name={id}
-                            defaultValue={value}
-                            rules={rules}
-                            render={({ field: { onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
-                                    onBlur={onBlur}
-                                    onChange={onInputChange}
-                                    type="text"
-                                    name={name}
-                                    defaultValue={value}
-                                    htmlFor={name}
-                                    id={name}
-                                    sizing={sizing}
-                                    error={error?.message}
-                                />
-                            )}
-                        /> */}
                         <Input
                             onChange={onInputChange}
                             type="text"
