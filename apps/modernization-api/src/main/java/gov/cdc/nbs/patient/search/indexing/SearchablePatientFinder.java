@@ -110,6 +110,7 @@ class SearchablePatientFinder {
                     Public_health_case phc
                     JOIN Act_id ai ON phc.public_health_case_uid = ai.act_uid
                     and ai.type_cd='STATE'
+                    and (ai.assigning_authority_cd <> 'ABCS' OR ai.assigning_authority_cd IS NULL)
                     and ai.root_extension_txt is not null
                     and ai.root_extension_txt<>''
                     JOIN participation par ON par.act_uid = phc.public_health_case_uid
@@ -129,6 +130,7 @@ class SearchablePatientFinder {
                     JOIN Act_id ai ON phc.public_health_case_uid = ai.act_uid
                       and ai.act_id_seq=2
                     and ai.type_cd='STATE'
+                    and ai.assigning_authority_cd='ABCS'
                     and ai.root_extension_txt is not null
                     and ai.root_extension_txt<>''
                     JOIN participation par ON par.act_uid = phc.public_health_case_uid
@@ -240,13 +242,13 @@ class SearchablePatientFinder {
   private static final int MORBIDITY_REPORT_IDS_COLUMN = 9;
   private static final int TREATMENT_IDS_COLUMN = 10;
   private static final int VACCINATION_IDS_COLUMN = 11;
-  private static final int ABCS_CASE_IDS_COLUMN = 12;
-  private static final int CITY_CASE_IDS_COLUMN = 13;
-  private static final int STATE_CASE_IDS_COLUMN = 14;
-  private static final int ACCESSION_IDS_COLUMN = 15;
+  private static final int STATE_CASE_IDS_COLUMN = 12;
+  private static final int ABCS_CASE_IDS_COLUMN = 13;
+  private static final int CITY_CASE_IDS_COLUMN = 14;
+  private static final int NOTIFICATION_IDS_COLUMN = 15;
   private static final int INVESTIGATION_IDS_COLUMN = 16;
   private static final int LAB_REPORT_IDS_COLUMN = 17;
-  private static final int NOTIFICATION_IDS_COLUMN = 18;
+  private static final int ACCESSION_IDS_COLUMN = 18;
 
   private final JdbcTemplate template;
   private final SearchablePatientRowMapper mapper;

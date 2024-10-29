@@ -7,6 +7,9 @@
     color: colors.$primary-dark;
     border-radius: 2px;
 
+    .name {
+        text-transform: uppercase;
+    }
 
     .closeIcon {
         cursor: pointer;
