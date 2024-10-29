@@ -7,7 +7,8 @@ import {
     displayEmails,
     displayAddresses,
     displayOtherNames,
-    displayIdentifications
+    displayIdentifications,
+    displayProfileLegalName
 } from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
@@ -75,7 +76,7 @@ describe('patientSearchResult functions', () => {
     };
 
     it('should displayPhones returns correct string', () => {
-        const {getByText} = render(displayPhones(mockPatient));
+        const { getByText } = render(displayPhones(mockPatient));
         expect(getByText('phone-use-value')).toBeInTheDocument();
         expect(getByText('270-685-4067')).toBeInTheDocument();
     });
@@ -114,5 +115,23 @@ describe('patientSearchResult functions', () => {
         expect(getByText('123-45-6789')).toBeInTheDocument();
         expect(getByText('MRN')).toBeInTheDocument();
         expect(getByText('123456')).toBeInTheDocument();
+    });
+
+    it('should displayProfileLegalName renders correctly with legal name', () => {
+        const { getByText } = render(<BrowserRouter>{displayProfileLegalName(mockPatient)}</BrowserRouter>);
+        const link = getByText('Doe, John');
+        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
+    });
+
+    it('should displayProfileLegalName renders "No Data" when legal name is missing', () => {
+        const mockPatientWithoutLegalName = {
+            ...mockPatient,
+            legalName: null
+        };
+        const { getByText } = render(
+            <BrowserRouter>{displayProfileLegalName(mockPatientWithoutLegalName)}</BrowserRouter>
+        );
+        const link = getByText('No Data');
+        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
     });
 });
