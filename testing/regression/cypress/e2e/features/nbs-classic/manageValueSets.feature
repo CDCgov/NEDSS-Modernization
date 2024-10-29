@@ -14,3 +14,8 @@ Feature: Classic NBS - User can view and manage data in NBS Questions
     Then Fill the details to create new "PHIN" Value Set
     Then Click submit button to create Value Set
 
+  Scenario: Filter navigate result page
+    And Click filter button in Value Set library
+    Then Enter filter text in the input in Value Set library
+    And Click OK button to filter in Value Set library
+
