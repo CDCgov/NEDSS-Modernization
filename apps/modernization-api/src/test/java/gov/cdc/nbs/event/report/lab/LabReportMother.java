@@ -41,7 +41,7 @@ public class LabReportMother {
   private final SequentialIdentityGenerator idGenerator;
   private final EntityManager entityManager;
   private final TestLabReportCleaner cleaner;
-
+  private final Active<AccessionIdentifier> activeAccessionIdentifier;
   private final Active<LabReportIdentifier> active;
   private final Available<LabReportIdentifier> available;
 
@@ -54,14 +54,15 @@ public class LabReportMother {
       final TestLabReportCleaner cleaner,
       final Active<LabReportIdentifier> active,
       final Available<LabReportIdentifier> available,
-      final PatientMother patientMother
-  ) {
+      final Active<AccessionIdentifier> activeAccessionIdentifier,
+      final PatientMother patientMother) {
     this.settings = settings;
     this.idGenerator = idGenerator;
     this.entityManager = entityManager;
     this.cleaner = cleaner;
     this.active = active;
     this.available = available;
+    this.activeAccessionIdentifier = activeAccessionIdentifier;
     this.patientMother = patientMother;
   }
 
@@ -74,8 +75,7 @@ public class LabReportMother {
       final PatientIdentifier patient,
       final OrganizationIdentifier organization,
       final JurisdictionIdentifier jurisdiction,
-      final ProgramAreaIdentifier programArea
-  ) {
+      final ProgramAreaIdentifier programArea) {
     PatientIdentifier revision = patientMother.revise(patient);
     // Observation
     long identifier = idGenerator.next();
@@ -113,8 +113,7 @@ public class LabReportMother {
   private void within(
       final Observation observation,
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
+      final JurisdictionIdentifier jurisdiction) {
     observation.setProgAreaCd(programArea.code());
     observation.setJurisdictionCd(jurisdiction.code());
     observation.setProgramJurisdictionOid(programArea.oid(jurisdiction));
@@ -168,8 +167,7 @@ public class LabReportMother {
   void within(
       final LabReportIdentifier identifier,
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
+      final JurisdictionIdentifier jurisdiction) {
     Observation lab = managed(identifier);
     within(lab, programArea, jurisdiction);
   }
@@ -242,6 +240,7 @@ public class LabReportMother {
     filler.setRootExtensionTxt(number);
 
     act.addIdentifier(filler);
+    activeAccessionIdentifier.active(new AccessionIdentifier(act.getId(), number));
   }
 
   void forPregnantPatient(final LabReportIdentifier identifier) {
@@ -257,8 +256,7 @@ public class LabReportMother {
   void created(
       final LabReportIdentifier identifier,
       final long by,
-      final Instant on
-  ) {
+      final Instant on) {
     Observation lab = managed(identifier);
     lab.setAddTime(on);
     lab.setAddUserId(by);
@@ -267,8 +265,7 @@ public class LabReportMother {
   void updated(
       final LabReportIdentifier identifier,
       final long by,
-      final Instant on
-  ) {
+      final Instant on) {
     Observation lab = managed(identifier);
     lab.setLastChgUserId(by);
     lab.setLastChgTime(on);

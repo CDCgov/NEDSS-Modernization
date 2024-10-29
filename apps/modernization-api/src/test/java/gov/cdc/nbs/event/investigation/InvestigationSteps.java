@@ -32,8 +32,7 @@ public class InvestigationSteps {
       final Active<ProviderIdentifier> activeProvider,
       final Active<InvestigationIdentifier> activeInvestigation,
       final InvestigationMother mother,
-      final ConceptParameterResolver resolver
-  ) {
+      final ConceptParameterResolver resolver) {
     this.activePatient = activePatient;
     this.activeJurisdiction = activeJurisdiction;
     this.activeProgramArea = activeProgramArea;
@@ -54,9 +53,7 @@ public class InvestigationSteps {
         p -> mother.create(
             p,
             activeJurisdiction.active(),
-            activeProgramArea.active()
-        )
-    );
+            activeProgramArea.active()));
   }
 
   @Given("the patient is a subject of {int} investigations")
@@ -69,23 +66,19 @@ public class InvestigationSteps {
       mother.create(
           patient,
           jurisdiction,
-          programArea
-      );
+          programArea);
     }
   }
 
   @Given("the investigation is for {programArea} within {jurisdiction}")
   public void the_investigation_is_within(
       final ProgramAreaIdentifier programArea,
-      final JurisdictionIdentifier jurisdiction
-  ) {
+      final JurisdictionIdentifier jurisdiction) {
     activeInvestigation.maybeActive().ifPresent(
         investigation -> mother.within(
             investigation,
             programArea,
-            jurisdiction
-        )
-    );
+            jurisdiction));
   }
 
   @Given("the investigation is for the {condition} condition")
@@ -172,7 +165,7 @@ public class InvestigationSteps {
         .ifPresent(active -> mother.relatedToStateCase(active, number));
   }
 
-  @Given("the investigation is related to ABCS Case {string}")
+  @Given("the investigation is related to ABCs Case {string}")
   public void the_investigation_is_related_to_ABCS_case(final String number) {
     this.activeInvestigation.maybeActive()
         .ifPresent(active -> mother.relatedToABCSCase(active, number));
@@ -190,9 +183,7 @@ public class InvestigationSteps {
         .ifPresent(
             active -> mother.investigatedBy(
                 active,
-                activeProvider.active()
-            )
-        );
+                activeProvider.active()));
   }
 
   @Given("the investigation was reported by the {organization} facility")
@@ -207,15 +198,12 @@ public class InvestigationSteps {
         .ifPresent(
             active -> mother.reportedBy(
                 active,
-                activeProvider.active()
-            )
-        );
+                activeProvider.active()));
   }
 
   @Given("the investigation is related to the {outbreak} outbreak")
   public void the_investigation_is_related_to_the_outbreak(final String outbreak) {
     this.activeInvestigation.maybeActive().ifPresent(
-        active -> mother.relatedToOutbreak(active, outbreak)
-    );
+        active -> mother.relatedToOutbreak(active, outbreak));
   }
 }
