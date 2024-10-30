@@ -12,6 +12,8 @@ export { statusOptions };
 
 type BasicInformation = {
     lastName?: string;
+    // when ready, replace the line above with this
+    // lastName?: TextCriteria;
     firstName?: string;
     dateOfBirth?: string;
     gender?: Selectable;
