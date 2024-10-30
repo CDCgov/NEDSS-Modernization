@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import com.example.save_dedupe_configuration.model.PassConfiguration;
+import com.example.save_dedupe_configuration.model.BlockingCriteria;
+import com.example.save_dedupe_configuration.model.MatchingCriteria;
+import com.example.save_dedupe_configuration.service.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
@@ -20,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Pass Configuration API", description = "Manage pass configurations, blocking criteria, and matching criteria")
 @RestController
 @RequestMapping("/api/configurations")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PassConfigurationController {
     @Autowired
     private PassConfigurationService passConfigurationService;

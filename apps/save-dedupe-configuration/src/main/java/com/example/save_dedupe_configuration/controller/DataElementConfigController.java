@@ -13,8 +13,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
-@RequestMapping("/api/configurations/config")
+@Tag(name = "Data Elements API", description = "Manage data elements for blocking and matching")
+@RequestMapping("/api/configurations/data-elements")
 @CrossOrigin(origins = "http://localhost:3000")
 public class DataElementConfigController {
 

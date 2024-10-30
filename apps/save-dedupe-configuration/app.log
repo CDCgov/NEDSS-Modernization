@@ -1,40 +1,1134 @@
-2024-10-29T00:53:43.209-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h13m30s772ms).
-2024-10-29T01:57:10.461-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h3m27s252ms).
-2024-10-29T03:19:07.460-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h21m56s999ms).
-2024-10-29T04:58:37.703-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h39m30s245ms).
-2024-10-29T06:23:20.256-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h24m42s552ms).
-2024-10-29T08:02:05.615-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h38m45s360ms).
-2024-10-29T09:13:37.447-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h11m31s831ms).
-2024-10-29T09:18:52.071-04:00  WARN 14080 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m14s624ms).
-2024-10-29T09:54:44.297-04:00  INFO 14080 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-10-29T09:54:44.319-04:00  INFO 14080 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2024-10-29T09:54:44.323-04:00  INFO 14080 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-2024-10-29T10:21:41.177-04:00  INFO 31355 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 31355 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
-2024-10-29T10:21:41.179-04:00  INFO 31355 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
-2024-10-29T10:21:41.433-04:00  INFO 31355 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2024-10-29T10:21:41.457-04:00  INFO 31355 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20 ms. Found 1 JPA repository interface.
-2024-10-29T10:21:41.668-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2024-10-29T10:21:41.677-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2024-10-29T10:21:41.677-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
-2024-10-29T10:21:41.705-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2024-10-29T10:21:41.705-04:00  INFO 31355 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 508 ms
-2024-10-29T10:21:41.771-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2024-10-29T10:21:41.791-04:00  INFO 31355 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
-2024-10-29T10:21:41.808-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2024-10-29T10:21:41.919-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2024-10-29T10:21:41.931-04:00  INFO 31355 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2024-10-29T10:21:42.023-04:00  INFO 31355 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@150d6eaf
-2024-10-29T10:21:42.024-04:00  INFO 31355 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2024-10-29T10:21:42.396-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2024-10-29T10:21:42.451-04:00  INFO 31355 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2024-10-29T10:21:42.580-04:00  WARN 31355 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-10-29T10:21:42.715-04:00  INFO 31355 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-2024-10-29T10:21:42.719-04:00  INFO 31355 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 1.711 seconds (process running for 1.855)
-2024-10-29T10:22:05.361-04:00  INFO 31355 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-10-29T10:22:05.362-04:00  INFO 31355 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2024-10-29T10:22:05.364-04:00  INFO 31355 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2024-10-29T10:40:45.020-04:00  WARN 31355 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m32s792ms).
-2024-10-29T10:55:07.934-04:00  WARN 31355 --- [save-dedupe-configuration] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m22s733ms).
-2024-10-29T10:55:18.124-04:00  INFO 31355 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-10-29T10:55:18.141-04:00  INFO 31355 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2024-10-29T10:55:18.146-04:00  INFO 31355 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:02:31.665-04:00  INFO 40722 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 40722 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:02:31.670-04:00  INFO 40722 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:02:31.963-04:00  INFO 40722 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:02:31.986-04:00  INFO 40722 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:02:32.192-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:02:32.198-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:02:32.199-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:02:32.222-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:02:32.222-04:00  INFO 40722 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 533 ms
+2024-10-30T18:02:32.336-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:02:32.364-04:00  INFO 40722 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:02:32.397-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:02:32.520-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:02:32.532-04:00  INFO 40722 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:02:32.604-04:00  INFO 40722 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5da57a64
+2024-10-30T18:02:32.605-04:00  INFO 40722 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:02:33.031-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:02:33.236-04:00  INFO 40722 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:02:33.437-04:00  WARN 40722 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:02:33.627-04:00  INFO 40722 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:02:33.632-04:00  INFO 40722 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.137 seconds (process running for 2.288)
+2024-10-30T18:03:06.224-04:00  INFO 40722 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:03:06.224-04:00  INFO 40722 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:03:06.245-04:00  INFO 40722 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 21 ms
+2024-10-30T18:04:14.621-04:00  INFO 40722 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:04:14.625-04:00  INFO 40722 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:04:14.627-04:00  INFO 40722 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:04:28.962-04:00  INFO 40831 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 40831 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:04:28.964-04:00  INFO 40831 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:04:29.258-04:00  INFO 40831 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:04:29.281-04:00  INFO 40831 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:04:29.482-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:04:29.488-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:04:29.488-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:04:29.514-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:04:29.514-04:00  INFO 40831 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 530 ms
+2024-10-30T18:04:29.580-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:04:29.603-04:00  INFO 40831 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:04:29.616-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:04:29.733-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:04:29.745-04:00  INFO 40831 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:04:29.840-04:00  INFO 40831 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@30fbc23
+2024-10-30T18:04:29.840-04:00  INFO 40831 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:04:30.258-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:04:30.318-04:00  INFO 40831 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:04:30.518-04:00  WARN 40831 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:04:30.729-04:00  INFO 40831 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:04:30.734-04:00  INFO 40831 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 1.951 seconds (process running for 2.093)
+2024-10-30T18:04:32.489-04:00  INFO 40831 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:04:32.489-04:00  INFO 40831 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:04:32.491-04:00  INFO 40831 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-10-30T18:07:13.352-04:00  INFO 40831 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:07:13.356-04:00  INFO 40831 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:07:13.359-04:00  INFO 40831 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:07:24.372-04:00  INFO 41044 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 41044 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:07:24.374-04:00  INFO 41044 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:07:24.717-04:00  INFO 41044 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:07:24.772-04:00  INFO 41044 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 51 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:07:25.019-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:07:25.025-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:07:25.026-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:07:25.052-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:07:25.053-04:00  INFO 41044 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 657 ms
+2024-10-30T18:07:25.125-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:07:25.144-04:00  INFO 41044 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:07:25.155-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:07:25.296-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:07:25.323-04:00  INFO 41044 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:07:25.431-04:00  INFO 41044 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@64fdcf99
+2024-10-30T18:07:25.432-04:00  INFO 41044 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:07:25.885-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:07:25.964-04:00  INFO 41044 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:07:26.172-04:00  WARN 41044 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:07:26.544-04:00  INFO 41044 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:07:26.550-04:00  INFO 41044 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.352 seconds (process running for 2.499)
+2024-10-30T18:07:28.523-04:00  INFO 41044 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:07:28.524-04:00  INFO 41044 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:07:28.530-04:00  INFO 41044 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2024-10-30T18:08:09.692-04:00  INFO 41044 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:08:09.696-04:00  INFO 41044 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:08:09.698-04:00  INFO 41044 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:09:42.806-04:00  INFO 41339 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 41339 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:09:42.808-04:00  INFO 41339 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:09:43.147-04:00  INFO 41339 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:09:43.210-04:00  INFO 41339 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:09:43.438-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:09:43.445-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:09:43.445-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:09:43.468-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:09:43.468-04:00  INFO 41339 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 642 ms
+2024-10-30T18:09:43.538-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:09:43.558-04:00  INFO 41339 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:09:43.569-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:09:43.683-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:09:43.695-04:00  INFO 41339 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:09:43.803-04:00  INFO 41339 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@63f2e0b
+2024-10-30T18:09:43.803-04:00  INFO 41339 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:09:44.214-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:09:44.283-04:00  INFO 41339 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:09:44.483-04:00  WARN 41339 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:09:44.678-04:00  INFO 41339 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:09:44.683-04:00  INFO 41339 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.046 seconds (process running for 2.194)
+2024-10-30T18:10:40.718-04:00  INFO 41339 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:10:40.724-04:00  INFO 41339 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:10:40.739-04:00  INFO 41339 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 14 ms
+2024-10-30T18:13:03.497-04:00  INFO 41339 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:13:03.506-04:00  INFO 41339 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:13:03.509-04:00  INFO 41339 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:13:13.704-04:00  INFO 41720 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 41720 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:13:13.705-04:00  INFO 41720 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:13:13.992-04:00  INFO 41720 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:13:14.019-04:00  INFO 41720 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 24 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:13:14.224-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:13:14.231-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:13:14.231-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:13:14.254-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:13:14.254-04:00  INFO 41720 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 530 ms
+2024-10-30T18:13:14.323-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:13:14.347-04:00  INFO 41720 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:13:14.358-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:13:14.467-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:13:14.478-04:00  INFO 41720 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:13:14.582-04:00  INFO 41720 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5f883d90
+2024-10-30T18:13:14.583-04:00  INFO 41720 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:13:14.994-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:13:15.071-04:00  INFO 41720 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:13:15.268-04:00  WARN 41720 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:13:15.460-04:00  INFO 41720 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:13:15.468-04:00  INFO 41720 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 1.926 seconds (process running for 2.071)
+2024-10-30T18:14:46.390-04:00  INFO 41720 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:14:46.390-04:00  INFO 41720 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:14:46.393-04:00  INFO 41720 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2024-10-30T18:14:46.653-04:00 ERROR 41720 --- [save-dedupe-configuration] [http-nio-8080-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:15:24.092-04:00 ERROR 41720 --- [save-dedupe-configuration] [http-nio-8080-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:16:08.233-04:00  INFO 41720 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:16:08.244-04:00  INFO 41720 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:16:08.247-04:00  INFO 41720 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:18:24.690-04:00  INFO 41957 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 41957 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:18:24.691-04:00  INFO 41957 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:18:24.991-04:00  INFO 41957 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:18:25.016-04:00  INFO 41957 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:18:25.226-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:18:25.232-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:18:25.232-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:18:25.255-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:18:25.256-04:00  INFO 41957 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 547 ms
+2024-10-30T18:18:25.319-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:18:25.343-04:00  INFO 41957 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:18:25.355-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:18:25.467-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:18:25.479-04:00  INFO 41957 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:18:25.572-04:00  INFO 41957 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@46ea78f0
+2024-10-30T18:18:25.572-04:00  INFO 41957 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:18:26.052-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:18:26.131-04:00  INFO 41957 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:18:26.343-04:00  WARN 41957 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:18:26.567-04:00  INFO 41957 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:18:26.573-04:00  INFO 41957 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.053 seconds (process running for 2.2)
+2024-10-30T18:18:28.988-04:00  INFO 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:18:28.988-04:00  INFO 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:18:28.991-04:00  INFO 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2024-10-30T18:18:29.219-04:00 ERROR 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:18:44.330-04:00 ERROR 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:21:35.588-04:00 ERROR 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:22:08.207-04:00 ERROR 41957 --- [save-dedupe-configuration] [http-nio-8080-exec-8] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:24:04.443-04:00  INFO 41957 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:24:04.447-04:00  INFO 41957 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:24:04.449-04:00  INFO 41957 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:24:14.184-04:00  INFO 42183 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 42183 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:24:14.185-04:00  INFO 42183 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:24:14.474-04:00  INFO 42183 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:24:14.497-04:00  INFO 42183 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:24:14.774-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:24:14.781-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:24:14.781-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:24:14.805-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:24:14.806-04:00  INFO 42183 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 602 ms
+2024-10-30T18:24:14.870-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:24:14.889-04:00  INFO 42183 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:24:14.901-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:24:15.016-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:24:15.027-04:00  INFO 42183 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:24:15.125-04:00  INFO 42183 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@667797f
+2024-10-30T18:24:15.126-04:00  INFO 42183 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:24:15.556-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:24:15.671-04:00  INFO 42183 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:24:15.899-04:00  WARN 42183 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:24:16.104-04:00  INFO 42183 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:24:16.109-04:00  INFO 42183 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.095 seconds (process running for 2.239)
+2024-10-30T18:24:18.752-04:00  INFO 42183 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:24:18.752-04:00  INFO 42183 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:24:18.756-04:00  INFO 42183 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2024-10-30T18:24:18.999-04:00 ERROR 42183 --- [save-dedupe-configuration] [http-nio-8080-exec-8] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:25:28.685-04:00  INFO 42183 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:25:28.689-04:00  INFO 42183 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:25:28.691-04:00  INFO 42183 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:25:38.249-04:00  INFO 42291 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 42291 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:25:38.250-04:00  INFO 42291 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:25:38.541-04:00  INFO 42291 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:25:38.565-04:00  INFO 42291 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:25:38.815-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:25:38.821-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:25:38.821-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:25:38.845-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:25:38.845-04:00  INFO 42291 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 574 ms
+2024-10-30T18:25:38.913-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:25:38.932-04:00  INFO 42291 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:25:38.945-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:25:39.054-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:25:39.065-04:00  INFO 42291 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:25:39.141-04:00  INFO 42291 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4c6bba7d
+2024-10-30T18:25:39.142-04:00  INFO 42291 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:25:39.558-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:25:39.636-04:00  INFO 42291 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:25:39.841-04:00  WARN 42291 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:25:40.042-04:00  INFO 42291 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:25:40.051-04:00  INFO 42291 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 1.96 seconds (process running for 2.1)
+2024-10-30T18:26:01.365-04:00  INFO 42291 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:26:01.365-04:00  INFO 42291 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:26:01.368-04:00  INFO 42291 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-10-30T18:26:01.504-04:00 ERROR 42291 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:975) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:659) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:110) ~[swagger-core-jakarta-2.2.9.jar:2.2.9]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:122) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:373) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:281) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:257) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:474) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:654) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:334) ~[springdoc-openapi-starter-common-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:111) ~[springdoc-openapi-starter-webmvc-api-2.1.0.jar:2.1.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:27:50.209-04:00  INFO 42291 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:27:50.213-04:00  INFO 42291 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:27:50.216-04:00  INFO 42291 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:28:03.898-04:00  INFO 42408 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 42408 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:28:03.900-04:00  INFO 42408 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:28:04.209-04:00  INFO 42408 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:28:04.232-04:00  INFO 42408 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:28:04.448-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:28:04.454-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:28:04.454-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:28:04.481-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:28:04.482-04:00  INFO 42408 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 564 ms
+2024-10-30T18:28:04.554-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:28:04.574-04:00  INFO 42408 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:28:04.585-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:28:04.694-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:28:04.706-04:00  INFO 42408 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:28:04.773-04:00  INFO 42408 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@19dac2d6
+2024-10-30T18:28:04.774-04:00  INFO 42408 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:28:05.186-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:28:05.271-04:00  INFO 42408 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:28:05.458-04:00  WARN 42408 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:28:05.658-04:00  INFO 42408 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:28:05.664-04:00  INFO 42408 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 1.93 seconds (process running for 2.075)
+2024-10-30T18:28:10.980-04:00  INFO 42408 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:28:10.980-04:00  INFO 42408 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:28:10.983-04:00  INFO 42408 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2024-10-30T18:28:11.125-04:00 ERROR 42408 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed: java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'] with root cause
+
+java.lang.NoSuchMethodError: 'boolean io.swagger.v3.oas.models.media.Schema.getExampleSetFlag()'
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:35) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at io.swagger.v3.core.jackson.SchemaSerializer.serialize(SchemaSerializer.java:13) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider._serialize(DefaultSerializerProvider.java:502) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ser.DefaultSerializerProvider.serializeValue(DefaultSerializerProvider.java:341) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter$Prefetch.serialize(ObjectWriter.java:1574) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter._writeValueAndClose(ObjectWriter.java:1275) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValueAsString(ObjectWriter.java:1140) ~[jackson-databind-2.17.2.jar:2.17.2]
+	at io.swagger.v3.core.util.Json.pretty(Json.java:24) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at io.swagger.v3.core.util.AnnotationsUtils.clone(AnnotationsUtils.java:1533) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at io.swagger.v3.core.jackson.ModelResolver.clone(ModelResolver.java:1066) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at io.swagger.v3.core.jackson.ModelResolver.resolve(ModelResolver.java:707) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at org.springdoc.core.converters.AdditionalModelsConverter.resolve(AdditionalModelsConverter.java:155) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.converters.FileSupportConverter.resolve(FileSupportConverter.java:69) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.converters.ResponseSupportConverter.resolve(ResponseSupportConverter.java:79) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.resolve(SchemaPropertyDeprecatingConverter.java:92) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.converters.PolymorphicModelConverter.resolve(PolymorphicModelConverter.java:77) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.converters.PageableOpenAPIConverter.resolve(PageableOpenAPIConverter.java:93) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.converters.SortOpenAPIConverter.resolve(SortOpenAPIConverter.java:83) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at io.swagger.v3.core.converter.ModelConverterContextImpl.resolve(ModelConverterContextImpl.java:97) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at io.swagger.v3.core.converter.ModelConverters.resolveAsResolvedSchema(ModelConverters.java:158) ~[swagger-core-jakarta-2.2.21.jar:2.2.21]
+	at org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema(SpringDocAnnotationsUtils.java:126) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.service.GenericParameterService.calculateSchema(GenericParameterService.java:374) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.service.RequestBodyService.buildRequestBody(RequestBodyService.java:290) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.service.RequestBodyService.calculateRequestBodyInfo(RequestBodyService.java:266) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.core.service.AbstractRequestService.build(AbstractRequestService.java:343) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:496) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.api.AbstractOpenApiResource.calculatePath(AbstractOpenApiResource.java:676) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$calculatePath$11(OpenApiResource.java:219) ~[springdoc-openapi-starter-webmvc-api-2.5.0.jar:2.5.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.calculatePath(OpenApiResource.java:200) ~[springdoc-openapi-starter-webmvc-api-2.5.0.jar:2.5.0]
+	at org.springdoc.webmvc.api.OpenApiResource.lambda$getPaths$2(OpenApiResource.java:170) ~[springdoc-openapi-starter-webmvc-api-2.5.0.jar:2.5.0]
+	at java.base/java.util.Optional.ifPresent(Optional.java:178) ~[na:na]
+	at org.springdoc.webmvc.api.OpenApiResource.getPaths(OpenApiResource.java:149) ~[springdoc-openapi-starter-webmvc-api-2.5.0.jar:2.5.0]
+	at org.springdoc.api.AbstractOpenApiResource.getOpenApi(AbstractOpenApiResource.java:353) ~[springdoc-openapi-starter-common-2.5.0.jar:2.5.0]
+	at org.springdoc.webmvc.api.OpenApiResource.openapiJson(OpenApiResource.java:124) ~[springdoc-openapi-starter-webmvc-api-2.5.0.jar:2.5.0]
+	at org.springdoc.webmvc.api.OpenApiWebMvcResource.openapiJson(OpenApiWebMvcResource.java:114) ~[springdoc-openapi-starter-webmvc-api-2.5.0.jar:2.5.0]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:255) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:188) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.13.jar:6.1.13]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.30.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.13.jar:6.1.13]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:384) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:905) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63) ~[tomcat-embed-core-10.1.30.jar:10.1.30]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2024-10-30T18:29:04.521-04:00  INFO 42408 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:29:04.525-04:00  INFO 42408 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:29:04.528-04:00  INFO 42408 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:29:13.158-04:00  INFO 42502 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 42502 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:29:13.159-04:00  INFO 42502 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:29:13.455-04:00  INFO 42502 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:29:13.488-04:00  INFO 42502 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 23 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:29:13.696-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:29:13.703-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:29:13.703-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:29:13.725-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:29:13.726-04:00  INFO 42502 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 551 ms
+2024-10-30T18:29:13.792-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:29:13.810-04:00  INFO 42502 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:29:13.821-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:29:13.936-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:29:13.947-04:00  INFO 42502 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:29:14.028-04:00  INFO 42502 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@57c6feea
+2024-10-30T18:29:14.029-04:00  INFO 42502 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:29:14.449-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:29:14.527-04:00  INFO 42502 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:29:14.722-04:00  WARN 42502 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:29:14.940-04:00  INFO 42502 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:29:14.945-04:00  INFO 42502 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 1.945 seconds (process running for 2.084)
+2024-10-30T18:29:24.994-04:00  INFO 42502 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:29:24.995-04:00  INFO 42502 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:29:24.997-04:00  INFO 42502 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-10-30T18:29:25.311-04:00  INFO 42502 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 287 ms
+2024-10-30T18:30:22.598-04:00  INFO 42502 --- [save-dedupe-configuration] [http-nio-8080-exec-3] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 120 ms
+2024-10-30T18:37:39.818-04:00  INFO 42502 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:37:39.834-04:00  INFO 42502 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:37:39.837-04:00  INFO 42502 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:37:49.784-04:00  INFO 42865 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 42865 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:37:49.786-04:00  INFO 42865 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:37:50.103-04:00  INFO 42865 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:37:50.136-04:00  INFO 42865 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 24 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:37:50.363-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:37:50.370-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:37:50.370-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:37:50.394-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:37:50.394-04:00  INFO 42865 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 590 ms
+2024-10-30T18:37:50.471-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:37:50.492-04:00  INFO 42865 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:37:50.504-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:37:50.832-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:37:50.845-04:00  INFO 42865 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:37:51.003-04:00  INFO 42865 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@e4ca109
+2024-10-30T18:37:51.005-04:00  INFO 42865 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:37:51.574-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:37:51.653-04:00  INFO 42865 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:37:51.868-04:00  WARN 42865 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:37:52.132-04:00  INFO 42865 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:37:52.138-04:00  INFO 42865 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.557 seconds (process running for 2.707)
+2024-10-30T18:37:56.315-04:00  INFO 42865 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:37:56.316-04:00  INFO 42865 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:37:56.318-04:00  INFO 42865 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2024-10-30T18:37:56.757-04:00  INFO 42865 --- [save-dedupe-configuration] [http-nio-8080-exec-9] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 232 ms
+2024-10-30T18:40:14.576-04:00  WARN 42865 --- [save-dedupe-configuration] [http-nio-8080-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot construct instance of `com.example.save_dedupe_configuration.model.Method` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('EQUALS')]
+2024-10-30T18:48:44.055-04:00  INFO 42865 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:48:44.058-04:00  INFO 42865 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:48:44.060-04:00  INFO 42865 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:49:30.150-04:00  INFO 43163 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 43163 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:49:30.151-04:00  INFO 43163 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:49:30.496-04:00  INFO 43163 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:49:30.521-04:00  INFO 43163 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:49:30.736-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:49:30.743-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:49:30.743-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:49:30.767-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:49:30.767-04:00  INFO 43163 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 595 ms
+2024-10-30T18:49:30.839-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:49:30.865-04:00  INFO 43163 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:49:30.880-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:49:31.005-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:49:31.018-04:00  INFO 43163 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:49:31.117-04:00  INFO 43163 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@645dc557
+2024-10-30T18:49:31.118-04:00  INFO 43163 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:49:31.582-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:49:31.641-04:00  INFO 43163 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:49:31.865-04:00  WARN 43163 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:49:32.084-04:00  INFO 43163 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:49:32.089-04:00  INFO 43163 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.107 seconds (process running for 2.255)
+2024-10-30T18:49:33.250-04:00  INFO 43163 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:49:33.251-04:00  INFO 43163 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-10-30T18:49:33.252-04:00  INFO 43163 --- [save-dedupe-configuration] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-30T18:49:49.083-04:00  INFO 43234 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Starting SaveDedupeConfigurationApplication using Java 21.0.4 with PID 43234 (/Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration/build/classes/java/main started by SnehaaHari in /Users/SnehaaHari/Desktop/API-DIBBS/configservice/NEDSS-Modernization/apps/save-dedupe-configuration)
+2024-10-30T18:49:49.084-04:00  INFO 43234 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : No active profile set, falling back to 1 default profile: "default"
+2024-10-30T18:49:49.401-04:00  INFO 43234 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-30T18:49:49.426-04:00  INFO 43234 --- [save-dedupe-configuration] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 5 JPA repository interfaces.
+2024-10-30T18:49:49.640-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-10-30T18:49:49.647-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-10-30T18:49:49.647-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-10-30T18:49:49.671-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-10-30T18:49:49.671-04:00  INFO 43234 --- [save-dedupe-configuration] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 567 ms
+2024-10-30T18:49:49.742-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-30T18:49:49.813-04:00  INFO 43234 --- [save-dedupe-configuration] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-10-30T18:49:49.834-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-10-30T18:49:49.975-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-30T18:49:49.989-04:00  INFO 43234 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-10-30T18:49:50.070-04:00  INFO 43234 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@645dc557
+2024-10-30T18:49:50.071-04:00  INFO 43234 --- [save-dedupe-configuration] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-10-30T18:49:50.689-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-30T18:49:50.745-04:00  INFO 43234 --- [save-dedupe-configuration] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-30T18:49:50.949-04:00  WARN 43234 --- [save-dedupe-configuration] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-30T18:49:51.159-04:00  INFO 43234 --- [save-dedupe-configuration] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2024-10-30T18:49:51.165-04:00  INFO 43234 --- [save-dedupe-configuration] [main] c.e.s.SaveDedupeConfigurationApplication : Started SaveDedupeConfigurationApplication in 2.259 seconds (process running for 2.432)
+2024-10-30T18:49:51.686-04:00  INFO 43234 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-30T18:49:51.686-04:00  INFO 43234 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-10-30T18:49:51.687-04:00  INFO 43234 --- [save-dedupe-configuration] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-10-30T18:49:52.072-04:00  INFO 43234 --- [save-dedupe-configuration] [http-nio-8080-exec-4] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 222 ms
