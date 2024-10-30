@@ -32,6 +32,8 @@ class PatientDemographicQueryResolver {
   private static final String IDENTIFICATIONS = "entity_id";
   private static final String BIRTHDAY = "birth_time";
   private static final String ADDRESSES = "address";
+  private static final String NAME_USE_CD = "name.nm_use_cd.keyword";
+  private static final String LAST_NAME = "name.lastNm";
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final Soundex soundex;
@@ -118,7 +120,7 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .must(
                                           primary -> primary.match(
@@ -176,12 +178,12 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .must(
                                           primary -> primary.match(
                                               match -> match
-                                                  .field("name.lastNm")
+                                                  .field(LAST_NAME)
                                                   .query(name)
                                                   .boost(settings.first().primary())))))))
                   .should(
@@ -191,7 +193,7 @@ class PatientDemographicQueryResolver {
                               .query(
                                   query -> query.simpleQueryString(
                                       nonPrimary -> nonPrimary
-                                          .fields("name.lastNm")
+                                          .fields(LAST_NAME)
                                           .query(WildCards.startsWith(name))
                                           .boost(settings.first().nonPrimary())))))
                   .should(
@@ -223,12 +225,12 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .must(
                                           primary -> primary.match(
                                               match -> match
-                                                  .field("name.lastNm")
+                                                  .field(LAST_NAME)
                                                   .query(name)
                                                   .boost(settings.first().primary())))))))));
 
@@ -242,12 +244,12 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .must(
                                           primary -> primary.simpleQueryString(
                                               nonPrimary -> nonPrimary
-                                                  .fields("name.lastNm")
+                                                  .fields(LAST_NAME)
                                                   .query(WildCards.startsWith(name))
                                                   .boost(settings.first().nonPrimary())))))))));
       case "contains" -> Optional.of(
@@ -260,11 +262,11 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .must(
                                           primary -> primary.wildcard(
-                                              nonPrimary -> nonPrimary.field("name.lastNm")
+                                              nonPrimary -> nonPrimary.field(LAST_NAME)
                                                   .value(WildCards.contains(name))
                                                   .boost(settings.first().nonPrimary())))))))));
       case "sounds_like" -> Optional.of(
@@ -277,7 +279,7 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .must(
                                           primary -> primary.term(
@@ -294,12 +296,12 @@ class PatientDemographicQueryResolver {
                               query -> query.bool(
                                   legal -> legal.filter(
                                       filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
+                                          term -> term.field(NAME_USE_CD)
                                               .value("L")))
                                       .mustNot(
                                           primary -> primary.match(
                                               match -> match
-                                                  .field("name.lastNm")
+                                                  .field(LAST_NAME)
                                                   .query(name)
                                                   .boost(settings.first().primary())))))))));
       default -> Optional.empty();
