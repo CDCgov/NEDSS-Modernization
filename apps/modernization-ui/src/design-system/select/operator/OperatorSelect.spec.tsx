@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { OperatorSelect, OperatorSelectProps } from './OperatorSelect';
-import { basicOperators, defaultOperator, operators } from 'options/operator';
+import { textOperators, defaultTextOperator, textAlphaOperators } from 'options/operator';
 
 describe('OperatorSelect', () => {
     const mockOnChange = jest.fn();
@@ -36,33 +36,33 @@ describe('OperatorSelect', () => {
     it('calls onChange when an option is selected', () => {
         const { getByRole } = render(<OperatorSelect {...defaultProps} />);
         const selectElement = getByRole('combobox');
-        fireEvent.change(selectElement, { target: { value: operators[0].value } });
-        expect(mockOnChange).toHaveBeenCalledWith(operators[0]);
+        fireEvent.change(selectElement, { target: { value: textOperators[0].value } });
+        expect(mockOnChange).toHaveBeenCalledWith(textOperators[0]);
     });
 
     it('displays the EQUAL operator by default', () => {
         const { getByRole } = render(<OperatorSelect {...defaultProps} />);
         const selectElement = getByRole('combobox') as HTMLSelectElement;
-        expect(selectElement.value).toBe(defaultOperator.value);
+        expect(selectElement.value).toBe(defaultTextOperator.value);
     });
 
     it('displays the correct initial value when specified', () => {
-        const { getByRole } = render(<OperatorSelect {...defaultProps} value={operators[1]} />);
+        const { getByRole } = render(<OperatorSelect {...defaultProps} value={textOperators[1]} />);
         const selectElement = getByRole('combobox') as HTMLSelectElement;
-        expect(selectElement.value).toBe(operators[1].value);
+        expect(selectElement.value).toBe(textOperators[1].value);
     });
 
     it('renders all of the operator options when mode is not specified', () => {
         const { getAllByRole } = render(<OperatorSelect {...defaultProps} />);
         const options = getAllByRole('option');
         // all options + the placeholder
-        expect(options.length).toBe(operators.length + 1);
+        expect(options.length).toBe(textOperators.length + 1);
     });
 
-    it('renders only the basic operator options when mode is basic', () => {
-        const { getAllByRole } = render(<OperatorSelect {...defaultProps} mode="basic" />);
+    it('renders only the basic operator options when mode is alpha', () => {
+        const { getAllByRole } = render(<OperatorSelect {...defaultProps} mode="alpha" />);
         const options = getAllByRole('option');
         // basic options + the placeholder
-        expect(options.length).toBe(basicOperators.length + 1);
+        expect(options.length).toBe(textAlphaOperators.length + 1);
     });
 });

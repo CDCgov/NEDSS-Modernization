@@ -4,40 +4,39 @@ import { Input } from 'components/FormInputs/Input';
 import { OperatorSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import {
-    asOperationValueOrString,
-    OperationValue,
-    Operation,
+    asTextCriteriaOrString,
+    TextCriteria,
+    TextOperation,
     asSelectableOperator,
-    asOperationValueOnly
+    asTextCriteria
 } from 'options/operator';
 import { ChangeEvent, useState } from 'react';
 
 export type OperatorInputProps = {
     id: string;
     /* value is string like "Bob" or object like { "equals": "Bob" } */
-    value?: string | OperationValue | null;
-    operator?: Operation;
-    operationMode?: 'basic' | 'all';
-    label?: string;
+    value?: string | TextCriteria | null;
+    operator?: TextOperation;
+    operationMode?: 'alpha' | 'all';
+    label: string;
     sizing?: Sizing;
     orientation?: 'vertical' | 'horizontal';
-    // control: Control<FieldValues>;
     error?: string;
-    /** When invoked, will pass either a string (if no operator selected) or an OperationValue object */
-    onChange: (value?: string | OperationValue | null) => void;
+    /** When invoked, will pass either a string (if no operator selected) or an TextCriteria object */
+    onChange: (value?: string | TextCriteria | null) => void;
 };
 
 type OperatorAndValue = {
-    operator?: Operation;
+    operator?: TextOperation;
     value?: string | null;
 };
 
-const asOperatorAndValue = (value?: string | OperationValue | null): OperatorAndValue => {
+const asOperatorAndValue = (value?: string | TextCriteria | null): OperatorAndValue => {
     if (typeof value === 'string') {
         return { operator: 'equals', value };
     }
     if (value != null && typeof value === 'object' && Object.keys(value).length >= 1) {
-        return { operator: Object.keys(value)[0] as Operation, value: asOperationValueOnly(value) };
+        return { operator: Object.keys(value)[0] as TextOperation, value: asTextCriteria(value) };
     }
     return { operator: 'equals', value: null };
 };
@@ -59,16 +58,16 @@ export const OperatorInput = ({
     const effectiveOperator = combinedValue.operator || operator;
 
     const onSelectionChange = (selectedOperation?: Selectable) => {
-        setCombinedValue((cur) => ({ ...cur, operator: selectedOperation?.value as Operation }));
-        const operationValue = asOperationValueOrString(combinedValue.value, selectedOperation?.value as Operation);
-        onChange(operationValue);
+        setCombinedValue((cur) => ({ ...cur, operator: selectedOperation?.value as TextOperation }));
+        const criteriaValue = asTextCriteriaOrString(combinedValue.value, selectedOperation?.value as TextOperation);
+        onChange(criteriaValue);
     };
 
     const onInputChange = (event?: ChangeEvent<HTMLInputElement>) => {
         const value = event?.target.value;
         setCombinedValue((cur) => ({ ...cur, value }));
-        const operationValue = asOperationValueOrString(value, combinedValue.operator);
-        onChange(operationValue);
+        const criteriaValue = asTextCriteriaOrString(value, combinedValue.operator);
+        onChange(criteriaValue);
     };
 
     return (

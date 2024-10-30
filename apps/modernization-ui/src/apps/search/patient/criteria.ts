@@ -13,7 +13,7 @@ export { statusOptions };
 type BasicInformation = {
     lastName?: string;
     // when ready, replace the line above with this
-    // lastName?: string | OperationValue;
+    // lastName?: TextCriteria;
     firstName?: string;
     dateOfBirth?: string;
     gender?: Selectable;

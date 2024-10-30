@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { OperatorInput, OperatorInputProps } from './OperatorInput';
-import { OperationValue } from 'options/operator';
+import { TextCriteria } from 'options/operator';
 
 const renderComponent = (props: Partial<OperatorInputProps> = {}) => {
     const combinedProps: OperatorInputProps = {
@@ -47,7 +47,7 @@ describe('OperatorInput', () => {
     });
 
     it('renders with correct initial value and operator', () => {
-        const initialValue: OperationValue = { equals: 'initial value' };
+        const initialValue: TextCriteria = { equals: 'initial value' };
         const { getByLabelText, getByRole } = renderComponent({ value: initialValue });
 
         const input = getByLabelText('test-operator-input') as HTMLInputElement;
