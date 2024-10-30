@@ -19,3 +19,14 @@ Feature: Classic Data Entry
     And I click the add button to add the lab report
     And I click the submit button
 
+Scenario: Adding a Morbidity Report
+    When I click on Data Entry in the menu bar
+    And I click on the Morbidity Report link
+    And I click on the Report Information tab
+    And I select "Brucellosis" from the Condition dropdown menu
+    And I select "Dekalb County" from the Jurisdiction dropdown menu
+    And I enter the current date in the Date of Morbidity Report field
+    And I enter "2" in the Facility and Provider Information field
+    And I click on the Code Lookup button
+    And I click the Submit button
+    And I confirm the submission by clicking "Ok"
