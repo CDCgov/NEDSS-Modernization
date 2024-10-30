@@ -24,8 +24,7 @@ public class PatientSearchCriteriaSteps {
   @Given("I add the patient criteria for a(n) {string} equal to {string}")
   public void i_add_the_patient_criteria_for_a_field_that_is_value(
       final String field,
-      final String value
-  ) {
+      final String value) {
 
     if (field == null || field.isEmpty()) {
       return;
@@ -38,12 +37,12 @@ public class PatientSearchCriteriaSteps {
   private PatientFilter applyCriteria(
       final String field,
       final String value,
-      final PatientFilter criteria
-  ) {
+      final PatientFilter criteria) {
     switch (field.toLowerCase()) {
       case "patient id" -> criteria.setId(value);
       case "first name" -> criteria.setFirstName(value);
       case "last name" -> criteria.setLastName(value);
+      case "last name operator" -> criteria.setLastNameOperator(value);
       case "disable soundex" -> criteria.setDisableSoundex(value.equals("true"));
       case "phone number" -> criteria.setPhoneNumber(value);
       case "email", "email address" -> criteria.setEmail(value);
@@ -86,28 +85,24 @@ public class PatientSearchCriteriaSteps {
   @Given("I add the patient criteria for patient's born on the {nth} day of the month")
   public void i_would_like_to_search_for_a_patient_born_on_a_specific_day_of_the_month(final int value) {
     this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornOnDay(value))
-    );
+        found -> this.activeCriteria.active(criteria -> criteria.withBornOnDay(value)));
   }
 
   @Given("I add the patient criteria for patient's born in the month of {month}")
   public void i_would_like_to_search_for_a_patient_born_on_a_specific_month(final Month month) {
     this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornOnMonth(month.getValue()))
-    );
+        found -> this.activeCriteria.active(criteria -> criteria.withBornOnMonth(month.getValue())));
   }
 
   @Given("I add the patient criteria for patient's born in the year {int}")
   public void i_would_like_to_search_for_a_patient_born_on_a_specific_year(final int year) {
     this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornOnYear(year))
-    );
+        found -> this.activeCriteria.active(criteria -> criteria.withBornOnYear(year)));
   }
 
   @Given("I add the patient criteria for patient's born between {localDate} and {localDate}")
   public void i_would_like_to_search_for_a_patient_born_between(final LocalDate from, final LocalDate to) {
     this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withBornBetween(from,to))
-    );
+        found -> this.activeCriteria.active(criteria -> criteria.withBornBetween(from, to)));
   }
 }

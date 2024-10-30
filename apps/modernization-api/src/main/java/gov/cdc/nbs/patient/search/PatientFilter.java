@@ -43,6 +43,7 @@ public class PatientFilter {
 
   private String id;
   private String lastName;
+  private String lastNameOperator;
   private String firstName;
   private String race;
   private Identification identification;

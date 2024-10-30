@@ -152,6 +152,10 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyLastNameCriteria(final PatientFilter criteria) {
+    if (criteria.getLastNameOperator() != null) {
+      return applyLastNameWithOperatorCriteria(criteria);
+    }
+
     String name = AdjustStrings.withoutHyphens(criteria.getLastName());
 
     if (name != null && !name.isBlank()) {
@@ -202,6 +206,104 @@ class PatientDemographicQueryResolver {
                                           .value(encoded)))))));
     }
     return Optional.empty();
+  }
+
+  private Optional<QueryVariant> applyLastNameWithOperatorCriteria(final PatientFilter criteria) {
+    String name = AdjustStrings.withoutHyphens(criteria.getLastName());
+    String operator = criteria.getLastNameOperator().toLowerCase();
+
+    return switch (operator) {
+      case "equal" -> Optional.of(
+          BoolQuery.of(
+              bool -> bool.must(
+                  must -> must.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field("name.nm_use_cd.keyword")
+                                              .value("L")))
+                                      .must(
+                                          primary -> primary.match(
+                                              match -> match
+                                                  .field("name.lastNm")
+                                                  .query(name)
+                                                  .boost(settings.first().primary())))))))));
+
+      case "starts_with" -> Optional.of(
+          BoolQuery.of(
+              bool -> bool.must(
+                  must -> must.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field("name.nm_use_cd.keyword")
+                                              .value("L")))
+                                      .must(
+                                          primary -> primary.simpleQueryString(
+                                              nonPrimary -> nonPrimary
+                                                  .fields("name.lastNm")
+                                                  .query(WildCards.startsWith(name))
+                                                  .boost(settings.first().nonPrimary())))))))));
+      case "contains" -> Optional.of(
+          BoolQuery.of(
+              bool -> bool.must(
+                  must -> must.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field("name.nm_use_cd.keyword")
+                                              .value("L")))
+                                      .must(
+                                          primary -> primary.wildcard(
+                                              nonPrimary -> nonPrimary.field("name.lastNm")
+                                                  .value(WildCards.contains(name))
+                                                  .boost(settings.first().nonPrimary())))))))));
+      case "sounds_like" -> Optional.of(
+          BoolQuery.of(
+              bool -> bool.must(
+                  must -> must.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field("name.nm_use_cd.keyword")
+                                              .value("L")))
+                                      .must(
+                                          primary -> primary.term(
+                                              term -> term
+                                                  .field("name.lastNmSndx.keyword")
+                                                  .value(soundex.encode(name.trim()))))))))));
+      case "not_equal" -> Optional.of(
+          BoolQuery.of(
+              bool -> bool.must(
+                  must -> must.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field("name.nm_use_cd.keyword")
+                                              .value("L")))
+                                      .mustNot(
+                                          primary -> primary.match(
+                                              match -> match
+                                                  .field("name.lastNm")
+                                                  .query(name)
+                                                  .boost(settings.first().primary())))))))));
+      default -> Optional.empty();
+    };
   }
 
   private Optional<QueryVariant> applyPhoneNumberCriteria(final PatientFilter criteria) {
