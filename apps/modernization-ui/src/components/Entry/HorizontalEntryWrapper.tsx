@@ -6,7 +6,7 @@ import styles from './horizontal-wrapper.module.scss';
 type Props = {
     className?: string;
     htmlFor: string;
-    label?: string;
+    label: string;
     error?: string;
     required?: boolean;
     children: ReactNode;

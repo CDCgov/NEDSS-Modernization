@@ -5,7 +5,7 @@ import { ErrorMessage, Label } from '@trussworks/react-uswds';
 type Props = {
     className?: string;
     htmlFor: string;
-    label?: string;
+    label: string;
     error?: string;
     required?: boolean;
     children: ReactNode;
