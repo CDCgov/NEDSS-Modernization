@@ -14,7 +14,7 @@ import {
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
-const LEGAL_NAME = { id: 'legalName', name: 'Patient name' };
+const PATIENT_NAME = { id: 'patientName', name: 'Patient name' };
 const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };
@@ -38,7 +38,7 @@ const columns: Column<PatientSearchResult>[] = [
     },
     { ...SEX, sortable: true, render: (result) => result.gender },
     {
-        ...LEGAL_NAME,
+        ...PATIENT_NAME,
         sortable: true,
         render: displayPatientName
     },
@@ -52,9 +52,9 @@ const columns: Column<PatientSearchResult>[] = [
 // column preferences
 const preferences: ColumnPreference[] = [
     { ...PATIENT_ID },
+    { ...PATIENT_NAME, moveable: true, toggleable: true },
     { ...DATE_OF_BIRTH, moveable: true, toggleable: true },
     { ...SEX, moveable: true, toggleable: true },
-    { ...LEGAL_NAME, moveable: true, toggleable: true, hidden: true },
     { ...NAMES, moveable: true, toggleable: true, hidden: true },
     { ...ADDRESS, moveable: true, toggleable: true },
     { ...PHONE, moveable: true, toggleable: true },
