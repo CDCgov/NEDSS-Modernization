@@ -19,3 +19,8 @@ Feature: Classic NBS - User can view and manage data in NBS Questions
     Then Enter filter text in the input in Value Set library
     And Click OK button to filter in Value Set library
 
+  Scenario: Collapse or Expand subsections
+    And Click on a Value set in Value Set library
+    Then Click Collapse Subsections to collapse the sections in Value Set library
+    And Click Expand Subsections to expand the sections in Value Set library
+
