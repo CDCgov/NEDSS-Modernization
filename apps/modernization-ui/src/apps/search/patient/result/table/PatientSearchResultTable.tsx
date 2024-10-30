@@ -6,7 +6,6 @@ import {
     displayPhones,
     displayPatientName,
     displayProfileLink,
-    displayOtherNames,
     displayEmails,
     displayAddresses,
     displayIdentifications
@@ -19,7 +18,7 @@ const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };
 const PHONE = { id: 'phoneNumber', name: 'Phone' };
-const NAMES = { id: 'names', name: 'Other names' };
+
 const IDENTIFICATIONS = { id: 'identification', name: 'ID' };
 const EMAIL = { id: 'email', name: 'Email' };
 
@@ -44,7 +43,7 @@ const columns: Column<PatientSearchResult>[] = [
     },
     { ...ADDRESS, render: displayAddresses },
     { ...PHONE, render: displayPhones },
-    { ...NAMES, render: (result) => displayOtherNames(result) },
+
     { ...IDENTIFICATIONS, render: displayIdentifications },
     { ...EMAIL, render: displayEmails }
 ];
@@ -55,7 +54,7 @@ const preferences: ColumnPreference[] = [
     { ...PATIENT_NAME, moveable: true, toggleable: true },
     { ...DATE_OF_BIRTH, moveable: true, toggleable: true },
     { ...SEX, moveable: true, toggleable: true },
-    { ...NAMES, moveable: true, toggleable: true, hidden: true },
+
     { ...ADDRESS, moveable: true, toggleable: true },
     { ...PHONE, moveable: true, toggleable: true },
     { ...IDENTIFICATIONS, moveable: true, toggleable: true },
