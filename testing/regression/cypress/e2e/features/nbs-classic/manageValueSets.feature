@@ -24,3 +24,9 @@ Feature: Classic NBS - User can view and manage data in NBS Questions
     Then Click Collapse Subsections to collapse the sections in Value Set library
     And Click Expand Subsections to expand the sections in Value Set library
 
+  Scenario: Add new concept in Value Set
+    And Click on a Value set in Value Set library
+    Then Click on Add new in Value Set Concept section
+    And Fill the details to create new concept Value Set
+    Then Click submit button to create new concept in Value Set
+
