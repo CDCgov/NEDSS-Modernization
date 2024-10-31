@@ -42,7 +42,7 @@ const displayPhones = (result: PatientSearchResult): JSX.Element => (
     <div>
         {result.detailedPhones.map((phone, index) => (
             <div key={index}>
-                <ItemGroup type="phone" label={phone.use ?? undefined}>
+                <ItemGroup type="phone" label={phone.use ?? phone.type}>
                     {phone.number}
                 </ItemGroup>
             </div>
