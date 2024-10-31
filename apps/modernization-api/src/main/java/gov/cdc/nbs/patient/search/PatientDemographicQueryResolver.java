@@ -22,6 +22,7 @@ import gov.cdc.nbs.search.WildCards;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
+import gov.cdc.nbs.search.criteria.name.NameCriteria;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
 
 @Component
@@ -154,7 +155,7 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyLastNameCriteria(final PatientFilter criteria) {
-    if (criteria.getLastNameOperator() != null) {
+    if (criteria.getLastNameCriteria() != null) {
       return applyLastNameWithOperatorCriteria(criteria);
     }
 
@@ -211,8 +212,9 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyLastNameWithOperatorCriteria(final PatientFilter criteria) {
-    String name = AdjustStrings.withoutHyphens(criteria.getLastName());
-    String operator = criteria.getLastNameOperator().toLowerCase();
+    NameCriteria nameCriteria = criteria.getLastNameCriteria();
+    String name = AdjustStrings.withoutHyphens(nameCriteria.name());
+    String operator = nameCriteria.operator().toLowerCase();
 
     return switch (operator) {
       case "equal" -> Optional.of(

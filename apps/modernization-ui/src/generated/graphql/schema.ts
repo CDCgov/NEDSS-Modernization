@@ -629,6 +629,11 @@ export type MutationUpdatePatientRaceArgs = {
   input: RaceInput;
 };
 
+export type NameCriteria = {
+  name: Scalars['String']['input'];
+  operator: NameOperator;
+};
+
 export enum NameOperator {
   Contains = 'CONTAINS',
   Equal = 'EQUAL',
@@ -1681,7 +1686,7 @@ export type PersonFilter = {
   investigation?: InputMaybe<Scalars['String']['input']>;
   labReport?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
-  lastNameOperator?: InputMaybe<NameOperator>;
+  lastNameCriteria?: InputMaybe<NameCriteria>;
   morbidity?: InputMaybe<Scalars['String']['input']>;
   mortalityStatus?: InputMaybe<Scalars['String']['input']>;
   notification?: InputMaybe<Scalars['String']['input']>;

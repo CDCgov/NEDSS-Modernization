@@ -1108,6 +1108,11 @@ input DateCriteria {
   between: DateBetweenCriteria
 }
 
+input NameCriteria {
+  name: String!
+  operator: NameOperator!
+}
+
 input IdentificationCriteria {
   identificationNumber: String
   identificationType: String
@@ -1117,7 +1122,7 @@ input IdentificationCriteria {
 input PersonFilter {
   id: String
   lastName: String
-  lastNameOperator: NameOperator
+  lastNameCriteria: NameCriteria
   firstName: String
   race: String
   identification: IdentificationCriteria

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.name.NameCriteria;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -43,7 +44,7 @@ public class PatientFilter {
 
   private String id;
   private String lastName;
-  private String lastNameOperator;
+  private NameCriteria lastNameCriteria;
   private String firstName;
   private String race;
   private Identification identification;

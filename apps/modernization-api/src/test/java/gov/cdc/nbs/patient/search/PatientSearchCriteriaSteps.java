@@ -3,6 +3,7 @@ package gov.cdc.nbs.patient.search;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
+import gov.cdc.nbs.search.criteria.name.NameCriteria;
 import gov.cdc.nbs.testing.support.Active;
 import io.cucumber.java.en.Given;
 
@@ -42,7 +43,7 @@ public class PatientSearchCriteriaSteps {
       case "patient id" -> criteria.setId(value);
       case "first name" -> criteria.setFirstName(value);
       case "last name" -> criteria.setLastName(value);
-      case "last name operator" -> criteria.setLastNameOperator(value);
+      case "last name operator" -> criteria.setLastNameCriteria(new NameCriteria(criteria.getLastName(), value));
       case "disable soundex" -> criteria.setDisableSoundex(value.equals("true"));
       case "phone number" -> criteria.setPhoneNumber(value);
       case "email", "email address" -> criteria.setEmail(value);
