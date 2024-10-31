@@ -1,14 +1,12 @@
 package gov.cdc.nbs.search.criteria.text;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import gov.cdc.nbs.search.AdjustStrings;
 import gov.cdc.nbs.search.WildCards;
 import org.apache.commons.codec.language.Soundex;
 
 public class TextCriteriaNestedQueryResolver {
 
   public static  BoolQuery equalTo(final String path, final String name, final String value) {
-    String adjusted = AdjustStrings.withoutHyphens(value);
     return BoolQuery.of(
         bool -> bool.must(
             should -> should.nested(
@@ -19,7 +17,7 @@ public class TextCriteriaNestedQueryResolver {
                                 must -> must.match(
                                     match -> match
                                         .field(name)
-                                        .query(adjusted)
+                                        .query(value)
                                 )
                             )
                         )
@@ -30,7 +28,6 @@ public class TextCriteriaNestedQueryResolver {
   }
 
   public static BoolQuery notEquals(final String path, final String name, final String value) {
-    String adjusted = AdjustStrings.withoutHyphens(value);
     return BoolQuery.of(
         bool -> bool.should(
             should -> should.nested(
@@ -41,7 +38,7 @@ public class TextCriteriaNestedQueryResolver {
                                 mustNot -> mustNot.match(
                                     match -> match
                                         .field(name)
-                                        .query(adjusted)
+                                        .query(value)
                                 )
                             )
                         )
@@ -52,7 +49,7 @@ public class TextCriteriaNestedQueryResolver {
   }
 
   public static BoolQuery contains(final String path, final String name, final String value) {
-    String adjusted = WildCards.contains(AdjustStrings.withoutHyphens(value));
+    String adjusted = WildCards.contains(value);
     return BoolQuery.of(
         bool -> bool.should(
             should -> should.nested(
@@ -74,7 +71,7 @@ public class TextCriteriaNestedQueryResolver {
   }
 
   public static BoolQuery startsWith(final String path, final String name, final String value) {
-    String adjusted = WildCards.startsWith(AdjustStrings.withoutHyphens(value));
+    String adjusted = WildCards.startsWith(value);
     return BoolQuery.of(
         bool -> bool.should(
             should -> should.nested(
@@ -96,7 +93,7 @@ public class TextCriteriaNestedQueryResolver {
   }
 
   public static BoolQuery soundLike(final String path, final String name, final String value) {
-    String adjusted = Holder.soundex.encode(AdjustStrings.withoutHyphens(value));
+    String adjusted = Holder.soundex.encode(value);
     return BoolQuery.of(
         bool -> bool.should(
             should -> should.nested(

@@ -32,31 +32,31 @@ class PatientNameDemographicQueryResolver {
 
   private Optional<QueryVariant> applyLastNameEquals(final PatientFilter.NameCriteria criteria) {
     return criteria.maybeLast()
-        .map(TextCriteria::equals)
+        .flatMap(TextCriteria::maybeEquals)
         .map(value -> equalTo(NAMES, LAST_NAME, value));
   }
 
   private Optional<QueryVariant> applyLastNameNotEquals(final PatientFilter.NameCriteria criteria) {
     return criteria.maybeLast()
-        .map(TextCriteria::not)
+        .flatMap(TextCriteria::maybeNot)
         .map(value -> notEquals(NAMES, LAST_NAME, value));
   }
 
   private Optional<QueryVariant> applyLastNameContains(final PatientFilter.NameCriteria criteria) {
     return criteria.maybeLast()
-        .map(TextCriteria::contains)
+        .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(NAMES, LAST_NAME, value));
   }
 
   private Optional<QueryVariant> applyLastNameStartsWith(final PatientFilter.NameCriteria criteria) {
     return criteria.maybeLast()
-        .map(TextCriteria::startsWith)
+        .flatMap(TextCriteria::maybeStartsWith)
         .map(value -> startsWith(NAMES, LAST_NAME, value));
   }
 
   private Optional<QueryVariant> applyLastNameSoundsLike(final PatientFilter.NameCriteria criteria) {
     return criteria.maybeLast()
-        .map(TextCriteria::soundsLike)
+        .flatMap(TextCriteria::maybeSoundsLike)
         .map(value -> soundLike(NAMES, LAST_NAME_SOUNDEX, value));
   }
 
