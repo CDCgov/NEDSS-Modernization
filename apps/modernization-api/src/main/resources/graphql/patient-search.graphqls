@@ -14,6 +14,14 @@ input DateCriteria {
   between: DateBetweenCriteria
 }
 
+input TextCriteria {
+  equals: String
+  not: String
+  startsWith:String
+  contains: String
+  soundsLike: String
+}
+
 input NameCriteria {
   name: String!
   operator: NameOperator!
@@ -25,8 +33,13 @@ input IdentificationCriteria {
   assigningAuthority: String
 }
 
+input PatientNameCriteria {
+  last: TextCriteria
+}
+
 input PersonFilter {
   id: String
+  name: PatientNameCriteria
   lastName: String
   lastNameCriteria: NameCriteria
   firstName: String

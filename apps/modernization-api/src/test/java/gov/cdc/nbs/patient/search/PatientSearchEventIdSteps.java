@@ -140,6 +140,6 @@ public class PatientSearchEventIdSteps {
     this.activeAccessionNumber.maybeActive()
         .map(AccessionIdentifier::local)
         .ifPresent(
-            identifier -> this.activeCriteria.active(criteria -> criteria.withAccessiontNumber(identifier)));
+            identifier -> this.activeCriteria.active(criteria -> criteria.withAccessionNumber(identifier)));
   }
 }
