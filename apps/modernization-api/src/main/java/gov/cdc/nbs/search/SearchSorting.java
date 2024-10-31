@@ -29,6 +29,7 @@ public class SearchSorting {
             field -> field.field(name)
                 .order(order)
                 .nested(nested -> nested.path(path))
+                .missing(order.name().equals("Desc") ? "_first" : "_last")
         )
     );
   }
