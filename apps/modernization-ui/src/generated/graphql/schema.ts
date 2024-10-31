@@ -629,19 +629,6 @@ export type MutationUpdatePatientRaceArgs = {
   input: RaceInput;
 };
 
-export type NameCriteria = {
-  name: Scalars['String']['input'];
-  operator: NameOperator;
-};
-
-export enum NameOperator {
-  Contains = 'CONTAINS',
-  Equal = 'EQUAL',
-  NotEqual = 'NOT_EQUAL',
-  SoundsLike = 'SOUNDS_LIKE',
-  StartsWith = 'STARTS_WITH'
-}
-
 export enum NameUseCd {
   /**  Alias Name */
   A = 'A',
@@ -1301,6 +1288,10 @@ export type PatientNameChangeResult = {
   sequence: Scalars['Int']['output'];
 };
 
+export type PatientNameCriteria = {
+  last?: InputMaybe<TextCriteria>;
+};
+
 export type PatientNameDegree = {
   __typename?: 'PatientNameDegree';
   description: Scalars['String']['output'];
@@ -1686,9 +1677,9 @@ export type PersonFilter = {
   investigation?: InputMaybe<Scalars['String']['input']>;
   labReport?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
-  lastNameCriteria?: InputMaybe<NameCriteria>;
   morbidity?: InputMaybe<Scalars['String']['input']>;
   mortalityStatus?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<PatientNameCriteria>;
   notification?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   race?: InputMaybe<Scalars['String']['input']>;
@@ -2075,6 +2066,14 @@ export enum Suffix {
   Sr = 'SR',
   V = 'V'
 }
+
+export type TextCriteria = {
+  contains?: InputMaybe<Scalars['String']['input']>;
+  equals?: InputMaybe<Scalars['String']['input']>;
+  not?: InputMaybe<Scalars['String']['input']>;
+  soundsLike?: InputMaybe<Scalars['String']['input']>;
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type TracedCondition = {
   __typename?: 'TracedCondition';

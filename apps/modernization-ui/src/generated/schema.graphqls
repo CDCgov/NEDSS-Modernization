@@ -1108,9 +1108,12 @@ input DateCriteria {
   between: DateBetweenCriteria
 }
 
-input NameCriteria {
-  name: String!
-  operator: NameOperator!
+input TextCriteria {
+  equals: String
+  not: String
+  startsWith:String
+  contains: String
+  soundsLike: String
 }
 
 input IdentificationCriteria {
@@ -1119,10 +1122,14 @@ input IdentificationCriteria {
   assigningAuthority: String
 }
 
+input PatientNameCriteria {
+  last: TextCriteria
+}
+
 input PersonFilter {
   id: String
+  name: PatientNameCriteria
   lastName: String
-  lastNameCriteria: NameCriteria
   firstName: String
   race: String
   identification: IdentificationCriteria
@@ -1171,14 +1178,6 @@ enum Operator {
   EQUAL
   BEFORE
   AFTER
-}
-
-enum NameOperator {
-  EQUAL
-  NOT_EQUAL
-  STARTS_WITH
-  CONTAINS
-  SOUNDS_LIKE
 }
 
 type PatientSearchResultIdentification {
