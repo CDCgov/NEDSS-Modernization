@@ -1,0 +1,29 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+aside {
+    position: sticky;
+    top: 0;
+    nav {
+        .navTitle {
+            padding: 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .navOptions {
+            display: flex;
+            flex-direction: column;
+            margin-top: 1rem;
+            @include borders.bordered('border-left');
+
+            a {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        .visible {
+            border-left: solid 4px colors.$base-darkest;
+        }
+    }
+}
