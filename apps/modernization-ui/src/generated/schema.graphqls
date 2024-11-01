@@ -1108,14 +1108,27 @@ input DateCriteria {
   between: DateBetweenCriteria
 }
 
+input TextCriteria {
+  equals: String
+  not: String
+  startsWith:String
+  contains: String
+  soundsLike: String
+}
+
 input IdentificationCriteria {
   identificationNumber: String
   identificationType: String
   assigningAuthority: String
 }
 
+input PatientNameCriteria {
+  last: TextCriteria
+}
+
 input PersonFilter {
   id: String
+  name: PatientNameCriteria
   lastName: String
   firstName: String
   race: String

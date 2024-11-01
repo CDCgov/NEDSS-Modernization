@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
 import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -40,8 +41,19 @@ public class PatientFilter {
     private String identificationType;
   }
 
+  public record NameCriteria(TextCriteria last){
+
+    Optional<TextCriteria> maybeLast() {
+      return Optional.ofNullable(last());
+    }
+
+    NameCriteria withLast(final TextCriteria last){
+      return new NameCriteria(last);
+    }
+  }
 
   private String id;
+  private NameCriteria name;
   private String lastName;
   private String firstName;
   private String race;
@@ -210,7 +222,7 @@ public class PatientFilter {
     return Optional.ofNullable(labReport);
   }
 
-  public PatientFilter withAccessiontNumber(final String identifier) {
+  public PatientFilter withAccessionNumber(final String identifier) {
     this.accessionNumber = identifier;
     return this;
   }
@@ -248,6 +260,20 @@ public class PatientFilter {
 
   public PatientFilter withBornBetween(final LocalDate from, final LocalDate to) {
     this.bornOn = DateCriteria.between(from, to);
+    return this;
+  }
+
+  public Optional<NameCriteria> maybeName() {
+    return Optional.ofNullable(this.name);
+  }
+
+  public PatientFilter withLastName(final TextCriteria criteria) {
+    if(this.name == null) {
+
+      this.name = new NameCriteria(criteria);
+    } else {
+      this.name = this.name.withLast(criteria);
+    }
     return this;
   }
 }
