@@ -35,8 +35,8 @@ public class PatientNameDemographicSteps {
     mother.withName(
         patient.active(),
         type,
-        first,
-        last
+        first.equals("null") ? null : first,
+        last.equals("null") ? null : last
     );
   }
 
@@ -71,9 +71,9 @@ public class PatientNameDemographicSteps {
         patient.active(),
         asOf,
         type,
-        first,
-        middle,
-        last,
+        first.equals("null") ? null : first,
+        middle.equals("null") ? null : middle,
+        last.equals("null") ? null : last,
         suffix
     );
 
