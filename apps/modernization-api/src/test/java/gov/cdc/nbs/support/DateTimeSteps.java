@@ -5,6 +5,7 @@ import io.cucumber.java.ParameterType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -28,5 +29,10 @@ public class DateTimeSteps {
         .atStartOfDay()
         .atZone(ZoneId.systemDefault())
         .toInstant();
+  }
+
+  @ParameterType(name = "month", value = ".*")
+  public Month month(final String value) {
+    return Month.valueOf(value.toUpperCase());
   }
 }

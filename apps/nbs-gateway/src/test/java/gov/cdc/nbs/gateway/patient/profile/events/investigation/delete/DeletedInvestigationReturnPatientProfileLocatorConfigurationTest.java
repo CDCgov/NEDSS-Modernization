@@ -1,8 +1,9 @@
 package gov.cdc.nbs.gateway.patient.profile.events.investigation.delete;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -11,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.github.tomakehurst.wiremock.matching.RequestPatternBuilder.allRequests;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -22,51 +24,37 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 )
 class DeletedInvestigationReturnPatientProfileLocatorConfigurationTest {
 
-    @RegisterExtension
-    static WireMockExtension classic = WireMockExtension.newInstance()
-        .options(wireMockConfig().port(10000))
-        .build();
+  @RegisterExtension
+  static WireMockExtension classic = WireMockExtension.newInstance()
+      .options(wireMockConfig().port(10000))
+      .build();
 
-    @RegisterExtension
-    static WireMockExtension service = WireMockExtension.newInstance()
-        .options(wireMockConfig().port(10001))
-        .build();
+  @RegisterExtension
+  static WireMockExtension service = WireMockExtension.newInstance()
+      .options(wireMockConfig().port(10001))
+      .build();
 
-    @Autowired
-    WebTestClient webClient;
+  @Autowired
+  WebTestClient webClient;
 
-    @Test
-    void should_route_to_service_when_Delete_Investigation_is_submitted() {
-        service.stubFor(post(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
+  @ParameterizedTest
+  @ValueSource(strings = {"ReturnToFileSummary", "ReturnToFileEvents", "FileSummary"})
+  void should_route_to_service_when_Delete_Investigation_is_submitted(final String action) {
+    service.stubFor(post(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
 
-        webClient
-            .post().uri(
-                builder -> builder
-                    .path("/nbs/PageAction.do")
-                    .queryParam("method", "deleteSubmit")
-                    .queryParam("ContextAction", "ReturnToFileSummary")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
+    webClient
+        .post().uri(
+            builder -> builder
+                .path("/nbs/PageAction.do")
+                .queryParam("method", "deleteSubmit")
+                .queryParam("ContextAction", action)
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
 
-    @Test
-    void should_route_to_service_when_an_investigation_is_deleted_after_being_created() {
-        service.stubFor(post(urlPathMatching("/nbs/redirect/patient/investigation/delete\\\\?.*")).willReturn(ok()));
-
-        webClient
-            .post().uri(
-                builder -> builder
-                    .path("/nbs/PageAction.do")
-                    .queryParam("method", "deleteSubmit")
-                    .queryParam("ContextAction", "ReturnToFileEvents")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
+    classic.verify(0, allRequests());
+  }
 
 }

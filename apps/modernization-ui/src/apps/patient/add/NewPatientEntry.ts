@@ -1,8 +1,7 @@
 import { internalizeDate } from 'date';
 import { Gender, Suffix, Deceased } from 'generated/graphql/schema';
 import { Selectable } from 'options';
-
-type Maybe<T> = T | null;
+import { Maybe } from 'utils';
 
 type NameEntry = {
     lastName: Maybe<string>;

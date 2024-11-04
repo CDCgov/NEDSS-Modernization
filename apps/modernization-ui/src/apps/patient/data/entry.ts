@@ -49,7 +49,7 @@ type PhoneEmailEntry = EffectiveDated &
 
 type IdentificationEntry = EffectiveDated & {
     type: Selectable | null;
-    id: string;
+    id: string | null;
     issuer?: Maybe<Selectable>;
 };
 

@@ -5,12 +5,12 @@ jackson = '2.17.2'
 queryDSL = '5.1.0'
 spring-kafka = '3.2.0'
 junit-jupiter = '5.10.3'
-cucumber = '7.18.1'
+cucumber = '7.20.1'
 assertj = '3.25.3'
 testcontainers = '1.20.1'
 
 [libraries]
-guava = { module = 'com.google.guava:guava', version = '33.3.0-jre' }
+guava = { module = 'com.google.guava:guava', version = '33.3.1-jre' }
 springBoot = { module = 'org.springframework.boot:spring-boot-starter', version.ref = 'springBoot' }
 springBoot-jdbc = { module = 'org.springframework.boot:spring-boot-starter-jdbc', version.ref = 'springBoot' }
 springBoot-jpa = { module = 'org.springframework.boot:spring-boot-starter-data-jpa', version.ref = 'springBoot' }
@@ -19,7 +19,7 @@ graphql = { module = 'com.graphql-java:graphql-java', version = '20.9' }
 springBoot-graphql = { module = 'org.springframework.boot:spring-boot-starter-graphql', version.ref = 'springBoot' }
 spring-kafka = { module = 'org.springframework.kafka:spring-kafka', version.ref = 'spring-kafka' }
 spring-kafka-test = { module = 'org.springframework.kafka:spring-kafka-test', version.ref = 'spring-kafka' }
-elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '7.17.23' }
+elasticsearch-java = { module = 'co.elastic.clients:elasticsearch-java', version = '7.17.25' }
 parsson = { module = 'org.eclipse.parsson:parsson', version = '1.1.5' }
 spring-test = { module = 'org.springframework.boot:spring-boot-starter-test', version.ref = 'springBoot' }
 spring-security = { module = 'org.springframework.boot:spring-boot-starter-security', version.ref = 'springBoot' }
@@ -35,7 +35,7 @@ jackson-datatype-jsr310 = { module = 'com.fasterxml.jackson.datatype:jackson-dat
 queryDSL-apt = { module = 'com.querydsl:querydsl-apt', version.ref = 'queryDSL' }
 queryDSL-jpa = { module = 'com.querydsl:querydsl-jpa', version.ref = 'queryDSL' }
 lombok = { module = 'org.projectlombok:lombok', version = '1.18.34' }
-mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '12.4.2.jre11' }
+mssql-jdbc = { module = 'com.microsoft.sqlserver:mssql-jdbc', version = '12.8.1.jre11' }
 java-jwt = { module = 'com.auth0:java-jwt', version = '4.4.0' }
 itextpdf = { module = 'com.itextpdf:itextpdf', version = '5.5.13.4' }
 assertj-core = { module = 'org.assertj:assertj-core', version.ref = 'assertj' }

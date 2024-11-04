@@ -5,11 +5,11 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
     if (entry.lastName) {
-        terms.push(fromValue('lastName', 'Last name')(entry.lastName));
+        terms.push(fromValue('lastName', 'LAST NAME')(entry.lastName));
     }
 
     if (entry.firstName) {
-        terms.push(fromValue('firstName', 'First name')(entry.firstName));
+        terms.push(fromValue('firstName', 'FIRST NAME')(entry.firstName));
     }
 
     if (entry.dateOfBirth) {
@@ -21,7 +21,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.id) {
-        terms.push(fromValue('id', 'Patient Id')(entry.id));
+        terms.push(fromValue('id', 'PATIENT ID')(entry.id));
     }
 
     if (entry.address) {
@@ -37,7 +37,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.zip) {
-        terms.push(fromValue('zip', 'ZIP code')(String(entry.zip)));
+        terms.push(fromValue('zip', 'ZIP CODE')(String(entry.zip)));
     }
 
     if (entry.email) {

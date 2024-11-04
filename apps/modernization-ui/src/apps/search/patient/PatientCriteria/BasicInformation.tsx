@@ -14,11 +14,31 @@ export const BasicInformation = () => {
 
     return (
         <SearchCriteria>
+            {/* 
+            
+            // WHEN READY: Uncomment this section to add the operator select for last name, the copy for first name and any others
+
             <Controller
                 control={control}
                 name="lastName"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                    <OperatorInput
+                        id={name}
+                        value={value}
+                        label="Last name"
+                        sizing="compact"
+                        error={error?.message}
+                        onChange={onChange}
+                    />
+                )}
+            />            
+            */}
+            <Controller
+                control={control}
+                name="lastName"
+                rules={validNameRule}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         onBlur={onBlur}
                         onChange={onChange}
@@ -122,7 +142,7 @@ export const BasicInformation = () => {
                         name={name}
                         label={'Include records that are'}
                         sizing="compact"
-                        requried
+                        required
                         options={statusOptions}
                         value={value}
                         onChange={onChange}

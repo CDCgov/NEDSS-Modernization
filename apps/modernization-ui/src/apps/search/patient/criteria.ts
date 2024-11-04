@@ -12,6 +12,8 @@ export { statusOptions };
 
 type BasicInformation = {
     lastName?: string;
+    // when ready, replace the line above with this
+    // lastName?: TextCriteria;
     firstName?: string;
     dateOfBirth?: string;
     gender?: Selectable;
@@ -42,7 +44,18 @@ type Identification = {
     identificationType?: Selectable;
 };
 
-type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification;
+type EventIds = {
+    morbidity?: string;
+    document?: string;
+    stateCase?: string;
+    abcCase?: string;
+    cityCountyCase?: string;
+    notification?: string;
+    labReport?: string;
+    accessionNumber?: string;
+};
+
+type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
 
 export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
 

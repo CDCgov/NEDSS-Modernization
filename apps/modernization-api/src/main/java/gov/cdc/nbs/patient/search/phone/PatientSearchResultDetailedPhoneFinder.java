@@ -18,6 +18,8 @@ class PatientSearchResultDetailedPhoneFinder {
             [use].code_short_desc_txt,
             [locators].[use_cd]
         )                               as [use],
+        [locators].cd                   as [type_cd],
+        [locators].use_cd               as [use_cd],
         [phone_number].phone_nbr_txt    as [phone_number]
       from Entity_locator_participation [locators]
       

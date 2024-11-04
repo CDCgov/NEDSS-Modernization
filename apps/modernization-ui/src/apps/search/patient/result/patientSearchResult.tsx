@@ -9,7 +9,8 @@ const displayProfileLink = (shortId: number, displayName?: string) => {
 };
 
 const displayProfileLegalName = (result: PatientSearchResult) => {
-    const legalNameDisplay = (result.legalName && displayName('fullLastFirst')(result.legalName)) || 'No Data';
+    const legalNameDisplay =
+        result.legalName?.first || result.legalName?.last ? displayName('fullLastFirst')(result.legalName) : 'No Data';
     return displayProfileLink(result.shortId, legalNameDisplay);
 };
 
@@ -37,7 +38,17 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
     </div>
 );
 
-const displayPhones = (result: PatientSearchResult): string => result.phones.join('\n');
+const displayPhones = (result: PatientSearchResult): JSX.Element => (
+    <div>
+        {result.detailedPhones.map((phone, index) => (
+            <div key={index}>
+                <ItemGroup type="phone" label={phone.use ?? phone.type}>
+                    {phone.number}
+                </ItemGroup>
+            </div>
+        ))}
+    </div>
+);
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
 const displayPatientName = (result: PatientSearchResult): JSX.Element => (
     <div>

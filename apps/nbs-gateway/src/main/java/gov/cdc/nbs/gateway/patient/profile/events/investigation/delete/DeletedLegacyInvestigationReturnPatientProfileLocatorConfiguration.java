@@ -1,5 +1,6 @@
 package gov.cdc.nbs.gateway.patient.profile.events.investigation.delete;
 
+import gov.cdc.nbs.gateway.RouteOrdering;
 import gov.cdc.nbs.gateway.patient.profile.PatientProfileService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -8,7 +9,6 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 
 import java.util.List;
 
@@ -32,6 +32,15 @@ import java.util.List;
  * <li>Query Parameter {@code ContextAction} equal to
  * {@code ReturnToFileEvents}</li>
  * </ul>
+ *
+ * OR
+ *
+ * <ul>
+ * <li>Path equal to {@code /nbs/ViewInvestigation3.do}</li>
+ * <li>Query Parameter {@code delete} equal to {@code true}</li>
+ * <li>Query Parameter {@code ContextAction} equal to
+ * {@code FileSummary}</li>
+ * </ul>
  */
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
@@ -45,19 +54,25 @@ class DeletedLegacyInvestigationReturnPatientProfileLocatorConfiguration {
     return builder.routes()
         .route(
             "deleted-legacy-investigation-patient-profile-return",
-            route -> route.order(Ordered.HIGHEST_PRECEDENCE)
-                .path("/nbs/ViewInvestigation1.do",
-                    "/nbs/ViewInvestigation3.do")
+            route -> route.order(RouteOrdering.PATIENT_PROFILE.before())
+                .path(
+                    "/nbs/ViewInvestigation1.do",
+                    "/nbs/ViewInvestigation2.do",
+                    "/nbs/ViewInvestigation3.do"
+                )
                 .and()
                 .query("delete", "true")
                 .and()
-                .query("ContextAction",
-                    "ReturnToFile(:?Summary|Events)")
+                .query(
+                    "ContextAction",
+                    "ReturnToFileSummary|ReturnToFileEvents|FileSummary"
+                )
                 .filters(
-                    filter -> filter.setPath(
-                            "/nbs/redirect/patient/investigation/delete")
-                        .filters(defaults))
-                .uri(service.uri()))
+                    filter -> filter.setPath("/nbs/redirect/patient/investigation/delete")
+                        .filters(defaults)
+                )
+                .uri(service.uri())
+        )
         .build();
   }
 

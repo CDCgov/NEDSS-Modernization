@@ -17,4 +17,9 @@ class LabReportingSupportConfiguration {
   Available<LabReportIdentifier> availableLabReport() {
     return new Available<>();
   }
+
+  @Bean
+  Active<AccessionIdentifier> activeAccessionIdentifier() {
+    return new Active<>();
+  }
 }

@@ -261,7 +261,7 @@ public class InvestigationSearchCriteriaSteps {
                 number)));
   }
 
-  @Given("I want to find investigations for the ABCS Case {string}")
+  @Given("I want to find investigations for the ABCs Case {string}")
   public void i_want_to_find_investigations_for_ABCS_case(final String number) {
     this.activeCriteria.maybeActive().ifPresent(
         criteria -> criteria.setEventId(

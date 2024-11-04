@@ -1,80 +1,108 @@
 package gov.cdc.nbs.patient.profile.investigation;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
-import gov.cdc.nbs.testing.interaction.http.Authenticated;
 import gov.cdc.nbs.testing.support.Active;
-import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import jakarta.servlet.http.Cookie;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class DeleteInvestigationSteps {
 
-  @Value("${nbs.wildfly.url:http://wildfly:7001}")
-  String classicUrl;
+  private final String classicUrl;
 
-  @Autowired
-  Active<PatientIdentifier> activePatient;
+  private final Active<PatientIdentifier> activePatient;
 
-  @Autowired
-  MockMvc mvc;
+  private final Active<NBS6InvestigationRequest> activeContext;
 
-  @Autowired
-  Authenticated authenticated;
+  private final NBS6InvestigationDeleteRequester requester;
 
-  @Autowired
-  Active<ResultActions> response;
+  private final Active<ResultActions> response;
 
-  @Autowired
-  @Qualifier("classicRestService")
-  MockRestServiceServer server;
+  private final MockRestServiceServer server;
 
-  @Before
-  public void reset() {
-    server.reset();
+  DeleteInvestigationSteps(
+      @Qualifier("classicRestService") final MockRestServiceServer server,
+      final Active<ResultActions> response,
+      final Active<PatientIdentifier> activePatient,
+      @Value("${nbs.wildfly.url}") final String classicUrl,
+      final Active<NBS6InvestigationRequest> activeContext,
+      final NBS6InvestigationDeleteRequester requester
+  ) {
+    this.server = server;
+    this.response = response;
+    this.activePatient = activePatient;
+    this.classicUrl = classicUrl;
+    this.activeContext = activeContext;
+    this.requester = requester;
   }
 
-  @When("an investigation is deleted from Classic NBS")
-  public void an_investigation_is_deleted_from_classic_nbs() throws Exception {
-
-    server.expect(requestTo(classicUrl + "/nbs/PageAction.do"))
-        .andExpect(method(HttpMethod.POST))
-        .andExpect(
-            content().formDataContains(
-                Map.of(
-                    "ContextAction", "FileSummary",
-                    "method", "deleteSubmit",
-                    "other-data", "value")))
-        .andRespond(withSuccess());
-
-    long patient = activePatient.active().id();
-
-    response.active(
-        mvc.perform(
-            authenticated.withSession(post("/nbs/redirect/patient/investigation/delete"))
-                .param("ContextAction", "FileSummary")
-                .param("method", "deleteSubmit")
-                .param("other-data", "value")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .cookie(new Cookie("Return-Patient", String.valueOf(patient)))));
+  @Given("the viewed investigation has no associated events")
+  public void the_viewed_investigation_has_not_associated_events() {
+    activeContext.maybeActive().ifPresent(
+        request -> server.expect(requestToUriTemplate("{base}/nbs/{location}", classicUrl, request.location()))
+            .andExpect(method(HttpMethod.POST))
+            .andExpect(
+                content().formDataContains(
+                    Map.of(
+                        "ContextAction", request.contextAction(),
+                        "method", "deleteSubmit"
+                    )
+                )
+            )
+            .andRespond(withSuccess())
+    );
   }
 
-  @Then("the investigation delete is submitted to Classic NBS")
+  @Given("the viewed investigation has an associated Lab Report")
+  public void the_viewed_investigation_has_an_associated_lab_report() {
+    activeContext.maybeActive().ifPresent(
+        request -> server.expect(requestTo(classicUrl + "/nbs/" + request.location()))
+            .andExpect(method(HttpMethod.POST))
+            .andExpect(
+                content().formDataContains(
+                    Map.of(
+                        "ContextAction", request.contextAction(),
+                        "method", "deleteSubmit"
+                    )
+                )
+            )
+            .andRespond(withStatus(HttpStatus.FOUND).header("Location", "/nbs6/investigation"))
+    );
+
+  }
+
+  @When("I delete the investigation from NBS6")
+  public void i_delete_the_investigation_from_NBS6() {
+    activePatient.maybeActive()
+        .flatMap(patient -> activeContext.maybeActive().map(contextAction -> requester.delete(patient, contextAction)))
+        .ifPresent(response::active);
+
+  }
+
+  @Then("the investigation delete is submitted to NBS6")
   public void the_investigation_delete_is_submitted_to_classic_nbs() {
     server.verify();
+  }
+
+  @Then("I am returned to the investigation in NBS6")
+  public void i_am_returned_to_the_investigation_in_nbs6() throws Exception {
+    this.response.active()
+        .andExpect(status().isFound())
+        .andExpect(header().string("Location", startsWith("/nbs6/investigation")));
   }
 }

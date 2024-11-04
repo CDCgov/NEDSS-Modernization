@@ -130,11 +130,15 @@ class ClassicHomePage {
 
   verifyDocumentsRequiringReview() {
     cy.get("a").contains("Documents Requiring Review").eq(0).click()
-    cy.get("a").contains("Lab Report").eq(0).click()
+    // cy.get("a").contains("Lab Report").eq(0).click()
+    cy.get("th.sortable").eq(1).find("img#queueIcon").click()
+    cy.get("label.selectAll").eq(1).click()
+    cy.get("label").contains("Last 14 Days").click()
+    cy.get("#b1").click({force: true})
   }
 
   verifyOpenInvestigations() {
-    cy.get("a").contains("Open Investigations").eq(0).click()    
+    cy.get("a").contains("Open Investigations").eq(0).click()
   } 
 
 }

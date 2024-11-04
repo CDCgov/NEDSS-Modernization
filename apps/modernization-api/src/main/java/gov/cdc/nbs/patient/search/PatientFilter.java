@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import gov.cdc.nbs.entity.enums.RecordStatus;
 import gov.cdc.nbs.message.enums.Deceased;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
+import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -31,14 +34,34 @@ public class PatientFilter {
   @AllArgsConstructor
   @NoArgsConstructor
   @EqualsAndHashCode
+  @JsonInclude(Include.NON_NULL)
   public static class Identification {
     private String identificationNumber;
     private String assigningAuthority;
     private String identificationType;
   }
 
+  public record NameCriteria(TextCriteria first, TextCriteria last) {
+
+    Optional<TextCriteria> maybeLast() {
+      return Optional.ofNullable(last());
+    }
+
+    NameCriteria withLast(final TextCriteria last) {
+      return new NameCriteria(first(), last);
+    }
+
+    Optional<TextCriteria> maybeFirst() {
+      return Optional.ofNullable(first());
+    }
+
+    NameCriteria withFirst(final TextCriteria first) {
+      return new NameCriteria(first, last());
+    }
+  }
 
   private String id;
+  private NameCriteria name;
   private String lastName;
   private String firstName;
   private String race;
@@ -57,13 +80,25 @@ public class PatientFilter {
   private String mortalityStatus;
   private String ethnicity;
   private List<RecordStatus> recordStatus;
-  private String treatmentId;
-  private String vaccinationId;
+  private String morbidity;
+  private String document;
+  private String stateCase;
+  private String abcCase;
+  private String cityCountyCase;
+  private String notification;
+  private String treatment;
+  private String vaccination;
+  private String investigation;
+  private String labReport;
+  private String accessionNumber;
+
   private boolean disableSoundex;
   @JsonIgnore
   @Getter(AccessLevel.NONE)
   @Setter(AccessLevel.NONE)
   private List<RecordStatus> adjustedStatus;
+
+  private DateCriteria bornOn;
 
   public PatientFilter() {
     this(RecordStatus.ACTIVE);
@@ -100,6 +135,163 @@ public class PatientFilter {
 
   public PatientFilter withId(final String id) {
     this.id = id;
+    return this;
+  }
+
+  public PatientFilter withMorbidity(final String identifier) {
+    this.morbidity = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeMorbidity() {
+    return Optional.ofNullable(morbidity);
+  }
+
+  public PatientFilter withDocument(final String identifier) {
+    this.document = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeDocument() {
+    return Optional.ofNullable(document);
+  }
+
+
+  public PatientFilter withStateCase(final String identifier) {
+    this.stateCase = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeStateCase() {
+    return Optional.ofNullable(stateCase);
+  }
+
+
+  public PatientFilter withAbcCase(final String identifier) {
+    this.abcCase = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeAbcCase() {
+    return Optional.ofNullable(abcCase);
+  }
+
+  public PatientFilter withCityCountyCase(final String identifier) {
+    this.cityCountyCase = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeCityCountyCase() {
+    return Optional.ofNullable(cityCountyCase);
+  }
+
+  public PatientFilter withNotification(final String identifier) {
+    this.notification = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeNotification() {
+    return Optional.ofNullable(notification);
+  }
+
+  public PatientFilter withTreatment(final String identifier) {
+    this.treatment = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeTreatment() {
+    return Optional.ofNullable(treatment);
+  }
+
+  public PatientFilter withVaccination(final String identifier) {
+    this.vaccination = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeVaccination() {
+    return Optional.ofNullable(vaccination);
+  }
+
+  public PatientFilter withInvestigation(final String identifier) {
+    this.investigation = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeInvestigation() {
+    return Optional.ofNullable(investigation);
+  }
+
+  public PatientFilter withLabReport(final String identifier) {
+    this.labReport = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeLabReport() {
+    return Optional.ofNullable(labReport);
+  }
+
+  public PatientFilter withAccessionNumber(final String identifier) {
+    this.accessionNumber = identifier;
+    return this;
+  }
+
+  public Optional<String> maybeAccessionNumber() {
+    return Optional.ofNullable(accessionNumber);
+  }
+
+  public PatientFilter withBornOnDay(final int day) {
+    if (this.bornOn != null) {
+      this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withDay(day));
+    } else {
+      this.bornOn = DateCriteria.equals(day, null, null);
+    }
+    return this;
+  }
+
+  public PatientFilter withBornOnMonth(final int month) {
+    if (this.bornOn != null) {
+      this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withMonth(month));
+    } else {
+      this.bornOn = DateCriteria.equals(null, month, null);
+    }
+    return this;
+  }
+
+  public PatientFilter withBornOnYear(final int year) {
+    if (this.bornOn != null) {
+      this.bornOn = this.bornOn.withEquals(this.bornOn.equals().withYear(year));
+    } else {
+      this.bornOn = DateCriteria.equals(null, null, year);
+    }
+    return this;
+  }
+
+  public PatientFilter withBornBetween(final LocalDate from, final LocalDate to) {
+    this.bornOn = DateCriteria.between(from, to);
+    return this;
+  }
+
+  public Optional<NameCriteria> maybeName() {
+    return Optional.ofNullable(this.name);
+  }
+
+  public PatientFilter withLastName(final TextCriteria criteria) {
+    if (this.name == null) {
+
+      this.name = new NameCriteria(null, criteria);
+    } else {
+      this.name = this.name.withLast(criteria);
+    }
+    return this;
+  }
+
+  public PatientFilter withFirstName(final TextCriteria criteria) {
+    if (this.name == null) {
+
+      this.name = new NameCriteria(criteria, null);
+    } else {
+      this.name = this.name.withFirst(criteria);
+    }
     return this;
   }
 }

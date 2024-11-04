@@ -13,8 +13,26 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
         : undefined;
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
-    const { includeSimilar, lastName, firstName, id, address, city, phoneNumber, email, dateOfBirth, ...remaining } =
-        data;
+    const {
+        includeSimilar,
+        lastName,
+        firstName,
+        id,
+        address,
+        city,
+        phoneNumber,
+        email,
+        dateOfBirth,
+        morbidity,
+        document,
+        stateCase,
+        abcCase,
+        cityCountyCase,
+        notification,
+        labReport,
+        accessionNumber,
+        ...remaining
+    } = data;
     return {
         disableSoundex: !includeSimilar,
         lastName,
@@ -24,6 +42,14 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         city,
         phoneNumber,
         email,
+        morbidity,
+        document,
+        stateCase,
+        abcCase,
+        cityCountyCase,
+        notification,
+        labReport,
+        accessionNumber,
         recordStatus: asValues(remaining.status) as RecordStatus[],
         gender: asValue(remaining.gender),
         state: asValue(remaining.state),

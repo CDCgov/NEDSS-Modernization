@@ -30,9 +30,11 @@ type BasicAddressEntry = {
     censusTract?: string;
 };
 
+type BasicWorkPhone = { phone: string; extension?: string };
+
 type BasicPhoneEmail = {
     home?: string;
-    work?: { phone: string; extension?: string };
+    work?: BasicWorkPhone;
     cell?: string;
     email?: string;
 };
@@ -59,6 +61,7 @@ export type {
     NameInformationEntry,
     OtherInformationEntry,
     BasicAddressEntry,
+    BasicWorkPhone,
     BasicPhoneEmail,
     BasicEthnicityRace,
     BasicIdentificationEntry
