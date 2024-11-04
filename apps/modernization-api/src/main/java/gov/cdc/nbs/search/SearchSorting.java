@@ -19,6 +19,10 @@ public class SearchSorting {
     );
   }
 
+  private static String resolveMissing(SortOrder order) {
+    return order.name().equals("Asc") ? "_first" : "_last";
+  }
+
   public static SortOptions asSortOption(
       final String path,
       final String name,
@@ -29,7 +33,7 @@ public class SearchSorting {
             field -> field.field(name)
                 .order(order)
                 .nested(nested -> nested.path(path))
-                .missing(order.name().equals("Desc") ? "_first" : "_last")
+                .missing(resolveMissing(order))
         )
     );
   }

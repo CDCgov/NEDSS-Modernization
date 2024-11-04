@@ -53,7 +53,7 @@ public class PatientSearchVerificationSteps {
 
     String finalValue = null;
 
-    if(!value.equals("")) {
+    if(!value.isEmpty()) {
       finalValue = value;
     }
 
@@ -105,6 +105,7 @@ public class PatientSearchVerificationSteps {
       case "gender", "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
+      case "middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].middle", position);
       case "suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].suffix", position);
       case "legal first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.first", position);
       case "legal middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.middle", position);
