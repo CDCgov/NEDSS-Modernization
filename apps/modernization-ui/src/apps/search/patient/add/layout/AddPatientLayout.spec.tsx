@@ -2,20 +2,10 @@ import { render } from '@testing-library/react';
 import { AddPatientLayout } from './AddPatientLayout';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 
-class MockIntersectionObserver {
-    observe = jest.fn();
-    unobserve = jest.fn();
-    disconnect = jest.fn();
-    constructor(callback: (entries: IntersectionObserverEntry[]) => void) {
-        callback([{ isIntersecting: true, target: { id: 'section1' } } as IntersectionObserverEntry]);
-    }
-}
-
-Object.defineProperty(window, 'IntersectionObserver', {
-    writable: true,
-    configurable: true,
-    value: MockIntersectionObserver
-});
+jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
+    __esModule: true,
+    default: jest.fn()
+}));
 
 const headerActions = <button>Save</button>;
 const headerTitle = 'Add New Patient';
