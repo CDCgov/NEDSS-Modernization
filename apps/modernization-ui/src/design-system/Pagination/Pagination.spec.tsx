@@ -111,4 +111,22 @@ describe('When Pagination renders', () => {
 
         expect(toggle).toBeInTheDocument();
     });
+
+    it('should hide the pagination component when the total results are zero', () => {
+        mockTotal = 0;
+
+        const { getByTestId } = render(<Setup />);
+
+        expect(getByTestId('pagination-container-component')).toBeInTheDocument();
+        expect(getByTestId('pagination-container-component')).toHaveClass('hidden');
+    });
+
+    it('should show the pagination component when the total results are not zero', () => {
+        mockTotal = 20;
+
+        const { getByTestId } = render(<Setup />);
+
+        expect(getByTestId('pagination-container-component')).toBeInTheDocument();
+        expect(getByTestId('pagination-container-component')).toHaveClass('pagination');
+    });
 });
