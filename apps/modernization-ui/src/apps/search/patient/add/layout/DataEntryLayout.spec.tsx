@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { AddPatientLayout } from './AddPatientLayout';
+import { DataEntryLayout } from './DataEntryLayout';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 
 jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
@@ -9,42 +9,29 @@ jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
 
 const headerActions = <button>Save</button>;
 const headerTitle = 'Add New Patient';
-const formContent = (
+const entryComponent = (
     <form>
         <input placeholder="Patient Name" />
     </form>
 );
-const inPageSections: NavSection[] = [
+const sections: NavSection[] = [
     { id: 'section1', label: 'Section 1' },
     { id: 'section2', label: 'Section 2' }
 ];
 const children = <div>Additional Content</div>;
 
-describe('AddPatientLayout', () => {
+describe('DataEntryLayout', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    it('should render the side navigation', () => {
-        const { getByText } = render(
-            <AddPatientLayout
-                headerActions={headerActions}
-                headerTitle={headerTitle}
-                formContent={formContent}
-                inPageSections={inPageSections}
-            />
-        );
-
-        expect(getByText('New patient')).toBeInTheDocument();
-    });
-
     it('should render the header content with title and actions', () => {
         const { getByText } = render(
-            <AddPatientLayout
+            <DataEntryLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                formContent={formContent}
-                inPageSections={inPageSections}
+                entryComponent={entryComponent}
+                sections={sections}
             />
         );
 
@@ -54,11 +41,11 @@ describe('AddPatientLayout', () => {
 
     it('should render the patient form', () => {
         const { getByPlaceholderText } = render(
-            <AddPatientLayout
+            <DataEntryLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                formContent={formContent}
-                inPageSections={inPageSections}
+                entryComponent={entryComponent}
+                sections={sections}
             />
         );
 
@@ -67,28 +54,28 @@ describe('AddPatientLayout', () => {
 
     it('should render the in-page navigation with sections', () => {
         const { getByText } = render(
-            <AddPatientLayout
+            <DataEntryLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                formContent={formContent}
-                inPageSections={inPageSections}
+                entryComponent={entryComponent}
+                sections={sections}
             />
         );
 
-        inPageSections.forEach((section) => {
+        sections.forEach((section) => {
             expect(getByText(section.label)).toBeInTheDocument();
         });
     });
 
     it('should render children content', () => {
         const { getByText } = render(
-            <AddPatientLayout
+            <DataEntryLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                formContent={formContent}
-                inPageSections={inPageSections}>
+                sections={sections}
+                entryComponent={<div>Entry Component</div>}>
                 {children}
-            </AddPatientLayout>
+            </DataEntryLayout>
         );
 
         expect(getByText('Additional Content')).toBeInTheDocument();

@@ -1,6 +1,6 @@
-import { NavEntry, SideNavigation } from 'apps/search/patient/add/layout/sideNavigation';
+import { NavEntry, SideNavigation } from 'design-system/side-nav/SideNavigation';
 
-export const AddPatientSideNavigation = () => {
+export const AddPatientSideNav = () => {
     return (
         <SideNavigation title="Data entry">
             <NavEntry name="New patient" active />

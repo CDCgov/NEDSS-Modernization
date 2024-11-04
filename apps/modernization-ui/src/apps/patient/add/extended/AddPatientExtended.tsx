@@ -10,6 +10,7 @@ import { useNavigationBlock } from 'navigation/useNavigationBlock';
 import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
+import { AddPatientSideNav } from 'apps/patient/add/nav/AddPatientSideNav';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
@@ -17,7 +18,6 @@ import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
 
 import styles from './add-patient-extended.module.scss';
 import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
-import { AddPatientSideNavigation } from 'apps/search/patient/add/layout/sideNavigation';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
@@ -76,7 +76,7 @@ export const AddPatientExtended = () => {
             </Shown>
             <FormProvider {...form}>
                 <div className={styles.addPatientExtended}>
-                    <AddPatientSideNavigation />
+                    <AddPatientSideNav />
                     <div className={styles.content}>
                         <header>
                             <h1>New patient - extended</h1>
