@@ -17,7 +17,7 @@ input DateCriteria {
 input TextCriteria {
   equals: String
   not: String
-  startsWith:String
+  startsWith: String
   contains: String
   soundsLike: String
 }
@@ -29,6 +29,7 @@ input IdentificationCriteria {
 }
 
 input PatientNameCriteria {
+  first: TextCriteria
   last: TextCriteria
 }
 

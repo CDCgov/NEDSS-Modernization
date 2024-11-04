@@ -1289,6 +1289,7 @@ export type PatientNameChangeResult = {
 };
 
 export type PatientNameCriteria = {
+  first?: InputMaybe<TextCriteria>;
   last?: InputMaybe<TextCriteria>;
 };
 

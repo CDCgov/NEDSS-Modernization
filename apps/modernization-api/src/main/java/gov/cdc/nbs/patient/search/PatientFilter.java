@@ -41,14 +41,22 @@ public class PatientFilter {
     private String identificationType;
   }
 
-  public record NameCriteria(TextCriteria last){
+  public record NameCriteria(TextCriteria first, TextCriteria last) {
 
     Optional<TextCriteria> maybeLast() {
       return Optional.ofNullable(last());
     }
 
-    NameCriteria withLast(final TextCriteria last){
-      return new NameCriteria(last);
+    NameCriteria withLast(final TextCriteria last) {
+      return new NameCriteria(first(), last);
+    }
+
+    Optional<TextCriteria> maybeFirst() {
+      return Optional.ofNullable(first());
+    }
+
+    NameCriteria withFirst(final TextCriteria first) {
+      return new NameCriteria(first, last());
     }
   }
 
@@ -268,11 +276,21 @@ public class PatientFilter {
   }
 
   public PatientFilter withLastName(final TextCriteria criteria) {
-    if(this.name == null) {
+    if (this.name == null) {
 
-      this.name = new NameCriteria(criteria);
+      this.name = new NameCriteria(null, criteria);
     } else {
       this.name = this.name.withLast(criteria);
+    }
+    return this;
+  }
+
+  public PatientFilter withFirstName(final TextCriteria criteria) {
+    if (this.name == null) {
+
+      this.name = new NameCriteria(criteria, null);
+    } else {
+      this.name = this.name.withFirst(criteria);
     }
     return this;
   }
