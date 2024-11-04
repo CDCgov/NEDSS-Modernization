@@ -14,6 +14,8 @@ class PatientNameDemographicQueryResolver {
   private static final String NAMES = "name";
   private static final String LAST_NAME = "name.lastNm";
   private static final String LAST_NAME_SOUNDEX = "name.lastNmSndx.keyword";
+  private static final String FIRST_NAME = "name.firstNm";
+  private static final String FIRST_NAME_SOUNDEX = "name.firstNmSndx.keyword";
 
   Stream<QueryVariant> resolve(final PatientFilter criteria) {
     return criteria.maybeName().stream().flatMap(this::resolveNameCriteria);
@@ -21,12 +23,16 @@ class PatientNameDemographicQueryResolver {
 
   private Stream<QueryVariant> resolveNameCriteria(final PatientFilter.NameCriteria criteria) {
     return Stream.of(
-            applyLastNameEquals(criteria),
-            applyLastNameNotEquals(criteria),
-            applyLastNameContains(criteria),
-            applyLastNameStartsWith(criteria),
-            applyLastNameSoundsLike(criteria)
-        )
+        applyLastNameEquals(criteria),
+        applyLastNameNotEquals(criteria),
+        applyLastNameContains(criteria),
+        applyLastNameStartsWith(criteria),
+        applyLastNameSoundsLike(criteria),
+        applyFirstNameEquals(criteria),
+        applyFirstNameNotEquals(criteria),
+        applyFirstNameContains(criteria),
+        applyFirstNameStartsWith(criteria),
+        applyFirstNameSoundsLike(criteria))
         .flatMap(Optional::stream);
   }
 
@@ -60,4 +66,33 @@ class PatientNameDemographicQueryResolver {
         .map(value -> soundLike(NAMES, LAST_NAME_SOUNDEX, value));
   }
 
+  private Optional<QueryVariant> applyFirstNameEquals(final PatientFilter.NameCriteria criteria) {
+    return criteria.maybeFirst()
+        .flatMap(TextCriteria::maybeEquals)
+        .map(value -> equalTo(NAMES, FIRST_NAME, value));
+  }
+
+  private Optional<QueryVariant> applyFirstNameNotEquals(final PatientFilter.NameCriteria criteria) {
+    return criteria.maybeFirst()
+        .flatMap(TextCriteria::maybeNot)
+        .map(value -> notEquals(NAMES, FIRST_NAME, value));
+  }
+
+  private Optional<QueryVariant> applyFirstNameContains(final PatientFilter.NameCriteria criteria) {
+    return criteria.maybeFirst()
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> contains(NAMES, FIRST_NAME, value));
+  }
+
+  private Optional<QueryVariant> applyFirstNameStartsWith(final PatientFilter.NameCriteria criteria) {
+    return criteria.maybeFirst()
+        .flatMap(TextCriteria::maybeStartsWith)
+        .map(value -> startsWith(NAMES, FIRST_NAME, value));
+  }
+
+  private Optional<QueryVariant> applyFirstNameSoundsLike(final PatientFilter.NameCriteria criteria) {
+    return criteria.maybeFirst()
+        .flatMap(TextCriteria::maybeSoundsLike)
+        .map(value -> soundLike(NAMES, FIRST_NAME_SOUNDEX, value));
+  }
 }
