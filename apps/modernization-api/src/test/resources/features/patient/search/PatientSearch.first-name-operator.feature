@@ -17,9 +17,9 @@ Feature: Searching patient's by name
     And there are 1 patient search results
 
   Scenario: I can find the a patient with a first name that does not equal a value
-    Given the patient has the legal name "Jose" "Smith"
+    Given the patient has the legal name "Joe" "Smith"
     And I have another patient
-    And the patient has the legal name "Joe" "Smith"
+    And the patient has the legal name "Jose" "Smith"
     And patients are available for search
     And I add the patient criteria for a first name that does not equal "Jose"
     When I search for patients
