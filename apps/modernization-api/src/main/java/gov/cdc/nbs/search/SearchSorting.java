@@ -15,7 +15,6 @@ public class SearchSorting {
         sort -> sort.field(
             field -> field.field(name)
                 .order(order)
-                .missing(resolveMissing(order))
         )
     );
   }
@@ -52,7 +51,6 @@ public class SearchSorting {
                 .nested(nested -> nested.path(path)
                     .filter(filter)
                 )
-                .missing(resolveMissing(order))
         )
     );
   }
