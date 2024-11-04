@@ -15,8 +15,13 @@ public class SearchSorting {
         sort -> sort.field(
             field -> field.field(name)
                 .order(order)
+                .missing(resolveMissing(order))
         )
     );
+  }
+
+  private static String resolveMissing(SortOrder order) {
+    return order.name().equals("Asc") ? "_first" : "_last";
   }
 
   public static SortOptions asSortOption(
@@ -29,7 +34,7 @@ public class SearchSorting {
             field -> field.field(name)
                 .order(order)
                 .nested(nested -> nested.path(path))
-                .missing(order.name().equals("Desc") ? "_first" : "_last")
+                .missing(resolveMissing(order))
         )
     );
   }
@@ -47,6 +52,7 @@ public class SearchSorting {
                 .nested(nested -> nested.path(path)
                     .filter(filter)
                 )
+                .missing(resolveMissing(order))
         )
     );
   }
