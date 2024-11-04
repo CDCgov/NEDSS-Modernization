@@ -57,3 +57,14 @@ Feature: Searching patient's by name
     Then search result 1 has a "first name" of "Jo"
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
+
+  Scenario: I can find the a patient with a first name and a last name
+    Given I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I add the patient criteria for a last name that equals "Smith"
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
