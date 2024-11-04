@@ -130,4 +130,30 @@ public class PatientSearchCriteriaSteps {
   public void i_add_the_patient_criteria_for_a_last_name_that_sounds_like(final String value) {
     this.activeCriteria.active(criteria -> criteria.withLastName(TextCriteria.soundsLike(value)));
   }
+
+  @Given("I add the patient criteria for a first name that equals {string}")
+  public void i_add_the_patient_criteria_for_a_first_name_that_equals(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withFirstName(TextCriteria.equals(value)));
+  }
+
+  @Given("I add the patient criteria for a first name that does not equal {string}")
+  public void i_add_the_patient_criteria_for_a_first_name_that_does_not_equal(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withFirstName(TextCriteria.not(value)));
+  }
+
+  @Given("I add the patient criteria for a first name that contains {string}")
+  public void i_add_the_patient_criteria_for_a_first_name_that_contains(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withFirstName(TextCriteria.contains(value)));
+  }
+
+  @Given("I add the patient criteria for a first name that starts with {string}")
+  public void i_add_the_patient_criteria_for_a_first_name_that_starts_with(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withFirstName(TextCriteria.startsWith(value)));
+  }
+
+  @Given("I add the patient criteria for a first name that sounds like {string}")
+  public void i_add_the_patient_criteria_for_a_first_name_that_sounds_like(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withFirstName(TextCriteria.soundsLike(value)));
+  }
+
 }
