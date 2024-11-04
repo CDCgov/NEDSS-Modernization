@@ -3,7 +3,6 @@ import { displayName, displayNameElement, matchesLegalName } from 'name';
 import { displayAddress } from 'address/display';
 import { Link } from 'react-router-dom';
 import { ItemGroup } from 'design-system/item';
-import { NoData } from 'components/NoData';
 
 const displayProfileLink = (shortId: number, displayName?: string) => {
     return <Link to={`/patient-profile/${shortId}/summary`}>{displayName || shortId}</Link>;
@@ -44,7 +43,7 @@ const displayPhones = (result: PatientSearchResult): JSX.Element => (
         {result.detailedPhones.map((phone, index) => (
             <div key={index}>
                 <ItemGroup type="phone" label={phone.use ?? phone.type}>
-                    {phone.number || <NoData />}
+                    {phone.number}
                 </ItemGroup>
             </div>
         ))}
@@ -64,7 +63,7 @@ const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
         {result.identification.map((identification, index) => (
             <div key={index}>
                 <ItemGroup type="other" label={identification.type}>
-                    {identification.value || <NoData />}
+                    {identification.value}
                 </ItemGroup>
             </div>
         ))}

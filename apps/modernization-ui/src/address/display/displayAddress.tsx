@@ -1,4 +1,3 @@
-import { NoData } from 'components/NoData';
 import { ItemGroup } from 'design-system/item';
 import { exists } from 'utils';
 
@@ -31,7 +30,7 @@ const displayAddress = (address: DisplayableAddress): JSX.Element => {
     const addressHeader = address.use ?? undefined;
     return (
         <ItemGroup type="address" label={addressHeader}>
-            {addressText || <NoData />}
+            {addressText}
         </ItemGroup>
     );
 };
