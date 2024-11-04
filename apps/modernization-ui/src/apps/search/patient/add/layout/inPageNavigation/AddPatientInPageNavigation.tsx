@@ -3,13 +3,12 @@ import styles from './in-page-nav.module.scss';
 
 type AddPatientInPageNavigationProps = {
     sections: NavSection[];
-    title: string;
 };
 
-export const AddPatientInPageNavigation = ({ title, sections }: AddPatientInPageNavigationProps) => {
+export const AddPatientInPageNavigation = ({ sections }: AddPatientInPageNavigationProps) => {
     return (
         <aside className={styles.aside}>
-            <InPageNavigation title={title} sections={sections} />
+            <InPageNavigation title="On this page" sections={sections} />
         </aside>
     );
 };

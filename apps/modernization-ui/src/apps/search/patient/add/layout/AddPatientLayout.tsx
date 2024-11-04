@@ -1,37 +1,33 @@
 import { ReactNode } from 'react';
 import styles from './add-layout.module.scss';
-import { AddPatientSideNavigation } from './sideNavigation/AddPatientSideNavigation';
-import { AddPatientHeaderContent } from './headerContent/AddPatientHeaderContent';
-import { AddPatientInPageNavigation } from './inPageNavigation/AddPatientInPageNavigation';
+import { AddPatientSideNavigation } from './sideNavigation';
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
+import { AddPatientContent } from './AddPatientContent';
 
 interface AddPatientLayoutProps {
     headerActions: ReactNode;
     headerTitle: string;
-    patientForm: ReactNode;
+    formContent: ReactNode;
     inPageSections: NavSection[];
-    inPageTitle: string;
     children?: ReactNode;
 }
 
 export const AddPatientLayout = ({
     headerActions,
     headerTitle,
-    patientForm,
-    inPageTitle,
+    formContent,
     inPageSections,
     children
 }: AddPatientLayoutProps) => {
     return (
         <div className={styles.addLayout}>
             <AddPatientSideNavigation />
-            <div className={styles.content}>
-                <AddPatientHeaderContent title={headerTitle}>{headerActions}</AddPatientHeaderContent>
-                <main>
-                    {patientForm}
-                    <AddPatientInPageNavigation title={inPageTitle} sections={inPageSections} />
-                </main>
-            </div>
+            <AddPatientContent
+                headerActions={headerActions}
+                headerTitle={headerTitle}
+                formContent={formContent}
+                inPageSections={inPageSections}
+            />
             {children}
         </div>
     );

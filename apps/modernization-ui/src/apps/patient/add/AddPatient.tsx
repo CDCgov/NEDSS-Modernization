@@ -24,9 +24,9 @@ import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { SuccessModal } from 'success';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
-import { AddPatientSideNav } from './nav/AddPatientSideNav';
 import { asValue } from 'options';
 import { useBasicExtendedTransition } from './useBasicExtendedTransition';
+import { AddPatientSideNavigation } from 'apps/search/patient/add/layout/sideNavigation';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -255,7 +255,7 @@ const AddPatient = () => {
                 </SuccessModal>
             )}
             <Grid col={3} className="bg-white">
-                <AddPatientSideNav />
+                <AddPatientSideNavigation />
             </Grid>
             <Grid col={9} className="margin-left-auto" style={{ position: 'relative' }}>
                 <FormProvider {...methods}>

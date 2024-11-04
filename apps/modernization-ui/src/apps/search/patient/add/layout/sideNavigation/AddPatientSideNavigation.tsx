@@ -1,4 +1,4 @@
-import { NavEntry, SideNavigation } from 'design-system/side-nav/SideNavigation';
+import { NavEntry, SideNavigation } from 'apps/search/patient/add/layout/sideNavigation';
 
 export const AddPatientSideNavigation = () => {
     return (

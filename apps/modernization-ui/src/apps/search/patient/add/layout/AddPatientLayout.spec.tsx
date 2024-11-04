@@ -19,7 +19,7 @@ Object.defineProperty(window, 'IntersectionObserver', {
 
 const headerActions = <button>Save</button>;
 const headerTitle = 'Add New Patient';
-const patientForm = (
+const formContent = (
     <form>
         <input placeholder="Patient Name" />
     </form>
@@ -28,7 +28,6 @@ const inPageSections: NavSection[] = [
     { id: 'section1', label: 'Section 1' },
     { id: 'section2', label: 'Section 2' }
 ];
-const inPageTitle = 'Patient Information';
 const children = <div>Additional Content</div>;
 
 describe('AddPatientLayout', () => {
@@ -41,9 +40,8 @@ describe('AddPatientLayout', () => {
             <AddPatientLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                patientForm={patientForm}
+                formContent={formContent}
                 inPageSections={inPageSections}
-                inPageTitle={inPageTitle}
             />
         );
 
@@ -55,9 +53,8 @@ describe('AddPatientLayout', () => {
             <AddPatientLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                patientForm={patientForm}
+                formContent={formContent}
                 inPageSections={inPageSections}
-                inPageTitle={inPageTitle}
             />
         );
 
@@ -70,9 +67,8 @@ describe('AddPatientLayout', () => {
             <AddPatientLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                patientForm={patientForm}
+                formContent={formContent}
                 inPageSections={inPageSections}
-                inPageTitle={inPageTitle}
             />
         );
 
@@ -84,13 +80,11 @@ describe('AddPatientLayout', () => {
             <AddPatientLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                patientForm={patientForm}
+                formContent={formContent}
                 inPageSections={inPageSections}
-                inPageTitle={inPageTitle}
             />
         );
 
-        expect(getByText(inPageTitle)).toBeInTheDocument();
         inPageSections.forEach((section) => {
             expect(getByText(section.label)).toBeInTheDocument();
         });
@@ -101,9 +95,8 @@ describe('AddPatientLayout', () => {
             <AddPatientLayout
                 headerActions={headerActions}
                 headerTitle={headerTitle}
-                patientForm={patientForm}
-                inPageSections={inPageSections}
-                inPageTitle={inPageTitle}>
+                formContent={formContent}
+                inPageSections={inPageSections}>
                 {children}
             </AddPatientLayout>
         );

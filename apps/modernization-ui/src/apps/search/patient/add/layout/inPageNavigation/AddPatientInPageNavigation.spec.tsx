@@ -35,7 +35,7 @@ describe('AddPatientExtendedInPageNav', () => {
     });
 
     it('should render all section labels', () => {
-        const { getByText } = render(<AddPatientInPageNavigation title="Test Title" sections={sections} />);
+        const { getByText } = render(<AddPatientInPageNavigation sections={sections} />);
 
         sections.forEach((section) => {
             expect(getByText(section.label)).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('AddPatientExtendedInPageNav', () => {
     });
 
     it('should render the navigation title', () => {
-        const { getByText } = render(<AddPatientInPageNavigation title="On this page" sections={sections} />);
+        const { getByText } = render(<AddPatientInPageNavigation sections={sections} />);
 
         expect(getByText('On this page')).toBeInTheDocument();
     });
