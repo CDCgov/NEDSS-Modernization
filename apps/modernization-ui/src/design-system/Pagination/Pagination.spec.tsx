@@ -115,18 +115,22 @@ describe('When Pagination renders', () => {
     it('should hide the pagination component when the total results are zero', () => {
         mockTotal = 0;
 
-        const { getByTestId } = render(<Setup />);
+        const { getByText } = render(<Setup />);
 
-        expect(getByTestId('pagination-container-component')).toBeInTheDocument();
-        expect(getByTestId('pagination-container-component')).toHaveClass('hidden');
+        const paginationDiv = getByText('Showing', { exact: false }).parentElement;
+
+        expect(paginationDiv).toBeInTheDocument();
+        expect(paginationDiv).toHaveClass('hidden');
     });
 
     it('should show the pagination component when the total results are not zero', () => {
         mockTotal = 20;
 
-        const { getByTestId } = render(<Setup />);
+        const { getByText } = render(<Setup />);
 
-        expect(getByTestId('pagination-container-component')).toBeInTheDocument();
-        expect(getByTestId('pagination-container-component')).toHaveClass('pagination');
+        const paginationDiv = getByText('Showing', { exact: false }).parentElement;
+
+        expect(paginationDiv).toBeInTheDocument();
+        expect(paginationDiv).toHaveClass('pagination');
     });
 });
