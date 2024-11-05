@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class ModernizedPatientProfileRedirectResolver {
 
@@ -53,10 +55,22 @@ public class ModernizedPatientProfileRedirectResolver {
    * @return A {@link ResponseEntity} that redirects to the Modernized Patient Profile
    */
   ResponseEntity<Void> fromPatientParameters(final HttpServletRequest request) {
-    return requested.from(request)
-        .map(ModernizedPatientProfileRedirect::forPatient)
+    return redirected(requested.from(request));
+  }
+
+  /**
+   * Resolves a redirect to the Modernized Patient Profile using the identifier given.
+   *
+   * @param identifier The unique identifier of a patient
+   * @return A {@link ResponseEntity} that redirects to the Modernized Patient Profile
+   */
+  ResponseEntity<Void> forPatient(final long identifier) {
+    return redirected(requested.from(identifier));
+  }
+
+  private ResponseEntity<Void> redirected(final Optional<IncomingPatient> incoming) {
+    return incoming.map(ModernizedPatientProfileRedirect::forPatient)
         .orElse(ModernizedPatientProfileRedirect.fallback())
         .redirect();
   }
-
 }
