@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static gov.cdc.nbs.search.SearchSorting.asSortOption;
+import static gov.cdc.nbs.search.SearchSorting.asSortOptionWithMissing;
 import static gov.cdc.nbs.search.SearchSorting.asSortOrder;
 
 @Component
@@ -33,9 +34,8 @@ class PatientSearchCriteriaSortResolver {
           asSortOption("name", "name.firstNm.keyword", order),
           asSortOption("name", "name.middleNm.keyword", order),
           asSortOption("name", "name.nmSuffix.keyword", order),
-          asSortOption("birth_time", order),
-          asSortOption("local_id", order)
-      );
+          asSortOptionWithMissing("birth_time", order),
+          asSortOptionWithMissing("local_id", order));
       case "lastnm" -> Stream.of(asSortOption("name", "name.lastNm.keyword", order));
       case "firstnm" -> Stream.of(asSortOption("name", "name.firstNm.keyword", order));
       case ADDRESS -> Stream.of(asSortOption(ADDRESS, "address.streetAddr1.keyword", order));
