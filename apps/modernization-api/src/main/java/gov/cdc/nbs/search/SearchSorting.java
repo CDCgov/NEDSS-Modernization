@@ -21,7 +21,7 @@ public class SearchSorting {
     return order.name().equals("Asc") ? "_first" : "_last";
   }
 
-  public static SortOptions asSortOptionWithMissing(final String name, final SortOrder order) {
+  public static SortOptions asHandlingNullSortOption(final String name, final SortOrder order) {
     return SortOptions.of(
         sort -> sort.field(
             field -> field.field(name)
