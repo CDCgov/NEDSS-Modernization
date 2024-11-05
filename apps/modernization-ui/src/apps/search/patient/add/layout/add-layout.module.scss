@@ -18,5 +18,20 @@
             background-color: colors.$background;
             overflow: auto;
         }
+
+        .aside {
+            position: sticky;
+            top: 0;
+        }
+    }
+
+    .dataEntryMenu {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 1rem;
+        gap: 1.5rem;
+        @extend %thin;
+        min-width: 14rem;
     }
 }
