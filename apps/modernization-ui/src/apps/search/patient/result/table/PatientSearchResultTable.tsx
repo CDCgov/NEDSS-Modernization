@@ -13,7 +13,7 @@ import {
 
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
-const PATIENT_NAME = { id: 'patientName', name: 'Patient name' };
+const PATIENT_NAME = { id: 'patientname', name: 'Patient name' };
 const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };

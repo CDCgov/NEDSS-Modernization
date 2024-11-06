@@ -38,11 +38,16 @@ describe('ItemGroup Component', () => {
         expect(div).toHaveAttribute('data-item-type', 'address');
     });
 
-    it('renders children with a <p> element', () => {
+    it('renders children with a <p> element when children is defined', () => {
         const result = render(<ItemGroup type="other">Some information here</ItemGroup>);
 
         const pElement = result.baseElement.querySelector('div.itemgroup > p');
         expect(pElement).toBeDefined();
         expect(result.getByText('Some information here')).toBeInTheDocument();
+    });
+
+    it('renders NoData element when children not defined', () => {
+        const { getByText } = render(<ItemGroup type="other"></ItemGroup>);
+        expect(getByText('No Data')).toBeInTheDocument();
     });
 });

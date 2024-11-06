@@ -1,0 +1,3 @@
+const PermittedNavigationEntry = () => {};
+
+export { PermittedNavigationEntry };

@@ -1,10 +1,5 @@
 package gov.cdc.nbs.patient.search;
 
-import java.time.LocalDate;
-import java.util.Optional;
-import java.util.stream.Stream;
-import org.apache.commons.codec.language.Soundex;
-import org.springframework.stereotype.Component;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
@@ -23,6 +18,12 @@ import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Between;
 import gov.cdc.nbs.search.criteria.date.DateCriteria.Equals;
 import gov.cdc.nbs.time.FlexibleInstantConverter;
+import org.apache.commons.codec.language.Soundex;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Component
 class PatientDemographicQueryResolver {
@@ -32,33 +33,48 @@ class PatientDemographicQueryResolver {
   private static final String IDENTIFICATIONS = "entity_id";
   private static final String BIRTHDAY = "birth_time";
   private static final String ADDRESSES = "address";
+  private static final String NAME_USE_CD = "name.nm_use_cd.keyword";
+  private static final String LAST_NAME = "name.lastNm";
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
+  private final PatientNameDemographicQueryResolver nameQueryResolver;
   private final Soundex soundex;
 
   PatientDemographicQueryResolver(
       final PatientSearchSettings settings,
-      final PatientLocalIdentifierResolver resolver) {
+      final PatientLocalIdentifierResolver resolver,
+      final PatientNameDemographicQueryResolver nameQueryResolver
+  ) {
     this.settings = settings;
     this.resolver = resolver;
+    this.nameQueryResolver = nameQueryResolver;
     this.soundex = new Soundex();
   }
 
   Stream<Query> resolve(final PatientFilter criteria) {
-    return Stream.of(
-        applyPatientIdentifierCriteria(criteria),
-        applyFirstNameCriteria(criteria),
-        applyLastNameCriteria(criteria),
-        applyPhoneNumberCriteria(criteria),
-        applyEmailCriteria(criteria),
-        applyIdentificationCriteria(criteria),
-        applyDateOfBirthCriteria(criteria),
-        applyStreetAddressCriteria(criteria),
-        applyCityCriteria(criteria),
-        applyDateOfBirthHighRangeCriteria(criteria),
-        applyDateOfBirthLowRangeCriteria(criteria),
-        applyZipcodeCriteria(criteria)).flatMap(Optional::stream)
+    return Stream.concat(
+            resolveDemographicCriteria(criteria),
+            nameQueryResolver.resolve(criteria)
+        )
         .map(QueryVariant::_toQuery);
+  }
+
+  private Stream<QueryVariant> resolveDemographicCriteria(final PatientFilter criteria) {
+    return Stream.of(
+            applyPatientIdentifierCriteria(criteria),
+            applyFirstNameCriteria(criteria),
+            applyLastNameCriteria(criteria),
+            applyPhoneNumberCriteria(criteria),
+            applyEmailCriteria(criteria),
+            applyIdentificationCriteria(criteria),
+            applyDateOfBirthCriteria(criteria),
+            applyStreetAddressCriteria(criteria),
+            applyCityCriteria(criteria),
+            applyDateOfBirthHighRangeCriteria(criteria),
+            applyDateOfBirthLowRangeCriteria(criteria),
+            applyZipcodeCriteria(criteria)
+        )
+        .flatMap(Optional::stream);
   }
 
   private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {
@@ -111,32 +127,43 @@ class PatientDemographicQueryResolver {
       return Optional.of(
           BoolQuery.of(
               bool -> bool.should(
-                  should -> should.nested(
-                      nested -> nested.path(NAMES)
-                          .scoreMode(ChildScoreMode.Max)
-                          .query(
-                              query -> query.bool(
-                                  legal -> legal.filter(
-                                      filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
-                                              .value("L")))
-                                      .must(
-                                          primary -> primary.match(
-                                              match -> match
-                                                  .field("name.firstNm")
-                                                  .query(name)
-                                                  .boost(settings.first().primary())
+                      should -> should.nested(
+                          nested -> nested.path(NAMES)
+                              .scoreMode(ChildScoreMode.Max)
+                              .query(
+                                  query -> query.bool(
+                                      legal -> legal.filter(
+                                              filter -> filter.term(
+                                                  term -> term.field(NAME_USE_CD)
+                                                      .value("L")))
+                                          .must(
+                                              primary -> primary.match(
+                                                  match -> match
+                                                      .field("name.firstNm")
+                                                      .query(name)
+                                                      .boost(settings.first().primary())
 
-                                          )))))).should(
-                                              should -> should.nested(
-                                                  nested -> nested.path(NAMES)
-                                                      .scoreMode(ChildScoreMode.Avg)
-                                                      .query(
-                                                          nonPrimary -> nonPrimary.simpleQueryString(
-                                                              queryString -> queryString
-                                                                  .fields("name.firstNm")
-                                                                  .query(WildCards.startsWith(name))
-                                                                  .boost(settings.first().nonPrimary())))))
+                                              )
+                                          )
+                                  )
+                              )
+                      )
+                  )
+                  .should(
+                      should -> should.nested(
+                          nested -> nested.path(NAMES)
+                              .scoreMode(ChildScoreMode.Avg)
+                              .query(
+                                  nonPrimary -> nonPrimary.simpleQueryString(
+                                      queryString -> queryString
+                                          .fields("name.firstNm")
+                                          .query(WildCards.startsWith(name))
+                                          .boost(settings.first().nonPrimary()
+                                          )
+                                  )
+                              )
+                      )
+                  )
                   .should(
                       should -> should.nested(
                           nested -> nested.path(NAMES)
@@ -146,7 +173,13 @@ class PatientDemographicQueryResolver {
                                   query -> query.term(
                                       term -> term
                                           .field("name.firstNmSndx.keyword")
-                                          .value(encoded)))))));
+                                          .value(encoded)
+                                  )
+                              )
+                      )
+                  )
+          )
+      );
     }
     return Optional.empty();
   }
@@ -165,21 +198,21 @@ class PatientDemographicQueryResolver {
       return Optional.of(
           BoolQuery.of(
               bool -> bool.should(
-                  should -> should.nested(
-                      nested -> nested.path(NAMES)
-                          .scoreMode(ChildScoreMode.Max)
-                          .query(
-                              query -> query.bool(
-                                  legal -> legal.filter(
-                                      filter -> filter.term(
-                                          term -> term.field("name.nm_use_cd.keyword")
-                                              .value("L")))
-                                      .must(
-                                          primary -> primary.match(
-                                              match -> match
-                                                  .field("name.lastNm")
-                                                  .query(name)
-                                                  .boost(settings.first().primary())))))))
+                      should -> should.nested(
+                          nested -> nested.path(NAMES)
+                              .scoreMode(ChildScoreMode.Max)
+                              .query(
+                                  query -> query.bool(
+                                      legal -> legal.filter(
+                                              filter -> filter.term(
+                                                  term -> term.field(NAME_USE_CD)
+                                                      .value("L")))
+                                          .must(
+                                              primary -> primary.match(
+                                                  match -> match
+                                                      .field(LAST_NAME)
+                                                      .query(name)
+                                                      .boost(settings.first().primary())))))))
                   .should(
                       should -> should.nested(
                           nested -> nested.path(NAMES)
@@ -187,7 +220,7 @@ class PatientDemographicQueryResolver {
                               .query(
                                   query -> query.simpleQueryString(
                                       nonPrimary -> nonPrimary
-                                          .fields("name.lastNm")
+                                          .fields(LAST_NAME)
                                           .query(WildCards.startsWith(name))
                                           .boost(settings.first().nonPrimary())))))
                   .should(
@@ -258,9 +291,9 @@ class PatientDemographicQueryResolver {
                   .query(
                       query -> query.bool(
                           bool -> bool.filter(
-                              filter -> filter.term(
-                                  term -> term.field("entity_id.typeCd.keyword")
-                                      .value(type)))
+                                  filter -> filter.term(
+                                      term -> term.field("entity_id.typeCd.keyword")
+                                          .value(type)))
                               .must(
                                   must -> must.prefix(
                                       prefix -> prefix.field("entity_id.rootExtensionTxt").caseInsensitive(true)
@@ -396,11 +429,11 @@ class PatientDemographicQueryResolver {
 
       QueryVariant q = zipcode.length() < 5
           ? PrefixQuery.of(
-              prefix -> prefix.field("address.zip")
-                  .value(zipcode))
+          prefix -> prefix.field("address.zip")
+              .value(zipcode))
           : MatchQuery.of(
-              match -> match.field("address.zip")
-                  .query(zipcode));
+          match -> match.field("address.zip")
+              .query(zipcode));
 
       return Optional.of(
           NestedQuery.of(

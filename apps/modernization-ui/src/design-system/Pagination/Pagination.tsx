@@ -10,7 +10,7 @@ const Pagination = () => {
     } = usePage();
 
     return (
-        <div className={styles.pagination}>
+        <div className={total > 0 ? styles.pagination : styles.hidden}>
             <div className={styles.range}>
                 Showing <RangeToggle initial={pageSize} aria-label="selected page size" /> of {total}
             </div>

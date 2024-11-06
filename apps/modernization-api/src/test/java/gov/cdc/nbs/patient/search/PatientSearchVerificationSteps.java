@@ -51,8 +51,14 @@ public class PatientSearchVerificationSteps {
 
     JsonPathResultMatchers pathMatcher = matchingPath(field, String.valueOf(index));
 
+    String finalValue = null;
+
+    if(!value.isEmpty()) {
+      finalValue = value;
+    }
+
     this.results.active()
-        .andExpect(pathMatcher.value(matchingValue(field, value)));
+        .andExpect(pathMatcher.value(matchingValue(field, finalValue)));
   }
 
   @Then("the search results have a patient with a(n) {string} equal to {string}")
@@ -99,6 +105,8 @@ public class PatientSearchVerificationSteps {
       case "gender", "sex" -> jsonPath("$.data.findPatientsByFilter.content[%s].gender", position);
       case "first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].first", position);
       case "last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].last", position);
+      case "middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].middle", position);
+      case "suffix" -> jsonPath("$.data.findPatientsByFilter.content[%s].names[*].suffix", position);
       case "legal first name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.first", position);
       case "legal middle name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.middle", position);
       case "legal last name" -> jsonPath("$.data.findPatientsByFilter.content[%s].legalName.last", position);
@@ -115,6 +123,7 @@ public class PatientSearchVerificationSteps {
           position);
       case "patientid", "patient id", "short id" -> jsonPath("$.data.findPatientsByFilter.content[%s].shortId",
           position);
+      case "local id" -> jsonPath("$.data.findPatientsByFilter.content[%s].localId", position);
       default -> throw new AssertionError("Unexpected property check %s".formatted(field));
     };
   }

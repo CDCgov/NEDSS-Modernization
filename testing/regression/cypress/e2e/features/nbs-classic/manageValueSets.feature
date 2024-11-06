@@ -1,4 +1,4 @@
-Feature: Classic NBS - User can view and manage data in NBS Questions
+Feature: Classic NBS - User can view and manage data in NBS Valueset
 
   Background:
     Given I am logged in as secure user and stay on classic
