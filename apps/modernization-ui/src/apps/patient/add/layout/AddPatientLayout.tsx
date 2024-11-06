@@ -4,7 +4,7 @@ import { InPageNavigation, NavSection } from 'design-system/inPageNavigation/InP
 import styles from './add-layout.module.scss';
 
 type AddPatientLayoutProps = {
-    headerActions: ReactNode;
+    headerActions: () => ReactNode;
     headerTitle: string;
     sections: NavSection[];
     children: ReactNode;
@@ -13,11 +13,11 @@ type AddPatientLayoutProps = {
 export const AddPatientLayout = ({ headerActions, headerTitle, sections, children }: AddPatientLayoutProps) => {
     return (
         <div className={styles.content}>
-            <AddPatientHeaderContent title={headerTitle}>{headerActions}</AddPatientHeaderContent>
+            <AddPatientHeaderContent title={headerTitle}>{headerActions()}</AddPatientHeaderContent>
             <main>
                 {children}
                 <aside className={styles.aside}>
-                    <InPageNavigation title="On this page" sections={sections} />
+                    <InPageNavigation sections={sections} />
                 </aside>
             </main>
         </div>

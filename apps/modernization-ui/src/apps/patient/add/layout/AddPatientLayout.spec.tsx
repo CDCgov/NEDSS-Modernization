@@ -8,7 +8,7 @@ jest.mock('design-system/inPageNavigation/useInPageNavigation', () => ({
 }));
 
 describe('AddPatientLayout', () => {
-    const headerActions = <button>Action</button>;
+    const headerActions = () => <button>Action</button>;
     const headerTitle = 'Add Patient';
     const sections: NavSection[] = [
         { id: 'section1', label: 'Section 1' },

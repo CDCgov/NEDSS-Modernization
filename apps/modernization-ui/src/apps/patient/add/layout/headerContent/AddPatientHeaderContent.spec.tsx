@@ -11,12 +11,12 @@ describe('AddPatientHeaderContent', () => {
     });
 
     it('should renders children correctly', () => {
-        const childrenText = 'Test Children';
+        const childrenText = () => 'Test Children';
         const { getByText } = render(
-            <AddPatientHeaderContent title="Test Title">{childrenText}</AddPatientHeaderContent>
+            <AddPatientHeaderContent title="Test Title">{childrenText()}</AddPatientHeaderContent>
         );
 
-        expect(getByText(childrenText)).toBeInTheDocument();
+        expect(getByText(childrenText())).toBeInTheDocument();
     });
 
     it('should applies the correct header class', () => {

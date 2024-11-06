@@ -3,6 +3,7 @@ import { AddPatient } from './AddPatient';
 import { AddPatientExtended } from './extended/AddPatientExtended';
 import { Outlet } from 'react-router-dom';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
+import { AddPatientBasic } from './basic/AddPatientBasic';
 
 const PatientDataProviderWrapper = () => (
     <BasicExtendedTransitionProvider>
@@ -20,11 +21,7 @@ const routing = [
             },
             {
                 path: '/patient/add',
-                element: (
-                    <FeatureGuard guard={(features) => features?.patient?.add?.enabled}>
-                        <AddPatient />
-                    </FeatureGuard>
-                )
+                element: <AddPatientBasic />
             },
             {
                 path: '/patient/add/extended',
