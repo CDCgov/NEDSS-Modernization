@@ -33,12 +33,6 @@ type OperatorAndValue = {
 };
 
 const asOperatorAndValue = (value?: string | TextCriteria | null): OperatorAndValue => {
-    // if (typeof value === 'string') {
-    //     return { operator: 'equals', value };
-    // }
-    // if (value != null && typeof value === 'object' && Object.keys(value).length >= 1) {
-    //     return { operator: Object.keys(value)[0] as TextOperation, value: asTextCriteriaValue(value) };
-    // }
     if (value) {
         const objValue: TextCriteria = typeof value === 'string' ? asTextCriteria(value)! : (value as TextCriteria);
         if (typeof objValue === 'object' && Object.keys(objValue).length >= 1) {
@@ -60,18 +54,11 @@ export const OperatorInput = ({
     onChange
 }: OperatorInputProps) => {
     const operatorValue = asOperatorAndValue(value);
-    // const [combinedValue, setCombinedValue] = useState<OperatorAndValue>(initialValue);
     const operatorSelectId = `${id}Operator`;
     const effectiveOperator = operatorValue.operator || operator;
-    console.log('inputValue', value, 'operatorValue', operatorValue);
-
-    // useEffect(() => {
-    //     setCombinedValue(asOperatorAndValue(value));
-    // }, [value]);
 
     const onSelectionChange = useCallback(
         (selectedOperation?: Selectable) => {
-            // setCombinedValue((cur) => ({ ...cur, operator: selectedOperation?.value as TextOperation }));
             const criteriaValue = asTextCriteriaOrString(
                 operatorValue.value,
                 selectedOperation?.value as TextOperation
@@ -84,7 +71,6 @@ export const OperatorInput = ({
     const onInputChange = useCallback(
         (event?: ChangeEvent<HTMLInputElement>) => {
             const value = event?.target.value;
-            // setCombinedValue((cur) => ({ ...cur, value }));
             const criteriaValue = asTextCriteriaOrString(value, operatorValue.operator);
             onChange(criteriaValue);
         },
