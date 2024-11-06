@@ -60,6 +60,17 @@ public class PatientFilter {
     }
   }
 
+  public record LocationCriteria(TextCriteria street) {
+
+    Optional<TextCriteria> maybeStreet() {
+      return Optional.ofNullable(street());
+    }
+
+    LocationCriteria withStreet(final TextCriteria street) {
+      return new LocationCriteria(street);
+    }
+  }
+
   private String id;
   private NameCriteria name;
   private String lastName;
@@ -72,6 +83,7 @@ public class PatientFilter {
   private String dateOfBirthOperator;
   private String gender;
   private Deceased deceased;
+  private LocationCriteria location;
   private String address;
   private String city;
   private String state;
@@ -292,6 +304,15 @@ public class PatientFilter {
     } else {
       this.name = this.name.withFirst(criteria);
     }
+    return this;
+  }
+
+  public Optional<LocationCriteria> maybeLocation() {
+    return Optional.ofNullable(this.location);
+  }
+
+  public PatientFilter withStreet(final TextCriteria criteria) {
+    this.location = new LocationCriteria(criteria);
     return this;
   }
 }

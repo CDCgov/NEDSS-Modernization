@@ -33,6 +33,10 @@ input PatientNameCriteria {
   last: TextCriteria
 }
 
+input LocationCriteria {
+  street: TextCriteria
+}
+
 input PersonFilter {
   id: String
   name: PatientNameCriteria
@@ -47,6 +51,7 @@ input PersonFilter {
   dateOfBirthOperator: Operator
   gender: String
   deceased: Deceased
+  location: LocationCriteria
   address: String
   city: String
   state: String

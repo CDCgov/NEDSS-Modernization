@@ -49,9 +49,7 @@ public class PatientSteps {
     this.patient.maybeActive().ifPresent(
         found -> mother.withBirthday(
             found,
-            value
-        )
-    );
+            value));
 
   }
 
