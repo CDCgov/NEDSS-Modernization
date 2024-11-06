@@ -24,7 +24,7 @@ import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { SuccessModal } from 'success';
 import { useConfiguration } from 'configuration';
 import { ClassicButton } from 'classic';
-import { AddPatientSideNav } from 'apps/patient/add/nav/AddPatientSideNav';
+import { AddPatientSideNav } from './nav/AddPatientSideNav';
 import { asValue } from 'options';
 import { useBasicExtendedTransition } from './useBasicExtendedTransition';
 
