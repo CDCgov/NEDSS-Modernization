@@ -28,7 +28,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should resolve terms with last name', () => {
         const input: PatientCriteriaEntry = {
-            lastName: 'last-name-value',
+            lastName: { equals: 'last-name-value' },
             status: []
         };
 

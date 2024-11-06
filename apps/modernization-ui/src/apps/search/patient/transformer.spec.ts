@@ -28,26 +28,25 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
     });
 
     it('should enable soundex when including similar', () => {
-      const input: PatientCriteriaEntry = {
-          includeSimilar: true,
-          status: []
-      };
-
-      const actual = transform(input);
-
-      expect(actual).toEqual(expect.objectContaining({ disableSoundex: false }));
-  });
-
-
-    it('should transform with last name', () => {
         const input: PatientCriteriaEntry = {
-            lastName: 'last-name-value',
+            includeSimilar: true,
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ lastName: 'last-name-value' }));
+        expect(actual).toEqual(expect.objectContaining({ disableSoundex: false }));
+    });
+
+    it('should transform with last name', () => {
+        const input: PatientCriteriaEntry = {
+            lastName: { equals: 'last-name-value' },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ name: { last: { equals: 'last-name-value' } } }));
     });
 
     it('should transform with first name', () => {
