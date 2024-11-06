@@ -156,4 +156,19 @@ public class PatientSearchCriteriaSteps {
     this.activeCriteria.active(criteria -> criteria.withFirstName(TextCriteria.soundsLike(value)));
   }
 
+  @Given("I add the patient criteria for a street address that equals {string}")
+  public void i_add_the_patient_criteria_for_a_street_address_that_equals(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withStreet(TextCriteria.equals(value)));
+  }
+
+  @Given("I add the patient criteria for a street address that does not equal {string}")
+  public void i_add_the_patient_criteria_for_a_street_address_that_does_not_equal(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withStreet(TextCriteria.not(value)));
+  }
+
+  @Given("I add the patient criteria for a street address that contains {string}")
+  public void i_add_the_patient_criteria_for_a_street_address_that_contains(final String value) {
+    this.activeCriteria.active(criteria -> criteria.withStreet(TextCriteria.contains(value)));
+  }
+
 }

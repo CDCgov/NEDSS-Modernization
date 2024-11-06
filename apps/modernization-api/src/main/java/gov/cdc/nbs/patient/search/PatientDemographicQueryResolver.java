@@ -38,42 +38,41 @@ class PatientDemographicQueryResolver {
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final PatientNameDemographicQueryResolver nameQueryResolver;
+  private final PatientLocationQueryResolver locationQueryResolver;
   private final Soundex soundex;
 
   PatientDemographicQueryResolver(
       final PatientSearchSettings settings,
       final PatientLocalIdentifierResolver resolver,
-      final PatientNameDemographicQueryResolver nameQueryResolver
-  ) {
+      final PatientNameDemographicQueryResolver nameQueryResolver,
+      final PatientLocationQueryResolver locationQueryResolver) {
     this.settings = settings;
     this.resolver = resolver;
     this.nameQueryResolver = nameQueryResolver;
+    this.locationQueryResolver = locationQueryResolver;
     this.soundex = new Soundex();
   }
 
   Stream<Query> resolve(final PatientFilter criteria) {
-    return Stream.concat(
-            resolveDemographicCriteria(criteria),
-            nameQueryResolver.resolve(criteria)
-        )
+    return Stream.concat(Stream.concat(resolveDemographicCriteria(criteria),
+        nameQueryResolver.resolve(criteria)), locationQueryResolver.resolve(criteria))
         .map(QueryVariant::_toQuery);
   }
 
   private Stream<QueryVariant> resolveDemographicCriteria(final PatientFilter criteria) {
     return Stream.of(
-            applyPatientIdentifierCriteria(criteria),
-            applyFirstNameCriteria(criteria),
-            applyLastNameCriteria(criteria),
-            applyPhoneNumberCriteria(criteria),
-            applyEmailCriteria(criteria),
-            applyIdentificationCriteria(criteria),
-            applyDateOfBirthCriteria(criteria),
-            applyStreetAddressCriteria(criteria),
-            applyCityCriteria(criteria),
-            applyDateOfBirthHighRangeCriteria(criteria),
-            applyDateOfBirthLowRangeCriteria(criteria),
-            applyZipcodeCriteria(criteria)
-        )
+        applyPatientIdentifierCriteria(criteria),
+        applyFirstNameCriteria(criteria),
+        applyLastNameCriteria(criteria),
+        applyPhoneNumberCriteria(criteria),
+        applyEmailCriteria(criteria),
+        applyIdentificationCriteria(criteria),
+        applyDateOfBirthCriteria(criteria),
+        applyStreetAddressCriteria(criteria),
+        applyCityCriteria(criteria),
+        applyDateOfBirthHighRangeCriteria(criteria),
+        applyDateOfBirthLowRangeCriteria(criteria),
+        applyZipcodeCriteria(criteria))
         .flatMap(Optional::stream);
   }
 
@@ -127,28 +126,23 @@ class PatientDemographicQueryResolver {
       return Optional.of(
           BoolQuery.of(
               bool -> bool.should(
-                      should -> should.nested(
-                          nested -> nested.path(NAMES)
-                              .scoreMode(ChildScoreMode.Max)
-                              .query(
-                                  query -> query.bool(
-                                      legal -> legal.filter(
-                                              filter -> filter.term(
-                                                  term -> term.field(NAME_USE_CD)
-                                                      .value("L")))
-                                          .must(
-                                              primary -> primary.match(
-                                                  match -> match
-                                                      .field("name.firstNm")
-                                                      .query(name)
-                                                      .boost(settings.first().primary())
+                  should -> should.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field(NAME_USE_CD)
+                                              .value("L")))
+                                      .must(
+                                          primary -> primary.match(
+                                              match -> match
+                                                  .field("name.firstNm")
+                                                  .query(name)
+                                                  .boost(settings.first().primary())
 
-                                              )
-                                          )
-                                  )
-                              )
-                      )
-                  )
+                                          ))))))
                   .should(
                       should -> should.nested(
                           nested -> nested.path(NAMES)
@@ -158,12 +152,7 @@ class PatientDemographicQueryResolver {
                                       queryString -> queryString
                                           .fields("name.firstNm")
                                           .query(WildCards.startsWith(name))
-                                          .boost(settings.first().nonPrimary()
-                                          )
-                                  )
-                              )
-                      )
-                  )
+                                          .boost(settings.first().nonPrimary())))))
                   .should(
                       should -> should.nested(
                           nested -> nested.path(NAMES)
@@ -173,13 +162,7 @@ class PatientDemographicQueryResolver {
                                   query -> query.term(
                                       term -> term
                                           .field("name.firstNmSndx.keyword")
-                                          .value(encoded)
-                                  )
-                              )
-                      )
-                  )
-          )
-      );
+                                          .value(encoded)))))));
     }
     return Optional.empty();
   }
@@ -198,21 +181,21 @@ class PatientDemographicQueryResolver {
       return Optional.of(
           BoolQuery.of(
               bool -> bool.should(
-                      should -> should.nested(
-                          nested -> nested.path(NAMES)
-                              .scoreMode(ChildScoreMode.Max)
-                              .query(
-                                  query -> query.bool(
-                                      legal -> legal.filter(
-                                              filter -> filter.term(
-                                                  term -> term.field(NAME_USE_CD)
-                                                      .value("L")))
-                                          .must(
-                                              primary -> primary.match(
-                                                  match -> match
-                                                      .field(LAST_NAME)
-                                                      .query(name)
-                                                      .boost(settings.first().primary())))))))
+                  should -> should.nested(
+                      nested -> nested.path(NAMES)
+                          .scoreMode(ChildScoreMode.Max)
+                          .query(
+                              query -> query.bool(
+                                  legal -> legal.filter(
+                                      filter -> filter.term(
+                                          term -> term.field(NAME_USE_CD)
+                                              .value("L")))
+                                      .must(
+                                          primary -> primary.match(
+                                              match -> match
+                                                  .field(LAST_NAME)
+                                                  .query(name)
+                                                  .boost(settings.first().primary())))))))
                   .should(
                       should -> should.nested(
                           nested -> nested.path(NAMES)
@@ -291,9 +274,9 @@ class PatientDemographicQueryResolver {
                   .query(
                       query -> query.bool(
                           bool -> bool.filter(
-                                  filter -> filter.term(
-                                      term -> term.field("entity_id.typeCd.keyword")
-                                          .value(type)))
+                              filter -> filter.term(
+                                  term -> term.field("entity_id.typeCd.keyword")
+                                      .value(type)))
                               .must(
                                   must -> must.prefix(
                                       prefix -> prefix.field("entity_id.rootExtensionTxt").caseInsensitive(true)
@@ -429,11 +412,11 @@ class PatientDemographicQueryResolver {
 
       QueryVariant q = zipcode.length() < 5
           ? PrefixQuery.of(
-          prefix -> prefix.field("address.zip")
-              .value(zipcode))
+              prefix -> prefix.field("address.zip")
+                  .value(zipcode))
           : MatchQuery.of(
-          match -> match.field("address.zip")
-              .query(zipcode));
+              match -> match.field("address.zip")
+                  .query(zipcode));
 
       return Optional.of(
           NestedQuery.of(
