@@ -3,6 +3,11 @@ import { textOperators, defaultTextOperator } from './operators';
 import { Selectable } from 'options/selectable';
 import { TextOperation, TextCriteria } from './types';
 
+const hasLegacyOperators = (value: string) => value && value.startsWith('%') && value.length > 1;
+
+// strip leading % if it exists as it is a contains operator
+const stripLegacyOperators = (value: string) => (hasLegacyOperators(value) ? value.substring(1) : value);
+
 /**
  * Converts the value to a valid selectable operator.
  * @param {string} value The value of the operator to find
@@ -33,12 +38,32 @@ export const asTextCriteriaOrString = (
 
 /**
  * Extracts the value from an OperationValue object, or returns the value if it is a string.
+ * For example, { "equals": "Bob" } would return "Bob".
  * @param {string | TextCriteria} value The operation value
  * @return {string} The string value
  */
-export const asTextCriteria = (value?: string | TextCriteria | null): string | null | undefined => {
+export const asTextCriteriaValue = (value?: string | TextCriteria | null): string | null | undefined => {
     if (value != null && typeof value === 'object' && Object.keys(value).length >= 1) {
         return value[Object.keys(value)[0] as TextOperation] as string;
     }
+    if (value != null && typeof value === 'string') {
+        return stripLegacyOperators(value);
+    }
     return value as string | null | undefined;
+};
+
+/**
+ * Returns the value as a TextCriteria object. If the string starts with '%', treats it as a contains operator.
+ * @param {string} value The value of the operator to find
+ * @return {TextCriteria} The a valid TextCriteria object, or undefined
+ */
+export const asTextCriteria = (value?: string | TextCriteria | null): TextCriteria | null | undefined => {
+    if (typeof value === 'string') {
+        if (hasLegacyOperators(value)) {
+            return { contains: stripLegacyOperators(value) };
+        }
+        return { equals: value };
+    } else {
+        return value;
+    }
 };

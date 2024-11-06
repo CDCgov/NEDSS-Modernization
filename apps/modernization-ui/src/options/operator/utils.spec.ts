@@ -1,4 +1,4 @@
-import { asSelectableOperator, asTextCriteriaOrString, asTextCriteria } from './utils';
+import { asSelectableOperator, asTextCriteria, asTextCriteriaOrString, asTextCriteriaValue } from './utils';
 import { textOperators, defaultTextOperator } from './operators';
 import { Selectable } from 'options/selectable';
 import { TextCriteria } from './types';
@@ -50,6 +50,26 @@ describe('utils', () => {
         });
     });
 
+    describe('asTextCriteriaValue', () => {
+        it('should return null when value is null', () => {
+            expect(asTextCriteriaValue(null)).toBeNull();
+        });
+
+        it('should return undefined when value is undefined', () => {
+            expect(asTextCriteriaValue(undefined)).toBeUndefined();
+        });
+
+        it('should return the string value when value is a string', () => {
+            const value = 'testValue';
+            expect(asTextCriteriaValue(value)).toBe(value);
+        });
+
+        it('should return the first operation value when value is an object', () => {
+            const value: TextCriteria = { startsWith: 'testValue' };
+            expect(asTextCriteriaValue(value)).toBe('testValue');
+        });
+    });
+
     describe('asTextCriteria', () => {
         it('should return null when value is null', () => {
             expect(asTextCriteria(null)).toBeNull();
@@ -59,14 +79,19 @@ describe('utils', () => {
             expect(asTextCriteria(undefined)).toBeUndefined();
         });
 
-        it('should return the string value when value is a string', () => {
+        it('should return the TextCriteria object with equals operator when value is a string', () => {
             const value = 'testValue';
-            expect(asTextCriteria(value)).toBe(value);
+            expect(asTextCriteria(value)).toStrictEqual({ equals: 'testValue' });
         });
 
-        it('should return the first operation value when value is an object', () => {
+        it('should return the TextCriteria object with contains operator when value is a string starting with %', () => {
+            const value = '%testValue';
+            expect(asTextCriteria(value)).toStrictEqual({ contains: 'testValue' });
+        });
+
+        it('should return the original object when input is an object', () => {
             const value: TextCriteria = { startsWith: 'testValue' };
-            expect(asTextCriteria(value)).toBe('testValue');
+            expect(asTextCriteria(value)).toStrictEqual({ startsWith: 'testValue' });
         });
     });
 });
