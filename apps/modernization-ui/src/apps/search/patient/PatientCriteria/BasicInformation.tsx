@@ -5,7 +5,8 @@ import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
 import { validNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+
+import { DatePickerInput } from 'design-system/date/picker';
 import { genders } from 'options/gender';
 import { OperatorInput } from 'design-system/input/operator';
 
@@ -49,13 +50,13 @@ export const BasicInformation = () => {
                 name="dateOfBirth"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <DatePickerInput
+                        id={name}
                         name={name}
                         label="Date of birth"
-                        defaultValue={value}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
-                        disableFutureDates
                     />
                 )}
             />
