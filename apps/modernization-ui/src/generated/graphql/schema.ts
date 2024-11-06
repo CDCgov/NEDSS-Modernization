@@ -462,6 +462,10 @@ export enum LaboratoryReportStatus {
   Unprocessed = 'UNPROCESSED'
 }
 
+export type LocationCriteria = {
+  street?: InputMaybe<TextCriteria>;
+};
+
 export type MaterialParticipation2 = {
   __typename?: 'MaterialParticipation2';
   actUid: Scalars['Int']['output'];
@@ -1678,6 +1682,7 @@ export type PersonFilter = {
   investigation?: InputMaybe<Scalars['String']['input']>;
   labReport?: InputMaybe<Scalars['String']['input']>;
   lastName?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<LocationCriteria>;
   morbidity?: InputMaybe<Scalars['String']['input']>;
   mortalityStatus?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<PatientNameCriteria>;
