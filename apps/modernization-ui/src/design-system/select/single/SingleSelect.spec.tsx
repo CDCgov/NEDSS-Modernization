@@ -65,7 +65,7 @@ describe('when one of the options is clicked', () => {
                     ]}
                     name="test-name"
                     value={selectedValue}
-                    onChange={setSelectedValue}
+                    onChange={(value?: Selectable) => setSelectedValue(value || null)}
                 />
             );
         };
