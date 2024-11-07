@@ -48,20 +48,6 @@ const SingleSelect = ({
         }
     };
 
-    //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
-    const Wrapped = () => (
-        <TrussworksSelect
-            {...inputProps}
-            id={id}
-            validationStatus={error ? 'error' : undefined}
-            name={inputProps.name ?? id}
-            defaultValue={value?.value}
-            placeholder="-Select-"
-            onChange={handleChange}>
-            {renderOptions(placeholder, options)}
-        </TrussworksSelect>
-    );
-
     return (
         <EntryWrapper
             orientation={orientation}
@@ -70,8 +56,16 @@ const SingleSelect = ({
             htmlFor={id}
             required={required}
             error={error}>
-            {value && <Wrapped />}
-            {!value && <Wrapped />}
+            <TrussworksSelect
+                {...inputProps}
+                id={id}
+                validationStatus={error ? 'error' : undefined}
+                name={inputProps.name ?? id}
+                value={value?.value || ''}
+                placeholder="-Select-"
+                onChange={handleChange}>
+                {renderOptions(placeholder, options)}
+            </TrussworksSelect>
         </EntryWrapper>
     );
 };
