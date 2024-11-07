@@ -32,20 +32,21 @@ type OperatorAndValue = {
     value?: string | null;
 };
 
-const asOperatorAndValue = (value?: string | TextCriteria | null): OperatorAndValue => {
+const asOperatorAndValue = (value?: string | TextCriteria | null, operator?: TextOperation): OperatorAndValue => {
     if (value) {
-        const objValue: TextCriteria = typeof value === 'string' ? asTextCriteria(value)! : (value as TextCriteria);
+        const objValue: TextCriteria =
+            typeof value === 'string' ? asTextCriteria(value, operator)! : (value as TextCriteria);
         if (typeof objValue === 'object' && Object.keys(objValue).length >= 1) {
             return { operator: Object.keys(objValue)[0] as TextOperation, value: asTextCriteriaValue(objValue) };
         }
     }
-    return { operator: 'equals', value: null };
+    return { operator: operator ?? 'equals', value: null };
 };
 
 export const OperatorInput = ({
     id,
     value,
-    operator = 'equals',
+    operator = 'startsWith',
     operationMode,
     label,
     sizing = 'compact',
@@ -53,7 +54,7 @@ export const OperatorInput = ({
     error,
     onChange
 }: OperatorInputProps) => {
-    const operatorValue = asOperatorAndValue(value);
+    const operatorValue = asOperatorAndValue(value, operator);
     const operatorSelectId = `${id}Operator`;
     const effectiveOperator = operatorValue.operator || operator;
 

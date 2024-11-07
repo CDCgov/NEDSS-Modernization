@@ -93,5 +93,10 @@ describe('utils', () => {
             const value: TextCriteria = { startsWith: 'testValue' };
             expect(asTextCriteria(value)).toStrictEqual({ startsWith: 'testValue' });
         });
+
+        it('should return the object with the correct operator when it is specified', () => {
+            const value = 'testValue';
+            expect(asTextCriteria(value, 'not')).toStrictEqual({ not: 'testValue' });
+        });
     });
 });

@@ -55,12 +55,18 @@ export const asTextCriteriaValue = (value?: string | TextCriteria | null): strin
 /**
  * Returns the value as a TextCriteria object. If the string starts with '%', treats it as a contains operator.
  * @param {string} value The value of the operator to find
+ * @param {string} operation A operator i.e. "equals" or selectable object containing the operator.
  * @return {TextCriteria} The a valid TextCriteria object, or undefined
  */
-export const asTextCriteria = (value?: string | TextCriteria | null): TextCriteria | null | undefined => {
+export const asTextCriteria = (
+    value?: string | TextCriteria | null,
+    operation?: TextOperation
+): TextCriteria | null | undefined => {
     if (typeof value === 'string') {
         if (hasLegacyOperators(value)) {
             return { contains: stripLegacyOperators(value) };
+        } else if (operation) {
+            return { [operation]: value };
         }
         return { equals: value };
     } else {
