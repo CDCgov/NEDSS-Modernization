@@ -30,3 +30,7 @@ Feature: Classic NBS - User can view and manage data in NBS Valueset
     And Fill the details to create new concept Value Set
     Then Click submit button to create new concept in Value Set
 
+  Scenario: Make inactive
+    And Click on a Value set in Value Set library
+    Then Click on Make Inactive button to inactive the value set
+
