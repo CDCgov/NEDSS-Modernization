@@ -463,6 +463,7 @@ export enum LaboratoryReportStatus {
 }
 
 export type LocationCriteria = {
+  city?: InputMaybe<TextCriteria>;
   street?: InputMaybe<TextCriteria>;
 };
 
