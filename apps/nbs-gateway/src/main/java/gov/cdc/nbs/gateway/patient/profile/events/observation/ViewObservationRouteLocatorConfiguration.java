@@ -34,7 +34,7 @@ class ViewObservationRouteLocatorConfiguration {
       "Patient-Action"
   );
   private static final RemoveCookieGatewayFilterFactory.Config REMOVE_RETURN_PATIENT_CONFIG =
-      new RemoveCookieGatewayFilterFactory.Config("/nbs/", "Return-Patient");
+      new RemoveCookieGatewayFilterFactory.Config("/nbs", "Return-Patient");
 
   @Bean
   RouteLocator viewObservationActionCookie(
@@ -49,7 +49,7 @@ class ViewObservationRouteLocatorConfiguration {
             "view-observation-apply-patient-action-cookie",
             route -> route
                 .order(RouteOrdering.PATIENT_PROFILE.after())
-                .path("/nbs/NewLabReview1.do")
+                .path("/nbs/NewLabReview1.do", "/nbs/PatientSearchResults1.do")
                 .and()
                 .query(IDENTIFIER_PARAMETER)
                 .filters(
