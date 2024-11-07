@@ -60,14 +60,22 @@ public class PatientFilter {
     }
   }
 
-  public record LocationCriteria(TextCriteria street) {
+  public record LocationCriteria(TextCriteria street, TextCriteria city) {
 
     Optional<TextCriteria> maybeStreet() {
       return Optional.ofNullable(street());
     }
 
+    Optional<TextCriteria> maybeCity() {
+      return Optional.ofNullable(city());
+    }
+
     LocationCriteria withStreet(final TextCriteria street) {
-      return new LocationCriteria(street);
+      return new LocationCriteria(street, city());
+    }
+
+    LocationCriteria withCity(final TextCriteria city) {
+      return new LocationCriteria(street(), city);
     }
   }
 
@@ -299,7 +307,6 @@ public class PatientFilter {
 
   public PatientFilter withFirstName(final TextCriteria criteria) {
     if (this.name == null) {
-
       this.name = new NameCriteria(criteria, null);
     } else {
       this.name = this.name.withFirst(criteria);
@@ -312,7 +319,20 @@ public class PatientFilter {
   }
 
   public PatientFilter withStreet(final TextCriteria criteria) {
-    this.location = new LocationCriteria(criteria);
+    if (this.location == null) {
+      this.location = new LocationCriteria(criteria, null);
+    } else {
+      this.location = this.location.withStreet(criteria);
+    }
+    return this;
+  }
+
+  public PatientFilter withCity(final TextCriteria criteria) {
+    if (this.location == null) {
+      this.location = new LocationCriteria(null, criteria);
+    } else {
+      this.location = this.location.withCity(criteria);
+    }
     return this;
   }
 }
