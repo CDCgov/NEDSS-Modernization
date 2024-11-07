@@ -70,3 +70,7 @@ When('I click on the "Remove All Filters Sorts" link', () => {
 
 Then('all filters and sorts should be cleared', () => {
 });
+
+Then('I click and view an Investigation', () => {
+ openInvestigationPage.verifInvestigation();
+});

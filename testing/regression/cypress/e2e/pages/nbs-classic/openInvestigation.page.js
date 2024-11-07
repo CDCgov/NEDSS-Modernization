@@ -65,6 +65,11 @@ class OpenInvestigationPage {
     verifyNoSortingChanges() {
       cy.get(this.sortedResult).contains('Confirmed').should('be.visible');
     }
+
+    verifInvestigation() {
+      cy.get("table#parent td>a").eq(1).click();
+      cy.get("a").contains("View Investigation:");
+    }
   }
   
   export const openInvestigationPage = new OpenInvestigationPage();
