@@ -1,6 +1,8 @@
+import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SingleSelect } from './SingleSelect';
+import { Selectable } from 'options/selectable';
 
 describe('when selecting a single item from a specific set of items', () => {
     it('should display the SingleSelect without a value checked', () => {
@@ -48,26 +50,32 @@ describe('when selecting a single item from a specific set of items', () => {
 
 describe('when one of the options is clicked', () => {
     it('should mark the option as checked', () => {
-        const { getByRole } = render(
-            <SingleSelect
-                id="test-id"
-                label="Test Label"
-                options={[
-                    { name: 'name-one', value: 'value-one', label: 'label-one' },
-                    { name: 'name-two', value: 'value-two', label: 'label-two' },
-                    { name: 'name-three', value: 'value-three', label: 'label-three' },
-                    { name: 'name-four', value: 'value-four', label: 'label-four' }
-                ]}
-                name="test-name"
-            />
-        );
+        const TestComponent = () => {
+            const [selectedValue, setSelectedValue] = useState<Selectable | null>(null);
+
+            return (
+                <SingleSelect
+                    id="test-id"
+                    label="Test Label"
+                    options={[
+                        { name: 'name-one', value: 'value-one', label: 'label-one' },
+                        { name: 'name-two', value: 'value-two', label: 'label-two' },
+                        { name: 'name-three', value: 'value-three', label: 'label-three' },
+                        { name: 'name-four', value: 'value-four', label: 'label-four' }
+                    ]}
+                    name="test-name"
+                    value={selectedValue}
+                    onChange={setSelectedValue}
+                />
+            );
+        };
+
+        const { getByRole } = render(<TestComponent />);
 
         const select = getByRole('combobox', { name: 'Test Label' });
 
-        userEvent.selectOptions(select, 'name-four');
+        userEvent.selectOptions(select, ['value-four']);
 
-        const checked = getByRole('option', { selected: true });
-
-        expect(checked).toHaveTextContent('name-four');
+        expect(select).toHaveValue('value-four');
     });
 });
