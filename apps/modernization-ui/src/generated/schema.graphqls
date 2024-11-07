@@ -1129,6 +1129,7 @@ input PatientNameCriteria {
 
 input LocationCriteria {
   street: TextCriteria
+  city: TextCriteria
 }
 
 input PersonFilter {

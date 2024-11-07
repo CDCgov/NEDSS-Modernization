@@ -13,6 +13,7 @@ import static gov.cdc.nbs.search.criteria.text.TextCriteriaNestedQueryResolver.*
 class PatientLocationQueryResolver {
   private static final String ADDRESS = "address";
   private static final String STREET = "address.streetAddr1";
+  private static final String CITY = "address.city";
 
   Stream<QueryVariant> resolve(final PatientFilter criteria) {
     return criteria.maybeLocation().stream().flatMap(this::resolveLocationCriteria);
@@ -22,7 +23,10 @@ class PatientLocationQueryResolver {
     return Stream.of(
         applyStreetEquals(criteria),
         applyStreetContains(criteria),
-        applyStreetNotEquals(criteria))
+        applyStreetNotEquals(criteria),
+        applyCityEquals(criteria),
+        applyCityContains(criteria),
+        applyCityNotEquals(criteria))
         .flatMap(Optional::stream);
   }
 
@@ -42,6 +46,24 @@ class PatientLocationQueryResolver {
     return criteria.maybeStreet()
         .flatMap(TextCriteria::maybeContains)
         .map(value -> contains(ADDRESS, STREET, value));
+  }
+
+  private Optional<QueryVariant> applyCityEquals(final PatientFilter.LocationCriteria criteria) {
+    return criteria.maybeCity()
+        .flatMap(TextCriteria::maybeEquals)
+        .map(value -> equalTo(ADDRESS, CITY, value));
+  }
+
+  private Optional<QueryVariant> applyCityNotEquals(final PatientFilter.LocationCriteria criteria) {
+    return criteria.maybeCity()
+        .flatMap(TextCriteria::maybeNot)
+        .map(value -> notEquals(ADDRESS, CITY, value));
+  }
+
+  private Optional<QueryVariant> applyCityContains(final PatientFilter.LocationCriteria criteria) {
+    return criteria.maybeCity()
+        .flatMap(TextCriteria::maybeContains)
+        .map(value -> contains(ADDRESS, CITY, value));
   }
 
 }
