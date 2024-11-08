@@ -24,14 +24,14 @@ public class PatientProfileReturningRedirectionSteps {
   }
 
   @When("Returning to a Patient Profile")
-  public void returning_to_a_patient_profile() throws Exception {
+  public void returning_to_a_patient_profile() {
     activePatient.maybeActive()
         .map(patient -> requester.returningTo(patient, "summary"))
         .ifPresent(activeResponse::active);
   }
 
   @When("Returning to a Patient Profile {patientProfileTab} tab")
-  public void returning_to_a_patient_profile_tab(final String tab) throws Exception {
+  public void returning_to_a_patient_profile_tab(final String tab) {
     activePatient.maybeActive()
         .map(patient -> requester.returningTo(patient, tab))
         .ifPresent(activeResponse::active);
