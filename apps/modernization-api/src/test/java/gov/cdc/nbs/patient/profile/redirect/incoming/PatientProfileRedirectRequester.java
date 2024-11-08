@@ -2,6 +2,7 @@ package gov.cdc.nbs.patient.profile.redirect.incoming;
 
 import gov.cdc.nbs.patient.identifier.PatientIdentifier;
 import gov.cdc.nbs.testing.interaction.http.Authenticated;
+import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,4 +36,12 @@ class PatientProfileRedirectRequester {
     }
   }
 
+  ResultActions returningTo(final PatientIdentifier patient, final String tab) {
+    try {
+      return mvc.perform(authenticated.withSession(get("/nbs/redirect/patientProfile/{tab}/return", tab))
+          .cookie(new Cookie("Return-Patient", String.valueOf(patient.id()))));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 }
