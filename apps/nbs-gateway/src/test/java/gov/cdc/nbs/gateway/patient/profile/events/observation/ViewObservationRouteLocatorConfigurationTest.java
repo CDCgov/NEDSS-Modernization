@@ -92,6 +92,7 @@ class ViewObservationRouteLocatorConfigurationTest {
                     .path("/nbs/PatientSearchResults1.do")
                     .queryParam("ContextAction", "ViewLab")
                     .queryParam("observationUID", "7841")
+                    .queryParam("MPRUid","257")
                     .build()
             )
             .exchange()

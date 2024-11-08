@@ -44,14 +44,4 @@ class PatientProfileIncomingRedirection {
     return resolver.fromReturnPatient(request, tab);
   }
 
-//  /**
-//   * Receives proxied View Patient Profile requests from Classic NBS.
-//   *
-//   * @param request The {@link HttpServletRequest} from Classic NBS
-//   * @return A {@link ResponseEntity} redirecting to the Modernized Patient Profile
-//   */
-//  @GetMapping("/nbs/redirect/patientProfile")
-//  ResponseEntity<Void> redirectedPatientProfileReturn(final HttpServletRequest request) {
-//    return resolver.fromReturnPatient(request);
-//  }
 }

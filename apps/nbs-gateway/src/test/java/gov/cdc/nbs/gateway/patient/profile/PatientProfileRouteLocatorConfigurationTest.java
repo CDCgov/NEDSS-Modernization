@@ -9,7 +9,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static com.github.tomakehurst.wiremock.matching.RequestPatternBuilder.allRequests;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -21,62 +20,79 @@ import static com.github.tomakehurst.wiremock.matching.RequestPatternBuilder.all
 )
 class PatientProfileRouteLocatorConfigurationTest {
 
-    @RegisterExtension
-    static WireMockExtension service = WireMockExtension.newInstance()
-        .options(wireMockConfig().port(10001))
-        .build();
+  @RegisterExtension
+  static WireMockExtension service = WireMockExtension.newInstance()
+      .options(wireMockConfig().port(10001))
+      .build();
 
-    @Autowired
-    WebTestClient webClient;
+  @Autowired
+  WebTestClient webClient;
 
-    @Test
-    void should_route_to_service_when_ContextAction_is_ViewFile() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/summary/return\\\\?.*")).willReturn(ok()));
+  @Test
+  void should_route_to_service_when_ContextAction_is_ViewFile() {
+    service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/summary/return\\\\?.*")).willReturn(ok()));
 
-        webClient
-            .get().uri(
-                builder -> builder
-                    .path("/nbs/any")
-                    .queryParam("ContextAction", "ViewFile")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/any")
+                .queryParam("ContextAction", "ViewFile")
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
 
-    }
+  }
 
-    @Test
-    void should_route_to_service_when_ContextAction_is_FileSummary() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/summary/return\\\\?.*")).willReturn(ok()));
+  @Test
+  void should_route_to_service_when_ContextAction_is_FileSummary() {
+    service.stubFor(get(urlPathMatching("/nbs/redirect/patientProfile/summary/return\\\\?.*")).willReturn(ok()));
 
-        webClient
-            .get().uri(
-                builder -> builder
-                    .path("/nbs/any")
-                    .queryParam("ContextAction", "FileSummary")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/any")
+                .queryParam("ContextAction", "FileSummary")
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
 
-    }
+  }
 
-    @Test
-    void should_route_to_patient_profile_service_when_ContextAction_is_ViewFile_and_uid_is_present() {
-        service.stubFor(get(urlPathMatching("/nbs/redirect/patient/profile")).willReturn(ok()));
+  @Test
+  void should_route_to_patient_profile_from_from_patient_name_in_an_event_search_result() {
+    service.stubFor(get(urlPathMatching("/nbs/redirect/patient/profile")).willReturn(ok()));
 
-        webClient
-            .get().uri(
-                builder -> builder
-                    .path("/nbs/PatientSearchResults1.do")
-                    .queryParam("ContextAction", "ViewFile")
-                    .queryParam("uid", "1051")
-                    .build()
-            )
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/PatientSearchResults1.do")
+                .queryParam("ContextAction", "ViewFile")
+                .queryParam("uid", "1051")
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
+
+  @Test
+  void should_route_to_patient_profile_service_from_patient_name_in_documents_requiring_review_queue() {
+    service.stubFor(get(urlPathMatching("/nbs/redirect/patient/profile")).willReturn(ok()));
+
+    webClient
+        .get().uri(
+            builder -> builder
+                .path("/nbs/NewLabReview1.do")
+                .queryParam("ContextAction", "ViewFile")
+                .queryParam("uid", "1051")
+                .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk();
+  }
 }
