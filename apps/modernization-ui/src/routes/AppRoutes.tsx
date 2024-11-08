@@ -11,11 +11,15 @@ import { routing as welcomeRouting } from 'apps/landing';
 import { routing as logoutRouting } from 'logout';
 import { Login } from 'pages/login';
 import { Expired } from 'apps/landing/Expired/Expired';
+import { DataElementConfig } from 'apps/deduplication/data-elements/DataElementConfig';
+import { MatchConfiguration } from 'apps/deduplication/match-configuration/MatchConfiguration';
 
 const routing = [
     welcomeRouting,
     logoutRouting,
     { path: '/login', element: <Login /> },
+    { path: '/deduplication/match-configuration', element: <MatchConfiguration /> },
+    { path: '/deduplication/data-elements', element: <DataElementConfig /> },
     {
         path: '/',
         element: <ProtectedLayout />,
