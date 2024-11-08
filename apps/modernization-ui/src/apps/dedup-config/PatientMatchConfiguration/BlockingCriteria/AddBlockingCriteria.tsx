@@ -4,7 +4,6 @@ import { useDataElementsContext } from '../../context/DataElementsContext';
 import { usePatientMatchContext } from '../../context/PatientMatchContext';
 import styles from './add-blocking-criteria.module.scss';
 import { DataElement } from 'apps/dedup-config/types';
-import PatientMatchForm from '../PatientMatchConfigurationPage/PatientMatchForm';
 
 type Props = {
     blockingModalRef: RefObject<ModalRef>;
@@ -12,14 +11,11 @@ type Props = {
 
 export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
     const { dataElements } = useDataElementsContext();
-    const { blockingCriteria, availableMethods } = usePatientMatchContext();
+    const { blockingCriteria, setBlockingCriteria, availableMethods } = usePatientMatchContext();
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
 
     useEffect(() => {
-        console.log('Blocking Criteria after update:', blockingCriteria);
         const selected = blockingCriteria.map((criteria) => criteria.field.name);
-        console.log('Blocking Criteria in context:', blockingCriteria);
-        console.log('Selected Fields updated:', selectedFields);
         setSelectedFields(selected);
     }, [blockingCriteria]);
 
@@ -33,54 +29,31 @@ export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
         });
     };
 
-    const addBlockingCriteria = async () => {
+    const addBlockingCriteria = () => {
         if (!dataElements) {
             return;
         }
-
-        const selectedFields = blockingCriteria.map((criteria) => criteria.field.name);
-
-        // Prepare new blocking criteria based on selected fields
         const newCriteria = selectedFields
             .filter((fieldName) => !blockingCriteria.some((criteria) => criteria.field.name === fieldName))
             .map((fieldName) => {
                 const field = dataElements.find((element) => element.name === fieldName);
-                console.log('Field found for', fieldName, ':', field); // Debug log
-                return field ? { field: field, method: availableMethods[0] } : null;
+                if (!field) {
+                    return null;
+                }
+                return {
+                    field: field,
+                    method: availableMethods[0]
+                };
             })
             .filter((criteria) => criteria !== null);
-        const updatedCriteria = blockingCriteria.filter((criteria) => selectedFields.includes(criteria.field.name));
 
-        // Combine updated and new criteria
-        const allCriteria = [...updatedCriteria, ...newCriteria];
-
-        // Here, you prepare the request body to send to the API
-        const requestBody = {
-            blockingCriteria: allCriteria,
-            selectedFields: selectedFields
-        };
-
-        console.log('Request body to send:', requestBody);
-
-        try {
-            const response = await fetch('/blocking-criteria', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestBody)
-            });
-
-            if (response.ok) {
-                console.log('Pass configuration saved successfully');
-            } else {
-                console.error('Failed to save pass configuration');
-            }
-        } catch (error) {
-            console.error('Error saving pass configuration:', error);
+        if (newCriteria.length > 0) {
+            setBlockingCriteria([...blockingCriteria, ...newCriteria]);
         }
 
-        // Close the modal
+        const updatedCriteria = blockingCriteria.filter((criteria) => selectedFields.includes(criteria.field.name));
+
+        setBlockingCriteria([...updatedCriteria, ...newCriteria]);
         blockingModalRef.current?.toggleModal();
     };
 
@@ -130,20 +103,6 @@ export const AddBlockingCriteria = ({ blockingModalRef }: Props) => {
                     Add blocking criteria
                 </ModalToggleButton>
             </div>
-            <PatientMatchForm
-                selectedFields={selectedFields}
-                passConfiguration={{
-                    name: 'Default Name',
-                    description: 'Default Description',
-                    active: false,
-                    blockingCriteria: [],
-                    matchingCriteria: []
-                }}
-                onSaveConfiguration={() => {}}
-                onDeleteConfiguration={() => true}
-                onCancel={() => {}}
-                isAdding={false}
-            />
         </div>
     );
 };

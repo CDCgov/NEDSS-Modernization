@@ -25,8 +25,7 @@ const PatientMatchForm = ({
     onDeleteConfiguration,
     onSaveConfiguration,
     onCancel,
-    isAdding,
-    selectedFields
+    isAdding
 }: Props) => {
     const { blockingCriteria } = usePatientMatchContext();
     const { showSuccess, showError } = useAlert();
@@ -67,10 +66,6 @@ const PatientMatchForm = ({
                 })) || []
         }
     });
-
-    useEffect(() => {
-        console.log('Selected Fields:', selectedFields);
-    }, [selectedFields]);
 
     console.log(
         'bc.field:',
