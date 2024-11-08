@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SingleSelect } from './SingleSelect';
@@ -50,32 +49,38 @@ describe('when selecting a single item from a specific set of items', () => {
 
 describe('when one of the options is clicked', () => {
     it('should mark the option as checked', () => {
-        const TestComponent = () => {
-            const [selectedValue, setSelectedValue] = useState<Selectable | null>(null);
-
-            return (
-                <SingleSelect
-                    id="test-id"
-                    label="Test Label"
-                    options={[
-                        { name: 'name-one', value: 'value-one', label: 'label-one' },
-                        { name: 'name-two', value: 'value-two', label: 'label-two' },
-                        { name: 'name-three', value: 'value-three', label: 'label-three' },
-                        { name: 'name-four', value: 'value-four', label: 'label-four' }
-                    ]}
-                    name="test-name"
-                    value={selectedValue}
-                    onChange={(value?: Selectable) => setSelectedValue(value || null)}
-                />
-            );
+        const SingleSelectTestWrapper = ({
+            value,
+            onChange
+        }: {
+            value: Selectable | null;
+            onChange: (value?: Selectable) => void;
+        }) => (
+            <SingleSelect
+                id="test-id"
+                label="Test Label"
+                options={[
+                    { name: 'name-one', value: 'value-one', label: 'label-one' },
+                    { name: 'name-two', value: 'value-two', label: 'label-two' },
+                    { name: 'name-three', value: 'value-three', label: 'label-three' },
+                    { name: 'name-four', value: 'value-four', label: 'label-four' }
+                ]}
+                name="test-name"
+                value={value}
+                onChange={onChange}
+            />
+        );
+        let selectedValue = null;
+        const handleChange = (value?: Selectable) => {
+            selectedValue = value || null;
         };
 
-        const { getByRole } = render(<TestComponent />);
+        const { getByRole } = render(<SingleSelectTestWrapper value={selectedValue} onChange={handleChange} />);
 
         const select = getByRole('combobox', { name: 'Test Label' });
 
         userEvent.selectOptions(select, ['value-four']);
 
-        expect(select).toHaveValue('value-four');
+        expect(selectedValue).toEqual({ name: 'name-four', value: 'value-four', label: 'label-four' });
     });
 });
