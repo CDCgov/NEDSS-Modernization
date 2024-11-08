@@ -4,6 +4,7 @@ import { internalizeDate } from 'date';
 import { asValue } from 'options';
 import { orNull } from 'utils';
 import { IdentificationEntry, EmailEntry } from 'apps/patient/add';
+import { TextCriteria, asTextCriteriaValue } from 'options/operator';
 
 const resolveIdentification = (entry: Identification): IdentificationEntry[] =>
     entry.identification && entry.identificationType
@@ -20,11 +21,13 @@ const resolveRace = (entry: RaceEthnicity): string[] => (entry.race ? [asValue(e
 
 const resolveEmail = (entry: Contact): EmailEntry[] => [{ email: entry.email || '' }];
 
+const resolveName = (textCriteria?: TextCriteria | string): string | null => orNull(asTextCriteriaValue(textCriteria));
+
 const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientEntry => {
     return {
         asOf: internalizeDate(new Date()),
         firstName: orNull(criteria.firstName),
-        lastName: orNull(criteria.lastName),
+        lastName: resolveName(criteria.lastName),
         dateOfBirth: criteria.dateOfBirth,
         currentGender: orNull(asValue(criteria.gender)),
         streetAddress1: orNull(criteria.address),

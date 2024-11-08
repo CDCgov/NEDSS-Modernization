@@ -3,6 +3,7 @@ import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/gr
 import { asValue, asValues } from 'options/selectable';
 import { PatientCriteriaEntry } from './criteria';
 import { externalizeDate } from 'date';
+import { asTextCriteria } from 'options/operator';
 
 const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>
     data.identification && data.identificationType
@@ -35,7 +36,9 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     } = data;
     return {
         disableSoundex: !includeSimilar,
-        lastName,
+        name: {
+            last: asTextCriteria(lastName)
+        },
         firstName,
         id,
         address,

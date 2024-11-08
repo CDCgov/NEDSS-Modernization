@@ -8,16 +8,13 @@ import { validNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { genders } from 'options/gender';
+import { OperatorInput } from 'design-system/input/operator';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     return (
         <SearchCriteria>
-            {/* 
-            
-            // WHEN READY: Uncomment this section to add the operator select for last name, the copy for first name and any others
-
             <Controller
                 control={control}
                 name="lastName"
@@ -30,26 +27,6 @@ export const BasicInformation = () => {
                         sizing="compact"
                         error={error?.message}
                         onChange={onChange}
-                    />
-                )}
-            />            
-            */}
-            <Controller
-                control={control}
-                name="lastName"
-                rules={validNameRule}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        type="text"
-                        label="Last name"
-                        name={name}
-                        defaultValue={value}
-                        htmlFor={name}
-                        id={name}
-                        sizing="compact"
-                        error={error?.message}
                     />
                 )}
             />

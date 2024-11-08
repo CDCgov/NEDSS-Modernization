@@ -8,9 +8,10 @@ import {
     TextCriteria,
     TextOperation,
     asSelectableOperator,
+    asTextCriteriaValue,
     asTextCriteria
 } from 'options/operator';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 
 export type OperatorInputProps = {
     id: string;
@@ -31,20 +32,21 @@ type OperatorAndValue = {
     value?: string | null;
 };
 
-const asOperatorAndValue = (value?: string | TextCriteria | null): OperatorAndValue => {
-    if (typeof value === 'string') {
-        return { operator: 'equals', value };
+const asOperatorAndValue = (value?: string | TextCriteria | null, operator?: TextOperation): OperatorAndValue => {
+    if (value) {
+        const objValue: TextCriteria =
+            typeof value === 'string' ? asTextCriteria(value, operator)! : (value as TextCriteria);
+        if (typeof objValue === 'object' && Object.keys(objValue).length >= 1) {
+            return { operator: Object.keys(objValue)[0] as TextOperation, value: asTextCriteriaValue(objValue) };
+        }
     }
-    if (value != null && typeof value === 'object' && Object.keys(value).length >= 1) {
-        return { operator: Object.keys(value)[0] as TextOperation, value: asTextCriteria(value) };
-    }
-    return { operator: 'equals', value: null };
+    return { operator: operator ?? 'equals', value: null };
 };
 
 export const OperatorInput = ({
     id,
     value,
-    operator = 'equals',
+    operator = 'startsWith',
     operationMode,
     label,
     sizing = 'compact',
@@ -52,23 +54,29 @@ export const OperatorInput = ({
     error,
     onChange
 }: OperatorInputProps) => {
-    const initialValue = asOperatorAndValue(value);
-    const [combinedValue, setCombinedValue] = useState<OperatorAndValue>(initialValue);
+    const operatorValue = asOperatorAndValue(value, operator);
     const operatorSelectId = `${id}Operator`;
-    const effectiveOperator = combinedValue.operator || operator;
+    const effectiveOperator = operatorValue.operator || operator;
 
-    const onSelectionChange = (selectedOperation?: Selectable) => {
-        setCombinedValue((cur) => ({ ...cur, operator: selectedOperation?.value as TextOperation }));
-        const criteriaValue = asTextCriteriaOrString(combinedValue.value, selectedOperation?.value as TextOperation);
-        onChange(criteriaValue);
-    };
+    const onSelectionChange = useCallback(
+        (selectedOperation?: Selectable) => {
+            const criteriaValue = asTextCriteriaOrString(
+                operatorValue.value,
+                selectedOperation?.value as TextOperation
+            );
+            onChange(criteriaValue);
+        },
+        [onChange, operatorValue]
+    );
 
-    const onInputChange = (event?: ChangeEvent<HTMLInputElement>) => {
-        const value = event?.target.value;
-        setCombinedValue((cur) => ({ ...cur, value }));
-        const criteriaValue = asTextCriteriaOrString(value, combinedValue.operator);
-        onChange(criteriaValue);
-    };
+    const onInputChange = useCallback(
+        (event?: ChangeEvent<HTMLInputElement>) => {
+            const value = event?.target.value;
+            const criteriaValue = asTextCriteriaOrString(value, operatorValue.operator);
+            onChange(criteriaValue);
+        },
+        [onChange, operatorValue]
+    );
 
     return (
         <EntryWrapper orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
@@ -88,7 +96,7 @@ export const OperatorInput = ({
                             onChange={onInputChange}
                             type="text"
                             name={id}
-                            defaultValue={combinedValue.value}
+                            defaultValue={operatorValue.value}
                             htmlFor={id}
                             id={id}
                             sizing={sizing}

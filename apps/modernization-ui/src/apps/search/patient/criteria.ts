@@ -1,4 +1,5 @@
 import { Selectable, asSelectable } from 'options';
+import { TextCriteria } from 'options/operator';
 
 const ACTIVE = asSelectable('ACTIVE', 'Active');
 
@@ -11,9 +12,7 @@ const statusOptions: Selectable[] = [
 export { statusOptions };
 
 type BasicInformation = {
-    lastName?: string;
-    // when ready, replace the line above with this
-    // lastName?: TextCriteria;
+    lastName?: TextCriteria | string;
     firstName?: string;
     dateOfBirth?: string;
     gender?: Selectable;
