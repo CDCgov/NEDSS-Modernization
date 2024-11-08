@@ -11,6 +11,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const PatientMatchConfigurationPage = () => {
     const [configurations, setConfigurations] = useState<PassConfiguration[]>([]);
+    const [selectedFields] = useState<any[]>([]);
     const [selectedConfigurationIndex, setSelectedConfigurationIndex] = useState<number>();
     const [isAddingConfiguration, setIsAddingConfiguration] = useState<boolean>(false);
     const {
@@ -106,7 +107,7 @@ const PatientMatchConfigurationPage = () => {
             ...config,
             blockingCriteria,
             matchingCriteria,
-            lowerBound: config.lowerBound, // Make sure these are included
+            lowerBound: config.lowerBound,
             upperBound: config.upperBound
         };
 
@@ -207,7 +208,8 @@ const PatientMatchConfigurationPage = () => {
                             onSaveConfiguration={handleSaveConfiguration}
                             onDeleteConfiguration={() => deleteModalRef.current?.toggleModal()}
                             onCancel={handleCancel}
-                            isAdding={isAddingConfiguration}
+                            isAdding={true}
+                            selectedFields={selectedFields}
                         />
                     ) : (
                         <NoPassConfigurations />

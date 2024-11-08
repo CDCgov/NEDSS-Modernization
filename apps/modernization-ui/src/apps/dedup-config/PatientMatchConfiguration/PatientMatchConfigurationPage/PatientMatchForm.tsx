@@ -9,6 +9,7 @@ import { PassConfiguration } from 'apps/dedup-config/types';
 import { useAlert } from 'alert';
 import { usePatientMatchContext } from 'apps/dedup-config/context/PatientMatchContext';
 import { useEffect } from 'react';
+import savePassConfiguration from './api';
 
 type Props = {
     passConfiguration: PassConfiguration;
@@ -16,6 +17,7 @@ type Props = {
     onSaveConfiguration: (config: PassConfiguration) => void;
     onCancel: () => void;
     isAdding: boolean;
+    selectedFields: string[];
 };
 
 const PatientMatchForm = ({
@@ -23,42 +25,104 @@ const PatientMatchForm = ({
     onDeleteConfiguration,
     onSaveConfiguration,
     onCancel,
-    isAdding
+    isAdding,
+    selectedFields
 }: Props) => {
     const { blockingCriteria } = usePatientMatchContext();
-    const { showSuccess } = useAlert();
+    const { showSuccess, showError } = useAlert();
     const patientMatchForm = useForm({
         mode: 'onBlur',
         defaultValues: {
             ...passConfiguration,
             lowerBound: passConfiguration.lowerBound ?? undefined,
-            upperBound: passConfiguration.upperBound ?? undefined
+            upperBound: passConfiguration.upperBound ?? undefined,
+            blockingCriteria: blockingCriteria.map((Criteria: any) => ({
+                method: Criteria.method || 'DefaultMethod',
+                field: Criteria.field.name || {
+                    name: 'DefaultField',
+                    label: '',
+                    category: '',
+                    active: false,
+                    m: 0,
+                    u: 0,
+                    threshold: 0,
+                    oddsRatio: 0,
+                    logOdds: 0
+                }
+            })),
+            matchingCriteria:
+                passConfiguration.matchingCriteria?.map((mc) => ({
+                    method: mc.method || 'DefaultMethod',
+                    field: mc.field || {
+                        name: 'DefaultField',
+                        label: '',
+                        category: '',
+                        active: false,
+                        m: 0,
+                        u: 0,
+                        threshold: 0,
+                        oddsRatio: 0,
+                        logOdds: 0
+                    }
+                })) || []
         }
     });
 
-    const generateName = () => {
-        const first = `${blockingCriteria[0].field.name}`;
-        let second = '';
+    useEffect(() => {
+        console.log('Selected Fields:', selectedFields);
+    }, [selectedFields]);
 
+    console.log(
+        'bc.field:',
+        blockingCriteria.map((bc) => ({ method: bc.method, field: bc.field }))
+    );
+    const generateName = () => {
+        const first = blockingCriteria[0]?.field?.name || 'Unnamed';
+        let second = '';
         if (blockingCriteria.length > 1) {
-            second = `${blockingCriteria[1].field.name}`;
+            second = blockingCriteria[1]?.field?.name || '';
             return `${first}_${second}`;
-        } else {
-            return first;
         }
+        return first;
     };
 
-    const saveConfiguration = () => {
+    const saveConfiguration = async () => {
         const name = generateName();
         patientMatchForm.setValue('name', name);
-        onSaveConfiguration(patientMatchForm.getValues());
-        showSuccess({
-            message: (
-                <>
-                    Successfully saved <strong>{name}</strong>
-                </>
-            )
-        });
+
+        const formValues = patientMatchForm.getValues();
+        console.log('Form Values:', formValues);
+
+        const transformedBlockingCriteria =
+            formValues.blockingCriteria?.map((criteria) => ({
+                method: criteria.method || 'DefaultMethod',
+                field: criteria.field?.name || 'FallbackField'
+            })) || [];
+
+        const transformedMatchingCriteria =
+            formValues.matchingCriteria?.map((criteria) => ({
+                method: String(criteria.method) || 'DefaultMethod',
+                field: criteria.field?.name || 'FallbackField'
+            })) || [];
+
+        const configurationData = {
+            ...formValues,
+            blockingCriteria: transformedBlockingCriteria,
+            matchingCriteria: transformedMatchingCriteria,
+            lowerBound: formValues.lowerBound,
+            upperBound: formValues.upperBound
+        };
+
+        console.log('Attempting to save pass configuration with data:', configurationData);
+
+        try {
+            const result = await savePassConfiguration(configurationData);
+            onSaveConfiguration(result);
+            showSuccess({ message: `Successfully saved ${formValues.name}` });
+        } catch (error) {
+            console.error('Error saving configuration:', error);
+            showError({ message: 'Failed to save pass configuration. Please try again.' });
+        }
     };
 
     useEffect(() => {
@@ -66,8 +130,6 @@ const PatientMatchForm = ({
             patientMatchForm.reset();
         }
     }, [isAdding]);
-
-    console.log('saving', patientMatchForm.getValues('matchingCriteria'));
 
     return (
         <div className={styles.form}>
@@ -82,7 +144,7 @@ const PatientMatchForm = ({
                         render={({ field: { onChange, value, name } }) => (
                             <Toggle
                                 value={value}
-                                label={'Activate this pass configuration'}
+                                label="Activate this pass configuration"
                                 name={name}
                                 onChange={onChange}
                                 sizing="compact"
@@ -98,7 +160,6 @@ const PatientMatchForm = ({
                             Delete pass configuration
                         </Button>
                     )}
-
                     <div className={styles.saveButton}>
                         <Button type="reset" outline onClick={onCancel}>
                             Cancel

@@ -2,7 +2,7 @@ const saveDataElementsConfiguration = async (data: { dataElements: any[]; belong
     console.log('Attempting to save configuration with data:', data);
 
     try {
-        const response = await fetch('http://localhost:8080/api/configurations/config', {
+        const response = await fetch('http://localhost:8080/api/configurations/data-elements', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
