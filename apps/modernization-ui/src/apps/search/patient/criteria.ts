@@ -13,7 +13,7 @@ export { statusOptions };
 
 type BasicInformation = {
     lastName?: TextCriteria | string;
-    firstName?: string;
+    firstName?: TextCriteria | string;
     dateOfBirth?: string;
     gender?: Selectable;
     id?: string;

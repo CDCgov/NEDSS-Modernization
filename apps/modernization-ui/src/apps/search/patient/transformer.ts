@@ -37,9 +37,9 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     return {
         disableSoundex: !includeSimilar,
         name: {
-            last: asTextCriteria(lastName)
+            last: asTextCriteria(lastName),
+            first: asTextCriteria(firstName)
         },
-        firstName,
         id,
         address,
         city,
