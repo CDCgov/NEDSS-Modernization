@@ -1,0 +1,19 @@
+.passForm {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    .activateButton {
+        label {
+            cursor: pointer;
+        }
+    }
+
+    .cardContainer {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 1rem;
+    }
+}

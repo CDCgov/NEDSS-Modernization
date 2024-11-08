@@ -1,0 +1,37 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.matchingCriteriaForm {
+    background-color: colors.$base-white;
+    @extend %thin;
+
+    & > header {
+        padding: 1.5rem;
+        @extend %thin-bottom;
+
+        .headerText {
+            color: colors.$base-darkest;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.4175rem;
+            margin: 0;
+        }
+    }
+
+    .matchingCriteria {
+        padding: 0 1.5rem;
+    }
+
+    .logOddsTotal {
+        display: flex;
+        gap: 2rem;
+        padding: 0.75rem 0;
+        color: colors.$base-darkest;
+        font-weight: 700;
+        @extend %thin-bottom;
+
+        :first-child {
+            width: 36.125rem;
+        }
+    }
+}

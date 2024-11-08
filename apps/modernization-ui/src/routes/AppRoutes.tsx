@@ -7,6 +7,7 @@ import { routing as searchRouting } from 'apps/search';
 import { routing as patientProfileRouting } from 'apps/patient/profile';
 import { routing as addPatientRouting } from 'apps/patient/add';
 import { routing as pageBuilderRouting } from 'apps/page-builder';
+import { routing as deduplicationRouting } from 'apps/deduplication';
 import { routing as welcomeRouting } from 'apps/landing';
 import { routing as logoutRouting } from 'logout';
 import { Login } from 'pages/login';
@@ -25,7 +26,8 @@ const routing = [
             ...searchRouting,
             ...addPatientRouting,
             ...patientProfileRouting,
-            ...pageBuilderRouting
+            ...pageBuilderRouting,
+            ...deduplicationRouting
         ]
     },
     { path: '*', element: <Navigate to={'/'} /> },
