@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.save_dedupe_configuration.service.*;
+
 import java.util.List;
 
 @RestController
@@ -28,7 +30,7 @@ public class MethodController {
 
     @GetMapping
     public ResponseEntity<List<Method>> getAllMethods() {
-        List<Method> methods = methodService.getAllMethods();
+        List<Method> methods = methodService.findAllMethods();
         return ResponseEntity.ok(methods);
     }
 

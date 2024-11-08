@@ -4,6 +4,9 @@ import com.example.save_dedupe_configuration.model.BlockingCriteria;
 import com.example.save_dedupe_configuration.model.MatchingCriteria;
 import com.example.save_dedupe_configuration.model.PassConfiguration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -34,18 +37,18 @@ public class BlockingCriteria {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Constructors
-    public BlockingCriteria() {}
+    // Parameterized constructor for deserialization
+    @JsonCreator
+    public BlockingCriteria(
+            @JsonProperty("dataElement") DataElement dataElement,
+            @JsonProperty("passConfiguration") PassConfiguration passConfiguration,
+            @JsonProperty("method") Method method) {
+        this.dataElement = dataElement;
+        this.passConfiguration = passConfiguration;
+        this.method = method;
+    }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public PassConfiguration getPassConfiguration() {
         return passConfiguration;
     }
@@ -94,11 +97,13 @@ public class BlockingCriteria {
         if (this == o) return true;
         if (!(o instanceof BlockingCriteria)) return false;
         BlockingCriteria that = (BlockingCriteria) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(dataElement, that.dataElement) &&
+                Objects.equals(passConfiguration, that.passConfiguration) &&
+                Objects.equals(method, that.method);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(dataElement, passConfiguration, method);
     }
 }

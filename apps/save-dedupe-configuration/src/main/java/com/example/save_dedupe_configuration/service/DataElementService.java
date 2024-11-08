@@ -47,7 +47,6 @@ public class DataElementService {
             return dataElementRepository.save(dataElement);
         }
     }
-
     // Save a list of DataElements
     public List<DataElement> saveAll(List<DataElement> dataElements) {
         return dataElementRepository.saveAll(dataElements);
