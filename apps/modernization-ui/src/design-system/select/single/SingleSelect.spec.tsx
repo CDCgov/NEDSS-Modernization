@@ -75,12 +75,18 @@ describe('when one of the options is clicked', () => {
             selectedValue = value || null;
         };
 
-        const { getByRole } = render(<SingleSelectTestWrapper value={selectedValue} onChange={handleChange} />);
+        const { getByRole, rerender } = render(
+            <SingleSelectTestWrapper value={selectedValue} onChange={handleChange} />
+        );
 
         const select = getByRole('combobox', { name: 'Test Label' });
 
         userEvent.selectOptions(select, ['value-four']);
 
+        rerender(<SingleSelectTestWrapper value={selectedValue} onChange={handleChange} />);
+
+        const checked = getByRole('option', { name: 'name-four', selected: true });
+        expect(checked).toHaveTextContent('name-four');
         expect(selectedValue).toEqual({ name: 'name-four', value: 'value-four', label: 'label-four' });
     });
 });
