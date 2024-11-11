@@ -5,7 +5,7 @@ import { DataElementRow } from './DataElementRow';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../DataElement';
 
-const dataElementKeys: (keyof Omit<DataElements, 'belongingnessRatio'>)[] = [
+const dataElementKeys: (keyof DataElements)[] = [
     'firstName',
     'lastName',
     'suffix',
@@ -52,11 +52,11 @@ export const DataElementsForm = () => {
                                 />
                             </th>
                             <th>Field</th>
-                            <th>M</th>
-                            <th>U</th>
+                            <th className={styles.numericField}>M</th>
+                            <th className={styles.numericField}>U</th>
                             <th className={styles.calculatedField}>Odds ratio</th>
                             <th className={styles.calculatedField}>Log odds</th>
-                            <th>Threshold</th>
+                            <th className={styles.numericField}>Threshold</th>
                             <th />
                         </tr>
                         <tr className={styles.border}>

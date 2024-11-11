@@ -1,13 +1,16 @@
 type DataElement = {
     active: boolean;
-    m: number;
-    u: number;
-    logOdds: number;
-    threshold: number;
+    m?: number;
+    u?: number;
+    logOdds?: number;
+    threshold?: number;
+};
+
+type BelongingnessRatio = {
+    belongingnessRatio: number;
 };
 
 type DataElements = {
-    belongingnessRatio: number;
     firstName: DataElement;
     lastName: DataElement;
     suffix: DataElement;
@@ -25,4 +28,6 @@ type DataElements = {
     telephone: DataElement;
 };
 
-export type { DataElement, DataElements };
+type DataElementsConfiguration = BelongingnessRatio & DataElements;
+
+export type { DataElementsConfiguration, DataElement, DataElements };

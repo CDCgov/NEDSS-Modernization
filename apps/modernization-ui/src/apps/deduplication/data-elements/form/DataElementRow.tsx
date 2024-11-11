@@ -4,10 +4,11 @@ import { Checkbox } from 'design-system/checkbox';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../DataElement';
 import styles from './data-elements-form.module.scss';
+import { useEffect } from 'react';
 
 type Props = {
     fieldName: string;
-    field: keyof Omit<DataElements, 'belongingnessRatio'>;
+    field: keyof DataElements;
 };
 export const DataElementRow = ({ fieldName, field }: Props) => {
     const form = useFormContext<DataElements>();
@@ -31,20 +32,18 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
         return Math.log(m) - Math.log(u);
     };
 
-    /**
-     *
-     * @param {boolean} active - the new value for the active state
-     */
-    const handleChecked = (active: boolean) => {
-        if (!active) {
-            form.reset(
-                { ...watch, [field]: { active: active, m: '', u: '', threshold: '' } },
-                { keepDefaultValues: true }
-            );
-        } else {
-            form.resetField(field);
+    useEffect(() => {
+        const active = watch[field]?.active;
+        if (active !== undefined) {
+            if (!active) {
+                form.setValue(field, { active, m: undefined, u: undefined, threshold: undefined });
+                form.clearErrors(field);
+            } else {
+                form.resetField(field);
+            }
         }
-    };
+    }, [watch[field]?.active]);
+
     return (
         <tr>
             <td className={styles.checkbox}>
@@ -52,16 +51,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                     control={form.control}
                     name={`${field}.active`}
                     render={({ field: { value, onChange, name } }) => (
-                        <Checkbox
-                            name={name}
-                            label=""
-                            id={`${field}-checkbox`}
-                            selected={value}
-                            onChange={(e) => {
-                                handleChecked(e);
-                                onChange(e);
-                            }}
-                        />
+                        <Checkbox name={name} label="" id={`${field}-checkbox`} selected={value} onChange={onChange} />
                     )}
                 />
             </td>
@@ -154,7 +144,6 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                                 onBlur={onBlur}
                                 value={value ?? ''}
                                 name={name}
-                                max={1}
                                 min={0}
                                 step={0.01}
                                 disabled={!watch[field]?.active}
