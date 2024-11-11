@@ -9,6 +9,7 @@ import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput } from 'design-system/date/picker';
 import { genders } from 'options/gender';
 import { OperatorInput } from 'design-system/input/operator';
+import { validDateRule } from 'design-system/date';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -48,7 +49,8 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="dateOfBirth"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={{ ...validDateRule('Date of birth') }}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={name}
                         name={name}
@@ -57,6 +59,7 @@ export const BasicInformation = () => {
                         onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
+                        error={error?.message}
                     />
                 )}
             />

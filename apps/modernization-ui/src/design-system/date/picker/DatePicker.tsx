@@ -1,17 +1,17 @@
-import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 import datePicker from '@uswds/uswds/js/usa-date-picker';
 
-import { asDate } from 'date';
 import { mapOr } from 'utils/mapping';
+import { asDateEntry, asISODate } from 'design-system/date';
 
-type DateValue = string | undefined;
+type TextualDate = string | undefined;
 
-const asFormattedDate = (value: DateValue): string | undefined => {
+const asFormattedDate = (value: TextualDate): string | undefined => {
     if (!value) {
         return undefined;
     } else if (typeof value === 'string') {
-        const date = asDate(value);
-        return date.toISOString().substring(0, 10);
+        const date = asDateEntry(value);
+        return asISODate(date);
     }
 };
 
@@ -21,19 +21,18 @@ const asDateOrToday = mapOr(asFormattedDate, today);
 
 type DatePickerProps = {
     id: string;
-    minDate?: DateValue;
-    maxDate?: DateValue;
-    value?: DateValue;
+    minDate?: TextualDate;
+    maxDate?: TextualDate;
+    value?: TextualDate;
     onChange?: (value?: string) => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
 const DatePicker = ({ id, maxDate, minDate, value, onChange, ...remaining }: DatePickerProps) => {
     const datePickerRef = useRef<HTMLDivElement>(null);
 
-    // const key = useMemo(() => value ?? id, [value, id]);
-    const adjustedValue = useMemo(() => asFormattedDate(value), [value]);
-    const adjustedMaxValue = useMemo(() => asDateOrToday(maxDate), [maxDate]);
-    const adjustedMinValue = useMemo(() => asFormattedDate(minDate), [minDate]);
+    const adjustedValue = asFormattedDate(value);
+    const adjustedMaxValue = asDateOrToday(maxDate);
+    const adjustedMinValue = asFormattedDate(minDate);
 
     const handleOnChange = useCallback(
         (event: Event) => {
@@ -43,8 +42,12 @@ const DatePicker = ({ id, maxDate, minDate, value, onChange, ...remaining }: Dat
                 onChange?.();
             }
         },
-        [useCallback]
+        [onChange]
     );
+
+    const handleKeyUp = (event: Event) => {
+        console.log('keyup', event);
+    };
 
     useLayoutEffect(() => {
         const datePickerElement = datePickerRef.current as HTMLDivElement;
@@ -52,12 +55,14 @@ const DatePicker = ({ id, maxDate, minDate, value, onChange, ...remaining }: Dat
 
         datePicker.on(datePickerElement);
 
-        const external = datePicker.getDatePickerContext(datePickerElement).externalInputEl;
+        const external = datePicker.getDatePickerContext(datePickerElement).externalInputEl as HTMLInputElement;
 
         external.addEventListener('change', handleOnChange);
+        external.addEventListener('keyup', handleKeyUp);
 
         return () => {
             external.removeEventListener('change', handleOnChange);
+            external.removeEventListener('keyup', handleKeyUp);
 
             if (wrapper) {
                 datePicker.off(datePickerElement);
