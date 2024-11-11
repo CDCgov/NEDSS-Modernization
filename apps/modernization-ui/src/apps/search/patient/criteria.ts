@@ -12,8 +12,8 @@ const statusOptions: Selectable[] = [
 export { statusOptions };
 
 type BasicInformation = {
-    lastName?: TextCriteria | string;
-    firstName?: string;
+    lastName?: TextCriteria;
+    firstName?: TextCriteria;
     dateOfBirth?: string;
     gender?: Selectable;
     id?: string;

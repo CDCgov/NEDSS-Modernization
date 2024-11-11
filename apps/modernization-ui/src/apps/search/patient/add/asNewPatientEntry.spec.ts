@@ -2,7 +2,7 @@ import { asNewPatientEntry } from './asNewPatientEntry';
 
 describe('when adding a new patient from a patient search', () => {
     it('should populate the first name that was searched for', () => {
-        const criteria = { firstName: 'first-name' };
+        const criteria = { firstName: { contains: 'first-name' } };
 
         const actual = asNewPatientEntry(criteria);
 

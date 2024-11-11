@@ -34,18 +34,14 @@ export const BasicInformation = () => {
                 control={control}
                 name="firstName"
                 rules={validNameRule}
-                render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        label="First name"
-                        name={name}
-                        htmlFor={name}
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                    <OperatorInput
                         id={name}
+                        value={value}
+                        label="First name"
                         sizing="compact"
                         error={error?.message}
+                        onChange={onChange}
                     />
                 )}
             />

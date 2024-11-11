@@ -51,13 +51,13 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should transform with first name', () => {
         const input: PatientCriteriaEntry = {
-            firstName: 'first-name-value',
+            firstName: { equals: 'first-name-value' },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ firstName: 'first-name-value' }));
+        expect(actual).toEqual(expect.objectContaining({ name: { first: { equals: 'first-name-value' } } }));
     });
 
     it('should transform with gender', () => {
