@@ -37,7 +37,10 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
      */
     const handleChecked = (active: boolean) => {
         if (!active) {
-            form.reset({ ...watch, [field]: { m: '', u: '', threshold: '' } }, { keepDefaultValues: true });
+            form.reset(
+                { ...watch, [field]: { active: active, m: '', u: '', threshold: '' } },
+                { keepDefaultValues: true }
+            );
         } else {
             form.resetField(field);
         }

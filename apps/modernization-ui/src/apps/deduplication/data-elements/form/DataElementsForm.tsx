@@ -2,10 +2,38 @@ import { Card } from 'apps/patient/add/extended/card/Card';
 import { Checkbox } from 'design-system/checkbox';
 import styles from './data-elements-form.module.scss';
 import { DataElementRow } from './DataElementRow';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { DataElements } from '../DataElement';
+
+const dataElementKeys: (keyof Omit<DataElements, 'belongingnessRatio'>)[] = [
+    'firstName',
+    'lastName',
+    'suffix',
+    'birthDate',
+    'mrn',
+    'ssn',
+    'sex',
+    'gender',
+    'race',
+    'address',
+    'city',
+    'state',
+    'zip',
+    'county',
+    'telephone'
+];
 
 export const DataElementsForm = () => {
+    const form = useFormContext<DataElements>();
+    const watch = useWatch({ control: form.control });
+
+    // Checks all keys in DataElements for an active property of false.
+    const hasInactive = (): boolean => {
+        return dataElementKeys.map((k) => watch[k]?.active).includes(false);
+    };
+
     const handleToggleAll = (toggle: boolean) => {
-        console.log('toggle all', toggle);
+        dataElementKeys.forEach((k) => form.setValue(`${k}.active`, toggle));
     };
 
     return (
@@ -19,6 +47,7 @@ export const DataElementsForm = () => {
                                     name={'selectAll'}
                                     label=""
                                     id={'toggle-all-checkbox'}
+                                    selected={!hasInactive()}
                                     onChange={handleToggleAll}
                                 />
                             </th>
@@ -37,6 +66,15 @@ export const DataElementsForm = () => {
                     <tbody>
                         <DataElementRow fieldName="Last name" field="lastName" />
                         <DataElementRow fieldName="First name" field="firstName" />
+                        <DataElementRow fieldName="Suffix" field="suffix" />
+                        <DataElementRow fieldName="Current sex" field="sex" />
+                        <DataElementRow fieldName="Date of birth" field="birthDate" />
+                        <DataElementRow fieldName="SSN" field="ssn" />
+                        <DataElementRow fieldName="Street address" field="address" />
+                        <DataElementRow fieldName="City" field="city" />
+                        <DataElementRow fieldName="State" field="state" />
+                        <DataElementRow fieldName="Zip" field="zip" />
+                        <DataElementRow fieldName="Telephone" field="telephone" />
                     </tbody>
                 </table>
             </div>
