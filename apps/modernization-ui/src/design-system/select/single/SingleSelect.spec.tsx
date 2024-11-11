@@ -59,13 +59,13 @@ describe('when one of the options is clicked', () => {
                     { name: 'name-four', value: 'value-four', label: 'label-four' }
                 ]}
                 name="test-name"
+                value={{ name: 'name-four', value: 'value-four', label: 'label-four' }}
+                onChange={jest.fn()}
             />
         );
-
         const select = getByRole('combobox', { name: 'Test Label' });
 
-        userEvent.selectOptions(select, 'name-four');
-
+        userEvent.selectOptions(select, 'value-four');
         const checked = getByRole('option', { selected: true });
 
         expect(checked).toHaveTextContent('name-four');
