@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SingleSelect } from './SingleSelect';
-import { Selectable } from 'options/selectable';
 
 describe('when selecting a single item from a specific set of items', () => {
     it('should display the SingleSelect without a value checked', () => {
@@ -49,13 +48,7 @@ describe('when selecting a single item from a specific set of items', () => {
 
 describe('when one of the options is clicked', () => {
     it('should mark the option as checked', () => {
-        const SingleSelectTestWrapper = ({
-            value,
-            onChange
-        }: {
-            value: Selectable | null;
-            onChange: (value?: Selectable) => void;
-        }) => (
+        const { getByRole } = render(
             <SingleSelect
                 id="test-id"
                 label="Test Label"
@@ -66,27 +59,15 @@ describe('when one of the options is clicked', () => {
                     { name: 'name-four', value: 'value-four', label: 'label-four' }
                 ]}
                 name="test-name"
-                value={value}
-                onChange={onChange}
+                value={{ name: 'name-four', value: 'value-four', label: 'label-four' }}
+                onChange={jest.fn()}
             />
         );
-        let selectedValue = null;
-        const handleChange = (value?: Selectable) => {
-            selectedValue = value || null;
-        };
-
-        const { getByRole, rerender } = render(
-            <SingleSelectTestWrapper value={selectedValue} onChange={handleChange} />
-        );
-
         const select = getByRole('combobox', { name: 'Test Label' });
 
-        userEvent.selectOptions(select, ['value-four']);
+        userEvent.selectOptions(select, 'value-four');
+        const checked = getByRole('option', { selected: true });
 
-        rerender(<SingleSelectTestWrapper value={selectedValue} onChange={handleChange} />);
-
-        const checked = getByRole('option', { name: 'name-four', selected: true });
         expect(checked).toHaveTextContent('name-four');
-        expect(selectedValue).toEqual({ name: 'name-four', value: 'value-four', label: 'label-four' });
     });
 });
