@@ -6,18 +6,19 @@ import { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDataElements } from '../api/useDataElements';
+import styles from './data-elements.module.scss';
 import { DataElements } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm';
 import { HelpText } from './HowTo';
-import styles from './data-elements.module.scss';
 
 export const DataElementConfig = () => {
     const { dataElements } = useDataElements();
-    const form = useForm<DataElements>({ mode: 'onBlur', defaultValues: dataElements });
+    const form = useForm<DataElements>({ mode: 'onBlur' });
     const nav = useNavigate();
 
     useEffect(() => {
-        form.reset(dataElements);
+        console.log('triggered');
+        form.reset(dataElements, { keepDefaultValues: false });
     }, [dataElements]);
 
     return (
