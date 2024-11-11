@@ -57,11 +57,12 @@ const SingleSelect = ({
             required={required}
             error={error}>
             <TrussworksSelect
+                key={value?.value}
                 {...inputProps}
                 id={id}
                 validationStatus={error ? 'error' : undefined}
                 name={inputProps.name ?? id}
-                value={value?.value || ''}
+                defaultValue={value?.value}
                 placeholder="-Select-"
                 onChange={handleChange}>
                 {renderOptions(placeholder, options)}
