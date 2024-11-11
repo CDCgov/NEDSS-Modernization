@@ -5,7 +5,7 @@ import { asTextCriteriaValue, TextCriteria } from 'options/operator';
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
-    const pushCriteria = (source: string, title: string, value?: string | TextCriteria) => {
+    const pushCriteria = (source: string, title: string, value?: TextCriteria) => {
         // note: we will eventually want to use asTextCriteria here and get the operator i.e. "contains"
         // to populate the operator field in the term
         const stringValue = asTextCriteriaValue(value);

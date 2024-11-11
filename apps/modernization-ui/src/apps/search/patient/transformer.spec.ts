@@ -51,7 +51,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should transform with first name', () => {
         const input: PatientCriteriaEntry = {
-            firstName: 'first-name-value',
+            firstName: { equals: 'first-name-value' },
             status: []
         };
 
