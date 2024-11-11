@@ -17,19 +17,10 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
     const calculateOddsRatio = () => {
         const m = watch[field]?.m;
         const u = watch[field]?.u;
-        if (Number.isNaN(m) || Number.isNaN(u) || u == 0 || m == undefined || u == undefined) {
+        if (Number.isNaN(m) || Number.isNaN(u) || u == 0 || m == 0 || m == undefined || u == undefined) {
             return '--';
         }
         return m / u;
-    };
-
-    const calculateLogOdds = () => {
-        const m = watch[field]?.m;
-        const u = watch[field]?.u;
-        if (Number.isNaN(m) || Number.isNaN(u) || u == 0 || m == undefined || u == undefined) {
-            return '--';
-        }
-        return Math.log(m) - Math.log(u);
     };
 
     useEffect(() => {
@@ -43,6 +34,16 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
             }
         }
     }, [watch[field]?.active]);
+
+    useEffect(() => {
+        const m = Number(watch[field]?.m);
+        const u = Number(watch[field]?.u);
+        if (Number.isNaN(m) || Number.isNaN(u) || u == 0 || m == 0 || m == undefined || u == undefined) {
+            form.setValue(`${field}.logOdds`, undefined);
+        } else {
+            form.setValue(`${field}.logOdds`, Math.log(m) - Math.log(u));
+        }
+    }, [watch[field]?.m, watch[field]?.u]);
 
     return (
         <tr>
@@ -125,7 +126,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                 />
             </td>
             <td>{calculateOddsRatio()}</td>
-            <td>{calculateLogOdds()}</td>
+            <td>{watch[field]?.logOdds ?? '--'}</td>
             <td>
                 <Controller
                     control={form.control}
