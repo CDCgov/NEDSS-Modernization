@@ -3,7 +3,6 @@ import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/gr
 import { asValue, asValues } from 'options/selectable';
 import { PatientCriteriaEntry } from './criteria';
 import { externalizeDate } from 'date';
-import { asTextCriteria } from 'options/operator';
 
 const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>
     data.identification && data.identificationType
@@ -15,8 +14,7 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
-        lastName,
-        firstName,
+        name,
         id,
         address,
         city,
@@ -37,10 +35,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         ...remaining
     } = data;
     return {
-        name: {
-            last: asTextCriteria(lastName),
-            first: asTextCriteria(firstName)
-        },
+        name,
         id,
         address,
         city,
