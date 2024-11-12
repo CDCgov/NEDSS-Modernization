@@ -27,11 +27,11 @@
                 }
             }
 
-            .calculatedField {
+            .calculatedColumn {
                 min-width: 12rem;
             }
 
-            .numericField {
+            .numericColumn {
                 width: 10rem;
             }
         }
@@ -48,61 +48,8 @@
             }
         }
 
-        .field {
-            font-weight: 700;
-        }
-
         tbody tr:nth-child(odd) {
             background-color: colors.$base-lightest;
-        }
-
-        .inputContainer {
-            display: flex;
-            align-items: center;
-
-            span {
-                span {
-                    background-color: colors.$error-dark;
-                    &::after {
-                        left: 51%;
-                        border-top: 5px solid colors.$error-dark;
-                    }
-                }
-            }
-
-            .numericInput {
-                width: 5rem;
-                height: 2.5rem;
-                padding: 0.5rem;
-                border-radius: 0;
-                border: solid 1px colors.$base-dark;
-            }
-
-            .errorBorder {
-                border: solid 0.25rem colors.$secondary-dark;
-            }
-
-            .tooltip {
-                background-color: unset;
-                min-width: unset;
-                min-height: unset;
-                padding: 0;
-                margin: 0;
-                color: colors.$secondary;
-                height: auto;
-                width: auto;
-                svg {
-                    margin: 0.25rem 0 0;
-                }
-
-                .tooltipIcon {
-                    margin-left: 0.25rem;
-                    font-size: 1rem;
-                    border-radius: 50%;
-                    width: 19.25px;
-                    height: 19.25px;
-                }
-            }
         }
 
         @extend %thin-bottom;

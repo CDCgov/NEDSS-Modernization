@@ -1,15 +1,15 @@
 import { Card } from 'apps/patient/add/extended/card/Card';
-import { Input } from 'components/FormInputs/Input';
 import { Heading } from 'components/heading';
 import { Icon } from 'design-system/icon';
 import { useEffect } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDataElements } from '../api/useDataElements';
+import styles from './data-elements.module.scss';
 import { DataElementsConfiguration } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm';
+import { TableNumericInput } from './form/TableNumericInput';
 import { HelpText } from './HowTo';
-import styles from './data-elements.module.scss';
 
 export const DataElementConfig = () => {
     const { dataElements } = useDataElements();
@@ -33,23 +33,28 @@ export const DataElementConfig = () => {
             <div className={styles.content}>
                 <main>
                     <Card id="globalSettings" title="Global settings">
-                        <Controller
-                            control={form.control}
-                            name="belongingnessRatio"
-                            render={({ field: { onChange, onBlur, value, name } }) => (
-                                <Input
-                                    type="number"
-                                    name={name}
-                                    label="Belongingness ratio"
-                                    defaultValue={value?.toString()}
-                                    onChange={onChange}
-                                    onBlur={onBlur}
-                                    orientation="horizontal"
-                                    className={styles.belongingnessInput}
-                                    step={0.01}
-                                />
-                            )}
-                        />
+                        <div className={styles.belongingnessCard}>
+                            <Controller
+                                control={form.control}
+                                name="belongingnessRatio"
+                                rules={{
+                                    required: { value: true, message: 'Belongingness ratio is required' }
+                                }}
+                                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                    <TableNumericInput
+                                        label="Belongingness ratio"
+                                        name={name}
+                                        value={value}
+                                        onChange={onChange}
+                                        onBlur={onBlur}
+                                        error={error?.message}
+                                        max={1}
+                                        min={0}
+                                        step={0.01}
+                                    />
+                                )}
+                            />
+                        </div>
                     </Card>
                     <FormProvider {...form}>
                         <DataElementsForm />

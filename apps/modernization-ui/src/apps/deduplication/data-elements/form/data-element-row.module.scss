@@ -1,0 +1,10 @@
+.checkbox {
+    width: 3.25rem;
+    label::before {
+        margin-top: -0.75rem;
+    }
+}
+
+.field {
+    font-weight: 700;
+}

@@ -52,11 +52,11 @@ export const DataElementsForm = () => {
                                 />
                             </th>
                             <th>Field</th>
-                            <th className={styles.numericField}>M</th>
-                            <th className={styles.numericField}>U</th>
-                            <th className={styles.calculatedField}>Odds ratio</th>
-                            <th className={styles.calculatedField}>Log odds</th>
-                            <th className={styles.numericField}>Threshold</th>
+                            <th className={styles.numericColumn}>M</th>
+                            <th className={styles.numericColumn}>U</th>
+                            <th className={styles.calculatedColumn}>Odds ratio</th>
+                            <th className={styles.calculatedColumn}>Log odds</th>
+                            <th className={styles.numericColumn}>Threshold</th>
                             <th />
                         </tr>
                         <tr className={styles.border}>

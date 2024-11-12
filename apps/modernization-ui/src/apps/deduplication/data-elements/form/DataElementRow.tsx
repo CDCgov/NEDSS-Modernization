@@ -1,10 +1,9 @@
-import { Icon, Tooltip } from '@trussworks/react-uswds';
-import classNames from 'classnames';
 import { Checkbox } from 'design-system/checkbox';
+import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../DataElement';
-import styles from './data-elements-form.module.scss';
-import { useEffect } from 'react';
+import { TableNumericInput } from './TableNumericInput';
+import styles from './data-element-row.module.scss';
 
 type Props = {
     fieldName: string;
@@ -65,29 +64,16 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                         required: { value: watch[field]?.active ?? false, message: 'M is required' }
                     }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
-                        <div className={styles.inputContainer}>
-                            <input
-                                type="number"
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                value={value ?? ''}
-                                name={name}
-                                max={1}
-                                min={0}
-                                step={0.01}
-                                disabled={!watch[field]?.active}
-                                className={classNames([error?.message ? styles.errorBorder : '', styles.numericInput])}
-                            />
-                            {error?.message && (
-                                <Tooltip
-                                    id={`${field}-m-error`}
-                                    label={error.message}
-                                    className={styles.tooltip}
-                                    position={'top'}>
-                                    <Icon.ErrorOutline className={styles.tooltipIcon} />
-                                </Tooltip>
-                            )}
-                        </div>
+                        <TableNumericInput
+                            name={name}
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                            max={1}
+                            min={0}
+                            step={0.01}
+                        />
                     )}
                 />
             </td>
@@ -99,29 +85,16 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                         required: { value: watch[field]?.active ?? false, message: 'U is required' }
                     }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
-                        <div className={styles.inputContainer}>
-                            <input
-                                type="number"
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                value={value ?? ''}
-                                name={name}
-                                max={1}
-                                min={0}
-                                step={0.01}
-                                disabled={!watch[field]?.active}
-                                className={classNames([error?.message ? styles.errorBorder : '', styles.numericInput])}
-                            />
-                            {error?.message && (
-                                <Tooltip
-                                    id={`${field}-u-error`}
-                                    label={error.message}
-                                    className={styles.tooltip}
-                                    position={'top'}>
-                                    <Icon.ErrorOutline className={styles.tooltipIcon} />
-                                </Tooltip>
-                            )}
-                        </div>
+                        <TableNumericInput
+                            name={name}
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                            max={1}
+                            min={0}
+                            step={0.01}
+                        />
                     )}
                 />
             </td>
@@ -138,28 +111,16 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                         }
                     }}
                     render={({ field: { value, onChange, onBlur, name }, fieldState: { error } }) => (
-                        <div className={styles.inputContainer}>
-                            <input
-                                type="number"
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                value={value ?? ''}
-                                name={name}
-                                min={0}
-                                step={0.01}
-                                disabled={!watch[field]?.active}
-                                className={classNames([error?.message ? styles.errorBorder : '', styles.numericInput])}
-                            />
-                            {error?.message && (
-                                <Tooltip
-                                    id={`${field}-threshold-error`}
-                                    label={error.message}
-                                    className={styles.tooltip}
-                                    position={'top'}>
-                                    <Icon.ErrorOutline className={styles.tooltipIcon} />
-                                </Tooltip>
-                            )}
-                        </div>
+                        <TableNumericInput
+                            name={name}
+                            value={value}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                            error={error?.message}
+                            max={1}
+                            min={0}
+                            step={0.01}
+                        />
                     )}
                 />
             </td>
