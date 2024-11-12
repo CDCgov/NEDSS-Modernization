@@ -212,3 +212,32 @@ describe('when the PatientCriteria contains Identification criteria', () => {
         );
     });
 });
+
+describe('when the PatientCriteria contains event id criteria', () => {
+    it.each([
+        'morbidity',
+        'investigation',
+        'vaccination',
+        'treatment',
+        'abcCase',
+        'cityCountyCase',
+        'notification',
+        'labReport',
+        'stateCase',
+        'document',
+        'accessionNumber'
+    ])('should transform with %s', (type) => {
+        const input: PatientCriteriaEntry = {
+            [type]: '1234',
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                [type]: '1234'
+            })
+        );
+    });
+});

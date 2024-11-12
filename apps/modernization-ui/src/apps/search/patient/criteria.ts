@@ -52,6 +52,9 @@ type EventIds = {
     notification?: string;
     labReport?: string;
     accessionNumber?: string;
+    investigation?: string;
+    treatment?: string;
+    vaccination?: string;
 };
 
 type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
