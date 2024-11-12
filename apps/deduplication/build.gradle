@@ -1,0 +1,40 @@
+plugins {
+    id 'distribution'
+    alias libs.plugins.springBoot
+}
+
+group = 'gov.cdc.nbs.deduplication'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+  implementation libs.springBoot.web
+
+  // database
+  implementation libs.bundles.jpa
+  implementation libs.mssql.jdbc
+
+  // swagger
+  implementation libs.bundles.swagger
+
+  // Testing
+	implementation libs.spring.test
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+bootRun {
+    systemProperty('spring.profiles.active', 'default,development,local')
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

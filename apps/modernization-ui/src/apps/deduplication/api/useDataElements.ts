@@ -1,120 +1,25 @@
 import { useEffect, useState } from 'react';
 import { DataElements } from '../data-elements/DataElement';
 
-export const initial = {
-    belongingnessRatio: 0.9,
-    firstName: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    lastName: {
-        active: true,
-        m: 0.4,
-        u: 0.2,
-        logOdds: Math.log(0.4) - Math.log(0.2),
-        threshold: 0.7
-    },
-    suffix: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    birthDate: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    mrn: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    ssn: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    sex: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    gender: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    race: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    address: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    city: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    state: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    zip: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    county: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    },
-    telephone: {
-        active: true,
-        m: 0.2,
-        u: 0.4,
-        logOdds: 0.2,
-        threshold: 0.7
-    }
-};
-
 export const useDataElements = () => {
     const [dataElements, setDataElements] = useState<DataElements | undefined>();
-    const fetch = () => {
-        // call API to retrieve values
-        setDataElements(initial);
+    const [error, setError] = useState<string | undefined>();
+    const [loading, setLoading] = useState<boolean>(false);
+    const fetchDataElements = async () => {
+        setLoading(true);
+        await fetch('/api/deduplication/data-elements', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(async (response) => {
+                setDataElements(await response.json());
+            })
+            .catch((error) => {
+                setError(error);
+            })
+            .finally(() => setLoading(false));
     };
 
     const save = (elements: DataElements): Promise<boolean> => {
@@ -124,8 +29,8 @@ export const useDataElements = () => {
     };
 
     useEffect(() => {
-        fetch();
+        fetchDataElements();
     }, []);
 
-    return { fetch, save, dataElements };
+    return { fetchDataElements, save, loading, error, dataElements };
 };

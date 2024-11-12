@@ -1,5 +1,5 @@
 type DataElement = {
-    active: boolean;
+    active?: boolean;
     m?: number;
     u?: number;
     logOdds?: number;
@@ -11,21 +11,21 @@ type BelongingnessRatio = {
 };
 
 type DataElements = {
-    firstName: DataElement;
-    lastName: DataElement;
-    suffix: DataElement;
-    birthDate: DataElement;
-    mrn: DataElement;
-    ssn: DataElement;
-    sex: DataElement;
-    gender: DataElement;
-    race: DataElement;
-    address: DataElement;
-    city: DataElement;
-    state: DataElement;
-    zip: DataElement;
-    county: DataElement;
-    telephone: DataElement;
+    firstName?: DataElement;
+    lastName?: DataElement;
+    suffix?: DataElement;
+    birthDate?: DataElement;
+    mrn?: DataElement;
+    ssn?: DataElement;
+    sex?: DataElement;
+    gender?: DataElement;
+    race?: DataElement;
+    address?: DataElement;
+    city?: DataElement;
+    state?: DataElement;
+    zip?: DataElement;
+    county?: DataElement;
+    telephone?: DataElement;
 };
 
 type DataElementsConfiguration = BelongingnessRatio & DataElements;

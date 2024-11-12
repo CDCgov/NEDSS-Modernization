@@ -106,6 +106,20 @@ services:
     entrypoint: "/opt/keycloak/bin/kc.sh start-dev --import-realm"
     networks:
       - nbs
+  deduplication-mssql:
+    build: 
+      context: ./deduplication
+      args:
+          - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+    container_name: deduplication-mssql
+    ports:
+      - 1434:1433
+    environment:
+      - ACCEPT_EULA=1
+      - SQLCMDPASSWORD=${DATABASE_PASSWORD}
+      - MSSQL_SA_PASSWORD=${DATABASE_PASSWORD}
+    networks:
+      - nbs
 volumes:
   nbs-mssql-data:
   nbs-mssql-working:
