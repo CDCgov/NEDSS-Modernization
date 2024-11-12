@@ -226,3 +226,39 @@ describe('when the PatientCriteria contains Identification criteria', () => {
         );
     });
 });
+
+type EventIdValue = { source: string; title: string; name: string; value: string };
+
+describe('when the PatientCriteria contains event ids criteria', () => {
+    it.each<EventIdValue>([
+        { name: '1234', source: 'morbidity', title: 'MORBIDITY REPORT ID', value: '1234' },
+        { name: '1234', source: 'investigation', title: 'INVESTIGATION ID', value: '1234' },
+        { name: '1234', source: 'vaccination', title: 'VACCINATION ID', value: '1234' },
+        { name: '1234', source: 'treatment', title: 'TREATMENT ID', value: '1234' },
+        { name: '1234', source: 'abcCase', title: 'ABCS CASE ID', value: '1234' },
+        { name: '1234', source: 'cityCountyCase', title: 'CITY/COUNTY CASE ID', value: '1234' },
+        { name: '1234', source: 'notification', title: 'NOTIFICATION ID', value: '1234' },
+        { name: '1234', source: 'labReport', title: 'LAB ID', value: '1234' },
+        { name: '1234', source: 'stateCase', title: 'STATE CASE ID', value: '1234' },
+        { name: '1234', source: 'document', title: 'DOCUMENT ID', value: '1234' },
+        { name: '1234', source: 'accessionNumber', title: 'ACCESSION NUMBER ID', value: '1234' }
+    ])('should resolve terms with %s %s', ({ name, source, title, value }) => {
+        const input: PatientCriteriaEntry = {
+            [source]: '1234',
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining([
+                {
+                    name: name,
+                    source: source,
+                    title: title,
+                    value: value
+                }
+            ])
+        );
+    });
+});
