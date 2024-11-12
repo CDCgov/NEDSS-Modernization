@@ -1,7 +1,7 @@
 import { Heading } from 'components/heading';
 import styles from './how-to.module.scss';
 
-export const HelpText = () => {
+export const HowTo = () => {
     return (
         <aside className={styles.helpText}>
             <Heading level={2}>How to</Heading>

@@ -11,10 +11,11 @@ type Props = {
     max?: number;
     min?: number;
     step?: number;
+    disabled?: boolean;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onBlur: (event: FocusEvent<HTMLInputElement>) => void;
 };
-export const TableNumericInput = ({ label, name, value, error, max, min, step, onChange, onBlur }: Props) => {
+export const TableNumericInput = ({ label, name, value, error, max, min, step, disabled, onChange, onBlur }: Props) => {
     return (
         <div className={styles.tableNumericInput}>
             {label && <Label htmlFor={name}>{label}</Label>}
@@ -29,6 +30,7 @@ export const TableNumericInput = ({ label, name, value, error, max, min, step, o
                     max={max}
                     min={min}
                     step={step}
+                    disabled={disabled}
                     className={classNames([error ? styles.errorBorder : '', styles.numericInput])}
                 />
                 {error && (

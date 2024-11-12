@@ -73,6 +73,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             max={1}
                             min={0}
                             step={0.01}
+                            disabled={!watch[field]?.active}
                         />
                     )}
                 />
@@ -94,6 +95,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             max={1}
                             min={0}
                             step={0.01}
+                            disabled={!watch[field]?.active}
                         />
                     )}
                 />
@@ -120,6 +122,7 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                             max={1}
                             min={0}
                             step={0.01}
+                            disabled={!watch[field]?.active}
                         />
                     )}
                 />

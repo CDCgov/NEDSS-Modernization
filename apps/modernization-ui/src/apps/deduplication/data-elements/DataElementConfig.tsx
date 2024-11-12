@@ -9,7 +9,7 @@ import styles from './data-elements.module.scss';
 import { DataElementsConfiguration } from './DataElement';
 import { DataElementsForm } from './form/DataElementsForm';
 import { TableNumericInput } from './form/TableNumericInput';
-import { HelpText } from './HowTo';
+import { HowTo } from './HowTo';
 
 export const DataElementConfig = () => {
     const { dataElements } = useDataElements();
@@ -60,7 +60,7 @@ export const DataElementConfig = () => {
                         <DataElementsForm />
                     </FormProvider>
                 </main>
-                <HelpText />
+                <HowTo />
             </div>
         </div>
     );
