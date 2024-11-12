@@ -32,6 +32,9 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         notification,
         labReport,
         accessionNumber,
+        investigation,
+        treatment,
+        vaccination,
         ...remaining
     } = data;
     return {
@@ -55,6 +58,9 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         notification,
         labReport,
         accessionNumber,
+        investigation,
+        vaccination,
+        treatment,
         recordStatus: asValues(remaining.status) as RecordStatus[],
         gender: asValue(remaining.gender),
         state: asValue(remaining.state),
