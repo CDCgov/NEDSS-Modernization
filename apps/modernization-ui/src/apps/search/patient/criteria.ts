@@ -22,7 +22,7 @@ type BasicInformation = {
 };
 
 type Address = {
-    address?: string;
+    address?: TextCriteria;
     city?: string;
     state?: Selectable;
     zip?: number;

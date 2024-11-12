@@ -34,7 +34,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should populate the street address that was searched for', () => {
-        const criteria = { address: 'address-value' };
+        const criteria = { address: { equals: 'address-value' } };
 
         const actual = asNewPatientEntry(criteria);
 

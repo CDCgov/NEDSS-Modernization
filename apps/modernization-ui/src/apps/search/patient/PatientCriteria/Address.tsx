@@ -4,6 +4,7 @@ import { SearchCriteriaContext, SearchCriteriaProvider } from 'providers/SearchC
 import { SingleSelect } from 'design-system/select';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry } from 'apps/search/patient/criteria';
+import { OperatorInput } from 'design-system/input/operator';
 
 export const Address = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -14,17 +15,17 @@ export const Address = () => {
                     control={control}
                     name="address"
                     render={({ field: { onChange, value, name } }) => (
-                        <Input
-                            onChange={onChange}
-                            type="text"
-                            label="Street address"
-                            defaultValue={value}
-                            htmlFor={name}
+                        <OperatorInput
                             id={name}
+                            value={value}
+                            label="Street address"
                             sizing="compact"
+                            operationMode="alpha"
+                            onChange={onChange}
                         />
                     )}
                 />
+
                 <Controller
                     control={control}
                     name="city"

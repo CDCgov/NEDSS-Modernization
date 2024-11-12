@@ -40,8 +40,10 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
             last: asTextCriteria(lastName),
             first: asTextCriteria(firstName)
         },
+        location: {
+            street: asTextCriteria(address)
+        },
         id,
-        address,
         city,
         phoneNumber,
         email,
