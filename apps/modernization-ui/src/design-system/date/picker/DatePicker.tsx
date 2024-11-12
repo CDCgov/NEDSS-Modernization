@@ -1,8 +1,15 @@
-import { useCallback, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
+import { mapOr } from 'utils/mapping';
+import { asDateEntry, asISODate } from 'design-system/date/entry';
+import { maskedAsDate } from './maskedAsDate';
+
 import datePicker from '@uswds/uswds/js/usa-date-picker';
 
-import { mapOr } from 'utils/mapping';
-import { asDateEntry, asISODate } from 'design-system/date';
+const handleKeyUp = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+
+    input.value = maskedAsDate(input.value);
+};
 
 type TextualDate = string | undefined;
 
@@ -34,19 +41,12 @@ const DatePicker = ({ id, maxDate, minDate, value, onChange, ...remaining }: Dat
     const adjustedMaxValue = asDateOrToday(maxDate);
     const adjustedMinValue = asFormattedDate(minDate);
 
-    const handleOnChange = useCallback(
-        (event: Event) => {
-            if (event.target && 'value' in event.target && typeof event.target.value === 'string') {
-                onChange?.(event.target.value);
-            } else {
-                onChange?.();
-            }
-        },
-        [onChange]
-    );
-
-    const handleKeyUp = (event: Event) => {
-        console.log('keyup', event);
+    const handleOnChange = (event: Event) => {
+        if (event.target && 'value' in event.target && typeof event.target.value === 'string') {
+            onChange?.(event.target.value);
+        } else {
+            onChange?.();
+        }
     };
 
     useLayoutEffect(() => {
