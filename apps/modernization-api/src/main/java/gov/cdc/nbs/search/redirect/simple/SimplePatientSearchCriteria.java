@@ -12,8 +12,17 @@ record SimplePatientSearchCriteria(
     @JsonSerialize(using = FormattedLocalDateJsonSerializer.class)
     LocalDate dateOfBirth,
     Option gender,
-    String id
+    String id,
+    String morbidity,
+    String document,
+    String stateCase,
+    String abcCase,
+    String cityCountyCase,
+    String notification,
+    String labReport,
+    String accessionNumber,
+    String investigation,
+    String treatment,
+    String vaccination
 ) {
-
-
 }
