@@ -22,21 +22,24 @@ Feature: Searching from the NBS home page
     And the token is present in the redirect
 
   Scenario Outline: NBS home page search redirects to Investigation and Laboratory search
-    Given I want a simple search for a <event-type> with the ID "2783"
+    Given I want a simple search for an <event-type> with the ID "<value>"
     When I perform a search from the NBS Home screen
     Then I am redirected to Advanced Search
-    And the search parameters include a <event-type> with the ID "2783"
-    And the search type is <search-type>
+    And the search parameters include a <event-type> with the ID "<value>"
 
     Examples:
-      | event-type          | search-type    |
-      | ABCS Case ID        | investigations |
-      | City/County Case ID | investigations |
-      | Investigation ID    | investigations |
-      | Notification ID     | investigations |
-      | State Case ID       | investigations |
-      | Accession Number ID | lab-reports    |
-      | Lab ID              | lab-reports    |
+      | event-type          | value |
+      | ABCS Case ID        | 10000 |
+      | City/County Case ID | 10001 |
+      | Investigation ID    | 10002 |
+      | Notification ID     | 10003 |
+      | State Case ID       | 10004 |
+      | Accession Number ID | 10005 |
+      | Lab ID              | 10006 |
+      | Vaccination ID      | 10007 |
+      | Treatment ID        | 10008 |
+      | Morbidity Report ID | 10009 |
+      | Document ID         | 10010 |
 
   Scenario: NBS home page search is not redirected when a user is not logged in
     Given I am not logged in

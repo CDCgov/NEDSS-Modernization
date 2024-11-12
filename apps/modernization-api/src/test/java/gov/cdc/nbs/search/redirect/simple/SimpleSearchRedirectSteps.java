@@ -108,24 +108,25 @@ public class SimpleSearchRedirectSteps {
   ) throws Exception {
 
     String type = switch (eventType) {
-      case "P10000" -> "ABCS_CASE_ID";
-      case "P10008" -> "CITY_COUNTY_CASE_ID";
-      case "P10001" -> "INVESTIGATION_ID";
-      case "P10013" -> "NOTIFICATION_ID";
-      case "P10004" -> "STATE_CASE_ID";
-      case "P10009" -> "ACCESSION_NUMBER";
-      case "P10002" -> "LAB_ID";
-      default -> null;
+      case "P10000" -> "abcCase";
+      case "P10008" -> "cityCountyCase";
+      case "P10001" -> "investigation";
+      case "P10013" -> "notification";
+      case "P10004" -> "stateCase";
+      case "P10009" -> "accessionNumber";
+      case "P10002" -> "labReport";
+      case "P10006" -> "vaccination";
+      case "P10010" -> "document";
+      case "P10003" -> "morbidity";
+      case "P10005" -> "treatment";
+      default -> throw new IllegalStateException("Unexpected value: " + eventType);
 
     };
 
-    if (type != null) {
+    this.decrypted.active()
+        .andDo(print())
+        .andExpect(jsonPath("$.%s", type).value(equalToIgnoringCase(identifier)));
 
-      this.decrypted.active()
-          .andDo(print())
-          .andExpect(jsonPath("$.identification.type.value").value(equalToIgnoringCase(type)))
-          .andExpect(jsonPath("$.identification.value").value(equalToIgnoringCase(identifier)));
-    }
   }
 
   @Then("the search type is {searchType}")
