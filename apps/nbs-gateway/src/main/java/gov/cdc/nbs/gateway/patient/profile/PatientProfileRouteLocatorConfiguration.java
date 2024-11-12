@@ -20,6 +20,11 @@ import java.util.List;
  *     <li>Query Parameter {@code ContextAction} of {@code ViewFile}</li>
  *     <li>Query Parameter {@code ContextAction} of {@code FileSummary}</li>
  * </ul>
+ *
+ * If the request contains a query parameter of either {@code uid} or {@code MPRUid} the request is routed to an endpoint
+ * of the patient profile service that can resolve the modernized patient profile using the value of the query parameter.
+ * Otherwise, the request is routed to an endpoint that can resolve the modernized patient profile using contextual
+ * request data present in cookies.
  */
 @Configuration
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
@@ -29,19 +34,32 @@ class PatientProfileRouteLocatorConfiguration {
   RouteLocator patientProfileLocator(
       final RouteLocatorBuilder builder,
       @Qualifier("defaults") final List<GatewayFilter> defaults,
-      final PatientProfileService parameters
+      final PatientProfileService service
   ) {
     return builder.routes()
         .route(
-            "patient-profile",
+            "patient-profile-direct",
+            route -> route
+                .order(RouteOrdering.PATIENT_PROFILE.order())
+                .query("ContextAction", "ViewFile|FileSummary")
+                .and()
+                .query("uid").or().query("MPRUid")
+                .filters(
+                    filter -> filter.setPath(service.direct())
+                        .filters(defaults)
+                )
+                .uri(service.uri())
+        )
+        .route(
+            "patient-profile-resolving",
             route -> route
                 .order(RouteOrdering.PATIENT_PROFILE.order())
                 .query("ContextAction", "ViewFile|FileSummary")
                 .filters(
-                    filter -> filter.setPath("/nbs/redirect/patientProfile")
+                    filter -> filter.setPath(service.summary())
                         .filters(defaults)
                 )
-                .uri(parameters.uri())
+                .uri(service.uri())
         )
         .build();
   }

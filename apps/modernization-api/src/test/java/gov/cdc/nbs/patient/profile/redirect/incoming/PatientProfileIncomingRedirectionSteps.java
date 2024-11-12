@@ -42,7 +42,7 @@ public class PatientProfileIncomingRedirectionSteps {
     response.active(
         mvc
             .perform(
-                authenticated.withSession(post("/nbs/redirect/patientProfile"))
+                authenticated.withSession(post("/nbs/redirect/patient/profile"))
                     .param("MPRUid", String.valueOf(patient.id()))
             )
     );
@@ -55,7 +55,7 @@ public class PatientProfileIncomingRedirectionSteps {
     response.active(
         mvc
             .perform(
-                authenticated.withSession(post("/nbs/redirect/patientProfile"))
+                authenticated.withSession(post("/nbs/redirect/patient/profile"))
                     .param("uid", String.valueOf(patient.id()))
             )
     );

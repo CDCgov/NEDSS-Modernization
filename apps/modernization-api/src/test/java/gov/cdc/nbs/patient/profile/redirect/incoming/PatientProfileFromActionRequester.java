@@ -27,7 +27,7 @@ class PatientProfileFromActionRequester {
   ResultActions returning(final InvestigationIdentifier investigation) {
     try {
       return mvc.perform(
-          authenticated.withSession(get("/nbs/redirect/patientProfile/return"))
+          authenticated.withSession(get("/nbs/redirect/patientProfile/summary/return"))
               .cookie(new Cookie("Patient-Action", String.valueOf(investigation.identifier())))
       );
     } catch (Exception e) {
