@@ -111,8 +111,8 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         terms.push(fromValue('treatment', 'TREATMENT ID')(entry.treatment));
     }
 
-    if(entry.vaccination) {
-      terms.push(fromValue('vaccination', 'VACCINATION ID')(entry.vaccination));
+    if (entry.vaccination) {
+        terms.push(fromValue('vaccination', 'VACCINATION ID')(entry.vaccination));
     }
 
     return terms;
