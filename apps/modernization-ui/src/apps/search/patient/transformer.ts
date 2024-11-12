@@ -15,7 +15,6 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
-        includeSimilar,
         lastName,
         firstName,
         id,
@@ -35,7 +34,6 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         ...remaining
     } = data;
     return {
-        disableSoundex: !includeSimilar,
         name: {
             last: asTextCriteria(lastName),
             first: asTextCriteria(firstName)

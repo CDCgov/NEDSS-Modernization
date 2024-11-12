@@ -3,7 +3,7 @@ import { PatientSearchResult, PersonFilter, useFindPatientsByFilterLazyQuery } f
 import { ResultRequest, SearchInteraction, useSearchResultsFormAdapter } from 'apps/search';
 import { transform as transformer } from './transformer';
 import { PatientCriteriaEntry, initial as defaultValues } from './criteria';
-import { patientTermsResolver as termResolver } from './patientTermsResovler';
+import { patientTermsResolver as termResolver } from './patientTermsResolver';
 
 type Settings = {
     form: UseFormReturn<PatientCriteriaEntry>;

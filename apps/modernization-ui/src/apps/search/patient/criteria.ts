@@ -18,7 +18,6 @@ type BasicInformation = {
     gender?: Selectable;
     id?: string;
     status: Selectable[];
-    includeSimilar?: boolean;
 };
 
 type Address = {
