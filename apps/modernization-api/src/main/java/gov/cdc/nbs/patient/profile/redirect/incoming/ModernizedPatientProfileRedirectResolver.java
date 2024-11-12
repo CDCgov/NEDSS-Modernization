@@ -58,16 +58,6 @@ public class ModernizedPatientProfileRedirectResolver {
     return redirected(requested.from(request));
   }
 
-  /**
-   * Resolves a redirect to the Modernized Patient Profile using the identifier given.
-   *
-   * @param identifier The unique identifier of a patient
-   * @return A {@link ResponseEntity} that redirects to the Modernized Patient Profile
-   */
-  ResponseEntity<Void> forPatient(final long identifier) {
-    return redirected(requested.from(identifier));
-  }
-
   private ResponseEntity<Void> redirected(final Optional<IncomingPatient> incoming) {
     return incoming.map(ModernizedPatientProfileRedirect::forPatient)
         .orElse(ModernizedPatientProfileRedirect.fallback())

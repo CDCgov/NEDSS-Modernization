@@ -1,4 +1,4 @@
-@patient-profile-returning-redirect @web-interaction
+@patient-profile-returning-redirect
 Feature: NBS Classic Patient Profile returns to modernized Patient Profile
 
   Background:
@@ -28,4 +28,3 @@ Feature: NBS Classic Patient Profile returns to modernized Patient Profile
   Scenario: A user in NBS6 is viewing a patient from the results of an Event search
     When navigating to a Patient Profile from event search results
     Then I am redirected to the Modernized Patient Profile
-
