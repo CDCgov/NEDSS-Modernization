@@ -1,7 +1,5 @@
-import { validateAll } from 'validation';
 import { asDateEntry } from './entry';
 import { validateDateEntry } from './validateDateEntry';
-import { validateFullDate } from './validateFullDate';
 
 const validateDate =
     (name: string) =>
@@ -12,7 +10,7 @@ const validateDate =
             return `The ${name} should be in the format MM/DD/YYYY.`;
         }
 
-        return validateAll(validateDateEntry(name), validateFullDate(name))(entered);
+        return validateDateEntry(name)(entered);
     };
 
 export { validateDate };

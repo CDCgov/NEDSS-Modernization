@@ -1,15 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { SingleSelect } from 'design-system/select';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { OperatorInput } from 'design-system/input/operator';
+import { Input } from 'components/FormInputs/Input';
+import { validNameRule } from 'validation/entry';
+import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { validNameRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-
-import { DatePickerInput } from 'design-system/date/picker';
-import { genders } from 'options/gender';
-import { OperatorInput } from 'design-system/input/operator';
-import { validDateRule } from 'design-system/date';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -49,7 +47,7 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="dateOfBirth"
-                rules={{ ...validDateRule('Date of birth') }}
+                rules={validDateRule('Date of birth')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         id={name}
@@ -81,7 +79,7 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
                         defaultValue={value}
@@ -91,6 +89,7 @@ export const BasicInformation = () => {
                         htmlFor={name}
                         id={name}
                         sizing="compact"
+                        error={error?.message}
                     />
                 )}
             />

@@ -5,21 +5,23 @@ const masked = (placeholder: string) => (value: string) => {
     let newValue = '';
 
     for (let i = 0, charIndex = 0; i < placeholder.length; i += 1) {
-        const isInt = isInteger(stripped[charIndex]);
+        const next = stripped[charIndex];
+
+        if (next === undefined) {
+            break;
+        }
+
+        const isInt = isInteger(next);
         const matchesNumber = placeholder[i] === '_';
 
         if (matchesNumber && isInt) {
-            newValue += stripped[charIndex];
+            newValue += next;
             charIndex += 1;
         } else if ((!isInt && matchesNumber) || (matchesNumber && !isInt)) {
             return newValue;
         } else {
-            //  take the value from the placeholder
+            //  use the placeholder
             newValue += placeholder[i];
-        }
-        // break if no characters left and the pattern is non-special character
-        if (stripped[charIndex] === undefined) {
-            break;
         }
     }
 

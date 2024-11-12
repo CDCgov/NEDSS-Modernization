@@ -10,15 +10,23 @@ const maybeNumber = maybeMap(Number);
 
 const DATE_ENTRY_FORMAT = /^(?<month>\d{2})\/(?<day>\d{2})\/(?<year>\d{4})$/;
 
-const asDateEntry = (value: string): DateEntry | undefined => {
-    const match = value.match(DATE_ENTRY_FORMAT);
+/**
+ * Creates a DateEntry from a string that matches the format MM/DD/YYYY.
+ *
+ * @param {string} value  The textual date value in the MM/DD/YYYY format.
+ * @return {DateEntry | undefined}
+ */
+const asDateEntry = (value?: string): DateEntry | undefined => {
+    if (value) {
+        const match = value.match(DATE_ENTRY_FORMAT);
 
-    if (match) {
-        const year = maybeNumber(match.groups?.year);
-        const month = maybeNumber(match.groups?.month);
-        const day = maybeNumber(match.groups?.day);
+        if (match) {
+            const year = maybeNumber(match.groups?.year);
+            const month = maybeNumber(match.groups?.month);
+            const day = maybeNumber(match.groups?.day);
 
-        return { year, month, day };
+            return { year, month, day };
+        }
     }
 };
 
@@ -46,5 +54,5 @@ const asDate = (value?: DateEntry) => {
     }
 };
 
-export { asDateEntry, asDate, displayDateEntry, asISODate };
+export { DATE_ENTRY_FORMAT, asDateEntry, asDate, displayDateEntry, asISODate };
 export type { DateEntry };

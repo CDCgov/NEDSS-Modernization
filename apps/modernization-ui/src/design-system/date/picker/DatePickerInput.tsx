@@ -24,7 +24,7 @@ const DatePickerInput = ({
             htmlFor={id}
             required={required}
             error={error}>
-            <DatePicker id={id} value={value} {...remaining} />
+            <DatePicker id={id} label={label} value={value} {...remaining} />
         </EntryWrapper>
     );
 };

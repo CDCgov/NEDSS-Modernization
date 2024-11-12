@@ -16,8 +16,7 @@ import { usePatientSearch } from './usePatientSearch';
 const PatientSearch = () => {
     const form = useForm<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>({
         defaultValues,
-        mode: 'onBlur',
-        reValidateMode: 'onBlur'
+        mode: 'all'
     });
 
     const interaction = usePatientSearch({ form });
