@@ -9,7 +9,7 @@ import {
     PatientSummaryPhone
 } from 'generated/graphql/schema';
 import { Loading } from 'components/Spinner';
-import { internalizeDate } from 'date';
+import { calculateAge, internalizeDate } from 'date';
 import { Patient } from 'apps/patient/profile';
 import { displayAddressText } from 'address/display';
 import { NoData } from 'components/NoData';
@@ -40,7 +40,9 @@ const asText = (value: string) => <p className="patient-summary-item-value">{val
 const allAsText = (items: string[]) => asText(items.join('\n'));
 
 const asBirthday = (summary: PatientSummary) => {
-    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${summary.age} years old)`;
+    const value =
+        summary.birthday &&
+        `${internalizeDate(summary.birthday)} (${calculateAge(summary.birthday)?.quantity.toString()} ${calculateAge(summary.birthday)?.unit.toString()})`;
     return maybeRender(value, asText);
 };
 
