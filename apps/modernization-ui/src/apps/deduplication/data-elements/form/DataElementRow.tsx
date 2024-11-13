@@ -4,12 +4,14 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { DataElements } from '../DataElement';
 import { TableNumericInput } from './TableNumericInput';
 import styles from './data-element-row.module.scss';
+import { useDataElements } from 'apps/deduplication/api/useDataElements';
 
 type Props = {
     fieldName: string;
     field: keyof DataElements;
 };
 export const DataElementRow = ({ fieldName, field }: Props) => {
+    const { dataElements } = useDataElements();
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
@@ -26,10 +28,23 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
         const active = watch[field]?.active;
         if (active !== undefined) {
             if (!active) {
-                form.setValue(field, { active, m: undefined, u: undefined, threshold: undefined });
+                form.setValue(field, {
+                    active,
+                    m: undefined,
+                    u: undefined,
+                    logOdds: undefined,
+                    threshold: undefined
+                });
                 form.clearErrors(field);
             } else {
-                form.resetField(field);
+                const defaultValue = {
+                    active,
+                    m: dataElements?.[field]?.m,
+                    u: dataElements?.[field]?.u,
+                    logOdds: 0, // calculated on m, u change
+                    threshold: dataElements?.[field]?.threshold
+                };
+                form.setValue(field, defaultValue, { shouldDirty: false });
             }
         }
     }, [watch[field]?.active]);

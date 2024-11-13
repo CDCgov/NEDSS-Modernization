@@ -29,10 +29,23 @@
             flex-direction: column;
             flex-grow: 1;
             gap: 1rem;
+            padding-bottom: 8rem;
 
             .belongingnessCard {
                 padding: 0.75rem 1.5rem;
             }
         }
+    }
+
+    .buttonBar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 1.5rem;
+        background-color: colors.$base-white;
+        position: fixed;
+        bottom: 0;
+        @extend %thin-top;
     }
 }

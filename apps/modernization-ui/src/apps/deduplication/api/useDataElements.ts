@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { DataElements } from '../data-elements/DataElement';
+import { DataElementsConfiguration } from '../data-elements/DataElement';
+
+const API_BASE = '/api/deduplication/data-elements';
 
 export const useDataElements = () => {
-    const [dataElements, setDataElements] = useState<DataElements | undefined>();
+    const [dataElements, setDataElements] = useState<DataElementsConfiguration | undefined>();
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState<boolean>(false);
     const fetchDataElements = async () => {
         setLoading(true);
-        await fetch('/api/deduplication/data-elements', {
+        await fetch(API_BASE, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,10 +24,21 @@ export const useDataElements = () => {
             .finally(() => setLoading(false));
     };
 
-    const save = (elements: DataElements): Promise<boolean> => {
-        console.log('saving elements', elements);
-        // call API persist values
-        return Promise.resolve(true);
+    const save = async (configuration: DataElementsConfiguration, successCallback?: () => void) => {
+        await fetch(API_BASE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(configuration)
+        })
+            .then(async (response) => {
+                setDataElements(await response.json());
+                successCallback?.();
+            })
+            .catch((error) => {
+                setError(error);
+            });
     };
 
     useEffect(() => {

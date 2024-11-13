@@ -1,4 +1,6 @@
+import { AlertProvider, useAlert } from 'alert';
 import { Card } from 'apps/patient/add/extended/card/Card';
+import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Icon } from 'design-system/icon';
 import { useEffect } from 'react';
@@ -12,13 +14,34 @@ import { TableNumericInput } from './form/TableNumericInput';
 import { HowTo } from './HowTo';
 
 export const DataElementConfig = () => {
-    const { dataElements } = useDataElements();
+    return (
+        <AlertProvider>
+            <DataElementConfigContent />
+        </AlertProvider>
+    );
+};
+
+const DataElementConfigContent = () => {
+    const { showSuccess, showError } = useAlert();
+    const { dataElements, save, error } = useDataElements();
     const form = useForm<DataElementsConfiguration>({ mode: 'onBlur' });
     const nav = useNavigate();
 
     useEffect(() => {
-        form.reset(dataElements, { keepDefaultValues: false });
+        form.reset(dataElements, { keepDefaultValues: false, keepDirty: false });
     }, [dataElements]);
+
+    useEffect(() => {
+        if (error) {
+            showError({ message: error });
+        }
+    }, [error]);
+
+    const handleSubmit = () => {
+        save(form.getValues(), () =>
+            showSuccess({ message: 'You have successfully updated the data elements configuration.' })
+        );
+    };
 
     return (
         <div className={styles.dataElements}>
@@ -61,6 +84,12 @@ export const DataElementConfig = () => {
                     </FormProvider>
                 </main>
                 <HowTo />
+            </div>
+            <div className={styles.buttonBar}>
+                <Button outline>Cancel</Button>
+                <Button onClick={handleSubmit} disabled={!form.formState.isDirty || !form.formState.isValid}>
+                    Save data elements configuration
+                </Button>
             </div>
         </div>
     );
