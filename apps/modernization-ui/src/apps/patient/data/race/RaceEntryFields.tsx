@@ -4,6 +4,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { RaceCategoryValidator, RaceEntry } from './entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
+import { useState } from 'react';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
@@ -12,6 +13,7 @@ type RaceEntryFieldsProps = {
 
 const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps) => {
     const { control } = useFormContext<RaceEntry>();
+    const [resetDetailed, setResetDetailed] = useState<boolean>(false);
 
     const id = useWatch({ control, name: 'id' });
 
@@ -50,7 +52,10 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
                         orientation="horizontal"
                         required
                         onBlur={onBlur}
-                        onChange={onChange}
+                        onChange={(selected) => {
+                            onChange(selected);
+                            setResetDetailed(true);
+                        }}
                         value={value}
                         id={`race-${name}`}
                         name={name}
@@ -70,8 +75,11 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
                         id={`race-${name}`}
                         name={name}
                         disabled={selectedCategory === undefined}
-                        value={value}
-                        onChange={onChange}
+                        value={!resetDetailed ? value : undefined}
+                        onChange={(details) => {
+                            onChange(details);
+                            setResetDetailed(false);
+                        }}
                         options={detailedRaces}
                     />
                 )}
