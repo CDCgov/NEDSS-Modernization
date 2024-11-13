@@ -46,7 +46,7 @@ public record DataElementConfiguration(
       Double threshold) {
     public DataElement() {
       this(
-          true,
+          false,
           null,
           null,
           null,

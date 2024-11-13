@@ -20,11 +20,29 @@ export const DataElementConfig = () => {
         </AlertProvider>
     );
 };
+const initial: DataElementsConfiguration = {
+    belongingnessRatio: undefined,
+    firstName: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    lastName: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    suffix: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    birthDate: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    mrn: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    ssn: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    sex: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    gender: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    race: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    address: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    city: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    state: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    zip: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    county: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined },
+    telephone: { active: false, m: undefined, u: undefined, logOdds: undefined, threshold: undefined }
+};
 
 const DataElementConfigContent = () => {
     const { showSuccess, showError } = useAlert();
     const { dataElements, save, error } = useDataElements();
-    const form = useForm<DataElementsConfiguration>({ mode: 'onBlur' });
+    const form = useForm<DataElementsConfiguration>({ mode: 'onBlur', defaultValues: initial });
     const nav = useNavigate();
 
     useEffect(() => {

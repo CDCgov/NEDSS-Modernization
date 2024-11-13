@@ -44,7 +44,8 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
                     logOdds: 0, // calculated on m, u change
                     threshold: dataElements?.[field]?.threshold
                 };
-                form.setValue(field, defaultValue, { shouldDirty: false });
+                form.setValue(field, defaultValue);
+                form.trigger(field);
             }
         }
     }, [watch[field]?.active]);

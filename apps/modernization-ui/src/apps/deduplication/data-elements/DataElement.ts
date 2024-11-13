@@ -7,7 +7,7 @@ type DataElement = {
 };
 
 type BelongingnessRatio = {
-    belongingnessRatio: number;
+    belongingnessRatio?: number;
 };
 
 type DataElements = {

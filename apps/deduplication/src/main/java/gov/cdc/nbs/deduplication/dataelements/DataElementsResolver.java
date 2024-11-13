@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.cdc.nbs.deduplication.dataelements.model.DataElementConfiguration;
+import gov.cdc.nbs.deduplication.dataelements.model.DataElementConfigurationResponse;
 import gov.cdc.nbs.deduplication.exception.ConfigurationParsingException;
 
 @Component
@@ -27,13 +28,14 @@ public class DataElementsResolver {
     this.mapper = mapper;
   }
 
-  public DataElementConfiguration resolveCurrent() {
+  public DataElementConfigurationResponse resolveCurrent() {
     final List<String> configurations = template.queryForList(QUERY, String.class);
     if (configurations.isEmpty()) {
-      return new DataElementConfiguration();
+      return new DataElementConfigurationResponse(null);
     }
     try {
-      return mapper.readValue(configurations.get(0), DataElementConfiguration.class);
+      return new DataElementConfigurationResponse(
+          mapper.readValue(configurations.get(0), DataElementConfiguration.class));
     } catch (JsonProcessingException e) {
       throw new ConfigurationParsingException();
     }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import gov.cdc.nbs.deduplication.dataelements.model.DataElementConfiguration;
+import gov.cdc.nbs.deduplication.dataelements.model.DataElementConfigurationResponse;
 
 @RestController
 @RequestMapping("/api/deduplication/data-elements")
@@ -21,12 +22,12 @@ public class DataElementsController {
   }
 
   @GetMapping
-  public DataElementConfiguration getDataElements() {
+  public DataElementConfigurationResponse getDataElements() {
     return resolver.resolveCurrent();
   }
 
   @PostMapping
-  public DataElementConfiguration save(@RequestBody DataElementConfiguration configuration) {
+  public DataElementConfigurationResponse save(@RequestBody DataElementConfiguration configuration) {
     creator.create(configuration);
     return resolver.resolveCurrent();
   }

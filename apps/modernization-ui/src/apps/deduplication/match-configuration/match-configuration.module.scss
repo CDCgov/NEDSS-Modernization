@@ -1,0 +1,23 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.matchConfiguration {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+
+    & > header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: colors.$base-white;
+        padding: 1rem;
+        @extend %thin-bottom;
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+    }
+}

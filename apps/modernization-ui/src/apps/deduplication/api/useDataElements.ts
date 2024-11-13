@@ -3,6 +3,10 @@ import { DataElementsConfiguration } from '../data-elements/DataElement';
 
 const API_BASE = '/api/deduplication/data-elements';
 
+type DataElementsConfigurationResponse = {
+    configuration: DataElementsConfiguration;
+};
+
 export const useDataElements = () => {
     const [dataElements, setDataElements] = useState<DataElementsConfiguration | undefined>();
     const [error, setError] = useState<string | undefined>();
@@ -16,7 +20,8 @@ export const useDataElements = () => {
             }
         })
             .then(async (response) => {
-                setDataElements(await response.json());
+                const configResponse: DataElementsConfigurationResponse = await response.json();
+                setDataElements(configResponse.configuration);
             })
             .catch((error) => {
                 setError(error);

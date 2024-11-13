@@ -34,6 +34,7 @@ export const DataElementsForm = () => {
 
     const handleToggleAll = (toggle: boolean) => {
         dataElementKeys.forEach((k) => form.setValue(`${k}.active`, toggle));
+        form.trigger();
     };
 
     return (
