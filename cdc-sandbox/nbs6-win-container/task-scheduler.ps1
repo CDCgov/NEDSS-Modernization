@@ -4,7 +4,7 @@
 # Following commands are required to run ELRImporter.bat in Docker Container Windows ServerCore.
 # This will add the variables in setenvJBOSS.cmd, allowing Instance Scheduler user to view them
 # Path to setenvJBOSS.cmd
-$setenvFilePath = "C:\wildfly-10.0.0.Final\nedssdomain\Nedss\BatchFiles\setenvJBOSS.cmd"
+$setenvFilePath = "D:\wildfly-10.0.0.Final\nedssdomain\Nedss\BatchFiles\setenvJBOSS.cmd"
 # Read the current content
 $currentContent = Get-Content -Path $setenvFilePath
 # String to prepend

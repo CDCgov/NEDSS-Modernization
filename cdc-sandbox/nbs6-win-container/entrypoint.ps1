@@ -1,6 +1,13 @@
 # ./entrypoint.ps1
 # Prepare NBS Configuration and Start NBS 6.0
 
+# Set environment memory allocation (override standalone.conf.bat)
+$setJAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Dprogram.name=standalone.bat"
+$setJAVA_OPTS="%JAVA_OPTS% -Xms%JAVA_MEMORY% -Xmx%JAVA_MEMORY% -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
+$setJAVA_OPTS="%JAVA_OPTS% -Djava.net.preferIPv4Stack=true"
+$setJAVA_OPTS="%JAVA_OPTS% -Djboss.modules.system.pkgs=org.jboss.byteman"
+
+
 # Initialize hastable for data sources
 # NOTE: Provide DATABASE_ENDPOINT when running Container
 
@@ -20,7 +27,7 @@ foreach ($key in $keys) {
 }
 
 # Replace datasources in standalone.xml file
-$xmlFileName = "C:\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml"
+$xmlFileName = "D:\wildfly-10.0.0.Final\nedssdomain\configuration\standalone.xml"
 
 # Create a XML document
 [xml]$xmlDoc = New-Object system.Xml.XmlDocument
@@ -80,7 +87,7 @@ $zip_folder = $zip_file_name.Trim(".zip")
 $user_guide_name = $(Get-ChildItem -Path $zip_folder\$zip_folder\*"User Guide.pdf" -Recurse).Name
 # Move zip file the final destination
 $zip_user_guide_path = Join-Path -Path $zip_folder -ChildPath "$zip_folder\$user_guide_name"
-$user_guide_directory = "C:\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME"
+$user_guide_directory = "D:\wildfly-10.0.0.Final\nedssdomain\Nedss\UserGuide\$env:FINAL_NBS_USER_GUIDE_NAME"
 Write-Output "Moving and Renaming User Guide '$user_guide_name' to '$env:FINAL_NBS_USER_GUIDE_NAME'"
 Copy-Item -Path "$zip_user_guide_path" -Destination "$user_guide_directory" -Force
 # Cleanup
@@ -88,5 +95,12 @@ Remove-Item $zip_file_name
 Remove-Item $zip_folder -Recurse -Force -Confirm:$false
 #### END OF Configure User Guide ####
 
+# AWS Implementation *********************************************************
+$string1 = (ipconfig | Where-Object {$_ -match 'taskbr'})
+$string2 = ($string1 -split '\(',2)[-1]
+$string3 = ($string2 -split '\)',2)[0]
+$ethernet_name = "vEthernet ($string3)"
+Set-NetIPInterface $ethernet_name -InterfaceMetric 10
+# ****************************************************************************
 
-Start-Process "C:\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
+Start-Process "D:\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
