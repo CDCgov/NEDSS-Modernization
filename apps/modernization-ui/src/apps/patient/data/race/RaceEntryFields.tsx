@@ -4,7 +4,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { RaceCategoryValidator, RaceEntry } from './entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
@@ -12,13 +12,16 @@ type RaceEntryFieldsProps = {
 };
 
 const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps) => {
-    const { control } = useFormContext<RaceEntry>();
-    const [resetDetailed, setResetDetailed] = useState<boolean>(false);
+    const { control, resetField } = useFormContext<RaceEntry>();
 
     const id = useWatch({ control, name: 'id' });
 
     const selectedCategory = useWatch({ control, name: 'race' });
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory?.value);
+
+    useEffect(() => {
+        resetField('detailed');
+    }, [selectedCategory]);
 
     return (
         <section>
@@ -52,10 +55,7 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
                         orientation="horizontal"
                         required
                         onBlur={onBlur}
-                        onChange={(selected) => {
-                            onChange(selected);
-                            setResetDetailed(true);
-                        }}
+                        onChange={onChange}
                         value={value}
                         id={`race-${name}`}
                         name={name}
@@ -75,11 +75,8 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
                         id={`race-${name}`}
                         name={name}
                         disabled={selectedCategory === undefined}
-                        value={!resetDetailed ? value : undefined}
-                        onChange={(details) => {
-                            onChange(details);
-                            setResetDetailed(false);
-                        }}
+                        value={value}
+                        onChange={onChange}
                         options={detailedRaces}
                     />
                 )}
