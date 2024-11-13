@@ -7,7 +7,7 @@ public class AddCookie {
 
     public static void to(final String name, final String value, final HttpHeaders headers) {
         String cookie = ResponseCookie.from(name, value)
-            .path("/nbs/")
+            .path("/nbs")
             .sameSite("Strict")
             .httpOnly(true)
             .secure(true)
