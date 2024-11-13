@@ -17,24 +17,24 @@ export type BlockingCriteria = {
     method: BlockingMethod;
 };
 
-export type BlockingFieldOption = { value: BlockingField; label: string };
+export type BlockingFieldOption = { active: boolean; value: BlockingField; label: string };
 
 export const blockingFieldOptions: BlockingFieldOption[] = [
-    { value: 'firstName', label: 'First name' },
-    { value: 'lastName', label: 'Last name' },
-    { value: 'suffix', label: 'Suffix' },
-    { value: 'birthDate', label: 'Date of birth' },
-    { value: 'mrn', label: 'MRN' },
-    { value: 'ssn', label: 'SSN' },
-    { value: 'sex', label: 'Current sex' },
-    { value: 'gender', label: 'Gender' },
-    { value: 'race', label: 'Race' },
-    { value: 'address', label: 'Street address' },
-    { value: 'city', label: 'City' },
-    { value: 'state', label: 'State' },
-    { value: 'zip', label: 'Zip' },
-    { value: 'county', label: 'County' },
-    { value: 'telephone', label: 'Telephone' }
+    { active: false, value: 'firstName', label: 'First name' },
+    { active: false, value: 'lastName', label: 'Last name' },
+    { active: false, value: 'suffix', label: 'Suffix' },
+    { active: false, value: 'birthDate', label: 'Date of birth' },
+    { active: false, value: 'mrn', label: 'MRN' },
+    { active: false, value: 'ssn', label: 'SSN' },
+    { active: false, value: 'sex', label: 'Current sex' },
+    { active: false, value: 'gender', label: 'Gender' },
+    { active: false, value: 'race', label: 'Race' },
+    { active: false, value: 'address', label: 'Street address' },
+    { active: false, value: 'city', label: 'City' },
+    { active: false, value: 'state', label: 'State' },
+    { active: false, value: 'zip', label: 'Zip' },
+    { active: false, value: 'county', label: 'County' },
+    { active: false, value: 'telephone', label: 'Telephone' }
 ];
 
 export type BlockingField =
@@ -71,23 +71,23 @@ export type MatchingCriteria = {
     method: MatchingMethod;
 };
 
-export type MatchingFieldOption = { value: MatchingField; label: string };
-const matchingFieldOptions: BlockingFieldOption[] = [
-    { value: 'firstName', label: 'First name' },
-    { value: 'lastName', label: 'Last name' },
-    { value: 'suffix', label: 'Suffix' },
-    { value: 'birthDate', label: 'Date of birth' },
-    { value: 'mrn', label: 'MRN' },
-    { value: 'ssn', label: 'SSN' },
-    { value: 'sex', label: 'Current sex' },
-    { value: 'gender', label: 'Gender' },
-    { value: 'race', label: 'Race' },
-    { value: 'address', label: 'Street address' },
-    { value: 'city', label: 'City' },
-    { value: 'state', label: 'State' },
-    { value: 'zip', label: 'Zip' },
-    { value: 'county', label: 'County' },
-    { value: 'telephone', label: 'Telephone' }
+export type MatchingFieldOption = { active: boolean; value: MatchingField; label: string };
+export const matchingFieldOptions: MatchingFieldOption[] = [
+    { active: false, value: 'firstName', label: 'First name' },
+    { active: false, value: 'lastName', label: 'Last name' },
+    { active: false, value: 'suffix', label: 'Suffix' },
+    { active: false, value: 'birthDate', label: 'Date of birth' },
+    { active: false, value: 'mrn', label: 'MRN' },
+    { active: false, value: 'ssn', label: 'SSN' },
+    { active: false, value: 'sex', label: 'Current sex' },
+    { active: false, value: 'gender', label: 'Gender' },
+    { active: false, value: 'race', label: 'Race' },
+    { active: false, value: 'address', label: 'Street address' },
+    { active: false, value: 'city', label: 'City' },
+    { active: false, value: 'state', label: 'State' },
+    { active: false, value: 'zip', label: 'Zip' },
+    { active: false, value: 'county', label: 'County' },
+    { active: false, value: 'telephone', label: 'Telephone' }
 ];
 
 export type MatchingField =

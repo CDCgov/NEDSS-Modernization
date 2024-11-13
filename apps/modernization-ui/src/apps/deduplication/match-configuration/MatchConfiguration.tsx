@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { PassList } from './pass-list/PassList';
 import { FormProvider, useForm } from 'react-hook-form';
 import { MatchingConfiguration } from './Configuration';
+import { PassForm } from './pass-form/PassForm';
 
 export const MatchConfiguration = () => {
     const { configuration, loading } = useDataElements();
@@ -39,7 +40,7 @@ export const MatchConfiguration = () => {
                     <Shown when={configuration != null}>
                         <FormProvider {...form}>
                             <PassList onSetActive={setActivePass} />
-                            The Active Pass is: {activePass}
+                            <PassForm activePass={activePass} />
                         </FormProvider>
                     </Shown>
                 </main>
