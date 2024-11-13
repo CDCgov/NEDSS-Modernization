@@ -42,7 +42,7 @@ const allAsText = (items: string[]) => asText(items.join('\n'));
 const asBirthday = (summary: PatientSummary) => {
     const value =
         summary.birthday &&
-        `${internalizeDate(summary.birthday)} (${calculateAge(summary.birthday)?.quantity.toString()} ${calculateAge(summary.birthday)?.unit.toString()})`;
+        `${internalizeDate(summary.birthday)} (${calculateAge(summary.birthday)?.quantity.toString()} ${calculateAge(summary.birthday)?.unit})`;
     return maybeRender(value, asText);
 };
 
