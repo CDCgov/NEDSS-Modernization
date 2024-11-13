@@ -11,9 +11,13 @@ const statusOptions: Selectable[] = [
 
 export { statusOptions };
 
+type NameCriteria = {
+    first?: TextCriteria;
+    last?: TextCriteria;
+};
+
 type BasicInformation = {
-    lastName?: TextCriteria;
-    firstName?: TextCriteria;
+    name?: NameCriteria;
     dateOfBirth?: string;
     gender?: Selectable;
     id?: string;
@@ -58,7 +62,7 @@ type EventIds = {
 
 type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
 
-export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
+export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria };
 
 const initial: PatientCriteriaEntry = {
     status: [ACTIVE]

@@ -26,8 +26,8 @@ const resolveName = (textCriteria?: TextCriteria | string): string | null => orN
 const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientEntry => {
     return {
         asOf: internalizeDate(new Date()),
-        firstName: resolveName(criteria.firstName),
-        lastName: resolveName(criteria.lastName),
+        firstName: resolveName(criteria.name?.first),
+        lastName: resolveName(criteria.name?.last),
         dateOfBirth: criteria.dateOfBirth,
         currentGender: orNull(asValue(criteria.gender)),
         streetAddress1: orNull(criteria.address),

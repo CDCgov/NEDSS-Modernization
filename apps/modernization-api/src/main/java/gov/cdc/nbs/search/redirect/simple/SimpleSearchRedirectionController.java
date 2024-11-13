@@ -46,7 +46,7 @@ class SimpleSearchRedirectionController {
     return UriComponentsBuilder.fromPath(searchRedirect.base())
         .path("/simple/{type}/{criteria}")
         .build()
-        .expand(search.type(),search.criteria())
+        .expand(search.type(), search.criteria())
         .toUri();
 
   }

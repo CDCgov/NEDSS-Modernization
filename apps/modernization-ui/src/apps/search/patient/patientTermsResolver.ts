@@ -14,12 +14,12 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         }
     };
 
-    if (entry.lastName) {
-        pushCriteria('lastName', 'LAST NAME', entry.lastName);
+    if (entry.name?.last) {
+        pushCriteria('lastName', 'LAST NAME', entry.name.last);
     }
 
-    if (entry.firstName) {
-        pushCriteria('firstName', 'FIRST NAME', entry.firstName);
+    if (entry.name?.first) {
+        pushCriteria('firstName', 'FIRST NAME', entry.name.first);
     }
 
     if (entry.dateOfBirth) {
