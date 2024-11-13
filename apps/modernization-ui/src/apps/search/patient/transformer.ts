@@ -16,7 +16,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
         name,
         id,
-        address,
+        location,
         city,
         phoneNumber,
         email,
@@ -36,8 +36,8 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     } = data;
     return {
         name,
+        location,
         id,
-        address,
         city,
         phoneNumber,
         email,
