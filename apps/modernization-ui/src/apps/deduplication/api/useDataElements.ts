@@ -8,7 +8,7 @@ type DataElementsConfigurationResponse = {
 };
 
 export const useDataElements = () => {
-    const [dataElements, setDataElements] = useState<DataElementsConfiguration | undefined>();
+    const [configuration, setConfiguration] = useState<DataElementsConfiguration | undefined>();
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState<boolean>(false);
     const fetchDataElements = async () => {
@@ -21,7 +21,7 @@ export const useDataElements = () => {
         })
             .then(async (response) => {
                 const configResponse: DataElementsConfigurationResponse = await response.json();
-                setDataElements(configResponse.configuration);
+                setConfiguration(configResponse.configuration);
             })
             .catch((error) => {
                 setError(error);
@@ -38,7 +38,8 @@ export const useDataElements = () => {
             body: JSON.stringify(configuration)
         })
             .then(async (response) => {
-                setDataElements(await response.json());
+                const configResponse: DataElementsConfigurationResponse = await response.json();
+                setConfiguration(configResponse.configuration);
                 successCallback?.();
             })
             .catch((error) => {
@@ -50,5 +51,5 @@ export const useDataElements = () => {
         fetchDataElements();
     }, []);
 
-    return { fetchDataElements, save, loading, error, dataElements };
+    return { fetchDataElements, save, loading, error, configuration };
 };

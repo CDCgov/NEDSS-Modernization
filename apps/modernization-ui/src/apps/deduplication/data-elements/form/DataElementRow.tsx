@@ -11,7 +11,7 @@ type Props = {
     field: keyof DataElements;
 };
 export const DataElementRow = ({ fieldName, field }: Props) => {
-    const { dataElements } = useDataElements();
+    const { configuration } = useDataElements();
     const form = useFormContext<DataElements>();
     const watch = useWatch({ control: form.control });
 
@@ -39,10 +39,10 @@ export const DataElementRow = ({ fieldName, field }: Props) => {
             } else {
                 const defaultValue = {
                     active,
-                    m: dataElements?.[field]?.m,
-                    u: dataElements?.[field]?.u,
+                    m: configuration?.[field]?.m,
+                    u: configuration?.[field]?.u,
                     logOdds: 0, // calculated on m, u change
-                    threshold: dataElements?.[field]?.threshold
+                    threshold: configuration?.[field]?.threshold
                 };
                 form.setValue(field, defaultValue);
                 form.trigger(field);
