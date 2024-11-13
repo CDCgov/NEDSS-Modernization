@@ -16,7 +16,7 @@ export const BasicInformation = () => {
         <SearchCriteria>
             <Controller
                 control={control}
-                name="lastName"
+                name="name.last"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <OperatorInput
@@ -31,7 +31,7 @@ export const BasicInformation = () => {
             />
             <Controller
                 control={control}
-                name="firstName"
+                name="name.first"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <OperatorInput

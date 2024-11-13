@@ -7,22 +7,19 @@ import gov.cdc.nbs.time.json.FormattedLocalDateJsonSerializer;
 import java.time.LocalDate;
 
 record SimplePatientSearchCriteria(
-    String lastName,
-    String firstName,
-    @JsonSerialize(using = FormattedLocalDateJsonSerializer.class)
-    LocalDate dateOfBirth,
-    Option gender,
-    String id,
-    String morbidity,
-    String document,
-    String stateCase,
-    String abcCase,
-    String cityCountyCase,
-    String notification,
-    String labReport,
-    String accessionNumber,
-    String investigation,
-    String treatment,
-    String vaccination
-) {
+        SimplePatientSearchNameCriteria name,
+        @JsonSerialize(using = FormattedLocalDateJsonSerializer.class) LocalDate dateOfBirth,
+        Option gender,
+        String id,
+        String morbidity,
+        String document,
+        String stateCase,
+        String abcCase,
+        String cityCountyCase,
+        String notification,
+        String labReport,
+        String accessionNumber,
+        String investigation,
+        String treatment,
+        String vaccination) {
 }
