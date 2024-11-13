@@ -30,7 +30,6 @@ type BasicInformation = {
 };
 
 type Address = {
-    city?: string;
     location?: LocationCriteria;
     state?: Selectable;
     zip?: number;

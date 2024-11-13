@@ -86,13 +86,13 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
     it('should transform with City', () => {
         const input: PatientCriteriaEntry = {
-            city: 'city-value',
+            location: { city: { equals: 'address-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ city: 'city-value' }));
+        expect(actual).toEqual(expect.objectContaining({ location: { street: { equals: 'city-value' } } }));
     });
 
     it('should transform with State', () => {

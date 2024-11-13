@@ -38,8 +38,8 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         pushCriteria('address', 'STREET ADDRESS', entry.location?.street);
     }
 
-    if (entry.city) {
-        terms.push(fromValue('city', 'CITY')(entry.city));
+    if (entry.location?.city) {
+        pushCriteria('city', 'CITY', entry.location?.city);
     }
 
     if (entry.state) {
