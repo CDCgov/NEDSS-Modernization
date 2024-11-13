@@ -52,7 +52,7 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                         Current age:
                     </Grid>
                     <Grid col={10} className="margin-top-1">
-                        {age}
+                        {age?.quantity}
                     </Grid>
                 </Grid>
                 <Grid row>

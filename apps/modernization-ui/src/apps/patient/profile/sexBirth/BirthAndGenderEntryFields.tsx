@@ -66,7 +66,7 @@ export const BirthAndGenderEntryFields = () => {
                 )}
             />
             <EntryWrapper label="Current age:" htmlFor="currentAge" orientation="horizontal">
-                <div>{age}</div>
+                <div>{age?.quantity}</div>
             </EntryWrapper>
             <Controller
                 control={control}
