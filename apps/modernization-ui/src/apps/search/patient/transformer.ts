@@ -16,7 +16,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
         name,
         id,
-        address,
+        location,
         city,
         phoneNumber,
         email,
@@ -36,9 +36,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     } = data;
     return {
         name,
-        location: {
-            street: asTextCriteria(address)
-        },
+        location,
         id,
         city,
         phoneNumber,

@@ -75,7 +75,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 describe('when the PatientCriteria contains Address criteria', () => {
     it('should transform with Street address', () => {
         const input: PatientCriteriaEntry = {
-            address: { equals: 'address-value' },
+            location: { street: { equals: 'address-value' } },
             status: []
         };
 

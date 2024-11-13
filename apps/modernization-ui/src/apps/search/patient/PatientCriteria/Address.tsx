@@ -13,7 +13,7 @@ export const Address = () => {
             <SearchCriteria>
                 <Controller
                     control={control}
-                    name="address"
+                    name="location.street"
                     render={({ field: { onChange, value, name } }) => (
                         <OperatorInput
                             id={name}
@@ -25,7 +25,6 @@ export const Address = () => {
                         />
                     )}
                 />
-
                 <Controller
                     control={control}
                     name="city"

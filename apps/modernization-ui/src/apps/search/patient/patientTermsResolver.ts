@@ -34,8 +34,8 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         terms.push(fromValue('id', 'PATIENT ID')(entry.id));
     }
 
-    if (entry.address) {
-        pushCriteria('address', 'STREET ADDRESS', entry.address);
+    if (entry.location?.street) {
+        pushCriteria('address', 'STREET ADDRESS', entry.location?.street);
     }
 
     if (entry.city) {

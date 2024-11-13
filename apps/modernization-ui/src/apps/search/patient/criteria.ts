@@ -1,5 +1,5 @@
 import { Selectable, asSelectable } from 'options';
-import { TextCriteria } from 'options/operator';
+import { TextCriteria, AlphaTextCriteria } from 'options/operator';
 
 const ACTIVE = asSelectable('ACTIVE', 'Active');
 
@@ -16,6 +16,11 @@ type NameCriteria = {
     last?: TextCriteria;
 };
 
+type LocationCriteria = {
+    street?: AlphaTextCriteria;
+    city?: AlphaTextCriteria;
+};
+
 type BasicInformation = {
     name?: NameCriteria;
     dateOfBirth?: string;
@@ -25,8 +30,8 @@ type BasicInformation = {
 };
 
 type Address = {
-    address?: TextCriteria;
     city?: string;
+    location?: LocationCriteria;
     state?: Selectable;
     zip?: number;
 };

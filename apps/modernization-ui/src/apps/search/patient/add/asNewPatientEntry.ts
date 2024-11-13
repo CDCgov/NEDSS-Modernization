@@ -30,7 +30,7 @@ const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientE
         lastName: resolveCriteria(criteria.name?.last),
         dateOfBirth: criteria.dateOfBirth,
         currentGender: orNull(asValue(criteria.gender)),
-        streetAddress1: resolveCriteria(criteria.address),
+        streetAddress1: resolveCriteria(criteria.location?.street),
         city: orNull(criteria.city),
         state: criteria.state,
         zip: (criteria.zip && String(criteria.zip)) || null,
