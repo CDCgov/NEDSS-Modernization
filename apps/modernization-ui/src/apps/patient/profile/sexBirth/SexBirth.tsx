@@ -19,7 +19,7 @@ const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     },
     {
         title: 'Current age:',
-        text: `${calculateAge(birth?.bornOn)?.quantity.toString()} ${calculateAge(birth?.bornOn)?.unit.toString()}`
+        text: `${birth?.bornOn ? `${calculateAge(birth?.bornOn)?.quantity?.toString()} ${calculateAge(birth?.bornOn)?.unit?.toString()}` : ''}`
     },
     { title: 'Date of birth:', text: internalizeDate(birth?.bornOn) },
     { title: 'Current sex:', text: gender?.current?.description },
