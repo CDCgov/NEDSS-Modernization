@@ -1,5 +1,5 @@
 import { PatientCriteriaEntry } from './criteria';
-import { patientTermsResolver } from './patientTermsResovler';
+import { patientTermsResolver } from './patientTermsResolver';
 
 describe('when the PatientCriteria contains Basic Information criteria', () => {
     it('should resolve terms with status', () => {
@@ -17,7 +17,6 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should resolve terms', () => {
         const input: PatientCriteriaEntry = {
-            includeSimilar: true,
             status: []
         };
 
