@@ -2,8 +2,8 @@ package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -31,17 +31,22 @@ class SimplePatientSearchCriteriaResolver {
   private static final String DOCUMENT_ID = "P10010";
   private static final String NOTIFICATION_ID = "P10013";
 
+  private static final String CONTAINS_SIGNIFIED = "%";
+
+  private static TextCriteria resolveCriteria(final String value) {
+    return value.startsWith(CONTAINS_SIGNIFIED)
+        ? TextCriteria.contains(value.replace(CONTAINS_SIGNIFIED, ""))
+        : TextCriteria.startsWith(value);
+  }
+
+
   private String fromIdentifier(final Map<String, String> criteria, final String type) {
     return maybe(criteria, TYPE).filter(type::equals).flatMap(s -> maybe(criteria, IDENTIFIER))
         .orElse(null);
   }
 
   Optional<SimplePatientSearchCriteria> resolve(final Map<String, String> criteria) {
-    String last = maybe(criteria, NBS_LAST_NAME)
-        .orElse(null);
-
-    String first = maybe(criteria, NBS_FIRST_NAME)
-        .orElse(null);
+    SimplePatientSearchNameCriteria name = resolveName(criteria).orElse(null);
 
     LocalDate dateOfBirth = maybe(criteria, NBS_DATE_OF_BIRTH)
         .map(FlexibleLocalDateConverter::fromString)
@@ -65,29 +70,42 @@ class SimplePatientSearchCriteriaResolver {
     String treatment = fromIdentifier(criteria, TREATMENT_ID);
     String vaccination = fromIdentifier(criteria, VACCINATION_ID);
 
-    return anyExist(last, first, dateOfBirth, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
+    return anyExist(name, dateOfBirth, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
         notification, labReport, accessionNumber, investigation, treatment, vaccination)
-        ? Optional.of(
-        new SimplePatientSearchCriteria(
-            last,
-            first,
-            dateOfBirth,
-            gender,
-            id,
-            morbidity,
-            document,
-            stateCase,
-            abcCase,
-            cityCountyCase,
-            notification,
-            labReport,
-            accessionNumber,
-            investigation,
-            treatment,
-            vaccination
-        )
-    )
+            ? Optional.of(
+                new SimplePatientSearchCriteria(
+                    name,
+                    dateOfBirth,
+                    gender,
+                    id,
+                    morbidity,
+                    document,
+                    stateCase,
+                    abcCase,
+                    cityCountyCase,
+                    notification,
+                    labReport,
+                    accessionNumber,
+                    investigation,
+                    treatment,
+                    vaccination))
+            : Optional.empty();
+  }
+
+  private Optional<SimplePatientSearchNameCriteria> resolveName(final Map<String, String> criteria) {
+    TextCriteria last = maybe(criteria, NBS_LAST_NAME)
+        .map(SimplePatientSearchCriteriaResolver::resolveCriteria)
+        .orElse(null);
+
+    TextCriteria first = maybe(criteria, NBS_FIRST_NAME)
+        .map(SimplePatientSearchCriteriaResolver::resolveCriteria)
+        .orElse(null);
+
+
+    return anyExist(last, first)
+        ? Optional.of(new SimplePatientSearchNameCriteria(first, last))
         : Optional.empty();
+
   }
 
   private static boolean anyExist(final Object first, Object... rest) {
@@ -103,11 +121,10 @@ class SimplePatientSearchCriteriaResolver {
     return false;
   }
 
-
   private Optional<String> maybe(final Map<String, String> map, final String key) {
     String value = map.get(key);
 
-    return StringUtils.hasText(value)
+    return (value != null && !value.isBlank())
         ? Optional.of(value)
         : Optional.empty();
   }

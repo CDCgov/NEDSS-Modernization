@@ -94,11 +94,35 @@ public class SimpleSearchRedirectSteps {
   }
 
   @Then("the search parameters include a(n) {string} of {string}")
-  public void the_search_parameters_include_date_of_birth_as(final String property, final String value)
+  public void the_search_parameters_include(final String property, final String value)
       throws Exception {
     JsonPathResultMatchers path = matchingPath(property);
 
     this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  @Then("the search parameters include a(n) {string} that starts with {string}")
+  public void the_search_parameters_include_the_criteria_that_starts_with(final String property, final String value)
+      throws Exception {
+    JsonPathResultMatchers path = criteriaMatchingPath(property, "startsWith");
+
+    this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  @Then("the search parameters include a(n) {string} that contains {string}")
+  public void the_search_parameters_include_the_criteria_that_contains(final String property, final String value)
+      throws Exception {
+    JsonPathResultMatchers path = criteriaMatchingPath(property, "contains");
+
+    this.decrypted.active().andDo(print()).andExpect(path.value(equalToIgnoringCase(value)));
+  }
+
+  private JsonPathResultMatchers criteriaMatchingPath(final String field, final String property) {
+    return switch (field.toLowerCase()) {
+      case "first name" -> jsonPath("$.name.first.%s", property);
+      case "last name" -> jsonPath("$.name.last.%s",property);
+      default -> throw new IllegalStateException("Unexpected simple search parameter value: " + field.toLowerCase());
+    };
   }
 
   @Then("the search parameters include a(n) {eventTypeId} with the ID {string}")
@@ -138,11 +162,9 @@ public class SimpleSearchRedirectSteps {
   private JsonPathResultMatchers matchingPath(final String field) {
     return switch (field.toLowerCase()) {
       case "date of birth" -> jsonPath("$.dateOfBirth");
-      case "first name" -> jsonPath("$.firstName");
-      case "last name" -> jsonPath("$.lastName");
       case "gender" -> jsonPath("$.gender.value");
       case "patient id" -> jsonPath("$.id");
-      default -> throw new IllegalStateException("Unexpected Page Summary value: " + field.toLowerCase());
+      default -> throw new IllegalStateException("Unexpected simple search parameter value: " + field.toLowerCase());
     };
   }
 
