@@ -5,6 +5,7 @@
     display: flex;
     flex-grow: 1;
     flex-direction: column;
+    height: 100%;
 
     & > header {
         display: flex;
@@ -19,5 +20,10 @@
             align-items: center;
             gap: 0.25rem;
         }
+    }
+
+    & > main {
+        display: flex;
+        flex-grow: 1;
     }
 }

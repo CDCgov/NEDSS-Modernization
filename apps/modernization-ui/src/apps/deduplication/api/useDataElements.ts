@@ -11,6 +11,7 @@ export const useDataElements = () => {
     const [configuration, setConfiguration] = useState<DataElementsConfiguration | undefined>();
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState<boolean>(false);
+
     const fetchDataElements = async () => {
         setLoading(true);
         await fetch(API_BASE, {

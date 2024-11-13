@@ -5,9 +5,22 @@ import styles from './match-configuration.module.scss';
 import { useDataElements } from '../api/useDataElements';
 import { ConfigurationMessage } from './ConfigurationMessage';
 import { Shown } from 'conditional-render';
+import { useMatchingConfiguration } from '../api/useMatchingConfiguration';
+import { useEffect, useState } from 'react';
+import { PassList } from './pass-list/PassList';
+import { FormProvider, useForm } from 'react-hook-form';
+import { MatchingConfiguration } from './Configuration';
 
 export const MatchConfiguration = () => {
-    const { configuration } = useDataElements();
+    const { configuration, loading } = useDataElements();
+    const { matchConfiguration } = useMatchingConfiguration();
+    const [activePass, setActivePass] = useState<number>(0);
+    const form = useForm<MatchingConfiguration>();
+
+    useEffect(() => {
+        form.reset(matchConfiguration, { keepDefaultValues: false });
+    }, [matchConfiguration]);
+
     return (
         <div className={styles.matchConfiguration}>
             <header>
@@ -17,13 +30,20 @@ export const MatchConfiguration = () => {
                     Data elements configuration
                 </NavLink>
             </header>
-            <main>
-                <Shown when={configuration == null}>
-                    <ConfigurationMessage />
-                </Shown>
+            <Shown when={!loading}>
+                <main>
+                    <Shown when={configuration == null}>
+                        <ConfigurationMessage />
+                    </Shown>
 
-                <Shown when={configuration != null}>Real content!</Shown>
-            </main>
+                    <Shown when={configuration != null}>
+                        <FormProvider {...form}>
+                            <PassList onSetActive={setActivePass} />
+                            The Active Pass is: {activePass}
+                        </FormProvider>
+                    </Shown>
+                </main>
+            </Shown>
         </div>
     );
 };
