@@ -12,3 +12,10 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Enter Page name on add new classic page
     Then Click on Submit button on add new classic page
 
+  Scenario: Add new Interview
+    Then Click on Add New button on add new classic page
+    Then Select Page as "Interview" type on add new classic page
+    Then Select Template form dropdown on add new classic page
+    Then Enter Page name on add new classic page
+    Then Click on Submit button on add new classic page
+
