@@ -16,7 +16,7 @@ class PatientSearchResultDetailedPhoneFinder {
         )                               as [type],
         coalesce(
             [use].code_short_desc_txt,
-            [locators].[use_cd]
+            IsNull([locators].[use_cd],'')
         )                               as [use],
         IsNull([locators].cd, '')       as [type_cd],
         [locators].use_cd               as [use_cd],

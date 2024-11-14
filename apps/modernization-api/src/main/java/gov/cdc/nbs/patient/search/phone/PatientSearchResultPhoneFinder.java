@@ -13,7 +13,7 @@ class PatientSearchResultPhoneFinder {
               [phone_number].phone_nbr_txt    as [phone_number],
               [phone_number].extension_txt    as [extension],
               IsNull([locators].cd, '')       as [type_cd],
-              [locators].use_cd               as [use_cd]
+              IsNull([locators].use_cd,'')    as [use_cd]
           from Entity_locator_participation [locators]
 
               join Tele_locator [phone_number] on
