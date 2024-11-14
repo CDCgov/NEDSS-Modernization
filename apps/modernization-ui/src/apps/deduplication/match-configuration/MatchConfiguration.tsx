@@ -9,8 +9,8 @@ import { useMatchingConfiguration } from '../api/useMatchingConfiguration';
 import { useEffect, useState } from 'react';
 import { PassList } from './pass-list/PassList';
 import { FormProvider, useForm } from 'react-hook-form';
-import { MatchingConfiguration } from './Configuration';
 import { PassForm } from './pass-form/PassForm';
+import { MatchingConfiguration } from './model/Pass';
 
 export const MatchConfiguration = () => {
     const { configuration, loading } = useDataElements();

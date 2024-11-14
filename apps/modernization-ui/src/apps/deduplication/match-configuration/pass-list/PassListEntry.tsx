@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { Pass } from '../Configuration';
 import styles from './pass-list-entry.module.scss';
+import { Pass } from '../model/Pass';
 
 type Props = {
     index: number;

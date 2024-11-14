@@ -1,7 +1,8 @@
 import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
-import { blockingMethodOptions, MatchingConfiguration } from '../../Configuration';
 import styles from './blocking-criteria-row.module.scss';
+import { MatchingConfiguration } from '../../model/Pass';
+import { BLOCKING_METHOD_OPTIONS } from '../../model/Blocking';
 
 type Props = {
     label: string;
@@ -28,7 +29,7 @@ export const BlockingCriteriaRow = ({ label, index, onRemove }: Props) => {
                                 onChange={onChange}
                                 name={name}
                                 value={value}
-                                options={blockingMethodOptions}
+                                options={BLOCKING_METHOD_OPTIONS}
                             />
                         )}
                     />

@@ -2,9 +2,9 @@ import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { MatchingConfiguration } from '../Configuration';
 import styles from './pass-list.module.scss';
 import { PassListEntry } from './PassListEntry';
+import { MatchingConfiguration } from '../model/Pass';
 
 type Props = {
     onSetActive: (index: number) => void;

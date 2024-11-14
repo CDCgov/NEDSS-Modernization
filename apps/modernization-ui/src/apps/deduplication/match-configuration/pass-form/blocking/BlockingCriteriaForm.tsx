@@ -4,7 +4,8 @@ import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
 import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { BlockingField, MatchingConfiguration } from '../../Configuration';
+import { BlockingFieldOption } from '../../model/Blocking';
+import { MatchingConfiguration } from '../../model/Pass';
 import styles from './blocking-criteria.module.scss';
 import { BlockingCriteriaRow } from './BlockingCriteriaRow';
 import { BlockingCriteriaFieldSelection } from './modal/BlockingCriteriaFieldSelection';
@@ -21,7 +22,7 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
         setShowModal(true);
     };
 
-    const handleModalAccept = (fields: BlockingField[]) => {
+    const handleModalAccept = (fields: BlockingFieldOption[]) => {
         const currentFields = form.getValues(`passes.${activePass}.blockingCriteria`).map((bc) => bc.field);
         // remove fields that were removed from list
         const toRemove: number[] = [];
@@ -53,7 +54,7 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
                 <p className={styles.headerText}>Include records that meet all these conditions</p>
             </header>
             {form.getValues('passes')[activePass].blockingCriteria.map((b, i) => (
-                <BlockingCriteriaRow label={b.field} index={i} key={i} onRemove={() => handleRemove(i)} />
+                <BlockingCriteriaRow label={b.field.name} index={i} key={i} onRemove={() => handleRemove(i)} />
             ))}
             <Button unstyled onClick={handleShowmodal}>
                 <Icon.Add size={3} /> Add blocking criteria

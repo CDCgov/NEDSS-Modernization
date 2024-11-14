@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MatchingConfiguration } from '../match-configuration/Configuration';
+import { MatchingConfiguration } from '../match-configuration/model/Pass';
 
 const API_BASE = '/api/deduplication/configuration';
 
