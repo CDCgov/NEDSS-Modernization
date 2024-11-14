@@ -2,12 +2,11 @@ import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { Modal } from 'design-system/modal';
 import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { BlockingField, MatchingConfiguration } from '../../Configuration';
 import styles from './blocking-criteria.module.scss';
-import { BlockingCriteriaFieldSelection } from './BlockingCriteriaFieldSelection';
+import { BlockingCriteriaFieldSelection } from './modal/BlockingCriteriaFieldSelection';
 
 type Props = {
     activePass: number;
@@ -58,13 +57,11 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
                 <Icon.Add size={3} /> Add blocking criteria
             </Button>
             <Shown when={showModal}>
-                <Modal id={'blocking-criteria-modal'} title="Title" forceAction onClose={() => {}}>
-                    <BlockingCriteriaFieldSelection
-                        activePass={activePass}
-                        onCancel={() => setShowModal(false)}
-                        onAccept={handleModalAccept}
-                    />
-                </Modal>
+                <BlockingCriteriaFieldSelection
+                    activePass={activePass}
+                    onCancel={() => setShowModal(false)}
+                    onAccept={handleModalAccept}
+                />
             </Shown>
         </section>
     );
