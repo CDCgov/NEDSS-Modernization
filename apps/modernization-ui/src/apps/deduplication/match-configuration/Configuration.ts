@@ -14,7 +14,7 @@ export type Pass = {
 
 export type BlockingCriteria = {
     field: BlockingField;
-    method: BlockingMethod;
+    method?: BlockingMethodOption;
 };
 
 export type BlockingField =
@@ -34,21 +34,25 @@ export type BlockingField =
     | 'county'
     | 'telephone';
 
+export type BlockingFieldOption = {
+    value: BlockingField;
+    name: string;
+};
 export type BlockingMethod = 'exact' | 'firstFour' | 'lastFour';
 
 export type BlockingMethodOption = {
     value: BlockingMethod;
-    label: string;
+    name: string;
 };
 export const blockingMethodOptions: BlockingMethodOption[] = [
-    { value: 'exact', label: 'Exact' },
-    { value: 'firstFour', label: 'First four characters' },
-    { value: 'lastFour', label: 'Last four characters' }
+    { value: 'exact', name: 'Exact' },
+    { value: 'firstFour', name: 'First four characters' },
+    { value: 'lastFour', name: 'Last four characters' }
 ];
 
 export type MatchingCriteria = {
     field: MatchingField;
-    method: MatchingMethod;
+    method: MatchingMethodOption;
 };
 
 export type MatchingFieldOption = { active: boolean; value: MatchingField; label: string };
@@ -90,9 +94,9 @@ export type MatchingField =
 export type MatchingMethod = 'exact' | 'logOdds';
 export type MatchingMethodOption = {
     value: MatchingMethod;
-    label: string;
+    name: string;
 };
 export const matchingMethodOptions: MatchingMethodOption[] = [
-    { value: 'exact', label: 'Exact' },
-    { value: 'logOdds', label: 'Log odds' }
+    { value: 'exact', name: 'Exact' },
+    { value: 'logOdds', name: 'Log odds' }
 ];

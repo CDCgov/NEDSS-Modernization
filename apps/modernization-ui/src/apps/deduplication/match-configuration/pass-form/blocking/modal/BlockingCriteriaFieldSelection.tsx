@@ -112,7 +112,6 @@ export const BlockingCriteriaFieldSelection = ({ activePass, onAccept, onCancel 
                             />
                         </div>
                     </section>
-
                     <section>
                         <Heading level={3}>Address</Heading>
                         <div className={styles.optionGroup}>

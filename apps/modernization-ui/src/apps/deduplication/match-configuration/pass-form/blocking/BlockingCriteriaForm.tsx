@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { BlockingField, MatchingConfiguration } from '../../Configuration';
 import styles from './blocking-criteria.module.scss';
+import { BlockingCriteriaRow } from './BlockingCriteriaRow';
 import { BlockingCriteriaFieldSelection } from './modal/BlockingCriteriaFieldSelection';
 
 type Props = {
@@ -21,16 +22,7 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
     };
 
     const handleModalAccept = (fields: BlockingField[]) => {
-        console.log('selected these fields:', fields);
         const currentFields = form.getValues(`passes.${activePass}.blockingCriteria`).map((bc) => bc.field);
-
-        // add fields that were selected but not already in list
-        fields.forEach((f) => {
-            if (currentFields.indexOf(f) < 0) {
-                append({ field: f, method: 'exact' });
-            }
-        });
-
         // remove fields that were removed from list
         const toRemove: number[] = [];
         currentFields.forEach((c, index) => {
@@ -39,7 +31,19 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
             }
         });
         remove(toRemove);
+
+        // add fields that were selected but not already in list
+        fields.forEach((f) => {
+            if (currentFields.indexOf(f) < 0) {
+                append({ field: f });
+            }
+        });
+
         setShowModal(false);
+    };
+
+    const handleRemove = (index: number) => {
+        remove(index);
     };
 
     return (
@@ -49,9 +53,7 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
                 <p className={styles.headerText}>Include records that meet all these conditions</p>
             </header>
             {form.getValues('passes')[activePass].blockingCriteria.map((b, i) => (
-                <div key={i}>
-                    Blocking Criteria: {b.field} - {b.method}
-                </div>
+                <BlockingCriteriaRow label={b.field} index={i} key={i} onRemove={() => handleRemove(i)} />
             ))}
             <Button unstyled onClick={handleShowmodal}>
                 <Icon.Add size={3} /> Add blocking criteria
