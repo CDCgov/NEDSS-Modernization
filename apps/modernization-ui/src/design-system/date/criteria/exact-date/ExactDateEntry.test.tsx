@@ -6,7 +6,9 @@ describe('ExactDateEntry Component', () => {
     const mockOnChange = jest.fn();
 
     it('should render inputs with correct default month', () => {
-        const { getByRole } = render(<ExactDateEntry value={{ equals: { month: 1 } }} onChange={mockOnChange} />);
+        const { getByRole } = render(
+            <ExactDateEntry id="test-id" value={{ equals: { month: 1 } }} onChange={mockOnChange} />
+        );
         const monthInput = getByRole('textbox', { name: 'month' }) as HTMLInputElement;
 
         expect(monthInput.value).toBe('1');
@@ -14,7 +16,7 @@ describe('ExactDateEntry Component', () => {
 
     it('should render inputs with correct default values', () => {
         const { getByRole } = render(
-            <ExactDateEntry value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={mockOnChange} />
+            <ExactDateEntry id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={mockOnChange} />
         );
         const monthInput = getByRole('textbox', { name: 'month' }) as HTMLInputElement;
         const dayInput = getByRole('textbox', { name: 'day' }) as HTMLInputElement;
@@ -26,7 +28,9 @@ describe('ExactDateEntry Component', () => {
     });
 
     it('should call onChange with updated month value', async () => {
-        const { getByRole } = render(<ExactDateEntry value={{ equals: { month: 1 } }} onChange={mockOnChange} />);
+        const { getByRole } = render(
+            <ExactDateEntry id="test-id" value={{ equals: { month: 1 } }} onChange={mockOnChange} />
+        );
         const dayInput = getByRole('textbox', { name: 'day' }) as HTMLInputElement;
         await userEvent.paste(dayInput, '12');
         expect(mockOnChange).toHaveBeenCalledWith({ equals: { month: 1, day: 12 } });
