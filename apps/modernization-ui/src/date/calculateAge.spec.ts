@@ -4,15 +4,13 @@ describe('given a value', () => {
     it('should calculate the age when given a string', () => {
         const actual = calculateAge('1984-09-01', new Date('2023-01-01'));
 
-        expect(actual?.quantity).toEqual(38);
-        expect(actual?.unit).toBe('years');
+        expect(actual).toEqual(38);
     });
 
     it('should calculate the age when given a date', () => {
         const actual = calculateAge(new Date('1984-09-01'), new Date('2023-01-01'));
 
-        expect(actual?.quantity).toEqual(38);
-        expect(actual?.unit).toBe('years');
+        expect(actual).toEqual(38);
     });
 });
 

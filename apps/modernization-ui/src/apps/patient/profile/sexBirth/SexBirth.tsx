@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@trussworks/react-uswds';
 import { PatientBirth, PatientGender, useUpdatePatientBirthAndGenderMutation } from 'generated/graphql/schema';
 import { PatientProfileBirthAndGenderResult, useFindPatientProfileBirth } from './useFindPatientProfileBirth';
-import { calculateAge, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { Data, EditableCard } from 'components/EditableCard';
 import { maybeDescription, maybeId } from '../coded';
 import { SexBirthForm } from './SexBirthForm';
@@ -11,6 +11,7 @@ import { maybeNumber, orNull } from 'utils';
 import { useAlert } from 'alert/useAlert';
 import { useProfileContext } from '../ProfileContext';
 import { Patient } from '../Patient';
+import { displayAgeAsOfToday } from 'date/displayAge';
 
 const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     {
@@ -19,7 +20,7 @@ const asView = (birth?: PatientBirth, gender?: PatientGender): Data[] => [
     },
     {
         title: 'Current age:',
-        text: `${birth?.bornOn ? `${calculateAge(birth?.bornOn)?.quantity?.toString()} ${calculateAge(birth?.bornOn)?.unit}` : ''}`
+        text: `${displayAgeAsOfToday(birth?.bornOn)}`
     },
     { title: 'Date of birth:', text: internalizeDate(birth?.bornOn) },
     { title: 'Current sex:', text: gender?.current?.description },

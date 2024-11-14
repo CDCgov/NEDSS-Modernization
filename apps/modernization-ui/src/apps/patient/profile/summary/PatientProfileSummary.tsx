@@ -9,12 +9,13 @@ import {
     PatientSummaryPhone
 } from 'generated/graphql/schema';
 import { Loading } from 'components/Spinner';
-import { calculateAge, internalizeDate } from 'date';
+import { internalizeDate } from 'date';
 import { Patient } from 'apps/patient/profile';
 import { displayAddressText } from 'address/display';
 import { NoData } from 'components/NoData';
 import { displayName } from 'name';
 import { useProfileContext } from '../ProfileContext';
+import { displayAgeAsOfToday } from 'date/displayAge';
 
 type Props = {
     patient?: Patient;
@@ -40,9 +41,7 @@ const asText = (value: string) => <p className="patient-summary-item-value">{val
 const allAsText = (items: string[]) => asText(items.join('\n'));
 
 const asBirthday = (summary: PatientSummary) => {
-    const value =
-        summary.birthday &&
-        `${internalizeDate(summary.birthday)} (${calculateAge(summary.birthday)?.quantity.toString()} ${calculateAge(summary.birthday)?.unit})`;
+    const value = summary.birthday && `${internalizeDate(summary.birthday)} (${displayAgeAsOfToday(summary.birthday)})`;
     return maybeRender(value, asText);
 };
 
