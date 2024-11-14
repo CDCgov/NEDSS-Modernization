@@ -3,13 +3,13 @@ import styles from './pass-list-entry.module.scss';
 import { Pass } from '../model/Pass';
 
 type Props = {
-    index: number;
     pass: Pass;
+    activePass: boolean;
     onClick: () => void;
 };
-export const PassListEntry = ({ pass, onClick }: Props) => {
+export const PassListEntry = ({ pass, activePass, onClick }: Props) => {
     return (
-        <section onClick={onClick} className={styles.passListEntry}>
+        <section onClick={onClick} className={classNames(styles.passListEntry, activePass ? styles.activeEntry : '')}>
             <div className={styles.border} />
             <div className={styles.info}>
                 <div className={styles.name}>{pass.name}</div>

@@ -54,7 +54,13 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
                 <p className={styles.headerText}>Include records that meet all these conditions</p>
             </header>
             {form.getValues('passes')[activePass].blockingCriteria.map((b, i) => (
-                <BlockingCriteriaRow label={b.field.name} index={i} key={i} onRemove={() => handleRemove(i)} />
+                <BlockingCriteriaRow
+                    key={i}
+                    activePass={activePass}
+                    label={b.field.name}
+                    index={i}
+                    onRemove={() => handleRemove(i)}
+                />
             ))}
             <Button unstyled onClick={handleShowmodal}>
                 <Icon.Add size={3} /> Add blocking criteria

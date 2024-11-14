@@ -24,7 +24,6 @@ export const BlockingCriteriaFieldSelection = ({ activePass, onAccept, onCancel 
     useEffect(() => {
         // get a list of which fields are already selected for blocking
         const activeFields = form.getValues(`passes.${activePass}.blockingCriteria`)?.map((a) => a.field.value);
-
         // update option list with existing selection
         setSelectedFields(activeFields);
     }, [form.getValues(`passes.${activePass}.blockingCriteria`)]);

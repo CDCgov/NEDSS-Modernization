@@ -8,10 +8,11 @@ import { Button } from 'components/button';
 
 type Props = {
     label: string;
+    activePass: number;
     index: number;
     onRemove: () => void;
 };
-export const BlockingCriteriaRow = ({ label, index, onRemove }: Props) => {
+export const BlockingCriteriaRow = ({ activePass, label, index, onRemove }: Props) => {
     const form = useFormContext<MatchingConfiguration>();
 
     return (
@@ -22,7 +23,7 @@ export const BlockingCriteriaRow = ({ label, index, onRemove }: Props) => {
                     <div className={styles.input}>
                         <Controller
                             control={form.control}
-                            name={`passes.${1}.blockingCriteria.${index}.method`}
+                            name={`passes.${activePass}.blockingCriteria.${index}.method`}
                             render={({ field: { onBlur, onChange, value, name } }) => (
                                 <SingleSelect
                                     id={`blockingMethod-${index}`}

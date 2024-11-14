@@ -3,14 +3,18 @@ import { MatchingBoundsForm } from './bounds/MatchingBoundsForm';
 import { MatchingCriteriaForm } from './matching/MatchingCriteriaForm';
 import styles from './pass-form.module.scss';
 type Props = {
-    activePass: number;
+    activePass?: number;
 };
 export const PassForm = ({ activePass }: Props) => {
     return (
         <div className={styles.passForm}>
-            <BlockingCriteriaForm activePass={activePass} />
-            <MatchingCriteriaForm />
-            <MatchingBoundsForm />
+            {activePass !== undefined && (
+                <>
+                    <BlockingCriteriaForm activePass={activePass} />
+                    <MatchingCriteriaForm />
+                    <MatchingBoundsForm />
+                </>
+            )}
         </div>
     );
 };

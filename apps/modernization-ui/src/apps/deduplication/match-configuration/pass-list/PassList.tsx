@@ -7,11 +7,12 @@ import { PassListEntry } from './PassListEntry';
 import { MatchingConfiguration } from '../model/Pass';
 
 type Props = {
+    activeIndex: number;
     onSetActive: (index: number) => void;
 };
-export const PassList = ({ onSetActive }: Props) => {
+export const PassList = ({ activeIndex, onSetActive }: Props) => {
     const form = useFormContext<MatchingConfiguration>();
-    const { append } = useFieldArray<MatchingConfiguration>({ name: 'passes' });
+    const { append } = useFieldArray<MatchingConfiguration>({ control: form.control, name: 'passes' });
 
     const handleAddPass = () => {
         append({
@@ -29,7 +30,7 @@ export const PassList = ({ onSetActive }: Props) => {
             <Heading level={2}>Pass configurations</Heading>
             <div className={styles.passEntries}>
                 {form.getValues('passes').map((p, k) => (
-                    <PassListEntry pass={p} key={k} index={k} onClick={() => onSetActive(k)} />
+                    <PassListEntry pass={p} key={k} activePass={activeIndex == k} onClick={() => onSetActive(k)} />
                 ))}
                 <Button unstyled onClick={handleAddPass}>
                     <Icon.Add size={3} /> Add pass configuration
