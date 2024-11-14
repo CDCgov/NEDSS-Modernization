@@ -96,11 +96,11 @@ Remove-Item $zip_folder -Recurse -Force -Confirm:$false
 #### END OF Configure User Guide ####
 
 # AWS Implementation *********************************************************
-$string1 = (ipconfig | Where-Object {$_ -match 'taskbr'})
-$string2 = ($string1 -split '\(',2)[-1]
-$string3 = ($string2 -split '\)',2)[0]
-$ethernet_name = "vEthernet ($string3)"
-Set-NetIPInterface $ethernet_name -InterfaceMetric 10
+# $string1 = (ipconfig | Where-Object {$_ -match 'taskbr'})
+# $string2 = ($string1 -split '\(',2)[-1]
+# $string3 = ($string2 -split '\)',2)[0]
+# $ethernet_name = "vEthernet ($string3)"
+# Set-NetIPInterface $ethernet_name -InterfaceMetric 10
 # ****************************************************************************
 
 Start-Process "D:\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host
