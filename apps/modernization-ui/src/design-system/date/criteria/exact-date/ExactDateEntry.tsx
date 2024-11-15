@@ -7,9 +7,10 @@ type ExactDateEntryProps = {
     id: string;
     value: DateEqualsCriteria;
     onChange: (value: DateEqualsCriteria) => void;
+    onBlur?: (value: DateEqualsCriteria) => void;
 };
 
-export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => {
+export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryProps) => {
     const handleOnChange = (field: 'month' | 'day' | 'year') => (event: ChangeEvent<HTMLInputElement>) => {
         let newValue: DateEqualsCriteria;
         if (event.target.value) {
@@ -25,6 +26,10 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
         onChange(newValue);
     };
 
+    const handleOnBlur = (field: 'month' | 'day' | 'year') => (event: ChangeEvent<HTMLInputElement>) => {
+        onBlur?.({ equals: { ...value?.equals, [field]: parseInt(event.target.value) } });
+    };
+
     return (
         <div id={id} className={styles['exact-date-entry']}>
             <NumericInputField
@@ -32,6 +37,7 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
                 label="Month"
                 value={value?.equals?.month ?? ''}
                 onChange={(e) => handleOnChange('month')(e)}
+                onBlur={(e) => handleOnBlur('month')(e)}
                 className={styles['month']}
             />
             <NumericInputField
@@ -39,6 +45,7 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
                 label="Day"
                 value={value?.equals?.day ?? ''}
                 onChange={(e) => handleOnChange('day')(e)}
+                onBlur={(e) => handleOnBlur('day')(e)}
                 className={styles['day']}
             />
 
@@ -47,6 +54,7 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
                 label="Year"
                 value={value?.equals?.year ?? ''}
                 onChange={(e) => handleOnChange('year')(e)}
+                onBlur={(e) => handleOnBlur('year')(e)}
                 className={styles['year']}
             />
         </div>

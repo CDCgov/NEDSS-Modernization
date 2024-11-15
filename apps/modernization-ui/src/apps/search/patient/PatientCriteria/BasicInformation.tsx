@@ -6,12 +6,23 @@ import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
 import { validNameRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { genders } from 'options/gender';
 import { OperatorInput } from 'design-system/input/operator';
+import { DateEntryCriteria } from 'design-system/date/criteria/DateEntryCriteria';
+import { validateDateEntry } from 'design-system/date/validateDateEntry';
+import { DateEqualsCriteria } from 'design-system/date/entry';
 
 export const BasicInformation = () => {
-    const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+    const { control, setError, clearErrors } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
+
+    const handleDateValidation = (value: DateEqualsCriteria) => {
+        const validationResult = validateDateEntry('Date of birth')(value);
+        if (typeof validationResult === 'string') {
+            setError('bornOn', { type: 'manual', message: validationResult });
+        } else {
+            clearErrors('bornOn');
+        }
+    };
 
     return (
         <SearchCriteria>
@@ -60,18 +71,21 @@ export const BasicInformation = () => {
             />
             <Controller
                 control={control}
-                name="dateOfBirth"
-                render={({ field: { onChange, onBlur, value, name } }) => (
-                    <DatePickerInput
-                        name={name}
-                        label="Date of birth"
-                        defaultValue={value}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        sizing="compact"
-                        disableFutureDates
-                    />
-                )}
+                name="bornOn"
+                rules={{ validate: (value) => validateDateEntry('Date of birth')(value as DateEqualsCriteria) }}
+                render={({ field: { onChange, value }, fieldState: { error } }) => {
+                    return (
+                        <DateEntryCriteria
+                            label="Date of birth"
+                            onChange={onChange}
+                            onBlur={(e) => handleDateValidation(e as DateEqualsCriteria)}
+                            value={value}
+                            sizing="compact"
+                            id={'bornOn'}
+                            error={error?.message}
+                        />
+                    );
+                }}
             />
             <Controller
                 control={control}
