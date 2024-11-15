@@ -10,7 +10,7 @@ import { Modal } from 'design-system/modal';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './blocking-criteria-field-selection.module.scss';
-import { BlockingFieldCheckbox } from './BlockingFieldCheckbox';
+import { FieldCheckbox } from 'apps/deduplication/match-configuration/field-checkbox/FieldCheckbox';
 
 type Props = {
     activePass: number;
@@ -41,31 +41,33 @@ export const BlockingCriteriaFieldSelection = ({ activePass, onAccept, onCancel 
         onAccept(Object.values(BLOCKING_FIELD_OPTIONS).filter((o) => selectedFields.includes(o.value)));
     };
 
+    const footer = () => (
+        <>
+            <Button outline onClick={onCancel}>
+                Cancel
+            </Button>
+            <Button onClick={handleAccept}>Accept</Button>
+        </>
+    );
+
     return (
         <Modal
             id={'blocking-criteria-modal'}
             title="Select attributes for blocking"
             onClose={onCancel}
             className={styles.modalSizing}
-            footer={() => (
-                <>
-                    <Button outline onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleAccept}>Accept</Button>
-                </>
-            )}>
+            footer={footer}>
             <div className={styles.fieldSelection}>
                 <div className={styles.content}>
                     <section>
                         <Heading level={3}>Name</Heading>
                         <div className={styles.optionGroup}>
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.lastName}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.lastName.value)}
                                 onChange={handleToggleField}
                             />
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.firstName}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.firstName.value)}
                                 onChange={handleToggleField}
@@ -75,12 +77,12 @@ export const BlockingCriteriaFieldSelection = ({ activePass, onAccept, onCancel 
                     <section>
                         <Heading level={3}>Sex and birth</Heading>
                         <div className={styles.optionGroup}>
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.sex}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.sex.value)}
                                 onChange={handleToggleField}
                             />
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.birthDate}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.birthDate.value)}
                                 onChange={handleToggleField}
@@ -90,22 +92,22 @@ export const BlockingCriteriaFieldSelection = ({ activePass, onAccept, onCancel 
                     <section>
                         <Heading level={3}>Address</Heading>
                         <div className={styles.optionGroup}>
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.address}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.address.value)}
                                 onChange={handleToggleField}
                             />
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.city}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.city.value)}
                                 onChange={handleToggleField}
                             />
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.state}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.state.value)}
                                 onChange={handleToggleField}
                             />
-                            <BlockingFieldCheckbox
+                            <FieldCheckbox
                                 field={BLOCKING_FIELD_OPTIONS.zip}
                                 selected={selectedFields.includes(BLOCKING_FIELD_OPTIONS.zip.value)}
                                 onChange={handleToggleField}

@@ -1,0 +1,37 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.matchingCriteriaRow {
+    .underlined {
+        @extend %thin-bottom;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .information {
+            display: flex;
+            align-items: center;
+
+            .label {
+                color: colors.$base-darkest;
+                font-weight: 700;
+                line-height: 1.25rem;
+                width: 10rem;
+            }
+
+            .input {
+                & > div {
+                    border: none;
+
+                    label {
+                        width: auto;
+                    }
+                }
+            }
+        }
+
+        button {
+            color: colors.$secondary;
+        }
+    }
+}

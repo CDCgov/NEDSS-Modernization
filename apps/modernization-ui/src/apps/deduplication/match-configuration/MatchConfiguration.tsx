@@ -40,7 +40,9 @@ export const MatchConfiguration = () => {
                     <Shown when={configuration != null}>
                         <FormProvider {...form}>
                             <PassList activeIndex={activePass} onSetActive={setActivePass} />
-                            <PassForm activePass={activePass} />
+                            {configuration && (
+                                <PassForm activePass={activePass} dataElementConfiguration={configuration} />
+                            )}
                         </FormProvider>
                     </Shown>
                 </main>

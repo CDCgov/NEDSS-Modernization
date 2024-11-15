@@ -1,26 +1,30 @@
 export type MatchingCriteria = {
-    field: MatchingField;
+    field: MatchingFieldOption;
     method: MatchingMethodOption;
 };
 
-export type MatchingFieldOption = { active: boolean; value: MatchingField; label: string };
-export const matchingFieldOptions: MatchingFieldOption[] = [
-    { active: false, value: 'firstName', label: 'First name' },
-    { active: false, value: 'lastName', label: 'Last name' },
-    { active: false, value: 'suffix', label: 'Suffix' },
-    { active: false, value: 'birthDate', label: 'Date of birth' },
-    { active: false, value: 'mrn', label: 'MRN' },
-    { active: false, value: 'ssn', label: 'SSN' },
-    { active: false, value: 'sex', label: 'Current sex' },
-    { active: false, value: 'gender', label: 'Gender' },
-    { active: false, value: 'race', label: 'Race' },
-    { active: false, value: 'address', label: 'Street address' },
-    { active: false, value: 'city', label: 'City' },
-    { active: false, value: 'state', label: 'State' },
-    { active: false, value: 'zip', label: 'Zip' },
-    { active: false, value: 'county', label: 'County' },
-    { active: false, value: 'telephone', label: 'Telephone' }
-];
+export type MatchingFieldOption = {
+    value: MatchingField;
+    name: string;
+};
+
+export const MATCHING_FIELD_OPTIONS: { [key in MatchingField]: MatchingFieldOption } = {
+    firstName: { value: 'firstName', name: 'First name' },
+    lastName: { value: 'lastName', name: 'Last name' },
+    suffix: { value: 'suffix', name: 'Suffix' },
+    birthDate: { value: 'birthDate', name: 'Date of birth' },
+    mrn: { value: 'mrn', name: 'MRN' },
+    ssn: { value: 'ssn', name: 'SSN' },
+    sex: { value: 'sex', name: 'Current sex' },
+    gender: { value: 'gender', name: 'Gender' },
+    race: { value: 'race', name: 'Race' },
+    address: { value: 'address', name: 'Street address' },
+    city: { value: 'city', name: 'City' },
+    state: { value: 'state', name: 'State' },
+    zip: { value: 'zip', name: 'Zip' },
+    county: { value: 'county', name: 'County' },
+    telephone: { value: 'telephone', name: 'Telephone' }
+};
 
 export type MatchingField =
     | 'firstName'
@@ -39,12 +43,10 @@ export type MatchingField =
     | 'county'
     | 'telephone';
 
-export type MatchingMethod = 'exact' | 'logOdds';
+export type MatchingMethod = 'jarowinkler';
 export type MatchingMethodOption = {
     value: MatchingMethod;
     name: string;
 };
-export const matchingMethodOptions: MatchingMethodOption[] = [
-    { value: 'exact', name: 'Exact' },
-    { value: 'logOdds', name: 'Log odds' }
-];
+
+export const MATCHING_METHOD_OPTIONS: MatchingMethodOption[] = [{ value: 'jarowinkler', name: 'JaroWinkler' }];

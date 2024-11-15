@@ -13,7 +13,7 @@ export const useMatchingConfiguration = () => {
             {
                 name: 'Pass #1',
                 description: 'Description',
-                active: true,
+                active: false,
                 blockingCriteria: [],
                 matchingCriteria: [],
                 lowerBound: 0,
