@@ -4,7 +4,8 @@ Feature: Patient Search by Date of birth
   Background:
     Given I am logged into NBS
     And I can "find" any "patient"
-    And I have a patient
+    Given I have a patient
+    And I have another patient
 
   Scenario: I can find patients born on a specific day
     Given the patient was born on 01/15/1974
