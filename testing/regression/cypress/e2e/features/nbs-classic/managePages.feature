@@ -26,3 +26,9 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Enter Page name on add new classic page
     Then Click on Submit button on add new classic page
 
+  Scenario: Investigation page details view
+    Then Click on view icon to display the page details on classic
+    Then Check details displayed for "Patient Information"
+    Then Check details displayed for "General Information"
+    Then Check details displayed for "Name Information"
+
