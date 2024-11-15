@@ -19,9 +19,6 @@ public class WildCards {
   }
 
   private static String escape(final String value) {
-    if (value == null) {
-      return null;
-    }
     return value.replaceAll("([+\\-!(){}\\[\\]^\"~*?:\\\\/])", "\\\\$1");
   }
 
