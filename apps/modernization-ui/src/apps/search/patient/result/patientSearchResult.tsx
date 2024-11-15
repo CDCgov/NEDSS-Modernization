@@ -58,11 +58,12 @@ const displayPatientName = (result: PatientSearchResult): JSX.Element => (
         {displayOtherNames(result, 'reverse')}
     </div>
 );
-const displayPatientAge = (result: PatientSearchResult): JSX.Element => (
+const displayPatientAge = (result: PatientSearchResult, variant: 'singleline' | 'multiline'): JSX.Element => (
     <div>
         {internalizeDate(result.birthday)}
-        <br />
+        {variant === 'multiline' ? <br /> : ' ('}
         {displayAgeAsOfToday(result.birthday)}
+        {variant === 'singleline' && ')'}
     </div>
 );
 
