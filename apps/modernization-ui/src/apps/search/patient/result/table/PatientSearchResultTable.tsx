@@ -1,10 +1,10 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
 import { Column, DataTable } from 'design-system/table';
 import { ColumnPreference, useColumnPreferences } from 'design-system/table/preferences';
-import { internalizeDate } from 'date';
 import {
     displayPhones,
     displayPatientName,
+    displayPatientAge,
     displayProfileLink,
     displayEmails,
     displayAddresses,
@@ -14,7 +14,7 @@ import {
 // column definitions
 const PATIENT_ID = { id: 'patientid', name: 'Patient ID' };
 const PATIENT_NAME = { id: 'patientname', name: 'Patient name' };
-const DATE_OF_BIRTH = { id: 'birthday', name: 'Date of birth' };
+const DATE_OF_BIRTH = { id: 'birthday', name: 'DOB/Age' };
 const SEX = { id: 'sex', name: 'Current sex' };
 const ADDRESS = { id: 'address', name: 'Address' };
 const PHONE = { id: 'phoneNumber', name: 'Phone' };
@@ -33,7 +33,7 @@ const columns: Column<PatientSearchResult>[] = [
     {
         ...DATE_OF_BIRTH,
         sortable: true,
-        render: (result) => internalizeDate(result.birthday)
+        render: (result) => result.birthday && displayPatientAge(result)
     },
     { ...SEX, sortable: true, render: (result) => result.gender },
     {
