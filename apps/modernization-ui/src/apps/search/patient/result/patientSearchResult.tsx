@@ -3,6 +3,7 @@ import { displayName, displayNameElement, matchesLegalName } from 'name';
 import { displayAddress } from 'address/display';
 import { Link } from 'react-router-dom';
 import { ItemGroup } from 'design-system/item';
+import { internalizeDate } from 'date';
 
 const displayProfileLink = (shortId: number, displayName?: string) => {
     return <Link to={`/patient-profile/${shortId}/summary`}>{displayName || shortId}</Link>;
@@ -56,6 +57,7 @@ const displayPatientName = (result: PatientSearchResult): JSX.Element => (
         {displayOtherNames(result, 'reverse')}
     </div>
 );
+const displayPatientAge = (result: PatientSearchResult): JSX.Element => <div>{internalizeDate(result.birthday)}</div>;
 
 // Returns JSX that represents a list of IDs to display
 const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
@@ -72,6 +74,7 @@ const displayIdentifications = (result: PatientSearchResult): JSX.Element => (
 
 export {
     displayPatientName,
+    displayPatientAge,
     displayOtherNames,
     displayProfileLink,
     displayProfileLegalName,
