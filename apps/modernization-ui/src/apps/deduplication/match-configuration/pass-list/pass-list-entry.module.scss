@@ -38,13 +38,14 @@
             border-radius: 0.125rem;
             width: fit-content;
             margin-top: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 400;
 
             &.active {
                 background: colors.$open;
                 color: #fff;
-                font-size: 0.875rem;
-                font-weight: 400;
             }
+
             &.inactive {
                 background: colors.$disabled-light;
             }

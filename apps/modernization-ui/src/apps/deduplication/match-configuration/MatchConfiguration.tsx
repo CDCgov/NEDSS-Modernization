@@ -16,7 +16,7 @@ export const MatchConfiguration = () => {
     const { configuration, loading } = useDataElements();
     const { matchConfiguration } = useMatchingConfiguration();
     const [activePass, setActivePass] = useState<number>(0);
-    const form = useForm<MatchingConfiguration>();
+    const form = useForm<MatchingConfiguration>({ mode: 'onBlur' });
 
     useEffect(() => {
         form.reset(matchConfiguration, { keepDefaultValues: false });

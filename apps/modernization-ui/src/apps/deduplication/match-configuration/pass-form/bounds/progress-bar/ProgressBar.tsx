@@ -12,14 +12,14 @@ export const ProgressBar = ({ lower, upper, max }: Props) => {
                 <div className={styles.baseBar} />
                 {max !== undefined && (
                     <>
-                        {lower && (
+                        {lower !== undefined && lower > 0 && lower < max && (
                             <div
                                 className={styles.reviewBar}
                                 style={{ width: `${((max - lower) / max) * 100}%` }}
                                 data-content={`| ${lower}`}
                             />
                         )}
-                        {upper && (
+                        {upper !== undefined && upper > 0 && upper < max && (
                             <div
                                 className={styles.autoBar}
                                 style={{ width: `${((max - upper) / max) * 100}%` }}

@@ -31,7 +31,9 @@ export const MatchingBoundsForm = ({ activePass, logOddsTotal }: Props) => {
                 <div className={styles.inputs}>
                     <Controller
                         name={`passes.${activePass}.lowerBound`}
+                        shouldUnregister={true}
                         control={form.control}
+                        rules={{ required: { value: true, message: 'Lower bound is required' } }}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <>
                                 <label htmlFor={name}>Lower bound</label>
@@ -52,6 +54,8 @@ export const MatchingBoundsForm = ({ activePass, logOddsTotal }: Props) => {
                     <Controller
                         name={`passes.${activePass}.upperBound`}
                         control={form.control}
+                        shouldUnregister={true}
+                        rules={{ required: { value: true, message: 'Upper bound is required' } }}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <>
                                 <label htmlFor={name}>Upper bound</label>

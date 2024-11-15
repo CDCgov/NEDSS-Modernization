@@ -24,16 +24,20 @@ export const MatchingCriteriaRow = ({ label, activePass, logOdds, index, onRemov
                         <Controller
                             control={form.control}
                             name={`passes.${activePass}.matchingCriteria.${index}.method`}
-                            render={({ field: { onBlur, onChange, value, name } }) => (
+                            rules={{ required: { value: true, message: 'Method is required' } }}
+                            render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <SingleSelect
                                     id={`matchingMethod-${index}`}
                                     orientation="horizontal"
                                     label="Method"
                                     onBlur={onBlur}
-                                    onChange={onChange}
+                                    onChange={(e) => {
+                                        onChange(e), onBlur();
+                                    }}
                                     name={name}
                                     value={value}
                                     options={MATCHING_METHOD_OPTIONS}
+                                    error={error?.message}
                                 />
                             )}
                         />

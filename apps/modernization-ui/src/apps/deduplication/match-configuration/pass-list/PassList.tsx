@@ -1,10 +1,10 @@
 import { Icon } from '@trussworks/react-uswds';
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { MatchingConfiguration } from '../model/Pass';
 import styles from './pass-list.module.scss';
 import { PassListEntry } from './PassListEntry';
-import { MatchingConfiguration } from '../model/Pass';
 
 type Props = {
     activeIndex: number;
@@ -12,6 +12,7 @@ type Props = {
 };
 export const PassList = ({ activeIndex, onSetActive }: Props) => {
     const form = useFormContext<MatchingConfiguration>();
+    const watch = useWatch({ control: form.control });
     const { append } = useFieldArray<MatchingConfiguration>({ control: form.control, name: 'passes' });
 
     const handleAddPass = () => {
@@ -25,12 +26,20 @@ export const PassList = ({ activeIndex, onSetActive }: Props) => {
             upperBound: 0
         });
     };
+
     return (
         <div className={styles.passList}>
             <Heading level={2}>Pass configurations</Heading>
             <div className={styles.passEntries}>
-                {form.getValues('passes').map((p, k) => (
-                    <PassListEntry pass={p} key={k} activePass={activeIndex == k} onClick={() => onSetActive(k)} />
+                {watch.passes?.map((p, k) => (
+                    <PassListEntry
+                        name={p.name ?? ''}
+                        description={p.description ?? ''}
+                        key={k}
+                        isActive={p.active ?? false}
+                        isSelected={activeIndex == k}
+                        onClick={() => onSetActive(k)}
+                    />
                 ))}
                 <Button unstyled onClick={handleAddPass}>
                     <Icon.Add size={3} /> Add pass configuration

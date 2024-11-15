@@ -1,21 +1,22 @@
 import classNames from 'classnames';
 import styles from './pass-list-entry.module.scss';
-import { Pass } from '../model/Pass';
 
 type Props = {
-    pass: Pass;
-    activePass: boolean;
+    name: string;
+    description: string;
+    isActive: boolean;
+    isSelected: boolean;
     onClick: () => void;
 };
-export const PassListEntry = ({ pass, activePass, onClick }: Props) => {
+export const PassListEntry = ({ name, description, isActive, isSelected, onClick }: Props) => {
     return (
-        <section onClick={onClick} className={classNames(styles.passListEntry, activePass ? styles.activeEntry : '')}>
+        <section onClick={onClick} className={classNames(styles.passListEntry, isSelected ? styles.activeEntry : '')}>
             <div className={styles.border} />
             <div className={styles.info}>
-                <div className={styles.name}>{pass.name}</div>
-                <div className={styles.description}>{pass.description}</div>
-                <div className={classNames(styles.status, pass.active ? styles.active : styles.inactive)}>
-                    {pass.active ? 'Active' : 'Inactive'}
+                <div className={styles.name}>{name}</div>
+                <div className={styles.description}>{description}</div>
+                <div className={classNames(styles.status, isActive ? styles.active : styles.inactive)}>
+                    {isActive ? 'Active' : 'Inactive'}
                 </div>
             </div>
         </section>
