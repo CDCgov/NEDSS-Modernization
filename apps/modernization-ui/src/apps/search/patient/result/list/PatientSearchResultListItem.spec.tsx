@@ -49,7 +49,7 @@ describe('PatientSearchResultListItem', () => {
                 <PatientSearchResultListItem result={patient} />
             </MemoryRouter>
         );
-        expect(getByText('07/05/1995')).toBeInTheDocument();
+        expect(getByText('07/05/1995 (29 years)', { trim: true })).toBeInTheDocument();
     });
 
     it('should render the sex', () => {
@@ -136,11 +136,13 @@ describe('PatientSearchResultListItem', () => {
             emails: [],
             names: [],
             identification: [],
-            detailedPhones: [{
-              number: 'phone-number-value',
-              type: '',
-              use: ''
-            }]
+            detailedPhones: [
+                {
+                    number: 'phone-number-value',
+                    type: '',
+                    use: ''
+                }
+            ]
         };
 
         const { getByText } = render(
