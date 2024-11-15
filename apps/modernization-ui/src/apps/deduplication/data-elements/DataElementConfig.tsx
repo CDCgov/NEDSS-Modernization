@@ -55,6 +55,9 @@ const DataElementConfigContent = () => {
         }
     }, [error]);
 
+    const handleCancel = () => {
+        nav({ pathname: '/deduplication/match-configuration' });
+    };
     const handleSubmit = () => {
         save(form.getValues(), () =>
             showSuccess({ message: 'You have successfully updated the data elements configuration.' })
@@ -104,7 +107,9 @@ const DataElementConfigContent = () => {
                 <HowTo />
             </div>
             <div className={styles.buttonBar}>
-                <Button outline>Cancel</Button>
+                <Button outline onClick={handleCancel}>
+                    Cancel
+                </Button>
                 <Button onClick={handleSubmit} disabled={!form.formState.isDirty || !form.formState.isValid}>
                     Save data elements configuration
                 </Button>
