@@ -1,42 +1,42 @@
 import { Radio } from '@trussworks/react-uswds';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
 import { EntryWrapper, Sizing } from 'components/Entry';
-import { DateBetweenCriteria, DateCriteria, DateEqualsCriteria, isDateBetweenCriteria } from '../entry';
+import {
+    DateBetweenCriteria,
+    DateCriteria,
+    DateEqualsCriteria,
+    isDateBetweenCriteria,
+    isDateEqualsCriteria
+} from '../entry';
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
-import { validateDateEntry } from '../validateDateEntry';
 import styles from './date-criteria.module.scss';
-
-type DateOperation = 'equals' | 'between';
 
 export type DateEntryCriteriaProps = {
     id: string;
-    value: DateCriteria;
+    value: DateCriteria | undefined;
     label: string;
     sizing?: Sizing;
     orientation?: 'vertical' | 'horizontal';
+    error?: string;
     onChange: (value?: DateCriteria) => void;
 };
 
-export const DateEntryCriteria = ({ orientation, label, id, sizing, value, onChange }: DateEntryCriteriaProps) => {
-    const [dateOperation, setDateOperation] = useState<DateOperation>();
-    const error = validateDateEntry(label)(value as DateEqualsCriteria);
-
-    useEffect(() => {
-        setDateOperation(value && isDateBetweenCriteria(value) ? 'between' : 'equals');
-    }, [value]);
-
+export const DateEntryCriteria = ({
+    orientation,
+    label,
+    id,
+    sizing,
+    value,
+    error,
+    onChange
+}: DateEntryCriteriaProps) => {
     const handleDateOperationChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setDateOperation(event.target.value as DateOperation);
+        onChange(event.target.value === 'equals' ? { equals: {} } : { between: {} });
     };
 
     return (
-        <EntryWrapper
-            error={typeof error === 'string' && dateOperation === 'equals' ? error : ''}
-            orientation={orientation}
-            label={label}
-            htmlFor={id}
-            sizing={sizing}>
+        <EntryWrapper error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
             <div className={styles['options-wrapper']}>
                 <Radio
                     id={'equals'}
@@ -44,7 +44,7 @@ export const DateEntryCriteria = ({ orientation, label, id, sizing, value, onCha
                     label={'Exact Date'}
                     value={'equals'}
                     onChange={handleDateOperationChange}
-                    checked={dateOperation === 'equals'}
+                    checked={value && isDateEqualsCriteria(value)}
                 />
                 <Radio
                     id={'between'}
@@ -52,14 +52,14 @@ export const DateEntryCriteria = ({ orientation, label, id, sizing, value, onCha
                     label={'Date Range'}
                     value={'between'}
                     onChange={handleDateOperationChange}
-                    checked={dateOperation === 'between'}
+                    checked={value && isDateBetweenCriteria(value)}
                 />
             </div>
             <div className="margin-bottom-1">
-                {dateOperation === 'equals' && (
+                {value && isDateEqualsCriteria(value) && (
                     <ExactDateEntry id={`${id}-exact-date`} value={value as DateEqualsCriteria} onChange={onChange} />
                 )}
-                {dateOperation === 'between' && (
+                {value && isDateBetweenCriteria(value) && (
                     <DateRangeEntry id={`${id}-exact-date`} value={value as DateBetweenCriteria} onChange={onChange} />
                 )}
             </div>

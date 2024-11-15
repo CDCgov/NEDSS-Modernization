@@ -18,15 +18,6 @@ describe('DateEntryCriteria Component', () => {
         expect(getByLabelText('Date Range')).toBeInTheDocument();
     });
 
-    it('should switch to Date Range when Date Range radio is selected', async () => {
-        const { getByLabelText } = render(<DateEntryCriteria {...defaultProps} />);
-
-        const dateRangeRadio = getByLabelText('Date Range');
-        await userEvent.click(dateRangeRadio);
-
-        expect(dateRangeRadio).toBeChecked();
-    });
-
     it('should call onChange when a exact date is selected', async () => {
         const { getByLabelText } = render(<DateEntryCriteria {...defaultProps} />);
 

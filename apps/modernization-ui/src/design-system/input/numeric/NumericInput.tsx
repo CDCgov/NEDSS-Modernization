@@ -1,26 +1,9 @@
-import {
-    ChangeEvent as ReactChangeEvent,
-    KeyboardEvent as ReactKeyboardEvent,
-    useEffect,
-    useMemo,
-    useState
-} from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
+import { NumericInputField } from './NumericInputField';
 
 type NumericOnChange = (value?: number) => void;
-
-const isNonNumericKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    const value = event.key as string;
-    return value.length == 1 ? !/[0-9]/.test(value) : false;
-};
-
-const handleKeydown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (!event.altKey && !event.ctrlKey && !event.metaKey && isNonNumericKey(event)) {
-        //  prevents spaces and letter characters from being entered but allows keyboard short cuts like (crtl-v)
-        event.preventDefault();
-    }
-};
 
 const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
 
@@ -48,8 +31,7 @@ const NumericInput = ({
     error,
     required,
     className,
-    placeholder = 'No Data',
-    ...props
+    placeholder = 'No Data'
 }: NumericInputProps) => {
     const [current, setCurrent] = useState<number | undefined>(value);
 
@@ -82,18 +64,15 @@ const NumericInput = ({
             htmlFor={id}
             required={required}
             error={error}>
-            <input
-                id={id}
-                name={name}
-                className={classNames('usa-input', className)}
-                type="number"
+            <NumericInputField
                 inputMode={inputMode}
-                onChange={handleChange}
-                placeholder={placeholder}
+                className={classNames('usa-input', className)}
+                name={name}
+                label={label}
                 value={display}
-                pattern="[0-9]*"
-                onKeyDown={handleKeydown}
-                {...props}
+                onChange={handleChange}
+                required={required}
+                placeholder={placeholder}
             />
         </EntryWrapper>
     );

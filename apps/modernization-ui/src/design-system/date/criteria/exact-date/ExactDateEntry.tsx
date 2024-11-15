@@ -1,7 +1,7 @@
 import { DateEqualsCriteria } from 'design-system/date/entry';
-import { ChangeEvent } from 'react';
-import { NumberInput } from 'components/FormInputs/numberInput';
 import styles from '../date-criteria.module.scss';
+import { NumericInputField } from 'design-system/input/numeric/NumericInputField';
+import { ChangeEvent } from 'react';
 
 type ExactDateEntryProps = {
     id: string;
@@ -11,44 +11,42 @@ type ExactDateEntryProps = {
 
 export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => {
     const handleOnChange = (field: 'month' | 'day' | 'year') => (event: ChangeEvent<HTMLInputElement>) => {
-        const newValue: DateEqualsCriteria = { equals: { ...value?.equals, [field]: +event.target.value } };
+        let newValue: DateEqualsCriteria;
+        if (event.target.value) {
+            newValue = {
+                equals: { ...value?.equals, [field]: parseInt(event.target.value) }
+            };
+        } else {
+            newValue = {
+                equals: { ...value?.equals }
+            };
+            delete newValue.equals[field];
+        }
         onChange(newValue);
     };
 
     return (
         <div id={id} className={styles['exact-date-entry']}>
-            <NumberInput
+            <NumericInputField
                 name="month"
-                ariaLabel="month"
                 label="Month"
-                defaultValue={value?.equals?.month?.toString()}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    handleOnChange('month')(e);
-                }}
-                mask="__"
+                value={value?.equals?.month ?? ''}
+                onChange={(e) => handleOnChange('month')(e)}
                 className={styles['month']}
             />
-            <NumberInput
+            <NumericInputField
                 name="day"
-                ariaLabel="day"
                 label="Day"
-                defaultValue={value?.equals?.day?.toString()}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    handleOnChange('day')(e);
-                }}
-                mask="__"
+                value={value?.equals?.day ?? ''}
+                onChange={(e) => handleOnChange('day')(e)}
                 className={styles['day']}
             />
 
-            <NumberInput
+            <NumericInputField
                 name="year"
-                ariaLabel="year"
                 label="Year"
-                defaultValue={value?.equals?.year?.toString()}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    handleOnChange('year')(e);
-                }}
-                mask="____"
+                value={value?.equals?.year ?? ''}
+                onChange={(e) => handleOnChange('year')(e)}
                 className={styles['year']}
             />
         </div>

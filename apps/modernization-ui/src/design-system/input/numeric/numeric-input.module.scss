@@ -1,11 +1,11 @@
-.mask-input-wrapper {
+.numeric-input-wrapper {
     width: 100%;
     display: flex;
     gap: 0.5rem;
     flex-direction: column;
     box-sizing: border-box;
 
-    .mask-input {
+    .numeric-input {
         width: 100% !important;
     }
 }
