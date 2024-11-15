@@ -3,20 +3,20 @@ import { DataElements, DataElementsConfiguration } from 'apps/deduplication/data
 import { Button } from 'components/button';
 import { Heading } from 'components/heading';
 import { Shown } from 'conditional-render';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { MatchingFieldOption } from '../../model/Matching';
 import { MatchingConfiguration } from '../../model/Pass';
 import styles from './matching-criteria-form.module.scss';
-import { MatchingCriteriaRow } from './row/MatchingCriteriaRow';
 import { MatchingCriteriaFieldSelection } from './modal/MatchingCriteriaFieldSelection';
+import { MatchingCriteriaRow } from './row/MatchingCriteriaRow';
 
 type Props = {
     activePass: number;
+    logOddsTotal?: number;
     dataElementConfiguration: DataElementsConfiguration;
 };
-export const MatchingCriteriaForm = ({ activePass, dataElementConfiguration }: Props) => {
-    const [logOddsTotal, setLogOddsTodal] = useState<number | undefined>();
+export const MatchingCriteriaForm = ({ activePass, logOddsTotal, dataElementConfiguration }: Props) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const form = useFormContext<MatchingConfiguration>();
     const { append, remove } = useFieldArray<MatchingConfiguration>({ name: `passes.${activePass}.matchingCriteria` });
@@ -48,15 +48,6 @@ export const MatchingCriteriaForm = ({ activePass, dataElementConfiguration }: P
     const handleRemove = (index: number) => {
         remove(index);
     };
-
-    useEffect(() => {
-        const total = form
-            .getValues(`passes.${activePass}.matchingCriteria`)
-            ?.map((m) => dataElementConfiguration[m.field.value]?.logOdds)
-            .filter((f) => f !== undefined)
-            .reduce((a, b) => a + b, 0);
-        setLogOddsTodal(total > 0 ? total : undefined);
-    }, [form.getValues(`passes.${activePass}.matchingCriteria`)]);
 
     return (
         <section className={styles.matchingCriteriaForm}>

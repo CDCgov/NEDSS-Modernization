@@ -1,0 +1,70 @@
+@use 'styles/colors';
+
+.progressBar {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0 0.75rem 0;
+    gap: 1rem;
+
+    .barContainer {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 1.5rem;
+
+        .baseBar {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 1.25rem;
+            border: 1px solid colors.$base-darkest;
+            background: colors.$base-lightest;
+        }
+
+        .reviewBar {
+            position: absolute;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            border-radius: 0 1.25rem 1.25rem 0;
+            border: 1px solid colors.$base-darkest;
+            background: colors.$warning;
+
+            &::after {
+                content: attr(data-content);
+                position: absolute;
+                left: -2px;
+                top: -13px;
+                color: colors.$base;
+                font-size: 0.75rem;
+                font-weight: 400;
+                line-height: 0.75rem;
+                letter-spacing: 0.01875rem;
+                text-transform: uppercase;
+            }
+        }
+
+        .autoBar {
+            position: absolute;
+            right: 0;
+            width: 20%;
+            height: 100%;
+            border-radius: 0 1.25rem 1.25rem 0;
+            border: 1px solid colors.$base-darkest;
+            background: colors.$success;
+
+            &::after {
+                content: attr(data-content);
+                position: absolute;
+                left: -2px;
+                top: -13px;
+                color: colors.$base;
+                font-size: 0.75rem;
+                font-weight: 400;
+                line-height: 0.75rem;
+                letter-spacing: 0.01875rem;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
