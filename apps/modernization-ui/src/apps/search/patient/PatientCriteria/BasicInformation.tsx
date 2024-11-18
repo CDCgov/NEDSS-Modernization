@@ -1,13 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { SingleSelect } from 'design-system/select';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { OperatorInput } from 'design-system/input/operator';
+import { Input } from 'components/FormInputs/Input';
+import { validNameRule } from 'validation/entry';
+import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { validNameRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { genders } from 'options/gender';
-import { OperatorInput } from 'design-system/input/operator';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -47,15 +47,17 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="dateOfBirth"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={validDateRule('Date of birth')}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
+                        id={name}
                         name={name}
                         label="Date of birth"
-                        defaultValue={value}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
-                        disableFutureDates
+                        error={error?.message}
                     />
                 )}
             />
@@ -77,7 +79,7 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
                         defaultValue={value}
@@ -87,6 +89,7 @@ export const BasicInformation = () => {
                         htmlFor={name}
                         id={name}
                         sizing="compact"
+                        error={error?.message}
                     />
                 )}
             />
