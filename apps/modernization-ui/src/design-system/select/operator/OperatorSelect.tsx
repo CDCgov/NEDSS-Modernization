@@ -22,6 +22,7 @@ export const OperatorSelect = ({ id, value, mode, showLabel = false, sizing, onC
             id={id}
             options={mode === 'alpha' ? textAlphaOperators : textOperators}
             sizing={sizing}
+            placeholder=""
         />
     );
 };
