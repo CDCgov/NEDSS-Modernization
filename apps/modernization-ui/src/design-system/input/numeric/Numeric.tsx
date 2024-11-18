@@ -6,20 +6,21 @@ type NumericProps = {
     inputMode?: 'decimal' | 'numeric';
     value: number | string;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-    onKeyDown?: (event: ReactKeyboardEvent<HTMLInputElement>) => void;
     error?: string;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
-const Numeric = ({
-    name,
-    inputMode = 'numeric',
-    value,
-    onChange,
-    onKeyDown,
-    className,
-    placeholder,
-    ...props
-}: NumericProps) => (
+const isNonNumericKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    const value = event.key as string;
+    return value.length == 1 ? !/[0-9]/.test(value) : false;
+};
+
+const handleKeydown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (!event.altKey && !event.ctrlKey && !event.metaKey && isNonNumericKey(event)) {
+        event.preventDefault();
+    }
+};
+
+const Numeric = ({ name, inputMode = 'numeric', value, onChange, className, placeholder, ...props }: NumericProps) => (
     <input
         id={name}
         name={name}
@@ -30,7 +31,7 @@ const Numeric = ({
         placeholder={placeholder}
         value={value}
         pattern="[0-9]*"
-        onKeyDown={onKeyDown}
+        onKeyDown={handleKeydown}
         aria-label={name}
         {...props}
     />
