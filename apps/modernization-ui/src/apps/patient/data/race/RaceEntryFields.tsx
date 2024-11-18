@@ -4,14 +4,15 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { RaceCategoryValidator, RaceEntry } from './entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
     categoryValidator: RaceCategoryValidator;
+    isDirty?: boolean;
 };
 
-const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps) => {
+const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFieldsProps) => {
     const { control, resetField } = useFormContext<RaceEntry>();
 
     const id = useWatch({ control, name: 'id' });
@@ -19,9 +20,11 @@ const RaceEntryFields = ({ categories, categoryValidator }: RaceEntryFieldsProps
     const selectedCategory = useWatch({ control, name: 'race' });
     const detailedRaces = useDetailedRaceCodedValues(selectedCategory?.value);
 
-    useEffect(() => {
-        resetField('detailed');
-    }, [selectedCategory]);
+    useLayoutEffect(() => {
+        if (isDirty) {
+            resetField('detailed', { defaultValue: [] });
+        }
+    }, [detailedRaces]);
 
     return (
         <section>
