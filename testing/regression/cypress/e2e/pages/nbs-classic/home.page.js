@@ -5,7 +5,7 @@ class ClassicHomePage {
   }
 
   enterLastName(text) {
-    cy.get("#lastName").type(text);
+    cy.get('[id="name.last"]').type(text);
   }
 
   clickSearchBtnInPatientSearchPane() {
@@ -13,7 +13,7 @@ class ClassicHomePage {
   }
 
   enterFirstName(text) {
-    cy.get("#firstName").type(text)
+    cy.get('[id="name.last"]').type(text)
   }
 
   clickAddNewBtnInPatientSearchPane() {
@@ -40,8 +40,8 @@ class ClassicHomePage {
   createTwoPatients() {
     const createPatient = () => {
         cy.get('#homePageAdvancedSearch').click()
-        cy.get("#lastName").type("Simpson");
-        cy.get("#firstName").type("Martin");
+        cy.get('[id="name.last"]').type("Simpson");
+        cy.get('[id="name.first"]').type("Martin");
         cy.wait(1000);
         cy.contains('button', 'Search').eq(0).click()
         cy.wait(2000)
