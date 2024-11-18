@@ -19,7 +19,7 @@ export const PassList = ({ activeIndex, onSetActive }: Props) => {
         append({
             name: `Pass #${form.getValues('passes').length + 1}`,
             description: 'Description',
-            active: false,
+            active: true,
             blockingCriteria: [],
             matchingCriteria: [],
             lowerBound: 0,

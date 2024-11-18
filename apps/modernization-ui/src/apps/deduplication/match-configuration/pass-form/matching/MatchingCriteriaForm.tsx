@@ -19,13 +19,16 @@ type Props = {
 export const MatchingCriteriaForm = ({ activePass, logOddsTotal, dataElementConfiguration }: Props) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const form = useFormContext<MatchingConfiguration>();
-    const { append, remove } = useFieldArray<MatchingConfiguration>({ name: `passes.${activePass}.matchingCriteria` });
+    const { append, remove } = useFieldArray<MatchingConfiguration>({
+        name: `passes.${activePass}.matchingCriteria`,
+        rules: { required: 'Matching criteria is required', minLength: 1 }
+    });
     const handleShowmodal = () => {
         setShowModal(true);
     };
 
     const handleModalAccept = (fields: MatchingFieldOption[]) => {
-        const currentFields = form.getValues(`passes.${activePass}.matchingCriteria`).map((mc) => mc.field);
+        const currentFields = form.getValues(`passes.${activePass}.matchingCriteria`)?.map((mc) => mc.field);
         // remove fields that were removed from list
         const toRemove: number[] = [];
         currentFields.forEach((c, index) => {

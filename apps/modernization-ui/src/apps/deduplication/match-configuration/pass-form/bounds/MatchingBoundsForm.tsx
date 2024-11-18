@@ -25,23 +25,22 @@ export const MatchingBoundsForm = ({ activePass, logOddsTotal }: Props) => {
             <div className={styles.formContent}>
                 <ProgressBar
                     max={logOddsTotal}
-                    lower={watch.passes?.[activePass].lowerBound}
-                    upper={watch.passes?.[activePass].upperBound}
+                    lower={watch.passes?.[activePass]?.lowerBound}
+                    upper={watch.passes?.[activePass]?.upperBound}
                 />
                 <div className={styles.inputs}>
                     <Controller
                         name={`passes.${activePass}.lowerBound`}
-                        shouldUnregister={true}
                         control={form.control}
                         rules={{ required: { value: true, message: 'Lower bound is required' } }}
-                        render={({ field: { onChange, onBlur, value, name } }) => (
+                        render={({ field: { onChange, onBlur, name } }) => (
                             <>
                                 <label htmlFor={name}>Lower bound</label>
                                 <input
                                     type="number"
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    value={value ?? ''}
+                                    value={watch.passes?.[activePass].lowerBound ?? 0}
                                     id={name}
                                     name={name}
                                     max={logOddsTotal}
@@ -54,16 +53,15 @@ export const MatchingBoundsForm = ({ activePass, logOddsTotal }: Props) => {
                     <Controller
                         name={`passes.${activePass}.upperBound`}
                         control={form.control}
-                        shouldUnregister={true}
                         rules={{ required: { value: true, message: 'Upper bound is required' } }}
-                        render={({ field: { onChange, onBlur, value, name } }) => (
+                        render={({ field: { onChange, onBlur, name } }) => (
                             <>
                                 <label htmlFor={name}>Upper bound</label>
                                 <input
                                     type="number"
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    value={value ?? ''}
+                                    value={watch.passes?.[activePass].upperBound ?? 0}
                                     id={name}
                                     name={name}
                                     max={logOddsTotal}

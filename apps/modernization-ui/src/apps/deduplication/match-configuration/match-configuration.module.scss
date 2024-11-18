@@ -25,5 +25,22 @@
     & > main {
         display: flex;
         flex-grow: 1;
+
+        .formAndButtonBar {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+
+            .buttonBar {
+                display: flex;
+                justify-content: flex-end;
+                gap: 0.5rem;
+                position: sticky;
+                bottom: 0;
+                padding: 1.5rem;
+                background-color: colors.$base-white;
+                @extend %thin-top;
+            }
+        }
     }
 }

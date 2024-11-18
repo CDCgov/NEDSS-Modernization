@@ -9,17 +9,7 @@ type MatchingConfigurationResponse = {
 
 export const useMatchingConfiguration = () => {
     const [matchConfiguration, setMatchConfiguration] = useState<MatchingConfiguration>({
-        passes: [
-            {
-                name: 'Pass #1',
-                description: 'Description',
-                active: false,
-                blockingCriteria: [],
-                matchingCriteria: [],
-                lowerBound: 0,
-                upperBound: 0
-            }
-        ]
+        passes: []
     });
     const [error, setError] = useState<string | undefined>();
     const [loading, setLoading] = useState<boolean>(false);

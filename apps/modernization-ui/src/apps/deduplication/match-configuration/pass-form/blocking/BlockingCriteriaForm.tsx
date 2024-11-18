@@ -16,7 +16,10 @@ type Props = {
 export const BlockingCriteriaForm = ({ activePass }: Props) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const form = useFormContext<MatchingConfiguration>();
-    const { append, remove } = useFieldArray<MatchingConfiguration>({ name: `passes.${activePass}.blockingCriteria` });
+    const { append, remove } = useFieldArray<MatchingConfiguration>({
+        name: `passes.${activePass}.blockingCriteria`,
+        rules: { required: 'Blocking criteria is required', minLength: 1 }
+    });
 
     const handleShowmodal = () => {
         setShowModal(true);
@@ -53,15 +56,11 @@ export const BlockingCriteriaForm = ({ activePass }: Props) => {
                 <Heading level={2}>Blocking criteria</Heading>
                 <p className={styles.headerText}>Include records that meet all these conditions</p>
             </header>
-            {form.getValues('passes')[activePass].blockingCriteria.map((b, i) => (
-                <BlockingCriteriaRow
-                    key={i}
-                    activePass={activePass}
-                    label={b.field.name}
-                    index={i}
-                    onRemove={() => handleRemove(i)}
-                />
-            ))}
+            {form
+                .getValues('passes')
+                [
+                    activePass
+                ]?.blockingCriteria?.map((b, i) => <BlockingCriteriaRow key={i} activePass={activePass} label={b.field.name} index={i} onRemove={() => handleRemove(i)} />)}
             <Button unstyled onClick={handleShowmodal}>
                 <Icon.Add size={3} /> Add blocking criteria
             </Button>

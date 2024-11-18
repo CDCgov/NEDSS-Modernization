@@ -1,13 +1,12 @@
 import { DataElementsConfiguration } from 'apps/deduplication/data-elements/DataElement';
+import { Toggle } from 'design-system/toggle/Toggle';
 import { useEffect, useState } from 'react';
-import { Controller, useFormContext, useFormState, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { MatchingConfiguration } from '../model/Pass';
 import { BlockingCriteriaForm } from './blocking/BlockingCriteriaForm';
 import { MatchingBoundsForm } from './bounds/MatchingBoundsForm';
 import { MatchingCriteriaForm } from './matching/MatchingCriteriaForm';
 import styles from './pass-form.module.scss';
-import { Toggle } from 'design-system/toggle/Toggle';
-import { Button } from 'components/button';
 
 type Props = {
     activePass?: number;
@@ -15,7 +14,6 @@ type Props = {
 };
 export const PassForm = ({ activePass, dataElementConfiguration }: Props) => {
     const form = useFormContext<MatchingConfiguration>();
-    const state = useFormState({ control: form.control });
     const watch = useWatch({ control: form.control });
     const [logOddsTotal, setLogOddsTodal] = useState<number | undefined>();
 
@@ -30,7 +28,7 @@ export const PassForm = ({ activePass, dataElementConfiguration }: Props) => {
         } else {
             setLogOddsTodal(undefined);
         }
-    }, [JSON.stringify(watch.passes?.[activePass ?? 0].matchingCriteria)]);
+    }, [JSON.stringify(watch.passes?.[activePass ?? 0]?.matchingCriteria)]);
 
     return (
         <div className={styles.passForm}>
@@ -60,10 +58,6 @@ export const PassForm = ({ activePass, dataElementConfiguration }: Props) => {
                                 )}
                             />
                         </div>
-                    </div>
-                    <div className={styles.buttonBar}>
-                        <Button outline>Cancel</Button>
-                        <Button disabled={!state.isValid}>Save pass configuration</Button>
                     </div>
                 </>
             )}
