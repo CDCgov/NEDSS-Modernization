@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { useDetailedRaceCodedValues } from 'coded/race';
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { MultiSelect, SingleSelect } from 'design-system/select';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Selectable } from 'options';
 import { validateRequiredRule } from 'validation/entry';
+import { useDetailedRaceCodedValues } from 'coded/race';
 import { RaceCategoryValidator, RaceEntry } from './entry';
+
+const RACE_AS_OF_LABEL = 'Race as of';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
@@ -33,18 +35,17 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date') }}
+                rules={{ ...validateRequiredRule(RACE_AS_OF_LABEL), ...validDateRule(RACE_AS_OF_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Race as of"
-                        onBlur={onBlur}
-                        orientation="horizontal"
-                        defaultValue={value}
-                        onChange={onChange}
-                        name={`races-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        id={`races-${name}`}
                         required
+                        label={RACE_AS_OF_LABEL}
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        orientation="horizontal"
+                        error={error?.message}
                     />
                 )}
             />
