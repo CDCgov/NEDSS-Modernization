@@ -1,7 +1,10 @@
 import { DateEqualsCriteria } from 'design-system/date/entry';
 import styles from '../date-criteria.module.scss';
-import { NumericInputField } from 'design-system/input/numeric/NumericInputField';
-import { ChangeEvent } from 'react';
+import { Numeric } from 'design-system/input/numeric/Numeric';
+import { ChangeEvent, useEffect } from 'react';
+import { ExactDateEntryFields, useDateEqualsCriteria } from '../useDateEntryCriteria';
+import { Label } from '@trussworks/react-uswds';
+import classNames from 'classnames';
 
 type ExactDateEntryProps = {
     id: string;
@@ -11,52 +14,52 @@ type ExactDateEntryProps = {
 };
 
 export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryProps) => {
-    const handleOnChange = (field: 'month' | 'day' | 'year') => (event: ChangeEvent<HTMLInputElement>) => {
-        let newValue: DateEqualsCriteria;
+    const { state: dateEntry, apply, clear } = useDateEqualsCriteria(value);
+
+    const handleOnChange = (field: ExactDateEntryFields) => (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.value) {
-            newValue = {
-                equals: { ...value?.equals, [field]: parseInt(event.target.value) }
-            };
+            apply(field, event.target.value);
         } else {
-            newValue = {
-                equals: { ...value?.equals }
-            };
-            delete newValue.equals[field];
+            clear(field);
         }
-        onChange(newValue);
     };
 
-    const handleOnBlur = (field: 'month' | 'day' | 'year') => (event: ChangeEvent<HTMLInputElement>) => {
-        onBlur?.({ equals: { ...value?.equals, [field]: parseInt(event.target.value) } });
-    };
+    useEffect(() => {
+        onChange(dateEntry as DateEqualsCriteria);
+    }, [dateEntry, onChange]);
 
     return (
         <div id={id} className={styles['exact-date-entry']}>
-            <NumericInputField
-                name="month"
-                label="Month"
-                value={value?.equals?.month ?? ''}
-                onChange={(e) => handleOnChange('month')(e)}
-                onBlur={(e) => handleOnBlur('month')(e)}
-                className={styles['month']}
-            />
-            <NumericInputField
-                name="day"
-                label="Day"
-                value={value?.equals?.day ?? ''}
-                onChange={(e) => handleOnChange('day')(e)}
-                onBlur={(e) => handleOnBlur('day')(e)}
-                className={styles['day']}
-            />
-
-            <NumericInputField
-                name="year"
-                label="Year"
-                value={value?.equals?.year ?? ''}
-                onChange={(e) => handleOnChange('year')(e)}
-                onBlur={(e) => handleOnBlur('year')(e)}
-                className={styles['year']}
-            />
+            <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
+                <Label htmlFor={'month'}>Month</Label>
+                <Numeric
+                    name="month"
+                    label="Month"
+                    value={value?.equals?.month ?? ''}
+                    onChange={(e) => handleOnChange('month')(e)}
+                    onBlur={() => onBlur?.(dateEntry as DateEqualsCriteria)}
+                />
+            </div>
+            <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
+                <Label htmlFor={'day'}>Day</Label>
+                <Numeric
+                    name="day"
+                    label="Day"
+                    value={value?.equals?.day ?? ''}
+                    onChange={(e) => handleOnChange('day')(e)}
+                    onBlur={() => onBlur?.(dateEntry as DateEqualsCriteria)}
+                />
+            </div>
+            <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
+                <Label htmlFor={'year'}>Year</Label>
+                <Numeric
+                    name="year"
+                    label="Year"
+                    value={value?.equals?.year ?? ''}
+                    onChange={(e) => handleOnChange('year')(e)}
+                    onBlur={() => onBlur?.(dateEntry as DateEqualsCriteria)}
+                />
+            </div>
         </div>
     );
 };

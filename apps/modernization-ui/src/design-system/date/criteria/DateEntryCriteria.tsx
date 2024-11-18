@@ -1,5 +1,5 @@
 import { Radio } from '@trussworks/react-uswds';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { EntryWrapper, Sizing } from 'components/Entry';
 import {
     DateBetweenCriteria,
@@ -11,6 +11,7 @@ import {
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
 import styles from './date-criteria.module.scss';
+import { useDateEqualsCriteria } from './useDateEntryCriteria';
 
 export type DateEntryCriteriaProps = {
     id: string;
@@ -33,9 +34,15 @@ export const DateEntryCriteria = ({
     onChange,
     onBlur
 }: DateEntryCriteriaProps) => {
+    const { state: dateEntry, updateDateCriteria } = useDateEqualsCriteria(value as DateEqualsCriteria);
+
     const handleDateOperationChange = (event: ChangeEvent<HTMLInputElement>) => {
-        onChange(event.target.value === 'equals' ? { equals: {} } : { between: {} });
+        updateDateCriteria(event.target.value === 'equals' ? { equals: {} } : { between: {} });
     };
+
+    useEffect(() => {
+        onChange(dateEntry);
+    }, [dateEntry, onChange]);
 
     return (
         <EntryWrapper error={error} orientation={orientation} label={label} htmlFor={id} sizing={sizing}>

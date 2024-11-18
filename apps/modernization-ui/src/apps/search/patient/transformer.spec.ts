@@ -1,6 +1,7 @@
 import { RecordStatus } from 'generated/graphql/schema';
 import { PatientCriteriaEntry } from './criteria';
 import { transform } from './transformer';
+import { externalizeDate } from 'date';
 
 describe('when the PatientCriteria contains Basic Information criteria', () => {
     it('should transform with status', () => {
@@ -72,23 +73,13 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should transform with DOB', () => {
         const input: PatientCriteriaEntry = {
-            bornOn: { equals: { day: 5, month: 2, year: 1995 } },
+            dateOfBirth: '02/05/1995',
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(
-            expect.objectContaining({
-                bornOn: {
-                    equals: {
-                        day: 5,
-                        month: 2,
-                        year: 1995
-                    }
-                }
-            })
-        );
+        expect(actual).toEqual(expect.objectContaining({ dateOfBirth: externalizeDate('02/05/1995') }));
     });
 
     it('should transform with patient id', () => {

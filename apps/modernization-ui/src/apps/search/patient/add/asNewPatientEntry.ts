@@ -5,7 +5,6 @@ import { asValue } from 'options';
 import { orNull } from 'utils';
 import { IdentificationEntry, EmailEntry } from 'apps/patient/add';
 import { TextCriteria, asTextCriteriaValue } from 'options/operator';
-import { DateCriteria } from 'design-system/date/entry';
 
 const resolveIdentification = (entry: Identification): IdentificationEntry[] =>
     entry.identification && entry.identificationType
@@ -24,23 +23,12 @@ const resolveEmail = (entry: Contact): EmailEntry[] => [{ email: entry.email || 
 
 const resolveName = (textCriteria?: TextCriteria | string): string | null => orNull(asTextCriteriaValue(textCriteria));
 
-const resolveDateOfBirth = (criteria: DateCriteria | undefined): string | null => {
-    if (criteria && 'equals' in criteria) {
-        const { day, month, year } = criteria.equals;
-        return `${month}/${day}/${year}`;
-    } else if (criteria && 'between' in criteria) {
-        const { from, to } = criteria.between;
-        return `${from}-${to}`;
-    }
-    return null;
-};
-
 const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientEntry => {
     return {
         asOf: internalizeDate(new Date()),
         firstName: resolveName(criteria.firstName),
         lastName: resolveName(criteria.lastName),
-        dateOfBirth: resolveDateOfBirth(criteria.dateOfBirth),
+        dateOfBirth: criteria.dateOfBirth,
         currentGender: orNull(asValue(criteria.gender)),
         streetAddress1: orNull(criteria.address),
         city: orNull(criteria.city),

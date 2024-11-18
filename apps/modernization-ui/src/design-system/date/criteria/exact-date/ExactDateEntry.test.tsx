@@ -9,7 +9,7 @@ describe('ExactDateEntry Component', () => {
         const { getByRole } = render(
             <ExactDateEntry id="test-id" value={{ equals: { month: 1 } }} onChange={mockOnChange} />
         );
-        const monthInput = getByRole('spinbutton', { name: 'Month' }) as HTMLInputElement;
+        const monthInput = getByRole('spinbutton', { name: 'month' }) as HTMLInputElement;
 
         expect(monthInput.value).toBe('1');
     });
@@ -18,9 +18,9 @@ describe('ExactDateEntry Component', () => {
         const { getByRole } = render(
             <ExactDateEntry id="test-id" value={{ equals: { month: 1, day: 1, year: 1995 } }} onChange={mockOnChange} />
         );
-        const monthInput = getByRole('spinbutton', { name: 'Month' }) as HTMLInputElement;
-        const dayInput = getByRole('spinbutton', { name: 'Day' }) as HTMLInputElement;
-        const yearInput = getByRole('spinbutton', { name: 'Year' }) as HTMLInputElement;
+        const monthInput = getByRole('spinbutton', { name: 'month' }) as HTMLInputElement;
+        const dayInput = getByRole('spinbutton', { name: 'day' }) as HTMLInputElement;
+        const yearInput = getByRole('spinbutton', { name: 'year' }) as HTMLInputElement;
 
         expect(monthInput.value).toBe('1');
         expect(dayInput.value).toBe('1');
@@ -31,7 +31,7 @@ describe('ExactDateEntry Component', () => {
         const { getByRole } = render(
             <ExactDateEntry id="test-id" value={{ equals: { month: 1 } }} onChange={mockOnChange} />
         );
-        const dayInput = getByRole('spinbutton', { name: 'Day' }) as HTMLInputElement;
+        const dayInput = getByRole('spinbutton', { name: 'day' }) as HTMLInputElement;
         await userEvent.paste(dayInput, '12');
         expect(mockOnChange).toHaveBeenCalledWith({ equals: { month: 1, day: 12 } });
     });

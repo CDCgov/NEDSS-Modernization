@@ -11,9 +11,11 @@ describe('when entering numeric values', () => {
     });
 
     it('should render successfully', () => {
-        const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} />);
+        const { getByRole } = render(
+            <NumericInput id={'testing-input'} name={'testing-input'} label={'Numeric Input test'} />
+        );
 
-        const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+        const input = getByRole('spinbutton', { name: 'testing-input' });
 
         expect(input).toHaveClass('usa-input');
         expect(input).toHaveAttribute('type', 'number');
@@ -23,10 +25,15 @@ describe('when entering numeric values', () => {
         const onChange = jest.fn();
 
         const { getByRole } = render(
-            <NumericInput id={'testing-input'} label={'Numeric Input test'} onChange={onChange} />
+            <NumericInput
+                id={'testing-input'}
+                name={'testing-input'}
+                label={'Numeric Input test'}
+                onChange={onChange}
+            />
         );
 
-        const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+        const input = getByRole('spinbutton', { name: 'testing-input' });
 
         userEvent.type(input, '7');
         userEvent.tab();
@@ -35,9 +42,11 @@ describe('when entering numeric values', () => {
     });
 
     it('should allow entry of numeric values', () => {
-        const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} />);
+        const { getByRole } = render(
+            <NumericInput id={'testing-input'} name={'testing-input'} label={'Numeric Input test'} />
+        );
 
-        const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+        const input = getByRole('spinbutton', { name: 'testing-input' });
 
         userEvent.type(input, '7');
         userEvent.tab();
@@ -46,9 +55,11 @@ describe('when entering numeric values', () => {
     });
 
     it('should allow pasting of numeric values', () => {
-        const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} />);
+        const { getByRole } = render(
+            <NumericInput id={'testing-input'} name={'testing-input'} label={'Numeric Input test'} />
+        );
 
-        const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+        const input = getByRole('spinbutton', { name: 'testing-input' });
 
         userEvent.paste(input, '743');
         userEvent.tab();
@@ -57,9 +68,11 @@ describe('when entering numeric values', () => {
     });
 
     it('should not allow alpha characters values', () => {
-        const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} />);
+        const { getByRole } = render(
+            <NumericInput id={'testing-input'} name={'testing-input'} label={'Numeric Input test'} />
+        );
 
-        const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+        const input = getByRole('spinbutton', { name: 'testing-input' });
 
         userEvent.type(input, 'a');
         userEvent.tab();
@@ -68,9 +81,11 @@ describe('when entering numeric values', () => {
     });
 
     it('should display given value', () => {
-        const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} value={5} />);
+        const { getByRole } = render(
+            <NumericInput id={'testing-input'} name={'testing-input'} label={'Numeric Input test'} value={5} />
+        );
 
-        const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+        const input = getByRole('spinbutton', { name: 'testing-input' });
 
         expect(input).toHaveValue(5);
     });
@@ -111,9 +126,11 @@ describe('when entering numeric values', () => {
             '(',
             ')'
         ])('should not allow input of "%s"', (value) => {
-            const { getByRole } = render(<NumericInput id={'testing-input'} label={'Numeric Input test'} />);
+            const { getByRole } = render(
+                <NumericInput id={'testing-input'} name={'testing-input'} label={'Numeric Input test'} />
+            );
 
-            const input = getByRole('spinbutton', { name: 'Numeric Input test' });
+            const input = getByRole('spinbutton', { name: 'testing-input' });
 
             userEvent.type(input, value);
             userEvent.tab();

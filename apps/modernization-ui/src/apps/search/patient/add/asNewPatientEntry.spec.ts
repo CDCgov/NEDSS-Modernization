@@ -18,11 +18,11 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should populate the date of birth that was searched for', () => {
-        const criteria = { dateOfBirth: { equals: { day: 5, month: 6, year: 1999 } } };
+        const criteria = { dateOfBirth: '06/05/2025' };
 
         const actual = asNewPatientEntry(criteria);
 
-        expect(actual).toEqual(expect.objectContaining({ dateOfBirth: '6/5/1999' }));
+        expect(actual).toEqual(expect.objectContaining({ dateOfBirth: '06/05/2025' }));
     });
 
     it('should populate the gender that was searched for', () => {

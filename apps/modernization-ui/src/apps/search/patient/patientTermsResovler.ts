@@ -1,7 +1,6 @@
 import { Term, fromSelectable, fromValue } from 'apps/search/terms';
 import { PatientCriteriaEntry } from './criteria';
 import { asTextCriteriaValue, TextCriteria } from 'options/operator';
-import { fromDateBetweenCriteria, fromDateEqualsCriteria } from '../terms/fromDateCriteria';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
@@ -23,12 +22,8 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         pushCriteria('firstName', 'FIRST NAME', entry.firstName);
     }
 
-    if (entry.bornOn) {
-        if ('equals' in entry.bornOn) {
-            terms.push(fromDateEqualsCriteria('dateOfBirth', 'DOB Equal')(entry.bornOn));
-        } else if ('between' in entry.bornOn) {
-            terms.push(fromDateBetweenCriteria('dateOfBirth', 'DOB Between')(entry.bornOn));
-        }
+    if (entry.dateOfBirth) {
+        terms.push(fromValue('dateOfBirth', 'DOB')(entry.dateOfBirth));
     }
 
     if (entry.gender) {

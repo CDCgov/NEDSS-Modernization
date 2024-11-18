@@ -9,6 +9,12 @@
     gap: 1rem;
     margin-top: 1rem;
 
+    .numeric-wrapper {
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+    }
+
     .month,
     .day {
         flex: 1;
