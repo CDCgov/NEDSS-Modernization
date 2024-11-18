@@ -14,11 +14,11 @@ class PatientSummaryAddressFinder {
       select
           coalesce(
                 [type].code_short_desc_txt,
-                [locators].cd
+                IsNull([locators].cd, '')
           )                               as [type],
           coalesce(
                 [use].code_short_desc_txt,
-                [locators].[use_cd]
+                IsNull([locators].[use_cd],'')
           )                               as [use],
           [address].street_addr1          as [address_1],
           [address].street_addr2          as [address_2],
@@ -36,7 +36,7 @@ class PatientSummaryAddressFinder {
           left join  NBS_SRTE..Code_value_general [type] on
                   [type].code_set_nm = 'EL_TYPE_PST_PAT'
               and [type].code = [locators].cd
-    
+
           left join NBS_SRTE..Code_value_general [use] on
                   [use].code_set_nm = 'EL_USE_PST_PAT'
               and [use].code = [locators].[use_cd]
@@ -51,7 +51,7 @@ class PatientSummaryAddressFinder {
 
       where   [locators].entity_uid = ?
           and [locators].[class_cd] = 'PST'
-          and [locators].[use_cd] not in ('BIR', 'DTH', 'H')
+          and ([locators].[use_cd] IS NULL OR [locators].[use_cd] not in ('BIR', 'DTH', 'H'))
           and [locators].[record_status_cd] = 'ACTIVE'
       """;
   private static final int PATIENT_PARAMETER = 1;

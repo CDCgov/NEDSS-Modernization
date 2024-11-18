@@ -46,8 +46,8 @@ const asOperatorAndValue = (value?: string | TextCriteria | null, operator?: Tex
 export const OperatorInput = ({
     id,
     value,
-    operator = 'startsWith',
     operationMode,
+    operator = operationMode === 'alpha' ? 'equals' : 'startsWith',
     label,
     sizing = 'compact',
     orientation = 'vertical',
