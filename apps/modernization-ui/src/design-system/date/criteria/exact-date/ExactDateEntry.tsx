@@ -1,10 +1,9 @@
 import { DateEqualsCriteria } from 'design-system/date/entry';
-import styles from '../date-criteria.module.scss';
 import { Numeric } from 'design-system/input/numeric/Numeric';
 import { ChangeEvent, useEffect } from 'react';
-import { ExactDateEntryFields, useDateEqualsCriteria } from '../useDateEntryCriteria';
-import { Label } from '@trussworks/react-uswds';
+import { ExactDateEntryFields, useDateEqualsCriteria } from '../useDateEqualsCriteria';
 import classNames from 'classnames';
+import styles from './exact-date-entry.module.scss';
 
 type ExactDateEntryProps = {
     id: string;
@@ -29,10 +28,11 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
     }, [dateEntry, onChange]);
 
     return (
-        <div id={id} className={styles['exact-date-entry']}>
+        <div id={id} aria-label="patient-search-exact-date" className={styles['exact-date-entry']}>
             <div className={classNames(styles['numeric-wrapper'], styles['month'])}>
-                <Label htmlFor={'month'}>Month</Label>
+                <label htmlFor={'month'}>Month</label>
                 <Numeric
+                    id={`${id}-month`}
                     name="month"
                     label="Month"
                     value={value?.equals?.month ?? ''}
@@ -41,8 +41,9 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
-                <Label htmlFor={'day'}>Day</Label>
+                <label htmlFor={'day'}>Day</label>
                 <Numeric
+                    id={`${id}-day`}
                     name="day"
                     label="Day"
                     value={value?.equals?.day ?? ''}
@@ -51,8 +52,9 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
-                <Label htmlFor={'year'}>Year</Label>
+                <label htmlFor={'year'}>Year</label>
                 <Numeric
+                    id={`${id}-year`}
                     name="year"
                     label="Year"
                     value={value?.equals?.year ?? ''}

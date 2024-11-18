@@ -20,9 +20,18 @@ const handleKeydown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     }
 };
 
-const Numeric = ({ name, inputMode = 'numeric', value, onChange, className, placeholder, ...props }: NumericProps) => (
+const Numeric = ({
+    name,
+    id,
+    inputMode = 'numeric',
+    value,
+    onChange,
+    className,
+    placeholder,
+    ...props
+}: NumericProps) => (
     <input
-        id={name}
+        id={id}
         name={name}
         className={classNames('usa-input', className)}
         type="number"

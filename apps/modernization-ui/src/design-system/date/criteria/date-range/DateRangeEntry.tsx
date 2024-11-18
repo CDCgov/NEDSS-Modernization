@@ -7,5 +7,9 @@ type DateRangeEntryProps = {
 };
 
 export const DateRangeEntry = ({ id }: DateRangeEntryProps) => {
-    return <div id={id}>Date range entry</div>;
+    return (
+        <div id={id} aria-label="patient-search-date-range">
+            Date range entry
+        </div>
+    );
 };
