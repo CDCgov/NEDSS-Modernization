@@ -42,7 +42,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should populate the city that was searched for', () => {
-        const criteria = { city: 'city-value' };
+        const criteria = { location: { city: { equals: 'city-value' } } };
 
         const actual = asNewPatientEntry(criteria);
 

@@ -27,16 +27,15 @@ export const Address = () => {
                 />
                 <Controller
                     control={control}
-                    name="city"
+                    name="location.city"
                     render={({ field: { onChange, value, name } }) => (
-                        <Input
-                            onChange={onChange}
-                            defaultValue={value}
-                            type="text"
-                            label="City"
-                            htmlFor={name}
+                        <OperatorInput
                             id={name}
+                            value={value}
+                            label="City"
                             sizing="compact"
+                            operationMode="alpha"
+                            onChange={onChange}
                         />
                     )}
                 />

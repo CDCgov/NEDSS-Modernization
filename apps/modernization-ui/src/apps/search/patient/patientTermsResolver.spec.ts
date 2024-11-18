@@ -100,7 +100,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
     it('should resolve terms with City', () => {
         const input: PatientCriteriaEntry = {
-            city: 'city-value',
+            location: { city: { equals: 'city-value' } },
             status: []
         };
 
