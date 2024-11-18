@@ -33,7 +33,7 @@ const columns: Column<PatientSearchResult>[] = [
     {
         ...DATE_OF_BIRTH,
         sortable: true,
-        render: (result) => result.birthday && displayPatientAge(result)
+        render: (result) => result.birthday && displayPatientAge(result, 'multiline')
     },
     { ...SEX, sortable: true, render: (result) => result.gender },
     {
