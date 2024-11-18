@@ -6,6 +6,25 @@ type DateEntry = {
     year?: number;
 };
 
+type DateEqualsCriteria = {
+    equals: DateEntry;
+};
+
+type DateBetweenCriteria = {
+    between: {
+        from?: string;
+        to?: string;
+    };
+};
+
+type DateCriteria = DateEqualsCriteria | DateBetweenCriteria;
+
+const isDateEqualsCriteria = (criteria: DateCriteria): criteria is DateEqualsCriteria => 'equals' in criteria;
+const isDateBetweenCriteria = (criteria: DateCriteria): criteria is DateBetweenCriteria => 'between' in criteria;
+
+export { isDateEqualsCriteria, isDateBetweenCriteria };
+export type { DateCriteria, DateBetweenCriteria, DateEqualsCriteria };
+
 const maybeNumber = maybeMap(Number);
 
 const DATE_ENTRY_FORMAT = /^(?<month>\d{2})\/(?<day>\d{2})\/(?<year>\d{4})$/;
