@@ -34,6 +34,14 @@ const validateDay = (name: string) => (value: DateEntry) => {
     return true;
 };
 
+/**
+ * Validates that the given string represents a valid date entry in the format MM/DD/YYYY with
+ * appropriate values for the month, day, and year.  Any failed validations will include the
+ * name of the field being validated.
+ *
+ * @param {string} name The name of the field being validated
+ * @return {Validator}
+ */
 const validateDateEntry =
     (name: string) =>
     (value: DateEntry): boolean | string =>

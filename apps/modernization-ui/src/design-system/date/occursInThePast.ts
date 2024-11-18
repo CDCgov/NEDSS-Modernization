@@ -14,6 +14,13 @@ const resolveDate = (value: DateEntry) => {
     return new Date(year ?? now.getFullYear(), month ?? now.getMonth(), day ?? now.getDate());
 };
 
+/**
+ * Validates that the given string represents a date that occurs on or after the current day.  Any failed
+ *  validations will include the name of the field being validated.
+ *
+ * @param {string} name The name of the field being validated
+ * @return {Validator}
+ */
 const occursInThePast =
     (name: string) =>
     (value: DateEntry): boolean | string => {
