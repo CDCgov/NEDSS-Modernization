@@ -34,7 +34,7 @@ const Numeric = ({ id, inputMode = 'numeric', value, onChange, className, placeh
 
     useEffect(() => {
         onChange?.(current);
-    }, [current, onChange]);
+    }, [current]);
 
     const display = useMemo(() => asDisplay(current), [current]);
 

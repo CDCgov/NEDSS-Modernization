@@ -1,6 +1,6 @@
 import { DateEqualsCriteria } from 'design-system/date/entry';
 import { Numeric } from 'design-system/input/numeric/Numeric';
-import { ChangeEvent, useEffect } from 'react';
+import { useEffect } from 'react';
 import { ExactDateEntryFields, useDateEqualsCriteria } from '../useDateEqualsCriteria';
 import classNames from 'classnames';
 import styles from './exact-date-entry.module.scss';
@@ -15,9 +15,9 @@ type ExactDateEntryProps = {
 export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryProps) => {
     const { state: dateEntry, apply, clear } = useDateEqualsCriteria(value);
 
-    const handleOnChange = (field: ExactDateEntryFields) => (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.value) {
-            apply(field, event.target.value);
+    const handleOnChange = (field: ExactDateEntryFields) => (value: number | undefined) => {
+        if (value) {
+            apply(field, value);
         } else {
             clear(field);
         }
@@ -34,8 +34,8 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
                 <Numeric
                     id={`${id}-month`}
                     name="month"
-                    label="Month"
-                    value={value?.equals?.month ?? ''}
+                    aria-label="month"
+                    value={value?.equals?.month}
                     onChange={(e) => handleOnChange('month')(e)}
                     onBlur={() => onBlur?.(dateEntry as DateEqualsCriteria)}
                 />
@@ -45,8 +45,8 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
                 <Numeric
                     id={`${id}-day`}
                     name="day"
-                    label="Day"
-                    value={value?.equals?.day ?? ''}
+                    aria-label="day"
+                    value={value?.equals?.day}
                     onChange={(e) => handleOnChange('day')(e)}
                     onBlur={() => onBlur?.(dateEntry as DateEqualsCriteria)}
                 />
@@ -56,8 +56,8 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
                 <Numeric
                     id={`${id}-year`}
                     name="year"
-                    label="Year"
-                    value={value?.equals?.year ?? ''}
+                    aria-label="year"
+                    value={value?.equals?.year}
                     onChange={(e) => handleOnChange('year')(e)}
                     onBlur={() => onBlur?.(dateEntry as DateEqualsCriteria)}
                 />

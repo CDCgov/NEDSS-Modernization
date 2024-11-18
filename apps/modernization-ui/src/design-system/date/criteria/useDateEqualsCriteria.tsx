@@ -4,14 +4,14 @@ import { DateEqualsCriteria } from '../entry';
 export type ExactDateEntryFields = 'day' | 'month' | 'year';
 
 type Action =
-    | { type: 'apply'; field: ExactDateEntryFields; value: string }
+    | { type: 'apply'; field: ExactDateEntryFields; value: number }
     | { type: 'clear'; field: ExactDateEntryFields };
 
 const dateReducer = (state: DateEqualsCriteria, action: Action): DateEqualsCriteria => {
     switch (action.type) {
         case 'apply':
             return {
-                equals: { ...state.equals, [action.field]: action.value ? parseInt(action.value) : '' }
+                equals: { ...state.equals, [action.field]: action.value }
             };
         case 'clear': {
             const newState = { equals: { ...state.equals } };
@@ -26,7 +26,7 @@ const dateReducer = (state: DateEqualsCriteria, action: Action): DateEqualsCrite
 export const useDateEqualsCriteria = (initialValue: DateEqualsCriteria) => {
     const [state, dispatch] = useReducer(dateReducer, initialValue);
 
-    const apply = (field: ExactDateEntryFields, value: string) => {
+    const apply = (field: ExactDateEntryFields, value: number) => {
         dispatch({ type: 'apply', field, value });
     };
 
