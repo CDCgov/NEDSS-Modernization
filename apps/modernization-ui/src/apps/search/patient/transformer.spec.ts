@@ -16,31 +16,9 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         );
     });
 
-    it('should disable soundex when not including similar', () => {
-        const input: PatientCriteriaEntry = {
-            includeSimilar: false,
-            status: []
-        };
-
-        const actual = transform(input);
-
-        expect(actual).toEqual(expect.objectContaining({ disableSoundex: true }));
-    });
-
-    it('should enable soundex when including similar', () => {
-        const input: PatientCriteriaEntry = {
-            includeSimilar: true,
-            status: []
-        };
-
-        const actual = transform(input);
-
-        expect(actual).toEqual(expect.objectContaining({ disableSoundex: false }));
-    });
-
     it('should transform with last name', () => {
         const input: PatientCriteriaEntry = {
-            lastName: { equals: 'last-name-value' },
+            name: { last: { equals: 'last-name-value' } },
             status: []
         };
 
@@ -51,7 +29,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should transform with first name', () => {
         const input: PatientCriteriaEntry = {
-            firstName: { equals: 'first-name-value' },
+            name: { first: { equals: 'first-name-value' } },
             status: []
         };
 
@@ -97,24 +75,24 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 describe('when the PatientCriteria contains Address criteria', () => {
     it('should transform with Street address', () => {
         const input: PatientCriteriaEntry = {
-            address: 'address-value',
+            location: { street: { equals: 'address-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ address: 'address-value' }));
+        expect(actual).toEqual(expect.objectContaining({ location: { street: { equals: 'address-value' } } }));
     });
 
     it('should transform with City', () => {
         const input: PatientCriteriaEntry = {
-            city: 'city-value',
+            location: { city: { equals: 'city-value' } },
             status: []
         };
 
         const actual = transform(input);
 
-        expect(actual).toEqual(expect.objectContaining({ city: 'city-value' }));
+        expect(actual).toEqual(expect.objectContaining({ location: { city: { equals: 'city-value' } } }));
     });
 
     it('should transform with State', () => {
@@ -208,6 +186,35 @@ describe('when the PatientCriteria contains Identification criteria', () => {
                     identificationNumber: 'identification-value',
                     identificationType: 'identification-type-value'
                 })
+            })
+        );
+    });
+});
+
+describe('when the PatientCriteria contains event id criteria', () => {
+    it.each([
+        'morbidity',
+        'investigation',
+        'vaccination',
+        'treatment',
+        'abcCase',
+        'cityCountyCase',
+        'notification',
+        'labReport',
+        'stateCase',
+        'document',
+        'accessionNumber'
+    ])('should transform with %s', (type) => {
+        const input: PatientCriteriaEntry = {
+            [type]: '1234',
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({
+                [type]: '1234'
             })
         );
     });

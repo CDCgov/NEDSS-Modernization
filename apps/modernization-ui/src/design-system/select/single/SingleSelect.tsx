@@ -3,9 +3,9 @@ import { Select as TrussworksSelect } from '@trussworks/react-uswds';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, findByValue } from 'options';
 
-const renderOptions = (placeholder: string, options: Selectable[]) => (
+const renderOptions = (options: Selectable[], placeholder?: string) => (
     <>
-        <option value="">{placeholder}</option>
+        {placeholder && <option value="">{placeholder}</option>}
         {options?.map((item, index) => (
             <option key={index} value={item.value}>
                 {item.name}
@@ -65,7 +65,7 @@ const SingleSelect = ({
                 defaultValue={value?.value}
                 placeholder="-Select-"
                 onChange={handleChange}>
-                {renderOptions(placeholder, options)}
+                {renderOptions(options, placeholder)}
             </TrussworksSelect>
         </EntryWrapper>
     );

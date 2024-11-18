@@ -1,5 +1,5 @@
 import { PatientCriteriaEntry } from './criteria';
-import { patientTermsResolver } from './patientTermsResovler';
+import { patientTermsResolver } from './patientTermsResolver';
 
 describe('when the PatientCriteria contains Basic Information criteria', () => {
     it('should resolve terms with status', () => {
@@ -17,7 +17,6 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should resolve terms', () => {
         const input: PatientCriteriaEntry = {
-            includeSimilar: true,
             status: []
         };
 
@@ -28,7 +27,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should resolve terms with last name', () => {
         const input: PatientCriteriaEntry = {
-            lastName: { equals: 'last-name-value' },
+            name: { last: { equals: 'last-name-value' } },
             status: []
         };
 
@@ -43,7 +42,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
     it('should resolve terms with first name', () => {
         const input: PatientCriteriaEntry = {
-            firstName: { equals: 'first-name-value' },
+            name: { first: { equals: 'first-name-value' } },
             status: []
         };
 
@@ -86,7 +85,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 describe('when the PatientCriteria contains Address criteria', () => {
     it('should resolve terms with Street address', () => {
         const input: PatientCriteriaEntry = {
-            address: 'address-value',
+            location: { street: { equals: 'address-value' } },
             status: []
         };
 
@@ -101,7 +100,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
     it('should resolve terms with City', () => {
         const input: PatientCriteriaEntry = {
-            city: 'city-value',
+            location: { city: { equals: 'city-value' } },
             status: []
         };
 
@@ -222,6 +221,42 @@ describe('when the PatientCriteria contains Identification criteria', () => {
                     value: 'identification-type-value'
                 },
                 { source: 'identification', title: 'ID', name: 'identification-value', value: 'identification-value' }
+            ])
+        );
+    });
+});
+
+type EventIdValue = { source: string; title: string; name: string; value: string };
+
+describe('when the PatientCriteria contains event ids criteria', () => {
+    it.each<EventIdValue>([
+        { name: '1234', source: 'morbidity', title: 'MORBIDITY REPORT ID', value: '1234' },
+        { name: '1234', source: 'investigation', title: 'INVESTIGATION ID', value: '1234' },
+        { name: '1234', source: 'vaccination', title: 'VACCINATION ID', value: '1234' },
+        { name: '1234', source: 'treatment', title: 'TREATMENT ID', value: '1234' },
+        { name: '1234', source: 'abcCase', title: 'ABCS CASE ID', value: '1234' },
+        { name: '1234', source: 'cityCountyCase', title: 'CITY/COUNTY CASE ID', value: '1234' },
+        { name: '1234', source: 'notification', title: 'NOTIFICATION ID', value: '1234' },
+        { name: '1234', source: 'labReport', title: 'LAB ID', value: '1234' },
+        { name: '1234', source: 'stateCase', title: 'STATE CASE ID', value: '1234' },
+        { name: '1234', source: 'document', title: 'DOCUMENT ID', value: '1234' },
+        { name: '1234', source: 'accessionNumber', title: 'ACCESSION NUMBER ID', value: '1234' }
+    ])('should resolve terms with %s %s', ({ name, source, title, value }) => {
+        const input: PatientCriteriaEntry = {
+            [source]: '1234',
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining([
+                {
+                    name: name,
+                    source: source,
+                    title: title,
+                    value: value
+                }
             ])
         );
     });

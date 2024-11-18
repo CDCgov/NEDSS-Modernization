@@ -14,12 +14,12 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         }
     };
 
-    if (entry.lastName) {
-        pushCriteria('lastName', 'LAST NAME', entry.lastName);
+    if (entry.name?.last) {
+        pushCriteria('lastName', 'LAST NAME', entry.name.last);
     }
 
-    if (entry.firstName) {
-        pushCriteria('firstName', 'FIRST NAME', entry.firstName);
+    if (entry.name?.first) {
+        pushCriteria('firstName', 'FIRST NAME', entry.name.first);
     }
 
     if (entry.dateOfBirth) {
@@ -34,12 +34,12 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         terms.push(fromValue('id', 'PATIENT ID')(entry.id));
     }
 
-    if (entry.address) {
-        terms.push(fromValue('address', 'STREET ADDRESS')(entry.address));
+    if (entry.location?.street) {
+        pushCriteria('address', 'STREET ADDRESS', entry.location?.street);
     }
 
-    if (entry.city) {
-        terms.push(fromValue('city', 'CITY')(entry.city));
+    if (entry.location?.city) {
+        pushCriteria('city', 'CITY', entry.location?.city);
     }
 
     if (entry.state) {
@@ -69,6 +69,50 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     if (entry.identification && entry.identificationType) {
         terms.push(fromSelectable('identificationType', 'ID TYPE')(entry.identificationType));
         terms.push(fromValue('identification', 'ID')(entry.identification));
+    }
+
+    if (entry.abcCase) {
+        terms.push(fromValue('abcCase', 'ABCS CASE ID')(entry.abcCase));
+    }
+
+    if (entry.accessionNumber) {
+        terms.push(fromValue('accessionNumber', 'ACCESSION NUMBER ID')(entry.accessionNumber));
+    }
+
+    if (entry.morbidity) {
+        terms.push(fromValue('morbidity', 'MORBIDITY REPORT ID')(entry.morbidity));
+    }
+
+    if (entry.cityCountyCase) {
+        terms.push(fromValue('cityCountyCase', 'CITY/COUNTY CASE ID')(entry.cityCountyCase));
+    }
+
+    if (entry.document) {
+        terms.push(fromValue('document', 'DOCUMENT ID')(entry.document));
+    }
+
+    if (entry.investigation) {
+        terms.push(fromValue('investigation', 'INVESTIGATION ID')(entry.investigation));
+    }
+
+    if (entry.labReport) {
+        terms.push(fromValue('labReport', 'LAB ID')(entry.labReport));
+    }
+
+    if (entry.notification) {
+        terms.push(fromValue('notification', 'NOTIFICATION ID')(entry.notification));
+    }
+
+    if (entry.stateCase) {
+        terms.push(fromValue('stateCase', 'STATE CASE ID')(entry.stateCase));
+    }
+
+    if (entry.treatment) {
+        terms.push(fromValue('treatment', 'TREATMENT ID')(entry.treatment));
+    }
+
+    if (entry.vaccination) {
+        terms.push(fromValue('vaccination', 'VACCINATION ID')(entry.vaccination));
     }
 
     return terms;

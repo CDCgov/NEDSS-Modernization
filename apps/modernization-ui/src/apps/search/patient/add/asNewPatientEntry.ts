@@ -21,17 +21,17 @@ const resolveRace = (entry: RaceEthnicity): string[] => (entry.race ? [asValue(e
 
 const resolveEmail = (entry: Contact): EmailEntry[] => [{ email: entry.email || '' }];
 
-const resolveName = (textCriteria?: TextCriteria | string): string | null => orNull(asTextCriteriaValue(textCriteria));
+const resolveCriteria = (textCriteria?: TextCriteria): string | null => orNull(asTextCriteriaValue(textCriteria));
 
 const asNewPatientEntry = (criteria: Partial<PatientCriteriaEntry>): NewPatientEntry => {
     return {
         asOf: internalizeDate(new Date()),
-        firstName: resolveName(criteria.firstName),
-        lastName: resolveName(criteria.lastName),
+        firstName: resolveCriteria(criteria.name?.first),
+        lastName: resolveCriteria(criteria.name?.last),
         dateOfBirth: criteria.dateOfBirth,
         currentGender: orNull(asValue(criteria.gender)),
-        streetAddress1: orNull(criteria.address),
-        city: orNull(criteria.city),
+        streetAddress1: resolveCriteria(criteria.location?.street),
+        city: resolveCriteria(criteria.location?.city),
         state: criteria.state,
         zip: (criteria.zip && String(criteria.zip)) || null,
         ethnicity: orNull(asValue(criteria.ethnicity)),

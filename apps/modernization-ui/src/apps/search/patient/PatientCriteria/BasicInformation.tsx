@@ -1,14 +1,13 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { SingleSelect } from 'design-system/select';
-import { Toggle } from 'design-system/toggle/Toggle';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { OperatorInput } from 'design-system/input/operator';
+import { Input } from 'components/FormInputs/Input';
+import { validNameRule } from 'validation/entry';
+import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { validNameRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { genders } from 'options/gender';
-import { OperatorInput } from 'design-system/input/operator';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -17,7 +16,7 @@ export const BasicInformation = () => {
         <SearchCriteria>
             <Controller
                 control={control}
-                name="lastName"
+                name="name.last"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <OperatorInput
@@ -32,7 +31,7 @@ export const BasicInformation = () => {
             />
             <Controller
                 control={control}
-                name="firstName"
+                name="name.first"
                 rules={validNameRule}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <OperatorInput
@@ -47,29 +46,18 @@ export const BasicInformation = () => {
             />
             <Controller
                 control={control}
-                name="includeSimilar"
-                render={({ field: { onChange, value, name } }) => (
-                    <Toggle
-                        value={value}
-                        label={'Include results that sound similar'}
-                        name={name}
-                        onChange={onChange}
-                        sizing="compact"
-                    />
-                )}
-            />
-            <Controller
-                control={control}
                 name="dateOfBirth"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={validDateRule('Date of birth')}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
+                        id={name}
                         name={name}
                         label="Date of birth"
-                        defaultValue={value}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
-                        disableFutureDates
+                        error={error?.message}
                     />
                 )}
             />
@@ -91,7 +79,7 @@ export const BasicInformation = () => {
             <Controller
                 control={control}
                 name="id"
-                render={({ field: { onChange, value, name } }) => (
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         onChange={onChange}
                         defaultValue={value}
@@ -101,6 +89,7 @@ export const BasicInformation = () => {
                         htmlFor={name}
                         id={name}
                         sizing="compact"
+                        error={error?.message}
                     />
                 )}
             />

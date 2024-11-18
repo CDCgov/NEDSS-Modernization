@@ -2,7 +2,7 @@ import { asNewPatientEntry } from './asNewPatientEntry';
 
 describe('when adding a new patient from a patient search', () => {
     it('should populate the first name that was searched for', () => {
-        const criteria = { firstName: { contains: 'first-name' } };
+        const criteria = { name: { first: { contains: 'first-name' } } };
 
         const actual = asNewPatientEntry(criteria);
 
@@ -10,7 +10,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should populate the last name that was searched for', () => {
-        const criteria = { lastName: { equals: 'last-name' } };
+        const criteria = { name: { last: { equals: 'last-name' } } };
 
         const actual = asNewPatientEntry(criteria);
 
@@ -34,7 +34,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should populate the street address that was searched for', () => {
-        const criteria = { address: 'address-value' };
+        const criteria = { location: { street: { equals: 'address-value' } } };
 
         const actual = asNewPatientEntry(criteria);
 
@@ -42,7 +42,7 @@ describe('when adding a new patient from a patient search', () => {
     });
 
     it('should populate the city that was searched for', () => {
-        const criteria = { city: 'city-value' };
+        const criteria = { location: { city: { equals: 'city-value' } } };
 
         const actual = asNewPatientEntry(criteria);
 

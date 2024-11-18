@@ -1,21 +1,7 @@
 import { getDaysInMonth } from 'date-fns';
 import { DateEntry } from './entry';
 import { occursInThePast } from './occursInThePast';
-
-type ValidationResult = boolean | string;
-type Validator<I> = (value: I) => ValidationResult;
-
-const validateAll =
-    <I>(...validators: Validator<I>[]) =>
-    (value: I): ValidationResult =>
-        validators.reduce<ValidationResult>((previous, current) => {
-            if (typeof previous === 'boolean' && previous) {
-                const result = current(value);
-                return result;
-            }
-
-            return previous;
-        }, true);
+import { validateAll } from 'validation';
 
 const validateYear = (name: string) => (value: DateEntry) => {
     if (value.year && value.year < 1875) {

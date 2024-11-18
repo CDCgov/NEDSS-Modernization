@@ -1,5 +1,5 @@
 import { Selectable, asSelectable } from 'options';
-import { TextCriteria } from 'options/operator';
+import { TextCriteria, AlphaTextCriteria } from 'options/operator';
 
 const ACTIVE = asSelectable('ACTIVE', 'Active');
 
@@ -11,19 +11,26 @@ const statusOptions: Selectable[] = [
 
 export { statusOptions };
 
+type NameCriteria = {
+    first?: TextCriteria;
+    last?: TextCriteria;
+};
+
+type LocationCriteria = {
+    street?: AlphaTextCriteria;
+    city?: AlphaTextCriteria;
+};
+
 type BasicInformation = {
-    lastName?: TextCriteria;
-    firstName?: TextCriteria;
+    name?: NameCriteria;
     dateOfBirth?: string;
     gender?: Selectable;
     id?: string;
     status: Selectable[];
-    includeSimilar?: boolean;
 };
 
 type Address = {
-    address?: string;
-    city?: string;
+    location?: LocationCriteria;
     state?: Selectable;
     zip?: number;
 };
@@ -52,11 +59,14 @@ type EventIds = {
     notification?: string;
     labReport?: string;
     accessionNumber?: string;
+    investigation?: string;
+    treatment?: string;
+    vaccination?: string;
 };
 
 type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity & Identification & EventIds;
 
-export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact };
+export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria };
 
 const initial: PatientCriteriaEntry = {
     status: [ACTIVE]
