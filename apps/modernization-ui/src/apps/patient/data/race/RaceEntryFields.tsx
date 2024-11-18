@@ -1,31 +1,32 @@
-import { useDetailedRaceCodedValues } from 'coded/race';
+import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { RaceCategoryValidator, RaceEntry } from './entry';
+import { useDetailedRaceCodedValues } from 'coded/race';
 import { MultiSelect, SingleSelect } from 'design-system/select';
+import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Selectable } from 'options';
-import { useLayoutEffect } from 'react';
 import { validateRequiredRule } from 'validation/entry';
+import { RaceCategoryValidator, RaceEntry } from './entry';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
     categoryValidator: RaceCategoryValidator;
-    isDirty?: boolean;
+    entry?: RaceEntry;
 };
 
-const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFieldsProps) => {
-    const { control, resetField } = useFormContext<RaceEntry>();
+const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFieldsProps) => {
+    const { control, setValue } = useFormContext<RaceEntry>();
 
     const id = useWatch({ control, name: 'id' });
 
-    const selectedCategory = useWatch({ control, name: 'race' });
-    const detailedRaces = useDetailedRaceCodedValues(selectedCategory?.value);
+    const selectedCategory = useWatch({ control, name: 'race.value', defaultValue: entry?.race?.value });
+    const detailedRaces = useDetailedRaceCodedValues(selectedCategory);
 
-    useLayoutEffect(() => {
-        if (isDirty) {
-            resetField('detailed', { defaultValue: [] });
+    useEffect(() => {
+        if (selectedCategory !== entry?.race?.value) {
+            //  when the category differs from the entry, clear the details
+            setValue('detailed', []);
         }
-    }, [detailedRaces]);
+    }, [selectedCategory]);
 
     return (
         <section>
@@ -40,7 +41,7 @@ const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFi
                         orientation="horizontal"
                         defaultValue={value}
                         onChange={onChange}
-                        name={`race-${name}`}
+                        name={`races-${name}`}
                         disableFutureDates
                         errorMessage={error?.message}
                         required
@@ -61,7 +62,7 @@ const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFi
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        id={`race-${name}`}
+                        id={`races-category-${name}`}
                         name={name}
                         options={categories}
                         error={error?.message}
@@ -76,9 +77,9 @@ const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFi
                     <MultiSelect
                         label="Detailed race"
                         orientation="horizontal"
-                        id={`race-${name}`}
+                        id={`races-detailed-${name}`}
                         name={name}
-                        disabled={selectedCategory === undefined}
+                        disabled={!selectedCategory}
                         value={value}
                         onChange={onChange}
                         options={detailedRaces}

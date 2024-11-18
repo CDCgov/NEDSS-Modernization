@@ -24,8 +24,7 @@ const Fixture = ({
         asOf: '04/11/2022',
         race: null,
         detailed: []
-    },
-    isDirty = false
+    }
 }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
@@ -34,7 +33,7 @@ const Fixture = ({
 
     return (
         <FormProvider {...form}>
-            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} isDirty={isDirty} />
+            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} />
         </FormProvider>
     );
 };
