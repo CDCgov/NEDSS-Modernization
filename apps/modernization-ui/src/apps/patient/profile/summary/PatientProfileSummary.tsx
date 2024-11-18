@@ -97,8 +97,8 @@ export const PatientProfileSummary = ({ patient }: Props) => {
                         <div className="grouped">
                             <SummaryItem label="Current sex">{maybeRender(summary.gender, asText)}</SummaryItem>
                             <SummaryItem label="Phone"> {maybeRender(summary.phone, asPhones)}</SummaryItem>
-                            <SummaryItem label={addressLabel(summary.home)}>
-                                {maybeRender(summary.home, asAddress)}
+                            <SummaryItem label={addressLabel(summary.home) ?? 'Address'}>
+                                {maybeRender(summary.home ?? summary.address[0], asAddress)}
                             </SummaryItem>
                             <SummaryItem label="Race">{maybeRender(summary.races, allAsText)}</SummaryItem>
                             <SummaryItem label="Date of birth">{asBirthday(summary)}</SummaryItem>
