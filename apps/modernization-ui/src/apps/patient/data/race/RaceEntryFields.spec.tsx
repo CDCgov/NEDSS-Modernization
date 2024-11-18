@@ -1,39 +1,40 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CodedValue } from 'coded/CodedValue';
 import { RaceEntry } from './entry';
 import { categoryRequiredValidator } from './categoryRequiredValidator';
 import { RaceEntryFields, RaceEntryFieldsProps } from './RaceEntryFields';
 
-const mockDetailedOptions: CodedValue[] = [
-    { value: '2', name: 'detailed race1' },
-    { value: '3', name: 'detailed race2' }
-];
+const mockDetailResolver = jest.fn();
 
-jest.mock('coded/race/useDetailedRaceCodedValues', () => ({
-    useDetailedRaceCodedValues: () => mockDetailedOptions
+jest.mock('coded/race', () => ({
+    useDetailedRaceCodedValues: (category: string) => mockDetailResolver(category)
 }));
 
-type Props = Partial<RaceEntryFieldsProps>;
+type Props = Partial<RaceEntryFieldsProps> & { entry?: RaceEntry } & { isDirty?: boolean };
 
 const Fixture = ({
-    categories = [{ value: '1', name: 'race name' }],
-    categoryValidator = jest.fn().mockResolvedValue(true)
+    categories = [
+        { value: '1', name: 'race name' },
+        { value: 'other', name: 'other name' }
+    ],
+    categoryValidator = jest.fn().mockResolvedValue(true),
+    entry = {
+        id: 19,
+        asOf: '04/11/2022',
+        race: null,
+        detailed: []
+    },
+    isDirty = false
 }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
-        defaultValues: {
-            id: 19,
-            asOf: undefined,
-            race: undefined,
-            detailed: undefined
-        }
+        defaultValues: entry
     });
 
     return (
         <FormProvider {...form}>
-            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} />
+            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} isDirty={isDirty} />
         </FormProvider>
     );
 };
@@ -60,12 +61,68 @@ describe('Race entry fields', () => {
         });
     });
 
+    it('detailed race values should depend on the race category', async () => {
+        mockDetailResolver.mockReturnValue([{ value: 'detailed', name: 'detailed race' }]);
+
+        const { getByLabelText, getByText } = render(<Fixture />);
+
+        const race = getByLabelText('Race');
+
+        act(() => {
+            userEvent.selectOptions(race, '1');
+        });
+
+        const detailed = getByLabelText('Detailed race');
+
+        userEvent.click(detailed);
+
+        expect(getByText('detailed race')).toBeInTheDocument();
+
+        expect(mockDetailResolver).toBeCalledWith('1');
+    });
+
+    it('detailed race values should clear when the category changes', async () => {
+        mockDetailResolver.mockReturnValue([{ value: 'other-detailed', name: 'other detailed name' }]);
+
+        const entry = {
+            id: 389,
+            asOf: '05/08/2013',
+            race: { value: 'selected', name: 'selected name' },
+            detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
+        };
+
+        const { getByLabelText, queryByText } = render(
+            <Fixture
+                entry={entry}
+                categories={[
+                    { value: 'other', name: 'other name' },
+                    { value: 'selected', name: 'selected name' }
+                ]}
+                isDirty={false}
+            />
+        );
+
+        const race = getByLabelText('Race');
+        const detailed = getByLabelText('Detailed race');
+
+        act(() => {
+            userEvent.selectOptions(race, 'other');
+            userEvent.tab();
+            userEvent.click(detailed);
+        });
+
+        await waitFor(() => {
+            expect(mockDetailResolver).toBeCalledWith('other');
+            expect(detailed).toHaveValue("");
+        });
+    });
+
     it('should require as of', async () => {
         const { getByLabelText, getByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Race as of');
         act(() => {
-            userEvent.click(asOf);
+            userEvent.clear(asOf);
             userEvent.tab();
         });
         await waitFor(() => {

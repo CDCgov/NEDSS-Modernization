@@ -4,7 +4,7 @@ import { useRaceCategoryOptions } from 'options/race/useRaceCategoryOptions';
 import { RaceEntryFields, RaceEntry, initial } from 'apps/patient/data/race';
 import { DetailedRaceDisplay } from './DetailedRaceDisplay';
 import { RaceEntryView } from './RaceEntryView';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { categoryValidator } from './categoryValidator';
 
 const columns: Column<RaceEntry>[] = [
@@ -27,9 +27,17 @@ type Props = {
 
 const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Props) => {
     const { categories } = useRaceCategoryOptions();
+    const [isDirtyEdit, setDirtyEdit] = useState<boolean>(false);
 
-    const renderForm = () => <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} />;
+    const renderForm = () => (
+        <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} isDirty={isDirtyEdit} />
+    );
     const renderView = (entry: RaceEntry) => <RaceEntryView entry={entry} />;
+
+    const isDirtyHandler = (isDirt: boolean) => {
+        setDirtyEdit(isDirt);
+        isDirty(isDirt);
+    };
 
     return (
         <RepeatingBlock<RaceEntry>
@@ -39,7 +47,7 @@ const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Prop
             defaultValues={initial()}
             values={values}
             onChange={onChange}
-            isDirty={isDirty}
+            isDirty={isDirtyHandler}
             formRenderer={renderForm}
             viewRenderer={renderView}
             errors={errors}
