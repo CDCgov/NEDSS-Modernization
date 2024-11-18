@@ -1,13 +1,13 @@
+import {
+    ChangeEvent as ReactChangeEvent,
+    KeyboardEvent as ReactKeyboardEvent,
+    useEffect,
+    useMemo,
+    useState
+} from 'react';
 import classNames from 'classnames';
-import { ChangeEvent, KeyboardEvent as ReactKeyboardEvent } from 'react';
 
-type NumericProps = {
-    label?: string;
-    inputMode?: 'decimal' | 'numeric';
-    value: number | string;
-    onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-    error?: string;
-} & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
+const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
 
 const isNonNumericKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     const value = event.key as string;
@@ -20,30 +20,55 @@ const handleKeydown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     }
 };
 
-const Numeric = ({
-    name,
-    id,
-    inputMode = 'numeric',
-    value,
-    onChange,
-    className,
-    placeholder,
-    ...props
-}: NumericProps) => (
-    <input
-        id={id}
-        name={name}
-        className={classNames('usa-input', className)}
-        type="number"
-        inputMode={inputMode}
-        onChange={onChange}
-        placeholder={placeholder}
-        value={value}
-        pattern="[0-9]*"
-        onKeyDown={handleKeydown}
-        aria-label={name}
-        {...props}
-    />
-);
+type NumericOnChange = (value?: number) => void;
+
+type NumericProps = {
+    id: string;
+    inputMode?: 'decimal' | 'numeric';
+    value?: number;
+    onChange?: NumericOnChange;
+} & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
+
+const Numeric = ({ id, inputMode = 'numeric', value, onChange, className, placeholder, ...props }: NumericProps) => {
+    const [current, setCurrent] = useState<number | undefined>(value);
+
+    useEffect(() => {
+        onChange?.(current);
+    }, [current, onChange]);
+
+    const display = useMemo(() => asDisplay(current), [current]);
+
+    const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
+        const next = event.target.value;
+
+        if (next === '') {
+            setCurrent(undefined);
+        } else if (Number.isNaN(next)) {
+            event.preventDefault();
+        } else {
+            const adjusted = Number(next);
+            if (!Number.isNaN(adjusted)) {
+                setCurrent(adjusted);
+            }
+        }
+    };
+
+    return (
+        <input
+            id={id}
+            name={props.name ?? id}
+            className={classNames('usa-input', className)}
+            type="number"
+            inputMode={inputMode}
+            onChange={handleChange}
+            placeholder={placeholder}
+            value={display}
+            pattern="[0-9]*"
+            onKeyDown={handleKeydown}
+            {...props}
+        />
+    );
+};
 
 export { Numeric };
+export type { NumericProps };

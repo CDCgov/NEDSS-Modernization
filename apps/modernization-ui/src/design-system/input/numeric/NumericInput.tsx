@@ -1,61 +1,25 @@
-import { ChangeEvent as ReactChangeEvent, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
-import { Numeric } from './Numeric';
-
-type NumericOnChange = (value?: number) => void;
-
-const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
+import { Numeric, NumericProps } from './Numeric';
 
 type NumericInputProps = {
     id: string;
     label: string;
-    inputMode?: 'decimal' | 'numeric';
-    value?: number;
-    onChange?: NumericOnChange;
     orientation?: Orientation;
     sizing?: Sizing;
     error?: string;
     required?: boolean;
-} & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
+} & NumericProps;
 
 const NumericInput = ({
     id,
-    name,
     label,
-    inputMode = 'numeric',
-    value,
-    onChange,
     orientation,
     sizing,
     error,
     required,
-    className,
-    placeholder = 'No Data'
+    placeholder = 'No Data',
+    ...remaining
 }: NumericInputProps) => {
-    const [current, setCurrent] = useState<number | undefined>(value);
-
-    useEffect(() => {
-        onChange?.(current);
-    }, [current, onChange]);
-
-    const display = useMemo(() => asDisplay(current), [current]);
-
-    const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
-        const next = event.target.value;
-
-        if (next === '') {
-            setCurrent(undefined);
-        } else if (Number.isNaN(next)) {
-            event.preventDefault();
-        } else {
-            const adjusted = Number(next);
-            if (!Number.isNaN(adjusted)) {
-                setCurrent(adjusted);
-            }
-        }
-    };
-
     return (
         <EntryWrapper
             orientation={orientation}
@@ -64,15 +28,7 @@ const NumericInput = ({
             htmlFor={id}
             required={required}
             error={error}>
-            <Numeric
-                inputMode={inputMode}
-                className={classNames('usa-input', className)}
-                name={name}
-                value={display}
-                onChange={handleChange}
-                required={required}
-                placeholder={placeholder}
-            />
+            <Numeric id={id} placeholder={placeholder} {...remaining} />
         </EntryWrapper>
     );
 };
