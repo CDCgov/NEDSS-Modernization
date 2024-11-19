@@ -29,6 +29,10 @@ export const MatchConfiguration = () => {
         form.reset(matchConfiguration, { keepDefaultValues: false });
     };
 
+    const handleSumbit = () => {
+        console.log('submit', form.getValues());
+    };
+
     return (
         <div className={styles.matchConfiguration}>
             <header>
@@ -49,14 +53,20 @@ export const MatchConfiguration = () => {
                             <PassList activeIndex={activePass} onSetActive={setActivePass} />
 
                             <div className={styles.formAndButtonBar}>
-                                {configuration && watch.passes?.[activePass] && (
-                                    <PassForm activePass={activePass} dataElementConfiguration={configuration} />
-                                )}
+                                <div>
+                                    {configuration && watch.passes?.[activePass] && (
+                                        <PassForm activePass={activePass} dataElementConfiguration={configuration} />
+                                    )}
+                                </div>
                                 <div className={styles.buttonBar}>
                                     <Button outline onClick={handleCancel}>
                                         Cancel
                                     </Button>
-                                    <Button disabled={!formState.isValid}>Save configuration</Button>
+                                    <Button
+                                        disabled={!formState.isValid || watch.passes?.length === 0}
+                                        onClick={handleSumbit}>
+                                        Save configuration
+                                    </Button>
                                 </div>
                             </div>
                         </FormProvider>
