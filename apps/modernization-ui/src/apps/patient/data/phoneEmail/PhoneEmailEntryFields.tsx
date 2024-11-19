@@ -3,7 +3,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
+import { maxLengthRule, validateRequiredRule, validEmailRule } from 'validation/entry';
 import { validatePhoneNumber } from 'validation/phone';
 import { PhoneEmailEntry } from '../entry';
 
@@ -16,7 +16,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule('As of') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Phone & email as of"
@@ -34,7 +34,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule('Type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -53,7 +53,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="use"
-                rules={{ required: { value: true, message: 'Use is required.' } }}
+                rules={{ ...validateRequiredRule('Use') }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
@@ -156,11 +156,7 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="email"
                 rules={{
-                    pattern: {
-                        value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                        message: 'Please enter a valid email address (example: youremail@website.com)'
-                    },
-                    ...maxLengthRule(100)
+                    ...validEmailRule(100, 'Email')
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
@@ -180,7 +176,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="url"
-                rules={maxLengthRule(100)}
+                rules={maxLengthRule(100, 'URL')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="URL"
@@ -199,7 +195,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000)}
+                rules={maxLengthRule(2000, 'Phone & email comments')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Phone & email comments"

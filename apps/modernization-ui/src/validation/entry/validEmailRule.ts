@@ -1,9 +1,10 @@
 import { maxLengthRule } from './maxLengthRule';
 
-const validEmailRule = (maxLength: number = 100) => ({
+const message = 'Please enter a valid email address (example: youremail@website.com)';
+const validEmailRule = (maxLength: number = 100, name?: string) => ({
     pattern: {
         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        message: 'Please enter a valid email address (example: youremail@website.com)'
+        message: name ? `${name}: ${message}` : message
     },
     ...maxLengthRule(maxLength)
 });

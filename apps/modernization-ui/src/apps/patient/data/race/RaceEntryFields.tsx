@@ -5,6 +5,7 @@ import { RaceCategoryValidator, RaceEntry } from './entry';
 import { MultiSelect, SingleSelect } from 'design-system/select';
 import { Selectable } from 'options';
 import { useLayoutEffect } from 'react';
+import { validateRequiredRule } from 'validation/entry';
 
 type RaceEntryFieldsProps = {
     categories: Selectable[];
@@ -31,7 +32,7 @@ const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFi
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule('As of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Race as of"

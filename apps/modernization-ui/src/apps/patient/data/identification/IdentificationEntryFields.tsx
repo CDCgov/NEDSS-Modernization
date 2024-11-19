@@ -3,7 +3,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { IdentificationEntry } from '../entry';
 
 export const IdentificationEntryFields = () => {
@@ -34,7 +34,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule('Type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
