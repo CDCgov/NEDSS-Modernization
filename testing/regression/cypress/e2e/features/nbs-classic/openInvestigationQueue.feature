@@ -31,3 +31,14 @@ Background:
     When I click on "Open Investigation" in the menu bar
     When I click on the "Remove All Filters Sorts" link
     Then all filters and sorts should be cleared
+
+  Scenario: User edits the treatment information for a patient in an open investigation
+    When the user clicks on Open Investigations under My Queues
+    And the user searches for the Investigation ID "CAS10003039GA01"
+    And the user clicks on the Condition name
+    And the user clicks on Manage Associations
+    And the user clicks on the Treatment Date link
+    And the user clicks on the Edit button
+    And the user enters "treatment provided" into the Treatment Comments field
+    And the user clicks the Submit button
+    Then the Treatment Comment is updated with the text "treatment provided"

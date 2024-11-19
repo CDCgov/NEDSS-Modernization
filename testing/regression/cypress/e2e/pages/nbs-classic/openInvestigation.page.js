@@ -11,6 +11,17 @@ class OpenInvestigationPage {
     cancelButton = '#b2';
     removeFiltersLink = 'font.hyperLink';
     sortedResult = '#parent > tbody > :nth-child(1) > :nth-child(7)';
+    clickOpenInvestigationsQueue = 'a[href="/nbs/LoadNavbar.do?ContextAction=GlobalInvestigations&initLoad=true"]';
+    searchArrow = 'img#queueIcon';
+    investigationIdField = 'input#SearchText2';
+    okButton = 'input#b2SearchText2';
+    conditionNameLink = 'a[onclick*="InvestigationID"]';
+    manageAssociationsButton = 'input#manageAssociations';
+    treatmentDateLink = 'a[href*="ViewTreatment"]';
+    editButton = 'input#Edit';
+    treatmentCommentsField = 'textarea#treatmentVO\\.theTreatmentDT\\.txt';
+    submitButton = 'input#Submit';
+    updatedComment = 'p';
   
     clickOpenInvestigation() {
       cy.get(this.openInvestigationLink).first().click();
@@ -69,6 +80,44 @@ class OpenInvestigationPage {
     verifInvestigation() {
       cy.get("table#parent td>a").eq(1).click();
       cy.get("a").contains("View Investigation:");
+    }
+  
+    openInvestigationsQueue() {
+      cy.get(this.clickOpenInvestigationsQueue).eq(1).click();
+    }
+    
+    searchForInvestigation(investigationId) {
+      cy.get(this.searchArrow).eq(7).click();
+      cy.get(this.investigationIdField).eq(0).type(investigationId);
+      cy.get(this.okButton).click();
+    }
+  
+    clickConditionName() {
+      cy.get(this.conditionNameLink).click();
+    }
+  
+    clickManageAssociations() {
+      cy.get(this.manageAssociationsButton).eq(0).click();
+    }
+  
+    clickTreatmentDate() {
+      cy.get(this.treatmentDateLink).click();
+    }
+  
+    clickEditButton() {
+      cy.get(this.editButton).eq(0).click();
+    }
+  
+    enterTreatmentComments(comment) {
+      cy.get(this.treatmentCommentsField).clear().type(comment);
+    }
+  
+    clickSubmitButton() {
+      cy.get(this.submitButton).eq(0).click();
+    }
+  
+    verifyUpdatedComment(expectedComment) {
+      cy.get(this.updatedComment).should('contain.text', expectedComment);
     }
   }
   
