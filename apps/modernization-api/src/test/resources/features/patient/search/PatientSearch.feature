@@ -235,6 +235,17 @@ Feature: Patient Search
     When I search for patients
     Then the patient is not in the search results
 
+  Scenario: I can search for a Patient using a value that is contained in the Identification
+    Given the patient can be identified with a "MC" of "1234"
+    And I have another patient
+    And the patient can be identified with a "MC" of "1345"
+    And patients are available for search
+    And I add the patient criteria for an "identification type" equal to "MC"
+    And I add the patient criteria for an "identification value" equal to "23"
+    When I search for patients
+    Then there is only one patient search result
+    And the search results have a patient with an "identification value" equal to "1234"
+
   Scenario: BUG: CNFT1-2008 I can search for a Patient with invalid identification
     Given the patient has the legal name "Max" "Headroom"
     And the patient can be identified with a Medicare Number of "1009"

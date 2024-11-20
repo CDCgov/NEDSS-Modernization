@@ -278,9 +278,9 @@ class PatientDemographicQueryResolver {
                                   term -> term.field("entity_id.typeCd.keyword")
                                       .value(type)))
                               .must(
-                                  must -> must.prefix(
-                                      prefix -> prefix.field("entity_id.rootExtensionTxt").caseInsensitive(true)
-                                          .value(value)))))));
+                                  must -> must.wildcard(
+                                      match -> match.field("entity_id.rootExtensionTxt").caseInsensitive(true)
+                                          .value(WildCards.contains(value))))))));
     }
     return Optional.empty();
   }
