@@ -16,5 +16,5 @@ dependencies {
     implementation libs.springBoot.web
     implementation libs.spring.test
 
-    implementation libs.cucumber.java
+    implementation libs.cucumber.spring
 }
