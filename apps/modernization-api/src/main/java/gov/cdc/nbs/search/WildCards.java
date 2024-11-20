@@ -19,7 +19,7 @@ public class WildCards {
   }
 
   private static String escape(final String value) {
-    return value.replaceAll("([+\\-!(){}\\[\\]^\"~*?:\\\\/])", "\\\\$1");
+    return value.replaceAll("([*?])", "\\\\$1");
   }
 
   private WildCards() {

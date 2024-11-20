@@ -54,9 +54,9 @@ class WildCardsTest {
 
   @Test
   void should_escape_special_characters() {
-    String actual = WildCards.startsWith("value*");
+    String actual = WildCards.startsWith("VALUE*?");
 
-    assertThat(actual).isEqualTo("value\\**");
+    assertThat(actual).isEqualTo("value\\*\\?*");
   }
-
+  
 }
