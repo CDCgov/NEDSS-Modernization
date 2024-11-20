@@ -59,7 +59,7 @@ describe('PhoneEmailEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The type is required')).toBeInTheDocument();
+            expect(getByText('The Type is required')).toBeInTheDocument();
         });
     });
 
@@ -72,7 +72,7 @@ describe('PhoneEmailEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The use is required')).toBeInTheDocument();
+            expect(getByText('The Use is required')).toBeInTheDocument();
         });
     });
 
@@ -85,7 +85,7 @@ describe('PhoneEmailEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The as of date is required')).toBeInTheDocument();
+            expect(getByText('The As of date is required')).toBeInTheDocument();
         });
     });
 
@@ -106,9 +106,9 @@ describe('PhoneEmailEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('The type is required')).not.toBeInTheDocument();
-            expect(queryByText('The as of date is required')).not.toBeInTheDocument();
-            expect(queryByText('The use is required')).not.toBeInTheDocument();
+            expect(queryByText('The Type is required')).not.toBeInTheDocument();
+            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The Use is required')).not.toBeInTheDocument();
         });
     });
 

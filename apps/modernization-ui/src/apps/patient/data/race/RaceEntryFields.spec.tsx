@@ -91,7 +91,7 @@ describe('Race entry fields', () => {
             detailed: [{ value: 'existing-detailed', name: 'existing detailed race name' }]
         };
 
-        const { getByLabelText, queryByText } = render(
+        const { getByLabelText } = render(
             <Fixture
                 entry={entry}
                 categories={[
@@ -126,7 +126,7 @@ describe('Race entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The as of date is required')).toBeInTheDocument();
+            expect(getByText('The As of date is required')).toBeInTheDocument();
         });
     });
 
@@ -140,7 +140,7 @@ describe('Race entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The race is required.')).toBeInTheDocument();
+            expect(getByText('The Race is required.')).toBeInTheDocument();
         });
     });
 
@@ -175,8 +175,8 @@ describe('Race entry fields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('The race as of date is required')).not.toBeInTheDocument();
-            expect(queryByText('The race is required')).not.toBeInTheDocument();
+            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The Race is required')).not.toBeInTheDocument();
         });
     });
 });

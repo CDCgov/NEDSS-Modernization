@@ -65,7 +65,7 @@ describe('Name entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The as of date is required')).toBeInTheDocument();
+            expect(getByText('The As of date is required')).toBeInTheDocument();
         });
     });
 
@@ -78,7 +78,7 @@ describe('Name entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The type is required')).toBeInTheDocument();
+            expect(getByText('The Type is required')).toBeInTheDocument();
         });
     });
 
@@ -95,8 +95,8 @@ describe('Name entry fields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('The as of date is required')).not.toBeInTheDocument();
-            expect(queryByText('The type is required')).not.toBeInTheDocument();
+            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The Type is required')).not.toBeInTheDocument();
         });
     });
 });

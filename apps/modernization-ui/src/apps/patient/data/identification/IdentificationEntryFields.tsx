@@ -16,7 +16,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('as of date') }}
+                rules={{ ...validateRequiredRule('As of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Identification as of"
@@ -34,7 +34,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('type') }}
+                rules={{ ...validateRequiredRule('Type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -69,7 +69,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="id"
-                rules={{ ...validateRequiredRule('id value'), ...maxLengthRule(100, 'id value') }}
+                rules={{ ...validateRequiredRule('ID value'), ...maxLengthRule(100, 'ID value') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="ID value"

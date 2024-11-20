@@ -16,7 +16,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('as of date') }}
+                rules={{ ...validateRequiredRule('As of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Phone & email as of"
@@ -34,7 +34,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('type') }}
+                rules={{ ...validateRequiredRule('Type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -53,7 +53,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule('use') }}
+                rules={{ ...validateRequiredRule('Use') }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
@@ -156,7 +156,7 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="email"
                 rules={{
-                    ...validEmailRule(100, 'email')
+                    ...validEmailRule(100)
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
