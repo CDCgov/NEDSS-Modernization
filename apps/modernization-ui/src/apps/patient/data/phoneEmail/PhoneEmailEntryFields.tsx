@@ -195,7 +195,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, 'phone & email comments')}
+                rules={maxLengthRule(2000, 'Phone & email comments')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Phone & email comments"
