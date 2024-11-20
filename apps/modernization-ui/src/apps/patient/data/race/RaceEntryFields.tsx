@@ -32,7 +32,7 @@ const RaceEntryFields = ({ categories, categoryValidator, isDirty }: RaceEntryFi
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date') }}
+                rules={{ ...validateRequiredRule('as of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Race as of"

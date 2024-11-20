@@ -4,7 +4,7 @@ const message = 'Please enter a valid email address (example: youremail@website.
 const validEmailRule = (maxLength: number = 100, name?: string) => ({
     pattern: {
         value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-        message: name ? `${name}: ${message}` : message
+        message: name ? `The ${name} ${message}` : message
     },
     ...maxLengthRule(maxLength)
 });

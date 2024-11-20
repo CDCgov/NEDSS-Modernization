@@ -80,7 +80,7 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
+            expect(getByText('The type is required')).toBeInTheDocument();
         });
     });
 
@@ -93,7 +93,7 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Use is required.')).toBeInTheDocument();
+            expect(getByText('The use is required')).toBeInTheDocument();
         });
     });
 
@@ -106,7 +106,7 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
+            expect(getByText('The as of date is required')).toBeInTheDocument();
         });
     });
 

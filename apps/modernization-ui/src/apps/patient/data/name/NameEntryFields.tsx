@@ -15,10 +15,10 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date:') }}
+                rules={{ ...validateRequiredRule('as of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="as of"
+                        label="Name as of"
                         orientation="horizontal"
                         onBlur={onBlur}
                         defaultValue={value}
@@ -33,7 +33,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('Type') }}
+                rules={{ ...validateRequiredRule('type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -69,7 +69,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="last"
-                rules={{ ...validateExtendedNameRule('Last Name') }}
+                rules={{ ...validateExtendedNameRule('last name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Last"
@@ -88,7 +88,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="secondLast"
-                rules={{ ...validateExtendedNameRule('Second Last Name') }}
+                rules={{ ...validateExtendedNameRule('second last name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second last"
@@ -107,7 +107,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="first"
-                rules={{ ...validateExtendedNameRule('First Name') }}
+                rules={{ ...validateExtendedNameRule('first name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="First"
@@ -126,7 +126,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="middle"
-                rules={{ ...validateExtendedNameRule('Middle Name') }}
+                rules={{ ...validateExtendedNameRule('middle name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"
@@ -145,7 +145,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="secondMiddle"
-                rules={{ ...validateExtendedNameRule('Second Middle Name') }}
+                rules={{ ...validateExtendedNameRule('second middle name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second middle"

@@ -113,7 +113,7 @@ describe('Race entry fields', () => {
 
         await waitFor(() => {
             expect(mockDetailResolver).toBeCalledWith('other');
-            expect(detailed).toHaveValue("");
+            expect(detailed).toHaveValue('');
         });
     });
 
@@ -126,7 +126,7 @@ describe('Race entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
+            expect(getByText('The as of date is required')).toBeInTheDocument();
         });
     });
 
@@ -140,7 +140,7 @@ describe('Race entry fields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Race is required.')).toBeInTheDocument();
+            expect(getByText('The race is required.')).toBeInTheDocument();
         });
     });
 
@@ -175,8 +175,8 @@ describe('Race entry fields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('As of date is required')).not.toBeInTheDocument();
-            expect(queryByText('Race is required')).not.toBeInTheDocument();
+            expect(queryByText('The race as of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The race is required')).not.toBeInTheDocument();
         });
     });
 });

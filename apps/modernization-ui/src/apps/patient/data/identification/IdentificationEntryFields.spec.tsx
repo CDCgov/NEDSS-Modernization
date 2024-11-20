@@ -53,7 +53,7 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
+            expect(getByText('The as of date is required')).toBeInTheDocument();
         });
     });
 
@@ -67,7 +67,7 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
+            expect(getByText('The type is required')).toBeInTheDocument();
         });
     });
 
@@ -81,7 +81,7 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('ID value is required.')).toBeInTheDocument();
+            expect(getByText('The id value is required')).toBeInTheDocument();
         });
     });
 
@@ -103,9 +103,9 @@ describe('IdentificationEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('ID value is required.')).not.toBeInTheDocument();
+            expect(queryByText('The type is required')).not.toBeInTheDocument();
+            expect(queryByText('The as of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The id value is required')).not.toBeInTheDocument();
         });
     });
 });

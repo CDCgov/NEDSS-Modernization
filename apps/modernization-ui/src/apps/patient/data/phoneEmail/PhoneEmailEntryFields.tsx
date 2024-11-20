@@ -16,7 +16,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of') }}
+                rules={{ ...validateRequiredRule('as of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Phone & email as of"
@@ -34,7 +34,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('Type') }}
+                rules={{ ...validateRequiredRule('type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -53,7 +53,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule('Use') }}
+                rules={{ ...validateRequiredRule('use') }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
@@ -156,7 +156,7 @@ export const PhoneEmailEntryFields = () => {
                 control={control}
                 name="email"
                 rules={{
-                    ...validEmailRule(100, 'Email')
+                    ...validEmailRule(100, 'email')
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
@@ -195,7 +195,7 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, 'Phone & email comments')}
+                rules={maxLengthRule(2000, 'phone & email comments')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Phone & email comments"

@@ -13,7 +13,10 @@ type MaxLengthRule = {
  * @return {MaxLengthRule}
  */
 const maxLengthRule = (value = 50, name?: string): MaxLengthRule => ({
-    maxLength: { value, message: name ? `${name}: Only allows ${value} characters` : `Only allows ${value} characters` }
+    maxLength: {
+        value,
+        message: name ? `The ${name} only allows ${value} characters` : `Only allows ${value} characters`
+    }
 });
 
 export { maxLengthRule };

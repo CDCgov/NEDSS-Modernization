@@ -34,7 +34,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date') }}
+                rules={{ ...validateRequiredRule('as of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Address as of"
@@ -52,7 +52,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('Type') }}
+                rules={{ ...validateRequiredRule('type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -71,7 +71,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule('Use') }}
+                rules={{ ...validateRequiredRule('use') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Use"
@@ -90,7 +90,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="address1"
-                rules={maxLengthRule(100, 'Street address 1')}
+                rules={maxLengthRule(100, 'street address 1')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <AddressSuggestionInput
                         label="Street address 1"
@@ -113,7 +113,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="address2"
-                rules={maxLengthRule(100, 'Street address 2')}
+                rules={maxLengthRule(100, 'street address 2')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Street address 2"
@@ -132,7 +132,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="city"
-                rules={maxLengthRule(100, 'City')}
+                rules={maxLengthRule(100, 'city')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="City"
@@ -251,7 +251,7 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, 'Comment')}
+                rules={maxLengthRule(2000, 'comment')}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Address comments"
