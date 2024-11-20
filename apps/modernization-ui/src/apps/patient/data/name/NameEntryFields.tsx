@@ -1,7 +1,7 @@
 import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
-import { validNameRule } from 'validation/entry';
+import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
 import { NameEntry } from '../entry';
 import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 import { SingleSelect } from 'design-system/select';
@@ -15,7 +15,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule('As of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Name as of"
@@ -33,7 +33,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule('Type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -69,7 +69,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="last"
-                rules={validNameRule}
+                rules={{ ...validateExtendedNameRule('Last name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Last"
@@ -88,7 +88,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="secondLast"
-                rules={validNameRule}
+                rules={{ ...validateExtendedNameRule('Second last name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second last"
@@ -107,7 +107,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="first"
-                rules={validNameRule}
+                rules={{ ...validateExtendedNameRule('First name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="First"
@@ -126,7 +126,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="middle"
-                rules={validNameRule}
+                rules={{ ...validateExtendedNameRule('Middle name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"
@@ -145,7 +145,7 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="secondMiddle"
-                rules={validNameRule}
+                rules={{ ...validateExtendedNameRule('Second middle name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second middle"
