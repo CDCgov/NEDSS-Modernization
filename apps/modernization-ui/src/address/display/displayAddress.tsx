@@ -2,6 +2,7 @@ import { ItemGroup } from 'design-system/item';
 import { exists } from 'utils';
 
 export type DisplayableAddress = {
+    type?: string | null;
     use?: string | null;
     address?: string | null;
     address2?: string | null;
@@ -35,4 +36,13 @@ const displayAddress = (address: DisplayableAddress): JSX.Element => {
     );
 };
 
-export { displayAddress, displayAddressText };
+/** Returns the type and use as combined text. Example: "Dormitory/Home"
+ * @param {DisplayableAddress} address - The address object with type and use fields.
+ * @return {string} The result string.
+ */
+const displayAddressTypeUse = ({ type, use }: DisplayableAddress): string => {
+    // return `${type}${use ? `/${use}` : ''}`;
+    return [type, use].filter(exists).join('/');
+};
+
+export { displayAddress, displayAddressText, displayAddressTypeUse };
