@@ -280,7 +280,7 @@ class PatientDemographicQueryResolver {
                               .must(
                                   must -> must.wildcard(
                                       match -> match.field("entity_id.rootExtensionTxt").caseInsensitive(true)
-                                          .value(value)))))));
+                                          .value(WildCards.contains(value))))))));
     }
     return Optional.empty();
   }
