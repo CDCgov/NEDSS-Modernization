@@ -13,7 +13,7 @@ describe('categoryValidator', () => {
 
         const actual = categoryValidator(entries)(5, null);
 
-        await expect(actual).resolves.toBe('Race is required.');
+        await expect(actual).resolves.toBe('The Race is required.');
     });
 
     it('should allow the same race category when validating the entry that contains the race category', async () => {

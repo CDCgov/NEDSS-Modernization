@@ -3,7 +3,7 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { Controller, useFormContext } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { IdentificationEntry } from '../entry';
 
 export const IdentificationEntryFields = () => {
@@ -16,7 +16,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule('As of date') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label="Identification as of"
@@ -34,7 +34,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ required: { value: true, message: 'Type is required.' } }}
+                rules={{ ...validateRequiredRule('Type') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
                         label="Type"
@@ -69,7 +69,7 @@ export const IdentificationEntryFields = () => {
             <Controller
                 control={control}
                 name="id"
-                rules={{ required: { value: true, message: 'ID value is required.' }, ...maxLengthRule(100) }}
+                rules={{ ...validateRequiredRule('ID value'), ...maxLengthRule(100, 'ID value') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="ID value"

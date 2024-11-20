@@ -10,6 +10,6 @@ import { exists } from 'utils';
  * @return {Promise<string | boolean>}
  */
 const categoryRequiredValidator = (id: number, category: Selectable | null): Promise<string | boolean> =>
-    !exists(category) ? Promise.resolve('Race is required.') : Promise.resolve(true);
+    !exists(category) ? Promise.resolve('The Race is required.') : Promise.resolve(true);
 
 export { categoryRequiredValidator };

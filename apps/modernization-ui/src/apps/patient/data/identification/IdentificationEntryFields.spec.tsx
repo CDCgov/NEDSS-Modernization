@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
 import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -34,8 +34,8 @@ const Fixture = () => {
 
 describe('IdentificationEntryFields', () => {
     it('should render the proper labels', async () => {
-        const { getByLabelText } = render(<Fixture />);
-        await screen.findByText('ID value');
+        const { getByLabelText, findByText } = render(<Fixture />);
+        await findByText('ID value');
 
         expect(getByLabelText('Identification as of')).toBeInTheDocument();
         expect(getByLabelText('Type')).toBeInTheDocument();
@@ -44,8 +44,8 @@ describe('IdentificationEntryFields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-        await screen.findByText('ID value');
+        const { getByLabelText, getByText, findByText } = render(<Fixture />);
+        await findByText('ID value');
 
         const asOf = getByLabelText('Identification as of');
         act(() => {
@@ -53,13 +53,13 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
+            expect(getByText('The As of date is required')).toBeInTheDocument();
         });
     });
 
     it('should require type', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-        await screen.findByText('ID value');
+        const { getByLabelText, getByText, findByText } = render(<Fixture />);
+        await findByText('ID value');
 
         const typeInput = getByLabelText('Type');
         act(() => {
@@ -67,13 +67,13 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('Type is required.')).toBeInTheDocument();
+            expect(getByText('The Type is required')).toBeInTheDocument();
         });
     });
 
     it('should require id value', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
-        await screen.findByText('ID value');
+        const { getByLabelText, getByText, findByText } = render(<Fixture />);
+        await findByText('ID value');
 
         const valueInput = getByLabelText('ID value');
         act(() => {
@@ -81,17 +81,17 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('ID value is required.')).toBeInTheDocument();
+            expect(getByText('The ID value is required')).toBeInTheDocument();
         });
     });
 
     it('should be valid with as of, type, and id value', async () => {
-        const { getByLabelText, queryByText } = render(<Fixture />);
+        const { getByLabelText, queryByText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Identification as of');
         const type = getByLabelText('Type');
         const idValue = getByLabelText('ID value');
-        await screen.findByText('ID value');
+        await findByText('ID value');
 
         act(() => {
             userEvent.paste(asOf, '01/20/2020');
@@ -103,9 +103,9 @@ describe('IdentificationEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('Type is required.')).not.toBeInTheDocument();
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
-            expect(queryByText('ID value is required.')).not.toBeInTheDocument();
+            expect(queryByText('The Type is required')).not.toBeInTheDocument();
+            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The ID value is required')).not.toBeInTheDocument();
         });
     });
 });
