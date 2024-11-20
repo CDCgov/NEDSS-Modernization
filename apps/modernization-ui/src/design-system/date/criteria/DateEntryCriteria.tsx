@@ -67,7 +67,12 @@ export const DateEntryCriteria = ({
                     />
                 )}
                 {value && isDateBetweenCriteria(value) && (
-                    <DateRangeEntry id={`${id}-exact-date`} value={value as DateBetweenCriteria} onChange={onChange} />
+                    <DateRangeEntry
+                        id={`${id}-exact-date`}
+                        value={value as DateBetweenCriteria}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                    />
                 )}
             </div>
         </EntryWrapper>
