@@ -25,6 +25,7 @@ import { sortingByDate } from 'sorting/sortingByDate';
 import { Patient } from '../Patient';
 import { TableBody, TableComponent } from 'components/Table';
 import { PatientTableActions } from 'apps/patient/profile/PatientTableActions';
+import { displayAddressTypeUse } from 'address/display';
 
 const asDetail = (data: PatientAddress): Detail[] => [
     { name: 'As of', value: internalizeDate(data.asOf) },
@@ -295,8 +296,7 @@ export const AddressesTable = ({ patient }: Props) => {
                     id: 2,
                     title: address?.type ? (
                         <span>
-                            {address?.type.description}
-                            {address.use?.description ? `/${address.use?.description}` : ''}
+                            {displayAddressTypeUse({ type: address?.type.description, use: address.use?.description })}
                         </span>
                     ) : null
                 },
