@@ -61,6 +61,8 @@ nbs:
           table:
             enabled: true
       patient:
+        profile:
+          enabled: true
         add:
           enabled: false
           extended:
