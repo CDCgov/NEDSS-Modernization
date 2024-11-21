@@ -57,3 +57,23 @@ Feature: Searching patient's by name
     Then search result 1 has a "first name" of "Joe"
     And search result 1 has a "last name" of "Smooth"
     And there are 1 patient search results
+
+  Scenario: I can find the a patient with a last name with multiple names that equals a value
+    Given I have another patient
+    And the patient has the legal name "JoeEqual" "Smith Jones"
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith Jones"
+    When I search for patients
+    Then search result 1 has a "first name" of "JoeEqual"
+    And search result 1 has a "last name" of "Smith Jones"
+    And there are 1 patient search results
+
+  Scenario: I can find the a patient with a last name with hyphens that equals a value
+    Given I have another patient
+    And the patient has the legal name "JoeEqual" "Smith-Jones"
+    And patients are available for search
+    And I add the patient criteria for a last name that equals "Smith-Jones"
+    When I search for patients
+    Then search result 1 has a "first name" of "JoeEqual"
+    And search result 1 has a "last name" of "Smith-Jones"
+    And there are 1 patient search results
