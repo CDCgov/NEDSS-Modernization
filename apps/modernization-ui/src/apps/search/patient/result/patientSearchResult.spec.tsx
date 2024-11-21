@@ -1,14 +1,11 @@
 import { render } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
 import { PatientSearchResult } from 'generated/graphql/schema';
 import {
-    displayProfileLink,
     displayPhones,
     displayEmails,
     displayAddresses,
     displayOtherNames,
-    displayIdentifications,
-    displayProfileLegalName
+    displayIdentifications
 } from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
@@ -86,14 +83,6 @@ describe('patientSearchResult functions', () => {
         expect(result).toBe('emily.reynolds@owensborohealth.org');
     });
 
-    it('should displayProfileLink renders correctly with shortId', () => {
-        const { getByText } = render(
-            <BrowserRouter>{displayProfileLink(mockPatient.shortId, 'John Doe')}</BrowserRouter>
-        );
-        const link = getByText('John Doe');
-        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
-    });
-
     it('should render addresses correctly', () => {
         const { getByText, queryAllByText } = render(displayAddresses(mockPatient));
         expect(getByText('Home')).toBeInTheDocument();
@@ -115,23 +104,5 @@ describe('patientSearchResult functions', () => {
         expect(getByText('123-45-6789')).toBeInTheDocument();
         expect(getByText('MRN')).toBeInTheDocument();
         expect(getByText('123456')).toBeInTheDocument();
-    });
-
-    it('should displayProfileLegalName renders correctly with legal name', () => {
-        const { getByText } = render(<BrowserRouter>{displayProfileLegalName(mockPatient)}</BrowserRouter>);
-        const link = getByText('Doe, John');
-        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
-    });
-
-    it('should displayProfileLegalName renders "No Data" when legal name is missing', () => {
-        const mockPatientWithoutLegalName = {
-            ...mockPatient,
-            legalName: null
-        };
-        const { getByText } = render(
-            <BrowserRouter>{displayProfileLegalName(mockPatientWithoutLegalName)}</BrowserRouter>
-        );
-        const link = getByText('No Data');
-        expect(link).toHaveAttribute('href', '/patient-profile/84001/summary');
     });
 });

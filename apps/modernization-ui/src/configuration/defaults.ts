@@ -41,6 +41,9 @@ const defaultFeatures: Features = {
     },
     search,
     patient: {
+        profile: {
+            enabled: false
+        },
         add: {
             enabled: false,
             extended: {

@@ -9,6 +9,9 @@ nbs:
   gateway:
     log:
       level: INFO
+    patient:
+      profile:
+        enabled: true
     pagebuilder:
       enabled: true
       page:

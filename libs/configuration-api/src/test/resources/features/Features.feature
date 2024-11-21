@@ -16,18 +16,20 @@ Feature: Frontend Feature Configuration
     Then the <feature> feature is <toggle>
 
     Examples:
-      | feature                  | toggle   |
-      | search view              | enabled  |
-      | search view              | disabled |
-      | tabular search results   | enabled  |
-      | tabular search results   | disabled |
-      | patient add              | enabled  |
-      | patient add              | disabled |
-      | patient add extended     | enabled  |
-      | patient add extended     | disabled |
-      | NBS6 event search        | enabled  |
-      | NBS6 event search        | disabled |
-      | investigation search     | enabled  |
-      | investigation search     | disabled |
-      | laboratory report search | enabled  |
-      | laboratory report search | disabled |
+      | feature                    | toggle   |
+      | search view                | enabled  |
+      | search view                | disabled |
+      | tabular search results     | enabled  |
+      | tabular search results     | disabled |
+      | patient add                | enabled  |
+      | patient add                | disabled |
+      | patient add extended       | enabled  |
+      | patient add extended       | disabled |
+      | NBS6 event search          | enabled  |
+      | NBS6 event search          | disabled |
+      | investigation search       | enabled  |
+      | investigation search       | disabled |
+      | laboratory report search   | enabled  |
+      | laboratory report search   | disabled |
+      | modernized patient profile | enabled  |
+      | modernized patient profile | disabled |

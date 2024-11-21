@@ -1,20 +1,9 @@
 import { PatientSearchResult } from 'generated/graphql/schema';
-import { displayName, displayNameElement, matchesLegalName } from 'name';
+import { displayNameElement, matchesLegalName } from 'name';
 import { displayAddress } from 'address/display';
-import { Link } from 'react-router-dom';
+
 import { ItemGroup } from 'design-system/item';
-import { internalizeDate } from 'date';
-import { displayAgeAsOfToday } from 'date/displayAge';
-
-const displayProfileLink = (shortId: number, displayName?: string) => {
-    return <Link to={`/patient-profile/${shortId}/summary`}>{displayName || shortId}</Link>;
-};
-
-const displayProfileLegalName = (result: PatientSearchResult) => {
-    const legalNameDisplay =
-        result.legalName?.first || result.legalName?.last ? displayName('fullLastFirst')(result.legalName) : 'No Data';
-    return displayProfileLink(result.shortId, legalNameDisplay);
-};
+import { internalizeDate, displayAgeAsOfToday } from 'date';
 
 // Displays Other names, that are not the legal name
 const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element => {
@@ -84,8 +73,6 @@ export {
     displayPatientName,
     displayPatientAge,
     displayOtherNames,
-    displayProfileLink,
-    displayProfileLegalName,
     displayPhones,
     displayAddresses,
     displayEmails,
