@@ -36,13 +36,4 @@ const displayAddress = (address: DisplayableAddress): JSX.Element => {
     );
 };
 
-/** Returns the type and use as combined text. Example: "Dormitory/Home"
- * @param {DisplayableAddress} address - The address object with type and use fields.
- * @return {string} The result string.
- */
-const displayAddressTypeUse = ({ type, use }: DisplayableAddress): string => {
-    // return `${type}${use ? `/${use}` : ''}`;
-    return [type, use].filter(exists).join('/');
-};
-
-export { displayAddress, displayAddressText, displayAddressTypeUse };
+export { displayAddress, displayAddressText };

@@ -5,7 +5,7 @@ import { AddressView } from './AddressView';
 import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
 import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { ReactNode } from 'react';
-import { displayAddressTypeUse } from 'address/display';
+import { asAddressTypeUse } from 'apps/patient/data/address/utils';
 
 const defaultValue: Partial<AddressEntry> = {
     asOf: today(),
@@ -38,7 +38,7 @@ export const AddressRepeatingBlock = ({ id, values, errors, onChange, isDirty }:
         {
             id: 'addressType',
             name: 'Type',
-            render: (v) => displayAddressTypeUse({ type: v.type?.name, use: v.use?.name })
+            render: (v) => asAddressTypeUse({ type: v.type?.name, use: v.use?.name })
         },
         { id: 'address', name: 'Address', render: (v) => v.address1 },
         { id: 'city', name: 'City', render: (v) => v.city },
