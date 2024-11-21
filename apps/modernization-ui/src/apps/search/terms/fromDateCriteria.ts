@@ -15,8 +15,8 @@ const fromDateBetweenCriteria =
     (criteria: DateBetweenCriteria): Term => ({
         source,
         title,
-        name: `${criteria.between.from}-${criteria.between.to}`,
-        value: `${criteria.between.from}-${criteria.between.to}`
+        name: `${criteria.between.from}${(criteria.between.to && '-' + criteria.between.to) ?? ''}`,
+        value: `${criteria.between.from}${(criteria.between.to && '-' + criteria.between.to) ?? ''}`
     });
 
 export { fromDateEqualsCriteria, fromDateBetweenCriteria };
