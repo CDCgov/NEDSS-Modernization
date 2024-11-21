@@ -19,8 +19,6 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         }
     };
 
-    console.log({ entry });
-
     if (entry.name?.last) {
         pushCriteria('lastName', 'LAST NAME', entry.name.last);
     }
