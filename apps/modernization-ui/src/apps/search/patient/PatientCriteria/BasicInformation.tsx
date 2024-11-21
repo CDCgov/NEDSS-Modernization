@@ -1,13 +1,14 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { CheckboxGroup } from 'design-system/checkbox/CheckboxGroup';
 import { SingleSelect } from 'design-system/select';
-import { DatePickerInput, validDateRule } from 'design-system/date';
 import { OperatorInput } from 'design-system/input/operator';
 import { Input } from 'components/FormInputs/Input';
 import { validNameRule } from 'validation/entry';
 import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
+import { DateEntryCriteria } from 'design-system/date/criteria/DateEntryCriteria';
+import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
 
 export const BasicInformation = () => {
     const { control } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
@@ -46,15 +47,13 @@ export const BasicInformation = () => {
             />
             <Controller
                 control={control}
-                name="dateOfBirth"
-                rules={validDateRule('Date of birth')}
-                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <DatePickerInput
+                name="bornOn"
+                rules={{ validate: (value) => !value || validateDateCriteria('Date of birth')(value) }}
+                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                    <DateEntryCriteria
                         id={name}
-                        name={name}
                         label="Date of birth"
                         value={value}
-                        onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
                         error={error?.message}

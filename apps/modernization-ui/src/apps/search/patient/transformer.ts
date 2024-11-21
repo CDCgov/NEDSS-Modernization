@@ -31,6 +31,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         investigation,
         treatment,
         vaccination,
+        bornOn,
         ...remaining
     } = data;
     return {
@@ -57,6 +58,7 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         race: asValue(remaining.race),
         ethnicity: asValue(remaining.ethnicity),
         identification: resolveIdentification(remaining),
-        dateOfBirth: externalizeDate(dateOfBirth)
+        dateOfBirth: externalizeDate(dateOfBirth),
+        bornOn
     };
 };
