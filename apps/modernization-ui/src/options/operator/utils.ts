@@ -75,9 +75,9 @@ export const asTextCriteria = (
 };
 
 /**
- * Returns the operator string, if no operator then will return unedfined
- * @param value
- * @returns
+ * Returns the operator string, if no operator then will return undefined
+ * @param {string | TextCriteria} value
+ * @return {string} or undefined
  */
 export const asTextCriteriaOperator = (value?: string | TextCriteria | null): string | undefined => {
     if (value != null && typeof value === 'string') {
