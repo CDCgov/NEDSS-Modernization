@@ -14,7 +14,6 @@ type Action<V> =
     | { type: 'reset' };
 
 const reducer = <V>(current: State<V>, action: Action<V>): State<V> => {
-    // const data = [...current.data];
     switch (action.type) {
         case 'add':
             return { status: 'adding', data: [...current.data, action.item] };
