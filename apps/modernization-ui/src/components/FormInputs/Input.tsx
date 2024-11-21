@@ -8,6 +8,7 @@ type InputProps = {
     className?: string;
     htmlFor?: string;
     label?: string;
+    helperText?: string;
     id?: string;
     type: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     required?: boolean;
@@ -32,6 +33,7 @@ export const Input = ({
     name,
     className,
     label,
+    helperText,
     id = '',
     type,
     error,
@@ -55,6 +57,7 @@ export const Input = ({
     return (
         <EntryWrapper
             label={label ?? ''}
+            helperText={helperText}
             htmlFor={id ?? ''}
             orientation={flexBox ? 'horizontal' : orientation}
             sizing={sizing}

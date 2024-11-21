@@ -11,6 +11,7 @@ const DatePickerInput = ({
     orientation,
     sizing,
     label,
+    helperText,
     required,
     error,
     value,
@@ -21,6 +22,7 @@ const DatePickerInput = ({
             orientation={orientation}
             sizing={sizing}
             label={label}
+            helperText={helperText}
             htmlFor={id}
             required={required}
             error={error}>

@@ -10,6 +10,7 @@ type OnBlur = (event: ReactFocusEvent<HTMLInputElement> | ReactFocusEvent<HTMLDi
 
 type DatePickerProps = {
     label?: string;
+    helperText?: string;
     name?: string;
     onChange?: OnChange;
     onBlur?: OnBlur;
@@ -67,6 +68,7 @@ export const DatePickerInput = (props: DatePickerProps) => {
             orientation={orientation}
             sizing={props.sizing}
             label={props.label || ''}
+            helperText={props.helperText}
             htmlFor={props.name || ''}
             required={props.required}
             error={_error}>
