@@ -1,6 +1,6 @@
 import { Term, fromSelectable, fromValue } from 'apps/search/terms';
 import { PatientCriteriaEntry } from './criteria';
-import { asTextCriteriaValue, TextCriteria } from 'options/operator';
+import { asTextCriteriaValue, TextCriteria, asTextCriteriaOperator } from 'options/operator';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
@@ -9,10 +9,17 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         // note: we will eventually want to use asTextCriteria here and get the operator i.e. "contains"
         // to populate the operator field in the term
         const stringValue = asTextCriteriaValue(value);
+        const operator = asTextCriteriaOperator(value);
         if (stringValue) {
-            terms.push(fromValue(source, title)(stringValue));
+            if (operator) {
+                terms.push(fromValue(source, title)(stringValue, operator));
+            } else {
+                terms.push(fromValue(source, title)(stringValue));
+            }
         }
     };
+
+    console.log({ entry });
 
     if (entry.name?.last) {
         pushCriteria('lastName', 'LAST NAME', entry.name.last);

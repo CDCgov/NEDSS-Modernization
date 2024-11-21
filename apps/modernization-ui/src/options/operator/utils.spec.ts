@@ -1,4 +1,10 @@
-import { asSelectableOperator, asTextCriteria, asTextCriteriaOrString, asTextCriteriaValue } from './utils';
+import {
+    asSelectableOperator,
+    asTextCriteria,
+    asTextCriteriaOperator,
+    asTextCriteriaOrString,
+    asTextCriteriaValue
+} from './utils';
 import { textOperators, defaultTextOperator } from './operators';
 import { Selectable } from 'options/selectable';
 import { TextCriteria } from './types';
@@ -97,6 +103,35 @@ describe('utils', () => {
         it('should return the object with the correct operator when it is specified', () => {
             const value = 'testValue';
             expect(asTextCriteria(value, 'not')).toStrictEqual({ not: 'testValue' });
+        });
+    });
+
+    describe('asTextCriteriaOperator', () => {
+        it('should return undefined when value undefined', () => {
+            expect(asTextCriteriaOperator(undefined)).toBeUndefined();
+        });
+        it('should return undefined when value null', () => {
+            expect(asTextCriteriaOperator(null)).toBeUndefined();
+        });
+        it('should return operator string for contains', () => {
+            const value = { contains: 'test-value' };
+            expect(asTextCriteriaOperator(value)).toBe('Contains');
+        });
+        it('should return operator string for equals', () => {
+            const value = { equals: 'test-value' };
+            expect(asTextCriteriaOperator(value)).toBe('Equals');
+        });
+        it('should return operator string for not equals', () => {
+            const value = { not: 'test-value' };
+            expect(asTextCriteriaOperator(value)).toBe('Not equal');
+        });
+        it('should return operator string for sounds like', () => {
+            const value = { soundsLike: 'test-value' };
+            expect(asTextCriteriaOperator(value)).toBe('Sounds like');
+        });
+        it('should return operator string for starts with', () => {
+            const value = { startsWith: 'test-value' };
+            expect(asTextCriteriaOperator(value)).toBe('Starts with');
         });
     });
 });
