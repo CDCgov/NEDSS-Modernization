@@ -1,11 +1,14 @@
 # ./entrypoint.ps1
 # Prepare NBS Configuration and Start NBS 6.0
 
+# get local ip (select second address as testing)
+$env:LOCALIP=(Get-NetIPAddress -AddressFamily IPv4 -AddressState Preferred | Where-Object { $_.IPAddress -ne "127.0.0.1" }).IPAddress[1]
+
 # Set environment memory allocation (override standalone.conf.bat)
-$setJAVA_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Dprogram.name=standalone.bat"
-$setJAVA_OPTS="%JAVA_OPTS% -Xms%JAVA_MEMORY% -Xmx%JAVA_MEMORY% -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
-$setJAVA_OPTS="%JAVA_OPTS% -Djava.net.preferIPv4Stack=true"
-$setJAVA_OPTS="%JAVA_OPTS% -Djboss.modules.system.pkgs=org.jboss.byteman"
+$env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
+$env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
+$env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
+$env:JAVA_OPTS="$env:JAVA_OPTS -Djava.rmi.server.hostname=$env:LOCALIP"
 
 
 # Initialize hastable for data sources
