@@ -131,7 +131,7 @@ const DatePicker = ({ id, label, maxDate, minDate, value, onChange, ...remaining
             externalInputRef.current.value = state.value;
         }
         onChange?.(state.value);
-    }, [state.value, onChange]);
+    }, [state.value]);
 
     return (
         <div
