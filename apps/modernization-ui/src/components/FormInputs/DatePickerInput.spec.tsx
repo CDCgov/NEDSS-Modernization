@@ -5,7 +5,7 @@ import { DatePickerInput } from './DatePickerInput';
 describe('DatePickerInput component tests', () => {
     describe('when default date value is provided', () => {
         it('should render DatePicker which has a label as Test DP Label and an input box with the provided default date value', () => {
-            const { container, getByTestId } = render(
+            const { container, getByTestId, getByText } = render(
                 <DatePickerInput
                     name="test-dp-name"
                     label="Test DP Label"
@@ -19,8 +19,7 @@ describe('DatePickerInput component tests', () => {
             expect(component).toBeTruthy();
             expect(component).not.toHaveClass('error');
 
-            const label = getByTestId('label');
-            expect(label).toHaveTextContent('Test DP Label');
+            expect(getByText('Test DP Label')).toBeInTheDocument();
 
             const input = getByTestId('date-picker-internal-input');
             expect(input).toHaveValue('2022-12-31');
@@ -151,7 +150,7 @@ describe('DatePickerInput component tests', () => {
 
     describe('when required is provided', () => {
         it('should render DatePicker which has a label as Test DP Label*', () => {
-            const { getByTestId } = render(
+            const { getByText } = render(
                 <DatePickerInput
                     name="test-dp-name"
                     label="Test DP Label"
@@ -160,8 +159,7 @@ describe('DatePickerInput component tests', () => {
                     required
                 />
             );
-            const label = getByTestId('label');
-            expect(label).toHaveTextContent('Test DP Label');
+            const label = getByText('Test DP Label');
             expect(label).toHaveClass('required');
         });
     });

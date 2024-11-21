@@ -1,15 +1,15 @@
-import { Grid } from '@trussworks/react-uswds';
-import { CodedValue } from 'coded';
-import FormCard from 'components/FormCard/FormCard';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { SelectInput } from 'components/FormInputs/SelectInput';
-import { calculateAge } from 'date';
-import { Deceased } from 'generated/graphql/schema';
 import { useMemo } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Grid } from '@trussworks/react-uswds';
+import { Deceased } from 'generated/graphql/schema';
+import { CodedValue } from 'coded';
+import FormCard from 'components/FormCard/FormCard';
+import { DatePickerInput } from 'design-system/date';
+import { calculateAge } from 'date';
+import { Input } from 'components/FormInputs/Input';
+import { SelectInput } from 'components/FormInputs/SelectInput';
 import { maxLengthRule } from 'validation/entry';
-import { NewPatientEntry } from '../NewPatientEntry';
+import { NewPatientEntry } from 'apps/patient/add/NewPatientEntry';
 
 type CodedValues = {
     deceased: CodedValue[];
@@ -37,10 +37,10 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                             name="dateOfBirth"
                             render={({ field: { onChange, value, name } }) => (
                                 <DatePickerInput
-                                    defaultValue={value}
+                                    id={name}
+                                    value={value}
                                     onChange={onChange}
                                     name={name}
-                                    disableFutureDates
                                     label="Date of birth"
                                 />
                             )}
@@ -117,11 +117,11 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                                 name="deceasedTime"
                                 render={({ field: { onChange, value, name } }) => (
                                     <DatePickerInput
-                                        defaultValue={value}
+                                        id={name}
+                                        value={value}
                                         onChange={onChange}
                                         name={name}
                                         label="Date of death"
-                                        disableFutureDates
                                         disabled={selectedDeceased !== Deceased.Y}
                                     />
                                 )}
