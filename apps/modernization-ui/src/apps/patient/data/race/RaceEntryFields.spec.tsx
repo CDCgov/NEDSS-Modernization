@@ -24,8 +24,7 @@ const Fixture = ({
         asOf: '04/11/2022',
         race: null,
         detailed: []
-    },
-    isDirty = false
+    }
 }: Props) => {
     const form = useForm<RaceEntry>({
         mode: 'onBlur',
@@ -34,7 +33,7 @@ const Fixture = ({
 
     return (
         <FormProvider {...form}>
-            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} isDirty={isDirty} />
+            <RaceEntryFields categories={categories} categoryValidator={categoryValidator} />
         </FormProvider>
     );
 };
@@ -118,16 +117,16 @@ describe('Race entry fields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Race as of');
+
         act(() => {
             userEvent.clear(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('The As of date is required')).toBeInTheDocument();
-        });
+
+        expect(await findByText(/The Race as of is required/)).toBeInTheDocument();
     });
 
     it('should require race category', async () => {
@@ -175,7 +174,7 @@ describe('Race entry fields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
+            expect(queryByText('The Race as of is required')).not.toBeInTheDocument();
             expect(queryByText('The Race is required')).not.toBeInTheDocument();
         });
     });
