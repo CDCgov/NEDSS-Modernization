@@ -6,7 +6,7 @@ Feature: Searching patient's by name
     And I can "find" any "patient"
     And I have a patient
 
-  Scenario: I can find the a patient with a last name that equals a value
+  Scenario: I can find a patient with a last name that equals a value
     Given I have another patient
     And the patient has the legal name "JoeEqual" "Smith"
     And patients are available for search
@@ -16,7 +16,7 @@ Feature: Searching patient's by name
     And search result 1 has a "last name" of "Smith"
     And there are 1 patient search results
 
-  Scenario: I can find the a patient with a last name that does not equal a value
+  Scenario: I can find a patient with a last name that does not equal a value
     Given the patient has the legal name "Joe" "not-equal"
     And I have another patient
     And the patient has the legal name "JoeEqual" "Smith"
@@ -26,8 +26,8 @@ Feature: Searching patient's by name
     Then there are 1 patient search results
     And the patient is not in the search results
 
-  Scenario: I can find the a patient with a last name that contains a value
-    Given the patient has the Alias Name name "Joe" "Aerosmithy"
+  Scenario: I can find a patient with a last name that contains a value
+    Given the patient has alias Name name "Joe" "Aerosmithy"
     And I have another patient
     And the patient has the legal name "Samantha" "Smother"
     And patients are available for search
@@ -37,8 +37,8 @@ Feature: Searching patient's by name
     And search result 1 has a "last name" of "Aerosmithy"
     And there are 1 patient search results
 
-  Scenario: I can find the a patient with a last name that starts with a value
-    Given the patient has the Alias Name name "Joe" "another-value"
+  Scenario: I can find a patient with a last name that starts with a value
+    Given the patient has alias Name name "Joe" "another-value"
     And I have another patient
     And the patient has the legal name "Sam" "starts-value"
     And patients are available for search
@@ -48,7 +48,7 @@ Feature: Searching patient's by name
     And search result 1 has a "last name" of "starts-value"
     And there are 1 patient search results
 
-  Scenario: I can find the a patient with a last name that sounds like a value
+  Scenario: I can find a patient with a last name that sounds like a value
     Given I have another patient
     And the patient has the legal name "Joe" "Smooth"
     And patients are available for search
@@ -58,7 +58,7 @@ Feature: Searching patient's by name
     And search result 1 has a "last name" of "Smooth"
     And there are 1 patient search results
 
-  Scenario: I can find the a patient with a last name with multiple names that equals a value
+  Scenario: I can find a patient with a last name with multiple names that equals a value
     Given I have another patient
     And the patient has the legal name "JoeEqual" "Smith Jones"
     And patients are available for search
@@ -68,7 +68,7 @@ Feature: Searching patient's by name
     And search result 1 has a "last name" of "Smith Jones"
     And there are 1 patient search results
 
-  Scenario: I can find the a patient with a last name with hyphens that equals a value
+  Scenario: I can find a patient with a last name with hyphens that equals a value
     Given I have another patient
     And the patient has the legal name "JoeEqual" "Smith-Jones"
     And patients are available for search
