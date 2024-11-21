@@ -27,7 +27,7 @@ Feature: Searching patient's by name
     And the patient is not in the search results
 
   Scenario: I can find a patient with a last name that contains a value
-    Given the patient has alias Name name "Joe" "Aerosmithy"
+    Given the patient has the Alias Name name "Joe" "Aerosmithy"
     And I have another patient
     And the patient has the legal name "Samantha" "Smother"
     And patients are available for search
@@ -38,7 +38,7 @@ Feature: Searching patient's by name
     And there are 1 patient search results
 
   Scenario: I can find a patient with a last name that starts with a value
-    Given the patient has alias Name name "Joe" "another-value"
+    Given the patient has the Alias Name name "Joe" "another-value"
     And I have another patient
     And the patient has the legal name "Sam" "starts-value"
     And patients are available for search
