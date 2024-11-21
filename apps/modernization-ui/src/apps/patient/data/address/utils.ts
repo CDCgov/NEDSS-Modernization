@@ -6,6 +6,5 @@ import { exists } from 'utils';
  * @return {string} The result string.
  */
 export const asAddressTypeUse = ({ type, use }: DisplayableAddress): string => {
-    // return `${type}${use ? `/${use}` : ''}`;
     return [type, use].filter(exists).join('/');
 };
