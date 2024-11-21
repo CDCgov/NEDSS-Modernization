@@ -2,6 +2,7 @@ import { ItemGroup } from 'design-system/item';
 import { exists } from 'utils';
 
 export type DisplayableAddress = {
+    type?: string | null;
     use?: string | null;
     address?: string | null;
     address2?: string | null;
