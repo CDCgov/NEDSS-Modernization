@@ -2,7 +2,7 @@ import { useReducer } from 'react';
 import { asStrictISODate } from 'design-system/date/asStrictISODate';
 
 type State = { date?: string | undefined; value: string };
-type Action = { type: 'initialize'; value?: string } | { type: 'change'; value: string } | { type: 'clear' };
+type Action = { type: 'initialize'; value?: string | null } | { type: 'change'; value: string } | { type: 'clear' };
 
 const reducer = (current: State, action: Action): State => {
     switch (action.type) {
@@ -13,7 +13,7 @@ const reducer = (current: State, action: Action): State => {
             return { value: action.value, date: asStrictISODate(action.value) };
         }
         case 'initialize': {
-            return action.value !== current.value ? asState(action.value) : current;
+            return action.value !== current.value ? asState(action.value ?? undefined) : current;
         }
         default:
             return current;
@@ -29,13 +29,13 @@ const asState = (current?: string): State => {
 type UseDateInteraction = {
     current: string;
     date?: string;
-    initialize: (value?: string) => void;
+    initialize: (value?: string | null) => void;
     clear: () => void;
     change: (value: string) => void;
 };
 
 type UseDateSettings = {
-    value?: string;
+    value?: string | null;
 };
 
 /**
@@ -56,11 +56,11 @@ type UseDateSettings = {
  * @return {UseDateInteraction} The interaction with the hook
  */
 const useDate = (settings?: UseDateSettings): UseDateInteraction => {
-    const [state, dispatch] = useReducer(reducer, settings?.value, asState);
+    const [state, dispatch] = useReducer(reducer, settings?.value ?? undefined, asState);
 
     const clear = () => dispatch({ type: 'clear' });
     const change = (value: string) => dispatch({ type: 'change', value });
-    const initialize = (value?: string) => dispatch({ type: 'initialize', value });
+    const initialize = (value?: string | null) => dispatch({ type: 'initialize', value });
 
     return {
         current: state.value,
