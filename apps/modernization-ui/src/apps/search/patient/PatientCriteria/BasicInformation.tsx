@@ -7,7 +7,7 @@ import { validNameRule } from 'validation/entry';
 import { genders } from 'options/gender';
 import { SearchCriteria } from 'apps/search/criteria';
 import { PatientCriteriaEntry, statusOptions } from 'apps/search/patient/criteria';
-import { DateEntryCriteria } from 'design-system/date/criteria/DateEntryCriteria';
+import { DateCriteriaEntry } from 'design-system/date/criteria/DateCriteriaEntry';
 import { validateDateCriteria } from 'design-system/date/criteria/validateDateCriteria';
 
 export const BasicInformation = () => {
@@ -50,7 +50,7 @@ export const BasicInformation = () => {
                 name="bornOn"
                 rules={{ validate: (value) => !value || validateDateCriteria('Date of birth')(value) }}
                 render={({ field: { onChange, value, name }, fieldState: { error } }) => (
-                    <DateEntryCriteria
+                    <DateCriteriaEntry
                         id={name}
                         label="Date of birth"
                         value={value}
