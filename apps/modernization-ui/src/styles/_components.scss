@@ -1,3 +1,5 @@
+@use 'styles/colors';
+
 $compact-font-size: 0.875rem;
 $compact-height: 2rem;
 
@@ -11,4 +13,10 @@ $compact-height: 2rem;
     width: unset;
 
     @extend %compact;
+}
+
+@mixin hint {
+    margin-top: -0.5rem;
+    font-size: 0.8rem;
+    color: colors.$base;
 }
