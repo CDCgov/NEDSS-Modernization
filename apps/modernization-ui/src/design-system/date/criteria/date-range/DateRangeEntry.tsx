@@ -9,10 +9,9 @@ type DateRangeEntryProps = {
     id: string;
     value: DateBetweenCriteria;
     onChange: (value: DateBetweenCriteria) => void;
-    onBlur?: (value: DateBetweenCriteria) => void;
 };
 
-export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryProps) => {
+export const DateRangeEntry = ({ id, value, onChange }: DateRangeEntryProps) => {
     const { state: rangeEntry, apply, clear } = useDateBetweenCriteria(value);
 
     const handleOnChange = (field: DateRangeEntryFields) => (value: string | undefined) => {
@@ -34,10 +33,9 @@ export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryPr
                 <DatePicker
                     id={`${id}-from`}
                     name="from"
-                    aria-label="from"
+                    aria-label={`${id}-from`}
                     value={value?.between?.from}
                     onChange={(e) => handleOnChange('from')(e)}
-                    onBlur={() => onBlur?.(rangeEntry as DateBetweenCriteria)}
                 />
             </div>
             <div className={classNames(styles['range-wrapper'])}>
@@ -46,10 +44,9 @@ export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryPr
                     id={`${id}-to`}
                     name="to"
                     minDate={value?.between?.from}
-                    aria-label="to"
+                    aria-label={`${id}-to`}
                     value={value?.between?.to}
                     onChange={(e) => handleOnChange('to')(e)}
-                    onBlur={() => onBlur?.(rangeEntry as DateBetweenCriteria)}
                 />
             </div>
         </div>

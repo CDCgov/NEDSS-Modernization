@@ -1,13 +1,7 @@
 import { Radio } from '@trussworks/react-uswds';
 import { ChangeEvent } from 'react';
 import { EntryWrapper, Sizing } from 'components/Entry';
-import {
-    DateBetweenCriteria,
-    DateCriteria,
-    DateEqualsCriteria,
-    isDateBetweenCriteria,
-    isDateEqualsCriteria
-} from '../entry';
+import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
 import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
 import styles from './date-criteria.module.scss';
@@ -20,7 +14,7 @@ export type DateEntryCriteriaProps = {
     orientation?: 'vertical' | 'horizontal';
     error?: string;
     onChange: (value?: DateCriteria) => void;
-    onBlur?: (value?: DateCriteria) => void;
+    onBlur?: () => void;
 };
 
 export const DateEntryCriteria = ({
@@ -30,8 +24,7 @@ export const DateEntryCriteria = ({
     sizing,
     value,
     error,
-    onChange,
-    onBlur
+    onChange
 }: DateEntryCriteriaProps) => {
     const handleDateOperationChange = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value === 'equals' ? { equals: {} } : { between: {} });
@@ -59,20 +52,10 @@ export const DateEntryCriteria = ({
             </div>
             <div className="margin-bottom-1">
                 {value && isDateEqualsCriteria(value) && (
-                    <ExactDateEntry
-                        id={`${id}-exact-date`}
-                        value={value as DateEqualsCriteria}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                    />
+                    <ExactDateEntry id={`${id}-exact-date`} value={value} onChange={onChange} />
                 )}
                 {value && isDateBetweenCriteria(value) && (
-                    <DateRangeEntry
-                        id={`${id}-exact-date`}
-                        value={value as DateBetweenCriteria}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                    />
+                    <DateRangeEntry id={`${id}-range-entry`} value={value} onChange={onChange} />
                 )}
             </div>
         </EntryWrapper>
