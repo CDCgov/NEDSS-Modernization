@@ -6,7 +6,7 @@ import { ExactDateEntry } from './exact-date';
 import { DateRangeEntry } from './date-range';
 import styles from './date-criteria.module.scss';
 
-export type DateEntryCriteriaProps = {
+export type DateCriteriaEntryProps = {
     id: string;
     value: DateCriteria | undefined;
     label: string;
@@ -17,7 +17,7 @@ export type DateEntryCriteriaProps = {
     onBlur?: () => void;
 };
 
-export const DateEntryCriteria = ({
+export const DateCriteriaEntry = ({
     orientation,
     label,
     id,
@@ -25,7 +25,7 @@ export const DateEntryCriteria = ({
     value,
     error,
     onChange
-}: DateEntryCriteriaProps) => {
+}: DateCriteriaEntryProps) => {
     const handleDateOperationChange = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value === 'equals' ? { equals: {} } : { between: {} });
     };
