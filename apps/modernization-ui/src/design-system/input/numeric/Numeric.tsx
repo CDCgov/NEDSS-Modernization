@@ -1,24 +1,8 @@
-import {
-    ChangeEvent as ReactChangeEvent,
-    KeyboardEvent as ReactKeyboardEvent,
-    useEffect,
-    useMemo,
-    useState
-} from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
+import { onlyNumericKeys } from './onlyNumericKeys';
 
 const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
-
-const isNonNumericKey = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    const value = event.key as string;
-    return value.length == 1 ? !/[0-9]/.test(value) : false;
-};
-
-const handleKeydown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
-    if (!event.altKey && !event.ctrlKey && !event.metaKey && isNonNumericKey(event)) {
-        event.preventDefault();
-    }
-};
 
 type NumericOnChange = (value?: number) => void;
 
@@ -64,7 +48,7 @@ const Numeric = ({ id, inputMode = 'numeric', value, onChange, className, placeh
             placeholder={placeholder}
             value={display}
             pattern="[0-9]*"
-            onKeyDown={handleKeydown}
+            onKeyDown={onlyNumericKeys}
             {...props}
         />
     );
