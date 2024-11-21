@@ -1,5 +1,6 @@
-import { DateCriteria, isDateEqualsCriteria } from '../entry';
+import { DateCriteria, isDateBetweenCriteria, isDateEqualsCriteria } from '../entry';
 import { validateDateEntry } from '../validateDateEntry';
+import { validateDateRange } from '../validateDateRange';
 
 const validateDateCriteria =
     (name: string) =>
@@ -7,7 +8,9 @@ const validateDateCriteria =
         if (isDateEqualsCriteria(value)) {
             return validateDateEntry(name)(value?.equals);
         }
-        // TODO: validate between
+        if (isDateBetweenCriteria(value)) {
+            return validateDateRange(name)(value);
+        }
         return true;
     };
 

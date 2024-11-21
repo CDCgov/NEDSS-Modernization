@@ -48,6 +48,9 @@ type Features = {
     };
     search: Search;
     patient: {
+        profile: {
+            enabled: boolean;
+        };
         add: {
             enabled: boolean;
             extended: {

@@ -1,11 +1,11 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { DateEntryCriteriaProps } from './DateEntryCriteria';
+import { DateCriteriaEntryProps } from './DateCriteriaEntry';
 import { DateEqualsCriteria } from '../entry';
-import { DateEntryCriteria } from './DateEntryCriteria';
+import { DateCriteriaEntry } from './DateCriteriaEntry';
 
-describe('DateEntryCriteria Component', () => {
-    const defaultProps: DateEntryCriteriaProps = {
+describe('DateCriteriaEntry Component', () => {
+    const defaultProps: DateCriteriaEntryProps = {
         id: 'test-date-entry',
         value: { equals: { day: 1, month: 1, year: 1995 } } as DateEqualsCriteria,
         label: 'Test Date Entry',
@@ -13,13 +13,13 @@ describe('DateEntryCriteria Component', () => {
     };
 
     it('should render with default props', () => {
-        const { getByLabelText } = render(<DateEntryCriteria {...defaultProps} />);
+        const { getByLabelText } = render(<DateCriteriaEntry {...defaultProps} />);
         expect(getByLabelText('Exact Date')).toBeInTheDocument();
         expect(getByLabelText('Date Range')).toBeInTheDocument();
     });
 
     it('should call onChange when a exact date is selected', async () => {
-        const { getByLabelText } = render(<DateEntryCriteria {...defaultProps} />);
+        const { getByLabelText } = render(<DateCriteriaEntry {...defaultProps} />);
 
         const exactDateRadio = getByLabelText('Exact Date');
         await userEvent.click(exactDateRadio);
