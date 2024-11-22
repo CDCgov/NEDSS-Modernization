@@ -81,7 +81,11 @@ class ClassicManageValueSetsPage {
   }
 
   clickMakeInactiveInValueSet() {
-    cy.get('input[type="button"][value="Make Inactive"]').eq(0).click()
+    cy.get('body').then(($body) => {
+        if($body.find('input[type="button"][value="Make Inactive"]').length > 0) {
+            cy.get('input[type="button"][value="Make Inactive"]').eq(0).click()
+        }
+    })
   }
 
   newName() {

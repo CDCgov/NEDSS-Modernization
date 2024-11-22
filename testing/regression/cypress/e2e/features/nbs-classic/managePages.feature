@@ -32,3 +32,13 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Check details displayed for "General Information"
     Then Check details displayed for "Name Information"
 
+  Scenario: Investigation page view tabs
+    Then Click on view icon to display the page details on classic
+    Then Check "Patient" tab displayed in investigation page details
+    Then Check "Case Info" tab displayed in investigation page details
+    Then Check "Contact Tracing" tab displayed in investigation page details
+    Then Check "Contact Records" tab displayed in investigation page details
+    Then Check "Supplemental Info" tab displayed in investigation page details
+
+
+
