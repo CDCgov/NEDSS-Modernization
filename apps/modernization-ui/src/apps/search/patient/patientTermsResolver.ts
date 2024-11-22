@@ -1,6 +1,7 @@
 import { Term, fromSelectable, fromValue } from 'apps/search/terms';
 import { PatientCriteriaEntry } from './criteria';
 import { asTextCriteriaValue, TextCriteria, asTextCriteriaOperator } from 'options/operator';
+import { splitStringByCommonDelimiters } from 'utils';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
@@ -19,12 +20,20 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         }
     };
 
+    const pushPatientIDs = (source: string, title: string, value: string) => {
+        console.log('pushPatientIDs value', value);
+        // splitStringByCommonDelimiters(value).forEach((id) => {
+        //     terms.push(fromValue(source, title)(id));
+        // });
+        terms.push(...splitStringByCommonDelimiters(value).map((id) => fromValue(source, title)(id)));
+    };
+
     if (entry.name?.last) {
-        pushCriteria('lastName', 'LAST NAME', entry.name.last);
+        pushCriteria('name.last', 'LAST NAME', entry.name.last);
     }
 
     if (entry.name?.first) {
-        pushCriteria('firstName', 'FIRST NAME', entry.name.first);
+        pushCriteria('name.first', 'FIRST NAME', entry.name.first);
     }
 
     if (entry.dateOfBirth) {
@@ -36,7 +45,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.id) {
-        terms.push(fromValue('id', 'PATIENT ID')(entry.id));
+        pushPatientIDs('id', 'PATIENT ID', entry.id);
     }
 
     if (entry.location?.street) {
