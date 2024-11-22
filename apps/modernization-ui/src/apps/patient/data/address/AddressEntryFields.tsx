@@ -1,14 +1,25 @@
-import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
-import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
-import { SingleSelect } from 'design-system/select';
-import { useLocationCodedValues } from 'location';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { EntryFieldsProps } from 'design-system/entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { SingleSelect } from 'design-system/select';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { AddressEntry } from '../entry';
+import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
+import { Input } from 'components/FormInputs/Input';
+import { useLocationCodedValues } from 'location';
+import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
+import { AddressEntry } from 'apps/patient/data/entry';
 
-export const AddressEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Address as of';
+const TYPE_LABEL = 'Type';
+const USE_LABEL = 'Use';
+const STREET_ADDRESS_LABEL = 'Street address 1';
+const STREET_ADDRESS_2_LABEL = 'Street address 2';
+const CITY_LABEL = 'City';
+const COMMENTS_LABEL = 'Address comments';
+
+type AddressEntryFieldsProps = EntryFieldsProps;
+
+export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryFieldsProps) => {
     const { control, reset } = useFormContext<AddressEntry>();
     const coded = usePatientAddressCodedValues();
     const location = useLocationCodedValues();
@@ -34,17 +45,17 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date') }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Address as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={`address-${name}`}
+                        label={AS_OF_DATE_LABEL}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={`address-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        name={name}
+                        orientation={orientation}
+                        error={error?.message}
                         required
                     />
                 )}
@@ -52,11 +63,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('Type') }}
+                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Type"
-                        orientation="horizontal"
+                        label={TYPE_LABEL}
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -71,11 +82,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule('Use') }}
+                rules={{ ...validateRequiredRule(USE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Use"
-                        orientation="horizontal"
+                        label={USE_LABEL}
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -90,11 +101,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="address1"
-                rules={maxLengthRule(100, 'Street address 1')}
+                rules={maxLengthRule(100, STREET_ADDRESS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <AddressSuggestionInput
-                        label="Street address 1"
-                        orientation="horizontal"
+                        label={STREET_ADDRESS_LABEL}
+                        orientation={orientation}
                         id={name}
                         locations={location}
                         criteria={{
@@ -113,11 +124,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="address2"
-                rules={maxLengthRule(100, 'Street address 2')}
+                rules={maxLengthRule(100, STREET_ADDRESS_2_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Street address 2"
-                        orientation="horizontal"
+                        label={STREET_ADDRESS_2_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -132,11 +143,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="city"
-                rules={maxLengthRule(100, 'City')}
+                rules={maxLengthRule(100, CITY_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="City"
-                        orientation="horizontal"
+                        label={CITY_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -154,7 +165,7 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="State"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
@@ -175,7 +186,7 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
                     <Input
                         label="Zip"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -195,7 +206,7 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="County"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
@@ -217,7 +228,7 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Census tract"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}
@@ -237,7 +248,7 @@ export const AddressEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="Country"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
@@ -251,11 +262,11 @@ export const AddressEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, 'Comment')}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Address comments"
-                        orientation="horizontal"
+                        label={COMMENTS_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}

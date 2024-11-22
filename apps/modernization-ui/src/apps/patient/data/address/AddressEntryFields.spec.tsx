@@ -53,7 +53,7 @@ const Fixture = () => {
     );
 };
 
-describe('AddressEntryFields', () => {
+describe('when entering patient address demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText } = render(<Fixture />);
 
@@ -80,7 +80,7 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The Type is required')).toBeInTheDocument();
+            expect(getByText('The Type is required.')).toBeInTheDocument();
         });
     });
 
@@ -93,21 +93,20 @@ describe('AddressEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The Use is required')).toBeInTheDocument();
+            expect(getByText('The Use is required.')).toBeInTheDocument();
         });
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Address as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('The As of date is required')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Address as of is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of, type, and use', async () => {
