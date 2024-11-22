@@ -1,3 +1,4 @@
+import { DateCriteria } from 'design-system/date/entry';
 import { Selectable, asSelectable } from 'options';
 import { TextCriteria, AlphaTextCriteria } from 'options/operator';
 
@@ -27,6 +28,7 @@ type BasicInformation = {
     gender?: Selectable;
     id?: string;
     status: Selectable[];
+    bornOn?: DateCriteria;
 };
 
 type Address = {
@@ -69,7 +71,8 @@ type PatientCriteriaEntry = BasicInformation & Address & Contact & RaceEthnicity
 export type { PatientCriteriaEntry, BasicInformation, Identification, RaceEthnicity, Contact, NameCriteria };
 
 const initial: PatientCriteriaEntry = {
-    status: [ACTIVE]
+    status: [ACTIVE],
+    bornOn: { equals: {} }
 };
 
 export { initial };

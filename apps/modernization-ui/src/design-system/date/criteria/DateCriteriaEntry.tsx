@@ -24,7 +24,8 @@ export const DateCriteriaEntry = ({
     sizing,
     value,
     error,
-    onChange
+    onChange,
+    onBlur
 }: DateCriteriaEntryProps) => {
     const handleDateOperationChange = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value === 'equals' ? { equals: {} } : { between: {} });
@@ -52,10 +53,10 @@ export const DateCriteriaEntry = ({
             </div>
             <div className="margin-bottom-1">
                 {value && isDateEqualsCriteria(value) && (
-                    <ExactDateEntry id={`${id}-exact-date`} value={value} onChange={onChange} />
+                    <ExactDateEntry id={`${id}-exact-date`} value={value} onChange={onChange} onBlur={onBlur} />
                 )}
                 {value && isDateBetweenCriteria(value) && (
-                    <DateRangeEntry id={`${id}-range-entry`} value={value} onChange={onChange} />
+                    <DateRangeEntry id={`${id}-range-entry`} value={value} onChange={onChange} onBlur={onBlur} />
                 )}
             </div>
         </EntryWrapper>

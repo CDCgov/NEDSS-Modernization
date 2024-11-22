@@ -148,6 +148,30 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(expect.objectContaining({ dateOfBirth: externalizeDate('02/05/1995') }));
     });
 
+    it('should transform with DOB equals', () => {
+        const input: PatientCriteriaEntry = {
+            bornOn: { equals: { month: 2, day: 5, year: 1995 } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(expect.objectContaining({ bornOn: { equals: { month: 2, day: 5, year: 1995 } } }));
+    });
+
+    it('should transform with DOB between', () => {
+        const input: PatientCriteriaEntry = {
+            bornOn: { between: { from: '02/05/1995', to: '02/05/1995' } },
+            status: []
+        };
+
+        const actual = transform(input);
+
+        expect(actual).toEqual(
+            expect.objectContaining({ bornOn: { between: { from: '02/05/1995', to: '02/05/1995' } } })
+        );
+    });
+
     it('should transform with patient id', () => {
         const input: PatientCriteriaEntry = {
             id: 'id-value',
