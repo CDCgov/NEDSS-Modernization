@@ -1,14 +1,21 @@
+import { useEffect } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Indicator, indicators } from 'coded';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { EntryFieldsProps } from 'design-system/entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
 import { useLocationCodedValues } from 'location';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { maxLengthRule } from 'validation/entry';
-import { MortalityEntry } from '../entry';
-import { useEffect } from 'react';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { MortalityEntry } from 'apps/patient/data/entry';
 
-export const MortalityEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Mortality information as of';
+const DECEASED_ON_LABEL = 'Date of death';
+const DEATH_CITY_LABEL = 'Death city';
+
+type MortalityEntryFieldsProps = EntryFieldsProps;
+
+export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEntryFieldsProps) => {
     const { control, resetField } = useFormContext<{ mortality: MortalityEntry }>();
     const selectedState = useWatch({ control, name: 'mortality.state' });
     const selectedDeceased = useWatch({ control, name: 'mortality.deceased' });
@@ -31,17 +38,16 @@ export const MortalityEntryFields = () => {
             <Controller
                 control={control}
                 name="mortality.asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Mortality information as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={name}
+                        label={AS_OF_DATE_LABEL}
+                        orientation={orientation}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        name={name}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
                     />
                 )}
@@ -52,7 +58,7 @@ export const MortalityEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Is the patient deceased?"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -67,26 +73,28 @@ export const MortalityEntryFields = () => {
                     <Controller
                         control={control}
                         name="mortality.deceasedOn"
+                        shouldUnregister
+                        rules={validDateRule(DECEASED_ON_LABEL)}
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <DatePickerInput
-                                label="Date of death"
-                                orientation="horizontal"
-                                defaultValue={value ?? ''}
+                                id={name}
+                                label={DECEASED_ON_LABEL}
+                                orientation={orientation}
+                                value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
-                                name={name}
-                                disableFutureDates
                             />
                         )}
                     />
                     <Controller
                         control={control}
                         name="mortality.city"
-                        rules={maxLengthRule(100)}
+                        shouldUnregister
+                        rules={maxLengthRule(100, DEATH_CITY_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Input
-                                label="Death city"
-                                orientation="horizontal"
+                                label={DEATH_CITY_LABEL}
+                                orientation={orientation}
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 type="text"
@@ -101,10 +109,11 @@ export const MortalityEntryFields = () => {
                     <Controller
                         control={control}
                         name="mortality.state"
+                        shouldUnregister
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death state"
-                                orientation="horizontal"
+                                orientation={orientation}
                                 value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -117,10 +126,11 @@ export const MortalityEntryFields = () => {
                     <Controller
                         control={control}
                         name="mortality.county"
+                        shouldUnregister
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death county"
-                                orientation="horizontal"
+                                orientation={orientation}
                                 value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
@@ -134,10 +144,11 @@ export const MortalityEntryFields = () => {
                     <Controller
                         control={control}
                         name="mortality.country"
+                        shouldUnregister
                         render={({ field: { onChange, onBlur, value, name } }) => (
                             <SingleSelect
                                 label="Death country"
-                                orientation="horizontal"
+                                orientation={orientation}
                                 value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
