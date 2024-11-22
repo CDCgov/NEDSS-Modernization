@@ -9,9 +9,10 @@ type ExactDateEntryProps = {
     id: string;
     value: DateEqualsCriteria;
     onChange: (value: DateEqualsCriteria) => void;
+    onBlur?: () => void;
 };
 
-export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => {
+export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryProps) => {
     const { state: dateEntry, apply, clear } = useDateEqualsCriteria(value);
 
     const handleOnChange = (field: ExactDateEntryFields) => (value: number | undefined) => {
@@ -36,6 +37,7 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
                     aria-label="month"
                     value={value?.equals?.month}
                     onChange={(e) => handleOnChange('month')(e)}
+                    onBlur={onBlur}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['day'])}>
@@ -46,6 +48,7 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
                     aria-label="day"
                     value={value?.equals?.day}
                     onChange={(e) => handleOnChange('day')(e)}
+                    onBlur={onBlur}
                 />
             </div>
             <div className={classNames(styles['numeric-wrapper'], styles['year'])}>
@@ -56,6 +59,7 @@ export const ExactDateEntry = ({ id, value, onChange }: ExactDateEntryProps) => 
                     aria-label="year"
                     value={value?.equals?.year}
                     onChange={(e) => handleOnChange('year')(e)}
+                    onBlur={onBlur}
                 />
             </div>
         </div>

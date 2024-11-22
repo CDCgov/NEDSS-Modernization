@@ -11,9 +11,19 @@ type NumericProps = {
     inputMode?: 'decimal' | 'numeric';
     value?: number;
     onChange?: NumericOnChange;
+    onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
-const Numeric = ({ id, inputMode = 'numeric', value, onChange, className, placeholder, ...props }: NumericProps) => {
+const Numeric = ({
+    id,
+    inputMode = 'numeric',
+    value,
+    onChange,
+    onBlur,
+    className,
+    placeholder,
+    ...props
+}: NumericProps) => {
     const [current, setCurrent] = useState<number | undefined>(value);
 
     useEffect(() => {
@@ -45,6 +55,7 @@ const Numeric = ({ id, inputMode = 'numeric', value, onChange, className, placeh
             type="number"
             inputMode={inputMode}
             onChange={handleChange}
+            onBlur={onBlur}
             placeholder={placeholder}
             value={display}
             pattern="[0-9]*"

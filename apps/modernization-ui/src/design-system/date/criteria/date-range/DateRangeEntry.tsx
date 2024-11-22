@@ -9,9 +9,10 @@ type DateRangeEntryProps = {
     id: string;
     value: DateBetweenCriteria;
     onChange: (value: DateBetweenCriteria) => void;
+    onBlur?: () => void;
 };
 
-export const DateRangeEntry = ({ id, value, onChange }: DateRangeEntryProps) => {
+export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryProps) => {
     const { state: rangeEntry, apply, clear } = useDateBetweenCriteria(value);
 
     const handleOnChange = (field: DateRangeEntryFields) => (value: string | undefined) => {
@@ -26,11 +27,19 @@ export const DateRangeEntry = ({ id, value, onChange }: DateRangeEntryProps) => 
         onChange(rangeEntry as DateBetweenCriteria);
     }, [rangeEntry, onChange]);
 
+    useEffect(() => {
+        const fromPickerElement = document.querySelectorAll('.usa-date-picker__calendar')?.[0] as HTMLElement;
+        if (fromPickerElement) {
+            fromPickerElement.style.left = '0';
+        }
+    }, []);
+
     return (
         <div id={id} aria-label="patient-search-date-range" className={styles['date-range-entry']}>
             <div className={classNames(styles['range-wrapper'])}>
                 <label htmlFor={'from'}>From</label>
                 <DatePicker
+                    onBlur={onBlur}
                     id={`${id}-from`}
                     name="from"
                     aria-label={`${id}-from`}
@@ -41,6 +50,7 @@ export const DateRangeEntry = ({ id, value, onChange }: DateRangeEntryProps) => 
             <div className={classNames(styles['range-wrapper'])}>
                 <label htmlFor={'to'}>To</label>
                 <DatePicker
+                    onBlur={onBlur}
                     id={`${id}-to`}
                     name="to"
                     minDate={value?.between?.from}

@@ -49,11 +49,12 @@ export const BasicInformation = () => {
                 control={control}
                 name="bornOn"
                 rules={{ validate: (value) => !value || validateDateCriteria('Date of birth')(value) }}
-                render={({ field: { onChange, value, name }, fieldState: { error } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DateCriteriaEntry
                         id={name}
                         label="Date of birth"
                         value={value}
+                        onBlur={onBlur}
                         onChange={onChange}
                         sizing="compact"
                         error={error?.message}
