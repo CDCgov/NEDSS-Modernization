@@ -81,7 +81,7 @@ public class PatientSearchCriteriaSteps {
 
     this.patient.maybeActive().ifPresent(
         found -> this.activeCriteria
-            .active(criteria -> criteria.withId(String.valueOf(found.shortId() + ";" + found.shortId()))));
+            .active(criteria -> criteria.withId(String.valueOf("999;" + found.shortId() + ";" + found.shortId()))));
 
   }
 
@@ -94,7 +94,8 @@ public class PatientSearchCriteriaSteps {
   @Given("I would like to search for a patient using multiple local IDs")
   public void i_would_like_to_search_for_a_patient_using_multiple_local_IDs() {
     this.patient.maybeActive().ifPresent(
-        found -> this.activeCriteria.active(criteria -> criteria.withId(found.local() + "," + found.local())));
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withId("abcde," + found.local() + "," + found.local())));
   }
 
   @Given("I would like to search for a patient using short and local IDs")
@@ -102,7 +103,7 @@ public class PatientSearchCriteriaSteps {
 
     this.patient.maybeActive().ifPresent(
         found -> this.activeCriteria
-            .active(criteria -> criteria.withId(String.valueOf(found.local() + " " + found.shortId()))));
+            .active(criteria -> criteria.withId(String.valueOf("abcde " + found.local() + " " + found.shortId()))));
 
   }
 

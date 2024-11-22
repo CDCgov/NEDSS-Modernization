@@ -31,6 +31,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
+@SuppressWarnings("squid:S3516")
 class PatientDemographicQueryResolver {
   private static final String NAMES = "name";
   private static final String PHONES = "phone";
