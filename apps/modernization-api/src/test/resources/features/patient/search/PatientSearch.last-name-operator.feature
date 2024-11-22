@@ -121,3 +121,17 @@ Feature: Searching patient's by name
     Then search result 1 has a "first name" of "JoeEqual"
     And search result 1 has a "last name" of "Smith-Jones"
     And there are 1 patient search results
+
+  Scenario: I can find a patient with a last name with multiple names that does not equal a value
+    Given the patient has the legal name "JoeEqual" "Smith Jones"
+    And patients are available for search
+    And I add the patient criteria for a last name that does not equal "Smith Jones"
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can find a patient with a last name with hyphens that equals a value
+    Given the patient has the legal name "JoeEqual" "Smith-Jones"
+    And patients are available for search
+    And I add the patient criteria for a last name that does not equal "Smith-Jones"
+    When I search for patients
+    Then there are 0 patient search results
