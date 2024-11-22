@@ -4,7 +4,7 @@ const fromValue = (source: string, title: string) => (value: string, operator?: 
     name: value,
     value,
     operator,
-    partial: !!partial
+    partial
 });
 
 export { fromValue };

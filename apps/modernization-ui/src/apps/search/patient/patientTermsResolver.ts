@@ -7,8 +7,7 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
     const pushCriteria = (source: string, title: string, value?: TextCriteria) => {
-        // note: we will eventually want to use asTextCriteria here and get the operator i.e. "contains"
-        // to populate the operator field in the term
+        // get the operator i.e. "contains" to populate the operator field in the term
         const stringValue = asTextCriteriaValue(value);
         const operator = asTextCriteriaOperator(value);
         if (stringValue) {
@@ -21,11 +20,8 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     };
 
     const pushPatientIDs = (source: string, title: string, value: string) => {
-        console.log('pushPatientIDs value', value);
-        // splitStringByCommonDelimiters(value).forEach((id) => {
-        //     terms.push(fromValue(source, title)(id));
-        // });
-        terms.push(...splitStringByCommonDelimiters(value).map((id) => fromValue(source, title)(id)));
+        // push multiple terms if the value contains common delimiters
+        terms.push(...splitStringByCommonDelimiters(value).map((id) => fromValue(source, title)(id, undefined, true)));
     };
 
     if (entry.name?.last) {
@@ -57,11 +53,11 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.location?.street) {
-        pushCriteria('address', 'STREET ADDRESS', entry.location?.street);
+        pushCriteria('location.street', 'STREET ADDRESS', entry.location?.street);
     }
 
     if (entry.location?.city) {
-        pushCriteria('city', 'CITY', entry.location?.city);
+        pushCriteria('location.city', 'CITY', entry.location?.city);
     }
 
     if (entry.state) {
