@@ -129,7 +129,7 @@ Feature: Searching patient's by name
     When I search for patients
     Then there are 0 patient search results
 
-  Scenario: I can find a patient with a last name with hyphens that equals a value
+  Scenario: I can find a patient with a last name with hyphens that does not equal a value
     Given the patient has the legal name "JoeEqual" "Smith-Jones"
     And patients are available for search
     And I add the patient criteria for a last name that does not equal "Smith-Jones"
