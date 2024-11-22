@@ -48,7 +48,7 @@ const Fixture = () => {
     );
 };
 
-describe('SexAndBirthEntryFields', () => {
+describe('when entering patient sex and birth demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText, getByText, queryByLabelText } = render(<Fixture />);
 
@@ -69,16 +69,15 @@ describe('SexAndBirthEntryFields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText } = render(<Fixture />);
+        const { getByLabelText, getByText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Sex & birth information as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('As of date is required.')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Sex & birth information as of is required.')).toBeInTheDocument();
     });
 
     it('should be valid with as of', async () => {
@@ -92,7 +91,7 @@ describe('SexAndBirthEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('As of date is required.')).not.toBeInTheDocument();
+            expect(queryByText('The Sex & birth information as of is required.')).not.toBeInTheDocument();
         });
     });
 
