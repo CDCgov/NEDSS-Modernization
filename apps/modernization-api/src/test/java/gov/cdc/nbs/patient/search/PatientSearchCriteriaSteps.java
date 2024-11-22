@@ -76,10 +76,35 @@ public class PatientSearchCriteriaSteps {
 
   }
 
+  @Given("I would like to search for a patient using multiple short IDs")
+  public void i_would_like_to_search_for_a_patient_using_multiple_short_IDs() {
+
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withId(String.valueOf("999;" + found.shortId() + ";" + found.shortId()))));
+
+  }
+
   @Given("I would like to search for a patient using a local ID")
   public void i_would_like_to_search_for_a_patient_using_a_local_ID() {
     this.patient.maybeActive().ifPresent(
         found -> this.activeCriteria.active(criteria -> criteria.withId(found.local())));
+  }
+
+  @Given("I would like to search for a patient using multiple local IDs")
+  public void i_would_like_to_search_for_a_patient_using_multiple_local_IDs() {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withId("abcde," + found.local() + "," + found.local())));
+  }
+
+  @Given("I would like to search for a patient using short and local IDs")
+  public void i_would_like_to_search_for_a_patient_using_short_and_local_IDs() {
+
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withId(String.valueOf("abcde " + found.local() + " " + found.shortId()))));
+
   }
 
   @Given("I add the patient criteria for patient's born on the {nth} day of the month")
