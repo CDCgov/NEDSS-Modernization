@@ -1,12 +1,18 @@
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { Input } from 'components/FormInputs/Input';
 import { Controller, useFormContext } from 'react-hook-form';
-import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
-import { NameEntry } from '../entry';
-import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
+import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { EntryFieldsProps } from 'design-system/entry';
+import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
+import { NameEntry } from 'apps/patient/data/entry';
+import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 
-export const NameEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Name as of';
+const TYPE_LABEL = 'Type';
+
+type NameEntryFieldsProps = EntryFieldsProps;
+
+export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsProps) => {
     const { control } = useFormContext<NameEntry>();
     const coded = usePatientNameCodedValues();
 
@@ -15,17 +21,17 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date') }}
+                rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Name as of"
-                        orientation="horizontal"
+                        id={name}
+                        label={AS_OF_DATE_LABEL}
+                        value={value}
                         onBlur={onBlur}
-                        defaultValue={value}
                         onChange={onChange}
-                        name={`name-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        name={name}
+                        orientation={orientation}
+                        error={error?.message}
                         required
                     />
                 )}
@@ -33,11 +39,11 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('Type') }}
+                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Type"
-                        orientation="horizontal"
+                        label={TYPE_LABEL}
+                        orientation={orientation}
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -55,7 +61,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Prefix"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         id={name}
                         onChange={onChange}
@@ -73,7 +79,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Last"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -92,7 +98,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second last"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -111,7 +117,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="First"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -126,11 +132,11 @@ export const NameEntryFields = () => {
             <Controller
                 control={control}
                 name="middle"
-                rules={{ ...validateExtendedNameRule('Middle name') }}
+                rules={validateExtendedNameRule('Middle name')}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -149,7 +155,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Second middle"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -167,7 +173,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <SingleSelect
                         label="Suffix"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -183,7 +189,7 @@ export const NameEntryFields = () => {
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="Degree"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         id={name}
