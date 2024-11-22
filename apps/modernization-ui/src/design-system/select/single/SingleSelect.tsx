@@ -17,6 +17,7 @@ const renderOptions = (options: Selectable[], placeholder?: string) => (
 type Props = {
     id: string;
     label: string;
+    helperText?: string;
     options: Selectable[];
     value?: Selectable | null;
     onChange?: (value?: Selectable) => void;
@@ -29,6 +30,7 @@ type Props = {
 const SingleSelect = ({
     id,
     label,
+    helperText,
     options,
     value,
     onChange,
@@ -53,6 +55,7 @@ const SingleSelect = ({
             orientation={orientation}
             sizing={sizing}
             label={label}
+            helperText={helperText}
             htmlFor={id}
             required={required}
             error={error}>
