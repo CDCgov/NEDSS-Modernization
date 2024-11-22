@@ -29,3 +29,16 @@ export const calculateAge = (birthday: Date) => {
 
     return `${Math.abs(ageDate.getUTCFullYear() - 1970)} years`;
 };
+
+/**
+ * Given an object, selects the value at the given path, using dot notation.
+ * Example: selectField({ a: { b: { c: 42 } } }, 'a.b.c') returns 42
+ * @param {object} obj The object for which to select the field
+ * @param {string} path The path to the field, using dot notation ('foo.bar.baz')
+ * @return {unknown} The original object if path is empty, or the field located at the specified path.
+ */
+export const selectField = (obj: { [key: string]: any }, path: string) => {
+    if (!path) return obj;
+    const keys = path.split('.');
+    return keys.reduce((acc, part) => acc && acc[part], obj);
+};
