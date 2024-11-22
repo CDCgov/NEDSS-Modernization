@@ -1,5 +1,5 @@
 import { DatePicker } from '@trussworks/react-uswds';
-import { FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent, useState } from 'react';
+import { FocusEvent as ReactFocusEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { isFuture } from 'date-fns';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
@@ -89,6 +89,18 @@ const InternalDatePicker = ({
     label,
     error
 }: DatePickerProps) => {
+    const [trackedDefaultValue, setTrackedDefaultValue] = useState<string>();
+
+    const manualStateManagementHack = async () => {
+        await setTrackedDefaultValue(undefined);
+    };
+
+    useEffect(() => {
+        manualStateManagementHack().then(() => {
+            setTrackedDefaultValue(defaultValue ? defaultValue : undefined);
+        });
+    }, [defaultValue]);
+
     const toggleCalendar = label ? `${label} toggle calendar` : EN_US.toggleCalendar;
     const getCurrentLocalDate = () => {
         let currentDate = new Date();
@@ -104,19 +116,25 @@ const InternalDatePicker = ({
 
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
     return (
-        <DatePicker
-            i18n={{ ...EN_US, toggleCalendar }}
-            id={name}
-            onBlur={onBlur}
-            onKeyDown={handleKeyDown}
-            onChange={handleOnChange(onChange)}
-            className={classNames(className)}
-            validationStatus={error ? 'error' : undefined}
-            name={name}
-            disabled={disabled}
-            defaultValue={defaultValue || undefined}
-            maxDate={disableFutureDates ? getCurrentLocalDate() : undefined}
-        />
+        <div>
+            {!trackedDefaultValue ? (
+                <div />
+            ) : (
+                <DatePicker
+                    i18n={{ ...EN_US, toggleCalendar }}
+                    id={name}
+                    onBlur={onBlur}
+                    onKeyDown={handleKeyDown}
+                    onChange={handleOnChange(onChange)}
+                    className={classNames(className)}
+                    validationStatus={error ? 'error' : undefined}
+                    name={name}
+                    disabled={disabled}
+                    defaultValue={trackedDefaultValue}
+                    maxDate={disableFutureDates ? getCurrentLocalDate() : undefined}
+                />
+            )}
+        </div>
     );
 };
 
