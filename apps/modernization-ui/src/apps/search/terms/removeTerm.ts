@@ -16,9 +16,15 @@ const removeTerm =
         const value = formValues[key];
 
         if (Array.isArray(value)) {
-            //  this will most likey be a Selectable
+            //  this will most likely be a Selectable
             const adjusted = value.filter(doesNotEqual(term.value));
             form.setValue(key, adjusted);
+        } else if (term.partial && typeof value === 'string') {
+            // extract and remove term from string: "123, 456" -> remove 123 -> ", 456"
+            // eslint-disable-next-line no-debugger
+            debugger;
+            const newValue = value.replace(term.value, '');
+            form.setValue(key, newValue);
         } else {
             form.resetField(key);
         }
