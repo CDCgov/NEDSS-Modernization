@@ -14,9 +14,30 @@ Feature: Patient Search
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: I can find a patient by Patient ID using multiple short ids
+    Given patients are available for search
+    And I would like to search for a patient using multiple short IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
   Scenario: I can find a patient by Patient ID using the local id
     Given patients are available for search
     And I would like to search for a patient using a local ID
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using multiple local ids
+    Given patients are available for search
+    And I would like to search for a patient using multiple local IDs
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using short and local ids
+    Given patients are available for search
+    And I would like to search for a patient using short and local IDs
     When I search for patients
     Then the patient is in the search results
     And there is only one patient search result
