@@ -1,5 +1,6 @@
 package gov.cdc.nbs.patient.search;
 
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.ChildScoreMode;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
@@ -9,7 +10,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.PrefixQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryVariant;
 import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.TermsQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.TermsQueryField;
 import co.elastic.clients.json.JsonData;
 import gov.cdc.nbs.patient.identifier.PatientLocalIdentifierResolver;
 import gov.cdc.nbs.search.AdjustStrings;
@@ -22,6 +24,9 @@ import org.apache.commons.codec.language.Soundex;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -84,31 +89,40 @@ class PatientDemographicQueryResolver {
         return Optional.empty();
       }
 
-      if (Character.isDigit(shortOrLongIdStripped.charAt(0))) {
-        // This may be a short id, resolve the local id and then search for it
-        try {
-          long shortId = Long.parseLong(shortOrLongIdStripped);
-
-          String localId = resolver.resolve(shortId);
-
-          return applyLocalId(localId);
-
-        } catch (NumberFormatException exception) {
-          // skip these criteria. it's not a short id or long id
-        }
-      } else {
-        return applyLocalId(shortOrLongIdStripped);
+      List<String> shortOrLongIdStrippedIds = Arrays.asList(shortOrLongIdStripped.split("[\\s,;]+"));
+      if (shortOrLongIdStrippedIds.isEmpty()) {
+        return Optional.empty();
       }
+
+      List<String> localIds = new ArrayList<>();
+      shortOrLongIdStrippedIds.forEach(shortOrLongIdStrippedId -> {
+        if (Character.isDigit(shortOrLongIdStrippedId.charAt(0))) {
+          // This may be a short id, resolve the local id and then search for it
+          try {
+            long shortId = Long.parseLong(shortOrLongIdStrippedId);
+            String localId = resolver.resolve(shortId);
+            localIds.add(localId);
+          } catch (NumberFormatException exception) {
+            // skip these criteria. it's not a short id or long id
+          }
+        } else {
+          localIds.add(shortOrLongIdStrippedId);
+        }
+        applyLocalIds(localIds);
+      });
     }
 
     return Optional.empty();
   }
 
-  private Optional<QueryVariant> applyLocalId(final String local) {
+  private Optional<QueryVariant> applyLocalIds(final List<String> localIds) {
+    TermsQueryField localIdTerms = new TermsQueryField.Builder()
+        .value(localIds.stream().map(FieldValue::of).toList())
+        .build();
+
     return Optional.of(
-        TermQuery.of(
-            query -> query.field("local_id")
-                .value(local)));
+        TermsQuery.of(
+            query -> query.field("local_id").terms(localIdTerms)));
   }
 
   private Optional<QueryVariant> applyFirstNameCriteria(final PatientFilter criteria) {
