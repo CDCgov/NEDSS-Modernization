@@ -42,12 +42,10 @@ public class TextCriteriaNestedQueryResolver {
             should -> should.nested(
                 nested -> nested.path(path)
                     .query(
-                        query -> query.bool(
-                            field -> field.must(
-                                must -> must.wildcard(
-                                    match -> match
-                                        .field(name)
-                                        .value(adjusted))))))));
+                        query -> query.queryString(
+                            simple -> simple.fields(name)
+                                .query(adjusted)
+                                .defaultOperator(Operator.And))))));
   }
 
   public static BoolQuery startsWith(final String path, final String name, final String value) {
