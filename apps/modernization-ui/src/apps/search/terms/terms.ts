@@ -3,6 +3,7 @@ type Term = {
     title: string;
     name: string;
     value: string;
+    operator?: string;
 };
 
 export type { Term };

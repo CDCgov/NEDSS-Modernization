@@ -9,14 +9,23 @@
     min-height: 3rem;
     @extend %thin-bottom;
 
-    label {
+    .left {
         width: 13rem;
+    }
+
+    label {
         color: colors.$base-darkest;
         font-size: 0.875rem;
         font-weight: 700;
     }
 
-    .verticalWrapper {
+    .helptext {
+        margin-top: -0.5rem;
+        font-size: 0.8rem;
+        color: colors.$base;
+    }
+
+    .right {
         width: 20rem;
     }
 }

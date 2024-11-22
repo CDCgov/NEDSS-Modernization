@@ -73,3 +73,36 @@ export const asTextCriteria = (
         return value;
     }
 };
+
+/**
+ * Returns the operator string, if no operator then will return undefined
+ * @param {string | TextCriteria} value
+ * @return {string} or undefined
+ */
+export const asTextCriteriaOperator = (value?: string | TextCriteria | null): string | undefined => {
+    if (value != null && typeof value === 'string') {
+        return undefined;
+    }
+    if (value != null && typeof value === 'object') {
+        return transformOperator(Object.keys(value)[0] as TextOperation);
+    }
+
+    return undefined;
+};
+
+const transformOperator = (value: TextOperation): string => {
+    switch (value) {
+        case 'contains':
+            return 'Contains';
+        case 'equals':
+            return 'Equals';
+        case 'soundsLike':
+            return 'Sounds like';
+        case 'startsWith':
+            return 'Starts with';
+        case 'not':
+            return 'Not equal';
+        default:
+            return '';
+    }
+};

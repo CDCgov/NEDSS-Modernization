@@ -35,7 +35,97 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'lastName', title: 'LAST NAME', name: 'last-name-value', value: 'last-name-value' }
+                {
+                    source: 'lastName',
+                    title: 'LAST NAME',
+                    name: 'last-name-value',
+                    value: 'last-name-value',
+                    operator: 'Equals'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with last name with contains', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { contains: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'lastName',
+                    title: 'LAST NAME',
+                    name: 'last-name-value',
+                    value: 'last-name-value',
+                    operator: 'Contains'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with last name with not equal', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { not: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'lastName',
+                    title: 'LAST NAME',
+                    name: 'last-name-value',
+                    value: 'last-name-value',
+                    operator: 'Not equal'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with last name with starts with', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { startsWith: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'lastName',
+                    title: 'LAST NAME',
+                    name: 'last-name-value',
+                    value: 'last-name-value',
+                    operator: 'Starts with'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with last name with sounds like', () => {
+        const input: PatientCriteriaEntry = {
+            name: { last: { soundsLike: 'last-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'lastName',
+                    title: 'LAST NAME',
+                    name: 'last-name-value',
+                    value: 'last-name-value',
+                    operator: 'Sounds like'
+                }
             ])
         );
     });
@@ -50,7 +140,97 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'firstName', title: 'FIRST NAME', name: 'first-name-value', value: 'first-name-value' }
+                {
+                    source: 'firstName',
+                    title: 'FIRST NAME',
+                    name: 'first-name-value',
+                    value: 'first-name-value',
+                    operator: 'Equals'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with first name with starts with', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { startsWith: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'firstName',
+                    title: 'FIRST NAME',
+                    name: 'first-name-value',
+                    value: 'first-name-value',
+                    operator: 'Starts with'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with first name with sounds like', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { soundsLike: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'firstName',
+                    title: 'FIRST NAME',
+                    name: 'first-name-value',
+                    value: 'first-name-value',
+                    operator: 'Sounds like'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with first name with not equal', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { not: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'firstName',
+                    title: 'FIRST NAME',
+                    name: 'first-name-value',
+                    value: 'first-name-value',
+                    operator: 'Not equal'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with first name with contains', () => {
+        const input: PatientCriteriaEntry = {
+            name: { first: { contains: 'first-name-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'firstName',
+                    title: 'FIRST NAME',
+                    name: 'first-name-value',
+                    value: 'first-name-value',
+                    operator: 'Contains'
+                }
             ])
         );
     });
@@ -93,7 +273,55 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'address', title: 'STREET ADDRESS', name: 'address-value', value: 'address-value' }
+                {
+                    source: 'address',
+                    title: 'STREET ADDRESS',
+                    name: 'address-value',
+                    value: 'address-value',
+                    operator: 'Equals'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with Street address with not equals', () => {
+        const input: PatientCriteriaEntry = {
+            location: { street: { not: 'address-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'address',
+                    title: 'STREET ADDRESS',
+                    name: 'address-value',
+                    value: 'address-value',
+                    operator: 'Not equal'
+                }
+            ])
+        );
+    });
+
+    it('should resolve terms with Street address with contains', () => {
+        const input: PatientCriteriaEntry = {
+            location: { street: { contains: 'address-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                {
+                    source: 'address',
+                    title: 'STREET ADDRESS',
+                    name: 'address-value',
+                    value: 'address-value',
+                    operator: 'Contains'
+                }
             ])
         );
     });
@@ -107,7 +335,39 @@ describe('when the PatientCriteria contains Address criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'city', title: 'CITY', name: 'city-value', value: 'city-value' }])
+            expect.arrayContaining([
+                { source: 'city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Equals' }
+            ])
+        );
+    });
+
+    it('should resolve terms with City', () => {
+        const input: PatientCriteriaEntry = {
+            location: { city: { not: 'city-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                { source: 'city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Not equal' }
+            ])
+        );
+    });
+
+    it('should resolve terms with City', () => {
+        const input: PatientCriteriaEntry = {
+            location: { city: { contains: 'city-value' } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                { source: 'city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Contains' }
+            ])
         );
     });
 

@@ -14,6 +14,7 @@ type Props = {
     sizing?: Sizing;
     htmlFor: string;
     label: string;
+    helperText?: string;
     error?: string;
     required?: boolean;
     children: ReactNode;

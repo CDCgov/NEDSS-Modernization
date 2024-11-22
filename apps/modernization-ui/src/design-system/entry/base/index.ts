@@ -4,6 +4,7 @@ type EntryComponentProps = {
     orientation?: Orientation;
     sizing?: Sizing;
     label: string;
+    helperText?: string;
     error?: string;
     required?: boolean;
 };

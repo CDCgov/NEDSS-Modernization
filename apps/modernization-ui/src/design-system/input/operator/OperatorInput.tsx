@@ -20,6 +20,7 @@ export type OperatorInputProps = {
     operator?: TextOperation;
     operationMode?: 'alpha' | 'all';
     label: string;
+    helperText?: string;
     sizing?: Sizing;
     orientation?: 'vertical' | 'horizontal';
     error?: string;
@@ -49,6 +50,7 @@ export const OperatorInput = ({
     operationMode,
     operator = operationMode === 'alpha' ? 'equals' : 'startsWith',
     label,
+    helperText,
     sizing = 'compact',
     orientation = 'vertical',
     error,
@@ -79,7 +81,7 @@ export const OperatorInput = ({
     );
 
     return (
-        <EntryWrapper orientation={orientation} label={label} htmlFor={id} sizing={sizing}>
+        <EntryWrapper orientation={orientation} label={label} helperText={helperText} htmlFor={id} sizing={sizing}>
             <Grid col={12}>
                 <Grid row>
                     <Grid col={5} className="padding-right-1">
