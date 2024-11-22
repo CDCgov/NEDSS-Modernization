@@ -1,8 +1,10 @@
 import { Controller, useFormContext } from 'react-hook-form';
 import { AdministrativeEntry } from '../entry';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { maxLengthRule } from 'validation/entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+
+const AS_OF_DATE_LABEL = 'Information as of date';
 
 export const AdministrativeEntryFields = () => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
@@ -12,17 +14,16 @@ export const AdministrativeEntryFields = () => {
             <Controller
                 control={control}
                 name="administrative.asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Information as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={name}
+                        label={AS_OF_DATE_LABEL}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
                     />
                 )}
