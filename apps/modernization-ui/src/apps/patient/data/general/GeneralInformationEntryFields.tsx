@@ -1,14 +1,21 @@
-import { GeneralInformationEntry } from '../entry';
 import { Controller, useFormContext } from 'react-hook-form';
+import { GeneralInformationEntry } from '../entry';
+import { NumericInput } from 'design-system/input';
+import { EntryFieldsProps } from 'design-system/entry';
+import { SingleSelect } from 'design-system/select';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
 import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { SingleSelect } from 'design-system/select';
-import { maxLengthRule } from 'validation/entry';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
-import { NumericInput } from 'design-system/input';
 
-export const GeneralInformationEntryFields = () => {
+const AS_OF_DATE_LABEL = 'General information as of';
+const MATERNAL_MAIDEN_NAME_LABEL = "Mother's maiden name";
+const STATE_HIV_CASE_LABEL = 'State HIV case ID';
+
+type GeneralInformationEntryFieldsProps = EntryFieldsProps;
+
+export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: GeneralInformationEntryFieldsProps) => {
     const { control } = useFormContext<{ general: GeneralInformationEntry }>();
     const { hivAccess } = usePatientProfilePermissions();
     const coded = usePatientGeneralCodedValues();
@@ -18,17 +25,16 @@ export const GeneralInformationEntryFields = () => {
             <Controller
                 control={control}
                 name="general.asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="General information as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={name}
+                        label={AS_OF_DATE_LABEL}
+                        orientation={orientation}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        name={name}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
                     />
                 )}
@@ -39,7 +45,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Marital status"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -52,11 +58,11 @@ export const GeneralInformationEntryFields = () => {
             <Controller
                 control={control}
                 name="general.maternalMaidenName"
-                rules={maxLengthRule(50)}
+                rules={maxLengthRule(50, MATERNAL_MAIDEN_NAME_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Mother's maiden name"
-                        orientation="horizontal"
+                        label={MATERNAL_MAIDEN_NAME_LABEL}
+                        orientation={orientation}
                         placeholder="No Data"
                         onBlur={onBlur}
                         onChange={onChange}
@@ -76,7 +82,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of adults in residence"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
@@ -94,7 +100,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of children in residence"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
@@ -111,7 +117,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Primary occupation"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -127,7 +133,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Highest level of education"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -143,7 +149,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Primary language"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -159,7 +165,7 @@ export const GeneralInformationEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Speaks English"
-                        orientation="horizontal"
+                        orientation={orientation}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -173,11 +179,11 @@ export const GeneralInformationEntryFields = () => {
                 <Controller
                     control={control}
                     name="general.stateHIVCase"
-                    rules={maxLengthRule(20)}
+                    rules={maxLengthRule(20, STATE_HIV_CASE_LABEL)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <Input
-                            label="State HIV case ID"
-                            orientation="horizontal"
+                            label={STATE_HIV_CASE_LABEL}
+                            orientation={orientation}
                             placeholder="No Data"
                             onBlur={onBlur}
                             onChange={onChange}
