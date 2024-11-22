@@ -3,10 +3,13 @@ import { AdministrativeEntry } from '../entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
+import { EntryFieldsProps } from 'design-system/entry';
 
-const AS_OF_DATE_LABEL = 'Information as of date';
+const AS_OF_DATE_LABEL = 'Information as of';
 
-export const AdministrativeEntryFields = () => {
+type AdministrativeEntryFieldsProps = EntryFieldsProps;
+
+export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: AdministrativeEntryFieldsProps) => {
     const { control } = useFormContext<{ administrative: AdministrativeEntry }>();
 
     return (
@@ -23,6 +26,7 @@ export const AdministrativeEntryFields = () => {
                         onBlur={onBlur}
                         onChange={onChange}
                         name={name}
+                        orientation={orientation}
                         error={error?.message}
                         required
                     />
@@ -31,14 +35,12 @@ export const AdministrativeEntryFields = () => {
             <Controller
                 control={control}
                 name="administrative.comment"
-                rules={{
-                    ...maxLengthRule(2000)
-                }}
+                rules={maxLengthRule(2000)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="General comments"
                         type="text"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
