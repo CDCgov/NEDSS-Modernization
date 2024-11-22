@@ -32,3 +32,21 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Check details displayed for "General Information"
     Then Check details displayed for "Name Information"
 
+  Scenario: Investigation page view tabs
+    Then Click on view icon to display the page details on classic
+    Then Check "Patient" tab displayed in investigation page details
+    Then Check "Case Info" tab displayed in investigation page details
+    Then Check "Contact Tracing" tab displayed in investigation page details
+    Then Check "Contact Records" tab displayed in investigation page details
+    Then Check "Supplemental Info" tab displayed in investigation page details
+
+
+  Scenario: Investigation page clone page
+    Then Click on view icon to display the page details on classic
+    Then Click on Page Details button on investigation page view
+    Then Click on Clone Page button on investigation page details view
+    Then Select Message Mapping Guide from dropdown on add new classic page
+    Then Enter Page name on add new classic page
+    Then Add Related Conditions on details page classic page
+    Then Click on Submit button in clone page on add new classic page
+

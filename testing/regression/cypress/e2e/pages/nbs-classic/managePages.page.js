@@ -7,7 +7,11 @@ class ClassicManagePagesPage {
   }
 
   clickAddNewBtn() {
-    cy.get('input[type="button"][value="Add New"]').eq(0).click()
+    cy.get('body').then(($body) => {
+        if($body.find('input[type="button"][value="Add New"]').length > 0) {
+            cy.get('input[type="button"][value="Add New"]').eq(0).click()
+        }
+    })
   }
 
   selectPageType(pageType) {
@@ -49,6 +53,57 @@ class ClassicManagePagesPage {
 
   checkDisplayed(text) {
     cy.contains(text)
+  }
+
+  clickPageDetailsBtn () {
+    cy.get('input[type="button"][name="Page Details"]').eq(0).click()
+  }
+
+  clickClonePageBtn () {
+    cy.get('input[type="button"][name="Clone Page"]').eq(0).click()
+  }
+
+  addRelatedConditions () {
+    cy.get('[name="conditionCodes"]').select(1)
+    cy.get('input[type="button"][value="Add >"]').eq(0).click()
+  }
+
+  clickSubmitBtn2 () {
+    cy.get('input[type="button"][name="Submit"]').eq(0).click()
+  }
+
+  clickEditBtn () {
+    cy.get('input[type="button"][name="Edit"]').eq(0).click()
+  }
+
+  enterDescription () {
+    cy.get('textarea[name="selection.waTemplateDT.descTxt"]')
+      .eq(0)
+      .clear()
+      .type('description edited')
+  }
+
+  clickPageRulesBtn () {
+    cy.get('input[type="button"][name="Page Rules"]').eq(0).click()
+  }
+
+  selectFunction () {
+    cy.get('#function').eq(0).select(1, { force: true })
+    cy.get('input[name="function_textbox"]').eq(0).click()
+  }
+
+  selectSource () {
+    cy.get('#sourceDC').eq(0).select(1, { force: true })
+    cy.get('input[name="sourceDC_textbox"]').eq(0).click()
+  }
+
+  selectLogic () {
+    cy.get('#logicDC').eq(0).select(1, { force: true })
+    cy.get('input[name="logicDC_textbox"]').eq(0).click()
+  }
+
+  selectTarget () {
+    cy.get('#targetDC').select(2)
   }
 }
 export default new ClassicManagePagesPage();

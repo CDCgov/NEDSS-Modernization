@@ -1,5 +1,5 @@
 @use 'styles/borders';
-@use 'styles/colors';
+@use 'styles/components';
 
 .horizontalInput {
     display: flex;
@@ -14,15 +14,12 @@
     }
 
     label {
-        color: colors.$base-darkest;
-        font-size: 0.875rem;
+        font-size: 0.875rem !important;
         font-weight: 700;
     }
 
     .helptext {
-        margin-top: -0.5rem;
-        font-size: 0.8rem;
-        color: colors.$base;
+        @include components.hint();
     }
 
     .right {

@@ -22,7 +22,7 @@ type DatePickerProps = {
     label?: string;
     minDate?: string;
     maxDate?: string;
-    value?: string;
+    value?: string | null;
     onChange?: (value?: string) => void;
     onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
@@ -99,7 +99,7 @@ const DatePicker = ({ id, label, maxDate, minDate, value, onChange, onBlur, ...r
             data-default-value={date}
             data-max-date={adjustedMaxValue}
             data-min-date={adjustedMinValue}>
-            <input id={id} className="usa-input" type="text" defaultValue={current} {...remaining} />
+            <input autoComplete="off" id={id} className="usa-input" type="text" defaultValue={current} {...remaining} />
         </div>
     );
 };

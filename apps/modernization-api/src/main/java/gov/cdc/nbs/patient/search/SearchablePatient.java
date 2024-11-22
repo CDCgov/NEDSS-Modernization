@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonDeserializer;
 import gov.cdc.nbs.search.LocalDateWithTimeJsonSerializer;
+import gov.cdc.nbs.search.WithoutHyphensJsonSerializer;
 import gov.cdc.nbs.search.WithoutSpecialCharactersJsonSerializer;
 
 import java.time.LocalDate;
@@ -89,7 +90,7 @@ public record SearchablePatient(@JsonProperty("person_uid") long identifier, @Js
       @JsonProperty("firstNmSndx") String firstSoundex,
       @JsonProperty("middleNm") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
           as = String.class) String middle,
-      @JsonProperty("lastNm") @JsonSerialize(using = WithoutSpecialCharactersJsonSerializer.class,
+      @JsonProperty("lastNm") @JsonSerialize(using = WithoutHyphensJsonSerializer.class,
           as = String.class) String last,
       @JsonProperty("lastNmSndx") String lastSoundex,
       @JsonProperty("nmPrefix") String prefix,
