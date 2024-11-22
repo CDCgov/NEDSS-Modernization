@@ -1,11 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { AdministrativeEntry } from '../entry';
+import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 
 const AS_OF_DATE_LABEL = 'Information as of';
+const COMMENTS_LABEL = 'General comments';
 
 type AdministrativeEntryFieldsProps = EntryFieldsProps;
 
@@ -35,10 +36,10 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
             <Controller
                 control={control}
                 name="administrative.comment"
-                rules={maxLengthRule(2000)}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="General comments"
+                        label={COMMENTS_LABEL}
                         type="text"
                         orientation={orientation}
                         onBlur={onBlur}
