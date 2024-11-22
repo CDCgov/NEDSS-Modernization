@@ -115,6 +115,7 @@ const InternalDatePicker = ({
     };
 
     //  In order for the defaultValue to be applied the component has to be re-created when it goes from null to non null.
+    //  This also seems to be the case for when the defaultValue is reset without going to null first.
     return (
         <div>
             {!trackedDefaultValue ? (
