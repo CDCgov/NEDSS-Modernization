@@ -28,7 +28,13 @@ const SearchTerms = ({ total, terms }: Props) => {
             <div className={styles.term}>
                 <h2>{total} results for:</h2>
                 {terms.map((term, index) => (
-                    <Chip key={index} name={term.title} value={term.name} handleClose={() => without(term)} />
+                    <Chip
+                        key={index}
+                        name={term.title}
+                        value={term.name}
+                        operator={term.operator}
+                        handleClose={() => without(term)}
+                    />
                 ))}
             </div>
         </div>
