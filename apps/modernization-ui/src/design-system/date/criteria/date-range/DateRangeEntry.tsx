@@ -27,16 +27,9 @@ export const DateRangeEntry = ({ id, value, onChange, onBlur }: DateRangeEntryPr
         onChange(rangeEntry as DateBetweenCriteria);
     }, [rangeEntry, onChange]);
 
-    useEffect(() => {
-        const fromPickerElement = document.querySelectorAll('.usa-date-picker__calendar')?.[0] as HTMLElement;
-        if (fromPickerElement) {
-            fromPickerElement.style.left = '0';
-        }
-    }, []);
-
     return (
         <div id={id} aria-label="patient-search-date-range" className={styles['date-range-entry']}>
-            <div className={classNames(styles['range-wrapper'])}>
+            <div className={classNames(styles['range-wrapper'], 'from')}>
                 <label htmlFor={'from'}>From</label>
                 <DatePicker
                     onBlur={onBlur}

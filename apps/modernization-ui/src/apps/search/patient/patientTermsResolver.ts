@@ -28,9 +28,9 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
 
     if (entry.bornOn) {
         if ('equals' in entry.bornOn && Object.keys(entry.bornOn.equals).length > 0) {
-            terms.push(fromDateEqualsCriteria('bornOn', 'DOB Equal')(entry.bornOn));
+            terms.push(fromDateEqualsCriteria('bornOn', 'DOB')(entry.bornOn));
         } else if ('between' in entry.bornOn && Object.keys(entry.bornOn.between).length > 0) {
-            terms.push(fromDateBetweenCriteria('bornOn', 'DOB Between')(entry.bornOn));
+            terms.push(fromDateBetweenCriteria('bornOn', 'DOB')(entry.bornOn));
         }
     }
 
