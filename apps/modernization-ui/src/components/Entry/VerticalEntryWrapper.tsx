@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { ErrorMessage, Label } from '@trussworks/react-uswds';
-import styles from './entry-wrapper.module.scss';
+import { ErrorMessage } from '@trussworks/react-uswds';
+
+import styles from './vertical-entry-wrapper.module.scss';
 
 type Props = {
     className?: string;
@@ -14,11 +15,11 @@ type Props = {
 };
 
 const VerticalEntryWrapper = ({ className, htmlFor, label, helperText, required, error, children }: Props) => (
-    <span className={className}>
+    <span className={classNames(styles.entry, className)}>
         {label && (
-            <Label className={classNames({ required })} htmlFor={htmlFor}>
+            <label className={classNames({ required })} htmlFor={htmlFor}>
                 {label}
-            </Label>
+            </label>
         )}
         {helperText && (
             <span id={`${htmlFor}-hint`} className={styles.helptext}>

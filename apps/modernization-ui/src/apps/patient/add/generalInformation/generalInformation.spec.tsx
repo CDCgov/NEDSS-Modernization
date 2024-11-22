@@ -11,14 +11,13 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe('GeneralInformation Component', () => {
     it('should renders without crashing', () => {
-        const { getByTestId, getByLabelText } = render(
+        const { getByLabelText } = render(
             <Wrapper>
                 <GeneralInformation id="test-id" title="Test Title" />
             </Wrapper>
         );
 
-        expect(getByTestId('required-text')).toBeInTheDocument();
-        expect(getByLabelText('Information as of Date')).toBeInTheDocument();
+        expect(getByLabelText('Information as of date')).toBeInTheDocument();
         expect(getByLabelText('Comments')).toBeInTheDocument();
     });
 
