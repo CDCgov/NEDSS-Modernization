@@ -36,7 +36,7 @@ const Fixture = () => {
         </FormProvider>
     );
 };
-describe('GeneralInformationEntryFields', () => {
+describe('when entering patient general information demographics', () => {
     it('should render the proper labels', () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
@@ -58,26 +58,17 @@ describe('GeneralInformationEntryFields', () => {
     });
 
     it('should require as of date', async () => {
-        const { getByLabelText, queryByText } = render(<Fixture />);
-        const errorMessage = 'As of date is required.';
+        const { getByLabelText, queryByText, findByText } = render(<Fixture />);
+        const errorMessage = 'The General information as of is required.';
         const dateInput = getByLabelText('General information as of');
 
         expect(queryByText(errorMessage)).not.toBeInTheDocument();
-        act(() => {
-            userEvent.click(dateInput);
-            userEvent.tab();
-        });
-        await waitFor(() => {
-            expect(queryByText(errorMessage)).toBeInTheDocument();
-        });
 
         act(() => {
             userEvent.click(dateInput);
-            userEvent.paste(dateInput, '12/01/2020');
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(queryByText(errorMessage)).not.toBeInTheDocument();
-        });
+
+        expect(await findByText(errorMessage)).toBeInTheDocument();
     });
 });

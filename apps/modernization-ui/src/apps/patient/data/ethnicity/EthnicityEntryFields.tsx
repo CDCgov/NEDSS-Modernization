@@ -1,14 +1,20 @@
-import { usePatientEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
-import { MultiSelect, SingleSelect } from 'design-system/select';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { DatePickerInput, validDateRule } from 'design-system/date';
+import { MultiSelect, SingleSelect } from 'design-system/select';
+import { EntryFieldsProps } from 'design-system/entry';
+import { validateRequiredRule } from 'validation/entry';
+import { usePatientEthnicityCodedValues } from 'apps/patient/profile/ethnicity';
 import { EthnicityEntry } from './entry';
 
 const UNKNOWN = 'UNK';
 const HISPANIC = '2135-2';
 
-export const EthnicityEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Ethnicity information as of';
+
+type EthnicityEntryFieldsProps = EntryFieldsProps;
+
+export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEntryFieldsProps) => {
     const { control, setValue } = useFormContext<{ ethnicity: EthnicityEntry }>();
     const coded = usePatientEthnicityCodedValues();
     const selectedEthnicity = useWatch({ control, name: 'ethnicity.ethnicGroup' });
@@ -23,17 +29,16 @@ export const EthnicityEntryFields = () => {
             <Controller
                 control={control}
                 name="ethnicity.asOf"
-                rules={{ required: { value: true, message: 'As of date is required.' } }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
+                        id={name}
                         label="Ethnicity information as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        orientation={orientation}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={name}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
                     />
                 )}
@@ -44,7 +49,7 @@ export const EthnicityEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Ethnicity"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
@@ -63,7 +68,7 @@ export const EthnicityEntryFields = () => {
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <MultiSelect
                             label="Spanish origin"
-                            orientation="horizontal"
+                            orientation={orientation}
                             onChange={onChange}
                             onBlur={onBlur}
                             id={name}
@@ -82,7 +87,7 @@ export const EthnicityEntryFields = () => {
                     render={({ field: { onChange, onBlur, value, name } }) => (
                         <SingleSelect
                             label="Reason unknown"
-                            orientation="horizontal"
+                            orientation={orientation}
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
