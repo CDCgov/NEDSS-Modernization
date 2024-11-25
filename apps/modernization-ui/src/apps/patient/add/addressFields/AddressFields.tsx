@@ -122,11 +122,10 @@ export default function AddressFields({ id, title, coded }: Props) {
                             name="zip"
                             rules={{
                                 pattern: {
-                                    value: /[\d]{5}(-[\d]{4})?/,
+                                    value: /^\d{5}(?:[-\s]\d{4})?$/,
                                     message:
                                         'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
-                                },
-                                ...maxLengthRule(20)
+                                }
                             }}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
@@ -139,6 +138,9 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     error={error?.message}
                                     onBlur={onBlur}
                                     onChange={onChange}
+                                    orientation={'vertical'}
+                                    mask="_____-____"
+                                    pattern="^\d{5}(?:[-\s]\d{4})?$"
                                 />
                             )}
                         />
