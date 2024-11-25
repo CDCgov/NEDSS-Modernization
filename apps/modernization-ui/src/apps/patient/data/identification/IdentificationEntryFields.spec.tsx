@@ -32,10 +32,9 @@ const Fixture = () => {
     );
 };
 
-describe('IdentificationEntryFields', () => {
+describe('when entering patient identification demographics', () => {
     it('should render the proper labels', async () => {
-        const { getByLabelText, findByText } = render(<Fixture />);
-        await findByText('ID value');
+        const { getByLabelText } = render(<Fixture />);
 
         expect(getByLabelText('Identification as of')).toBeInTheDocument();
         expect(getByLabelText('Type')).toBeInTheDocument();
@@ -44,22 +43,19 @@ describe('IdentificationEntryFields', () => {
     });
 
     it('should require as of', async () => {
-        const { getByLabelText, getByText, findByText } = render(<Fixture />);
-        await findByText('ID value');
+        const { getByLabelText, findByText } = render(<Fixture />);
 
         const asOf = getByLabelText('Identification as of');
         act(() => {
             userEvent.click(asOf);
             userEvent.tab();
         });
-        await waitFor(() => {
-            expect(getByText('The As of date is required')).toBeInTheDocument();
-        });
+
+        expect(await findByText('The Identification as of is required.')).toBeInTheDocument();
     });
 
     it('should require type', async () => {
         const { getByLabelText, getByText, findByText } = render(<Fixture />);
-        await findByText('ID value');
 
         const typeInput = getByLabelText('Type');
         act(() => {
@@ -67,7 +63,7 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The Type is required')).toBeInTheDocument();
+            expect(getByText('The Type is required.')).toBeInTheDocument();
         });
     });
 
@@ -81,7 +77,7 @@ describe('IdentificationEntryFields', () => {
             userEvent.tab();
         });
         await waitFor(() => {
-            expect(getByText('The ID value is required')).toBeInTheDocument();
+            expect(getByText('The ID value is required.')).toBeInTheDocument();
         });
     });
 
@@ -103,9 +99,9 @@ describe('IdentificationEntryFields', () => {
         });
 
         await waitFor(() => {
-            expect(queryByText('The Type is required')).not.toBeInTheDocument();
-            expect(queryByText('The As of date is required')).not.toBeInTheDocument();
-            expect(queryByText('The ID value is required')).not.toBeInTheDocument();
+            expect(queryByText('The Type is required.')).not.toBeInTheDocument();
+            expect(queryByText('The Identification as of is required.')).not.toBeInTheDocument();
+            expect(queryByText('The ID value is required.')).not.toBeInTheDocument();
         });
     });
 });

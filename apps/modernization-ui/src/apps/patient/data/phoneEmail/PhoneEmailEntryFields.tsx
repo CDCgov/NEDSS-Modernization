@@ -1,13 +1,21 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
-import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
-import { Controller, useFormContext } from 'react-hook-form';
 import { maxLengthRule, validateRequiredRule, validEmailRule } from 'validation/entry';
 import { validatePhoneNumber } from 'validation/phone';
-import { PhoneEmailEntry } from '../entry';
+import { PhoneEmailEntry } from 'apps/patient/data/entry';
+import { EntryFieldsProps } from 'design-system/entry';
 
-export const PhoneEmailEntryFields = () => {
+const AS_OF_DATE_LABEL = 'Phone & email as of';
+const TYPE_LABEL = 'Type';
+const USE_LABEL = 'Use';
+const COMMENTS_LABEL = 'Phone & email comments';
+
+type PhoneEmailEntryFieldsProps = EntryFieldsProps;
+
+export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmailEntryFieldsProps) => {
     const { control } = useFormContext<PhoneEmailEntry>();
     const coded = usePatientPhoneCodedValues();
 
@@ -16,17 +24,16 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="asOf"
-                rules={{ ...validateRequiredRule('As of date') }}
+                rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Phone & email as of"
-                        orientation="horizontal"
-                        defaultValue={value}
+                        id={`phone-${name}`}
+                        label={AS_OF_DATE_LABEL}
+                        orientation={orientation}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        name={`phone-${name}`}
-                        disableFutureDates
-                        errorMessage={error?.message}
+                        error={error?.message}
                         required
                     />
                 )}
@@ -34,11 +41,11 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="type"
-                rules={{ ...validateRequiredRule('Type') }}
+                rules={{ ...validateRequiredRule(TYPE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Type"
-                        orientation="horizontal"
+                        label={TYPE_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
@@ -53,11 +60,11 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="use"
-                rules={{ ...validateRequiredRule('Use') }}
+                rules={{ ...validateRequiredRule(USE_LABEL) }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <SingleSelect
-                        label="Use"
-                        orientation="horizontal"
+                        label={USE_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
@@ -82,7 +89,7 @@ export const PhoneEmailEntryFields = () => {
                     return (
                         <Input
                             label="Country code"
-                            orientation="horizontal"
+                            orientation={orientation}
                             onChange={onChange}
                             onBlur={onBlur}
                             defaultValue={value}
@@ -108,7 +115,7 @@ export const PhoneEmailEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Phone number"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -137,7 +144,7 @@ export const PhoneEmailEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Extension"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -161,7 +168,7 @@ export const PhoneEmailEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Email"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -180,7 +187,7 @@ export const PhoneEmailEntryFields = () => {
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="URL"
-                        orientation="horizontal"
+                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
                         defaultValue={value}
@@ -195,11 +202,11 @@ export const PhoneEmailEntryFields = () => {
             <Controller
                 control={control}
                 name="comment"
-                rules={maxLengthRule(2000, 'Phone & email comments')}
+                rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="Phone & email comments"
-                        orientation="horizontal"
+                        label={COMMENTS_LABEL}
+                        orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
                         defaultValue={value}

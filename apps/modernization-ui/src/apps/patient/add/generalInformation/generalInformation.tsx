@@ -1,6 +1,6 @@
 import { Grid } from '@trussworks/react-uswds';
 import { Controller, useFormContext } from 'react-hook-form';
-import { DatePickerInput } from 'design-system/date';
+import { DatePickerInput, validDateRule } from 'design-system/date';
 import { Input } from 'components/FormInputs/Input';
 import FormCard from 'components/FormCard/FormCard';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
@@ -20,7 +20,7 @@ export default function GeneralInformation({ id, title }: { id?: string; title?:
                         <Controller
                             control={control}
                             name="asOf"
-                            rules={validateRequiredRule(AS_OF_DATE_LABEL)}
+                            rules={{ ...validDateRule(AS_OF_DATE_LABEL), ...validateRequiredRule(AS_OF_DATE_LABEL) }}
                             render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                                 <DatePickerInput
                                     id={name}
