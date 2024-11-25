@@ -1,6 +1,7 @@
 import { FieldValues, Path, PathValue, UseFormReturn } from 'react-hook-form';
 import { Term } from './terms';
 import { selectField } from 'utils/util';
+import { removeAndTrim } from 'utils';
 
 const isSelectableNotMatching = (value: string) => (item: any) => 'value' in item && item.value !== value;
 
@@ -21,8 +22,8 @@ const removeTerm =
             const adjusted = value.filter(doesNotEqual(term.value));
             form.setValue(key, adjusted);
         } else if (term.partial && typeof value === 'string') {
-            // extract and remove term from string: "123, 456" -> remove 123 -> ", 456"
-            const adjusted = (value as string).replace(term.value, '');
+            // extract and remove term from string: "123, 456" -> remove 123 and surrounding delimiters -> "456"
+            const adjusted = removeAndTrim(value as string, term.value);
             form.setValue(key, adjusted as PathValue<C, Path<C>>);
         } else {
             form.resetField(key);

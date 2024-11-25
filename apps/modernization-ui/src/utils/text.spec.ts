@@ -1,4 +1,4 @@
-import { splitStringByCommonDelimiters } from './text';
+import { splitStringByCommonDelimiters, trimCommonDelimiters } from './text';
 
 describe('splitStringByCommonDelimiters', () => {
     it('should split a string by commas', () => {
@@ -34,5 +34,22 @@ describe('splitStringByCommonDelimiters', () => {
     it('should handle string with only delimiters', () => {
         const result = splitStringByCommonDelimiters(', ; ');
         expect(result).toHaveLength(0);
+    });
+});
+
+describe('trimCommonDelimiters', () => {
+    it('should remove leading and trailing common delimiters', () => {
+        const result = trimCommonDelimiters(',; a, b; c; ');
+        expect(result).toEqual('a, b; c');
+    });
+
+    it('should handle empty string', () => {
+        const result = trimCommonDelimiters('');
+        expect(result).toEqual('');
+    });
+
+    it('should handle string with only delimiters', () => {
+        const result = trimCommonDelimiters(', ; ');
+        expect(result).toEqual('');
     });
 });

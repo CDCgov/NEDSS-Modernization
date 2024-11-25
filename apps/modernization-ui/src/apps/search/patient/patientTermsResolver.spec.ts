@@ -262,6 +262,23 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
             ])
         );
     });
+
+    it('should resolve multiple terms with patient id', () => {
+        const input: PatientCriteriaEntry = {
+            id: '123,456; 789',
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                { source: 'id', title: 'PATIENT ID', name: '123', value: '123', partial: true },
+                { source: 'id', title: 'PATIENT ID', name: '456', value: '456', partial: true },
+                { source: 'id', title: 'PATIENT ID', name: '789', value: '789', partial: true }
+            ])
+        );
+    });
 });
 
 describe('when the PatientCriteria contains Address criteria', () => {
@@ -353,7 +370,6 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                // eslint-disable-next-line prettier/prettier
                 { source: 'location.city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Not equal' }
             ])
         );
@@ -369,7 +385,6 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                // eslint-disable-next-line prettier/prettier
                 { source: 'location.city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Contains' }
             ])
         );

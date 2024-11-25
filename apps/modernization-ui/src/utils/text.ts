@@ -13,3 +13,24 @@ export function splitStringByCommonDelimiters(text: string): string[] {
             .filter((s) => s.length > 0) ?? []
     );
 }
+
+/**
+ * Trim common delimiters from the beginning and end of a string.
+ * @param {string} text The text to trim
+ * @return {string} the updated string
+ */
+export function trimCommonDelimiters(text: string): string {
+    // remove any common delimiters at beginning or end of string
+    return text?.replace(new RegExp(`^[${COMMON_DELIMITERS.join('')}]+|[${COMMON_DELIMITERS.join('')}]+$`, 'g'), '');
+}
+
+/**
+ * Remove the specified value from a string and trim common delimiters.
+ * @param {string} text The text to trim
+ * @param {string} value The value to remove
+ * @return {string} the updated string
+ */
+export function removeAndTrim(text: string, value: string) {
+    if (!text) return '';
+    return trimCommonDelimiters(text.replace(value, ''));
+}
