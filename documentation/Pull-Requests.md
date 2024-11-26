@@ -29,4 +29,5 @@ When a pull request is marked as `ready for review` and you are marked as a revi
 
 If changes are requested, be precise and provide explanation.
 
+
 Once the pull request has been reviewed and approved. The `creator` of the pull request should be responsible for `squashing and merging` the pull request.
