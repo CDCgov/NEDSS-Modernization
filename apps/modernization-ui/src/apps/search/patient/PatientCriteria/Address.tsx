@@ -67,7 +67,8 @@ export const Address = () => {
                     rules={{
                         pattern: {
                             value: /^\d{1,5}(?:[-\s]\d{1,4})?$/,
-                            message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                            message:
+                                'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
                         }
                     }}
                     render={({ field: { onBlur, onChange, name, value }, fieldState: { error } }) => (
