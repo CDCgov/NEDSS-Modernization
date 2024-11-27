@@ -4,6 +4,7 @@ type Term = {
     name: string;
     value: string;
     operator?: string;
+    partial?: boolean;
 };
 
 export type { Term };

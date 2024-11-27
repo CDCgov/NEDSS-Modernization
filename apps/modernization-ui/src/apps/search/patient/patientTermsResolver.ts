@@ -1,13 +1,13 @@
 import { Term, fromDateBetweenCriteria, fromDateEqualsCriteria, fromSelectable, fromValue } from 'apps/search/terms';
 import { PatientCriteriaEntry } from './criteria';
 import { asTextCriteriaValue, TextCriteria, asTextCriteriaOperator } from 'options/operator';
+import { splitStringByCommonDelimiters } from 'utils';
 
 const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     const terms: Term[] = [];
 
     const pushCriteria = (source: string, title: string, value?: TextCriteria) => {
-        // note: we will eventually want to use asTextCriteria here and get the operator i.e. "contains"
-        // to populate the operator field in the term
+        // get the operator i.e. "contains" to populate the operator field in the term
         const stringValue = asTextCriteriaValue(value);
         const operator = asTextCriteriaOperator(value);
         if (stringValue) {
@@ -19,12 +19,17 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         }
     };
 
+    const pushPatientIDs = (source: string, title: string, value: string) => {
+        // push multiple terms if the value contains common delimiters
+        terms.push(...splitStringByCommonDelimiters(value).map((id) => fromValue(source, title)(id, undefined, true)));
+    };
+
     if (entry.name?.last) {
-        pushCriteria('lastName', 'LAST NAME', entry.name.last);
+        pushCriteria('name.last', 'LAST NAME', entry.name.last);
     }
 
     if (entry.name?.first) {
-        pushCriteria('firstName', 'FIRST NAME', entry.name.first);
+        pushCriteria('name.first', 'FIRST NAME', entry.name.first);
     }
 
     if (entry.dateOfBirth) {
@@ -44,15 +49,15 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
     }
 
     if (entry.id) {
-        terms.push(fromValue('id', 'PATIENT ID')(entry.id));
+        pushPatientIDs('id', 'PATIENT ID', entry.id);
     }
 
     if (entry.location?.street) {
-        pushCriteria('address', 'STREET ADDRESS', entry.location?.street);
+        pushCriteria('location.street', 'STREET ADDRESS', entry.location?.street);
     }
 
     if (entry.location?.city) {
-        pushCriteria('city', 'CITY', entry.location?.city);
+        pushCriteria('location.city', 'CITY', entry.location?.city);
     }
 
     if (entry.state) {

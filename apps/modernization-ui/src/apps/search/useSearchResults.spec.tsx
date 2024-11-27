@@ -74,7 +74,7 @@ const setup = (props?: Partial<SearchResultSettings<Criteria, APIParameters, Res
     const defaultTransformer = (criteria: Criteria) => ({ search: criteria.name });
     const defaultResultResolver = () => Promise.resolve({ total: 0, content: [], page: 0, size: 7 });
     const defaultTermResolver = () => [
-        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-vlaue' }
+        { source: 'default-source', title: 'title-value', name: 'name-value', value: 'value-value', partial: false }
     ];
     //
     const transformer = props?.transformer ?? defaultTransformer;
@@ -176,7 +176,9 @@ describe('when searching using useSearchResults', () => {
     it('should change the criteria when searching', async () => {
         const transformer = jest.fn(() => ({ search: 'name-value' }));
 
-        const terms = [{ source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock' }];
+        const terms = [
+            { source: 'mock-source', title: 'Mocked Title', name: 'Mocked Name', value: 'mock', partial: false }
+        ];
 
         const termResolver = jest.fn(() => terms);
 
