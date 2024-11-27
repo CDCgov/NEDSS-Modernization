@@ -5,7 +5,7 @@ import { Deceased } from 'generated/graphql/schema';
 import { CodedValue } from 'coded';
 import FormCard from 'components/FormCard/FormCard';
 import { DatePickerInput } from 'design-system/date';
-import { calculateAge } from 'date';
+import { displayAgeAsOfToday } from 'date';
 import { Input } from 'components/FormInputs/Input';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { maxLengthRule } from 'validation/entry';
@@ -25,7 +25,7 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
     const selectedDeceased = useWatch({ control, name: 'deceased' });
 
     const currentBirthday = useWatch({ control, name: 'dateOfBirth' });
-    const age = useMemo(() => calculateAge(currentBirthday), [currentBirthday]);
+    const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
 
     return (
         <FormCard id={id} title={title}>
