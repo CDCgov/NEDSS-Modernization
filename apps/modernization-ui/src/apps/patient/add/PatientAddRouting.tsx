@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 import { AddPatientBasic } from './basic/AddPatientBasic';
 
-const PatientDataProviderWrapper = () => (
+export const PatientDataProviderWrapper = () => (
     <BasicExtendedTransitionProvider>
         <Outlet />
     </BasicExtendedTransitionProvider>
