@@ -124,6 +124,8 @@ export default function ContactFields({ id, title }: Props) {
                                     defaultValue={value}
                                     htmlFor={name}
                                     id={name}
+                                    mask="________"
+                                    pattern="^\+?\d{1,8}$"
                                     error={error?.message}
                                 />
                             )}
