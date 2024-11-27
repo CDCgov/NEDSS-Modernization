@@ -85,6 +85,7 @@ export const BasicInformation = () => {
                         defaultValue={value}
                         type="text"
                         label="Patient ID"
+                        helperText="Separate IDs by commas, semicolons, or spaces"
                         name={name}
                         htmlFor={name}
                         id={name}

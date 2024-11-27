@@ -36,7 +36,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'lastName',
+                    source: 'name.last',
                     title: 'LAST NAME',
                     name: 'last-name-value',
                     value: 'last-name-value',
@@ -57,7 +57,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'lastName',
+                    source: 'name.last',
                     title: 'LAST NAME',
                     name: 'last-name-value',
                     value: 'last-name-value',
@@ -78,7 +78,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'lastName',
+                    source: 'name.last',
                     title: 'LAST NAME',
                     name: 'last-name-value',
                     value: 'last-name-value',
@@ -99,7 +99,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'lastName',
+                    source: 'name.last',
                     title: 'LAST NAME',
                     name: 'last-name-value',
                     value: 'last-name-value',
@@ -120,7 +120,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'lastName',
+                    source: 'name.last',
                     title: 'LAST NAME',
                     name: 'last-name-value',
                     value: 'last-name-value',
@@ -141,7 +141,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'firstName',
+                    source: 'name.first',
                     title: 'FIRST NAME',
                     name: 'first-name-value',
                     value: 'first-name-value',
@@ -162,7 +162,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'firstName',
+                    source: 'name.first',
                     title: 'FIRST NAME',
                     name: 'first-name-value',
                     value: 'first-name-value',
@@ -183,7 +183,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'firstName',
+                    source: 'name.first',
                     title: 'FIRST NAME',
                     name: 'first-name-value',
                     value: 'first-name-value',
@@ -204,7 +204,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'firstName',
+                    source: 'name.first',
                     title: 'FIRST NAME',
                     name: 'first-name-value',
                     value: 'first-name-value',
@@ -225,7 +225,7 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'firstName',
+                    source: 'name.first',
                     title: 'FIRST NAME',
                     name: 'first-name-value',
                     value: 'first-name-value',
@@ -257,7 +257,26 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         const actual = patientTermsResolver(input);
 
         expect(actual).toEqual(
-            expect.arrayContaining([{ source: 'id', title: 'PATIENT ID', name: 'id-value', value: 'id-value' }])
+            expect.arrayContaining([
+                { source: 'id', title: 'PATIENT ID', name: 'id-value', value: 'id-value', partial: true }
+            ])
+        );
+    });
+
+    it('should resolve multiple terms with patient id', () => {
+        const input: PatientCriteriaEntry = {
+            id: '123,456; 789',
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                { source: 'id', title: 'PATIENT ID', name: '123', value: '123', partial: true },
+                { source: 'id', title: 'PATIENT ID', name: '456', value: '456', partial: true },
+                { source: 'id', title: 'PATIENT ID', name: '789', value: '789', partial: true }
+            ])
         );
     });
 });
@@ -274,7 +293,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'address',
+                    source: 'location.street',
                     title: 'STREET ADDRESS',
                     name: 'address-value',
                     value: 'address-value',
@@ -295,7 +314,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'address',
+                    source: 'location.street',
                     title: 'STREET ADDRESS',
                     name: 'address-value',
                     value: 'address-value',
@@ -316,7 +335,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
         expect(actual).toEqual(
             expect.arrayContaining([
                 {
-                    source: 'address',
+                    source: 'location.street',
                     title: 'STREET ADDRESS',
                     name: 'address-value',
                     value: 'address-value',
@@ -336,7 +355,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Equals' }
+                { source: 'location.city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Equals' }
             ])
         );
     });
@@ -351,7 +370,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Not equal' }
+                { source: 'location.city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Not equal' }
             ])
         );
     });
@@ -366,7 +385,7 @@ describe('when the PatientCriteria contains Address criteria', () => {
 
         expect(actual).toEqual(
             expect.arrayContaining([
-                { source: 'city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Contains' }
+                { source: 'location.city', title: 'CITY', name: 'city-value', value: 'city-value', operator: 'Contains' }
             ])
         );
     });
