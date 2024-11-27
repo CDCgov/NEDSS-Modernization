@@ -68,7 +68,7 @@ RUN C:\task-scheduler.ps1
 COPY entrypoint.ps1 entrypoint.ps1
 
 # Expose necessary ports
-# EXPOSE 7001
+EXPOSE 7001
 
 # ContainerUser used for running NBS6, following best practacies
 # USER ContainerUser
