@@ -267,7 +267,10 @@ const AddPatient = () => {
                                         outline>
                                         Cancel
                                     </Button>
-                                    <Button className="add-patient-button" type={'submit'}>
+                                    <Button
+                                        className="add-patient-button"
+                                        type={'button'}
+                                        onClick={handleSubmit(evaluateMissingFields)}>
                                         Save changes
                                     </Button>
                                 </div>
