@@ -109,8 +109,9 @@ class PatientDemographicQueryResolver {
         } else {
           localIds.add(shortOrLongIdStrippedId);
         }
-        applyLocalIds(localIds);
       });
+
+      return applyLocalIds(localIds);
     }
 
     return Optional.empty();
