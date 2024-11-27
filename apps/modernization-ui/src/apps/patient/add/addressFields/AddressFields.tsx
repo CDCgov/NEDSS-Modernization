@@ -124,7 +124,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                 pattern: {
                                     value: /^\d{5}(?:[-\s]\d{4})?$/,
                                     message:
-                                        'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                                        'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
                                 }
                             }}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (

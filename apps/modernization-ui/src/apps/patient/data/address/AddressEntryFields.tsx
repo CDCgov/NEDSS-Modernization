@@ -180,7 +180,8 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                 rules={{
                     pattern: {
                         value: /^\d{5}(?:[-\s]\d{4})?$/,
-                        message: 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).'
+                        message:
+                            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
                     }
                 }}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
