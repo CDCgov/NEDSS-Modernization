@@ -13,11 +13,10 @@ public class TextCriteriaNestedQueryResolver {
             should -> should.nested(
                 nested -> nested.path(path)
                     .query(
-                        query -> query.queryString(
-                            simple -> simple.fields(name)
-                                .query(value)
-                                .defaultOperator(Operator.And)
-                                .quoteFieldSuffix(".exact"))))));
+                        query -> query.term(
+                            term -> term.field(name + ".keyword")
+                                .value(value)
+                                .caseInsensitive(true))))));
   }
 
   public static BoolQuery notEquals(final String path, final String name, final String value) {
