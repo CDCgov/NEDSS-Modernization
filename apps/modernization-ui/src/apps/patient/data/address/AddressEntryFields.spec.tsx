@@ -184,7 +184,8 @@ describe('when entering patient address demographics', () => {
         userEvent.paste(zipCodeInput, value);
         userEvent.tab();
 
-        const validationMessage = 'Please enter a valid ZIP code (XXXXX) using only numeric characters (0-9).';
+        const validationMessage =
+            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
