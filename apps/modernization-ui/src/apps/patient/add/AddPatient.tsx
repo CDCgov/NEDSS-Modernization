@@ -26,6 +26,7 @@ import { PatientCreatedPanel } from './PatientCreatedPanel';
 
 import './AddPatient.scss';
 import { CreatedPatient } from './api';
+import { useNavigate } from 'react-router-dom';
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
 //      1.  Check Missing Fields
@@ -143,6 +144,12 @@ const AddPatient = () => {
         });
     };
 
+    const navigate = useNavigate();
+
+    const handleCancel = () => {
+        navigate(-1);
+    };
+
     useEffect(() => {
         //  controls the modal visibility
         const shown =
@@ -253,6 +260,13 @@ const AddPatient = () => {
                                             Add extended data
                                         </Button>
                                     )}
+                                    <Button
+                                        className="add-patient-button"
+                                        onClick={handleCancel}
+                                        type={'button'}
+                                        outline>
+                                        Cancel
+                                    </Button>
                                     <Button
                                         className="add-patient-button"
                                         type={'button'}
