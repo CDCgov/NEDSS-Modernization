@@ -50,3 +50,9 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Add Related Conditions on details page classic page
     Then Click on Submit button in clone page on add new classic page
 
+  Scenario: Investigation page details edit
+    Then Click on view icon to display the page details on classic
+    Then Click on Page Details button on investigation page view
+    Then Click on Edit button on investigation page details view
+    Then Re-enter Page description on add new classic page
+    Then Click on Submit button in edit page on add new classic page
