@@ -8,23 +8,14 @@ public class TextCriteriaNestedQueryResolver {
 
   public static  BoolQuery equalTo(final String path, final String name, final String value) {
     return BoolQuery.of(
-        bool -> bool.must(
+        bool -> bool.should(
             should -> should.nested(
                 nested -> nested.path(path)
                     .query(
-                        query -> query.bool(
-                            field -> field.must(
-                                must -> must.match(
-                                    match -> match
-                                        .field(name)
-                                        .query(value)
-                                )
-                            )
-                        )
-                    )
-            )
-        )
-    );
+                        query -> query.term(
+                            term -> term.field(name + ".keyword")
+                                .value(value)
+                                .caseInsensitive(true))))));
   }
 
   public static BoolQuery notEquals(final String path, final String name, final String value) {
