@@ -26,7 +26,7 @@ import { PatientCreatedPanel } from './PatientCreatedPanel';
 
 import './AddPatient.scss';
 import { CreatedPatient } from './api';
-import { useNavigate } from 'react-router-dom';
+import { useSearchNavigation } from 'apps/search';
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
 //      1.  Check Missing Fields
@@ -144,10 +144,11 @@ const AddPatient = () => {
         });
     };
 
-    const navigate = useNavigate();
+    const { go } = useSearchNavigation();
 
     const handleCancel = () => {
-        navigate(-1);
+        go();
+
     };
 
     useEffect(() => {
