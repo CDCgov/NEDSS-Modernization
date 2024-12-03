@@ -130,6 +130,31 @@ export default function ContactFields({ id, title }: Props) {
                         />
                     </Grid>
                 </Grid>
+                <Grid col={6}>
+                    <Controller
+                        control={control}
+                        name={`emailAddress`}
+                        rules={{
+                            pattern: {
+                                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                                message: 'Please enter a valid email address (example: youremail@website.com)'
+                            },
+                            ...maxLengthRule(100)
+                        }}
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                type="text"
+                                label="Email"
+                                defaultValue={value}
+                                htmlFor={name}
+                                id={name}
+                                error={error?.message}
+                            />
+                        )}
+                    />
+                </Grid>
             </Grid>
         </FormCard>
     );
