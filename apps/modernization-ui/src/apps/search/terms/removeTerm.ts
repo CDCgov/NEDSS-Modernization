@@ -26,6 +26,8 @@ const removeTerm =
             const adjusted = removeAndTrim(value as string, term.value);
             form.setValue(key, adjusted as PathValue<C, Path<C>>);
         } else {
+            // set the value to null in case there is no form element for it
+            form.setValue(key, null as PathValue<C, Path<C>>);
             form.resetField(key);
         }
 
