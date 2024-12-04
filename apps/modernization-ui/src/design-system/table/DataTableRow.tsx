@@ -35,7 +35,7 @@ export const DataTableRow = <V,>({ columns, row, index }: Props<V>) => {
                                 {column.render(row, index)}
                             </HeightConstrained>
                         ) : (
-                            <NoData />
+                            <NoData showText={false} />
                         )}
                     </td>
                 );
