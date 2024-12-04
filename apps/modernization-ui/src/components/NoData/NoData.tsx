@@ -1,7 +1,12 @@
 import './NoData.scss';
 
-const NoData = ({ className = '' }: { className?: string }) => {
-    return <span className={`no-data ${className}`}>No Data</span>;
+type NoDataProps = {
+    className?: string;
+    showText?: boolean;
+};
+
+const NoData = ({ className = '', showText = true }: NoDataProps) => {
+    return <span className={`no-data ${className}`}>{showText ? 'No Data' : <>&nbsp;</>}</span>;
 };
 
 export { NoData };
