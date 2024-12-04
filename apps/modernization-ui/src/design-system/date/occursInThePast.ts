@@ -1,17 +1,27 @@
-import { isFuture } from 'date-fns';
+import { internalizeDate } from 'date';
+import { now } from './clock';
 import { DateEntry } from './entry';
-import { today } from 'date';
 
-const isInThePast = (name: string, date?: Date) =>
-    date && isFuture(date) ? `The ${name} cannot be after ${today()}.` : true;
+type FullDate = Required<DateEntry>;
 
-const resolveMonth = (value: DateEntry) => (value.month ? value.month - 1 : undefined);
+const isFullDateInThePast = (name: string, date: Date) => {
+    const limit = now();
 
-const resolveDate = (value: DateEntry) => {
-    const { year, day } = value;
-    const month = resolveMonth(value);
-    const now = new Date();
-    return new Date(year ?? now.getFullYear(), month ?? now.getMonth(), day ?? now.getDate());
+    return date.getTime() > limit.getTime() ? `The ${name} cannot be after ${internalizeDate(limit)}.` : true;
+};
+
+const isFullDate = (value: DateEntry): value is Required<DateEntry> =>
+    value.month !== undefined && value.day !== undefined && value.year !== undefined;
+
+const resolveDate = (value: Required<DateEntry>) => new Date(value.year, value.month - 1, value.day);
+
+type MonthYear = DateEntry & Omit<FullDate, 'day'>;
+
+const isMonthYear = (value: DateEntry): value is MonthYear => value.month !== undefined && value.year !== undefined;
+
+const isMonthDateInThePast = (name: string, value: MonthYear) => {
+    const date = new Date(value.year, value.month - 1, now().getDate());
+    return isFullDateInThePast(name, date);
 };
 
 /**
@@ -24,8 +34,13 @@ const resolveDate = (value: DateEntry) => {
 const occursInThePast =
     (name: string) =>
     (value: DateEntry): boolean | string => {
-        const resolved = resolveDate(value);
-        return isInThePast(name, resolved);
+        if (isFullDate(value)) {
+            return isFullDateInThePast(name, resolveDate(value));
+        } else if (isMonthYear(value)) {
+            return isMonthDateInThePast(name, value);
+        } else {
+            return true;
+        }
     };
 
 export { occursInThePast };
