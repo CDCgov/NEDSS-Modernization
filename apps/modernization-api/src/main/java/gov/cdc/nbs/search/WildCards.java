@@ -22,6 +22,5 @@ public class WildCards {
     return value.replaceAll("([+\\-!(){}\\[\\]^\"~*?:\\\\/])", "\\\\$1");
   }
 
-  private WildCards() {
-  }
+  private WildCards() {}
 }
