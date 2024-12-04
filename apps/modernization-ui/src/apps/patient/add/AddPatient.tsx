@@ -94,7 +94,7 @@ const AddPatient = () => {
     } = methods;
 
     useEffect(() => {
-        methods.reset(prefilled);
+        methods.reset(prefilled, { keepDefaultValues: true });
     }, [prefilled, methods.reset]);
 
     const formHasErrors = Object.keys(errors).length > 0;
