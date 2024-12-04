@@ -33,20 +33,6 @@ public class TextCriteriaNestedQueryResolver {
                                         .query(value))))))));
   }
 
-  public static BoolQuery notEquals(final String path, final String name, final String value) {
-    return BoolQuery.of(
-        bool -> bool.mustNot(
-            mustNot -> mustNot.nested(
-                nested -> nested.path(path)
-                    .query(
-                        query -> query.bool(
-                            field -> field.must(
-                                must -> must.match(
-                                    match -> match
-                                        .field(name)
-                                        .query(value))))))));
-  }
-
   public static BoolQuery contains(final String path, final String name, final String value) {
     String adjusted = WildCards.contains(value);
     return BoolQuery.of(
