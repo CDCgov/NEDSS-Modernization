@@ -75,11 +75,15 @@ type NewPatientEntry = RequiredFields &
 
 type DefaultNewPatentEntry = RequiredFields & FormRequired;
 
-const initialEntry = (asOf: Date = new Date()): DefaultNewPatentEntry => ({
+const initialEntry = (asOf: Date = new Date()): NewPatientEntry => ({
     asOf: internalizeDate(asOf) || '',
     identification: [{ type: null, authority: null, value: null }],
     phoneNumbers: [],
-    emailAddresses: [{ email: null }]
+    emailAddresses: [{ email: null }],
+    country: {
+        value: '840',
+        name: 'United States'
+    }
 });
 
 export { initialEntry };

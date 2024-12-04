@@ -197,6 +197,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="country"
+                            defaultValue={{ value: '840', name: 'United States' }}
                             render={({ field: { onChange, value, name } }) => (
                                 <SingleSelect
                                     id={name}
