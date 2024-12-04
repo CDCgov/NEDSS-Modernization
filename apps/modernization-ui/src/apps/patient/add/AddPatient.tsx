@@ -88,7 +88,13 @@ const AddPatient = () => {
     }, [prefilled]);
 
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
-        defaultValues: initialEntry(),
+        defaultValues: {
+            ...initialEntry(),
+            country: {
+                value: '840',
+                name: 'United States'
+            }
+        },
         mode: 'onBlur'
     });
 

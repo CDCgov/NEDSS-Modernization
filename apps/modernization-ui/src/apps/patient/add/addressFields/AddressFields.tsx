@@ -200,7 +200,10 @@ export default function AddressFields({ id, title, coded }: Props) {
                             render={({ field: { onChange, value, name } }) => (
                                 <SingleSelect
                                     id={name}
-                                    onChange={onChange}
+                                    onChange={(e) => {
+                                        console.log(e);
+                                        onChange(e);
+                                    }}
                                     value={value}
                                     name={name}
                                     label="Country"
