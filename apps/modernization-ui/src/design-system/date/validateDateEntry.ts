@@ -2,10 +2,15 @@ import { getDaysInMonth } from 'date-fns';
 import { DateEntry } from './entry';
 import { occursInThePast } from './occursInThePast';
 import { validateAll } from 'validation';
+import { now } from './clock';
 
 const validateYear = (name: string) => (value: DateEntry) => {
-    if (value.year && value.year < 1875) {
-        return `The ${name} should occur after 12/31/1874.`;
+    if (value.year) {
+        if (value.year < 1875) {
+            return `The ${name} should occur after 12/31/1874.`;
+        } else if (value.year > now().getFullYear()) {
+            return `The ${name} should occur before or within the current year.`;
+        }
     }
     return true;
 };
