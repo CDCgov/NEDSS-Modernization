@@ -2,7 +2,15 @@ import { internalizeDate } from 'date';
 import { validateDateEntry } from './validateDateEntry';
 import { add } from 'date-fns';
 
+const mockNow = jest.fn();
+
+jest.mock('./clock', () => ({
+    now: () => mockNow()
+}));
+
 describe('when validating a date entered in parts', () => {
+    beforeEach(() => mockNow.mockReturnValue(new Date()));
+
     describe('with a month', () => {
         it('should allow a valid month', () => {
             const actual = validateDateEntry('Date with valid month')({ month: 5 });
@@ -33,12 +41,14 @@ describe('when validating a date entered in parts', () => {
         });
 
         it('should not allow months after today', () => {
-            const today = new Date();
+            const today = new Date('2021-08-19');
 
-            const tomorrow = add(today, { days: 1 });
+            mockNow.mockReturnValue(today);
+
+            const tomorrow = add(today, { months: 1 });
 
             const actual = validateDateEntry('Date in the future')({
-                month: tomorrow.getMonth() + 2,
+                month: tomorrow.getMonth() + 1,
                 year: tomorrow.getFullYear()
             });
 
@@ -80,15 +90,16 @@ describe('when validating a date entered in parts', () => {
         });
 
         it('should not allow dates after this year', () => {
-            const today = new Date();
+            const today = new Date('2021-08-19');
 
-            const tomorrow = add(today, { days: 1 });
+            mockNow.mockReturnValue(today);
+            const tomorrow = add(today, { years: 1 });
 
             const actual = validateDateEntry('Date in the future')({
-                year: tomorrow.getFullYear() + 1
+                year: tomorrow.getFullYear()
             });
 
-            expect(actual).toContain(`The Date in the future cannot be after ${internalizeDate(today)}`);
+            expect(actual).toContain('The Date in the future should occur before or within the current year.');
         });
     });
 
