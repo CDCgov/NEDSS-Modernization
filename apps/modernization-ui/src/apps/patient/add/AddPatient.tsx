@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { createContext, useEffect, useRef, useState } from 'react';
+import { FormProvider, useForm, UseFormGetValues } from 'react-hook-form';
 import { useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
 import { StateCodedValues, useLocationCodedValues } from 'location';
@@ -26,7 +26,7 @@ import { PatientCreatedPanel } from './PatientCreatedPanel';
 
 import './AddPatient.scss';
 import { CreatedPatient } from './api';
-import { useSearchNavigation } from 'apps/search';
+import { useSearchFromAddPatient } from 'apps/search/patient/PatientCriteria/useSearchFromAddPatient';
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
 //      1.  Check Missing Fields
@@ -92,6 +92,8 @@ const AddPatient = () => {
         mode: 'onBlur'
     });
 
+    const PatientContext = createContext<UseFormGetValues<NewPatientEntry | DefaultNewPatentEntry>>(methods.getValues);
+
     const {
         handleSubmit,
         reset,
@@ -144,11 +146,10 @@ const AddPatient = () => {
         });
     };
 
-    const { go } = useSearchNavigation();
+    // const { toSearch } = useSearchFromAddPatient();
 
     const handleCancel = () => {
-        go();
-
+        // toSearch();
     };
 
     useEffect(() => {
