@@ -21,7 +21,7 @@ public class GeneralCodedValueResolver {
 
     @QueryMapping
     public Collection<CodedValue> educationLevels() {
-        return finder.all("P_EDUC_LVL", CodedValues.withStandardizedName());
+        return finder.all("P_EDUC_LVL", CodedValues.withEducationName());
     }
 
     @QueryMapping
