@@ -1,11 +1,15 @@
 import { ChangeEvent } from 'react';
-import { Select as TrussworksSelect } from '@trussworks/react-uswds';
 import { EntryWrapper, Orientation, Sizing } from 'components/Entry';
 import { Selectable, findByValue } from 'options';
+import classNames from 'classnames';
 
 const renderOptions = (options: Selectable[], placeholder?: string) => (
     <>
-        {placeholder && <option value="">{placeholder}</option>}
+        {placeholder && (
+            <option key={-1} value="">
+                {placeholder}
+            </option>
+        )}
         {options?.map((item, index) => (
             <option key={index} value={item.value}>
                 {item.name}
@@ -30,6 +34,7 @@ type Props = {
 const SingleSelect = ({
     id,
     label,
+    className,
     helperText,
     options,
     value,
@@ -59,17 +64,17 @@ const SingleSelect = ({
             htmlFor={id}
             required={required}
             error={error}>
-            <TrussworksSelect
-                key={value?.value}
-                {...inputProps}
+            <select
+                key={value?.value ?? ''}
                 id={id}
-                validationStatus={error ? 'error' : undefined}
+                className={classNames('usa-select', className)}
                 name={inputProps.name ?? id}
-                defaultValue={value?.value}
-                placeholder="-Select-"
-                onChange={handleChange}>
+                value={value?.value}
+                placeholder={placeholder}
+                onChange={handleChange}
+                {...inputProps}>
                 {renderOptions(options, placeholder)}
-            </TrussworksSelect>
+            </select>
         </EntryWrapper>
     );
 };
