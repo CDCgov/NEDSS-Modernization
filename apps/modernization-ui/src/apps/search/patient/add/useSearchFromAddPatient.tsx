@@ -1,9 +1,8 @@
-import { useSearchCriteriaEncrypted } from 'apps/search/useSearchCriteriaEncrypted';
 import { createContext, ReactNode, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type SearchFromAddPatientContextType = {
-    toSearch: () => void;
+    toSearch: (criteria: string | null) => void;
 };
 
 const SearchFromAddPatientContext = createContext<SearchFromAddPatientContextType | undefined>(undefined);
@@ -14,9 +13,8 @@ type SearchFromAddPatientProviderProps = {
 
 function SearchFromAddPatientProvider({ children }: SearchFromAddPatientProviderProps) {
     const navigate = useNavigate();
-    const { criteria } = useSearchCriteriaEncrypted();
 
-    const toSearch = () => {
+    const toSearch = (criteria: string | null) => {
         console.log(criteria);
         if (criteria) {
             navigate(`search/patients/?q=${criteria}`);

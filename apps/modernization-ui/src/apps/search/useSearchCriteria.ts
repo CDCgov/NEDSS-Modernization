@@ -59,7 +59,7 @@ type Interaction<V> = {
 const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Interaction<C> => {
     const [_searchParams, setSearchParams] = useSearchParams();
 
-    const { criteria: found } = useSearchCriteriaEncrypted();
+    const { found } = useSearchCriteriaEncrypted();
 
     const [state, dispatch] = useReducer(reducer<C>, { status: 'initializing' });
 

@@ -1,7 +1,6 @@
 import { ButtonActionMenu } from 'components/ButtonActionMenu/ButtonActionMenu';
 import { Button } from 'components/button';
 import { useAddPatientFromSearch } from './add/useAddPatientFromSearch';
-
 type Props = {
     disabled: boolean;
 };

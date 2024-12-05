@@ -27,6 +27,7 @@ import { PatientCreatedPanel } from './PatientCreatedPanel';
 import './AddPatient.scss';
 import { CreatedPatient } from './api';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { useLocation } from 'react-router-dom';
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
 //      1.  Check Missing Fields
@@ -145,9 +146,9 @@ const AddPatient = () => {
     };
 
     const { toSearch } = useSearchFromAddPatient();
-
+    const location = useLocation();
     const handleCancel = () => {
-        toSearch();
+        toSearch(location.state.criteria);
     };
 
     useEffect(() => {
