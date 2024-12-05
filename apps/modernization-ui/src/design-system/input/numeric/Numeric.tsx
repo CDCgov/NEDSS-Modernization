@@ -1,6 +1,7 @@
-import { ChangeEvent as ReactChangeEvent, useEffect, useMemo, useReducer } from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { onlyNumericKeys } from './onlyNumericKeys';
+import { useNumeric } from './useNumeric';
 
 const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
 
@@ -14,17 +15,6 @@ type NumericProps = {
     onBlur?: () => void;
 } & Omit<JSX.IntrinsicElements['input'], 'defaultValue' | 'onChange' | 'value' | 'type' | 'inputMode'>;
 
-type Action = { type: 'SET'; payload: number | undefined };
-
-const reducer = (state: number | undefined, action: Action): number | undefined => {
-    switch (action.type) {
-        case 'SET':
-            return action.payload;
-        default:
-            return state;
-    }
-};
-
 const Numeric = ({
     id,
     inputMode = 'numeric',
@@ -35,7 +25,7 @@ const Numeric = ({
     placeholder,
     ...props
 }: NumericProps) => {
-    const [current, dispatch] = useReducer(reducer, value);
+    const { current, change, clear, initialize } = useNumeric(value);
 
     useEffect(() => {
         onChange?.(current);
@@ -47,19 +37,19 @@ const Numeric = ({
         const next = event.target.value;
 
         if (next === '') {
-            dispatch({ type: 'SET', payload: undefined });
+            clear();
         } else if (Number.isNaN(next)) {
             event.preventDefault();
         } else {
             const adjusted = Number(next);
             if (!Number.isNaN(adjusted)) {
-                dispatch({ type: 'SET', payload: adjusted });
+                change(adjusted);
             }
         }
     };
 
     useEffect(() => {
-        dispatch({ type: 'SET', payload: value });
+        initialize(value);
     }, [value]);
 
     return (
