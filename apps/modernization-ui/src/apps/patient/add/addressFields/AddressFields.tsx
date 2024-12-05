@@ -24,12 +24,12 @@ export default function AddressFields({ id, title, coded }: Props) {
 
     const counties = coded.counties.byState(selectedState?.value);
 
-    function handleSuggestionSelection(selected: AddressSuggestion) {
+    const handleSuggestionSelection = (selected: AddressSuggestion) => {
         setValue('streetAddress1', selected.address1);
         setValue('city', selected.city);
         setValue('state', selected.state?.value);
         setValue('zip', selected.zip);
-    }
+    };
 
     return (
         <FormCard id={id} title={title}>
