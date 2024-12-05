@@ -1,9 +1,16 @@
 export { asAdministrative } from './administrative/asAdministrative';
-export { asName } from './name/asName';
-export { asAddress } from './address/asAddress';
+
+export type { NameEntry } from './name/';
+export { asName } from './name';
+
+export type { AddressEntry } from './address';
+export { asAddress } from './address';
+
+export type { RaceEntry } from './race';
+export { asRace } from './race';
+
 export { asPhoneEmail } from './phoneEmail/asPhoneEmail';
 export { asIdentification } from './identification/asIdentification';
-export { asRace } from './race/asRace';
 export { asEthnicity } from './ethnicity/asEthnicity';
 export { asMortality } from './mortality/asMortality';
 export { asSex } from './sexAndBirth/asSex';

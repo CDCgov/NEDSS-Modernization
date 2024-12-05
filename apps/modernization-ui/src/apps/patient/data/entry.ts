@@ -10,20 +10,6 @@ type LocationEntry = {
 
 type AdministrativeEntry = EffectiveDated & HasComments;
 
-type AddressEntry = EffectiveDated &
-    HasComments & {
-        type: Selectable | null;
-        use: Selectable | null;
-        address1?: string;
-        address2?: string;
-        city?: string;
-        county?: Maybe<Selectable>;
-        state?: Maybe<Selectable>;
-        zipcode?: string;
-        country?: Maybe<Selectable>;
-        censusTract?: string;
-    };
-
 type PhoneEmailEntry = EffectiveDated &
     HasComments & {
         type: Selectable | null;
@@ -76,7 +62,6 @@ type GeneralInformationEntry = EffectiveDated & {
 
 export type {
     AdministrativeEntry,
-    AddressEntry,
     PhoneEmailEntry,
     IdentificationEntry,
     SexEntry,

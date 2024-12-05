@@ -1,13 +1,13 @@
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { EntryFieldsProps } from 'design-system/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
-import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { EntryFieldsProps } from 'design-system/entry';
 import { usePatientAddressCodedValues } from 'apps/patient/profile/addresses/usePatientAddressCodedValues';
-import { Input } from 'components/FormInputs/Input';
 import { useLocationCodedValues } from 'location';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { Input } from 'components/FormInputs/Input';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
-import { AddressEntry } from 'apps/patient/data/entry';
+import { AddressEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
