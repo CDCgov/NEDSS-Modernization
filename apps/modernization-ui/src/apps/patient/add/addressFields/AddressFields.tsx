@@ -8,6 +8,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 
 type Props = {
     id: string;
@@ -120,27 +121,17 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="zip"
-                            rules={{
-                                pattern: {
-                                    value: /^\d{5}(?:[-\s]\d{4})?$/,
-                                    message:
-                                        'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
-                                }
-                            }}
+                            rules={validZipCodeRule('ZIP code')}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <ZipCodeInputField
                                     id={name}
                                     name={name}
-                                    type="text"
                                     label="ZIP"
-                                    htmlFor={name}
-                                    defaultValue={value}
+                                    orientation="vertical"
+                                    value={value}
                                     error={error?.message}
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    orientation={'vertical'}
-                                    mask="_____-____"
-                                    pattern="^\d{5}(?:[-\s]\d{4})?$"
                                 />
                             )}
                         />
