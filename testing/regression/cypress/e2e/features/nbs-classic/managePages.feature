@@ -56,3 +56,14 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Click on Edit button on investigation page details view
     Then Re-enter Page description on add new classic page
     Then Click on Submit button in edit page on add new classic page
+
+  Scenario: Investigation page rules add new
+    Then Click on view icon to display the page details on classic
+    Then Click on Page Rules button on investigation page view
+    Then Click on Add New button on investigation page rules view
+    Then Select Function form dropdown on add new rule classic page
+    Then Select Source form dropdown on add new rule classic page
+    Then Select Logic form dropdown on add new rule classic page
+    Then Select Target form dropdown on add new rule classic page
+    Then Click on Submit button in add new rule on classic page
+
