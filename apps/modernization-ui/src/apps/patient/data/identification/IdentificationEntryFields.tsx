@@ -1,11 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { EntryFieldsProps } from 'design-system/entry';
-import { usePatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { Input } from 'components/FormInputs/Input';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
+import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
-import { IdentificationEntry } from '../entry';
+import { usePatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { IdentificationEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Identification as of';
 const TYPE_LABEL = 'Type';

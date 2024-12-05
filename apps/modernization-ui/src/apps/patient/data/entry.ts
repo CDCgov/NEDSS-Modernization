@@ -10,12 +10,6 @@ type LocationEntry = {
 
 type AdministrativeEntry = EffectiveDated & HasComments;
 
-type IdentificationEntry = EffectiveDated & {
-    type: Selectable | null;
-    id: string | null;
-    issuer?: Maybe<Selectable>;
-};
-
 type SexEntry = EffectiveDated & {
     current?: Selectable;
     unknownReason?: Selectable;
@@ -49,4 +43,4 @@ type GeneralInformationEntry = EffectiveDated & {
     stateHIVCase?: string;
 };
 
-export type { AdministrativeEntry, IdentificationEntry, SexEntry, BirthEntry, MortalityEntry, GeneralInformationEntry };
+export type { AdministrativeEntry, SexEntry, BirthEntry, MortalityEntry, GeneralInformationEntry };

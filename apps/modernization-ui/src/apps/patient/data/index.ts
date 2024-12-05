@@ -9,7 +9,8 @@ export { asAddress } from './address';
 export type { PhoneEmailEntry } from './phoneEmail';
 export { asPhoneEmail } from './phoneEmail';
 
-export { asIdentification } from './identification/asIdentification';
+export type { IdentificationEntry } from './identification';
+export { asIdentification } from './identification';
 
 export type { RaceEntry } from './race';
 export { asRace } from './race';
