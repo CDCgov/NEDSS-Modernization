@@ -6,11 +6,14 @@ export { asName } from './name';
 export type { AddressEntry } from './address';
 export { asAddress } from './address';
 
+export type { PhoneEmailEntry } from './phoneEmail';
+export { asPhoneEmail } from './phoneEmail';
+
+export { asIdentification } from './identification/asIdentification';
+
 export type { RaceEntry } from './race';
 export { asRace } from './race';
 
-export { asPhoneEmail } from './phoneEmail/asPhoneEmail';
-export { asIdentification } from './identification/asIdentification';
 export { asEthnicity } from './ethnicity/asEthnicity';
 export { asMortality } from './mortality/asMortality';
 export { asSex } from './sexAndBirth/asSex';

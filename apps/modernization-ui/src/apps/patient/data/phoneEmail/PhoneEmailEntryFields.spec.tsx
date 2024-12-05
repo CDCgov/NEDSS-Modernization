@@ -1,9 +1,8 @@
-import { render, waitFor, screen } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
-import { FormProvider, useForm } from 'react-hook-form';
-import { PhoneEmailEntry } from '../entry';
-import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
+import { render, waitFor, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PhoneEmailEntry } from './entry';
+import { PhoneEmailEntryFields } from './PhoneEmailEntryFields';
 
 const mockPatientPhoneCodedValues = {
     types: [{ name: 'Phone', value: 'PH' }],

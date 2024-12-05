@@ -10,17 +10,6 @@ type LocationEntry = {
 
 type AdministrativeEntry = EffectiveDated & HasComments;
 
-type PhoneEmailEntry = EffectiveDated &
-    HasComments & {
-        type: Selectable | null;
-        use: Selectable | null;
-        countryCode?: string;
-        phoneNumber?: string;
-        extension?: string;
-        email?: string;
-        url?: string;
-    };
-
 type IdentificationEntry = EffectiveDated & {
     type: Selectable | null;
     id: string | null;
@@ -60,12 +49,4 @@ type GeneralInformationEntry = EffectiveDated & {
     stateHIVCase?: string;
 };
 
-export type {
-    AdministrativeEntry,
-    PhoneEmailEntry,
-    IdentificationEntry,
-    SexEntry,
-    BirthEntry,
-    MortalityEntry,
-    GeneralInformationEntry
-};
+export type { AdministrativeEntry, IdentificationEntry, SexEntry, BirthEntry, MortalityEntry, GeneralInformationEntry };

@@ -1,6 +1,6 @@
 import { asValue } from 'options';
 import { PhoneEmail } from '../api';
-import { PhoneEmailEntry } from '../entry';
+import { PhoneEmailEntry } from './entry';
 import { exists, orUndefined } from 'utils';
 
 const asPhoneEmail = (entry: PhoneEmailEntry): PhoneEmail | undefined => {

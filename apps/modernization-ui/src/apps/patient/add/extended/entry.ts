@@ -1,7 +1,6 @@
 import { today } from 'date';
 import {
     AdministrativeEntry,
-    PhoneEmailEntry,
     IdentificationEntry,
     SexEntry,
     BirthEntry,
@@ -10,7 +9,7 @@ import {
 } from 'apps/patient/data/entry';
 import { EthnicityEntry, initial as initialEthnicity } from 'apps/patient/data/ethnicity';
 
-import { AddressEntry, NameEntry, RaceEntry } from 'apps/patient/data';
+import { AddressEntry, NameEntry, RaceEntry, PhoneEmailEntry } from 'apps/patient/data';
 
 type ExtendedNewPatientEntry = {
     administrative?: AdministrativeEntry;
