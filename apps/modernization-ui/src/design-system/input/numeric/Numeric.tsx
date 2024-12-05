@@ -1,6 +1,7 @@
-import { ChangeEvent as ReactChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent as ReactChangeEvent, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { onlyNumericKeys } from './onlyNumericKeys';
+import { useNumeric } from './useNumeric';
 
 const asDisplay = (value?: string | number | null) => (value === undefined ? '' : `${value}`);
 
@@ -24,7 +25,7 @@ const Numeric = ({
     placeholder,
     ...props
 }: NumericProps) => {
-    const [current, setCurrent] = useState<number | undefined>(value);
+    const { current, change, clear, initialize } = useNumeric(value);
 
     useEffect(() => {
         onChange?.(current);
@@ -36,16 +37,20 @@ const Numeric = ({
         const next = event.target.value;
 
         if (next === '') {
-            setCurrent(undefined);
+            clear();
         } else if (Number.isNaN(next)) {
             event.preventDefault();
         } else {
             const adjusted = Number(next);
             if (!Number.isNaN(adjusted)) {
-                setCurrent(adjusted);
+                change(adjusted);
             }
         }
     };
+
+    useEffect(() => {
+        initialize(value);
+    }, [value]);
 
     return (
         <input

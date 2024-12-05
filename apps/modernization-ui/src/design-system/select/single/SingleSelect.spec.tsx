@@ -1,8 +1,26 @@
 import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
 import userEvent from '@testing-library/user-event';
 import { SingleSelect } from './SingleSelect';
 
 describe('when selecting a single item from a specific set of items', () => {
+    it('should render with no accessibility violations', async () => {
+        const { container } = render(
+            <SingleSelect
+                id="test-id"
+                label="Test Label"
+                options={[
+                    { name: 'name-one', value: 'value-one', label: 'label-one' },
+                    { name: 'name-two', value: 'value-two', label: 'label-two' },
+                    { name: 'name-three', value: 'value-three', label: 'label-three' },
+                    { name: 'name-four', value: 'value-four', label: 'label-four' }
+                ]}
+            />
+        );
+
+        expect(await axe(container)).toHaveNoViolations();
+    });
+
     it('should display the SingleSelect without a value checked', () => {
         const { queryByRole } = render(
             <SingleSelect
@@ -14,7 +32,6 @@ describe('when selecting a single item from a specific set of items', () => {
                     { name: 'name-three', value: 'value-three', label: 'label-three' },
                     { name: 'name-four', value: 'value-four', label: 'label-four' }
                 ]}
-                name="test-name"
                 placeholder="place-holder-value"
             />
         );
@@ -35,7 +52,6 @@ describe('when selecting a single item from a specific set of items', () => {
                     { name: 'name-three', value: 'value-three', label: 'label-three' },
                     { name: 'name-four', value: 'value-four', label: 'label-four' }
                 ]}
-                name="test-name"
                 value={{ name: 'name-three', value: 'value-three', label: 'label-three' }}
             />
         );
@@ -58,7 +74,6 @@ describe('when one of the options is clicked', () => {
                     { name: 'name-three', value: 'value-three', label: 'label-three' },
                     { name: 'name-four', value: 'value-four', label: 'label-four' }
                 ]}
-                name="test-name"
                 value={{ name: 'name-four', value: 'value-four', label: 'label-four' }}
                 onChange={jest.fn()}
             />
