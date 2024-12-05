@@ -20,7 +20,6 @@ const TextInput = ({
     type = 'text',
     inputMode = 'text',
     placeholder,
-    mask,
     value,
     onChange,
     onBlur,
@@ -32,19 +31,6 @@ const TextInput = ({
     useEffect(() => {
         setCurrent(value ?? '');
     }, [value]);
-
-    useEffect(() => {
-        const inputElement = inputRef.current;
-        if (inputElement && mask) {
-            inputMask.on(inputElement);
-        }
-
-        return () => {
-            if (inputElement && mask) {
-                inputMask.off(inputElement);
-            }
-        };
-    });
 
     const handleChange = (event: ReactChangeEvent<HTMLInputElement>) => {
         const next = event.target.value;
@@ -64,7 +50,7 @@ const TextInput = ({
             name={props.name ?? id}
             type={type}
             inputMode={inputMode}
-            className={classNames('usa-input', { 'usa-masked': mask }, className)}
+            className={classNames('usa-input', className)}
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
