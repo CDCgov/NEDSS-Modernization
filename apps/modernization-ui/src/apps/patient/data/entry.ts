@@ -10,18 +10,6 @@ type LocationEntry = {
 
 type AdministrativeEntry = EffectiveDated & HasComments;
 
-type NameEntry = EffectiveDated & {
-    type: Selectable | null;
-    prefix?: Maybe<Selectable>;
-    first?: string;
-    middle?: string;
-    secondMiddle?: string;
-    last?: string;
-    secondLast?: string;
-    suffix?: Maybe<Selectable>;
-    degree?: Maybe<Selectable>;
-};
-
 type AddressEntry = EffectiveDated &
     HasComments & {
         type: Selectable | null;
@@ -88,7 +76,6 @@ type GeneralInformationEntry = EffectiveDated & {
 
 export type {
     AdministrativeEntry,
-    NameEntry,
     AddressEntry,
     PhoneEmailEntry,
     IdentificationEntry,

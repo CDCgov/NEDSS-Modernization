@@ -1,23 +1,10 @@
-import { NameEntry } from 'apps/patient/data/entry';
-import { NameEntryFields } from 'apps/patient/data/name/NameEntryFields';
-import { today } from 'date';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
-import { Column } from 'design-system/table';
-import { NameEntryView } from './NameEntryView';
 import { ReactNode } from 'react';
+import { Column } from 'design-system/table';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { NameEntry, NameEntryFields, initial } from 'apps/patient/data/name';
+import { NameEntryView } from './NameEntryView';
 
-const defaultValue: Partial<NameEntry> = {
-    asOf: today(),
-    type: null,
-    prefix: null,
-    first: '',
-    middle: '',
-    secondMiddle: '',
-    last: '',
-    secondLast: '',
-    suffix: null,
-    degree: null
-};
+const defaultValue: Partial<NameEntry> = initial();
 
 const columns: Column<NameEntry>[] = [
     { id: 'nameAsOf', name: 'As of', render: (v) => v.asOf },

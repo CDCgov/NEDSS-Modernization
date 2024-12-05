@@ -1,6 +1,6 @@
 import { asSelectable, findByValue, Selectable } from 'options';
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
-import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
+import { AddressEntry, IdentificationEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
 import { RaceEntry } from 'apps/patient/data/race/entry';
 import { NewPatientEntry } from 'apps/patient/add/NewPatientEntry';
 import { ExtendedNewPatientEntry } from './entry';
@@ -11,6 +11,7 @@ import { HOME as HOME_ADDRESS } from 'options/address/uses';
 import { HOUSE } from 'options/address/types';
 import { CELL_PHONE, PHONE, EMAIL } from 'options/phone/types';
 import { HOME as HOME_PHONE, MOBILE_CONTACT, PRIMARY_WORKPLACE } from 'options/phone/uses';
+import { NameEntry } from 'apps/patient/data/name';
 
 const mapOr =
     <R, S, O>(mapping: Mapping<R, S>, fallback: O) =>
