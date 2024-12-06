@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
@@ -23,9 +22,11 @@ import { useBasicExtendedTransition } from './useBasicExtendedTransition';
 import { DataEntryMenu } from './DataEntryMenu';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from './PatientCreatedPanel';
-import { CreatedPatient } from './api';
 
 import './AddPatient.scss';
+import { CreatedPatient } from './api';
+import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { useLocation } from 'react-router-dom';
 
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
@@ -149,10 +150,10 @@ const AddPatient = () => {
         });
     };
 
-    const navigate = useNavigate();
-
+    const { toSearch } = useSearchFromAddPatient();
+    const location = useLocation();
     const handleCancel = () => {
-        navigate(-1);
+        toSearch(location.state.criteria);
     };
 
     useEffect(() => {

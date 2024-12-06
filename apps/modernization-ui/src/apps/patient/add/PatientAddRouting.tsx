@@ -4,11 +4,14 @@ import { AddPatientExtended } from './extended/AddPatientExtended';
 import { Outlet } from 'react-router-dom';
 import { BasicExtendedTransitionProvider } from 'apps/patient/add/useBasicExtendedTransition';
 import { AddPatientBasic } from './basic/AddPatientBasic';
+import { SearchFromAddPatientProvider } from 'apps/search/patient/add/useSearchFromAddPatient';
 
 const PatientDataProviderWrapper = () => (
-    <BasicExtendedTransitionProvider>
-        <Outlet />
-    </BasicExtendedTransitionProvider>
+    <SearchFromAddPatientProvider>
+        <BasicExtendedTransitionProvider>
+            <Outlet />
+        </BasicExtendedTransitionProvider>
+    </SearchFromAddPatientProvider>
 );
 
 const routing = [

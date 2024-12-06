@@ -28,7 +28,8 @@
         "@typescript-eslint/no-unused-vars": [
             "error",
             {
-                "caughtErrors": "none"
+                "caughtErrors": "none",
+                "varsIgnorePattern": "_"
             }
         ],
         "react/react-in-jsx-scope": "off",
