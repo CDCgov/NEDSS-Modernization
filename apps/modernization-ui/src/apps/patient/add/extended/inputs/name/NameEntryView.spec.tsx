@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { NameEntry } from 'apps/patient/data/entry';
+import { NameEntry } from 'apps/patient/data/name';
 import { NameEntryView } from './NameEntryView';
 import { asSelectable } from 'options/selectable';
 

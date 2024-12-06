@@ -1,9 +1,8 @@
-import { render, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
-import { AddressEntry } from '../entry';
-import { AddressEntryFields } from './AddressEntryFields';
 import userEvent from '@testing-library/user-event';
+import { render, waitFor, act } from '@testing-library/react';
+import { AddressEntry } from './entry';
+import { AddressEntryFields } from './AddressEntryFields';
 
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],

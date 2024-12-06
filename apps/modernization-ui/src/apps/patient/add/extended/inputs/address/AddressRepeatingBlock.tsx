@@ -1,26 +1,12 @@
-import { AddressEntry } from 'apps/patient/data/entry';
-import { today } from 'date';
-import { Column } from 'design-system/table';
-import { AddressView } from './AddressView';
-import { AddressEntryFields } from 'apps/patient/data/address/AddressEntryFields';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
 import { ReactNode } from 'react';
+import { Column } from 'design-system/table';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { AddressEntry, AddressEntryFields, initial } from 'apps/patient/data/address';
 import { asAddressTypeUse } from 'apps/patient/data/address/utils';
 
-const defaultValue: Partial<AddressEntry> = {
-    asOf: today(),
-    type: null,
-    use: null,
-    address1: '',
-    address2: '',
-    city: '',
-    state: null,
-    zipcode: '',
-    county: null,
-    country: null,
-    censusTract: '',
-    comment: ''
-};
+import { AddressView } from './AddressView';
+
+const defaultValue: Partial<AddressEntry> = initial();
 
 type Props = {
     id: string;

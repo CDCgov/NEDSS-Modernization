@@ -1,17 +1,11 @@
-import { IdentificationEntry } from 'apps/patient/data/entry';
-import { IdentificationEntryFields } from 'apps/patient/data/identification/IdentificationEntryFields';
-import { today } from 'date';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
-import { Column } from 'design-system/table';
-import { IdentificationView } from './IdentificationView';
 import { ReactNode } from 'react';
+import { Column } from 'design-system/table';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { IdentificationEntryFields, IdentificationEntry, initial } from 'apps/patient/data/identification';
+import { IdentificationView } from './IdentificationView';
 
-const defaultValue: Partial<IdentificationEntry> = {
-    asOf: today(),
-    type: null,
-    issuer: null,
-    id: ''
-};
+const defaultValue: Partial<IdentificationEntry> = initial();
+
 type Props = {
     id: string;
     values?: IdentificationEntry[];

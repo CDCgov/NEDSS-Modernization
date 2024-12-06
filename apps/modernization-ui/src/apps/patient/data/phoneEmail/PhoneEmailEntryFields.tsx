@@ -1,12 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
+import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule, validateRequiredRule, validEmailRule } from 'validation/entry';
 import { validatePhoneNumber } from 'validation/phone';
-import { PhoneEmailEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
+import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
+import { PhoneEmailEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Phone & email as of';
 const TYPE_LABEL = 'Type';

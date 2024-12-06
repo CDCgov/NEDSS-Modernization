@@ -1,10 +1,9 @@
-import { render, waitFor } from '@testing-library/react';
-import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
-import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
-import { IdentificationEntry } from '../entry';
-import { IdentificationEntryFields } from './IdentificationEntryFields';
+import { render, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { PatientIdentificationCodedValues } from 'apps/patient/profile/identification/usePatientIdentificationCodedValues';
+import { IdentificationEntry } from './entry';
+import { IdentificationEntryFields } from './IdentificationEntryFields';
 
 const mockPatientIdentificationCodedValues: PatientIdentificationCodedValues = {
     types: [{ name: 'Account number', value: 'AN' }],
