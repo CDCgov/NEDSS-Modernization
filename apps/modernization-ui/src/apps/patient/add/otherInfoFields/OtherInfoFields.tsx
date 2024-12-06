@@ -48,10 +48,10 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                     </Grid>
                 </Grid>
                 <Grid row className="flex-justify flex-align-center padding-y-2">
-                    <Grid col={2} className="margin-top-1">
+                    <Grid col={1} className="margin-top-1">
                         Current age:
                     </Grid>
-                    <Grid col={10} className="margin-top-1">
+                    <Grid col={11} className="margin-top-1">
                         {age}
                     </Grid>
                 </Grid>
@@ -102,7 +102,7 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                                     onChange={onChange}
                                     name={name}
                                     htmlFor={name}
-                                    label="Is this patient deceased?"
+                                    label="Is the patient deceased?"
                                     options={coded.deceased}
                                 />
                             )}
