@@ -15,12 +15,12 @@ const TestComponent = () => {
 
 describe('useSearchFromAddPatient', () => {
     it('should throw an error if outside of SearchFromAddPatientProvider', () => {
-      const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      expect(() => render(<TestComponent />)).toThrow(
-        'useSearchFromAddPatient must be used within a SearchFromAddPatientProvider'
-    );
+        expect(() => render(<TestComponent />)).toThrow(
+            'useSearchFromAddPatient must be used within a SearchFromAddPatientProvider'
+        );
 
-    consoleError.mockRestore();
+        consoleError.mockRestore();
     });
 });
