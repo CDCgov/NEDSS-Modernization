@@ -4,7 +4,7 @@ import { SingleSelect } from 'design-system/select';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validateExtendedNameRule, validateRequiredRule } from 'validation/entry/';
-import { NameEntry } from 'apps/patient/data/entry';
+import { NameEntry } from './entry';
 import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
 
 const AS_OF_DATE_LABEL = 'Name as of';

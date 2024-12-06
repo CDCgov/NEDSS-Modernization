@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useCreatePatientMutation } from 'generated/graphql/schema';
 import { Button, Form, Grid, Icon, ModalRef } from '@trussworks/react-uswds';
@@ -18,7 +19,6 @@ import { orNull } from 'utils';
 import { DefaultNewPatentEntry, initialEntry, NewPatientEntry } from 'apps/patient/add';
 import { usePreFilled } from 'apps/patient/add/usePreFilled';
 import { useConfiguration } from 'configuration';
-import { asValue } from 'options';
 import { useBasicExtendedTransition } from './useBasicExtendedTransition';
 import { DataEntryMenu } from './DataEntryMenu';
 import { Shown } from 'conditional-render';
@@ -28,6 +28,7 @@ import './AddPatient.scss';
 import { CreatedPatient } from './api';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 import { useLocation } from 'react-router-dom';
+
 // The process of creating a patient is broken into steps once input is valid and the form has been submitted.
 //
 //      1.  Check Missing Fields
@@ -58,7 +59,7 @@ const withVerifiedAddress = (entry: NewPatientEntry, address: VerifiableAdddress
     ...entry,
     streetAddress1: address.address1,
     city: address.city,
-    state: asValue(address.state),
+    state: address.state,
     zip: address.zip
 });
 
@@ -84,20 +85,25 @@ const AddPatient = () => {
 
     const { toExtended } = useBasicExtendedTransition();
 
-    useEffect(() => {
-        reset(prefilled);
-    }, [prefilled]);
-
     const methods = useForm<NewPatientEntry, DefaultNewPatentEntry>({
-        defaultValues: initialEntry(),
+        defaultValues: {
+            ...initialEntry(),
+            country: {
+                value: '840',
+                name: 'United States'
+            }
+        },
         mode: 'onBlur'
     });
 
     const {
         handleSubmit,
-        reset,
         formState: { errors }
     } = methods;
+
+    useEffect(() => {
+        methods.reset(prefilled, { keepDefaultValues: true });
+    }, [prefilled, methods.reset]);
 
     const formHasErrors = Object.keys(errors).length > 0;
 

@@ -4,7 +4,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { validatePhoneNumber } from 'validation/phone';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
-import { maxLengthRule } from 'validation/entry';
+import { maxLengthRule, validEmailRule } from 'validation/entry';
 import { useEffect } from 'react';
 
 type Props = {
@@ -131,6 +131,27 @@ export default function ContactFields({ id, title }: Props) {
                             )}
                         />
                     </Grid>
+                </Grid>
+                <Grid col={6}>
+                    <Controller
+                        control={control}
+                        name={`emailAddress`}
+                        rules={{
+                            ...validEmailRule(100)
+                        }}
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                type="text"
+                                label="Email"
+                                defaultValue={value}
+                                htmlFor={name}
+                                id={name}
+                                error={error?.message}
+                            />
+                        )}
+                    />
                 </Grid>
             </Grid>
         </FormCard>

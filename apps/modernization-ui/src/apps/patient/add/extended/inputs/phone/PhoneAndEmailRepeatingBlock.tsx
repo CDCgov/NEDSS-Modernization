@@ -1,22 +1,11 @@
-import { PhoneEmailEntry } from 'apps/patient/data/entry';
-import { PhoneEmailEntryFields } from 'apps/patient/data/phoneEmail/PhoneEmailEntryFields';
-import { today } from 'date';
-import { RepeatingBlock } from 'design-system/entry/multi-value/RepeatingBlock';
-import { Column } from 'design-system/table';
-import { PhoneEntryView } from './PhoneEntryView';
 import { ReactNode } from 'react';
+import { RepeatingBlock } from 'design-system/entry/multi-value';
+import { Column } from 'design-system/table';
+import { PhoneEmailEntry, PhoneEmailEntryFields, initial } from 'apps/patient/data/phoneEmail';
+import { PhoneEntryView } from './PhoneEntryView';
 
-const defaultValue: Partial<PhoneEmailEntry> = {
-    asOf: today(),
-    type: null,
-    use: null,
-    countryCode: '',
-    phoneNumber: '',
-    extension: '',
-    email: '',
-    url: '',
-    comment: ''
-};
+const defaultValue: Partial<PhoneEmailEntry> = initial();
+
 type Props = {
     id: string;
     values?: PhoneEmailEntry[];

@@ -19,6 +19,7 @@ describe('when removing search terms', () => {
 
         const after = jest.fn();
 
+        const setValue = jest.spyOn(result.current, 'setValue');
         const resetField = jest.spyOn(result.current, 'resetField');
 
         const remove = removeTerm(result.current, after);
@@ -26,7 +27,7 @@ describe('when removing search terms', () => {
         remove({ ...DEFAULT_TERM, source: 'value' });
 
         expect(after).toBeCalled();
-
+        expect(setValue).toBeCalledWith('value', null);
         expect(resetField).toBeCalledWith('value');
     });
 

@@ -1,8 +1,8 @@
 import { asSelectable, findByValue, Selectable } from 'options';
 import { PatientNameCodedValues } from 'apps/patient/profile/names/usePatientNameCodedValues';
-import { AddressEntry, IdentificationEntry, NameEntry, PhoneEmailEntry } from 'apps/patient/data/entry';
-import { RaceEntry } from 'apps/patient/data/race/entry';
-import { NewPatientEntry } from 'apps/patient/add/NewPatientEntry';
+
+import { RaceEntry, AddressEntry, NameEntry, PhoneEmailEntry, IdentificationEntry } from 'apps/patient/data';
+import { NewPatientEntry } from 'apps/patient/add';
 import { ExtendedNewPatientEntry } from './entry';
 import { CodedValue } from 'coded';
 import { isEmpty, Mapping } from 'utils';

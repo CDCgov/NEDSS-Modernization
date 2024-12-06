@@ -14,7 +14,7 @@ type AddressEntry = {
     streetAddress1: Maybe<string>;
     streetAddress2: Maybe<string>;
     city: Maybe<string>;
-    state?: Selectable;
+    state?: Selectable | null;
     zip: Maybe<string>;
     county?: Selectable;
     censusTract: Maybe<string>;

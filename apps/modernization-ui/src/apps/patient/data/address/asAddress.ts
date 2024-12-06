@@ -1,6 +1,6 @@
 import { asValue } from 'options';
 import { Address } from '../api';
-import { AddressEntry } from '../entry';
+import { AddressEntry } from './entry';
 import { exists, orUndefined } from 'utils';
 
 const asAddress = (entry: AddressEntry): Address | undefined => {
