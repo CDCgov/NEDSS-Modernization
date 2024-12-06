@@ -8,7 +8,14 @@ import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
-import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import {
+    validZipCodeRule,
+    ZipCodeInputField,
+    CensusTractInputField,
+    validCensusTractRule
+} from 'libs/demographics/location';
+
+const CENSUS_TRACT_LABEL = 'Census tract';
 
 type Props = {
     id: string;
@@ -160,23 +167,14 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="censusTract"
-                            rules={{
-                                pattern: {
-                                    value: /[0-9]{4}(.(([0-8][0-9])|([9][0-8])))?/,
-                                    message:
-                                        ' Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                                },
-                                ...maxLengthRule(10)
-                            }}
+                            rules={validCensusTractRule(CENSUS_TRACT_LABEL)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <CensusTractInputField
+                                    id={name}
+                                    label={CENSUS_TRACT_LABEL}
+                                    value={value}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    type="text"
-                                    label="Census tract"
-                                    defaultValue={value}
-                                    htmlFor={name}
-                                    id={name}
                                     error={error?.message}
                                 />
                             )}
