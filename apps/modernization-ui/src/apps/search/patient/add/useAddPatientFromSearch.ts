@@ -14,8 +14,6 @@ const useAddPatientFromSearch = (): Interaction => {
     const { getValues } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     const add = () => {
-        console.log('add');
-        console.log(found);
         const defaults = asNewPatientEntry(getValues());
         navigate('/add-patient', { state: { defaults, criteria: found } });
     };

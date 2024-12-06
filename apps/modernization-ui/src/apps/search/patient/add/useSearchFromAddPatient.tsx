@@ -15,7 +15,6 @@ function SearchFromAddPatientProvider({ children }: SearchFromAddPatientProvider
     const navigate = useNavigate();
 
     const toSearch = (criteria: string | null) => {
-        console.log(criteria);
         if (criteria) {
             navigate(`search/patients/?q=${criteria}`);
         } else {
