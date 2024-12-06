@@ -7,6 +7,7 @@ import { useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { AddressEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Address as of';
@@ -15,6 +16,7 @@ const USE_LABEL = 'Use';
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
 const CITY_LABEL = 'City';
+const ZIP_LABEL = 'Zip';
 const COMMENTS_LABEL = 'Address comments';
 
 type AddressEntryFieldsProps = EntryFieldsProps;
@@ -177,26 +179,15 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
             <Controller
                 control={control}
                 name="zipcode"
-                rules={{
-                    pattern: {
-                        value: /^\d{5}(?:[-\s]\d{4})?$/,
-                        message:
-                            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
-                    }
-                }}
+                rules={validZipCodeRule(ZIP_LABEL)}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
-                    <Input
-                        label="Zip"
-                        orientation={orientation}
+                    <ZipCodeInputField
+                        id={name}
+                        label={ZIP_LABEL}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
-                        name="zipcode"
-                        mask="_____-____"
-                        pattern="^\d{5}(?:[-\s]\d{4})?$"
-                        htmlFor={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}
