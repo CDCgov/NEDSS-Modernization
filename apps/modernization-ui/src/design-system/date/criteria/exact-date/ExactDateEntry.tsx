@@ -16,7 +16,7 @@ export const ExactDateEntry = ({ id, value, onChange, onBlur }: ExactDateEntryPr
     const { state: dateEntry, apply, clear } = useDateEqualsCriteria(value);
 
     const handleOnChange = (field: ExactDateEntryFields) => (value: number | undefined) => {
-        if (value) {
+        if (value !== undefined) {
             apply(field, value);
         } else {
             clear(field);
