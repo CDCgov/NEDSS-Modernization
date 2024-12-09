@@ -25,7 +25,7 @@ $newContent | Set-Content -Path $setenvFilePath
 # 11. ALERT_EMAIL, 12. DEDUPLICATION_SIMILAR, 13. MSGOUT (MSGoutProcessor), 14. COVID_Case_DATAMART_REPORT, 15. COVID_LAB_DATAMART_REPORT
 # 16. COVID CELR_Repot
 $batchFilePath = "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles"
-$batchJobFiles = "ELRImporter","AHSLogRotate", "Mark as Reviewed", "Covid-Case", "DCIPER", "Covid-Celrlab", "Covid_Celrlab Rhapsody Report", "USER_PROFILE", "nbs_odse nbs_odse_Jurisdiction_Code SP", "ELRImporter", "UserProfileUpdateProcess", "ALERT_EMAIL", "DEDUPLICATION_SIMILAR", "MSGOUT", "COVID_Case_DATAMART_REPORT", "COVID_LAB_DATAMART_REPORT", "COVID CELR_Repot" 
+$batchJobFiles = "ELRImporter.bat","AHSLogRotate.bat", "Mark as Reviewed.bat", "Covid-Case.bat", "DCIPER.bat", "Covid-Celrlab.bat", "Covid_Celrlab Rhapsody Report.bat", "USER_PROFILE.bat", "nbs_odse nbs_odse_Jurisdiction_Code SP.bat", "UserProfileUpdateProcess.bat", "ALERT_EMAIL.bat", "DEDUPLICATION_SIMILAR.bat", "MSGOUT.bat", "COVID_Case_DATAMART_REPORT.bat", "COVID_LAB_DATAMART_REPORT.bat", "COVID CELR_Repot.bat" 
 
 foreach ($item in $batchJobFiles) {
     
@@ -35,7 +35,7 @@ foreach ($item in $batchJobFiles) {
     $duration = $currentDate.AddYears(25) -$currentDate
     # Define the file path
     $scriptDirPath = "$batchFilePath"
-    $scriptPath = ".\$item.bat"
+    $scriptPath = ".\$item"
     $argument = "> $item.output 2>&1"
     $principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType S4U
     # Action to run the specified batch file
@@ -47,8 +47,30 @@ foreach ($item in $batchJobFiles) {
     # Register the scheduled task
     Register-ScheduledTask -TaskName $jobName -Action $action -Trigger $trigger -Principal $principal -Settings $settings
 
-    Write-Output "Scheduled task $batchFilePath\$item.bat"
+    Write-Output "Scheduled task $batchFilePath\$item"
 }
+
+# "ELRImporter" - scheduled
+# "AHSLogRotate" -
+# "Mark as Reviewed" -
+# "Covid-Case" -
+# "DCIPER" -
+# "Covid-Celrlab" -
+# "Covid_Celrlab Rhapsody Report" -
+# "USER_PROFILE" -
+# "nbs_odse nbs_odse_Jurisdiction_Code SP" -
+# "UserProfileUpdateProcess" - 
+# "ALERT_EMAIL" - 
+# "DEDUPLICATION_SIMILAR"- 
+# "MSGOUT" - (may exist, under different name) - 
+# "COVID_Case_DATAMART_REPORT" -
+# "COVID_LAB_DATAMART_REPORT" - 
+# "COVID CELR_Repot" -
+
+## covid19ETL.bat
+
+
+
 
 
 ################################################################
