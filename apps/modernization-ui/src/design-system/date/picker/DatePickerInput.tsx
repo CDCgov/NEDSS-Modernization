@@ -1,7 +1,7 @@
-import { EntryWrapper, EntryComponentProps } from 'design-system/entry/base';
+import { Field, FieldProps } from 'design-system/field';
 import { DatePicker, DatePickerProps } from './DatePicker';
 
-type DatePickerInputProps = EntryComponentProps & DatePickerProps;
+type DatePickerInputProps = FieldProps & DatePickerProps;
 
 /**
  * @return {JSX.Element}
@@ -18,7 +18,7 @@ const DatePickerInput = ({
     ...remaining
 }: DatePickerInputProps) => {
     return (
-        <EntryWrapper
+        <Field
             orientation={orientation}
             sizing={sizing}
             label={label}
@@ -27,7 +27,7 @@ const DatePickerInput = ({
             required={required}
             error={error}>
             <DatePicker id={id} label={label} value={value} {...remaining} />
-        </EntryWrapper>
+        </Field>
     );
 };
 

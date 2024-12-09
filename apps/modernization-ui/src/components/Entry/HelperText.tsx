@@ -1,3 +1,0 @@
-const HelperText = () => {};
-
-export { HelperText };
