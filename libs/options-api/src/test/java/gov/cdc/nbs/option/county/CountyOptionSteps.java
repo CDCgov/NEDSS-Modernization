@@ -12,7 +12,7 @@ public class CountyOptionSteps {
   }
 
   @Given("there is a {string} county for {state} state")
-  public void the_county_exists_in_the_value_set(final String name, final String state) {
+  public void the_county_exists_in_the_value_set_for_state(final String name, final String state) {
     mother.create(name, state);
   }
 
