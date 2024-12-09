@@ -131,8 +131,8 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                     <MaskedTextInputField
                         id={name}
                         label="Extension"
-                        mask="____"
-                        pattern="^\+?\d{1,4}$"
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
