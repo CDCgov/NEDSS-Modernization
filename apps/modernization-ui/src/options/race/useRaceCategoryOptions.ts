@@ -6,7 +6,7 @@ type Interaction = {
 };
 
 const useRaceCategoryOptions = (): Interaction => {
-    const { options: categories } = useConceptOptions('P_RACE_CAT', { lazy: false });
+    const { options: categories } = useConceptOptions('RACE_CALCULATED', { lazy: false });
 
     return { categories };
 };
