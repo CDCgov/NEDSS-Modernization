@@ -1,7 +1,7 @@
-import { EntryComponentProps, EntryWrapper } from 'design-system/entry/base';
+import { Field, FieldProps } from 'design-system/field';
 import { MaskedTextInput, MaskedTextInputProps } from './MaskedTextInput';
 
-type MaskedTextInputFieldProps = EntryComponentProps & MaskedTextInputProps;
+type MaskedTextInputFieldProps = FieldProps & MaskedTextInputProps;
 
 const MaskedTextInputField = ({
     id,
@@ -13,15 +13,9 @@ const MaskedTextInputField = ({
     ...remaining
 }: MaskedTextInputFieldProps) => {
     return (
-        <EntryWrapper
-            orientation={orientation}
-            sizing={sizing}
-            label={label}
-            htmlFor={id}
-            required={required}
-            error={error}>
+        <Field orientation={orientation} sizing={sizing} label={label} htmlFor={id} required={required} error={error}>
             <MaskedTextInput id={id} {...remaining} />
-        </EntryWrapper>
+        </Field>
     );
 };
 

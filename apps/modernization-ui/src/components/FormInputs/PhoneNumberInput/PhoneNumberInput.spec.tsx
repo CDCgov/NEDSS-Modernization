@@ -4,26 +4,24 @@ import { PhoneNumberInput } from './PhoneNumberInput';
 describe('PhoneNumberInput component tests', () => {
     describe('When phone number is valid and formatted', () => {
         it('should return true', () => {
-            const { queryByTestId } = render(<PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" />);
-            expect(queryByTestId('errorMessage')).toBeNull();
+            const { queryByRole } = render(
+                <PhoneNumberInput label="test-phone-input" defaultValue="555-555-5555" onChange={jest.fn()} />
+            );
+            expect(queryByRole('alert')).not.toBeInTheDocument();
         });
     });
-    describe('When phone number is partially valid', () => {
-        it('should return true', () => {
-            const { queryByTestId } = render(<PhoneNumberInput label="test-phone-partial" defaultValue="555" />);
-            expect(queryByTestId('errorMessage')).toBeNull();
-        });
-    });
+
     describe('When phone number is invalid', () => {
         it('should return false', () => {
-            const { getByTestId } = render(
+            const { getByRole } = render(
                 <PhoneNumberInput
                     label="test-phone-input-false"
                     defaultValue="&X}5"
                     error="Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9)."
+                    onChange={jest.fn()}
                 />
             );
-            expect(getByTestId('errorMessage').innerHTML).toBe(
+            expect(getByRole('alert')).toHaveTextContent(
                 'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
             );
         });

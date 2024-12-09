@@ -6,6 +6,10 @@
     width: 100%;
     box-sizing: border-box;
 
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: colors.$clear;
+
     label {
         margin: 0;
         color: colors.$base-darkest;
@@ -32,11 +36,16 @@
     }
 
     &.error {
-        border-left: 2px solid colors.$secondary-dark;
-        padding-left: 1.375rem;
+        border-left-color: colors.$error-dark;
 
-        input {
+        input,
+        select,
+        textarea {
             outline: none;
+
+            border-width: 4px;
+            border-style: solid;
+            border-color: colors.$error-dark;
         }
     }
 }

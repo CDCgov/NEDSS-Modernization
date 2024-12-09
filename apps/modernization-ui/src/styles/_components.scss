@@ -14,9 +14,3 @@ $compact-height: 2rem;
 
     @extend %compact;
 }
-
-@mixin hint {
-    margin-top: -0.5rem;
-    font-size: 0.8rem;
-    color: colors.$base;
-}
