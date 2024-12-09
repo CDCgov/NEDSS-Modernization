@@ -30,9 +30,10 @@ class CountyMother {
       insert into NBS_SRTE.[dbo].State_county_code_value(
         code,
         code_desc_txt,
-        indent_level_nbr
+        indent_level_nbr,
+        parent_is_cd
       )
-      values (:identifier, :name, :order)
+      values (:identifier, :name, :order, :stateCode)
       """;
 
   private final NamedParameterJdbcTemplate template;
@@ -63,7 +64,7 @@ class CountyMother {
     }
   }
 
-  void create(final String name) {
+  void create(final String name, final String stateCode) {
 
     String code = UUID.randomUUID().toString()
         .replace("-", "")
@@ -77,6 +78,7 @@ class CountyMother {
     Map<String, ? extends Serializable> parameters = Map.of(
         "identifier", code,
         "name", name,
+        "stateCode", stateCode,
         "order", order);
 
     template.execute(

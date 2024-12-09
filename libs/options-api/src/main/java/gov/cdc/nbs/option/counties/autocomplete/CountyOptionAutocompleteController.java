@@ -27,8 +27,9 @@ class CountyOptionAutocompleteController {
   @GetMapping
   Collection<Option> complete(
       @RequestParam final String criteria,
+      @RequestParam final String state,
       @RequestParam(defaultValue = "15") final int limit) {
-    return this.resolver.resolve(criteria, limit);
+    return this.resolver.resolve(criteria, state, limit);
   }
 
 }

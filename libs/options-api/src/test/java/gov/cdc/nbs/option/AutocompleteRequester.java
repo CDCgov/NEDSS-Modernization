@@ -18,16 +18,35 @@ public class AutocompleteRequester {
 
   public ResultActions complete(final String name, final String criteria) throws Exception {
     return mvc.perform(
-            get("/nbs/api/options/{name}/search", name)
-                .param("criteria", criteria))
+        get("/nbs/api/options/{name}/search", name)
+            .param("criteria", criteria))
         .andDo(print());
   }
 
   public ResultActions complete(final String name, final String criteria, final int limit) throws Exception {
     return mvc.perform(
-            get("/nbs/api/options/{name}/search", name)
-                .param("criteria", criteria)
-                .param("limit", String.valueOf(limit)))
+        get("/nbs/api/options/{name}/search", name)
+            .param("criteria", criteria)
+            .param("limit", String.valueOf(limit)))
+        .andDo(print());
+  }
+
+  public ResultActions complete(final String name, final String criteria, String key1, String value1, final int limit)
+      throws Exception {
+    return mvc.perform(
+        get("/nbs/api/options/{name}/search", name)
+            .param("criteria", criteria)
+            .param(key1, value1)
+            .param("limit", String.valueOf(limit)))
+        .andDo(print());
+  }
+
+  public ResultActions complete(final String name, final String criteria, String key1, String value1)
+      throws Exception {
+    return mvc.perform(
+        get("/nbs/api/options/{name}/search", name)
+            .param("criteria", criteria)
+            .param(key1, value1))
         .andDo(print());
   }
 }

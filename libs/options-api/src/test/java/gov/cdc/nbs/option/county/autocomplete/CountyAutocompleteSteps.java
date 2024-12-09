@@ -18,16 +18,18 @@ public class CountyAutocompleteSteps {
     this.response = response;
   }
 
-  @When("I am trying to find counties that start with {string}")
-  public void i_am_trying_to_find_county_that_start_with(final String criteria) throws Exception {
-    response.active(request.complete(NAME, criteria));
+  @When("I am trying to find counties that start with {string} for state {string}")
+  public void i_am_trying_to_find_counties_that_start_with_for_state(final String criteria, final String state)
+      throws Exception {
+    response.active(request.complete(NAME, criteria, "state", state));
   }
 
-  @When("I am trying to find at most {int} counties that start with {string}")
+  @When("I am trying to find at most {int} counties that start with {string} for state {string}")
   public void i_am_trying_to_find_n_counties_that_start_with(
       final int limit,
-      final String criteria) throws Exception {
-    response.active(request.complete("counties", criteria, limit));
+      final String criteria,
+      final String state) throws Exception {
+    response.active(request.complete(NAME, criteria, "state", state, limit));
   }
 
 }

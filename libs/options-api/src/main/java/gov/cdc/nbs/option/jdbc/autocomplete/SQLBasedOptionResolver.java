@@ -14,6 +14,7 @@ public class SQLBasedOptionResolver {
   private static final String LIMIT_PARAMETER = "limit";
   private static final String SQL_WILDCARD = "%";
   private static final String QUICK_CODE = "quickCode";
+  private static final String PARAM2 = "param2";
 
   private final String query;
   private final NamedParameterJdbcTemplate template;
@@ -25,17 +26,21 @@ public class SQLBasedOptionResolver {
     this.mapper = new OptionRowMapper();
   }
 
-
-  public Collection<Option> resolve(final String keyword, final int limit) {
+  public Collection<Option> resolve(final String keyword, final String param2, final int limit) {
     Map<String, Object> parameters = Map.of(
         CRITERIA_PARAMETER, withWildcard(keyword),
         PREFIX_CRITERIA_PARAMETER, withPrefixWildcard(keyword),
         QUICK_CODE, keyword,
+        PARAM2, param2,
         LIMIT_PARAMETER, limit);
     return this.template.query(
         this.query,
         new MapSqlParameterSource(parameters),
         this.mapper);
+  }
+
+  public Collection<Option> resolve(final String keyword, final int limit) {
+    return resolve(keyword, null, limit);
   }
 
   private String withWildcard(final String value) {
