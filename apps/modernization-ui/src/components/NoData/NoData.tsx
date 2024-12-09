@@ -1,12 +1,14 @@
+import classNames from 'classnames';
 import './NoData.scss';
 
 type NoDataProps = {
     className?: string;
-    showText?: boolean;
+    display?: 'text' | 'dashes' | 'whitespace';
 };
 
-const NoData = ({ className = '', showText = true }: NoDataProps) => {
-    return <span className={`no-data ${className}`}>{showText ? 'No Data' : <>&nbsp;</>}</span>;
+const NoData = ({ className = '', display = 'text' }: NoDataProps) => {
+    const noDataText = display === 'dashes' ? '--' : display === 'whitespace' ? <>&nbsp;</> : 'No Data';
+    return <span className={classNames('no-data', className)}>{noDataText}</span>;
 };
 
 export { NoData };
