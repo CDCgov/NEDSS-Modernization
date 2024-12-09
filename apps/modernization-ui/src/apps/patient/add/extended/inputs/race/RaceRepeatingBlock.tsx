@@ -26,7 +26,7 @@ type Props = {
 };
 
 const RaceRepeatingBlock = ({ id, values = [], errors, onChange, isDirty }: Props) => {
-    const { categories } = useRaceCategoryOptions();
+    const { categories } = useRaceCategoryOptions(true);
 
     const renderForm = (entry?: RaceEntry) => (
         <RaceEntryFields categories={categories} categoryValidator={categoryValidator(values)} entry={entry} />

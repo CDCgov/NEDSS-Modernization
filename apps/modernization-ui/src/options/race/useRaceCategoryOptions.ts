@@ -5,8 +5,8 @@ type Interaction = {
     categories: Selectable[];
 };
 
-const useRaceCategoryOptions = (): Interaction => {
-    const { options: categories } = useConceptOptions('P_RACE_CAT', { lazy: false });
+const useRaceCategoryOptions = (isMultiRace = false): Interaction => {
+    const { options: categories } = useConceptOptions(isMultiRace ? 'RACE_CALCULATED' : 'P_RACE_CAT', { lazy: false });
 
     return { categories };
 };
