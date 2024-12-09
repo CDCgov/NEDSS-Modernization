@@ -8,6 +8,10 @@ import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import { CensusTractInputField, validCensusTractRule } from 'apps/patient/data/address';
+
+const CENSUS_TRACT_LABEL = 'Census tract';
 
 type Props = {
     id: string;
@@ -120,27 +124,17 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="zip"
-                            rules={{
-                                pattern: {
-                                    value: /^\d{5}(?:[-\s]\d{4})?$/,
-                                    message:
-                                        'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
-                                }
-                            }}
+                            rules={validZipCodeRule('ZIP code')}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <ZipCodeInputField
                                     id={name}
                                     name={name}
-                                    type="text"
                                     label="ZIP"
-                                    htmlFor={name}
-                                    defaultValue={value}
+                                    orientation="vertical"
+                                    value={value}
                                     error={error?.message}
                                     onBlur={onBlur}
                                     onChange={onChange}
-                                    orientation={'vertical'}
-                                    mask="_____-____"
-                                    pattern="^\d{5}(?:[-\s]\d{4})?$"
                                 />
                             )}
                         />
@@ -169,23 +163,14 @@ export default function AddressFields({ id, title, coded }: Props) {
                         <Controller
                             control={control}
                             name="censusTract"
-                            rules={{
-                                pattern: {
-                                    value: /[0-9]{4}(.(([0-8][0-9])|([9][0-8])))?/,
-                                    message:
-                                        ' Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                                },
-                                ...maxLengthRule(10)
-                            }}
+                            rules={validCensusTractRule(CENSUS_TRACT_LABEL)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <Input
+                                <CensusTractInputField
+                                    id={name}
+                                    label={CENSUS_TRACT_LABEL}
+                                    value={value}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    type="text"
-                                    label="Census tract"
-                                    defaultValue={value}
-                                    htmlFor={name}
-                                    id={name}
                                     error={error?.message}
                                 />
                             )}

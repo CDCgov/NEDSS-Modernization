@@ -7,6 +7,8 @@ import { useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Address as of';
@@ -15,6 +17,8 @@ const USE_LABEL = 'Use';
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
 const CITY_LABEL = 'City';
+const ZIP_LABEL = 'Zip';
+const CENSUS_TRACT_LABEL = 'Census tract';
 const COMMENTS_LABEL = 'Address comments';
 
 type AddressEntryFieldsProps = EntryFieldsProps;
@@ -177,26 +181,15 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
             <Controller
                 control={control}
                 name="zipcode"
-                rules={{
-                    pattern: {
-                        value: /^\d{5}(?:[-\s]\d{4})?$/,
-                        message:
-                            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).'
-                    }
-                }}
+                rules={validZipCodeRule(ZIP_LABEL)}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
-                    <Input
-                        label="Zip"
-                        orientation={orientation}
+                    <ZipCodeInputField
+                        id={name}
+                        label={ZIP_LABEL}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
-                        name="zipcode"
-                        mask="_____-____"
-                        pattern="^\d{5}(?:[-\s]\d{4})?$"
-                        htmlFor={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}
@@ -219,26 +212,15 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
             <Controller
                 control={control}
                 name="censusTract"
-                rules={{
-                    pattern: {
-                        value: /^(?!0000)(\d{4})(?:\.(?!00|99)\d{2})?$/,
-                        message:
-                            'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.'
-                    }
-                }}
+                rules={validCensusTractRule(CENSUS_TRACT_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Census tract"
-                        orientation={orientation}
+                    <CensusTractInputField
+                        id={name}
+                        label={CENSUS_TRACT_LABEL}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
-                        mask="____.__"
-                        pattern="^(?!0000)(\d{4})(?:\.(?!00|99)\d{2})?$"
-                        name={name}
-                        htmlFor={name}
-                        id={name}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}
