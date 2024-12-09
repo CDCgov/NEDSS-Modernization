@@ -9,6 +9,7 @@ type Column<V> = {
     name: string;
     fixed?: boolean;
     sortable?: boolean;
+    className?: string;
     render: (value: V, index: number) => ReactNode | undefined;
 };
 
@@ -26,7 +27,9 @@ const DataTable = <V,>({ id, className, columns, data }: Props<V>) => {
                 <thead>
                     <tr>
                         {columns.map((column, index) => (
-                            <Header key={index}>{column}</Header>
+                            <Header key={index} className={column.className}>
+                                {column}
+                            </Header>
                         ))}
                     </tr>
                     <tr className={styles.border}>

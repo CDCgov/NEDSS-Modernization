@@ -1,6 +1,6 @@
 /* eslint-disable no-redeclare */
 import { asValue } from 'options';
-import { NameEntry } from '../entry';
+import { NameEntry } from './entry';
 import { Name } from '../api';
 import { exists, orUndefined } from 'utils';
 

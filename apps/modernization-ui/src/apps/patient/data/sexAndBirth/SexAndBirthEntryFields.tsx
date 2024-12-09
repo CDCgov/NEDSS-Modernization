@@ -132,7 +132,8 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
             <Controller
                 control={control}
                 name="birthAndSex.additionalGender"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                rules={maxLengthRule(20)}
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Additional gender"
                         orientation={orientation}
@@ -144,6 +145,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         name={name}
                         htmlFor={name}
                         defaultValue={value}
+                        error={error?.message}
                     />
                 )}
             />

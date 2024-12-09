@@ -1,6 +1,6 @@
 [versions]
-springBoot = '3.3.4'
-spring-security = '6.3.3'
+springBoot = '3.3.6'
+spring-security = '6.3.5'
 jackson = '2.17.2'
 queryDSL = '5.1.0'
 spring-kafka = '3.2.0'

@@ -10,49 +10,6 @@ type LocationEntry = {
 
 type AdministrativeEntry = EffectiveDated & HasComments;
 
-type NameEntry = EffectiveDated & {
-    type: Selectable | null;
-    prefix?: Maybe<Selectable>;
-    first?: string;
-    middle?: string;
-    secondMiddle?: string;
-    last?: string;
-    secondLast?: string;
-    suffix?: Maybe<Selectable>;
-    degree?: Maybe<Selectable>;
-};
-
-type AddressEntry = EffectiveDated &
-    HasComments & {
-        type: Selectable | null;
-        use: Selectable | null;
-        address1?: string;
-        address2?: string;
-        city?: string;
-        county?: Maybe<Selectable>;
-        state?: Maybe<Selectable>;
-        zipcode?: string;
-        country?: Maybe<Selectable>;
-        censusTract?: string;
-    };
-
-type PhoneEmailEntry = EffectiveDated &
-    HasComments & {
-        type: Selectable | null;
-        use: Selectable | null;
-        countryCode?: string;
-        phoneNumber?: string;
-        extension?: string;
-        email?: string;
-        url?: string;
-    };
-
-type IdentificationEntry = EffectiveDated & {
-    type: Selectable | null;
-    id: string | null;
-    issuer?: Maybe<Selectable>;
-};
-
 type SexEntry = EffectiveDated & {
     current?: Selectable;
     unknownReason?: Selectable;
@@ -86,14 +43,4 @@ type GeneralInformationEntry = EffectiveDated & {
     stateHIVCase?: string;
 };
 
-export type {
-    AdministrativeEntry,
-    NameEntry,
-    AddressEntry,
-    PhoneEmailEntry,
-    IdentificationEntry,
-    SexEntry,
-    BirthEntry,
-    MortalityEntry,
-    GeneralInformationEntry
-};
+export type { AdministrativeEntry, SexEntry, BirthEntry, MortalityEntry, GeneralInformationEntry };

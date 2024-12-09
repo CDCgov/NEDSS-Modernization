@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { NameEntry } from '../entry';
+import { act, render, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { NameEntry } from './entry';
 import { NameEntryFields } from './NameEntryFields';
 
 const mockPatientNameCodedValues = {

@@ -1,11 +1,14 @@
-import { Grid } from '@trussworks/react-uswds';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import FormCard from 'components/FormCard/FormCard';
-import { validatePhoneNumber } from 'validation/phone';
-import { Input } from 'components/FormInputs/Input';
-import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
-import { maxLengthRule } from 'validation/entry';
 import { useEffect } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Grid } from '@trussworks/react-uswds';
+import FormCard from 'components/FormCard/FormCard';
+import { Input } from 'components/FormInputs/Input';
+import { maxLengthRule, validEmailRule } from 'validation/entry';
+import { PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+
+const HOME_PHONE_LABEL = 'Home phone';
+const WORK_PHONE_LABEL = 'Work phone';
+const CELL_PHONE_LABEL = 'Cell phone';
 
 type Props = {
     id: string;
@@ -37,22 +40,15 @@ export default function ContactFields({ id, title }: Props) {
                         <Controller
                             control={control}
                             name="homePhone"
-                            rules={{
-                                validate: {
-                                    properNumber: validatePhoneNumber
-                                },
-                                ...maxLengthRule(20)
-                            }}
-                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                                <PhoneNumberInput
+                            rules={validPhoneNumberRule(HOME_PHONE_LABEL)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                <PhoneNumberInputField
+                                    id={name}
+                                    label={HOME_PHONE_LABEL}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    label="Home phone"
-                                    defaultValue={value}
-                                    id="homePhone"
+                                    value={value}
                                     error={error?.message}
-                                    mask="___-___-____"
-                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
@@ -63,22 +59,15 @@ export default function ContactFields({ id, title }: Props) {
                         <Controller
                             control={control}
                             name="workPhone"
-                            rules={{
-                                validate: {
-                                    properNumber: validatePhoneNumber
-                                },
-                                ...maxLengthRule(20)
-                            }}
-                            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                                <PhoneNumberInput
+                            rules={validPhoneNumberRule(WORK_PHONE_LABEL)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                <PhoneNumberInputField
+                                    id={name}
+                                    label={WORK_PHONE_LABEL}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    label="Work phone"
-                                    defaultValue={value}
-                                    id="workPhone"
+                                    value={value}
                                     error={error?.message}
-                                    mask="___-___-____"
-                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
@@ -111,26 +100,40 @@ export default function ContactFields({ id, title }: Props) {
                         <Controller
                             control={control}
                             name="cellPhone"
-                            rules={{
-                                validate: {
-                                    properNumber: validatePhoneNumber
-                                },
-                                ...maxLengthRule(20)
-                            }}
+                            rules={validPhoneNumberRule(CELL_PHONE_LABEL)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                                <PhoneNumberInput
+                                <PhoneNumberInputField
+                                    id={name}
+                                    label={CELL_PHONE_LABEL}
                                     onChange={onChange}
                                     onBlur={onBlur}
-                                    label="Cell phone"
-                                    defaultValue={value}
-                                    id={name}
+                                    value={value}
                                     error={error?.message}
-                                    mask="___-___-____"
-                                    pattern="\d{3}-\d{3}-\d{4}"
                                 />
                             )}
                         />
                     </Grid>
+                </Grid>
+                <Grid col={6}>
+                    <Controller
+                        control={control}
+                        name={`emailAddress`}
+                        rules={{
+                            ...validEmailRule(100)
+                        }}
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                            <Input
+                                onChange={onChange}
+                                onBlur={onBlur}
+                                type="text"
+                                label="Email"
+                                defaultValue={value}
+                                htmlFor={name}
+                                id={name}
+                                error={error?.message}
+                            />
+                        )}
+                    />
                 </Grid>
             </Grid>
         </FormCard>

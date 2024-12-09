@@ -1,16 +1,18 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
-import { Input } from 'components/FormInputs/Input';
 import { SingleSelect } from 'design-system/select';
-import { maxLengthRule, validateRequiredRule, validEmailRule } from 'validation/entry';
-import { validatePhoneNumber } from 'validation/phone';
-import { PhoneEmailEntry } from 'apps/patient/data/entry';
 import { EntryFieldsProps } from 'design-system/entry';
+import { maxLengthRule, validateRequiredRule, validEmailRule } from 'validation/entry';
+import { PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { MaskedTextInputField } from 'design-system/input/text';
+import { Input } from 'components/FormInputs/Input';
+import { PhoneEmailEntry } from 'apps/patient/data';
+import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
 
 const AS_OF_DATE_LABEL = 'Phone & email as of';
 const TYPE_LABEL = 'Type';
 const USE_LABEL = 'Use';
+const PHONE_NUMBER_LABEL = 'Phone number';
 const COMMENTS_LABEL = 'Phone & email comments';
 
 type PhoneEmailEntryFieldsProps = EntryFieldsProps;
@@ -82,53 +84,37 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,3}$/,
-                        message: 'A country code should be 1 to 3 digits'
+                        message: 'A Country code should be 1 to 3 digits'
                     }
                 }}
-                render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => {
-                    return (
-                        <Input
-                            label="Country code"
-                            orientation={orientation}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            defaultValue={value}
-                            type="tel"
-                            mask="___"
-                            pattern="^\+?\d{1,3}$"
-                            htmlFor={name}
-                            id={name}
-                            name={name}
-                            error={error?.message}
-                        />
-                    );
-                }}
+                render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
+                    <MaskedTextInputField
+                        id={name}
+                        label="Country code"
+                        type="tel"
+                        mask="___"
+                        pattern="^\+?\d{1,3}$"
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        orientation={orientation}
+                        error={error?.message}
+                    />
+                )}
             />
             <Controller
                 control={control}
                 name="phoneNumber"
-                rules={{
-                    validate: {
-                        properNumber: (value) => validatePhoneNumber(value ?? '')
-                    }
-                }}
+                rules={validPhoneNumberRule(PHONE_NUMBER_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Phone number"
-                        orientation={orientation}
+                    <PhoneNumberInputField
+                        id={name}
+                        label={PHONE_NUMBER_LABEL}
+                        value={value}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
-                        mask="___-___-____"
-                        pattern="\d{3}-\d{3}-\d{4}"
-                        error={
-                            error &&
-                            'Please enter a valid phone number (XXX-XXX-XXXX) using only numeric characters (0-9).'
-                        }
+                        orientation={orientation}
+                        error={error?.message}
                     />
                 )}
             />
@@ -138,22 +124,19 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,4}$/,
-                        message: 'A Extension should be 1 to 4 digits'
+                        message: 'An Extension should be 1 to 4 digits'
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <MaskedTextInputField
+                        id={name}
                         label="Extension"
-                        orientation={orientation}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        defaultValue={value}
-                        type="text"
                         mask="____"
                         pattern="^\+?\d{1,4}$"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
+                        value={value}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        orientation={orientation}
                         error={error?.message}
                     />
                 )}

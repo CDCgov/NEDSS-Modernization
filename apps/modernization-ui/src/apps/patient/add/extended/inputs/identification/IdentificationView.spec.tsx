@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { IdentificationEntry } from 'apps/patient/data/entry';
+import { IdentificationEntry } from 'apps/patient/data';
 import { IdentificationView } from './IdentificationView';
 
 const entry: IdentificationEntry = {

@@ -15,7 +15,7 @@ export type { RaceEntry, RaceCategoryValidator };
 const initial = (asOf: string = today()): Partial<RaceEntry> => ({
     id: new Date().getTime(),
     asOf,
-    race: null,
+    race: undefined,
     detailed: []
 });
 

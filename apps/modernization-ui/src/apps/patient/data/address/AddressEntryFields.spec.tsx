@@ -1,9 +1,8 @@
-import { render, waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
 import { FormProvider, useForm } from 'react-hook-form';
-import { AddressEntry } from '../entry';
-import { AddressEntryFields } from './AddressEntryFields';
 import userEvent from '@testing-library/user-event';
+import { render, waitFor, act } from '@testing-library/react';
+import { AddressEntry } from './entry';
+import { AddressEntryFields } from './AddressEntryFields';
 
 const mockPatientAddressCodedValues = {
     types: [{ name: 'House', value: 'H' }],
@@ -155,7 +154,7 @@ describe('when entering patient address demographics', () => {
         userEvent.tab();
 
         const validationMessage =
-            'Census Tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
+            'The Census tract should be in numeric XXXX or XXXX.xx format where XXXX is the basic tract and xx is the suffix. XXXX ranges from 0001 to 9999. The suffix is limited to a range between .01 and .98.';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
@@ -185,7 +184,7 @@ describe('when entering patient address demographics', () => {
         userEvent.tab();
 
         const validationMessage =
-            'Please enter a valid ZIP code (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).';
+            'Please enter a valid Zip (XXXXX or XXXXX-XXXX ) using only numeric characters (0-9).';
 
         await waitFor(() => {
             const validationError = queryByText(validationMessage);
