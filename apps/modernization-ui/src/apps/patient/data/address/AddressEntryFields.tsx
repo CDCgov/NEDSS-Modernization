@@ -7,12 +7,8 @@ import { useLocationCodedValues } from 'location';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
-import {
-    validZipCodeRule,
-    ZipCodeInputField,
-    CensusTractInputField,
-    validCensusTractRule
-} from 'libs/demographics/location';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
 
 const AS_OF_DATE_LABEL = 'Address as of';

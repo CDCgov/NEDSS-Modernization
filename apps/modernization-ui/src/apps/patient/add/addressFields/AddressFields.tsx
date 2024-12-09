@@ -8,12 +8,8 @@ import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 import { SingleSelect } from 'design-system/select';
-import {
-    validZipCodeRule,
-    ZipCodeInputField,
-    CensusTractInputField,
-    validCensusTractRule
-} from 'libs/demographics/location';
+import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
+import { CensusTractInputField, validCensusTractRule } from 'apps/patient/data/address';
 
 const CENSUS_TRACT_LABEL = 'Census tract';
 
