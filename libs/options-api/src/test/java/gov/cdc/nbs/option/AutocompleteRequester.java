@@ -31,22 +31,20 @@ public class AutocompleteRequester {
         .andDo(print());
   }
 
-  public ResultActions complete(final String name, final String criteria, String key1, String value1, final int limit)
+  public ResultActions complete(final String name, final String criteria, String root, final int limit)
       throws Exception {
     return mvc.perform(
-        get("/nbs/api/options/{name}/search", name)
+        get("/nbs/api/options/{name}/{root}/search", name, root)
             .param("criteria", criteria)
-            .param(key1, value1)
             .param("limit", String.valueOf(limit)))
         .andDo(print());
   }
 
-  public ResultActions complete(final String name, final String criteria, String key1, String value1)
+  public ResultActions complete(final String name, final String criteria, String root)
       throws Exception {
     return mvc.perform(
-        get("/nbs/api/options/{name}/search", name)
-            .param("criteria", criteria)
-            .param(key1, value1))
+        get("/nbs/api/options/{name}/{root}/search", name, root)
+            .param("criteria", criteria))
         .andDo(print());
   }
 }
