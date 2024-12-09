@@ -1,0 +1,50 @@
+@use 'styles/colors';
+@use 'styles/components';
+
+.entry {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: colors.$clear;
+
+    label {
+        margin: 0;
+        color: colors.$base-darkest;
+    }
+
+    input,
+    select {
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    &.compact {
+        @extend %compact;
+
+        label {
+            @extend %compact;
+        }
+
+        input,
+        select {
+            @extend %compact-input;
+        }
+    }
+
+    &.error {
+        border-left-color: colors.$error-dark;
+
+        input,
+        select,
+        textarea {
+            outline: none;
+
+            border-width: 4px;
+            border-style: solid;
+            border-color: colors.$error-dark;
+        }
+    }
+}

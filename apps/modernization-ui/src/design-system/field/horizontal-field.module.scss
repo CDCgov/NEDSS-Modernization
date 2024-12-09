@@ -1,0 +1,23 @@
+@use 'styles/borders';
+
+.horizontalInput {
+    display: flex;
+    padding: 0.5rem 1.5rem;
+    align-items: center;
+    gap: 2rem;
+    min-height: 3rem;
+    @extend %thin-bottom;
+
+    .left {
+        width: 13rem;
+    }
+
+    label {
+        font-size: 0.875rem !important;
+        font-weight: 700;
+    }
+
+    .right {
+        width: 20rem;
+    }
+}

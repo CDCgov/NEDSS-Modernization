@@ -1,0 +1,9 @@
+@use 'styles/colors';
+
+.message {
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    color: colors.$error-dark;
+    display: block;
+    font-weight: 700;
+}
