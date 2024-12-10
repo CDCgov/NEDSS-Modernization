@@ -67,3 +67,12 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Select Target form dropdown on add new rule classic page
     Then Click on Submit button in add new rule on classic page
 
+  Scenario: Investigation page add/import elements
+    Then Click on view icon to display the page details on classic
+    Then Click on Edit button on investigation view page
+    Then Click Add Elements Icon in Edit page
+    Then Select Static Element as Element Type in Add Element page
+    Then Select static element type from dropdown
+    Then Click on Submit Button in Add Element page
+    Then Click on Close Button in Add Element page
+

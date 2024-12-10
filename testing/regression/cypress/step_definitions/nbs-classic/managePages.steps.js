@@ -96,3 +96,27 @@ Then("Select Target form dropdown on add new rule classic page", () => {
 Then("Click on Submit button in add new rule on classic page", () => {
     classicManagePagesPage.clickSubmitBtn2()
 });
+
+Then("Click on Edit button on investigation view page", () => {
+    classicManagePagesPage.clickEditBtnInViewPage()
+});
+
+Then("Click Add Elements Icon in Edit page", () => {
+    classicManagePagesPage.clickAddElements()
+});
+
+Then("Select Static Element as Element Type in Add Element page", () => {
+    classicManagePagesPage.selectStaticElement()
+});
+
+Then("Select static element type from dropdown", () => {
+    classicManagePagesPage.selectStaticElementType()
+});
+
+Then("Click on Submit Button in Add Element page", () => {
+    classicManagePagesPage.clickSubmitBtnInElementPage()
+});
+
+Then("Click on Close Button in Add Element page", () => {
+    classicManagePagesPage.clickCloseBtnInAddElementPage()
+});
