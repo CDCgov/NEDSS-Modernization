@@ -1,4 +1,4 @@
-Feature: Page Builder - User can view existing page library pagination here.
+Feature: Page Builder - Page builder manage pages investigations
 
     Background:
         Given I am logged in as secure user and stay on classic
