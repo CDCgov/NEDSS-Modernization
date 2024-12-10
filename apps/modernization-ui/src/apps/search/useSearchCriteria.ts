@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
 import { decrypt, encrypt } from 'cryptography';
 import { useSearchParams } from 'react-router-dom';
+import { useSearchCriteriaEncrypted } from './useSearchCriteriaEncrypted';
 
 const CRITERIA_PARAMETER = 'q';
 
@@ -56,8 +57,9 @@ type Interaction<V> = {
  * @return {Interaction<C>} Interaction result
  */
 const useSearchCriteria = <C extends object>({ defaultValues }: Options<C>): Interaction<C> => {
-    const [searchParams, setSearchParams] = useSearchParams();
-    const found = useMemo(() => searchParams.get(CRITERIA_PARAMETER), [searchParams]);
+    const [_searchParams, setSearchParams] = useSearchParams();
+
+    const { found } = useSearchCriteriaEncrypted();
 
     const [state, dispatch] = useReducer(reducer<C>, { status: 'initializing' });
 

@@ -1,7 +1,6 @@
 import { AlertBanner } from 'apps/page-builder/components/AlertBanner/AlertBanner';
 import styles from './no-patient-result.module.scss';
-
-import { useAddPatientFromSearch } from 'apps/search/patient/add';
+import { useAddPatientFromSearch } from 'apps/search/patient/add/useAddPatientFromSearch';
 
 const NoPatientResults = () => {
     const { add } = useAddPatientFromSearch();

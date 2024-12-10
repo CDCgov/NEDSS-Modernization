@@ -1,6 +1,6 @@
+import { DefaultNewPatentEntry, NewPatientEntry } from 'apps/patient/add';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { DefaultNewPatentEntry, NewPatientEntry } from 'apps/patient/add';
 
 const usePreFilled = (initial: DefaultNewPatentEntry): NewPatientEntry => {
     const location = useLocation();
@@ -10,9 +10,8 @@ const usePreFilled = (initial: DefaultNewPatentEntry): NewPatientEntry => {
         if (location?.state?.defaults) {
             setPrefilled(location?.state?.defaults);
         }
-    }, [location?.state?.criteria, location?.state?.defaults]);
+    }, [location?.state?.defaults]);
 
     return prefilled;
 };
-
 export { usePreFilled };
