@@ -4,6 +4,7 @@ import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 const AS_OF_DATE_LABEL = 'Information as of';
 const COMMENTS_LABEL = 'General comments';
@@ -38,18 +39,28 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                 name="administrative.comment"
                 rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <Input
+                    // <Input
+                    //     label={COMMENTS_LABEL}
+                    //     type="text"
+                    //     orientation={orientation}
+                    //     onBlur={onBlur}
+                    //     onChange={onChange}
+                    //     defaultValue={value}
+                    //     name={name}
+                    //     htmlFor={name}
+                    //     id={name}
+                    //     error={error?.message}
+                    //     multiline
+                    // />
+                    <TextAreaField
                         label={COMMENTS_LABEL}
-                        type="text"
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         name={name}
-                        htmlFor={name}
                         id={name}
                         error={error?.message}
-                        multiline
                     />
                 )}
             />

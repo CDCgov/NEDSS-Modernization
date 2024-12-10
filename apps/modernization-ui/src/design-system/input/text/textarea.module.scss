@@ -1,0 +1,16 @@
+@use 'styles/colors';
+
+.textArea {
+    display: flex;
+    flex-direction: column;
+
+    .counter {
+        display: flex;
+        justify-content: end;
+        color: colors.$base;
+
+        .limit {
+            color: colors.$error;
+        }
+    }
+}
