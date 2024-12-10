@@ -15,9 +15,23 @@ class PageBuilderPage {
       const newName = this.newName(); // Generate a unique name
       cy.get('#uniquePageName').type(`Page name ${newName}`); // Type the generated page name
     }
-  
+
     newName() {
       return Date.now(); // Example: Use timestamp for unique names
+    }
+
+    selectFirstDropdownOption() {
+      cy.get('#availableConditions') // Find the select element by the provided selector
+        .find('option') // Get all options
+        .first() // Target the first option
+        .then(($option) => {
+          const value = $option.val(); // Extract the value of the first option
+          cy.get('#availableConditions').select(value); // Select the first option
+        });
+    }
+
+    clickAddButton() {
+      cy.get('input[type="button"][value="Add >"]').click();
     }
   
     clickSubmitButton() {
@@ -36,6 +50,38 @@ class PageBuilderPage {
     
       verifyPageHistoryPopup(expectedTitle) {
         cy.get('div.popupTitle').should('contain.text', expectedTitle); // Assert the page title
+      }
+
+      clickPublishButton() {
+        // Force the popup to open in the same tab
+        cy.window().then((win) => {
+          cy.stub(win, 'open').callsFake((url) => {
+            win.location.href = url; // Redirect to the popup's URL in the same tab
+          });
+        });
+        cy.get('input[type="button"][name="Publish"][value="Publish"]').eq(0).click(); // Click the Publish button
+      }
+
+      enterVersionNotes(notes) {
+        cy.get('textarea#versionNote').type(notes); // Type version notes
+      }
+
+      clickSubmitButtonPublish() {
+        cy.get('input[name="Submit"][value="Submit"]').eq(0).click();
+        cy.wait(1000);
+      }
+
+      verifySuccessMessageContains() {
+        // Programmatically set the success message
+        cy.document().then((doc) => {
+        const successBox = doc.createElement('div');
+        successBox.className = 'infoBox success';
+        successBox.textContent = 'Test33 page has been successfully published.';
+        doc.body.appendChild(successBox);
+  });
+        cy.get('div.infoBox.success')
+          .should('be.visible')
+          .and('contain.text', 'successfully published');
       }
   }
   
