@@ -1,2 +1,2 @@
-export { PhoneNumberInputField } from './PhoneNumberInputField';
-export { validPhoneNumberRule } from './validPhoneNumberRule';
+export { PhoneNumberInputField } from './phone/PhoneNumberInputField';
+export { validPhoneNumberRule } from './phone/validPhoneNumberRule';
