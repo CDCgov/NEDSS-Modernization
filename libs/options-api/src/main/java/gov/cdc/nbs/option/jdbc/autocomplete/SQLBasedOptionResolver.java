@@ -40,7 +40,7 @@ public class SQLBasedOptionResolver {
   }
 
   public Collection<Option> resolve(final String keyword, final int limit) {
-    return resolve(keyword, null, limit);
+    return resolve(keyword, "", limit);
   }
 
   private String withWildcard(final String value) {
