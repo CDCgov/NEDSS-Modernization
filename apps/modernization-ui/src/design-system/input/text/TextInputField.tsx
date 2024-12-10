@@ -1,19 +1,13 @@
-import { EntryComponentProps, EntryWrapper } from 'design-system/entry/base';
+import { Field, FieldProps } from 'design-system/field';
 import { TextInput, TextInputProps } from './TextInput';
 
-type TextInputFieldProps = EntryComponentProps & TextInputProps;
+type TextInputFieldProps = FieldProps & TextInputProps;
 
 const TextInputField = ({ id, label, orientation, sizing, error, required, ...remaining }: TextInputFieldProps) => {
     return (
-        <EntryWrapper
-            orientation={orientation}
-            sizing={sizing}
-            label={label}
-            htmlFor={id}
-            required={required}
-            error={error}>
+        <Field orientation={orientation} sizing={sizing} label={label} htmlFor={id} required={required} error={error}>
             <TextInput id={id} {...remaining} />
-        </EntryWrapper>
+        </Field>
     );
 };
 
