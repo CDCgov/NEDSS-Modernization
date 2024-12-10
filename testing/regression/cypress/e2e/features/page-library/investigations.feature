@@ -8,3 +8,9 @@ Feature: Page Builder - Page builder manage pages investigations
     Scenario: User views the page history in NBS Classic
     And the user clicks on the Page History button
     Then the Manage Pages: View Page History page is displayed
+
+    Scenario: User publishes draft investigation
+	And the user clicks the Publish button
+	And the user enters Version Notes as "automated testing"
+	And the user clicks the Submit button to publish
+	Then success message contains the phrase "successfully published"
