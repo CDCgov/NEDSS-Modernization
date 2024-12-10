@@ -5,7 +5,7 @@ export const sections: NavSection[] = [
     { id: 'nameInformation', label: 'Name information' },
     { id: 'otherInformation', label: 'Other information' },
     { id: 'addresses', label: 'Address' },
-    { id: 'telephone', label: 'Telephone' },
+    { id: 'phoneEmail', label: 'Phone & Email' },
     { id: 'ethnicity', label: 'Ethnicity' },
     { id: 'races', label: 'Race' },
     { id: 'identifications', label: 'Identification' }
