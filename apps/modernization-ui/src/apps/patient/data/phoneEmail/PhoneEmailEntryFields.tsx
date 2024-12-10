@@ -123,8 +123,8 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 name="extension"
                 rules={{
                     pattern: {
-                        value: /^\+?\d{1,4}$/,
-                        message: 'An Extension should be 1 to 4 digits'
+                        value: /^\+?\d{1,20}$/,
+                        message: 'An Extension should be 1 to 20 digits'
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
