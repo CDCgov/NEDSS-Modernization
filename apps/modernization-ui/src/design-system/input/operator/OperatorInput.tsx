@@ -12,6 +12,7 @@ import {
     asTextCriteria
 } from 'options/operator';
 import { ChangeEvent, useCallback } from 'react';
+import styles from './operator.module.scss';
 
 export type OperatorInputProps = {
     id: string;
@@ -84,7 +85,7 @@ export const OperatorInput = ({
         <EntryWrapper orientation={orientation} label={label} helperText={helperText} htmlFor={id} sizing={sizing}>
             <Grid col={12}>
                 <Grid row>
-                    <Grid col={5} className="padding-right-1">
+                    <Grid col={5} className={styles.left}>
                         <OperatorSelect
                             id={operatorSelectId}
                             value={asSelectableOperator(effectiveOperator)}
@@ -93,7 +94,7 @@ export const OperatorInput = ({
                             onChange={onSelectionChange}
                         />
                     </Grid>
-                    <Grid col={7}>
+                    <Grid col={7} className={styles.right}>
                         <Input
                             onChange={onInputChange}
                             type="text"
