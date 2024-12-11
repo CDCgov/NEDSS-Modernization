@@ -59,7 +59,7 @@ const TextArea = ({
                 {...props}
             />
             <div className={styles.counter}>
-                <span className={current.length > 2000 ? styles.limit : ''}>{current.length}</span>/{maxLength}
+                <span className={current.length > maxLength ? styles.limit : ''}>{current.length}</span>/{maxLength}
             </div>
         </div>
     );
