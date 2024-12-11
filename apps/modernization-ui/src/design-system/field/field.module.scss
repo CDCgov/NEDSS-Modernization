@@ -1,6 +1,20 @@
 @use 'styles/colors';
 @use 'styles/components';
 
+@mixin highlight($color) {
+    border-left-color: $color;
+
+    input,
+    select,
+    textarea {
+        outline: none;
+
+        border-width: 4px;
+        border-style: solid;
+        border-color: $color;
+    }
+}
+
 .entry {
     display: flex;
     width: 100%;
@@ -36,16 +50,10 @@
     }
 
     &.error {
-        border-left-color: colors.$error-dark;
+        @include highlight(colors.$error-dark);
+    }
 
-        input,
-        select,
-        textarea {
-            outline: none;
-
-            border-width: 4px;
-            border-style: solid;
-            border-color: colors.$error-dark;
-        }
+    &.warn {
+        @include highlight(colors.$warning);
     }
 }

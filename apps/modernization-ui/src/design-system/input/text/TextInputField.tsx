@@ -3,9 +3,25 @@ import { TextInput, TextInputProps } from './TextInput';
 
 type TextInputFieldProps = FieldProps & TextInputProps;
 
-const TextInputField = ({ id, label, orientation, sizing, error, required, ...remaining }: TextInputFieldProps) => {
+const TextInputField = ({
+    id,
+    label,
+    orientation,
+    sizing,
+    error,
+    warnings,
+    required,
+    ...remaining
+}: TextInputFieldProps) => {
     return (
-        <Field orientation={orientation} sizing={sizing} label={label} htmlFor={id} required={required} error={error}>
+        <Field
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={id}
+            required={required}
+            error={error}
+            warnings={warnings}>
             <TextInput id={id} {...remaining} />
         </Field>
     );
