@@ -1,46 +1,55 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.UpdateSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 public class UpdateSubsectionSteps {
-    @Autowired
-    private SubSectionController subsectionController;
+    private final SubSectionController subsectionController;
 
-    @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
+    private final WaUiMetadataRepository waUiMetadataRepository;
 
-    @Autowired
-    private PageMother pageMother;
+    private final PageMother pageMother;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private UserDetailsProvider user;
+    private final UserDetailsProvider user;
 
     private WaUiMetadata subsectionToUpdate;
+
+    UpdateSubsectionSteps(
+        final SubSectionController subsectionController,
+        final WaUiMetadataRepository waUiMetadataRepository,
+        final PageMother pageMother,
+        final ExceptionHolder exceptionHolder,
+        final UserDetailsProvider user
+    ) {
+        this.subsectionController = subsectionController;
+        this.waUiMetadataRepository = waUiMetadataRepository;
+        this.pageMother = pageMother;
+        this.exceptionHolder = exceptionHolder;
+        this.user = user;
+    }
 
     @Given("I send an update subsection request")
     public void i_send_an_update_subsection_request() {
         WaTemplate page = pageMother.one();
 
         subsectionToUpdate = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1016l)
+                .filter(u -> u.getNbsUiComponentUid() == 1016L)
                 .findFirst()
                 .orElseThrow();
         try {
@@ -49,9 +58,7 @@ public class UpdateSubsectionSteps {
                     subsectionToUpdate.getId(),
                     new UpdateSubSectionRequest("Updated Name", false),
                     user.getCurrentUserDetails());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

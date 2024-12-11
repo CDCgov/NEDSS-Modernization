@@ -8,6 +8,8 @@ import { DatePickerInput } from 'components/FormInputs/DatePickerInput';
 import { SelectInput } from 'components/FormInputs/SelectInput';
 import { usePatientGeneralCodedValues } from './usePatientGeneralCodedValues';
 
+const ENTRY_FIELD_PLACEHOLDER = '';
+
 export const GeneralInformationFields = () => {
     const { control } = useFormContext<GeneralInformationEntry>();
     const { hivAccess } = usePatientProfilePermissions();
@@ -58,7 +60,7 @@ export const GeneralInformationFields = () => {
                     <Input
                         label="Mother's maiden name:"
                         orientation="horizontal"
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onBlur={onBlur}
                         onChange={onChange}
                         type="text"
@@ -78,7 +80,7 @@ export const GeneralInformationFields = () => {
                     <Input
                         label="Number of adults in residence:"
                         orientation="horizontal"
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onBlur={onBlur}
                         onChange={onChange}
                         type="number"
@@ -98,7 +100,7 @@ export const GeneralInformationFields = () => {
                     <Input
                         label="Number of children in residence:"
                         orientation="horizontal"
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onBlur={onBlur}
                         onChange={onChange}
                         type="number"
@@ -187,7 +189,7 @@ export const GeneralInformationFields = () => {
                         <Input
                             label="State HIV case ID:"
                             orientation="horizontal"
-                            placeholder="No Data"
+                            placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}
                             type="text"

@@ -1,50 +1,57 @@
 package gov.cdc.nbs.questionbank.page.content.section;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.section.request.UpdateSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Transactional
 public class UpdateSectionSteps {
-    @Autowired
-    private SectionController sectionController;
 
-    @Autowired
-    private WaUiMetadataRepository waUiMetadataRepository;
+    private final SectionController sectionController;
 
-    @Autowired
-    private PageMother pageMother;
+    private final WaUiMetadataRepository waUiMetadataRepository;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final PageMother pageMother;
 
-    @Autowired
-    private UserDetailsProvider user;
+    private final ExceptionHolder exceptionHolder;
+
+    private final UserDetailsProvider user;
 
     private WaUiMetadata sectionToUpdate;
+
+    UpdateSectionSteps(
+        final SectionController sectionController, WaUiMetadataRepository waUiMetadataRepository,
+        PageMother pageMother, ExceptionHolder exceptionHolder, UserDetailsProvider user) {
+        this.sectionController = sectionController;
+        this.waUiMetadataRepository = waUiMetadataRepository;
+        this.pageMother = pageMother;
+        this.exceptionHolder = exceptionHolder;
+        this.user = user;
+    }
 
     @Given("I send an update section request")
     public void i_send_an_update_section_request() {
         WaTemplate page = pageMother.one();
 
         List<WaUiMetadata> sections = page.getUiMetadata().stream()
-                .filter(u -> u.getNbsUiComponentUid() == 1015l)
+                .filter(u -> u.getNbsUiComponentUid() == 1015L)
                 .toList();
 
-        sectionToUpdate = sections.get(sections.size() - 1);
+        sectionToUpdate = sections.getLast();
 
         try {
             sectionController.updateSection(
@@ -52,9 +59,7 @@ public class UpdateSectionSteps {
                     sectionToUpdate.getId(),
                     new UpdateSectionRequest("Updated Name", false),
                     user.getCurrentUserDetails());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
