@@ -10,7 +10,6 @@ function internalizeDate(input: string | Date | null | undefined) {
         return internalizeDate(parseISO(input));
     } else if (input instanceof Date) {
         return input.toLocaleDateString('en-US', {
-            timeZone: 'UTC',
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
