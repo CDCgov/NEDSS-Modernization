@@ -5,7 +5,7 @@ import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 
-const AS_OF_DATE_LABEL = 'Information as of';
+const AS_OF_DATE_LABEL = 'Information as of date';
 const COMMENTS_LABEL = 'General comments';
 
 type AdministrativeEntryFieldsProps = EntryFieldsProps;
