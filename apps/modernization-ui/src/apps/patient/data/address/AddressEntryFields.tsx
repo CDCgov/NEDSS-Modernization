@@ -10,6 +10,7 @@ import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { CensusTractInputField, validCensusTractRule } from './census-tract';
 import { AddressEntry } from './entry';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 const AS_OF_DATE_LABEL = 'Address as of';
 const TYPE_LABEL = 'Type';
@@ -247,18 +248,15 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                 name="comment"
                 rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextAreaField
                         label={COMMENTS_LABEL}
                         orientation={orientation}
-                        onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
+                        onChange={onChange}
+                        value={value}
                         name={name}
-                        htmlFor={name}
                         id={name}
                         error={error?.message}
-                        multiline
                     />
                 )}
             />

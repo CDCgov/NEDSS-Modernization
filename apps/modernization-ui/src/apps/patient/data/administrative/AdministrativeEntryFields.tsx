@@ -2,7 +2,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
-import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
@@ -39,19 +38,6 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                 name="administrative.comment"
                 rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    // <Input
-                    //     label={COMMENTS_LABEL}
-                    //     type="text"
-                    //     orientation={orientation}
-                    //     onBlur={onBlur}
-                    //     onChange={onChange}
-                    //     defaultValue={value}
-                    //     name={name}
-                    //     htmlFor={name}
-                    //     id={name}
-                    //     error={error?.message}
-                    //     multiline
-                    // />
                     <TextAreaField
                         label={COMMENTS_LABEL}
                         orientation={orientation}
