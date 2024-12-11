@@ -35,7 +35,7 @@ public class UpdatePageCodedQuestionValuesetSteps {
   public void have_the_update_page_coded_valueset_request(DataTable dataTable) {
     Map<String, String> map = dataTable.asMap();
 
-    request = new UpdatePageCodedQuestionValuesetRequest(Long.valueOf(map.get("valueset")));
+    request = new UpdatePageCodedQuestionValuesetRequest(Long.parseLong(map.get("valueset")));
   }
 
 
@@ -43,7 +43,7 @@ public class UpdatePageCodedQuestionValuesetSteps {
   public void send_update_page_coded_valueset_request() throws Exception {
     WaTemplate page = pageMother.one();
     List<WaUiMetadata> content = pageMother.pageContent();
-    long id = content.get(content.size() - 1).getId();
+    long id = content.getLast().getId();
     response.active(requester.send(page.getId(), id, request));
   }
 
@@ -51,7 +51,7 @@ public class UpdatePageCodedQuestionValuesetSteps {
   public void page_coded_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.valueSet", equalTo(Long.valueOf(request.valueset()).intValue())));
+        .andExpect(jsonPath("$.valueSet", equalTo(request.valueset())));
   }
 
 }

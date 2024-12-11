@@ -49,11 +49,11 @@ public class UpdatePageNumericQuestionSteps {
       messagingInfo = new MessagingInfo(false, null, null, null, false, null);
     } else {
       messagingInfo = new MessagingInfo(
-          "true".equals(map.get("includedInMessage").toLowerCase()),
+          "true".equalsIgnoreCase(map.get("includedInMessage")),
           map.get("messageVariableId"),
           map.get("labelInMessage"),
           map.get("codeSystem"),
-          "true".equals(map.get("requiredInMessage").toLowerCase()),
+          "true".equalsIgnoreCase(map.get("requiredInMessage")),
           map.get("hl7DataType"));
     }
 
@@ -63,7 +63,7 @@ public class UpdatePageNumericQuestionSteps {
         "true".equals(map.get("visible")),
         "true".equals(map.get("enabled")),
         "true".equals(map.get("required")),
-        Long.valueOf(map.get("displayControl")),
+        Long.parseLong(map.get("displayControl")),
         NumericMask.valueOf(map.get("mask")),
         tryParseInt(map.get("fieldLength")),
         tryParseLong(map.get("defaultValue")),
@@ -94,7 +94,7 @@ public class UpdatePageNumericQuestionSteps {
   public void send_update_page_numeric_request() throws Exception {
     WaTemplate page = pageMother.one();
     List<WaUiMetadata> content = pageMother.pageContent();
-    long id = content.get(content.size() - 1).getId();
+    long id = content.getLast().getId();
     response.active(requester.send(page.getId(), id, request));
   }
 
@@ -102,7 +102,7 @@ public class UpdatePageNumericQuestionSteps {
   public void page_numeric_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayControl", equalTo(Long.valueOf(request.displayControl()).intValue())))
+        .andExpect(jsonPath("$.displayControl", equalTo(request.displayControl())))
         .andExpect(jsonPath("$.fieldLength", equalTo(request.fieldLength())))
         .andExpect(jsonPath("$.defaultValue", equalTo(request.defaultValue().toString())))
         .andExpect(jsonPath("$.mask", equalTo(request.mask().toString())))
