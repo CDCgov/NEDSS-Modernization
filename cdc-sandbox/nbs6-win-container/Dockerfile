@@ -37,7 +37,8 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
     FINAL_NBS_USER_GUIDE_NAME="NBS User Training Guide.pdf" \
     # Full zip file name and file format to be downloaded from latest Release Assets in Modernization Repository. <version> will be replaced in entrypoint script.
     GITHUB_ZIP_FILE_NAME="<version>.NEDSS.NBS.Modernized.Documentation.zip" \
-    JAVA_MEMORY="4096M"
+    JAVA_MEMORY="4096M" \
+    DISABLED_SCHEDULED_TASKS="SendAlertEMail.bat,DeDuplicationSimilarBatchProcess.bat,UserProfileUpdateProcess.bat"
 
 # Configure NBS from Local Directory
 # NOTE: 
@@ -62,6 +63,7 @@ COPY --from=builder C:\\wildfly-10.0.0.Final C:\\wildfly-10.0.0.Final
 
 # Configure Task Schedular. Requires Administrator Permissions
 COPY task-scheduler.ps1 task-scheduler.ps1
+COPY tasks.csv tasks.csv
 RUN C:\task-scheduler.ps1
 
 # Setup Entrypoint Script

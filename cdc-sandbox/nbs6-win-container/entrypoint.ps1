@@ -1,15 +1,18 @@
 # ./entrypoint.ps1
 # Prepare NBS Configuration and Start NBS 6.0
 
-# get local ip (select second address as testing)
-$env:LOCALIP=(Get-NetIPAddress -AddressFamily IPv4 -AddressState Preferred | Where-Object { $_.IPAddress -ne "127.0.0.1" }).IPAddress[1]
+#Disable specific scheduled tasks (all enabled by default)
+$disabledTasksArray= $env:DISABLED_SCHEDULED_TASKS.split(',') | ForEach-Object {$_.Trim()}
+
+foreach ($item in $disabledTasksArray) {
+    Write-Output "Disabling TaskName: $item Task"
+    Disable-ScheduledTask -TaskName "$item Task"
+}
 
 # Set environment memory allocation (override standalone.conf.bat)
 $env:JAVA_OPTS="-Xms$env:JAVA_MEMORY -Xmx$env:JAVA_MEMORY -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Xss4m"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djava.net.preferIPv4Stack=true"
 $env:JAVA_OPTS="$env:JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman"
-$env:JAVA_OPTS="$env:JAVA_OPTS -Djava.rmi.server.hostname=$env:LOCALIP"
-
 
 # Initialize hastable for data sources
 # NOTE: Provide DATABASE_ENDPOINT when running Container
@@ -97,13 +100,5 @@ Copy-Item -Path "$zip_user_guide_path" -Destination "$user_guide_directory" -For
 Remove-Item $zip_file_name
 Remove-Item $zip_folder -Recurse -Force -Confirm:$false
 #### END OF Configure User Guide ####
-
-# AWS Implementation *********************************************************
-# $string1 = (ipconfig | Where-Object {$_ -match 'taskbr'})
-# $string2 = ($string1 -split '\(',2)[-1]
-# $string3 = ($string2 -split '\)',2)[0]
-# $ethernet_name = "vEthernet ($string3)"
-# Set-NetIPInterface $ethernet_name -InterfaceMetric 10
-# ****************************************************************************
 
 Start-Process "D:\\wildfly-10.0.0.Final\\bin\\standalone.bat" -Wait -NoNewWindow -PassThru | Out-Host

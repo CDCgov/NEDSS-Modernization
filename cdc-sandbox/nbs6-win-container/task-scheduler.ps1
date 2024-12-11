@@ -4,7 +4,7 @@
 # Following commands are required to run ELRImporter.bat in Docker Container Windows ServerCore.
 # This will add the variables in setenvJBOSS.cmd, allowing Instance Scheduler user to view them
 # Path to setenvJBOSS.cmd
-$setenvFilePath = "D:\wildfly-10.0.0.Final\nedssdomain\Nedss\BatchFiles\setenvJBOSS.cmd"
+$setenvFilePath = "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles\setenvJBOSS.cmd"
 # Read the current content
 $currentContent = Get-Content -Path $setenvFilePath
 # String to prepend
@@ -24,50 +24,77 @@ $newContent | Set-Content -Path $setenvFilePath
 # 7. USER_PROFILE, 8. nbs_odse nbs_odse_Jurisdiction_Code SP, 9. ELRImporter, 10. UserProfileUpdateProcess
 # 11. ALERT_EMAIL, 12. DEDUPLICATION_SIMILAR, 13. MSGOUT (MSGoutProcessor), 14. COVID_Case_DATAMART_REPORT, 15. COVID_LAB_DATAMART_REPORT
 # 16. COVID CELR_Repot
-$batchFilePath = "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles"
-$batchJobFiles = "ELRImporter.bat","AHSLogRotate.bat", "Mark as Reviewed.bat", "Covid-Case.bat", "DCIPER.bat", "Covid-Celrlab.bat", "Covid_Celrlab Rhapsody Report.bat", "USER_PROFILE.bat", "nbs_odse nbs_odse_Jurisdiction_Code SP.bat", "UserProfileUpdateProcess.bat", "ALERT_EMAIL.bat", "DEDUPLICATION_SIMILAR.bat", "MSGOUT.bat", "COVID_Case_DATAMART_REPORT.bat", "COVID_LAB_DATAMART_REPORT.bat", "COVID CELR_Repot.bat" 
 
-foreach ($item in $batchJobFiles) {
-    
-    $jobName = "$item Task"
-    $repeat = (New-TimeSpan -Minutes 2)
+# $batchJobFiles = "ELRImporter.bat","AHSLogRotate.bat", "Mark as Reviewed.bat", "Covid-Case.bat", "DCIPER.bat", "Covid-Celrlab.bat", "Covid_Celrlab Rhapsody Report.bat", "USER_PROFILE.bat", "nbs_odse nbs_odse_Jurisdiction_Code SP.bat", "UserProfileUpdateProcess.bat", "ALERT_EMAIL.bat", "DEDUPLICATION_SIMILAR.bat", "MSGOUT.bat", "COVID_Case_DATAMART_REPORT.bat", "COVID_LAB_DATAMART_REPORT.bat", "COVID CELR_Repot.bat" 
+
+#TODO modify DOCKERFILE AND PLACE PATH HERE
+$csvData = Import-Csv -Path "C:\tasks.csv"
+$WorkingDirectory = "$env:JBOSS_HOME\nedssdomain\Nedss\BatchFiles"
+
+foreach ($row in $csvData) {
+    $days=[int]$row.frequencyDays
+    $hours=[int]$row.frequencyHours
+    $minutes=[int]$row.frequencyMinutes
+    $jobName = $row.filename + " Task"
+    $repeat = (New-TimeSpan -Days $days -Hours $hours -Minutes $minutes)
     $currentDate= ([DateTime]::Now)
     $duration = $currentDate.AddYears(25) -$currentDate
+
     # Define the file path
-    $scriptDirPath = "$batchFilePath"
-    $scriptPath = ".\$item"
-    $argument = "> $item.output 2>&1"
+    $relativeScriptPath = "$env:JBOSS_HOME\" + $row.dirpath
+    $filename = $row.filename
+    $filename_noext = $filename.split('.')[0]
+    $scriptPathFromWorkDir = ".\" + $row.scriptPathFromWorkDir + $row.filename
+    $argument = "> " + $filename_noext + ".output 2>&1"
+    
     $principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType S4U
     # Action to run the specified batch file
-    $action = New-ScheduledTaskAction -Execute "$scriptPath" -Argument "$argument" -WorkingDirectory "$scriptDirPath"
+    $action = New-ScheduledTaskAction -Execute "$scriptPathFromWorkDir" -Argument "$argument" -WorkingDirectory "$WorkingDirectory"
     # Trigger for daily execution once, repeating every 2 minutes
-    $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval $repeat -RepetitionDuration $duration
+    $trigger = New-ScheduledTaskTrigger -Once -At $row.startTime -RepetitionInterval $repeat -RepetitionDuration $duration
     # Create scheduled task
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -RunOnlyIfNetworkAvailable -DontStopOnIdleEnd
     # Register the scheduled task
     Register-ScheduledTask -TaskName $jobName -Action $action -Trigger $trigger -Principal $principal -Settings $settings
 
-    Write-Output "Scheduled task $batchFilePath\$item"
+    Write-Output "Scheduled task $WorkingDirectory\" + $row.scriptPathFromWorkDir + $row.filename
 }
 
-# "ELRImporter" - scheduled
-# "AHSLogRotate" -
-# "Mark as Reviewed" -
-# "Covid-Case" -
-# "DCIPER" -
-# "Covid-Celrlab" -
-# "Covid_Celrlab Rhapsody Report" -
-# "USER_PROFILE" -
-# "nbs_odse nbs_odse_Jurisdiction_Code SP" -
-# "UserProfileUpdateProcess" - 
-# "ALERT_EMAIL" - 
-# "DEDUPLICATION_SIMILAR"- 
-# "MSGOUT" - (may exist, under different name) - 
-# "COVID_Case_DATAMART_REPORT" -
-# "COVID_LAB_DATAMART_REPORT" - 
-# "COVID CELR_Repot" -
+# Batch Files Name
+# MasterETL ---
+# AHSLogRotate
+# Mark As Reviewed
+# Covid-Case
+# Covid-Lab
+# DCIPER
+# Covid-Celrlab
+# Covid_Celrlab Rhapsody Report
+# USER_PROFILE
+# nbs_odse nbs_odse_Jurisdiction_Code SP 
+# PHCMartETL.bat ---
+# DynamicDataMart.bat ---
+# ELRImporter.bat - ELRImporter.bat
 
-## covid19ETL.bat
+# UserProfileUpdateProcess - retired\UserProfileUpdateProcess.bat
+
+# ALERT_EMAIL  - retired\SendAlertEMail.bat
+
+# DEDUPLICATION_SIMILAR - retired\DeDuplicationSimilarBatchProcess.bat
+
+# MSGOUT - MsgOutProcessor.bat
+
+# COVID_Case_DATAMART_REPORT
+# COVID_LAB_DATAMART_REPORT
+# COVID CELR Repot
+# covid19ETL.bat
+
+
+
+
+
+
+
+
 
 
 
