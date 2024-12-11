@@ -8,6 +8,7 @@ type TextAreaProps = {
     id: string;
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
     value?: string | null;
+    maxLength?: number;
     onChange?: TextOnChange;
     onBlur?: () => void;
 } & Omit<
@@ -20,6 +21,7 @@ const TextArea = ({
     inputMode = 'text',
     placeholder,
     value,
+    maxLength = 2000,
     onChange,
     onBlur,
     className,
@@ -52,6 +54,7 @@ const TextArea = ({
                 className={classNames('usa-textarea', className)}
                 onChange={handleChange}
                 onBlur={onBlur}
+                maxLength={maxLength}
                 placeholder={placeholder}
                 value={current}
                 {...props}
