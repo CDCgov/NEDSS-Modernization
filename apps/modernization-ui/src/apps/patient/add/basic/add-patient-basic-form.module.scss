@@ -1,0 +1,21 @@
+@use 'styles/colors';
+@use 'styles/borders';
+
+.addPatientForm {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    margin-right: 1rem;
+    width: 100%;
+
+    .formContent {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding-bottom: 12rem;
+
+        input {
+            width: 100% !important;
+        }
+    }
+}
