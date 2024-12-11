@@ -4,7 +4,7 @@ import { usePatientNameCodedValues } from 'apps/patient/profile/names/usePatient
 import { useConceptOptions } from 'options/concepts';
 import { ExtendedNewPatientEntry } from '../extended';
 import { asExtendedNewPatientEntry } from '../extended/asExtendedNewPatientEntry';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type BasicExtendedTransitionContextType = {
     transitionData: NewPatientEntry | null;
@@ -24,16 +24,15 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
     const navigate = useNavigate();
     const nameCodes = usePatientNameCodedValues();
     const raceCategories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
-    const location = useLocation();
 
     const toExtended = (initial: NewPatientEntry) => {
         setTransitionData(initial);
         const defaults: ExtendedNewPatientEntry = asExtendedNewPatientEntry(initial, nameCodes, raceCategories);
-        navigate('/patient/add/extended', { state: { defaults: defaults, criteria: location.state.criteria } });
+        navigate('/patient/add/extended', { state: { defaults: defaults } });
     };
 
     const toBasic = () => {
-        navigate('/add-patient', { state: { defaults: transitionData, criteria: location.state.criteria } });
+        navigate('/add-patient', { state: { defaults: transitionData } });
     };
 
     const value: BasicExtendedTransitionContextType = {
