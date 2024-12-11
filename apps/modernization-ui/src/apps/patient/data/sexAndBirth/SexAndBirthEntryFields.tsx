@@ -16,6 +16,7 @@ const UNKNOWN_GENDER = 'U';
 const AS_OF_DATE_LABEL = 'Sex & birth information as of';
 const BORN_ON_LABEL = 'Date of birth';
 const BIRTH_CITY_LABEL = 'Birth city';
+const ENTRY_FIELD_PLACEHOLDER = '';
 
 type SexAndBirthEntryFieldsProps = EntryFieldsProps;
 
@@ -137,7 +138,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                     <Input
                         label="Additional gender"
                         orientation={orientation}
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onChange={onChange}
                         onBlur={onBlur}
                         type="text"
@@ -191,7 +192,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         <Input
                             label="Birth order"
                             orientation={orientation}
-                            placeholder="No Data"
+                            placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onChange={onChange}
                             onBlur={onBlur}
                             type="text"
@@ -214,7 +215,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                     <Input
                         label={BIRTH_CITY_LABEL}
                         orientation={orientation}
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onChange={onChange}
                         onBlur={onBlur}
                         type="text"

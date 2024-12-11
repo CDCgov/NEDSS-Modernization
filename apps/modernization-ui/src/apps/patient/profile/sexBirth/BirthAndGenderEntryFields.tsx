@@ -11,6 +11,7 @@ import { BirthAndGenderEntry } from './BirthAndGenderEntry';
 import { usePatientSexBirthCodedValues } from './usePatientSexBirthCodedValues';
 
 const UNKNOWN_GENDER = 'U';
+const ENTRY_FIELD_PLACEHOLDER = '';
 
 export const BirthAndGenderEntryFields = () => {
     const { control, setValue } = useFormContext<BirthAndGenderEntry>();
@@ -127,7 +128,7 @@ export const BirthAndGenderEntryFields = () => {
                     <Input
                         label="Additional gender:"
                         orientation="horizontal"
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onChange={onChange}
                         onBlur={onBlur}
                         type="text"
@@ -181,7 +182,7 @@ export const BirthAndGenderEntryFields = () => {
                         <Input
                             label="Birth order:"
                             orientation="horizontal"
-                            placeholder="No Data"
+                            placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onChange={onChange}
                             onBlur={onBlur}
                             type="text"
@@ -204,7 +205,7 @@ export const BirthAndGenderEntryFields = () => {
                     <Input
                         label="Birth city:"
                         orientation="horizontal"
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onChange={onChange}
                         onBlur={onBlur}
                         type="text"

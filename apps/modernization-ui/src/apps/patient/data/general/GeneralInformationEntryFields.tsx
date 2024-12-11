@@ -12,6 +12,7 @@ import { Input } from 'components/FormInputs/Input';
 const AS_OF_DATE_LABEL = 'General information as of';
 const MATERNAL_MAIDEN_NAME_LABEL = "Mother's maiden name";
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
+const ENTRY_FIELD_PLACEHOLDER = '';
 
 type GeneralInformationEntryFieldsProps = EntryFieldsProps;
 
@@ -63,7 +64,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                     <Input
                         label={MATERNAL_MAIDEN_NAME_LABEL}
                         orientation={orientation}
-                        placeholder="No Data"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         onBlur={onBlur}
                         onChange={onChange}
                         type="text"
@@ -82,6 +83,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of adults in residence"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -100,6 +102,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <NumericInput
                         label="Number of children in residence"
+                        placeholder={ENTRY_FIELD_PLACEHOLDER}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -184,7 +187,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         <Input
                             label={STATE_HIV_CASE_LABEL}
                             orientation={orientation}
-                            placeholder="No Data"
+                            placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}
                             type="text"
