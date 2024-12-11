@@ -40,8 +40,7 @@ foreach ($row in $csvData) {
     $currentDate= ([DateTime]::Now)
     $duration = $currentDate.AddYears(25) -$currentDate
 
-    # Define the file path
-    $relativeScriptPath = "$env:JBOSS_HOME\" + $row.dirpath
+    # Define the file path    
     $filename = $row.filename
     $filename_noext = $filename.split('.')[0]
     $scriptPathFromWorkDir = ".\" + $row.scriptPathFromWorkDir + $row.filename
