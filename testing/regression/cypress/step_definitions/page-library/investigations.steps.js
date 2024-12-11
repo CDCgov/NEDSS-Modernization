@@ -35,4 +35,14 @@ Then('I add new page', () => {
   Then('success message contains the phrase "successfully published"', () => {
     PageBuilderPage.verifySuccessMessageContains();
   });
+
+  Then('the user clicks the Delete Draft button', () => {
+    PageBuilderPage.clickDeleteDraftButton();
+  });
+
+  Then('success message is displayed', () => {
+    PageBuilderPage.verifyDraftDeletedSuccessMessage();
+  });
+  
+  
   
