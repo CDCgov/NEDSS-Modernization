@@ -203,7 +203,7 @@ describe('AddPatientExtendedForm', () => {
         const expected = internalizeDate(new Date());
 
         await waitFor(() => {
-            expect(getByLabelText('Information as of')).toHaveValue('05/07/1977');
+            expect(getByLabelText('Information as of date')).toHaveValue('05/07/1977');
 
             expect(getByLabelText('Name as of')).toHaveValue(expected);
 
