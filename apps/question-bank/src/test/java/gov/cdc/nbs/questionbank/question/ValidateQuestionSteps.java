@@ -3,40 +3,41 @@ package gov.cdc.nbs.questionbank.question;
 
 import gov.cdc.nbs.questionbank.question.exception.UniqueQuestionException;
 import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest;
+import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
+import gov.cdc.nbs.questionbank.question.response.QuestionValidationResponse;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import gov.cdc.nbs.questionbank.question.request.QuestionValidationRequest.Field;
-import gov.cdc.nbs.questionbank.question.response.QuestionValidationResponse;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ValidateQuestionSteps {
 
-  @Autowired
-  private ExceptionHolder exceptionHolder;
+  private final ExceptionHolder exceptionHolder;
 
-  @Autowired
-  private QuestionControllerHelper controllerHelper;
+  private final QuestionControllerHelper controllerHelper;
 
   QuestionValidationRequest request;
 
   private QuestionValidationResponse validationResult;
 
+  ValidateQuestionSteps(
+      final ExceptionHolder exceptionHolder,
+      final QuestionControllerHelper controllerHelper
+  ) {
+    this.exceptionHolder = exceptionHolder;
+    this.controllerHelper = controllerHelper;
+  }
 
   @When("I validate unique field {string}")
   public void i_validate_unique_field(String field) {
     try {
       request = prepareRequest(field);
       validationResult = controllerHelper.validate(request);
-    } catch (UniqueQuestionException e) {
-      exceptionHolder.setException(e);
-    } catch (AccessDeniedException e) {
-      exceptionHolder.setException(e);
-    } catch (AuthenticationCredentialsNotFoundException e) {
+    } catch (UniqueQuestionException | AuthenticationCredentialsNotFoundException | AccessDeniedException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -46,11 +47,7 @@ public class ValidateQuestionSteps {
     try {
       request = new QuestionValidationRequest(Field.RDB_COLUMN_NAME, "XXX_RDB_COL_NMM");
       validationResult = controllerHelper.validate(request);
-    } catch (UniqueQuestionException e) {
-      exceptionHolder.setException(e);
-    } catch (AccessDeniedException e) {
-      exceptionHolder.setException(e);
-    } catch (AuthenticationCredentialsNotFoundException e) {
+    } catch (UniqueQuestionException | AccessDeniedException e) {
       exceptionHolder.setException(e);
     }
   }
@@ -69,7 +66,7 @@ public class ValidateQuestionSteps {
   @Then("a validate unique question exception is thrown")
   public void a_validate_unique_question_exception_is_thrown() {
     assertNotNull(exceptionHolder.getException());
-    assertTrue(exceptionHolder.getException() instanceof UniqueQuestionException);
+    assertInstanceOf(UniqueQuestionException.class, exceptionHolder.getException());
   }
 
   private QuestionValidationRequest prepareRequest(String field) {

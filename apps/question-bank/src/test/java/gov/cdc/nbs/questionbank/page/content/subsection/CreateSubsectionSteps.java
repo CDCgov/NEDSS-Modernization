@@ -1,42 +1,49 @@
 package gov.cdc.nbs.questionbank.page.content.subsection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.authentication.UserDetailsProvider;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaUiMetadataRepository;
+import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.page.content.subsection.model.SubSection;
 import gov.cdc.nbs.questionbank.page.content.subsection.request.CreateSubSectionRequest;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
-import gov.cdc.nbs.questionbank.page.PageMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 public class CreateSubsectionSteps {
 
-    @Autowired
-    private SubSectionController subsectionController;
+    private final SubSectionController subsectionController;
 
-    @Autowired
-    private WaUiMetadataRepository repository;
+    private final WaUiMetadataRepository repository;
 
-    @Autowired
-    private PageMother pageMother;
+    private final PageMother pageMother;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private UserDetailsProvider user;
+    private final UserDetailsProvider user;
 
     private SubSection subsection;
+
+    CreateSubsectionSteps(
+        final SubSectionController subsectionController,
+        final WaUiMetadataRepository repository,
+        final PageMother pageMother,
+        final ExceptionHolder exceptionHolder,
+        final UserDetailsProvider user
+    ) {
+        this.subsectionController = subsectionController;
+        this.repository = repository;
+        this.pageMother = pageMother;
+        this.exceptionHolder = exceptionHolder;
+        this.user = user;
+    }
 
     @Given("I send a create subsection request")
     public void i_send_a_create_subsection_request() {
@@ -54,9 +61,7 @@ public class CreateSubsectionSteps {
                             "new subsection",
                             true),
                     user.getCurrentUserDetails());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

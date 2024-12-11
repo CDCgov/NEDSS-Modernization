@@ -1,35 +1,40 @@
 package gov.cdc.nbs.questionbank.programarea;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.programarea.model.ProgramArea;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.support.ProgramAreaHolder;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ProgramAreaFinderSteps {
 
-    @Autowired
-    private ProgramAreaHolder programAreaHolder;
+    private final ProgramAreaHolder programAreaHolder;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private ProgramAreaController controller;
+    private final ProgramAreaController controller;
+
+    ProgramAreaFinderSteps(
+        final ProgramAreaHolder programAreaHolder,
+        final ExceptionHolder exceptionHolder,
+        final ProgramAreaController controller
+    ) {
+        this.programAreaHolder = programAreaHolder;
+        this.exceptionHolder = exceptionHolder;
+        this.controller = controller;
+    }
 
     @When("I list all program areas")
     public void i_list_all_program_areas() {
         try {
             programAreaHolder.setProgramAreas(controller.getProgramAreas());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
