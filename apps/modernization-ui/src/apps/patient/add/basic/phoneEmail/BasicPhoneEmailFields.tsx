@@ -2,9 +2,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { EntryFieldsProps } from 'design-system/entry';
 import { validEmailRule } from 'validation/entry';
 import { PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
-import { Input } from 'components/FormInputs/Input';
 import { BasicPhoneEmail } from '../entry';
-import { MaskedTextInputField } from 'design-system/input/text';
+import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 
 const HOME_PHONE_LABEL = 'Home phone';
 const WORK_PHONE_LABEL = 'Work phone';
@@ -101,15 +100,14 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
                     ...validEmailRule(100)
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextInputField
                         sizing="compact"
                         label="Email"
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
+                        value={value}
                         type="text"
-                        htmlFor={name}
                         id={name}
                         name={name}
                         error={error?.message}

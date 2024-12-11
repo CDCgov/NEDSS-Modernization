@@ -1,4 +1,4 @@
-import { Card } from '../card/Card';
+import { Card } from 'design-system/card';
 import styles from './add-patient-basic-form.module.scss';
 import { BasicPhoneEmailFields } from './phoneEmail';
 

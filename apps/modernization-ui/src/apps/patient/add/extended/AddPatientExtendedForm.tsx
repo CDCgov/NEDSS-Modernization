@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { Card } from '../card/Card';
+import { Card } from 'design-system/card';
 import { ExtendedNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { EthnicityEntryFields } from 'apps/patient/data/ethnicity/EthnicityEntryFields';
