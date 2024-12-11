@@ -54,7 +54,6 @@ const TextArea = ({
                 className={classNames('usa-textarea', className)}
                 onChange={handleChange}
                 onBlur={onBlur}
-                maxLength={maxLength}
                 placeholder={placeholder}
                 value={current}
                 {...props}

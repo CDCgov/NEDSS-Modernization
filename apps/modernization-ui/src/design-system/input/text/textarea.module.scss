@@ -3,12 +3,12 @@
 .textArea {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
 
     .counter {
         display: flex;
         justify-content: end;
         color: colors.$base;
-        padding-top: 0.5rem;
 
         .limit {
             color: colors.$error;
