@@ -14,3 +14,7 @@ Feature: Page Builder - Page builder manage pages investigations
 	And the user enters Version Notes as "automated testing"
 	And the user clicks the Submit button to publish
 	Then success message contains the phrase "successfully published"
+
+    Scenario: User deletes draft investigations 
+	And the user clicks the Delete Draft button
+	Then success message is displayed
