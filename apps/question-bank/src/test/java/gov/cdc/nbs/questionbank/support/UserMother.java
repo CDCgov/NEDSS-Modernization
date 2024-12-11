@@ -31,16 +31,14 @@ public class UserMother {
   @Autowired
   private AuthPermSetRepository permSetRepository;
 
-  public AuthUser adminUser() {
-    var admin = userRepository.findByUserId("admin").orElseGet(() -> createAdminUser());
+  public void adminUser() {
+    var admin = userRepository.findByUserId("admin").orElseGet(this::createAdminUser);
     setSecurityContext(admin);
-    return admin;
   }
 
-  public AuthUser noPermissions() {
-    var user = userRepository.findByUserId("empty").orElseGet(() -> createEmptyUser());
+  public void noPermissions() {
+    var user = userRepository.findByUserId("empty").orElseGet(this::createEmptyUser);
     setSecurityContext(user);
-    return user;
   }
 
   private AuthUser createEmptyUser() {

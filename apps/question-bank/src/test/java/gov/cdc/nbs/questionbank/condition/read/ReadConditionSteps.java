@@ -1,12 +1,5 @@
 package gov.cdc.nbs.questionbank.condition.read;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.condition.ConditionController;
 import gov.cdc.nbs.questionbank.condition.model.Condition;
 import gov.cdc.nbs.questionbank.condition.repository.ConditionCodeRepository;
@@ -14,28 +7,39 @@ import gov.cdc.nbs.questionbank.condition.util.ConditionHolder;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ReadConditionSteps {
-    @Autowired
-    ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    ConditionController conditionController;
+    private final ConditionController conditionController;
 
-    @Autowired
-    private ConditionCodeRepository conditionRepository;
+    private final ConditionCodeRepository conditionRepository;
 
-    @Autowired
-    private ConditionHolder conditionHolder;
+    private final ConditionHolder conditionHolder;
 
+    ReadConditionSteps(
+        final ExceptionHolder exceptionHolder,
+        final ConditionController conditionController,
+        final ConditionCodeRepository conditionRepository,
+        final ConditionHolder conditionHolder
+    ) {
+        this.exceptionHolder = exceptionHolder;
+        this.conditionController = conditionController;
+        this.conditionRepository = conditionRepository;
+        this.conditionHolder = conditionHolder;
+    }
 
     @When("I request all conditions")
     public void i_request_all_conditions() {
         try {
             conditionHolder.setAllConditionsResponse(conditionController.findAllConditions());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -46,9 +50,7 @@ public class ReadConditionSteps {
             Page<Condition> result =
                     conditionController.findConditions(PageRequest.ofSize(20));
             conditionHolder.setReadConditionResponse(result);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

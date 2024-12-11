@@ -82,7 +82,7 @@ public class UpdatePageTextQuestionSteps {
   public void page_text_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayControl", equalTo(request.displayControl())))
+        .andExpect(jsonPath("$.displayControl", equalTo((int)request.displayControl())))
         .andExpect(jsonPath("$.fieldLength", equalTo(request.fieldLength())))
         .andExpect(jsonPath("$.defaultValue", equalTo(request.defaultValue())))
         .andExpect(jsonPath("$.label", equalTo(request.label())))

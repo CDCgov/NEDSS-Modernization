@@ -83,7 +83,7 @@ public class UpdatePageDateQuestionSteps {
   public void page_date_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayControl", equalTo(request.displayControl())))
+        .andExpect(jsonPath("$.displayControl", equalTo((int)request.displayControl())))
         .andExpect(jsonPath("$.allowFutureDates", equalTo(request.allowFutureDates())))
         .andExpect(jsonPath("$.mask", equalTo(request.mask().toString())))
 

@@ -82,7 +82,7 @@ public class UpdatePageCodedQuestionSteps {
   public void page_coded_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayControl", equalTo(request.displayControl())))
+        .andExpect(jsonPath("$.displayControl", equalTo((int)request.displayControl())))
         .andExpect(jsonPath("$.valueSet", equalTo(request.valueSet().intValue())))
         .andExpect(jsonPath("$.defaultValue", equalTo(request.defaultValue())))
         .andExpect(jsonPath("$.label", equalTo(request.label())))

@@ -8,36 +8,41 @@ import gov.cdc.nbs.questionbank.page.PageMother;
 import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Transactional
 public class UnGroupSubsectionSteps {
 
-    @Autowired
-    private SubSectionController subsectionController;
+    private final SubSectionController subsectionController;
 
-    @Autowired
-    private PageMother pageMother;
+    private final PageMother pageMother;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private UserDetailsProvider user;
+    private final UserDetailsProvider user;
 
+    UnGroupSubsectionSteps(
+        final SubSectionController subsectionController,
+        final PageMother pageMother,
+        final ExceptionHolder exceptionHolder,
+        final UserDetailsProvider user
+    ) {
+        this.subsectionController = subsectionController;
+        this.pageMother = pageMother;
+        this.exceptionHolder = exceptionHolder;
+        this.user = user;
+    }
 
     @Given("I send a ungroup subsection request")
     public void i_send_a_un_group_subsection_request() {
         WaTemplate page = pageMother.one();
 
         WaUiMetadata section = page.getUiMetadata().stream()
-            .filter(u -> u.getNbsUiComponentUid() == 1016l)
+            .filter(u -> u.getNbsUiComponentUid() == 1016L)
             .findFirst()
             .orElseThrow();
         try {
@@ -46,11 +51,7 @@ public class UnGroupSubsectionSteps {
                 section.getId(),
                 user.getCurrentUserDetails());
 
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
-            exceptionHolder.setException(e);
-        } catch (BadRequestException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException | BadRequestException e) {
             exceptionHolder.setException(e);
         }
     }

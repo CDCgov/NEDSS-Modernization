@@ -59,9 +59,7 @@ public class DeleteQuestionFromPageSteps {
 
     try {
       pageQuestionController.deleteQuestion(page.getId(), waUiMetadata.getId(), user.getCurrentUserDetails());
-    } catch (AccessDeniedException e) {
-      exceptionHolder.setException(e);
-    } catch (AuthenticationCredentialsNotFoundException e) {
+    } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
       exceptionHolder.setException(e);
     }
   }

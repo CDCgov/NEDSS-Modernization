@@ -1,12 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.question.model.Question;
 import gov.cdc.nbs.questionbank.question.request.FindQuestionRequest;
@@ -17,20 +10,34 @@ import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionSearchSteps {
 
-    @Autowired
-    private QuestionMother questionMother;
+    private final QuestionMother questionMother;
 
-    @Autowired
-    private QuestionSearchHolder searchHolder;
+    private final QuestionSearchHolder searchHolder;
 
-    @Autowired
-    private QuestionController controller;
+    private final QuestionController controller;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
+
+    QuestionSearchSteps(
+        final QuestionMother questionMother,
+        final QuestionSearchHolder searchHolder,
+        final QuestionController controller,
+        final ExceptionHolder exceptionHolder
+    ) {
+        this.questionMother = questionMother;
+        this.searchHolder = searchHolder;
+        this.controller = controller;
+        this.exceptionHolder = exceptionHolder;
+    }
 
     @Given("A date question exists")
     public void a_date_question_exists() {
@@ -42,9 +49,7 @@ public class QuestionSearchSteps {
         try {
             Page<Question> results = controller.findAllQuestions(PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -54,9 +59,7 @@ public class QuestionSearchSteps {
         try {
             GetQuestionResponse response = controller.getQuestion(questionMother.one().getId());
             searchHolder.setGetQuestionResponse(response);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -66,9 +69,7 @@ public class QuestionSearchSteps {
         try {
             Page<Question> results = controller.findQuestions(new FindQuestionRequest("",""), PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -84,30 +85,18 @@ public class QuestionSearchSteps {
     @When("I search for a question by {string}")
     public void i_search_for_question_by(String field) {
         WaQuestion searchQuestion = questionMother.one();
-        String search;
-        switch (field) {
-            case "name":
-                search = searchQuestion.getQuestionNm();
-                break;
-            case "id":
-                search = searchQuestion.getId().toString();
-                break;
-            case "local id":
-                search = searchQuestion.getQuestionIdentifier();
-                break;
-            case "label":
-                search = searchQuestion.getQuestionLabel();
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid search type specified");
-        }
-        try {
+        String search = switch (field) {
+          case "name" -> searchQuestion.getQuestionNm();
+          case "id" -> searchQuestion.getId().toString();
+          case "local id" -> searchQuestion.getQuestionIdentifier();
+          case "label" -> searchQuestion.getQuestionLabel();
+          default -> throw new IllegalArgumentException("Invalid search type specified");
+        };
+      try {
             Page<Question> results = controller.findQuestions(new FindQuestionRequest(search,"LOCAL"), PageRequest.ofSize(20));
             searchHolder.setQuestionResults(results);
             searchHolder.setSearchQuestion(searchQuestion);
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }

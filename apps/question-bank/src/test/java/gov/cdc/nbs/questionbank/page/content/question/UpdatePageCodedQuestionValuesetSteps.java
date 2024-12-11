@@ -51,7 +51,7 @@ public class UpdatePageCodedQuestionValuesetSteps {
   public void page_coded_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.valueSet", equalTo(request.valueset())));
+        .andExpect(jsonPath("$.valueSet", equalTo((int)request.valueset())));
   }
 
 }
