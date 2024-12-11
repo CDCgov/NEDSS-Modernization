@@ -83,6 +83,17 @@ class PageBuilderPage {
           .should('be.visible')
           .and('contain.text', 'successfully published');
       }
+
+      clickDeleteDraftButton() {
+        cy.get('input[type="button"][name="Delete Draft"][value="Delete Draft"]').eq(0).click();
+      }
+      
+      verifyDraftDeletedSuccessMessage() {
+        cy.get('div.infoBox.success').invoke('text').then((text) => {
+          expect(text).to.include('successfully  deleted.');
+        });
+      }      
+      
   }
   
   export default new PageBuilderPage();
