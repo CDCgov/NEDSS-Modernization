@@ -67,6 +67,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
                         mask="____________________"
                         pattern="^\+?\d{1,20}$"
                         value={value}
+                        sizing="compact"
                         onBlur={onBlur}
                         onChange={onChange}
                         orientation={orientation}
