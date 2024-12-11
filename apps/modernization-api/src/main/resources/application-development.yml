@@ -64,7 +64,7 @@ nbs:
         profile:
           enabled: true
         add:
-          enabled: false
+          enabled: true
           extended:
             enabled: true
 
