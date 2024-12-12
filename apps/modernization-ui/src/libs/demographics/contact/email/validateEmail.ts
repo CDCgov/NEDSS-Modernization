@@ -1,6 +1,6 @@
 import { Validator } from 'validation';
 
-const FORMAT = /^\w+([.-]?\w+)*@\w+([.-/+]?\w+)*(\.\w{2,3})+$/;
+const FORMAT = /^[\w\-+.]+@([\w-]+\.)+[\w-]{2,}$/gm;
 
 /**
  * Validates that the given string represents a valid email.  Any failed
@@ -12,11 +12,11 @@ const FORMAT = /^\w+([.-]?\w+)*@\w+([.-/+]?\w+)*(\.\w{2,3})+$/;
 const validateEmail =
     (name: string): Validator<string> =>
     (value: string): boolean | string => {
-        if (!FORMAT.test(value)) {
+        if (!value.match(FORMAT)) {
             return `Please enter ${name} as an email address (example: youremail@website.com).`;
         }
 
-        return false;
+        return true;
     };
 
 export { validateEmail };
