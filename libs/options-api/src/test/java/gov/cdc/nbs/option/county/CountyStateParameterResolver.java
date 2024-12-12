@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-class CountyStateParameterResolver {
+public class CountyStateParameterResolver {
 
   private static final int CODE_COLUMN = 1;
   private static final String QUERY = """
@@ -24,7 +24,7 @@ class CountyStateParameterResolver {
     this.template = template;
   }
 
-  Optional<String> resolve(final String value) {
+  public Optional<String> resolve(final String value) {
     return this.template.query(
         QUERY,
         statement -> {
