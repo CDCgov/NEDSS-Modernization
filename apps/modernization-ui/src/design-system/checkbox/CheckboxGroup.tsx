@@ -1,10 +1,10 @@
-import React, { FocusEvent as ReactFocusEvent, useEffect } from 'react';
-import classNames from 'classnames';
+import { FocusEvent as ReactFocusEvent, useEffect } from 'react';
 import { Selectable, useMultiSelection } from 'options';
 import { SelectableCheckbox } from './SelectableCheckbox';
 import styles from './checkboxGroup.module.scss';
-import { ErrorMessage } from '@trussworks/react-uswds';
-import { Sizing } from 'components/Entry';
+import { Orientation, Sizing } from 'components/Entry';
+import classNames from 'classnames';
+import { Field } from 'design-system/field';
 
 type Props = {
     name: string;
@@ -16,6 +16,7 @@ type Props = {
     error?: string;
     required?: boolean;
     sizing?: Sizing;
+    orientation?: Orientation;
     onChange?: (selected: Selectable[]) => void;
     onBlur?: (event: ReactFocusEvent<HTMLElement>) => void;
 };
@@ -28,9 +29,10 @@ export const CheckboxGroup = ({
     onChange,
     onBlur,
     disabled = false,
-    className,
     error,
     required,
+    className,
+    orientation = 'vertical',
     sizing
 }: Props) => {
     const { items, selected, select, deselect, reset } = useMultiSelection({ available: options });
@@ -54,14 +56,19 @@ export const CheckboxGroup = ({
     };
 
     return (
-        <fieldset
-            className={classNames(styles.checkboxGroup, className, {
-                [styles.required]: required,
-                [styles.compact]: sizing === 'compact'
-            })}>
-            <legend>{label}</legend>
-            {error && <ErrorMessage className={styles.error}>{error}</ErrorMessage>}
-            <div className={styles.options}>
+        <Field
+            className={classNames(styles.checkboxGroup, styles[className ?? ''])}
+            orientation={orientation}
+            sizing={sizing}
+            label={label}
+            htmlFor={name}
+            required={required}
+            error={error}>
+            <div
+                className={classNames({
+                    [styles.verticalOptions]: orientation === 'vertical',
+                    [styles.horizontalOptions]: orientation === 'horizontal'
+                })}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}
@@ -75,6 +82,6 @@ export const CheckboxGroup = ({
                     />
                 ))}
             </div>
-        </fieldset>
+        </Field>
     );
 };

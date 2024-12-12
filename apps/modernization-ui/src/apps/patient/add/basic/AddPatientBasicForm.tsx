@@ -2,6 +2,7 @@ import { Card } from 'design-system/card';
 import styles from './add-patient-basic-form.module.scss';
 import { BasicPhoneEmailFields } from './phoneEmail';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
+import { BasicRaceEthnicityFields } from './raceEthnicity/BasicRaceEthnicityFields';
 
 export const AddPatientBasicForm = () => {
     return (
@@ -17,8 +18,11 @@ export const AddPatientBasicForm = () => {
                     }>
                     <AdministrativeEntryFields />
                 </Card>
-                <Card id="phoneEmail" title="Phone & Email">
+                <Card id="phoneEmail" title="Phone & email">
                     <BasicPhoneEmailFields />
+                </Card>
+                <Card id="raceEthnicity" title="Ethnicity and race information">
+                    <BasicRaceEthnicityFields />
                 </Card>
             </div>
         </div>

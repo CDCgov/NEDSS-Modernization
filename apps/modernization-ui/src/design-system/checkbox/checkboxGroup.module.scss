@@ -1,36 +1,22 @@
-@use 'styles/colors';
-@use 'styles/components';
-
 .checkboxGroup {
-    padding: 0;
-    border: none;
-
-    legend {
-        padding-top: 0;
-        color: colors.$base-darkest;
-        margin-bottom: 0.5rem;
+    &.basic-race-ethnicity {
+        padding: 1rem 1.5rem !important;
     }
 
-    .error {
-        margin-bottom: 0.5rem;
-        padding-top: 0;
-    }
-
-    .options {
+    .verticalOptions {
         display: flex;
         flex-direction: row;
         gap: 0.5rem;
         flex-wrap: wrap;
     }
 
-    &.required {
-        legend::after {
-            content: ' *';
-            color: colors.$mandatory;
-        }
-    }
+    .horizontalOptions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
-    &.compact {
-        @extend %compact;
+        label {
+            font-weight: normal !important;
+        }
     }
 }

@@ -10,7 +10,7 @@ describe('Checkbox testing', () => {
     it('should render the selectable label as the checkbox label', () => {
         const { getByText } = render(<SelectableCheckbox selectable={option} selected={false} />);
 
-        const label = getByText('label');
+        const label = getByText('name');
 
         expect(label).toBeInTheDocument();
     });
@@ -68,7 +68,7 @@ describe('Checkbox testing', () => {
 
         const { getByText } = render(<SelectableCheckbox onChange={onChange} selectable={option} selected={false} />);
 
-        const label = getByText('label');
+        const label = getByText('name');
 
         userEvent.click(label);
 

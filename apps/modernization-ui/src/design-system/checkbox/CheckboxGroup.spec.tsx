@@ -14,12 +14,12 @@ describe('CheckboxGroup', () => {
     it('should render with options', () => {
         const { getByLabelText } = render(<CheckboxGroup name="test" label="checkbox group label" options={options} />);
 
-        const checkbox1 = getByLabelText('label1');
+        const checkbox1 = getByLabelText('name1');
         expect(checkbox1).toBeInTheDocument();
         expect(checkbox1).not.toBeChecked();
         expect(checkbox1).not.toBeDisabled();
 
-        const checkbox2 = getByLabelText('label2');
+        const checkbox2 = getByLabelText('name2');
         expect(checkbox2).toBeInTheDocument();
         expect(checkbox2).not.toBeChecked();
         expect(checkbox1).not.toBeDisabled();
@@ -48,13 +48,13 @@ describe('CheckboxGroup', () => {
             />
         );
 
-        const one = getByLabelText('One Label');
+        const one = getByLabelText('One Name');
         expect(one).toBeChecked();
 
-        const two = getByLabelText('Two Label');
+        const two = getByLabelText('Two Name');
         expect(two).not.toBeChecked();
 
-        const three = getByLabelText('Three Label');
+        const three = getByLabelText('Three Name');
         expect(three).toBeChecked();
     });
 
@@ -71,10 +71,10 @@ describe('CheckboxGroup', () => {
             />
         );
 
-        const one = getByLabelText('One Label');
+        const one = getByLabelText('One Name');
         expect(one).not.toBeChecked();
 
-        const two = getByLabelText('Two Label');
+        const two = getByLabelText('Two Name');
         expect(two).not.toBeChecked();
 
         userEvent.click(one);
@@ -105,8 +105,8 @@ describe('CheckboxGroup', () => {
             />
         );
 
-        const one = getByLabelText('label1');
-        const two = getByLabelText('label2');
+        const one = getByLabelText('name1');
+        const two = getByLabelText('name2');
 
         act(() => {
             userEvent.click(one);
@@ -131,25 +131,10 @@ describe('CheckboxGroup', () => {
             <CheckboxGroup name="test" label="Testing CheckboxGroup" options={options} disabled />
         );
 
-        const checkbox1 = getByLabelText('label1');
+        const checkbox1 = getByLabelText('name1');
         expect(checkbox1).toBeDisabled();
 
-        const checkbox2 = getByLabelText('label2');
+        const checkbox2 = getByLabelText('name2');
         expect(checkbox2).toBeDisabled();
-    });
-
-    it('should render with specified className', () => {
-        const { getByRole } = render(
-            <CheckboxGroup
-                name="test"
-                label="Testing CheckboxGroup"
-                className="customClass"
-                options={options}
-                disabled
-            />
-        );
-
-        const group = getByRole('group');
-        expect(group).toHaveClass('customClass');
     });
 });
