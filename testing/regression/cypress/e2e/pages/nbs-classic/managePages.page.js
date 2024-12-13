@@ -105,6 +105,36 @@ class ClassicManagePagesPage {
   selectTarget () {
     cy.get('#targetDC').select(2)
   }
+
+  clickEditBtnInViewPage() {
+    cy.get('input[type="button"][name="Edit Page"]').eq(0).click()
+  }
+
+  clickAddElements() {
+    cy.window().then((win) => {
+      cy.stub(win, 'open').callsFake((url) => {
+        win.location.href = url; // Redirect to the popup's URL in the same tab
+      });
+    });
+    cy.get('.importQuestionLink').eq(0).click()
+  }
+
+  selectStaticElement() {
+    cy.get('input[type="radio"][value="staticElt"]').check()
+  }
+
+  selectStaticElementType() {
+    cy.get('#eltType').select(1)
+  }
+
+  clickSubmitBtnInElementPage() {
+    cy.get('input[type="button"][name="SubmitForm"]').eq(0).click()
+  }
+
+  clickCloseBtnInAddElementPage() {
+    cy.get('input[type="button"][value="Close"]').eq(0).click()
+  }
+
 }
 export default new ClassicManagePagesPage();
 

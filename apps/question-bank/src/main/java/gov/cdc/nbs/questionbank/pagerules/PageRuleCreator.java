@@ -53,7 +53,7 @@ public class PageRuleCreator {
     if (request.targetIdentifiers() == null || request.targetIdentifiers().isEmpty()) {
       throw new RuleException("At least 1 target identifier is required");
     }
-    if (!request.targetIdentifiers().stream().allMatch(t -> t != null && t.trim().length() > 0)) {
+    if (!request.targetIdentifiers().stream().allMatch(t -> t != null && !t.trim().isEmpty())) {
       throw new RuleException("A target is missing it's identifier");
     }
 

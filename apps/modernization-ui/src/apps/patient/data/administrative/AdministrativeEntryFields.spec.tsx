@@ -17,22 +17,22 @@ describe('when entering patient administrative information', () => {
     it('should render all input fields', () => {
         const { getByLabelText } = render(<Fixture />);
 
-        expect(getByLabelText('Information as of')).toBeInTheDocument();
+        expect(getByLabelText('Information as of date')).toBeInTheDocument();
         expect(getByLabelText('General comments')).toBeInTheDocument();
     });
 
     it('should require as of date', async () => {
         const { getByLabelText, queryByText, findByText } = render(<Fixture />);
 
-        const dateInput = getByLabelText('Information as of');
+        const dateInput = getByLabelText('Information as of date');
 
-        expect(queryByText('The Information as of is required.')).not.toBeInTheDocument();
+        expect(queryByText('The Information as of date is required.')).not.toBeInTheDocument();
 
         act(() => {
             userEvent.click(dateInput);
             userEvent.tab();
         });
 
-        expect(await findByText('The Information as of is required.')).toBeInTheDocument();
+        expect(await findByText('The Information as of date is required.')).toBeInTheDocument();
     });
 });

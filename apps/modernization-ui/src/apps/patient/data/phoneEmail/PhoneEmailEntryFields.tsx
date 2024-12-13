@@ -8,6 +8,7 @@ import { MaskedTextInputField } from 'design-system/input/text';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneEmailEntry } from 'apps/patient/data';
 import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
+import { TextAreaField } from 'design-system/input/text/TextAreaField';
 
 const AS_OF_DATE_LABEL = 'Phone & email as of';
 const TYPE_LABEL = 'Type';
@@ -123,16 +124,16 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 name="extension"
                 rules={{
                     pattern: {
-                        value: /^\+?\d{1,4}$/,
-                        message: 'An Extension should be 1 to 4 digits'
+                        value: /^\+?\d{1,20}$/,
+                        message: 'An Extension should be 1 to 20 digits'
                     }
                 }}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <MaskedTextInputField
                         id={name}
                         label="Extension"
-                        mask="____"
-                        pattern="^\+?\d{1,4}$"
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
                         value={value}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -187,18 +188,15 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 name="comment"
                 rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextAreaField
                         label={COMMENTS_LABEL}
                         orientation={orientation}
-                        onChange={onChange}
                         onBlur={onBlur}
-                        defaultValue={value}
-                        type="text"
+                        onChange={onChange}
+                        value={value}
                         name={`phone-${name}`}
-                        htmlFor={`phone-${name}`}
                         id={`phone-${name}`}
                         error={error?.message}
-                        multiline
                     />
                 )}
             />

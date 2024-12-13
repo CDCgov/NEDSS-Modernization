@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { AddPatientExtended } from './AddPatientExtended';
-import { createMemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router-dom';
+import { createMemoryRouter, MemoryRouter, Navigate, RouterProvider, useNavigate } from 'react-router-dom';
 import { CodedValue } from 'coded';
 import { MockedProvider } from '@apollo/react-testing';
 import { CountiesCodedValues } from 'location';
@@ -168,7 +168,11 @@ const renderWithRouter = () => {
     const routes = [
         {
             path: '/',
-            element: <AddPatientExtended />
+            element: (
+                <BasicExtendedTransitionProvider>
+                    <AddPatientExtended />
+                </BasicExtendedTransitionProvider>
+            )
         },
         {
             path: '/add-patient',
@@ -178,11 +182,9 @@ const renderWithRouter = () => {
 
     const router = createMemoryRouter(routes, { initialEntries: ['/'] });
     return render(
-        <BasicExtendedTransitionProvider>
-            <MockedProvider mocks={[]} addTypename={false}>
-                <RouterProvider router={router} />
-            </MockedProvider>
-        </BasicExtendedTransitionProvider>
+        <MockedProvider mocks={[]} addTypename={false}>
+            <RouterProvider router={router} />
+        </MockedProvider>
     );
 };
 

@@ -1,35 +1,44 @@
 package gov.cdc.nbs.questionbank.page.content.reorder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 import gov.cdc.nbs.questionbank.entity.WaTemplate;
 import gov.cdc.nbs.questionbank.entity.WaUiMetadata;
 import gov.cdc.nbs.questionbank.entity.repository.WaTemplateRepository;
-import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import gov.cdc.nbs.questionbank.page.PageMother;
+import gov.cdc.nbs.questionbank.support.ExceptionHolder;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Transactional
 public class ReorderSteps {
 
-    @Autowired
-    private PageMother pageMother;
+    private final PageMother pageMother;
 
-    @Autowired
-    private ReorderController controller;
+    private final ReorderController controller;
 
-    @Autowired
-    private WaTemplateRepository templateRepository;
+    private final WaTemplateRepository templateRepository;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
+
+    ReorderSteps(
+        final PageMother pageMother,
+        final ReorderController controller,
+        final WaTemplateRepository templateRepository,
+        final ExceptionHolder exceptionHolder
+    ) {
+        this.pageMother = pageMother;
+        this.controller = controller;
+        this.templateRepository = templateRepository;
+        this.exceptionHolder = exceptionHolder;
+    }
 
     @When("I send a reorder request for a tab")
     public void i_send_a_tab_reorder_request() {
@@ -43,9 +52,7 @@ public class ReorderSteps {
                     page.getId(),
                     tabs.get(0).getId(),
                     tabs.get(1).getId());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -56,7 +63,7 @@ public class ReorderSteps {
         List<WaUiMetadata> content = templateRepository.findById(pageMother.brucellosis().getId())
                 .orElseThrow()
                 .getUiMetadata();
-        content.sort((a, b) -> a.getOrderNbr() < b.getOrderNbr() ? -1 : 1);
+        content.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
         assertEquals("Second tab", content.get(1).getQuestionLabel());
         assertEquals("Second section", content.get(2).getQuestionLabel());
         assertEquals("Second subsection", content.get(3).getQuestionLabel());
@@ -80,9 +87,7 @@ public class ReorderSteps {
                     page.getId(),
                     sections.get(0).getId(),
                     sections.get(1).getId());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -93,7 +98,7 @@ public class ReorderSteps {
         List<WaUiMetadata> content = templateRepository.findById(pageMother.brucellosis().getId())
                 .orElseThrow()
                 .getUiMetadata();
-        content.sort((a, b) -> a.getOrderNbr() < b.getOrderNbr() ? -1 : 1);
+        content.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
         assertEquals("First tab", content.get(1).getQuestionLabel());
         assertEquals("Second tab", content.get(2).getQuestionLabel());
         assertEquals("Second section", content.get(3).getQuestionLabel());
@@ -116,9 +121,7 @@ public class ReorderSteps {
                     page.getId(),
                     subsections.get(0).getId(),
                     subsections.get(1).getId());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -129,7 +132,7 @@ public class ReorderSteps {
         List<WaUiMetadata> content = templateRepository.findById(pageMother.brucellosis().getId())
                 .orElseThrow()
                 .getUiMetadata();
-        content.sort((a, b) -> a.getOrderNbr() < b.getOrderNbr() ? -1 : 1);
+        content.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
         assertEquals("First tab", content.get(1).getQuestionLabel());
         assertEquals("First section", content.get(2).getQuestionLabel());
         assertEquals("Second tab", content.get(3).getQuestionLabel());
@@ -152,9 +155,7 @@ public class ReorderSteps {
                     page.getId(),
                     questions.get(0).getId(),
                     questions.get(1).getId());
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -165,7 +166,7 @@ public class ReorderSteps {
         List<WaUiMetadata> content = templateRepository.findById(pageMother.brucellosis().getId())
                 .orElseThrow()
                 .getUiMetadata();
-        content.sort((a, b) -> a.getOrderNbr() < b.getOrderNbr() ? -1 : 1);
+        content.sort(Comparator.comparing(WaUiMetadata::getOrderNbr));
         assertEquals("First tab", content.get(1).getQuestionLabel());
         assertEquals("First section", content.get(2).getQuestionLabel());
         assertEquals("First subsection", content.get(3).getQuestionLabel());

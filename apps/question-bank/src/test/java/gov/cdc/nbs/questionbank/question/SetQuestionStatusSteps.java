@@ -1,13 +1,5 @@
 package gov.cdc.nbs.questionbank.question;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.temporal.ChronoUnit;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestion;
 import gov.cdc.nbs.questionbank.entity.question.WaQuestionHist;
 import gov.cdc.nbs.questionbank.question.repository.WaQuestionHistRepository;
@@ -18,24 +10,39 @@ import gov.cdc.nbs.questionbank.support.QuestionMother;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+
+import java.time.temporal.ChronoUnit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SetQuestionStatusSteps {
 
-    @Autowired
-    private QuestionController controller;
+    private final QuestionController controller;
 
-    @Autowired
-    private ExceptionHolder exceptionHolder;
+    private final ExceptionHolder exceptionHolder;
 
-    @Autowired
-    private WaQuestionRepository repository;
+    private final WaQuestionRepository repository;
 
-    @Autowired
-    private QuestionMother questionMother;
+    private final QuestionMother questionMother;
 
-    @Autowired
-    private WaQuestionHistRepository histRepository;
+    private final WaQuestionHistRepository histRepository;
 
+    SetQuestionStatusSteps(
+        final QuestionController controller,
+        final ExceptionHolder exceptionHolder,
+        final WaQuestionRepository repository,
+        final QuestionMother questionMother,
+        final WaQuestionHistRepository histRepository
+    ) {
+        this.controller = controller;
+        this.exceptionHolder = exceptionHolder;
+        this.repository = repository;
+        this.questionMother = questionMother;
+        this.histRepository = histRepository;
+    }
 
     @Given("A text question exists")
     public void a_text_question_exists() {
@@ -57,10 +64,8 @@ public class SetQuestionStatusSteps {
         WaQuestion question = questionMother.one();
         try {
             controller.setQuestionStatus(question.getId(),
-                new QuestionStatusRequest("Active".equals(status) ? true : false));
-        } catch (AccessDeniedException e) {
-            exceptionHolder.setException(e);
-        } catch (AuthenticationCredentialsNotFoundException e) {
+                new QuestionStatusRequest("Active".equals(status)));
+        } catch (AccessDeniedException | AuthenticationCredentialsNotFoundException e) {
             exceptionHolder.setException(e);
         }
     }
@@ -68,7 +73,7 @@ public class SetQuestionStatusSteps {
     @Then("the question's status is set to {string}")
     public void the_question_status_is_set_to(String status) {
         WaQuestion originalQuestion = questionMother.one();
-        WaQuestion updatedQuestion = repository.findById(originalQuestion.getId()).get();
+        WaQuestion updatedQuestion = repository.findById(originalQuestion.getId()).orElseThrow();
         assertEquals(status, updatedQuestion.getRecordStatusCd());
         assertTrue(originalQuestion.getRecordStatusTime().compareTo(updatedQuestion.getRecordStatusTime()) < 0);
     }

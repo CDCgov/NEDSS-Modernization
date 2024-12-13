@@ -1,5 +1,4 @@
 @use 'styles/borders';
-@use 'styles/components';
 
 .horizontalInput {
     display: flex;
@@ -16,10 +15,6 @@
     label {
         font-size: 0.875rem !important;
         font-weight: 700;
-    }
-
-    .helptext {
-        @include components.hint();
     }
 
     .right {

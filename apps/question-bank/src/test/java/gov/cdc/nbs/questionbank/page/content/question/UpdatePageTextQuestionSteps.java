@@ -48,11 +48,11 @@ public class UpdatePageTextQuestionSteps {
       messagingInfo = new MessagingInfo(false, null, null, null, false, null);
     } else {
       messagingInfo = new MessagingInfo(
-          "true".equals(map.get("includedInMessage").toLowerCase()),
+          "true".equalsIgnoreCase(map.get("includedInMessage")),
           map.get("messageVariableId"),
           map.get("labelInMessage"),
           map.get("codeSystem"),
-          "true".equals(map.get("requiredInMessage").toLowerCase()),
+          "true".equalsIgnoreCase(map.get("requiredInMessage")),
           map.get("hl7DataType"));
     }
 
@@ -62,7 +62,7 @@ public class UpdatePageTextQuestionSteps {
         "true".equals(map.get("visible")),
         "true".equals(map.get("enabled")),
         "true".equals(map.get("required")),
-        Integer.valueOf(map.get("displayControl")),
+        Integer.parseInt(map.get("displayControl")),
         map.get("defaultValue"),
         Integer.valueOf(map.get("fieldLength")),
         reportingInfo,
@@ -74,7 +74,7 @@ public class UpdatePageTextQuestionSteps {
   public void send_update_page_text_request() throws Exception {
     WaTemplate page = pageMother.one();
     List<WaUiMetadata> content = pageMother.pageContent();
-    long id = content.get(content.size() - 1).getId();
+    long id = content.getLast().getId();
     response.active(requester.send(page.getId(), id, request));
   }
 
@@ -82,7 +82,7 @@ public class UpdatePageTextQuestionSteps {
   public void page_text_is_updated() throws Exception {
     response.active()
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.displayControl", equalTo(Long.valueOf(request.displayControl()).intValue())))
+        .andExpect(jsonPath("$.displayControl", equalTo((int)request.displayControl())))
         .andExpect(jsonPath("$.fieldLength", equalTo(request.fieldLength())))
         .andExpect(jsonPath("$.defaultValue", equalTo(request.defaultValue())))
         .andExpect(jsonPath("$.label", equalTo(request.label())))
