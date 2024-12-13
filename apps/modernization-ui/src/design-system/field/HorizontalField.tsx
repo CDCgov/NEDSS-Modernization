@@ -18,11 +18,9 @@ type Props = {
 const HorizontalField = ({ className, htmlFor, label, helperText, required, error, children }: Props) => (
     <div className={classNames(styles.horizontalInput, className)}>
         <div className={styles.left}>
-            {label && (
-                <label className={classNames({ required })} htmlFor={htmlFor}>
-                    {label}
-                </label>
-            )}
+            <label className={classNames({ required })} htmlFor={htmlFor}>
+                {label}
+            </label>
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         </div>
         <div className={styles.right}>

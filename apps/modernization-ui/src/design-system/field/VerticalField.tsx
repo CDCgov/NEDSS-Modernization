@@ -17,11 +17,9 @@ type Props = {
 
 const VerticalField = ({ className, htmlFor, label, helperText, required, error, children }: Props) => (
     <span className={classNames(styles.entry, className, { [styles.error]: error })}>
-        {label && (
-            <label className={classNames({ required })} htmlFor={htmlFor}>
-                {label}
-            </label>
-        )}
+        <label className={classNames({ required })} htmlFor={htmlFor}>
+            {label}
+        </label>
         {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         {error && <InlineErrorMessage id={`${error}-error`}>{error}</InlineErrorMessage>}
         {children}
