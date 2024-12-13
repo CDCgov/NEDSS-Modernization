@@ -119,6 +119,64 @@ class OpenInvestigationPage {
     verifyUpdatedComment(expectedComment) {
       cy.get(this.updatedComment).should('contain.text', expectedComment);
     }
+
+    clickPatientName() {
+        cy.get('#parent tbody tr td a').eq(2).click()
+    }
+
+    clickEventsTab() {
+        cy.contains('Events').eq(0).click()
+    }
+
+    clickAddInvestigationBtn() {
+        cy.contains('button', 'Add investigation').eq(0).click()
+    }
+
+    selectConditionFromDropdown() {
+        cy.get('img[name="ccd_button"]').eq(0).click()
+        cy.wait(1000)
+        cy.get('#ccd').select(1, { force: true })
+        cy.get('input[name="ccd_textbox"]').eq(0).click()
+        cy.get('#ccd').select(1, { force: true })
+    }
+
+    clickSubmitBtnInSelectConditionPage() {
+        cy.get('#Submit').eq(0).click()
+    }
+
+    clickCaseInfoTab() {
+        cy.contains('Case Info').eq(0).click()
+    }
+
+    selectJurisdictionFromDropdown() {
+        cy.get('img[name="INV107_button"]').eq(0).click()
+        cy.get('#INV107').select(1, { force: true })
+        cy.get('input[name="INV107_textbox"]').eq(0).click()
+    }
+
+    selectCaseStatusFromDropdown() {
+        cy.get('img[name="INV163_button"]').eq(0).click()
+        cy.get('#INV163').select(1, { force: true })
+        cy.get('input[name="INV163_textbox"]').eq(0).click()
+        cy.get('#INV886').eq(0).click()
+    }
+
+    clickSubmitBtnInAddInvestigationPage() {
+        cy.get('#SubmitBottom').eq(0).click()
+    }
+
+    clickCreateInvestigationsBtn() {
+        cy.window().then((win) => {
+         cy.stub(win, 'open').callsFake((url) => {
+           win.location.href = url;
+         });
+       });
+       cy.get('#createNoti').eq(0).click()
+    }
+
+    clickSubmitBtnInCreateNotificationPage() {
+        cy.get('#topcreatenotId input[type="button"][value="Submit"]').eq(0).click({ force: true })
+    }
   }
   
   export const openInvestigationPage = new OpenInvestigationPage();
