@@ -5,8 +5,7 @@ import {
     displayEmails,
     displayAddresses,
     displayOtherNames,
-    displayIdentifications,
-    maybeDisplay
+    displayIdentifications
 } from './patientSearchResult';
 
 describe('patientSearchResult functions', () => {
@@ -105,18 +104,5 @@ describe('patientSearchResult functions', () => {
         expect(getByText('123-45-6789')).toBeInTheDocument();
         expect(getByText('MRN')).toBeInTheDocument();
         expect(getByText('123456')).toBeInTheDocument();
-    });
-});
-
-describe('maybeDisplay', () => {
-    it('should return null if the value is empty', () => {
-        const result = maybeDisplay([], <div>test</div>);
-        expect(result).toBeNull();
-    });
-
-    it('should return the content if the value is not empty', () => {
-        const element = <div>test</div>;
-        const result = maybeDisplay([1], element);
-        expect(result).toEqual(element);
     });
 });
