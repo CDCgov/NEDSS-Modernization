@@ -13,8 +13,8 @@ export const AddPatientBasicForm = () => {
         <div className={styles.addPatientForm}>
             <div className={styles.formContent}>
                 <Card
-                    id="generalInformation"
-                    title="General information"
+                    id="administrative"
+                    title="Administrative"
                     info={
                         <span>
                             <span className="required"> All fields marked with</span> are required
