@@ -4,6 +4,7 @@ import { displayAddress } from 'address/display';
 
 import { ItemGroup } from 'design-system/item';
 import { internalizeDate, displayAgeAsOfToday } from 'date';
+import { MaybeNoData } from 'components/NoData';
 
 // Displays Other names, that are not the legal name
 const displayOtherNames = (result: PatientSearchResult, order: 'normal' | 'reverse' = 'normal'): JSX.Element => {
@@ -31,13 +32,15 @@ const displayAddresses = (result: PatientSearchResult): JSX.Element => (
 
 const displayPhones = (result: PatientSearchResult): JSX.Element => (
     <div>
-        {result.detailedPhones.map((phone, index) => (
-            <div key={index}>
-                <ItemGroup type="phone" label={phone.use ?? phone.type}>
-                    {phone.number}
-                </ItemGroup>
-            </div>
-        ))}
+        <MaybeNoData>
+            {result.detailedPhones.map((phone, index) => (
+                <div key={index}>
+                    <ItemGroup type="phone" label={phone.use ?? phone.type}>
+                        {phone.number}
+                    </ItemGroup>
+                </div>
+            ))}
+        </MaybeNoData>
     </div>
 );
 const displayEmails = (result: PatientSearchResult): string => result.emails.join('\n');
