@@ -23,7 +23,7 @@ export const AddPatientBasicForm = () => {
                     <AdministrativeEntryFields />
                 </Card>
                 <Card id="name" title="Name">
-                  <NameEntryFields/>
+                    <NameEntryFields />
                 </Card>
                 <Card id="phoneEmail" title="Phone & Email">
                     <BasicPhoneEmailFields />
