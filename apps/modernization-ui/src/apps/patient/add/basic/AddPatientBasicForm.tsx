@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { BasicNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { NameEntryFields } from './name/NameEntryFields';
+import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
 
 export const AddPatientBasicForm = () => {
     const { control } = useFormContext<BasicNewPatientEntry>();
@@ -13,8 +14,8 @@ export const AddPatientBasicForm = () => {
         <div className={styles.addPatientForm}>
             <div className={styles.formContent}>
                 <Card
-                    id="generalInformation"
-                    title="General information"
+                    id="administrative"
+                    title="Administrative"
                     info={
                         <span>
                             <span className="required"> All fields marked with</span> are required
@@ -25,8 +26,11 @@ export const AddPatientBasicForm = () => {
                 <Card id="name" title="Name">
                     <NameEntryFields />
                 </Card>
-                <Card id="phoneEmail" title="Phone & Email">
+                <Card id="phoneEmail" title="Phone & email">
                     <BasicPhoneEmailFields />
+                </Card>
+                <Card id="raceEthnicity" title="Ethnicity and race">
+                    <BasicRaceEthnicityFields />
                 </Card>
                 <Controller
                     control={control}

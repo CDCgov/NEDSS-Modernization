@@ -27,7 +27,7 @@ const SelectableCheckbox = ({ className, selectable, selected = false, sizing, o
                 {...inputProps}
             />
             <label className={classNames({ [styles.disabled]: inputProps.disabled })} htmlFor={id}>
-                {selectable.label}
+                {selectable.name}
             </label>
         </div>
     );

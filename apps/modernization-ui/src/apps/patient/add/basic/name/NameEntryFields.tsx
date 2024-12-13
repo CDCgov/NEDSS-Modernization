@@ -20,6 +20,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Last"
+                        sizing="compact"
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -39,6 +40,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="First"
+                        sizing="compact"
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -58,6 +60,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
                         label="Middle"
+                        sizing="compact"
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
@@ -77,6 +80,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                     <SingleSelect
                         label="Suffix"
                         orientation={orientation}
+                        sizing="compact"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}

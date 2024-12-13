@@ -507,7 +507,7 @@ describe('when transforming entered basic patient data', () => {
         });
     });
 
-    describe('that contains Ethnicity and race information ', () => {
+    describe('that contains Ethnicity and race', () => {
         it('should transform ethnicity to a format accepted by the API', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
