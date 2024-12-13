@@ -5,6 +5,7 @@ import { BasicIdentificationRepeatingBlock } from './identification';
 import { Controller, useFormContext } from 'react-hook-form';
 import { BasicNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
+import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
 
 export const AddPatientBasicForm = () => {
     const { control } = useFormContext<BasicNewPatientEntry>();
@@ -21,8 +22,11 @@ export const AddPatientBasicForm = () => {
                     }>
                     <AdministrativeEntryFields />
                 </Card>
-                <Card id="phoneEmail" title="Phone & Email">
+                <Card id="phoneEmail" title="Phone & email">
                     <BasicPhoneEmailFields />
+                </Card>
+                <Card id="raceEthnicity" title="Ethnicity and race">
+                    <BasicRaceEthnicityFields />
                 </Card>
                 <Controller
                     control={control}
