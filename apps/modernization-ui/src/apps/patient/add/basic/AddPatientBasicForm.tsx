@@ -25,6 +25,9 @@ export const AddPatientBasicForm = () => {
                 <Card id="phoneEmail" title="Phone & email">
                     <BasicPhoneEmailFields />
                 </Card>
+                <Card id="raceEthnicity" title="Ethnicity and race">
+                    <BasicRaceEthnicityFields />
+                </Card>
                 <Controller
                     control={control}
                     name="identifications"
@@ -37,9 +40,6 @@ export const AddPatientBasicForm = () => {
                         />
                     )}
                 />
-                <Card id="raceEthnicity" title="Ethnicity and race">
-                    <BasicRaceEthnicityFields />
-                </Card>
             </div>
         </div>
     );
