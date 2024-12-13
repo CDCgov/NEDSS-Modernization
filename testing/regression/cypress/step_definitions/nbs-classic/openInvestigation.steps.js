@@ -111,3 +111,48 @@ When('the user clicks the Submit button', () => {
 Then('the Treatment Comment is updated with the text {string}', (expectedComment) => {
   openInvestigationPage.verifyUpdatedComment(expectedComment);
 });
+
+Then('Click on Patient name from open investigation queue', () => {
+  openInvestigationPage.clickPatientName();
+});
+
+Then('Click Events tab on Patient Profile Page', () => {
+  openInvestigationPage.clickEventsTab();
+});
+
+Then('Click Add Investigation button on Events tab', () => {
+  openInvestigationPage.clickAddInvestigationBtn();
+});
+
+Then('Select condition form the dropdown in Select Condition Page', () => {
+  openInvestigationPage.selectConditionFromDropdown();
+});
+
+Then('Click Submit button in Select Condition Page', () => {
+  openInvestigationPage.clickSubmitBtnInSelectConditionPage();
+});
+
+Then('Click on Case Info Tab in Add Investigation for the selected condition', () => {
+  openInvestigationPage.clickCaseInfoTab();
+});
+
+Then('Select Jurisdiction as it is mandatory field in Add Investigation for the selected condition', () => {
+  openInvestigationPage.selectJurisdictionFromDropdown();
+});
+
+Then('Select status from Case Status dropdown in Add Investigation for the selected condition', () => {
+  openInvestigationPage.selectCaseStatusFromDropdown();
+});
+
+Then('Click Submit button in Add Investigation for the selected condition', () => {
+  openInvestigationPage.clickSubmitBtnInAddInvestigationPage();
+});
+
+Then('Click Create Notifications button from top action button group', () => {
+  openInvestigationPage.clickCreateInvestigationsBtn();
+});
+
+Then('Click Submit button in newly opened window Create Notification Page', () => {
+  openInvestigationPage.clickSubmitBtnInCreateNotificationPage();
+});
+
