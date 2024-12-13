@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import './NoData.scss';
 
-export type NoDataProps = {
+type NoDataProps = {
     className?: string;
     display?: 'text' | 'dashes' | 'whitespace';
 };
