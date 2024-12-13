@@ -29,7 +29,7 @@ import {
     BasicNewPatientEntry,
     BasicPhoneEmail,
     NameInformationEntry,
-    OtherInformationEntry
+    BasicOtherInformationEntry
 } from './entry';
 
 const maybeMapEach =
@@ -107,7 +107,7 @@ const asName =
 
 const asBirth =
     (asOf: string) =>
-    (entry: OtherInformationEntry): Birth | undefined => {
+    (entry: BasicOtherInformationEntry): Birth | undefined => {
         const { bornOn, birthSex } = entry;
 
         if (bornOn || birthSex) {
@@ -121,7 +121,7 @@ const asBirth =
 
 const asGender =
     (asOf: string) =>
-    (entry: OtherInformationEntry): Sex | undefined => {
+    (entry: BasicOtherInformationEntry): Sex | undefined => {
         const { currentSex } = entry;
 
         if (currentSex) {
@@ -134,7 +134,7 @@ const asGender =
 
 const asMortality =
     (asOf: string) =>
-    (entry: OtherInformationEntry): Mortality | undefined => {
+    (entry: BasicOtherInformationEntry): Mortality | undefined => {
         const { deceased, deceasedOn } = entry;
 
         if (deceased || deceasedOn) {
@@ -148,7 +148,7 @@ const asMortality =
 
 const asGeneral =
     (asOf: string) =>
-    (entry: OtherInformationEntry): GeneralInformation | undefined => {
+    (entry: BasicOtherInformationEntry): GeneralInformation | undefined => {
         const { maritalStatus, stateHIVCase } = entry;
         if (maritalStatus || stateHIVCase) {
             return {

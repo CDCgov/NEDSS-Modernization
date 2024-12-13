@@ -10,7 +10,7 @@ type NameInformationEntry = {
     suffix?: Selectable;
 };
 
-type OtherInformationEntry = {
+type BasicOtherInformationEntry = {
     bornOn?: string;
     currentSex?: Selectable;
     birthSex?: Selectable;
@@ -50,7 +50,7 @@ type BasicIdentificationEntry = Omit<IdentificationEntry, 'asOf'>;
 type BasicNewPatientEntry = {
     administrative: AdministrativeEntry;
     name?: NameInformationEntry;
-    other?: OtherInformationEntry;
+    other?: BasicOtherInformationEntry;
     address?: BasicAddressEntry;
     phoneEmail?: BasicPhoneEmail;
     ethnicityRace?: BasicEthnicityRace;
@@ -60,7 +60,7 @@ type BasicNewPatientEntry = {
 export type {
     BasicNewPatientEntry,
     NameInformationEntry,
-    OtherInformationEntry,
+    BasicOtherInformationEntry,
     BasicAddressEntry,
     BasicWorkPhone,
     BasicPhoneEmail,

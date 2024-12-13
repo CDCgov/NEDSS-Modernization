@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { BasicNewPatientEntry } from './entry';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
 import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
+import { BasicOtherInfoFields } from './otherInfo/BasicOtherInfoFields';
 
 export const AddPatientBasicForm = () => {
     const { control } = useFormContext<BasicNewPatientEntry>();
@@ -21,6 +22,9 @@ export const AddPatientBasicForm = () => {
                         </span>
                     }>
                     <AdministrativeEntryFields />
+                </Card>
+                <Card id="otherInfo" title="Other Information">
+                    <BasicOtherInfoFields />
                 </Card>
                 <Card id="phoneEmail" title="Phone & email">
                     <BasicPhoneEmailFields />
