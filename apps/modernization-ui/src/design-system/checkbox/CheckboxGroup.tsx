@@ -31,7 +31,6 @@ export const CheckboxGroup = ({
     disabled = false,
     error,
     required,
-    className,
     orientation = 'vertical',
     sizing
 }: Props) => {
@@ -57,18 +56,23 @@ export const CheckboxGroup = ({
 
     return (
         <Field
-            className={classNames(styles.checkboxGroup, styles[className ?? ''])}
+            className={classNames(styles.checkboxGroup, {
+                [styles.horizontalCheckboxGroup]: orientation === 'horizontal'
+            })}
             orientation={orientation}
             sizing={sizing}
             label={label}
             htmlFor={name}
             required={required}
             error={error}>
-            <div
-                className={classNames({
-                    [styles.verticalOptions]: orientation === 'vertical',
-                    [styles.horizontalOptions]: orientation === 'horizontal'
-                })}>
+            <fieldset
+                className={classNames(
+                    {
+                        [styles.verticalOptions]: orientation === 'vertical',
+                        [styles.horizontalOptions]: orientation === 'horizontal'
+                    },
+                    styles.fieldSet
+                )}>
                 {items.map((item, index) => (
                     <SelectableCheckbox
                         name={name}
@@ -81,7 +85,7 @@ export const CheckboxGroup = ({
                         onBlur={onBlur}
                     />
                 ))}
-            </div>
+            </fieldset>
         </Field>
     );
 };

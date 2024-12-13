@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BasicRaceEthnicityFields } from './BasicRaceEthnicityFields';
+import { BasicRaceEthnicityFields } from './BasicEthnicityRaceFields';
 import { BasicEthnicityRace } from '../entry';
 
 const mockRaces = [

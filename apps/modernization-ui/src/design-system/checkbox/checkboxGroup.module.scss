@@ -1,5 +1,9 @@
 .checkboxGroup {
-    &.basic-race-ethnicity {
+    .fieldSet {
+        padding: 0;
+        border: none;
+    }
+    &.horizontalCheckboxGroup {
         padding: 1rem 1.5rem !important;
     }
 

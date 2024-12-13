@@ -2,7 +2,7 @@ import { Card } from 'design-system/card';
 import styles from './add-patient-basic-form.module.scss';
 import { BasicPhoneEmailFields } from './phoneEmail';
 import { AdministrativeEntryFields } from 'apps/patient/data/administrative/AdministrativeEntryFields';
-import { BasicRaceEthnicityFields } from './raceEthnicity/BasicRaceEthnicityFields';
+import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
 
 export const AddPatientBasicForm = () => {
     return (

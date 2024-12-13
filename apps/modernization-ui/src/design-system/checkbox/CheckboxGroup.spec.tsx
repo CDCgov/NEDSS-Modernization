@@ -137,4 +137,19 @@ describe('CheckboxGroup', () => {
         const checkbox2 = getByLabelText('name2');
         expect(checkbox2).toBeDisabled();
     });
+
+    it('should render with specified className', () => {
+        const { getByRole } = render(
+            <CheckboxGroup
+                name="test"
+                label="Testing CheckboxGroup"
+                className="customClass"
+                options={options}
+                disabled
+            />
+        );
+
+        const group = getByRole('group');
+        expect(group).toBeInTheDocument();
+    });
 });
