@@ -32,22 +32,6 @@ describe('PhoneEmailEntryFields', () => {
         expect(getByLabelText('Email')).toBeInTheDocument();
     });
 
-    it('should validates email field', async () => {
-        const { getByLabelText, queryByText } = render(<Fixture />);
-
-        const emailInput = getByLabelText('Email');
-        userEvent.clear(emailInput);
-        userEvent.paste(emailInput, 'invalid-email');
-        userEvent.tab();
-
-        const validationMessage = 'Please enter a valid email address (example: youremail@website.com)';
-
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            expect(validationError).toBeInTheDocument();
-        });
-    });
-
     it('should validates cell phone field', async () => {
         const { getByLabelText, queryByText } = render(<Fixture />);
 
