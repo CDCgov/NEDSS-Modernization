@@ -55,7 +55,7 @@ type FormRequired = {
 
 type OptionalFields = {
     comments: Maybe<string>;
-    dateOfBirth: Maybe<string>;
+    dateOfBirth: string | undefined;
     currentGender: Maybe<Gender>;
     birthGender: Maybe<Gender>;
     deceased: Maybe<Deceased>;
