@@ -73,7 +73,7 @@ describe('patientSearchResult functions', () => {
     };
 
     it('should displayPhones returns correct string', () => {
-        const { getByText } = render(displayPhones(mockPatient));
+        const { getByText } = render(<>{displayPhones(mockPatient)}</>);
         expect(getByText('phone-use-value')).toBeInTheDocument();
         expect(getByText('270-685-4067')).toBeInTheDocument();
     });
@@ -84,7 +84,7 @@ describe('patientSearchResult functions', () => {
     });
 
     it('should render addresses correctly', () => {
-        const { getByText, queryAllByText } = render(displayAddresses(mockPatient));
+        const { getByText, queryAllByText } = render(<>{displayAddresses(mockPatient)}</>);
         expect(getByText('Home')).toBeInTheDocument();
         expect(queryAllByText('2222 Test Valley Rd', { exact: false })).toHaveLength(2);
         expect(queryAllByText('3333 Test Valley Rd', { exact: false })).toHaveLength(1);
@@ -93,7 +93,7 @@ describe('patientSearchResult functions', () => {
     });
 
     it('should render other names with header and content', () => {
-        const { getByText } = render(displayOtherNames(mockPatient));
+        const { getByText } = render(<>{displayOtherNames(mockPatient)}</>);
         expect(getByText('Alias')).toBeInTheDocument();
         expect(getByText('TestnullTest, Johnny')).toBeInTheDocument();
     });
