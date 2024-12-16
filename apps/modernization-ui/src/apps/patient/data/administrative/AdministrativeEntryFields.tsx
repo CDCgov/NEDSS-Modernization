@@ -29,6 +29,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                         name={name}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                         required
                     />
                 )}
@@ -41,6 +42,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                     <TextAreaField
                         label={COMMENTS_LABEL}
                         orientation={orientation}
+                        sizing="compact"
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}

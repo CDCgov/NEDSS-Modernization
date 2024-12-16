@@ -2,8 +2,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
-import { maxLengthRule, validateRequiredRule, validEmailRule } from 'validation/entry';
-import { PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { maxLengthRule, validateRequiredRule } from 'validation/entry';
+import { Verification } from 'libs/verification';
+import { EmailField, validateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
 import { MaskedTextInputField } from 'design-system/input/text';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneEmailEntry } from 'apps/patient/data';
@@ -14,6 +15,8 @@ const AS_OF_DATE_LABEL = 'Phone & email as of';
 const TYPE_LABEL = 'Type';
 const USE_LABEL = 'Use';
 const PHONE_NUMBER_LABEL = 'Phone number';
+const EMAIL_LABEL = 'Email';
+const URL_LABEL = 'URL';
 const COMMENTS_LABEL = 'Phone & email comments';
 
 type PhoneEmailEntryFieldsProps = EntryFieldsProps;
@@ -146,31 +149,35 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
             <Controller
                 control={control}
                 name="email"
-                rules={{
-                    ...validEmailRule(100)
-                }}
+                rules={maxLengthRule(100, EMAIL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
-                        label="Email"
-                        orientation={orientation}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
-                        error={error?.message}
+                    <Verification
+                        constraint={validateEmail(EMAIL_LABEL)}
+                        render={({ verify, violation }) => (
+                            <EmailField
+                                id={name}
+                                label={EMAIL_LABEL}
+                                onBlur={() => {
+                                    verify(value);
+                                    onBlur();
+                                }}
+                                onChange={onChange}
+                                value={value}
+                                orientation={orientation}
+                                error={error?.message}
+                                warning={violation}
+                            />
+                        )}
                     />
                 )}
             />
             <Controller
                 control={control}
                 name="url"
-                rules={maxLengthRule(100, 'URL')}
+                rules={maxLengthRule(100, URL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
-                        label="URL"
+                        label={URL_LABEL}
                         orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
