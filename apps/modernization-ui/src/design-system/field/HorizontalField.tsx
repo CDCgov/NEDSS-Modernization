@@ -13,11 +13,11 @@ type Props = {
     helperText?: string;
     error?: string;
     required?: boolean;
-    warnings?: string;
+    warning?: string;
     children: ReactNode;
 };
 
-const HorizontalField = ({ className, htmlFor, label, helperText, required, error, warnings, children }: Props) => (
+const HorizontalField = ({ className, htmlFor, label, helperText, required, error, warning, children }: Props) => (
     <div className={classNames(styles.horizontalInput, className)}>
         <div className={styles.left}>
             <label className={classNames({ required })} htmlFor={htmlFor}>
@@ -26,7 +26,7 @@ const HorizontalField = ({ className, htmlFor, label, helperText, required, erro
             {helperText && <HelperText id={`${htmlFor}-hint`}>{helperText}</HelperText>}
         </div>
         <div className={styles.right}>
-            {warnings && <InlineWarningMessage id={`${htmlFor}-warning`}>{warnings}</InlineWarningMessage>}
+            {warning && <InlineWarningMessage id={`${htmlFor}-warning`}>{warning}</InlineWarningMessage>}
             {error && <InlineErrorMessage id={`${htmlFor}-error`}>{error}</InlineErrorMessage>}
             {children}
         </div>

@@ -135,7 +135,7 @@ export default function ContactFields({ id, title }: Props) {
                                         onChange={onChange}
                                         value={value}
                                         error={error?.message}
-                                        warnings={violation}
+                                        warning={violation}
                                     />
                                 )}
                             />

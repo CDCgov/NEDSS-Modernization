@@ -165,7 +165,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                                 value={value}
                                 orientation={orientation}
                                 error={error?.message}
-                                warnings={violation}
+                                warning={violation}
                             />
                         )}
                     />

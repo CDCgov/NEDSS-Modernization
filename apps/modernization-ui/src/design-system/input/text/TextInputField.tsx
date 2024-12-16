@@ -9,7 +9,7 @@ const TextInputField = ({
     orientation,
     sizing,
     error,
-    warnings,
+    warning,
     required,
     ...remaining
 }: TextInputFieldProps) => {
@@ -21,7 +21,7 @@ const TextInputField = ({
             htmlFor={id}
             required={required}
             error={error}
-            warnings={warnings}>
+            warning={warning}>
             <TextInput id={id} {...remaining} />
         </Field>
     );

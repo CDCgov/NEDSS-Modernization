@@ -9,7 +9,7 @@ const TextAreaField = ({
     orientation,
     sizing,
     error,
-    warnings,
+    warning,
     helperText,
     required,
     ...remaining
@@ -22,7 +22,7 @@ const TextAreaField = ({
             htmlFor={id}
             required={required}
             error={error}
-            warnings={warnings}
+            warning={warning}
             helperText={helperText}>
             <TextArea id={id} {...remaining} />
         </Field>

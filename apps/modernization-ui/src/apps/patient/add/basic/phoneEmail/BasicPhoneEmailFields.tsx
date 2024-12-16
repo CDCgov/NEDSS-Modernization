@@ -115,7 +115,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
                                 value={value}
                                 orientation={orientation}
                                 error={error?.message}
-                                warnings={violation}
+                                warning={violation}
                             />
                         )}
                     />
