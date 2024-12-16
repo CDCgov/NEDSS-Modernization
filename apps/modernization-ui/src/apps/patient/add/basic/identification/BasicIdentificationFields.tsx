@@ -13,7 +13,6 @@ type IdentificationEntryFieldsProps = EntryFieldsProps;
 
 export const BasicIdentificationFields = ({ orientation = 'horizontal' }: IdentificationEntryFieldsProps) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
-
     const coded = usePatientIdentificationCodedValues();
 
     return (
