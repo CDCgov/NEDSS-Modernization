@@ -29,7 +29,7 @@ import {
     BasicNewPatientEntry,
     BasicPhoneEmail,
     NameInformationEntry,
-    BasicOtherInformationEntry
+    BasicPersonalDetailsEntry
 } from './entry';
 
 const maybeMapEach =
@@ -64,10 +64,10 @@ const transformer = (entry: BasicNewPatientEntry): NewPatient => {
     const { asOf } = administrative;
 
     const names = asNames(asOf)(entry.name);
-    const birth = maybeAsBirth(asOf)(entry.other);
-    const gender = maybeAsGender(asOf)(entry.other);
-    const mortality = maybeAsMortality(asOf)(entry.other);
-    const general = maybeAsGeneral(asOf)(entry.other);
+    const birth = maybeAsBirth(asOf)(entry.personalDetails);
+    const gender = maybeAsGender(asOf)(entry.personalDetails);
+    const mortality = maybeAsMortality(asOf)(entry.personalDetails);
+    const general = maybeAsGeneral(asOf)(entry.personalDetails);
     const addresses = asAddresses(asOf)(entry.address);
     const ethnicity = maybeAsEthnicity(asOf)(entry.ethnicityRace);
     const races = asRaces(asOf)(entry.ethnicityRace?.races);
@@ -107,7 +107,7 @@ const asName =
 
 const asBirth =
     (asOf: string) =>
-    (entry: BasicOtherInformationEntry): Birth | undefined => {
+    (entry: BasicPersonalDetailsEntry): Birth | undefined => {
         const { bornOn, birthSex } = entry;
 
         if (bornOn || birthSex) {
@@ -121,7 +121,7 @@ const asBirth =
 
 const asGender =
     (asOf: string) =>
-    (entry: BasicOtherInformationEntry): Sex | undefined => {
+    (entry: BasicPersonalDetailsEntry): Sex | undefined => {
         const { currentSex } = entry;
 
         if (currentSex) {
@@ -134,7 +134,7 @@ const asGender =
 
 const asMortality =
     (asOf: string) =>
-    (entry: BasicOtherInformationEntry): Mortality | undefined => {
+    (entry: BasicPersonalDetailsEntry): Mortality | undefined => {
         const { deceased, deceasedOn } = entry;
 
         if (deceased || deceasedOn) {
@@ -148,7 +148,7 @@ const asMortality =
 
 const asGeneral =
     (asOf: string) =>
-    (entry: BasicOtherInformationEntry): GeneralInformation | undefined => {
+    (entry: BasicPersonalDetailsEntry): GeneralInformation | undefined => {
         const { maritalStatus, stateHIVCase } = entry;
         if (maritalStatus || stateHIVCase) {
             return {

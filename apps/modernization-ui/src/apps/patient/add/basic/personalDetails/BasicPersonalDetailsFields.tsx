@@ -8,7 +8,7 @@ import { displayAgeAsOfToday } from 'date/displayAge';
 import { maxLengthRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
 import { ValueView } from 'design-system/data-display/ValueView';
-import { BasicOtherInformationEntry } from '../entry';
+import { BasicPersonalDetailsEntry } from '../entry';
 import { usePatientProfilePermissions } from 'apps/patient/profile/permission';
 import { Indicator, indicators } from 'coded';
 import { usePatientGeneralCodedValues } from 'apps/patient/profile/generalInfo';
@@ -18,16 +18,15 @@ const DECEASED_ON_LABEL = 'Date of death';
 const STATE_HIV_CASE_LABEL = 'State HIV case ID';
 const ENTRY_FIELD_PLACEHOLDER = '';
 
-type BasicOtherInfoFieldsProps = EntryFieldsProps;
+type BasicPersonalDetailsProps = EntryFieldsProps;
 
-export const BasicOtherInfoFields = ({ orientation = 'horizontal' }: BasicOtherInfoFieldsProps) => {
-    const { control } = useFormContext<BasicOtherInformationEntry>();
+export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: BasicPersonalDetailsProps) => {
+    const { control } = useFormContext<BasicPersonalDetailsEntry>();
     const currentBirthday = useWatch({ control, name: 'bornOn' });
     const selectedDeceased = useWatch({ control, name: 'deceased' });
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
     const sexBirthValues = usePatientSexBirthCodedValues();
     const generalValues = usePatientGeneralCodedValues();
-
     const { hivAccess } = usePatientProfilePermissions();
 
     return (
@@ -36,7 +35,7 @@ export const BasicOtherInfoFields = ({ orientation = 'horizontal' }: BasicOtherI
                 control={control}
                 name="bornOn"
                 rules={validDateRule(BORN_ON_LABEL)}
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
                         label={BORN_ON_LABEL}
                         orientation={orientation}
@@ -44,6 +43,7 @@ export const BasicOtherInfoFields = ({ orientation = 'horizontal' }: BasicOtherI
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
+                        error={error?.message}
                     />
                 )}
             />
