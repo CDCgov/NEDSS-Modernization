@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
@@ -28,6 +28,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
     const sexBirthValues = usePatientSexBirthCodedValues();
     const generalValues = usePatientGeneralCodedValues();
     const { hivAccess } = usePatientProfilePermissions();
+    const { isValid: bornOnValid } = useFormState({ control, name: 'bornOn' });
 
     return (
         <section>
@@ -47,7 +48,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     />
                 )}
             />
-            <ValueView title="Current age" value={age} />
+            <ValueView title="Current age" value={bornOnValid ? age : null} />
             <Controller
                 control={control}
                 name="currentSex"

@@ -52,7 +52,6 @@ jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => (
 const Fixture = () => {
     const form = useForm<BasicPersonalDetailsEntry>({
         mode: 'onBlur'
-        //defaultValues: { birthAndSex: { multiple: { value: 'Y', name: 'Yes' } } }
     });
 
     return (
@@ -90,13 +89,21 @@ describe('when entering patient sex and birth demographics', () => {
         expect(await findByText('The Date of birth should be in the format MM/DD/YYYY.')).toBeInTheDocument();
     });
 
+    it('should not render age when date of birth not set', async () => {
+        const { container, getByText } = render(<Fixture />);
+        expect(getByText('Current age')).toBeInTheDocument();
+        expect(container.querySelector('span.value')?.innerHTML).toBe('');
+    });
+
     it('should enable Date of death when deceased is true', async () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
         const deceased = getByLabelText('Is the patient deceased?');
         expect(queryByLabelText('Date of death')).not.toBeInTheDocument();
 
-        userEvent.selectOptions(deceased, 'Y');
+        act(() => {
+            userEvent.selectOptions(deceased, 'Y');
+        });
         await waitFor(() => {
             expect(getByLabelText('Date of death')).toBeInTheDocument();
         });
