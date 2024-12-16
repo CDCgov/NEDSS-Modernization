@@ -156,7 +156,7 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                         <Controller
                             control={control}
                             name="stateHIVCase"
-                            rules={maxLengthRule(20)}
+                            rules={maxLengthRule(16)}
                             render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                                 <Input
                                     label="State HIV case ID"
