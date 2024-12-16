@@ -1,131 +1,124 @@
 class ClassicOpenerPage {
-
   submitNewTab() {
-    
-    function isUniqueElementName(eltType, eltName, eltId) { 
+    function isUniqueElementName(eltType, eltName, eltId) {
       return true;
     }
     function submitForm() {
-      document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + $j("#pageElementUid").val();
+      var unblock = false;
+      document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
       document.forms[0].submit();
     }
     var opener = {};
     opener.isUniqueElementName = isUniqueElementName;
     opener.submitForm = submitForm;
-    cy.visit("https://app.demo.nbspreview.com/nbs/ManagePageElement.do?method=addLoad&eltType=tab");
+    cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=tab");
     cy.get("#tabNameTd").type("NEWTAB");
-    cy.window().then((win) => {            
-        win.opener = opener;        
-        cy.get('input[name="SubmitForm"]').eq(0).click()    
-        cy.visit("https://app.demo.nbspreview.com/nbs/ManagePage.do?method=editPageContentsLoad&fromWhere=V");
-        cy.wait(500);
-        cy.get('body').then(($body) => {            
-            if($body.find('img[title="Add New Tab"]').length > 0) {                
-                cy.get('img[title="Add New Tab"]').eq(0).click().then(() => {
-                  
-                  cy.get('body').then(($body2) => {                     
-                    function handleEvents(elt, eltType, publishInd, batchUid, dataLoc) { 
-                      return true;
-                    }
+    cy.window().then((win) => {
+      win.opener = opener;
+      cy.get('input[name="SubmitForm"]').eq(0).click();
+      cy.visit("/nbs/ManagePage.do?method=editPageContentsLoad&fromWhere=V");
+      cy.wait(500);
+      cy.get('body').then(($body) => {
+        if ($body.find('img[title="Add New Tab"]').length > 0) {
+          cy.get('img[title="Add New Tab"]').eq(0).click().then(() => {
+            cy.get('body').then(($body2) => {
+              function handleTabBodyEvents(elt) {
+                var aLink = Cypress.$(Cypress.$(elt).find("a.addSection")).get(0);
+                Cypress.$(aLink).click(() => fbRef.showAddElementDialog(elt, 'section'));
+                var tacLink = Cypress.$(Cypress.$(elt).find("a.toggleAllChildrenLink")).get(0);
+                Cypress.$(tacLink).click(() => fbRef.toggleAllChildren(tacLink));
+                var vtLink = Cypress.$(Cypress.$(elt).find("a.viewTabLink")).get(0);
+                Cypress.$(vtLink).click(() => fbRef.showViewElementDialog(elt, "tab"));
+                var elLink = Cypress.$(Cypress.$(elt).find("a.editTabLink")).get(0);
+                Cypress.$(elLink).click(() => fbRef.showEditElementDialog(elt, "tab"));
+                var dLink = Cypress.$(Cypress.$(elt).find("a.deleteLink")).get(0);
+                Cypress.$(dLink).click(() => fbRef.deleteElement(elt, "tab"));
+                Cypress.$(elt).mouseover(() => Cypress.$(elt).addClass("pageElementHover"))
+                  .mouseout(() => Cypress.$(elt).removeClass("pageElementHover"));
+              }
 
-                    function getTabBody(pageElt, isActive) {
-                        var tabBodyClass = "ui-tabs-hide";
-                        if (isActive) {
-                            tabBodyClass = "ui-tabs-panel";
-                        }
-                        tabBodyClass += " " + "nbsPageElementCssClass";
-                        var html = "<div id=\"" + pageElt.pageElementUid + "\" class=\"" + tabBodyClass + "\"><div style=\"width:200px; text-align:left; margin-top:10px; float:left;\"><a class=\"toggleAllChildrenLink\" title=\"Collapse All Sections \" href=\"javascript:void(0)\"> &nbsp;&nbsp; <img src=\"CollapseAll.gif\" alt=\"Collapse All Sections\" title=\"Collapse All Sections\"/> <span class=\"text\">Collapse All Sections </span></a> &nbsp;</div><div style=\"width:200px; float:right;\" class=\"utilButton\"> <a title=\"Add Section\" class=\"addSection\" href=\"javascript:void(0)\"> <img src=\"add.gif\" alt=\"Add Section\" title=\"Add Section\"/> </a> &nbsp; <a title=\"View Tab\" class=\"viewTabLink\" href=\"javascript:void(0)\"> <img src=\"page_white_text.gif\"  alt=\"View Tab\"/> </a> &nbsp; <a title=\"Edit Tab\" class=\"editTabLink\" href=\"javascript:void(0)\"> <img src=\"page_white_edit.gif\"  alt=\"Edit Tab\" title=\"Edit Tab\"/> </a> &nbsp; <a title=\"Delete Tab\" class=\"deleteLink\" href=\"javascript:void(0)\"> <img src=\"cross.gif\"  alt=\"Delete Tab\" title=\"Delete Tab\"/> </a></div> <div class=\"ffClear\"> </div> <ul class=\"sortableSections\"></ul></div>";
-                        var elt = Cypress.$(html);
-                        handleEvents(elt, 'tabBody');
-                        return elt;
-                    }
-        
-                    function getTabHandle(pageElt, isActive) {
-                        var tabHandleClass = "";
-                        if (isActive) {
-                            tabHandleClass = "ui-tabs-selected";
-                        }
-                        var html = "<li class=\"" + tabHandleClass + "\"><a href=\"" + pageElt.pageElementUid + "\">" + pageElt.elementLabel + "</a></li>";                        
-                        var elt = Cypress.$(html);
-                        handleEvents(elt, 'tabHandle');
-                        return elt;
-                    }
+              function handleTabHandleEvents(elt) {
+                var aLink = Cypress.$(Cypress.$(elt).find("a")).get(0);
+                Cypress.$(aLink).click((ev) => {
+                  var href = Cypress.$(aLink).attr("href");
+                  var id = href.substring(href.lastIndexOf("/") + 1);
+                  var jQueryBodyId = "div#" + id;
+                  ev.preventDefault();
+                  Cypress.$(Cypress.$(Cypress.$(aLink).parents("ul").get(0)).find("li.ui-tabs-selected").get(0)).removeClass("ui-tabs-selected");
+                  Cypress.$(Cypress.$(aLink).parents("li").get(0)).addClass("ui-tabs-selected");
+                  Cypress.$(Cypress.$("div#tabContainer").find("div.ui-tabs-panel").get(0)).removeClass("ui-tabs-panel").addClass("ui-tabs-hide");
+                  Cypress.$(Cypress.$("div#tabContainer").find(jQueryBodyId).get(0)).addClass("ui-tabs-panel").removeClass("ui-tabs-hide");
+                });
+              }
 
-                    function getDisplayName(eltType) {
-                        switch(eltType.toLowerCase()) {
-                            case 'tab':
-                                return 'Tab';
-                                break;                            
-                            case 'section':
-                                return 'Section';
-                                break;
+              function handleEvents(elt, eltType) {
+                if (eltType === 'tabHandle') handleTabHandleEvents(elt);
+                if (eltType === 'tabBody') handleTabBodyEvents(elt);
+              }
 
-                            case 'subsection':
-                                return 'Subsection';
-                                break;
+              function getTabBody(pageElt, isActive) {
+                var tabBodyClass = isActive ? "ui-tabs-panel nbsPageElementCssClass" : "ui-tabs-hide nbsPageElementCssClass";
+                var html = `<div id="${pageElt.pageElementUid}" class="${tabBodyClass}">
+                              <div style="width:200px; text-align:left; margin-top:10px; float:left;">
+                                <a class="toggleAllChildrenLink" title="Collapse All Sections " href="javascript:void(0)">
+                                  &nbsp;&nbsp; <img src="CollapseAll.gif" alt="Collapse All Sections"/>
+                                  <span class="text">Collapse All Sections</span>
+                                </a>&nbsp;
+                              </div>
+                              <div style="width:200px; float:right;" class="utilButton">
+                                <a title="Add Section" class="addSection" href="javascript:void(0)">
+                                  <img src="add.gif" alt="Add Section"/>
+                                </a>&nbsp;
+                                <a title="View Tab" class="viewTabLink" href="javascript:void(0)">
+                                  <img src="page_white_text.gif" alt="View Tab"/>
+                                </a>&nbsp;
+                                <a title="Edit Tab" class="editTabLink" href="javascript:void(0)">
+                                  <img src="page_white_edit.gif" alt="Edit Tab"/>
+                                </a>&nbsp;
+                                <a title="Delete Tab" class="deleteLink" href="javascript:void(0)">
+                                  <img src="cross.gif" alt="Delete Tab"/>
+                                </a>
+                              </div>
+                              <div class="ffClear"></div>
+                              <ul class="sortableSections"></ul>
+                            </div>`;
+                var elt = Cypress.$(html);
+                handleEvents(elt, 'tabBody');
+                return elt;
+              }
 
-                            case 'question':
-                                return 'Question';
-                                break;
-                                
-                            case 'fieldrow':
-                                return 'Element';
-                                break;
+              function getTabHandle(pageElt, isActive) {
+                var tabHandleClass = isActive ? "ui-tabs-selected" : "";
+                var html = `<li class="${tabHandleClass}">
+                              <a href="${pageElt.pageElementUid}">${pageElt.elementLabel}</a>
+                            </li>`;
+                var elt = Cypress.$(html);
+                handleEvents(elt, 'tabHandle');
+                return elt;
+              }
 
-                            default:
-                                return eltType;
-                                break;
-                        }
-                    }
+              var jsonObj = [{
+                "pageElementUid": -2,
+                "elementLabel": "Test Tabb",
+                "elementType": "Tab",
+                "isStandardized": "F",
+                "isPublished": "F",
+                "elementComponentType": "1010"
+              }];
 
-                    $body2.find('#parentWindowDiv')[0].remove();                                         
-                    var eltsJson = '[{"pageElementUid":-2,"elementLabel":"Test Tabb","elementDescription":null,\n    "elementType":"Tab","questionIdentifier":null,"isStandardized":"F",\n    "isPublished":"F","questionGroupSeqNbr":null,"dataLocation":null,\n    "elementComponentType":"1010","isCoInfection":null,"blockName":null,\n    "dataMartRepeatNumber":null,"dataMartColumnNm":null}]\n';
-                    var action = "add"; 
-
-                    var jsonObj = eval('(' + eltsJson + ')');
-                    if (action != "view") {                        
-                        var clickedEltType = "tab"
-                        var eltDisplayName = "";
-                        var jsonObj = eval('(' + eltsJson + ')');
-                        for (var i in jsonObj) {
-                            if (jsonObj[i].elementLabel != null && jsonObj[i].elementLabel != undefined && 
-                                   clickedEltType != undefined && clickedEltType != null ) {
-                                eltDisplayName = getDisplayName(jsonObj[i].elementType);                   
-                                switch (clickedEltType.toLowerCase()) {
-                                    case 'tab':
-                                        var tabHandle = null, tabBody = null;                                        
-                                        tabHandle = getTabHandle(jsonObj[i], true);
-                                        tabBody = getTabBody(jsonObj[i], true);                                        
-                                        switch (action) {
-                                            case 'add':                                                
-                                                // insert the items in appropriate place
-                                                Cypress.$(".ui-tabs-nav").append(tabHandle)
-                                                // $j($j(this.canvas).find("ul.ui-tabs-nav").get(0)).append(tabHandle);
-                                                Cypress.$(".div#tabContainer").append(tabBody)
-                                                // $j($j(this.canvas).find("div#tabContainer").get(0)).append(tabBody);                                                
-                                                // activate this tab.
-                                                // $j($j(tabHandle).find("a").get(0)).click();
-                                                break;
-                                            
-                                            case 'edit':
-                                                // $j($j("li.ui-tabs-selected").find("a").get(0)).html(jsonObj[i].elementLabel);
-                                                break;
-                                        }
-                                        break;                                                                       
-                                } // switch
-                            } // if
-                        } // for                        
-                    }
-                  })
-                });                
-            }
-        })
-
-
-    })    
-
+              jsonObj.forEach((elt) => {
+                var tabHandle = getTabHandle(elt, true);
+                var tabBody = getTabBody(elt, true);
+                Cypress.$(".ui-tabs-nav").append(tabHandle);
+                Cypress.$(".div#tabContainer").append(tabBody);
+                tabHandle.find("a").get(0).click();
+              });
+            });
+          });
+        }
+      });
+    });
   }
-
 }
 
 export default new ClassicOpenerPage();
