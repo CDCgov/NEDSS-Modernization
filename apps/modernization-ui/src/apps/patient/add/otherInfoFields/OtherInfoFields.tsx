@@ -161,6 +161,7 @@ export default function OtherInfoFields({ id, title, coded }: Readonly<Props>) {
                                 <Input
                                     label="State HIV case ID"
                                     onChange={onChange}
+                                    maxLength={16}
                                     onBlur={onBlur}
                                     type="text"
                                     defaultValue={value}
