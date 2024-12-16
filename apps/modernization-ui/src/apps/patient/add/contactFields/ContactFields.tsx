@@ -3,12 +3,14 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
-import { maxLengthRule, validEmailRule } from 'validation/entry';
-import { PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { maxLengthRule } from 'validation/entry';
+import { Verification } from 'libs/verification';
+import { EmailField, validateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
 
 const HOME_PHONE_LABEL = 'Home phone';
 const WORK_PHONE_LABEL = 'Work phone';
 const CELL_PHONE_LABEL = 'Cell phone';
+const EMAIL_LABEL = 'Email';
 
 type Props = {
     id: string;
@@ -118,19 +120,24 @@ export default function ContactFields({ id, title }: Props) {
                     <Controller
                         control={control}
                         name={`emailAddress`}
-                        rules={{
-                            ...validEmailRule(100)
-                        }}
+                        rules={maxLengthRule(100, EMAIL_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                type="text"
-                                label="Email"
-                                defaultValue={value}
-                                htmlFor={name}
-                                id={name}
-                                error={error?.message}
+                            <Verification
+                                constraint={validateEmail(EMAIL_LABEL)}
+                                render={({ verify, violation }) => (
+                                    <EmailField
+                                        id={name}
+                                        label={EMAIL_LABEL}
+                                        onBlur={() => {
+                                            verify(value);
+                                            onBlur();
+                                        }}
+                                        onChange={onChange}
+                                        value={value}
+                                        error={error?.message}
+                                        warning={violation}
+                                    />
+                                )}
                             />
                         )}
                     />
