@@ -15,6 +15,7 @@ type FieldProps = {
     helperText?: string;
     error?: string;
     required?: boolean;
+    warning?: string;
 };
 
 type Props = {
@@ -29,6 +30,7 @@ const Field = ({ sizing = 'standard', orientation = 'vertical', className, child
         className,
         styles.vertical,
         { [styles.compact]: sizing === 'compact' },
+        { [styles.warn]: remaining.warning && !remaining.error },
         { [styles.error]: remaining.error }
     );
 
