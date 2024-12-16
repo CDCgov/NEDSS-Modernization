@@ -21,6 +21,7 @@ export const BasicRaceEthnicityFields = ({ orientation = 'horizontal' }: BasicRa
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Ethnicity"
+                        sizing="compact"
                         orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
