@@ -182,7 +182,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                 <Controller
                     control={control}
                     name="general.stateHIVCase"
-                    rules={maxLengthRule(20, STATE_HIV_CASE_LABEL)}
+                    rules={maxLengthRule(16, STATE_HIV_CASE_LABEL)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <Input
                             label={STATE_HIV_CASE_LABEL}
@@ -190,6 +190,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                             placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}
+                            maxLength={16}
                             type="text"
                             defaultValue={value}
                             htmlFor={name}
