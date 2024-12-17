@@ -51,7 +51,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                 rules={{ ...validateRequiredRule(AS_OF_DATE_LABEL), ...validDateRule(AS_OF_DATE_LABEL) }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label="Sex & birth information as of"
+                        label={AS_OF_DATE_LABEL}
                         orientation={orientation}
                         value={value}
                         onChange={onChange}
@@ -66,14 +66,15 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                 control={control}
                 name="birthAndSex.bornOn"
                 rules={validDateRule(BORN_ON_LABEL)}
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
-                        label={BORN_ON_LABEL}
-                        orientation={orientation}
+                        id={name}
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        id={name}
+                        label={BORN_ON_LABEL}
+                        error={error?.message}
+                        orientation={orientation}
                     />
                 )}
             />
