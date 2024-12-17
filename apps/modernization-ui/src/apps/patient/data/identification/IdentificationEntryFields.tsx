@@ -34,6 +34,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         onChange={onChange}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -52,6 +53,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -67,6 +69,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         onBlur={onBlur}
                         id={name}
                         options={coded.authorities}
+                        sizing="compact"
                     />
                 )}
             />
@@ -86,6 +89,7 @@ export const IdentificationEntryFields = ({ orientation = 'horizontal' }: Identi
                         id={name}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />

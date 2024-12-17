@@ -62,6 +62,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         orientation={orientation}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -81,6 +82,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -100,6 +102,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         options={coded.uses}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -142,6 +145,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -161,6 +165,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         htmlFor={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -176,6 +181,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         id={name}
                         name={name}
                         options={location.states.all}
+                        sizing="compact"
                     />
                 )}
             />
@@ -192,6 +198,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -207,6 +214,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         id={name}
                         name={name}
                         options={counties}
+                        sizing="compact"
                     />
                 )}
             />
@@ -223,6 +231,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -238,6 +247,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         id={name}
                         name={name}
                         options={location.countries}
+                        sizing="compact"
                         autoComplete="off"
                     />
                 )}
@@ -257,6 +267,7 @@ export const AddressEntryFields = ({ orientation = 'horizontal' }: AddressEntryF
                         name={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />

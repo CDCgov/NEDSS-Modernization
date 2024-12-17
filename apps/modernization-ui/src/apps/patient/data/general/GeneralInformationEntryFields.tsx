@@ -37,6 +37,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         onBlur={onBlur}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -53,6 +54,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.maritalStatuses}
+                        sizing="compact"
                     />
                 )}
             />
@@ -73,6 +75,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         name={name}
                         htmlFor={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -92,6 +95,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         name={name}
                         min="0"
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -111,6 +115,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         name={name}
                         min="0"
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -127,6 +132,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         options={coded.primaryOccupations}
                         id={name}
                         name={name}
+                        sizing="compact"
                     />
                 )}
             />
@@ -143,6 +149,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.educationLevels}
+                        sizing="compact"
                     />
                 )}
             />
@@ -159,6 +166,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.primaryLanguages}
+                        sizing="compact"
                     />
                 )}
             />
@@ -175,6 +183,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                         id={name}
                         name={name}
                         options={coded.speaksEnglish}
+                        sizing="compact"
                     />
                 )}
             />
@@ -197,6 +206,7 @@ export const GeneralInformationEntryFields = ({ orientation = 'horizontal' }: Ge
                             id={name}
                             name={name}
                             error={error?.message}
+                            sizing="compact"
                         />
                     )}
                 />
