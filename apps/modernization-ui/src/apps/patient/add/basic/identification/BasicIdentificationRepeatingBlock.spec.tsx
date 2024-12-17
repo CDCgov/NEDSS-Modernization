@@ -37,8 +37,8 @@ describe('BasicIdentificationRepeatingBlock', () => {
 
         const headers = getAllByRole('columnheader');
         expect(headers[0]).toHaveTextContent('Type');
-        expect(headers[1]).toHaveTextContent('Authority');
-        expect(headers[2]).toHaveTextContent('Value');
+        expect(headers[1]).toHaveTextContent('Assigning authority');
+        expect(headers[2]).toHaveTextContent('ID value');
     });
 
     it('should display proper defaults', async () => {
