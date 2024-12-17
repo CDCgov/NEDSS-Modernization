@@ -41,6 +41,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -60,6 +61,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -79,6 +81,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         options={coded.uses}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -103,6 +106,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -119,6 +123,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -142,6 +147,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -166,6 +172,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                                 orientation={orientation}
                                 error={error?.message}
                                 warning={violation}
+                                sizing="compact"
                             />
                         )}
                     />
@@ -187,6 +194,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         id={name}
                         name={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -204,6 +212,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         name={`phone-${name}`}
                         id={`phone-${name}`}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
