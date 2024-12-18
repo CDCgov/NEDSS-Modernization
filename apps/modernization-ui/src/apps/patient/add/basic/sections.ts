@@ -6,6 +6,6 @@ export const sections: NavSection[] = [
     { id: 'otherInformation', label: 'Other information' },
     { id: 'addresses', label: 'Address' },
     { id: 'phoneEmail', label: 'Phone & email' },
-    { id: 'raceEthnicity', label: 'Ethnicity and race' },
+    { id: 'raceEthnicity', label: 'Ethnicity & race' },
     { id: 'identifications', label: 'Identification' }
 ];
