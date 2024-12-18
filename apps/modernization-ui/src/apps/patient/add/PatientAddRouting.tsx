@@ -24,7 +24,11 @@ const routing = [
             },
             {
                 path: '/patient/add',
-                element: <AddPatientBasic />
+                element: (
+                    <FeatureGuard guard={(features) => features?.patient?.add?.enabled}>
+                        <AddPatientBasic />
+                    </FeatureGuard>
+                )
             },
             {
                 path: '/patient/add/extended',
