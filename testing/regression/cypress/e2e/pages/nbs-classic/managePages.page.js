@@ -1,5 +1,5 @@
 class ClassicManagePagesPage {
-
+    
   navigateToPageLibrary() {
     cy.contains('System Management').click()
     cy.get('#systemAdmin5 a').eq(0).click()
@@ -13,6 +13,14 @@ class ClassicManagePagesPage {
         }
     })
   }
+
+  clickAddNewTabImg() {
+    cy.get('body').then(($body) => {
+        if($body.find('img[title="Add New Tab"]').length > 0) {
+            cy.get('img[title="Add New Tab"]').eq(0).click()
+        }
+    })
+  }  
 
   selectPageType(pageType) {
     const pageTypes = {
