@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 @Table(name = "Entity_id")
 @SuppressWarnings(
     //  The PatientIdentificationHistoryListener is an entity listener specifically for instances of this class
-    "javaarchitecture:S7027"
+    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
 )
 @EntityListeners(PatientIdentificationHistoryListener.class)
 public class EntityId {

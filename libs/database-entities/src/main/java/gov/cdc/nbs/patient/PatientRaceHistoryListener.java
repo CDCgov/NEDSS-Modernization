@@ -17,7 +17,7 @@ public class PatientRaceHistoryListener {
     }
 
     @PreRemove
-    @SuppressWarnings("javaarchitecture:S7027")
+    @SuppressWarnings({"javaarchitecture:S7027","javaarchitecture:S7091"})
     void preRemove(final PersonRace personRace) {
         long personUid = personRace.getPersonUid().getId();
         String raceCode = personRace.getRaceCd();

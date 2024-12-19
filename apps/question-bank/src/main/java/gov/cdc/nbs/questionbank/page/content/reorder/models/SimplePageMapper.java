@@ -9,10 +9,6 @@ import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Subs
 import gov.cdc.nbs.questionbank.page.content.reorder.models.ReorderablePage.Tab;
 
 public class SimplePageMapper {
-    public static final int PAGE_TYPE = 1002;
-    public static final int TAB = 1010;
-    public static final int SECTION = 1015;
-    public static final int SUBSECTION = 1016;
 
     private List<Tab> tabs = new ArrayList<>();
     private Tab currentTab = null;
@@ -23,20 +19,20 @@ public class SimplePageMapper {
         ReorderablePage page = null;
         for (PageEntry e : entries) {
             switch (e.component()) {
-                case PAGE_TYPE:
+                case ReorderablePage.PAGE_TYPE:
                     page = new ReorderablePage(e.id());
                     break;
-                case TAB: {
+                case ReorderablePage.TAB: {
                     rollUpTab();
                     currentTab = new Tab(e.id());
                     break;
                 }
-                case SECTION: {
+                case ReorderablePage.SECTION: {
                     rollUpSection();
                     currentSection = new Section(e.id());
                     break;
                 }
-                case SUBSECTION: {
+                case ReorderablePage.SUBSECTION: {
                     rollUpSubsection();
                     currentSubsection = new Subsection(e.id());
                     break;

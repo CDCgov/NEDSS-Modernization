@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,8 +26,12 @@ public class AuthBusOpRt {
     @JoinColumn(name = "auth_bus_op_type_uid", nullable = false)
     private AuthBusOpType authBusOpTypeUid;
 
+    @SuppressWarnings(
+        //  Bidirectional mappings require knowledge of each other
+        "javaarchitecture:S7027"
+    )
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "auth_bus_obj_rt_uid", nullable = false)
     private AuthBusObjRt authBusObjRtUid;
 
@@ -39,7 +44,7 @@ public class AuthBusOpRt {
     @Embedded
     private AuthAudit audit;
 
-    AuthBusOpRt() {
+    protected AuthBusOpRt() {
 
     }
 
