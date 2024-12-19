@@ -11,6 +11,6 @@ import gov.cdc.nbs.entity.srte.CodeValueGeneralId;
 
 public interface CodeValueGeneralRepository extends JpaRepository<CodeValueGeneral, CodeValueGeneralId> {
 
-    @Query("SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.codeSetNm=:name")
-    Page<CodeValueGeneral> findAllByCodeSetName(@Param("name") String name, Pageable pageable);
+  @Query("SELECT cvg FROM CodeValueGeneral cvg WHERE cvg.id.codeSetNm=:name order by cvg.id.code asc")
+  Page<CodeValueGeneral> findAllByCodeSetName(@Param("name") String name, Pageable pageable);
 }
