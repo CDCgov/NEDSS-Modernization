@@ -25,7 +25,7 @@ class CountryCodedValueFinder {
     Collection<CodedValue> all() {
         List<CodedValue> result = new ArrayList<>();
 
-        result.add(new CodedValue("United States", "840"));
+        result.add(new CodedValue("840", "United States"));
 
         List<CodedValue> fetchedValues = this.factory.select(
             values.id,
