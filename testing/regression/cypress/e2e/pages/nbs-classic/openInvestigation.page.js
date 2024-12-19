@@ -93,7 +93,7 @@ class OpenInvestigationPage {
     }
   
     clickConditionName() {
-      cy.get(this.conditionNameLink).click();
+      cy.get(this.conditionNameLink).eq(1).click();
     }
   
     clickManageAssociations() {
