@@ -24,6 +24,7 @@ class CountryCodedValueFinder {
         return this.factory.select(
                 values.id,
                 values.codeDescTxt).from(values)
+                .add(new CodedValue("United States", "840"));
                 .orderBy(new OrderSpecifier<>(Order.ASC, values.codeDescTxt))
                 .fetch()
                 .stream()

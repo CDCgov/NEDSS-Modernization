@@ -6,7 +6,6 @@ public class CountryCodeUtil {
     public static HashMap<String, String> countryCodeMap = new HashMap<>();
 
     static {
-        countryCodeMap.put("United States", "840");
         countryCodeMap.put("Bulgaria", "100");
         countryCodeMap.put("Myanmar", "104");
         countryCodeMap.put("Burundi", "108");
