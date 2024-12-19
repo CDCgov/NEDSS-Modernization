@@ -34,7 +34,7 @@ Background:
 
   Scenario: User edits the treatment information for a patient in an open investigation
     When the user clicks on Open Investigations under My Queues
-    And the user searches for the Investigation ID "CAS10003039GA01"
+    And the user searches for the Investigation ID "CAS"
     And the user clicks on the Condition name
     And the user clicks on Manage Associations
     And the user clicks on the Treatment Date link
