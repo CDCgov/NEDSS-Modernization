@@ -25,8 +25,8 @@ export const BasicIdentificationRepeatingBlock = ({
 
     const columns: Column<BasicIdentificationEntry>[] = [
         { id: 'identificationType', name: 'Type', render: (v) => v.type?.name },
-        { id: 'assigningAuthority', name: 'Authority', render: (v) => v.issuer?.name },
-        { id: 'idValue', name: 'Value', render: (v) => v.id }
+        { id: 'assigningAuthority', name: 'Assigning authority', render: (v) => v.issuer?.name },
+        { id: 'idValue', name: 'ID value', render: (v) => v.id }
     ];
     return (
         <RepeatingBlock<BasicIdentificationEntry>

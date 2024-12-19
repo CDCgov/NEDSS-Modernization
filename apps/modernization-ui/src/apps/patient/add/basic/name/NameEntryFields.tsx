@@ -9,13 +9,13 @@ import { SingleSelect } from 'design-system/select';
 type NameEntryFieldsProps = EntryFieldsProps;
 
 export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsProps) => {
-    const { control } = useFormContext<NameInformationEntry>();
+    const { control } = useFormContext<{ name: NameInformationEntry }>();
     const coded = usePatientNameCodedValues();
     return (
         <section>
             <Controller
                 control={control}
-                name="last"
+                name="name.last"
                 rules={{ ...validateExtendedNameRule('Last name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
@@ -35,7 +35,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
 
             <Controller
                 control={control}
-                name="first"
+                name="name.first"
                 rules={{ ...validateExtendedNameRule('First name') }}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
@@ -55,7 +55,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
 
             <Controller
                 control={control}
-                name="middle"
+                name="name.middle"
                 rules={validateExtendedNameRule('Middle name')}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
                     <Input
@@ -75,7 +75,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
 
             <Controller
                 control={control}
-                name="suffix"
+                name="name.suffix"
                 render={({ field: { onBlur, onChange, value, name } }) => (
                     <SingleSelect
                         label="Suffix"

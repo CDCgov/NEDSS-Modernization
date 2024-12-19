@@ -35,7 +35,7 @@ describe('when displaying the Data entry menu', () => {
 
         const { getByRole } = render(<DataEntryMenu />);
 
-        const entry = getByRole('link', { name: 'Organization' });
+        const entry = getByRole('link', { name: 'New Organization' });
 
         expect(entry).toBeInTheDocument();
     });
@@ -43,7 +43,7 @@ describe('when displaying the Data entry menu', () => {
     it('should not display New organization when the user cannot manage organizations', () => {
         const { queryByRole } = render(<DataEntryMenu />);
 
-        const entry = queryByRole('link', { name: 'Organization' });
+        const entry = queryByRole('link', { name: 'New Organization' });
 
         expect(entry).not.toBeInTheDocument();
     });
@@ -53,7 +53,7 @@ describe('when displaying the Data entry menu', () => {
 
         const { getByRole } = render(<DataEntryMenu />);
 
-        const entry = getByRole('link', { name: 'Provider' });
+        const entry = getByRole('link', { name: 'New Provider' });
 
         expect(entry).toBeInTheDocument();
     });
@@ -61,7 +61,7 @@ describe('when displaying the Data entry menu', () => {
     it('should not display Provider when the user cannot manage providers', () => {
         const { queryByRole } = render(<DataEntryMenu />);
 
-        const entry = queryByRole('link', { name: 'Provider' });
+        const entry = queryByRole('link', { name: 'New Provider' });
 
         expect(entry).not.toBeInTheDocument();
     });
