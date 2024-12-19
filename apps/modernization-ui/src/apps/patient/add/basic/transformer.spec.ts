@@ -112,7 +112,7 @@ describe('when transforming entered basic patient data', () => {
         it('should transform birth values to a format accepted by the API', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
-                other: {
+                personalDetails: {
                     bornOn: '08/05/1990',
                     birthSex: { value: 'birth-sex-value', name: 'birth-sex-name' }
                 }
@@ -130,7 +130,7 @@ describe('when transforming entered basic patient data', () => {
         it('should transform gender values to a format accepted by the API', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
-                other: {
+                personalDetails: {
                     currentSex: { value: 'current-sex-value', name: 'current-sex-name' }
                 }
             };
@@ -147,7 +147,7 @@ describe('when transforming entered basic patient data', () => {
         it('should transform mortality values to a format accepted by the API', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
-                other: {
+                personalDetails: {
                     deceased: { value: 'deceased-value', name: 'deceased-name' },
                     deceasedOn: '05/08/1790'
                 }
@@ -169,7 +169,7 @@ describe('when transforming entered basic patient data', () => {
         it('should transform general values to a format accepted by the API', () => {
             const entry: BasicNewPatientEntry = {
                 administrative: { asOf: '04/13/2017' },
-                other: {
+                personalDetails: {
                     maritalStatus: { value: 'marital-status-value', name: 'marital-status-name' },
                     stateHIVCase: 'state-hiv-case-value'
                 }

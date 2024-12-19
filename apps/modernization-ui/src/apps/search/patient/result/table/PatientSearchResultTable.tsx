@@ -69,7 +69,14 @@ type Props = {
 const PatientSearchResultTable = ({ results }: Props) => {
     const { apply } = useColumnPreferences();
 
-    return <DataTable<PatientSearchResult> id="patient-search-results" columns={apply(columns)} data={results} />;
+    return (
+        <DataTable<PatientSearchResult>
+            id="patient-search-results"
+            className={styles.patient_results}
+            columns={apply(columns)}
+            data={results}
+        />
+    );
 };
 
 export { PatientSearchResultTable, preferences };
