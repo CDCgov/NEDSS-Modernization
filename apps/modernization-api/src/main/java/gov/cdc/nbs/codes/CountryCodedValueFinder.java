@@ -21,16 +21,25 @@ class CountryCodedValueFinder {
     }
 
     Collection<CodedValue> all() {
-        return this.factory.select(
-                values.id,
-                values.codeDescTxt).from(values)
-                .add(new CodedValue("United States", "840"));
-                .orderBy(new OrderSpecifier<>(Order.ASC, values.codeDescTxt))
-                .fetch()
-                .stream()
-                .map(this::map)
-                .toList();
+
+        List<CodedValue> result = new ArrayList<>();
+
+        result.add(new CodedValue("United States", "840"));
+
+        List<CodedValue> fetchedValues = this.factory.select(
+            values.id,
+            values.codeDescTxt)
+            .from(values)
+            .orderBy(new OrderSpecifier<>(Order.ASC, values.codeDescTxt))
+            .fetch()
+            .stream()
+            .map(this::map)
+            .toList();
+
+        result.addAll(fetchedValues);
+        return result;
     }
+
 
     private CodedValue map(final Tuple tuple) {
         String value = tuple.get(values.id);
