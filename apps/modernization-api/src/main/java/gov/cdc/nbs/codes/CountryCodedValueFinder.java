@@ -1,5 +1,7 @@
 package gov.cdc.nbs.codes;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -21,7 +23,6 @@ class CountryCodedValueFinder {
     }
 
     Collection<CodedValue> all() {
-
         List<CodedValue> result = new ArrayList<>();
 
         result.add(new CodedValue("United States", "840"));
@@ -39,7 +40,6 @@ class CountryCodedValueFinder {
         result.addAll(fetchedValues);
         return result;
     }
-
 
     private CodedValue map(final Tuple tuple) {
         String value = tuple.get(values.id);
