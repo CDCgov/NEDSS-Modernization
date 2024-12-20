@@ -3,7 +3,7 @@ import { AddPatientLayout, DataEntryLayout } from 'apps/patient/add/layout';
 import styles from './add-patient-basic.module.scss';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { BasicNewPatientEntry, initial } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
@@ -16,8 +16,6 @@ export const AddPatientBasic = () => {
         defaultValues: initial(),
         mode: 'onBlur'
     });
-
-    const values = useWatch({ control: form.control });
 
     const created = useMemo(
         () => (interaction.status === 'created' ? interaction.created : undefined),

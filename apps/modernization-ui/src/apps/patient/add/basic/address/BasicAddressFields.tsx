@@ -5,7 +5,6 @@ import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
 import { useLocationCodedValues } from 'location';
-import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
 import { BasicNewPatientEntry } from '../entry';
