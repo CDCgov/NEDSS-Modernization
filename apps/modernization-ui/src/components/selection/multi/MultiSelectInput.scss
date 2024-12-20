@@ -14,10 +14,10 @@
         border-style: solid;
         border-color: colors.$base-dark;
         min-height: 2.5rem;
+        border-radius: 0;
 
         .multi-select__indicator {
             color: colors.$base-darker !important;
-
             height: 2rem;
             width: 2rem;
             padding: 0.5rem;
@@ -29,7 +29,6 @@
 
         .multi-select__multi-value {
             background-color: colors.$primary-lighter !important;
-            border-radius: 0.125rem !important;
         }
 
         .multi-select_multi-value_label {
