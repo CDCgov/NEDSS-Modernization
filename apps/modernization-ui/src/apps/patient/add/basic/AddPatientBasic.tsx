@@ -5,7 +5,6 @@ import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { BasicNewPatientEntry, initial } from './entry';
-import { useEffect } from 'react';
 import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
@@ -20,9 +19,6 @@ export const AddPatientBasic = () => {
 
     const values = useWatch({ control: form.control });
 
-    useEffect(() => {
-        console.log('values', values);
-    }, [values]);
     const created = useMemo(
         () => (interaction.status === 'created' ? interaction.created : undefined),
         [interaction.status]
