@@ -6,8 +6,14 @@ import java.util.Objects;
 import gov.cdc.nbs.questionbank.page.content.reorder.ReorderException;
 
 public class ReorderablePage {
-    private List<Tab> tabs = new ArrayList<>();
-    private Long id;
+
+    public static final int PAGE_TYPE = 1002;
+    public static final int TAB = 1010;
+    public static final int SECTION = 1015;
+    public static final int SUBSECTION = 1016;
+
+    private final List<Tab> tabs = new ArrayList<>();
+    private final Long id;
 
     public ReorderablePage(Long id) {
         this.id = id;
@@ -37,13 +43,13 @@ public class ReorderablePage {
     public List<PageEntry> toPageEntries() {
         List<PageEntry> entries = new ArrayList<>();
         int orderNumber = 1;
-        entries.add(new PageEntry(id, SimplePageMapper.PAGE_TYPE, orderNumber++));
+        entries.add(new PageEntry(id, PAGE_TYPE, orderNumber++));
         for (Tab t : tabs) {
-            entries.add(new PageEntry(t.getId(), SimplePageMapper.TAB, orderNumber++));
+            entries.add(new PageEntry(t.getId(), TAB, orderNumber++));
             for (Section s : t.getSections()) {
-                entries.add(new PageEntry(s.getId(), SimplePageMapper.SECTION, orderNumber++));
+                entries.add(new PageEntry(s.getId(), SECTION, orderNumber++));
                 for (Subsection ss : s.getSubsections()) {
-                    entries.add(new PageEntry(ss.getId(), SimplePageMapper.SUBSECTION, orderNumber++));
+                    entries.add(new PageEntry(ss.getId(), SUBSECTION, orderNumber++));
                     for (Element e : ss.getElements()) {
                         entries.add(new PageEntry(e.getId(), e.getType(), orderNumber++));
                     }

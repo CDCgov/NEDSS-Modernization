@@ -8,6 +8,10 @@ import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue(TeleEntityLocatorParticipation.TELECOM_CLASS_CODE)
+@SuppressWarnings(
+    //  The PatientPhoneLocatorHistoryListener is an entity listener specifically for instances of this class
+    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+)
 @EntityListeners(PatientPhoneLocatorHistoryListener.class)
 public class TeleEntityLocatorParticipation extends EntityLocatorParticipation {
 
