@@ -1,4 +1,4 @@
-import { splitStringByCommonDelimiters, trimCommonDelimiters } from './text';
+import { pluralize, splitStringByCommonDelimiters, trimCommonDelimiters } from './text';
 
 describe('splitStringByCommonDelimiters', () => {
     it('should split a string by commas', () => {
@@ -51,5 +51,22 @@ describe('trimCommonDelimiters', () => {
     it('should handle string with only delimiters', () => {
         const result = trimCommonDelimiters(', ; ');
         expect(result).toEqual('');
+    });
+});
+
+describe('pluralize', () => {
+    it('should return singular form for count of 1', () => {
+        const result = pluralize('item', 1);
+        expect(result).toEqual('item');
+    });
+
+    it('should return plural form for count greater than 1', () => {
+        const result = pluralize('item', 2);
+        expect(result).toEqual('items');
+    });
+
+    it('should return custom plural form', () => {
+        const result = pluralize('person', 2, 'people');
+        expect(result).toEqual('people');
     });
 });
