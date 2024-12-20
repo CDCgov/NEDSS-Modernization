@@ -114,6 +114,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
                                 onChange={onChange}
                                 value={value}
                                 orientation={orientation}
+                                sizing="compact"
                                 error={error?.message}
                                 warning={violation}
                             />
