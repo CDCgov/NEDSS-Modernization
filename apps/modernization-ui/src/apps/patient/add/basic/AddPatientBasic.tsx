@@ -9,6 +9,7 @@ import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const AddPatientBasic = () => {
     const interaction = useAddBasicPatient();
@@ -24,6 +25,12 @@ export const AddPatientBasic = () => {
 
     const handleSave = form.handleSubmit(interaction.create);
 
+    const navigate = useNavigate();
+
+    const handleCancel = () => {
+        navigate('/search/patients');
+    };
+
     return (
         <DataEntryLayout>
             <Shown when={interaction.status === 'created'}>
@@ -35,7 +42,9 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
-                            <Button outline>Cancel</Button>
+                            <Button onClick={handleCancel} outline>
+                                Cancel
+                            </Button>
                             <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
                                 Save
                             </Button>
