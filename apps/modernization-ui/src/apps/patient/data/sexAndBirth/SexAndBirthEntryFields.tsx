@@ -73,7 +73,6 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
-                        id={name}
                         sizing="compact"
                         label={BORN_ON_LABEL}
                         error={error?.message}
