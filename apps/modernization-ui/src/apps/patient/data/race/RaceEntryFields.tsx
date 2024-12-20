@@ -46,6 +46,7 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                         onChange={onChange}
                         orientation="horizontal"
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -67,6 +68,7 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                         name={name}
                         options={categories}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -84,6 +86,7 @@ const RaceEntryFields = ({ categories, categoryValidator, entry }: RaceEntryFiel
                         value={value}
                         onChange={onChange}
                         options={detailedRaces}
+                        sizing="compact"
                     />
                 )}
             />

@@ -40,6 +40,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                         onChange={onChange}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -56,6 +57,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                         name={name}
                         value={value}
                         options={coded.ethnicGroups}
+                        sizing="compact"
                     />
                 )}
             />
@@ -75,6 +77,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                             name={name}
                             value={value}
                             options={coded.detailedEthnicities}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -94,6 +97,7 @@ export const EthnicityEntryFields = ({ orientation = 'horizontal' }: EthnicityEn
                             id={name}
                             name={name}
                             options={coded.ethnicityUnknownReasons}
+                            sizing="compact"
                         />
                     )}
                 />

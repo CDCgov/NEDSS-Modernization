@@ -49,6 +49,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                         onBlur={onBlur}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -65,6 +66,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                         id={name}
                         name={name}
                         options={indicators}
+                        sizing="compact"
                     />
                 )}
             />
@@ -83,6 +85,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                                 value={value}
                                 onChange={onChange}
                                 onBlur={onBlur}
+                                sizing="compact"
                                 error={error?.message}
                             />
                         )}
@@ -104,6 +107,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                                 name={name}
                                 htmlFor={name}
                                 error={error?.message}
+                                sizing="compact"
                             />
                         )}
                     />
@@ -121,6 +125,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                                 id={name}
                                 name={name}
                                 options={location.states.all}
+                                sizing="compact"
                             />
                         )}
                     />
@@ -138,6 +143,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                                 id={name}
                                 name={name}
                                 options={counties}
+                                sizing="compact"
                             />
                         )}
                     />
@@ -156,6 +162,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                                 id={name}
                                 name={name}
                                 options={location.countries}
+                                sizing="compact"
                             />
                         )}
                     />

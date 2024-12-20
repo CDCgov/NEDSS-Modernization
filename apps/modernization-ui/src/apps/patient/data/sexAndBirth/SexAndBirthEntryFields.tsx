@@ -59,6 +59,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -72,6 +73,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
+                        sizing="compact"
                         label={BORN_ON_LABEL}
                         error={error?.message}
                         orientation={orientation}
@@ -92,6 +94,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={coded.genders}
+                        sizing="compact"
                     />
                 )}
             />
@@ -110,6 +113,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                             id={name}
                             name={name}
                             options={coded.genderUnknownReasons}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -128,6 +132,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={coded.preferredGenders}
+                        sizing="compact"
                     />
                 )}
             />
@@ -148,6 +153,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         htmlFor={name}
                         defaultValue={value}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -164,6 +170,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={coded.genders}
+                        sizing="compact"
                     />
                 )}
             />
@@ -180,6 +187,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={coded.multipleBirth}
+                        sizing="compact"
                     />
                 )}
             />
@@ -204,6 +212,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                             mask="_____"
                             pattern="\d{5}"
                             error={error?.message}
+                            sizing="compact"
                         />
                     )}
                 />
@@ -225,6 +234,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         name={name}
                         htmlFor={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -241,6 +251,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={coded.states.all}
+                        sizing="compact"
                     />
                 )}
             />
@@ -257,6 +268,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={counties}
+                        sizing="compact"
                     />
                 )}
             />
@@ -274,6 +286,7 @@ export const SexAndBirthEntryFields = ({ orientation = 'horizontal' }: SexAndBir
                         id={name}
                         name={name}
                         options={coded.countries}
+                        sizing="compact"
                     />
                 )}
             />
