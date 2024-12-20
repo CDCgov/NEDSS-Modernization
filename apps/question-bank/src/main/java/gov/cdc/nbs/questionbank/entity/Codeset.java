@@ -1,6 +1,6 @@
 package gov.cdc.nbs.questionbank.entity;
 
-import java.time.Instant;
+import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -9,12 +9,13 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import gov.cdc.nbs.questionbank.valueset.command.ValueSetCommand;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -61,8 +62,9 @@ public class Codeset {
   private Instant statusToTime;
 
   @SuppressWarnings(
-  //  Bidirectional mappings require knowledge of each other
-  "javaarchitecture:S7027")
+      //  Bidirectional mappings require knowledge of each other
+      "javaarchitecture:S7027"
+  )
   @ManyToOne(fetch = FetchType.LAZY, cascade = {
       CascadeType.MERGE,
       CascadeType.REMOVE,
