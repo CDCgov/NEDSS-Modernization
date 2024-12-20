@@ -1,5 +1,4 @@
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
-import { AddressEntry } from 'apps/patient/data';
 import { validCensusTractRule, CensusTractInputField } from 'apps/patient/data/address';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
@@ -9,6 +8,7 @@ import { useLocationCodedValues } from 'location';
 import { useEffect } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
+import { BasicNewPatientEntry } from '../entry';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
@@ -19,12 +19,12 @@ const CENSUS_TRACT_LABEL = 'Census tract';
 type AddressEntryFieldsProps = EntryFieldsProps;
 
 export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryFieldsProps) => {
-    const { control, reset } = useFormContext<AddressEntry>();
+    const { control, reset } = useFormContext<BasicNewPatientEntry>();
     const location = useLocationCodedValues();
-    const selectedState = useWatch({ control, name: 'state' });
-    const enteredCity = useWatch({ control, name: 'city' });
-    const enteredZip = useWatch({ control, name: 'zipcode' });
-    const country = useWatch({ control, name: 'country' });
+    const selectedState = useWatch({ control, name: 'address.state' });
+    const enteredCity = useWatch({ control, name: 'address.city' });
+    const enteredZip = useWatch({ control, name: 'address.zipcode' });
+    const country = useWatch({ control, name: 'address.country' });
     const counties = location.counties.byState(selectedState?.value ?? '');
 
     useEffect(() => {
@@ -34,10 +34,12 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
             {
-                address1: selected.address1,
-                city: selected.city,
-                state: selected.state ?? undefined,
-                zipcode: selected.zip
+                address: {
+                    address1: selected.address1,
+                    city: selected.city,
+                    state: selected.state ?? undefined,
+                    zipcode: selected.zip
+                }
             },
             { keepDefaultValues: true }
         );
@@ -47,7 +49,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
         <section>
             <Controller
                 control={control}
-                name="address1"
+                name="address.address1"
                 rules={maxLengthRule(100, STREET_ADDRESS_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <AddressSuggestionInput
@@ -71,7 +73,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="address2"
+                name="address.address2"
                 rules={maxLengthRule(100, STREET_ADDRESS_2_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
@@ -91,7 +93,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="city"
+                name="address.city"
                 rules={maxLengthRule(100, CITY_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Input
@@ -111,7 +113,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="state"
+                name="address.state"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="State"
@@ -127,7 +129,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="zipcode"
+                name="address.zipcode"
                 rules={validZipCodeRule(ZIP_LABEL)}
                 render={({ field: { onChange, value, name, onBlur }, fieldState: { error } }) => (
                     <ZipCodeInputField
@@ -144,7 +146,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="county"
+                name="address.county"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="County"
@@ -160,7 +162,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="censusTract"
+                name="address.censusTract"
                 rules={validCensusTractRule(CENSUS_TRACT_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <CensusTractInputField
@@ -177,7 +179,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
             />
             <Controller
                 control={control}
-                name="country"
+                name="address.country"
                 render={({ field: { onChange, value, name } }) => (
                     <SingleSelect
                         label="Country"

@@ -3,22 +3,21 @@ import { AddPatientLayout, DataEntryLayout } from 'apps/patient/add/layout';
 import styles from './add-patient-basic.module.scss';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { BasicNewPatientEntry, initial } from './entry';
+import { useEffect } from 'react';
 
 export const AddPatientBasic = () => {
     const form = useForm<BasicNewPatientEntry>({
-        defaultValues: {
-            ...initial(),
-            address: {
-                country: {
-                    value: '840',
-                    name: 'United States'
-                }
-            }
-        },
+        defaultValues: initial(),
         mode: 'onBlur'
     });
+
+    const values = useWatch({ control: form.control });
+
+    useEffect(() => {
+        console.log('values', values);
+    }, [values]);
 
     return (
         <DataEntryLayout>

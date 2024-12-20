@@ -72,6 +72,12 @@ const initial = (asOf: string = today()): BasicNewPatientEntry => ({
     administrative: {
         asOf: asOf
     },
+    address: {
+        country: {
+            value: '840',
+            name: 'United States'
+        }
+    },
     identifications: []
 });
 
