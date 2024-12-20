@@ -24,12 +24,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
     const selectedState = useWatch({ control, name: 'address.state' });
     const enteredCity = useWatch({ control, name: 'address.city' });
     const enteredZip = useWatch({ control, name: 'address.zipcode' });
-    const country = useWatch({ control, name: 'address.country' });
     const counties = location.counties.byState(selectedState?.value ?? '');
-
-    useEffect(() => {
-        console.log({ country });
-    });
 
     const handleSuggestionSelection = (selected: AddressSuggestion) => {
         reset(
