@@ -15,8 +15,7 @@
 }
 
 .multi-select__control {
-    // height: unset;
-    // min-height: unset !important;
+    min-height: 2.5rem !important;
 
     .multi-select__indicator {
         color: colors.$base-darker !important;
