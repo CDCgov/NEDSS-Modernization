@@ -34,3 +34,15 @@ export function removeAndTrim(text: string, value: string) {
     if (!text) return '';
     return trimCommonDelimiters(text.replace(value, ''));
 }
+
+/**
+ * Pluralize a word based on a count. If count is 1 returns the singular form.
+ * Optionally provide a plural form for words that do not pluralize by adding 's'.
+ * @param {string} singular The word to pluralize.
+ * @param {number} count The count to determine singular or plural.
+ * @param {string} plural The plural form of the word. Defaults to adding 's' to the singular form.
+ * @return {string} The singular or plural form of the word.
+ */
+export function pluralize(singular: string, count: number, plural?: string) {
+    return count === 1 ? singular : plural || `${singular}s`;
+}

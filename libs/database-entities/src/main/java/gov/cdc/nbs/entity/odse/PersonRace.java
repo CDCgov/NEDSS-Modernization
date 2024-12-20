@@ -18,7 +18,7 @@ import java.time.Instant;
 @IdClass(PersonRaceId.class)
 @SuppressWarnings(
     //  The PatientRaceHistoryListener is an entity listener specifically for instances of this class
-    "javaarchitecture:S7027"
+    {"javaarchitecture:S7027","javaarchitecture:S7091"}
 )
 @EntityListeners(PatientRaceHistoryListener.class)
 public class PersonRace {

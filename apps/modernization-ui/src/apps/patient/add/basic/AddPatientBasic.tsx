@@ -6,8 +6,13 @@ import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { BasicNewPatientEntry, initial } from './entry';
 import { useEffect } from 'react';
+import { useAddBasicPatient } from './useAddBasicPatient';
+import { Shown } from 'conditional-render';
+import { PatientCreatedPanel } from '../PatientCreatedPanel';
+import { useMemo } from 'react';
 
 export const AddPatientBasic = () => {
+    const interaction = useAddBasicPatient();
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: initial(),
         mode: 'onBlur'
@@ -18,9 +23,18 @@ export const AddPatientBasic = () => {
     useEffect(() => {
         console.log('values', values);
     }, [values]);
+    const created = useMemo(
+        () => (interaction.status === 'created' ? interaction.created : undefined),
+        [interaction.status]
+    );
+
+    const handleSave = form.handleSubmit(interaction.create);
 
     return (
         <DataEntryLayout>
+            <Shown when={interaction.status === 'created'}>
+                {created && <PatientCreatedPanel created={created} />}
+            </Shown>
             <FormProvider {...form}>
                 <AddPatientLayout
                     headerTitle="New patient"
@@ -28,7 +42,9 @@ export const AddPatientBasic = () => {
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
                             <Button outline>Cancel</Button>
-                            <Button type="submit">Save</Button>
+                            <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
+                                Save
+                            </Button>
                         </div>
                     )}>
                     <AddPatientBasicForm />

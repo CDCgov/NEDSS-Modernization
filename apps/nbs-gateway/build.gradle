@@ -62,5 +62,5 @@ tasks.withType(JavaExec).configureEach {
 
 tasks.named("bootRun") {
     // Enables the local profile when run from the command line
-    systemProperty 'spring.profiles.active', 'default,development'
+    systemProperty 'spring.profiles.active', 'default,development,local'
 }
