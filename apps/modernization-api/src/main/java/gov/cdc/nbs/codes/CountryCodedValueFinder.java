@@ -31,6 +31,7 @@ class CountryCodedValueFinder {
             values.id,
             values.codeDescTxt)
             .from(values)
+            .where(values.codeDescTxt.ne("United States"))
             .orderBy(new OrderSpecifier<>(Order.ASC, values.codeDescTxt))
             .fetch()
             .stream()
