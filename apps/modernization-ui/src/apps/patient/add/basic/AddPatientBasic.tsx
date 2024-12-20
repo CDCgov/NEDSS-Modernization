@@ -8,7 +8,15 @@ import { BasicNewPatientEntry, initial } from './entry';
 
 export const AddPatientBasic = () => {
     const form = useForm<BasicNewPatientEntry>({
-        defaultValues: initial(),
+        defaultValues: {
+            ...initial(),
+            address: {
+                country: {
+                    value: '840',
+                    name: 'United States'
+                }
+            }
+        },
         mode: 'onBlur'
     });
 

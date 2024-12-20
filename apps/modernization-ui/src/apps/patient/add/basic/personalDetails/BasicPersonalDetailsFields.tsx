@@ -40,6 +40,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <DatePickerInput
                         label={BORN_ON_LABEL}
                         orientation={orientation}
+                        sizing="compact"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -56,6 +57,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Current sex"
                         orientation={orientation}
+                        sizing="compact"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -72,6 +74,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Birth sex"
                         orientation={orientation}
+                        sizing="compact"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -88,6 +91,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Is the patient deceased?"
                         orientation={orientation}
+                        sizing="compact"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -108,6 +112,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                             id={name}
                             label={DECEASED_ON_LABEL}
                             orientation={orientation}
+                            sizing="compact"
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
@@ -122,6 +127,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     <SingleSelect
                         label="Marital status"
                         orientation={orientation}
+                        sizing="compact"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -140,6 +146,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                         <Input
                             label={STATE_HIV_CASE_LABEL}
                             orientation={orientation}
+                            sizing="compact"
                             placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}
