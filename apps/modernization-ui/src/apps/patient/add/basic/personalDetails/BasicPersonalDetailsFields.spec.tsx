@@ -95,6 +95,22 @@ describe('when entering patient sex and birth demographics', () => {
         expect(container.querySelector('span.value')?.innerHTML).toBe('');
     });
 
+    it('should render age only when date of birth is valid', async () => {
+        const { container, getByText, getByLabelText } = render(<Fixture />);
+        const dateOfBirth = getByLabelText('Date of birth');
+
+        expect(getByText('Current age')).toBeInTheDocument();
+        expect(container.querySelector('span.value')?.innerHTML).toBe('');
+
+        act(() => {
+            userEvent.clear(dateOfBirth);
+            userEvent.type(dateOfBirth, '12012012');
+            userEvent.tab();
+        });
+
+        expect(container.querySelector('span.value')?.innerHTML).toContain('years');
+    });
+
     it('should enable Date of death when deceased is true', async () => {
         const { getByLabelText, queryByLabelText } = render(<Fixture />);
 
