@@ -223,6 +223,7 @@ public class CountryCodeUtil {
         countryCodeMap.put("Isle of Man", "833");
         countryCodeMap.put("United Republic of Tanzania", "834");
         countryCodeMap.put("Belize", "84");
+        countryCodeMap.put("United States", "840");
         countryCodeMap.put("United States Virgin Islands", "850");
         countryCodeMap.put("Burkina Faso", "854");
         countryCodeMap.put("Uruguay", "858");
