@@ -15,8 +15,11 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "Person_ethnic_group")
+@SuppressWarnings(
+    //  The PatientEthnicityHistoryListener is an entity listener specifically for instances of this class
+    {"javaarchitecture:S7027","javaarchitecture:S7091"}
+)
 @EntityListeners(PatientEthnicityHistoryListener.class)
-@SuppressWarnings("javaarchitecture:S7027") //  Bidirectional mappings require knowledge of each other
 public class PersonEthnicGroup {
     @EmbeddedId
     private PersonEthnicGroupId id;
