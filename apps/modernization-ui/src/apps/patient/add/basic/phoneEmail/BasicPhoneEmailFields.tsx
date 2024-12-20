@@ -14,13 +14,13 @@ const EMAIL_LABEL = 'Email';
 type BasicPhoneEmailFieldsProps = EntryFieldsProps;
 
 export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhoneEmailFieldsProps) => {
-    const { control } = useFormContext<BasicPhoneEmail>();
+    const { control } = useFormContext<{ phoneEmail: BasicPhoneEmail }>();
 
     return (
         <section>
             <Controller
                 control={control}
-                name="home"
+                name="phoneEmail.home"
                 rules={validPhoneNumberRule(HOME_PHONE_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <PhoneNumberInputField
@@ -37,7 +37,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
             />
             <Controller
                 control={control}
-                name="work.phone"
+                name="phoneEmail.work.phone"
                 rules={validPhoneNumberRule(WORK_PHONE_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <PhoneNumberInputField
@@ -55,7 +55,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
 
             <Controller
                 control={control}
-                name="work.extension"
+                name="phoneEmail.work.extension"
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,20}$/,
@@ -80,7 +80,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
 
             <Controller
                 control={control}
-                name="cell"
+                name="phoneEmail.cell"
                 rules={validPhoneNumberRule(CELL_PHONE_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <PhoneNumberInputField
@@ -98,7 +98,7 @@ export const BasicPhoneEmailFields = ({ orientation = 'horizontal' }: BasicPhone
 
             <Controller
                 control={control}
-                name="email"
+                name="phoneEmail.email"
                 rules={maxLengthRule(100, EMAIL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Verification

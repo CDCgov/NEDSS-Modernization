@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 @Table(name = "Entity_locator_participation")
 @SuppressWarnings(
     //  The PatientEntityLocatorHistoryListener is an entity listener specifically for instances of this class
-    "javaarchitecture:S7027"
+    {"javaarchitecture:S7027", "javaarchitecture:S7091"}
 )
 @EntityListeners(PatientEntityLocatorHistoryListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

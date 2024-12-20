@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Controller, useFormContext, useFormState, useWatch } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { usePatientSexBirthCodedValues } from 'apps/patient/profile/sexBirth/usePatientSexBirthCodedValues';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { SingleSelect } from 'design-system/select';
@@ -21,20 +21,20 @@ const ENTRY_FIELD_PLACEHOLDER = '';
 type BasicPersonalDetailsProps = EntryFieldsProps;
 
 export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: BasicPersonalDetailsProps) => {
-    const { control } = useFormContext<BasicPersonalDetailsEntry>();
-    const currentBirthday = useWatch({ control, name: 'bornOn' });
-    const selectedDeceased = useWatch({ control, name: 'deceased' });
+    const { control, formState, getFieldState } = useFormContext<{ personalDetails: BasicPersonalDetailsEntry }>();
+    const currentBirthday = useWatch({ control, name: 'personalDetails.bornOn' });
+    const selectedDeceased = useWatch({ control, name: 'personalDetails.deceased' });
     const age = useMemo(() => displayAgeAsOfToday(currentBirthday), [currentBirthday]);
     const sexBirthValues = usePatientSexBirthCodedValues();
     const generalValues = usePatientGeneralCodedValues();
     const { hivAccess } = usePatientProfilePermissions();
-    const { isValid: bornOnValid } = useFormState({ control, name: 'bornOn' });
+    const { invalid: bornOnInvalid } = getFieldState('personalDetails.bornOn', formState);
 
     return (
         <section>
             <Controller
                 control={control}
-                name="bornOn"
+                name="personalDetails.bornOn"
                 rules={validDateRule(BORN_ON_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <DatePickerInput
@@ -48,10 +48,10 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                     />
                 )}
             />
-            <ValueView title="Current age" value={bornOnValid ? age : null} />
+            <ValueView title="Current age" value={!bornOnInvalid ? age : null} />
             <Controller
                 control={control}
-                name="currentSex"
+                name="personalDetails.currentSex"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Current sex"
@@ -67,7 +67,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
             />
             <Controller
                 control={control}
-                name="birthSex"
+                name="personalDetails.birthSex"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Birth sex"
@@ -83,7 +83,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
             />
             <Controller
                 control={control}
-                name="deceased"
+                name="personalDetails.deceased"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Is the patient deceased?"
@@ -100,10 +100,10 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
             {selectedDeceased?.value === Indicator.Yes && (
                 <Controller
                     control={control}
-                    name="deceasedOn"
+                    name="personalDetails.deceasedOn"
                     shouldUnregister
                     rules={validDateRule(DECEASED_ON_LABEL)}
-                    render={({ field: { onChange, onBlur, value, name } }) => (
+                    render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <DatePickerInput
                             id={name}
                             label={DECEASED_ON_LABEL}
@@ -111,13 +111,14 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                             value={value}
                             onChange={onChange}
                             onBlur={onBlur}
+                            error={error?.message}
                         />
                     )}
                 />
             )}
             <Controller
                 control={control}
-                name="maritalStatus"
+                name="personalDetails.maritalStatus"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Marital status"
@@ -134,8 +135,8 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
             {hivAccess && (
                 <Controller
                     control={control}
-                    name="stateHIVCase"
-                    rules={maxLengthRule(20, STATE_HIV_CASE_LABEL)}
+                    name="personalDetails.stateHIVCase"
+                    rules={maxLengthRule(16, STATE_HIV_CASE_LABEL)}
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <Input
                             label={STATE_HIV_CASE_LABEL}
@@ -143,6 +144,7 @@ export const BasicPersonalDetailsFields = ({ orientation = 'horizontal' }: Basic
                             placeholder={ENTRY_FIELD_PLACEHOLDER}
                             onBlur={onBlur}
                             onChange={onChange}
+                            maxLength={16}
                             type="text"
                             defaultValue={value}
                             htmlFor={name}

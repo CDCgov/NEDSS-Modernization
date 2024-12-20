@@ -63,9 +63,10 @@ type Props = {
     id: string;
     children: ReactNode;
     available?: SortingSelectable[];
+    defaultSort?: ActiveSorting;
 };
 
-const SortingPreferenceProvider = ({ id, children, available = [] }: Props) => {
+const SortingPreferenceProvider = ({ id, children, available = [], defaultSort }: Props) => {
     const [state, dispatch] = useReducer(reducer, { status: 'unsorted' });
 
     const { value, save, remove } = useLocalStorage<ActiveSorting>({ key: id });
@@ -74,6 +75,8 @@ const SortingPreferenceProvider = ({ id, children, available = [] }: Props) => {
         if (value) {
             //  use the stored sorting
             dispatch({ type: 'load', active: value });
+        } else if (defaultSort) {
+            dispatch({ type: 'load', active: defaultSort });
         }
     }, [value]);
 

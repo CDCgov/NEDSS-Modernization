@@ -1,9 +1,5 @@
 nbs:
   security:
-    oidc:
-      client:
-        id: nbs-development
-        secret: ${OIDC_CLIENT_SECRET}
     log:
       level: INFO
   gateway:

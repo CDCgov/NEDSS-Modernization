@@ -77,7 +77,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                         name="mortality.deceasedOn"
                         shouldUnregister
                         rules={validDateRule(DECEASED_ON_LABEL)}
-                        render={({ field: { onChange, onBlur, value, name } }) => (
+                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <DatePickerInput
                                 id={name}
                                 label={DECEASED_ON_LABEL}
@@ -86,6 +86,7 @@ export const MortalityEntryFields = ({ orientation = 'horizontal' }: MortalityEn
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 sizing="compact"
+                                error={error?.message}
                             />
                         )}
                     />
