@@ -1,9 +1,8 @@
-import { validateIfPresent } from 'validation';
 import { maxLengthRule } from 'validation/entry';
-import { validateEmail } from './validateEmail';
+import { maybeValidateEmail } from './maybeValidateEmail';
 
 const validEmailRule = (name: string) => ({
-    validate: validateIfPresent(validateEmail(name)),
+    validate: maybeValidateEmail(name),
     ...maxLengthRule(100, name)
 });
 
