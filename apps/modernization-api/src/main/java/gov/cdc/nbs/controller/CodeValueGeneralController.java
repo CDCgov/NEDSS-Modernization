@@ -23,15 +23,14 @@ public class CodeValueGeneralController {
 
   public CodeValueGeneralController(
       @Value("${nbs.max-page-size: 50}") final Integer maxPageSize,
-      final CodeValueGeneralRepository codeValueGeneralRepository
-  ) {
+      final CodeValueGeneralRepository codeValueGeneralRepository) {
     this.maxPageSize = maxPageSize;
     this.codeValueGeneralRepository = codeValueGeneralRepository;
   }
 
   @QueryMapping()
   public Page<CodeValueGeneral> findAllRaceValues(@Argument GraphQLPage page) {
-    return codeValueGeneralRepository.findAllByCodeSetName(RACE_CODE_SET_NM,
+    return codeValueGeneralRepository.findAllByCodeSetNameOrdered(RACE_CODE_SET_NM,
         toPageable(page, maxPageSize));
   }
 

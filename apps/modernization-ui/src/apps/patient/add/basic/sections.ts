@@ -2,10 +2,10 @@ import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 
 export const sections: NavSection[] = [
     { id: 'administrative', label: 'Administrative' },
-    { id: 'nameInformation', label: 'Name information' },
-    { id: 'otherInformation', label: 'Other information' },
+    { id: 'name', label: 'Name' },
+    { id: 'personalDetails', label: 'Personal details' },
     { id: 'addresses', label: 'Address' },
     { id: 'phoneEmail', label: 'Phone & email' },
-    { id: 'raceEthnicity', label: 'Ethnicity and race' },
+    { id: 'raceEthnicity', label: 'Ethnicity & race' },
     { id: 'identifications', label: 'Identification' }
 ];

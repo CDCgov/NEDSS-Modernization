@@ -24,6 +24,6 @@ describe('when displaying a ReturnMessage', () => {
         const returnLink = getByRole('link', { name: 'Return to NBS' });
 
         expect(returnLink).toBeInTheDocument();
-        expect(returnLink).toHaveAttribute('href', '/welcome');
+        expect(returnLink).toHaveAttribute('href', '/nbs/login');
     });
 });

@@ -1,16 +1,10 @@
 import classNames from 'classnames';
+import { InlineMessage, InlineMessageProps } from './InlineMessage';
 
 import styles from './inline-error-message.module.scss';
 
-type InlineErrorMessageProps = {
-    id: string;
-    children: string;
-} & Omit<JSX.IntrinsicElements['span'], 'id' | 'children'>;
-
-const InlineErrorMessage = ({ id, className, children }: InlineErrorMessageProps) => (
-    <span className={classNames(styles.message, className)} id={id} role="alert">
-        {children}
-    </span>
+const InlineErrorMessage = ({ className, ...remaining }: InlineMessageProps) => (
+    <InlineMessage className={classNames(styles.error, className)} {...remaining} />
 );
 
 export { InlineErrorMessage };

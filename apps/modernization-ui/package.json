@@ -9,7 +9,7 @@
         "@types/jest": "^28.1.6",
         "@types/react": "18.2.42",
         "@types/react-beautiful-dnd": "^13.1.5",
-        "@types/react-dom": "^17",
+        "@types/react-dom": "17.0.25",
         "@uswds/uswds": "3.10.0",
         "classnames": "^2.5.1",
         "date-fns": "3.6.0",

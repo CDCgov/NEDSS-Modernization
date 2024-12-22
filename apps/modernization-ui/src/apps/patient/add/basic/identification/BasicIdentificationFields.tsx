@@ -13,7 +13,6 @@ type IdentificationEntryFieldsProps = EntryFieldsProps;
 
 export const BasicIdentificationFields = ({ orientation = 'horizontal' }: IdentificationEntryFieldsProps) => {
     const { control } = useFormContext<BasicIdentificationEntry>();
-
     const coded = usePatientIdentificationCodedValues();
 
     return (
@@ -28,6 +27,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal' }: Identi
                         orientation={orientation}
                         value={value}
                         onBlur={onBlur}
+                        sizing="compact"
                         onChange={onChange}
                         id={`identification-${name}`}
                         options={coded.types}
@@ -44,6 +44,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal' }: Identi
                         label="Assigning authority"
                         orientation={orientation}
                         value={value}
+                        sizing="compact"
                         onChange={onChange}
                         onBlur={onBlur}
                         id={name}
@@ -63,6 +64,7 @@ export const BasicIdentificationFields = ({ orientation = 'horizontal' }: Identi
                         onChange={onChange}
                         defaultValue={value}
                         type="text"
+                        sizing="compact"
                         htmlFor={name}
                         id={name}
                         error={error?.message}

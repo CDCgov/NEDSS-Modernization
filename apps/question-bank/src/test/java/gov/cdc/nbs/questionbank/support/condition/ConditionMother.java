@@ -20,18 +20,12 @@ public class ConditionMother {
     @Autowired
     private LdfPageSetRepository ldfPageSetRepository;
 
-    private List<ConditionCode> allConditions = new ArrayList<>();
+    private final List<ConditionCode> allConditions = new ArrayList<>();
 
     public void clean() {
         conditionCodeRepository.deleteAll();
         ldfPageSetRepository.deleteAll();
         allConditions.clear();
-    }
-
-    public ConditionCode conditionCode() {
-        return allConditions.stream()
-                .filter(c -> c instanceof ConditionCode).findFirst()
-                .orElseGet(this::createCondition);
     }
 
     public ConditionCode one() {

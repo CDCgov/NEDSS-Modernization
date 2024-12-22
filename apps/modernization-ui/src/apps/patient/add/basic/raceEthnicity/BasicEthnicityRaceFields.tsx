@@ -11,16 +11,17 @@ type BasicRaceEthnicityFieldsProps = EntryFieldsProps;
 export const BasicRaceEthnicityFields = ({ orientation = 'horizontal' }: BasicRaceEthnicityFieldsProps) => {
     const codedEthnicity = usePatientEthnicityCodedValues();
     const codedRaces = useRaceCodedValues();
-    const { control } = useFormContext<BasicEthnicityRace>();
+    const { control } = useFormContext<{ ethnicityRace: BasicEthnicityRace }>();
 
     return (
         <section>
             <Controller
                 control={control}
-                name="ethnicity"
+                name="ethnicityRace.ethnicity"
                 render={({ field: { onChange, onBlur, value, name } }) => (
                     <SingleSelect
                         label="Ethnicity"
+                        sizing="compact"
                         orientation={orientation}
                         onChange={onChange}
                         onBlur={onBlur}
@@ -34,7 +35,7 @@ export const BasicRaceEthnicityFields = ({ orientation = 'horizontal' }: BasicRa
             {codedRaces.length && (
                 <Controller
                     control={control}
-                    name="races"
+                    name="ethnicityRace.races"
                     render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                         <CheckboxGroup
                             label="Race"

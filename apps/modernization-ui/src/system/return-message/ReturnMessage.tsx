@@ -10,7 +10,7 @@ const ReturnMessage = ({ title, children }: Props) => (
     <div className={styles.return}>
         <h1>{title}</h1>
         <div className={styles.message}>{children}</div>
-        <a href="/welcome">Return to NBS</a>
+        <a href="/nbs/login">Return to NBS</a>
     </div>
 );
 

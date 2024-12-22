@@ -32,6 +32,10 @@ public class AuthBusObjRt {
     @JoinColumn(name = "auth_bus_obj_type_uid", nullable = false)
     private AuthBusObjType authBusObjTypeUid;
 
+    @SuppressWarnings(
+        //  Bidirectional mappings require knowledge of each other
+        "javaarchitecture:S7027"
+    )
     @OneToOne(
         mappedBy = "authBusObjRtUid",
         cascade = {
@@ -45,7 +49,7 @@ public class AuthBusObjRt {
     @Embedded
     private AuthAudit audit;
 
-    AuthBusObjRt() {
+    protected AuthBusObjRt() {
 
     }
 
