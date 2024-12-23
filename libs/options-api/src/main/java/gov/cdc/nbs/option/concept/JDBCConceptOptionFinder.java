@@ -30,7 +30,7 @@ class JDBCConceptOptionFinder implements ConceptOptionFinder {
       where code_set_nm = ?
       order by
           indent_level_nbr,
-          code_short_desc_txt
+          code
       """;
 
   private final JdbcTemplate template;
@@ -47,8 +47,7 @@ class JDBCConceptOptionFinder implements ConceptOptionFinder {
     return this.template.query(
         getQuery(valueSet),
         statement -> statement.setString(VALUE_SET_PARAMETER, valueSet),
-        this.mapper
-    );
+        this.mapper);
   }
 
   private String getQuery(String valueSet) {
