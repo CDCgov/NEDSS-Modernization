@@ -74,8 +74,8 @@ export const PhoneAndEmailEntryFields = () => {
                 name="countryCode"
                 rules={{
                     pattern: {
-                        value: /^\+?\d{1,3}$/,
-                        message: 'A country code should be 1 to 3 digits'
+                        value: /^\+?\d{1,20}$/,
+                        message: 'A country code should be 1 to 20 digits'
                     }
                 }}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => {
