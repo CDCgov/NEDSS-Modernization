@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 class PrimaryLanguageValueSetFinder {
@@ -35,10 +36,10 @@ class PrimaryLanguageValueSetFinder {
         .map(this::map)
         .toList());
     List<CodedValue> result = new ArrayList<>();
-    CodedValue primaryLanguageCodededValue =
-        recs.stream().filter(item -> item.name().equals(primaryLanguage)).findFirst().get();
-    if (primaryLanguageCodededValue != null) {
-      result.add(primaryLanguageCodededValue);
+    Optional<CodedValue> primaryLanguageCodededValue =
+        recs.stream().filter(item -> item.name().equals(primaryLanguage)).findFirst();
+    if (primaryLanguageCodededValue.isPresent()) {
+      result.add(primaryLanguageCodededValue.get());
       recs.removeIf(item -> item.name().equals(primaryLanguage));
     }
     result.addAll(recs);
