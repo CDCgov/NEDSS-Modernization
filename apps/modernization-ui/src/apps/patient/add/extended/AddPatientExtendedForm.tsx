@@ -58,7 +58,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
 
     return (
         <div className={styles.addPatientForm}>
-            <div className={styles.formContent}>
+            <div className={styles.formContent} id="extended-form-errors">
                 {validationErrors && (
                     <AlertMessage title="Please fix the following errors:" type="error">
                         {renderErrorMessages()}
