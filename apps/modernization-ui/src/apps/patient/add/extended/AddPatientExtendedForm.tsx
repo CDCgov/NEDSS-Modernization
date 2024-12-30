@@ -35,7 +35,7 @@ export const AddPatientExtendedForm = ({ validationErrors, setSubFormState }: Pr
         );
         return (
             <React.Fragment key={section}>
-                Data has been entered in the {linkOrText} section. Please press Add or clear the data and submit again.
+                Data have been entered in the {linkOrText} section. Please press Add or clear the data and submit again.
             </React.Fragment>
         );
     };
