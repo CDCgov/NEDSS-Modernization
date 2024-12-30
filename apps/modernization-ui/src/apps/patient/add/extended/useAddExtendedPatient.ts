@@ -66,8 +66,6 @@ const useAddExtendedPatient = (): AddExtendedPatientInteraction => {
                 subFormDirtyState.race
             ) {
                 dispatch({ type: 'invalidate', validationErrors: { dirtySections: subFormDirtyState } });
-                const form = document.getElementById('extended-form-errors');
-                form?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                 dispatch({ type: 'validated' });
             }

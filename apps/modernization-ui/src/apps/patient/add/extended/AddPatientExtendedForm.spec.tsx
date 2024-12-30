@@ -36,6 +36,8 @@ jest.mock('apps/patient/profile/sexBirth/usePatientSexBirthCodedValues', () => (
     usePatientSexBirthCodedValues: () => mockSexBirthCodedValues
 }));
 
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 const mockCountyCodedValues: CountiesCodedValues = { counties: [{ name: 'CountyA', value: 'A', group: 'G' }] };
 
 jest.mock('location/useCountyCodedValues', () => ({
