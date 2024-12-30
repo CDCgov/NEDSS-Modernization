@@ -91,7 +91,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 rules={{
                     pattern: {
                         value: /^\+?\d{1,20}$/,
-                        message: 'A country code should be 1 to 20 digits'
+                        message: 'A Country code should be 1 to 20 digits'
                     }
                 }}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
@@ -99,7 +99,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         id={name}
                         label="Country code"
                         type="tel"
-                        mask="___"
+                        mask="____________________"
                         pattern="^\+?\d{1,20}$"
                         value={value}
                         onChange={onChange}
