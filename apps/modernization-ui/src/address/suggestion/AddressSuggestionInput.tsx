@@ -99,6 +99,7 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
                 defaultValue={props.defaultValue}
                 placeholder={props.placeholder}
                 autoComplete="off"
+                sizing="compact"
                 orientation={orientation}
                 sizing={props.sizing}
                 error={props.error}
