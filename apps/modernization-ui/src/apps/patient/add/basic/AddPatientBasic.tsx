@@ -9,7 +9,8 @@ import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 
 export const AddPatientBasic = () => {
     const interaction = useAddBasicPatient();
@@ -25,10 +26,10 @@ export const AddPatientBasic = () => {
 
     const handleSave = form.handleSubmit(interaction.create);
 
-    const navigate = useNavigate();
-
+    const { toSearch } = useSearchFromAddPatient();
+    const location = useLocation();
     const handleCancel = () => {
-        navigate('/search/patients');
+        toSearch(location.state.criteria);
     };
 
     return (
