@@ -101,7 +101,6 @@ const AddressSuggestionInput = (props: Props): ReactElement => {
                 autoComplete="off"
                 sizing="compact"
                 orientation={orientation}
-                sizing={props.sizing}
                 error={props.error}
                 onChange={handleOnChange}
                 onBlur={props.onBlur}
