@@ -99,7 +99,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         id={name}
                         label="Country code"
                         type="tel"
-                        mask="___"
+                        mask="____________________"
                         pattern="^\+?\d{1,20}$"
                         value={value}
                         onChange={onChange}
