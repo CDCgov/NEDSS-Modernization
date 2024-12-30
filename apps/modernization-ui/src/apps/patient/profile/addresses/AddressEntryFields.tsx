@@ -104,7 +104,7 @@ export const AddressEntryFields = () => {
                             state: selectedState ?? undefined,
                             zip: enteredZip ?? undefined
                         }}
-                        defaultValue={value ?? ''}
+                        value={value ?? undefined}
                         onChange={onChange}
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
