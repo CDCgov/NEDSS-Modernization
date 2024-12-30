@@ -120,7 +120,6 @@ export const BasicPhoneEmailFields = ({
                                 value={value}
                                 sizing={sizing}
                                 orientation={orientation}
-                                sizing="compact"
                                 error={error?.message}
                                 warning={violation}
                             />

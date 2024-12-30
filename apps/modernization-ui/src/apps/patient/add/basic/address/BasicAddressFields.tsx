@@ -1,13 +1,13 @@
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useLocationCodedValues } from 'location';
 import { AddressSuggestion, AddressSuggestionInput } from 'address/suggestion';
 import { validCensusTractRule, CensusTractInputField } from 'apps/patient/data/address';
 import { Input } from 'components/FormInputs/Input';
 import { EntryFieldsProps } from 'design-system/entry';
 import { SingleSelect } from 'design-system/select';
 import { validZipCodeRule, ZipCodeInputField } from 'libs/demographics/location';
-import { useLocationCodedValues } from 'location';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { maxLengthRule } from 'validation/entry';
-import { BasicNewPatientEntry } from '../entry';
+import { BasicNewPatientEntry } from 'apps/patient/add/basic/entry';
 
 const STREET_ADDRESS_LABEL = 'Street address 1';
 const STREET_ADDRESS_2_LABEL = 'Street address 2';
@@ -57,7 +57,7 @@ export const BasicAddressFields = ({ orientation = 'horizontal' }: AddressEntryF
                             state: selectedState?.value ?? undefined,
                             zip: enteredZip ?? undefined
                         }}
-                        defaultValue={value ?? ''}
+                        value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         onSelection={handleSuggestionSelection}
