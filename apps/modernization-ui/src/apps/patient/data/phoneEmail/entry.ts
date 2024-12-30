@@ -19,12 +19,12 @@ const initial = (asOf: string = today()): Partial<PhoneEmailEntry> => ({
     asOf,
     type: undefined,
     use: undefined,
-    countryCode: '',
-    phoneNumber: '',
-    extension: '',
-    email: '',
-    url: '',
-    comment: ''
+    countryCode: undefined,
+    phoneNumber: undefined,
+    extension: undefined,
+    email: undefined,
+    url: undefined,
+    comment: undefined
 });
 
 export { initial };
