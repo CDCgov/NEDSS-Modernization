@@ -5,7 +5,7 @@ import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
 import { maxLengthRule } from 'validation/entry';
 import { Verification } from 'libs/verification';
-import { EmailField, validateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
+import { EmailField, maybeValidateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
 
 const HOME_PHONE_LABEL = 'Home phone';
 const WORK_PHONE_LABEL = 'Work phone';
@@ -123,13 +123,15 @@ export default function ContactFields({ id, title }: Props) {
                         rules={maxLengthRule(100, EMAIL_LABEL)}
                         render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                             <Verification
-                                constraint={validateEmail(EMAIL_LABEL)}
+                                control={control}
+                                name={name}
+                                constraint={maybeValidateEmail(EMAIL_LABEL)}
                                 render={({ verify, violation }) => (
                                     <EmailField
                                         id={name}
                                         label={EMAIL_LABEL}
                                         onBlur={() => {
-                                            verify(value);
+                                            verify();
                                             onBlur();
                                         }}
                                         onChange={onChange}
