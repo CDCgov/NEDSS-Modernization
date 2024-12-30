@@ -6,7 +6,6 @@
         "@apollo/client": "^3.11.8",
         "@apollo/react-testing": "^4.0.0",
         "@trussworks/react-uswds": "^5.3.1",
-        "@types/jest": "^28.1.6",
         "@types/react": "18.2.42",
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "17.0.25",
@@ -15,13 +14,11 @@
         "date-fns": "3.6.0",
         "graphql": "^16.8.1",
         "lodash.debounce": "^4.0.8",
-        "multiselect-react-dropdown": "^2.0.25",
         "posthog-js": "^1.161.0",
         "react": "^17",
         "react-beautiful-dnd": "^13.1.1",
         "react-dom": "^17",
         "react-hook-form": "7.52.2",
-        "react-refresh": "^0.14.2",
         "react-router-dom": "^6.26.2",
         "react-scripts": "5.0.1",
         "react-select": "^5.7.2",
@@ -30,9 +27,16 @@
     },
     "overrides": {
         "react-refresh": "^0.14.2",
-        "typescript": "5.6.3"
+        "typescript": "5.6.3",
+        "prop-types": "^15.8.1",
+        "nth-check": "^2.0.1 ",
+        "postcss": "^8.4.31"
     },
     "devDependencies": {
+        "@types/jest": "^28.1.6",
+        "@types/node": "^18.19.47",
+        "@types/lodash.debounce": "^4.0.7",
+        "@types/jest-axe": "^3.5.9",
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@graphql-codegen/cli": "^5.0.0",
         "@graphql-codegen/fragment-matcher": "^5.0.0",
@@ -43,9 +47,6 @@
         "@testing-library/react": "^12",
         "@testing-library/react-hooks": "^7.0.2",
         "@testing-library/user-event": "^13",
-        "@types/lodash.debounce": "^4.0.7",
-        "@types/node": "^18.19.47",
-        "@types/jest-axe": "^3.5.9",
         "@typescript-eslint/eslint-plugin": "8.15.0",
         "@typescript-eslint/parser": "8.15.0",
         "eslint": "9.15.0",
@@ -59,7 +60,6 @@
         "jest-axe": "^9.0.0",
         "openapi-typescript-codegen": "^0.29.0",
         "prettier": "^3.2.5",
-        "prop-types": "^15.8.1",
         "sass": "^1.78.0",
         "typescript-plugin-css-modules": "^5.0.2",
         "webpack": "^5.90.1"
@@ -105,7 +105,6 @@
     "jest": {
         "clearMocks": true,
         "globalSetup": "./global-setup.test.js",
-        "clearMocks": true,
         "moduleNameMapper": {
             "^.+\\.svg$": "<rootDir>/module-mock.js",
             "^@uswds/uswds/js/(.*)$": "<rootDir>/node_modules/@uswds/uswds/packages/$1/src/index.js"
