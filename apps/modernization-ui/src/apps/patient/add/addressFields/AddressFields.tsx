@@ -51,7 +51,7 @@ export default function AddressFields({ id, title, coded }: Props) {
                                     locations={coded}
                                     criteria={{ zip: enteredZip, city: enteredCity, state: selectedState }}
                                     label="Street address 1"
-                                    defaultValue={value}
+                                    value={value}
                                     onChange={onChange}
                                     onSelection={handleSuggestionSelection}
                                     error={error?.message}

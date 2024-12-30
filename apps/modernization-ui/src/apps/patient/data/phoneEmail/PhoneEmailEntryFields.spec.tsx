@@ -157,4 +157,19 @@ describe('when entering patient phone & email demographics', () => {
             }
         });
     });
+
+    it('should verify email field', async () => {
+        const { getByLabelText, getByText } = render(<Fixture />);
+        const email = getByLabelText('Email');
+
+        userEvent.paste(email, 'invalid-email');
+        userEvent.tab();
+
+        await waitFor(() => {
+            const validationError = getByText(
+                'Please enter Email as an email address (example: youremail@website.com).'
+            );
+            expect(validationError).toBeInTheDocument();
+        });
+    });
 });

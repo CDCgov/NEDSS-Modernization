@@ -4,9 +4,8 @@ import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Verification } from 'libs/verification';
-import { EmailField, validateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
-import { MaskedTextInputField } from 'design-system/input/text';
-import { Input } from 'components/FormInputs/Input';
+import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
+import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { PhoneEmailEntry } from 'apps/patient/data';
 import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
@@ -158,13 +157,15 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 rules={maxLengthRule(100, EMAIL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Verification
-                        constraint={validateEmail(EMAIL_LABEL)}
+                        control={control}
+                        name={name}
+                        constraint={maybeValidateEmail(EMAIL_LABEL)}
                         render={({ verify, violation }) => (
                             <EmailField
                                 id={name}
                                 label={EMAIL_LABEL}
                                 onBlur={() => {
-                                    verify(value);
+                                    verify();
                                     onBlur();
                                 }}
                                 onChange={onChange}
@@ -183,16 +184,13 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 name="url"
                 rules={maxLengthRule(100, URL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextInputField
+                        id={name}
                         label={URL_LABEL}
-                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
+                        value={value}
+                        orientation={orientation}
                         error={error?.message}
                         sizing="compact"
                     />
