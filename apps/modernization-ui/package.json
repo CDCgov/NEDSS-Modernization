@@ -5,7 +5,7 @@
     "dependencies": {
         "@apollo/client": "^3.11.8",
         "@apollo/react-testing": "^4.0.0",
-        "@trussworks/react-uswds": "^5.3.1",
+        "@trussworks/react-uswds": "6.2.0",
         "@types/react": "18.2.42",
         "@types/react-beautiful-dnd": "^13.1.5",
         "@types/react-dom": "17.0.25",
