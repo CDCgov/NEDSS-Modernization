@@ -1,7 +1,7 @@
-import { render, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BasicPhoneEmailFields } from './BasicPhoneEmailFields';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BasicPhoneEmailFields } from './BasicPhoneEmailFields';
 import { BasicPhoneEmail } from '../entry';
 
 const Fixture = (props: { sizing?: 'small' | 'medium' | 'large' }) => {
@@ -43,19 +43,18 @@ describe('PhoneEmailEntryFields', () => {
     });
 
     it('should validates cell phone field', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
 
         const cellInput = getByLabelText('Cell phone');
-        userEvent.clear(cellInput);
-        userEvent.paste(cellInput, '233');
-        userEvent.tab();
+        await user.clear(cellInput);
+        await user.type(cellInput, '233');
+        await user.tab();
 
-        const validationMessage = 'Please enter a valid Cell phone (XXX-XXX-XXXX) using only numeric characters (0-9).';
-
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            expect(validationError).toBeInTheDocument();
-        });
+        const validationError = queryByText(
+            'Please enter a valid Cell phone (XXX-XXX-XXXX) using only numeric characters (0-9).'
+        );
+        expect(validationError).toBeInTheDocument();
     });
 
     test.each([
@@ -64,37 +63,31 @@ describe('PhoneEmailEntryFields', () => {
         { value: '123', valid: true },
         { value: '1234', valid: true }
     ])('should validate extension format for value: $value', async ({ value, valid }) => {
+        const user = userEvent.setup();
         const { getByLabelText, queryByText } = render(<Fixture />);
         const extensionInput = getByLabelText('Work phone extension');
 
-        userEvent.clear(extensionInput);
-        userEvent.paste(extensionInput, value);
-        userEvent.tab();
+        await user.clear(extensionInput);
+        await user.type(extensionInput, value);
+        await user.tab();
 
-        const validationMessage = 'A Extension should be 1 to 4 digits';
-
-        await waitFor(() => {
-            const validationError = queryByText(validationMessage);
-            if (valid) {
-                expect(validationError).not.toBeInTheDocument();
-            } else {
-                expect(validationError).toBeInTheDocument();
-            }
-        });
+        const validationError = queryByText('A Extension should be 1 to 4 digits');
+        if (valid) {
+            expect(validationError).not.toBeInTheDocument();
+        } else {
+            expect(validationError).toBeInTheDocument();
+        }
     });
 
     it('should verify email field', async () => {
+        const user = userEvent.setup();
         const { getByLabelText, getByText } = render(<Fixture />);
         const email = getByLabelText('Email');
 
-        userEvent.paste(email, 'invalid-email');
-        userEvent.tab();
+        await user.type(email, 'invalid-email');
+        await user.tab();
 
-        await waitFor(() => {
-            const validationError = getByText(
-                'Please enter Email as an email address (example: youremail@website.com).'
-            );
-            expect(validationError).toBeInTheDocument();
-        });
+        const validationError = getByText('Please enter Email as an email address (example: youremail@website.com).');
+        expect(validationError).toBeInTheDocument();
     });
 });

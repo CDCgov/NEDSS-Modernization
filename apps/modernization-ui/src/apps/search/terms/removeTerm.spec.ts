@@ -1,5 +1,6 @@
+import { act } from 'react';
 import { useForm } from 'react-hook-form';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { removeTerm } from './removeTerm';
 import { asSelectable, Selectable } from 'options';
 

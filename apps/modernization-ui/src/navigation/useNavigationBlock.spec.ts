@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { act } from 'react';
+import { renderHook } from '@testing-library/react';
 import { useNavigationBlock } from './useNavigationBlock';
 import { useBlocker } from 'react-router';
 
@@ -27,10 +28,6 @@ describe('useNavigationBlock', () => {
     beforeEach(() => {
         mockBlocker = { ...defaultBlockerResult };
         (useBlocker as jest.Mock).mockReturnValue(mockBlocker);
-    });
-
-    afterEach(() => {
-        jest.clearAllMocks();
     });
 
     it('should block navigation when blocking is activated', () => {

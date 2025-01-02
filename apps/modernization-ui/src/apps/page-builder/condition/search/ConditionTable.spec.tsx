@@ -84,7 +84,8 @@ describe('when a search is performed', () => {
 
         const row1Checkbox = (await findAllByRole('cell'))[0].children[0].children[1];
         // select the first condition
-        userEvent.click(row1Checkbox);
+        const user = userEvent.setup();
+        await user.click(row1Checkbox);
         expect(mockOnSelectionChange).toHaveBeenLastCalledWith(['1']);
 
         const newConditions = [

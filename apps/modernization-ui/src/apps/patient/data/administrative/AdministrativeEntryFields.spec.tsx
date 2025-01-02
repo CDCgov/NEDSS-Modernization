@@ -1,4 +1,4 @@
-import { act, render, cleanup } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { AdministrativeEntryFields } from './AdministrativeEntryFields';
 import { FormProvider, useForm } from 'react-hook-form';
 import userEvent from '@testing-library/user-event';
@@ -24,22 +24,22 @@ describe('when entering patient administrative information', () => {
     it('should render all input fields with the correct sizing when sizing is small.', () => {
         const { getByText } = render(<Fixture sizing="small" />);
 
+        //  This is assuming that the elements have a specific structure.
         expect(getByText('Information as of date').parentElement?.parentElement).toHaveClass('small');
         expect(getByText('Comments').parentElement?.parentElement).toHaveClass('small');
     });
 
     it('should require as of date', async () => {
-        const { getByLabelText, queryByText, findByText } = render(<Fixture />);
+        const { getByLabelText, queryByText } = render(<Fixture />);
 
         const dateInput = getByLabelText('Information as of date');
 
         expect(queryByText('The Information as of date is required.')).not.toBeInTheDocument();
 
-        act(() => {
-            userEvent.click(dateInput);
-            userEvent.tab();
-        });
+        const user = userEvent.setup();
 
-        expect(await findByText('The Information as of date is required.')).toBeInTheDocument();
+        await user.click(dateInput).then(() => user.tab());
+
+        expect(queryByText('The Information as of date is required.')).toBeInTheDocument();
     });
 });

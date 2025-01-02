@@ -1,5 +1,5 @@
-import { render, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Radio } from './Radio';
 
 const mockOnChange = jest.fn();
@@ -19,10 +19,13 @@ describe('Radio Component', () => {
         expect(radioElement.parentElement).toHaveClass('large');
     });
 
-    it('should call onChange handler when clicked', () => {
+    it('should call onChange handler when clicked', async () => {
         const { getByRole } = render(<Radio value="radio-1" name="test" onChange={mockOnChange} />);
         const radioElement = getByRole('radio');
-        fireEvent.click(radioElement);
+
+        const user = userEvent.setup();
+
+        await user.click(radioElement);
         expect(mockOnChange).toHaveBeenCalledTimes(1);
     });
 

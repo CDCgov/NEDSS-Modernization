@@ -1,55 +1,55 @@
-import { ReactNode } from 'react';
 import { render } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { BasicInformation } from './BasicInformation';
 import { PatientCriteriaEntry } from '../criteria';
-import { FormProvider, useForm } from 'react-hook-form';
-import { renderHook } from '@testing-library/react-hooks';
 
-const { result } = renderHook(() =>
-    useForm<PatientCriteriaEntry>({
-        mode: 'onChange',
-        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
-    })
-);
+const mockAllows = jest.fn();
 
-const mockPermissionAllows = jest.fn();
-
-jest.mock('libs/permission/Permitted', () => ({
-    Permitted: ({ children }: { children: ReactNode }) => mockPermissionAllows() && children
+jest.mock('libs/permission/usePermissions', () => ({
+    usePermissions: () => ({ permissions: [], allows: mockAllows })
 }));
 
-const setup = () => {
-    return render(
-        <FormProvider {...result.current}>
+const Fixture = () => {
+    const form = useForm<PatientCriteriaEntry>({
+        mode: 'onChange',
+        defaultValues: { status: [{ name: 'Active', label: 'Active', value: 'ACTIVE' }] }
+    });
+
+    return (
+        <FormProvider {...form}>
             <BasicInformation />
         </FormProvider>
     );
 };
 
 describe('when Basic information renders', () => {
-    beforeEach(() => {
-        mockPermissionAllows.mockReturnValue(true);
-    });
-
     it('should render 8 input fields', () => {
-        const { container } = setup();
+        //  this test would be more effective if it checked for the existence of input labels and asserts accessibility settings.
+        const { container } = render(<Fixture />);
         const inputs = container.getElementsByTagName('input');
-        expect(inputs.length).toBe(11);
+        expect(inputs).toHaveLength(8);
     });
 
     it('should have helper text for patient ID', () => {
-        const { getByText } = setup();
+        const { getByText } = render(<Fixture />);
         expect(getByText('Separate IDs by commas, semicolons, or spaces')).toBeInTheDocument();
     });
 
-    it('should show status component by default', () => {
-        const { queryByText } = setup();
-        expect(queryByText('Include records that are')).toBeInTheDocument();
+    it('should show status component when a user can find inactive patients', () => {
+        mockAllows.mockReturnValue(true);
+        const { getByText } = render(<Fixture />);
+
+        // expect(mockAllows).toBeCalledWith('FINDINACTIVE-PATIENT');
+
+        expect(getByText('Include records that are')).toBeInTheDocument();
     });
 
-    it('should hide status component when permission not set', () => {
-        mockPermissionAllows.mockReturnValue(false);
-        const { queryByText } = setup();
+    it('should hide status component when a user cannot find inactive patients', () => {
+        mockAllows.mockReturnValue(false);
+        const { queryByText } = render(<Fixture />);
+
+        // expect(mockAllows).toBeCalledWith('FINDINACTIVE-PATIENT');
+
         expect(queryByText('Include records that are')).not.toBeInTheDocument();
     });
 });
