@@ -1,11 +1,19 @@
 import { NavSection } from 'design-system/inPageNavigation/InPageNavigation';
 
+export const ADMINISTRATIVE_SECTION = { id: 'administrative', label: 'Administrative' };
+export const NAME_SECTION = { id: 'name', label: 'Name' };
+export const PERSONAL_DETAILS_SECTION = { id: 'personalDetails', label: 'Personal details' };
+export const ADDRESS_SECTION = { id: 'address', label: 'Address' };
+export const PHONE_EMAIL_SECTION = { id: 'phoneEmail', label: 'Phone & email' };
+export const RACE_ETHNICITY_SECTION = { id: 'raceEthnicity', label: 'Ethnicity & race' };
+export const IDENTIFICATIONS_SECTION = { id: 'identifications', label: 'Identification' };
+
 export const sections: NavSection[] = [
-    { id: 'administrative', label: 'Administrative' },
-    { id: 'name', label: 'Name' },
-    { id: 'personalDetails', label: 'Personal details' },
-    { id: 'addresses', label: 'Address' },
-    { id: 'phoneEmail', label: 'Phone & email' },
-    { id: 'raceEthnicity', label: 'Ethnicity & race' },
-    { id: 'identifications', label: 'Identification' }
+    ADMINISTRATIVE_SECTION,
+    NAME_SECTION,
+    PERSONAL_DETAILS_SECTION,
+    ADDRESS_SECTION,
+    PHONE_EMAIL_SECTION,
+    RACE_ETHNICITY_SECTION,
+    IDENTIFICATIONS_SECTION
 ];
