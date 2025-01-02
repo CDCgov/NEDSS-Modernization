@@ -9,6 +9,15 @@ import { NameEntryFields } from './name/NameEntryFields';
 import { BasicRaceEthnicityFields } from './raceEthnicity/BasicEthnicityRaceFields';
 import { BasicPersonalDetailsFields } from './personalDetails/BasicPersonalDetailsFields';
 import { BasicAddressFields } from './address/BasicAddressFields';
+import {
+    ADDRESS_SECTION,
+    ADMINISTRATIVE_SECTION,
+    IDENTIFICATIONS_SECTION,
+    NAME_SECTION,
+    PERSONAL_DETAILS_SECTION,
+    PHONE_EMAIL_SECTION,
+    RACE_ETHNICITY_SECTION
+} from './sections';
 
 export const AddPatientBasicForm = () => {
     const { control } = useFormContext<BasicNewPatientEntry>();
@@ -16,8 +25,8 @@ export const AddPatientBasicForm = () => {
         <div className={styles.addPatientForm}>
             <div className={styles.formContent}>
                 <Card
-                    id="administrative"
-                    title="Administrative"
+                    id={ADMINISTRATIVE_SECTION.id}
+                    title={ADMINISTRATIVE_SECTION.label}
                     info={
                         <span>
                             <span className="required"> All fields marked with</span> are required
@@ -25,27 +34,27 @@ export const AddPatientBasicForm = () => {
                     }>
                     <AdministrativeEntryFields />
                 </Card>
-                <Card id="name" title="Name">
+                <Card id={NAME_SECTION.id} title={NAME_SECTION.label}>
                     <NameEntryFields />
                 </Card>
-                <Card id="personalDetails" title="Personal details">
+                <Card id={PERSONAL_DETAILS_SECTION.id} title={PERSONAL_DETAILS_SECTION.label}>
                     <BasicPersonalDetailsFields />
                 </Card>
-                <Card id="address" title="Address">
+                <Card id={ADDRESS_SECTION.id} title={ADDRESS_SECTION.label}>
                     <BasicAddressFields />
                 </Card>
-                <Card id="phoneEmail" title="Phone & email">
+                <Card id={PHONE_EMAIL_SECTION.id} title={PHONE_EMAIL_SECTION.label}>
                     <BasicPhoneEmailFields />
                 </Card>
-                <Card id="raceEthnicity" title="Ethnicity & race">
+                <Card id={RACE_ETHNICITY_SECTION.id} title={RACE_ETHNICITY_SECTION.label}>
                     <BasicRaceEthnicityFields />
                 </Card>
                 <Controller
                     control={control}
                     name="identifications"
-                    render={({ field: { onChange, value, name } }) => (
+                    render={({ field: { onChange, value } }) => (
                         <BasicIdentificationRepeatingBlock
-                            id={name}
+                            id={IDENTIFICATIONS_SECTION.id}
                             values={value}
                             onChange={onChange}
                             isDirty={() => {}}
