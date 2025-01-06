@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import { Grid } from '@trussworks/react-uswds';
 import FormCard from 'components/FormCard/FormCard';
 import { Input } from 'components/FormInputs/Input';
@@ -18,21 +17,12 @@ type Props = {
 };
 
 export default function ContactFields({ id, title }: Props) {
-    const { control, setValue } = useFormContext();
+    const { control } = useFormContext();
 
-    const phoneFields = useWatch({ control: control, name: 'phoneNumbers' });
-
-    useEffect(() => {
-        if (phoneFields) {
-            phoneFields.forEach((number: any, i: number) => {
-                if (number.use === 'MC') {
-                    setValue(`phoneNumbers.${i}.type`, 'CP');
-                } else {
-                    setValue(`phoneNumbers.${i}.type`, 'PH');
-                }
-            });
-        }
-    }, [JSON.stringify(phoneFields)]);
+    const { fields: emailFields } = useFieldArray({
+        control,
+        name: 'emailAddresses'
+    });
 
     return (
         <FormCard id={id} title={title}>
@@ -117,32 +107,35 @@ export default function ContactFields({ id, title }: Props) {
                     </Grid>
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name={`emailAddress`}
-                        rules={maxLengthRule(100, EMAIL_LABEL)}
-                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                            <Verification
-                                control={control}
-                                name={name}
-                                constraint={maybeValidateEmail(EMAIL_LABEL)}
-                                render={({ verify, violation }) => (
-                                    <EmailField
-                                        id={name}
-                                        label={EMAIL_LABEL}
-                                        onBlur={() => {
-                                            verify();
-                                            onBlur();
-                                        }}
-                                        onChange={onChange}
-                                        value={value}
-                                        error={error?.message}
-                                        warning={violation}
-                                    />
-                                )}
-                            />
-                        )}
-                    />
+                    {emailFields.map((item: { id: string }, index: number) => (
+                        <Controller
+                            key={item.id}
+                            control={control}
+                            name={`emailAddresses[${index}].email`}
+                            rules={maxLengthRule(100, EMAIL_LABEL)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                <Verification
+                                    control={control}
+                                    name={name}
+                                    constraint={maybeValidateEmail(EMAIL_LABEL)}
+                                    render={({ verify, violation }) => (
+                                        <EmailField
+                                            id={name}
+                                            label={EMAIL_LABEL}
+                                            onBlur={() => {
+                                                verify();
+                                                onBlur();
+                                            }}
+                                            onChange={onChange}
+                                            value={value}
+                                            error={error?.message}
+                                            warning={violation}
+                                        />
+                                    )}
+                                />
+                            )}
+                        />
+                    ))}
                 </Grid>
             </Grid>
         </FormCard>
