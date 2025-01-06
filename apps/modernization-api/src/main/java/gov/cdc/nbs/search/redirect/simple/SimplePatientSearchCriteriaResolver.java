@@ -2,6 +2,7 @@ package gov.cdc.nbs.search.redirect.simple;
 
 import gov.cdc.nbs.message.enums.Gender;
 import gov.cdc.nbs.option.Option;
+import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
 
@@ -52,6 +53,10 @@ class SimplePatientSearchCriteriaResolver {
         .map(FlexibleLocalDateConverter::fromString)
         .orElse(null);
 
+    DateCriteria bornOn = dateOfBirth != null
+        ? DateCriteria.equals(dateOfBirth.getDayOfMonth(), dateOfBirth.getMonthValue(), dateOfBirth.getYear())
+        : null;
+
     Option gender = maybe(criteria, NBS_SEX).map(Gender::resolve)
         .map(found -> new Option(found.value(), found.display()))
         .orElse(null);
@@ -70,12 +75,12 @@ class SimplePatientSearchCriteriaResolver {
     String treatment = fromIdentifier(criteria, TREATMENT_ID);
     String vaccination = fromIdentifier(criteria, VACCINATION_ID);
 
-    return anyExist(name, dateOfBirth, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
+    return anyExist(name, bornOn, gender, id, morbidity, document, stateCase, abcCase, cityCountyCase,
         notification, labReport, accessionNumber, investigation, treatment, vaccination)
             ? Optional.of(
                 new SimplePatientSearchCriteria(
                     name,
-                    dateOfBirth,
+                    bornOn,
                     gender,
                     id,
                     morbidity,
