@@ -10,6 +10,10 @@
         gap: 0.12rem;
     }
 
+    &.horizontal {
+        align-items: center;
+    }
+
     .label {
         font-size: 0.8125rem;
         font-weight: 600;
