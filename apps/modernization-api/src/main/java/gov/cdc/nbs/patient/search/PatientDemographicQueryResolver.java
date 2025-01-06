@@ -41,6 +41,7 @@ class PatientDemographicQueryResolver {
   private static final String ADDRESSES = "address";
   private static final String NAME_USE_CD = "name.nm_use_cd.keyword";
   private static final String LAST_NAME = "name.lastNm";
+  private static final String LOCAL_ID = "local_id";
   private final PatientSearchSettings settings;
   private final PatientLocalIdentifierResolver resolver;
   private final PatientNameDemographicQueryResolver nameQueryResolver;
@@ -68,6 +69,7 @@ class PatientDemographicQueryResolver {
   private Stream<QueryVariant> resolveDemographicCriteria(final PatientFilter criteria) {
     return Stream.of(
         applyPatientIdentifierCriteria(criteria),
+        applyPatientIdFilterCriteria(criteria),
         applyFirstNameCriteria(criteria),
         applyLastNameCriteria(criteria),
         applyPhoneNumberCriteria(criteria),
@@ -80,6 +82,21 @@ class PatientDemographicQueryResolver {
         applyDateOfBirthLowRangeCriteria(criteria),
         applyZipcodeCriteria(criteria))
         .flatMap(Optional::stream);
+  }
+
+  private Optional<QueryVariant> applyPatientIdFilterCriteria(final PatientFilter criteria) {
+    String idFilter = criteria.getIdFilter();
+    if (idFilter == null) {
+      return Optional.empty();
+
+    }
+    String adjusted = WildCards.contains(idFilter);
+    return Optional.of(BoolQuery.of(
+        bool -> bool.must(
+            query -> query.queryString(
+                simple -> simple.fields(LOCAL_ID)
+                    .query(adjusted)))));
+
   }
 
   private Optional<QueryVariant> applyPatientIdentifierCriteria(final PatientFilter criteria) {
@@ -124,7 +141,7 @@ class PatientDemographicQueryResolver {
 
     return Optional.of(
         TermsQuery.of(
-            query -> query.field("local_id").terms(localIdTerms)));
+            query -> query.field(LOCAL_ID).terms(localIdTerms)));
   }
 
   private Optional<QueryVariant> applyFirstNameCriteria(final PatientFilter criteria) {

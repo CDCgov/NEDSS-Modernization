@@ -1167,6 +1167,7 @@ input PersonFilter {
   accessionNumber: String
   disableSoundex: Boolean
   recordStatus: [RecordStatus!]!
+  idFilter: String
 }
 
 enum Gender {

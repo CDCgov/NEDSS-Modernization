@@ -111,6 +111,7 @@ public class PatientFilter {
   private String investigation;
   private String labReport;
   private String accessionNumber;
+  private String idFilter;
 
   private boolean disableSoundex;
   @JsonIgnore
@@ -155,6 +156,11 @@ public class PatientFilter {
 
   public PatientFilter withId(final String id) {
     this.id = id;
+    return this;
+  }
+
+  public PatientFilter withIdFilter(final String idFilter) {
+    this.idFilter = idFilter;
     return this;
   }
 

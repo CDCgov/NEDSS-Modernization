@@ -1679,6 +1679,7 @@ export type PersonFilter = {
   firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
+  idFilter?: InputMaybe<Scalars['String']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
   investigation?: InputMaybe<Scalars['String']['input']>;
   labReport?: InputMaybe<Scalars['String']['input']>;
