@@ -1,11 +1,10 @@
 import { Grid } from '@trussworks/react-uswds';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 import FormCard from 'components/FormCard/FormCard';
 import { validatePhoneNumber } from 'validation/phone';
 import { Input } from 'components/FormInputs/Input';
 import { PhoneNumberInput } from 'components/FormInputs/PhoneNumberInput/PhoneNumberInput';
 import { maxLengthRule, validEmailRule } from 'validation/entry';
-import { useEffect } from 'react';
 
 type Props = {
     id: string;
@@ -13,21 +12,12 @@ type Props = {
 };
 
 export default function ContactFields({ id, title }: Props) {
-    const { control, setValue } = useFormContext();
+    const { control } = useFormContext();
 
-    const phoneFields = useWatch({ control: control, name: 'phoneNumbers' });
-
-    useEffect(() => {
-        if (phoneFields) {
-            phoneFields.forEach((number: any, i: number) => {
-                if (number.use === 'MC') {
-                    setValue(`phoneNumbers.${i}.type`, 'CP');
-                } else {
-                    setValue(`phoneNumbers.${i}.type`, 'PH');
-                }
-            });
-        }
-    }, [JSON.stringify(phoneFields)]);
+    const { fields: emailFields } = useFieldArray({
+        control,
+        name: 'emailAddresses'
+    });
 
     return (
         <FormCard id={id} title={title}>
@@ -133,25 +123,26 @@ export default function ContactFields({ id, title }: Props) {
                     </Grid>
                 </Grid>
                 <Grid col={6}>
-                    <Controller
-                        control={control}
-                        name={`emailAddress`}
-                        rules={{
-                            ...validEmailRule(100)
-                        }}
-                        render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                            <Input
-                                onChange={onChange}
-                                onBlur={onBlur}
-                                type="text"
-                                label="Email"
-                                defaultValue={value}
-                                htmlFor={name}
-                                id={name}
-                                error={error?.message}
-                            />
-                        )}
-                    />
+                    {emailFields.map((item: { id: string }, index: number) => (
+                        <Controller
+                            key={item.id}
+                            control={control}
+                            name={`emailAddresses[${index}].email`}
+                            rules={validEmailRule(100)}
+                            render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
+                                <Input
+                                    onChange={onChange}
+                                    onBlur={onBlur}
+                                    type="text"
+                                    label="Email"
+                                    defaultValue={value}
+                                    htmlFor={name}
+                                    id={name}
+                                    error={error?.message}
+                                />
+                            )}
+                        />
+                    ))}
                 </Grid>
             </Grid>
         </FormCard>
