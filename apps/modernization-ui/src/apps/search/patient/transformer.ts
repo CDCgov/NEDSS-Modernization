@@ -2,8 +2,6 @@ import { RecordStatus, PersonFilter, IdentificationCriteria } from 'generated/gr
 
 import { asValue, asValues } from 'options/selectable';
 import { PatientCriteriaEntry } from './criteria';
-// import { externalizeDate } from 'date';
-//import { asDateEntry, DateCriteria } from 'design-system/date/entry';
 
 const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriteria | undefined =>
     data.identification && data.identificationType
@@ -12,15 +10,6 @@ const resolveIdentification = (data: PatientCriteriaEntry): IdentificationCriter
               identificationType: data.identificationType.value
           }
         : undefined;
-
-// const resolveBornOn = (bornOn: DateCriteria | undefined, dateOfBirth?: string): DateCriteria | undefined => {
-//     console.log('resolveBornOn', bornOn, dateOfBirth);
-//     if (!bornOn && dateOfBirth) {
-//         const dateObj = asDateEntry(dateOfBirth);
-//         return dateObj && { equals: dateObj };
-//     }
-//     return bornOn;
-// };
 
 export const transform = (data: PatientCriteriaEntry): PersonFilter => {
     const {
@@ -68,7 +57,5 @@ export const transform = (data: PatientCriteriaEntry): PersonFilter => {
         race: asValue(remaining.race),
         ethnicity: asValue(remaining.ethnicity),
         identification: resolveIdentification(remaining)
-        // dateOfBirth: externalizeDate(dateOfBirth),
-        // bornOn: resolveBornOn(bornOn, dateOfBirth)
     };
 };
