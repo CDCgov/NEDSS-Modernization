@@ -3,7 +3,7 @@ import { AdministrativeEntry } from 'apps/patient/data/entry';
 import { DatePickerInput, validDateRule } from 'design-system/date';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { EntryFieldsProps } from 'design-system/entry';
-import { TextAreaField } from 'design-system/input/text/TextAreaField';
+import { ProtoTextareaField } from 'design-system/input/text/ProtoTextAreaField';
 
 const AS_OF_DATE_LABEL = 'Information as of date';
 const COMMENTS_LABEL = 'General comments';
@@ -39,7 +39,7 @@ export const AdministrativeEntryFields = ({ orientation = 'horizontal' }: Admini
                 name="administrative.comment"
                 rules={maxLengthRule(2000, COMMENTS_LABEL)}
                 render={({ field: { onBlur, onChange, value, name }, fieldState: { error } }) => (
-                    <TextAreaField
+                    <ProtoTextareaField
                         label={COMMENTS_LABEL}
                         orientation={orientation}
                         sizing="compact"

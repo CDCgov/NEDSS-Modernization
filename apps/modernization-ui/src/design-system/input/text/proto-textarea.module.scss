@@ -1,0 +1,42 @@
+@use 'styles/colors';
+
+.area {
+    position: relative;
+
+    height: 10rem;
+    max-width: 30rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .content {
+        .view {
+            color: brown;
+        }
+
+        .editing,
+        .view {
+            margin: 0;
+            padding: 0;
+
+            position: absolute;
+            left: 0;
+            top: 0;
+
+            overflow: auto;
+            white-space: nowrap;
+            resize: none;
+        }
+    }
+
+    .counter {
+        display: flex;
+        justify-content: end;
+        color: colors.$base;
+
+        .limit {
+            color: colors.$error;
+        }
+    }
+}
