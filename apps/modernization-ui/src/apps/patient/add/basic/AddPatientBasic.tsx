@@ -9,13 +9,18 @@ import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useMemo } from 'react';
+import { useConfiguration } from 'configuration';
+import { useBasicExtendedTransition } from '../useBasicExtendedTransition';
 
 export const AddPatientBasic = () => {
     const interaction = useAddBasicPatient();
+    const { features } = useConfiguration();
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: initial(),
         mode: 'onBlur'
     });
+
+    const { toExtendedNew } = useBasicExtendedTransition();
 
     const created = useMemo(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -23,6 +28,8 @@ export const AddPatientBasic = () => {
     );
 
     const handleSave = form.handleSubmit(interaction.create);
+
+    const handleExtended = form.handleSubmit(toExtendedNew);
 
     return (
         <DataEntryLayout>
@@ -35,6 +42,11 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
+                            {features.patient?.add?.extended?.enabled && (
+                                <Button type="button" onClick={handleExtended} outline className="add-patient-button">
+                                    Add extended data
+                                </Button>
+                            )}
                             <Button outline>Cancel</Button>
                             <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
                                 Save

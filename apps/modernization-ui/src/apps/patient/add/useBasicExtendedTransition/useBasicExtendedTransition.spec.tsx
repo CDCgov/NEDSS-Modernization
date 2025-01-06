@@ -38,8 +38,8 @@ function TestComponent() {
                 }>
                 Add Patient
             </button>
-            <div data-testid="patient-name">{`${transitionData?.firstName} ${transitionData?.lastName}`}</div>
-            <div data-testid="patient-age">{transitionData?.dateOfBirth}</div>
+            {/* <div data-testid="patient-name">{`${transitionData?.firstName} ${transitionData?.lastName}`}</div>
+            <div data-testid="patient-age">{transitionData?.dateOfBirth}</div> */}
         </div>
     );
 }
