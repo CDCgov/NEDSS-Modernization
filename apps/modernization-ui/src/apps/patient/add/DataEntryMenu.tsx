@@ -8,10 +8,10 @@ const DataEntryMenu = () => {
                 <NavEntry name="New patient" path="/search/patient" active />
             </Permitted>
             <Permitted permission="manage-organization">
-                <NavEntry name="New Organization" href="/nbs/MyTaskList1.do?ContextAction=GlobalOrganization" />
+                <NavEntry name="New organization" href="/nbs/MyTaskList1.do?ContextAction=GlobalOrganization" />
             </Permitted>
             <Permitted permission="manage-provider">
-                <NavEntry name="New Provider" href="/nbs/MyTaskList1.do?ContextAction=GlobalProvider" />
+                <NavEntry name="New provider" href="/nbs/MyTaskList1.do?ContextAction=GlobalProvider" />
             </Permitted>
             <Permitted permission="add-observationmorbidityreport">
                 <NavEntry name="Morbidity report" href="/nbs/MyTaskList1.do?ContextAction=AddMorbDataEntry" />

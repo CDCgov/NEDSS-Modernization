@@ -4,9 +4,8 @@ import { SingleSelect } from 'design-system/select';
 import { EntryFieldsProps } from 'design-system/entry';
 import { maxLengthRule, validateRequiredRule } from 'validation/entry';
 import { Verification } from 'libs/verification';
-import { EmailField, validateEmail, PhoneNumberInputField, validPhoneNumberRule } from 'libs/demographics/contact';
-import { MaskedTextInputField } from 'design-system/input/text';
-import { Input } from 'components/FormInputs/Input';
+import { EmailField, PhoneNumberInputField, validPhoneNumberRule, maybeValidateEmail } from 'libs/demographics/contact';
+import { MaskedTextInputField, TextInputField } from 'design-system/input/text';
 import { PhoneEmailEntry } from 'apps/patient/data';
 import { usePatientPhoneCodedValues } from 'apps/patient/profile/phoneEmail/usePatientPhoneCodedValues';
 import { TextAreaField } from 'design-system/input/text/TextAreaField';
@@ -41,6 +40,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -60,6 +60,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -79,6 +80,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         options={coded.uses}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -87,8 +89,8 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 name="countryCode"
                 rules={{
                     pattern: {
-                        value: /^\+?\d{1,3}$/,
-                        message: 'A Country code should be 1 to 3 digits'
+                        value: /^\+?\d{1,20}$/,
+                        message: 'A Country code should be 1 to 20 digits'
                     }
                 }}
                 render={({ field: { onChange, value, onBlur, name }, fieldState: { error } }) => (
@@ -96,13 +98,14 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         id={name}
                         label="Country code"
                         type="tel"
-                        mask="___"
-                        pattern="^\+?\d{1,3}$"
+                        mask="____________________"
+                        pattern="^\+?\d{1,20}$"
                         value={value}
                         onChange={onChange}
                         onBlur={onBlur}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -119,6 +122,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -142,6 +146,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         onChange={onChange}
                         orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -152,13 +157,15 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 rules={maxLengthRule(100, EMAIL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
                     <Verification
-                        constraint={validateEmail(EMAIL_LABEL)}
+                        control={control}
+                        name={name}
+                        constraint={maybeValidateEmail(EMAIL_LABEL)}
                         render={({ verify, violation }) => (
                             <EmailField
                                 id={name}
                                 label={EMAIL_LABEL}
                                 onBlur={() => {
-                                    verify(value);
+                                    verify();
                                     onBlur();
                                 }}
                                 onChange={onChange}
@@ -166,6 +173,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                                 orientation={orientation}
                                 error={error?.message}
                                 warning={violation}
+                                sizing="compact"
                             />
                         )}
                     />
@@ -176,17 +184,15 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                 name="url"
                 rules={maxLengthRule(100, URL_LABEL)}
                 render={({ field: { onChange, onBlur, value, name }, fieldState: { error } }) => (
-                    <Input
+                    <TextInputField
+                        id={name}
                         label={URL_LABEL}
-                        orientation={orientation}
                         onBlur={onBlur}
                         onChange={onChange}
-                        defaultValue={value}
-                        type="text"
-                        htmlFor={name}
-                        id={name}
-                        name={name}
+                        value={value}
+                        orientation={orientation}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -204,6 +210,7 @@ export const PhoneEmailEntryFields = ({ orientation = 'horizontal' }: PhoneEmail
                         name={`phone-${name}`}
                         id={`phone-${name}`}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />

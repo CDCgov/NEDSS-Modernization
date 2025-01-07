@@ -1,5 +1,6 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import classicManagePagesPage from "cypress/e2e/pages/nbs-classic/managePages.page";
+import classicOpener from "cypress/e2e/pages/nbs-classic/classicOpener.page";
 
 Then("Navigate to Page Library on classic", () => {
     classicManagePagesPage.navigateToPageLibrary()
@@ -7,6 +8,30 @@ Then("Navigate to Page Library on classic", () => {
 
 Then("Click on Add New button on add new classic page", () => {
     classicManagePagesPage.clickAddNewBtn()
+});
+
+Then("Click on Add New Tab button on investigation view page", () => {
+    classicManagePagesPage.clickAddNewTabImg()
+});
+
+Then("Click on Add New Section button on investigation view page", () => {
+    classicManagePagesPage.clickAddSection()
+});
+
+Then("Click on Add New Subsection button on investigation view page", () => {
+    classicManagePagesPage.clickAddSubSection()
+});
+
+Then("Submit a section in new window", () => {
+    classicOpener.submitNewSection()
+});
+
+Then("Submit a subsection in new window", () => {
+    classicOpener.submitNewSubSection()
+});
+
+Then("Submit a new New Tab via a new window", () => {
+    classicOpener.submitNewTab()
 });
 
 Then("Select Page as {string} type on add new classic page", (pageType) => {

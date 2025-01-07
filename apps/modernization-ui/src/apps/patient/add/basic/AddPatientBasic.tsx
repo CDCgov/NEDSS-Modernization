@@ -11,13 +11,18 @@ import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
+import { useConfiguration } from 'configuration';
+import { useBasicExtendedTransition } from '../useBasicExtendedTransition';
 
 export const AddPatientBasic = () => {
     const interaction = useAddBasicPatient();
+    const { features } = useConfiguration();
     const form = useForm<BasicNewPatientEntry>({
         defaultValues: initial(),
         mode: 'onBlur'
     });
+
+    const { toExtendedNew } = useBasicExtendedTransition();
 
     const created = useMemo(
         () => (interaction.status === 'created' ? interaction.created : undefined),
@@ -31,6 +36,7 @@ export const AddPatientBasic = () => {
     const handleCancel = () => {
         toSearch(location.state.criteria);
     };
+    const handleExtended = form.handleSubmit(toExtendedNew);
 
     return (
         <DataEntryLayout>
@@ -46,6 +52,17 @@ export const AddPatientBasic = () => {
                             <Button onClick={handleCancel} outline>
                                 Cancel
                             </Button>
+                            {features.patient?.add?.extended?.enabled && (
+                                <Button
+                                    type="button"
+                                    onClick={handleExtended}
+                                    outline
+                                    className="add-patient-button"
+                                    disabled={!form.formState.isValid}>
+                                    Add extended data
+                                </Button>
+                            )}
+                            <Button outline>Cancel</Button>
                             <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
                                 Save
                             </Button>
