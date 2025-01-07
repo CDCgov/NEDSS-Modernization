@@ -15,7 +15,7 @@ const useAddPatientFromSearch = (): Interaction => {
 
     const add = () => {
         const defaults = asNewPatientEntry(getValues());
-        navigate('/add-patient', { state: { defaults, criteria: found } });
+        navigate('/patient/add', { state: { defaults, criteria: found } });
     };
 
     return {

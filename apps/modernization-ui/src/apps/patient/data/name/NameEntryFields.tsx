@@ -33,6 +33,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         orientation={orientation}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -52,6 +53,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         options={coded.types}
                         error={error?.message}
                         required
+                        sizing="compact"
                     />
                 )}
             />
@@ -68,6 +70,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         onBlur={onBlur}
                         name={name}
                         options={coded.prefixes}
+                        sizing="compact"
                     />
                 )}
             />
@@ -87,6 +90,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -106,6 +110,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -125,6 +130,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -144,6 +150,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -163,6 +170,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         name={name}
                         id={name}
                         error={error?.message}
+                        sizing="compact"
                     />
                 )}
             />
@@ -180,6 +188,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         id={name}
                         name={name}
                         options={coded.suffixes}
+                        sizing="compact"
                     />
                 )}
             />
@@ -195,6 +204,7 @@ export const NameEntryFields = ({ orientation = 'horizontal' }: NameEntryFieldsP
                         id={name}
                         name={name}
                         options={coded.degrees}
+                        sizing="compact"
                     />
                 )}
             />
