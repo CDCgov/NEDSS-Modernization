@@ -1,16 +1,19 @@
 class ClassicOpenerPage {
+
+  isUniqueElementName(eltType, eltName, eltId) {
+    return true;
+  }
+
+  submitForm() {
+    var unblock = false;
+    document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
+    document.forms[0].submit();
+  }
+
   submitNewTab() {
-    function isUniqueElementName(eltType, eltName, eltId) {
-      return true;
-    }
-    function submitForm() {
-      var unblock = false;
-      document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
-      document.forms[0].submit();
-    }
     var opener = {};
-    opener.isUniqueElementName = isUniqueElementName;
-    opener.submitForm = submitForm;
+    opener.isUniqueElementName = this.isUniqueElementName;
+    opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=tab");
     cy.get("#tabNameTd").type("NEWTAB");
     cy.window().then((win) => {
@@ -121,18 +124,9 @@ class ClassicOpenerPage {
   }
 
   submitNewSection() {
-    function isUniqueElementName(eltType, eltName, eltId) {
-      return true;
-    }
-
-    function submitForm() {
-      var unblock = false;
-      document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
-      document.forms[0].submit();
-    }
     var opener = {};
-    opener.isUniqueElementName = isUniqueElementName;
-    opener.submitForm = submitForm;
+    opener.isUniqueElementName = this.UniqueElementName;
+    opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=section");
     cy.window().then((win) => {
       win.opener = opener;
@@ -142,18 +136,9 @@ class ClassicOpenerPage {
   }
 
   submitNewSubSection() {
-    function isUniqueElementName(eltType, eltName, eltId) {
-      return true;
-    }
-
-    function submitForm() {
-      var unblock = false;
-      document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
-      document.forms[0].submit();
-    }
     var opener = {};
-    opener.isUniqueElementName = isUniqueElementName;
-    opener.submitForm = submitForm;
+    opener.isUniqueElementName = this.isUniqueElementName;
+    opener.submitForm = this.submitForm;
     cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=subSection");
     cy.window().then((win) => {
       win.opener = opener;
