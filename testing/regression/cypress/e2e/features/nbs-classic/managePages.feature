@@ -76,3 +76,20 @@ Feature: Classic NBS - User can view and manage data in Manage Pages
     Then Click on Submit Button in Add Element page
     Then Click on Close Button in Add Element page
 
+  Scenario: Add a new tab to Investigation
+    Then Click on view icon to display the page details on classic
+    Then Click on Edit button on investigation view page
+    Then Click on Add New Tab button on investigation view page
+    Then Submit a new New Tab via a new window
+
+  Scenario: Add a new section to Investigation
+    Then Click on view icon to display the page details on classic
+    Then Click on Edit button on investigation view page
+    Then Click on Add New Section button on investigation view page
+    Then Submit a section in new window
+
+  Scenario: Add a new subsection to Investigation
+    Then Click on view icon to display the page details on classic
+    Then Click on Edit button on investigation view page
+    Then Click on Add New Subsection button on investigation view page
+    Then Submit a subsection in new window
