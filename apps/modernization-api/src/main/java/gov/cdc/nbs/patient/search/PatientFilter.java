@@ -177,11 +177,7 @@ public class PatientFilter {
   }
 
   public PatientFilter withIdFilter(final String idFilter) {
-    if (this.filter == null) {
-      this.filter = new Filter(idFilter);
-    } else {
-      this.filter.id = idFilter;
-    }
+    this.filter = new Filter(idFilter);
     return this;
   }
 
