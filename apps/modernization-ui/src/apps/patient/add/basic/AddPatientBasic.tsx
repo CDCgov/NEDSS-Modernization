@@ -43,7 +43,12 @@ export const AddPatientBasic = () => {
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
                             {features.patient?.add?.extended?.enabled && (
-                                <Button type="button" onClick={handleExtended} outline className="add-patient-button">
+                                <Button
+                                    type="button"
+                                    onClick={handleExtended}
+                                    outline
+                                    className="add-patient-button"
+                                    disabled={!form.formState.isValid}>
                                     Add extended data
                                 </Button>
                             )}

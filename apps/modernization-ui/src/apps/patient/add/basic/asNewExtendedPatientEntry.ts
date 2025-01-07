@@ -75,7 +75,8 @@ const phoneEmailsExtended = (initial: BasicNewPatientEntry): PhoneEmailEntry[] =
     if (
         !isEmpty({
             home: initial.phoneEmail?.home,
-            work: initial.phoneEmail?.work,
+            workNum: initial.phoneEmail?.work?.phone,
+            workExt: initial.phoneEmail?.work?.extension,
             cell: initial.phoneEmail?.cell,
             email: initial.phoneEmail?.email
         })
