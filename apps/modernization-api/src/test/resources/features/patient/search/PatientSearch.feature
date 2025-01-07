@@ -28,6 +28,39 @@ Feature: Patient Search
     Then the patient is in the search results
     And there is only one patient search result
 
+  Scenario: I can find a patient by Patient ID using the local id and an id filter that equals the id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a good equals id filter
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can find a patient by Patient ID using the local id and an id filter the contains the id
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a good contains id filter
+    When I search for patients
+    Then the patient is in the search results
+    And there is only one patient search result
+
+  Scenario: I can't find a patient by Patient ID using a good local id and a bad id filter
+    Given patients are available for search
+    And I would like to search for a patient using a local ID and a bad id filter
+    When I search for patients
+    Then there are 0 patient search results
+
+  Scenario: I can filter search results with the patient's short ID
+    Given I have a patient
+    And the patient has the legal name "Joe" "Other"
+    And I have another patient
+    And the patient has the legal name "Joe" "Smith"
+    And patients are available for search
+    And I add the patient criteria for a first name that equals "Joe"
+    And I would like to filter search results with the patient's short ID
+    When I search for patients
+    Then search result 1 has a "first name" of "Joe"
+    And search result 1 has a "last name" of "Smith"
+    And there are 1 patient search results
+
   Scenario: I can find a patient by Patient ID using multiple local ids
     Given patients are available for search
     And I would like to search for a patient using multiple local IDs

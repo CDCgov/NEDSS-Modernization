@@ -41,6 +41,16 @@ public class PatientFilter {
     private String identificationType;
   }
 
+  @Getter
+  @Setter
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @EqualsAndHashCode
+  @JsonInclude(Include.NON_NULL)
+  public static class Filter {
+    private String id;
+  }
+
   public record NameCriteria(TextCriteria first, TextCriteria last) {
 
     Optional<TextCriteria> maybeLast() {
@@ -111,6 +121,7 @@ public class PatientFilter {
   private String investigation;
   private String labReport;
   private String accessionNumber;
+  private Filter filter;
 
   private boolean disableSoundex;
   @JsonIgnore
@@ -139,6 +150,13 @@ public class PatientFilter {
     return identification;
   }
 
+  public Filter getFilter() {
+    if (this.filter == null) {
+      this.filter = new Filter();
+    }
+    return filter;
+  }
+
   public List<RecordStatus> adjustedStatus() {
     return adjustedStatus == null ? List.copyOf(this.recordStatus) : List.copyOf(this.adjustedStatus);
   }
@@ -155,6 +173,11 @@ public class PatientFilter {
 
   public PatientFilter withId(final String id) {
     this.id = id;
+    return this;
+  }
+
+  public PatientFilter withIdFilter(final String idFilter) {
+    this.filter = new Filter(idFilter);
     return this;
   }
 
