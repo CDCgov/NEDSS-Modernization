@@ -119,6 +119,27 @@ class ClassicOpenerPage {
       });
     });
   }
+
+  submitNewSection() {
+    function isUniqueElementName(eltType, eltName, eltId) {
+      return true;
+    }
+
+    function submitForm() {
+      var unblock = false;
+      document.forms[0].action = "/nbs/ManagePageElement.do?method=editSubmit&eltType=section&waQuestionUId=" + Cypress.$("#pageElementUid").val();
+      document.forms[0].submit();
+    }
+    var opener = {};
+    opener.isUniqueElementName = isUniqueElementName;
+    opener.submitForm = submitForm;
+    cy.visit("/nbs/ManagePageElement.do?method=addLoad&eltType=section");
+    cy.window().then((win) => {
+      win.opener = opener;
+      cy.get("#tabNameTd").type("New Section");
+      cy.get('input[type="button"][name="SubmitForm"]').eq(0).click()
+    });
+  }
 }
 
 export default new ClassicOpenerPage();

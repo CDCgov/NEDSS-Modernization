@@ -22,6 +22,10 @@ class ClassicManagePagesPage {
     })
   }  
 
+  clickAddSection() {
+    cy.get(".addSection").eq(0).click();
+  }
+
   selectPageType(pageType) {
     const pageTypes = {
       Investigation: 3,
