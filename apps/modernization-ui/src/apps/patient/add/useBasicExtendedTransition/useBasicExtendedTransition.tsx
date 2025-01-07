@@ -9,11 +9,14 @@ import { BasicNewPatientEntry } from '../basic/entry';
 import { asNewExtendedPatientEntry } from '../basic/asNewExtendedPatientEntry';
 
 type BasicExtendedTransitionContextType = {
-    transitionData: NewPatientEntry | BasicNewPatientEntry | null;
+    transitionData: NewPatientEntry | null;
     setTransitionData: (data: NewPatientEntry) => void;
+    newTransitionData: BasicNewPatientEntry | null;
+    setNewTransitionData: (data: BasicNewPatientEntry) => void;
     toExtended: (initial: NewPatientEntry) => void;
     toExtendedNew: (initial: BasicNewPatientEntry) => void;
     toBasic: () => void;
+    toNewBasic: () => void;
 };
 
 const BasicExtendedTransitionContext = createContext<BasicExtendedTransitionContextType | undefined>(undefined);
@@ -23,7 +26,8 @@ type BasicExtendedTransitionProviderProps = {
 };
 
 function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionProviderProps) {
-    const [transitionData, setTransitionData] = useState<NewPatientEntry | BasicNewPatientEntry | null>(null);
+    const [transitionData, setTransitionData] = useState<NewPatientEntry | null>(null);
+    const [newTransitionData, setNewTransitionData] = useState<BasicNewPatientEntry | null>(null);
     const navigate = useNavigate();
     const nameCodes = usePatientNameCodedValues();
     const raceCategories = useConceptOptions('P_RACE_CAT', { lazy: false }).options;
@@ -35,9 +39,13 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
     };
 
     const toExtendedNew = (initial: BasicNewPatientEntry) => {
-        setTransitionData(initial);
+        setNewTransitionData(initial);
         const defaults: ExtendedNewPatientEntry = asNewExtendedPatientEntry(initial);
         navigate('/patient/add/extended', { state: { defaults: defaults } });
+    };
+
+    const toNewBasic = () => {
+        navigate('patient/add', { state: { defaults: newTransitionData } });
     };
 
     const toBasic = () => {
@@ -47,9 +55,12 @@ function BasicExtendedTransitionProvider({ children }: BasicExtendedTransitionPr
     const value: BasicExtendedTransitionContextType = {
         transitionData,
         setTransitionData,
+        newTransitionData,
+        setNewTransitionData,
         toExtended,
         toExtendedNew,
-        toBasic
+        toBasic,
+        toNewBasic
     };
 
     return <BasicExtendedTransitionContext.Provider value={value}>{children}</BasicExtendedTransitionContext.Provider>;
