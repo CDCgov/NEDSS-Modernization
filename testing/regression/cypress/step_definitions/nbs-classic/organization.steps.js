@@ -16,3 +16,19 @@ Then("Click on Search in classic organization Search pane", () => {
 Then("View organization details through classic search", () => {
     classicSearchOrganizationPage.viewOrganizationDetails()
 });
+
+Then("Navigate to classic organization add page", () => {
+    classicSearchOrganizationPage.navigateToAddOrganisation()
+});
+
+Then("Click on Add button on organization add page", () => {
+    classicSearchOrganizationPage.clickAddButtonOnAddOrganisation()
+});
+
+Then("Enter quick code for new organisation", () => {
+    classicSearchOrganizationPage.enterQuickCode()
+});
+
+Then("Click Submit button on organization add page", () => {
+    classicSearchOrganizationPage.clickSubmitBtnOnOrganisation()
+});
