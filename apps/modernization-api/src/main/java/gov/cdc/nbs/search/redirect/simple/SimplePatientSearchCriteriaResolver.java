@@ -6,7 +6,6 @@ import gov.cdc.nbs.search.criteria.date.DateCriteria;
 import gov.cdc.nbs.search.criteria.text.TextCriteria;
 import gov.cdc.nbs.time.FlexibleLocalDateConverter;
 
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -49,13 +48,10 @@ class SimplePatientSearchCriteriaResolver {
   Optional<SimplePatientSearchCriteria> resolve(final Map<String, String> criteria) {
     SimplePatientSearchNameCriteria name = resolveName(criteria).orElse(null);
 
-    LocalDate dateOfBirth = maybe(criteria, NBS_DATE_OF_BIRTH)
+    DateCriteria bornOn = maybe(criteria, NBS_DATE_OF_BIRTH)
         .map(FlexibleLocalDateConverter::fromString)
+        .map(DateCriteria::equals)
         .orElse(null);
-
-    DateCriteria bornOn = dateOfBirth != null
-        ? DateCriteria.equals(dateOfBirth.getDayOfMonth(), dateOfBirth.getMonthValue(), dateOfBirth.getYear())
-        : null;
 
     Option gender = maybe(criteria, NBS_SEX).map(Gender::resolve)
         .map(found -> new Option(found.value(), found.display()))
