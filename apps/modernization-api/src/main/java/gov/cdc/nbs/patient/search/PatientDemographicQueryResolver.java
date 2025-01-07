@@ -85,12 +85,11 @@ class PatientDemographicQueryResolver {
   }
 
   private Optional<QueryVariant> applyPatientIdFilterCriteria(final PatientFilter criteria) {
-    String idFilter = criteria.getIdFilter();
-    if (idFilter == null) {
+    if (criteria.getFilter() == null || criteria.getFilter().getId() == null) {
       return Optional.empty();
-
     }
-    String adjusted = WildCards.contains(idFilter);
+
+    String adjusted = WildCards.contains(criteria.getFilter().getId());
     return Optional.of(BoolQuery.of(
         bool -> bool.must(
             query -> query.queryString(

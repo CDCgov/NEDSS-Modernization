@@ -203,6 +203,10 @@ export type FacilityProviders = {
   sendingFacility?: Maybe<SendingFacility>;
 };
 
+export type Filter = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
 export enum Gender {
   F = 'F',
   M = 'M',
@@ -1676,10 +1680,10 @@ export type PersonFilter = {
   document?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   ethnicity?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<Filter>;
   firstName?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
-  idFilter?: InputMaybe<Scalars['String']['input']>;
   identification?: InputMaybe<IdentificationCriteria>;
   investigation?: InputMaybe<Scalars['String']['input']>;
   labReport?: InputMaybe<Scalars['String']['input']>;
