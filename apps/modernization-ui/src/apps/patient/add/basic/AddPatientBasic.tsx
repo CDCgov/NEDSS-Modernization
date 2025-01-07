@@ -49,9 +49,6 @@ export const AddPatientBasic = () => {
                     sections={sections}
                     headerActions={() => (
                         <div className={styles.buttonGroup}>
-                            <Button onClick={handleCancel} outline>
-                                Cancel
-                            </Button>
                             {features.patient?.add?.extended?.enabled && (
                                 <Button
                                     type="button"
@@ -62,7 +59,9 @@ export const AddPatientBasic = () => {
                                     Add extended data
                                 </Button>
                             )}
-                            <Button outline>Cancel</Button>
+                            <Button onClick={handleCancel} outline>
+                                Cancel
+                            </Button>
                             <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
                                 Save
                             </Button>
