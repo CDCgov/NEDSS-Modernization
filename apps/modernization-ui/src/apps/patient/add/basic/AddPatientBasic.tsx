@@ -9,6 +9,8 @@ import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 import { useConfiguration } from 'configuration';
 import { useBasicExtendedTransition } from '../useBasicExtendedTransition';
 
@@ -29,6 +31,11 @@ export const AddPatientBasic = () => {
 
     const handleSave = form.handleSubmit(interaction.create);
 
+    const { toSearch } = useSearchFromAddPatient();
+    const location = useLocation();
+    const handleCancel = () => {
+        toSearch(location.state.criteria);
+    };
     const handleExtended = form.handleSubmit(toExtendedNew);
 
     return (
@@ -52,7 +59,9 @@ export const AddPatientBasic = () => {
                                     Add extended data
                                 </Button>
                             )}
-                            <Button outline>Cancel</Button>
+                            <Button onClick={handleCancel} outline>
+                                Cancel
+                            </Button>
                             <Button type="submit" onClick={handleSave} disabled={!form.formState.isValid}>
                                 Save
                             </Button>
