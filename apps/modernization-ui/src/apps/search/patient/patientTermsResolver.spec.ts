@@ -235,6 +235,21 @@ describe('when the PatientCriteria contains Basic Information criteria', () => {
         );
     });
 
+    it('should resolve bornOn with equals', () => {
+        const input: PatientCriteriaEntry = {
+            bornOn: { equals: { year: 2021, month: 5, day: 1 } },
+            status: []
+        };
+
+        const actual = patientTermsResolver(input);
+
+        expect(actual).toEqual(
+            expect.arrayContaining([
+                { source: 'bornOn', title: 'DOB', name: '5/1/2021', value: '5/1/2021', operator: 'Equal' }
+            ])
+        );
+    });
+
     it('should resolve terms with gender', () => {
         const input: PatientCriteriaEntry = {
             gender: { name: 'Female', label: 'Female', value: 'F' },

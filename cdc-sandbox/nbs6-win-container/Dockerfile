@@ -16,6 +16,11 @@ COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
 USER ContainerAdministrator
 RUN Expand-Archive -Path C:\$env:S3_ZIP_NAME.zip; mv C:\$env:S3_ZIP_NAME\wildfly-10.0.0.Final\* C:\wildfly-10.0.0.Final\/
 
+# Downloads
+RUN mkdir C:\executables\sqlcmd
+RUN Invoke-WebRequest -Uri https://github.com/microsoft/go-sqlcmd/releases/download/v1.8.2/sqlcmd-windows-amd64.zip -OutFile C:\executables\sqlcmd\sqlcmd-windows-amd64.zip
+RUN Expand-Archive C:\executables\sqlcmd\sqlcmd-windows-amd64.zip C:\executables\sqlcmd\/
+
 # Use Windows Server Core as the base image
 FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
@@ -45,8 +50,6 @@ ENV JAVA_HOME="D:\wildfly-10.0.0.Final\Java\jdk8u412b08" \
 # 1) Verify Zip File is downloaded from S3 and place in same directory, example: wildfly-10.0.0.Final-6.0.15.1.zip
 # 2) Delete wildfly*/bin/hs_err_pid2604.mdmp and/or any file name containing "err"
 
-# COPY $S3_ZIP_NAME.zip $S3_ZIP_NAME.zip
-
 USER ContainerAdministrator
 
 # Set symbolic link as D drive using HKEY_LOCAL_MACHINE (HKLM)
@@ -55,11 +58,7 @@ RUN New-Item -ItemType directory -Path C:\wildfly-10.0.0.Final ; \
 
     
 COPY --from=builder C:\\wildfly-10.0.0.Final C:\\wildfly-10.0.0.Final
-# RUN Expand-Archive -Path C:\$env:S3_ZIP_NAME.zip; mv C:\$env:S3_ZIP_NAME\wildfly-10.0.0.Final\* C:\wildfly-10.0.0.Final\/
-
-# # Cleanup
-# RUN Remove-Item -Path C:\$env:S3_ZIP_NAME.zip -Force
-# RUN Remove-Item -Path C:\$env:S3_ZIP_NAME -Recurse -Force
+COPY --from=builder C:\\executables\\sqlcmd\\/ C:\\Users\\ContainerAdministrator\\AppData\\Local\\Microsoft\\WindowsApps\\/
 
 # Configure Task Schedular. Requires Administrator Permissions
 COPY task-scheduler.ps1 task-scheduler.ps1
