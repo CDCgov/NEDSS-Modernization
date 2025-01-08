@@ -8,6 +8,10 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record DateCriteria(Equals equals, Between between) {
 
+  public static DateCriteria equals(final LocalDate localDate) {
+    return equals(localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
+  }
+
   public static DateCriteria equals(final Integer day, final Integer month, final Integer year) {
     return new DateCriteria(new Equals(day, month, year), null);
   }

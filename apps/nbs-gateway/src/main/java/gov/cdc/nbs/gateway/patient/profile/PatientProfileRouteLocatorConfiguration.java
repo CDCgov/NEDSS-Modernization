@@ -30,6 +30,9 @@ import java.util.List;
 @ConditionalOnProperty(prefix = "nbs.gateway.patient.profile", name = "enabled", havingValue = "true")
 class PatientProfileRouteLocatorConfiguration {
 
+  private static final String CONTEXT_ACTION_PARAMETER = "ContextAction";
+  private static final String VALID_ACTIONS = "ViewFile|FileSummary";
+
   @Bean
   RouteLocator patientProfileLocator(
       final RouteLocatorBuilder builder,
@@ -38,12 +41,25 @@ class PatientProfileRouteLocatorConfiguration {
   ) {
     return builder.routes()
         .route(
-            "patient-profile-direct",
+            "patient-profile-direct-uid",
             route -> route
                 .order(RouteOrdering.PATIENT_PROFILE.order())
-                .query("ContextAction", "ViewFile|FileSummary")
+                .query(CONTEXT_ACTION_PARAMETER, VALID_ACTIONS)
                 .and()
-                .query("uid").or().query("MPRUid")
+                .query("uid")
+                .filters(
+                    filter -> filter.setPath(service.direct())
+                        .filters(defaults)
+                )
+                .uri(service.uri())
+        )
+        .route(
+            "patient-profile-direct-uid",
+            route -> route
+                .order(RouteOrdering.PATIENT_PROFILE.order())
+                .query(CONTEXT_ACTION_PARAMETER, VALID_ACTIONS)
+                .and()
+                .query("MPRUid")
                 .filters(
                     filter -> filter.setPath(service.direct())
                         .filters(defaults)
@@ -54,7 +70,7 @@ class PatientProfileRouteLocatorConfiguration {
             "patient-profile-resolving",
             route -> route
                 .order(RouteOrdering.PATIENT_PROFILE.order())
-                .query("ContextAction", "ViewFile|FileSummary")
+                .query(CONTEXT_ACTION_PARAMETER, VALID_ACTIONS)
                 .filters(
                     filter -> filter.setPath(service.summary())
                         .filters(defaults)

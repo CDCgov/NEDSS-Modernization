@@ -91,6 +91,34 @@ public class PatientSearchCriteriaSteps {
         found -> this.activeCriteria.active(criteria -> criteria.withId(found.local())));
   }
 
+  @Given("I would like to search for a patient using a local ID and a good equals id filter")
+  public void i_would_like_to_search_for_a_patient_using_a_local_ID_and_good_id_filter_that_equals_the_id() {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()))));
+  }
+
+  @Given("I would like to search for a patient using a local ID and a good contains id filter")
+  public void i_would_like_to_search_for_a_patient_using_a_local_ID_and_good_id_filter_that_contains_the_id() {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(
+                criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()).substring(1))));
+  }
+
+  @Given("I would like to search for a patient using a local ID and a bad id filter")
+  public void i_would_like_to_search_for_a_patient_using_a_local_ID_and_id_filter_that_does_not_exist() {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria.active(criteria -> criteria.withId(found.local()).withIdFilter("XXXXX")));
+  }
+
+  @Given("I would like to filter search results with the patient's short ID")
+  public void i_would_like_to_filter_search_results_with_the_patients_short_id() {
+    this.patient.maybeActive().ifPresent(
+        found -> this.activeCriteria
+            .active(criteria -> criteria.withId(found.local()).withIdFilter(Long.toString(found.shortId()))));
+  }
+
   @Given("I would like to search for a patient using multiple local IDs")
   public void i_would_like_to_search_for_a_patient_using_multiple_local_IDs() {
     this.patient.maybeActive().ifPresent(

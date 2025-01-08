@@ -32,10 +32,6 @@ const patientTermsResolver = (entry: PatientCriteriaEntry): Term[] => {
         pushCriteria('name.first', 'FIRST NAME', entry.name.first);
     }
 
-    if (entry.dateOfBirth) {
-        terms.push(fromValue('dateOfBirth', 'DOB')(entry.dateOfBirth));
-    }
-
     if (entry.bornOn) {
         if ('equals' in entry.bornOn && Object.keys(entry.bornOn.equals).length > 0) {
             terms.push(fromDateEqualsCriteria('bornOn', 'DOB')(entry.bornOn));
