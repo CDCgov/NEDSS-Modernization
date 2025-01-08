@@ -1,4 +1,4 @@
-import { ChangeEvent as ReactChangeEvent, useEffect, useState } from 'react';
+import { RefObject, ChangeEvent as ReactChangeEvent, useState, useEffect } from 'react';
 import classNames from 'classnames';
 
 type TextOnChange = (value?: string) => void;
@@ -8,6 +8,7 @@ type TextInputProps = {
     type?: 'text' | 'email' | 'number' | 'password' | 'search' | 'tel' | 'url';
     inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'search';
     value?: string;
+    inputRef?: RefObject<HTMLInputElement>;
     onChange?: TextOnChange;
     onBlur?: () => void;
 } & Omit<
@@ -24,8 +25,10 @@ const TextInput = ({
     onChange,
     onBlur,
     className,
+    inputRef,
     ...props
 }: TextInputProps) => {
+    // if a ref is passed, we will ignore state
     const [current, setCurrent] = useState<string>(value ?? '');
 
     useEffect(() => {
@@ -54,7 +57,8 @@ const TextInput = ({
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
-            value={current}
+            value={inputRef ? value || '' : current}
+            ref={inputRef}
             {...props}
         />
     );
