@@ -4,21 +4,24 @@ import styles from './add-patient-basic.module.scss';
 import { sections } from './sections';
 import { AddPatientBasicForm } from './AddPatientBasicForm';
 import { FormProvider, useForm } from 'react-hook-form';
-import { BasicNewPatientEntry, initial } from './entry';
+import { BasicNewPatientEntry } from './entry';
 import { useAddBasicPatient } from './useAddBasicPatient';
 import { Shown } from 'conditional-render';
 import { PatientCreatedPanel } from '../PatientCreatedPanel';
 import { useMemo } from 'react';
+import { useAddPatientBasicDefaults } from './useAddPatientBasicDefaults';
 import { useLocation } from 'react-router-dom';
 import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAddPatient';
 import { useConfiguration } from 'configuration';
 import { useBasicExtendedTransition } from '../useBasicExtendedTransition';
 
 export const AddPatientBasic = () => {
+    const { initialize } = useAddPatientBasicDefaults();
+
     const interaction = useAddBasicPatient();
     const { features } = useConfiguration();
     const form = useForm<BasicNewPatientEntry>({
-        defaultValues: initial(),
+        defaultValues: initialize(),
         mode: 'onBlur'
     });
 

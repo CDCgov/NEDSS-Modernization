@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { PatientCriteriaEntry } from '../criteria';
-import { asNewPatientEntry } from './asNewPatientEntry';
 import { useSearchCriteriaEncrypted } from 'apps/search/useSearchCriteriaEncrypted';
 import { useFormContext } from 'react-hook-form';
+import { asBasicNewPatientEntry } from 'apps/patient/add/basic/asBasicNewPatientEntry';
 
 type Interaction = {
     add: () => void;
@@ -14,7 +14,7 @@ const useAddPatientFromSearch = (): Interaction => {
     const { getValues } = useFormContext<PatientCriteriaEntry, Partial<PatientCriteriaEntry>>();
 
     const add = () => {
-        const defaults = asNewPatientEntry(getValues());
+        const defaults = asBasicNewPatientEntry(getValues());
         navigate('/patient/add', { state: { defaults, criteria: found } });
     };
 
