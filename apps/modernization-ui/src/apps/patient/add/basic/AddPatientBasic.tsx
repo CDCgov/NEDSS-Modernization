@@ -15,7 +15,6 @@ import { useSearchFromAddPatient } from 'apps/search/patient/add/useSearchFromAd
 import { useConfiguration } from 'configuration';
 import { useBasicExtendedTransition } from '../useBasicExtendedTransition';
 
-
 export const AddPatientBasic = () => {
     const { initialize } = useAddPatientBasicDefaults();
 
