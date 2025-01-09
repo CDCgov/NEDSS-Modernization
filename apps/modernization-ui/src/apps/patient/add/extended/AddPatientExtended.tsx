@@ -1,23 +1,23 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
-import { CreatedPatient } from '../api';
-import { ExtendedNewPatientEntry } from './entry';
-import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
-import { useAddExtendedPatient } from './useAddExtendedPatient';
-import { useShowCancelModal } from './useShowCancelModal';
-import { useNavigationBlock } from 'navigation/useNavigationBlock';
-import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
 import { Button } from 'components/button';
 import { Shown } from 'conditional-render';
+import { useNavigationBlock } from 'navigation/useNavigationBlock';
+import { CreatedPatient } from 'apps/patient/add/api';
+import { DataEntryMenu } from 'apps/patient/add/DataEntryMenu';
 import { PatientCreatedPanel } from 'apps/patient/add/PatientCreatedPanel';
+import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
+import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
+import { ExtendedNewPatientEntry } from './entry';
 import { AddPatientExtendedForm } from './AddPatientExtendedForm';
 import { CancelAddPatientExtendedPanel } from './CancelAddPatientExtendedPanel';
-import { AddPatientExtendedInPageNav } from './nav/AddPatientExtendedNav';
+import { useAddPatientExtendedDefaults } from './useAddPatientExtendedDefaults';
+import { useAddExtendedPatient } from './useAddExtendedPatient';
+import { AddExtendedPatientInteractionProvider } from './useAddExtendedPatientInteraction';
+import { useShowCancelModal } from './useShowCancelModal';
 
 import styles from './add-patient-extended.module.scss';
-import { useBasicExtendedTransition } from 'apps/patient/add/useBasicExtendedTransition';
-import { DataEntryMenu } from 'apps/patient/add/DataEntryMenu';
 
 export const AddPatientExtended = () => {
     const interaction = useAddExtendedPatient();
@@ -36,6 +36,8 @@ export const AddPatientExtended = () => {
         mode: 'onBlur',
         reValidateMode: 'onBlur'
     });
+
+    const working = !form.formState.isValid || interaction.status !== 'waiting';
 
     const handleSave = form.handleSubmit(interaction.create);
 
@@ -84,7 +86,7 @@ export const AddPatientExtended = () => {
                                 <Button onClick={handleCancel} outline>
                                     Cancel
                                 </Button>
-                                <Button onClick={handleSave} disabled={!form.formState.isValid}>
+                                <Button onClick={handleSave} disabled={working}>
                                     Save
                                 </Button>
                             </div>
